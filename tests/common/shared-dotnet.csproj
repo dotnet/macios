@@ -142,12 +142,12 @@
 		Whether the build is hot-reload-compatible is an app-level decision (it depends on the
 		registrar, which is only selected for projects that produce an app bundle), but it affects
 		the library projects the app references as well (their assemblies are the ones that must be
-		left unmodified). Pass true through every level of project references; false is already
-		their default. Otherwise the same library can be built twice with different global
-		properties but shared outputs.
+		left unmodified). Pass true through every level of project references. Only pass false
+		from a debug non-NativeAOT app, where a library could otherwise default to true;
+		passing false in NativeAOT builds can create duplicate library instances with shared outputs.
 	-->
 	<Target Name="_PassHotReloadCompatibleBuildToProjectReferences" BeforeTargets="AssignProjectConfiguration" DependsOnTargets="_ComputeHotReloadCompatibleBuild" Condition="$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
-		<ItemGroup Condition="'$(HotReloadCompatibleBuild)' == 'true'">
+		<ItemGroup Condition="'$(HotReloadCompatibleBuild)' == 'true' Or ('$(_CanOutputAppBundle)' == 'true' And '$(HotReloadCompatibleBuild)' == 'false' And '$(_BundlerDebug)' == 'true' And '$(_UseNativeAot)' != 'true')">
 			<ProjectReference Update="@(ProjectReference)" AdditionalProperties="%(ProjectReference.AdditionalProperties);HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)" />
 		</ItemGroup>
 	</Target>

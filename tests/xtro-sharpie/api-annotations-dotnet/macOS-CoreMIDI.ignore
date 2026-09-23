@@ -2,6 +2,7 @@
 !missing-pinvoke! MIDIClientCreateWithBlock is not bound
 
 # These functions are only useful to CoreMIDI driver plug-ins, which can't be implemented entirely in managed code.
+!missing-pinvoke! MIDIDeviceDispose is not bound
 !missing-pinvoke! MIDIDriverEnableMonitoring is not bound
 !missing-pinvoke! MIDIGetDriverDeviceList is not bound
 !missing-pinvoke! MIDIGetDriverIORunLoop is not bound

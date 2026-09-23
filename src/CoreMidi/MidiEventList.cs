@@ -274,6 +274,8 @@ namespace CoreMidi {
 		/// <param name="callback">The function to call for each packet.</param>
 		public unsafe void Iterate (MidiEventListIterator callback)
 		{
+			ArgumentNullException.ThrowIfNull (callback);
+
 			var packetCount = PacketCount;
 			if (packetCount == 0)
 				return;

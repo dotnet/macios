@@ -157,6 +157,13 @@ namespace MonoTouchFixtures.CoreMidi {
 			=> ((uint) MidiMessageType.ChannelVoice1 << 28) | ((uint) group << 24) | (0x9u << 20) | ((uint) channel << 16) | ((uint) note << 8) | velocity;
 
 		[Test]
+		public void IterateTest_Null ()
+		{
+			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			Assert.Throws<ArgumentNullException> (() => obj.Iterate (null), "Iterate (null)");
+		}
+
+		[Test]
 		public void ForEachEventTest_Null ()
 		{
 			using var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);

@@ -706,7 +706,7 @@ namespace CoreMidi {
 			unsafe {
 				statusCode = (MidiError) MIDISourceCreate (GetCheckedHandle (), namePtr, &endpointHandle);
 			}
-			if (endpointHandle == MidiObject.InvalidRef)
+			if (statusCode != MidiError.Ok || endpointHandle == MidiObject.InvalidRef)
 				return null;
 			return new MidiEndpoint (endpointHandle, true);
 		}
@@ -727,7 +727,7 @@ namespace CoreMidi {
 			unsafe {
 				status = (MidiError) MIDISourceCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle);
 			}
-			if (handle == MidiObject.InvalidRef)
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiEndpoint (handle, true);
 		}
@@ -2131,17 +2131,6 @@ namespace CoreMidi {
 			return new MidiDevice (handle);
 		}
 
-		[DllImport (Constants.CoreMidiLibrary)]
-		unsafe extern static OSStatus MIDIDeviceDispose (MidiDeviceRef device);
-
-		/// <summary>Dispose of devices that haven't yet been added to the system with <see cref="MidiSetup.AddDevice" />.</summary>
-		/// <returns><see cref="MidiError.Ok" /> if successful, an error code otherwise.</returns>
-		/// <remarks>Only drivers can call this method, and only before calling <see cref="MidiSetup.AddDevice" />. Once <see cref="MidiSetup.AddDevice" /> has been called, use <see cref="MidiSetup.RemoveDevice" /> instead to destroy the device.</remarks>
-		public MidiError DisposeDevice ()
-		{
-			return (MidiError) MIDIDeviceDispose (GetCheckedHandle ());
-		}
-
 		/// <summary>Returns the number of MIDI entities in this device.</summary>
 		///         <value>
 		///         </value>
@@ -3418,6 +3407,7 @@ namespace CoreMidi {
 		}
 
 		class SysexRequest : IDisposable {
+			readonly object structPointerLock = new ();
 			IntPtr structPointer;
 			MidiEndpoint endpoint;
 			byte []? byteData;
@@ -3519,31 +3509,35 @@ namespace CoreMidi {
 			unsafe void SysexCancellationRequest ()
 			{
 				wasCancelled = true;
-				var rv = (MidiSysexSendRequest*) structPointer;
-				if (rv is null)
-					return;
-				rv->Complete = true;
+				lock (structPointerLock) {
+					var rv = (MidiSysexSendRequest*) structPointer;
+					if (rv is null)
+						return;
+					rv->Complete = true;
+				}
 			}
 
 			unsafe void UmpSysexCancellationRequest ()
 			{
 				wasCancelled = true;
-				var rv = (MidiSysexSendRequestUmp*) structPointer;
-				if (rv is null)
-					return;
-				rv->Complete = true;
+				lock (structPointerLock) {
+					var rv = (MidiSysexSendRequestUmp*) structPointer;
+					if (rv is null)
+						return;
+					rv->Complete = true;
+				}
 			}
 
 			public void Dispose ()
 			{
 				cancellationTokenRegistration?.Dispose ();
 				cancellationTokenRegistration = null;
-				// Zero out 'structPointer' before freeing it, so that a concurrent
-				// cancellation callback (which checks 'structPointer' for null) can
-				// never see a stale, already-freed pointer.
-				var ptr = Interlocked.Exchange (ref structPointer, IntPtr.Zero);
-				if (ptr != IntPtr.Zero)
-					Marshal.FreeHGlobal (ptr);
+				lock (structPointerLock) {
+					var ptr = structPointer;
+					structPointer = IntPtr.Zero;
+					if (ptr != IntPtr.Zero)
+						Marshal.FreeHGlobal (ptr);
+				}
 				if (dataHandle.IsAllocated)
 					dataHandle.Free ();
 				if (thisHandle.IsAllocated)

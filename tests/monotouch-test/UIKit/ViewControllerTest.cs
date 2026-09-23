@@ -178,12 +178,7 @@ namespace MonoTouchFixtures.UIKit {
 			if (useNavigationController && UIDevice.CurrentDevice.UserInterfaceIdiom != UIUserInterfaceIdiom.Phone)
 				Assert.Ignore ("Navigation-controller containment is only used on iPhone.");
 
-			var originalWindow = UIApplication.SharedApplication.ConnectedScenes
-				.OfType<UIWindowScene> ()
-				.SelectMany (scene => scene.Windows)
-				.LastOrDefault (window => window.IsKeyWindow);
-			Assert.That (originalWindow, Is.Not.Null, "Existing key window");
-
+			var originalWindow = GetKeyWindow ();
 			using var content = new AppearanceTrackingController ();
 			using var navigation = useNavigationController ? new UINavigationController (content) : null;
 			UIViewController root = content;
@@ -232,6 +227,40 @@ namespace MonoTouchFixtures.UIKit {
 				window.RootViewController = null;
 				originalWindow.MakeKeyWindow ();
 			}
+		}
+
+		[Test]
+		public void RunAsyncRestoresRootlessKeyWindow ()
+		{
+			var originalWindow = GetKeyWindow ();
+			using var window = new UIWindow (originalWindow.WindowScene);
+			try {
+				window.MakeKeyWindow ();
+				Assert.That (window.IsKeyWindow, Is.True, "Rootless key window");
+				Assert.That (window.RootViewController, Is.Null, "Initial root");
+				var inspected = false;
+				Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => {
+					Assert.That (window.IsKeyWindow, Is.False, "Temporary window became key");
+					Assert.That (GetKeyWindow ().WindowScene, Is.SameAs (window.WindowScene), "Temporary window scene");
+					inspected = true;
+				}, () => inspected), Is.True, "RunAsync completed");
+				Assert.That (inspected, Is.True, "Inspected temporary window");
+				Assert.That (window.IsKeyWindow, Is.True, "Restored key window");
+				Assert.That (window.RootViewController, Is.Null, "Root remains unchanged");
+			} finally {
+				window.Hidden = true;
+				originalWindow.MakeKeyWindow ();
+			}
+		}
+
+		static UIWindow GetKeyWindow ()
+		{
+			var window = UIApplication.SharedApplication.ConnectedScenes
+				.OfType<UIWindowScene> ()
+				.SelectMany (scene => scene.Windows)
+				.LastOrDefault (candidate => candidate.IsKeyWindow);
+			Assert.That (window, Is.Not.Null, "Existing key window");
+			return window;
 		}
 
 		[Preserve (AllMembers = true)]

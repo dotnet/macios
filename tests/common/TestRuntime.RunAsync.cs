@@ -144,6 +144,7 @@ partial class TestRuntime {
 #if HAS_UIKIT
 		UIViewController? child;
 		UIWindow? window;
+		UIWindow? previousKeyWindow;
 		UINavigationController? navigation;
 #else
 		NSWindow? window;
@@ -163,7 +164,8 @@ partial class TestRuntime {
 						.LastOrDefault (v => v.IsKeyWindow);
 			var initialRootViewController = window?.RootViewController;
 			if (initialRootViewController is null) {
-				window = new UIWindow (UIScreen.MainScreen.Bounds);
+				previousKeyWindow = window;
+				window = previousKeyWindow?.WindowScene is UIWindowScene scene ? new UIWindow (scene) : new UIWindow (UIScreen.MainScreen.Bounds);
 				window.RootViewController = vc;
 				window.MakeKeyAndVisible ();
 				close_window = true;
@@ -225,10 +227,16 @@ partial class TestRuntime {
 #endif // HAS_UIKIT
 
 			if (close_window) {
-#if !HAS_UIKIT
+#if HAS_UIKIT
+				window.Hidden = true;
+#else
 				window.Close ();
 #endif
 				window.Dispose ();
+#if HAS_UIKIT
+				previousKeyWindow?.MakeKeyWindow ();
+				previousKeyWindow = null;
+#endif
 			}
 
 			window = null;

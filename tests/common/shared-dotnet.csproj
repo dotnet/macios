@@ -146,8 +146,8 @@
 		their default. Otherwise the same library can be built twice with different global
 		properties but shared outputs.
 	-->
-	<Target Name="_PassHotReloadCompatibleBuildToProjectReferences" BeforeTargets="AssignProjectConfiguration" DependsOnTargets="_ComputeHotReloadCompatibleBuild" Condition="'$(HotReloadCompatibleBuild)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
-		<ItemGroup>
+	<Target Name="_PassHotReloadCompatibleBuildToProjectReferences" BeforeTargets="AssignProjectConfiguration" DependsOnTargets="_ComputeHotReloadCompatibleBuild" Condition="$([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+		<ItemGroup Condition="'$(HotReloadCompatibleBuild)' == 'true'">
 			<ProjectReference Update="@(ProjectReference)" AdditionalProperties="%(ProjectReference.AdditionalProperties);HotReloadCompatibleBuild=$(HotReloadCompatibleBuild)" />
 		</ItemGroup>
 	</Target>

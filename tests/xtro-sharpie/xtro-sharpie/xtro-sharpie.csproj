@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="UnitTests" />
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <ProjectReference Include="../../../tools/sharpie/Sharpie.Bind/Sharpie.Bind.csproj" />
   </ItemGroup>

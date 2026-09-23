@@ -106,8 +106,6 @@ namespace MonoTouchFixtures.UIKit {
 		[TestCase (2, true)]
 		public void AppearanceWhenContainedInInstancesOfClasses (int containerCount, bool withTraits)
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 9, 0, throwIfOtherPlatform: false);
-
 			Type [] containers = { typeof (UITextField), typeof (UIView) };
 			Array.Resize (ref containers, containerCount);
 			var handles = new NativeHandle [containerCount];

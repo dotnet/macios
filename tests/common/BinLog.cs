@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging;
 using Microsoft.Build.Logging.StructuredLogger;
+using NUnit.Framework;
 
 #nullable enable
 
@@ -100,6 +101,9 @@ namespace Xamarin.Tests {
 	}
 
 	public class BinLog {
+		public static readonly Dictionary<string, string?> EnablePropertyTracking = new Dictionary<string, string?> {
+			{ "MSBuildLogPropertyTracking", "1" },
+		};
 
 		public static IEnumerable<TargetExecutionResult> GetAllTargets (string path)
 		{
@@ -315,6 +319,12 @@ namespace Xamarin.Tests {
 			}
 
 			return value is not null;
+		}
+
+		public static void AssertPropertyValue (string binlog, string property, string expectedValue)
+		{
+			Assert.That (TryFindPropertyValue (binlog, property, out var value), Is.True, $"Could not find the '{property}' property in the binlog.");
+			Assert.That (value, Is.EqualTo (expectedValue), property);
 		}
 
 		// Returns a diagnostic build log as a string

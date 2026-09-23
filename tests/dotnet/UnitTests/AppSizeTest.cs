@@ -9,10 +9,6 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class AppSizeTest : TestBaseClass {
-		static readonly Dictionary<string, string?> EnablePropertyTracking = new Dictionary<string, string?> {
-			{ "MSBuildLogPropertyTracking", "1" },
-		};
-
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
@@ -49,9 +45,9 @@ namespace Xamarin.Tests {
 				{ "_IsPublishing", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: EnablePropertyTracking);
+			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: BinLog.EnablePropertyTracking);
 
-			AssertRegistrar (result, "trimmable-static");
+			BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "trimmable-static");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -65,11 +61,11 @@ namespace Xamarin.Tests {
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var environmentVariables = platform == ApplePlatform.MacOSX ? EnablePropertyTracking : null;
+			var environmentVariables = platform == ApplePlatform.MacOSX ? BinLog.EnablePropertyTracking : null;
 			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict, environmentVariables: environmentVariables);
 
 			if (platform == ApplePlatform.MacOSX)
-				AssertRegistrar (result, "trimmable-static");
+				BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "trimmable-static");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -145,12 +141,6 @@ namespace Xamarin.Tests {
 			}
 
 			return result;
-		}
-
-		static void AssertRegistrar (ExecutionResult result, string expectedRegistrar)
-		{
-			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
-			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
 		}
 
 		static void CopyAppBundleForDiagnostics (string name, string appPath)

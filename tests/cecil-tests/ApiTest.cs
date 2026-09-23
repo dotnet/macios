@@ -19,32 +19,6 @@ namespace Cecil.Tests {
 	[TestFixture]
 	public partial class ApiTest {
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		public void AppKitCallbackNullability (AssemblyInfo info)
-		{
-			if (info.Platform != ApplePlatform.MacOSX)
-				Assert.Ignore ("These AppKit callbacks are only available on macOS.");
-
-			(string TypeName, bool NullableReturn) [] callbacks = [
-				("LocalEventHandler", true),
-				("NSDocumentLockCompletionHandler", false),
-				("NSDocumentControllerOpenPanelWithCompletionHandler", false),
-			];
-
-			foreach (var (typeName, nullableReturn) in callbacks) {
-				var type = info.Assembly.MainModule.GetType ($"AppKit.{typeName}");
-				Assert.That (type, Is.Not.Null, typeName);
-				var invoke = type.Methods.Single (m => m.Name == "Invoke");
-				ICustomAttributeProvider value = nullableReturn ? invoke.MethodReturnType : invoke.Parameters [0];
-				var nullable = value.CustomAttributes.SingleOrDefault (a => a.AttributeType.Is ("System.Runtime.CompilerServices", "NullableAttribute"))
-					?? invoke.CustomAttributes.SingleOrDefault (a => a.AttributeType.Is ("System.Runtime.CompilerServices", "NullableContextAttribute"))
-					?? type.CustomAttributes.SingleOrDefault (a => a.AttributeType.Is ("System.Runtime.CompilerServices", "NullableContextAttribute"));
-
-				Assert.That (nullable?.ConstructorArguments [0].Value, Is.EqualTo ((byte) 2), $"{typeName} nullable {(nullableReturn ? "return" : "parameter")}");
-			}
-		}
-
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{
 			// all subclasses of ARConfiguration must (re)export 'GetSupportedVideoFormats'

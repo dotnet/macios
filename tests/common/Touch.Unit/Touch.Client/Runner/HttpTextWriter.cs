@@ -106,20 +106,17 @@ namespace MonoTouch.NUnit {
 
 		public override void Write (char value)
 		{
-			Console.Out.Write (value);
 			log.Append (value);
 		}
 
 		public override void Write (char []? buffer)
 		{
-			Console.Out.Write (buffer);
 			if (buffer is not null)
 				log.Append (buffer);
 		}
 
 		public override void WriteLine (string? value)
 		{
-			Console.Out.WriteLine (value);
 			log.AppendLine (value);
 		}
 	}

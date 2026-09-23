@@ -18418,13 +18418,17 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("savePresentedItemChangesWithCompletionHandler:")]
-		void SavePresentedItemChanges (Action<NSError> completionHandler);
+#nullable enable
+		void SavePresentedItemChanges (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedItemDeletionWithCompletionHandler:")]
-		void AccommodatePresentedItemDeletion (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemDeletion (Action<NSError?> completionHandler);
+#nullable disable
 
 		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]

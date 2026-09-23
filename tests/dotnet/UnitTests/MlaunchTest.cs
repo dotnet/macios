@@ -87,6 +87,10 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "DeployToDevice");
+			var executedTargets = BinLog.GetAllTargets (rv.BinLogPath).Where (v => !v.Skipped).Select (v => v.TargetName);
+			Assert.That (executedTargets, Does.Not.Contain ("Build"), "Build target");
+			Assert.That (executedTargets, Does.Not.Contain ("Compile"), "Compile target");
+			Assert.That (executedTargets, Does.Not.Contain ("CoreCompile"), "CoreCompile target");
 
 			// The 'MlaunchInstallArguments' property is computed (and thus present in the binlog) as soon as a device/simulator
 			// was found, regardless of whether the actual install (done by mlaunch, executed via an <Exec/> task) succeeds - and

@@ -14,8 +14,8 @@ namespace Xamarin.Tests {
 		public void IncrementalBuild (ApplePlatform platform, string runtimeIdentifiers, string registrar, string linkMode, string configuration)
 		{
 			// An incremental (second, no-source-change) build with PrepareAssemblies=true must not fail.
-			// The '_PrepareAssemblies' and '_PostprocessAssemblies' targets must not run as partial
-			// incremental builds, because the assembly-preparer needs the complete set of assemblies to
+			// The PrepareAssemblies task must not run in a partial incremental build,
+			// because the assembly-preparer needs the complete set of assemblies to
 			// resolve inter-assembly references (otherwise it fails with MT4116/MT2362). See
 			// https://github.com/dotnet/macios/issues/25938.
 			var project = "MySimpleApp";
@@ -34,7 +34,47 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			// The second (incremental) build, without any changes, must also succeed.
+			var result = DotNet.AssertBuild (project_path, properties);
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetNotExecuted (targets, "_ExecutePrepareAssemblies", "Incremental preparation");
+			AssertTargetNotExecuted (targets, "_ExecutePostprocessAssemblies", "Incremental post-processing");
+
+			var sourcePath = Path.Combine (Path.GetDirectoryName (project_path)!, "..", "AppDelegate.cs");
+			Configuration.Touch (sourcePath);
+			result = DotNet.AssertBuild (project_path, properties);
+			targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (targets, "_ExecutePrepareAssemblies", "Source change preparation");
+			AssertTargetExecuted (targets, "_ExecutePostprocessAssemblies", "Source change post-processing");
+
+			properties ["DynamicRegistrationSupported"] = "true";
+			result = DotNet.AssertBuild (project_path, properties);
+			targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (targets, "_ExecutePrepareAssemblies", "Configuration change preparation");
+			AssertTargetExecuted (targets, "_ExecutePostprocessAssemblies", "Configuration change post-processing");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void NativeAotIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["Registrar"] = "trimmable-static";
+
 			DotNet.AssertBuild (project_path, properties);
+
+			var result = DotNet.AssertBuild (project_path, properties);
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetNotExecuted (targets, "_ExecutePrepareAssemblies", "Incremental NativeAOT preparation");
+			AssertTargetNotExecuted (targets, "_ExecutePostprocessAssembliesAfterIlc", "Incremental NativeAOT post-processing");
 		}
 
 		[TestCase (true, true, "trimmable-static", null, null, true)]

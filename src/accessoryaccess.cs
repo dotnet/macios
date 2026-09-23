@@ -10,20 +10,28 @@ using OS_xpc_object = Foundation.NSObject;
 
 namespace AccessoryAccess {
 
+	/// <summary>Specifies errors reported by AccessoryAccess.</summary>
 	[Mac (27, 0)]
 	[Native]
 	[ErrorDomain ("AAErrorDomain")]
 	public enum AAErrorCode : long {
+		/// <summary>An internal error occurred.</summary>
 		Internal = 1,
+		/// <summary>An accessory listener is already registered.</summary>
 		AccessoryListenerAlreadyRegistered = 2,
+		/// <summary>The accessory is not accessible.</summary>
 		AccessoryNotAccessible = 3,
+		/// <summary>The accessory is in an invalid state for the requested operation.</summary>
 		InvalidAccessoryState = 4,
 	}
 
+	/// <summary>Specifies how interface matching dictionaries are applied when matching a USB accessory.</summary>
 	[Mac (27, 0)]
 	[Native ("AAUSBAccessoryMatchingCriteriaInterfaceMatchingOption")]
 	public enum AAUsbAccessoryMatchingCriteriaInterfaceMatchingOption : long {
+		/// <summary>All interface matching dictionaries must match.</summary>
 		MatchAll,
+		/// <summary>At least one interface matching dictionary must match.</summary>
 		MatchAny,
 	}
 
@@ -32,6 +40,8 @@ namespace AccessoryAccess {
 	/// <param name="error">The error that was encountered, or <see langword="null" /> if no error occurred.</param>
 	/// <remarks>IOUSBHost is not bound in macios, so this handle is surfaced as a raw <see cref="IntPtr"/>. To perform USB I/O, hand the accessory to a native/Swift service via <see cref="AAUsbAccessory.CreateXpcRepresentation"/> or bridge the handle through native IOUSBHost code.</remarks>
 	delegate void AAUsbAccessoryOpenCompletionHandler (IntPtr device, [NullAllowed] NSError error);
+	/// <summary>A completion handler for closing a USB accessory.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the accessory closed successfully.</param>
 	delegate void AAUsbAccessoryCloseCompletionHandler ([NullAllowed] NSError error);
 
 	[Mac (27, 0)]
@@ -76,7 +86,11 @@ namespace AccessoryAccess {
 		void UsbAccessoryDidDisconnect (AAUsbAccessory usbAccessory);
 	}
 
+	/// <summary>A completion handler for registering a USB accessory listener.</summary>
+	/// <param name="accessories">The USB accessories that are already connected.</param>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if registration succeeded.</param>
 	delegate void AAUsbAccessoryManagerRegisterListenerCompletionHandler (AAUsbAccessory [] accessories, [NullAllowed] NSError error);
+	/// <summary>A completion handler for unregistering a USB accessory listener.</summary>
 	delegate void AAUsbAccessoryManagerUnregisterListenerCompletionHandler ();
 
 	[Mac (27, 0)]

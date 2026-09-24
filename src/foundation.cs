@@ -11070,7 +11070,7 @@ namespace Foundation {
 		[Export ("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")]
 #nullable enable
 		void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest?> completionHandler);
-#nullable disable
+#nullable restore
 
 		/// <param name="session">To be added.</param>
 		/// <param name="task">To be added.</param>

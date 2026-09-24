@@ -452,6 +452,8 @@ public class BindingTouch : IDisposable, IToolLog {
 		cargs.Add ("-debug");
 		cargs.Add ("-unsafe");
 		cargs.Add ("-target:library");
+		// Binding projects may not be nullable-warning clean.
+		cargs.Add ("-nullable:annotations");
 		cargs.Add ("-nowarn:436");
 		cargs.Add ("-nowarn:CS0419"); // "Ambiguous reference in cref attribute: '...'. Assuming '...', but could have also matched other overloads including '...'." => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.
 		cargs.Add ("-nowarn:CS1574"); // "XML comment has cref attribute '...' that could not be resolved" => we want to be able to write xml comments in api definition code for APIs that don't exist until all the code has been generated, so we ignore these warnings.

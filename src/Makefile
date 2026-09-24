@@ -303,6 +303,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-nowarn:436,1591,CA1416,CS8981 \
 		-nowarn:$(XML_DOCS_WARNINGS) \
 		-warnaserror+ \
+		-nullable+ \
 		-out:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).xml \
 		-r:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \

@@ -17,6 +17,10 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolExtraArgs
+
+Additional arguments to pass to `actool`.
+
 ## ACToolPath
 
 The full path to the `actool` tool.
@@ -749,6 +753,18 @@ affect anything.
 The default value is `true` for non-NativeAOT debug builds that don't use the
 managed static registrar, and `false` otherwise (the managed static registrar
 modifies user assemblies, which is incompatible with Hot Reload).
+
+## IBToolExtraArgs
+
+Additional arguments to pass to `ibtool`.
+
+For example, to use the simulator-based Interface Builder compilation mode:
+
+```xml
+<PropertyGroup>
+  <IBToolExtraArgs>--cocoatouch-compiler-mode simulator</IBToolExtraArgs>
+</PropertyGroup>
+```
 
 ## IBToolPath
 

@@ -304,7 +304,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
 
-			using var view = new UIView ();
+			using var view = new TraitObservableView ();
 			IUITraitChangeObservable observable = view;
 			var traits = new [] { new Class (typeof (UITraitVerticalSizeClass)) };
 			var action = new Selector ("notifyTraitChange:collection:");
@@ -317,12 +317,14 @@ namespace MonoTouchFixtures.UIKit {
 			using var actionRegistration = useExtensionMethods ?
 				UITraitChangeObservable_Extensions.RegisterForTraitChanges (observable, traits, action) :
 				observable.RegisterForTraitChanges (traits, action);
+			Assert.That (view.RegistrationCount, Is.EqualTo (3), "Registration overrides");
 
 			foreach (var registration in new [] { callbackRegistration, targetRegistration, actionRegistration }) {
 				Assert.That (registration.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Registered");
 				observable.UnregisterForTraitChanges (registration);
 				Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Unregistered");
 			}
+			Assert.That (view.UnregistrationCount, Is.EqualTo (3), "Unregistration overrides");
 		}
 
 		[Test]

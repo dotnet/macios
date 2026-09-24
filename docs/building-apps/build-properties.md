@@ -13,9 +13,9 @@ an MSBuild PropertyGroup.
 
 > [!IMPORTANT]
 > Mono-specific properties on this page apply to supported builds targeting
-> .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, iOS,
-> tvOS, and Mac Catalyst projects use CoreCLR and can't select Mono: setting
-> `UseMonoRuntime=true` produces `NETSDK1242`. macOS was already CoreCLR-only;
+> .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, the default
+> runtime for iOS, tvOS, and Mac Catalyst is CoreCLR (NativeAOT is a separate
+> option), and these projects can't select Mono: setting `UseMonoRuntime=true` produces `NETSDK1242`.
 > setting `UseMonoRuntime=true` produces its existing `Only CoreCLR is
 > supported on macOS` workload error instead of `NETSDK1242`.
 

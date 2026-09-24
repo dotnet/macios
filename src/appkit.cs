@@ -403,7 +403,7 @@ namespace AppKit {
 		[Export ("duration")]
 		double Duration { get; set; }
 
-		[Export ("completionHandler", ArgumentSemantic.Copy)]
+		[NullAllowed, Export ("completionHandler", ArgumentSemantic.Copy)]
 		Action CompletionHandler { get; set; }
 
 		[Static]
@@ -3871,7 +3871,7 @@ namespace AppKit {
 		void MoveItem (NSIndexPath indexPath, NSIndexPath newIndexPath);
 
 		[Export ("performBatchUpdates:completionHandler:")]
-		void PerformBatchUpdates (Action updates, Action<bool> completionHandler);
+		void PerformBatchUpdates ([NullAllowed] Action updates, [NullAllowed] Action<bool> completionHandler);
 
 		[Export ("scrollToItemsAtIndexPaths:scrollPosition:")]
 		void ScrollToItems (NSSet<NSIndexPath> indexPaths, NSCollectionViewScrollPosition scrollPosition);
@@ -7042,7 +7042,7 @@ namespace AppKit {
 		INSPreviewRepresentableActivityItem [] PreviewRepresentableActivityItems { get; set; }
 	}
 
-	delegate void OpenDocumentCompletionHandler (NSDocument document, bool documentWasAlreadyOpen, NSError error);
+	delegate void OpenDocumentCompletionHandler ([NullAllowed] NSDocument document, bool documentWasAlreadyOpen, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[DesignatedDefaultCtor]
@@ -9053,6 +9053,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	delegate void GlobalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
 	delegate void NSEventTrackHandler (nfloat gestureAmount, NSEventPhase eventPhase, bool isComplete, ref bool stop);
@@ -17592,10 +17593,10 @@ namespace AppKit {
 		NSTextCheckingResult [] CheckString (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, out NSOrthography orthography, out nint wordCount);
 
 		[Export ("requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:")]
-		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, [NullAllowed] NSDictionary options, nint tag, Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
+		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, [NullAllowed] NSDictionary options, nint tag, [NullAllowed] Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
 
 		[Wrap ("RequestChecking (stringToCheck, range, checkingTypes, options.GetDictionary (), tag, completionHandler)")]
-		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
+		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, [NullAllowed] Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
 
 		[Export ("menuForResult:string:options:atLocation:inView:")]
 		NSMenu MenuForResults (NSTextCheckingResult result, string checkedString, NSDictionary options, CGPoint location, NSView view);
@@ -18741,6 +18742,7 @@ namespace AppKit {
 		NSString WritingToolsExclusion { get; }
 	}
 
+	[return: NullAllowed]
 	delegate NSObject NSStoryboardControllerCreator (NSCoder coder);
 
 	[NoMacCatalyst]
@@ -20353,7 +20355,7 @@ namespace AppKit {
 		void PresentViewController (NSViewController viewController, CGRect positioningRect, NSView positioningView, nuint preferredEdge, NSPopoverBehavior behavior);
 
 		[Export ("transitionFromViewController:toViewController:options:completionHandler:")]
-		void TransitionFromViewController (NSViewController fromViewController, NSViewController toViewController, NSViewControllerTransitionOptions options, Action completion);
+		void TransitionFromViewController (NSViewController fromViewController, NSViewController toViewController, NSViewControllerTransitionOptions options, [NullAllowed] Action completion);
 
 		[Export ("parentViewController")]
 		NSViewController ParentViewController { get; }
@@ -25359,7 +25361,7 @@ namespace AppKit {
 
 	}
 
-	delegate void NSWindowTrackEventsMatchingCompletionHandler (NSEvent evt, ref bool stop);
+	delegate void NSWindowTrackEventsMatchingCompletionHandler ([NullAllowed] NSEvent evt, ref bool stop);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSResponder), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSWindowDelegate) })]
@@ -26318,10 +26320,10 @@ namespace AppKit {
 		NSWindowOcclusionState OcclusionState { get; }
 
 		[Export ("beginSheet:completionHandler:")]
-		void BeginSheet (NSWindow sheetWindow, Action<nint> completionHandler);
+		void BeginSheet (NSWindow sheetWindow, [NullAllowed] Action<nint> completionHandler);
 
 		[Export ("beginCriticalSheet:completionHandler:")]
-		void BeginCriticalSheet (NSWindow sheetWindow, Action<nint> completionHandler);
+		void BeginCriticalSheet (NSWindow sheetWindow, [NullAllowed] Action<nint> completionHandler);
 
 		[Export ("endSheet:")]
 		void EndSheet (NSWindow sheetWindow);
@@ -26457,7 +26459,7 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	delegate void NSWindowCompletionHandler (NSWindow window, NSError error);
+	delegate void NSWindowCompletionHandler ([NullAllowed] NSWindow window, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -27119,7 +27121,7 @@ namespace AppKit {
 		// The 'FileType' property has manual bindings.
 	}
 
-	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, NSError error);
+	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -27215,10 +27217,10 @@ namespace AppKit {
 		NSColor [] FileLabelColors { get; }
 
 		[Export ("recycleURLs:completionHandler:"), ThreadSafe]
-		void RecycleUrls (NSArray urls, NSWorkspaceUrlHandler completionHandler);
+		void RecycleUrls (NSArray urls, [NullAllowed] NSWorkspaceUrlHandler completionHandler);
 
 		[Export ("duplicateURLs:completionHandler:"), ThreadSafe]
-		void DuplicateUrls (NSArray urls, NSWorkspaceUrlHandler completionHandler);
+		void DuplicateUrls (NSArray urls, [NullAllowed] NSWorkspaceUrlHandler completionHandler);
 
 		[Export ("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:"), ThreadSafe]
 		bool GetFileSystemInfo (string fullPath, out bool removableFlag, out bool writableFlag, out bool unmountableFlag, out string description, out string fileSystemType);
@@ -28870,7 +28872,7 @@ namespace AppKit {
 		void TerminateAutomaticallyTerminableApplications ();
 	}
 
-	delegate void NSSpellCheckerShowCorrectionIndicatorOfTypeHandler (string acceptedString);
+	delegate void NSSpellCheckerShowCorrectionIndicatorOfTypeHandler ([NullAllowed] string acceptedString);
 
 	partial interface NSSpellChecker {
 		[Export ("correctionForWordRange:inString:language:inSpellDocumentWithTag:")]
@@ -28887,7 +28889,7 @@ namespace AppKit {
 
 		[Export ("showCorrectionIndicatorOfType:primaryString:alternativeStrings:forStringInRect:view:completionHandler:")]
 		void ShowCorrectionIndicatorOfType (NSCorrectionIndicatorType type, string primaryString, string [] alternativeStrings,
-			CGRect forStringInRect, NSRulerView view, NSSpellCheckerShowCorrectionIndicatorOfTypeHandler completionHandler);
+			CGRect forStringInRect, NSRulerView view, [NullAllowed] NSSpellCheckerShowCorrectionIndicatorOfTypeHandler completionHandler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -29129,16 +29131,16 @@ namespace AppKit {
 		[Export ("initWithSize:flipped:drawingHandler:")]
 		NativeHandle Constructor (CGSize size, bool flipped, NSCustomImageRepDrawingHandler drawingHandler);
 
-		[Export ("drawingHandler")]
+		[NullAllowed, Export ("drawingHandler")]
 		NSCustomImageRepDrawingHandler DrawingHandler { get; }
 	}
 
 	delegate void NSDocumentMoveCompletionHandler (bool didMove);
-	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
+	delegate void NSDocumentMoveToUrlCompletionHandler ([NullAllowed] NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
-	delegate void NSDocumentLockCompletionHandler (NSError error);
-	delegate void NSDocumentUnlockCompletionHandler (NSError error);
+	delegate void NSDocumentLockCompletionHandler ([NullAllowed] NSError error);
+	delegate void NSDocumentUnlockCompletionHandler ([NullAllowed] NSError error);
 
 	partial interface NSDocument : NSEditorRegistration, NSFilePresenter, NSMenuItemValidation
 	, NSUserInterfaceValidations // ValidateUserInterfaceItem was bound with NSObject and fix would break API compat  
@@ -29168,10 +29170,10 @@ namespace AppKit {
 		void MoveDocument (NSObject sender);
 
 		[Export ("moveDocumentWithCompletionHandler:")]
-		void MoveDocumentWithCompletionHandler (NSDocumentMoveCompletionHandler completionHandler);
+		void MoveDocumentWithCompletionHandler ([NullAllowed] NSDocumentMoveCompletionHandler completionHandler);
 
 		[Export ("moveToURL:completionHandler:")]
-		void MoveToUrl (NSUrl url, NSDocumentMoveToUrlCompletionHandler completionHandler);
+		void MoveToUrl (NSUrl url, [NullAllowed] NSDocumentMoveToUrlCompletionHandler completionHandler);
 
 		[Export ("lockDocument:")]
 		void LockDocument (NSObject sender);
@@ -29180,16 +29182,16 @@ namespace AppKit {
 		void UnlockDocument (NSObject sender);
 
 		[Export ("lockDocumentWithCompletionHandler:")]
-		void LockDocumentWithCompletionHandler (NSDocumentLockDocumentCompletionHandler completionHandler);
+		void LockDocumentWithCompletionHandler ([NullAllowed] NSDocumentLockDocumentCompletionHandler completionHandler);
 
 		[Export ("lockWithCompletionHandler:")]
-		void LockWithCompletionHandler (NSDocumentLockCompletionHandler completionHandler);
+		void LockWithCompletionHandler ([NullAllowed] NSDocumentLockCompletionHandler completionHandler);
 
 		[Export ("unlockDocumentWithCompletionHandler:")]
-		void UnlockDocumentWithCompletionHandler (NSDocumentUnlockDocumentCompletionHandler completionHandler);
+		void UnlockDocumentWithCompletionHandler ([NullAllowed] NSDocumentUnlockDocumentCompletionHandler completionHandler);
 
 		[Export ("unlockWithCompletionHandler:")]
-		void UnlockWithCompletionHandler (NSDocumentUnlockCompletionHandler completionHandler);
+		void UnlockWithCompletionHandler ([NullAllowed] NSDocumentUnlockCompletionHandler completionHandler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -29208,7 +29210,7 @@ namespace AppKit {
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
 
-	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
+	delegate void NSDocumentControllerOpenPanelWithCompletionHandler ([NullAllowed] NSArray urlsToOpen);
 	delegate void NSDocumentControllerOpenPanelResultHandler (nint result);
 
 	partial interface NSDocumentController : NSMenuItemValidation
@@ -32749,7 +32751,7 @@ namespace AppKit {
 
 		[Abstract]
 		[Export ("filePromiseProvider:writePromiseToURL:completionHandler:")]
-		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
+		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, Action<NSError?> completionHandler);
 
 		/// <param name="filePromiseProvider">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -32773,7 +32775,7 @@ namespace AppKit {
 		string [] FileNames { get; }
 
 		[Export ("receivePromisedFilesAtDestination:options:operationQueue:reader:")]
-		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl?, NSError?> reader);
+		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl, NSError?> reader);
 	}
 
 	interface INSValidatedUserInterfaceItem { }
@@ -33744,7 +33746,7 @@ namespace AppKit {
 		void CancelPrefetching (NSCollectionView collectionView, NSIndexPath [] indexPaths);
 	}
 
-	delegate bool DownloadFontAssetsRequestCompletionHandler (NSError error);
+	delegate bool DownloadFontAssetsRequestCompletionHandler ([NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -34086,7 +34088,7 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	interface NSColorSampler {
 		[Export ("showSamplerWithSelectionHandler:")]
-		void ShowSampler (Action<NSColor> selectionHandler);
+		void ShowSampler (Action<NSColor?> selectionHandler);
 	}
 
 	[NoMacCatalyst]
@@ -34121,6 +34123,7 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSCollectionLayoutSection NSCollectionViewCompositionalLayoutSectionProvider (nint section, INSCollectionLayoutEnvironment layout);
 
 	[NoMacCatalyst]
@@ -34393,9 +34396,11 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSCollectionViewItem NSCollectionViewDiffableDataSourceItemProvider (NSCollectionView collectionView, NSIndexPath indexPath, NSObject itemIdentifierType);
 
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSView NSCollectionViewDiffableDataSourceSupplementaryViewProvider (NSCollectionView collectionView, string str, NSIndexPath indexPath);
 
 	[NoMacCatalyst]

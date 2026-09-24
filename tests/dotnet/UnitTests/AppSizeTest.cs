@@ -45,7 +45,7 @@ namespace Xamarin.Tests {
 				{ "_IsPublishing", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: BinLog.EnablePropertyTracking);
+			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: BinLog.CreateEnablePropertyTracking ());
 
 			BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "trimmable-static");
 		}
@@ -61,7 +61,7 @@ namespace Xamarin.Tests {
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var environmentVariables = platform == ApplePlatform.MacOSX ? BinLog.EnablePropertyTracking : null;
+			var environmentVariables = platform == ApplePlatform.MacOSX ? BinLog.CreateEnablePropertyTracking () : null;
 			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict, environmentVariables: environmentVariables);
 
 			if (platform == ApplePlatform.MacOSX)

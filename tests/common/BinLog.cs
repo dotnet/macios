@@ -101,7 +101,7 @@ namespace Xamarin.Tests {
 	}
 
 	public class BinLog {
-		public static readonly Dictionary<string, string?> EnablePropertyTracking = new Dictionary<string, string?> {
+		public static Dictionary<string, string?> CreateEnablePropertyTracking () => new Dictionary<string, string?> {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 

@@ -18,7 +18,7 @@ namespace Xamarin.Tests {
 			properties ["MtouchLink"] = linkMode;
 			properties ["UseMonoRuntime"] = "false";
 
-			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: BinLog.EnablePropertyTracking);
+			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: BinLog.CreateEnablePropertyTracking ());
 
 			BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", expectedRegistrar);
 			BinLog.AssertPropertyValue (result.BinLogPath, "PrepareAssemblies", "true");
@@ -41,7 +41,7 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (projectPath, properties);
 
 			properties.Remove ("Registrar");
-			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: BinLog.EnablePropertyTracking);
+			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: BinLog.CreateEnablePropertyTracking ());
 
 			BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "partial-static");
 

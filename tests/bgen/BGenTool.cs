@@ -279,7 +279,7 @@ namespace Xamarin.Tests {
 			if (command.Length == 0)
 				throw new InvalidOperationException ("No .NET C# compiler command is configured for the bgen tests.");
 
-			var arguments = command.Skip (1).ToList ();
+			var arguments = new List<string> ();
 			var targetFramework = Profile == Profile.None ? (TargetFramework?) null : TargetFramework.Parse (GetTargetFramework (Profile));
 			var baseLibrary = BaseLibrary ?? (targetFramework.HasValue ? Configuration.GetBaseLibrary (targetFramework.Value) : null);
 			var attributeLibrary = AttributeLibrary ?? (targetFramework.HasValue ? Configuration.GetBindingAttributePath (targetFramework.Value) : null);
@@ -314,7 +314,6 @@ namespace Xamarin.Tests {
 
 			if (targetFramework.HasValue) {
 				arguments.Add ("/nostdlib");
-				arguments.Add ("/noconfig");
 			}
 			arguments.Add ($"/doc:{Path.ChangeExtension (outputAssembly, ".xml")}");
 			arguments.Add ("/nowarn:1591");
@@ -326,8 +325,15 @@ namespace Xamarin.Tests {
 			arguments.Add (globalUsings);
 			arguments.AddRange (sources);
 
+			var responseFile = Path.Combine (EnsureTempDir (), apiDefinitions ? "api-csc.rsp" : "generated-csc.rsp");
+			File.WriteAllLines (responseFile, arguments.Select (StringUtils.QuoteForProcess));
+
+			var compilerArguments = command.Skip (1).ToList ();
+			if (targetFramework.HasValue)
+				compilerArguments.Add ("/noconfig");
+			compilerArguments.Add ($"@{responseFile}");
 			StringBuilder compilerOutput;
-			var rv = ExecutionHelper.Execute (command [0], arguments, out compilerOutput, WorkingDirectory);
+			var rv = ExecutionHelper.Execute (command [0], compilerArguments, out compilerOutput, WorkingDirectory);
 			Output.Append (compilerOutput);
 			Console.WriteLine (compilerOutput);
 			return rv;

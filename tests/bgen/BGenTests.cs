@@ -15,8 +15,9 @@ namespace GeneratorTests {
 		[Test]
 		public void PrecompiledApiAssemblyWithoutSources ()
 		{
-			var baseLibrary = Path.Combine (Configuration.SourceRoot, "src", "build", "dotnet", "ios", "ref", "Microsoft.iOS.dll");
-			var attributeLibrary = Path.Combine (Configuration.SourceRoot, "src", "build", "dotnet", "Xamarin.Apple.BindingAttributes.dll");
+			var targetFramework = TargetFramework.Parse (BGenTool.GetTargetFramework (Profile.iOS));
+			var baseLibrary = Configuration.GetBaseLibrary (targetFramework);
+			var attributeLibrary = Configuration.GetBindingAttributePath (targetFramework);
 			var compiledApi = BuildFile (Profile.iOS, bgen => {
 				bgen.BaseLibrary = baseLibrary;
 				bgen.AttributeLibrary = attributeLibrary;

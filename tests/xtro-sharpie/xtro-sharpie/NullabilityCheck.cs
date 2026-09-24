@@ -253,19 +253,41 @@ namespace Extrospection {
 				return;
 
 			var invoke = definition.Methods.Single (v => v.Name == "Invoke");
-			if (invoke.Parameters.Count != funcType.ParamTypes.Count)
-				throw new InvalidOperationException ($"Cannot compare callback '{managedType}' on {location} in '{method.FullName}': managed signature has {invoke.Parameters.Count} parameters, native signature has {funcType.ParamTypes.Count}.");
+			var parameterOffset = GetManagedParameterOffset (managedType, invoke, method, funcType.ParamTypes.Count);
+			if (invoke.Parameters.Count - parameterOffset != funcType.ParamTypes.Count && !HasOmittedCompletionHandler (funcType, invoke))
+				return;
 
 			var nullable = GetNullable (provider);
 			var context = GetNullableContext (invoke);
-			for (var i = 0; i < invoke.Parameters.Count; i++) {
+			for (var i = parameterOffset; i < invoke.Parameters.Count; i++) {
 				var parameter = invoke.Parameters [i];
-				CheckBlockTypeNullability (funcType.ParamTypes [i], parameter.ParameterType, parameter, context,
-					managedType as GenericInstanceType, nullable, managedDefaultNullability, method, framework, $"{location} block parameter #{i}");
+				var nativeIndex = i - parameterOffset;
+				CheckBlockTypeNullability (funcType.ParamTypes [nativeIndex], parameter.ParameterType, parameter, context,
+					managedType as GenericInstanceType, nullable, managedDefaultNullability, method, framework, $"{location} block parameter #{nativeIndex}");
 			}
 
 			CheckBlockTypeNullability (funcType.ReturnType, invoke.ReturnType, invoke.MethodReturnType, context,
 				managedType as GenericInstanceType, nullable, managedDefaultNullability, method, framework, $"{location} block return type");
+		}
+
+		static bool HasOmittedCompletionHandler (FunctionProtoType nativeType, MethodDefinition managedInvoke)
+		{
+			if (nativeType.ParamTypes.Count != managedInvoke.Parameters.Count + 1)
+				return false;
+
+			return GetBlockFunctionProtoType (nativeType.ParamTypes [^1]) is not null;
+		}
+
+		static int GetManagedParameterOffset (TypeReference managedType, MethodDefinition managedInvoke, MethodDefinition method, int nativeParameterCount)
+		{
+			if (managedInvoke.Parameters.Count != nativeParameterCount + 1)
+				return 0;
+
+			var firstParameterType = managedInvoke.Parameters [0].ParameterType;
+			if (firstParameterType is GenericParameter parameter && managedType is GenericInstanceType generic)
+				firstParameterType = generic.GenericArguments [parameter.Position];
+
+			return firstParameterType.FullName == method.DeclaringType.FullName ? 1 : 0;
 		}
 
 		void CheckBlockTypeNullability (ClangSharp.Type nativeType, TypeReference managedType, ICustomAttributeProvider provider,

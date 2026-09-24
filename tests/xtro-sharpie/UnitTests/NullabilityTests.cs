@@ -251,13 +251,36 @@ public class NullabilityTests {
 	}
 
 	[Test]
-	public void ParameterCountMismatchIsNotSilentlyTruncated ()
+	public void ParameterCountMismatchIsIgnored ()
 	{
-		Assert.That (() => Check ("""
+		var messages = Check ("""
 			@interface Callbacks
 			- (void)Named:(void (^ _Nonnull)(id _Nonnull))callback;
 			@end
-			"""), Throws.InvalidOperationException.With.Message.Contains ("managed signature has 2 parameters, native signature has 1"));
+			""");
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
+	public void OmittedCompletionHandler ()
+	{
+		var messages = Check ("""
+			@interface Callbacks
+			- (void)Projected:(void (^ _Nonnull)(void (^ _Nonnull)(id _Nullable, id _Nullable)))callback;
+			@end
+			""");
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
+	public void PrependedDeclaringType ()
+	{
+		var messages = Check ("""
+			@interface Callbacks
+			- (void)WithSender:(void (^ _Nonnull)(id _Nullable))callback;
+			@end
+			""");
+		Assert.That (messages, Is.Empty);
 	}
 }
 
@@ -288,6 +311,8 @@ public class CallbackFixtures {
 	public void NullableValue (Action<int?, object?> callback) { }
 	public void Reference (ReferenceCallback callback) { }
 	public void Context (ContextCallback callback) { }
+	public void Projected (Action callback) { }
+	public void WithSender (Action<CallbackFixtures, object?> callback) { }
 	public NamedCallback? ReadWrite { get; set; }
 	public NamedCallback? ReadOnly => null;
 	public NamedCallback? Returned () => null;

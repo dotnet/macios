@@ -402,3 +402,4 @@
 !missing-null-allowed! 'UIKit.UIView UIKit.IUIInteraction::get_View()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIView UIKit.IUIViewControllerTransitionCoordinatorContext::GetTransitionViewControllerForKey(Foundation.NSString)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIViewController UIKit.IUIViewControllerTransitionCoordinatorContext::GetViewControllerForKey(Foundation.NSString)' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'UIKit.UIViewControllerTransition UIKit.UIViewControllerTransition::Zoom(UIKit.UIZoomTransitionOptions,System.Func`2<UIKit.UIZoomTransitionSourceViewProviderContext,UIKit.UIView>)' is missing a '?' on parameter 'sourceViewProvider' block return type

@@ -223,13 +223,13 @@ public class NullabilityTests {
 			- (void)Context:(id _Nonnull (^ _Nonnull)(id _Nonnull))callback;
 			@end
 			""", (module, fixture) => {
-				var callback = fixture.NestedTypes.Single (v => v.Name == "ContextCallback");
-				var invoke = callback.Methods.Single (v => v.Name == "Invoke");
-				invoke.CustomAttributes.Clear ();
-				callback.CustomAttributes.Clear ();
-				SetContext (module, fixture, context);
-				SetContext (module, fixture.Methods.Single (v => v.Name == "Context"), 1);
-			});
+			var callback = fixture.NestedTypes.Single (v => v.Name == "ContextCallback");
+			var invoke = callback.Methods.Single (v => v.Name == "Invoke");
+			invoke.CustomAttributes.Clear ();
+			callback.CustomAttributes.Clear ();
+			SetContext (module, fixture, context);
+			SetContext (module, fixture.Methods.Single (v => v.Name == "Context"), 1);
+		});
 		Assert.That (messages, Has.Length.EqualTo (expectedCount));
 	}
 
@@ -241,12 +241,12 @@ public class NullabilityTests {
 			- (void)Context:(id _Nonnull (^ _Nonnull)(id _Nonnull))callback;
 			@end
 			""", (module, fixture) => {
-				SetContext (module, fixture, 2);
-				var callback = fixture.NestedTypes.Single (v => v.Name == "ContextCallback");
-				SetContext (module, callback, 2);
-				SetContext (module, callback.Methods.Single (v => v.Name == "Invoke"), 0);
-				SetContext (module, fixture.Methods.Single (v => v.Name == "Context"), 1);
-			});
+			SetContext (module, fixture, 2);
+			var callback = fixture.NestedTypes.Single (v => v.Name == "ContextCallback");
+			SetContext (module, callback, 2);
+			SetContext (module, callback.Methods.Single (v => v.Name == "Invoke"), 0);
+			SetContext (module, fixture.Methods.Single (v => v.Name == "Context"), 1);
+		});
 		Assert.That (messages, Is.Empty);
 	}
 

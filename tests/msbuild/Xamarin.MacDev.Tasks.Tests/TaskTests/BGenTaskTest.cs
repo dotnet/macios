@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using Microsoft.Build.Utilities;
 
@@ -36,6 +37,20 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.That (task.Execute (), Is.False);
 			Assert.That (task.Log.HasLoggedErrors, Is.True);
+		}
+
+		[Test]
+		public void CompiledApiDocumentationIsCopied ()
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			var compiledApiDefinitionAssembly = Path.Combine (directory, "compiled-api-definitions.dll");
+			var documentationFile = Path.ChangeExtension (compiledApiDefinitionAssembly, ".xml");
+			File.WriteAllText (documentationFile, "");
+
+			var task = CreateTask<BGen> ();
+			task.CompiledApiDefinitionAssembly = new TaskItem (compiledApiDefinitionAssembly);
+
+			Assert.That (task.GetAdditionalItemsToBeCopied ().Select (item => item.ItemSpec), Does.Contain (documentationFile));
 		}
 
 		[Test]

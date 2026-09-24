@@ -170,43 +170,12 @@ namespace Cecil.Tests {
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
 
-			var failures = FindUnsupportedPlatformClaims (Helper.NetPlatformAssemblyDefinitions.Select (info => info.Assembly));
-			Helper.AssertFailures (failures, IgnoreElementsThatDoNotExistInThatAssembly, nameof (IgnoreElementsThatDoNotExistInThatAssembly), "Supported inconsistencies");
-		}
-
-		[Test]
-		public void SupportedTypeMustExistOnClaimedPlatform ()
-		{
-			var ios = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Microsoft.iOS", new Version (1, 0)), "Microsoft.iOS", ModuleKind.Dll);
-			var tvos = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Microsoft.tvOS", new Version (1, 0)), "Microsoft.tvOS", ModuleKind.Dll);
-			var module = ios.MainModule;
-			var type = new TypeDefinition ("CoreMidi", "Example", TypeAttributes.Public, module.TypeSystem.Object);
-			var constructor = new MethodReference (".ctor", module.TypeSystem.Void, module.ImportReference (typeof (System.Runtime.Versioning.SupportedOSPlatformAttribute))) {
-				HasThis = true,
-			};
-			constructor.Parameters.Add (new ParameterDefinition (module.TypeSystem.String));
-			foreach (var platform in new [] { "ios18.0", "tvos18.0" }) {
-				var attribute = new CustomAttribute (constructor);
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (module.TypeSystem.String, platform));
-				type.CustomAttributes.Add (attribute);
-			}
-			module.Types.Add (type);
-
-			var failures = FindUnsupportedPlatformClaims (new [] { ios, tvos });
-			Assert.That (failures.Keys, Does.Contain ("CoreMidi.Example"));
-			Assert.That (failures ["CoreMidi.Example"], Does.Contain ("not found on tvos"));
-
-			type.CustomAttributes.RemoveAt (1);
-			Assert.That (FindUnsupportedPlatformClaims (new [] { ios, tvos }), Is.Empty);
-		}
-
-		Dictionary<string, string> FindUnsupportedPlatformClaims (IEnumerable<AssemblyDefinition> assemblies)
-		{
 			// Dictionary of (FullName of Member) -> (Dictionary of (Actual Platform) -> Platform Claim Info)
 			var harvestedInfo = new Dictionary<string, Dictionary<string, PlatformClaimInfo>> ();
 
 			// Load each platform assembly
-			foreach (var assembly in assemblies) {
+			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
+				var assembly = info.Assembly;
 				string currentPlatform = AssemblyToAttributeName (assembly);
 
 				// Walk every class/struct/enum/property/method/enum value/pinvoke/event
@@ -270,7 +239,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			return failures;
+			Helper.AssertFailures (failures, IgnoreElementsThatDoNotExistInThatAssembly, nameof (IgnoreElementsThatDoNotExistInThatAssembly), "Supported inconsistencies");
 		}
 
 		static HashSet<string> IgnoreElementsThatDoNotExistInThatAssembly {

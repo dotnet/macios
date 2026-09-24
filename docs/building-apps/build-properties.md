@@ -13,11 +13,11 @@ an MSBuild PropertyGroup.
 
 > [!IMPORTANT]
 > Mono-specific properties on this page apply to supported builds targeting
-> .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, the default
-> runtime for iOS, tvOS, and Mac Catalyst is CoreCLR (NativeAOT is a separate
-> option), and these projects can't select Mono: setting `UseMonoRuntime=true` produces `NETSDK1242`.
-> setting `UseMonoRuntime=true` produces its existing `Only CoreCLR is
-> supported on macOS` workload error instead of `NETSDK1242`.
+> .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, CoreCLR
+> is the default runtime for iOS, tvOS, and Mac Catalyst (NativeAOT remains a
+> separate option). Setting `UseMonoRuntime=true` on those platforms produces
+> `NETSDK1242`. On macOS, setting `UseMonoRuntime=true` instead produces the
+> existing `Only CoreCLR is supported on macOS` workload error.
 
 ## AltoolPath
 

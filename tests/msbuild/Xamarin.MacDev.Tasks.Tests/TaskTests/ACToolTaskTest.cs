@@ -16,6 +16,40 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class ACToolTaskTests : TestBase {
+		class TestACTool : ACTool {
+			public bool InvokeAppendAdditionalArguments (List<string> arguments)
+			{
+				return base.AppendAdditionalArguments (arguments);
+			}
+		}
+
+		[Test]
+		public void AdditionalArguments ()
+		{
+			var task = CreateTask<TestACTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "--foo \"quoted value\"";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.True, "Append arguments");
+			Assert.That (arguments, Is.EqualTo (new [] { "--foo", "quoted value" }), "Arguments");
+		}
+
+		[Test]
+		public void InvalidAdditionalArguments ()
+		{
+			var task = CreateTask<TestACTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "\"";
+			task.AdditionalArgumentsPropertyName = "ACToolExtraArgs";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.False, "Append arguments");
+			Assert.That (task.Log.HasLoggedErrors, Is.True, "Logged error");
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Message, Does.Contain ("ACToolExtraArgs"), "Error message");
+			Assert.That (arguments, Is.Empty, "Arguments");
+		}
+
 		ACTool CreateACToolTask (ApplePlatform platform, string projectDir, out string intermediateOutputPath, params string [] imageAssets)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -228,11 +262,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AppIcons60x60</string>
-										<string>AppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AppIcons</string>
 								</dict>
@@ -253,11 +282,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AppIcons60x60</string>
-										<string>AppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AppIcons</string>
 								</dict>
@@ -450,11 +474,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AlternateAppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AlternateAppIcons60x60</string>
-										<string>AlternateAppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AlternateAppIcons</string>
 								</dict>
@@ -475,11 +494,6 @@ namespace Xamarin.MacDev.Tasks {
 							<dict>
 								<key>AlternateAppIcons</key>
 								<dict>
-									<key>CFBundleIconFiles</key>
-									<array>
-										<string>AlternateAppIcons60x60</string>
-										<string>AlternateAppIcons76x76</string>
-									</array>
 									<key>CFBundleIconName</key>
 									<string>AlternateAppIcons</string>
 								</dict>

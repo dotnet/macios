@@ -129,6 +129,10 @@ namespace MonoTouchFixtures.HealthKit {
 					if (!TestRuntime.CheckXcodeVersion (16, 0))
 						continue;
 					break;
+				case HKQuantityTypeIdentifier.HeartRateVariabilityRmssd:
+					if (!TestRuntime.CheckXcodeVersion (27, 0))
+						continue;
+					break;
 				}
 
 				try {

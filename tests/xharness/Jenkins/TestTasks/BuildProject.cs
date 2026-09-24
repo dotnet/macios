@@ -42,7 +42,7 @@ namespace Xharness.Jenkins.TestTasks {
 			var result = new List<string> ();
 			var doc = new XmlDocument ();
 			doc.Load (csproj.Replace ("\\", "/"));
-			foreach (var referenceProject in doc.GetProjectReferences ()) {
+			foreach (var referenceProject in doc.GetProjectReferenceIncludes ()) {
 				var fixPath = referenceProject.Replace ("\\", "/"); // do the replace in case we use win paths
 				result.Add (fixPath);
 				// get all possible references

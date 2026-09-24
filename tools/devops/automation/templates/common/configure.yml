@@ -129,6 +129,14 @@ parameters:
       testStage: 'mac_26_arm64',
       isMacTest: true,
     },
+    {
+      label: mac_golden_gate,
+      displayName: 'Tests on macOS Golden Gate (27)',
+      splitByPlatforms: false,
+      testPrefix: 'mac_27_arm64',
+      testStage: 'mac_27_arm64',
+      isMacTest: true,
+    },
   ]
 
 # Note that this is _all_ the platforms we support (not just the enabled ones).

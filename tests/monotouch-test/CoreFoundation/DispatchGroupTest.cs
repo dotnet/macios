@@ -7,6 +7,8 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
+using System.Threading.Tasks;
+
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {
@@ -19,13 +21,15 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using (var dg = DispatchGroup.Create ()) {
 				var dq = DispatchQueue.GetGlobalQueue (DispatchQueuePriority.Default);
+				var called = new TaskCompletionSource<bool> ();
 
 				dg.DispatchAsync (dq, delegate
 				{
-					Console.WriteLine ("Inside dispatch");
+					called.SetResult (true);
 				});
 
 				Assert.That (dg.Wait (DispatchTime.Forever), Is.True);
+				Assert.That (called.Task.Result, Is.True, "Called");
 				dq.Dispose ();
 			}
 		}

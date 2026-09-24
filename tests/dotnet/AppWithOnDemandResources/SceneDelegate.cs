@@ -43,12 +43,14 @@ namespace AppWithOnDemandResources {
 		void BeginAccessingResources ()
 		{
 			var tags = new NSSet<NSString> ((NSString) ResourceTag);
+#pragma warning disable CA1422 // This test intentionally exercises the obsolete On-Demand Resources API.
 			request = new NSBundleResourceRequest (tags);
 			request.BeginAccessingResources (error => {
 				var success = error is null && CanReadResource ();
 				Console.WriteLine ($"Accessing the on-demand resources completed. Error: {error?.LocalizedDescription ?? "none"} Success: {success}");
 				BeginInvokeOnMainThread (() => SetColor (success ? UIColor.Green : UIColor.Red));
 			});
+#pragma warning restore CA1422
 		}
 
 		static bool CanReadResource ()

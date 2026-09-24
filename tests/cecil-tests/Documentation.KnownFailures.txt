@@ -53800,15 +53800,11 @@ T:AdServices.AAAttribution
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
 T:AppClip.APActivationPayloadErrorCode
-T:AppKit.AttributedStringForCandidateHandler
-T:AppKit.ContinueUserActivityRestorationHandler
 T:AppKit.DownloadFontAssetsRequestCompletionHandler
 T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate
 T:AppKit.DrawerWillResizeContentsDelegate
-T:AppKit.GlobalEventHandler
 T:AppKit.INSDraggingInfo_Extensions
-T:AppKit.LocalEventHandler
 T:AppKit.NSAboutPanelOption
 T:AppKit.NSAccessibilityActions
 T:AppKit.NSAccessibilityAnnotationAttributeKey
@@ -53844,7 +53840,6 @@ T:AppKit.NSApplication_NSServicesMenu
 T:AppKit.NSApplication_NSStandardAboutPanel
 T:AppKit.NSApplication_NSTouchBarCustomization
 T:AppKit.NSApplicationContinueUserActivity
-T:AppKit.NSApplicationEnumerateWindowsHandler
 T:AppKit.NSApplicationError
 T:AppKit.NSApplicationFile
 T:AppKit.NSApplicationFileCommand
@@ -53937,7 +53932,6 @@ T:AppKit.NSCursor
 T:AppKit.NSCursorFrameResizeDirections
 T:AppKit.NSCursorFrameResizePosition
 T:AppKit.NSCustomImageRep
-T:AppKit.NSCustomImageRepDrawingHandler
 T:AppKit.NSCustomTouchBarItem
 T:AppKit.NSDatePicker
 T:AppKit.NSDatePickerCell
@@ -53947,11 +53941,7 @@ T:AppKit.NSDiffableDataSourceSnapshot`2
 T:AppKit.NSDirectionalRectEdge
 T:AppKit.NSDockTile
 T:AppKit.NSDocument
-T:AppKit.NSDocumentCompletionHandler
 T:AppKit.NSDocumentController
-T:AppKit.NSDocumentControllerOpenPanelResultHandler
-T:AppKit.NSDocumentControllerOpenPanelWithCompletionHandler
-T:AppKit.NSDocumentLockCompletionHandler
 T:AppKit.NSDocumentLockDocumentCompletionHandler
 T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler

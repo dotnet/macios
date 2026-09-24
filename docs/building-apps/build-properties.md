@@ -12,7 +12,7 @@ They're specified within the project file, for example *MyApp.csproj*, within
 an MSBuild PropertyGroup.
 
 > [!IMPORTANT]
-> Mono-specific properties on this page apply to supported builds targeting
+> Runtime-specific Mono properties on this page apply to supported builds targeting
 > .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, CoreCLR
 > is the default runtime for iOS, tvOS, and Mac Catalyst (NativeAOT remains a
 > separate option). Setting `UseMonoRuntime=true` on those platforms produces

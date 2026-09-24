@@ -58,7 +58,7 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Xml.ReaderWriter.dll \
 
 DOTNET_OR_GREATER_DEFINES:=$(foreach version,$(shell seq 6 $(firstword $(subst ., ,$(subst net,,$(DOTNET_TFM))))),/define:NET$(version)_0_OR_GREATER)
-DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
+DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths -nullable+
 
 ifeq ($(XCODE_IS_STABLE),true)
 DOTNET_FLAGS+=/define:XCODE_IS_STABLE
@@ -282,7 +282,6 @@ $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNE
 		$($(2)_DEFINES) \
 		-d:COREBUILD \
 		$($(2)_DOTNET_CORE_SOURCES) \
-		-nullable+ \
 		-warnaserror+ \
 		-nowarn:1591 \
 		-nowarn:$(XML_DOCS_WARNINGS) \
@@ -477,7 +476,6 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml \
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.Substitutions.xml \
 		-warnaserror+ \
-		-nullable+ \
 		$$($(2)_DOTNET_SOURCES) \
 		@$$(abspath $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources) \
 		-out:$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll \

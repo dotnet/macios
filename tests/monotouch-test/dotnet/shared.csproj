@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType Condition="'$(IsAppExtension)' != 'true'">Exe</OutputType>
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
-    <RootNamespace>monotouchtest</RootNamespace>
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\..\product.snk</AssemblyOriginatorKeyFile>
-    <AssemblyName>monotouchtest</AssemblyName>
-
     <RootTestsDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..'))</RootTestsDirectory>
+    <RootNamespace Condition="'$(IsAppExtension)' != 'true'">monotouchtest</RootNamespace>
+    <SignAssembly Condition="'$(SignAssembly)' == ''">True</SignAssembly>
+    <AssemblyOriginatorKeyFile Condition="'$(AssemblyOriginatorKeyFile)' == ''">$(RootTestsDirectory)\..\product.snk</AssemblyOriginatorKeyFile>
+    <AssemblyName Condition="'$(IsAppExtension)' != 'true'">monotouchtest</AssemblyName>
     <TestLibrariesDirectory>$(RootTestsDirectory)\test-libraries</TestLibrariesDirectory>
     <MonoTouchTestDirectory>$(RootTestsDirectory)\monotouch-test</MonoTouchTestDirectory>
 
@@ -109,7 +108,7 @@
     <Compile Include="$(RootTestsDirectory)\..\tools\common\SdkVersions.cs">
       <Link>SdkVersions.cs</Link>
     </Compile>
-    <Compile Include="$(RootTestsDirectory)\common\AppDelegate.cs" Condition="!$(TargetFramework.EndsWith('-macos'))" />
+    <Compile Include="$(RootTestsDirectory)\common\AppDelegate.cs" Condition="'$(IncludeMonoTouchAppDelegate)' != 'false' And !$(TargetFramework.EndsWith('-macos'))" />
   </ItemGroup>
 
   <ItemGroup>

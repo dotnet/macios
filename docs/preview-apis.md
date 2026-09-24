@@ -113,4 +113,4 @@ The diagnostic id for Rgen is APL0003.
 
 ---
 
-[1]: https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute?view=net-8.0
+[1]: https://learn.microsoft.com/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute

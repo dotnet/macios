@@ -780,7 +780,7 @@ namespace CoreMidi {
 			using var block = new BlockLiteral (trampoline, readBlock, typeof (MidiClient), nameof (ReceiveBlockTrampoline));
 			var blockPtr = (BlockLiteral*) &block;
 			status = (MidiError) MIDIDestinationCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, blockPtr);
-			if (handle == MidiObject.InvalidRef)
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiEndpoint (handle, name, true);
 		}
@@ -2055,7 +2055,7 @@ namespace CoreMidi {
 			unsafe {
 				status = (MidiError) MIDIDeviceNewEntity (GetCheckedHandle (), namePtr, protocol, embedded.AsByte (), numberOfSourceEndpoints, numberOfDestinationEndpoints, &handle);
 			}
-			if (handle == MidiObject.InvalidRef)
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiEntity (handle);
 		}
@@ -2126,7 +2126,7 @@ namespace CoreMidi {
 				status = (MidiError) MIDIDeviceCreate (IntPtr.Zero, namePtr, manufacturerPtr, modelPtr, &handle);
 			}
 
-			if (handle == MidiObject.InvalidRef)
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiDevice (handle);
 		}

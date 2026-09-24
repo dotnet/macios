@@ -144,6 +144,7 @@ namespace CoreMidi {
 		public unsafe int /* OSStatus */ Send (MidiPort port, MidiEndpoint destination)
 		{
 			var rv = MIDISendEventList (port.Handle, destination.Handle, midiDataPointer);
+			GC.KeepAlive (this);
 			GC.KeepAlive (port);
 			GC.KeepAlive (destination);
 			return rv;
@@ -159,6 +160,7 @@ namespace CoreMidi {
 		public unsafe int /* OSStatus */ Receive (MidiEndpoint source)
 		{
 			var rv = MIDIReceivedEventList (source.Handle, midiDataPointer);
+			GC.KeepAlive (this);
 			GC.KeepAlive (source);
 			return rv;
 		}
@@ -287,6 +289,7 @@ namespace CoreMidi {
 				callback (ref Unsafe.AsRef<MidiEventPacket> (packet));
 				packet = nextPacket;
 			}
+			GC.KeepAlive (this);
 		}
 
 		/// <summary>Parse each Universal MIDI Packet (UMP) in this list, invoking the specified <paramref name="visitor" /> for each parsed message.</summary>
@@ -303,6 +306,7 @@ namespace CoreMidi {
 			var gch = GCHandle.Alloc (visitor);
 			try {
 				MIDIEventListForEachEvent (midiDataPointer, &TrampolineForEachEvent, (void*) GCHandle.ToIntPtr (gch));
+				GC.KeepAlive (this);
 			} finally {
 				gch.Free ();
 			}

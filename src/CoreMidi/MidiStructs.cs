@@ -15,6 +15,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
+	[UnsupportedOSPlatform ("tvos")]
 	[NativeName ("MIDI2DeviceManufacturer")]
 	public struct Midi2DeviceManufacturer {
 		// Byte sysExIDByte[3]; // 1-byte SysEx IDs are padded with trailing zeroes
@@ -42,6 +43,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
+	[UnsupportedOSPlatform ("tvos")]
 	[NativeName ("MIDI2DeviceRevisionLevel")]
 	public struct Midi2DeviceRevisionLevel {
 		// Byte revisionLevel[4];
@@ -71,6 +73,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
+	[UnsupportedOSPlatform ("tvos")]
 	[NativeName ("MIDICIProfileIDStandard")]
 	public struct MidiCIProfileIdStandard {
 		public byte /* MIDIUInteger7 */ ProfileIdByte1;
@@ -83,6 +86,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
+	[UnsupportedOSPlatform ("tvos")]
 	[NativeName ("MIDICIProfileIDManufacturerSpecific")]
 	public struct MidiCIProfileIdManufacturerSpecific {
 		public byte /* MIDIUInteger7 */ SysExId1;
@@ -95,6 +99,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("ios18.0")]
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
+	[UnsupportedOSPlatform ("tvos")]
 	[NativeName ("MIDICIProfileID")]
 	public struct MidiCIProfileId {
 		// This is a union between MidiCIProfileIdStandard and MidiCIProfileIdManufacturerSpecific, each with the same size (5 bytes)

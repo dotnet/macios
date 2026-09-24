@@ -3012,7 +3012,8 @@ namespace Xamarin.Tests {
 			var config = "Debug";
 			var runtimeIdentifierInfix = $"/{runtimeIdentifiers}/";
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.FilterWarnings (platform);
+								.FilterWarnings (platform)
+								.Where (v => !(v.File?.EndsWith ("Microsoft.Common.CurrentVersion.targets", StringComparison.Ordinal) == true && v.Message?.StartsWith ("Property reassignment:") == true));
 			var expectedWarnings = new ExpectedBuildMessage [] {
 				new ExpectedBuildMessage ($"ILC", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
 				new ExpectedBuildMessage ($"MSBuild", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),

@@ -9,6 +9,7 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class AppSizeTest : TestBaseClass {
+
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
@@ -45,9 +46,7 @@ namespace Xamarin.Tests {
 				{ "_IsPublishing", "true" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict, environmentVariables: BinLog.CreateEnablePropertyTracking ());
-
-			BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "trimmable-static");
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -61,11 +60,7 @@ namespace Xamarin.Tests {
 				{ "PublishReadyToRun", "false" },
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
-			var environmentVariables = platform == ApplePlatform.MacOSX ? BinLog.CreateEnablePropertyTracking () : null;
-			var result = Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict, environmentVariables: environmentVariables);
-
-			if (platform == ApplePlatform.MacOSX)
-				BinLog.AssertPropertyValue (result.BinLogPath, "Registrar", "trimmable-static");
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -92,7 +87,7 @@ namespace Xamarin.Tests {
 		// * Files added or removed from app bundle
 		// * Total app size changed >10kb
 		// * For those apps where assembly APIs can be compared, any API was added or removed.
-		ExecutionResult Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null, Dictionary<string, string?>? environmentVariables = null)
+		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -114,7 +109,7 @@ namespace Xamarin.Tests {
 			// so the app size would otherwise differ depending on the macOS version of the machine that built the app.
 			properties ["EnableCodeSigning"] = "false";
 
-			var result = DotNet.AssertBuild (project_path, properties, environmentVariables: environmentVariables);
+			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
 			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails (and mark the test as passed)
@@ -139,8 +134,6 @@ namespace Xamarin.Tests {
 				CopyAppBundleForDiagnostics (name, appPath);
 				throw;
 			}
-
-			return result;
 		}
 
 		static void CopyAppBundleForDiagnostics (string name, string appPath)

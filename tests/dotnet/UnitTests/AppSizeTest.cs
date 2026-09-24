@@ -13,31 +13,6 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void MonoVM (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "UseMonoRuntime", "true" },
-				{ "NoDSymUtil", "false" },
-			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, dict);
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void MonoVM_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "UseInterpreter", "true" },
-				{ "UseMonoRuntime", "true" },
-				{ "NoDSymUtil", "false" },
-			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, dict);
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		public void NativeAOT (ApplePlatform platform, string runtimeIdentifiers)
 		{

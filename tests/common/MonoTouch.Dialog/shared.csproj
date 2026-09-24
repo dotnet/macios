@@ -6,10 +6,6 @@
     <AssemblyName>MonoTouch.Dialog</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
 
-    <!-- MSBuild can build this project with and without HotReloadCompatibleBuild in parallel. -->
-    <IntermediateOutputPath Condition="'$(HotReloadCompatibleBuild)' == 'true'">$(BaseIntermediateOutputPath)hotreload/$(Configuration)/</IntermediateOutputPath>
-    <OutputPath Condition="'$(HotReloadCompatibleBuild)' == 'true'">bin/hotreload/$(Configuration)/</OutputPath>
-
     <!-- warning CA1422: This call site is reachable on: '...' unsupported on: '...': MonoTouch.Dialog isn't really maintained, so we're not removing usage of unsupported APIs unless we really have to, so just ignore any such warnings -->
     <NoWarn>$(NoWarn);CA1416</NoWarn>
 

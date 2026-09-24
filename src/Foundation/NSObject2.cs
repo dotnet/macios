@@ -266,6 +266,8 @@ namespace Foundation {
 			HasManagedRef = 32,
 			// 64, // Used by SoM
 			IsCustomType = 128,
+			IsUserTypeKnown = 256,
+			IsUserType = 512,
 		}
 
 		// Must be kept in sync with the same enum in trampolines.h
@@ -310,6 +312,24 @@ namespace Foundation {
 
 		internal bool InFinalizerQueue {
 			get { return ((flags & Flags.InFinalizerQueue) == Flags.InFinalizerQueue); }
+		}
+
+		bool TryGetIsUserType (NativeHandle handle, out bool isUserType, [NotNullWhen (false)] out string? error_message)
+		{
+			var currentFlags = flags;
+			if ((currentFlags & Flags.IsUserTypeKnown) == Flags.IsUserTypeKnown) {
+				isUserType = (currentFlags & Flags.IsUserType) == Flags.IsUserType;
+				error_message = null;
+				return true;
+			}
+
+			if (!Runtime.TryGetIsUserType (handle, out isUserType, out error_message))
+				return false;
+
+			flags = isUserType
+				? flags | Flags.IsUserTypeKnown | Flags.IsUserType
+				: (flags | Flags.IsUserTypeKnown) & ~Flags.IsUserType;
+			return true;
 		}
 
 		bool IsCustomType {
@@ -517,7 +537,7 @@ namespace Foundation {
 
 			bool native_ref = (flags & Flags.NativeRef) == Flags.NativeRef;
 
-			if (!Runtime.TryGetIsUserType (handle, out var isUserType, out var error_message))
+			if (!TryGetIsUserType (handle, out var isUserType, out var error_message))
 				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			// Issue #25861: when we've just alloc'd a user type, defer adding it to the
@@ -570,7 +590,7 @@ namespace Foundation {
 		// if the ivar is already set.
 		void EnsureManagedReference (NativeHandle newHandle)
 		{
-			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
+			if (!TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
 				return;
 			if (Runtime.GetGCHandleForObject (newHandle) != IntPtr.Zero)
 				return;
@@ -597,7 +617,7 @@ namespace Foundation {
 		void ReleaseManagedRef ()
 		{
 			var handle = this.Handle; // Get a copy of the handle, because it will be cleared out when calling Runtime.NativeObjectHasDied, and we still need the handle later.
-			if (!Runtime.TryGetIsUserType (handle, out var user_type, out var error_message))
+			if (!TryGetIsUserType (handle, out var user_type, out var error_message))
 				throw new InvalidOperationException ($"Unable to release the managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 			HasManagedRef = false;
 			if (!user_type) {
@@ -861,6 +881,7 @@ namespace Foundation {
 						Runtime.UnregisterNSObject (handle, this);
 				}
 
+				flags &= ~(Flags.IsUserTypeKnown | Flags.IsUserType);
 				handle = value;
 
 				if (handle != IntPtr.Zero)

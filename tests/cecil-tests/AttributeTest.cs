@@ -170,41 +170,70 @@ namespace Cecil.Tests {
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
 
+			var failures = FindUnsupportedPlatformClaims (Helper.NetPlatformAssemblyDefinitions.Select (info => info.Assembly));
+			Helper.AssertFailures (failures, IgnoreElementsThatDoNotExistInThatAssembly, nameof (IgnoreElementsThatDoNotExistInThatAssembly), "Supported inconsistencies");
+		}
+
+		[Test]
+		public void SupportedTypeMustExistOnClaimedPlatform ()
+		{
+			var ios = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Microsoft.iOS", new Version (1, 0)), "Microsoft.iOS", ModuleKind.Dll);
+			var tvos = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Microsoft.tvOS", new Version (1, 0)), "Microsoft.tvOS", ModuleKind.Dll);
+			var module = ios.MainModule;
+			var type = new TypeDefinition ("CoreMidi", "Example", TypeAttributes.Public, module.TypeSystem.Object);
+			var constructor = new MethodReference (".ctor", module.TypeSystem.Void, module.ImportReference (typeof (System.Runtime.Versioning.SupportedOSPlatformAttribute))) {
+				HasThis = true,
+			};
+			constructor.Parameters.Add (new ParameterDefinition (module.TypeSystem.String));
+			foreach (var platform in new [] { "ios18.0", "tvos18.0" }) {
+				var attribute = new CustomAttribute (constructor);
+				attribute.ConstructorArguments.Add (new CustomAttributeArgument (module.TypeSystem.String, platform));
+				type.CustomAttributes.Add (attribute);
+			}
+			module.Types.Add (type);
+
+			var failures = FindUnsupportedPlatformClaims (new [] { ios, tvos });
+			Assert.That (failures.Keys, Does.Contain ("CoreMidi.Example"));
+			Assert.That (failures ["CoreMidi.Example"], Does.Contain ("not found on tvos"));
+
+			type.CustomAttributes.RemoveAt (1);
+			Assert.That (FindUnsupportedPlatformClaims (new [] { ios, tvos }), Is.Empty);
+		}
+
+		Dictionary<string, string> FindUnsupportedPlatformClaims (IEnumerable<AssemblyDefinition> assemblies)
+		{
 			// Dictionary of (FullName of Member) -> (Dictionary of (Actual Platform) -> Platform Claim Info)
 			var harvestedInfo = new Dictionary<string, Dictionary<string, PlatformClaimInfo>> ();
 
 			// Load each platform assembly
-			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
-				var assembly = info.Assembly;
+			foreach (var assembly in assemblies) {
 				string currentPlatform = AssemblyToAttributeName (assembly);
 
 				// Walk every class/struct/enum/property/method/enum value/pinvoke/event
-				foreach (var module in assembly.Modules) {
-					foreach (var type in module.Types) {
-						if (!type.IsPubliclyVisible ())
-							continue;
+				foreach (var type in assembly.EnumerateTypes ()) {
+					if (!type.IsPubliclyVisible ())
+						continue;
 
-						switch (type.Namespace) {
-						case "AppKit":
-						case "UIKit":
-							// The availability attributes between AppKit and UIKit are quite inconsistent:
-							// https://github.com/dotnet/macios/issues/17292
-							// So let's just skip these two namespaces for now.
-							continue;
-						}
-						foreach (var member in GetAllTypeMembers (type)) {
-							var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
-							if (mentionedPlatforms.Any ()) {
-								var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
-								string key = GetMemberLookupKey (member);
-								if (!harvestedInfo.ContainsKey (key)) {
-									harvestedInfo [key] = new Dictionary<string, PlatformClaimInfo> ();
-								}
-								var claimInfo = new PlatformClaimInfo (mentionedPlatforms, claimedPlatforms, member);
-								if (harvestedInfo [key].TryGetValue (currentPlatform, out var existingClaim))
-									throw new InvalidOperationException ($"The key {key} was computed for two different members:\n\tMember 1: {existingClaim.Member.FullName}\n\tMember 2: {member.FullName}\n\tKey: {key}");
-								harvestedInfo [key] [currentPlatform] = claimInfo;
+					switch (type.Namespace) {
+					case "AppKit":
+					case "UIKit":
+						// The availability attributes between AppKit and UIKit are quite inconsistent:
+						// https://github.com/dotnet/macios/issues/17292
+						// So let's just skip these two namespaces for now.
+						continue;
+					}
+					foreach (var member in GetAllTypeMembers (type)) {
+						var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
+						if (mentionedPlatforms.Any ()) {
+							var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
+							string key = GetMemberLookupKey (member);
+							if (!harvestedInfo.ContainsKey (key)) {
+								harvestedInfo [key] = new Dictionary<string, PlatformClaimInfo> ();
 							}
+							var claimInfo = new PlatformClaimInfo (mentionedPlatforms, claimedPlatforms, member);
+							if (harvestedInfo [key].TryGetValue (currentPlatform, out var existingClaim))
+								throw new InvalidOperationException ($"The key {key} was computed for two different members:\n\tMember 1: {existingClaim.Member.FullName}\n\tMember 2: {member.FullName}\n\tKey: {key}");
+							harvestedInfo [key] [currentPlatform] = claimInfo;
 						}
 					}
 				}
@@ -241,7 +270,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			Helper.AssertFailures (failures, IgnoreElementsThatDoNotExistInThatAssembly, nameof (IgnoreElementsThatDoNotExistInThatAssembly), "Supported inconsistencies");
+			return failures;
 		}
 
 		static HashSet<string> IgnoreElementsThatDoNotExistInThatAssembly {
@@ -431,6 +460,8 @@ namespace Cecil.Tests {
 
 		IEnumerable<IMemberDefinition> GetAllTypeMembers (TypeDefinition type)
 		{
+			yield return type;
+
 			foreach (var method in type.Methods.Where (m => m.IsPublic)) {
 				yield return method;
 			}

@@ -1813,10 +1813,10 @@ The current (as of .NET 9) default values are:
 Exceptions:
 
 * The default value is always `full` when building with NativeAOT.
-* MAUI changes the default value to `copy` when building for the `Debug`
-  configuration _and_ the interpreter is enabled using
-  [UseInterpreter](#useinterpreter) (which MAUI also enables by default when
-  using the `"Debug"` configuration).
+* For iOS and Mac Catalyst Debug builds using Mono, MAUI changes the default
+  trim mode to `copy` when [UseInterpreter](#useinterpreter) is enabled. MAUI
+  enables `UseInterpreter` by default for these builds in .NET 10 and earlier,
+  but not for supported .NET 11 CoreCLR builds.
 
 > [!NOTE]
 > The default trim mode may change in the future.

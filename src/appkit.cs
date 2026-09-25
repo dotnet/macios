@@ -25412,6 +25412,9 @@ namespace AppKit {
 
 	}
 
+	/// <summary>Handles an event matched while a window tracks events.</summary>
+	/// <param name="evt">The matching event.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop tracking events.</param>
 	delegate void NSWindowTrackEventsMatchingCompletionHandler (NSEvent evt, ref bool stop);
 
 	[NoMacCatalyst]

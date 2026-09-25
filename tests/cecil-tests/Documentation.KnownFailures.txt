@@ -54337,7 +54337,6 @@ T:AppKit.NSWindowSize
 T:AppKit.NSWindowSizeSize
 T:AppKit.NSWindowTab
 T:AppKit.NSWindowTabGroup
-T:AppKit.NSWindowTrackEventsMatchingCompletionHandler
 T:AppKit.NSWindowUndoManager
 T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspace

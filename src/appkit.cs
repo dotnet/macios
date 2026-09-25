@@ -7049,6 +7049,10 @@ namespace AppKit {
 		INSPreviewRepresentableActivityItem [] PreviewRepresentableActivityItems { get; set; }
 	}
 
+	/// <summary>Handles the result of opening a document.</summary>
+	/// <param name="document">The opened document, or <see langword="null"/> if opening failed.</param>
+	/// <param name="documentWasAlreadyOpen">Whether the document was already open.</param>
+	/// <param name="error">The error that prevented the document from opening, or <see langword="null"/> on success.</param>
 	delegate void OpenDocumentCompletionHandler (NSDocument document, bool documentWasAlreadyOpen, NSError error);
 
 	[NoMacCatalyst]

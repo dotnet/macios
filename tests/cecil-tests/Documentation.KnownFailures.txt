@@ -54378,7 +54378,6 @@ T:AppKit.NSWritingToolsCoordinatorTextDecoration
 T:AppKit.NSWritingToolsCoordinatorTextReplacementReason
 T:AppKit.NSWritingToolsCoordinatorTextUpdateReason
 T:AppKit.NSWritingToolsResultOptions
-T:AppKit.OpenDocumentCompletionHandler
 T:AppTrackingTransparency.ATTrackingManager
 T:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus
 T:ARKit.ARAltitudeSource

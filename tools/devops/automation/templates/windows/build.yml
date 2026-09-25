@@ -171,8 +171,12 @@ steps:
     Write-Host "Current long paths state:"
     Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
     Write-Host "Enabling long paths":
-    Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1
-    Write-Host "Updated long paths state:"
+    try {
+      Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -ErrorAction Stop
+    } catch [System.Security.SecurityException] {
+      Write-Host "##vso[task.logissue type=warning]Could not enable long paths due to registry permissions. Continuing with the current setting: $_"
+    }
+    Write-Host "Resulting long paths state:"
     Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
   displayName: 'Enable long paths'
 

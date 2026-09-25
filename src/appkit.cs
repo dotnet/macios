@@ -29201,6 +29201,8 @@ namespace AppKit {
 		NSCustomImageRepDrawingHandler DrawingHandler { get; }
 	}
 
+	/// <summary>Handles completion of an asynchronous document move.</summary>
+	/// <param name="didMove">Whether the document was moved.</param>
 	delegate void NSDocumentMoveCompletionHandler (bool didMove);
 	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);

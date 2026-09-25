@@ -54045,7 +54045,6 @@ T:AppKit.NSPanGestureRecognizer
 T:AppKit.NSPasteboard
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler
-T:AppKit.NSPasteboardDetectValuesCompletionHandler
 T:AppKit.NSPasteboardItem
 T:AppKit.NSPasteboardName
 T:AppKit.NSPasteboardType

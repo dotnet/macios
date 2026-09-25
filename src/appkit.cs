@@ -27178,6 +27178,9 @@ namespace AppKit {
 		// The 'FileType' property has manual bindings.
 	}
 
+	/// <summary>Handles completion of a workspace URL operation.</summary>
+	/// <param name="newUrls">The resulting URLs, or <see langword="null"/> if the operation failed.</param>
+	/// <param name="error">The operation error, or <see langword="null"/> on success.</param>
 	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, NSError error);
 
 	[NoMacCatalyst]

@@ -54341,7 +54341,6 @@ T:AppKit.NSWindowWindows
 T:AppKit.NSWorkspace
 T:AppKit.NSWorkspaceAuthorization
 T:AppKit.NSWorkspaceOpenConfiguration
-T:AppKit.NSWorkspaceUrlHandler
 T:AppKit.NSWritingToolsBehavior
 T:AppKit.NSWritingToolsCoordinator
 T:AppKit.NSWritingToolsCoordinatorAnimationParameters

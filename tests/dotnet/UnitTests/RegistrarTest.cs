@@ -324,7 +324,7 @@ namespace Xamarin.Tests {
 			Assert.That (File.GetLastWriteTimeUtc (updatedRegistrarObject), Is.GreaterThan (registrarObjectTimestamp), "Registration change recompiles registrar");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, nativeExecutable, validationEnvironment);
 
-			Clean (projectPath);
+			DotNet.Execute ("clean", projectPath, properties);
 			Assert.That (File.Exists (currentAssembliesObject), Is.False, "Clean removes generated assembly object");
 		}
 

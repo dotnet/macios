@@ -5864,10 +5864,11 @@ namespace Registrar {
 			if (assembly_source_path is not null && assembly_source is not null)
 				Driver.WriteIfDifferent (App, assembly_source_path, assembly_source.ToString ());
 			if (assembly_object_path is not null) {
-				if (App.DeploymentTarget is null || App.NativeSdkVersion is null)
-					throw new InvalidOperationException ("A deployment target and native SDK version are required to emit the registrar assembly object.");
+				if (App.DeploymentTarget is null || App.SdkVersion is null)
+					throw new InvalidOperationException ("A deployment target and SDK version are required to emit the registrar assembly object.");
 				var assemblies = registered_assemblies.Select (v => (v.Name, v.Assembly.MainModule.Mvid)).ToArray ();
-				var bytes = Xamarin.RegistrarAssembliesObjectWriter.Create (assemblies, App.Abi, App.Platform, App.IsSimulatorBuild, App.DeploymentTarget, App.NativeSdkVersion);
+				// Mac Catalyst's build version uses the iOS SDK version, not the macOS SDK version.
+				var bytes = Xamarin.RegistrarAssembliesObjectWriter.Create (assemblies, App.Abi, App.Platform, App.IsSimulatorBuild, App.DeploymentTarget, App.SdkVersion);
 				Driver.WriteIfDifferent (App, assembly_object_path, bytes);
 			}
 

@@ -7214,6 +7214,8 @@ namespace AppKit {
 		NSString LabelKey { get; }
 	}
 
+	/// <summary>Provides the image components for a dragging item.</summary>
+	/// <returns>The image components to display during dragging.</returns>
 	[NoMacCatalyst]
 	delegate NSDraggingImageComponent [] NSDraggingItemImagesContentProvider ();
 

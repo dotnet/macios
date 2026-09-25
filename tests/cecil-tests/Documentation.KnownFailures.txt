@@ -53950,7 +53950,6 @@ T:AppKit.NSDocumentUnlockDocumentCompletionHandler
 T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingImageComponent
 T:AppKit.NSDraggingItem
-T:AppKit.NSDraggingItemImagesContentProvider
 T:AppKit.NSDraggingSession
 T:AppKit.NSDrawer
 T:AppKit.NSEPSImageRep

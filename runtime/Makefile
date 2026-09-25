@@ -93,10 +93,10 @@ MONOTOUCH_ARM64_SOURCE_STEMS = $(patsubst %.s,%,$(patsubst %.m,%,$(SHARED_ARM64_
 # .NET
 #
 
-DOTNET_iOS_LIBRARIES = libextension-dotnet.a libextension-dotnet-coreclr.a
-DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a libextension-dotnet-coreclr.a libtvextension-dotnet-coreclr.a
+DOTNET_iOS_LIBRARIES = libextension-dotnet-coreclr.a
+DOTNET_tvOS_LIBRARIES = libextension-dotnet-coreclr.a libtvextension-dotnet-coreclr.a
 DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a
-DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet.a libextension-dotnet-coreclr.a
+DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet-coreclr.a
 
 define DotNetLibTemplate
 DOTNET_TARGETS += \
@@ -112,17 +112,6 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/xamarin/%.h: x
 endef
 
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibTemplate,$(platform),$(rid)))))
-
-define DotNetMonoLibTemplate
-DOTNET_TARGETS += \
-	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/libxamarin-dotnet.dylib \
-	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/libxamarin-dotnet-debug.dylib \
-	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/libxamarin-dotnet.a \
-	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/libxamarin-dotnet-debug.a \
-
-endef
-
-$(foreach platform,$(DOTNET_MONOVM_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetMonoLibTemplate,$(platform),$(rid)))))
 
 define DotNetCoreClrLibTemplate
 DOTNET_TARGETS += \
@@ -145,15 +134,10 @@ endef
 $(foreach platform,$(DOTNET_NATIVEAOT_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetNativeAotLibTemplate,$(platform),$(rid)))))
 
 # a few lookup tables, because the data we have is not always in the format we need it
-DOTNET_iphonesimulator_DYLIB_FLAGS=-lmonosgen-2.0 -framework UIKit
 DOTNET_iphonesimulator_CORECLR_DYLIB_FLAGS=-lcoreclr
-DOTNET_iphoneos_DYLIB_FLAGS=-lmonosgen-2.0 -framework UIKit
 DOTNET_iphoneos_CORECLR_DYLIB_FLAGS=-lcoreclr
-DOTNET_tvsimulator_DYLIB_FLAGS=-lmonosgen-2.0 -framework UIKit
 DOTNET_tvsimulator_CORECLR_DYLIB_FLAGS=-lcoreclr
-DOTNET_tvos_DYLIB_FLAGS=-lmonosgen-2.0 -framework UIKit
 DOTNET_tvos_CORECLR_DYLIB_FLAGS=-lcoreclr
-DOTNET_maccatalyst_DYLIB_FLAGS=-lmonosgen-2.0 -framework UIKit
 DOTNET_maccatalyst_CORECLR_DYLIB_FLAGS=-lcoreclr
 DOTNET_mac_CORECLR_DYLIB_FLAGS=-lcoreclr
 
@@ -214,13 +198,9 @@ endef
 # foreach (var platform in DOTNET_PLATFORMS)
 #   foreach (var rid in DOTNET_<platform>_RUNTIME_IDENTIFIERS))
 #                                           1      2    3      4                  5                     6       7
-#        call DotNetLibXamarinTemplate (platform, rid, <unused>,       ,         "-dotnet",                       ,.mono)
-#        call DotNetLibXamarinTemplate (platform, rid, <unused>, _DEBUG,         "-dotnet-debug",                 ,.mono)
 #        call DotNetLibXamarinTemplate (platform, rid, <unused>, _CORECLR,       "-dotnet-coreclr",       _CORECLR,)
 #        call DotNetLibXamarinTemplate (platform, rid, <unused>, _CORECLR_DEBUG, "-dotnet-coreclr-debug", _CORECLR,)
 
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibXamarinTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,,-dotnet,,.mono))))
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibXamarinTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_DEBUG,-dotnet-debug,,.mono))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibXamarinTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_CORECLR,-dotnet-coreclr,_CORECLR))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibXamarinTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_CORECLR_DEBUG,-dotnet-coreclr-debug,_CORECLR))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibXamarinTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_NATIVEAOT,-dotnet-nativeaot,_NATIVEAOT,.mono))))
@@ -246,10 +226,8 @@ endef
 # foreach (var platform in DOTNET_PLATFORMS)
 #   foreach (var rid in DOTNET_<platform>_RUNTIME_IDENTIFIERS))
 #                                             1      2    3      4                  5                     6
-#        call DotNetLibExtensionTemplate (platform, rid, <unused>,         ,       "-dotnet",                       )
 #        call DotNetLibExtensionTemplate (platform, rid, <unused>, _CORECLR,       "-dotnet-coreclr",       _CORECLR)
 
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibExtensionTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,,-dotnet,,))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibExtensionTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_CORECLR,-dotnet-coreclr,_CORECLR))))
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call DotNetLibExtensionTemplate,$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),,_NATOVEAOT,-dotnet-nativeaot,_NATOVEAOT))))
 

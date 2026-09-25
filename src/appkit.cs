@@ -28025,6 +28025,7 @@ namespace AppKit {
 
 	// Start of NSSharingService.h
 
+	/// <summary>Performs the custom action associated with a sharing service.</summary>
 	delegate void NSSharingServiceHandler ();
 
 	[NoMacCatalyst]

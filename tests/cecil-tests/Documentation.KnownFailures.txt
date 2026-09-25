@@ -54117,7 +54117,6 @@ T:AppKit.NSSharingCollaborationMode
 T:AppKit.NSSharingCollaborationModeRestriction
 T:AppKit.NSSharingService
 T:AppKit.NSSharingServiceAnchoringViewForSharingService
-T:AppKit.NSSharingServiceHandler
 T:AppKit.NSSharingServiceName
 T:AppKit.NSSharingServicePicker
 T:AppKit.NSSharingServicePickerDelegateCollaborationModeRestrictions

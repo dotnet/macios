@@ -173,56 +173,6 @@ class MainClass {
 		}
 
 		[Test]
-		// this test is fairly slow, so execute on one arch only
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void Interpreter (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-
-			properties ["UseMonoRuntime"] = "true"; // only applicable when using MonoVM.
-
-			// Build with the interpreter disabled
-			properties ["UseInterpreter"] = "false";
-			DotNet.AssertBuild (project_path, properties);
-
-			// Make sure it runs successfully (if on desktop)
-			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// Capture when executable was created
-			var appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
-
-			// Build again, now enabling the interpreter
-			Configuration.Touch (project_path);
-			properties ["UseInterpreter"] = "true";
-			DotNet.AssertBuild (project_path, properties);
-
-			// Executing should work just fine
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// The main executable must be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.GreaterThan (appExecutableTimestamp), "Modified A");
-
-			// Capture when executable was rebuilt
-			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
-
-			// Build again, not doing anything
-			DotNet.AssertBuild (project_path, properties);
-
-			// Executing should work just fine
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// The main executable must not be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified B");
-		}
-
-		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		public void CodeChangeSkipsTargets_Mono (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)

@@ -54162,7 +54162,6 @@ T:AppKit.NSTableViewColumnRowPredicate
 T:AppKit.NSTableViewColumnRowString
 T:AppKit.NSTableViewColumnWidth
 T:AppKit.NSTableViewDiffableDataSource`2
-T:AppKit.NSTableViewDiffableDataSourceSectionHeaderViewProvider
 T:AppKit.NSTableViewEventString
 T:AppKit.NSTableViewIndexFilter
 T:AppKit.NSTableViewPredicate

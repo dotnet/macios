@@ -34658,6 +34658,11 @@ namespace AppKit {
 	/// <returns>The row view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSTableRowView NSTableViewDiffableDataSourceRowProvider (NSTableView tableView, nint row, NSObject identifier);
+	/// <summary>Provides a section header view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the header view.</param>
+	/// <param name="row">The index of the header row.</param>
+	/// <param name="sectionId">The identifier of the section.</param>
+	/// <returns>The header view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSTableViewDiffableDataSourceSectionHeaderViewProvider (NSTableView tableView, nint row, NSObject sectionId);
 

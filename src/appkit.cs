@@ -7352,6 +7352,10 @@ namespace AppKit {
 		bool WantsPeriodicDraggingUpdates { get; }
 	}
 
+	/// <summary>Handles an item while enumerating the items in a dragging session.</summary>
+	/// <param name="draggingItem">The item being enumerated.</param>
+	/// <param name="idx">The item's index in the enumeration.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop enumerating.</param>
 	[NoMacCatalyst]
 	delegate void NSDraggingEnumerator (NSDraggingItem draggingItem, nint idx, ref bool stop);
 

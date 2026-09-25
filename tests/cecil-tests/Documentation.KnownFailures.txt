@@ -53947,7 +53947,6 @@ T:AppKit.NSDocumentMoveCompletionHandler
 T:AppKit.NSDocumentMoveToUrlCompletionHandler
 T:AppKit.NSDocumentUnlockCompletionHandler
 T:AppKit.NSDocumentUnlockDocumentCompletionHandler
-T:AppKit.NSDraggingEnumerator
 T:AppKit.NSDraggingImageComponent
 T:AppKit.NSDraggingItem
 T:AppKit.NSDraggingSession

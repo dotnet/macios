@@ -2219,12 +2219,14 @@
 			<_CompileNativeExecutableFile Include="@(_MainFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
-			<_CompileNativeExecutableFile Include="@(_RegistrarFile)">
+			<_CompileNativeExecutableFile Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' != '.o'">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
 			<_CompileNativeExecutableFile Include="@(_ReferencesFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
+			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<_NativeExecutableObjectFiles Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' == '.o'" />
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
 	</Target>
@@ -2371,7 +2373,6 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
 			<FileWrites Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>

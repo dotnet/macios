@@ -2969,7 +2969,7 @@ namespace Registrar {
 #endif
 		}
 
-		void Specialize (AutoIndentStringBuilder sb, out string initialization_method, AutoIndentStringBuilder? assembly_source)
+		void Specialize (AutoIndentStringBuilder sb, out string initialization_method, AutoIndentStringBuilder? assembly_source, bool assembly_object)
 		{
 			if (interfaces is null)
 				throw ErrorHelper.CreateError (99, Errors.MX0099, "No interfaces?");
@@ -3375,25 +3375,27 @@ namespace Registrar {
 				map.AppendLine ();
 			}
 
-			if (assembly_source is not null)
+			if (assembly_source is not null || assembly_object)
 				map.AppendLine ("extern const MTAssembly __xamarin_registration_assemblies [];");
 
-			var assembly_map = assembly_source ?? map;
-			assembly_map.AppendLine (assembly_source is null ? "static const MTAssembly __xamarin_registration_assemblies [] = {" : "extern \"C\" const MTAssembly __xamarin_registration_assemblies [] = {");
-			int count = 0;
-			foreach (var assembly in registered_assemblies) {
-				count++;
-				if (count > 1)
-					assembly_map.AppendLine (", ");
-				assembly_map.Append ("{ \"");
-				assembly_map.Append (assembly.Name);
-				assembly_map.Append ("\", \"");
-				assembly_map.Append (assembly.Assembly.MainModule.Mvid.ToString ());
-				assembly_map.Append ("\" }");
+			var count = registered_assemblies.Count;
+			if (!assembly_object) {
+				var assembly_map = assembly_source ?? map;
+				assembly_map.AppendLine (assembly_source is null ? "static const MTAssembly __xamarin_registration_assemblies [] = {" : "extern \"C\" const MTAssembly __xamarin_registration_assemblies [] = {");
+				var index = 0;
+				foreach (var assembly in registered_assemblies) {
+					if (index++ > 0)
+						assembly_map.AppendLine (", ");
+					assembly_map.Append ("{ \"");
+					assembly_map.Append (assembly.Name);
+					assembly_map.Append ("\", \"");
+					assembly_map.Append (assembly.Assembly.MainModule.Mvid.ToString ());
+					assembly_map.Append ("\" }");
+				}
+				assembly_map.AppendLine ();
+				assembly_map.AppendLine ("};");
+				assembly_map.AppendLine ();
 			}
-			assembly_map.AppendLine ();
-			assembly_map.AppendLine ("};");
-			assembly_map.AppendLine ();
 
 			if (full_token_reference_count > 0) {
 				map.AppendLine ("static const MTFullTokenReference __xamarin_token_references [] = {");
@@ -5803,8 +5805,11 @@ namespace Registrar {
 			Generate (header_path, source_path, out initialization_method);
 		}
 
-		public void Generate (string header_path, string source_path, out string initialization_method, string? assembly_source_path = null)
+		public void Generate (string header_path, string source_path, out string initialization_method, string? assembly_source_path = null, string? assembly_object_path = null)
 		{
+			if (assembly_source_path is not null && assembly_object_path is not null)
+				throw new ArgumentException ("The assembly table can only be emitted as a source or an object file.");
+
 			var sb = new AutoIndentStringBuilder ();
 			header = new AutoIndentStringBuilder ();
 			declarations = new AutoIndentStringBuilder ();
@@ -5845,7 +5850,7 @@ namespace Registrar {
 			methods.WriteLine ($"#include \"{Path.GetFileName (header_path)}\"");
 			methods.StringBuilder.AppendLine ("extern \"C\" {");
 
-			Specialize (sb, out initialization_method, assembly_source);
+			Specialize (sb, out initialization_method, assembly_source, assembly_object_path is not null);
 
 			methods.WriteLine ();
 			methods.AppendLine ();
@@ -5858,6 +5863,13 @@ namespace Registrar {
 			Driver.WriteIfDifferent (App, source_path, methods.ToString (), true);
 			if (assembly_source_path is not null && assembly_source is not null)
 				Driver.WriteIfDifferent (App, assembly_source_path, assembly_source.ToString ());
+			if (assembly_object_path is not null) {
+				if (App.DeploymentTarget is null || App.NativeSdkVersion is null)
+					throw new InvalidOperationException ("A deployment target and native SDK version are required to emit the registrar assembly object.");
+				var assemblies = registered_assemblies.Select (v => (v.Name, v.Assembly.MainModule.Mvid)).ToArray ();
+				var bytes = Xamarin.RegistrarAssembliesObjectWriter.Create (assemblies, App.Abi, App.Platform, App.IsSimulatorBuild, App.DeploymentTarget, App.NativeSdkVersion);
+				Driver.WriteIfDifferent (App, assembly_object_path, bytes);
+			}
 
 			header.AppendLine ();
 			header.AppendLine (declarations);

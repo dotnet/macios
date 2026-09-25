@@ -38,7 +38,12 @@ namespace Xamarin.Linker {
 				var dir = Configuration.CacheDirectory;
 				var header = Path.Combine (dir, "registrar.h");
 				var code = Path.Combine (dir, "registrar.mm");
-				var assemblySource = app.Registrar == RegistrarMode.TrimmableStatic && app.XamarinRuntime == XamarinRuntime.CoreCLR
+				var separateAssemblies = app.Registrar == RegistrarMode.TrimmableStatic && app.XamarinRuntime == XamarinRuntime.CoreCLR;
+				var architecture = Configuration.Abi & Abi.ArchMask;
+				var assemblyObject = separateAssemblies && (architecture == Abi.ARM64 || architecture == Abi.x86_64)
+					? Path.Combine (dir, "registrar-assemblies.o")
+					: null;
+				var assemblySource = separateAssemblies && assemblyObject is null
 					? Path.Combine (dir, "registrar-assemblies.mm")
 					: null;
 #if !ASSEMBLY_PREPARER
@@ -49,7 +54,7 @@ namespace Xamarin.Linker {
 					Configuration.Application.StaticRegistrar.FilterTrimmedApi (Annotations);
 				}
 #endif
-				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method, assemblySource);
+				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method, assemblySource, assemblyObject);
 
 				var items = new List<MSBuildItem> ();
 				var abi = Configuration.Abi;
@@ -73,6 +78,8 @@ namespace Xamarin.Linker {
 						}
 					));
 				}
+				if (assemblyObject is not null)
+					items.Add (new MSBuildItem (assemblyObject));
 
 				Configuration.WriteOutputForMSBuild ("_RegistrarFile", items);
 				Configuration.RegistrationMethods.Add (initialization_method);

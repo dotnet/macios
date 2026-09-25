@@ -284,12 +284,12 @@ namespace Xamarin.Tests {
 				var result = DotNet.AssertBuild (projectPath, properties);
 
 				var registrarSource = Directory.GetFiles (objDir, "registrar.mm", SearchOption.AllDirectories).Single ();
-				var assembliesSource = Directory.GetFiles (objDir, "registrar-assemblies.mm", SearchOption.AllDirectories).Single ();
-				var registrarObject = Directory.GetFiles (objDir, "registrar.o", SearchOption.AllDirectories).Single ();
 				var assembliesObject = Directory.GetFiles (objDir, "registrar-assemblies.o", SearchOption.AllDirectories).Single ();
+				var registrarObject = Directory.GetFiles (objDir, "registrar.o", SearchOption.AllDirectories).Single ();
 				using var module = ModuleDefinition.ReadModule (appAssembly);
 				var mvid = module.Mvid;
-				Assert.That (File.ReadAllText (assembliesSource), Does.Contain ($"\"{projectName}\", \"{mvid}\""), $"Version {version}: registered assembly MVID");
+				Assert.That (Directory.GetFiles (objDir, "registrar-assemblies.mm", SearchOption.AllDirectories), Is.Empty, $"Version {version}: no assembly source to compile");
+				Assert.That (File.ReadAllBytes (assembliesObject).AsSpan ().IndexOf (System.Text.Encoding.ASCII.GetBytes (mvid.ToString ())), Is.GreaterThanOrEqualTo (0), $"Version {version}: generated assembly object MVID");
 				Assert.That (File.ReadAllText (registrarSource), Does.Not.Contain (mvid.ToString ()), $"Version {version}: stable registrar source");
 				Assert.That (File.ReadAllBytes (nativeExecutable).AsSpan ().IndexOf (System.Text.Encoding.ASCII.GetBytes (mvid.ToString ())), Is.GreaterThanOrEqualTo (0), $"Version {version}: linked native MVID");
 				ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, nativeExecutable, validationEnvironment);
@@ -300,14 +300,21 @@ namespace Xamarin.Tests {
 					Assert.That (mvid, Is.Not.EqualTo (previousMvid), $"Version {version}: assembly MVID changed");
 					Assert.That (File.ReadAllText (registrarSource), Is.EqualTo (registrarContents), $"Version {version}: registrar contents");
 					Assert.That (File.GetLastWriteTimeUtc (registrarObject), Is.EqualTo (registrarObjectTimestamp), $"Version {version}: registrar object reused");
-					Assert.That (File.GetLastWriteTimeUtc (assembliesObject), Is.GreaterThan (assembliesObjectTimestamp), $"Version {version}: assembly table recompiled");
-					AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_CompileNativeExecutable", $"Version {version}");
+					Assert.That (File.GetLastWriteTimeUtc (assembliesObject), Is.GreaterThan (assembliesObjectTimestamp), $"Version {version}: assembly object regenerated");
+					var targets = BinLog.GetAllTargets (result.BinLogPath);
+					AssertTargetNotExecuted (targets, "_CompileNativeExecutable", $"Version {version}: no native compilation");
+					AssertTargetExecuted (targets, "_LinkNativeExecutable", $"Version {version}: native relink");
 				}
 
 				previousMvid = mvid;
 				registrarObjectTimestamp = File.GetLastWriteTimeUtc (registrarObject);
 				assembliesObjectTimestamp = File.GetLastWriteTimeUtc (assembliesObject);
 			}
+
+			var unchanged = DotNet.AssertBuild (projectPath, properties);
+			var currentAssembliesObject = Directory.GetFiles (objDir, "registrar-assemblies.o", SearchOption.AllDirectories).Single ();
+			Assert.That (File.GetLastWriteTimeUtc (currentAssembliesObject), Is.EqualTo (assembliesObjectTimestamp), "Unchanged assembly object");
+			AssertTargetNotExecuted (BinLog.GetAllTargets (unchanged.BinLogPath), "_CompileNativeExecutable", "Unchanged native sources");
 
 			File.WriteAllText (sourcePath, source.Replace ("VERSION", "4").Replace ("EXTRA_EXPORT", "[Export (\"extraValue\")]\n\tpublic string ExtraValue () => \"extra\";"));
 			DotNet.AssertBuild (projectPath, properties);
@@ -316,6 +323,9 @@ namespace Xamarin.Tests {
 			Assert.That (File.ReadAllText (updatedRegistrarSource), Does.Contain ("extraValue"), "New registered method");
 			Assert.That (File.GetLastWriteTimeUtc (updatedRegistrarObject), Is.GreaterThan (registrarObjectTimestamp), "Registration change recompiles registrar");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, nativeExecutable, validationEnvironment);
+
+			Clean (projectPath);
+			Assert.That (File.Exists (currentAssembliesObject), Is.False, "Clean removes generated assembly object");
 		}
 
 		IEnumerable<TypeDefinition> AllTypes (ModuleDefinition module)

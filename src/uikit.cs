@@ -36933,18 +36933,22 @@ namespace UIKit {
 	[Protocol]
 	interface UITraitChangeObservable {
 		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withHandler:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler);
 
 		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withTarget:action:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action);
 
 		[Abstract (GenerateExtensionMethod = true)]
+		[Manual]
 		[Export ("registerForTraitChanges:withAction:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action);
 
 		[Abstract]
+		[Manual]
 		[Export ("unregisterForTraitChanges:")]
 		void UnregisterForTraitChanges (IUITraitChangeRegistration registration);
 	}

@@ -8,6 +8,7 @@
 //
 
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 #nullable enable
 
@@ -40,6 +41,153 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
+		}
+
+		/// <summary>Registers a callback handler that runs when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="handler">The callback to execute when a trait changes.</param>
+		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		[RequiredMember]
+		[Export ("registerForTraitChanges:withHandler:")]
+		public IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return _RegisterForTraitChanges (this, traits, handler);
+		}
+
+		[UnmanagedCallersOnly]
+		static void TraitChangeHandler (IntPtr block, NativeHandle environment, NativeHandle previousCollection)
+		{
+			var handler = BlockLiteral.GetTarget<Action<IUITraitEnvironment, UITraitCollection>> (block);
+			if (handler is not null) {
+				var observable = Runtime.GetINativeObject<IUITraitEnvironment> (environment, false)
+					?? throw new InvalidOperationException ("The trait change callback has no environment.");
+				var collection = Runtime.GetNSObject<UITraitCollection> (previousCollection)
+					?? throw new InvalidOperationException ("The trait change callback has no previous collection.");
+				handler (observable, collection);
+			}
+		}
+
+		internal static unsafe IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler, NSObject? super = null)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			ArgumentNullException.ThrowIfNull (handler);
+			using var array = NSArray.FromNSObjects (traits);
+			delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, void> trampoline = &TraitChangeHandler;
+			using var block = new BlockLiteral (trampoline, handler, typeof (IUITraitChangeObservable), nameof (TraitChangeHandler));
+			var selector = Selector.GetHandle ("registerForTraitChanges:withHandler:");
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, (IntPtr) (&block));
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, (IntPtr) (&block));
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			return CreateRegistration (This, handle);
+		}
+
+		/// <summary>Registers a selector on the specified target to be called when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="target">The object on which to invoke the selector.</param>
+		/// <param name="action">The selector to invoke.</param>
+		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		[RequiredMember]
+		[Export ("registerForTraitChanges:withTarget:action:")]
+		public IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+		{
+			return _RegisterForTraitChanges (this, traits, target, action);
+		}
+
+		internal static unsafe IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, NSObject target, Selector action, NSObject? super = null)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			var targetHandle = target.GetNonNullHandle (nameof (target));
+			var actionHandle = action.GetNonNullHandle (nameof (action));
+			using var array = NSArray.FromNSObjects (traits);
+			var selector = Selector.GetHandle ("registerForTraitChanges:withTarget:action:");
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, targetHandle, actionHandle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, targetHandle, actionHandle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (target);
+			GC.KeepAlive (action);
+			return CreateRegistration (This, handle);
+		}
+
+		/// <summary>Registers a selector on this observable to be called when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="action">The selector to invoke.</param>
+		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		[RequiredMember]
+		[Export ("registerForTraitChanges:withAction:")]
+		public IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+		{
+			return _RegisterForTraitChanges (this, traits, action);
+		}
+
+		internal static unsafe IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, Selector action, NSObject? super = null)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			var actionHandle = action.GetNonNullHandle (nameof (action));
+			using var array = NSArray.FromNSObjects (traits);
+			var selector = Selector.GetHandle ("registerForTraitChanges:withAction:");
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, actionHandle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, actionHandle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (action);
+			return CreateRegistration (This, handle);
+		}
+
+		static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle)
+		{
+			var registration = Runtime.GetINativeObject<IUITraitChangeRegistration> (handle, false)
+				?? throw new InvalidOperationException ("UIKit returned a null trait change registration.");
+			return new UITraitChangeRegistrationToken (observable, registration);
+		}
+
+		/// <summary>Unregisters a trait-change callback and releases the registration's reference to this observable.</summary>
+		/// <param name="registration">The token returned when the callback was registered.</param>
+		[RequiredMember]
+		[Export ("unregisterForTraitChanges:")]
+		public void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+		{
+			UnregisterForTraitChangesInternal (this, registration);
+		}
+
+		internal static unsafe void UnregisterForTraitChangesInternal (IUITraitChangeObservable This, IUITraitChangeRegistration registration, NSObject? super = null)
+		{
+			UIApplication.EnsureUIThread ();
+			if (registration is UITraitChangeRegistrationToken token) {
+				token.Unregister (This, super);
+				return;
+			}
+
+			var handle = registration.GetNonNullHandle (nameof (registration));
+			var selector = Selector.GetHandle ("unregisterForTraitChanges:");
+			if (super is null) {
+				Messaging.void_objc_msgSend_NativeHandle (This.Handle, selector, handle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				Messaging.void_objc_msgSendSuper_NativeHandle (&objcSuper, selector, handle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (registration);
 		}
 
 		/// <summary>
@@ -182,6 +330,66 @@ namespace UIKit {
 			return _RegisterForTraitChanges (This, ToClasses (traits), action);
 		}
 
+		sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
+			GCHandle observable;
+			IUITraitChangeRegistration? registration;
+
+			public NativeHandle Handle => registration?.Handle ?? NativeHandle.Zero;
+
+			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration)
+			{
+				this.observable = GCHandle.Alloc (observable);
+				this.registration = registration;
+			}
+
+			public NSObject Copy (NSZone? zone)
+			{
+				if (registration is null)
+					throw new ObjectDisposedException (nameof (UITraitChangeRegistrationToken));
+				return registration.Copy (zone);
+			}
+
+			~UITraitChangeRegistrationToken ()
+			{
+				Runtime.NSLog ("Warning: trait change registration object was not disposed manually with Dispose()");
+				Dispose (false);
+			}
+
+			public void Dispose ()
+			{
+				Dispose (true);
+				GC.SuppressFinalize (this);
+			}
+
+			internal void Unregister (IUITraitChangeObservable observable, NSObject? super)
+			{
+				if (registration is null)
+					return;
+
+				// The public override has already run; continue its base/native path.
+				UnregisterForTraitChangesInternal (observable, registration, super);
+				Dispose (false);
+				GC.SuppressFinalize (this);
+			}
+
+			void Dispose (bool disposing)
+			{
+				if (registration is null)
+					return;
+
+				if (disposing) {
+					var observable = this.observable.Target as IUITraitChangeObservable;
+					if (observable is null)
+						throw new InvalidOperationException ("The trait change observable has been collected.");
+					observable.UnregisterForTraitChanges (registration);
+				}
+				// UIKit unregisters automatically when the observable is deallocated.
+				// The finalizer must not call UIKit's main-thread-only unregister method.
+				registration = null;
+				this.observable.Free ();
+			}
+		}
+
 #if XAMCORE_5_0
 		private static Class [] ToClasses (IUITraitDefinition [] traits)
 #else
@@ -202,21 +410,21 @@ namespace UIKit {
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Action<IUITraitEnvironment, UITraitCollection>)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), handler);
+			return _RegisterForTraitChanges (this, ToClasses (traits), handler);
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], NSObject, Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, NSObject target, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), target, action);
+			return _RegisterForTraitChanges (this, ToClasses (traits), target, action);
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), action);
+			return _RegisterForTraitChanges (this, ToClasses (traits), action);
 		}
 #endif // !XACMORE_5_0
 
@@ -243,6 +451,213 @@ namespace UIKit {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public extern static NativeHandle NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (IntPtr receiver, IntPtr selector, NativeHandle arg1, NativeHandle arg2, NativeHandle arg3);
 #endif
+	}
+
+	public static partial class UITraitChangeObservable_Extensions {
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Action{IUITraitEnvironment, UITraitCollection})" />
+		/// <param name="This">The observable on which to register the callback.</param>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="handler">The callback to execute when a trait changes.</param>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		public static IUITraitChangeRegistration RegisterForTraitChanges (this IUITraitChangeObservable This, Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (This, traits, handler);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], NSObject, Selector)" />
+		/// <param name="This">The observable on which to register the callback.</param>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="target">The object on which to invoke the selector.</param>
+		/// <param name="action">The selector to invoke.</param>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		public static IUITraitChangeRegistration RegisterForTraitChanges (this IUITraitChangeObservable This, Class [] traits, NSObject target, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (This, traits, target, action);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Selector)" />
+		/// <param name="This">The observable on which to register the callback.</param>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="action">The selector to invoke.</param>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		public static IUITraitChangeRegistration RegisterForTraitChanges (this IUITraitChangeObservable This, Class [] traits, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (This, traits, action);
+		}
+	}
+
+	public partial class UIView {
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Action{IUITraitEnvironment, UITraitCollection})" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withHandler:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], NSObject, Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withTarget:action:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withAction:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.UnregisterForTraitChanges" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("unregisterForTraitChanges:")]
+		public virtual void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+		{
+			IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration, IsDirectBinding ? null : this);
+		}
+	}
+
+	public partial class UIViewController {
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Action{IUITraitEnvironment, UITraitCollection})" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withHandler:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], NSObject, Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withTarget:action:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withAction:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.UnregisterForTraitChanges" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("unregisterForTraitChanges:")]
+		public virtual void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+		{
+			IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration, IsDirectBinding ? null : this);
+		}
+	}
+
+	public partial class UIWindowScene {
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Action{IUITraitEnvironment, UITraitCollection})" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withHandler:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], NSObject, Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withTarget:action:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withAction:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.UnregisterForTraitChanges" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("unregisterForTraitChanges:")]
+		public virtual void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+		{
+			IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration, IsDirectBinding ? null : this);
+		}
+	}
+
+	public partial class UIPresentationController {
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Action{IUITraitEnvironment, UITraitCollection})" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withHandler:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], NSObject, Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withTarget:action:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.RegisterForTraitChanges(Class[], Selector)" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("registerForTraitChanges:withAction:")]
+		public virtual IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+		{
+			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action, IsDirectBinding ? null : this);
+		}
+
+		/// <inheritdoc cref="IUITraitChangeObservable.UnregisterForTraitChanges" />
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[Export ("unregisterForTraitChanges:")]
+		public virtual void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+		{
+			IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration, IsDirectBinding ? null : this);
+		}
 	}
 
 #if !XAMCORE_5_0

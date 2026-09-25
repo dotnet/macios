@@ -295,6 +295,7 @@ namespace Cecil.Tests {
 					"SceneKit.SCNRenderer.FromContext (OpenGL.CGLContext, Foundation.NSDictionary)",
 
 					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/dotnet/macios/issues/17291).
+					"MediaPlayer.MPMediaEntity",
 					"MediaPlayer.MPMediaEntity.EncodeTo (Foundation.NSCoder)",
 					"MediaPlayer.MPMediaEntity.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaEntity.GetObject (Foundation.NSObject)",
@@ -302,6 +303,9 @@ namespace Cecil.Tests {
 					"MediaPlayer.MPMediaItem.get_PropertyPersistentID ()",
 					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
 					"MediaPlayer.MPMediaItem.PropertyPersistentID",
+
+					// The generator only creates NIErrorCodeExtensions where NIErrorDomain is available.
+					"NearbyInteraction.NIErrorCodeExtensions",
 
 					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS as well).
 					// Ref: https://github.com/dotnet/macios/pull/17306
@@ -327,8 +331,9 @@ namespace Cecil.Tests {
 					"PdfKit.PdfView.ShouldRecognizeSimultaneously (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 					"PdfKit.PdfView.ShouldRequireFailureOf (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 
-#if !XAMCORE_5_0
 					// The ARQuickLookPreviewItem type is in the QuickLook framework for Mac Catalyst, and ARKit for all other platforms.
+					"QuickLook.ARQuickLookPreviewItem",
+#if !XAMCORE_5_0
 					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemTitle ()",
 					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemUrl ()",
 					"QuickLook.ARQuickLookPreviewItem.PreviewItemTitle",
@@ -430,6 +435,10 @@ namespace Cecil.Tests {
 		IEnumerable<IMemberDefinition> GetAllTypeMembers (TypeDefinition type)
 		{
 			yield return type;
+
+			// Nested members were not checked before nested types were added to this test.
+			if (type.IsNested)
+				yield break;
 
 			foreach (var method in type.Methods.Where (m => m.IsPublic)) {
 				yield return method;

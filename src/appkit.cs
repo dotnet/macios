@@ -34651,6 +34651,11 @@ namespace AppKit {
 	/// <returns>The cell view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSTableViewDiffableDataSourceCellProvider (NSTableView tableView, NSTableColumn column, nint row, NSObject itemId);
+	/// <summary>Provides a row view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the row view.</param>
+	/// <param name="row">The index of the row.</param>
+	/// <param name="identifier">The identifier of the row's item.</param>
+	/// <returns>The row view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSTableRowView NSTableViewDiffableDataSourceRowProvider (NSTableView tableView, nint row, NSObject identifier);
 	[NoMacCatalyst]

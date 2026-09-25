@@ -54136,7 +54136,6 @@ T:AppKit.NSSound
 T:AppKit.NSSpeechRecognizer
 T:AppKit.NSSpeechSynthesizer
 T:AppKit.NSSpellChecker
-T:AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler
 T:AppKit.NSSpellingState
 T:AppKit.NSSplitView
 T:AppKit.NSSplitViewController

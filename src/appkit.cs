@@ -28933,6 +28933,8 @@ namespace AppKit {
 		void TerminateAutomaticallyTerminableApplications ();
 	}
 
+	/// <summary>Handles a spelling correction selected from the correction indicator.</summary>
+	/// <param name="acceptedString">The correction accepted by the user.</param>
 	delegate void NSSpellCheckerShowCorrectionIndicatorOfTypeHandler (string acceptedString);
 
 	partial interface NSSpellChecker {

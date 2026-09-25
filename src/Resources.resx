@@ -656,4 +656,8 @@
 	<data name="BI1128" xml:space="preserve">
 		<value>The [Field] member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.</value>
 	</data>
+
+	<data name="BI1129" xml:space="preserve">
+		<value>Export attribute contains invalid selector name: {0}</value>
+	</data>
 </root>

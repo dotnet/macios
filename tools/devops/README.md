@@ -174,6 +174,8 @@ stages:
 - `build.yml` - Windows test execution
 - `reenable-mac.yml` - Release reserved macOS agent
 
+Windows setup attempts to enable long paths. If the registry update fails with a permission-related `SecurityException`, it logs a warning and continues with the current setting. Other setup errors and test failures still fail the job.
+
 ### Release Templates (`templates/release/`)
 
 | Template | Purpose |

@@ -1762,4 +1762,11 @@
 {1} - The app manifest entry name.
 {2} - The app manifest entry type.</comment>
     </data>
+    <data name="E7192" xml:space="preserve">
+        <value>Unable to parse the '{0}' value: {1}</value>
+        <comment>
+            {0}: name of an MSBuild property (IBToolExtraArgs or ACToolExtraArgs): don't translate
+            {1}: user-provided value
+        </comment>
+    </data>
 </root>

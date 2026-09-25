@@ -5,15 +5,18 @@ There are a number of properties that are contingent upon the configuration sett
 
 ### Release Configuration
 
-| **Property**                                            	| **Default value**                 	| **Condition?**                        	|
-|---------------------------------------------------------	|-----------------------------------	|---------------------------------------	|
-| DebuggerSupport                                         	| false                             	|                                       	|
-| EnableAssemblyILStripping                               	| true                              	|                                       	|
-| RuntimeIdentifiers                                      	| maccatalyst-x64;maccatalyst-arm64 	| TargetFramework == netx.x-maccatalyst 	|
-| RuntimeIdentifiers                                      	| osx-x64;osx-arm64                 	| TargetFramework == netx.x-macos       	|
-| UseSystemResourceKeys                                   	| true                              	|                                       	|
-| VerifyDependencyInjectionOpenGenericServiceTrimmability 	| false                             	|                                       	|
+| **Property**                                            | **Default value**                 | **Condition?**                                                                         |
+|---------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------|
+| DebuggerSupport                                         | false                             |                                                                                        |
+| EnableAssemblyILStripping                               | true                              |                                                                                        |
+| RuntimeIdentifiers                                      | maccatalyst-x64;maccatalyst-arm64 | TargetFramework == netx.x-maccatalyst and effective SupportedOSPlatformVersion < 27.0  |
+| RuntimeIdentifier                                       | Host architecture                 | TargetFramework == netx.x-maccatalyst and effective SupportedOSPlatformVersion >= 27.0 |
+| RuntimeIdentifiers                                      | osx-x64;osx-arm64                 | TargetFramework == netx.x-macos and effective SupportedOSPlatformVersion < 27.0        |
+| RuntimeIdentifier                                       | Host architecture                 | TargetFramework == netx.x-macos and effective SupportedOSPlatformVersion >= 27.0       |
+| UseSystemResourceKeys                                   | true                              |                                                                                        |
+| VerifyDependencyInjectionOpenGenericServiceTrimmability | false                             |                                                                                        |
 
+When `SupportedOSPlatformVersion` is not available during SDK props evaluation, its effective value is the SDK's default `TargetPlatformVersion`. Set `SupportedOSPlatformVersion` in `Directory.Build.props` or on the command line when it must affect the default runtime identifier.
 
 ### Debug Configuration
 
@@ -35,4 +38,3 @@ These are options that are set when the `Optimize` property is `true` (which hap
 | EventSourceSupport             | false      |
 | HttpActivityPropagationSupport | false      |
 | MetricsSupport                 | false      |
-

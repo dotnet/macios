@@ -13825,6 +13825,9 @@ namespace AppKit {
 	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectPatternsCompletionHandler ([NullAllowed] HashSet<NSPasteboardDetectionPattern> detectedPatterns, [NullAllowed] NSError error);
 
+	/// <summary>Handles the values detected in a pasteboard.</summary>
+	/// <param name="detectedValues">The detected values, or <see langword="null"/> if none were detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectValuesHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedValues, [NullAllowed] NSError error);
 	delegate void NSPasteboardDetectValuesCompletionHandler ([NullAllowed] Dictionary<NSPasteboardDetectionPattern, DDMatch []> detectedValues, [NullAllowed] NSError error);
 

@@ -198,6 +198,12 @@ On the other hand, the lookup tables for the type mapping are generated after
 trimming, because we only want to add types that aren't trimmed away to the
 lookup tables (otherwise we'd end up causing all those types to be kept).
 
+For CoreCLR builds with the trimmable static registrar, the native assembly
+names and MVIDs are generated in `registrar-assemblies.mm`, separately from
+the Objective-C++ registration code in `registrar.mm`. An app-only IL change
+can recompile just the small assembly table before relinking; a change to
+registered types or methods still regenerates and recompiles `registrar.mm`.
+
 ## Interpreter / JIT
 
 When not using the AOT compiler, we need to look up the native entry points

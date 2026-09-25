@@ -1519,6 +1519,8 @@
 			</ResolvedFileToPublish>
 			<FileWrites Include="@(_TypeMapAssemblies)" />
 			<FileWrites Include="@(_ManagedAssemblyToLinkFromLinker)" />
+			<FileWrites Include="@(_RegistrarFile)" />
+			<FileWrites Include="@(_RegistrarFile -> '%(AdditionalDependencies)')" />
 		</ItemGroup>
 		<PropertyGroup Condition="'$(RunILLink)' == 'true' And '$(_UseNativeAot)' == 'true' And @(_TrimmerRootDescriptorFromCustomLinkerSteps->Count()) &gt; 0">
 			<!-- When the custom linker steps produce xml root descriptors, those xml root descriptors may refer to types and members that are removed
@@ -2370,6 +2372,7 @@
 
 		<ItemGroup>
 			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<FileWrites Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 

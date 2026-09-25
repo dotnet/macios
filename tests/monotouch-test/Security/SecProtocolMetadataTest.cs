@@ -15,6 +15,21 @@ namespace MonoTouchFixtures.Security {
 			TestRuntime.AssertXcodeVersion (10, 0);
 		}
 
+		static void CheckOptionalAccess<T> (Action<Action<T>> access, Action<T> visit, string unavailableMessage)
+		{
+			var count = 0;
+			try {
+				access (value => {
+					count++;
+					visit (value);
+				});
+			} catch (InvalidOperationException ex) {
+				Assert.That (ex.Message, Is.EqualTo (unavailableMessage), "Unavailable data");
+				Assert.That (count, Is.EqualTo (0), "An unavailable collection must not invoke the callback");
+				Console.WriteLine (unavailableMessage);
+			}
+		}
+
 		[Test]
 		public void TlsDefaults ()
 		{
@@ -61,7 +76,7 @@ namespace MonoTouchFixtures.Security {
 					}
 
 					using (var m = connection.GetProtocolMetadata<NWTlsMetadata> (NWProtocolDefinition.CreateTlsDefinition ())) {
-						var s = m.SecProtocolMetadata;
+						using var s = m.SecProtocolMetadata;
 						Assert.That (s.EarlyDataAccepted, Is.False, "EarlyDataAccepted");
 						Assert.That (s.NegotiatedProtocol, Is.Null, "NegotiatedProtocol");
 						Assert.That (s.NegotiatedProtocolVersion, Is.EqualTo (SslProtocol.Tls_1_2).Or.EqualTo (SslProtocol.Tls_1_3), "NegotiatedProtocolVersion");
@@ -69,6 +84,29 @@ namespace MonoTouchFixtures.Security {
 
 						Assert.That (SecProtocolMetadata.ChallengeParametersAreEqual (s, s), Is.True, "ChallengeParametersAreEqual");
 						Assert.That (SecProtocolMetadata.PeersAreEqual (s, s), Is.True, "PeersAreEqual");
+
+						Assert.Throws<ArgumentNullException> (() => s.SetDistinguishedNamesForPeerHandler (null), "Null distinguished names handler");
+						Assert.Throws<ArgumentNullException> (() => s.SetOcspResponseForPeerHandler (null), "Null OCSP handler");
+						Assert.Throws<ArgumentNullException> (() => s.SetCertificateChainForPeerHandler (null), "Null certificate handler");
+						Assert.Throws<ArgumentNullException> (() => s.SetSignatureAlgorithmsForPeerHandler (null), "Null signature handler");
+
+						var certificateSubjects = new List<string> ();
+						s.SetCertificateChainForPeerHandler (certificate => {
+							using (certificate)
+								certificateSubjects.Add (certificate.SubjectSummary);
+						});
+						Assert.That (certificateSubjects, Is.Not.Empty, "Peer certificate chain");
+						Assert.That (certificateSubjects, Has.None.Null, "Certificate subjects");
+
+						// These collections depend on the TLS handshake and may be unavailable.
+						CheckOptionalAccess<DispatchData> (s.SetDistinguishedNamesForPeerHandler, data => {
+							data.Dispose ();
+						}, "Distinguished names are not accessible.");
+						CheckOptionalAccess<DispatchData> (s.SetOcspResponseForPeerHandler, data => {
+							data.Dispose ();
+						}, "The OSCP response is not accessible.");
+						CheckOptionalAccess<ushort> (s.SetSignatureAlgorithmsForPeerHandler, algorithm => {
+						}, "The supported signature list is not accessible.");
 
 						if (TestRuntime.CheckXcodeVersion (11, 0)) {
 							using (var d = s.CreateSecret ("Xamarin", 128)) {

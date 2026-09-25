@@ -22,6 +22,27 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class DispatchQueueTests {
+		[TestCase (0, false)]
+		[TestCase (1, false)]
+		[TestCase (8, false)]
+		[TestCase (8, true)]
+		public void Submit (int iterations, bool concurrent)
+		{
+			var queue = new DispatchQueue ("Submit", concurrent);
+			var reference = new WeakReference (queue);
+			var visits = new int [iterations];
+			var collected = 0;
+			queue.Submit (index => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				if (!reference.IsAlive)
+					System.Threading.Interlocked.Increment (ref collected);
+				System.Threading.Interlocked.Increment (ref visits [index]);
+			}, iterations);
+			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
+			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");
+		}
+
 		[Test]
 		public void CtorWithAttributes ()
 		{

@@ -16,6 +16,70 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class IBToolTaskTests : TestBase {
+		class TestIBTool : IBTool {
+			public bool InvokeAppendAdditionalArguments (List<string> arguments)
+			{
+				return base.AppendAdditionalArguments (arguments);
+			}
+
+			public bool InvokeInterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
+			{
+				return base.InterfaceDefinitionChanged (interfaceDefinition, log);
+			}
+		}
+
+		[Test]
+		public void AdditionalArguments ()
+		{
+			var task = CreateTask<TestIBTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "--cocoatouch-compiler-mode simulator --module \"My Module\"";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.True, "Append arguments");
+			Assert.That (arguments, Is.EqualTo (new [] { "--cocoatouch-compiler-mode", "simulator", "--module", "My Module" }), "Arguments");
+		}
+
+		[Test]
+		public void InvalidAdditionalArguments ()
+		{
+			var task = CreateTask<TestIBTool> ();
+			var arguments = new List<string> ();
+
+			task.AdditionalArguments = "\"";
+			task.AdditionalArgumentsPropertyName = "IBToolExtraArgs";
+
+			Assert.That (task.InvokeAppendAdditionalArguments (arguments), Is.False, "Append arguments");
+			Assert.That (task.Log.HasLoggedErrors, Is.True, "Logged error");
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Message, Does.Contain ("IBToolExtraArgs"), "Error message");
+			Assert.That (arguments, Is.Empty, "Arguments");
+		}
+
+		[Test]
+		public void AdditionalArgumentsInvalidateManifest ()
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			var interfaceDefinition = new TaskItem (Path.Combine (directory, "View.xib"));
+			var additionalArgumentsFile = Path.Combine (directory, "ibtool-extra-args.txt");
+			var manifest = new TaskItem (Path.Combine (directory, "View.nib"));
+			var now = DateTime.UtcNow;
+			var task = CreateTask<TestIBTool> ();
+
+			File.WriteAllText (interfaceDefinition.ItemSpec, "");
+			File.WriteAllText (additionalArgumentsFile, "");
+			new PDictionary ().Save (manifest.ItemSpec);
+			File.SetLastWriteTimeUtc (interfaceDefinition.ItemSpec, now.AddMinutes (-2));
+			File.SetLastWriteTimeUtc (additionalArgumentsFile, now.AddMinutes (-2));
+			File.SetLastWriteTimeUtc (manifest.ItemSpec, now.AddMinutes (-1));
+			task.AdditionalArgumentsFile = additionalArgumentsFile;
+
+			Assert.That (task.InvokeInterfaceDefinitionChanged (interfaceDefinition, manifest), Is.False, "Unchanged arguments");
+
+			File.SetLastWriteTimeUtc (additionalArgumentsFile, now);
+
+			Assert.That (task.InvokeInterfaceDefinitionChanged (interfaceDefinition, manifest), Is.True, "Changed arguments");
+		}
+
 		IBTool CreateIBToolTask (ApplePlatform framework, string projectDir, string intermediateOutputPath)
 		{
 			var task = CreateTask<IBTool> ();

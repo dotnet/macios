@@ -461,7 +461,6 @@ COREFOUNDATION_CORE_SOURCES = \
 	CoreFoundation/CFMutableString.cs \
 	CoreFoundation/CFRunLoop.cs \
 	CoreFoundation/CFString.cs \
-	CoreFoundation/CFUuidBytes.cs \
 	CoreFoundation/Dispatch.cs \
 	CoreFoundation/DispatchData.cs \
 	CoreFoundation/NativeObject.cs \

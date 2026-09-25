@@ -374,6 +374,37 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			nonNullSource.Dispose ();
 		}
+
+		[Test]
+		public async Task SendSysexAsyncSuccess ()
+		{
+			using var client = new MidiClient ("TestSysexClient");
+			using var destination = client.CreateVirtualDestination ("TestSysexDestination", MidiProtocolId.Protocol_1_0, (_, _) => { }, out var destinationStatus);
+			MidiTestHelpers.AssertStatusOkOrInconclusive (destinationStatus, "Create destination");
+			var nonNullDestination = MidiTestHelpers.AssertNotNull (destination, "Destination");
+
+			var data = new byte [] { 0xf0, 0x7d, 0xf7 };
+			var successfulTask = nonNullDestination.SendSysexAsync (data);
+			Assert.That (await Task.WhenAny (successfulTask, Task.Delay (TimeSpan.FromSeconds (10))).ConfigureAwait (false), Is.SameAs (successfulTask), "Successful completion");
+			Assert.That (await successfulTask.ConfigureAwait (false), Is.EqualTo (MidiError.Ok), "Success status");
+		}
+
+		[Test]
+		public async Task SendSysexAsyncCancellation ()
+		{
+			using var client = new MidiClient ("TestSysexClient");
+			using var destination = client.CreateVirtualDestination ("TestSysexDestination", MidiProtocolId.Protocol_1_0, (_, _) => { }, out var destinationStatus);
+			MidiTestHelpers.AssertStatusOkOrInconclusive (destinationStatus, "Create destination");
+			var nonNullDestination = MidiTestHelpers.AssertNotNull (destination, "Destination");
+			var data = new byte [] { 0xf0, 0x7d, 0xf7 };
+			for (var i = 0; i < 10; i++) {
+				using var cancellationTokenSource = new CancellationTokenSource ();
+				var cancellationTask = nonNullDestination.SendSysexAsync (data, cancellationTokenSource.Token);
+				cancellationTokenSource.Cancel ();
+				Assert.That (await Task.WhenAny (cancellationTask, Task.Delay (TimeSpan.FromSeconds (10))).ConfigureAwait (false), Is.SameAs (cancellationTask), $"Cancellation completion #{i}");
+				Assert.That (cancellationTask.IsCompletedSuccessfully || cancellationTask.IsCanceled, Is.True, $"Cancellation result #{i}");
+			}
+		}
 	}
 
 	[TestFixture]

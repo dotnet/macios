@@ -854,7 +854,7 @@ namespace CoreMidi {
 			using var block = new BlockLiteral (trampoline, readBlock, typeof (MidiClient), nameof (ReceiveBlockTrampoline));
 			var blockPtr = (BlockLiteral*) &block;
 			status = (MidiError) MIDIInputPortCreateWithProtocol (GetCheckedHandle (), namePtr, protocol, &handle, blockPtr);
-			if (handle == MidiObject.InvalidRef)
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef)
 				return null;
 			return new MidiPort (handle, true, this, name, true);
 		}

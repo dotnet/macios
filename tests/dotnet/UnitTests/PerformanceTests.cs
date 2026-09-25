@@ -9,12 +9,12 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.MacOSX)]
-		public void PrepareAssemblies_CoreCLR (ApplePlatform platform)
+		public void PrepareAssemblies (ApplePlatform platform)
 		{
-			PrepareAssemblies (platform);
+			PrepareAssembliesImpl (platform);
 		}
 
-		void PrepareAssemblies (ApplePlatform platform)
+		void PrepareAssembliesImpl (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -70,6 +70,8 @@ namespace Xamarin.Tests {
 								result.GetBuildTimes (propertyValue).Times.Add (rv);
 							}
 						}
+
+
 
 						results.Add (result);
 					}
@@ -183,4 +185,3 @@ namespace Xamarin.Tests {
 		}
 	}
 }
-

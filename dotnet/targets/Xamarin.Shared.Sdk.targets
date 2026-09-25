@@ -1519,6 +1519,8 @@
 			</ResolvedFileToPublish>
 			<FileWrites Include="@(_TypeMapAssemblies)" />
 			<FileWrites Include="@(_ManagedAssemblyToLinkFromLinker)" />
+			<FileWrites Include="@(_RegistrarFile)" />
+			<FileWrites Include="@(_RegistrarFile -> '%(AdditionalDependencies)')" />
 		</ItemGroup>
 		<PropertyGroup Condition="'$(RunILLink)' == 'true' And '$(_UseNativeAot)' == 'true' And @(_TrimmerRootDescriptorFromCustomLinkerSteps->Count()) &gt; 0">
 			<!-- When the custom linker steps produce xml root descriptors, those xml root descriptors may refer to types and members that are removed
@@ -2217,12 +2219,14 @@
 			<_CompileNativeExecutableFile Include="@(_MainFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
-			<_CompileNativeExecutableFile Include="@(_RegistrarFile)">
+			<_CompileNativeExecutableFile Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' != '.o'">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
 			<_CompileNativeExecutableFile Include="@(_ReferencesFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
+			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<_NativeExecutableObjectFiles Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' == '.o'" />
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
 	</Target>
@@ -2369,7 +2373,7 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<FileWrites Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 

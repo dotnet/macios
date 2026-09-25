@@ -71,8 +71,6 @@ namespace Xamarin.Tests {
 							}
 						}
 
-
-
 						results.Add (result);
 					}
 				}
@@ -185,3 +183,4 @@ namespace Xamarin.Tests {
 		}
 	}
 }
+

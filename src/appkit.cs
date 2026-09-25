@@ -13838,6 +13838,9 @@ namespace AppKit {
 	/// <param name="detectedMetadata">The detected metadata, or <see langword="null"/> if none was detected.</param>
 	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectMetadataHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedMetadata, [NullAllowed] NSError error);
+	/// <summary>Handles the typed metadata detected in a pasteboard.</summary>
+	/// <param name="detectedMetadata">The detected metadata, or <see langword="null"/> if none was detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectMetadataCompletionHandler ([NullAllowed] Dictionary<NSPasteboardMetadataType, UTType> detectedMetadata, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]

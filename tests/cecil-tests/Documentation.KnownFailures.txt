@@ -54182,7 +54182,6 @@ T:AppKit.NSTableViewPredicate
 T:AppKit.NSTableViewRowAction
 T:AppKit.NSTableViewRowActionsGetter
 T:AppKit.NSTableViewRowGetter
-T:AppKit.NSTableViewRowHandler
 T:AppKit.NSTableViewRowHeight
 T:AppKit.NSTableViewRowPredicate
 T:AppKit.NSTableViewSearchString

@@ -20821,6 +20821,9 @@ namespace AppKit {
 		}
 	}
 
+	/// <summary>Handles an available row view during table view enumeration.</summary>
+	/// <param name="rowView">The available row view.</param>
+	/// <param name="row">The row associated with the view.</param>
 	[NoMacCatalyst]
 	delegate void NSTableViewRowHandler (NSTableRowView rowView, nint row);
 

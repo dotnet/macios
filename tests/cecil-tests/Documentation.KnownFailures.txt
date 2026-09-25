@@ -54046,7 +54046,6 @@ T:AppKit.NSPasteboard
 T:AppKit.NSPasteboardDetectMetadataCompletionHandler
 T:AppKit.NSPasteboardDetectMetadataHandler
 T:AppKit.NSPasteboardDetectPatternsCompletionHandler
-T:AppKit.NSPasteboardDetectPatternsHandler
 T:AppKit.NSPasteboardDetectValuesCompletionHandler
 T:AppKit.NSPasteboardDetectValuesHandler
 T:AppKit.NSPasteboardItem

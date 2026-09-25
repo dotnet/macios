@@ -16,6 +16,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		#region Inputs
 
+		public string? AdditionalArgumentsFile { get; set; }
+
 		public bool EnableOnDemandResources { get; set; }
 
 		[Required]
@@ -164,9 +166,16 @@ namespace Xamarin.MacDev.Tasks {
 			return false;
 		}
 
-		static bool InterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
+		protected bool InterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
 		{
-			return !LogExists (log.ItemSpec) || File.GetLastWriteTimeUtc (log.ItemSpec) < File.GetLastWriteTimeUtc (interfaceDefinition.ItemSpec);
+			if (!LogExists (log.ItemSpec))
+				return true;
+
+			var logWriteTime = File.GetLastWriteTimeUtc (log.ItemSpec);
+			if (logWriteTime < File.GetLastWriteTimeUtc (interfaceDefinition.ItemSpec))
+				return true;
+
+			return AdditionalArgumentsFile is not null && logWriteTime < File.GetLastWriteTimeUtc (AdditionalArgumentsFile);
 		}
 
 		bool CompileInterfaceDefinitions (IEnumerable<ITaskItem> interfaceDefinitions, string baseManifestDir, string baseOutputDir, List<ITaskItem> compiled, IList<ITaskItem> manifests, out bool changed)

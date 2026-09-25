@@ -29210,6 +29210,8 @@ namespace AppKit {
 	/// <summary>Handles completion of locking a document.</summary>
 	/// <param name="didLock">Whether the document was locked.</param>
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
+	/// <summary>Handles completion of unlocking a document.</summary>
+	/// <param name="didUnlock">Whether the document was unlocked.</param>
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
 	/// <summary>Handles the completion of an asynchronous document lock operation.</summary>
 	/// <param name="error">The error that occurred, or <see langword="null"/> if the operation succeeded.</param>

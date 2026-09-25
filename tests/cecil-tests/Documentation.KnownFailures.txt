@@ -53943,7 +53943,6 @@ T:AppKit.NSDockTile
 T:AppKit.NSDocument
 T:AppKit.NSDocumentController
 T:AppKit.NSDocumentUnlockCompletionHandler
-T:AppKit.NSDocumentUnlockDocumentCompletionHandler
 T:AppKit.NSDraggingImageComponent
 T:AppKit.NSDraggingItem
 T:AppKit.NSDraggingSession

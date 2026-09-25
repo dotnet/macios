@@ -64,7 +64,7 @@ namespace Xamarin {
 			}
 
 			using var strings = new MemoryStream ();
-			var stringOffsets = new List<uint> (checked (assemblies.Count * 2));
+			var stringOffsets = new List<uint> (checked(assemblies.Count * 2));
 			foreach (var (name, mvid) in assemblies) {
 				if (name is null || name.IndexOf ('\0') >= 0)
 					throw new ArgumentException ("Assembly names cannot be null or contain a NUL character.", nameof (assemblies));
@@ -73,15 +73,15 @@ namespace Xamarin {
 			}
 
 			var stringBytes = strings.ToArray ();
-			var stringSize = checked ((uint) stringBytes.Length);
-			var tableAddress = checked ((stringSize + 7) & ~7u);
-			var pointerCount = checked ((uint) stringOffsets.Count);
-			var tableSize = checked (pointerCount * 8);
-			var segmentSize = checked (tableAddress + tableSize);
-			var relocationOffset = checked (DataOffset + segmentSize);
-			var symbolOffset = checked (relocationOffset + tableSize);
-			var stringTableOffset = checked (symbolOffset + 16);
-			var stringTableSize = checked (((uint) symbolName.Length + 3) & ~3u);
+			var stringSize = checked((uint) stringBytes.Length);
+			var tableAddress = checked((stringSize + 7) & ~7u);
+			var pointerCount = checked((uint) stringOffsets.Count);
+			var tableSize = checked(pointerCount * 8);
+			var segmentSize = checked(tableAddress + tableSize);
+			var relocationOffset = checked(DataOffset + segmentSize);
+			var symbolOffset = checked(relocationOffset + tableSize);
+			var stringTableOffset = checked(symbolOffset + 16);
+			var stringTableSize = checked(((uint) symbolName.Length + 3) & ~3u);
 
 			using var output = new MemoryStream ();
 			using var writer = new BinaryWriter (output);
@@ -132,7 +132,7 @@ namespace Xamarin {
 				writer.Write ((ulong) offset);
 
 			for (var i = stringOffsets.Count - 1; i >= 0; i--) {
-				writer.Write (checked (i * 8));
+				writer.Write (checked(i * 8));
 				writer.Write (1u | (3u << 25)); // Local 64-bit relocation against __cstring (section 1).
 			}
 
@@ -153,7 +153,7 @@ namespace Xamarin {
 
 		static void WriteCString (MemoryStream stream, List<uint> offsets, string value)
 		{
-			offsets.Add (checked ((uint) stream.Position));
+			offsets.Add (checked((uint) stream.Position));
 			var bytes = Encoding.UTF8.GetBytes (value);
 			stream.Write (bytes, 0, bytes.Length);
 			stream.WriteByte (0);

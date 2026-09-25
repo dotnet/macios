@@ -9,6 +9,19 @@ repository=${REPOSITORY:-dotnet/macios}
 net10_branch=${NET10_BRANCH:-release/10.0.1xx}
 net11_branch=${NET11_BRANCH:-release/11.0.1xx-rc.2}
 
+red=""
+green=""
+yellow=""
+cyan=""
+reset=""
+if [[ -t 1 && -z ${NO_COLOR:-} && ${TERM:-} != "dumb" ]]; then
+	red=$'\033[31m'
+	green=$'\033[32m'
+	yellow=$'\033[33m'
+	cyan=$'\033[36m'
+	reset=$'\033[0m'
+fi
+
 usage ()
 {
 	cat <<EOF
@@ -22,6 +35,7 @@ Environment variables:
   REPOSITORY    GitHub repository (default: $repository)
   NET10_BRANCH  .NET 10 target branch (default: $net10_branch)
   NET11_BRANCH  .NET 11 target branch (default: $net11_branch)
+  NO_COLOR      Disable colored output when set
 EOF
 }
 
@@ -94,22 +108,22 @@ check_backports ()
 			)
 		' "$sources_file" > "$results_file"
 
-	echo "$label -> $target_branch"
+	printf '%s%s -> %s%s\n' "$cyan" "$label" "$target_branch" "$reset"
 	if [[ $(jq length "$results_file") -eq 0 ]]; then
-		echo "  No merged pull requests have this label."
+		printf '  %sNo merged pull requests have this label.%s\n' "$yellow" "$reset"
 		return
 	fi
 
 	while IFS=$'\t' read -r result source_number source_url backport_number backport_state; do
 		case "$result" in
 		already-targets-branch)
-			printf '  [OK]      #%s already targets %s\n' "$source_number" "$target_branch"
+			printf '  %s[OK]%s      #%s already targets %s\n' "$green" "$reset" "$source_number" "$target_branch"
 			;;
 		found)
-			printf '  [OK]      #%s -> #%s (%s)\n' "$source_number" "$backport_number" "$backport_state"
+			printf '  %s[OK]%s      #%s -> #%s (%s)\n' "$green" "$reset" "$source_number" "$backport_number" "$backport_state"
 			;;
 		missing)
-			printf '  [MISSING] #%s has no backport PR: %s\n' "$source_number" "$source_url"
+			printf '  %s[MISSING]%s #%s has no backport PR: %s\n' "$red" "$reset" "$source_number" "$source_url"
 			missing=1
 			;;
 		esac
@@ -131,8 +145,8 @@ check_backports "backport-to-net10.0" "$net10_branch"
 check_backports "backport-to-net11.0" "$net11_branch"
 
 if [[ $missing -ne 0 ]]; then
-	echo "One or more backports are missing." >&2
+	printf '%sOne or more backports are missing.%s\n' "$red" "$reset" >&2
 	exit 1
 fi
 
-echo "All labeled pull requests have a backport."
+printf '%sAll labeled pull requests have a backport.%s\n' "$green" "$reset"

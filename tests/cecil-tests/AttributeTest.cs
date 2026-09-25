@@ -179,32 +179,30 @@ namespace Cecil.Tests {
 				string currentPlatform = AssemblyToAttributeName (assembly);
 
 				// Walk every class/struct/enum/property/method/enum value/pinvoke/event
-				foreach (var module in assembly.Modules) {
-					foreach (var type in module.Types) {
-						if (!type.IsPubliclyVisible ())
-							continue;
+				foreach (var type in assembly.EnumerateTypes ()) {
+					if (!type.IsPubliclyVisible ())
+						continue;
 
-						switch (type.Namespace) {
-						case "AppKit":
-						case "UIKit":
-							// The availability attributes between AppKit and UIKit are quite inconsistent:
-							// https://github.com/dotnet/macios/issues/17292
-							// So let's just skip these two namespaces for now.
-							continue;
-						}
-						foreach (var member in GetAllTypeMembers (type)) {
-							var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
-							if (mentionedPlatforms.Any ()) {
-								var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
-								string key = GetMemberLookupKey (member);
-								if (!harvestedInfo.ContainsKey (key)) {
-									harvestedInfo [key] = new Dictionary<string, PlatformClaimInfo> ();
-								}
-								var claimInfo = new PlatformClaimInfo (mentionedPlatforms, claimedPlatforms, member);
-								if (harvestedInfo [key].TryGetValue (currentPlatform, out var existingClaim))
-									throw new InvalidOperationException ($"The key {key} was computed for two different members:\n\tMember 1: {existingClaim.Member.FullName}\n\tMember 2: {member.FullName}\n\tKey: {key}");
-								harvestedInfo [key] [currentPlatform] = claimInfo;
+					switch (type.Namespace) {
+					case "AppKit":
+					case "UIKit":
+						// The availability attributes between AppKit and UIKit are quite inconsistent:
+						// https://github.com/dotnet/macios/issues/17292
+						// So let's just skip these two namespaces for now.
+						continue;
+					}
+					foreach (var member in GetAllTypeMembers (type)) {
+						var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
+						if (mentionedPlatforms.Any ()) {
+							var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
+							string key = GetMemberLookupKey (member);
+							if (!harvestedInfo.ContainsKey (key)) {
+								harvestedInfo [key] = new Dictionary<string, PlatformClaimInfo> ();
 							}
+							var claimInfo = new PlatformClaimInfo (mentionedPlatforms, claimedPlatforms, member);
+							if (harvestedInfo [key].TryGetValue (currentPlatform, out var existingClaim))
+								throw new InvalidOperationException ($"The key {key} was computed for two different members:\n\tMember 1: {existingClaim.Member.FullName}\n\tMember 2: {member.FullName}\n\tKey: {key}");
+							harvestedInfo [key] [currentPlatform] = claimInfo;
 						}
 					}
 				}
@@ -431,6 +429,8 @@ namespace Cecil.Tests {
 
 		IEnumerable<IMemberDefinition> GetAllTypeMembers (TypeDefinition type)
 		{
+			yield return type;
+
 			foreach (var method in type.Methods.Where (m => m.IsPublic)) {
 				yield return method;
 			}

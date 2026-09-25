@@ -4265,8 +4265,6 @@ namespace Xamarin.Tests {
 			properties ["MtouchLink"] = linkMode;
 			properties ["LinkMode"] = linkMode;
 			properties ["UseMonoRuntime"] = "false";
-			if (platform != ApplePlatform.MacOSX)
-				properties ["UseInterpreter"] = "true"; // ignored by CoreCLR
 			DotNet.AssertBuild (project_path, properties);
 
 			var appExecutable = GetNativeExecutable (platform, appPath);

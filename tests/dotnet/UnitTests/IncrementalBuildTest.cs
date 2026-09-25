@@ -23,7 +23,6 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
 			properties ["UseMonoRuntime"] = "false";
-			properties ["UseInterpreter"] = "true"; // ignored by CoreCLR
 
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);
@@ -133,7 +132,6 @@ namespace Xamarin.Tests {
 
 			var project_path = GenerateProject (platform, name: nameof (MetalShadersNotRecompiled), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["UseInterpreter"] = "true"; // this makes the test faster
 
 			var projectDir = Path.GetDirectoryName (project_path)!;
 
@@ -227,7 +225,6 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
 			properties ["UseMonoRuntime"] = "false";
-			properties ["UseInterpreter"] = "False";
 			properties ["MtouchLink"] = "None";
 
 			// Build the first time

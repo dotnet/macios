@@ -34487,6 +34487,11 @@ namespace AppKit {
 		nint SpellCheckerDocumentTag { get; set; }
 	}
 
+	/// <summary>Provides an item for a collection view's diffable data source.</summary>
+	/// <param name="collectionView">The collection view requesting the item.</param>
+	/// <param name="indexPath">The index path of the item.</param>
+	/// <param name="itemIdentifierType">The identifier of the item.</param>
+	/// <returns>The item to display.</returns>
 	[NoMacCatalyst]
 	delegate NSCollectionViewItem NSCollectionViewDiffableDataSourceItemProvider (NSCollectionView collectionView, NSIndexPath indexPath, NSObject itemIdentifierType);
 

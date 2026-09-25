@@ -54153,7 +54153,6 @@ T:AppKit.NSStepper
 T:AppKit.NSStepperCell
 T:AppKit.NSStepperTouchBarItem
 T:AppKit.NSStoryboard
-T:AppKit.NSStoryboardControllerCreator
 T:AppKit.NSStoryboardSegue
 T:AppKit.NSStringAttributeKey
 T:AppKit.NSStringDrawing_NSAttributedString

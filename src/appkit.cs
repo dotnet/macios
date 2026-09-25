@@ -18788,6 +18788,9 @@ namespace AppKit {
 		NSString WritingToolsExclusion { get; }
 	}
 
+	/// <summary>Creates a storyboard controller using a coder.</summary>
+	/// <param name="coder">The coder containing the controller's archived state.</param>
+	/// <returns>The controller created for the storyboard.</returns>
 	delegate NSObject NSStoryboardControllerCreator (NSCoder coder);
 
 	[NoMacCatalyst]

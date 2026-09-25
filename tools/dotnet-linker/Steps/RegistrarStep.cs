@@ -38,6 +38,9 @@ namespace Xamarin.Linker {
 				var dir = Configuration.CacheDirectory;
 				var header = Path.Combine (dir, "registrar.h");
 				var code = Path.Combine (dir, "registrar.mm");
+				var assemblySource = app.Registrar == RegistrarMode.TrimmableStatic && app.XamarinRuntime == XamarinRuntime.CoreCLR
+					? Path.Combine (dir, "registrar-assemblies.mm")
+					: null;
 #if !ASSEMBLY_PREPARER
 				if (app.Registrar == RegistrarMode.ManagedStatic || app.Registrar == RegistrarMode.TrimmableStatic) {
 					// Every api has been registered if we're using the managed registrar
@@ -46,7 +49,7 @@ namespace Xamarin.Linker {
 					Configuration.Application.StaticRegistrar.FilterTrimmedApi (Annotations);
 				}
 #endif
-				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method);
+				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method, assemblySource);
 
 				var items = new List<MSBuildItem> ();
 				var abi = Configuration.Abi;
@@ -61,6 +64,15 @@ namespace Xamarin.Linker {
 						{ "AdditionalDependencies", header },
 					}
 				));
+				if (assemblySource is not null) {
+					items.Add (new MSBuildItem (
+						assemblySource,
+						new Dictionary<string, string> {
+							{ "Arch", abi.AsArchString () },
+							{ "Arguments", "-std=c++14" },
+						}
+					));
+				}
 
 				Configuration.WriteOutputForMSBuild ("_RegistrarFile", items);
 				Configuration.RegistrationMethods.Add (initialization_method);

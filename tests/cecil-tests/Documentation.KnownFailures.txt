@@ -54088,7 +54088,6 @@ T:AppKit.NSRulerView
 T:AppKit.NSRulerViewUnits
 T:AppKit.NSRunningApplication
 T:AppKit.NSSavePanel
-T:AppKit.NSSavePanelComplete
 T:AppKit.NSScreen
 T:AppKit.NSScreenTouchCapabilities
 T:AppKit.NSScrollEdgeEffectStyle

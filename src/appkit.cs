@@ -16163,6 +16163,8 @@ namespace AppKit {
 		Picas,
 	}
 
+	/// <summary>Handles the response when a save panel closes.</summary>
+	/// <param name="result">The modal response from the panel.</param>
 	delegate void NSSavePanelComplete (nint result);
 
 	[NoMacCatalyst]

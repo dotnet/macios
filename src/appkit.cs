@@ -29216,6 +29216,8 @@ namespace AppKit {
 	/// <summary>Handles the completion of an asynchronous document lock operation.</summary>
 	/// <param name="error">The error that occurred, or <see langword="null"/> if the operation succeeded.</param>
 	delegate void NSDocumentLockCompletionHandler (NSError error);
+	/// <summary>Handles completion of an asynchronous document unlock operation.</summary>
+	/// <param name="error">The unlock error, or <see langword="null"/> on success.</param>
 	delegate void NSDocumentUnlockCompletionHandler (NSError error);
 
 	partial interface NSDocument : NSEditorRegistration, NSFilePresenter, NSMenuItemValidation

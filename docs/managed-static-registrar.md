@@ -199,10 +199,12 @@ trimming, because we only want to add types that aren't trimmed away to the
 lookup tables (otherwise we'd end up causing all those types to be kept).
 
 For CoreCLR builds with the trimmable static registrar, the native assembly
-names and MVIDs are generated in `registrar-assemblies.mm`, separately from
-the Objective-C++ registration code in `registrar.mm`. An app-only IL change
-can recompile just the small assembly table before relinking; a change to
-registered types or methods still regenerates and recompiles `registrar.mm`.
+names and MVIDs are written directly to the Mach-O object
+`registrar-assemblies.o`, separately from the Objective-C++ registration code
+in `registrar.mm`. An app-only IL change regenerates just this object before
+relinking, without invoking Clang; a change to registered types or methods
+still regenerates and recompiles `registrar.mm`. Architectures other than
+arm64 and x86_64 continue to use a separate `registrar-assemblies.mm` source.
 
 ## Interpreter / JIT
 

@@ -2041,7 +2041,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(IsBindingProject)' == 'true' And '$(_DisableBindingProjectBuild)' != 'true'"
 		>
 
-		<!-- This is a mirror of the method GetCompiledApiBindingsAssembly in BindingTouch.cs where the compilation is done inside bgen -->
+		<!-- Mirror GetCompiledApiBindingsAssembly in BindingTouch.cs; binding projects may not be nullable-warning clean. -->
 		<Csc
 			AdditionalLibPaths="$(_CompiledApiDefinitionLibPaths)"
 			AllowUnsafeBlocks="true"
@@ -2051,6 +2051,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			DocumentationFile="$(_CompiledApiDefinitionDocumentationFile)"
 			NoConfig="true"
 			NoStandardLib="true"
+			Nullable="annotations"
 			Deterministic="true"
 			OutputAssembly="$(_CompiledApiDefinitionAssembly)"
 			References="@(_CompiledApiDefinitionReferences)"

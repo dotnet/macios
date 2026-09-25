@@ -26512,6 +26512,9 @@ namespace AppKit {
 		bool Emphasized { [Bind ("isEmphasized")] get; set; }
 	}
 
+	/// <summary>Handles completion of a window restoration request.</summary>
+	/// <param name="window">The restored window, or <see langword="null"/> if restoration failed.</param>
+	/// <param name="error">The restoration error, or <see langword="null"/> on success.</param>
 	[NoMacCatalyst]
 	delegate void NSWindowCompletionHandler (NSWindow window, NSError error);
 

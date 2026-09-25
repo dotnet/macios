@@ -54324,7 +54324,6 @@ T:AppKit.NSVisualEffectView
 T:AppKit.NSWindow
 T:AppKit.NSWindowApplicationPresentationOptions
 T:AppKit.NSWindowClient
-T:AppKit.NSWindowCompletionHandler
 T:AppKit.NSWindowController
 T:AppKit.NSWindowDocumentDrag
 T:AppKit.NSWindowFrame

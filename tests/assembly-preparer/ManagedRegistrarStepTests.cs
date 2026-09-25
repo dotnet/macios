@@ -38,6 +38,67 @@ public class ManagedRegistrarStepTests : BaseClass {
 	}
 
 	[Test]
+	public void CollectsRelocatedProtocolCallbacksAfterPreparation ()
+	{
+		var code = @"
+		using Foundation;
+		using ObjCRuntime;
+
+		[Protocol]
+		public interface IMyProtocol {
+			[Export (""first"")]
+			void First ();
+
+			[Export (""second"")]
+			void Second ();
+		}
+
+		public class MyClass : NSObject, IMyProtocol {
+			public void First () { }
+			public virtual void Second () { }
+		}
+		";
+		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
+		var config = $@"
+		AssemblyName=Microsoft.iOS.dll
+		PrepareAssemblies=true
+		TypeMapAssemblyName=_TypeMap
+		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
+		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
+		";
+
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic,
+			code, out _, extraConfig: config, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
+		AssertPrepare (preparer);
+
+		var postDir = Path.Combine (tempDir, "post");
+		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (v.OutputPath, Path.Combine (postDir, Path.GetFileName (v.OutputPath)), v.OriginalInputPath, v.IsTrimmable, v.TrimMode))
+			.Concat (preparer.AddedAssemblies.Select (v => new AssemblyPreparerInfo (v.Path, Path.Combine (postDir, Path.GetFileName (v.Path)), true, "link")))
+			.ToArray ();
+		var configPath = Path.Combine (Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, "..")), "config.txt");
+		var logger = new TestLogger { Platform = ApplePlatform.iOS };
+		using var postprocessor = new AssemblyPreparer (logger, infos, configPath) { Registrar = RegistrarMode.TrimmableStatic };
+		postprocessor.Configuration.Application.IsPostProcessingAssemblies = true;
+		var resolver = new PreTrimTestResolver ();
+		resolver.AddPaths (preparer.Assemblies.Select (v => v.InputPath));
+		postprocessor.Configuration.Application.PreTrimAssemblyResolver = resolver;
+
+		var context = postprocessor.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var protocol = assembly.MainModule.Types.Single (v => v.Name == "IMyProtocol");
+		// The pre-trim resolver still exposes this method after it is removed from the loaded assembly.
+		protocol.Methods.Remove (protocol.Methods.Single (v => v.Name == "Second"));
+		new ManagedRegistrarStep ().Process (context);
+
+		var callbacks = postprocessor.Configuration.AssemblyTrampolineInfos [assembly];
+		Assert.That (callbacks.Count (v => v.Target.Name == "First"), Is.EqualTo (1), "First callback (present in both protocol snapshots)");
+		Assert.That (callbacks.Count (v => v.Target.Name == "Second"), Is.EqualTo (1), "Second callback (removed from the post-trim protocol)");
+		Assert.That (resolver.TestResolveCount, Is.GreaterThan (0), "Pre-trim protocol lookup");
+		Assert.That (logger.Errors, Is.Empty, "Postprocessing errors");
+	}
+
+	[Test]
 	public void NSObjectFactory ()
 	{
 		var code = @"
@@ -123,6 +184,29 @@ public class ManagedRegistrarStepTests : BaseClass {
 			Assert.That (entryPointFields [0].Argument.Value, Is.EqualTo (callback.Name), "EntryPoint");
 		} else {
 			Assert.That (entryPointFields, Is.Empty, "EntryPoint fields");
+		}
+	}
+
+	sealed class PreTrimTestResolver : CoreResolver {
+		readonly Dictionary<string, string> paths = new (StringComparer.OrdinalIgnoreCase);
+
+		public int TestResolveCount { get; private set; }
+
+		public void AddPaths (IEnumerable<string> assemblies)
+		{
+			foreach (var path in assemblies)
+				paths [Path.GetFileNameWithoutExtension (path)] = path;
+		}
+
+		public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
+		{
+			if (name.Name == "Test")
+				TestResolveCount++;
+			if (ResolverCache.TryGetValue (name.Name, out var assembly))
+				return assembly;
+			if (paths.TryGetValue (name.Name, out var path))
+				return CacheAssembly (AssemblyDefinition.ReadAssembly (path, parameters));
+			throw new AssemblyResolutionException (name);
 		}
 	}
 }

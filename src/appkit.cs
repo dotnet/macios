@@ -9076,6 +9076,11 @@ namespace AppKit {
 	/// <returns>The event to dispatch, or <see langword="null"/> to suppress the event.</returns>
 	[NoMacCatalyst]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
+	/// <summary>Tracks progress during a swipe gesture.</summary>
+	/// <param name="gestureAmount">The current progress of the gesture.</param>
+	/// <param name="eventPhase">The current phase of the gesture.</param>
+	/// <param name="isComplete">Whether the gesture has completed.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop tracking.</param>
 	[NoMacCatalyst]
 	delegate void NSEventTrackHandler (nfloat gestureAmount, NSEventPhase eventPhase, bool isComplete, ref bool stop);
 

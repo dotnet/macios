@@ -53954,7 +53954,6 @@ T:AppKit.NSDrawer
 T:AppKit.NSEPSImageRep
 T:AppKit.NSEvent
 T:AppKit.NSEventModifierFlags
-T:AppKit.NSEventTrackHandler
 T:AppKit.NSFilePromiseProvider
 T:AppKit.NSFilePromiseReceiver
 T:AppKit.NSFont

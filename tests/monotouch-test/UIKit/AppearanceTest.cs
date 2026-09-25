@@ -98,6 +98,31 @@ namespace MonoTouchFixtures.UIKit {
 			}
 		}
 
+		[TestCase (0, false)]
+		[TestCase (0, true)]
+		[TestCase (1, false)]
+		[TestCase (1, true)]
+		[TestCase (2, false)]
+		[TestCase (2, true)]
+		public void AppearanceWhenContainedInInstancesOfClasses (int containerCount, bool withTraits)
+		{
+			Type [] containers = { typeof (UITextField), typeof (UIView) };
+			Array.Resize (ref containers, containerCount);
+			var handles = new NativeHandle [containerCount];
+			for (int i = 0; i < containerCount; i++)
+				handles [i] = Class.GetHandle (containers [i]);
+
+			using (var array = NSArray.FromIntPtrs (handles))
+			using (var traits = UITraitCollection.FromHorizontalSizeClass (UIUserInterfaceSizeClass.Compact))
+			using (var appearance = withTraits ? UILabel.GetAppearance (traits, containers) : UILabel.AppearanceWhenContainedIn (containers)) {
+				var expected = withTraits
+					? Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (UILabel)), Selector.GetHandle ("appearanceForTraitCollection:whenContainedInInstancesOfClasses:"), traits.Handle, array.Handle)
+					: Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (UILabel)), Selector.GetHandle ("appearanceWhenContainedInInstancesOfClasses:"), array.Handle);
+
+				Assert.That ((IntPtr) appearance.Handle, Is.EqualTo (expected), "Appearance proxy");
+			}
+		}
+
 
 		[Test]
 		public void AppearanceWhenContainedIn_UITraitCollection ()

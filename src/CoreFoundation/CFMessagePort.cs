@@ -279,10 +279,7 @@ namespace CoreFoundation {
 
 				var result = context.Callback.Invoke (msgid, managedData);
 				// System will release returned CFData
-				result?.DangerousRetain ();
-#pragma warning disable RBI0014
-				return result.GetHandle ();
-#pragma warning restore RBI0014
+				return Runtime.RetainNSObject (result);
 			}
 		}
 

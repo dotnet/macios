@@ -33832,6 +33832,9 @@ namespace AppKit {
 		void CancelPrefetching (NSCollectionView collectionView, NSIndexPath [] indexPaths);
 	}
 
+	/// <summary>Handles an error or the successful completion of a font asset download.</summary>
+	/// <param name="error">The download error, or <see langword="null"/> when all fonts have downloaded.</param>
+	/// <returns><see langword="true"/> to continue downloading the remaining fonts; otherwise, <see langword="false"/> to stop.</returns>
 	delegate bool DownloadFontAssetsRequestCompletionHandler (NSError error);
 
 	[NoMacCatalyst]

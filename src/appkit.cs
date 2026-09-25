@@ -29204,6 +29204,8 @@ namespace AppKit {
 	/// <summary>Handles completion of an asynchronous document move.</summary>
 	/// <param name="didMove">Whether the document was moved.</param>
 	delegate void NSDocumentMoveCompletionHandler (bool didMove);
+	/// <summary>Handles completion of moving a document to a URL.</summary>
+	/// <param name="error">The move error, or <see langword="null"/> on success.</param>
 	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);

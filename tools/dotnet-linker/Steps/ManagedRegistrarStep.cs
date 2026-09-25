@@ -85,6 +85,8 @@ namespace Xamarin.Linker {
 		List<Exception> exceptions = new List<Exception> ();
 
 		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
+		Dictionary<AssemblyDefinition, AssemblyDefinition?> relocatedCompanions = new ();
+		Dictionary<TypeDefinition, ILookup<string, MethodDefinition>> callbackMethodsByName = new ();
 
 		// Whether the registrar trampolines for the given method should be relocated into the
 		// per-assembly companion assembly (_<Asm>.TypeMap.dll) instead of being emitted into the
@@ -103,11 +105,17 @@ namespace Xamarin.Linker {
 		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
 		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
 		{
+			if (relocatedCompanions.TryGetValue (userAssembly, out var companion))
+				return companion;
+
 			var companionName = RegistrarCompanionAssembly.GetName (userAssembly);
 			foreach (var assembly in Configuration.Assemblies) {
-				if (assembly.Name.Name == companionName)
+				if (assembly.Name.Name == companionName) {
+					relocatedCompanions.Add (userAssembly, assembly);
 					return assembly;
+				}
 			}
+			relocatedCompanions.Add (userAssembly, null);
 			return null;
 		}
 
@@ -393,7 +401,11 @@ namespace Xamarin.Linker {
 				}
 			}
 
-			var candidates = callbackType.Methods.Where (v => v.Name == ucoName).ToArray ();
+			if (!callbackMethodsByName.TryGetValue (callbackType, out var callbackMethods)) {
+				callbackMethods = callbackType.Methods.ToLookup (v => v.Name);
+				callbackMethodsByName.Add (callbackType, callbackMethods);
+			}
+			var candidates = callbackMethods [ucoName].ToArray ();
 			if (candidates.Length != 1) {
 				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Didn't find exactly one matching callback method in __Registrar_Callbacks__ for method {method.FullName}, found {candidates.Length}"));
 				return;

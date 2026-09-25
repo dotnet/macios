@@ -400,9 +400,12 @@ namespace Registrar {
 				// When post-processing assemblies, the protocol interface methods may have been trimmed
 				// away, and we're not in the same process as the trimmer, so we can't use the methods the
 				// trimmer stored for us. Instead look up any missing methods in the pre-trim assemblies.
-				foreach (var imethod in GetPreTrimMethods (iface)) {
-					if (!iface_methods.Any (v => v.FullName == imethod.FullName))
-						iface_methods.Add (imethod);
+				if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+					var methodNames = new HashSet<string> (iface_methods.Select (v => v.FullName), StringComparer.Ordinal);
+					foreach (var imethod in GetPreTrimMethods (iface)) {
+						if (methodNames.Add (imethod.FullName))
+							iface_methods.Add (imethod);
+					}
 				}
 #endif
 			}

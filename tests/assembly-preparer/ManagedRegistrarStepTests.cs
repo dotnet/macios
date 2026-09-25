@@ -38,6 +38,84 @@ public class ManagedRegistrarStepTests : BaseClass {
 	}
 
 	[Test]
+	public void TypeMapOutputsOnlyChangeWithRegistration ()
+	{
+		static string Code (int value, string extraMethod = "") => $@"
+		using Foundation;
+		using ObjCRuntime;
+
+		public class MyClass : NSObject {{
+			[Export (""answer"")]
+			public int Answer () => {value};
+			{extraMethod}
+		}}
+		";
+
+		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
+		var typeMapDir = Path.Combine (tempDir, "typemaps");
+		var config = $@"
+		AssemblyName=Microsoft.iOS.dll
+		PrepareAssemblies=true
+		TypeMapAssemblyName=_TypeMap
+		TypeMapOutputDirectory={typeMapDir}
+		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
+		";
+		var rootPath = Path.Combine (typeMapDir, "_TypeMap.dll");
+		var companionPath = Path.Combine (typeMapDir, "_Test.TypeMap.dll");
+		void AssertTypeMapMvids (AssemblyPreparer preparer)
+		{
+			foreach (var added in preparer.AddedAssemblies.Where (v => v.Path == rootPath || v.Path == companionPath)) {
+				using var onDisk = AssemblyDefinition.ReadAssembly (added.Path);
+				Assert.That (added.Assembly.MainModule.Mvid, Is.EqualTo (onDisk.MainModule.Mvid), $"MVID of {added.Path}");
+			}
+		}
+
+		AssemblyPreparerInfo [] infos;
+		string projectDir;
+		string userAssemblyPath;
+
+		using (var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic,
+			Code (1), out var testInfo, extraConfig: config, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy")) {
+			infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (v.InputPath, v.OutputPath, v.OriginalInputPath, v.IsTrimmable, v.TrimMode)).ToArray ();
+			projectDir = Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, ".."));
+			userAssemblyPath = testInfo.InputPath;
+			AssertPrepare (preparer);
+			AssertTypeMapMvids (preparer);
+		}
+
+		Assert.That (File.Exists (rootPath), Is.True, "Root type map exists");
+		Assert.That (File.Exists (companionPath), Is.True, "Companion type map exists");
+		var originalRoot = File.ReadAllBytes (rootPath);
+		var originalCompanion = File.ReadAllBytes (companionPath);
+		var originalUserAssembly = File.ReadAllBytes (userAssemblyPath);
+		var timestamp = new DateTime (2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		File.SetLastWriteTimeUtc (rootPath, timestamp);
+		File.SetLastWriteTimeUtc (companionPath, timestamp);
+
+		void Reprepare (string code)
+		{
+			File.WriteAllText (Path.Combine (projectDir, "Test.cs"), code);
+			DotNet.AssertBuild (Path.Combine (projectDir, "Test.csproj"), new Dictionary<string, string> { ["TreatWarningsAsErrors"] = "false" });
+			var logger = new TestLogger { Platform = ApplePlatform.iOS };
+			var inputInfos = infos.Select (v => new AssemblyPreparerInfo (v.InputPath, v.OutputPath, v.OriginalInputPath, v.IsTrimmable, v.TrimMode)).ToArray ();
+			using var preparer = new AssemblyPreparer (logger, inputInfos, Path.Combine (projectDir, "config.txt")) { Registrar = RegistrarMode.TrimmableStatic };
+			AssertPrepare (preparer);
+			AssertTypeMapMvids (preparer);
+		}
+
+		Reprepare (Code (2));
+		Assert.That (File.ReadAllBytes (userAssemblyPath), Is.Not.EqualTo (originalUserAssembly), "User assembly changed");
+		Assert.That (File.ReadAllBytes (rootPath), Is.EqualTo (originalRoot), "Root type map contents after a body edit");
+		Assert.That (File.ReadAllBytes (companionPath), Is.EqualTo (originalCompanion), "Companion contents after a body edit");
+		Assert.That (File.GetLastWriteTimeUtc (rootPath), Is.EqualTo (timestamp), "Root type map timestamp after a body edit");
+		Assert.That (File.GetLastWriteTimeUtc (companionPath), Is.EqualTo (timestamp), "Companion timestamp after a body edit");
+
+		Reprepare (Code (2, @"[Export (""other"")] public void Other () { }"));
+		Assert.That (File.ReadAllBytes (companionPath), Is.Not.EqualTo (originalCompanion), "Companion contents after a new export");
+		Assert.That (File.GetLastWriteTimeUtc (companionPath), Is.GreaterThan (timestamp), "Companion timestamp after a new export");
+	}
+
+	[Test]
 	public void NSObjectFactory ()
 	{
 		var code = @"

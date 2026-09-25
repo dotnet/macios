@@ -34211,6 +34211,10 @@ namespace AppKit {
 		UIMenu ItemMenu { get; set; }
 	}
 
+	/// <summary>Provides a layout section for a collection view.</summary>
+	/// <param name="section">The index of the section to lay out.</param>
+	/// <param name="layout">The environment in which the section is laid out.</param>
+	/// <returns>The layout section to use.</returns>
 	[NoMacCatalyst]
 	delegate NSCollectionLayoutSection NSCollectionViewCompositionalLayoutSectionProvider (nint section, INSCollectionLayoutEnvironment layout);
 

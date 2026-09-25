@@ -135,8 +135,6 @@ namespace Xamarin.Linker {
 			abr.SaveCurrentAssembly ();
 			abr.ClearCurrentAssembly ();
 
-			// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
-			// it again during the next incremental build.
 			if (!useEntryAssemblyAsRootTypeMapAssembly) {
 				WriteDeterministically (rootTypeMapAssembly, createdRootTypeMapAssemblyPath);
 			}
@@ -147,12 +145,26 @@ namespace Xamarin.Linker {
 		// The MVIDs of the typemap assemblies end up in the generated registrar code, so if we let Cecil
 		// compute a new random MVID every time, the registrar code would change on every build, and we'd
 		// have to recompile (and relink) it every time.
-		static void WriteDeterministically (AssemblyDefinition assembly, string path)
+		void WriteDeterministically (AssemblyDefinition assembly, string path)
 		{
-			assembly.Write (path, new WriterParameters {
+			// Type-map assemblies are usually small enough to serialize in memory, avoiding a
+			// temporary disk write just to detect unchanged output during incremental builds.
+			using var contents = new MemoryStream ();
+			assembly.Write (contents, new WriterParameters {
 				DeterministicMvid = true,
 				Timestamp = 0,
 			});
+			if (File.Exists (path)) {
+				using var existing = File.OpenRead (path);
+				contents.Position = 0;
+				if (Cache.CompareStreams (App, existing, contents)) {
+					App.Log (3, "Target {0} is up-to-date.", path);
+					return;
+				}
+			}
+			using var output = File.Create (path);
+			contents.Position = 0;
+			contents.CopyTo (output);
 		}
 
 		MethodReference CreateMethodReference (MethodReference methodReference, params TypeReference [] declaringTypeGenericArguments)
@@ -732,8 +744,6 @@ namespace Xamarin.Linker {
 
 				abr.ClearCurrentAssembly ();
 
-				// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
-				// it again during the next incremental build.
 				WriteDeterministically (typeMapAssembly, typeMapAssemblyPath);
 			}
 

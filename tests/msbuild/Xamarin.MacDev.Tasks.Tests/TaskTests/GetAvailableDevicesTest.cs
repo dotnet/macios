@@ -120,6 +120,7 @@ namespace Xamarin.MacDev.Tasks {
 			});
 		}
 
+		[Test]
 		public void DeviceCtlJsonVersion5 ()
 		{
 			var platform = ApplePlatform.iOS;

@@ -34643,6 +34643,12 @@ namespace AppKit {
 		void EndSearchInteraction ();
 	}
 
+	/// <summary>Provides a cell view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the cell.</param>
+	/// <param name="column">The column containing the cell.</param>
+	/// <param name="row">The row containing the cell.</param>
+	/// <param name="itemId">The identifier of the item.</param>
+	/// <returns>The cell view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSTableViewDiffableDataSourceCellProvider (NSTableView tableView, NSTableColumn column, nint row, NSObject itemId);
 	[NoMacCatalyst]

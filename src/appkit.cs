@@ -34495,6 +34495,11 @@ namespace AppKit {
 	[NoMacCatalyst]
 	delegate NSCollectionViewItem NSCollectionViewDiffableDataSourceItemProvider (NSCollectionView collectionView, NSIndexPath indexPath, NSObject itemIdentifierType);
 
+	/// <summary>Provides a supplementary view for a collection view's diffable data source.</summary>
+	/// <param name="collectionView">The collection view requesting the supplementary view.</param>
+	/// <param name="str">The kind of supplementary view to provide.</param>
+	/// <param name="indexPath">The index path of the supplementary view.</param>
+	/// <returns>The supplementary view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSCollectionViewDiffableDataSourceSupplementaryViewProvider (NSCollectionView collectionView, string str, NSIndexPath indexPath);
 

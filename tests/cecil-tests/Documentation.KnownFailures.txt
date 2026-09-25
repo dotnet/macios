@@ -53894,7 +53894,6 @@ T:AppKit.NSCollectionView
 T:AppKit.NSCollectionViewCompositionalLayout
 T:AppKit.NSCollectionViewCompositionalLayoutConfiguration
 T:AppKit.NSCollectionViewDiffableDataSource`2
-T:AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider
 T:AppKit.NSCollectionViewFlowLayout
 T:AppKit.NSCollectionViewFlowLayoutInvalidationContext
 T:AppKit.NSCollectionViewGridLayout

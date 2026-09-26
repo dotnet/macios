@@ -165,7 +165,7 @@ namespace Xharness {
 			}
 
 			var projectReferences = new List<TestProject> ();
-			foreach (var pr in doc.GetProjectReferences ()) {
+			foreach (var pr in doc.GetProjectReferenceIncludes ()) {
 				var prPath = pr.Replace ('\\', '/');
 				prPath = HarnessConfiguration.EvaluateRootTestsDirectory (prPath);
 				if (!allProjectReferences.TryGetValue (prPath, out var tp)) {

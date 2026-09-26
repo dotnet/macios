@@ -15,6 +15,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\..\common\Touch.Unit\Touch.Client\Runner\ConsoleTextWriter.cs">
+			<Link>external\ConsoleTextWriter.cs</Link>
+		</Compile>
 		<Compile Include="..\..\common\Configuration.cs">
 			<Link>external\Configuration.cs</Link>
 		</Compile>

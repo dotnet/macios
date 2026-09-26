@@ -101,11 +101,14 @@
     <FirstParty Include="System.Diagnostics.DiagnosticSource.dll" />
     <FirstParty Include="System.Diagnostics.Process.dll" />
     <FirstParty Include="System.Diagnostics.StackTrace.dll" />
+    <FirstParty Include="System.Drawing.Primitives.dll" />
+    <FirstParty Include="System.Drawing.dll" />
     <FirstParty Include="System.dll" />
     <FirstParty Include="System.Formats.Asn1.dll" />
     <FirstParty Include="System.IO.Compression.Brotli.dll" />
     <FirstParty Include="System.IO.Compression.dll" />
     <FirstParty Include="System.IO.MemoryMappedFiles.dll" />
+    <FirstParty Include="System.IO.Pipelines.dll" />
     <FirstParty Include="System.IO.Pipes.dll" />
     <FirstParty Include="System.Linq.dll" />
     <FirstParty Include="System.Memory.dll" />

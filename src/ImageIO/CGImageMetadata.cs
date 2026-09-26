@@ -161,6 +161,7 @@ namespace ImageIO {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, byte> trampoline = &TagEnumerator;
 				using var block_handler = new BlockLiteral (trampoline, block, typeof (CGImageMetadata), nameof (TagEnumerator));
 				CGImageMetadataEnumerateTagsUsingBlock (Handle, rootPath.GetHandle (), o.GetHandle (), &block_handler);
+				GC.KeepAlive (this);
 				GC.KeepAlive (rootPath);
 				GC.KeepAlive (o);
 			}

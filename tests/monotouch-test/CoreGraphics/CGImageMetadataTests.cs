@@ -37,5 +37,33 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (keys.Count, Is.EqualTo (2), "key count mismatch");
 			Assert.That (tags.Count, Is.EqualTo (2), "tag count mistmatch");
 		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void EnumerateMetadataWithForcedGC (bool stopAfterFirstTag)
+		{
+			var data = SampleMetadata ();
+			var reference = new WeakReference (data);
+			var handle = data.Handle;
+
+			// Keep the native metadata alive independently so a regression fails an assertion instead of crashing.
+			TestRuntime.CFRetain (handle);
+			try {
+				var metadataAlive = true;
+				var count = 0;
+				data.EnumerateTags (null, null, (key, tag) => {
+					GC.Collect ();
+					GC.WaitForPendingFinalizers ();
+					metadataAlive &= reference.IsAlive;
+					count++;
+					tag.Dispose ();
+					return !stopAfterFirstTag;
+				});
+				Assert.That (metadataAlive, Is.True, "Metadata must remain alive during enumeration");
+				Assert.That (count, Is.EqualTo (stopAfterFirstTag ? 1 : 2), "tag count");
+			} finally {
+				TestRuntime.CFRelease (handle);
+			}
+		}
 	}
 }

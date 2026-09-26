@@ -51,6 +51,59 @@ namespace Xamarin.Tests {
 			AssertAppContents (platform, appPath);
 		}
 
+		[TestCase (ApplePlatform.MacOSX, "26.0", true)]
+		[TestCase (ApplePlatform.MacOSX, "27.0", false)]
+		[TestCase (ApplePlatform.MacOSX, null, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "26.0", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "27.0", false)]
+		[TestCase (ApplePlatform.MacCatalyst, null, false)]
+		public void DefaultDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, string? supportedOSPlatformVersion, bool expectUniversal)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project = supportedOSPlatformVersion is null ? "MaxSupportedOSPlatformVersion" : platform == ApplePlatform.MacOSX ? "MyCocoaApp" : "MyCatalystApp";
+			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
+			var projectPath = GetProjectPath (project, platform: platform);
+			var properties = GetDefaultProperties ();
+			properties ["Configuration"] = "Release";
+			if (supportedOSPlatformVersion is not null)
+				properties ["SupportedOSPlatformVersion"] = supportedOSPlatformVersion;
+
+			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
+			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
+			var expectedRuntimeIdentifier = expectUniversal ? "" : $"{runtimeIdentifierPrefix}-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
+			var expectedRuntimeIdentifiers = expectUniversal ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
+
+			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
+			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
+		}
+
+		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		public void ExplicitDesktopReleaseRuntimeIdentifiers (ApplePlatform platform, bool multiple)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifierPrefix = platform == ApplePlatform.MacOSX ? "osx" : "maccatalyst";
+			var expectedRuntimeIdentifier = multiple ? "" : $"{runtimeIdentifierPrefix}-arm64";
+			var expectedRuntimeIdentifiers = multiple ? $"{runtimeIdentifierPrefix}-x64;{runtimeIdentifierPrefix}-arm64" : "";
+			var projectPath = GetProjectPath ("MaxSupportedOSPlatformVersion", platform: platform);
+			var properties = GetDefaultProperties ();
+			properties ["Configuration"] = "Release";
+			if (multiple)
+				properties ["RuntimeIdentifiers"] = expectedRuntimeIdentifiers;
+			else
+				properties ["RuntimeIdentifier"] = expectedRuntimeIdentifier;
+
+			var runtimeIdentifier = DotNet.GetProperty (projectPath, "RuntimeIdentifier", properties);
+			var runtimeIdentifiers = DotNet.GetProperty (projectPath, "RuntimeIdentifiers", properties);
+
+			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
+			Assert.That (runtimeIdentifiers, Is.EqualTo (expectedRuntimeIdentifiers), "RuntimeIdentifiers");
+		}
+
 		[Test]
 		[TestCase (null)]
 		[TestCase ("tvossimulator-x64")]
@@ -2487,9 +2540,10 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var extraArgs = "--require-pinvoke-wrappers:true --registrar:static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
+			var extraArgs = "--require-pinvoke-wrappers:true";
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
+			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -2972,7 +3026,10 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			var expectedRuntimeIdentifiers = runtimeIdentifiers;
+			if (string.IsNullOrEmpty (expectedRuntimeIdentifiers) && platform == ApplePlatform.MacOSX)
+				expectedRuntimeIdentifiers = $"osx-{(Configuration.CanRunArm64 ? "arm64" : "x64")}";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: expectedRuntimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = configuration;

@@ -124,6 +124,8 @@ namespace AccessorySetupKit {
 		NSError Error { get; }
 	}
 
+	/// <summary>A completion handler for accessory session operations.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the operation succeeded.</param>
 	delegate void ASAccessorySessionCompletionHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
@@ -183,8 +185,14 @@ namespace AccessorySetupKit {
 		void FinishPickerDiscovery (ASAccessorySessionFinishPickerDiscoveryHandler completionHandler);
 	}
 
+	/// <summary>A completion handler for updating accessory authorization.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if authorization was updated successfully.</param>
 	delegate void ASAccessorySessionUpdateAuthorizationHandler ([NullAllowed] NSError error);
+	/// <summary>A completion handler for updating the accessories shown in the picker.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the picker was updated successfully.</param>
 	delegate void ASAccessorySessionUpdatePickerHandler ([NullAllowed] NSError error);
+	/// <summary>A completion handler for finishing picker discovery.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if discovery finished successfully.</param>
 	delegate void ASAccessorySessionFinishPickerDiscoveryHandler ([NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
@@ -341,16 +349,22 @@ namespace AccessorySetupKit {
 		ulong WifiAwarePairedDeviceId { get; set; }
 	}
 
+	/// <summary>Represents a string and the comparison options used to match it.</summary>
 	[iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPropertyCompareString {
+		/// <summary>Gets the string to match.</summary>
 		[Export ("string")]
 		string String { get; }
 
+		/// <summary>Gets the options used to compare the string.</summary>
 		[Export ("compareOptions", ArgumentSemantic.Assign)]
 		NSStringCompareOptions CompareOptions { get; }
 
+		/// <summary>Creates a string comparison value.</summary>
+		/// <param name="string">The string to match.</param>
+		/// <param name="compareOptions">The options to use when comparing the string.</param>
 		[Export ("initWithString:compareOptions:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string @string, NSStringCompareOptions compareOptions);
@@ -400,25 +414,34 @@ namespace AccessorySetupKit {
 		double Unbounded { get; }
 	}
 
+	/// <summary>Provides information about an accessory discovered for custom picker filtering.</summary>
 	[iOS (26, 1)]
 	[BaseType (typeof (ASAccessory))]
 	interface ASDiscoveredAccessory {
+		/// <summary>Gets the parsed Bluetooth advertisement data from the discovered accessory.</summary>
 		[NullAllowed]
 		[Wrap ("WeakBluetoothAdvertisementData")]
 		CoreBluetooth.AdvertisementData BluetoothAdvertisementData { get; }
 
+		/// <summary>Gets the raw Bluetooth advertisement data from the discovered accessory.</summary>
 		[NullAllowed, Export ("bluetoothAdvertisementData", ArgumentSemantic.Copy)]
 		NSDictionary WeakBluetoothAdvertisementData { get; }
 
+		/// <summary>Gets the Bluetooth received signal strength, in dBm, when the accessory was discovered.</summary>
 		[Export ("bluetoothRSSI", ArgumentSemantic.Copy)]
 		[BindAs (typeof (nint?))]
 		NSNumber BluetoothRSSI { get; }
 	}
 
+	/// <summary>A picker display item created by customizing a discovered accessory.</summary>
 	[iOS (26, 1)]
 	[BaseType (typeof (ASPickerDisplayItem))]
 	[DisableDefaultCtor]
 	interface ASDiscoveredDisplayItem {
+		/// <summary>Creates a picker display item for a discovered accessory.</summary>
+		/// <param name="name">The accessory name to display in the picker.</param>
+		/// <param name="productImage">The accessory image to display in the picker.</param>
+		/// <param name="accessory">The discovered accessory to display in the picker.</param>
 		[Export ("initWithName:productImage:accessory:")]
 		NativeHandle Constructor (string name, UIImage productImage, ASDiscoveredAccessory accessory);
 	}

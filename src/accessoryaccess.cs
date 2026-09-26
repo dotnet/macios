@@ -40,6 +40,8 @@ namespace AccessoryAccess {
 	/// <param name="error">The error that was encountered, or <see langword="null" /> if no error occurred.</param>
 	/// <remarks>IOUSBHost is not bound in macios, so this handle is surfaced as a raw <see cref="IntPtr"/>. To perform USB I/O, hand the accessory to a native/Swift service via <see cref="AAUsbAccessory.CreateXpcRepresentation"/> or bridge the handle through native IOUSBHost code.</remarks>
 	delegate void AAUsbAccessoryOpenCompletionHandler (IntPtr device, [NullAllowed] NSError error);
+	/// <summary>A completion handler for closing a USB accessory.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if the accessory closed successfully.</param>
 	delegate void AAUsbAccessoryCloseCompletionHandler ([NullAllowed] NSError error);
 
 	[Mac (27, 0)]
@@ -84,7 +86,11 @@ namespace AccessoryAccess {
 		void UsbAccessoryDidDisconnect (AAUsbAccessory usbAccessory);
 	}
 
+	/// <summary>A completion handler for registering a USB accessory listener.</summary>
+	/// <param name="accessories">The USB accessories that are already connected.</param>
+	/// <param name="error">The error that occurred, or <see langword="null" /> if registration succeeded.</param>
 	delegate void AAUsbAccessoryManagerRegisterListenerCompletionHandler (AAUsbAccessory [] accessories, [NullAllowed] NSError error);
+	/// <summary>A completion handler for unregistering a USB accessory listener.</summary>
 	delegate void AAUsbAccessoryManagerUnregisterListenerCompletionHandler ();
 
 	[Mac (27, 0)]

@@ -67,13 +67,19 @@ namespace Network {
 		Cancelled = 5,
 	}
 
+	/// <summary>Describes the state of a network connection group.</summary>
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	public enum NWConnectionGroupState {
+		/// <summary>The connection group state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The group is waiting for a usable network.</summary>
 		Waiting = 1,
+		/// <summary>The group can receive and process incoming messages.</summary>
 		Ready = 2,
+		/// <summary>The group has irrecoverably failed.</summary>
 		Failed = 3,
+		/// <summary>The group was cancelled.</summary>
 		Cancelled = 4,
 	}
 

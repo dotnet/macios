@@ -2737,12 +2737,18 @@
       <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieprawidłowa wartość dla DotNetRuntime: „{0}”]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieoczekiwana wartość RuntimeLibLinkMode dla „NativeAOT”: „{0}”]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2758,6 +2764,9 @@
       <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Invalid RuntimeLibLinkMode value: „{0}”]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2791,30 +2800,45 @@
       <Item ItemId=";E7180" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Natywne odwołanie „{0}” w pakiecie zasobów powiązania „{1}” jest nieprawidłowe: nazwa musi być ścieżką względną bez segmentów „..”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7181" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można ponownie zidentyfikować biblioteki natywnej jako „{0}”, ponieważ ta ścieżka znajduje się poza docelowym katalogiem wyjściowym „{1}”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7183" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zasób „{0}” w zestawie „{1}” zostałby rozpakowany do „{2}”, co znajduje się poza docelowym katalogiem „{3}”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Kompilacja podpisywania kodu nie powiodła się z błędem „errSecInternalComponent”. Zwykle oznacza to, że pęk kluczy jest zablokowany, co często zdarza się podczas kompilowania przez SSH. Najpierw odblokuj pęk kluczy, na przykład uruchamiając „security unlock-keychain ~/Library/Keychains/login.keychain-db”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7185" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można określić ścieżki docelowej na urządzeniu po skopiowaniu „{0}” na urządzenie. Wyjściowy JSON z „xcrun devicectl” był: {1}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2830,6 +2854,9 @@
       <Item ItemId=";E7187" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Wartość „{0}” dla właściwości „{1}” nie jest prawidłowym numerem wersji, ponieważ zawiera odstęp.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2845,6 +2872,9 @@
       <Item ItemId=";E7189" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieznany typ „{0}” dla wpisu manifestu aplikacji „{1}” określony w grupie elementów AppManifestEntry. Oczekiwano instrukcji „Remove”, „Boolean”, „String” lub „StringArray”.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2860,6 +2890,18 @@
       <Item ItemId=";E7191" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieprawidłowa wartość „{0}” dla wpisu manifestu aplikacji „{1}” typu „{2}” określona w grupie elementów AppManifestEntry. Oczekiwano wartości „true” lub „false”.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7192" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to parse the '{0}' value: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można przeanalizować wartości „{0}”: {1}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -3757,8 +3799,8 @@
       <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Zmienna środowiskowa „{0}” jest przestarzała i zostanie zignorowana na platformie .NET 11+. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” programu MSBuild, aby wybrać kod Xcode do użycia.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zmienna środowiskowa „{0}” jest przestarzała i zostanie zignorowana na platformie .NET 11+. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” MSBuild, aby użyć kodu Xcode innego niż bieżący domyślny kod Xcode systemu.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3769,8 +3811,8 @@
       <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Zmienna środowiskowa „{0}” jest przestarzała i zostanie zignorowana. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” programu MSBuild, aby wybrać kod Xcode do użycia.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Zmienna środowiskowa „{0}” jest przestarzała i zostanie zignorowana. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” MSBuild, aby użyć kodu Xcode innego niż bieżący domyślny kod Xcode systemu.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3781,8 +3823,8 @@
       <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Plik ustawień „{0}” jest przestarzały i zostanie zignorowany na platformie .NET 11+. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” programu MSBuild, aby wybrać kod Xcode do użycia.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plik ustawień „{0}” jest przestarzały i zostanie zignorowany na platformie .NET 11+. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” MSBuild, aby użyć kodu Xcode innego niż bieżący domyślny kod Xcode systemu.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3793,8 +3835,8 @@
       <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Plik ustawień „{0}” jest przestarzały i zostanie zignorowany. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” programu MSBuild, aby wybrać kod Xcode do użycia.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Plik ustawień „{0}” jest przestarzały i zostanie zignorowany. Użyj zmiennej środowiskowej „DEVELOPER_DIR” lub właściwości „XcodeLocation” MSBuild, aby użyć kodu Xcode innego niż bieżący domyślny kod Xcode systemu.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>

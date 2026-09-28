@@ -139,9 +139,11 @@ namespace Network {
 	}
 
 	// from System/Library/Frameworks/Network.framework/Headers/framer_options.h:
+	/// <summary>Specifies options for creating a custom framer protocol.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NWFramerCreateFlags : uint {
+		/// <summary>Use the default framer protocol options.</summary>
 		Default = 0x00,
 	}
 

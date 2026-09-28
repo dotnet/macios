@@ -39,7 +39,7 @@ Environment variables:
 EOF
 }
 
-if [[ ${1:-} == "--help" || ${1:-} == "-h" ]]; then
+if [[ $# -eq 1 && (${1:-} == "--help" || ${1:-} == "-h") ]]; then
 	usage
 	exit 0
 fi
@@ -65,23 +65,52 @@ check_backports ()
 {
 	local label=$1
 	local target_branch=$2
+	local source_issues_file="$temporary_directory/source-issues.json"
+	local source_details_file="$temporary_directory/source-details.json"
 	local sources_file="$temporary_directory/sources.json"
 	local backports_file="$temporary_directory/backports.json"
 	local results_file="$temporary_directory/results.json"
 
-	gh pr list \
-		--repo "$repository" \
-		--state merged \
-		--label "$label" \
-		--limit 1000 \
-		--json number,title,url,baseRefName > "$sources_file"
+	gh api \
+		--paginate \
+		--slurp \
+		--method GET \
+		"repos/$repository/issues" \
+		-f state=closed \
+		-f labels="$label" \
+		-f per_page=100 > "$source_issues_file"
 
-	gh pr list \
-		--repo "$repository" \
-		--state all \
-		--base "$target_branch" \
-		--limit 1000 \
-		--json number,title,url,state,body > "$backports_file"
+	: > "$source_details_file"
+	while IFS= read -r pull_request_url; do
+		gh api "$pull_request_url" >> "$source_details_file"
+	done < <(
+		jq -r 'add[] | select(.pull_request.merged_at != null) | .pull_request.url' "$source_issues_file"
+	)
+
+	jq -s '
+		map({
+			number,
+			title,
+			url: .html_url,
+			baseRefName: .base.ref
+		})
+	' "$source_details_file" > "$sources_file"
+
+	gh api \
+		--paginate \
+		--slurp \
+		--method GET \
+		"repos/$repository/pulls" \
+		-f state=all \
+		-f base="$target_branch" \
+		-f per_page=100 |
+		jq 'add | map({
+			number,
+			title,
+			url: .html_url,
+			state: (if .merged_at == null then .state | ascii_upcase else "MERGED" end),
+			body
+		})' > "$backports_file"
 
 	jq \
 		--arg branch "$target_branch" \

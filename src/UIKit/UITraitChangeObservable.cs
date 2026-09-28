@@ -49,7 +49,7 @@ namespace UIKit {
 		}
 
 		[UnmanagedCallersOnly]
-		static void TraitChangeHandler (IntPtr block, NativeHandle environment, NativeHandle previousCollection)
+		private static void TraitChangeHandler (IntPtr block, NativeHandle environment, NativeHandle previousCollection)
 		{
 			var handler = BlockLiteral.GetTarget<Action<IUITraitEnvironment, UITraitCollection>> (block);
 			if (handler is not null) {
@@ -61,6 +61,7 @@ namespace UIKit {
 			}
 		}
 
+		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static unsafe IUITraitChangeRegistration RegisterForTraitChangesCore (IUITraitChangeObservable This, Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			UIApplication.EnsureUIThread ();
@@ -137,14 +138,14 @@ namespace UIKit {
 			return CreateRegistration (This, handle);
 		}
 
-		static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle)
+		private static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle)
 		{
 			var registration = Runtime.GetINativeObject<IUITraitChangeRegistration> (handle, false)
 				?? throw new InvalidOperationException ("UIKit returned a null trait change registration.");
 			return new UITraitChangeRegistrationToken (observable, registration);
 		}
 
-		static NSObject? GetSuper (IUITraitChangeObservable observable)
+		private static NSObject? GetSuper (IUITraitChangeObservable observable)
 		{
 			return observable is NSObject { IsDirectBinding: false } obj ? obj : null;
 		}
@@ -311,11 +312,18 @@ namespace UIKit {
 			return _RegisterForTraitChanges (This, ToClasses (traits), action);
 		}
 
-		sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
+		private sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
 			GCHandle observable;
 			IUITraitChangeRegistration? registration;
 
-			public NativeHandle Handle => registration?.Handle ?? NativeHandle.Zero;
+			public NativeHandle Handle {
+				get {
+					var registration = this.registration;
+					var handle = registration?.Handle ?? NativeHandle.Zero;
+					GC.KeepAlive (registration);
+					return handle;
+				}
+			}
 
 			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration)
 			{

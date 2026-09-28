@@ -318,10 +318,7 @@ namespace UIKit {
 
 			public NativeHandle Handle {
 				get {
-					var registration = this.registration;
-					var handle = registration?.Handle ?? NativeHandle.Zero;
-					GC.KeepAlive (registration);
-					return handle;
+					return Runtime.RetainAndAutoreleaseNativeObject (this.registration);
 				}
 			}
 

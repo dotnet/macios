@@ -1,3 +1,9 @@
+---
+title: Minimizing app size
+description: This document lists build options that can be used to minimize app size
+ms.date: 28/09/2026
+---
+
 Minimizing app size
 ===================
 

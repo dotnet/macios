@@ -184,13 +184,16 @@
 		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'tvOS' And '$(_IsPublishing)' != 'true' And '$(_IsArm64Machine)' != 'true'">tvossimulator-x64</RuntimeIdentifier>
 
 		<!-- For debug desktop builds we default to the host architecture -->
-		<!-- For release desktop builds we default to universal apps in .NET 7+ -->
-		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' != 'Release' And '$(_PlatformName)' == 'macOS' And '$(_IsArm64Machine)' == 'true'">osx-arm64</RuntimeIdentifier>
-		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' != 'Release' And '$(_PlatformName)' == 'macOS' And '$(_IsArm64Machine)' != 'true'">osx-x64</RuntimeIdentifier>
-		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' != 'Release' And '$(_PlatformName)' == 'MacCatalyst' And '$(_IsArm64Machine)' == 'true'">maccatalyst-arm64</RuntimeIdentifier>
-		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' != 'Release' And '$(_PlatformName)' == 'MacCatalyst' And '$(_IsArm64Machine)' != 'true'">maccatalyst-x64</RuntimeIdentifier>
-		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' == 'Release' And '$(_PlatformName)' == 'macOS'">osx-x64;osx-arm64</RuntimeIdentifiers>
-		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' == '' And '$(Configuration)' == 'Release' And '$(_PlatformName)' == 'MacCatalyst'">maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
+		<!-- For release desktop builds we default to universal apps in .NET 7+, except for macOS and Mac Catalyst 27+ -->
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(SupportedOSPlatformVersion)' != ''">$(SupportedOSPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_EffectiveSupportedOSPlatformVersion Condition="'$(_EffectiveSupportedOSPlatformVersion)' == ''">$(TargetPlatformVersion)</_EffectiveSupportedOSPlatformVersion>
+		<_DefaultToUniversalDesktopApp Condition="'$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And $([MSBuild]::VersionLessThan($(_EffectiveSupportedOSPlatformVersion), '27.0'))">true</_DefaultToUniversalDesktopApp>
+		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'macOS' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' == 'true'">osx-arm64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'macOS' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' != 'true'">osx-x64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' == 'true'">maccatalyst-arm64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(_DefaultToUniversalDesktopApp)' != 'true' And '$(_IsArm64Machine)' != 'true'">maccatalyst-x64</RuntimeIdentifier>
+		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' == '' And '$(_DefaultToUniversalDesktopApp)' == 'true' And '$(_PlatformName)' == 'macOS'">osx-x64;osx-arm64</RuntimeIdentifiers>
+		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' == '' And '$(_DefaultToUniversalDesktopApp)' == 'true' And '$(_PlatformName)' == 'MacCatalyst'">maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
 
 	</PropertyGroup>
 

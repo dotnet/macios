@@ -10,6 +10,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<!-- Mono assembly-processing tests still need the BCL packs, even though we no longer ship Mono runtime libraries. -->
+		<PackageDownload Include="Microsoft.NETCore.App.Runtime.Mono.ios-arm64;Microsoft.NETCore.App.Runtime.Mono.tvOS-arm64;Microsoft.NETCore.App.Runtime.Mono.maccatalyst-arm64" Version="[$(BundledNETCorePlatformsPackageVersion)]" />
 		<PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
 		<PackageReference Include="NUnit.ConsoleRunner" Version="$(NUnitConsoleRunnerPackageVersion)" />
 		<PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersPackageVersion)" />
@@ -47,4 +49,3 @@
 		</Compile>
 	</ItemGroup>
 </Project>
-

@@ -76,7 +76,6 @@ namespace UIKit {
 			return ptrs;
 		}
 
-#if TVOS
 		const string selAppearanceWhenContainedInInstancesOfClasses = "appearanceWhenContainedInInstancesOfClasses:";
 
 		/// <summary>Gets the appearance proxy for a class in the specified containment hierarchy.</summary>
@@ -110,56 +109,6 @@ namespace UIKit {
 				return result;
 			}
 		}
-#else
-		const string selAppearanceWhenContainedIn = "appearanceWhenContainedIn:";
-		const string selAppearanceForTraitCollectionWhenContainedIn = "appearanceForTraitCollection:whenContainedIn:";
-
-		/// <summary>Gets the appearance proxy for a class in the specified containment hierarchy.</summary>
-		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
-		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
-		/// <returns>The appearance proxy for the specified class when found in the specified containment hierarchy.</returns>
-		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static IntPtr GetAppearance (IntPtr class_ptr, params Type [] whenFoundIn)
-		{
-			var ptrs = TypesToPointers (whenFoundIn);
-
-			// The first type is not a varargs, but the subsequent ones are
-			var firstPtr = ptrs [0];
-			Array.Copy (ptrs, 1, ptrs, 0, ptrs.Length - 1);
-			Array.Resize (ref ptrs, ptrs.Length - 1);
-			return Messaging.objc_msgSend_3_vargs (
-				class_ptr,
-				Selector.GetHandle (UIAppearance.selAppearanceWhenContainedIn),
-				firstPtr,
-				ptrs);
-		}
-
-		/// <summary>Gets the appearance proxy for a class with the specified trait collection in the specified containment hierarchy.</summary>
-		/// <param name="class_ptr">The Objective-C class pointer for the type to get the appearance proxy for.</param>
-		/// <param name="traits">The <see cref="UITraitCollection" /> for which to return the appearance proxy.</param>
-		/// <param name="whenFoundIn">The types representing the containment hierarchy in which the appearance should be applied.</param>
-		/// <returns>The appearance proxy for the specified class and traits when found in the specified containment hierarchy.</returns>
-		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static IntPtr GetAppearance (IntPtr class_ptr, UITraitCollection traits, params Type [] whenFoundIn)
-		{
-			ArgumentNullException.ThrowIfNull (traits);
-
-			var ptrs = TypesToPointers (whenFoundIn);
-
-			// The first type is not a varargs, but the subsequent ones are
-			var firstPtr = ptrs [0];
-			Array.Copy (ptrs, 1, ptrs, 0, ptrs.Length - 1);
-			Array.Resize (ref ptrs, ptrs.Length - 1);
-			IntPtr result = Messaging.objc_msgSend_4_vargs (
-				class_ptr,
-				Selector.GetHandle (UIAppearance.selAppearanceForTraitCollectionWhenContainedIn),
-				traits.Handle,
-				firstPtr,
-				ptrs);
-			GC.KeepAlive (traits);
-			return result;
-		}
-#endif
 
 		const string selAppearanceForTraitCollection = "appearanceForTraitCollection:";
 

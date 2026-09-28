@@ -135,6 +135,37 @@ namespace Xamarin.Tests {
 			Assert.That (assetsAfterIncrementalBuild, Does.Contain ("Image"), "Library image asset after incremental build (issue #5755)");
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void ACToolExtraArgsInvalidateIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			Clean (projectPath);
+
+			var result = DotNet.AssertBuild (projectPath, properties);
+			var allTargets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (allTargets, "_CoreCompileImageAssets", "Initial build");
+
+			var assetsCar = Path.Combine (GetResourcesDirectory (platform, appPath), "Assets.car");
+			Assert.That (assetsCar, Does.Exist, "Assets.car after initial build");
+			var initialTimestamp = File.GetLastWriteTimeUtc (assetsCar);
+
+			result = DotNet.AssertBuild (projectPath, properties);
+			allTargets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CoreCompileImageAssets", "Unchanged build");
+			Assert.That (File.GetLastWriteTimeUtc (assetsCar), Is.EqualTo (initialTimestamp), "Assets.car after unchanged build");
+
+			properties ["ACToolExtraArgs"] = "--compress-pngs";
+			result = DotNet.AssertBuild (projectPath, properties);
+			allTargets = BinLog.GetAllTargets (result.BinLogPath);
+			AssertTargetExecuted (allTargets, "_CoreCompileImageAssets", "Changed ACToolExtraArgs");
+			Assert.That (File.GetLastWriteTimeUtc (assetsCar), Is.GreaterThan (initialTimestamp), "Assets.car after changing ACToolExtraArgs");
+		}
+
 		// Returns the set of image asset (imageset) names in the given compiled Assets.car.
 		static HashSet<string> FindImageAssetNames (string assetsCar, string sdkVersion)
 		{

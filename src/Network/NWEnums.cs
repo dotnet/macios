@@ -119,15 +119,22 @@ namespace Network {
 		ExpiredCache = 3,
 	}
 
+	/// <summary>Describes the state of an Ethernet channel.</summary>
 	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[NativeName ("nw_ethernet_channel_state_t")]
 	public enum NWEthernetChannelState {
+		/// <summary>The channel state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The channel is waiting for a usable network.</summary>
 		Waiting = 1,
+		/// <summary>The channel is being established.</summary>
 		Preparing = 2,
+		/// <summary>The channel can send and receive data.</summary>
 		Ready = 3,
+		/// <summary>The channel has irrecoverably failed or closed.</summary>
 		Failed = 4,
+		/// <summary>The channel was cancelled.</summary>
 		Cancelled = 5,
 	}
 

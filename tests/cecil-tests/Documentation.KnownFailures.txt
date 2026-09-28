@@ -5347,12 +5347,6 @@ F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Below
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Same
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Unknown
 F:Network.NWErrorDomain.WiFiAware
-F:Network.NWEthernetChannelState.Cancelled
-F:Network.NWEthernetChannelState.Failed
-F:Network.NWEthernetChannelState.Invalid
-F:Network.NWEthernetChannelState.Preparing
-F:Network.NWEthernetChannelState.Ready
-F:Network.NWEthernetChannelState.Waiting
 F:Network.NWFramerCreateFlags.Default
 F:Network.NWFramerStartResult.Ready
 F:Network.NWFramerStartResult.Unknown
@@ -58230,7 +58224,6 @@ T:Network.NWErrorDomain
 T:Network.NWEstablishmentReport
 T:Network.NWEthernetChannel
 T:Network.NWEthernetChannelReceiveDelegate
-T:Network.NWEthernetChannelState
 T:Network.NWFramer
 T:Network.NWFramerCreateFlags
 T:Network.NWFramerInputDelegate

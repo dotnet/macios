@@ -2737,12 +2737,18 @@
       <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Valeur DotNetRuntime non valide : « {0} »]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Valeur inattendue de RuntimeLibLinkMode pour « NativeAOT » : « {0} »]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2758,6 +2764,9 @@
       <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Valeur RuntimeLibLinkMode non valide : « {0} »]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2791,6 +2800,9 @@
       <Item ItemId=";E7180" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La référence native « {0} » dans le package de ressources de liaison « {1} » n’est pas valide : le nom doit être un chemin relatif sans segments « .. ».]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2815,6 +2827,9 @@
       <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Codesign a échoué avec « errSecInternalComponent ». Cela signifie généralement que le trousseau est verrouillé, ce qui est courant lors d’une compilation via SSH. Déverrouillez d’abord le trousseau, par exemple en exécutant « security unlock-keychain ~/Library/Keychains/login.keychain-db ».]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2875,6 +2890,18 @@
       <Item ItemId=";E7191" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Valeur « {0} » non valide pour l’entrée du manifeste d’application « {1} » de type « {2} » spécifiée dans le groupe d’éléments AppManifestEntry. « true » ou « false » attendu.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7192" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to parse the '{0}' value: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nous ne pouvons pas analyser la valeur « {0} » : {1}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -3772,8 +3799,8 @@
       <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[La variable d’environnement « {0} » est déconseillée. Elle sera ignorée dans .NET 11+. Veuillez utiliser la variable d’environnement « DEVELOPER_DIR » ou la propriété MSBuild « XcodeLocation » pour choisir la version Xcode à utiliser.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La variable d’environnement « {0} » est déconseillée. Elle sera ignorée dans .NET 11+. Utilisez la variable d’environnement « DEVELOPER_DIR » ou la propriété MSBuild « XcodeLocation » pour utiliser une version de Xcode autre que celle définie par défaut sur le système.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3796,8 +3823,8 @@
       <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[Le fichier de paramètres « {0} » est déconseillé. Il sera ignoré dans .NET 11+. Veuillez utiliser la variable d’environnement « DEVELOPER_DIR » ou la propriété MSBuild « XcodeLocation » pour choisir la version Xcode à utiliser.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Le fichier de paramètres « {0} » est déconseillé. Il sera ignoré dans .NET 11+. Utilisez la variable d’environnement « DEVELOPER_DIR » ou la propriété MSBuild « XcodeLocation » pour utiliser une version de Xcode autre que celle définie par défaut sur le système.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>

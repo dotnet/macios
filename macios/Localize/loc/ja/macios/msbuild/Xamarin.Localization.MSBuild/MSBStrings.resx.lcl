@@ -1258,6 +1258,9 @@
       <Item ItemId=";E0192" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[PrepareAssemblies タスクが、特定のエラーを報告せずに失敗しました。詳細を確認するには、詳細度を上げて再ビルドしてください。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2734,12 +2737,18 @@
       <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無効な DotNetRuntime 値: '{0}']]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['NativeAOT' の RuntimeLibLinkMode 値が予期しない値です: '{0}']]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2755,6 +2764,9 @@
       <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[無効な RuntimeLibLinkMode 値: '{0}']]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2788,12 +2800,18 @@
       <Item ItemId=";E7180" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[バインド リソース パッケージ '{1}' のネイティブ参照 '{0}' が無効です: 名前には '..' セグメントを含まない相対パスを指定する必要があります。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7181" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ネイティブ ライブラリを '{0}' として再識別することはできません。そのパスは、意図された出力ディレクトリ '{1}' の範囲外にあるためです。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2809,18 +2827,27 @@
       <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Codesign が 'errSecInternalComponent' で失敗しました。これは通常、キーチェーンがロックされていることを意味し、SSH 経由でビルドする場合によく発生します。まずキーチェーンのロックを解除します。たとえば、security unlock-keychain ~/Library/Keychains/login.keychain-db を実行します。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7185" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not determine the on-device destination path after copying '{0}' to the device. The 'xcrun devicectl' JSON output was: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' をデバイスにコピーした後、デバイス上のコピー先パスを特定できませんでした。'xcrun devicectl' の JSON 出力は次のとおりです: {1}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7186" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not read the runtime configuration file '{0}': {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ランタイム構成ファイル '{0}' を読み取れませんでした: {1}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2845,6 +2872,9 @@
       <Item ItemId=";E7189" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[AppManifestEntry アイテム グループで指定されたアプリ マニフェスト エントリ '{1}' の種類 '{0}' は不明です。'Remove'、'Boolean'、'String'、または 'StringArray' が必要です。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2862,6 +2892,15 @@
           <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[AppManifestEntry 項目グループで指定された型 '{2}' のアプリ マニフェスト エントリ '{1}' の値 '{0}' が無効です。'true' または 'false' が必要です。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7192" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to parse the '{0}' value: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' の値を解析できません: {1}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3760,8 +3799,8 @@
       <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[環境変数 '{0}' は非推奨であり、.NET 11 以降では無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境変数 '{0}' は非推奨であり、.NET 11 以降では無視されます。システムの現在の既定の Xcode 以外の Xcode を使用するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用します。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3784,8 +3823,8 @@
       <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode.]]></Val>
-          <Tgt Cat="Text" Stat="Update" Orig="New">
-            <Val><![CDATA[設定ファイル '{0}' は非推奨であり、.NET 11 以降では無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定ファイル '{0}' は非推奨であり、.NET 11 以降では無視されます。システムの現在の既定の Xcode 以外の Xcode を使用するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用します。]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
@@ -3826,6 +3865,9 @@
       <Item ItemId=";W7182" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Ignoring a native reference with no name in the binding resource package '{0}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[バインド リソース パッケージ '{0}' に、名前のないネイティブ参照があるため、無視しています。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

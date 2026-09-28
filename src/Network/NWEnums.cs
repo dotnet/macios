@@ -17,15 +17,23 @@ using OS_nw_txt_record = System.IntPtr;
 
 namespace Network {
 
+	/// <summary>Describes changes between two network browse results.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NWBrowseResultChange : ulong {
+		/// <summary>The change is invalid.</summary>
 		Invalid = 0x00,
+		/// <summary>The browse results are identical.</summary>
 		Identical = 0x01,
+		/// <summary>A browse result was added.</summary>
 		ResultAdded = 0x02,
+		/// <summary>A browse result was removed.</summary>
 		ResultRemoved = 0x04,
+		/// <summary>The TXT record changed.</summary>
 		TxtRecordChanged = 0x20,
+		/// <summary>A network interface became available.</summary>
 		InterfaceAdded = 0x08,
+		/// <summary>A network interface was removed.</summary>
 		InterfaceRemoved = 0x10,
 	}
 

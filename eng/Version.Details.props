@@ -13,7 +13,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftNETILLinkPackageVersion>11.0.0-rc.2.26465.108</MicrosoftNETILLinkPackageVersion>
     <MicrosoftNETILLinkTasksPackageVersion>11.0.0-rc.2.26465.108</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-rc.2.26465.108</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>11.0.100-rc.2.26465.108</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>11.0.100-rc.2.26475.136</MicrosoftNETSdkPackageVersion>
     <MicrosoftNETCoreAppRefPackageVersion>11.0.0-rc.2.26465.108</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-rc.2.26465.108</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet-macios dependencies -->

@@ -436,10 +436,6 @@ namespace Cecil.Tests {
 		{
 			yield return type;
 
-			// Nested members were not checked before nested types were added to this test.
-			if (type.IsNested)
-				yield break;
-
 			foreach (var method in type.Methods.Where (m => m.IsPublic)) {
 				yield return method;
 			}

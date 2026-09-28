@@ -2599,7 +2599,7 @@ public partial class Generator : IMemberGatherer {
 		return parentAvailability;
 	}
 
-	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null)
+	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null, PlatformName? excludedPlatform = null)
 	{
 		bool printed = false;
 		if (mi is null)
@@ -2608,6 +2608,8 @@ public partial class Generator : IMemberGatherer {
 		AvailabilityBaseAttribute []? type_ca = null;
 
 		foreach (var availability in GetPlatformAttributesToPrint (mi, null, inlinedType)) {
+			if (availability.Platform == excludedPlatform)
+				continue;
 			var t = inlinedType ?? (mi as TypeInfo) ?? mi.DeclaringType;
 			if (type_ca is null) {
 				if (t is not null)
@@ -4008,9 +4010,10 @@ public partial class Generator : IMemberGatherer {
 		PrintPropertyAttributes (pi, minfo, skipTypeInjection);
 	}
 
-	void PrintPropertyAttributes (PropertyInfo pi, MemberInformation minfo, bool skipTypeInjection = false)
+	void PrintPropertyAttributes (PropertyInfo pi, MemberInformation minfo, bool skipTypeInjection = false, bool is_appearance = false)
 	{
 		Type type = minfo.type;
+		var excludedPlatform = is_appearance ? PlatformName.MacOSX : (PlatformName?) null;
 		PrintObsoleteAttributes (pi);
 
 		foreach (var ba in AttributeManager.GetCustomAttributes<DebuggerBrowsableAttribute> (pi))
@@ -4029,13 +4032,15 @@ public partial class Generator : IMemberGatherer {
 		// we must look if the type has an [Availability] attribute
 		if (type != pi.DeclaringType) {
 			// print, if not duplicated from the type (being inlined into), the property availability
-			if (!PrintPlatformAttributes (pi, type) && !skipTypeInjection) {
+			if (!PrintPlatformAttributes (pi, type, excludedPlatform) && !skipTypeInjection) {
 				// print, if not duplicated from the type (being inlined into), the property declaring type (protocol) availability
-				PrintPlatformAttributes (pi.DeclaringType, type);
+				PrintPlatformAttributes (pi.DeclaringType, type, excludedPlatform);
 			}
 		} else {
-			PrintPlatformAttributes (pi);
+			PrintPlatformAttributes (pi, excludedPlatform: excludedPlatform);
 		}
+		if (is_appearance)
+			print (AttributeFactory.CreateUnsupportedAttribute (PlatformName.MacOSX).ToString ());
 
 		foreach (var sa in AttributeManager.GetCustomAttributes<ThreadSafeAttribute> (pi))
 			print (sa.Safe ? "[ThreadSafe]" : "[ThreadSafe (false)]");
@@ -4096,7 +4101,7 @@ public partial class Generator : IMemberGatherer {
 			if (!WriteDocumentation (pi) && is_appearance)
 				WriteAppearanceMemberDocumentation (type, pi.Name);
 			print_generated_code ();
-			PrintPropertyAttributes (pi, minfo);
+			PrintPropertyAttributes (pi, minfo, is_appearance: is_appearance);
 			PrintAttributes (pi, preserve: true, advice: true);
 			var wrapNullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
 			print ("{0} {1}{2}{3} {4} {{",
@@ -4175,7 +4180,7 @@ public partial class Generator : IMemberGatherer {
 		if (!WriteDocumentation (pi) && is_appearance)
 			WriteAppearanceMemberDocumentation (type, pi.Name);
 		print_generated_code (optimizable: IsOptimizable (pi));
-		PrintPropertyAttributes (pi, minfo);
+		PrintPropertyAttributes (pi, minfo, is_appearance: is_appearance);
 
 		PrintAttributes (pi, preserve: true, advice: true, bindAs: true);
 

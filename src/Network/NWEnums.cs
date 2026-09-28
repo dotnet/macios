@@ -37,11 +37,16 @@ namespace Network {
 		InterfaceRemoved = 0x10,
 	}
 
+	/// <summary>Describes the state of a network browser.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWBrowserState {
+		/// <summary>The browser state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The browser can receive endpoint updates.</summary>
 		Ready = 1,
+		/// <summary>The browser has failed and cannot be restarted.</summary>
 		Failed = 2,
+		/// <summary>The browser was cancelled and cannot be restarted.</summary>
 		Cancelled = 3,
 	}
 

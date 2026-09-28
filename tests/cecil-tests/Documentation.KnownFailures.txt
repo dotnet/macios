@@ -5346,10 +5346,6 @@ F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.AboveOrBelow
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Below
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Same
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Unknown
-F:Network.NWBrowserState.Cancelled
-F:Network.NWBrowserState.Failed
-F:Network.NWBrowserState.Invalid
-F:Network.NWBrowserState.Ready
 F:Network.NWConnectionGroupState.Cancelled
 F:Network.NWConnectionGroupState.Failed
 F:Network.NWConnectionGroupState.Invalid
@@ -58236,7 +58232,6 @@ T:Network.NWBrowserChangesDelegate
 T:Network.NWBrowserCompleteChangesDelegate
 T:Network.NWBrowserDescriptor
 T:Network.NWBrowseResult
-T:Network.NWBrowserState
 T:Network.NWConnectionGroup
 T:Network.NWConnectionGroupReceiveDelegate
 T:Network.NWConnectionGroupState

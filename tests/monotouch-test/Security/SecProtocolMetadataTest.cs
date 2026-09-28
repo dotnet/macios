@@ -104,7 +104,7 @@ namespace MonoTouchFixtures.Security {
 						}, "Distinguished names are not accessible.");
 						CheckOptionalAccess<DispatchData> (s.SetOcspResponseForPeerHandler, data => {
 							data.Dispose ();
-						}, "The OSCP response is not accessible.");
+						}, "The OCSP response is not accessible.");
 						CheckOptionalAccess<ushort> (s.SetSignatureAlgorithmsForPeerHandler, algorithm => {
 						}, "The supported signature list is not accessible.");
 

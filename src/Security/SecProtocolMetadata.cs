@@ -225,7 +225,7 @@ namespace Security {
 				var result = sec_protocol_metadata_access_ocsp_response (GetCheckedHandle (), &block);
 				GC.KeepAlive (this);
 				if (result == 0)
-					throw new InvalidOperationException ("The OSCP response is not accessible.");
+					throw new InvalidOperationException ("The OCSP response is not accessible.");
 			}
 		}
 

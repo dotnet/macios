@@ -92,16 +92,18 @@ namespace Network {
 		Collected = 2,
 	}
 
+	/// <summary>Identifies the kind of network endpoint.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWEndpointType {
-		/// <summary>To be added.</summary>
+		/// <summary>The endpoint type is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>An IP address and port.</summary>
 		Address = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A hostname and port.</summary>
 		Host = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A Bonjour service name, type, and domain.</summary>
 		BonjourService = 3,
+		/// <summary>A URL endpoint.</summary>
 		[MacCatalyst (13, 1)]
 		Url = 4,
 	}

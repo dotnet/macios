@@ -5346,7 +5346,6 @@ F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.AboveOrBelow
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Below
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Same
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Unknown
-F:Network.NWEndpointType.Url
 F:Network.NWErrorDomain.WiFiAware
 F:Network.NWEthernetChannelState.Cancelled
 F:Network.NWEthernetChannelState.Failed
@@ -58230,7 +58229,6 @@ T:Network.NWConnectionGroupReceiveDelegate
 T:Network.NWConnectionGroupStateChangedDelegate
 T:Network.NWConnectionReceiveReadOnlySpanCompletion
 T:Network.NWDataTransferReport
-T:Network.NWEndpointType
 T:Network.NWErrorDomain
 T:Network.NWEstablishmentReport
 T:Network.NWEthernetChannel

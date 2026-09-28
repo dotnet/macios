@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 using CoreMidi;
 using Foundation;
@@ -376,7 +375,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		[Test]
-		public async Task SendSysexAsyncSuccess ()
+		public void SendSysexAsyncSuccess ()
 		{
 			using var client = new MidiClient ("TestSysexClient");
 			using var destination = client.CreateVirtualDestination ("TestSysexDestination", MidiProtocolId.Protocol_1_0, (_, _) => { }, out var destinationStatus);
@@ -385,12 +384,12 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			var data = new byte [] { 0xf0, 0x7d, 0xf7 };
 			var successfulTask = nonNullDestination.SendSysexAsync (data);
-			Assert.That (await Task.WhenAny (successfulTask, Task.Delay (TimeSpan.FromSeconds (10))).ConfigureAwait (false), Is.SameAs (successfulTask), "Successful completion");
-			Assert.That (await successfulTask.ConfigureAwait (false), Is.EqualTo (MidiError.Ok), "Success status");
+			Assert.That (successfulTask.Wait (TimeSpan.FromSeconds (10)), Is.True, "Successful completion");
+			Assert.That (successfulTask.Result, Is.EqualTo (MidiError.Ok), "Success status");
 		}
 
 		[Test]
-		public async Task SendSysexAsyncCancellation ()
+		public void SendSysexAsyncCancellation ()
 		{
 			using var client = new MidiClient ("TestSysexClient");
 			using var destination = client.CreateVirtualDestination ("TestSysexDestination", MidiProtocolId.Protocol_1_0, (_, _) => { }, out var destinationStatus);
@@ -401,7 +400,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				using var cancellationTokenSource = new CancellationTokenSource ();
 				var cancellationTask = nonNullDestination.SendSysexAsync (data, cancellationTokenSource.Token);
 				cancellationTokenSource.Cancel ();
-				Assert.That (await Task.WhenAny (cancellationTask, Task.Delay (TimeSpan.FromSeconds (10))).ConfigureAwait (false), Is.SameAs (cancellationTask), $"Cancellation completion #{i}");
+				Assert.That (SpinWait.SpinUntil (() => cancellationTask.IsCompleted, TimeSpan.FromSeconds (10)), Is.True, $"Cancellation completion #{i}");
 				Assert.That (cancellationTask.IsCompletedSuccessfully || cancellationTask.IsCanceled, Is.True, $"Cancellation result #{i}");
 			}
 		}

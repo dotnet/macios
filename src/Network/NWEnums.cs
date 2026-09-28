@@ -83,9 +83,12 @@ namespace Network {
 		Cancelled = 4,
 	}
 
+	/// <summary>Describes whether a network data transfer report is still collecting data.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWDataTransferReportState {
+		/// <summary>The report is collecting transfer data.</summary>
 		Collecting = 1,
+		/// <summary>The report has finished collecting transfer data.</summary>
 		Collected = 2,
 	}
 

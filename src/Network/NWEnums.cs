@@ -108,10 +108,14 @@ namespace Network {
 		Url = 4,
 	}
 
+	/// <summary>Identifies where a network name resolution result came from.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWReportResolutionSource {
+		/// <summary>The result came from a network query.</summary>
 		Query = 1,
+		/// <summary>The result came from a cached response.</summary>
 		Cache = 2,
+		/// <summary>The result came from an expired cached response.</summary>
 		ExpiredCache = 3,
 	}
 

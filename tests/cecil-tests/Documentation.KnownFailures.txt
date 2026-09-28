@@ -5399,9 +5399,6 @@ F:Network.NWReportResolutionProtocol.Tcp
 F:Network.NWReportResolutionProtocol.Tls
 F:Network.NWReportResolutionProtocol.Udp
 F:Network.NWReportResolutionProtocol.Unknown
-F:Network.NWReportResolutionSource.Cache
-F:Network.NWReportResolutionSource.ExpiredCache
-F:Network.NWReportResolutionSource.Query
 F:Network.NWResolverConfigEndpointType.Https
 F:Network.NWResolverConfigEndpointType.Tls
 F:Network.NWTxtRecordFindKey.EmptyValue
@@ -58267,7 +58264,6 @@ T:Network.NWQuicMetadata
 T:Network.NWQuicStreamType
 T:Network.NWRelayHop
 T:Network.NWReportResolutionProtocol
-T:Network.NWReportResolutionSource
 T:Network.NWResolutionReport
 T:Network.NWResolverConfig
 T:Network.NWResolverConfigEndpointType

@@ -50,19 +50,20 @@ namespace Network {
 		Cancelled = 3,
 	}
 
+	/// <summary>Describes the state of a network connection.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWConnectionState {
-		/// <summary>To be added.</summary>
+		/// <summary>The connection state is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection is waiting for a usable network.</summary>
 		Waiting = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection is being established.</summary>
 		Preparing = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection can send and receive data.</summary>
 		Ready = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection has irrecoverably failed or closed.</summary>
 		Failed = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection was cancelled.</summary>
 		Cancelled = 5,
 	}
 

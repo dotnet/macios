@@ -58237,7 +58237,6 @@ T:Network.NWConnectionGroupReceiveDelegate
 T:Network.NWConnectionGroupState
 T:Network.NWConnectionGroupStateChangedDelegate
 T:Network.NWConnectionReceiveReadOnlySpanCompletion
-T:Network.NWConnectionState
 T:Network.NWDataTransferReport
 T:Network.NWDataTransferReportState
 T:Network.NWEndpointType

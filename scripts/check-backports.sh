@@ -84,16 +84,19 @@ check_backports ()
 	while IFS= read -r pull_request_url; do
 		gh api "$pull_request_url" >> "$source_details_file"
 	done < <(
-		jq -r 'add[] | select(.pull_request.merged_at != null) | .pull_request.url' "$source_issues_file"
+		jq -r 'add[] | select(.pull_request != null) | .pull_request.url' "$source_issues_file"
 	)
 
 	jq -s '
-		map({
-			number,
-			title,
-			url: .html_url,
-			baseRefName: .base.ref
-		})
+		map(
+			select(.merged_at != null) |
+			{
+				number,
+				title,
+				url: .html_url,
+				baseRefName: .base.ref
+			}
+		)
 	' "$source_details_file" > "$sources_file"
 
 	gh api \
@@ -131,7 +134,7 @@ check_backports ()
 					([ $backports [0][] | select(references_source($source)) ] | first) as $backport
 					| . + {
 						backport: $backport,
-						result: if $backport == null then "missing" else "found" end
+						result: (if $backport == null then "missing" else "found" end)
 					}
 				end
 			)

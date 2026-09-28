@@ -1127,8 +1127,13 @@ namespace AppKit {
 		NSString ApplicationVersion { get; }
 	}
 
+	/// <summary>Handles a window during application window enumeration.</summary>
+	/// <param name="window">The window being enumerated.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop the enumeration.</param>
 	delegate void NSApplicationEnumerateWindowsHandler (NSWindow window, ref bool stop);
 
+	/// <summary>Provides the objects used to restore a continued user activity.</summary>
+	/// <param name="restorableObjects">The objects that participate in restoring the user activity.</param>
 	[NoMacCatalyst]
 	delegate void ContinueUserActivityRestorationHandler (INSUserActivityRestoring [] restorableObjects);
 
@@ -6661,6 +6666,8 @@ namespace AppKit {
 		NSMenu DockMenu ();
 	}
 
+	/// <summary>Handles the completion of an asynchronous document operation.</summary>
+	/// <param name="nsErrorPointerOrZero">A native pointer to the error that occurred, or zero if the operation succeeded.</param>
 	delegate void NSDocumentCompletionHandler (IntPtr nsErrorPointerOrZero);
 
 	[NoMacCatalyst]
@@ -9050,8 +9057,13 @@ namespace AppKit {
 		CGRect BoundingBox { get; }
 	}
 
+	/// <summary>Handles events received by a global event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
 	[NoMacCatalyst]
 	delegate void GlobalEventHandler (NSEvent theEvent);
+	/// <summary>Filters events received by a local event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
+	/// <returns>The event to dispatch, or <see langword="null"/> to suppress the event.</returns>
 	[NoMacCatalyst]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
 	[NoMacCatalyst]
@@ -29122,6 +29134,9 @@ namespace AppKit {
 		NSColor FromCGColor (CGColor cgColor);
 	}
 
+	/// <summary>Draws the contents of a custom image representation.</summary>
+	/// <param name="dstRect">The rectangle in which to draw the image.</param>
+	/// <returns><see langword="true"/> if drawing succeeded; otherwise, <see langword="false"/>.</returns>
 	delegate bool NSCustomImageRepDrawingHandler (CGRect dstRect);
 
 	partial interface NSCustomImageRep {
@@ -29137,6 +29152,8 @@ namespace AppKit {
 	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
+	/// <summary>Handles the completion of an asynchronous document lock operation.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null"/> if the operation succeeded.</param>
 	delegate void NSDocumentLockCompletionHandler (NSError error);
 	delegate void NSDocumentUnlockCompletionHandler (NSError error);
 
@@ -29208,7 +29225,11 @@ namespace AppKit {
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
 
+	/// <summary>Handles the completion of the document controller's open panel.</summary>
+	/// <param name="urlsToOpen">The URLs selected in the open panel, or <see langword="null"/> if the user canceled the panel.</param>
 	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
+	/// <summary>Handles the response from a document controller open panel.</summary>
+	/// <param name="result">The modal response returned by the open panel.</param>
 	delegate void NSDocumentControllerOpenPanelResultHandler (nint result);
 
 	partial interface NSDocumentController : NSMenuItemValidation
@@ -32886,6 +32907,10 @@ namespace AppKit {
 
 	public interface INSCandidateListTouchBarItemDelegate { }
 
+	/// <summary>Provides an attributed string for a candidate in a candidate list.</summary>
+	/// <param name="candidate">The candidate to represent.</param>
+	/// <param name="index">The index of the candidate in the list.</param>
+	/// <returns>The attributed string to display for the candidate.</returns>
 	delegate NSAttributedString AttributedStringForCandidateHandler (NSObject candidate, nint index);
 
 	[NoMacCatalyst]

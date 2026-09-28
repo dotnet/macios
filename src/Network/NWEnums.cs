@@ -148,10 +148,14 @@ namespace Network {
 	}
 
 	// from System/Library/Frameworks/Network.framework/Headers/framer_options.h:
+	/// <summary>Indicates when a custom framer protocol becomes ready.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWFramerStartResult {
+		/// <summary>The result is unknown.</summary>
 		Unknown = 0,
+		/// <summary>The protocol is marked ready when the start handler returns.</summary>
 		Ready = 1,
+		/// <summary>The start handler will mark the protocol ready later.</summary>
 		WillMarkReady = 2,
 	}
 

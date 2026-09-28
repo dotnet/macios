@@ -5347,9 +5347,6 @@ F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Below
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Same
 F:NearbyInteraction.NINearbyObjectVerticalDirectionEstimate.Unknown
 F:Network.NWErrorDomain.WiFiAware
-F:Network.NWFramerStartResult.Ready
-F:Network.NWFramerStartResult.Unknown
-F:Network.NWFramerStartResult.WillMarkReady
 F:Network.NWInterfaceRadioType.CellCdma
 F:Network.NWInterfaceRadioType.CellEndcMmw
 F:Network.NWInterfaceRadioType.CellEndcSub6
@@ -58227,7 +58224,6 @@ T:Network.NWFramer
 T:Network.NWFramerInputDelegate
 T:Network.NWFramerMessage
 T:Network.NWFramerParseCompletionDelegate
-T:Network.NWFramerStartResult
 T:Network.NWInterfaceRadioType
 T:Network.NWInterfaceType
 T:Network.NWIPEcnFlag

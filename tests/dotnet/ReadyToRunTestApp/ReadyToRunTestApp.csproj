@@ -1,0 +1,112 @@
+<!-- Copyright (c) Microsoft Corporation. -->
+<!-- Licensed under the MIT License. -->
+
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-ios</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<ApplicationTitle>ReadyToRunTestApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.readytoruntestapp</ApplicationId>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<Target Name="_AssertReadyToRunConfiguration"
+			Condition="'$(ExpectedReadyToRunConfiguration)' != ''"
+			AfterTargets="_AddExcludedAssembliesAsR2RCompositeReferences"
+			BeforeTargets="_CreateR2RImages">
+		<ItemGroup>
+			<_ReadyToRunTestCoreLibCompositeRoot
+				Include="@(PublishReadyToRunCompositeRoots)"
+				Condition="'%(PublishReadyToRunCompositeRoots.Filename)%(PublishReadyToRunCompositeRoots.Extension)' == 'System.Private.CoreLib.dll'" />
+			<_ReadyToRunTestNonCoreLibCompositeRoots
+				Include="@(PublishReadyToRunCompositeRoots)"
+				Condition="'%(PublishReadyToRunCompositeRoots.Filename)%(PublishReadyToRunCompositeRoots.Extension)' != 'System.Private.CoreLib.dll'" />
+			<_ReadyToRunTestCoreLibRoot
+				Include="@(_ReadyToRunCompositeBuildInput)"
+				Condition="'%(_ReadyToRunCompositeBuildInput.Filename)%(_ReadyToRunCompositeBuildInput.Extension)' == 'System.Private.CoreLib.dll'" />
+			<_ReadyToRunTestNonCoreLibRoots
+				Include="@(_ReadyToRunCompositeBuildInput)"
+				Condition="'%(_ReadyToRunCompositeBuildInput.Filename)%(_ReadyToRunCompositeBuildInput.Extension)' != 'System.Private.CoreLib.dll'" />
+			<_ReadyToRunTestAppRoot
+				Include="@(_ReadyToRunCompositeBuildInput)"
+				Condition="'%(_ReadyToRunCompositeBuildInput.Filename)%(_ReadyToRunCompositeBuildInput.Extension)' == '$(AssemblyName).dll'" />
+			<_ReadyToRunTestAppReference
+				Include="@(_ReadyToRunCompositeBuildReferences)"
+				Condition="'%(_ReadyToRunCompositeBuildReferences.Filename)%(_ReadyToRunCompositeBuildReferences.Extension)' == '$(AssemblyName).dll'" />
+			<_ReadyToRunTestSystemRuntimeReference
+				Include="@(_ReadyToRunCompositeBuildReferences)"
+				Condition="'%(_ReadyToRunCompositeBuildReferences.Filename)%(_ReadyToRunCompositeBuildReferences.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestSystemRuntimeIL
+				Include="@(ResolvedFileToPublish)"
+				Condition="'%(ResolvedFileToPublish.Filename)%(ResolvedFileToPublish.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestSystemRuntimeUnrooted
+				Include="@(_ReadyToRunCompositeUnrootedBuildInput)"
+				Condition="'%(_ReadyToRunCompositeUnrootedBuildInput.Filename)%(_ReadyToRunCompositeUnrootedBuildInput.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestCoreLibHash
+				Include="@(_R2RAssembliesToHash)"
+				Condition="'%(_R2RAssembliesToHash.Filename)%(_R2RAssembliesToHash.Extension)' == 'System.Private.CoreLib.dll'" />
+		</ItemGroup>
+
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '$(FilterReadyToRunAssemblies)' != 'true'"
+			Text="Expected ReadyToRun assembly filtering to be enabled, but FilterReadyToRunAssemblies was '$(FilterReadyToRunAssemblies)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And @(_ReadyToRunTestCoreLibCompositeRoot->Count()) != 1"
+			Text="Expected System.Private.CoreLib.dll to be the only ReadyToRun composite root, but found '@(PublishReadyToRunCompositeRoots)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestNonCoreLibCompositeRoots)' != ''"
+			Text="Expected no ReadyToRun composite roots other than System.Private.CoreLib.dll, but found '@(_ReadyToRunTestNonCoreLibCompositeRoots)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestCoreLibRoot)' == ''"
+			Text="Expected System.Private.CoreLib.dll in _ReadyToRunCompositeBuildInput, but found '@(_ReadyToRunCompositeBuildInput)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestNonCoreLibRoots)' != ''"
+			Text="Expected no composite roots other than System.Private.CoreLib.dll, but found '@(_ReadyToRunTestNonCoreLibRoots)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunCompositeUnrootedBuildInput)' != ''"
+			Text="Expected no unrooted ReadyToRun composite inputs, but found '@(_ReadyToRunCompositeUnrootedBuildInput)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestSystemRuntimeReference)' != ''"
+			Text="Expected System.Runtime.dll not to be passed to crossgen2 as a reference." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestSystemRuntimeIL)' == ''"
+			Text="Expected the original System.Runtime.dll to remain in ResolvedFileToPublish." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And (@(_R2RAssembliesToHash->Count()) != 1 Or '@(_ReadyToRunTestCoreLibHash)' == '')"
+			Text="Expected only System.Private.CoreLib.dll to be hashed, but found '@(_R2RAssembliesToHash)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestAppReference)' == ''"
+			Text="Expected $(AssemblyName).dll to be passed to crossgen2 as a reference, but found '@(_ReadyToRunCompositeBuildReferences)'." />
+
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And '@(_ReadyToRunTestSystemRuntimeUnrooted)' == ''"
+			Text="Expected System.Runtime.dll to remain an unrooted ReadyToRun composite input in Release." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And @(_R2RAssembliesToHash->Count()) &lt; 2"
+			Text="Expected unrooted ReadyToRun assemblies to remain hashed in Release." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And '@(_ReadyToRunTestAppReference)' == ''"
+			Text="Expected $(AssemblyName).dll to be passed to crossgen2 as a reference in filtered Release." />
+
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '$(FilterReadyToRunAssemblies)' == 'true'"
+			Text="Expected ReadyToRun assembly filtering to be disabled for a full composite build." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And @(PublishReadyToRunCompositeRoots->Count()) != 0"
+			Text="Expected no explicit ReadyToRun composite roots for a full composite build, but found '@(PublishReadyToRunCompositeRoots)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '@(_ReadyToRunCompositeUnrootedBuildInput)' != ''"
+			Text="Expected no unrooted inputs for a full ReadyToRun composite build, but found '@(_ReadyToRunCompositeUnrootedBuildInput)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '@(_ReadyToRunTestCoreLibRoot)' == ''"
+			Text="Expected System.Private.CoreLib.dll in the full ReadyToRun composite input." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '@(_ReadyToRunTestAppRoot)' == ''"
+			Text="Expected $(AssemblyName).dll in the full ReadyToRun composite input, but found '@(_ReadyToRunCompositeBuildInput)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '@(_ReadyToRunTestAppReference)' != ''"
+			Text="Expected $(AssemblyName).dll to be compiled into the full ReadyToRun composite instead of passed as a reference." />
+		<Error Text="All good!" />
+	</Target>
+</Project>

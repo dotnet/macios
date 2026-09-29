@@ -16,7 +16,7 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 
-			var projectPath = GetProjectPath ("MySimpleApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out _, configuration: configuration);
+			var projectPath = GetProjectPath ("ReadyToRunTestApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out _, configuration: configuration);
 			Clean (projectPath);
 
 			var properties = GetDefaultProperties (runtimeIdentifier);

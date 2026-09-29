@@ -38,7 +38,7 @@ namespace Cecil.Tests {
 			var missing = new List<string> ();
 			foreach (var package in packages) {
 				using var archive = ZipFile.OpenRead (package);
-				CheckArchive (archive, Path.GetFileName (package), "", patterns, matched, missing, 0);
+				CheckArchive (archive, Path.GetFileName (package), "", "", patterns, matched, missing, 0);
 			}
 			if (!Configuration.AnyIgnoredPlatforms ()) {
 				for (var i = 0; i < patterns.Count; i++) {
@@ -56,17 +56,20 @@ namespace Cecil.Tests {
 			foreach (var group in signingGroups) {
 				foreach (var item in document.Descendants (group)) {
 					var include = (string?) item.Attribute ("Include");
-					Assert.That (include, Is.Not.Null.And.Not.Empty, $"{group} entry without Include in {signList}");
+					if (string.IsNullOrEmpty (include)) {
+						Assert.Fail ($"{group} entry without Include in {signList}");
+						continue;
+					}
 					Assert.That (include, Does.Not.Contain ("/"), $"Use Windows-style separators in {signList}: {include}");
-					var expression = Regex.Escape (include!).Replace (@"\*", ".*").Replace (@"\?", ".");
-					patterns.Add ((group, include!, new Regex ($"(^|\\\\){expression}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)));
+					var expression = Regex.Escape (include).Replace (@"\*", ".*").Replace (@"\?", ".");
+					patterns.Add ((group, include, new Regex ($"(^|\\\\){expression}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)));
 				}
 			}
 			Assert.That (patterns, Is.Not.Empty, $"No signing entries found in {signList}");
 			return patterns;
 		}
 
-		static void CheckArchive (ZipArchive archive, string archiveName, string zipPath, IReadOnlyList<(string Group, string Include, Regex Pattern)> patterns, bool [] matched, List<string> missing, int depth)
+		static void CheckArchive (ZipArchive archive, string archiveName, string zipPath, string matchPrefix, IReadOnlyList<(string Group, string Include, Regex Pattern)> patterns, bool [] matched, List<string> missing, int depth)
 		{
 			foreach (var entry in archive.Entries) {
 				if (entry.Name.Length == 0)
@@ -77,13 +80,13 @@ namespace Cecil.Tests {
 					Assert.That (depth, Is.LessThan (MaxZipDepth), $"Nested ZIP depth exceeds {MaxZipDepth}: {archiveName}!{zipPath}{entry.FullName}");
 					using var stream = entry.Open ();
 					using var nested = new ZipArchive (stream, ZipArchiveMode.Read);
-					CheckArchive (nested, archiveName, zipPath + entry.FullName + "!", patterns, matched, missing, depth + 1);
+					CheckArchive (nested, archiveName, zipPath + entry.FullName + "!", matchPrefix + Path.GetFileNameWithoutExtension (entry.Name) + "\\", patterns, matched, missing, depth + 1);
 				} else if (name.EndsWith (".dll", StringComparison.OrdinalIgnoreCase)
 					|| name.EndsWith (".exe", StringComparison.OrdinalIgnoreCase)
 					|| name.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase)) {
 					var found = false;
 					for (var i = 0; i < patterns.Count; i++) {
-						if (patterns [i].Pattern.IsMatch (name)) {
+						if (patterns [i].Pattern.IsMatch (matchPrefix + name)) {
 							matched [i] = true;
 							found = true;
 						}

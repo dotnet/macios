@@ -75,10 +75,7 @@
 	</PropertyGroup>
 
 
-	<!--
-		Exclude user assemblies from R2R composite so they run interpreted for debugging.
-		User assembly is defined as anything not coming from a NuGet package.
-	-->
+	<!-- Exclude user assemblies from R2R so they run interpreted for debugging. -->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
@@ -90,6 +87,11 @@
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
 			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+			<_CoreLibR2RAssembly Include="@(_ResolvedAssembliesToPublish)" Condition="'%(_ResolvedAssembliesToPublish.Filename)%(_ResolvedAssembliesToPublish.Extension)' == 'System.Private.CoreLib.dll'" />
+			<!-- In Debug builds with only CoreLib rooted, publish IL instead of generating unrooted components. -->
+			<_NonCoreLibR2RExclusions Include="@(_NonUserAssemblies)" Exclude="@(_CoreLibR2RAssembly)" Condition="'$(_BundlerDebug)' == 'true' And '@(PublishReadyToRunCompositeRoots)' == 'System.Private.CoreLib.dll'" />
+			<PublishReadyToRunExclude Include="@(_NonCoreLibR2RExclusions -> '%(Filename)%(Extension)')" />
+			<_R2RAssembliesToHash Include="@(_NonUserAssemblies)" Exclude="@(_NonCoreLibR2RExclusions)" />
 		</ItemGroup>
 
 		<PropertyGroup>
@@ -100,10 +102,10 @@
 		</ReadLinesFromFile>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
-		<GetFileHash Files="@(_NonUserAssemblies)" Algorithm="SHA256">
-			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
+		<GetFileHash Files="@(_R2RAssembliesToHash)" Algorithm="SHA256">
+			<Output TaskParameter="Items" ItemName="_R2RAssembliesWithHash" />
 		</GetFileHash>
-		<Hash ItemsToHash="@(_NonUserAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
+		<Hash ItemsToHash="@(_R2RAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
 			<Output TaskParameter="HashResult" PropertyName="_R2RInputHash" />
 		</Hash>
 
@@ -126,11 +128,11 @@
 		<ItemGroup>
 			<_ReadyToRunCompositeBuildReferences
 				Include="@(_ReadyToRunAssembliesToReference)"
-				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput)" />
+				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput);@(_NonCoreLibR2RExclusions)" />
 		</ItemGroup>
 	</Target>
 
-	<!-- Touch R2R outputs when only user assemblies changed, so that R2R compilation is skipped. -->
+	<!-- Touch R2R outputs when only excluded assemblies changed, so that R2R compilation is skipped. -->
 	<Target Name="_TouchR2ROutputs"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(_R2RInputHashChanged)' == 'false'"
 			AfterTargets="_PrepareForReadyToRunCompilation"

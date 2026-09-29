@@ -6,9 +6,10 @@
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class ReadyToRunTest : TestBaseClass {
-		[TestCase ("Debug", "CoreLib")]
-		[TestCase ("Release", "Full")]
-		public void AssemblySelection (string configuration, string expectedReadyToRunConfiguration)
+		[TestCase ("Debug", "CoreLib", false)]
+		[TestCase ("Release", "Full", false)]
+		[TestCase ("Release", "FilteredRelease", true)]
+		public void AssemblySelection (string configuration, string expectedReadyToRunConfiguration, bool filterReadyToRunAssemblies)
 		{
 			var platform = ApplePlatform.iOS;
 			var runtimeIdentifier = "iossimulator-arm64";
@@ -22,6 +23,8 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = configuration;
 			properties ["UseMonoRuntime"] = "false";
 			properties ["ExpectedReadyToRunConfiguration"] = expectedReadyToRunConfiguration;
+			if (filterReadyToRunAssemblies)
+				properties ["FilterReadyToRunAssemblies"] = "true";
 
 			var rv = DotNet.AssertBuildFailure (projectPath, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();

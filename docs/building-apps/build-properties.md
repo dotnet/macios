@@ -703,6 +703,19 @@ for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
 [eventsource]: /dotnet/core/diagnostics/eventsource
 
+## FilterReadyToRunAssemblies
+
+When enabled, single-RID Debug builds using CoreCLR include only
+`System.Private.CoreLib.dll` in the ReadyToRun composite by default. Other
+managed assemblies are published without being passed to crossgen2 as
+composite inputs, reducing build time at the expense of interpreting their
+code. Projects with additional composite roots retain those inputs. When
+explicitly enabled in Release builds, user assemblies are excluded but other
+assemblies remain unrooted inputs, as before.
+
+Default: `true` for CoreCLR Debug builds using Mach-O ReadyToRun, and disabled
+otherwise. Set to `false` to compile all eligible assemblies in Debug builds.
+
 ## GenerateApplicationManifest
 
 If an application manifest (`Info.plist`) should be generated.
@@ -1454,7 +1467,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 ## PublishReadyToRunComposite
 
-Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
+Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing the assemblies selected for compilation, or one image per assembly.
 
 Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
 

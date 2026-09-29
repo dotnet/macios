@@ -37,6 +37,18 @@
 			<_ReadyToRunTestAppReference
 				Include="@(_ReadyToRunCompositeBuildReferences)"
 				Condition="'%(_ReadyToRunCompositeBuildReferences.Filename)%(_ReadyToRunCompositeBuildReferences.Extension)' == '$(AssemblyName).dll'" />
+			<_ReadyToRunTestSystemRuntimeReference
+				Include="@(_ReadyToRunCompositeBuildReferences)"
+				Condition="'%(_ReadyToRunCompositeBuildReferences.Filename)%(_ReadyToRunCompositeBuildReferences.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestSystemRuntimeIL
+				Include="@(ResolvedFileToPublish)"
+				Condition="'%(ResolvedFileToPublish.Filename)%(ResolvedFileToPublish.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestSystemRuntimeUnrooted
+				Include="@(_ReadyToRunCompositeUnrootedBuildInput)"
+				Condition="'%(_ReadyToRunCompositeUnrootedBuildInput.Filename)%(_ReadyToRunCompositeUnrootedBuildInput.Extension)' == 'System.Runtime.dll'" />
+			<_ReadyToRunTestCoreLibHash
+				Include="@(_R2RAssembliesToHash)"
+				Condition="'%(_R2RAssembliesToHash.Filename)%(_R2RAssembliesToHash.Extension)' == 'System.Private.CoreLib.dll'" />
 		</ItemGroup>
 
 		<Error
@@ -55,11 +67,30 @@
 			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestNonCoreLibRoots)' != ''"
 			Text="Expected no composite roots other than System.Private.CoreLib.dll, but found '@(_ReadyToRunTestNonCoreLibRoots)'." />
 		<Error
-			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunCompositeUnrootedBuildInput)' == ''"
-			Text="Expected framework assemblies as unrooted ReadyToRun composite inputs." />
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunCompositeUnrootedBuildInput)' != ''"
+			Text="Expected no unrooted ReadyToRun composite inputs, but found '@(_ReadyToRunCompositeUnrootedBuildInput)'." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestSystemRuntimeReference)' != ''"
+			Text="Expected System.Runtime.dll not to be passed to crossgen2 as a reference." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestSystemRuntimeIL)' == ''"
+			Text="Expected the original System.Runtime.dll to remain in ResolvedFileToPublish." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And (@(_R2RAssembliesToHash->Count()) != 1 Or '@(_ReadyToRunTestCoreLibHash)' == '')"
+			Text="Expected only System.Private.CoreLib.dll to be hashed, but found '@(_R2RAssembliesToHash)'." />
 		<Error
 			Condition="'$(ExpectedReadyToRunConfiguration)' == 'CoreLib' And '@(_ReadyToRunTestAppReference)' == ''"
 			Text="Expected $(AssemblyName).dll to be passed to crossgen2 as a reference, but found '@(_ReadyToRunCompositeBuildReferences)'." />
+
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And '@(_ReadyToRunTestSystemRuntimeUnrooted)' == ''"
+			Text="Expected System.Runtime.dll to remain an unrooted ReadyToRun composite input in Release." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And @(_R2RAssembliesToHash->Count()) &lt; 2"
+			Text="Expected unrooted ReadyToRun assemblies to remain hashed in Release." />
+		<Error
+			Condition="'$(ExpectedReadyToRunConfiguration)' == 'FilteredRelease' And '@(_ReadyToRunTestAppReference)' == ''"
+			Text="Expected $(AssemblyName).dll to be passed to crossgen2 as a reference in filtered Release." />
 
 		<Error
 			Condition="'$(ExpectedReadyToRunConfiguration)' == 'Full' And '$(FilterReadyToRunAssemblies)' == 'true'"

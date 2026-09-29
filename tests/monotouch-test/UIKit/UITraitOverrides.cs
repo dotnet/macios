@@ -398,8 +398,8 @@ namespace MonoTouchFixtures.UIKit {
 
 			using var view = new UIView ();
 			using var registration = view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
-			using var copy = registration.Copy (null);
-			Assert.That (copy.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Copy");
+			Assert.Throws<NotSupportedException> (() => registration.Copy (null), "Copy");
+			Assert.That (registration.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Original remains registered");
 
 			registration.Dispose ();
 			Assert.Throws<ObjectDisposedException> (() => registration.Copy (null), "Copy after disposal");
@@ -417,6 +417,85 @@ namespace MonoTouchFixtures.UIKit {
 		static WeakReference AbandonRegistration (out WeakReference observable)
 		{
 			return new WeakReference (CreateRegistration (out observable), trackResurrection: true);
+		}
+
+		[Register ("TraitChangeTarget")]
+		class TraitChangeTarget : NSObject {
+			readonly Action callback;
+
+			public TraitChangeTarget (Action callback)
+			{
+				this.callback = callback;
+			}
+
+			[Export ("traitChanged:previousCollection:")]
+			void TraitChanged (IUITraitEnvironment environment, UITraitCollection previousCollection)
+			{
+				callback ();
+			}
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static IUITraitChangeRegistration CreateTargetRegistration (UIViewController observable, Action callback, out WeakReference target)
+		{
+			var receiver = new TraitChangeTarget (callback);
+			target = new WeakReference (receiver);
+			return observable.RegisterForTraitChanges (new [] { new Class (typeof (UITraitVerticalSizeClass)) },
+				receiver, new Selector ("traitChanged:previousCollection:"));
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference AbandonTargetRegistration (out WeakReference observable, out WeakReference target)
+		{
+			var controller = new UIViewController ();
+			observable = new WeakReference (controller);
+			return new WeakReference (CreateTargetRegistration (controller, () => { }, out target), trackResurrection: true);
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RegisterForTraitChanges_RootsTarget (bool disposeRegistration)
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var observable = new UIViewController ();
+			var callbacks = 0;
+			using var registration = CreateTargetRegistration (observable, () => callbacks++, out var target);
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			Assert.That (target.IsAlive, Is.True, "Target rooted");
+
+			var initial = observable.TraitCollection.VerticalSizeClass;
+			observable.TraitOverrides.VerticalSizeClass = initial == UIUserInterfaceSizeClass.Regular ?
+				UIUserInterfaceSizeClass.Compact : UIUserInterfaceSizeClass.Regular;
+			Assert.That (callbacks, Is.EqualTo (1), "Callback after collection");
+
+			if (disposeRegistration)
+				registration.Dispose ();
+			else
+				observable.UnregisterForTraitChanges (registration);
+
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !target.IsAlive;
+			}), Is.True, "Target released");
+			observable.TraitOverrides.VerticalSizeClass = initial;
+			Assert.That (callbacks, Is.EqualTo (1), "Callback unregistered");
+			GC.KeepAlive (registration);
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_TargetFinalizer ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			var registration = AbandonTargetRegistration (out var observable, out var target);
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !registration.IsAlive && !observable.IsAlive && !target.IsAlive;
+			}), Is.True, "Registration finalized and observable and target released");
 		}
 
 		[Test]

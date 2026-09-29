@@ -109,7 +109,7 @@ namespace UIKit {
 			GC.KeepAlive (super);
 			GC.KeepAlive (target);
 			GC.KeepAlive (action);
-			return CreateRegistration (This, handle);
+			return CreateRegistration (This, handle, target);
 		}
 
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, Selector action)
@@ -138,11 +138,11 @@ namespace UIKit {
 			return CreateRegistration (This, handle);
 		}
 
-		private static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle)
+		private static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle, NSObject? target = null)
 		{
 			var registration = Runtime.GetINativeObject<IUITraitChangeRegistration> (handle, false)
 				?? throw new InvalidOperationException ("UIKit returned a null trait change registration.");
-			return new UITraitChangeRegistrationToken (observable, registration);
+			return new UITraitChangeRegistrationToken (observable, registration, target);
 		}
 
 		private static NSObject? GetSuper (IUITraitChangeObservable observable)
@@ -315,6 +315,7 @@ namespace UIKit {
 		private sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
 			GCHandle observable;
 			IUITraitChangeRegistration? registration;
+			NSObject? target;
 
 			public NativeHandle Handle {
 				get {
@@ -322,17 +323,18 @@ namespace UIKit {
 				}
 			}
 
-			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration)
+			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration, NSObject? target)
 			{
 				this.observable = GCHandle.Alloc (observable);
 				this.registration = registration;
+				this.target = target;
 			}
 
 			public NSObject Copy (NSZone? zone)
 			{
 				if (registration is null)
 					throw new ObjectDisposedException (nameof (UITraitChangeRegistrationToken));
-				return registration.Copy (zone);
+				throw new NotSupportedException ("Trait change registration tokens cannot be copied.");
 			}
 
 			~UITraitChangeRegistrationToken ()
@@ -372,6 +374,8 @@ namespace UIKit {
 				// UIKit unregisters automatically when the observable is deallocated.
 				// The finalizer must not call UIKit's main-thread-only unregister method.
 				registration = null;
+				GC.KeepAlive (target);
+				target = null;
 				this.observable.Free ();
 			}
 		}

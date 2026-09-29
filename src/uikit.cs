@@ -36936,6 +36936,7 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when a trait changes.</param>
 		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
 		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, handler)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withHandler:")]
@@ -36945,7 +36946,8 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="target">The object on which to invoke the selector.</param>
 		/// <param name="action">The selector to invoke.</param>
-		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this observable and <paramref name="target" /> alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
 		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, target, action)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withTarget:action:")]
@@ -36955,6 +36957,7 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="action">The selector to invoke.</param>
 		/// <returns>A token that keeps this observable alive until disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</remarks>
 		[Abstract (GenerateExtensionMethod = true)]
 		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, action)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withAction:")]

@@ -962,7 +962,6 @@
 				XamarinRuntime=$(_XamarinRuntime)
 				XcodeVersion=$(_XcodeVersion)
 			</_CustomLinkerOptions>
-			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --custom-data "LinkerOptionsFile=$(_CustomLinkerOptionsFile)"</_ExtraTrimmerArgs>
 			<_ExtraTrimmerArgs Condition="'$(TrimMode)' == 'copy' And '$(MarkCopiedAssemblies)' != 'true'">$(_ExtraTrimmerArgs) --custom-data DisableMarkingOfCopyAssemblies=true</_ExtraTrimmerArgs>
 
 			<!-- Verbose output, so that we get something to stdout when something goes wrong -->
@@ -1011,10 +1010,6 @@
 
 			<!-- We always want the linker to process debug symbols, even when building in Release mode, because the AOT compiler uses the managed debug symbols to output DWARF debugging symbols -->
 			<TrimmerRemoveSymbols Condition="'$(TrimmerRemoveSymbols)' == ''">false</TrimmerRemoveSymbols>
-
-			<!-- Linker -->
-			<_AdditionalTaskAssemblyDirectory>$(_XamarinSdkRootDirectoryOnMac)tools/dotnet-linker/</_AdditionalTaskAssemblyDirectory>
-			<_AdditionalTaskAssembly>$(_AdditionalTaskAssemblyDirectory)dotnet-linker.dll</_AdditionalTaskAssembly>
 
 			<MobileAggressiveAttributeTrimming Condition="'$(MobileAggressiveAttributeTrimming)' == '' And '$(_UseNativeAot)' != 'true'">true</MobileAggressiveAttributeTrimming>
 			<_TrimAttributesLinkDescriptionPath>$(_XamarinSdkRootDirectory)tools/TrimAttributes.LinkDescription.xml</_TrimAttributesLinkDescriptionPath>
@@ -1365,7 +1360,6 @@
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/TrimmerRootDescriptor.items" />
-			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/ManagedAssemblyToLink.items" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -1391,21 +1385,13 @@
 			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
 			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
 			<_TrimmerRootDescriptorFromCustomLinkerSteps Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'TrimmerRootDescriptor.items'" />
-			<_ManagedAssemblyToLinkFromLinker Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'ManagedAssemblyToLink.items'" />
 
 			<TrimmerRootDescriptor Include="@(_TrimmerRootDescriptorFromCustomLinkerSteps)" />
 		</ItemGroup>
 
 		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static'">
 			<_TypeMapAssemblies Include="$(_TypeMapOutputDirectory)/*.dll" />
-			<ResolvedFileToPublish Include="@(_ManagedAssemblyToLinkFromLinker)">
-				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-				<RelativePath>$(_AssemblyPublishDir)%(Filename)%(Extension)</RelativePath>
-				<OriginalRelativePath>%(Filename)%(Extension)</OriginalRelativePath>
-			</ResolvedFileToPublish>
 			<FileWrites Include="@(_TypeMapAssemblies)" />
-			<FileWrites Include="@(_ManagedAssemblyToLinkFromLinker)" />
 			<FileWrites Include="@(_RegistrarFile)" />
 			<FileWrites Include="@(_RegistrarFile -> '%(AdditionalDependencies)')" />
 		</ItemGroup>
@@ -2020,7 +2006,6 @@
 			<ManagedBinary Include="$(IntermediateLinkDir)$(TargetName)$(TargetExt)" />
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
-			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
 		</ItemGroup>
 
 		<ItemGroup>

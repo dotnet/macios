@@ -1509,16 +1509,6 @@ namespace Xamarin.Linker {
 			}
 			AssemblySaved?.Invoke (assembly);
 			if (action == AssemblyAction.Copy) {
-#if !ASSEMBLY_PREPARER
-				// Preserve TypeForwardedTo which would the linker sweep otherwise
-				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
-				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
-				if (assembly.MainModule.HasExportedTypes) {
-					foreach (var type in assembly.MainModule.ExportedTypes) {
-						annotations.Mark (type);
-					}
-				}
-#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1534,11 +1524,6 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateAttribute (MethodReference constructor)
 		{
-#if !ASSEMBLY_PREPARER
-			// For some reason the trimmer doesn't mark attribute constructors
-			// This is probably only needed when running as a custom linker step.
-			configuration.Context.Annotations.Mark (constructor.Resolve ());
-#endif // !ASSEMBLY_PREPARER
 			return new CustomAttribute (constructor);
 		}
 

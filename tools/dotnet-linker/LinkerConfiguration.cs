@@ -91,9 +91,9 @@ namespace Xamarin.Linker {
 			}
 		}
 		public DotNetResolver AssemblyResolver { get; private set; }
-	 	public IMetadataResolver MetadataResolver { get; private set; }
+		public IMetadataResolver MetadataResolver { get; private set; }
 
-		public LinkContext Context { get =>  DerivedLinkContext; }
+		public LinkContext Context { get => DerivedLinkContext; }
 		public DerivedLinkContext DerivedLinkContext { get => Application.LinkContext; }
 		public Profile Profile { get; private set; }
 

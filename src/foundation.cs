@@ -18432,7 +18432,9 @@ namespace Foundation {
 
 		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]
-		void AccommodatePresentedItemEviction (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemEviction (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="newURL">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -18468,7 +18470,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedSubitemDeletionAtURL:completionHandler:")]
-		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="atUrl">To be added.</param>
 		/// <summary>To be added.</summary>

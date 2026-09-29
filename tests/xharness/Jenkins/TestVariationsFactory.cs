@@ -65,12 +65,7 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = $"{test.ProjectConfiguration} (CoreCLR, Trimmable Static Registrar)", TestVariation = "coreclr|trimmable-static-registrar", Ignored = ignore };
 				}
 				break;
-			case "link sdk":
 			case "link all":
-				if (supports_coreclr && jenkins.Harness.DotNetVersion.Major < 11)
-					yield return new TestData { Variation = $"{test.ProjectConfiguration} (CoreCLR, Trimmable Static Registrar)", TestVariation = "coreclr|trimmable-static-registrar", Ignored = ignore };
-				if (test.TestName != "link all")
-					break;
 				if (test.ProjectConfiguration == "Debug") {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
 				}
@@ -84,9 +79,6 @@ namespace Xharness.Jenkins {
 				// otherwise nothing is trimmed away and none of this is exercised.
 				if (supports_coreclr)
 					yield return new TestData { Variation = $"{test.ProjectConfiguration} (Trimmable Static Registrar, link sdk)", TestVariation = "linksdk|trimmable-static-registrar", Ignored = ignore };
-				// On .NET 11+ this is already covered by the default no-link CoreCLR configuration.
-				if (jenkins.Harness.DotNetVersion.Major < 11)
-					yield return new TestData { Variation = $"{test.ProjectConfiguration} (inline dlfcn, dont link)", TestVariation = "dontlink|inline-dlfcn-methods-compat", Ignored = ignore };
 				break;
 			}
 

@@ -47,11 +47,11 @@
 		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<!--
-			On .NET 11+, make the trimmable-static registrar the default for NativeAOT. This has to be set here,
+			Make the trimmable-static registrar the default for NativeAOT. This has to be set here,
 			at evaluation time, because the static _PostprocessAssembliesAfterIlc gate checks the registrar at
 			evaluation time. The CoreCLR default is set later in SelectRegistrar, once the exact link mode is known.
 		-->
-		<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">trimmable-static</Registrar>
+		<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">trimmable-static</Registrar>
 
 		<AfterMicrosoftNETSdkTargets>$(AfterMicrosoftNETSdkTargets);$(MSBuildThisFileDirectory)Microsoft.$(_PlatformName).Sdk.targets</AfterMicrosoftNETSdkTargets>
 
@@ -114,14 +114,14 @@
 		<AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">false</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
 
-	<!-- Set default value for InlineDlfcnMethods based on .NET version and NativeAOT -->
-	<PropertyGroup Condition="'$(InlineDlfcnMethods)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+	<!-- Set default value for InlineDlfcnMethods based on NativeAOT -->
+	<PropertyGroup Condition="'$(InlineDlfcnMethods)' == ''">
 		<InlineDlfcnMethods Condition="'$(_UseNativeAot)' == 'true'">strict</InlineDlfcnMethods>
 		<InlineDlfcnMethods Condition="'$(InlineDlfcnMethods)' == ''">compatibility</InlineDlfcnMethods>
 	</PropertyGroup>
 
-	<!-- Set default value for InlineClassGetHandle based on .NET version -->
-	<PropertyGroup Condition="'$(InlineClassGetHandle)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+	<!-- Set default value for InlineClassGetHandle -->
+	<PropertyGroup Condition="'$(InlineClassGetHandle)' == ''">
 		<InlineClassGetHandle Condition="'$(_UseNativeAot)' == 'true'">strict</InlineClassGetHandle>
 		<InlineClassGetHandle Condition="'$(InlineClassGetHandle)' == ''">compatibility</InlineClassGetHandle>
 	</PropertyGroup>

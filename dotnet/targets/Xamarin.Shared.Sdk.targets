@@ -611,20 +611,20 @@
 		<PropertyGroup>
 			<!--
 			Registrar configuration:
-				- On .NET 11+, set 'partial-static' for CoreCLR simulator builds when no assemblies are trimmed
+				- Set 'partial-static' for CoreCLR simulator builds when no assemblies are trimmed
 				  and MarshalManagedExceptionMode is default (or not set), otherwise set 'trimmable-static'.
 				- Set 'managed-static' for:
 					- NativeAOT supported platforms in all configurations
 					- ios/tvos device builds in all configurations
 					- macOS/MacCatalyst builds in release configuration
-				  (On .NET 11+ NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
+				  (NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
 				  evaluation time, in Xamarin.Shared.Sdk.props.)
 				- Set 'partial-static' for:
 					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
 				- Otherwise set 'dynamic' 
 			-->
-			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And '$(_SdkIsSimulator)' == 'true' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default') And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">partial-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">trimmable-static</Registrar>
+			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And '$(_SdkIsSimulator)' == 'true' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default')">partial-static</Registrar>
+			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true'">trimmable-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_BundlerDebug)' != 'true' And '$(SdkIsDesktop)' == 'true'">managed-static</Registrar>
@@ -807,13 +807,8 @@
 				standard NativeAOT flow). This simplifies the pipeline and makes it possible to run ILC before the
 				native registrar code is generated. When ILLink is skipped, we copy the prepared assemblies to the
 				IntermediateLinkDir ourselves (see _PopulateLinkDirWhenSkippingILLink).
-
-				This is gated on .NET 11+: feeding the untrimmed assemblies to ILC hits ILC's duplicate-type-name
-				bug (https://github.com/dotnet/runtime/issues/127004, e.g. the two Foundation.NSDictionary_Proxy
-				types the trimmable-static registrar emits), which is only fixed in the .NET 11+ ILC. On .NET 10
-				we keep running ILLink (which trims away the duplicates before ILC sees them).
 			-->
-			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true'">true</_SkipILLink>
 			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
 
 			<!-- Yep, we want to run ILLink as well, because we need our custom steps to run (NativeAOT sets this to false, so set it back to true), unless we're skipping ILLink (see _SkipILLink above) -->
@@ -822,7 +817,7 @@
 			<TypeMapEntryAssembly Condition="'$(Registrar)' == 'trimmable-static'">$(_TypeMapAssemblyName)</TypeMapEntryAssembly>
 			<!-- ILLink targets add typemap-entry-assembly to _ExtraTrimmerArgs in a static PropertyGroup,
 			     but that's evaluated at import time before TypeMapEntryAssembly is set. Add it here instead. -->
-			<_ExtraTrimmerArgs Condition="'$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">$(_ExtraTrimmerArgs) --typemap-entry-assembly &quot;$(_TypeMapAssemblyName)&quot;</_ExtraTrimmerArgs>
+			<_ExtraTrimmerArgs Condition="'$(Registrar)' == 'trimmable-static'">$(_ExtraTrimmerArgs) --typemap-entry-assembly &quot;$(_TypeMapAssemblyName)&quot;</_ExtraTrimmerArgs>
 
 			<!--
 				In the case of NativeAOT builds, the trim warnings will be produced either by the ILLink roslyn analyzer in Debug builds
@@ -1061,16 +1056,6 @@
 			>
 				<TrimMode>copy</TrimMode> <!-- Don't use 'copyused', because that might still end up saving some assemblies, and if that's the platform assembly, it may break the partial static registrar -->
 			</ResolvedFileToPublish>
-		</ItemGroup>
-
-		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), '11.0'))">
-			<!--
-				This step must run because otherwise ILLink will remove the type map attributes
-				from the type map assemblies the trimmable registrar generated before ILLink ran.
-
-				It's not needed on .NET 11+, because there we pass the typemap-entry-assembly argument to ILLink instead.
-			-->
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SetTypeMapEntryAssemblyStep" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -1354,12 +1339,10 @@
 		so ILC consumes the prepared (pre-postprocessing) assemblies and the postprocessing output no longer feeds
 		ILC. The gate is computed statically (all the properties are available at evaluation time) so it can be
 		used both in static target wiring and in runtime target conditions. It mirrors the conditions that make
-		_SkipILLink true (see _SkipILLink) - in particular the .NET 11+ gate - because this reorder is only valid
-		when ILLink is skipped: when ILLink still runs (e.g. .NET 10) we must keep postprocessing before ILC, so
-		_PostprocessAssemblies handles it as usual and this target stays off.
+		_SkipILLink true (see _SkipILLink), because this reorder is only valid when ILLink is skipped.
 	-->
 	<PropertyGroup>
-		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(_UseNativeAot)' == 'true' And '$(Registrar)' == 'trimmable-static' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_PostprocessAssembliesAfterIlc>
+		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == '' And '$(_UseNativeAot)' == 'true' And '$(Registrar)' == 'trimmable-static'">true</_PostprocessAssembliesAfterIlc>
 		<_PostprocessAssembliesAfterIlc Condition="'$(_PostprocessAssembliesAfterIlc)' == ''">false</_PostprocessAssembliesAfterIlc>
 		<!-- When postprocessing runs after ILC, _LoadLinkerOutput must run the postprocessing target first so
 		     that the *.items files (registrar.mm etc.) exist when they're loaded. -->

@@ -8,6 +8,7 @@
 //
 
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 #if MONOMAC
@@ -36,8 +37,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 				GC.Collect ();
 				GC.WaitForPendingFinalizers ();
 				if (!reference.IsAlive)
-					System.Threading.Interlocked.Increment (ref collected);
-				System.Threading.Interlocked.Increment (ref visits [index]);
+					Interlocked.Increment (ref collected);
+				Interlocked.Increment (ref visits [index]);
 			}, iterations);
 			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
 			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");

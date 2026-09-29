@@ -3022,7 +3022,7 @@ namespace Registrar {
 
 #if !LEGACY_TOOLS
 			// When we know which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC) - which
-			// is only the case for the trimmable static registrar with NativeAOT + PrepareAssemblies, where the
+			// is only the case for the trimmable static registrar with NativeAOT, where the
 			// native registrar code is generated after ILC - we can skip generating the native code for any class
 			// whose trampolines were all trimmed away by ILC (ILC only trims a class's trampolines when it has
 			// determined the class can't be constructed, so nothing will reference it). We must however keep any

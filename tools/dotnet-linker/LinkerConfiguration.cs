@@ -508,10 +508,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => PlatformAssembly = Path.GetFileNameWithoutExtension (value)),
 					new SaveValue ((key, storage) => saveNonEmpty (key, string.IsNullOrEmpty (PlatformAssembly) ? PlatformAssembly : PlatformAssembly + ".dll", storage))
 				)},
-				{ "PrepareAssemblies", (
-					new LoadValue ((key, value) => loadBool (key, value, out Application.PrepareAssemblies)),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.PrepareAssemblies, storage))
-				)},
 				{ "PublishTrimmed", (
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(PublishTrimmed ? "true" : "false")}"))

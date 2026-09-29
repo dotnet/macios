@@ -48,7 +48,7 @@ namespace Xamarin.Linker {
 		// Add [assembly: AssemblyMetadata ("IsTrimmable", "True")] to the given assembly.
 		//
 		// The type map assemblies are written to disk and then passed to ILLink as ordinary input assemblies
-		// (this happens when PrepareAssemblies=true, where we generate the type map assemblies before ILLink runs).
+		// (the assembly-preparer generates the type map assemblies before ILLink runs).
 		// ILLink only trims assemblies that are marked as trimmable when TrimMode is 'partial' (which is the
 		// default for our apps) - any other assembly is copied as-is, which also roots everything it references.
 		// The type map assemblies reference every Objective-C type in the app, so if they're not trimmed, nothing

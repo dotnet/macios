@@ -31,8 +31,6 @@ namespace Xamarin.Tests {
 
 			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
 			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
-			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "PrepareAssemblies", out var prepareAssemblies), Is.True, "Could not find the 'PrepareAssemblies' property in the binlog.");
-			Assert.That (prepareAssemblies, Is.EqualTo ("true"), "PrepareAssemblies");
 		}
 
 		[TestCase (ApplePlatform.iOS)]

@@ -60,25 +60,26 @@ namespace MonoTouchFixtures.CoreMidi {
 						// GetRefCons/SetRefCons return GeneralParamError (-50) on hosts that don't
 						// support refcons for endpoints, but can succeed (Ok) on hosts that do.
 						// Accept both, and only verify the refcon round-trip when the calls succeed.
+						const MidiError ParamErr = (MidiError) (-50);
 
-						var getA = (AudioQueueStatus) ep.GetRefCons (out var ref1, out var ref2);
-						Assert.That (getA, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons A");
-						if (getA == AudioQueueStatus.GeneralParamError) {
+						var getA = ep.GetRefCons (out var ref1, out var ref2);
+						Assert.That (getA, Is.EqualTo (MidiError.Ok).Or.EqualTo (ParamErr), "GetRefCons A");
+						if (getA == ParamErr) {
 							Assert.That (ref1, Is.EqualTo (IntPtr.Zero), "GetRefCons A 1");
 							Assert.That (ref2, Is.EqualTo (IntPtr.Zero), "GetRefCons A 2");
 						}
 
 						ref1 = unchecked((IntPtr) 0xfee1600d);
 						ref2 = 0x42f00f00;
-						var setB = (AudioQueueStatus) ep.SetRefCons (ref1, ref2);
-						Assert.That (setB, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "SetRefCons B");
+						var setB = ep.SetRefCons (ref1, ref2);
+						Assert.That (setB, Is.EqualTo (MidiError.Ok).Or.EqualTo (ParamErr), "SetRefCons B");
 
-						var getC = (AudioQueueStatus) ep.GetRefCons (out var ref1C, out var ref2C);
-						Assert.That (getC, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons C");
-						if (setB == AudioQueueStatus.Ok && getC == AudioQueueStatus.Ok) {
+						var getC = ep.GetRefCons (out var ref1C, out var ref2C);
+						Assert.That (getC, Is.EqualTo (MidiError.Ok).Or.EqualTo (ParamErr), "GetRefCons C");
+						if (setB == MidiError.Ok && getC == MidiError.Ok) {
 							Assert.That (ref1C, Is.EqualTo (ref1), "GetRefCons C 1");
 							Assert.That (ref2C, Is.EqualTo (ref2), "GetRefCons C 2");
-						} else if (getC == AudioQueueStatus.GeneralParamError) {
+						} else if (getC == ParamErr) {
 							Assert.That (ref1C, Is.EqualTo (IntPtr.Zero), "GetRefCons C 1");
 							Assert.That (ref2C, Is.EqualTo (IntPtr.Zero), "GetRefCons C 2");
 						}

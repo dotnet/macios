@@ -2,16 +2,11 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 using Foundation;
 using ObjCRuntime;
-
-using MidiEndpointRef = System.Int32;
-using MidiPortRef = System.Int32;
 
 #nullable enable
 

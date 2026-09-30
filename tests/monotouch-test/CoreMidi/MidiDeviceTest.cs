@@ -20,6 +20,8 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void ExternalDevice ()
 		{
 			using var device = Midi.CreateExternalDevice ("MonoTouchTestMidiTestDevice", "MonoTouchTestMidiTestManufacturer", "MonoTouchTestMidiTestModel", out var status);
+			if (status == MidiError.NotPermitted)
+				Assert.Inconclusive ("MIDI permission not granted in this environment.");
 			Assert.That (device, Is.Not.Null, "Device");
 			Assert.That (status, Is.EqualTo (MidiError.Ok), "Status");
 			if (device is not null) {

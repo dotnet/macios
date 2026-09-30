@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				var value = new MidiEventPacket ();
 				Assert.That (value.Timestamp, Is.EqualTo (0), "Timestamp");
 				Assert.That (value.WordCount, Is.EqualTo (0), "WordCount");
-				Assert.That (value.Words.Length, Is.EqualTo (0), "WordCount");
+				Assert.That (value.Words.Length, Is.EqualTo (0), "Words.Length");
 
 				ex = Assert.Throws<ArgumentOutOfRangeException> (() => v = value [-1], $"Index #-1");
 				Assert.That (ex.Message, Does.Contain ("index must be positive."), $"Index #-1 message");

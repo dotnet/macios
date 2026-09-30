@@ -142,8 +142,9 @@ partial class TestRuntime {
 
 	class AsyncState : IDisposable {
 #if HAS_UIKIT
-		UIViewController? initialRootViewController;
+		UIViewController? child;
 		UIWindow? window;
+		UIWindow? previousKeyWindow;
 		UINavigationController? navigation;
 #else
 		NSWindow? window;
@@ -161,13 +162,15 @@ partial class TestRuntime {
 						.ConnectedScenes
 						.SelectMany<UIScene, UIWindow> (v => (v as UIWindowScene)?.Windows ?? Array.Empty<UIWindow> ())
 						.LastOrDefault (v => v.IsKeyWindow);
-			if (window is null) {
-				window = new UIWindow (UIScreen.MainScreen.Bounds);
+			var initialRootViewController = window?.RootViewController;
+			if (initialRootViewController is null) {
+				previousKeyWindow = window;
+				window = previousKeyWindow?.WindowScene is UIWindowScene scene ? new UIWindow (scene) : new UIWindow (UIScreen.MainScreen.Bounds);
 				window.RootViewController = vc;
 				window.MakeKeyAndVisible ();
 				close_window = true;
+				initialRootViewController = vc;
 			}
-			initialRootViewController = window.RootViewController!;
 			navigation = initialRootViewController as UINavigationController;
 
 			// Pushing something to a navigation controller doesn't seem to work on phones
@@ -176,8 +179,18 @@ partial class TestRuntime {
 
 			if (navigation is not null) {
 				navigation.PushViewController (vc, false);
-			} else {
-				window.RootViewController = vc;
+			} else if (!close_window) {
+				child = vc;
+				initialRootViewController.AddChildViewController (vc);
+				vc.View.Frame = initialRootViewController.View.Bounds;
+				vc.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+				vc.BeginAppearanceTransition (true, false);
+				try {
+					initialRootViewController.View.AddSubview (vc.View);
+					vc.DidMoveToParentViewController (initialRootViewController);
+				} finally {
+					vc.EndAppearanceTransition ();
+				}
 			}
 #else
 			var size = new CGRect (0, 0, 300, 300);
@@ -200,16 +213,30 @@ partial class TestRuntime {
 #if HAS_UIKIT
 			if (navigation is not null) {
 				navigation.PopViewController (false);
-			} else if (!close_window) {
-				window.RootViewController = initialRootViewController;
+			} else if (child is not null) {
+				child.WillMoveToParentViewController (null);
+				child.BeginAppearanceTransition (false, false);
+				try {
+					child.View.RemoveFromSuperview ();
+					child.RemoveFromParentViewController ();
+				} finally {
+					child.EndAppearanceTransition ();
+				}
+				child = null;
 			}
 #endif // HAS_UIKIT
 
 			if (close_window) {
-#if !HAS_UIKIT
+#if HAS_UIKIT
+				window.Hidden = true;
+#else
 				window.Close ();
 #endif
 				window.Dispose ();
+#if HAS_UIKIT
+				previousKeyWindow?.MakeKeyWindow ();
+				previousKeyWindow = null;
+#endif
 			}
 
 			window = null;

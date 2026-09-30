@@ -2,16 +2,9 @@ using System.Collections.Generic;
 namespace Cecil.Tests {
 	public partial class HandleSafetyTest {
 		static HashSet<string> knownFailuresHandleSafety = new HashSet<string> {
-			"AddressBook.ABMultiValue`1/<>c.<.ctor>b__2_1`0 (T)",
-			"AddressBook.ABPerson/<>c__95`1.<CreateDictionaryMultiValue>b__95_1`0 (T)",
 			"AppKit.NSStringAttributes.Get (Foundation.NSString)",
 			"AudioUnit.AUScheduledAudioFileRegion.GetAudioFileRegion ()",
 			"AudioUnit.SamplerInstrumentData.ToStruct ()",
-			"CoreFoundation.CFDataBuffer.get_Handle ()",
-			"CoreFoundation.CFMessagePort.MessagePortCallback (System.IntPtr, System.Int32, System.IntPtr, System.IntPtr)",
-			"CoreFoundation.CFMutableString.Transform (CoreFoundation.CFRange&, CoreFoundation.CFStringTransform, System.Boolean)",
-			"CoreFoundation.CFMutableString.Transform (CoreFoundation.CFStringTransform, System.Boolean)",
-			"CoreFoundation.CFSocketSignature..ctor (System.Net.Sockets.AddressFamily, System.Net.Sockets.SocketType, System.Net.Sockets.ProtocolType, CoreFoundation.CFSocketAddress)",
 			"CoreGraphics.CGBitmapParameters.set_ColorSpace (CoreGraphics.CGColorSpace)",
 			"CoreGraphics.CGColorSpace.CreateAcesCGLinear ()",
 			"CoreGraphics.CGColorSpace.CreateAdobeRgb1988 ()",

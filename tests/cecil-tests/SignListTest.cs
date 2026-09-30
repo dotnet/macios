@@ -61,7 +61,7 @@ namespace Cecil.Tests {
 						continue;
 					}
 					Assert.That (include, Does.Not.Contain ("/"), $"Use Windows-style separators in {signList}: {include}");
-					var expression = Regex.Escape (include).Replace (@"\*", ".*").Replace (@"\?", ".");
+					var expression = Regex.Escape (include).Replace (@"\*", @"[^\\]*").Replace (@"\?", @"[^\\]");
 					patterns.Add ((group, include, new Regex ($"(^|\\\\){expression}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)));
 				}
 			}

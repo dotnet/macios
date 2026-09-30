@@ -2606,7 +2606,7 @@ namespace Xamarin.Tests {
 			properties ["UseMonoRuntime"] = "false";
 
 			var rv = DotNet.AssertBuild (project_path, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Where (v => v.ProjectFile == project_path).ToArray ();
 			AssertWarningMessages (warnings, $"RuntimeIdentifiers is not recommended for {platform.AsString ()} projects. Use RuntimeIdentifier instead to build for a single architecture.");
 		}
 

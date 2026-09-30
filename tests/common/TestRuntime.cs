@@ -1738,7 +1738,8 @@ partial class TestRuntime {
 
 	public static void IgnoreInCIIfNetworkConnectionLost (Exception ex)
 	{
-		if (!(ex is NSErrorException nex))
+		var nex = FindInner<NSErrorException> (ex);
+		if (nex is null)
 			return;
 
 		IgnoreInCIIfNetworkConnectionLost (nex.Error);

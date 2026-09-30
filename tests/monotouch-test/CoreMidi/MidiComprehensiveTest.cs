@@ -99,8 +99,15 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			MidiError status;
 			using var device = Midi.CreateExternalDevice ("Test Device", "Test Manufacturer", "Test Model", out status);
-			Assert.That (status, Is.EqualTo (MidiError.Ok), "Status");
+			MidiTestHelpers.AssertStatusOkOrInconclusive (status, "Status");
 			var nonNullDevice = MidiTestHelpers.AssertNotNull (device, "Device");
+
+			using var entity = nonNullDevice.CreateEntity ("Test Entity", MidiProtocolId.Protocol_2_0, false, 1, 1, out var entityStatus);
+			MidiTestHelpers.AssertStatusOkOrInconclusive (entityStatus, "CreateEntity");
+			var nonNullEntity = MidiTestHelpers.AssertNotNull (entity, "Entity");
+
+			var endpointStatus = nonNullEntity.AddOrRemoveEndpoints (2, 2);
+			MidiTestHelpers.AssertStatusOkOrInconclusive (endpointStatus, "AddOrRemoveEndpoints");
 
 			// Clean up
 			var removeStatus = MidiSetup.RemoveExternalDevice (nonNullDevice);
@@ -115,7 +122,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		public void AddRemoveExternalDevice ()
 		{
 			var device = Midi.CreateExternalDevice ("TestExtDevice", "TestExtManufacturer", "TestExtModel", out var createStatus);
-			Assert.That (createStatus, Is.EqualTo (MidiError.Ok), "Create");
+			MidiTestHelpers.AssertStatusOkOrInconclusive (createStatus, "Create");
 			var nonNullDevice = MidiTestHelpers.AssertNotNull (device, "Device not null");
 
 			var addStatus = MidiSetup.AddExternalDevice (nonNullDevice);

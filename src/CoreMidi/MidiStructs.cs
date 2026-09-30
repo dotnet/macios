@@ -224,6 +224,7 @@ namespace CoreMidi {
 
 	/// <summary>A struct that represents a request to transmit a single UMP system-exclusive event.</summary>
 	[NativeName ("MIDISysexSendRequestUMP")]
+	[StructLayout (LayoutKind.Sequential)]
 	struct MidiSysexSendRequestUmp {
 		MidiEndpointRef destination;
 		IntPtr /* UInt32* */ words;
@@ -270,6 +271,6 @@ namespace CoreMidi {
 			get => completionRefCon;
 			set => completionRefCon = value;
 		}
-	};
+	}
 }
 #endif

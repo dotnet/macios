@@ -30,7 +30,7 @@ namespace CoreMidi {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreMidiLibrary)]
-		static extern unsafe int MIDIBluetoothDriverDisconnect (/* CFStringRef* */ NativeHandle uuid);
+		static extern unsafe int MIDIBluetoothDriverDisconnect (/* CFStringRef */ NativeHandle uuid);
 
 		/// <summary>Disconnects a Bluetooth MIDI device identified by its UUID.</summary>
 		/// <param name="uuid">The UUID of the Bluetooth MIDI device to disconnect.</param>

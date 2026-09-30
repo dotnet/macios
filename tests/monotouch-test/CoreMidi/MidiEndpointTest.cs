@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 
-using AudioToolbox;
 using Foundation;
 using CoreMidi;
 
@@ -39,7 +38,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		[Test]
-		public void SendTest ()
+		public void RefConsTest ()
 		{
 			var anyChecks = false;
 
@@ -84,15 +83,15 @@ namespace MonoTouchFixtures.CoreMidi {
 							Assert.That (ref2C, Is.EqualTo (IntPtr.Zero), "GetRefCons C 2");
 						}
 
-						var setD = (AudioQueueStatus) ep.SetRefCons (IntPtr.Zero, IntPtr.Zero);
-						Assert.That (setD, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "SetRefCons D");
+						var setD = ep.SetRefCons (IntPtr.Zero, IntPtr.Zero);
+						Assert.That (setD, Is.EqualTo (MidiError.Ok).Or.EqualTo (ParamErr), "SetRefCons D");
 
-						var getE = (AudioQueueStatus) ep.GetRefCons (out var ref1E, out var ref2E);
-						Assert.That (getE, Is.EqualTo (AudioQueueStatus.Ok).Or.EqualTo (AudioQueueStatus.GeneralParamError), "GetRefCons E");
-						if (setD == AudioQueueStatus.Ok && getE == AudioQueueStatus.Ok) {
+						var getE = ep.GetRefCons (out var ref1E, out var ref2E);
+						Assert.That (getE, Is.EqualTo (MidiError.Ok).Or.EqualTo (ParamErr), "GetRefCons E");
+						if (setD == MidiError.Ok && getE == MidiError.Ok) {
 							Assert.That (ref1E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
 							Assert.That (ref2E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
-						} else if (getE == AudioQueueStatus.GeneralParamError) {
+						} else if (getE == ParamErr) {
 							Assert.That (ref1E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 1");
 							Assert.That (ref2E, Is.EqualTo (IntPtr.Zero), "GetRefCons E 2");
 						}

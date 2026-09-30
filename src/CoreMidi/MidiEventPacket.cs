@@ -11,7 +11,7 @@ using ObjCRuntime;
 #nullable enable
 
 namespace CoreMidi {
-	/// <summary>This class represents the Objective-C struct MIDIEventPacket, which is a variable-sized struct.</summary>
+	/// <summary>Represents the native CoreMIDI <c>MIDIEventPacket</c> variable-sized C struct.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]

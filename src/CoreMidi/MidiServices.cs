@@ -630,9 +630,9 @@ namespace CoreMidi {
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static int /* OSStatus = SInt32 */ MIDISourceCreate (MidiObjectRef handle, IntPtr name, MidiEndpointRef* endpoint);
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDISourceCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc);
@@ -716,9 +716,9 @@ namespace CoreMidi {
 		/// <param name="protocol">The MIDI protocol for the data this source will produce.</param>
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public MidiEndpoint? CreateVirtualSource (string name, MidiProtocolId protocol, out MidiError status)
 		{
@@ -764,9 +764,9 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiEndpoint" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiEndpoint? CreateVirtualDestination (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
@@ -792,9 +792,9 @@ namespace CoreMidi {
 			del?.Invoke (eventList, srcConnRefCon);
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIDestinationCreateWithProtocol (MidiClientRef client, IntPtr /* CFStringRef */ name, MidiProtocolId protocol, MidiEndpointRef* outSrc, BlockLiteral* /* MIDIReceiveBlock */ readBlock);
@@ -819,9 +819,9 @@ namespace CoreMidi {
 			return new MidiPort (this, name, false);
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreMidiLibrary)]
 		unsafe extern static OSStatus MIDIInputPortCreateWithProtocol (
@@ -838,9 +838,9 @@ namespace CoreMidi {
 		/// <param name="status">A status code that describes the result of this operation. This will be <see cref="MidiError.Ok" /> in case of success.</param>
 		/// <returns>A newly created <see cref="MidiPort" /> if successful, otherwise null.</returns>
 		/// <remarks>The <paramref name="readBlock" /> callback receives two pointers: the first is a pointer to the <c>MIDIEventList</c>, and the second is a pointer to the source <c>MIDIEndpointRef</c>. Use <see cref="MidiEventList(IntPtr)" /> to wrap the event list pointer.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("maccatalyst14.0")]
+		[SupportedOSPlatform ("macos11.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe MidiPort? CreateInputPort (string name, MidiProtocolId protocol, MidiReceiveBlock readBlock, out MidiError status)
@@ -1275,7 +1275,8 @@ namespace CoreMidi {
 				handle = tempHandle;
 
 				if (code != 0) {
-					gch.Free ();
+					if (gch.IsAllocated)
+						gch.Free ();
 					handle = MidiObject.InvalidRef;
 					throw new MidiException ((MidiError) code);
 				}
@@ -2944,7 +2945,9 @@ namespace CoreMidi {
 			unsafe {
 				status = (MidiError) MIDIDestinationCreate (client.GetCheckedHandle (), namePtr, &Read, GCHandle.ToIntPtr (gch), &handle);
 			}
-			if (handle == MidiObject.InvalidRef) {
+			if (status != MidiError.Ok || handle == MidiObject.InvalidRef) {
+				if (handle != MidiObject.InvalidRef)
+					MIDIEndpointDispose (handle);
 				gch.Free ();
 				return;
 			}

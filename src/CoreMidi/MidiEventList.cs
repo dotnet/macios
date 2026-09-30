@@ -15,7 +15,7 @@ using MidiPortRef = System.Int32;
 #nullable enable
 
 namespace CoreMidi {
-	/// <summary>This class represents the Objective-C struct MIDIEventList, which is a list of <see cref="MidiEventPacket" /> packets.</summary>
+	/// <summary>A managed wrapper around the native CoreMIDI <c>MIDIEventList</c> struct, which is a list of <see cref="MidiEventPacket" /> packets.</summary>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
@@ -44,7 +44,7 @@ namespace CoreMidi {
 		bool owns;
 		unsafe MidiEventPacket* currentPacket;
 
-		const int MinimumSize = 276; /* 4 + 4 + sizeof (MidiEventPacket) */
+		static readonly int MinimumSize = Marshal.SizeOf<MIDIEventList> ();
 
 		/// <summary>The <see cref="MidiProtocolId" /> protocol for the packets in this list of packets.</summary>
 		/// <returns>The <see cref="MidiProtocolId" /> protocol for the packets in this list of packets.</returns>
@@ -172,7 +172,7 @@ namespace CoreMidi {
 		public unsafe bool Add (ulong time, uint [] words)
 		{
 			if (midiDataSize < 0)
-				throw new InvalidOperationException ($"Can't add to a MidiEventList initialized from a raw pointer.");
+				throw new InvalidOperationException ("Can't add to a MidiEventList initialized from a raw pointer.");
 
 			ArgumentNullException.ThrowIfNull (words);
 

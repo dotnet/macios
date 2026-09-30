@@ -173,8 +173,12 @@ public static class ErrorHelper {
 				}
 			}
 
-			if (log.Verbosity > 2 && e.StackTrace is not null)
-				log.LogError (e.StackTrace);
+			if (log.Verbosity > 2 && e.StackTrace is not null) {
+				if (error)
+					log.LogError (e.StackTrace);
+				else
+					log.Log (e.StackTrace);
+			}
 		} else {
 			log.LogError ("error BI0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 			log.LogException (e);

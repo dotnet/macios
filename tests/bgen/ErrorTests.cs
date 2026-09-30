@@ -78,6 +78,21 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void InvalidSelectorDoesNotExitProcess (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = profile,
+			};
+			bgen.AddTestApiDefinition ("invalid-selector.cs");
+
+			bgen.AssertExecuteError ("invalid selector");
+			bgen.AssertError (0, "Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
+			Assert.That (bgen.Output.ToString (), Does.Contain ("Export attribute contains invalid selector name: invalid(selector"));
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void BI1036 (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

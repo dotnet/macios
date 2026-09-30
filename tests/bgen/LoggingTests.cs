@@ -73,15 +73,34 @@ namespace GeneratorTests {
 
 			ErrorHelper.Show (log, new InvalidOperationException ("unexpected"), false);
 
-			Assert.That (log.Messages, Has.Some.StartsWith ("error BI0000: Unexpected error"));
+			Assert.That (log.ErrorMessages, Has.Some.StartsWith ("error BI0000: Unexpected error"));
 			Assert.That (log.Exceptions, Has.Count.EqualTo (1));
 			Assert.That (log.Exceptions [0].Message, Is.EqualTo ("unexpected"));
 		}
 
+		[Test]
+		public void InjectedLogVerboseWarning ()
+		{
+			var log = new TestLog { Verbosity = 3 };
+			BindingException warning;
+			try {
+				throw new BindingException (1027, false);
+			} catch (BindingException ex) {
+				warning = ex;
+			}
+
+			ErrorHelper.Show (log, warning, false);
+
+			Assert.That (log.Warnings, Has.Count.EqualTo (1));
+			Assert.That (log.ErrorMessages, Is.Empty);
+			Assert.That (log.Messages, Has.Some.Contains (nameof (InjectedLogVerboseWarning)));
+		}
+
 		class TestLog : IToolLog {
-			public int Verbosity => 0;
+			public int Verbosity { get; init; }
 			public ApplePlatform Platform => ApplePlatform.None;
 			public List<string> Messages { get; } = new ();
+			public List<string> ErrorMessages { get; } = new ();
 			public List<BindingException> Errors { get; } = new ();
 			public List<BindingException> Warnings { get; } = new ();
 			public List<Exception> Exceptions { get; } = new ();
@@ -93,7 +112,7 @@ namespace GeneratorTests {
 
 			public void LogError (string message)
 			{
-				Messages.Add (message);
+				ErrorMessages.Add (message);
 			}
 
 			public void LogError (BindingException exception)

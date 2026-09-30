@@ -87,8 +87,7 @@ namespace GeneratorTests {
 			bgen.AddTestApiDefinition ("invalid-selector.cs");
 
 			bgen.AssertExecuteError ("invalid selector");
-			bgen.AssertError (0, "Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
-			Assert.That (bgen.Output.ToString (), Does.Contain ("Export attribute contains invalid selector name: invalid(selector"));
+			bgen.AssertError (1129, "The selector 'invalid(selector' on 'InvalidSelector.InvalidSelectorType.InvalidSelector' contains invalid characters.");
 		}
 
 		[Test]

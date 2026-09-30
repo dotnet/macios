@@ -1249,7 +1249,7 @@ public partial class Generator : IMemberGatherer {
 			throw new BindingException (1024, true, mo.DeclaringType!.FullName, mo.Name);
 
 		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1)
-			throw new InvalidOperationException ($"Export attribute contains invalid selector name: {export.Selector}");
+			throw new BindingException (1129, true, export.Selector, FormatProvider (mo));
 
 		return export;
 	}

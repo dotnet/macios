@@ -47,7 +47,7 @@ run-dotnet: $(TARGETS)
 	$(DOTNET) build -t:Run $(PROJECT_NEW_FILE) $(COMMON_ARGS) /p:RuntimeIdentifier=ios-arm64 /bl:$@.binlog
 
 run-dotnet-sim:
-	$(DOTNET) build -t:Run $(PROJECT_NEW_FILE) $(COMMON_ARGS) /p:RuntimeIdentifier=iossimulator-x64 /p:Platform=iPhoneSimulator /bl:$@.binlog
+	$(DOTNET) build -t:Run $(PROJECT_NEW_FILE) $(COMMON_ARGS) /p:RuntimeIdentifier=iossimulator-arm64 /p:Platform=iPhoneSimulator /bl:$@.binlog
 
 .install-workloads.stamp:
 	$(DOTNET) workload install maui-maccatalyst --skip-manifest-update

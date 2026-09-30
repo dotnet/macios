@@ -31,8 +31,6 @@
 //
 //
 
-#define DOUBLE_BLOCKS
-
 global using nfloat = global::System.Runtime.InteropServices.NFloat;
 
 using CloudKit;
@@ -18400,7 +18398,6 @@ namespace Foundation {
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 		NSOperationQueue PresentedItemOperationQueue { get; }
 
-#if DOUBLE_BLOCKS
 		/// <param name="readerAction">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
@@ -18412,7 +18409,6 @@ namespace Foundation {
 		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToWriter:")]
 		void RelinquishPresentedItemToWriter (NSFilePresenterReacquirer writerAction);
-#endif
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>

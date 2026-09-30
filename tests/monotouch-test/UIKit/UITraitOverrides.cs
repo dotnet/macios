@@ -530,6 +530,59 @@ namespace MonoTouchFixtures.UIKit {
 			}), Is.True, "Registration finalized and observable released");
 		}
 
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference AbandonNativeRetainedRegistration (UIView parent, Action callback, bool useTarget, out WeakReference observable, out WeakReference? target)
+		{
+			var view = new UIView ();
+			parent.AddSubview (view);
+			observable = new WeakReference (view);
+			var traits = new [] { new Class (typeof (UITraitVerticalSizeClass)) };
+			IUITraitChangeRegistration registration;
+			if (useTarget) {
+				var receiver = new TraitChangeTarget (callback);
+				target = new WeakReference (receiver);
+				registration = view.RegisterForTraitChanges (traits, receiver, new Selector ("traitChanged:previousCollection:"));
+			} else {
+				target = null;
+				registration = view.RegisterForTraitChanges (traits, (environment, previousCollection) => callback ());
+			}
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Regular;
+			return new WeakReference (registration, trackResurrection: true);
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RegisterForTraitChanges_FinalizerWithNativeRetainedObservable (bool useTarget)
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var parent = new UIView ();
+			var callbacks = 0;
+			var registration = AbandonNativeRetainedRegistration (parent, () => callbacks++, useTarget, out var observable, out var target);
+			Assert.That (callbacks, Is.GreaterThan (0), "Callback registered");
+
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			Assert.That (registration.IsAlive, Is.True, "Token rooted until main queue cleanup");
+			Assert.That (observable.IsAlive, Is.True, "Observable rooted until native unregister");
+			if (target is not null)
+				Assert.That (target.IsAlive, Is.True, "Target rooted until native unregister");
+
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !registration.IsAlive && (target is null || !target.IsAlive);
+			}), Is.True, "Deferred cleanup completed");
+
+			var previousCallbacks = callbacks;
+			using var view = parent.Subviews [0];
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Regular;
+			Assert.That (callbacks, Is.EqualTo (previousCallbacks), "No callback after deferred unregister");
+			view.RemoveFromSuperview ();
+		}
+
 		[Test]
 		public void RegisterForTraitChanges_TypeArray ()
 		{

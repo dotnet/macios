@@ -340,7 +340,8 @@ namespace UIKit {
 			~UITraitChangeRegistrationToken ()
 			{
 				Runtime.NSLog ("Warning: trait change registration object was not disposed manually with Dispose()");
-				Dispose (false);
+				// The queued delegate roots this token until UIKit unregistration completes on the main thread.
+				CoreFoundation.DispatchQueue.MainQueue.DispatchAsync (Dispose);
 			}
 
 			public void Dispose ()
@@ -371,8 +372,6 @@ namespace UIKit {
 						throw new InvalidOperationException ("The trait change observable has been collected.");
 					observable.UnregisterForTraitChanges (registration);
 				}
-				// UIKit unregisters automatically when the observable is deallocated.
-				// The finalizer must not call UIKit's main-thread-only unregister method.
 				registration = null;
 				GC.KeepAlive (target);
 				target = null;

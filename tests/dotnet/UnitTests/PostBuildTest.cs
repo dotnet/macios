@@ -55,17 +55,9 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void BuildIpaTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		public void BuildIpaTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void BuildIpaTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+			BuildIpaTestImpl (platform, runtimeIdentifiers);
 		}
 
 		[Test]
@@ -138,7 +130,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		void BuildIpaTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
+		void BuildIpaTestImpl (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -150,7 +142,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["BuildIpa"] = "true";
 			properties ["Configuration"] = configuration;
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
+			properties ["UseMonoRuntime"] = "false";
 
 			var result = DotNet.AssertBuild (project_path, properties);
 
@@ -159,9 +151,8 @@ namespace Xamarin.Tests {
 			AssertApplicationArtifact (result.BinLogPath, appPath, platform, "app", isDirectory: true);
 			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, "ipa", isDirectory: false);
 
-			// With MonoVM, AOT compiles method bodies to native code and IL gets stripped.
 			// With CoreCLR (R2R), assemblies retain their IL bodies.
-			AssertBundleAssembliesStripStatus (appPath, useMonoRuntime);
+			AssertBundleAssembliesStripStatus (appPath, false);
 			AssertDSymDirectory (appPath);
 
 			// IpaIncludeSymbols defaults to true, so the .ipa must contain a populated 'Symbols' directory.
@@ -366,52 +357,6 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase ("MySimpleApp", ApplePlatform.iOS, "ios-arm64", true)]
-		[TestCase ("MySimpleApp", ApplePlatform.iOS, "ios-arm64", false)]
-		[TestCase ("MySimpleAppWithSatelliteReference", ApplePlatform.iOS, "ios-arm64", true)]
-		[TestCase ("MySimpleAppWithSatelliteReference", ApplePlatform.iOS, "ios-arm64", false)]
-		public void AssemblyStripping (string project, ApplePlatform platform, string runtimeIdentifiers, bool shouldStrip)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-
-			// Force EnableAssemblyILStripping since we are building debug which never will by default
-			properties ["EnableAssemblyILStripping"] = shouldStrip ? "true" : "false";
-			properties ["UseMonoRuntime"] = "true"; // *we* only strip assemblies when using MonoVM (R2R also does it, but that's not *us*, technically, and the result is also slightly different so a different test would be needed if we wanted to assert anything).
-
-			DotNet.AssertBuild (project_path, properties);
-
-			AssertBundleAssembliesStripStatus (appPath, shouldStrip);
-			Assert.That (Path.Combine (appPath, $"{project}.dll"), Does.Exist, "Application Assembly");
-			Assert.That (Path.Combine (appPath, "Microsoft.iOS.dll"), Does.Exist, "Platform Assembly");
-		}
-
-		[Test]
-		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
-		public void DefaultAssemblyStripping (string project, ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var configuration = "Release";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-
-			// Verify value defaults to false when not set
-			properties ["Configuration"] = configuration;
-			properties ["UseMonoRuntime"] = "true"; // *we* only strip assemblies when using MonoVM (R2R also does it, but that's not *us*, technically, and the result is also slightly different so a different test would be needed if we wanted to assert anything).
-
-			DotNet.AssertBuild (project_path, properties);
-
-			AssertBundleAssembliesStripStatus (appPath, false);
-		}
-
-		[Test]
 		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase ("MySimpleApp", ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase ("MySimpleApp", ApplePlatform.MacOSX, "osx-x64")]
@@ -466,23 +411,14 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
-		public void PublishTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
-		public void PublishTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		public void PublishTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+			PublishTestImpl (platform, runtimeIdentifiers);
 		}
 
-		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
+		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -511,7 +447,7 @@ namespace Xamarin.Tests {
 			var pkgPath = Path.Combine (tmpdir, $"MyPackage.{packageExtension}");
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
+			properties ["UseMonoRuntime"] = "false";
 			properties [pathVariable] = pkgPath;
 
 			var result = DotNet.AssertPublish (project_path, properties);

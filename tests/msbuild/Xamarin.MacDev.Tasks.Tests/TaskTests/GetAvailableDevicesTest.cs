@@ -107,6 +107,34 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void DeviceCtlDuplicateSimulator ()
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1.Replace ("00008003-012301230123ABCD", "3F1C114D-FC3D-481A-9CA1-499EE1339390"));
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
+
+			Assert.Multiple (() => {
+				Assert.That (task.Devices.Count, Is.EqualTo (4), "Devices count mismatch.");
+				Assert.That (task.Devices.Count (d => d.ItemSpec == "3F1C114D-FC3D-481A-9CA1-499EE1339390"), Is.EqualTo (1), "Duplicate simulator count mismatch.");
+				Assert.That (task.Devices.Single (d => d.ItemSpec == "3F1C114D-FC3D-481A-9CA1-499EE1339390").GetMetadata ("Type"), Is.EqualTo ("Simulator"), "Simulator metadata mismatch.");
+			});
+		}
+
+		public void DeviceCtlJsonVersion5 ()
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, "", DEVICECTL_JSON_VERSION_5);
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
+			Assert.Multiple (() => {
+				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
+				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("00008003-012301230123ABCD"), "Device UDID mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("Rolf's iPhone 15 - iOS 27.0"), "Device description mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("ios-arm64"), "Device RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Status"), Is.EqualTo ("Paired"), "Device Status mismatch.");
+			});
+		}
+
+		[Test]
 		public void SimCtl1 ()
 		{
 			if (!Configuration.CanRunArm64)
@@ -747,6 +775,43 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [1].GetMetadata ("State"), Is.EqualTo ("Shutdown"), "Device 2 State mismatch.");
 			});
 		}
+
+		const string DEVICECTL_JSON_VERSION_5 =
+		"""
+		{
+			"info": {
+				"jsonVersion": 5
+			},
+			"result": {
+				"devices": [
+					{
+						"_deprecationNotice": {
+							"deprecatedFields": [ "hardwareProperties", "deviceProperties", "connectionProperties" ],
+							"replacement": "properties"
+						},
+						"identifier": "33333333-AAAA-BBBB-CCCC-DDDDDDDDDDDD",
+						"properties": {
+							"device": {
+								"name": "Rolf's iPhone 15"
+							},
+							"hardware": {
+								"cpuType": {
+									"name": "arm64e"
+								},
+								"deviceType": "iPhone",
+								"platform": "iOS",
+								"udid": "00008003-012301230123ABCD"
+							},
+							"state": {
+								"osVersionNumber": "27.0",
+								"pairingState": "paired"
+							}
+						}
+					}
+				]
+			}
+		}
+		""";
 
 		const string DEVICECTL_JSON_1 =
 		"""

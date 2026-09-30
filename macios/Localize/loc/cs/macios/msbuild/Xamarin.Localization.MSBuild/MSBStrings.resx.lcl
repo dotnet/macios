@@ -1258,6 +1258,9 @@
       <Item ItemId=";E0192" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Úloha PrepareAssemblies se nezdařila, aniž by byla nahlášena konkrétní chyba. Pokud chcete získat další podrobnosti, proveďte sestavení znovu se zvýšenou úrovní podrobností.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2734,12 +2737,18 @@
       <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Neplatná hodnota DotNetRuntime: {0}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Neočekávaná hodnota RuntimeLibLinkMode pro NativeAOT: {0}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2755,6 +2764,9 @@
       <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Neplatná hodnota RuntimeLibLinkMode: {0}]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2788,12 +2800,18 @@
       <Item ItemId=";E7180" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nativní odkaz {0} v balíčku prostředků vazby {1} je neplatný: název musí být relativní cesta bez segmentů ..]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7181" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nativní knihovnu nelze znovu identifikovat jako {0}, protože tato cesta se nachází mimo určený výstupní adresář {1}.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2809,6 +2827,9 @@
       <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Podepisování kódu se nezdařilo s chybou errSecInternalComponent. Obvykle to znamená, že je klíčenka uzamčená, což je při sestavování přes SSH běžné. Nejprve odemkněte klíčenku, například spuštěním příkazu security unlock-keychain ~/Library/Keychains/login.keychain-db.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2833,18 +2854,27 @@
       <Item ItemId=";E7187" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Hodnota {0} vlastnosti {1} není platné číslo verze, protože obsahuje prázdné znaky.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7188" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The runtime configuration file '{0}' is not a valid JSON object.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Konfigurační soubor modulu runtime {0} není platný objekt JSON.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7189" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Pro položku manifestu aplikace {1} zadanou ve skupině položek AppManifestEntry byl zadán neznámý typ {0}. Očekávala se hodnota Remove, Boolean, String nebo StringArray.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2862,6 +2892,15 @@
           <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Neplatná hodnota '{0}' pro '{1}' položky manifestu aplikace typu '{2}' zadaná ve skupině položek AppManifestEntry. Očekávala se hodnota true nebo false.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7192" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to parse the '{0}' value: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nepovedlo se analyzovat hodnotu vlastnosti {0}: {1}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3817,12 +3856,18 @@
       <Item ItemId=";W7179" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Metadata {0} pro nativní odkaz {1} v balíčku prostředků vazby {2} se ignorují: tato metadata se vypočítávají při sestavení a nelze je nastavit v manifestu balíčku prostředků vazby.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7182" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Ignoring a native reference with no name in the binding resource package '{0}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nativní odkaz bez názvu v balíčku prostředků vazby {0} se ignoruje.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

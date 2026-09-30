@@ -2576,6 +2576,7 @@ namespace Xamarin.Tests {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void PluralRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
@@ -2594,7 +2595,23 @@ namespace Xamarin.Tests {
 			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
 			properties ["UseMonoRuntime"] = "false";
 
-			DotNet.AssertBuild (project_path, properties);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+			AssertWarningMessages (warnings, $"RuntimeIdentifiers is not recommended for {platform.AsString ()} projects. Use RuntimeIdentifier instead to build for a single architecture.");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		public void NoRuntimeIdentifiersWarning (ApplePlatform platform, string runtimeIdentifier, bool usePlural)
+		{
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			var properties = GetDefaultProperties ();
+			properties [usePlural ? "RuntimeIdentifiers" : "RuntimeIdentifier"] = runtimeIdentifier;
+			var rv = DotNet.AssertBuild (projectPath, properties, target: "_WarnAboutRuntimeIdentifiers");
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+			Assert.That (warnings, Is.Empty, "Warnings");
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]

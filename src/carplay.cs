@@ -17,6 +17,14 @@ namespace CarPlay {
 	// Just to please the generator that at this point does not know the hierarchy
 	interface NSUnitLength : NSUnit { }
 	interface NSUnitAngle : NSUnit { }
+	interface NSUnitElectricPotentialDifference : NSUnit { }
+	interface NSUnitPower : NSUnit { }
+	interface NSUnitVolume : NSUnit { }
+	interface NSUnitEnergy : NSUnit { }
+	interface NSUnitMass : NSUnit { }
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	delegate void CPTemplateOperationCompletionHandler (bool success, [NullAllowed] NSError error);
 
 	/// <summary>Enumerates the styles for a <see cref="CarPlay.CPAlertAction" /> object's action button.</summary>
 	[NoTV, NoMac]
@@ -591,6 +599,16 @@ namespace CarPlay {
 		[Async]
 		[Export ("dismissTemplateAnimated:completion:")]
 		void DismissTemplate (bool animated, [NullAllowed] Action<bool, NSError> completion);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("showOverlayTemplate:animated:completion:")]
+		void ShowOverlayTemplate (CPTemplate templateToShow, bool animated, [NullAllowed] CPTemplateOperationCompletionHandler completion);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("hideOverlayTemplateAnimated:completion:")]
+		void HideOverlayTemplate (bool animated, [NullAllowed] CPTemplateOperationCompletionHandler completion);
 
 		[iOS (14, 0)]
 		[Export ("carTraitCollection", ArgumentSemantic.Strong)]
@@ -1187,12 +1205,35 @@ namespace CarPlay {
 		[iOS (14, 0)]
 		[Export ("showTripPreviews:selectedTrip:textConfiguration:")]
 		void ShowTripPreviews (CPTrip [] tripPreviews, [NullAllowed] CPTrip selectedTrip, [NullAllowed] CPTripPreviewTextConfiguration textConfiguration);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("showPanel:completion:")]
+		void ShowPanel (CPMapPanel panel, [NullAllowed] CPTemplateOperationCompletionHandler completion);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("pushPanel:completion:")]
+		void PushPanel (CPMapPanel panel, [NullAllowed] CPTemplateOperationCompletionHandler completion);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("popPanelWithCompletion:")]
+		void PopPanel ([NullAllowed] CPTemplateOperationCompletionHandler completion);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Async]
+		[Export ("hidePanelWithCompletion:")]
+		void HidePanel ([NullAllowed] CPTemplateOperationCompletionHandler completion);
 	}
 
 	/// <summary>Delegate object for <see cref="CarPlay.CPMapTemplate" /> objects.</summary>
 	interface ICPMapTemplateDelegate { }
 
 	delegate void CPMapTemplateDidRequestToInsertWaypointHandler (CPTravelEstimates travelEstimates);
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	delegate void CPMapTemplateDidRequestMultiStopCardConfigurationHandler (CPMultiStopCardConfiguration configuration);
 
 	/// <summary>Default implementation of <see cref="CarPlay.ICPMapTemplateDelegate" />, providing the delegate object for <see cref="CarPlay.CPMapTemplate" /> objects.</summary>
 	[NoTV, NoMac]
@@ -1223,6 +1264,26 @@ namespace CarPlay {
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("mapTemplate:didReceiveRequestForDestination:")]
 		void DidReceiveRequestForDestination (CPMapTemplate mapTemplate, CPNavigationWaypoint waypoint);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("mapTemplate:didUpdateRouteSharingEnabled:")]
+		void DidUpdateRouteSharingEnabled (CPMapTemplate mapTemplate, bool enabled);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("mapTemplateShouldProvideMultiStopRouting:")]
+		bool ShouldProvideMultiStopRouting (CPMapTemplate mapTemplate);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("mapTemplate:didRequestToRemoveWaypoint:")]
+		void DidRequestToRemoveWaypoint (CPMapTemplate mapTemplate, CPNavigationWaypoint waypoint);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("mapTemplate:didRequestToRemoveDestination:")]
+		void DidRequestToRemoveDestination (CPMapTemplate mapTemplate, CPNavigationWaypoint waypoint);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("mapTemplate:didRequestMultiStopCardConfigurationWithCompletion:")]
+		void DidRequestMultiStopCardConfiguration (CPMapTemplate mapTemplate, CPMapTemplateDidRequestMultiStopCardConfigurationHandler completion);
 
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("mapTemplate:willShareDestinationForTrip:")]
@@ -1473,8 +1534,16 @@ namespace CarPlay {
 		[Export ("initWithTitleVariants:subtitleVariants:image:primaryAction:secondaryAction:duration:")]
 		NativeHandle Constructor (string [] titleVariants, [NullAllowed] string [] subtitleVariants, [NullAllowed] UIImage image, CPAlertAction primaryAction, [NullAllowed] CPAlertAction secondaryAction, double duration);
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("initWithTitleVariants:subtitleVariants:avatarImage:alertImage:actions:duration:")]
+		NativeHandle Constructor (string [] titleVariants, string [] subtitleVariants, [NullAllowed] UIImage avatarImage, [NullAllowed] UIImage alertImage, CPAlertAction [] actions, double duration);
+
 		[Export ("updateTitleVariants:subtitleVariants:")]
 		void UpdateTitleVariants (string [] newTitleVariants, string [] newSubtitleVariants);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("updateTitleVariants:subtitleVariants:avatarImage:alertImage:actions:duration:")]
+		void UpdateTitleVariants (string [] newTitleVariants, string [] newSubtitleVariants, [NullAllowed] UIImage avatarImage, [NullAllowed] UIImage alertImage, CPAlertAction [] actions, double duration);
 
 		[Export ("titleVariants", ArgumentSemantic.Copy)]
 		string [] TitleVariants { get; }
@@ -1488,6 +1557,14 @@ namespace CarPlay {
 		[NullAllowed, Export ("image", ArgumentSemantic.Copy)]
 		UIImage Image { get; }
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[NullAllowed, Export ("avatarImage", ArgumentSemantic.Copy)]
+		UIImage AvatarImage { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[NullAllowed, Export ("alertImage", ArgumentSemantic.Copy)]
+		UIImage AlertImage { get; }
+
 		[Export ("primaryAction", ArgumentSemantic.Strong)]
 		CPAlertAction PrimaryAction { get; }
 
@@ -1496,6 +1573,29 @@ namespace CarPlay {
 
 		[Export ("duration")]
 		double Duration { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("actions", ArgumentSemantic.Copy)]
+		CPAlertAction [] Actions { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Static]
+		[Export ("maximumActionsCount")]
+		nint MaximumActionCount { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Static]
+		[Export ("maximumAlertImageSize")]
+		CGSize MaximumAlertImageSize { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Static]
+		[Export ("maximumAvatarImageSize")]
+		CGSize MaximumAvatarImageSize { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("showsCloseButton")]
+		bool ShowsCloseButton { get; set; }
 	}
 
 	/// <summary>A session that may involve planning, updating, and executing a trip.</summary>
@@ -1550,9 +1650,17 @@ namespace CarPlay {
 		[Export ("updateTravelEstimates:forManeuver:")]
 		void UpdateTravelEstimates (CPTravelEstimates estimates, CPManeuver maneuver);
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[NullAllowed, Export ("optionsPanel", ArgumentSemantic.Strong)]
+		CPMapPanel OptionsPanel { get; set; }
+
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("resumeTripWithUpdatedRouteSegments:currentSegment:rerouteReason:")]
 		void ResumeTrip (CPRouteSegment [] routeSegments, CPRouteSegment currentSegment, CPRerouteReason rerouteReason);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("resumeNavigationWithUpdatedTrip:routeSegments:currentSegment:rerouteReason:")]
+		void ResumeNavigation (CPTrip updatedTrip, CPRouteSegment [] routeSegments, CPRouteSegment currentSegment, CPRerouteReason rerouteReason);
 
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("addRouteSegments:")]
@@ -1565,6 +1673,14 @@ namespace CarPlay {
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("currentSegment", ArgumentSemantic.Assign)]
 		CPRouteSegment CurrentSegment { get; set; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("routeSharingEnabled")]
+		bool RouteSharingEnabled { [Bind ("isRouteSharingEnabled")] get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("routeSharingSupported")]
+		bool RouteSharingSupported { [Bind ("isRouteSharingSupported")] get; }
 	}
 
 	/// <summary>
@@ -1714,6 +1830,11 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor (string [] summaryVariants, string [] additionalInformationVariants, string [] selectionSummaryVariants);
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("initWithSummaryVariants:additionalInformationVariants:selectionSummaryVariants:travelEstimates:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (string [] summaryVariants, string [] additionalInformationVariants, string [] selectionSummaryVariants, [NullAllowed] CPTravelEstimates travelEstimates);
+
 		[Export ("summaryVariants", ArgumentSemantic.Copy)]
 		string [] SummaryVariants { get; }
 
@@ -1727,6 +1848,10 @@ namespace CarPlay {
 
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Strong)]
 		NSObject UserInfo { get; set; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[NullAllowed, Export ("travelEstimates", ArgumentSemantic.Strong)]
+		CPTravelEstimates TravelEstimates { get; }
 	}
 
 	/// <summary>A journey from <see cref="CarPlay.CPTrip.Origin" /> to <see cref="CarPlay.CPTrip.Destination" />.</summary>
@@ -1769,6 +1894,7 @@ namespace CarPlay {
 		[NullAllowed, Export ("userInfo", ArgumentSemantic.Strong)]
 		NSObject UserInfo { get; set; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'DestinationWaypoint.NameVariants' instead.")]
 		[iOS (17, 4), MacCatalyst (17, 4)]
 		[NullAllowed, Export ("destinationNameVariants", ArgumentSemantic.Copy)]
 		string [] DestinationNameVariants { get; set; }
@@ -1789,6 +1915,10 @@ namespace CarPlay {
 		[Export ("initWithIdentifier:titleVariants:image:repeats:")]
 		NativeHandle Constructor (string identifier, [NullAllowed] string [] titleVariants, [NullAllowed] UIImage image, bool repeats);
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("initWithIdentifier:titleVariants:image:backgroundImage:repeats:")]
+		NativeHandle Constructor (string identifier, [NullAllowed] string [] titleVariants, [NullAllowed] UIImage image, [NullAllowed] UIImage backgroundImage, bool repeats);
+
 		[NullAllowed, Export ("titleVariants", ArgumentSemantic.Copy)]
 		string [] TitleVariants { get; }
 
@@ -1800,6 +1930,10 @@ namespace CarPlay {
 
 		[Export ("repeats")]
 		bool Repeats { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[NullAllowed, Export ("backgroundImage", ArgumentSemantic.Strong)]
+		UIImage BackgroundImage { get; }
 
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("actionButtons", ArgumentSemantic.Copy)]
@@ -1937,6 +2071,11 @@ namespace CarPlay {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSMeasurement<NSUnitLength> distanceRemaining, NSMeasurement<NSUnitLength> distanceRemainingToDisplay, double time);
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("initWithDistanceRemaining:distanceRemainingToDisplay:timeRemaining:routeDetails:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (NSMeasurement<NSUnitLength> distanceRemaining, NSMeasurement<NSUnitLength> distanceRemainingToDisplay, double time, CPRouteDetail [] routeDetails);
+
 		[iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("distanceRemainingToDisplay", ArgumentSemantic.Copy)]
 		NSMeasurement<NSUnitLength> DistanceRemainingToDisplay { get; }
@@ -1946,6 +2085,10 @@ namespace CarPlay {
 
 		[Export ("timeRemaining")]
 		double TimeRemaining { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("routeDetails", ArgumentSemantic.Copy)]
+		CPRouteDetail [] RouteDetails { get; }
 	}
 
 	[NoTV, NoMac]
@@ -2708,6 +2851,10 @@ namespace CarPlay {
 		[Export ("upNextButtonEnabled")]
 		bool IsUpNextButtonEnabled { [Bind ("isUpNextButtonEnabled")] get; set; }
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("allowsMiniPlayer")]
+		bool AllowsMiniPlayer { get; set; }
+
 		[Export ("upNextTitle")]
 		string UpNextTitle { get; set; }
 
@@ -3203,6 +3350,11 @@ namespace CarPlay {
 		[Export ("sportsOverlay", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		CPSportsOverlay SportsOverlay { get; set; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Static]
+		[Export ("maximumImageSizeForAspectRatio:")]
+		CGSize GetMaximumImageSize (nfloat aspectRatio);
 	}
 
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
@@ -3281,11 +3433,21 @@ namespace CarPlay {
 		[NullAllowed, Export ("locationThreshold")]
 		NSMeasurement<NSUnitLength> LocationThreshold { get; }
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'NameVariants' instead.")]
 		[NullAllowed, Export ("name")]
 		string Name { get; }
 
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("nameVariants")]
+		string [] NameVariants { get; }
+
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'AddressVariants' instead.")]
 		[NullAllowed, Export ("address")]
 		string Address { get; }
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Export ("addressVariants")]
+		string [] AddressVariants { get; }
 
 		[Internal]
 		[Export ("entryPoints")]
@@ -3300,6 +3462,12 @@ namespace CarPlay {
 		[Internal]
 		[Export ("initWithCenterPoint:locationThreshold:name:address:entryPoints:entryPointsCount:timeZone:")]
 		NativeHandle _InitWithCenterPoint (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed] string name, [NullAllowed] string address, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
+
+		[NoMacCatalyst, iOS (27, 0)]
+		[Internal]
+		[Export ("initWithCenterPoint:locationThreshold:nameVariants:addressVariants:entryPoints:entryPointsCount:timeZone:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, string [] nameVariants, string [] addressVariants, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
 
 		[Internal]
 		[Export ("initWithMapItem:locationThreshold:entryPoints:entryPointsCount:")]
@@ -3353,7 +3521,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPMapTemplateWaypoint {
+	interface CPMapTemplateWaypoint : NSSecureCoding {
 		[Export ("waypoint", ArgumentSemantic.Strong)]
 		CPNavigationWaypoint Waypoint { get; set; }
 
@@ -3362,5 +3530,260 @@ namespace CarPlay {
 
 		[Export ("initWithWaypoint:travelEstimates:")]
 		NativeHandle Constructor (CPNavigationWaypoint waypoint, CPTravelEstimates travelEstimates);
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CPChargingStationConnection : NSCopying, NSSecureCoding {
+		[Export ("initWithConnector:voltage:power:")]
+		NativeHandle Constructor (CPChargingStationConnectionConnector connector, NSMeasurement<NSUnitElectricPotentialDifference> voltage, NSMeasurement<NSUnitPower> power);
+
+		[Export ("connector", ArgumentSemantic.Assign)]
+		CPChargingStationConnectionConnector Connector { get; }
+
+		[Export ("voltage", ArgumentSemantic.Strong)]
+		NSMeasurement<NSUnitElectricPotentialDifference> Voltage { get; }
+
+		[Export ("power", ArgumentSemantic.Strong)]
+		NSMeasurement<NSUnitPower> Power { get; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPPanelItem : NSSecureCoding {
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
+
+		[Export ("showsBottomSeparator")]
+		bool ShowsBottomSeparator { get; set; }
+
+		[NullAllowed, Export ("userInfo", ArgumentSemantic.Strong)]
+		NSObject UserInfo { get; set; }
+
+		[Export ("initWithListItem:")]
+		NativeHandle Constructor (CPListItem listItem);
+
+		[Export ("initWithGridButtons:")]
+		NativeHandle Constructor (CPGridButton [] gridButtons);
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	delegate void CPMapPanelItemHandler (CPMapPanelItem item, [BlockCallback] Action completionBlock);
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (CPPanelItem))]
+	[DisableDefaultCtor]
+	interface CPMapPanelItem {
+		[Export ("initWithListItem:")]
+		NativeHandle Constructor (CPListItem listItem);
+
+		[Export ("initWithGridButtons:")]
+		NativeHandle Constructor (CPGridButton [] gridButtons);
+
+		[Export ("initWithTrip:handler:")]
+		NativeHandle Constructor (CPTrip trip, [NullAllowed] CPMapPanelItemHandler handler);
+
+		[Export ("initWithTravelEstimates:handler:")]
+		NativeHandle Constructor (CPTravelEstimates travelEstimates, [NullAllowed] CPMapPanelItemHandler handler);
+
+		[Export ("initWithRouteChoice:handler:")]
+		NativeHandle Constructor (CPRouteChoice routeChoice, [NullAllowed] CPMapPanelItemHandler handler);
+
+		[Export ("initWithRouteDetails:handler:")]
+		NativeHandle Constructor (CPRouteDetail [] routeDetails, [NullAllowed] CPMapPanelItemHandler handler);
+
+		[Export ("initWithChargingStationConnection:handler:")]
+		NativeHandle Constructor (CPChargingStationConnection chargingStationConnection, [NullAllowed] CPMapPanelItemHandler handler);
+
+		[Export ("initWithMapTemplateWaypoint:image:handler:")]
+		NativeHandle Constructor (CPMapTemplateWaypoint mapTemplateWaypoint, [NullAllowed] UIImage image, [NullAllowed] CPMapPanelItemHandler handler);
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPMapPanelSection : NSSecureCoding {
+		[Export ("initWithTitle:items:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor ([NullAllowed] string title, CPMapPanelItem [] items);
+
+		[NullAllowed, Export ("title", ArgumentSemantic.Copy)]
+		string Title { get; set; }
+
+		[Export ("items", ArgumentSemantic.Copy)]
+		CPMapPanelItem [] Items { get; set; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CPPanel : NSSecureCoding {
+		[Static]
+		[Export ("maximumPanelItemsCount")]
+		nint MaximumItemCount { get; }
+
+		[Export ("showsCloseButton")]
+		bool ShowsCloseButton { get; set; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPPanelButtonConfiguration : NSSecureCoding {
+		[Export ("initWithPrimaryAction:secondaryAction:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CPTextButton primaryAction, [NullAllowed] CPTextButton secondaryAction);
+
+		[Export ("primaryAction", ArgumentSemantic.Copy)]
+		CPTextButton PrimaryAction { get; }
+
+		[NullAllowed, Export ("secondaryAction", ArgumentSemantic.Copy)]
+		CPTextButton SecondaryAction { get; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (CPPanelButtonConfiguration))]
+	[DisableDefaultCtor]
+	interface CPMapPanelButtonConfiguration {
+		[Export ("initWithPrimaryAction:secondaryAction:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (CPTextButton primaryAction, [NullAllowed] CPTextButton secondaryAction);
+
+		[Export ("initWithPrimaryAction:secondaryButton:travelEstimates:")]
+		NativeHandle Constructor (CPTextButton primaryAction, [NullAllowed] CPButton secondaryButton, CPTravelEstimates travelEstimates);
+
+		[NullAllowed, Export ("travelEstimates", ArgumentSemantic.Copy)]
+		CPTravelEstimates TravelEstimates { get; set; }
+
+		[NullAllowed, Export ("secondaryButton", ArgumentSemantic.Copy)]
+		CPButton SecondaryButton { get; }
+	}
+
+	interface ICPMapPanelDelegate { }
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface CPMapPanelDelegate {
+		[Export ("panelDidShow:")]
+		void DidShow (CPMapPanel panel);
+
+		[Export ("panelDidHide:")]
+		void DidHide (CPMapPanel panel);
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (CPPanel))]
+	[DisableDefaultCtor]
+	interface CPMapPanel {
+		[Export ("initWithTitle:sections:buttonConfiguration:")]
+		NativeHandle Constructor ([NullAllowed] string title, CPMapPanelSection [] sections, [NullAllowed] CPMapPanelButtonConfiguration buttonConfiguration);
+
+		[NullAllowed, Export ("title", ArgumentSemantic.Copy)]
+		string Title { get; }
+
+		[Export ("sections", ArgumentSemantic.Copy)]
+		CPMapPanelSection [] Sections { get; set; }
+
+		[NullAllowed, Export ("buttonConfiguration", ArgumentSemantic.Strong)]
+		CPMapPanelButtonConfiguration ButtonConfiguration { get; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		ICPMapPanelDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface CPMultiStopCardConfiguration : NSSecureCoding {
+		[Export ("initWithTitle:buttons:")]
+		NativeHandle Constructor ([NullAllowed] string title, CPTextButton [] buttons);
+
+		[Export ("initWithTitle:buttons:image:")]
+		NativeHandle Constructor ([NullAllowed] string title, CPTextButton [] buttons, [NullAllowed] UIImage image);
+
+		[NullAllowed, Export ("title", ArgumentSemantic.Copy)]
+		string Title { get; }
+
+		[NullAllowed, Export ("image", ArgumentSemantic.Copy)]
+		UIImage Image { get; }
+
+		[Export ("buttons", ArgumentSemantic.Copy)]
+		CPTextButton [] Buttons { get; }
+	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CPRouteDetail : NSCopying, NSSecureCoding {
+		[Static]
+		[Export ("routeDetailWithTollAmount:locale:")]
+		CPRouteDetail CreateTollAmount (double value, NSLocale locale);
+
+		[Static]
+		[Export ("routeDetailWithFuelLevel:")]
+		CPRouteDetail CreateFuelLevel (NSMeasurement<NSUnitVolume> fuelLevel);
+
+		[Static]
+		[Export ("routeDetailWithFuelEnergy:")]
+		CPRouteDetail CreateFuelEnergy (NSMeasurement<NSUnitEnergy> fuelEnergy);
+
+		[Static]
+		[Export ("routeDetailWithFuelMass:")]
+		CPRouteDetail CreateFuelMass (NSMeasurement<NSUnitMass> fuelMass);
+
+		[Static]
+		[Export ("routeDetailWithBatteryLevel:")]
+		CPRouteDetail CreateBatteryLevel (double batteryLevel);
+
+		[Static]
+		[Export ("routeDetailWithKilowattHours:")]
+		CPRouteDetail CreateKilowattHours (NSMeasurement<NSUnitEnergy> kilowattHours);
+
+		[Static]
+		[Export ("routeDetailWithCarbonFootprint:")]
+		CPRouteDetail CreateCarbonFootprint (NSMeasurement<NSUnitMass> carbonFootprint);
+
+		[Static]
+		[Export ("routeDetailWithEcoScore:")]
+		CPRouteDetail CreateEcoScore (double value);
+
+		[Static]
+		[Export ("routeDetailWithEmissions:")]
+		CPRouteDetail CreateEmissions (NSMeasurement<NSUnitMass> emissions);
+
+		[Static]
+		[Export ("routeDetailWithRating:")]
+		CPRouteDetail CreateRating (double rating);
+
+		[Static]
+		[Export ("routeDetailWithHOV:")]
+		CPRouteDetail CreateHov (string highOccupancyVehicleInfo);
+
+		[Static]
+		[Export ("routeDetailWithTrafficLights:")]
+		CPRouteDetail CreateTrafficLightCount (nuint trafficLights);
+
+		[Static]
+		[Export ("routeDetailWithWarning:")]
+		CPRouteDetail CreateWarning (string warning);
+
+		[Static]
+		[Export ("routeDetailWithInfo:")]
+		CPRouteDetail CreateInfo (string info);
+
+		[Static]
+		[Export ("routeDetailWithParking:")]
+		CPRouteDetail CreateParking (string parking);
+
+		[Static]
+		[Export ("routeDetailWithSymbolName:value:")]
+		CPRouteDetail CreateCustom (string symbolName, string value);
+
+		[NullAllowed, Export ("symbolTintColor", ArgumentSemantic.Strong)]
+		UIColor SymbolTintColor { get; set; }
 	}
 }

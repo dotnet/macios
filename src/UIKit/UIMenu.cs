@@ -2,8 +2,8 @@
 namespace UIKit {
 	public partial class UIMenu {
 #if !XAMCORE_5_0
-		[SupportedOSPlatform ("tvos15.0")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public virtual UIMenuElement [] SelectedElements {
 			get {

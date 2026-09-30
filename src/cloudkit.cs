@@ -268,6 +268,21 @@ namespace CloudKit {
 		[Static]
 		[Export ("oneTimeURLParticipant")]
 		CKShareParticipant GetOneTimeUrlParticipant ();
+
+		/// <param name="anObject">The object to compare with this participant. May be <see langword="null" />.</param>
+		/// <summary>Determines whether <paramref name="anObject" /> represents the same person as this participant.</summary>
+		/// <returns>
+		///   <see langword="true" /> if <paramref name="anObject" /> represents the same person as this participant;
+		///   otherwise, <see langword="false" />.
+		/// </returns>
+		/// <remarks>
+		///   <para>Equality is based on person identity rather than structural equality. Participants with different roles,
+		///   acceptance statuses, permissions, or other properties may compare equal.</para>
+		/// </remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("isEqual:")]
+		[Override]
+		bool IsEqual ([NullAllowed] NSObject anObject);
 	}
 
 	[MacCatalyst (13, 1)]

@@ -2607,6 +2607,10 @@ namespace MediaPlayer {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("MPNowPlayingInfoProperty3x4AnimatedArtwork")]
 		NSString Property3x4AnimatedArtwork { get; }
+
+		[MacCatalyst (27, 0), TV (27, 0), Mac (27, 0), iOS (27, 0)]
+		[Field ("MPNowPlayingInfoPropertyAppEntityIdentifiers")]
+		NSString PropertyAppEntityIdentifiers { get; }
 	}
 
 	/// <summary>User-meaningful information about an <see cref="MediaPlayer.MPMediaItem" />.</summary>

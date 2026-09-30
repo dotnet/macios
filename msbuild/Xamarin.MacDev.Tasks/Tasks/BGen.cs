@@ -38,6 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string AttributeAssembly { get; set; } = string.Empty;
 
+		[Required]
 		public ITaskItem? CompiledApiDefinitionAssembly { get; set; }
 
 		public bool EmitDebugInformation { get; set; }
@@ -172,7 +173,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			if (CompiledApiDefinitionAssembly is null || string.IsNullOrEmpty (CompiledApiDefinitionAssembly.ItemSpec)) {
+			var compiledApiDefinitionAssembly = CompiledApiDefinitionAssembly;
+			if (compiledApiDefinitionAssembly is null || string.IsNullOrEmpty (compiledApiDefinitionAssembly.ItemSpec)) {
 				Log.LogError ("A compiled API definition assembly is required.");
 				return false;
 			}
@@ -187,6 +189,7 @@ namespace Xamarin.MacDev.Tasks {
 					BaseLibDll = PlatformPath.GetPathForCurrentPlatform (BaseLibDll);
 
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
+					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, new [] { compiledApiDefinitionAssembly });
 
 					if (ExecuteRemotely (out var taskRunner)) {
 						GetGeneratedSourcesAsync (taskRunner).Wait ();
@@ -236,13 +239,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			if (ObjectiveCLibraries is null)
-				return new ITaskItem [0];
+			var compiledApiDefinitionAssembly = CompiledApiDefinitionAssembly?.ItemSpec;
+			if (!string.IsNullOrEmpty (compiledApiDefinitionAssembly)) {
+				var documentationFile = Path.ChangeExtension (compiledApiDefinitionAssembly, ".xml");
+				if (File.Exists (documentationFile))
+					yield return new TaskItem (documentationFile);
+			}
 
-			return ObjectiveCLibraries.Select (item => {
+			if (ObjectiveCLibraries is null)
+				yield break;
+
+			foreach (var item in ObjectiveCLibraries) {
 				var linkWithFileName = String.Concat (Path.GetFileNameWithoutExtension (item.ItemSpec), ".linkwith.cs");
-				return new TaskItem (linkWithFileName);
-			}).ToArray ();
+				yield return new TaskItem (linkWithFileName);
+			}
 		}
 
 		public void Cancel ()

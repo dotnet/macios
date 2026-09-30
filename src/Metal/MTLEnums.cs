@@ -434,6 +434,18 @@ namespace Metal {
 		/// <summary>Indicates a 5-bit B, 6-bit G, 5-bit R, and 1-bit Alpha unnormalized signed integer format.</summary>
 		[MacCatalyst (13, 1)]
 		BGR5A1Unorm = 43,
+		/// <summary>A three-channel, 8-bit-per-channel normalized unsigned integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB8Unorm = 45,
+		/// <summary>A three-channel, 8-bit-per-channel normalized signed integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB8Snorm = 46,
+		/// <summary>A three-channel, 8-bit-per-channel unsigned integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB8Uint = 47,
+		/// <summary>A three-channel, 8-bit-per-channel signed integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB8Sint = 48,
 		/// <summary>Indicates a single 32-bit unsigned integer format.</summary>
 		R32Uint = 53,
 		/// <summary>Indicates a single 32-bit signed integer format.</summary>
@@ -475,6 +487,21 @@ namespace Metal {
 		/// <summary>Indicates a 10-bit B, 10-bit G, 10-bit R, and 2-bit Alpha normalized unsigned integer format.</summary>
 		[MacCatalyst (13, 1)]
 		BGR10A2Unorm = 94,
+		/// <summary>A three-channel, 16-bit-per-channel normalized unsigned integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB16Unorm = 95,
+		/// <summary>A three-channel, 16-bit-per-channel normalized signed integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB16Snorm = 96,
+		/// <summary>A three-channel, 16-bit-per-channel unsigned integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB16Uint = 97,
+		/// <summary>A three-channel, 16-bit-per-channel signed integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB16Sint = 98,
+		/// <summary>A three-channel, 16-bit-per-channel floating-point RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB16Float = 99,
 		/// <summary>Indicates a 2-channel unsigned integer format with 32 bits per channel.</summary>
 		RG32Uint = 103,
 		/// <summary>Indicates a 2-channel signed integer format with 32 bits per channel.</summary>
@@ -491,6 +518,15 @@ namespace Metal {
 		RGBA16Sint = 114,
 		/// <summary>Indicates a format with 4 16-bit floating point channels.</summary>
 		RGBA16Float = 115,
+		/// <summary>A three-channel, 32-bit-per-channel unsigned integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB32Uint = 120,
+		/// <summary>A three-channel, 32-bit-per-channel signed integer RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB32Sint = 121,
+		/// <summary>A three-channel, 32-bit-per-channel floating-point RGB format for texture buffers without shader-write usage.</summary>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		RGB32Float = 122,
 		/// <summary>Indicates a format with 4 32-bit unsigned integer channels.</summary>
 		RGBA32Uint = 123,
 		/// <summary>Indicates a format with 4 32-bit signed integer channels.</summary>
@@ -1524,6 +1560,8 @@ namespace Metal {
 		v3_2 = (3ul << 16) + 2,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		v4_0 = (4uL << 16) + 0,
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+		v4_1 = (4uL << 16) + 1,
 	}
 
 	/// <summary>Enumerates values that indicate whether to clip or clamp depth values.</summary>
@@ -1994,6 +2032,8 @@ namespace Metal {
 		Apple9 = 1009,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		Apple10 = 1010,
+		/// <summary>The Apple11 GPU family.</summary>
+		Apple11 = 1011,
 		Mac1 = 2001,
 		Mac2 = 2002,
 		Common1 = 3001,
@@ -2565,6 +2605,18 @@ namespace Metal {
 		Int4 = 143,
 		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
 		UInt4 = 144,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8UE8M0 = 145,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		UInt2 = 149,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		Int2 = 150,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8E5M2 = 141,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat8E4M3 = 142,
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		MetalFloat4E2M1 = 148,
 	}
 
 	[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
@@ -2595,6 +2647,13 @@ namespace Metal {
 		MachineLearning = 1L << 2,
 	}
 
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+	[Native]
+	public enum MTLTensorPlaneType : long {
+		Data = 0,
+		Scales = 1,
+	}
+
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	public enum MTLTextureSparseTier : long {
@@ -2616,5 +2675,27 @@ namespace Metal {
 		WeightedAverage = 0,
 		Minimum = 1,
 		Maximum = 2,
+	}
+
+	/// <summary>Specifies how a compute pipeline relieves contention.</summary>
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+	[Native]
+	public enum MTLContentionRelief : long {
+		/// <summary>Lets Metal select the contention-relief behavior.</summary>
+		Automatic = 0,
+		/// <summary>Disables contention relief.</summary>
+		None = 1,
+	}
+
+	/// <summary>Specifies the forward-progress behavior of a compute pipeline.</summary>
+	[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
+	[Native]
+	public enum MTLForwardProgressUsage : long {
+		/// <summary>Lets Metal select the forward-progress behavior.</summary>
+		Automatic = 0,
+		/// <summary>Uses weak forward progress.</summary>
+		Weak = 1,
+		/// <summary>Uses SIMD-group parallel forward progress.</summary>
+		SimdGroupParallel = 2,
 	}
 }

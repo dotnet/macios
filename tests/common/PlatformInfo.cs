@@ -116,10 +116,19 @@ namespace Xamarin.Tests {
 				return true;
 			}
 
-			// Check for [UnsupportedSimulator] attributes
+			// Check for [UnsupportedSimulator] attributes. A bare platform name (e.g. "ios") means the API is
+			// unavailable in every simulator version; a versioned name (e.g. "ios18.0") means the API became
+			// unavailable in the simulator starting with that version (it was available in earlier ones).
 			foreach (var attr in customAttributes.OfType<ObjCRuntime.UnsupportedSimulatorAttribute> ()) {
-				if (attr.PlatformName.StartsWith (platformPrefix, StringComparison.OrdinalIgnoreCase))
-					return false;
+				if (!attr.PlatformName.StartsWith (platformPrefix, StringComparison.OrdinalIgnoreCase))
+					continue;
+				var unsupportedVersionString = attr.PlatformName.AsSpan (platformPrefix.Length);
+				if (unsupportedVersionString.IsEmpty)
+					return false; // unsupported in all simulator versions
+				if (!Version.TryParse (unsupportedVersionString, out var unsupportedVersion))
+					throw new InvalidOperationException ($"Invalid version string in UnsupportedSimulator attribute: '{attr.PlatformName}'");
+				if (PlatformInfo.Host.Version >= unsupportedVersion)
+					return false; // unsupported starting with this simulator version
 			}
 
 			// Check for [SupportedSimulator] attributes

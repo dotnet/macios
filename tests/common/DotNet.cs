@@ -75,15 +75,11 @@ namespace Xamarin.Tests {
 				return;
 			var usingMonoRuntime = string.Equals (useMonoRuntime, "true", StringComparison.OrdinalIgnoreCase);
 			IgnoreIfUnsupportedMonoRuntime (usingMonoRuntime);
-			if (usingMonoRuntime)
-				properties ["_DisableCheckForUnsupportedMonoMobileRuntime"] = "true";
 		}
 
 		public static void IgnoreIfUnsupportedMonoRuntime (bool useMonoRuntime)
 		{
 			if (!useMonoRuntime)
-				return;
-			if (Configuration.dotnet_monovm_supported)
 				return;
 			Assert.Ignore ("Mono is not supported");
 		}

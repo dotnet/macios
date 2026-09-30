@@ -1460,8 +1460,8 @@ namespace AudioUnit {
 		Midi = 8,
 		/// <summary>To be added.</summary>
 		MidiSysEx = 9,
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		MidiEventList = 10,

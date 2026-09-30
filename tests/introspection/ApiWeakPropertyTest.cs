@@ -14,6 +14,10 @@ namespace Introspection {
 		/// <param name="type">Type to be tested</param>
 		protected virtual bool Skip (Type type)
 		{
+			// Dictionary entries are not Objective-C properties and have no argument semantics.
+			if (typeof (DictionaryContainer).IsAssignableFrom (type))
+				return true;
+
 			switch (type.Name) {
 			case "LinkWithAttribute": // LinkWithAttribute.WeakFrameworks
 				return true;

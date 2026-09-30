@@ -1,8 +1,3 @@
-## [Notification] in protocol - https://bugzilla.xamarin.com/show_bug.cgi?id=59342
-!missing-field! MTLDeviceRemovalRequestedNotification not bound
-!missing-field! MTLDeviceWasAddedNotification not bound
-!missing-field! MTLDeviceWasRemovedNotification not bound
-
 ## bound selectors with no native declaration reachable from the class in the current SDK headers:
 ## private/SPI selectors, protocol/category members Apple inlines without declaring the conformance on
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
@@ -82,3 +77,17 @@
 !missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexSamplerState(Metal.IMTLSamplerState,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Metal.IMTLRenderCommandEncoder::SetVertexTexture(Metal.IMTLTexture,System.UIntPtr)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void Metal.IMTLResource::set_Label(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLComputePipelineState,Metal.MTLComputePipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLComputePipelineState,Metal.MTLComputePipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLComputePipelineState,Metal.MTLComputePipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #2
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,System.Action`2<Metal.IMTLComputePipelineState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateComputePipelineState(Metal.IMTLFunction,System.Action`2<Metal.IMTLComputePipelineState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateLibrary(Metal.MTLStitchedLibraryDescriptor,System.Action`2<Metal.IMTLLibrary,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateLibrary(Metal.MTLStitchedLibraryDescriptor,System.Action`2<Metal.IMTLLibrary,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateLibrary(System.String,Metal.MTLCompileOptions,System.Action`2<Metal.IMTLLibrary,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateLibrary(System.String,Metal.MTLCompileOptions,System.Action`2<Metal.IMTLLibrary,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLRenderPipelineState,Metal.MTLRenderPipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLRenderPipelineState,Metal.MTLRenderPipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,Metal.MTLPipelineOption,System.Action`3<Metal.IMTLRenderPipelineState,Metal.MTLRenderPipelineReflection,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #2
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,System.Action`2<Metal.IMTLRenderPipelineState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void Metal.IMTLDevice::CreateRenderPipelineState(Metal.MTLRenderPipelineDescriptor,System.Action`2<Metal.IMTLRenderPipelineState,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #1

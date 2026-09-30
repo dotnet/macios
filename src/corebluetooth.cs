@@ -916,6 +916,17 @@ namespace CoreBluetooth {
 		[Export ("openL2CAPChannel:")]
 		void OpenL2CapChannel (ushort psm);
 
+		/// <param name="configuration">The configuration for the channel sounding session.</param>
+		/// <summary>Starts a channel sounding session with the peripheral.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("startChannelSoundingSession:")]
+		void StartChannelSoundingSession (CBChannelSoundingSessionConfiguration configuration);
+
+		/// <summary>Cancels the active channel sounding session, if one exists.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("cancelChannelSoundingSession")]
+		void CancelChannelSoundingSession ();
+
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("ancsAuthorized")]
@@ -1103,6 +1114,38 @@ namespace CoreBluetooth {
 		[Export ("peripheral:didOpenL2CAPChannel:error:")]
 		void DidOpenL2CapChannel (CBPeripheral peripheral, [NullAllowed] CBL2CapChannel channel, [NullAllowed] NSError error);
 
+		/// <param name="peripheral">The peripheral that provided the update.</param>
+		/// <param name="results">
+		///   <para>The channel sounding procedure results.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <param name="error">
+		///   <para>The error that occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <summary>Called when a channel sounding procedure produces results.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[EventArgs ("CBChannelSoundingProcedureResults", XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
+		[Export ("peripheral:didReceiveChannelSoundingProcedureResults:error:")]
+		void DidReceiveChannelSoundingProcedureResults (CBPeripheral peripheral, [NullAllowed] CBChannelSoundingProcedureResults results, [NullAllowed] NSError error);
+
+		/// <param name="peripheral">The peripheral whose channel sounding session completed.</param>
+		/// <param name="error">
+		///   <para>The error that occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <summary>Called when a channel sounding session completes.</summary>
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[EventArgs ("NSError", true, XmlDocs = """
+			<summary>Event raised by the object.</summary>
+			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
+			""")]
+		[Export ("peripheral:didCompleteChannelSoundingSession:")]
+		void DidCompleteChannelSoundingSession (CBPeripheral peripheral, [NullAllowed] NSError error);
+
 		/// <param name="peripheral">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -1113,6 +1156,32 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		[Export ("peripheralIsReadyToSendWriteWithoutResponse:")]
 		void IsReadyToSendWriteWithoutResponse (CBPeripheral peripheral);
+	}
+
+	/// <summary>Configures the role that a peripheral assumes in a channel sounding session.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CBChannelSoundingSessionConfiguration {
+		/// <summary>Gets the role that the peripheral assumes in the channel sounding session.</summary>
+		[Export ("role")]
+		CBChannelSoundingSessionConfigurationRole Role { get; }
+
+		/// <param name="role">The role that the peripheral assumes in the channel sounding session.</param>
+		/// <summary>Creates a channel sounding session configuration with the specified role.</summary>
+		[DesignatedInitializer]
+		[Export ("initWithRole:")]
+		NativeHandle Constructor (CBChannelSoundingSessionConfigurationRole role);
+	}
+
+	/// <summary>Contains the results of a channel sounding procedure.</summary>
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CBChannelSoundingProcedureResults {
+		/// <summary>Gets the measured distance to the peripheral, in meters.</summary>
+		[Export ("distance")]
+		double Distance { get; }
 	}
 
 	/// <summary>Represents the services of a remote peripheral.</summary>

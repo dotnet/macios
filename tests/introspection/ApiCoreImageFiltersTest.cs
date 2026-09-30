@@ -70,6 +70,15 @@ namespace Introspection {
 				return true;
 			case "CIAreaAlphaWeightedHistogram": // not in Xcode 16 b1 or b2 headers.
 				return true;
+			// The iOS and tvOS 27 runtimes started exposing these barcode generator filters, but they are
+			// undocumented (not declared in CIFilterBuiltins.h on any platform), so - like the other undocumented
+			// filters above - we don't bind them and skip them here.
+			case "CICodabarBarcodeGenerator":
+			case "CICode39BarcodeGenerator":
+			case "CIEAN13BarcodeGenerator":
+			case "CIInterleaved2of5BarcodeGenerator":
+			case "CISeimensStarGenerator":
+				return true;
 #if __TVOS__
 			case "CIPersonSegmentation": // removed in Xcode 26?
 			case "CISaliencyMapFilter": // removed in Xcode 26?
@@ -179,7 +188,12 @@ namespace Introspection {
 				writer.WriteLine ("[NoMac]");
 			} else {
 				try {
-					var mac = Version.Parse (value.ToString ()!);
+					var v = value.ToString ()!;
+					// just like the iOS attribute above, recent macOS versions report a single number
+					// (e.g. "27" for macOS 27.0), and System.Version requires at least "major.minor".
+					if (v.IndexOf ('.') == -1)
+						v += ".0";
+					var mac = Version.Parse (v);
 					// we only document availability for 10.7+
 					if (mac.Minor > 6)
 						writer.WriteLine ("[Mac ({0},{1})]", mac.Major, mac.Minor);

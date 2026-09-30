@@ -5,10 +5,10 @@ namespace GameKit {
 	/// <summary>This enum is used to select how to initialize a new instance of a <see cref="GKGameCenterViewController" />.</summary>
 	public enum GKGameCenterViewControllerInitializationOption {
 		/// <summary>The <c>id</c> parameter passed to the constructor is an achievement ID.</summary>
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		Achievement,
 		/// <summary>The <c>id</c> parameter passed to the constructor is a leaderboard set ID.</summary>
 		[SupportedOSPlatform ("ios18.0")]
@@ -21,10 +21,10 @@ namespace GameKit {
 	public partial class GKGameCenterViewController {
 		/// <summary>Create a new GKGameCenterViewController instance that presents an achievement.</summary>
 		/// <param name="achievementId">The ID of the achievement to show.</param>
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		public GKGameCenterViewController (string achievementId)
 			: this (achievementId, GKGameCenterViewControllerInitializationOption.Achievement)
 		{
@@ -33,10 +33,10 @@ namespace GameKit {
 		/// <summary>Create a new GKGameCenterViewController instance that presents an achievement or a leaderboard set.</summary>
 		/// <param name="id">The ID of the achievement or the leaderboard set to show.</param>
 		/// <param name="option">Use this option to specify whether the GKGameCenterViewController shows an achievement or a leader board set.</param>
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		public GKGameCenterViewController (string id, GKGameCenterViewControllerInitializationOption option)
 			: base (NSObjectFlag.Empty)
 		{

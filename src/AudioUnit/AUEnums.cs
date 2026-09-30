@@ -1033,6 +1033,8 @@ namespace AudioUnit {
 		Reverb2DecayTimeAtNyquist = 5,
 		/// <summary>To be added.</summary>
 		Reverb2RandomizeReflections = 6,
+		/// <summary>Controls whether the reverb unit uses legacy processing behavior.</summary>
+		Reverb2LegacyMode = 7,
 #endif
 
 		// RoundTripAAC
@@ -1341,6 +1343,9 @@ namespace AudioUnit {
 		MediumHall3 = 11,
 		/// <summary>To be added.</summary>
 		LargeHall2 = 12,
+		/// <summary>A general-purpose outdoor reverberation environment.</summary>
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		OutdoorGeneral = 24,
 	}
 
 	public enum AUScheduledAudioSliceFlags : uint {

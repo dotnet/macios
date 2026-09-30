@@ -75,6 +75,7 @@ namespace Metal {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos27.0", "Device notifications are not applicable on Apple Silicon")]
 		[DllImport (Constants.MetalLibrary)]
 		unsafe static extern IntPtr MTLCopyAllDevicesWithObserver (IntPtr* observer, BlockLiteral* handler);
 
@@ -82,6 +83,7 @@ namespace Metal {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos27.0", "Device notifications are not applicable on Apple Silicon")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static IMTLDevice [] GetAllDevices (MTLDeviceNotificationHandler handler, out NSObject? observer)
 		{
@@ -117,6 +119,7 @@ namespace Metal {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos27.0", "Device notifications are not applicable on Apple Silicon")]
 		[DllImport (Constants.MetalLibrary)]
 		static extern void MTLRemoveDeviceObserver (IntPtr observer);
 
@@ -127,6 +130,7 @@ namespace Metal {
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("macos27.0", "Device notifications are not applicable on Apple Silicon")]
 		public static void RemoveObserver (NSObject observer)
 		{
 			if (observer is null)

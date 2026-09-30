@@ -1,0 +1,20 @@
+# Informal protocol selectors bound via [Protocol (IsInformal = true), Model] interfaces
+# SFAuthorizationViewDelegate informal protocol
+!missing-selector! NSObject::authorizationViewCreatedAuthorization: not bound
+!missing-selector! NSObject::authorizationViewDidAuthorize: not bound
+!missing-selector! NSObject::authorizationViewDidDeauthorize: not bound
+!missing-selector! NSObject::authorizationViewDidHide: not bound
+!missing-selector! NSObject::authorizationViewReleasedAuthorization: not bound
+!missing-selector! NSObject::authorizationViewShouldDeauthorize: not bound
+
+# SFCertificatePanelDelegate informal protocol
+!missing-selector! NSObject::certificatePanelShowHelp: not bound
+
+# SFChooseIdentityPanelDelegate informal protocol
+!missing-selector! NSObject::chooseIdentityPanelShowHelp: not bound
+
+# The header declares SFChooseIdentityTableCellView, but SecurityInterface.tbd does not export its
+# Objective-C class symbol, so Objective-C clients cannot link against this class.
+!missing-selector! SFChooseIdentityTableCellView::issuerTextField not bound
+!missing-selector! SFChooseIdentityTableCellView::setIssuerTextField: not bound
+!missing-type! SFChooseIdentityTableCellView not bound

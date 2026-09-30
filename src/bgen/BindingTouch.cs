@@ -162,7 +162,7 @@ public class BindingTouch : IDisposable, IToolLog {
 				{ "baselib=", "Sets the base library", v => config.Baselibdll = v },
 				{ "attributelib=", "Sets the attribute library", v => config.Attributedll = v },
 #if !XAMCORE_5_0
-				{ "use-zero-copy", v=> ErrorHelper.Warning (this, 1027) },
+				{ "use-zero-copy", v => ErrorHelper.Warning (this, 1027) },
 #endif
 				{ "nostdlib", "Does not reference mscorlib.dll library", l => config.OmitStandardLibrary = true },
 				{ "native-exception-marshalling", "Enable the marshalling support for Objective-C exceptions", (v) => { /* no-op */} },

@@ -711,8 +711,8 @@ namespace Xamarin.Tests {
 		// do all the work instead.
 		static bool AreAssembliesPreparedAndPostProcessed (IEnumerable<TargetExecutionResult> targets)
 		{
-			var prepared = targets.Any (v => v.TargetName == "_PrepareAssemblies" && !v.Skipped);
-			var postProcessed = targets.Any (v => (v.TargetName == "_PostprocessAssemblies" || v.TargetName == "_PostprocessAssembliesAfterIlc") && !v.Skipped);
+			var prepared = targets.Any (v => v.TargetName == "_ExecutePrepareAssemblies" && !v.Skipped);
+			var postProcessed = targets.Any (v => (v.TargetName == "_ExecutePostprocessAssemblies" || v.TargetName == "_ExecutePostprocessAssembliesAfterIlc") && !v.Skipped);
 			return prepared && postProcessed;
 		}
 

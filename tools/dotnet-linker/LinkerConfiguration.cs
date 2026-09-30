@@ -44,6 +44,10 @@ namespace Xamarin.Linker {
 		// The value of the $(HotReloadCompatibleBuild) MSBuild property. When enabled, steps that
 		// re-serialize user assemblies (breaking Hot Reload) must leave reloadable assemblies untouched.
 		public bool HotReloadCompatibleBuild { get; private set; }
+		// The value of the $(_HotReloadModifiedAssemblySafetyNet) MSBuild property. This is an
+		// undocumented escape hatch to opt out of the error we show when a reloadable assembly is
+		// modified during a Hot Reload compatible build, in case the safety net itself has a bug.
+		public bool HotReloadModifiedAssemblySafetyNet { get; private set; } = true;
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
 		public InlineClassGetHandleMode InlineClassGetHandle { get; set; }
@@ -376,6 +380,10 @@ namespace Xamarin.Linker {
 				{ "HotReloadCompatibleBuild", (
 					new LoadValue ((key, value) => HotReloadCompatibleBuild = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, HotReloadCompatibleBuild, storage))
+				)},
+				{ "HotReloadModifiedAssemblySafetyNet", (
+					new LoadValue ((key, value) => HotReloadModifiedAssemblySafetyNet = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
+					new SaveValue ((key, storage) => storage.Add ($"{key}={(HotReloadModifiedAssemblySafetyNet ? "true" : "false")}"))
 				)},
 				{ "InlineDlfcnMethods", (
 					new LoadValue ((key, value) => {

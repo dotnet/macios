@@ -127,7 +127,9 @@
 !missing-pinvoke! CMBufferQueueGetMinPresentationTimeStamp is not bound
 !missing-pinvoke! CMBufferQueueGetTypeID is not bound
 !missing-pinvoke! CMBufferQueueCopyHead is not bound
+## The kCMMetadataDataType_* family and related registry APIs are intentionally unbound.
 !missing-field! kCMMetadataDataType_QuickTimeMetadataMilliLux not bound
+!missing-field! kCMMetadataDataType_QuickTimeMetadataSMPTE2094_50 not bound
 !missing-field! kCMMetadataDataType_QuickTimeMetadataUUID not bound
 
 !missing-pinvoke! CMBufferQueueInstallTrigger is not bound

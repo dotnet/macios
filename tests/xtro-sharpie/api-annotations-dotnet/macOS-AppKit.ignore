@@ -57,7 +57,6 @@
 !incorrect-protocol-member! +NSWindowRestoration::restoreWindowWithIdentifier:state:completionHandler: is REQUIRED and should be abstract
 
 # This init method is bound manually, because the managed signature is identical to another init method.
-!missing-selector! NSTextContainer::initWithContainerSize: not bound
 
 ## unsorted
 
@@ -132,9 +131,6 @@
 !missing-selector! NSATSTypesetter::usesFontLeading not bound
 !missing-selector! NSATSTypesetter::willSetLineFragmentRect:forGlyphRange:usedRect:baselineOffset: not bound
 !missing-selector! NSMutableAttributedString::fixAttributesInRange: not bound
-!missing-selector! NSString::boundingRectWithSize:options:attributes: not bound
-!missing-selector! NSString::drawWithRect:options:attributes: not bound
-!missing-selector! NSTextContainer::lineFragmentRectForProposedRect:sweepDirection:movementDirection:remainingRect: not bound
 !missing-selector! NSTextStorage::attributeRuns not bound
 !missing-selector! NSTextStorage::characters not bound
 !missing-selector! NSTextStorage::font not bound
@@ -218,7 +214,6 @@
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::ShadowWithLevel(System.Runtime.InteropServices.NFloat)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColor::UsingColorSpace(AppKit.NSColorSpace)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColor AppKit.NSColorList::ColorWithKey(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSColor AppKit.NSTextBlock::GetBorderColor(AppKit.NSRectEdge)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColorList AppKit.NSColorList::ColorListNamed(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSColorSpace AppKit.NSScreen::get_ColorSpace()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSCustomImageRepDrawingHandler AppKit.NSCustomImageRep::get_DrawingHandler()' is missing an [NullAllowed] on return type
@@ -851,9 +846,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSText::Unscript(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::.ctor(Foundation.NSFileWrapper)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachment::set_AttachmentCell(AppKit.NSTextAttachmentCell)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::set_BackgroundColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::SetBorderColor(AppKit.NSColor)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextBlock::SetBorderColor(AppKit.NSColor,AppKit.NSRectEdge)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextContainer::set_TextView(AppKit.NSTextView)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_Client(AppKit.INSTextFinderClient)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_FindBarContainer(AppKit.INSTextFinderBarContainer)' is missing an [NullAllowed] on parameter #0
@@ -1543,3 +1535,30 @@
 !missing-null-allowed! 'System.Void AppKit.INSTextContent::SetContentType(Foundation.NSString)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.INSTextElementProvider::Synchronize(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0
 !missing-null-allowed! 'System.Void AppKit.INSUserInterfaceItemIdentification::set_Identifier(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-null-allowed! 'AppKit.NSViewController AppKit.NSStoryboard::InstantiateController(System.String,AppKit.NSStoryboardControllerCreator)' is missing a '?' on parameter 'handler' block return type
+!missing-null-allowed! 'AppKit.NSViewController AppKit.NSStoryboard::InstantiateInitialController(AppKit.NSStoryboardControllerCreator)' is missing a '?' on parameter 'handler' block return type
+!missing-null-allowed! 'Foundation.NSObject AppKit.NSEvent::AddLocalMonitorForEventsMatchingMask(AppKit.NSEventMask,AppKit.LocalEventHandler)' is missing a '?' on parameter 'handler' block return type
+!missing-null-allowed! 'System.Boolean AppKit.NSApplication::RestoreWindowWithIdentifier(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'onCompletion' block parameter #0
+!missing-null-allowed! 'System.Boolean AppKit.NSApplication::RestoreWindowWithIdentifier(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'onCompletion' block parameter #1
+!missing-null-allowed! 'System.Void AppKit.INSWindowRestoration::RestoreWindow(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'onCompletion' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.INSWindowRestoration::RestoreWindow(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'onCompletion' block parameter #1
+!missing-null-allowed! 'System.Void AppKit.NSCollectionViewCompositionalLayout::.ctor(AppKit.NSCollectionViewCompositionalLayoutSectionProvider,AppKit.NSCollectionViewCompositionalLayoutConfiguration)' is missing a '?' on parameter 'sectionProvider' block return type
+!missing-null-allowed! 'System.Void AppKit.NSCollectionViewCompositionalLayout::.ctor(AppKit.NSCollectionViewCompositionalLayoutSectionProvider)' is missing a '?' on parameter 'sectionProvider' block return type
+!missing-null-allowed! 'System.Void AppKit.NSCollectionViewDiffableDataSource`2::.ctor(AppKit.NSCollectionView,AppKit.NSCollectionViewDiffableDataSourceItemProvider)' is missing a '?' on parameter 'itemProvider' block return type
+!missing-null-allowed! 'System.Void AppKit.NSCollectionViewDiffableDataSource`2::set_SupplementaryViewProvider(AppKit.NSCollectionViewDiffableDataSourceSupplementaryViewProvider)' is missing a '?' on parameter 'value' block return type
+!missing-null-allowed! 'System.Void AppKit.NSDocument::LockWithCompletionHandler(AppKit.NSDocumentLockCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::MoveToUrl(Foundation.NSUrl,AppKit.NSDocumentMoveToUrlCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::RelinquishPresentedItemToReader(Foundation.NSFilePresenterReacquirer)' is missing a '?' on parameter 'readerAction' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::RelinquishPresentedItemToWriter(Foundation.NSFilePresenterReacquirer)' is missing a '?' on parameter 'writerAction' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::RestoreDocumentWindow(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocument::RestoreDocumentWindow(System.String,Foundation.NSCoder,AppKit.NSWindowCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void AppKit.NSDocument::UnlockWithCompletionHandler(AppKit.NSDocumentUnlockCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocumentController::BeginOpenPanelWithCompletionHandler(AppKit.NSDocumentControllerOpenPanelWithCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocumentController::OpenDocument(Foundation.NSUrl,System.Boolean,AppKit.OpenDocumentCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocumentController::OpenDocument(Foundation.NSUrl,System.Boolean,AppKit.OpenDocumentCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #2
+!missing-null-allowed! 'System.Void AppKit.NSDocumentController::ReopenDocumentForUrl(Foundation.NSUrl,Foundation.NSUrl,System.Boolean,AppKit.OpenDocumentCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSDocumentController::ReopenDocumentForUrl(Foundation.NSUrl,Foundation.NSUrl,System.Boolean,AppKit.OpenDocumentCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #2
+!missing-null-allowed! 'System.Void AppKit.NSFontAssetRequest::DownloadFontAssets(AppKit.DownloadFontAssetsRequestCompletionHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSWindow::TrackEventsMatching(AppKit.NSEventMask,System.Double,System.String,AppKit.NSWindowTrackEventsMatchingCompletionHandler)' is missing a '?' on parameter 'trackingHandler' block parameter #0
+!missing-null-allowed! 'System.Void AppKit.NSWorkspace::DuplicateUrls(Foundation.NSArray,AppKit.NSWorkspaceUrlHandler)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'System.Void AppKit.NSWorkspace::RecycleUrls(Foundation.NSArray,AppKit.NSWorkspaceUrlHandler)' is missing a '?' on parameter 'completionHandler' block parameter #1

@@ -23,6 +23,10 @@ namespace MultipeerConnectivity {
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCPeerID_class/index.html">Apple documentation for <c>MCPeerID</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCPeerID init]: unrecognized selector sent to instance 0x7d721090
 	partial interface MCPeerID : NSCopying, NSSecureCoding {
@@ -46,6 +50,10 @@ namespace MultipeerConnectivity {
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCSession']/*" />
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // crash when calling `description` selector
 	partial interface MCSession {
@@ -323,6 +331,10 @@ namespace MultipeerConnectivity {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceAdvertiserClassRef/index.html">Apple documentation for <c>MCNearbyServiceAdvertiser</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceAdvertiser init]: unrecognized selector sent to instance 0x19195e50
 	partial interface MCNearbyServiceAdvertiser {
@@ -427,6 +439,10 @@ namespace MultipeerConnectivity {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceBrowserClassRef/index.html">Apple documentation for <c>MCNearbyServiceBrowser</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCNearbyServiceBrowser init]: unrecognized selector sent to instance 0x15519a70
 	partial interface MCNearbyServiceBrowser {
@@ -540,6 +556,10 @@ namespace MultipeerConnectivity {
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCBrowserViewController.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCBrowserViewController']/*" />
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSInvalidArgumentException -[MCPeerPickerViewController initWithNibName:bundle:]: unrecognized selector sent to instance 0x15517b90
 	partial interface MCBrowserViewController : MCNearbyServiceBrowserDelegate {
@@ -672,6 +692,10 @@ namespace MultipeerConnectivity {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCAdvertiserAssistant_class/index.html">Apple documentation for <c>MCAdvertiserAssistant</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Network Framework instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[MCAdvertiserAssistant init]: unrecognized selector sent to instance 0x7ea7fa40
 	interface MCAdvertiserAssistant {

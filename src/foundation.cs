@@ -14387,11 +14387,17 @@ namespace Foundation {
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 		[Export ("preservationPriorityForTag:")]
 		double GetPreservationPriority (NSString tag);
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 		[Export ("setPreservationPriority:forTags:")]
 		void SetPreservationPriority (double priority, NSSet<NSString> tags);
 
@@ -14411,6 +14417,9 @@ namespace Foundation {
 
 	[NoMac]
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSBundleResourceRequest : NSProgressReporting {
@@ -14684,6 +14693,10 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	partial interface NSItemProvider : NSCopying {
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
 		[DesignatedInitializer]
 		[Export ("initWithItem:typeIdentifier:")]
 		NativeHandle Constructor ([NullAllowed] NSObject item, string typeIdentifier);
@@ -14694,12 +14707,20 @@ namespace Foundation {
 		[Export ("registeredTypeIdentifiers", ArgumentSemantic.Copy)]
 		string [] RegisteredTypeIdentifiers { get; }
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'RegisterObject' method instead.")]
 		[Export ("registerItemForTypeIdentifier:loadHandler:")]
 		void RegisterItemForTypeIdentifier (string typeIdentifier, NSItemProviderLoadHandler loadHandler);
 
 		[Export ("hasItemConformingToTypeIdentifier:")]
 		bool HasItemConformingTo (string typeIdentifier);
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'LoadObject' method instead.")]
 		[Async (XmlDocs = """
 			<param name="typeIdentifier">To be added.</param>
 			<param name="options">To be added.</param>

@@ -7,6 +7,15 @@ and the repository's `.editorconfig`.
 
 ---
 
+## 0. PRs Excluded from Review
+
+Before reviewing a PR, retrieve its author. PRs authored by `csigs` are generated
+by the localization pipeline and must not be reviewed. Stop without reading the
+diff, posting inline comments, or submitting a review summary or verdict. Never
+rubber-stamp these PRs with a green verdict.
+
+---
+
 ## 1. Binding Definition Conventions
 
 Binding definitions (`src/*.cs`) are the core of this repository. They define the

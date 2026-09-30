@@ -6,9 +6,9 @@ using OS_nw_resolver_config = System.IntPtr;
 using OS_nw_proxy_config = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWPrivacyContext : NativeObject {
 

@@ -11,5 +11,7 @@
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! +FSBlockDeviceResource::proxyResourceForBSDName: not found
 !unknown-selector! +FSBlockDeviceResource::proxyResourceForBSDName:isWritable: not found
-!extra-null-allowed! 'FSKit.FSFileName[] FSKit.IFSVolumeXattrOperations::GetSupportedXattrNames(FSKit.FSItem)' has a extraneous [NullAllowed] on return type
+## The Xcode 27 headers annotate these values as non-null, but their documentation allows nil.
+!extra-null-allowed! 'FSKit.FSFileName[] FSKit.IFSVolumeXattrHandler::GetSupportedXattrNames(FSKit.FSItem)' has a extraneous [NullAllowed] on return type
+!extra-null-allowed! 'System.Void FSKit.IFSVolumeKernelOffloadedIoHandler::CompleteIo(FSKit.FSItem,System.Int64,System.UIntPtr,Foundation.NSError,FSKit.FSCompleteIoFlags,System.UIntPtr,FSKit.FSVolumeKernelOffloadedIoHandlerCompleteIoHandler)' has a extraneous [NullAllowed] on parameter #3
 !missing-null-allowed! 'Foundation.NSProgress FSKit.IFSManageableResourceMaintenanceOperations::StartCheckWithTask(FSKit.FSTask,FSKit.FSTaskOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type

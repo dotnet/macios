@@ -2,10 +2,9 @@
 #nullable enable
 
 namespace CoreAnimation {
-	/// <summary>Specifies minimum, maximum, and preferred frame rates.</summary>
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct CAFrameRateRange {

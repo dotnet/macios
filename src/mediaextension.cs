@@ -95,6 +95,10 @@ namespace MediaExtension {
 		[Mac (26, 0)]
 		[Export ("sidecarFileName"), NullAllowed]
 		string SidecarFileName { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("constituentFileNames", ArgumentSemantic.Copy)]
+		string [] ConstituentFileNames { get; set; }
 	}
 
 	delegate void METrackReaderLoadTrackInfoCallback ([NullAllowed] METrackInfo trackInfo, [NullAllowed] NSError error);

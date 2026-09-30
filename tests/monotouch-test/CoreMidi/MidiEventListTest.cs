@@ -142,7 +142,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				Assert.That (packets [0].Words, Is.EqualTo (new uint [] { 1, 2, 3, 4, 5, 6 }), "Item[0].Words");
 
 				var packetList = new List<MidiEventPacket> ();
-				obj.Iterate ((ref MidiEventPacket packet) => {
+				obj.Iterate ((in MidiEventPacket packet) => {
 					packetList.Add (packet);
 				});
 				Assert.That (packetList.Count, Is.EqualTo (1), "packetList.Length");

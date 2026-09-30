@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
@@ -33,7 +32,7 @@ namespace CoreMidi {
 		 */
 
 		// this struct is just used internally to avoid some manual pointer math
-		[StructLayout (LayoutKind.Sequential)]
+		[StructLayout (LayoutKind.Sequential, Pack = 4)]
 		struct MIDIEventList {
 			internal MidiProtocolId protocol;
 			internal uint numPackets;
@@ -177,6 +176,9 @@ namespace CoreMidi {
 
 			ArgumentNullException.ThrowIfNull (words);
 
+			if (words.Length > 64)
+				return false;
+
 			fixed (uint* wordsPtr = words) {
 				var rv = MIDIEventListAdd (midiDataPointer, (ulong) midiDataSize, currentPacket, time, (ulong) words.Length, wordsPtr);
 				if (rv is not null) {
@@ -286,7 +288,7 @@ namespace CoreMidi {
 			for (var i = 0; i < packetCount; i++) {
 				uint* wordPointer = &packet->word_00;
 				var nextPacket = (MidiEventPacket*) (wordPointer + packet->WordCount);
-				callback (ref Unsafe.AsRef<MidiEventPacket> (packet));
+				callback (in *packet);
 				packet = nextPacket;
 			}
 			GC.KeepAlive (this);
@@ -335,5 +337,5 @@ namespace CoreMidi {
 
 	/// <summary>The delegate type used by <see cref="MidiEventList.Iterate" />.</summary>
 	/// <param name="packet">The current packet found when iterating.</param>
-	public delegate void MidiEventListIterator (ref MidiEventPacket packet);
+	public delegate void MidiEventListIterator (in MidiEventPacket packet);
 }

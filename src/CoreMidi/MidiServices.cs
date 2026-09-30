@@ -1252,13 +1252,13 @@ namespace CoreMidi {
 			Client = client;
 			PortName = portName;
 			this.input = input;
-			gch = GCHandle.Alloc (this);
 		}
 
 		internal MidiPort (MidiClient client, string portName, bool input)
 		{
 			using (var nsstr = new NSString (portName)) {
-				GCHandle gch = GCHandle.Alloc (this);
+				if (input)
+					gch = GCHandle.Alloc (this);
 				int code;
 
 				MidiPortRef tempHandle;
@@ -3335,7 +3335,13 @@ namespace CoreMidi {
 
 			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
-			var rv = (MidiError) MIDISendSysex (request.GetSysexRequestStruct (cancellationToken));
+			MidiError rv;
+			try {
+				rv = (MidiError) MIDISendSysex (request.GetSysexRequestStruct (cancellationToken));
+			} catch {
+				request.Dispose ();
+				throw;
+			}
 			if (rv != MidiError.Ok) {
 				request.Dispose ();
 				tcs.TrySetResult (rv);
@@ -3366,7 +3372,13 @@ namespace CoreMidi {
 
 			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
-			var rv = (MidiError) MIDISendUMPSysex (request.GetSysexUmpRequestStruct (cancellationToken));
+			MidiError rv;
+			try {
+				rv = (MidiError) MIDISendUMPSysex (request.GetSysexUmpRequestStruct (cancellationToken));
+			} catch {
+				request.Dispose ();
+				throw;
+			}
 			if (rv != MidiError.Ok) {
 				request.Dispose ();
 				tcs.TrySetResult (rv);
@@ -3397,7 +3409,13 @@ namespace CoreMidi {
 
 			var tcs = new TaskCompletionSource<MidiError> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var request = new SysexRequest (this, data, tcs);
-			var rv = (MidiError) MIDISendUMPSysex8 (request.GetSysexUmpRequestStruct (cancellationToken));
+			MidiError rv;
+			try {
+				rv = (MidiError) MIDISendUMPSysex8 (request.GetSysexUmpRequestStruct (cancellationToken));
+			} catch {
+				request.Dispose ();
+				throw;
+			}
 			if (rv != MidiError.Ok) {
 				request.Dispose ();
 				tcs.TrySetResult (rv);

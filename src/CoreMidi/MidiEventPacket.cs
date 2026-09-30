@@ -22,6 +22,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[NativeName ("MIDIEventPacket")]
+	[StructLayout (LayoutKind.Sequential, Pack = 4)]
 	public struct MidiEventPacket {
 		ulong /* MIDITimeStamp */ timeStamp;
 		uint /* UInt32 */ wordCount;

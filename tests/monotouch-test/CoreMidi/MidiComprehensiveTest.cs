@@ -203,7 +203,7 @@ namespace MonoTouchFixtures.CoreMidi {
 		}
 
 		[Test]
-		public void SendAndReceive ()
+		public void CreateOutputPortAndVirtualSource ()
 		{
 			// Create client, source, destination, and output port
 			using var client = new MidiClient ("TestSendReceiveClient");
@@ -404,6 +404,20 @@ namespace MonoTouchFixtures.CoreMidi {
 				Assert.That (cancellationTask.IsCompletedSuccessfully || cancellationTask.IsCanceled, Is.True, $"Cancellation result #{i}");
 			}
 		}
+
+		[Test]
+		public void SendSysexAsyncDisposedEndpoint ()
+		{
+			using var client = new MidiClient ("TestSysexClient");
+			using var destination = client.CreateVirtualDestination ("TestSysexDestination", MidiProtocolId.Protocol_1_0, (_, _) => { }, out var destinationStatus);
+			MidiTestHelpers.AssertStatusOkOrInconclusive (destinationStatus, "Create destination");
+			var nonNullDestination = MidiTestHelpers.AssertNotNull (destination, "Destination");
+			nonNullDestination.Dispose ();
+
+			Assert.Throws<ObjectDisposedException> (() => nonNullDestination.SendSysexAsync (new byte [] { 0xf0, 0x7d, 0xf7 }), "MIDI 1.0");
+			Assert.Throws<ObjectDisposedException> (() => nonNullDestination.SendSysexUmpAsync (new uint [] { 0x301601f0 }), "UMP");
+			Assert.Throws<ObjectDisposedException> (() => nonNullDestination.SendSysexUmp8Async (new uint [] { 0x501601f0 }), "UMP 8");
+		}
 	}
 
 	[TestFixture]
@@ -517,7 +531,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			list.Add (200, new uint [] { 0x20806040 });
 
 			var packetList = new List<(ulong Timestamp, uint [] Words)> ();
-			list.Iterate ((ref MidiEventPacket packet) => {
+			list.Iterate ((in MidiEventPacket packet) => {
 				packetList.Add ((packet.Timestamp, packet.Words));
 			});
 
@@ -531,25 +545,14 @@ namespace MonoTouchFixtures.CoreMidi {
 		{
 			using var list = new MidiEventList (MidiProtocolId.Protocol_1_0);
 			var count = 0;
-			list.Iterate ((ref MidiEventPacket packet) => { count++; });
+			list.Iterate ((in MidiEventPacket packet) => { count++; });
 			Assert.That (count, Is.EqualTo (0), "Empty iteration count");
 		}
 
 		[Test]
-		public void Iterate_CallbackMayMutatePacket ()
+		public void MidiEventPacket_Size ()
 		{
-			using var list = new MidiEventList (MidiProtocolId.Protocol_1_0, 1024);
-
-			list.Add (100, new uint [] { 0x20906040 });
-			list.Add (200, new uint [] { 0x20806040 });
-
-			var timestamps = new List<ulong> ();
-			list.Iterate ((ref MidiEventPacket packet) => {
-				timestamps.Add (packet.Timestamp);
-				packet.WordCount = 0;
-			});
-
-			Assert.That (timestamps, Is.EqualTo (new ulong [] { 100, 200 }), "Timestamps");
+			Assert.That (Marshal.SizeOf<MidiEventPacket> (), Is.EqualTo (268), "Size");
 		}
 
 		[Test]
@@ -644,7 +647,7 @@ namespace MonoTouchFixtures.CoreMidi {
 
 			// Verify the melody by iterating and collecting all words
 			var allWords = new List<(ulong Timestamp, uint Word)> ();
-			list.Iterate ((ref MidiEventPacket packet) => {
+			list.Iterate ((in MidiEventPacket packet) => {
 				var words = packet.Words;
 				for (int w = 0; w < words.Length; w++)
 					allWords.Add ((packet.Timestamp, words [w]));

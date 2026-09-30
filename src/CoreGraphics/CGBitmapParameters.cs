@@ -78,6 +78,7 @@ namespace CoreGraphics {
 		public CGColorSpace? ColorSpace {
 			get => Runtime.GetINativeObject<CGColorSpace> (colorSpace, false);
 			set {
+				ArgumentNullException.ThrowIfNull (value);
 				// this is unsafe: the calling code must keep the managed CGColorSpace instance around somehow.
 				// we call Runtime.RetainAndAutoreleaseNativeObject for two reasons:
 				// * it's somewhat safer when the object can be autoreleased (although this typically isn't the case for CGColorSpace objects).

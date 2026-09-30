@@ -45,12 +45,13 @@ static void PrintUsage ()
 sealed class AudioUnitExtensionTestRunner {
 	const string DefaultBundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension";
 	const string MacCatalystBundleIdentifier = "com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst";
+	const string TopShelfBundleIdentifier = "com.xamarin.monotouch-test.TopShelfExtension";
 	const string DesktopContainerBundleIdentifier = "com.xamarin.monotouch-test.audiounit.containerapp";
 	const string MobileContainerBundleIdentifier = "com.xamarin.monotouch-test";
 
 	// Predicate used to capture the system log for diagnostic purposes only. The
 	// actual test results are streamed back over a TCP connection (see below).
-	const string LogPredicate = "process == \"monotouchtest\" OR process == \"ContainerApp\" OR eventMessage CONTAINS[c] \"monotouch-test-audio-unit\"";
+	const string LogPredicate = "process == \"monotouchtest\" OR process == \"ContainerApp\" OR eventMessage CONTAINS[c] \"monotouch-test-app-extension\"";
 
 	const string EndMarker = "<!-- the end -->";
 
@@ -59,7 +60,11 @@ sealed class AudioUnitExtensionTestRunner {
 	readonly Options options;
 	readonly object logLock = new ();
 
-	string BundleIdentifier => options.Platform == "MacCatalyst" ? MacCatalystBundleIdentifier : DefaultBundleIdentifier;
+	string BundleIdentifier => options.Platform switch {
+		"MacCatalyst" => MacCatalystBundleIdentifier,
+		"tvOS" => TopShelfBundleIdentifier,
+		_ => DefaultBundleIdentifier,
+	};
 	string DefaultsDomain => options.SimulatorUdid is null
 		? Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", BundleIdentifier, "Data", "Library", "Preferences", BundleIdentifier + ".plist")
 		: BundleIdentifier;

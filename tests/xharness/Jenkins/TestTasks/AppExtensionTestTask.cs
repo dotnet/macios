@@ -17,13 +17,17 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 namespace Xharness.Jenkins.TestTasks {
 	class AppExtensionTestTask : AppleTestTask {
 		readonly IMlaunchProcessManager processManager;
+		readonly string extensionDirectory;
 		readonly string testVariation;
 		readonly IEnumerable<ISimulatorDevice>? candidates;
 
-		public AppExtensionTestTask (Jenkins jenkins, IMlaunchProcessManager processManager, TestPlatform platform, string testVariation, IEnumerable<ISimulatorDevice>? candidates)
+		public override bool ShowModeGroup => true;
+
+		public AppExtensionTestTask (Jenkins jenkins, IMlaunchProcessManager processManager, TestPlatform platform, string extensionDirectory, string testVariation, IEnumerable<ISimulatorDevice>? candidates)
 			: base (jenkins)
 		{
 			this.processManager = processManager;
+			this.extensionDirectory = extensionDirectory;
 			this.testVariation = testVariation;
 			this.candidates = candidates;
 			Platform = platform;
@@ -42,7 +46,7 @@ namespace Xharness.Jenkins.TestTasks {
 				"monotouch-test",
 				"dotnet",
 				"extensions",
-				"audio-unit",
+				extensionDirectory,
 				platformName);
 			var extensionLogPath = Path.Combine (Logs.Directory, $"app-extension-{Platform}-{Timestamp}.log");
 			var resultsPath = Path.Combine (Logs.Directory, $"vsts-app-extension-{Platform}-{Timestamp}.xml");
@@ -54,7 +58,6 @@ namespace Xharness.Jenkins.TestTasks {
 			process.StartInfo.ArgumentList.Add (projectDirectory);
 			process.StartInfo.ArgumentList.Add ("run");
 			process.StartInfo.ArgumentList.Add ($"TEST_VARIATION={testVariation}");
-			process.StartInfo.ArgumentList.Add ("TEST_FILTER=MonoTouchFixtures.AudioUnit.AppExtensionSmokeTest");
 			process.StartInfo.ArgumentList.Add ($"LOGFILENAME={extensionLogPath}");
 			process.StartInfo.ArgumentList.Add ($"RESULTSFILENAME={resultsPath}");
 			process.StartInfo.ArgumentList.Add ("RUN_TIMEOUT_SECONDS=600");

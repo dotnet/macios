@@ -2,10 +2,8 @@
 <!-- This file contains the logic shared by all the platform-specific AppExtension.csproj projects. -->
 <Project>
   <PropertyGroup>
-    <OutputType>Library</OutputType>
     <IsAppExtension>true</IsAppExtension>
-    <AssemblyName>monotouchtest</AssemblyName>
-    <RootNamespace>monotouchtestappextension</RootNamespace>
+    <!-- macOS and Mac Catalyst extensions are registered on the same host, so they need distinct bundle identifiers. -->
     <ApplicationId Condition="$(TargetFramework.EndsWith('-maccatalyst'))">com.xamarin.monotouch-test.AudioUnitExtension.MacCatalyst</ApplicationId>
     <ApplicationId Condition="!$(TargetFramework.EndsWith('-maccatalyst'))">com.xamarin.monotouch-test.AudioUnitExtension</ApplicationId>
     <ApplicationVersion>1</ApplicationVersion>
@@ -14,17 +12,19 @@
 
   <Import Project="$(MSBuildThisFileDirectory)..\..\shared.csproj" />
 
-  <ItemGroup Condition="!$(TargetFramework.EndsWith('-tvos')) And !$(TargetFramework.EndsWith('-maccatalyst'))">
-    <!-- The Info.plist values that are common to all platforms. Everything else is either an MSBuild property or computed by the SDK. -->
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <!-- The normal monotouch-test projects are two directory levels closer to product.snk. -->
+    <AssemblyOriginatorKeyFile>$(RootTestsDirectory)\..\product.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="!$(TargetFramework.EndsWith('-maccatalyst'))">
+    <!-- The Info.plist values shared by the iOS and macOS Audio Unit extensions. -->
     <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-Info.plist" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.EndsWith('-maccatalyst'))">
     <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-MacCatalyst-Info.plist" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.EndsWith('-tvos'))">
-    <PartialAppManifest Include="$(MSBuildThisFileDirectory)AppExtension-tvOS-Info.plist" />
-  </ItemGroup>
-
   <!-- On desktop the audio unit extension must be sandboxed. On mobile there's no app sandbox entitlement. -->
   <ItemGroup Condition="'$(SdkIsDesktop)' == 'true'">
     <CustomEntitlements Include="com.apple.security.app-sandbox" Type="boolean" Value="true" />
@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)..\AppExtensionTestHost.cs">
+      <Link>AppExtensionTestHost.cs</Link>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)AudioUnitTestExtension.cs">
       <Link>AudioUnitTestExtension.cs</Link>
     </Compile>

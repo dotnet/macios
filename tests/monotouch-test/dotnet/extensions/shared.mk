@@ -8,10 +8,9 @@ include $(TOP)/mk/colors.mk
 include $(TOP)/scripts/run-audio-unit-extension-tests/fragment.mk
 
 # This file is meant to be included from
-# tests/monotouch-test/dotnet/extensions/audio-unit/<platform>/Makefile.
+# tests/monotouch-test/dotnet/extensions/<extension kind>/<platform>/Makefile.
 
 BINLOG_TIMESTAMP:=$(shell date +%Y-%m-%d-%H%M%S)
-AUVAL_ARGUMENTS?=-v aufx mtts Xmrn
 RUN_TIMEOUT_SECONDS?=600
 BUILD_PARAMETERS+=$(BUILD_ARGUMENTS)
 
@@ -19,7 +18,7 @@ ifeq ($(PLATFORM),)
 PLATFORM=$(shell basename "$(CURDIR)")
 endif
 
-LOGFILENAME:=$(TMPDIR)/monotouch-test/extensions/audio-unit/$(PLATFORM)-$(shell date +%Y-%m-%d--%H:%M:%S).log
+LOGFILENAME:=$(TMPDIR)/monotouch-test/extensions/$(EXTENSION_KIND)/$(PLATFORM)-$(shell date +%Y-%m-%d--%H:%M:%S).log
 RESULTSFILENAME?=$(patsubst %.log,%.nunit-results.xml,$(LOGFILENAME))
 
 # The runtime (CoreCLR/MonoVM), the registrar and other options are selected
@@ -95,7 +94,7 @@ prepare:
 	@# nothing to do here right now
 
 build: prepare
-	$(Q) echo "Building extension test project: $(COLOR_GRAY)$(CONTAINER_PROJECT)$(COLOR_CLEAR) [$(CONFIG) $(RID)]"
+	$(Q) echo "Building app extension test project: $(COLOR_GRAY)$(CONTAINER_PROJECT)$(COLOR_CLEAR) [$(CONFIG) $(RID)]"
 	$(Q) rm -rf "$(abspath $(CURDIR))/AppExtension/bin" "$(abspath $(CURDIR))/AppExtension/obj" "$(abspath $(CURDIR))/ContainerApp/bin" "$(abspath $(CURDIR))/ContainerApp/obj"
 	$(Q) $(DOTNET) build "$(CONTAINER_PROJECT)" "/bl:$(abspath build-$(BINLOG_TIMESTAMP).binlog)" $(DOTNET_BUILD_VERBOSITY) $(BUILD_PARAMETERS) $(CONFIG_ARGUMENT) $(RID_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(TEST_VARIATION_ARGUMENT)
 	$(Q) echo "Build completed."
@@ -105,7 +104,7 @@ register-extension: build
 	$(Q) pluginkit -a "$(EXTENSION_PATH)"
 
 run: build $(RUN_AUDIO_UNIT_EXTENSION_TESTS)
-	$(Q) echo "Running monotouch-test from the audio unit extension: $(COLOR_GRAY)$(EXTENSION_PATH)$(COLOR_CLEAR)"
+	$(Q) echo "Running monotouch-test from the app extension: $(COLOR_GRAY)$(EXTENSION_PATH)$(COLOR_CLEAR)"
 	$(Q) echo "Writing output to: $(COLOR_GRAY)$(LOGFILENAME)$(COLOR_CLEAR)"
 	$(Q) $(RUN_AUDIO_UNIT_EXTENSION_TESTS_EXEC) \
 		--platform "$(PLATFORM)" \

@@ -6,9 +6,6 @@ using System.Threading;
 
 using AudioUnit;
 using Foundation;
-#if __TVOS__
-using TVServices;
-#endif
 
 namespace MonotouchTest.AudioUnitExtensionHost {
 	public class Program {
@@ -41,11 +38,6 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 
 		static int RunExtensionTests ()
 		{
-#if __TVOS__
-			Console.WriteLine ($"{logPrefix} Requesting updated top-shelf content from the TV Services extension.");
-			TVTopShelfContentProvider.DidChange ();
-			return 0;
-#else
 			var desc = new AudioComponentDescription {
 				ComponentType = AudioComponentType.Effect,
 #if __MACCATALYST__
@@ -84,7 +76,6 @@ namespace MonotouchTest.AudioUnitExtensionHost {
 				while (true)
 					NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (0.25));
 			}
-#endif
 		}
 
 		static int FourCC (string value)

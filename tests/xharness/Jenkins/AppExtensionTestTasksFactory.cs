@@ -22,32 +22,32 @@ namespace Xharness.Jenkins {
 			if (Jenkins.Harness.INCLUDE_MAC && Jenkins.TestSelection.IsEnabled (PlatformLabel.Mac)) {
 				tasks.Add (CreateTask (
 					TestPlatform.Mac,
-					"Debug (CoreCLR, trimmable static registrar)",
-					"coreclr|trimmable-static-registrar",
+					"Debug (trimmable static registrar)",
+					"trimmable-static-registrar",
 					!selected));
 			}
 
 			if (Jenkins.Harness.INCLUDE_MACCATALYST && Jenkins.TestSelection.IsEnabled (PlatformLabel.MacCatalyst)) {
 				tasks.Add (CreateTask (
 					TestPlatform.MacCatalyst,
-					"Debug (CoreCLR, trimmable static registrar)",
-					"coreclr|trimmable-static-registrar",
+					"Debug (trimmable static registrar)",
+					"trimmable-static-registrar",
 					!selected));
 			}
 
 			if (Jenkins.Harness.INCLUDE_IOS && Jenkins.TestSelection.IsEnabled (PlatformLabel.iOS) && Jenkins.TestSelection.IsEnabled (PlatformLabel.iOSSimulator)) {
 				tasks.Add (CreateTask (
 					TestPlatform.iOS,
-					"Debug (CoreCLR, trimmable static registrar)",
-					"coreclr|trimmable-static-registrar",
+					"Debug (trimmable static registrar)",
+					"trimmable-static-registrar",
 					!selected));
 			}
 
 			if (Jenkins.Harness.INCLUDE_TVOS && Jenkins.TestSelection.IsEnabled (PlatformLabel.tvOS) && Jenkins.TestSelection.IsEnabled (PlatformLabel.iOSSimulator)) {
 				tasks.Add (CreateTask (
 					TestPlatform.tvOS,
-					"Debug (CoreCLR, trimmable static registrar)",
-					"coreclr|trimmable-static-registrar",
+					"Debug (trimmable static registrar)",
+					"trimmable-static-registrar",
 					!selected));
 			}
 
@@ -60,9 +60,11 @@ namespace Xharness.Jenkins {
 			var targets = platform.GetTestTargetsForSimulator ();
 			if (targets.Length > 0)
 				candidates = Jenkins.Simulators.SelectDevices (targets [0].GetTargetOs (false), Jenkins.SimulatorLoadLog, false);
+			var extensionDirectory = platform == TestPlatform.tvOS ? "tv-top-shelf" : "audio-unit";
 
-			return new AppExtensionTestTask (Jenkins, ProcessManager, platform, testVariation, candidates) {
-				TestName = "monotouch-test app extension",
+			return new AppExtensionTestTask (Jenkins, ProcessManager, platform, extensionDirectory, testVariation, candidates) {
+				TestName = "monotouch-test app extensions",
+				Mode = platform.ToPlatformName (),
 				Variation = variation,
 				Ignored = ignored,
 			};

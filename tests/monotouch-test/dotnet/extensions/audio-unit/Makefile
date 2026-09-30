@@ -2,8 +2,8 @@
 # Licensed under the MIT License.
 
 TOP=../../../../..
-DOTNET_PLATFORMS=macOS MacCatalyst iOS tvOS
-DOTNET_DESKTOP_PLATFORMS=macOS MacCatalyst
+DOTNET_TEST_PLATFORMS=$(filter macOS MacCatalyst iOS,$(DOTNET_PLATFORMS))
+DOTNET_TEST_DESKTOP_PLATFORMS=$(filter macOS MacCatalyst,$(DOTNET_DESKTOP_PLATFORMS))
 
 include $(TOP)/tests/common/shared-dotnet-test.mk
 

@@ -374,10 +374,11 @@
 		<Warning Text="$(_RuntimeIdentifiersClashMessage)" />
 	</Target>
 
-	<Target Name="_WarnAboutRuntimeIdentifiers"
+	<Target Name="_ValidateRuntimeIdentifiers"
 		Condition="'$(RuntimeIdentifiers)' != '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')"
 		BeforeTargets="Build">
-		<Warning Text="RuntimeIdentifiers is not recommended for $(_PlatformName) projects. Use RuntimeIdentifier instead to build for a single architecture." />
+		<Warning Condition="$([MSBuild]::VersionLessThan('$(TargetFrameworkVersion)', '13.0'))" Text="RuntimeIdentifiers is not recommended for $(_PlatformName) projects. Use RuntimeIdentifier instead to build for a single architecture." />
+		<Error Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '13.0'))" Text="RuntimeIdentifiers is not supported for $(_PlatformName) projects. Use RuntimeIdentifier instead to build for a single architecture." />
 	</Target>
 
 	<Target Name="_ErrorRuntimeIdentifiersClash" Condition="'$(_RuntimeIdentifiersClashErrorMessage)' != ''">

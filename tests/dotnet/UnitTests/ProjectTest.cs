@@ -2610,17 +2610,40 @@ namespace Xamarin.Tests {
 			AssertWarningMessages (warnings, $"RuntimeIdentifiers is not recommended for {platform.AsString ()} projects. Use RuntimeIdentifier instead to build for a single architecture.");
 		}
 
+		[TestCase (ApplePlatform.iOS, "v12.0", false)]
+		[TestCase (ApplePlatform.TVOS, "v12.0", false)]
+		[TestCase (ApplePlatform.iOS, "v13.0", true)]
+		[TestCase (ApplePlatform.TVOS, "v14.0", true)]
+		public void RuntimeIdentifiersDiagnosticByTargetFrameworkVersion (ApplePlatform platform, string targetFrameworkVersion, bool expectError)
+		{
+			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
+			var properties = new Dictionary<string, string> ();
+			properties ["_PlatformName"] = platform.AsString ();
+			properties ["RuntimeIdentifiers"] = platform == ApplePlatform.iOS ? "iossimulator-arm64" : "tvossimulator-arm64";
+			properties ["TargetFrameworkVersion"] = targetFrameworkVersion;
+			if (expectError) {
+				var rv = DotNet.AssertBuildFailure (projectPath, properties, target: "_ValidateRuntimeIdentifiers");
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+				AssertErrorMessages (errors, $"RuntimeIdentifiers is not supported for {platform.AsString ()} projects. Use RuntimeIdentifier instead to build for a single architecture.");
+			} else {
+				var rv = DotNet.AssertBuild (projectPath, properties, target: "_ValidateRuntimeIdentifiers");
+				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+				AssertWarningMessages (warnings, $"RuntimeIdentifiers is not recommended for {platform.AsString ()} projects. Use RuntimeIdentifier instead to build for a single architecture.");
+			}
+		}
+
 		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		public void NoRuntimeIdentifiersWarning (ApplePlatform platform, string runtimeIdentifier, bool usePlural)
 		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
-			var properties = GetDefaultProperties ();
+			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
+			var properties = new Dictionary<string, string> ();
+			properties ["_PlatformName"] = platform.AsString ();
+			properties ["TargetFrameworkVersion"] = "v13.0";
 			properties [usePlural ? "RuntimeIdentifiers" : "RuntimeIdentifier"] = runtimeIdentifier;
-			var rv = DotNet.AssertBuild (projectPath, properties, target: "_WarnAboutRuntimeIdentifiers");
+			var rv = DotNet.AssertBuild (projectPath, properties, target: "_ValidateRuntimeIdentifiers");
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
 			Assert.That (warnings, Is.Empty, "Warnings");
 		}

@@ -2585,7 +2585,7 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void PluralRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers)
 		{

@@ -98,11 +98,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		foreach (var d in devices) {
 			if (!d.RuntimeIdentifiers.Any ())
 				continue;
-			if (!string.IsNullOrEmpty (RuntimeIdentifier)) {
-				d.Item.SetMetadata ("RuntimeIdentifier", RuntimeIdentifier);
-			} else {
-				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single ());
-			}
+			d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single ());
 		}
 
 		DiscardedDevices = devices.Where (d => d.Discarded).Select (v => {

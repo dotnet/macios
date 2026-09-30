@@ -271,7 +271,7 @@ namespace Xamarin.Tests {
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;", "Debug")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "Debug")]
 		public void PluralRuntimeIdentifiersWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
 			var properties = AddRemoteProperties ();

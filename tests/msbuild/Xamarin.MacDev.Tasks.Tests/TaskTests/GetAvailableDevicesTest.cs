@@ -742,6 +742,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.RuntimeIdentifier = "iossimulator-x64";
 			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.That (task.Devices, Is.Empty, "Devices");
+			Assert.That (task.DiscardedDevices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded simulator RuntimeIdentifier");
 			Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.AnyOf ("Device runtime identifier(s) 'iossimulator-arm64' incompatible with the requested runtime identifier 'iossimulator-x64'", "Can't run an arm64 simulator on an x86_64 macOS desktop."), "Discarded reason");
 		}
 

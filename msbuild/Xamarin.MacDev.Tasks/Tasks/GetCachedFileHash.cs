@@ -14,8 +14,11 @@ using Microsoft.Build.Utilities;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
+	// Computes SHA-256 hashes for R2R inputs, reusing cached hashes until each file's timestamp or length changes.
 	public class GetCachedFileHash : XamarinTask {
-		public sealed class CacheEntry {
+		sealed class CacheEntry {
+			public CacheEntry () { }
+
 			public long Length { get; set; }
 			public long LastWriteTimeUtcTicks { get; set; }
 			public string Hash { get; set; } = "";
@@ -40,9 +43,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (!cacheNeedsWriting) {
 				try {
 					cached = JsonSerializer.Deserialize<Dictionary<string, CacheEntry>> (File.ReadAllText (CacheFile))
-						?? throw new JsonException ("The cache does not contain any entries.");
+						?? throw new JsonException (MSBStrings.E7193);
 				} catch (JsonException e) {
-					Log.LogWarning ("Ignoring invalid R2R input hash cache '{0}': {1}", CacheFile, e.Message);
+					Log.LogWarning (MSBStrings.W7194, CacheFile, e.Message);
 					cacheNeedsWriting = true;
 				}
 			}
@@ -52,13 +55,13 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var file in Files) {
 				var info = new FileInfo (file.ItemSpec);
 				if (!info.Exists) {
-					Log.LogError ("R2R input file '{0}' does not exist.", file.ItemSpec);
+					Log.LogError (MSBStrings.E7195, file.ItemSpec);
 					return false;
 				}
 
 				if (cached.TryGetValue (info.FullName, out var entry)) {
 					if (entry is null) {
-						Log.LogWarning ("Ignoring invalid R2R input hash for '{0}' in cache '{1}'.", info.FullName, CacheFile);
+						Log.LogWarning (MSBStrings.W7196, info.FullName, CacheFile);
 					} else if (entry.Length == info.Length && entry.LastWriteTimeUtcTicks == info.LastWriteTimeUtc.Ticks) {
 						if (IsValidHash (entry.Hash)) {
 							file.SetMetadata ("FileHash", entry.Hash);
@@ -66,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 							current [info.FullName] = entry;
 							continue;
 						}
-						Log.LogWarning ("Ignoring invalid R2R input hash for '{0}' in cache '{1}'.", info.FullName, CacheFile);
+						Log.LogWarning (MSBStrings.W7196, info.FullName, CacheFile);
 					}
 				}
 				filesToHash.Add (file);
@@ -95,7 +98,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			FilesHashed = filesToHash.Count;
-			Log.LogMessage (MessageImportance.Low, "Hashed {0} of {1} R2R input files.", FilesHashed, Files.Length);
+			Log.LogMessage (MessageImportance.Low, MSBStrings.M7197, FilesHashed, Files.Length);
 			Items = Files;
 			return !Log.HasLoggedErrors;
 		}

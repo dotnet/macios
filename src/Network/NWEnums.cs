@@ -31,9 +31,9 @@ namespace Network {
 		ResultRemoved = 0x04,
 		/// <summary>The TXT record changed.</summary>
 		TxtRecordChanged = 0x20,
-		/// <summary>A network interface became available.</summary>
+		/// <summary>The service became discoverable on another interface.</summary>
 		InterfaceAdded = 0x08,
-		/// <summary>A network interface was removed.</summary>
+		/// <summary>The service is no longer discoverable on an interface.</summary>
 		InterfaceRemoved = 0x10,
 	}
 

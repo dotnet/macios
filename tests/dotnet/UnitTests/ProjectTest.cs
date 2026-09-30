@@ -1923,9 +1923,9 @@ namespace Xamarin.Tests {
 							$"{lib}.xcframework/tvos-arm64",
 							$"{lib}.xcframework/tvos-arm64/{lib}.framework",
 							$"{lib}.xcframework/tvos-arm64/{lib}.framework/{lib}",
-							$"{lib}.xcframework/tvos-arm64_x86_64-simulator",
-							$"{lib}.xcframework/tvos-arm64_x86_64-simulator/{lib}.framework",
-							$"{lib}.xcframework/tvos-arm64_x86_64-simulator/{lib}.framework/{lib}",
+							$"{lib}.xcframework/tvos-arm64-simulator",
+							$"{lib}.xcframework/tvos-arm64-simulator/{lib}.framework",
+							$"{lib}.xcframework/tvos-arm64-simulator/{lib}.framework/{lib}",
 						});
 
 						addHere = Configuration.include_mac ? mustHaveContents : mayHaveContents;
@@ -1944,9 +1944,9 @@ namespace Xamarin.Tests {
 
 						addHere = Configuration.include_ios ? mustHaveContents : mayHaveContents;
 						addHere.AddRange (new string [] {
-							$"{lib}.xcframework/ios-arm64_x86_64-simulator",
-							$"{lib}.xcframework/ios-arm64_x86_64-simulator/{lib}.framework",
-							$"{lib}.xcframework/ios-arm64_x86_64-simulator/{lib}.framework/{lib}",
+							$"{lib}.xcframework/ios-arm64-simulator",
+							$"{lib}.xcframework/ios-arm64-simulator/{lib}.framework",
+							$"{lib}.xcframework/ios-arm64-simulator/{lib}.framework/{lib}",
 							$"{lib}.xcframework/ios-arm64",
 							$"{lib}.xcframework/ios-arm64/{lib}.framework",
 							$"{lib}.xcframework/ios-arm64/{lib}.framework/{lib}",
@@ -1977,17 +1977,17 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources",
 					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
 					"XTest.xcframework/ios-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
-					"XTest.xcframework/ios-arm64_x86_64-simulator",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework/Info.plist",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/XTest.framework/XTest",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
-					"XTest.xcframework/ios-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
+					"XTest.xcframework/ios-arm64-simulator",
+					"XTest.xcframework/ios-arm64-simulator/XTest.framework",
+					"XTest.xcframework/ios-arm64-simulator/XTest.framework/Info.plist",
+					"XTest.xcframework/ios-arm64-simulator/XTest.framework/XTest",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/ios-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				addHere = Configuration.include_maccatalyst ? mustHaveContents : mayHaveContents;
@@ -2045,17 +2045,17 @@ namespace Xamarin.Tests {
 					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources",
 					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
 					"XTest.xcframework/tvos-arm64/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/Info.plist",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/XTest.framework/XTest",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
-					"XTest.xcframework/tvos-arm64_x86_64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
+					"XTest.xcframework/tvos-arm64-simulator",
+					"XTest.xcframework/tvos-arm64-simulator/XTest.framework",
+					"XTest.xcframework/tvos-arm64-simulator/XTest.framework/Info.plist",
+					"XTest.xcframework/tvos-arm64-simulator/XTest.framework/XTest",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Info.plist",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF",
+					"XTest.xcframework/tvos-arm64-simulator/dSYMs/XTest.framework.dSYM/Contents/Resources/DWARF/XTest",
 				});
 
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);

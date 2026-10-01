@@ -43,7 +43,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 				Interlocked.Increment (ref visits [index]);
 			}, iterations);
 			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
-			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");
+			for (var i = 0; i < visits.Length; i++)
+				Assert.That (visits [i], Is.EqualTo (1), $"Iteration {i} must run exactly once before Submit returns");
 		}
 #endif // !XAMCORE_5_0
 
@@ -65,7 +66,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 				Interlocked.Increment (ref visits [index]);
 			}, (nint) iterations);
 			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
-			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");
+			for (var i = 0; i < visits.Length; i++)
+				Assert.That (visits [i], Is.EqualTo (1), $"Iteration {i} must run exactly once before Submit returns");
 		}
 
 		[Test]

@@ -19,6 +19,7 @@ public class AttributeManager {
 		"System.Runtime.CompilerServices.NullableContextAttribute",
 		"System.Runtime.CompilerServices.NativeIntegerAttribute",
 		"System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute",
+		"System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute",
 	};
 
 	// Cache raw GetCustomAttributesData() results per provider to avoid repeated reflection allocations.

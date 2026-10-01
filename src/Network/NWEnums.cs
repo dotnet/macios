@@ -233,7 +233,7 @@ namespace Network {
 		Allow = 1,
 		/// <summary>Prohibit the use of expired DNS answers.</summary>
 		Prohibit = 2,
-		/// <summary>Allow expired DNS answers and cache answers persistently for the process.</summary>
+		/// <summary>Allow expired DNS answers and cache answers persistently for the process. Use only for hostnames whose resolutions do not change across networks.</summary>
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Persistent = 3,
 	}

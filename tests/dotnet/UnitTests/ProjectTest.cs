@@ -2619,8 +2619,11 @@ namespace Xamarin.Tests {
 			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
 			var properties = new Dictionary<string, string> ();
 			properties ["_PlatformName"] = platform.AsString ();
+			properties ["_CanOutputAppBundle"] = "true";
 			properties ["RuntimeIdentifiers"] = platform == ApplePlatform.iOS ? "iossimulator-arm64" : "tvossimulator-arm64";
 			properties ["TargetFrameworkVersion"] = targetFrameworkVersion;
+			var firstBuildDependency = DotNet.GetProperty (projectPath, "BuildDependsOn", properties).Split (';', StringSplitOptions.RemoveEmptyEntries).First ().Trim ();
+			Assert.That (firstBuildDependency, Is.EqualTo ("_ValidateRuntimeIdentifiers"), "First build dependency");
 			if (expectError) {
 				var rv = DotNet.AssertBuildFailure (projectPath, properties, target: "_ValidateRuntimeIdentifiers");
 				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();

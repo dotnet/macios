@@ -338,7 +338,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						}
 					}
 					if (runtimeIdentifiers.Count == 0 && string.IsNullOrEmpty (discardedReason))
-						discardedReason = "Simulator does not support arm64.";
+						discardedReason = MSBStrings.M0170;
 				}
 			} else {
 				discardedReason = $"Device is not available: {device.AvailabilityError}";

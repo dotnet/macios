@@ -10,32 +10,6 @@ using Xamarin.Utils;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetTestTest : TestBaseClass {
-		[TestCase (null, "true", false)]
-		[TestCase ("0", "true", false)]
-		[TestCase ("1", "true", true)]
-		[TestCase ("1", "True", true)]
-		[TestCase ("1", "false", false)]
-		[TestCase ("1", null, false)]
-		[NonParallelizable]
-		public void SkipMonoTests (string? skipMonoTests, string? useMonoRuntime, bool ignored)
-		{
-			var previous = Environment.GetEnvironmentVariable ("SKIP_MONO_TESTS");
-			try {
-				Environment.SetEnvironmentVariable ("SKIP_MONO_TESTS", skipMonoTests);
-				var properties = new Dictionary<string, string> ();
-				if (useMonoRuntime is not null)
-					properties ["UseMonoRuntime"] = useMonoRuntime;
-				var project = Path.Combine (Path.GetTempPath (), Guid.NewGuid ().ToString (), "test.csproj");
-				foreach (var verb in new [] { "build", "pack", "publish", "restore", "run", "test" })
-					Assert.Throws (ignored ? typeof (IgnoreException) : typeof (FileNotFoundException),
-						() => DotNet.Execute (verb, project, properties), verb);
-				if (ignored)
-					Assert.That (() => DotNet.IgnoreIfUnsupportedMonoRuntime (true), Throws.TypeOf<IgnoreException> ());
-			} finally {
-				Environment.SetEnvironmentVariable ("SKIP_MONO_TESTS", previous);
-			}
-		}
-
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iostest")]
 		[TestCase (ApplePlatform.TVOS, "tvostest")]

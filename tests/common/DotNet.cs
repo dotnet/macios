@@ -83,8 +83,6 @@ namespace Xamarin.Tests {
 		{
 			if (!useMonoRuntime)
 				return;
-			if (string.Equals (Environment.GetEnvironmentVariable ("SKIP_MONO_TESTS"), "1", StringComparison.Ordinal))
-				Assert.Ignore ("Mono tests are disabled in CI.");
 			if (Configuration.dotnet_monovm_supported)
 				return;
 			Assert.Ignore ("Mono is not supported");
@@ -259,8 +257,6 @@ namespace Xamarin.Tests {
 
 		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, Dictionary<string, string?>? environmentVariables = null, params string [] extraArguments)
 		{
-			if (string.Equals (Environment.GetEnvironmentVariable ("SKIP_MONO_TESTS"), "1", StringComparison.Ordinal))
-				IgnoreIfUnsupportedMonoRuntime (properties);
 			if (!File.Exists (project))
 				throw new FileNotFoundException ($"The project file '{project}' does not exist.");
 			verb = verb.ToLowerInvariant ();

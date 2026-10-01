@@ -33,9 +33,9 @@ namespace Xharness.Jenkins {
 			var supports_coreclr = true;
 			var ignore_coreclr = ignore;
 			var supports_mono = jenkins.Harness.DOTNET_MONOVM_SUPPORTED && test.Platform != TestPlatform.Mac;
-			var run_mono = supports_mono &&
-				!string.Equals (Environment.GetEnvironmentVariable ("SKIP_MONO_TESTS"), "1", StringComparison.Ordinal);
-			var supports_interpreter = run_mono;
+			var run_coreclr_variations = supports_coreclr && test.Platform != TestPlatform.Mac &&
+				(jenkins.Harness.DOTNET_MONOVM_SUPPORTED || jenkins.Harness.InCI);
+			var supports_interpreter = supports_mono;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines
 																								   // Xcode 27 only ships arm64 simulator runtimes (there's no x86_64/universal variant available
 																								   // to download), so x64 simulator apps can't run there. Skip x64 *simulator* configurations on
@@ -70,10 +70,8 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, CoreCLR, Trimmable Static Registrar)", TestVariation = "coreclr|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 				}
 				if (supports_mono) {
-					if (run_mono) {
-						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Dynamic Registrar)", TestVariation = "monovm|prepare-assemblies|dynamic-registrar", Ignored = ignore };
-						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Managed Static Registrar)", TestVariation = "monovm|prepare-assemblies|managed-static-registrar", Ignored = ignore };
-					}
+					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Dynamic Registrar)", TestVariation = "monovm|prepare-assemblies|dynamic-registrar", Ignored = ignore };
+					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Managed Static Registrar)", TestVariation = "monovm|prepare-assemblies|managed-static-registrar", Ignored = ignore };
 					if (jenkins.Harness.DotNetVersion.Major >= 11) { // on Mono, the trimmable static registrar only works in .NET 11
 						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Trimmable Static Registrar)", TestVariation = "monovm|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 					}
@@ -103,12 +101,12 @@ namespace Xharness.Jenkins {
 				}
 				break;
 			case "introspection":
-				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+				if (run_coreclr_variations) {
 					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore_coreclr };
 				}
 				break;
 			case "monotouch-test":
-				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+				if (run_coreclr_variations) {
 					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore_coreclr };
 					yield return new TestData { Variation = "Release (CoreCLR, ARM64)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, RuntimeIdentifier = arm64_sim_runtime_identifier };
 					yield return new TestData { Variation = "Release (CoreCLR, x64)", TestVariation = "release|coreclr", Ignored = !supports_x64 ? true : ignore_coreclr, RuntimeIdentifier = x64_sim_runtime_identifier };
@@ -146,7 +144,7 @@ namespace Xharness.Jenkins {
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 					}
-					if (run_mono)
+					if (supports_mono)
 						yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
 					if (supports_coreclr)

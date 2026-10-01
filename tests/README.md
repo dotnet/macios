@@ -91,10 +91,6 @@ Use the project defaults for linking, i.e.
 
 # Common make targets
 
-CI sets `SKIP_MONO_TESTS=1` to skip Mono runtime test variations and .NET tests
-that build or run Mono applications. Local runs keep these tests enabled unless
-the same environment variable is set.
-
 Each test project has a `dotnet` directory, with a subdirectory for each platform we support.
 
 Use the makefile in each of those subdirectories to run the corresponding test suite.

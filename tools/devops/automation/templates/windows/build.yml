@@ -260,11 +260,10 @@ steps:
     "@
     Set-Content -Path $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/Windows/config.runsettings -Value $runsettings
     Get-Content -Path $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/Windows/config.runsettings | Write-Host
+    Add-Content -Path "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/test.config" -Value "`nDOTNET_MONOVM_SUPPORTED="
   displayName: 'Create runsettings for .NET tests'
 
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-local-windows-tests.ps1
-  env:
-    SKIP_MONO_TESTS: '1'
   displayName: 'Run .NET tests locally'
   timeoutInMinutes: 30
   continueOnError: true
@@ -278,7 +277,6 @@ steps:
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
   env:
-    SKIP_MONO_TESTS: '1'
     XMA_PASSWORD: $(XMA.Password)
 
 - pwsh: |

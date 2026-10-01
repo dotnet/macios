@@ -128,7 +128,7 @@ extends:
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
           useACES: true  # see templates/variables/common.yml
-          enableSourceIndex: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
+          enableSourceIndex: ${{ or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/release-test/source-dot-net')) }}
 
       - template: localization/v1.yml@yaml-templates
         parameters:

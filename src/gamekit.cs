@@ -2940,7 +2940,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void DeclineInvite ([NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
+		void DeclineInvite ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
 
 		[Export ("matchDataMaximumSize")]
 		nint MatchDataMaximumSize { get; }

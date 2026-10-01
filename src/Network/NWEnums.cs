@@ -211,15 +211,16 @@ namespace Network {
 		Cancelled = 4,
 	}
 
+	/// <summary>Specifies how a connection can use multiple network interfaces.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWMultiPathService {
-		/// <summary>To be added.</summary>
+		/// <summary>Do not attempt multipath transport.</summary>
 		Disabled = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Use an expensive interface only when the primary interface is unavailable.</summary>
 		Handover = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Use an expensive interface more aggressively to reduce latency.</summary>
 		Interactive = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Use all available interfaces to improve throughput and latency.</summary>
 		Aggregate = 3,
 	}
 

@@ -58226,7 +58226,6 @@ T:Network.NWIPEcnFlag
 T:Network.NWIPMetadata
 T:Network.NWLinkQuality
 T:Network.NWMulticastGroup
-T:Network.NWMultiPathService
 T:Network.NWMultipathVersion
 T:Network.NWMultiplexGroup
 T:Network.NWParametersAttribution

@@ -101,12 +101,12 @@ namespace GameKit {
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate passed to <see cref="GameKit.GKAchievementDescription" /> that defines behavior after the image has been loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKImageLoadedHandler (UIImage image, NSError error);
+	delegate void GKImageLoadedHandler ([NullAllowed] UIImage image, [NullAllowed] NSError error);
 	/// <param name="photo">To be added.</param>
 	/// <param name="error">To be added.</param>
 	/// <summary>A delegate used with <see cref="GameKit.GKPlayer.LoadPhoto(GameKit.GKPhotoSize,GameKit.GKPlayerPhotoLoaded)" /> to specify behavior after the photo is loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	delegate void GKPlayerPhotoLoaded (UIImage photo, NSError error);
+	delegate void GKPlayerPhotoLoaded ([NullAllowed] UIImage photo, [NullAllowed] NSError error);
 	/// <param name="composeController">To be added.</param>
 	/// <param name="issuedChallenge">To be added.</param>
 	/// <param name="sentPlayerIDs">To be added.</param>
@@ -4344,7 +4344,7 @@ namespace GameKit {
 	delegate void GKChallengeDefinitionLoadImageHandler ([NullAllowed] UIImage image, [NullAllowed] NSError error);
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
-	delegate void GKChallengeDefinitionLoadDefinitionsHandler (GKChallengeDefinition [] definitions, [NullAllowed] NSError error);
+	delegate void GKChallengeDefinitionLoadDefinitionsHandler ([NullAllowed] GKChallengeDefinition [] definitions, [NullAllowed] NSError error);
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	delegate void GKChallengeDefinitionHasActiveChallengesHandler (bool hasActiveChallenges, [NullAllowed] NSError error);

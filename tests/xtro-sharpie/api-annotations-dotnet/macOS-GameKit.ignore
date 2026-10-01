@@ -5,4 +5,3 @@
 # We have bound GKVoiceChatServiceError as GKVoiceChatServiceError which has no support for macOS
 # https://developer.apple.com/documentation/gamekit/gkvoicechatserviceerror?language=objc
 
-!missing-null-allowed! 'System.Void GameKit.GKChallengeDefinition::LoadDefinitions(GameKit.GKChallengeDefinitionLoadDefinitionsHandler)' is missing a '?' on parameter 'completionHandler' block parameter #0

@@ -8,6 +8,7 @@
 //
 
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class DispatchQueueTests {
+#if !XAMCORE_5_0
 		[TestCase (0, false)]
 		[TestCase (1, false)]
 		[TestCase (8, false)]
@@ -33,7 +35,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var reference = new WeakReference (queue);
 			var visits = new int [iterations];
 			var collected = 0;
-			queue.Submit (index => {
+			queue.Submit ((int index) => {
 				GC.Collect ();
 				GC.WaitForPendingFinalizers ();
 				if (!reference.IsAlive)
@@ -42,6 +44,75 @@ namespace MonoTouchFixtures.CoreFoundation {
 			}, iterations);
 			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
 			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");
+		}
+#endif // !XAMCORE_5_0
+
+		[TestCase (0, false)]
+		[TestCase (1, false)]
+		[TestCase (8, false)]
+		[TestCase (8, true)]
+		public void SubmitNative (int iterations, bool concurrent)
+		{
+			var queue = new DispatchQueue ("SubmitNative", concurrent);
+			var reference = new WeakReference (queue);
+			var visits = new int [iterations];
+			var collected = 0;
+			queue.Submit ((nint index) => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				if (!reference.IsAlive)
+					Interlocked.Increment (ref collected);
+				Interlocked.Increment (ref visits [index]);
+			}, (nint) iterations);
+			Assert.That (collected, Is.EqualTo (0), "Queue must remain alive during all iterations");
+			Assert.That (visits, Is.All.EqualTo (1), "Each iteration must run exactly once before Submit returns");
+		}
+
+		[Test]
+		public void SubmitOverloadResolution ()
+		{
+			using var queue = new DispatchQueue ("SubmitOverloadResolution");
+			object index = null;
+			queue.Submit (iteration => index = iteration, 1);
+			Assert.That (index, Is.TypeOf<nint> (), "An untyped callback must select the native-sized overload");
+		}
+
+		[Test]
+		public void SubmitNullAction ()
+		{
+			using var queue = new DispatchQueue ("SubmitNullAction");
+			Assert.Throws<ArgumentNullException> (() => queue.Submit ((Action<nint>) null, (nint) 0), "Native");
+#if !XAMCORE_5_0
+			Assert.Throws<ArgumentNullException> (() => queue.Submit ((Action<int>) null, 0L), "Compatibility");
+#endif // !XAMCORE_5_0
+		}
+
+		[TestCase (false)]
+#if !XAMCORE_5_0
+		[TestCase (true)]
+#endif // !XAMCORE_5_0
+		public void SubmitZeroReleasesCallbackState (bool compatibility)
+		{
+			var reference = SubmitZeroWithCapturedState (compatibility);
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			GC.Collect ();
+			Assert.That (reference.IsAlive, Is.False, "Zero iterations must release the callback state");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference SubmitZeroWithCapturedState (bool compatibility)
+		{
+			using var queue = new DispatchQueue ("SubmitZeroWithCapturedState");
+			var state = new int [1];
+			var reference = new WeakReference (state);
+#if !XAMCORE_5_0
+			if (compatibility)
+				queue.Submit ((int index) => state [0] = index, 0L);
+			else
+#endif // !XAMCORE_5_0
+				queue.Submit ((nint index) => state [0] = (int) index, (nint) 0);
+			return reference;
 		}
 
 		[Test]

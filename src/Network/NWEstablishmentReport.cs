@@ -70,6 +70,13 @@ namespace Network {
 			return 0;
 		}
 
+		/// <summary>Enumerates the endpoint resolution steps performed while establishing the connection.</summary>
+		/// <param name="handler">The callback invoked for each resolution step. Its arguments are the resolution source, the time spent resolving endpoints, the number of resolved endpoints, the endpoint used to establish the connection, and the first endpoint attempted, respectively.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   The callback is invoked synchronously zero or more times before this method returns.
+		///   The endpoint objects passed to the callback are disposed when the callback returns.
+		/// </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateResolutions (Action<NWReportResolutionSource, TimeSpan, int, NWEndpoint, NWEndpoint> handler)
 		{

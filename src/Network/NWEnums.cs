@@ -268,14 +268,15 @@ namespace Network {
 		Signaling = 5,
 	}
 
+	/// <summary>Identifies the explicit congestion notification (ECN) marking in an IP header.</summary>
 	public enum NWIPEcnFlag {
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is not ECN-capable.</summary>
 		NonEct = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is ECN-capable with the ECT(0) marking.</summary>
 		Ect = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is ECN-capable with the ECT(1) marking.</summary>
 		Ect1 = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Congestion was experienced.</summary>
 		Ce = 3,
 	}
 

@@ -22692,7 +22692,6 @@ M:Network.NWBrowser.Start
 M:Network.NWBrowserDescriptor.CreateApplicationServiceName(System.String)
 M:Network.NWBrowserDescriptor.CreateBonjourService(System.String,System.String)
 M:Network.NWBrowserDescriptor.CreateBonjourService(System.String)
-M:Network.NWBrowseResult.EnumerateInterfaces(System.Action{Network.NWInterface})
 M:Network.NWBrowseResult.GetChanges(Network.NWBrowseResult,Network.NWBrowseResult)
 M:Network.NWConnection.GetEstablishmentReport(CoreFoundation.DispatchQueue,System.Action{Network.NWEstablishmentReport})
 M:Network.NWConnection.GetProtocolMetadata``1(Network.NWProtocolDefinition)

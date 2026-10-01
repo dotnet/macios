@@ -127,12 +127,19 @@ namespace MonoTouchFixtures.Network {
 					didRun = true;
 					try {
 						receivedNotNullChange = oldResult is not null || newResult is not null;
-						(oldResult ?? newResult)?.EnumerateInterfaces (iface => {
-							using (iface) {
-								lock (interfaceNames)
-									interfaceNames.Add (iface.Name);
-							}
-						});
+						var result = oldResult ?? newResult;
+						if (result is not null) {
+							var expectedCount = (ulong) result.InterfacesCount;
+							ulong enumeratedCount = 0;
+							result.EnumerateInterfaces (iface => {
+								using (iface) {
+									lock (interfaceNames)
+										interfaceNames.Add (iface.Name);
+									enumeratedCount++;
+								}
+							});
+							Assert.That (enumeratedCount, Is.EqualTo (expectedCount), "Browse result interface count");
+						}
 					} catch (Exception e) {
 						ex = e;
 					} finally {

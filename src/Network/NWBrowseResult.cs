@@ -68,10 +68,15 @@ namespace Network {
 			if (del is not null) {
 				var nwInterface = new NWInterface (inter, owns: false);
 				del (nwInterface);
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 
+		/// <summary>Invokes a handler for each network interface associated with this browse result.</summary>
+		/// <param name="handler">The handler to invoke for each interface.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
+		/// <remarks>The handler is invoked synchronously. Enumeration continues through all interfaces before this method returns.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateInterfaces (Action<NWInterface> handler)
 		{

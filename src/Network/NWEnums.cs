@@ -17,103 +17,145 @@ using OS_nw_txt_record = System.IntPtr;
 
 namespace Network {
 
+	/// <summary>Describes changes between two network browse results.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NWBrowseResultChange : ulong {
+		/// <summary>The change is invalid.</summary>
 		Invalid = 0x00,
+		/// <summary>The browse results are identical.</summary>
 		Identical = 0x01,
+		/// <summary>A browse result was added.</summary>
 		ResultAdded = 0x02,
+		/// <summary>A browse result was removed.</summary>
 		ResultRemoved = 0x04,
+		/// <summary>The TXT record changed.</summary>
 		TxtRecordChanged = 0x20,
+		/// <summary>The service became discoverable on another interface.</summary>
 		InterfaceAdded = 0x08,
+		/// <summary>The service is no longer discoverable on an interface.</summary>
 		InterfaceRemoved = 0x10,
 	}
 
+	/// <summary>Describes the state of a network browser.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWBrowserState {
+		/// <summary>The browser state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The browser can receive endpoint updates.</summary>
 		Ready = 1,
+		/// <summary>The browser has failed and cannot be restarted.</summary>
 		Failed = 2,
+		/// <summary>The browser was cancelled and cannot be restarted.</summary>
 		Cancelled = 3,
 	}
 
+	/// <summary>Describes the state of a network connection.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWConnectionState {
-		/// <summary>To be added.</summary>
+		/// <summary>The connection state is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection is waiting for a usable network.</summary>
 		Waiting = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection is being established.</summary>
 		Preparing = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection can send and receive data.</summary>
 		Ready = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection has irrecoverably failed or closed.</summary>
 		Failed = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection was cancelled.</summary>
 		Cancelled = 5,
 	}
 
+	/// <summary>Describes the state of a network connection group.</summary>
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	public enum NWConnectionGroupState {
+		/// <summary>The connection group state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The group is waiting for a usable network.</summary>
 		Waiting = 1,
+		/// <summary>The group can receive and process incoming messages.</summary>
 		Ready = 2,
+		/// <summary>The group has irrecoverably failed.</summary>
 		Failed = 3,
+		/// <summary>The group was cancelled.</summary>
 		Cancelled = 4,
 	}
 
+	/// <summary>Describes whether a network data transfer report is still collecting data.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWDataTransferReportState {
+		/// <summary>The report is collecting transfer data.</summary>
 		Collecting = 1,
+		/// <summary>The report has finished collecting transfer data.</summary>
 		Collected = 2,
 	}
 
+	/// <summary>Identifies the kind of network endpoint.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWEndpointType {
-		/// <summary>To be added.</summary>
+		/// <summary>The endpoint type is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>An IP address and port.</summary>
 		Address = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A hostname and port.</summary>
 		Host = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A Bonjour service name, type, and domain.</summary>
 		BonjourService = 3,
+		/// <summary>A URL endpoint.</summary>
 		[MacCatalyst (13, 1)]
 		Url = 4,
 	}
 
+	/// <summary>Identifies where a network name resolution result came from.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWReportResolutionSource {
+		/// <summary>The result came from a network query.</summary>
 		Query = 1,
+		/// <summary>The result came from a cached response.</summary>
 		Cache = 2,
+		/// <summary>The result came from an expired cached response.</summary>
 		ExpiredCache = 3,
 	}
 
+	/// <summary>Describes the state of an Ethernet channel.</summary>
 	[NoTV, NoiOS]
 	[NoMacCatalyst]
 	[NativeName ("nw_ethernet_channel_state_t")]
 	public enum NWEthernetChannelState {
+		/// <summary>The channel state is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The channel is waiting for a usable network.</summary>
 		Waiting = 1,
+		/// <summary>The channel is being established.</summary>
 		Preparing = 2,
+		/// <summary>The channel can send and receive data.</summary>
 		Ready = 3,
+		/// <summary>The channel has irrecoverably failed or closed.</summary>
 		Failed = 4,
+		/// <summary>The channel was cancelled.</summary>
 		Cancelled = 5,
 	}
 
 	// from System/Library/Frameworks/Network.framework/Headers/framer_options.h:
+	/// <summary>Specifies options for creating a custom framer protocol.</summary>
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum NWFramerCreateFlags : uint {
+		/// <summary>Use the default framer protocol options.</summary>
 		Default = 0x00,
 	}
 
 	// from System/Library/Frameworks/Network.framework/Headers/framer_options.h:
+	/// <summary>Indicates when a custom framer protocol becomes ready.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWFramerStartResult {
+		/// <summary>The result is unknown.</summary>
 		Unknown = 0,
+		/// <summary>The protocol is marked ready when the start handler returns.</summary>
 		Ready = 1,
+		/// <summary>The start handler will mark the protocol ready later.</summary>
 		WillMarkReady = 2,
 	}
 

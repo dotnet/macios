@@ -196,17 +196,18 @@ namespace Network {
 		Loopback = 4,
 	}
 
+	/// <summary>Describes the state of a network listener.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWListenerState {
-		/// <summary>To be added.</summary>
+		/// <summary>The listener state is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener is waiting for a usable network.</summary>
 		Waiting = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener can accept incoming connections.</summary>
 		Ready = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener has irrecoverably failed or closed.</summary>
 		Failed = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener was cancelled.</summary>
 		Cancelled = 4,
 	}
 

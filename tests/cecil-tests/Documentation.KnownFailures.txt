@@ -58225,7 +58225,6 @@ T:Network.NWInterfaceRadioType
 T:Network.NWIPEcnFlag
 T:Network.NWIPMetadata
 T:Network.NWLinkQuality
-T:Network.NWListenerState
 T:Network.NWMulticastGroup
 T:Network.NWMultiPathService
 T:Network.NWMultipathVersion

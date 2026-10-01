@@ -7,7 +7,7 @@ namespace Intents {
 #if !TVOS
 	public partial class INPerson {
 		/// <summary>This enum is used to select how to initialize a new instance of an <see cref="INPerson" />.</summary>
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -27,7 +27,7 @@ namespace Intents {
 		/// <param name="customIdentifier">The custom identifier for the new <see cref="INPerson" /> instance.</param>
 		/// <param name="isMe">Whether the new <see cref="INPerson" /> instance is me or not.</param>
 		/// <param name="suggestionType">The suggestion type for the new <see cref="INPerson" /> instance.</param>
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -46,7 +46,7 @@ namespace Intents {
 		/// <param name="isMe">Whether the new <see cref="INPerson" /> instance is me or not, or whether it's a contact suggestion or not.</param>
 		/// <param name="suggestionType">The suggestion type for the new <see cref="INPerson" /> instance.</param>
 		/// <param name="personType">Whether the <paramref name="isMe" /> parameter determines whether the <see cref="INPerson" /> is me (or not), or whether it's a contact suggestion (or not).</param>
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]

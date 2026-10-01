@@ -25,11 +25,6 @@ namespace Introspection {
 			//LogProgress = true;
 		}
 
-		protected override bool Skip (Type type)
-		{
-			return base.Skip (type);
-		}
-
 		protected override bool Skip (PropertyInfo p)
 		{
 			switch (p.DeclaringType?.Namespace) {

@@ -9,6 +9,11 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void Link (ApplePlatform platform, string runtimeIdentifiers)
 		{
+			LinkImpl (platform, runtimeIdentifiers);
+		}
+
+		void LinkImpl (ApplePlatform platform, string runtimeIdentifiers)
+		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -17,10 +22,12 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			properties ["UseInterpreter"] = "true"; // this makes the test faster
+			properties ["UseMonoRuntime"] = "false";
 
 			// Build the first time
-			DotNet.AssertBuild (project_path, properties);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
 			// Make sure it runs successfully (if on desktop)
 			var appExecutable = GetNativeExecutable (platform, appPath);
@@ -36,7 +43,9 @@ namespace Xamarin.Tests {
 
 			// Build again, adding a package with frameworks
 			properties ["IncludeFwInRuntimesNativeDirectory"] = "true";
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -53,7 +62,11 @@ namespace Xamarin.Tests {
 			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
 
 			// Build again, not doing anything
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			// With CoreCLR, the app executable is re-linked because the generated R2R
+			// framework participates in the native link inputs and is refreshed each build.
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "C");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -63,12 +76,14 @@ namespace Xamarin.Tests {
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1");
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2");
 
-			// The main executable must not be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified C");
+			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.GreaterThan (appExecutableTimestamp), "Modified C");
+			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
 
 			// Build yet again, now removing the package
 			properties.Remove ("IncludeFwInRuntimesNativeDirectory");
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "D");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -92,117 +107,19 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void NativeLink (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GenerateProject (platform, name: nameof (NativeLink), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
-			var properties = new Dictionary<string, string> (verbosity);
-			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
-
-			var mainContents = @"
-class MainClass {
-	static int Main ()
-	{
-		return 123;
-	}
-}
-";
-			var mainFile = Path.Combine (Path.GetDirectoryName (project_path)!, "Main.cs");
-
-			File.WriteAllText (mainFile, mainContents);
-
-			// Build the first time
-			var rv = DotNet.AssertBuild (project_path, properties);
-			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_AOTCompile", "A");
-			AssertTargetExecuted (allTargets, "_CompileNativeExecutable", "A");
-			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
-
-			// Capture the current time
-			var timestamp = DateTime.UtcNow;
-			File.WriteAllText (mainFile, mainContents);
-
-			// Build again
-			rv = DotNet.AssertBuild (project_path, properties);
-
-			// Check that some targets executed
-			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
-			AssertTargetExecuted (allTargets, "_AOTCompile", "B");
-			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
-
-			// Verify that the timestamp of the executable has been updated
-			var executable = GetNativeExecutable (platform, appPath!);
-			Assert.That (File.GetLastWriteTimeUtc (executable), Is.GreaterThan (timestamp), "B: Executable modified");
-		}
-
-		[Test]
-		// this test is fairly slow, so execute on one arch only
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void Interpreter (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-
-			// Build with the interpreter disabled
-			properties ["UseInterpreter"] = "false";
-			DotNet.AssertBuild (project_path, properties);
-
-			// Make sure it runs successfully (if on desktop)
-			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// Capture when executable was created
-			var appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
-
-			// Build again, now enabling the interpreter
-			Configuration.Touch (project_path);
-			properties ["UseInterpreter"] = "true";
-			DotNet.AssertBuild (project_path, properties);
-
-			// Executing should work just fine
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// The main executable must be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.GreaterThan (appExecutableTimestamp), "Modified A");
-
-			// Capture when executable was rebuilt
-			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
-
-			// Build again, not doing anything
-			DotNet.AssertBuild (project_path, properties);
-
-			// Executing should work just fine
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-
-			// The main executable must not be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified B");
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
-		{
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers);
 		}
 
 		[Test]
 		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers);
 		}
 
 		[Test]
@@ -215,7 +132,6 @@ class MainClass {
 
 			var project_path = GenerateProject (platform, name: nameof (MetalShadersNotRecompiled), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["UseInterpreter"] = "true"; // this makes the test faster
 
 			var projectDir = Path.GetDirectoryName (project_path)!;
 
@@ -256,7 +172,10 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			AssertTargetNotExecuted (allTargets, "_TemperMetal", "Second build");
 		}
 
-		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void UserCodeChangeSkipsR2RCompilation_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -266,7 +185,46 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_SelectR2RAssemblies", "First build");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "First build");
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "Unchanged build");
+
+			var r2rInputHashPath = Path.Combine (GetObjDir (project_path, platform, runtimeIdentifiers), "r2r-input.hash");
+			Assert.That (r2rInputHashPath, Does.Exist, "R2R input hash");
+			File.SetLastWriteTimeUtc (r2rInputHashPath, DateTime.UtcNow.AddMinutes (1));
+
+			properties ["AdditionalDefineConstants"] = "INCLUDED_ADDITIONAL_CODE";
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_TouchR2ROutputs", "User code change");
+			AssertTargetNotExecuted (allTargets, "_CreateR2RImages", "User code change");
+
+			File.WriteAllText (r2rInputHashPath, "changed");
+			properties.Remove ("AdditionalDefineConstants");
+
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_TouchR2ROutputs", "R2R input change");
+			AssertTargetExecuted (allTargets, "_CreateR2RImages", "R2R input change");
+		}
+
+		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "IncrementalTestApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			properties ["UseMonoRuntime"] = "false";
 			properties ["MtouchLink"] = "None";
 
 			// Build the first time
@@ -288,11 +246,8 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
 			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			if (interpreterEnabled) {
-				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
-			} else {
-				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
-			}
+			// With the partial static registrar on CoreCLR, _LinkNativeExecutable should be skipped.
+			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 		}
 	}
 }

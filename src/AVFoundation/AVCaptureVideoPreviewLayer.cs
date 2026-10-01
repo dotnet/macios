@@ -9,21 +9,19 @@ namespace AVFoundation {
 	public partial class AVCaptureVideoPreviewLayer {
 
 		/// <summary>Enumerates values that specify the presence or absence of a capture session connection.</summary>
-		///     <remarks>To be added.</remarks>
 		public enum InitMode {
-			/// <summary>Indicates a connection.</summary>
+			/// <summary>Creates the preview layer with a connection to the capture session.</summary>
 			WithConnection,
-			/// <summary>Indicates no connection.</summary>
+			/// <summary>Creates the preview layer without a connection to the capture session.</summary>
 			[SupportedOSPlatform ("ios")]
 			[SupportedOSPlatform ("macos")]
 			[SupportedOSPlatform ("maccatalyst")]
 			WithNoConnection,
 		}
 
-		/// <param name="session">To be added.</param>
-		///         <param name="mode">To be added.</param>
-		///         <summary>Creates a new preview layer with the supplied capture session and initialization mode.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new preview layer with the supplied capture session and initialization mode.</summary>
+		/// <param name="session">The capture session to preview.</param>
+		/// <param name="mode">The mode that determines whether to create a connection to <paramref name="session" />.</param>
 		public AVCaptureVideoPreviewLayer (AVCaptureSession session, InitMode mode) : base (NSObjectFlag.Empty)
 		{
 			switch (mode) {
@@ -38,9 +36,8 @@ namespace AVFoundation {
 			}
 		}
 
-		/// <param name="session">To be added.</param>
-		///         <summary>Creates a new preview layer with the supplied capture session.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new preview layer connected to the supplied capture session.</summary>
+		/// <param name="session">The capture session to preview.</param>
 		public AVCaptureVideoPreviewLayer (AVCaptureSession session) : this (session, InitMode.WithConnection) { }
 	}
 }

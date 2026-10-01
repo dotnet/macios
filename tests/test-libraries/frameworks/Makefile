@@ -46,14 +46,20 @@ iphoneos_HEADERS_INFIX=/Headers
 iphonesimulator_HEADERS_INFIX=/Headers
 tvos_HEADERS_INFIX=/Headers
 tvsimulator_HEADERS_INFIX=/Headers
+iphoneos_RESOURCES_INFIX=/Resources
+iphonesimulator_RESOURCES_INFIX=/Resources
+tvos_RESOURCES_INFIX=/Resources
+tvsimulator_RESOURCES_INFIX=/Resources
 
 mac_SYMLINKS=1
 mac_INFO_PLIST_INFIX=/Versions/A/Resources
 mac_HEADERS_INFIX=/Versions/A/Headers
+mac_RESOURCES_INFIX=/Versions/A/Resources
 mac_BINARY_INFIX=/Versions/A
 maccatalyst_SYMLINKS=1
 maccatalyst_INFO_PLIST_INFIX=/Versions/A/Resources
 maccatalyst_HEADERS_INFIX=/Versions/A/Headers
+maccatalyst_RESOURCES_INFIX=/Versions/A/Resources
 maccatalyst_BINARY_INFIX=/Versions/A
 
 # For XCFrameworks, we have to lipo some of the RID-specific frameworks together (the ones with multiple RIDs below)
@@ -70,14 +76,12 @@ else
 ZIP=zip --symlinks
 endif
 
-LONG_HEADER_NAME=full-paths-exceeding-two-hundred-and-sixty-characters/often-cause-trouble-on-windows/where-the-maximum-is-by-default-two-hundred-and-sixty-characters/because-frameworks-and-by-extension-xcframeworks/very-often-have-paths-longer-than-this-limit/especially-when-contained-in-other-directories.h
+LONG_FILE_NAME=full-paths-exceeding-two-hundred-and-sixty-characters/often-cause-trouble-on-windows/where-the-maximum-is-by-default-two-hundred-and-sixty-characters/because-frameworks-and-by-extension-xcframeworks/very-often-have-paths-longer-than-this-limit/especially-when-contained-in-other-directories.txt
 
 define FrameworkWithHeadersTemplate
-$(3)_$(1)_DIRECTORIES += \
-	.libs/$(3)/$(1).framework/Resources/Headers \
-
 $(1)_$(3)_TARGETS += \
-	.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/$(LONG_HEADER_NAME) \
+	.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/test.h \
+	.libs/$(3)/$(1).framework$($(2)_RESOURCES_INFIX)/$(LONG_FILE_NAME) \
 
 ifeq ($($(2)_SYMLINKS),1)
 $(1)_$(3)_TARGETS += \
@@ -85,9 +89,12 @@ $(1)_$(3)_TARGETS += \
 
 endif
 
-.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/$(LONG_HEADER_NAME): | .libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)
-	$$(Q) mkdir -p $$(dir $$@)
+.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/test.h: | .libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)
 	$$(Q) echo "#include <hello/windows.h>" > $$@
+
+.libs/$(3)/$(1).framework$($(2)_RESOURCES_INFIX)/$(LONG_FILE_NAME):
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(Q) echo "A file with a long path" > $$@
 endef
 $(foreach name,$(FRAMEWORKS_WITH_HEADERS),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkWithHeadersTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid))))))
 

@@ -71,11 +71,11 @@ steps:
   displayName: 'Fix device discovery (reset launchctl)'
 
 - bash: |
-    make -C src build/generator-frameworks.g.cs
-    make -C src build/ios/Constants.cs
+    set -ex
     make -C msbuild Versions.g.cs
+    make -C tools/spawner
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
-  displayName: Generate constants files 
+  displayName: "Generate / compile dependencies"
   timeoutInMinutes: 15
 
 - pwsh: >-
@@ -128,7 +128,7 @@ steps:
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
   displayName: 'Run tests'
   name: runTests # not to be confused with the displayName, this is used to later use the name of the step to access the output variables from an other job
-  timeoutInMinutes: 840
+  timeoutInMinutes: 165
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
 

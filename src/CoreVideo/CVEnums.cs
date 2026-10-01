@@ -102,7 +102,7 @@ namespace CoreVideo {
 	/// <summary>A flagging enumeration. Currently only contains a <c>None</c> value of 0.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVOptionFlags : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No options are specified.</summary>
 		None = 0,
 	}
 
@@ -110,7 +110,7 @@ namespace CoreVideo {
 	[Flags]
 	[MacCatalyst (13, 1)]
 	public enum CVTimeFlags : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The time value is indefinite.</summary>
 		IsIndefinite = 1 << 0,
 	}
 
@@ -173,11 +173,10 @@ namespace CoreVideo {
 	/// <summary>Defines an option for <see cref="CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferPoolFlushFlags : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Releases all unused buffers from the pool.</summary>
 		FlushExcessBuffers = 1,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CVImageBufferAlphaChannelMode {
 		[Field ("kCVImageBufferAlphaChannelMode_StraightAlpha")]

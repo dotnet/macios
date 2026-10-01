@@ -1,5 +1,6 @@
 Build.props
 Make.config.inc
+Make.config.inc.tmp.*
 Make.config.local
 configure.inc
 dotnet.config
@@ -20,10 +21,8 @@ packages
 jenkins-results
 .vs
 *.raw
-provisionator.msbuild.props
 global.json
 .idea
-provision-shared.csx
 mono_crash.*.json
 *.binlog
 .vscode

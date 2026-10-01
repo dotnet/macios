@@ -53,6 +53,8 @@ namespace Xharness.Jenkins.TestTasks {
 				var assemblyName = project.GetAssemblyName ();
 				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile)!, outputPath!, assemblyName + ".app", "Contents", "MacOS", assemblyName);
 			}
+			var appBundlePath = System.IO.Path.GetFullPath (System.IO.Path.Combine (System.IO.Path.GetDirectoryName (Path)!, "..", ".."));
+			var appInformation = new AppBundleInformation (name!, "N/A", appBundlePath, appBundlePath, true, null, System.IO.Path.GetFileName (Path));
 
 			using (var resource = await NotifyAndAcquireDesktopResourceAsync ()) {
 				using (var proc = new Process ()) {
@@ -85,14 +87,17 @@ namespace Xharness.Jenkins.TestTasks {
 						proc.StartInfo.EnvironmentVariables ["DISABLE_SYSTEM_PERMISSION_TESTS"] = "1";
 					proc.StartInfo.EnvironmentVariables ["MONO_DEBUG"] = "no-gdb-backtrace";
 					proc.StartInfo.EnvironmentVariables.Remove ("DYLD_FALLBACK_LIBRARY_PATH"); // VSMac might set this, and the test may end up crashing
-					proc.StartInfo.Arguments = StringUtils.FormatArguments (arguments);
-					Jenkins.MainLog.WriteLine ("Executing {0} ({1})", TestName, Mode);
+
+					// Use the spawner to launch the app, to avoid issues with macOS getting confused who's the responsible process
+					Harness.UseSpawner (proc.StartInfo, arguments);
+
+					Jenkins.MainLog.WriteLine ("Executing {0} ({1} - {2})", TestName, Mode, Variation);
 					var log = Logs.Create ($"execute-{Platform}-{Timestamp}.txt", LogType.ExecutionLog.ToString ());
 					ICrashSnapshotReporter? snapshot = null;
 					if (!Jenkins.Harness.DryRun) {
 						ExecutionResult = TestExecutingResult.Running;
 
-						snapshot = CrashReportSnapshotFactory.Create (log, Logs, isDevice: false, deviceName: null);
+						snapshot = CrashReportSnapshotFactory.Create (log, Logs, isDevice: false, deviceName: null, appInformation);
 						await snapshot.StartCaptureAsync ();
 
 						ProcessExecutionResult? result = null;
@@ -120,7 +125,7 @@ namespace Xharness.Jenkins.TestTasks {
 					if (IsUnitTest) {
 						var reporterFactory = new TestReporterFactory (ProcessManager);
 						var listener = new Microsoft.DotNet.XHarness.iOS.Shared.Listeners.SimpleFileListener (xmlLog!.FullPath, log, xmlLog, useXmlOutput);
-						var reporter = reporterFactory.Create (Harness.HarnessLog!, log, Logs, snapshot!, listener, Harness.ResultParser, new AppBundleInformation ("N/A", "N/A", "N/A", "N/A", true, null), RunMode.MacOS, Harness.XmlJargon, "no device here", TimeSpan.Zero);
+						var reporter = reporterFactory.Create (Harness.HarnessLog!, log, Logs, snapshot!, listener, Harness.ResultParser, appInformation, RunMode.MacOS, Harness.XmlJargon, "no device here", TimeSpan.Zero);
 						var rv = await reporter.ParseResult ();
 
 						if (ExecutionResult == TestExecutingResult.Succeeded) {

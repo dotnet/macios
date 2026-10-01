@@ -537,7 +537,7 @@ namespace CoreText {
 #endif // !XAMCORE_5_0
 
 #if __IOS__ || __MACCATALYST__
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]

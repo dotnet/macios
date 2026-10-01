@@ -17,6 +17,9 @@ namespace Xamarin.Linker {
 		{
 			var app = Configuration.Application;
 
+			// Always write this item file so that changing registrar modes doesn't leave stale generated registrar sources behind.
+			Configuration.WriteOutputForMSBuild ("_RegistrarFile", new List<MSBuildItem> ());
+
 			switch (app.Registrar) {
 			case RegistrarMode.Dynamic:
 				// Nothing to do here
@@ -35,6 +38,14 @@ namespace Xamarin.Linker {
 				var dir = Configuration.CacheDirectory;
 				var header = Path.Combine (dir, "registrar.h");
 				var code = Path.Combine (dir, "registrar.mm");
+				var separateAssemblies = app.Registrar == RegistrarMode.TrimmableStatic && app.XamarinRuntime == XamarinRuntime.CoreCLR;
+				var architecture = Configuration.Abi & Abi.ArchMask;
+				var assemblyObject = separateAssemblies && (architecture == Abi.ARM64 || architecture == Abi.x86_64)
+					? Path.Combine (dir, "registrar-assemblies.o")
+					: null;
+				var assemblySource = separateAssemblies && assemblyObject is null
+					? Path.Combine (dir, "registrar-assemblies.mm")
+					: null;
 #if !ASSEMBLY_PREPARER
 				if (app.Registrar == RegistrarMode.ManagedStatic || app.Registrar == RegistrarMode.TrimmableStatic) {
 					// Every api has been registered if we're using the managed registrar
@@ -43,7 +54,7 @@ namespace Xamarin.Linker {
 					Configuration.Application.StaticRegistrar.FilterTrimmedApi (Annotations);
 				}
 #endif
-				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method);
+				Configuration.Application.StaticRegistrar.Generate (header, code, out var initialization_method, assemblySource, assemblyObject);
 
 				var items = new List<MSBuildItem> ();
 				var abi = Configuration.Abi;
@@ -52,8 +63,23 @@ namespace Xamarin.Linker {
 					new Dictionary<string, string> {
 						{ "Arch", abi.AsArchString () },
 						{ "Arguments", "-std=c++14" },
+						// The generated code #includes the generated header, so the header
+						// has to be next to the code when it's compiled. Declare it here, so
+						// that it's copied to the Mac when building remotely from Windows.
+						{ "AdditionalDependencies", header },
 					}
 				));
+				if (assemblySource is not null) {
+					items.Add (new MSBuildItem (
+						assemblySource,
+						new Dictionary<string, string> {
+							{ "Arch", abi.AsArchString () },
+							{ "Arguments", "-std=c++14" },
+						}
+					));
+				}
+				if (assemblyObject is not null)
+					items.Add (new MSBuildItem (assemblyObject));
 
 				Configuration.WriteOutputForMSBuild ("_RegistrarFile", items);
 				Configuration.RegistrationMethods.Add (initialization_method);

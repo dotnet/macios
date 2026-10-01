@@ -39,6 +39,6 @@
 		<string>KeyboardViewController</string>
 	</dict>
 	<key>MinimumOSVersion</key>
-	<string>12.2</string>
+	<string>13.0</string>
 </dict>
 </plist>

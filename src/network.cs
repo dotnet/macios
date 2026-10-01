@@ -5,15 +5,15 @@ namespace Network {
 
 	[MacCatalyst (13, 1)]
 	public enum NWErrorDomain {
-		/// <summary>To be added.</summary>
+		/// <summary>An invalid error domain.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A POSIX error domain.</summary>
 		[Field ("kNWErrorDomainPOSIX")]
 		Posix = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A DNS error domain.</summary>
 		[Field ("kNWErrorDomainDNS")]
 		Dns = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A TLS error domain.</summary>
 		[Field ("kNWErrorDomainTLS")]
 		Tls = 3,
 

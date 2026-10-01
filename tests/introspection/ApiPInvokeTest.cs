@@ -254,6 +254,9 @@ namespace Introspection {
 					case "System.Net.Security.Native":
 						path = null;
 						break;
+					case "QCall":
+						// These symbols are inside libcoreclr.dylib, but they're private, so dlsym won't see them.
+						continue;
 					}
 
 					var lib = Dlfcn.dlopen (path, 0);

@@ -11,9 +11,8 @@
 
 namespace SceneKit {
 	public partial class SCNPhysicsTest {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the search mode for physics shape tests.</summary>
+		/// <value>The physics search mode.</value>
 		public SCNPhysicsSearchMode SearchMode {
 			get {
 				var k = _SearchMode;

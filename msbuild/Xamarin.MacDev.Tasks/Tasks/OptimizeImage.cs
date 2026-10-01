@@ -29,17 +29,22 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string PngCrushPath { get; set; } = string.Empty;
 
+		public bool StripPngText { get; set; }
+
 		#endregion
 
-		static List<string> GenerateCommandLineCommands (string inputImage, string outputImage)
+		static List<string> GenerateCommandLineCommands (string inputImage, string outputImage, bool stripPngText)
 		{
 			var args = new List<string> ();
 
-			args.Add ("pngcrush");
 			args.Add ("-q");
 			args.Add ("-iphone");
 			args.Add ("-f");
 			args.Add ("0");
+			if (stripPngText) {
+				args.Add ("-rem");
+				args.Add ("text");
+			}
 			args.Add (inputImage);
 			args.Add (outputImage);
 
@@ -81,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Directory.CreateDirectory (Path.GetDirectoryName (outputImage)!);
 
-				var args = GenerateCommandLineCommands (inputImage, outputImage);
+				var args = GenerateCommandLineCommands (inputImage, outputImage, StripPngText);
 				listOfArguments.Add ((args, inputImage));
 			}
 

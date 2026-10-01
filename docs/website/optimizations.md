@@ -16,8 +16,15 @@ Xamarin.iOS and Xamarin.Mac apps.
 
 ## Remove UIApplication.EnsureUIThread / NSApplication.EnsureUIThread
 
-Removes calls to [UIApplication.EnsureUIThread][1] (for Xamarin.iOS) or
-`NSApplication.EnsureUIThread` (for Xamarin.Mac).
+> [!NOTE]
+> This optimization has been replaced by the `CheckForIllegalCrossThreadCalls`
+> MSBuild property, which sets the
+> `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls` trimmer feature switch.
+> The `--optimize=[+|-]remove-uithread-checks` flag is no longer applied and has
+> no effect.
+
+Removes calls to [UIApplication.EnsureUIThread][1] (for .NET for iOS) or
+`NSApplication.EnsureUIThread` (for .NET for macOS).
 
 This optimization will change the following type of code:
 
@@ -43,7 +50,7 @@ methods with the `[BindingImpl (BindingImplOptions.Optimizable)]` attribute.
 
 By default it's enabled for release builds.
 
-The default behavior can be overridden by passing `--optimize=[+|-]remove-uithread-checks` to mtouch/mmp.
+Set the `CheckForIllegalCrossThreadCalls` MSBuild property to override the default behavior.
 
 [1]: /dotnet/api/UIKit.UIApplication.EnsureUIThread
 
@@ -576,7 +583,13 @@ build time.
 
 It's usually possible to determine at build time if we'll be running on an
 ARM64 cpu at runtime, and in that case we can inline the value of this
-property to a constant `true` or `false` value.
+field to a constant `true` or `false` value.
+
+This optimization has been replaced by the
+`ObjCRuntime.Runtime.IsARM64CallingConvention` trimmer feature switch: the
+build sets the feature switch according to the target architecture, and ILLink
+folds `Runtime.IsARM64CallingConvention` into a constant `true` or `false`
+value.
 
 This optimization will change the following type of code:
 
@@ -609,13 +622,11 @@ if (false) {
 
 ```
 
-This optimization requires the linker to be enabled, and is only applied to
-methods with the `[BindingImpl (BindingImplOptions.Optimizable)]` attribute.
+This optimization requires the linker (trimmer) to be enabled.
 
-It is always enabled by default (when the linker is enabled).
-
-The default behavior can be overridden by passing
-`--optimize=[+|-]inline-is-arm64-calling-convention` to mtouch/mmp.
+The `--optimize=[+|-]inline-is-arm64-calling-convention` option to mtouch/mmp
+no longer has any effect (it's kept only so that passing it won't cause an
+error).
 
 ## Seal and Devirtualize
 

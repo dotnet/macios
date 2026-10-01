@@ -39,6 +39,8 @@ steps:
 
 - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
   displayName: 'Show Bot Info'
+  continueOnError: true
+  timeoutInMinutes: 10
 
 - ${{ if or(contains(variables['Build.Reason'], 'ResourceTrigger'), contains(variables['Build.Reason'], 'BuildCompletion'), contains(variables['Build.DefinitionName'], 'xamarin-macios-ci-tests'), contains(variables['Build.DefinitionName'], 'xamarin-macios-pr-tests')) }}:
   - download: macios
@@ -171,8 +173,12 @@ steps:
     Write-Host "Current long paths state:"
     Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
     Write-Host "Enabling long paths":
-    Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1
-    Write-Host "Updated long paths state:"
+    try {
+      Set-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Value 1 -ErrorAction Stop
+    } catch [System.Security.SecurityException] {
+      Write-Host "##vso[task.logissue type=warning]Could not enable long paths due to registry permissions. Continuing with the current setting: $_"
+    }
+    Write-Host "Resulting long paths state:"
     Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
   displayName: 'Enable long paths'
 

@@ -11,20 +11,18 @@ namespace UIKit {
 
 	public partial class UICollectionViewLayout {
 
-		/// <param name="viewType">The type of the class that will provide the decoration.   Use null to unregister the previous.</param>
-		///         <param name="kind">The element kind for which the registered type will be used.</param>
-		///         <summary>Registers the class identified by kind as a decoration view.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Registers a class to use when creating decoration views of the specified kind.</summary>
+		/// <param name="viewType">The class to use for the decoration view, or <see langword="null" /> to unregister the current class.</param>
+		/// <param name="kind">The element kind for which to use the registered class.</param>
 		public void RegisterClassForDecorationView (Type viewType, NSString kind)
 		{
 			RegisterClassForDecorationView (Class.GetHandle (viewType), kind);
 		}
 
-		/// <param name="section">To be added.</param>
-		///         <param name="indexPath">To be added.</param>
-		///         <summary>The attributes for the supplementary view at the specified indexPath.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the layout attributes for the supplementary view at the specified index path.</summary>
+		/// <param name="section">The section kind of the supplementary view.</param>
+		/// <param name="indexPath">The index path of the supplementary view.</param>
+		/// <returns>The layout attributes for the supplementary view.</returns>
 		public UICollectionViewLayoutAttributes LayoutAttributesForSupplementaryView (UICollectionElementKindSection section, NSIndexPath indexPath)
 		{
 			NSString kind;

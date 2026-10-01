@@ -71,7 +71,6 @@ namespace PhotosUI {
 
 	[NoTV]
 	[iOS (14, 0)]
-	[Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum PHPickerConfigurationAssetRepresentationMode : long {
@@ -80,14 +79,14 @@ namespace PhotosUI {
 		Compatible = 2,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PHPickerMode : long {
 		Default = 0,
 		Compact = 1,
 	}
 
-	[Flags, NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PHPickerCapabilities : ulong {
 		None = 0,
@@ -96,5 +95,21 @@ namespace PhotosUI {
 		CollectionNavigation = 1 << 2,
 		SelectionActions = 1 << 3,
 		SensitivityAnalysisIntervention = 1uL << 4,
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Flags]
+	[Native]
+	public enum PHPickerMetadataOptions : ulong {
+		None = 0,
+		RemoveLocation = 1 << 0,
+		RemoveCaptions = 1 << 1,
+	}
+
+	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHSharedAlbumCreationSharingPolicy : long {
+		Private = 0,
+		Public = 1,
 	}
 }

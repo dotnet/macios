@@ -116,6 +116,9 @@ namespace Photos {
 		/// <summary>The collection is a regular folder.</summary>
 		RegularFolder = 100,
 
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		RootFolder = 101,
+
 		/// <summary>The collection is a smart folder of events.</summary>
 		SmartFolderEvents = 200,
 		/// <summary>The collection is a smart folder of faces.</summary>
@@ -223,8 +226,6 @@ namespace Photos {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SmartAlbumLongExposures = 215,
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		SmartAlbumUnableToUpload = 216,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -291,6 +292,8 @@ namespace Photos {
 		/// <summary>A Depth Effect photo.</summary>
 		[MacCatalyst (13, 1)]
 		PhotoDepthEffect = (1 << 4),
+		[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+		PhotoAnimation = (1 << 6),
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = (1 << 10),
 		/// <summary>A streaming video.</summary>
@@ -299,7 +302,7 @@ namespace Photos {
 		VideoHighFrameRate = (1 << 17),
 		/// <summary>A timelapse video.</summary>
 		VideoTimelapse = (1 << 18),
-		[iOS (13, 0), MacCatalyst (13, 1), TV (13, 0)]
+		[MacCatalyst (13, 1)]
 		VideoScreenRecording = (1 << 19),
 		VideoCinematic = (1 << 21),
 	}
@@ -316,6 +319,32 @@ namespace Photos {
 		AutoPick = (1 << 0),
 		/// <summary>The user picked the asset as a favorite.</summary>
 		UserPick = (1 << 1),
+	}
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHOriginalResourceChoice : long {
+		Compressed = 0,
+		Raw = 1,
+	}
+
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+	[Native]
+	public enum PHAssetAdjustmentsState : long {
+		None = 0,
+		UserAdjusted = 2,
+		CameraAutoAdjusted = 3,
+	}
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum PHAssetRating : long {
+		Unset = 0,
+		One,
+		Two,
+		Three,
+		Four,
+		Five,
 	}
 
 	/// <summary>Enumerates the current authorization allowed by the application user.</summary>
@@ -360,17 +389,14 @@ namespace Photos {
 		/// <summary>Original video data for a Live Photo.</summary>
 		[MacCatalyst (13, 1)]
 		PairedVideo = 9,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		FullSizePairedVideo = 10,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AdjustmentBasePairedVideo = 11,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		AdjustmentBaseVideo = 12,
 		[iOS (17, 0), TV (17, 0)]
-		[MacCatalyst (17, 0), Mac (14, 0)]
+		[MacCatalyst (17, 0)]
 		PhotoProxy = 19,
 	}
 
@@ -413,6 +439,15 @@ namespace Photos {
 		Video = 4,
 		/// <summary>To be added.</summary>
 		VideoLooping = 5,
+	}
+
+	[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+	[Native]
+	public enum PHAssetPlaybackVariation : long {
+		None = 0,
+		AutoLoop = 1,
+		Mirror = 2,
+		LongExposure = 3,
 	}
 
 	[NoiOS]
@@ -513,7 +548,6 @@ namespace Photos {
 	}
 
 	[ErrorDomain ("PHPhotosErrorDomain")]
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHPhotosError : long {
@@ -548,7 +582,7 @@ namespace Photos {
 		ReadWrite = 2,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[Native]
 	public enum PHObjectType : long {

@@ -15,6 +15,7 @@
     <Skip Include="tools\msbuild\iOS\System.Security.Principal.Windows.dll" />
     <Skip Include="tools\msbuild\iOS\ws2_32.dll" />
     <!-- Broker.zip -->
+    <Skip Include="Broker\Microsoft.Bcl.Cryptography.dll" />
     <Skip Include="Broker\Newtonsoft.Json.dll" />
     <Skip Include="Broker\MQTTnet.dll" />
     <Skip Include="Broker\System.Reactive.dll" />
@@ -24,6 +25,7 @@
     <Skip Include="Broker\System.ValueTuple.dll" />
     <!-- Build.zip -->
     <Skip Include="Build\Microsoft.Bcl.AsyncInterfaces.dll" />
+    <Skip Include="Build\Microsoft.VisualStudio.SolutionPersistence.dll" />
     <Skip Include="Build\System.Buffers.dll" />
     <Skip Include="Build\System.Collections.Immutable.dll" />
     <Skip Include="Build\System.Memory.dll" />
@@ -35,11 +37,8 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
-    <!-- net10.0 msbuild tools content -->
-    <Skip Include="AssemblyStripper.dll" />
-    <Skip Include="ILLink.Tasks.dll" />
+    <!-- net1*.0 msbuild tools content -->
     <Skip Include="Microsoft.Win32.SystemEvents.dll" />
-    <Skip Include="MonoTargetsTasks.dll" />
     <Skip Include="System.CodeDom.dll" />
     <Skip Include="System.ComponentModel.Composition.dll" />
     <Skip Include="System.Configuration.ConfigurationManager.dll" />
@@ -101,11 +100,14 @@
     <FirstParty Include="System.Diagnostics.DiagnosticSource.dll" />
     <FirstParty Include="System.Diagnostics.Process.dll" />
     <FirstParty Include="System.Diagnostics.StackTrace.dll" />
+    <FirstParty Include="System.Drawing.Primitives.dll" />
+    <FirstParty Include="System.Drawing.dll" />
     <FirstParty Include="System.dll" />
     <FirstParty Include="System.Formats.Asn1.dll" />
     <FirstParty Include="System.IO.Compression.Brotli.dll" />
     <FirstParty Include="System.IO.Compression.dll" />
     <FirstParty Include="System.IO.MemoryMappedFiles.dll" />
+    <FirstParty Include="System.IO.Pipelines.dll" />
     <FirstParty Include="System.IO.Pipes.dll" />
     <FirstParty Include="System.Linq.dll" />
     <FirstParty Include="System.Memory.dll" />
@@ -143,11 +145,18 @@
     <!-- Xamarin.Messaging -->
     <FirstParty Include="Merq.dll" />
     <FirstParty Include="Merq.Core.dll" />
+    <FirstParty Include="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+    <FirstParty Include="Microsoft.Extensions.Logging.Abstractions.dll" />
     <!-- Broker.zip -->
+    <FirstParty Include="Broker.dll" />
     <FirstParty Include="Broker.exe" />
     <FirstParty Include="Broker.resources.dll" />
     <!-- Build.zip -->
     <FirstParty Include="Build.dll" />
+    <!-- The net11.0 SDK packs ship these task assemblies unsigned, so we sign them here. -->
+    <FirstParty Include="tools\msbuild\net11.0\AssemblyStripper.dll" />
+    <FirstParty Include="tools\msbuild\net11.0\ILLink.Tasks.dll" />
+    <FirstParty Include="tools\msbuild\net11.0\MonoTargetsTasks.dll" />
     <FirstParty Include="Microsoft.Build*.dll" />
     <FirstParty Include="Microsoft.NET.StringTools.dll" />
     <FirstParty Include="System.IO.Abstractions.dll" />

@@ -19,8 +19,9 @@ class Program {
 			var isTrimmableString = ia.Single (v => v.StartsWith ("IsTrimmable="))?.Substring ("IsTrimmable=".Length);
 			var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 			var trimMode = ia.Single (v => v.StartsWith ("TrimMode="))?.Substring ("TrimMode=".Length) ?? "";
+			var originalInputPath = ia.SingleOrDefault (v => v.StartsWith ("OriginalInputPath="))?.Substring ("OriginalInputPath=".Length);
 
-			api.Add (new AssemblyPreparerInfo (inputPath, outputPath, isTrimmable, trimMode));
+			api.Add (new AssemblyPreparerInfo (inputPath, outputPath, originalInputPath, isTrimmable, trimMode));
 		}
 
 		var platformString = File.ReadAllLines (optionsFile).Single (v => v.StartsWith ("Platform=")).Substring ("Platform=".Length);

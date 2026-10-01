@@ -1,0 +1,3 @@
+!missing-null-allowed! 'System.Void BrowserEngineKit.IBETextInput::SelectTextForEditMenu(CoreGraphics.CGPoint,System.Action`3<System.Boolean,Foundation.NSString,Foundation.NSRange>)' is missing a '?' on parameter 'completionHandler' block parameter #1
+!missing-null-allowed! 'UIKit.UIView BrowserEngineKit.IBETextInput::get_SelectionContainerViewAboveText()' is missing an [NullAllowed] on return type
+!missing-null-allowed! 'UIKit.UIView BrowserEngineKit.IBETextInput::get_SelectionContainerViewBelowText()' is missing an [NullAllowed] on return type

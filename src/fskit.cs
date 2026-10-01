@@ -27,6 +27,12 @@ namespace FSKit {
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
+	[Mac (27, 0)]
+	delegate void FSClientMountSingleVolumeCompletionHandler ([NullAllowed] NSUrl mountPath, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -38,6 +44,15 @@ namespace FSKit {
 		[Async]
 		[Export ("fetchInstalledExtensionsWithCompletionHandler:")]
 		void FetchInstalledExtensions (FetchInstalledExtensionsCallback results);
+
+		[Mac (27, 0)]
+		[Async]
+		[Export ("mountSingleVolumeForResource:bundleID:options:completionHandler:")]
+		void MountSingleVolume (FSResource resource, string bundleId, string [] options, FSClientMountSingleVolumeCompletionHandler completionHandler);
+
+		[Mac (27, 0)]
+		[Export ("openFileSystemExtensionsSettings")]
+		bool OpenFileSystemExtensionsSettings ();
 	}
 
 #if !STABLE_FSKIT
@@ -74,8 +89,14 @@ namespace FSKit {
 		[Export ("initWithUUID:qualifier:")]
 		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'Create' instead.")]
 		[Export ("initWithUUID:data:")]
 		NativeHandle Constructor (NSUuid uuid, NSData qualifier);
+
+		[Mac (27, 0)]
+		[Internal]
+		[Export ("initWithUUID:qualifierData:")]
+		NativeHandle _InitWithUuidQualifierData (NSUuid uuid, NSData qualifierData);
 
 		[Export ("uuid", ArgumentSemantic.Retain)]
 		NSUuid Uuid { get; set; }
@@ -294,6 +315,9 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	interface FSItem {
+		[Mac (27, 0)]
+		[Export ("tryReclaimWithBlock:")]
+		bool TryReclaim (Action reclaimBlock);
 	}
 
 #if !STABLE_FSKIT
@@ -654,6 +678,11 @@ namespace FSKit {
 		[DesignatedInitializer]
 		[Export ("initWithVolumeID:volumeName:")]
 		NativeHandle Constructor (FSVolumeIdentifier volumeId, FSFileName volumeName);
+
+		[Mac (27, 0)]
+		[Export ("setCacheStateForItem:cacheMode:coherencyType:coherencyAction:")]
+		[return: NullAllowed]
+		NSError SetCacheState (FSItem item, FSDataCacheMode cacheMode, FSKernelCacheCoherencyType coherencyType, FSKernelCacheCoherencyAction action);
 	}
 
 #if !STABLE_FSKIT
@@ -819,7 +848,7 @@ namespace FSKit {
 #endif
 	[Mac (15, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
-	interface FSVolumeOperations : FSVolumePathConfOperations {
+	interface FSVolumeCommonOperations {
 		[Abstract]
 		[Export ("supportedVolumeCapabilities")]
 		FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
@@ -827,6 +856,16 @@ namespace FSKit {
 		[Abstract]
 		[Export ("volumeStatistics")]
 		FSStatFSResult VolumeStatistics { get; }
+
+		[Mac (26, 0)]
+		[Export ("enableOpenUnlinkEmulation")]
+		bool EnableOpenUnlinkEmulation { get; }
+
+		/// <summary>Gets the mount options that the file system requests from FSKit.</summary>
+		/// <remarks>FSKit reads this value after the volume replies to the <see cref="M:FSKit.IFSVolumeCommonOperations.Mount(FSKit.FSTaskOptions,FSKit.FSVolumeOperationsMountHandler)" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
+		[Mac (26, 4)]
+		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
+		FSMountOptions RequestedMountOptions { get; }
 
 		[Abstract]
 		[Export ("mountWithOptions:replyHandler:")]
@@ -841,6 +880,17 @@ namespace FSKit {
 		void Synchronize (FSSyncFlags flags, FSVolumeOperationsSynchronizeHandler reply);
 
 		[Abstract]
+		[Export ("reclaimItem:replyHandler:")]
+		void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (15, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeOperations : FSVolumeCommonOperations, FSVolumePathConfOperations {
+		[Abstract]
 		[Export ("getAttributes:ofItem:replyHandler:")]
 		void GetAttributes (FSItemGetAttributesRequest desiredAttributes, FSItem item, FSVolumeOperationsAttributesHandler reply);
 
@@ -851,10 +901,6 @@ namespace FSKit {
 		[Abstract]
 		[Export ("lookupItemNamed:inDirectory:replyHandler:")]
 		void LookupItem (FSFileName name, FSItem directory, FSVolumeOperationsLookupItemHandler reply);
-
-		[Abstract]
-		[Export ("reclaimItem:replyHandler:")]
-		void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
 
 		[Abstract]
 		[Export ("readSymbolicLink:replyHandler:")]
@@ -891,16 +937,6 @@ namespace FSKit {
 		[Abstract]
 		[Export ("deactivateWithOptions:replyHandler:")]
 		void Deactivate (FSDeactivateOptions options, FSVolumeOperationsDeactivateHandler reply);
-
-		[Mac (26, 0)]
-		[Export ("enableOpenUnlinkEmulation")]
-		bool EnableOpenUnlinkEmulation { get; set; }
-
-		/// <summary>Gets or sets the mount options that the file system requests from FSKit.</summary>
-		/// <remarks>FSKit reads this value after the volume replies to the <see cref="M:FSKit.IFSVolumeOperations.Mount(FSKit.FSTaskOptions,FSKit.FSVolumeOperationsMountHandler)" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
-		[Mac (26, 0)]
-		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
-		FSMountOptions RequestedMountOptions { get; set; }
 	}
 
 #if !STABLE_FSKIT
@@ -1098,6 +1134,8 @@ namespace FSKit {
 	public enum FSExtentType : long {
 		Data = 0,
 		ZeroFill = 1,
+		[Mac (27, 0)]
+		ReadOnly = 2,
 	}
 
 #if !STABLE_FSKIT
@@ -1252,11 +1290,11 @@ namespace FSKit {
 		DWait = 4,
 	}
 
-	/// <summary>Mount options to be requested from FSKit using the <see cref="IFSVolumeOperations.RequestedMountOptions" /> property.</summary>
+	/// <summary>Mount options to be requested from FSKit using the <see cref="IFSVolumeCommonOperations.RequestedMountOptions" /> property.</summary>
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
-	[Mac (26, 0)]
+	[Mac (26, 4)]
 	[Flags]
 	[Native]
 	public enum FSMountOptions : ulong {
@@ -1449,5 +1487,1025 @@ namespace FSKit {
 
 		[Export ("writable")]
 		bool Writable { [Bind ("isWritable")] get; }
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[ErrorDomain ("FSKitErrorDomain")]
+	[Mac (27, 0)]
+	[Native]
+	public enum FSDataCacheErrorCode : long {
+		InvalidCacheModeCoherency = 4510,
+		InvalidCacheTransition = 4511,
+		CacheFlushFailed = 4512,
+		CacheInvalidationFailed = 4513,
+		CacheOperationConflict = 4514,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Native]
+	public enum FSDataCacheMode : long {
+		None = 0,
+		ReadWithCache,
+		ReadWriteWithCache,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Native]
+	public enum FSKernelCacheCoherencyType : long {
+		NoCache = 0,
+		ReadCache,
+		WriteThrough,
+		WriteBack,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Native]
+	public enum FSKernelCacheCoherencyAction : long {
+		Push = 0,
+		PushInvalidate,
+		Invalidate,
+		Update,
+		Revoke,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Native]
+	public enum FSSeekRegion : ulong {
+		Hole = 1,
+		Data = 2,
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DesignatedDefaultCtor]
+	interface FSFreeSpace {
+		[Export ("populateWithBytes:")]
+		void PopulateWithBytes (ulong freeSpaceBytes);
+
+		[Static]
+		[Export ("noUpdate")]
+		FSFreeSpace NoUpdate { get; }
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface FSContext {
+		[Export ("realUserID")]
+		nint RealUserId { get; }
+
+		[Export ("effectiveUserID")]
+		nint EffectiveUserId { get; }
+
+		[Export ("realGroupID")]
+		nint RealGroupId { get; }
+
+		[Export ("effectiveGroupID")]
+		nint EffectiveGroupId { get; }
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (NSObject))]
+	interface FSVolumeHandlerResult {
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSActivateResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithRootItem:")]
+		NativeHandle Constructor (FSItem rootItem);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSLookupItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithFoundItem:itemName:itemAttributes:")]
+		NativeHandle Constructor (FSItem foundItem, FSFileName itemName, FSItemAttributes itemAttributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSCreateItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithNewItem:newItemName:newItemAttributes:directoryAttributes:freeSpace:")]
+		NativeHandle Constructor (FSItem newItem, FSFileName newItemName, FSItemAttributes newItemAttributes, FSItemAttributes directoryAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSCreateItemResult))]
+	[DisableDefaultCtor]
+	interface FSCreateSymlinkResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithNewItem:newItemName:newItemAttributes:directoryAttributes:freeSpace:")]
+		NativeHandle Constructor (FSItem newItem, FSFileName newItemName, FSItemAttributes newItemAttributes, FSItemAttributes directoryAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSCreateLinkResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithLinkName:linkAttributes:directoryAttributes:freeSpace:")]
+		NativeHandle Constructor (FSFileName linkName, FSItemAttributes linkAttributes, FSItemAttributes directoryAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSRenameItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithNewName:renamedItemAttributes:sourceDirectoryAttributes:destinationDirectoryAttributes:overItemAttributes:freeSpace:")]
+		NativeHandle Constructor (FSFileName newName, FSItemAttributes renamedItemAttributes, FSItemAttributes sourceDirectoryAttributes, FSItemAttributes destinationDirectoryAttributes, [NullAllowed] FSItemAttributes overItemAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSRemoveItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithItemAttributes:directoryAttributes:freeSpace:")]
+		NativeHandle Constructor (FSItemAttributes itemAttributes, FSItemAttributes directoryAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSGetAttributesResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithAttributes:")]
+		NativeHandle Constructor (FSItemAttributes attributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSSetAttributesResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithAttributes:freeSpace:")]
+		NativeHandle Constructor (FSItemAttributes attributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSEnumerateDirectoryResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithVerifier:")]
+		NativeHandle Constructor (FSDirectoryVerifier currentVerifier);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSReadSymlinkResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithContents:symlinkAttributes:")]
+		NativeHandle Constructor (FSFileName contents, FSItemAttributes attributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSGetXattrResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithXattrValue:")]
+		NativeHandle Constructor (NSData value);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSSetXattrResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithFreeSpace:")]
+		NativeHandle Constructor ([NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSListXattrsResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithXattrNames:")]
+		NativeHandle Constructor (FSFileName [] xattrNames);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSReadFileResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithBytesRead:itemAttributes:")]
+		NativeHandle Constructor (nuint bytesRead, FSItemAttributes attributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSWriteFileResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithBytesWritten:itemAttributes:freeSpace:")]
+		NativeHandle Constructor (nuint bytesWritten, FSItemAttributes attributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSCheckAccessResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithAccessAllowed:")]
+		NativeHandle Constructor (bool accessAllowed);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSVolumeRenameResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithNewName:")]
+		NativeHandle Constructor (FSFileName newName);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSPreallocateResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithBytesAllocated:itemAttributes:freeSpace:")]
+		NativeHandle Constructor (nuint bytesAllocated, FSItemAttributes attributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSDeactivateItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithFreeSpace:")]
+		NativeHandle Constructor ([NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSSeekRegionResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithReturnedOffset:")]
+		NativeHandle Constructor (long returnedOffset);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSBlockmapResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithFreeSpace:")]
+		NativeHandle Constructor ([NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult), Name = "FSCompleteIOResult")]
+	[DisableDefaultCtor]
+	interface FSCompleteIoResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithAttributes:")]
+		NativeHandle Constructor (FSItemAttributes attributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSCreateItemResult), Name = "FSCreateFileKOIOResult")]
+	[DisableDefaultCtor]
+	interface FSCreateFileKoioResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithNewItem:newItemName:newItemAttributes:directoryAttributes:freeSpace:")]
+		NativeHandle Constructor (FSItem newItem, FSFileName newItemName, FSItemAttributes newItemAttributes, FSItemAttributes directoryAttributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSLookupItemResult), Name = "FSLookupItemKOIOResult")]
+	[DisableDefaultCtor]
+	interface FSLookupItemKoioResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithFoundItem:itemName:itemAttributes:")]
+		NativeHandle Constructor (FSItem foundItem, FSFileName itemName, FSItemAttributes itemAttributes);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSPreallocateResult), Name = "FSPreallocateKOIOResult")]
+	[DisableDefaultCtor]
+	interface FSPreallocateKoioResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithBytesAllocated:itemAttributes:freeSpace:")]
+		NativeHandle Constructor (nuint bytesAllocated, FSItemAttributes attributes, [NullAllowed] FSFreeSpace freeSpace);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSOpenItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithGrantedCoherency:")]
+		NativeHandle Constructor (FSKernelCacheCoherencyType grantedCoherency);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[BaseType (typeof (FSVolumeHandlerResult))]
+	[DisableDefaultCtor]
+	interface FSUpgradeItemResult {
+		[New]
+		[Static]
+		[Export ("requestedAttributes", ArgumentSemantic.Strong)]
+		FSItemGetAttributesRequest RequestedAttributes { get; }
+
+		[DesignatedInitializer]
+		[Export ("initWithGrantedCoherency:")]
+		NativeHandle Constructor (FSKernelCacheCoherencyType grantedCoherency);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerActivateHandler ([NullAllowed] FSActivateResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerDeactivateHandler ([NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerLookupItemHandler ([NullAllowed] FSLookupItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerCreateItemHandler ([NullAllowed] FSCreateItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerCreateSymlinkHandler ([NullAllowed] FSCreateSymlinkResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerCreateLinkHandler ([NullAllowed] FSCreateLinkResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerRenameItemHandler ([NullAllowed] FSRenameItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerRemoveItemHandler ([NullAllowed] FSRemoveItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerGetAttributesHandler ([NullAllowed] FSGetAttributesResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerSetAttributesHandler ([NullAllowed] FSSetAttributesResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerEnumerateDirectoryHandler ([NullAllowed] FSEnumerateDirectoryResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeHandlerReadSymbolicLinkHandler ([NullAllowed] FSReadSymlinkResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeHandler : FSVolumeCommonOperations, FSVolumePathConfOperations {
+		[Abstract]
+		[Export ("supportedVolumeCapabilities")]
+		new FSVolumeSupportedCapabilities SupportedVolumeCapabilities { get; }
+
+		[Abstract]
+		[Export ("volumeStatistics")]
+		new FSStatFSResult VolumeStatistics { get; }
+
+		[Abstract]
+		[Export ("activateVolumeWithOptions:replyHandler:")]
+		void Activate (FSTaskOptions options, FSVolumeHandlerActivateHandler reply);
+
+		[Abstract]
+		[Export ("deactivateVolumeWithOptions:replyHandler:")]
+		void Deactivate (FSDeactivateOptions options, FSVolumeHandlerDeactivateHandler reply);
+
+		[Abstract]
+		[Export ("mountWithOptions:replyHandler:")]
+		new void Mount (FSTaskOptions options, FSVolumeOperationsMountHandler reply);
+
+		[Abstract]
+		[Export ("unmountWithReplyHandler:")]
+		new void Unmount (Action reply);
+
+		[Abstract]
+		[Export ("synchronizeWithFlags:replyHandler:")]
+		new void Synchronize (FSSyncFlags flags, FSVolumeOperationsSynchronizeHandler reply);
+
+		[Abstract]
+		[Export ("lookupItemNamed:inDirectory:context:replyHandler:")]
+		void LookupItem (FSFileName name, FSItem directory, FSContext context, FSVolumeHandlerLookupItemHandler reply);
+
+		[Abstract]
+		[Export ("reclaimItem:replyHandler:")]
+		new void Reclaim (FSItem item, FSVolumeOperationsReclaimHandler reply);
+
+		[Abstract]
+		[Export ("createItemNamed:type:inDirectory:attributes:context:replyHandler:")]
+		void CreateItem (FSFileName name, FSItemType type, FSItem directory, FSItemSetAttributesRequest newAttributes, FSContext context, FSVolumeHandlerCreateItemHandler reply);
+
+		[Abstract]
+		[Export ("createSymbolicLinkNamed:inDirectory:attributes:linkContents:context:replyHandler:")]
+		void CreateSymbolicLink (FSFileName name, FSItem directory, FSItemSetAttributesRequest newAttributes, FSFileName contents, FSContext context, FSVolumeHandlerCreateSymlinkHandler reply);
+
+		[Abstract]
+		[Export ("createLinkToItem:named:inDirectory:context:replyHandler:")]
+		void CreateLink (FSItem item, FSFileName name, FSItem directory, FSContext context, FSVolumeHandlerCreateLinkHandler reply);
+
+		[Abstract]
+		[Export ("renameItem:inDirectory:named:toNewName:inDirectory:overItem:context:replyHandler:")]
+		void RenameItem (FSItem item, FSItem sourceDirectory, FSFileName sourceName, FSFileName destinationName, FSItem destinationDirectory, [NullAllowed] FSItem overItem, FSContext context, FSVolumeHandlerRenameItemHandler reply);
+
+		[Abstract]
+		[Export ("removeItem:named:fromDirectory:context:replyHandler:")]
+		void RemoveItem (FSItem item, FSFileName name, FSItem directory, FSContext context, FSVolumeHandlerRemoveItemHandler reply);
+
+		[Abstract]
+		[Export ("getAttributes:ofItem:context:replyHandler:")]
+		void GetAttributes (FSItemGetAttributesRequest desiredAttributes, FSItem item, FSContext context, FSVolumeHandlerGetAttributesHandler reply);
+
+		[Abstract]
+		[Export ("setAttributes:onItem:context:replyHandler:")]
+		void SetAttributes (FSItemSetAttributesRequest newAttributes, FSItem item, FSContext context, FSVolumeHandlerSetAttributesHandler reply);
+
+		[Abstract]
+		[Export ("enumerateDirectory:startingAtCookie:verifier:providingAttributes:usingPacker:context:replyHandler:")]
+		void EnumerateDirectory (FSItem directory, FSDirectoryCookie startingAt, FSDirectoryVerifier verifier, [NullAllowed] FSItemGetAttributesRequest attributes, FSDirectoryEntryPacker packer, FSContext context, FSVolumeHandlerEnumerateDirectoryHandler reply);
+
+		[Abstract]
+		[Export ("readSymbolicLink:context:replyHandler:")]
+		void ReadSymbolicLink (FSItem item, FSContext context, FSVolumeHandlerReadSymbolicLinkHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeXattrHandlerGetHandler ([NullAllowed] FSGetXattrResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeXattrHandlerSetHandler ([NullAllowed] FSSetXattrResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeXattrHandlerListHandler ([NullAllowed] FSListXattrsResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeXattrHandler {
+		[Export ("xattrOperationsInhibited")]
+		bool XattrOperationsInhibited { get; }
+
+		[return: NullAllowed]
+		[Export ("supportedXattrNamesForItem:")]
+		FSFileName [] GetSupportedXattrNames (FSItem item);
+
+		[Abstract]
+		[Export ("getXattrNamed:ofItem:context:replyHandler:")]
+		void GetXattr (FSFileName name, FSItem item, FSContext context, FSVolumeXattrHandlerGetHandler reply);
+
+		[Abstract]
+		[Export ("setXattrNamed:toData:onItem:policy:context:replyHandler:")]
+		void SetXattr (FSFileName name, [NullAllowed] NSData value, FSItem item, FSSetXattrPolicy policy, FSContext context, FSVolumeXattrHandlerSetHandler reply);
+
+		[Abstract]
+		[Export ("listXattrsOfItem:context:replyHandler:")]
+		void ListXattrs (FSItem item, FSContext context, FSVolumeXattrHandlerListHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeOpenCloseHandlerReplyHandler ([NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeOpenCloseHandler {
+		[Export ("openCloseInhibited")]
+		bool IsOpenCloseInhibited { [Bind ("isOpenCloseInhibited")] get; }
+
+		[Abstract]
+		[Export ("openItem:withModes:context:replyHandler:")]
+		void OpenItem (FSItem item, FSVolumeOpenModes mode, FSContext context, FSVolumeOpenCloseHandlerReplyHandler reply);
+
+		[Abstract]
+		[Export ("closeItem:keepingModes:context:replyHandler:")]
+		void CloseItem (FSItem item, FSVolumeOpenModes mode, FSContext context, FSVolumeOpenCloseHandlerReplyHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeReadWriteHandlerReadHandler ([NullAllowed] FSReadFileResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeReadWriteHandlerWriteHandler ([NullAllowed] FSWriteFileResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeReadWriteHandler {
+		[Abstract]
+		[Export ("readFromFile:offset:length:intoBuffer:replyHandler:")]
+		void Read (FSItem item, long offset, nuint length, FSMutableFileDataBuffer buffer, FSVolumeReadWriteHandlerReadHandler reply);
+
+		[Abstract]
+		[Export ("writeContents:toFile:atOffset:replyHandler:")]
+		void Write (NSData contents, FSItem item, long offset, FSVolumeReadWriteHandlerWriteHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeAccessCheckHandlerCheckAccessHandler ([NullAllowed] FSCheckAccessResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeAccessCheckHandler {
+		[Export ("accessCheckInhibited")]
+		bool IsAccessCheckInhibited { [Bind ("isAccessCheckInhibited")] get; }
+
+		[Abstract]
+		[Export ("checkAccessToItem:requestedAccess:context:replyHandler:")]
+		void RequestedAccess (FSItem item, FSAccessMask access, FSContext context, FSVolumeAccessCheckHandlerCheckAccessHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeRenameHandlerSetVolumeNameHandler ([NullAllowed] FSVolumeRenameResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeRenameHandler {
+		[Export ("volumeRenameInhibited")]
+		bool IsVolumeRenameInhibited { [Bind ("isVolumeRenameInhibited")] get; }
+
+		[Abstract]
+		[Export ("setVolumeName:context:replyHandler:")]
+		void SetVolumeName (FSFileName name, FSContext context, FSVolumeRenameHandlerSetVolumeNameHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumePreallocateHandlerPreallocateSpaceHandler ([NullAllowed] FSPreallocateResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumePreallocateHandler {
+		[Export ("preallocateInhibited")]
+		bool IsPreallocateInhibited { [Bind ("isPreallocateInhibited")] get; }
+
+		[Abstract]
+		[Export ("preallocateSpaceForItem:atOffset:length:flags:context:replyHandler:")]
+		void PreallocateSpace (FSItem item, long offset, nuint length, FSPreallocateFlags flags, FSContext context, FSVolumePreallocateHandlerPreallocateSpaceHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeItemDeactivationHandlerDeactivateItemHandler ([NullAllowed] FSDeactivateItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeItemDeactivationHandler {
+		[Abstract]
+		[Export ("itemDeactivationPolicy")]
+		FSItemDeactivationOptions ItemDeactivationPolicy { get; }
+
+		[Abstract]
+		[Export ("deactivateItem:context:replyHandler:")]
+		void DeactivateItem (FSItem item, FSContext context, FSVolumeItemDeactivationHandlerDeactivateItemHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeSeekRegionHandlerSeekHandler ([NullAllowed] FSSeekRegionResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeSeekRegionHandler {
+		[Export ("seekRegionInhibited")]
+		bool IsSeekRegionInhibited { [Bind ("isSeekRegionInhibited")] get; }
+
+		[Abstract]
+		[Export ("seekWithinItem:fromOffset:region:context:replyHandler:")]
+		void Seek (FSItem item, long offset, FSSeekRegion region, FSContext context, FSVolumeSeekRegionHandlerSeekHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeDataCacheHandlerOpenItemHandler ([NullAllowed] FSOpenItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeDataCacheHandlerUpgradeItemHandler ([NullAllowed] FSUpgradeItemResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeDataCacheHandler {
+		[Export ("dataCacheInhibited")]
+		bool IsDataCacheInhibited { [Bind ("isDataCacheInhibited")] get; }
+
+		[Abstract]
+		[Export ("openItem:modes:cacheMode:context:replyHandler:")]
+		void OpenItem (FSItem item, FSVolumeOpenModes modes, FSDataCacheMode cacheMode, FSContext context, FSVolumeDataCacheHandlerOpenItemHandler reply);
+
+		[Abstract]
+		[Export ("closeItem:context:replyHandler:")]
+		void CloseItem (FSItem item, FSContext context, Action reply);
+
+		[Abstract]
+		[Export ("upgradeItem:cacheMode:context:replyHandler:")]
+		void UpgradeItem (FSItem item, FSDataCacheMode cacheMode, FSContext context, FSVolumeDataCacheHandlerUpgradeItemHandler reply);
+	}
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeKernelOffloadedIoHandlerBlockmapFileHandler ([NullAllowed] FSBlockmapResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeKernelOffloadedIoHandlerCompleteIoHandler ([NullAllowed] FSCompleteIoResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeKernelOffloadedIoHandlerCreateFileHandler ([NullAllowed] FSCreateFileKoioResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeKernelOffloadedIoHandlerLookupItemHandler ([NullAllowed] FSLookupItemKoioResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	delegate void FSVolumeKernelOffloadedIoHandlerPreallocateSpaceHandler ([NullAllowed] FSPreallocateKoioResult result, [NullAllowed] NSError error);
+
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 0)]
+	[Protocol (Name = "FSVolumeKernelOffloadedIOHandler", BackwardsCompatibleCodeGeneration = false)]
+	interface FSVolumeKernelOffloadedIoHandler {
+		[Abstract]
+		[Export ("blockmapFile:offset:length:flags:operationID:packer:replyHandler:")]
+		void BlockmapFile (FSItem item, long offset, nuint length, FSBlockmapFlags flags, FSOperationId operationId, FSExtentPacker packer, FSVolumeKernelOffloadedIoHandlerBlockmapFileHandler reply);
+
+		// The header marks 'status' non-null, but its documentation says it is null when no error occurred.
+		[Abstract]
+		[Export ("completeIOForFile:offset:length:status:flags:operationID:replyHandler:")]
+		void CompleteIo (FSItem item, long offset, nuint length, [NullAllowed] NSError status, FSCompleteIoFlags flags, FSOperationId operationId, FSVolumeKernelOffloadedIoHandlerCompleteIoHandler reply);
+
+		[Abstract]
+		[Export ("createFileNamed:inDirectory:attributes:packer:context:replyHandler:")]
+		void CreateFile (FSFileName name, FSItem directory, FSItemSetAttributesRequest newAttributes, FSExtentPacker packer, FSContext context, FSVolumeKernelOffloadedIoHandlerCreateFileHandler reply);
+
+		[Abstract]
+		[Export ("lookupItemNamed:inDirectory:packer:context:replyHandler:")]
+		void LookupItem (FSFileName name, FSItem directory, FSExtentPacker packer, FSContext context, FSVolumeKernelOffloadedIoHandlerLookupItemHandler reply);
+
+		[Export ("preallocateSpaceForFile:atOffset:length:flags:packer:context:replyHandler:")]
+		void PreallocateSpace (FSItem file, long offset, nuint length, FSPreallocateFlags flags, FSExtentPacker packer, FSContext context, FSVolumeKernelOffloadedIoHandlerPreallocateSpaceHandler reply);
 	}
 }

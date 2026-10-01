@@ -66,7 +66,7 @@ public class DocumentationManager {
 		for (var i = 0; i < lines.Length; i++) {
 			var line = lines [i].TrimStart (' ');
 
-			// We compile code twice:
+			// The build compiles code twice:
 			// 1. The API bindings
 			// 2. The final (generated) binding code
 			// Any xml documentation from the API definitions are copied to the generated binding code,
@@ -112,7 +112,7 @@ public class DocumentationManager {
 	// There's already an implementation in Roslyn, but that's a rather heavy dependency,
 	// so we're implementing this in our own code instead.
 
-	public static string GetDocId (MethodInfo md, bool includeDeclaringType = true, bool alwaysIncludeParenthesis = false)
+	public static string GetDocId (MethodInfo md, bool includeDeclaringType = true, bool alwaysIncludeParenthesis = false, Func<ParameterInfo, Type>? parameterTypeProvider = null)
 	{
 		var methodName = md.Name.Replace ('.', '#');
 		var name = methodName;
@@ -122,7 +122,7 @@ public class DocumentationManager {
 			name += $"``{md.GetGenericArguments ().Length}";
 		var parameters = md.GetParameters ();
 		if (parameters.Length > 0) {
-			name += "(" + string.Join (",", parameters.Select (p => GetDocId (p.ParameterType))) + ")";
+			name += "(" + string.Join (",", parameters.Select (p => GetDocId (parameterTypeProvider?.Invoke (p) ?? p.ParameterType))) + ")";
 		} else if (alwaysIncludeParenthesis) {
 			name += "()";
 		}

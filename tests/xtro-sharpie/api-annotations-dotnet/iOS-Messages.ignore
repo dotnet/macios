@@ -13,3 +13,4 @@
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! MSSticker::initWithFileURL:identifier:localizedDescription: not found
+!missing-null-allowed! 'UIKit.UIColor Messages.IMSMessagesAppTranscriptPresentation::get_MessageTintColor()' is missing an [NullAllowed] on return type

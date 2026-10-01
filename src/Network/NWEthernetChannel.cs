@@ -52,13 +52,13 @@ namespace Network {
 			GC.KeepAlive (networkInterface);
 		}
 
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_ethernet_channel nw_ethernet_channel_create_with_parameters (ushort ether_type, OS_nw_interface @interface, OS_nw_parameters parameters);
 
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		public NWEthernetChannel (ushort ethernetType, NWInterface networkInterface, NWParameters parameters)
@@ -181,13 +181,13 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern uint nw_ethernet_channel_get_maximum_payload_size (OS_nw_ethernet_channel ethernet_channel);
 
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("ios")]
 		public uint MaximumPayloadSize => nw_ethernet_channel_get_maximum_payload_size (GetCheckedHandle ());

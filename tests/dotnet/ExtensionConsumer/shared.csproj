@@ -17,6 +17,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\ExtensionProject\$(_PlatformName)\ExtensionProject.csproj">
 			<IsAppExtension>true</IsAppExtension>
+			<ReferenceOutputAssembly Condition="'$(TestReferenceOutputAssembly)' != ''">$(TestReferenceOutputAssembly)</ReferenceOutputAssembly>
 		</ProjectReference>
 	</ItemGroup>
 </Project>

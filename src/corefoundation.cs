@@ -37,6 +37,133 @@ namespace CoreFoundation {
 		[Internal]
 		[Field ("kCFNull")]
 		IntPtr /* CFNullRef */ _CFNullHandle { get; }
+
+		[Internal]
+		[Field ("kCFTypeArrayCallBacks", SymbolAddress = true)]
+		IntPtr _CFTypeArrayCallbacks { get; }
+	}
+
+	[Internal]
+	[Partial]
+	interface CFDictionary {
+		[Internal]
+		[Field ("kCFTypeDictionaryKeyCallBacks", SymbolAddress = true)]
+		IntPtr _KeyCallbacks { get; }
+
+		[Internal]
+		[Field ("kCFTypeDictionaryValueCallBacks", SymbolAddress = true)]
+		IntPtr _ValueCallbacks { get; }
+	}
+
+	[Static, Partial]
+	interface CFErrorDomain {
+#if !XAMCORE_5_0
+		[Internal]
+		[Field ("kCFErrorDomainCocoa")]
+		NSString _Cocoa { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainMach")]
+		NSString _Mach { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainOSStatus")]
+		NSString _OSStatus { get; }
+
+		[Internal]
+		[Field ("kCFErrorDomainPOSIX")]
+		NSString _Posix { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Identifies errors reported by Cocoa APIs.</summary>
+		[Field ("kCFErrorDomainCocoa")]
+		[NullAllowed]
+		NSString Cocoa { get; }
+
+		/// <summary>Identifies errors reported by Mach APIs.</summary>
+		[Field ("kCFErrorDomainMach")]
+		[NullAllowed]
+		NSString Mach { get; }
+
+		/// <summary>Identifies errors reported using OSStatus values.</summary>
+		[Field ("kCFErrorDomainOSStatus")]
+		[NullAllowed]
+		NSString OSStatus { get; }
+
+		/// <summary>Identifies errors reported using POSIX error codes.</summary>
+		[Field ("kCFErrorDomainPOSIX")]
+		[NullAllowed]
+		NSString Posix { get; }
+#endif
+	}
+
+	[Static, Partial]
+	interface CFExceptionDataKey {
+#if !XAMCORE_5_0
+		[Internal]
+		[Field ("kCFErrorDescriptionKey")]
+		NSString _Description { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedDescriptionKey")]
+		NSString _LocalizedDescription { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedFailureReasonKey")]
+		NSString _LocalizedFailureReason { get; }
+
+		[Internal]
+		[Field ("kCFErrorLocalizedRecoverySuggestionKey")]
+		NSString _LocalizedRecoverySuggestion { get; }
+
+		[Internal]
+		[Field ("kCFErrorUnderlyingErrorKey")]
+		NSString _UnderlyingError { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>Gets the key for an error's nonlocalized description.</summary>
+		[Field ("kCFErrorDescriptionKey")]
+		[NullAllowed]
+		NSString Description { get; }
+
+		/// <summary>Gets the key for an error's localized description.</summary>
+		[Field ("kCFErrorLocalizedDescriptionKey")]
+		[NullAllowed]
+		NSString LocalizedDescription { get; }
+
+		/// <summary>Gets the key for an error's localized failure reason.</summary>
+		[Field ("kCFErrorLocalizedFailureReasonKey")]
+		[NullAllowed]
+		NSString LocalizedFailureReason { get; }
+
+		/// <summary>Gets the key for an error's localized recovery suggestion.</summary>
+		[Field ("kCFErrorLocalizedRecoverySuggestionKey")]
+		[NullAllowed]
+		NSString LocalizedRecoverySuggestion { get; }
+
+		/// <summary>Gets the key for an underlying error.</summary>
+		[Field ("kCFErrorUnderlyingErrorKey")]
+		[NullAllowed]
+		NSString UnderlyingError { get; }
+#endif
+	}
+
+	[Static, Partial]
+	interface CFPreferences {
+#if !XAMCORE_5_0
+		[Internal]
+		[Field ("kCFPreferencesCurrentApplication")]
+		NSString _CurrentApplication { get; }
+#endif
+#if XAMCORE_5_0
+		/// <summary>The current application.</summary>
+		/// <remarks>
+		///   <para>Use this value to read or write preferences for the calling application.</para>
+		/// </remarks>
+		[Field ("kCFPreferencesCurrentApplication")]
+		[NullAllowed]
+		NSString CurrentApplication { get; }
+#endif
 	}
 
 	[Partial]

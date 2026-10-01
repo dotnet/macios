@@ -16,6 +16,8 @@ namespace Extrospection {
 
 	public class SelectorCheck : BaseVisitor {
 
+		const int FactoryMethodBindingImplOption = 4;
+
 		HashSet<string> qualified_selectors = new HashSet<string> ();
 		Dictionary<string, List<Tuple<MethodDefinition, Helpers.ArgumentSemantic>>> qualified_properties = new Dictionary<string, List<Tuple<MethodDefinition, Helpers.ArgumentSemantic>>> ();
 
@@ -148,6 +150,24 @@ namespace Extrospection {
 			return type.IsPublic;
 		}
 
+		static bool IsFactoryMethod (MethodDefinition method)
+		{
+			foreach (var ca in method.CustomAttributes) {
+				if (ca.Constructor.DeclaringType.Name != "BindingImplAttribute")
+					continue;
+				var options = (int) ca.ConstructorArguments [0].Value;
+				return (options & FactoryMethodBindingImplOption) == FactoryMethodBindingImplOption;
+			}
+			return false;
+		}
+
+		static bool IsInitializerSelector (string selector)
+		{
+			if (selector == "init")
+				return true;
+			return selector.Length > 4 && selector.StartsWith ("init", StringComparison.Ordinal) && char.IsUpper (selector [4]);
+		}
+
 		// splits '[+]Type::selector' into the native type name and the selector (keeping the leading
 		// '+' on the selector for class selectors)
 		static bool TrySplitQualifiedName (string qualifiedName, out string type, out string selector)
@@ -220,6 +240,23 @@ namespace Extrospection {
 
 					break;
 				}
+			}
+
+			if (!IsFactoryMethod (method) || !method.HasBody)
+				return;
+
+			var typeName = type.GetName ();
+			if (string.IsNullOrEmpty (typeName))
+				return;
+
+			foreach (var instruction in method.Body.Instructions) {
+				if (instruction.OpCode.Code != Mono.Cecil.Cil.Code.Ldstr || instruction.Operand is not string selector || !IsInitializerSelector (selector))
+					continue;
+
+				var methodDefinition = $"{typeName}::{selector}";
+				qualified_selectors.Add (methodDefinition);
+				if (IsPubliclyVisible (type))
+					managed_selectors.Add ((Helpers.GetFramework (type), methodDefinition, typeName, selector));
 			}
 		}
 

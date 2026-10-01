@@ -18,20 +18,23 @@ namespace Xamarin.Linker.Steps {
 		protected override string Name { get; } = "Smart Enum Conversion Preserver";
 		protected override int ErrorCode { get; } = 2200;
 
-		// When set, we can't modify user assemblies (that would break Hot Reload), so instead of injecting
-		// [DynamicDependency] attributes into the referencing (possibly user) assembly, we collect the
-		// framework-side conversion methods and emit an ILLink root-descriptor XML that preserves them
+		// When set for a given assembly, we can't modify it (that would break Hot Reload), so instead of
+		// injecting [DynamicDependency] attributes into the referencing (possibly user) assembly, we collect
+		// the framework-side conversion methods and emit an ILLink root-descriptor XML that preserves them
 		// unconditionally. This only makes sense in the assembly-preparer, where the descriptor is consumed
 		// by the subsequent trimmer pass (in the trimmer itself we keep the current attribute-injection
 		// behaviour, which doesn't affect Hot Reload since Hot Reload requires the assembly-preparer).
-		bool UseXmlDescriptionFile {
-			get {
+		//
+		// Assemblies that are trimmed can't be hot reloaded, so we can modify those, and it's important that
+		// we do: preserving every smart enum conversion in our platform assembly unconditionally would keep
+		// a lot of code (and thus native frameworks) alive that should have been trimmed away.
+		bool UseXmlDescriptionFile (AssemblyDefinition assembly)
+		{
 #if ASSEMBLY_PREPARER
-				return Configuration.HotReloadCompatibleBuild;
+			return Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link;
 #else
-				return false;
+			return false;
 #endif
-			}
 		}
 
 		// The framework-side conversion methods to preserve via the root-descriptor XML.
@@ -71,16 +74,16 @@ namespace Xamarin.Linker.Steps {
 			if (conds.Length == 0)
 				return false;
 
-			if (UseXmlDescriptionFile) {
-				// Don't modify the (possibly user) assembly: collect the framework-side conversion methods so
-				// they can be preserved unconditionally via a root-descriptor XML instead.
-				xmlDescriptor.PreserveMethod (pair.Item1);
-				xmlDescriptor.PreserveMethod (pair.Item2);
-				return false;
-			}
-
 			var modified = false;
 			foreach (var condition in conds) {
+				if (UseXmlDescriptionFile (condition.Module.Assembly)) {
+					// Don't modify the (possibly user) assembly: collect the framework-side conversion methods
+					// so they can be preserved unconditionally via a root-descriptor XML instead.
+					xmlDescriptor.PreserveMethod (pair.Item1);
+					xmlDescriptor.PreserveMethod (pair.Item2);
+					continue;
+				}
+
 				modified |= abr.AddDynamicDependencyAttribute (condition, pair.Item1);
 				modified |= abr.AddDynamicDependencyAttribute (condition, pair.Item2);
 			}
@@ -90,7 +93,7 @@ namespace Xamarin.Linker.Steps {
 
 		protected override void TryEndProcess ()
 		{
-			if (!UseXmlDescriptionFile || xmlDescriptor.IsEmpty)
+			if (xmlDescriptor.IsEmpty)
 				return;
 
 			var xmlPath = Path.Combine (Configuration.CacheDirectory, "preserve-smart-enum-conversions.xml");

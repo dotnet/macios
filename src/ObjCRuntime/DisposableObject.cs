@@ -49,12 +49,23 @@ namespace ObjCRuntime {
 			Dispose (false);
 		}
 
+		/// <summary>Releases all resources used by this object.</summary>
+		/// <remarks>
+		///   <para>This method releases the resources used by this object, and marks the object as disposed. Once developers have invoked the <see cref="Dispose()" /> method, the object is no longer useful and developers should no longer make any calls to it.</para>
+		///   <para>Calling this method when the application is finished using this object ensures that all external resources used by this object are released as soon as possible.</para>
+		/// </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
 			GC.SuppressFinalize (this);
 		}
 
+		/// <summary>Releases the resources used by this object.</summary>
+		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and disposes managed and unmanaged resources. If set to <see langword="false" />, the method is called by the garbage collector finalizer and should only release unmanaged resources.</param>
+		/// <remarks>
+		///   <para>This method is called by both the <see cref="Dispose()" /> method and the object finalizer. When invoked by the <see cref="Dispose()" /> method, the <paramref name="disposing" /> parameter is set to <see langword="true" />. When invoked by the object finalizer, on the finalizer thread, the <paramref name="disposing" /> parameter is set to <see langword="false" />.</para>
+		///   <para>Subclasses should override this method to release any resources they hold, and then call the base implementation.</para>
+		/// </remarks>
 		protected virtual void Dispose (bool disposing)
 		{
 			handle = NativeHandle.Zero;

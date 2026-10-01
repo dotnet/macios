@@ -22,22 +22,22 @@ namespace ImageIO {
 		public delegate void CGImageSourceAnimationHandler (nint index, CGImage image, out bool stop);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageAtURLWithBlock ( /* CFURLRef */ IntPtr url, /* CFDictionaryRef _iio_Nullable */ IntPtr options, /* CGImageSourceAnimationHandler */ BlockLiteral* block);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.ImageIOLibrary)]
 		unsafe static extern /* OSStatus */ CGImageAnimationStatus CGAnimateImageDataWithBlock ( /* CFDataRef _Nonnull */ IntPtr data, /* CFDictionaryRef _Nullable */ IntPtr options, /* CGImageSourceAnimationHandler _Nonnull */ BlockLiteral* block);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSUrl url, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
@@ -58,8 +58,8 @@ namespace ImageIO {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSData data, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)

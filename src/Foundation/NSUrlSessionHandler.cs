@@ -182,35 +182,48 @@ namespace Foundation {
 		/// </remarks>
 		public long MaxInputInMemory { get; set; } = long.MaxValue;
 
-		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
+		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true, bool unregisterCancellation = true)
 		{
+			InflightData? data = null;
 			lock (inflightRequestsLock) {
-				if (inflightRequests.Remove (task, out var data)) {
-					if (cancel)
-						data.CancellationTokenSource.Cancel ();
-				}
+				if (!inflightRequests.Remove (task, out data))
+					return;
 			}
 
-			if (cancel)
-				task?.Cancel ();
+			if (unregisterCancellation)
+				data.CancellationRegistration.Dispose ();
 
-			task?.Dispose ();
+			if (cancel) {
+				data.CancellationTokenSource.Cancel ();
+				task.Cancel ();
+			}
+
+			// Don't dispose the task: NSURLSession may still invoke delegate callbacks, and other callbacks may still reference the managed wrapper.
 		}
 
 		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
-			var tasks = new List<NSUrlSessionTask> ();
+			var requests = new List<KeyValuePair<NSUrlSessionTask, InflightData>> ();
 			lock (inflightRequestsLock) {
-				tasks.AddRange (inflightRequests.Keys);
+				disposed = true;
+				requests.AddRange (inflightRequests);
 				inflightRequests.Clear ();
 			}
-			foreach (var task in tasks) {
-				task.Cancel ();
-				task.Dispose ();
+			foreach (var request in requests) {
+				request.Value.CancellationRegistration.Dispose ();
+				request.Value.CancellationTokenSource.Cancel ();
+				request.Value.CompletionSource.TrySetCanceled ();
+				request.Value.Stream.TrySetException (new ObjectDisposedException (nameof (NSUrlSessionHandler)));
+				request.Key.Cancel ();
 			}
 
-			session.InvalidateAndCancel ();
+			// Take the proxy configuration lock so we don't race with ConfigureSessionProxy: either we
+			// invalidate the session it created (if it ran first), or it observes 'disposed' and doesn't
+			// create a new session that would never be invalidated (if we ran first).
+			lock (proxyConfigurationLock) {
+				session.InvalidateAndCancel ();
+			}
 			base.Dispose (disposing);
 		}
 
@@ -449,6 +462,106 @@ namespace Foundation {
 			return nsrequest;
 		}
 
+		readonly object proxyConfigurationLock = new object ();
+		bool proxyConfigured;
+		bool disposed;
+
+		// NSUrlSession applies proxy settings per-session (via the configuration's connection proxy dictionary),
+		// not per-request, so we compute the proxy configuration once (using the first request's destination) and
+		// recreate the session with it before the first request is sent.
+		void ConfigureSessionProxy (HttpRequestMessage request)
+		{
+			lock (proxyConfigurationLock) {
+				if (proxyConfigured)
+					return;
+
+				// The handler has been disposed (and the session already invalidated); don't create a new
+				// session, since it would never be invalidated.
+				if (Volatile.Read (ref disposed))
+					return;
+
+				if (TryGetProxyDictionary (request.RequestUri, out var proxyDictionary)) {
+					var oldSession = session;
+					var configuration = session.Configuration;
+					configuration.ConnectionProxyDictionary = proxyDictionary;
+					session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+					// A session keeps a strong reference to its delegate until it's invalidated, so
+					// invalidate the old session to release its delegate (which references this handler).
+					// No requests have been sent on the old session yet, so there's nothing to cancel.
+					oldSession.InvalidateAndCancel ();
+					oldSession.Dispose ();
+				}
+
+				// Only mark the proxy as configured once we've successfully computed and applied the
+				// configuration, so that a failure (e.g. a throwing IWebProxy) doesn't permanently leave the
+				// session unconfigured while pretending otherwise (the next request will try again).
+				proxyConfigured = true;
+			}
+		}
+
+		// Computes the connection proxy dictionary to apply to the session.
+		// Returns false (and a null dictionary) when the session's default proxy behavior (use the OS-configured proxies) should be used.
+		bool TryGetProxyDictionary (Uri? destination, out NSDictionary? proxyDictionary)
+		{
+			proxyDictionary = null;
+
+			// The developer explicitly asked us to not use any proxy: apply an empty dictionary to
+			// override any proxy configured in the OS.
+			if (!useProxy) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			// No custom proxy: let NSUrlSession use the OS-configured proxies (the default behavior).
+			if (proxy is null || destination is null)
+				return false;
+
+			// The proxy says this destination should not be proxied: override any OS-configured proxy.
+			if (proxy.IsBypassed (destination)) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			var proxyUri = proxy.GetProxy (destination);
+			// A null proxy uri (or one that points back at the destination) means "no proxy for this destination".
+			if (proxyUri is null || proxyUri == destination) {
+				proxyDictionary = new NSDictionary ();
+				return true;
+			}
+
+			// The proxy uri's scheme indicates how to connect to the proxy itself (not which requests to
+			// proxy). NSUrlSession's connection proxy dictionary can only describe a plain-HTTP connection
+			// to the proxy (the HTTP/HTTPS proxy keys select the destination scheme, not the protocol used
+			// to reach the proxy, and there's no key to connect to the proxy over TLS or via SOCKS). Rather
+			// than silently connecting over plain HTTP and doing the wrong thing for a secure ("https") or
+			// SOCKS proxy, fail loudly for any scheme we can't honor.
+			if (!string.Equals (proxyUri.Scheme, Uri.UriSchemeHttp, StringComparison.OrdinalIgnoreCase))
+				throw new NotSupportedException ($"The proxy scheme '{proxyUri.Scheme}' is not supported. Only 'http' proxies are supported.");
+
+			var strongProxy = new ProxyConfigurationDictionary {
+				HttpEnable = true,
+				HttpProxyHost = proxyUri.DnsSafeHost,
+				HttpProxyPort = proxyUri.Port,
+				HttpsProxyHost = proxyUri.DnsSafeHost,
+				HttpsProxyPort = proxyUri.Port,
+#if MONOMAC
+				HttpsEnable = true,
+#endif
+			};
+			proxyDictionary = strongProxy.GetDictionary ();
+#if !MONOMAC
+			// The strongly-typed HttpsEnable property (kCFNetworkProxiesHTTPSEnable) is only exposed on
+			// macOS, but CFNetwork honors the same "HTTPSEnable" key on the other platforms too, and it's
+			// required for HTTPS proxying (CONNECT tunneling) to work. Add it via the literal key.
+			if (proxyDictionary is not null) {
+				var mutableProxyDictionary = new NSMutableDictionary (proxyDictionary);
+				mutableProxyDictionary ["HTTPSEnable"] = NSNumber.FromBoolean (true);
+				proxyDictionary = mutableProxyDictionary;
+			}
+#endif
+			return true;
+		}
+
 		/// <param name="request">To be added.</param>
 		///         <param name="cancellationToken">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -456,36 +569,59 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		protected override async Task<HttpResponseMessage> SendAsync (HttpRequestMessage request, CancellationToken cancellationToken)
 		{
+			// Mark the handler as non-modifiable before any per-first-request initialization (such as
+			// configuring the session proxy), so other threads can't mutate handler properties once the
+			// first request has started being processed.
 			Volatile.Write (ref sentRequest, true);
+
+			ConfigureSessionProxy (request);
 
 			var nsrequest = await CreateRequest (request).ConfigureAwait (false);
 			var dataTask = session.CreateDataTask (nsrequest);
 
 			var inflightData = new InflightData (request.RequestUri?.AbsoluteUri!, cancellationToken, request);
 
+			var disposeTask = false;
 			lock (inflightRequestsLock) {
-				inflightRequests.Add (dataTask, inflightData);
+				if (disposed)
+					disposeTask = true;
+				else {
+					inflightRequests.Add (dataTask, inflightData);
+
+					// as per documentation:
+					// If this token is already in the canceled state, the
+					// delegate will be run immediately and synchronously.
+					// Any exception the delegate generates will be
+					// propagated out of this method call.
+					//
+					// The execution of the register ensures that if we
+					// receive a already cancelled token or it is cancelled
+					// just before this call, we will cancel the task.
+					// Other approaches are harder, since querying the state
+					// of the token does not guarantee that in the next
+					// execution a threads cancels it.
+					inflightData.CancellationRegistration = cancellationToken.Register (() => {
+						RemoveInflightData (dataTask, unregisterCancellation: false);
+						inflightData.CompletionSource.TrySetCanceled ();
+					});
+
+					if (inflightRequests.ContainsKey (dataTask)) {
+						if (dataTask.State == NSUrlSessionTaskState.Suspended)
+							dataTask.Resume ();
+					} else {
+						// Register invokes the callback synchronously for an already-canceled token,
+						// before the returned registration can be assigned above.
+						inflightData.CancellationRegistration.Dispose ();
+					}
+				}
 			}
 
-			if (dataTask.State == NSUrlSessionTaskState.Suspended)
-				dataTask.Resume ();
-
-			// as per documentation: 
-			// If this token is already in the canceled state, the 
-			// delegate will be run immediately and synchronously.
-			// Any exception the delegate generates will be 
-			// propagated out of this method call.
-			//
-			// The execution of the register ensures that if we 
-			// receive a already cancelled token or it is cancelled
-			// just before this call, we will cancel the task. 
-			// Other approaches are harder, since querying the state
-			// of the token does not guarantee that in the next
-			// execution a threads cancels it.
-			cancellationToken.Register (() => {
-				RemoveInflightData (dataTask);
+			if (disposeTask) {
+				inflightData.CancellationTokenSource.Cancel ();
 				inflightData.CompletionSource.TrySetCanceled ();
-			});
+				inflightData.Stream.TrySetException (new ObjectDisposedException (nameof (NSUrlSessionHandler)));
+				dataTask.Cancel ();
+			}
 
 			return await inflightData.CompletionSource.Task.ConfigureAwait (false);
 		}
@@ -558,14 +694,23 @@ namespace Foundation {
 
 		public ClientCertificateOption ClientCertificateOptions { get; set; }
 
-		// We're ignoring this property, just like Xamarin.Android does:
-		// https://github.com/xamarin/xamarin-android/blob/09e8cb5c07ea6c39383185a3f90e53186749b802/src/Mono.Android/Xamarin.Android.Net/AndroidMessageHandler.cs#L152
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public ICredentials? DefaultProxyCredentials { get; set; }
+		ICredentials? defaultProxyCredentials;
+
+		/// <summary>The credentials to submit to the proxy server for authentication.</summary>
+		/// <value>The credentials to use to authenticate with the proxy, or <see langword="null" /> to not provide any proxy credentials.</value>
+		/// <remarks>
+		///   <para>These credentials are only used when the proxy itself (<see cref="Proxy" />) doesn't provide its own credentials.</para>
+		///   <para>Proxy authentication is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so these credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
+		/// </remarks>
+		public ICredentials? DefaultProxyCredentials {
+			get {
+				return defaultProxyCredentials;
+			}
+			set {
+				EnsureModifiability ();
+				defaultProxyCredentials = value;
+			}
+		}
 
 		public int MaxAutomaticRedirections {
 			get => int.MaxValue;
@@ -614,18 +759,27 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public IDictionary<string, object>? Properties { get { return null; } }
 
-		// We dont support any custom proxies, and don't let anybody wonder why their proxy isn't
-		// being used if they try to assign one (in any case we also return false from 'SupportsProxy').
-		[UnsupportedOSPlatform ("ios")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("macos")]
-		[EditorBrowsable (EditorBrowsableState.Never)]
+		IWebProxy? proxy;
+
+		/// <summary>The proxy to use for requests.</summary>
+		/// <value>The custom proxy to use, or <see langword="null" /> to use the proxies configured in the operating system.</value>
+		/// <remarks>
+		///   <para>Setting this property only has an effect if <see cref="UseProxy" /> is <see langword="true" /> (which is the default value).</para>
+		///   <para>NSUrlSession applies proxy settings per-session, not per-request, so the proxy is evaluated only once, using the destination of the first request sent by this handler, and the result is applied to every subsequent request made by this handler.</para>
+		///   <para>
+		///     This has important consequences when a single handler is reused for requests to multiple destinations: the proxy's per-destination decisions (<see cref="IWebProxy.IsBypassed(System.Uri)" /> and the proxy returned by <see cref="IWebProxy.GetProxy(System.Uri)" />) are computed from the first request's destination only.
+		///     As a result a proxy's bypass list and any destination-dependent proxy selection are not honored for later requests to other destinations: requests that should have been proxied might be sent directly (or through the wrong proxy), and requests that should have bypassed the proxy might be sent through it.
+		///   </para>
+		///   <para>If per-destination proxy behavior is required, use a separate <see cref="NSUrlSessionHandler" /> (and thus a separate <see cref="System.Net.Http.HttpClient" />) for each destination or proxy configuration.</para>
+		///   <para>Proxy authentication (using <see cref="Proxy" />'s own credentials or <see cref="DefaultProxyCredentials" />) is only supported for HTTPS destinations (which are proxied using a CONNECT tunnel). For plain HTTP destinations NSUrlSession doesn't deliver a proxy authentication challenge, so proxy credentials aren't applied and an authenticating proxy will return an HTTP 407 response instead.</para>
+		/// </remarks>
 		public IWebProxy? Proxy {
-			get => null;
+			get {
+				return proxy;
+			}
 			set {
-				if (value is not null)
-					throw new PlatformNotSupportedException ();
+				EnsureModifiability ();
+				proxy = value;
 			}
 		}
 
@@ -743,9 +897,10 @@ namespace Foundation {
 			get => true;
 		}
 
-		// We don't support using custom proxies, but NSUrlSession will automatically use any proxies configured in the OS.
+		// We support custom proxies (applied per-session via the connection proxy dictionary), and
+		// NSUrlSession will also automatically use any proxies configured in the OS.
 		public bool SupportsProxy {
-			get => false;
+			get => true;
 		}
 
 		// We support the AllowAutoRedirect property, but we don't support changing the MaxAutomaticRedirections value,
@@ -754,13 +909,15 @@ namespace Foundation {
 			get => false;
 		}
 
-		// NSUrlSession will automatically use any proxies configured in the OS (so always return true in the getter).
-		// There doesn't seem to be a way to turn this off, so throw if someone attempts to disable this.
+		bool useProxy = true;
+
+		// When true (the default), NSUrlSession uses either the custom 'Proxy' (if set) or the proxies configured in the OS.
+		// When false, no proxy is used (this overrides any proxy configured in the OS).
 		public bool UseProxy {
-			get => true;
+			get => useProxy;
 			set {
-				if (!value)
-					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), value, "It's not possible to disable the use of system proxies."); ;
+				EnsureModifiability ();
+				useProxy = value;
 			}
 		}
 
@@ -796,8 +953,8 @@ namespace Foundation {
 
 				lock (sessionHandler.inflightRequestsLock)
 					if (sessionHandler.inflightRequests.TryGetValue (task, out inflight)) {
-						// ensure that we did not cancel the request, if we did, do cancel the task, if we 
-						// cancel the task it means that we are not interested in any of the delegate methods:
+						// Ensure that we did not cancel the request. If we did, return null to indicate
+						// that we are not interested in any of the delegate methods:
 						// 
 						// DidReceiveResponse     We might have received a response, but either the user cancelled or a 
 						//                        timeout did, if that is the case, we do not care about the response.
@@ -805,16 +962,12 @@ namespace Foundation {
 						//                        reason we would like to add more data.
 						// DidCompleteWithError - We are not changing a behaviour compared to the case in which 
 						//                        we did not find the data.
-						if (inflight.CancellationToken.IsCancellationRequested) {
-							task?.Cancel ();
-							// return null so that we break out of any delegate method.
+						if (inflight.CancellationToken.IsCancellationRequested)
 							return null;
-						}
 						return inflight;
 					}
 
-				// if we did not manage to get the inflight data, we either got an error or have been canceled, lets cancel the task, that will execute DidCompleteWithError
-				task?.Cancel ();
+				// If we did not manage to get the inflight data, another cleanup path already owns the task.
 				return null;
 			}
 
@@ -853,10 +1006,6 @@ namespace Foundation {
 					var absoluteUri = new Uri (urlResponse.Url.AbsoluteString!);
 
 					var content = new NSUrlSessionDataTaskStreamContent (inflight.Stream, () => {
-						if (!inflight.Completed) {
-							dataTask.Cancel ();
-						}
-
 						inflight.Disposed = true;
 						inflight.Stream.TrySetException (new ObjectDisposedException ("The content stream was disposed."));
 
@@ -936,8 +1085,12 @@ namespace Foundation {
 					// We don't want to send the response back to the task just yet.  Because we want to mimic .NET behavior
 					// as much as possible.  When the response is sent back in .NET, the content stream is ready to read or the
 					// request has completed, because of this we want to send back the response in DidReceiveData or DidCompleteWithError
-					if (dataTask.State == NSUrlSessionTaskState.Suspended)
-						dataTask.Resume ();
+					lock (sessionHandler.inflightRequestsLock) {
+						if (sessionHandler.inflightRequests.TryGetValue (dataTask, out var currentInflight) &&
+							ReferenceEquals (currentInflight, inflight) &&
+							dataTask.State == NSUrlSessionTaskState.Suspended)
+							dataTask.Resume ();
+					}
 
 				} catch (Exception ex) {
 					inflight.CompletionSource.TrySetException (ex);
@@ -958,7 +1111,7 @@ namespace Foundation {
 					return;
 
 				inflight.Stream.Add (data);
-				SetResponse (inflight);
+				SetResponse (dataTask, inflight);
 			}
 
 			[Preserve (Conditional = true)]
@@ -983,30 +1136,35 @@ namespace Foundation {
 						inflight.Stream.TrySetReceivedAllData ();
 
 						inflight.Completed = true;
-						SetResponse (inflight);
+						SetResponse (task, inflight);
 					}
 
 					sessionHandler.RemoveInflightData (task, cancel: false);
 				}
 			}
 
-			void SetResponse (InflightData inflight)
+			void SetResponse (NSUrlSessionTask task, InflightData inflight)
 			{
-				lock (inflight.Lock) {
-					if (inflight.ResponseSent)
+				lock (sessionHandler.inflightRequestsLock) {
+					if (!sessionHandler.inflightRequests.TryGetValue (task, out var current) || !ReferenceEquals (current, inflight))
 						return;
 
-					if (inflight.CancellationTokenSource.Token.IsCancellationRequested)
-						return;
+					lock (inflight.Lock) {
+						if (inflight.ResponseSent)
+							return;
 
-					if (inflight.CompletionSource.Task.IsCompleted)
-						return;
+						if (inflight.CancellationTokenSource.Token.IsCancellationRequested)
+							return;
 
-					var httpResponse = inflight.Response;
+						if (inflight.CompletionSource.Task.IsCompleted)
+							return;
 
-					inflight.ResponseSent = true;
+						var httpResponse = inflight.Response;
 
-					inflight.CompletionSource.TrySetResult (httpResponse!);
+						inflight.ResponseSent = true;
+
+						inflight.CompletionSource.TrySetResult (httpResponse!);
+					}
 				}
 			}
 
@@ -1150,8 +1308,10 @@ namespace Foundation {
 				// but we are hiding such a situation from our users, we can nevertheless know if the header was added and deal with it. The idea is as follows,
 				// check if we are in the first attempt, if we are (PreviousFailureCount == 0), we check the headers of the request and if we do have the Auth 
 				// header, it means that we do not have the correct credentials, in any other case just do what it is expected.
+				// This only applies to server authentication challenges: a proxy authentication challenge is unrelated to
+				// the request's (server-targeted) Authorization header, so it's handled separately below.
 
-				if (challenge.PreviousFailureCount == 0) {
+				if (challenge.PreviousFailureCount == 0 && !challenge.ProtectionSpace.IsProxy) {
 					var authHeader = inflight.Request.Headers?.Authorization;
 					if (!(string.IsNullOrEmpty (authHeader?.Scheme) && string.IsNullOrEmpty (authHeader?.Parameter))) {
 						completionHandler (NSUrlSessionAuthChallengeDisposition.RejectProtectionSpace, null!);
@@ -1175,7 +1335,35 @@ namespace Foundation {
 					}
 				}
 
-				if (sessionHandler.Credentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
+				// Proxy authentication challenges are handled separately from server authentication challenges:
+				// the credentials come from the proxy configuration (the proxy's own credentials or the
+				// DefaultProxyCredentials) rather than from the handler's Credentials property.
+				if (challenge.ProtectionSpace.IsProxy) {
+					var proxy = sessionHandler.Proxy;
+					var proxyCredentials = proxy?.Credentials ?? sessionHandler.DefaultProxyCredentials;
+					// Only provide the credentials for the first challenge; if they were rejected we let the request
+					// fail instead of retrying the same (bad) credentials indefinitely.
+					if (proxyCredentials is not null && challenge.PreviousFailureCount == 0) {
+						var proxyUri = GetProxyLookupUri (challenge.ProtectionSpace);
+						// Look up the credentials using the proxy's authentication method (Basic/Digest/NTLM), so
+						// that a CredentialCache keyed by a specific scheme resolves correctly. Fall back to "basic"
+						// for any authentication method we don't recognize: a plain NetworkCredential ignores the
+						// authentication type anyway, so this preserves the behavior for the common case.
+						if (!TryGetAuthenticationType (challenge.ProtectionSpace, out var proxyAuthType) || proxyAuthType == RejectProtectionSpaceAuthType)
+							proxyAuthType = "basic";
+						var proxyCredential = proxyCredentials.GetCredential (proxyUri, proxyAuthType);
+						if (proxyCredential is not null) {
+							var proxyNSCredential = new NSUrlCredential (proxyCredential.UserName, proxyCredential.Password, NSUrlCredentialPersistence.ForSession);
+							completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, proxyNSCredential);
+							return;
+						}
+					}
+					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
+					return;
+				}
+
+				var challengeCredentials = sessionHandler.Credentials;
+				if (challengeCredentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
 						// interesting situation, when we use a credential that we created that is empty, we are not getting the RejectProtectionSpaceAuthType,
@@ -1196,8 +1384,8 @@ namespace Foundation {
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
 							var uri = GetCredentialLookupUri (task, inflight);
-							if (ShouldLookupCredentials (sessionHandler.Credentials, inflight))
-								credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
+							if (ShouldLookupCredentials (challengeCredentials, inflight))
+								credentialsToUse = challengeCredentials.GetCredential (uri, authType);
 						}
 					}
 
@@ -1212,6 +1400,15 @@ namespace Foundation {
 				} else {
 					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
 				}
+			}
+
+			static Uri GetProxyLookupUri (NSUrlProtectionSpace protectionSpace)
+			{
+				// Derive the scheme from the proxy type (HTTP vs HTTPS proxy), not from ReceivesCredentialSecurely
+				// (which describes whether the authentication method protects the credentials, not the proxy protocol).
+				var scheme = protectionSpace.ProxyType == (string) NSUrlProtectionSpace.HTTPSProxy ? "https" : "http";
+				var builder = new UriBuilder (scheme, protectionSpace.Host, (int) protectionSpace.Port);
+				return builder.Uri;
 			}
 
 			static Uri GetCredentialLookupUri (NSUrlSessionTask task, InflightData inflight)
@@ -1290,6 +1487,7 @@ namespace Foundation {
 
 			public TaskCompletionSource<HttpResponseMessage> CompletionSource { get; } = new TaskCompletionSource<HttpResponseMessage> (TaskCreationOptions.RunContinuationsAsynchronously);
 			public CancellationToken CancellationToken { get; set; }
+			public CancellationTokenRegistration CancellationRegistration { get; set; }
 			public CancellationTokenSource CancellationTokenSource { get; } = new CancellationTokenSource ();
 			public NSUrlSessionDataTaskStream Stream { get; } = new NSUrlSessionDataTaskStream ();
 			public HttpRequestMessage Request { get; set; }
@@ -1449,19 +1647,25 @@ namespace Foundation {
 
 			public void TrySetReceivedAllData ()
 			{
-				receivedAllData = true;
+				lock (dataLock) {
+					receivedAllData = true;
+				}
 			}
 
 			public void TrySetException (Exception e)
 			{
-				exc = e;
-				TrySetReceivedAllData ();
+				lock (dataLock) {
+					exc = e;
+					receivedAllData = true;
+				}
 			}
 
 			void ThrowIfNeeded (CancellationToken cancellationToken)
 			{
-				if (exc is not null)
-					throw exc;
+				lock (dataLock) {
+					if (exc is not null)
+						throw exc;
+				}
 
 				cancellationToken.ThrowIfCancellationRequested ();
 			}

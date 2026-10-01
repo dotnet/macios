@@ -62,6 +62,29 @@ See also:
 
 An item group that contains atlas textures.
 
+## AppManifestEntry
+
+An item group that contains entries to add to the app manifest (Info.plist).
+
+These entries are processed last and override entries from the main app
+manifest, partial app manifests, and generated values.
+
+The following types are supported:
+
+```xml
+<ItemGroup>
+    <AppManifestEntry Include="BooleanKey" Type="Boolean" Value="true" />
+    <AppManifestEntry Include="StringKey" Type="String" Value="stringvalue" />
+    <AppManifestEntry Include="StringArrayKey" Type="StringArray" Value="a;b" />
+    <AppManifestEntry Include="StringArrayKeyWithCustomSeparator" Type="StringArray" Value="a|b" ArraySeparator="|" />
+    <AppManifestEntry Include="KeyToRemove" Type="Remove" />
+</ItemGroup>
+```
+
+Boolean values may be `true` or `false` (case-insensitive). String arrays use a
+semicolon as the default separator, which can be changed with the
+`ArraySeparator` metadata.
+
 ## BGenReferencePath
 
 The list of assembly references to pass to the `bgen` tool (binding generator).

@@ -27,18 +27,15 @@ using System.IO;
 
 namespace ObjCRuntime {
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Specifies a native framework required by an assembly.</summary>
 	[AttributeUsage (AttributeTargets.Assembly, AllowMultiple = true)]
 	public class RequiredFrameworkAttribute : Attribute {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the name of the required framework.</summary>
+		/// <value>The framework name.</value>
 		public string Name { get; private set; }
 
-		/// <param name="name">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an attribute for the specified required framework.</summary>
+		/// <param name="name">The framework name.</param>
 		public RequiredFrameworkAttribute (string name)
 		{
 			Name = name;

@@ -24,12 +24,16 @@
       "datatype": "choice",
       "choices": [
         {
+          "choice": "net11.0-maccatalyst",
+          "description": "Target net11.0-maccatalyst"
+        },
+        {
           "choice": "net10.0-maccatalyst",
           "description": "Target net10.0-maccatalyst"
         }
       ],
-      "replaces": "DOTNET_TFM",
-      "defaultValue": "net10.0-maccatalyst"
+      "replaces": "net11.0-maccatalyst",
+      "defaultValue": "net11.0-maccatalyst"
     }
   }
 }

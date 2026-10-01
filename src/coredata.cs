@@ -108,7 +108,7 @@ namespace CoreData {
 		[Field ("NSAffectedStoresErrorKey")]
 		NSString AffectedStoresForErrorKey { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSPersistentStoreStagedMigrationManagerOptionKey")]
 		NSString StagedMigrationManagerOptionKey { get; }
 
@@ -468,7 +468,6 @@ namespace CoreData {
 		[Export ("allowsExternalBinaryDataStorage")]
 		bool AllowsExternalBinaryDataStorage { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("preservesValueInHistoryOnDeletion")]
 		bool PreservesValueInHistoryOnDeletion { get; set; }
@@ -2579,13 +2578,13 @@ namespace CoreData {
 		NSDictionary EntityVersionHashesByName { get; }
 #endif
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("checksumsForVersionedModelAtURL:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSString> ChecksumsForVersionedModel (NSUrl modelUrl, [NullAllowed] out NSError error);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("versionChecksum")]
 		string VersionChecksum { get; }
 	}
@@ -3003,19 +3002,16 @@ namespace CoreData {
 		[NullAllowed, Export ("updatedProperties", ArgumentSemantic.Copy)]
 		NSSet<NSPropertyDescription> UpdatedProperties { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("entityDescription")]
 		NSEntityDescription EntityDescription { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entityDescriptionWithContext:")]
@@ -3108,13 +3104,11 @@ namespace CoreData {
 		[NullAllowed, Export ("token", ArgumentSemantic.Strong)]
 		NSPersistentHistoryToken Token { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("fetchHistoryWithFetchRequest:")]
 		NSPersistentHistoryChangeRequest FetchHistory (NSFetchRequest fetchRequest);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fetchRequest", ArgumentSemantic.Strong)]
 		NSFetchRequest FetchRequest { get; set; }
@@ -3213,20 +3207,17 @@ namespace CoreData {
 		[Export ("objectIDNotification")]
 		NSNotification ObjectIdNotification { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entityDescriptionWithContext:")]
 		[return: NullAllowed]
 		NSEntityDescription GetEntityDescription (NSManagedObjectContext context);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("entityDescription")]
 		NSEntityDescription EntityDescription { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("fetchRequest")]
@@ -3484,13 +3475,11 @@ namespace CoreData {
 		[Export ("coreSpotlightExporter")]
 		NSCoreDataCoreSpotlightDelegate CoreSpotlightExporter { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRemoteChangeNotificationPostOptionKey")]
 		NSString RemoteChangeNotificationPostOptionKey { get; }
 
 		[Notification (typeof (NSPersistentStoreRemoteChangeEventArgs))]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRemoteChangeNotification")]
 		NSString StoreRemoteChangeNotification { get; }
@@ -3630,7 +3619,6 @@ namespace CoreData {
 		NativeHandle Constructor (NSUrl url);
 
 		// NSPersistentStoreDescription_NSPersistentCloudKitContainerAdditions category
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("cloudKitContainerOptions", ArgumentSemantic.Strong)]
 		NSPersistentCloudKitContainerOptions CloudKitContainerOptions { get; set; }
@@ -4356,7 +4344,6 @@ namespace CoreData {
 		bool ReplacePersistentStore (NSUrl destinationUrl, [NullAllowed] NSDictionary destinationOptions, NSUrl sourceUrl, [NullAllowed] NSDictionary sourceOptions, string storeType, out NSError error);
 
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("currentPersistentHistoryTokenFromStores:")]
 		[return: NullAllowed]
@@ -5040,7 +5027,6 @@ namespace CoreData {
 #endif
 	delegate bool NSBatchInsertRequestManagedObjectHandler (NSManagedObject managedObject);
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor] // NSInternalInconsistencyException Reason: -init results in undefined behavior for NSBatchInsertRequest
@@ -5121,7 +5107,6 @@ namespace CoreData {
 		NSBatchInsertRequest CreateBatchInsertRequest (string entityName, NSBatchInsertRequestManagedObjectHandler handler);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchInsertResult {
@@ -5132,7 +5117,6 @@ namespace CoreData {
 		NSBatchInsertRequestResultType ResultType { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSAttributeDescription))]
 	interface NSDerivedAttributeDescription : NSSecureCoding {
@@ -5155,7 +5139,6 @@ namespace CoreData {
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	delegate void NSPersistentCloudKitContainerAcceptShareInvitationsHandler ([NullAllowed] NSArray<CKShareMetadata> acceptedShareMetadatas, [NullAllowed] NSError error);
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentContainer))]
 	[DisableDefaultCtor]
@@ -5235,7 +5218,6 @@ namespace CoreData {
 
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -5323,7 +5305,7 @@ namespace CoreData {
 		NSPersistentCloudKitContainerEventResultType ResultType { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSStagedMigrationManager {
@@ -5338,14 +5320,14 @@ namespace CoreData {
 		NativeHandle Constructor (NSMigrationStage [] stages);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationStage {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSManagedObjectModelReference {
@@ -5368,7 +5350,7 @@ namespace CoreData {
 		NativeHandle Constructor (string modelName, [NullAllowed] NSBundle bundle, string versionChecksum);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSLightweightMigrationStage {
@@ -5380,14 +5362,14 @@ namespace CoreData {
 		NativeHandle Constructor (string [] versionChecksums);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSAttributeDescription))]
 	interface NSCompositeAttributeDescription {
 		[Export ("elements", ArgumentSemantic.Copy)]
 		NSAttributeDescription [] Elements { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSCustomMigrationStage {

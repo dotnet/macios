@@ -13,9 +13,9 @@ namespace MetalPerformanceShaders {
 		/// <param name="resultImages">The last images in the graph.</param>
 		/// <param name="resultsAreNeeded">An array of boolean for each element in the <paramref name="resultImages" /> array.</param>
 		/// <returns>A new <see cref="MPSNNGraph" /> if successful, <see langword="null" /> otherwise.</returns>
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe static MPSNNGraph? Create (IMTLDevice device, MPSNNImageNode [] resultImages, bool []? resultsAreNeeded)
 		{
@@ -31,9 +31,9 @@ namespace MetalPerformanceShaders {
 		/// <param name="device">The device where the filter will run.</param>
 		/// <param name="resultImages">The last images in the graph.</param>
 		/// <param name="resultsAreNeeded">An array of boolean for each element in the <paramref name="resultImages" /> array.</param>
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public MPSNNGraph (IMTLDevice device, MPSNNImageNode [] resultImages, bool []? resultsAreNeeded)
 			: base (NSObjectFlag.Empty)

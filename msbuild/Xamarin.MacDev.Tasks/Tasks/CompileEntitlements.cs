@@ -277,60 +277,14 @@ namespace Xamarin.MacDev.Tasks {
 
 		void AddCustomEntitlements (PDictionary dict, MobileProvision? profile)
 		{
-			if (CustomEntitlements is null)
-				return;
-
-			// Process any custom entitlements from the 'CustomEntitlements' item group. These are applied last, and will override anything else.
-			// Possible values:
-			//     <ItemGroup>
-			//         <CustomEntitlements Include="name.of.entitlement" Type="Boolean" Value="true" /> <!-- value can be 'false' too (case doesn't matter) -->
-			//         <CustomEntitlements Include="name.of.entitlement" Type="String" Value="stringvalue" />
-			//         <CustomEntitlements Include="name.of.entitlement" Type="StringArray" Value="a;b" /> <!-- array of strings, separated by semicolon -->
-			//         <CustomEntitlements Include="name.of.entitlement" Type="StringArray" Value="a😁b" ArraySeparator="😁" /> <!-- array of strings, separated by 😁 -->
-			//         <CustomEntitlements Include="name.of.entitlement" Type="Remove" /> <!-- This will remove the corresponding entitlement  -->
-			//     </ItemGroup>
-
-			foreach (var item in CustomEntitlements) {
-				var entitlement = item.ItemSpec;
-				var type = item.GetMetadata ("Type");
-				var value = item.GetMetadata ("Value");
-				switch (type.ToLowerInvariant ()) {
-				case "remove":
-					if (!string.IsNullOrEmpty (value))
-						Log.LogError (MSBStrings.E7102, /* Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected no value at all. */ value, entitlement, type);
-					dict.Remove (entitlement);
-					break;
-				case "boolean":
-					bool booleanValue;
-					if (string.Equals (value, "true", StringComparison.OrdinalIgnoreCase)) {
-						booleanValue = true;
-					} else if (string.Equals (value, "false", StringComparison.OrdinalIgnoreCase)) {
-						booleanValue = false;
-					} else {
-						Log.LogError (MSBStrings.E7103, /* "Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected 'true' or 'false'." */ value, entitlement, type);
-						continue;
-					}
-
-					dict [entitlement] = new PBoolean (booleanValue);
-					break;
-				case "string":
-					dict [entitlement] = MergeEntitlementString (new PString (value), profile, entitlement == ApplicationIdentifierKey, entitlement);
-					break;
-				case "stringarray":
-					var arraySeparator = item.GetMetadata ("ArraySeparator");
-					if (string.IsNullOrEmpty (arraySeparator))
-						arraySeparator = ";";
-					var arrayContent = value.Split (new string [] { arraySeparator }, StringSplitOptions.None);
-					var parray = new PArray ();
-					foreach (var element in arrayContent)
-						parray.Add (MergeEntitlementString (new PString (element), profile, entitlement == ApplicationIdentifierKey, entitlement));
-					dict [entitlement] = parray;
-					break;
-				default:
-					Log.LogError (MSBStrings.E7104, /* "Unknown type '{0}' for the entitlement '{1}' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'." */ type, entitlement);
-					break;
-				}
-			}
+			PListItemGroup.Merge (
+				Log,
+				dict,
+				CustomEntitlements,
+				(value, entitlement) => MergeEntitlementString (value, profile, entitlement == ApplicationIdentifierKey, entitlement),
+				MSBStrings.E7102, /* Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected no value at all. */
+				MSBStrings.E7103, /* "Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected 'true' or 'false'." */
+				MSBStrings.E7104 /* "Unknown type '{0}' for the entitlement '{1}' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'." */);
 		}
 
 		static bool AreEqual (byte [] x, byte [] y)

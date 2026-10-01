@@ -302,6 +302,10 @@ namespace CoreGraphics {
 		public delegate bool OnResolveCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
 		unsafe static byte CGBitmapContextCreateAdaptive_OnResolve (IntPtr block, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
 		{
 			var del = BlockLiteral.GetTarget<OnResolveCallback> (block);
@@ -315,6 +319,10 @@ namespace CoreGraphics {
 		public delegate CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ OnAllocateCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
 		unsafe static IntPtr CGBitmapContextCreateAdaptive_OnAllocate (IntPtr block, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
 		{
 			var del = BlockLiteral.GetTarget<OnAllocateCallback> (block);
@@ -328,6 +336,10 @@ namespace CoreGraphics {
 		public delegate void OnFreeCallback (CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
 		unsafe static void CGBitmapContextCreateAdaptive_OnFree (IntPtr block, IntPtr /* CGRenderingBufferProviderRef */ bufferingProviderRef, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
 		{
 			var del = BlockLiteral.GetTarget<OnFreeCallback> (block);
@@ -340,6 +352,10 @@ namespace CoreGraphics {
 		public delegate void OnErrorCallback (NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
 
 		[UnmanagedCallersOnly]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
 		unsafe static void CGBitmapContextCreateAdaptive_OnError (IntPtr block, IntPtr errorHandle, CGContentInfo* contentInfo, CGBitmapParameters* bitmapParameters)
 		{
 			var del = BlockLiteral.GetTarget<OnErrorCallback> (block);

@@ -78,4 +78,18 @@ namespace CarPlay {
 		Pause,
 		Replay,
 	}
+
+	[NoTV, NoMac, NoMacCatalyst, iOS (27, 0)]
+	[Native]
+	public enum CPChargingStationConnectionConnector : long {
+		Ccs1,
+		Ccs2,
+		J1772,
+		ChaDeMo,
+		Mennekes,
+		Gbtdc,
+		Gbtac,
+		NacsDC,
+		NacsAC,
+	}
 }

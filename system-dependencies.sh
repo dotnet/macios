@@ -27,6 +27,7 @@ FAIL=
 PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
 VERBOSE=
+XCODE_PACKAGE_DIRECTORY=
 
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
@@ -46,6 +47,15 @@ fi
 function get_xcode_developer_root ()
 {
 	local suffix="${1:-}"
+
+	# When we're provisioning Xcode ourselves, Make.config is the only source of truth:
+	# install-xcode.sh reads it directly, so honoring an inherited variable or a stale
+	# configure.inc here would make the rest of this script inspect a different Xcode
+	# than the one we just installed and selected.
+	if test -n "$XCODE_PACKAGE_DIRECTORY" || test -n "${PROVISION_XCODE:-}"; then
+		grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+		return
+	fi
 
 	if test -z "$suffix"; then
 		if test -n "${XCODE_DEVELOPER_ROOT:-}"; then
@@ -73,6 +83,16 @@ while ! test -z $1; do
 			PROVISION_XCODE=1
 			unset IGNORE_XCODE
 			shift
+			;;
+		--xcode-package-directory)
+			if [[ $# -lt 2 || -z "$2" ]]; then
+				echo "--xcode-package-directory requires a value."
+				exit 1
+			fi
+			XCODE_PACKAGE_DIRECTORY=$2
+			PROVISION_XCODE=1
+			unset IGNORE_XCODE
+			shift 2
 			;;
 		--provision-xcode-components)
 			PROVISION_XCODE_COMPONENTS=1
@@ -348,35 +368,85 @@ function delete_all_simulator_runtimes ()
 	rm -rf "$TMPFILE"
 }
 
-SIMULATORS_WITHOUT_X64=()
-SIMULATORS_WITHOUT_X64_COUNT=0
-function get_non_universal_simulator_runtimes ()
+# Checks whether a simulator runtime for the given platform is installed and
+# available (this is the same kind of check as in check_old_simulators).
+# $1: the platform (iOS, tvOS, ...)
+# $2: (optional) the version to look for. A runtime matches if its version is
+#     equal to this value or is a patch release of it (e.g. a "$2" of "26.5"
+#     matches both "26.5" and "26.5.1"), because simctl reports a patch version
+#     for the most recent runtimes. If empty, any version of the platform
+#     qualifies.
+# Returns 0 if a matching, available runtime is installed, non-zero otherwise.
+function is_simulator_runtime_installed ()
 {
-	local TMPFILE
-	TMPFILE=$(mktemp)
+	local platform="$1"
+	local version="$2"
+	local tmpfile
+	tmpfile=$(mktemp)
 
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
+	xcrun simctl list runtimes --json --json-output "$tmpfile" >/dev/null 2>&1
 
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({identifier: .identifier, version: .version, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not)) | .[].identifier'
-	SIMULATORS_WITHOUT_X64=($(jq "$JQ_QUERY" -r "$TMPFILE"))
-	SIMULATORS_WITHOUT_X64_COUNT="${#SIMULATORS_WITHOUT_X64[@]}"
+	local selector=".platform == \"$platform\" and .isAvailable == true and .isInternal == false"
+	if [[ -n "$version" ]]; then
+		selector="$selector and (.version == \"$version\" or (.version | startswith(\"$version.\")))"
+	fi
 
-	rm -f "$TMPFILE"
+	local count
+	count=$(jq "[ .runtimes[] | select($selector) ] | length" < "$tmpfile")
+	rm -f "$tmpfile"
+
+	[[ -n "$count" && "$count" -gt 0 ]]
 }
 
-function print_non_universal_simulator_runtimes ()
+# Downloads a simulator platform using 'xcodebuild -downloadPlatform', retrying a
+# few times in case of transient network failures.
+#
+# When the requested simulator runtime isn't available through the normal
+# mechanism, xcodebuild falls back to downloading it from Apple's downloadable
+# simulator index, and that transport occasionally stalls until curl fails (e.g.
+# 'curl: (56) Recv failure: Operation timed out'). In that fallback case
+# xcodebuild frequently still exits 0 while only printing the failure to stdout,
+# so instead of trusting xcodebuild's exit code (or its output) we check the
+# desired result directly: is the simulator runtime actually installed afterwards?
+# If not, we retry the download.
+#
+# $1: the platform to download (iOS, tvOS, ...)
+# $2: the expected runtime version, used *only* to verify the install afterwards
+#     (see is_simulator_runtime_installed for how it's matched). If empty, the
+#     download is accepted as long as any runtime for the platform is installed.
+# $3...: the arguments to pass to 'xcodebuild -downloadPlatform' after the
+#     platform (e.g. '-buildVersion 16.0' or '-architectureVariant universal').
+function xcodebuild_download_platform ()
 {
-	local TMPFILE
-	TMPFILE=$(mktemp)
+	local platform="$1"
+	local version="$2"
+	shift 2
 
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
+	local XCODE_DEVELOPER_ROOT
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
-	jq "$JQ_QUERY" -r "$TMPFILE"
+	local attempts=5
+	local attempt=1
+	while true; do
+		log "Executing (attempt $attempt of $attempts) '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform $*'"
+		# We intentionally ignore xcodebuild's exit code here (see the comment
+		# above) and check whether the runtime got installed instead.
+		set +e
+		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" "$@" 2>&1 | sed 's/^/        /'
+		set -e
 
-	rm -f "$TMPFILE"
+		if is_simulator_runtime_installed "$platform" "$version"; then
+			return 0
+		fi
+
+		if [[ $attempt -ge $attempts ]]; then
+			warn "The $platform ${version:+$version }simulator runtime was still not installed after $attempts download attempts."
+			return 1
+		fi
+		warn "The $platform ${version:+$version }simulator runtime was not installed (attempt $attempt of $attempts); retrying in 15 seconds..."
+		sleep 15
+		attempt=$((attempt + 1))
+	done
 }
 
 function xcodebuild_download_selected_platforms ()
@@ -398,11 +468,17 @@ function xcodebuild_download_selected_platforms ()
 
 	IOS_BUILD_VERSION=
 	TVOS_BUILD_VERSION=
+	# kept the is_at_least_version "$XCODE_VERSION" 26.0 guard because -architectureVariant only exists in Xcode 26+; on older Xcode it falls back to a plain -downloadPlatform.
 	if is_at_least_version "$XCODE_VERSION" 26.0; then
-		# we always want the universal variant, so that we can run x64 test apps on arm64
-		IOS_BUILD_VERSION=" -architectureVariant universal"
-		TVOS_BUILD_VERSION=" -architectureVariant universal"
+		# we always want the arm64 variant (the x64 simulators aren't supported anymore)
+		IOS_BUILD_VERSION=" -architectureVariant arm64"
+		TVOS_BUILD_VERSION=" -architectureVariant arm64"
 	fi
+
+	# The expected simulator runtime versions for the current Xcode, so we can
+	# verify the downloads below actually installed the runtimes we need.
+	IOS_NUGET_OS_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
+	TVOS_NUGET_OS_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed 's/.*=//')
 
 	local TMPFILE
 	TMPFILE=$(mktemp)
@@ -422,62 +498,16 @@ function xcodebuild_download_selected_platforms ()
 		log "    none found."
 	fi
 
-	# If we're executing on arm64, we need simulator runtimes that support x64 in order to run
-	# x64 apps in the simulator (aka the universal architecture variant). If we have any simulator
-	# runtimes that don't support x64, then delete those, so that we can re-install the universal
-	# variant.
-	local DOTNET_ARCH
-	if [[ "$(arch)" == "arm64" ]]; then
-		DOTNET_ARCH=arm64
-	elif [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null)" == "1" ]]; then
-		DOTNET_ARCH=arm64
-	fi
-	if [[ "$DOTNET_ARCH" == "arm64" ]]; then
-		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
-
-		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
-		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
-			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
-				log "Executing 'xcrun simctl runtime delete $sim'"
-				xcrun simctl runtime delete "$sim"
-			done
-			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
-			log "Waiting for the simulators to be deleted..."
-			printf "            "
-			for i in $(seq 1 300); do
-				sleep 1
-				get_non_universal_simulator_runtimes
-				if [[ "$SIMULATORS_WITHOUT_X64_COUNT" == "0" ]]; then
-					break
-				fi
-				# every 60 seconds print the simulators left to delete
-				if [[ $(( i % 60)) == 0 ]]; then
-					printf "\n"
-					printf "            Simulators left to delete:\n"
-					print_non_universal_simulator_runtimes | sed 's/^/            /'
-					printf "            "
-				fi
-				printf "$SIMULATORS_WITHOUT_X64_COUNT"
-			done
-			printf "\n"
-			if [[ "$SIMULATORS_WITHOUT_X64_COUNT" != "0" ]]; then
-				warn "Waited for 5 minutes, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
-			fi
-		else
-			log "All installed iOS/tvOS 26+ simulators support x64"
-		fi
+	local RC=0
+	if ! xcodebuild_download_platform iOS "$IOS_NUGET_OS_VERSION" $IOS_BUILD_VERSION; then
+		RC=1
 	fi
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION   2>&1 | sed 's/^/        /'
+	if ! xcodebuild_download_platform tvOS "$TVOS_NUGET_OS_VERSION" $TVOS_BUILD_VERSION; then
+		RC=1
+	fi
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION 2>&1 | sed 's/^/        /'
-
-	return 0
+	return $RC
 }
 
 function download_xcode_platforms ()
@@ -551,83 +581,66 @@ function run_xcode_first_launch ()
 }
 
 function install_specific_xcode () {
-	local XCODE_URL=`grep XCODE$1_URL= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_DEVELOPER_ROOT="$2"
-	local XCODE_ROOT="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
+	local XCODE_URL
+	local XCODE_VERSION
+	local XCODE_NAME
+	local XCODE_ARCHIVE
+	local INSTALLER_ARGS=(install)
 
-	if test -z $XCODE_URL; then
+	XCODE_URL=$(grep "XCODE$1_URL=" Make.config | sed 's/.*=//')
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+
+	if test -z "$SUDO"; then
+		INSTALLER_ARGS+=(--no-sudo)
+	fi
+
+	# CI downloads an immutable Universal Package from Azure Artifacts and hands us the
+	# directory it was expanded into; install-xcode.sh validates it before installing.
+	if test -n "$XCODE_PACKAGE_DIRECTORY"; then
+		INSTALLER_ARGS+=(--package-directory "$XCODE_PACKAGE_DIRECTORY")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+		return
+	fi
+
+	if test -z "$XCODE_URL"; then
 		fail "No XCODE$1_URL set in Make.config, cannot provision"
 		return
 	fi
 
-	mkdir -p $PROVISION_DOWNLOAD_DIR
+	# CI must never silently fall back to the storage-account URL: that dependency is
+	# exactly what the Universal Package replaced, and there are no credentials for it
+	# here, so it would fail obscurely much later.
+	if test -n "${TF_BUILD:-}"; then
+		fail "Xcode $XCODE_VERSION is not installed and no Xcode Universal Package was supplied. Re-run the 'Download Xcode Universal Package' step."
+		return
+	fi
+
+	mkdir -p "$PROVISION_DOWNLOAD_DIR"
 	log "Downloading Xcode $XCODE_VERSION from $XCODE_URL to $PROVISION_DOWNLOAD_DIR..."
-	local XCODE_NAME=`basename $XCODE_URL`
-	local XCODE_DMG=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME
+	XCODE_NAME=$(basename "$XCODE_URL")
+	XCODE_ARCHIVE="$PROVISION_DOWNLOAD_DIR/$XCODE_NAME"
 
-	# To test this script with new Xcode versions, copy the downloaded file to $XCODE_DMG,
-	# uncomment the following curl line, and run ./system-dependencies.sh --provision-xcode
+	# To test this script with a local archive, place it in ~/Downloads and run
+	# ./system-dependencies.sh --provision-xcode.
 	if test -f "$HOME/Downloads/$XCODE_NAME"; then
-		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_DMG instead of re-downloading it."
-		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_DMG"
+		log "Found $XCODE_NAME in your ~/Downloads folder, copying that version to $XCODE_ARCHIVE instead of re-downloading it."
+		cp "$HOME/Downloads/$XCODE_NAME" "$XCODE_ARCHIVE"
 	else
-		curl -L $XCODE_URL > $XCODE_DMG
+		curl --fail --location --retry 5 --retry-all-errors "$XCODE_URL" > "$XCODE_ARCHIVE"
 	fi
 
-	if [[ ${XCODE_DMG: -4} == ".dmg" ]]; then
-		local XCODE_MOUNTPOINT=$PROVISION_DOWNLOAD_DIR/$XCODE_NAME-mount
-		log "Mounting $XCODE_DMG into $XCODE_MOUNTPOINT..."
-		hdiutil attach $XCODE_DMG -mountpoint $XCODE_MOUNTPOINT -quiet -nobrowse
-		log "Removing previous Xcode from $XCODE_ROOT"
-		rm -Rf $XCODE_ROOT
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		cp -R $XCODE_MOUNTPOINT/*.app $XCODE_ROOT
-		log "Unmounting $XCODE_DMG..."
-		hdiutil detach $XCODE_MOUNTPOINT -quiet
-	elif [[ ${XCODE_DMG: -4} == ".xip" ]]; then
-		log "Extracting $XCODE_DMG..."
-		pushd . > /dev/null
-		cd $PROVISION_DOWNLOAD_DIR
-		# make sure there's nothing interfering
-		rm -Rf *.app
-		rm -Rf $XCODE_ROOT
-		# extract
-		xip --expand "$XCODE_DMG"
-		log "Installing Xcode $XCODE_VERSION to $XCODE_ROOT..."
-		mv *.app $XCODE_ROOT
-		popd > /dev/null
+	if [[ "$XCODE_ARCHIVE" == *.xip ]]; then
+		INSTALLER_ARGS+=(--archive "$XCODE_ARCHIVE")
+		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
+	elif [[ "$XCODE_ARCHIVE" == *.dmg ]]; then
+		fail "DMG-based Xcode provisioning is no longer supported. Provide an Apple-signed XIP archive."
+		return
 	else
-		fail "Don't know how to install $XCODE_DMG"
-	fi
-	rm -f $XCODE_DMG
-
-	log "Removing any com.apple.quarantine attributes from the installed Xcode"
-	$SUDO xattr -s -d -r com.apple.quarantine $XCODE_ROOT
-
-	if is_at_least_version $XCODE_VERSION 5.0; then
-		log "Accepting Xcode license"
-		$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
+		fail "Don't know how to install $XCODE_ARCHIVE"
+		return
 	fi
 
-	if is_at_least_version "$XCODE_VERSION" 9.0; then
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
-	elif is_at_least_version $XCODE_VERSION 8.0; then
-		PKGS="MobileDevice.pkg MobileDeviceDevelopment.pkg XcodeSystemResources.pkg"
-		for pkg in $PKGS; do
-			if test -f "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg"; then
-				log "Installing $pkg"
-				$SUDO /usr/sbin/installer -dumplog -verbose -pkg "$XCODE_DEVELOPER_ROOT/../Resources/Packages/$pkg" -target /
-				log "Installed $pkg"
-			else
-				log "Not installing $pkg because it doesn't exist."
-			fi
-		done
-	fi
-
-	log "Clearing xcrun cache..."
-	xcrun -k
-
+	rm -f "$XCODE_ARCHIVE"
 	ok "Xcode $XCODE_VERSION provisioned"
 }
 
@@ -709,41 +722,38 @@ function check_specific_xcode () {
 	local XCODE_DEVELOPER_ROOT
 	local XCODE_VERSION
 	local XCODE_ROOT
+	local INSTALLER="$PWD/tools/devops/automation/scripts/bash/install-xcode.sh"
+	local INSTALLER_ARGS=(verify --quiet)
 
 	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
 	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
 	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
-	
-	if ! test -d $XCODE_DEVELOPER_ROOT; then
+
+	if ! "$INSTALLER" "${INSTALLER_ARGS[@]}"; then
 		if ! test -z $PROVISION_XCODE; then
 			install_specific_xcode "$1" "$XCODE_DEVELOPER_ROOT"
 		else
+			# The probe above is quiet so that the common "not installed yet" case doesn't
+			# look like an error; repeat it verbosely so the actual reason is visible.
+			"$INSTALLER" verify || true
 			fail "You must install Xcode ($XCODE_VERSION) in $XCODE_ROOT. You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode"
+			return
 		fi
-		return
-	else
-		if is_at_least_version $XCODE_VERSION 5.0; then
-			if ! $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license check >/dev/null 2>&1; then
-				if ! test -z $PROVISION_XCODE; then
-					$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -license accept
-				else
-					fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
-					return
-				fi
-			fi
-		fi
-
-		run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
 	fi
 
-	local XCODE_ACTUAL_VERSION=`/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$XCODE_DEVELOPER_ROOT/../version.plist"`
-	# this is a hard match, having 4.5 when requesting 4.4 is not OK (but 4.4.1 is OK)
-	if [[ ! "x$XCODE_ACTUAL_VERSION" =~ "x$XCODE_VERSION" ]]; then
-		fail "You must install Xcode $XCODE_VERSION in $XCODE_ROOT (found $XCODE_ACTUAL_VERSION).  You can download Xcode $XCODE_VERSION here: https://developer.apple.com/downloads/index.action?name=Xcode";
+	if ! test -z $PROVISION_XCODE; then
+		INSTALLER_ARGS=(reconcile)
+		if test -z "$SUDO"; then
+			INSTALLER_ARGS+=(--no-sudo)
+		fi
+		"$INSTALLER" "${INSTALLER_ARGS[@]}"
+	elif ! "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -license check >/dev/null 2>&1; then
+		fail "The license for Xcode $XCODE_VERSION has not been accepted. Execute '$SUDO $XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild' to review the license and accept it."
 		return
 	fi
 
-	ok "Found Xcode $XCODE_ACTUAL_VERSION in $XCODE_ROOT"
+	run_xcode_first_launch "$XCODE_VERSION" "$XCODE_DEVELOPER_ROOT"
+	ok "Found Xcode $XCODE_VERSION in $XCODE_ROOT"
 }
 
 function check_xcode () {
@@ -974,6 +984,99 @@ IFS='
 IFS=$IFS_tmp
 }
 
+# Download and install a simulator runtime from Apple's downloadable simulator index.
+#
+# This is the same index Xcode's UI uses to download simulators, and we need it because
+# 'xcodebuild -downloadPlatform' can't download the older simulators anymore with Xcode 27+
+# (Apple removed them from the platform catalog xcodebuild uses, but they're still available
+# in this index).
+#
+# $1: the simulator's os (iOS, tvOS, ...)
+# $2: the simulator's version (16.0, ...)
+function install_old_simulator_from_index ()
+{
+	local os="$1"
+	local version="$2"
+
+	local platform
+	local dldir
+	local index_url
+	local query
+	local source
+	local expectedSize
+	local path
+	local dmg
+	local actualSize
+
+	case "$os" in
+		iOS)             platform=com.apple.platform.iphoneos ;;
+		tvOS)            platform=com.apple.platform.appletvos ;;
+		watchOS)         platform=com.apple.platform.watchos ;;
+		xrOS | visionOS) platform=com.apple.platform.xros ;;
+		*)
+			warn "Don't know the platform identifier for the $os simulator."
+			return 1
+			;;
+	esac
+
+	dldir="$SD_TMP_DIR/$os-$version-runtime"
+	rm -rf -- "$dldir"
+	mkdir -p "$dldir"
+
+	# This is the index Xcode uses to find downloadable simulator runtimes.
+	index_url=https://devimages-cdn.apple.com/downloads/xcode/simulators/index2.dvtdownloadableindex
+	log "Downloading the simulator runtime index from $index_url..."
+	if ! curl --fail --location --silent --show-error --max-time 120 "$index_url" --output "$dldir/index.plist"; then
+		warn "Failed to download the simulator runtime index."
+		return 1
+	fi
+	plutil -convert json -o "$dldir/index.json" "$dldir/index.plist"
+
+	# Find the download url (and expected file size) for the requested simulator in the index.
+	query=".downloadables[] | select(.platform == \"$platform\" and .simulatorVersion.version == \"$version\")"
+	source=$(jq -r "first($query) | .source // empty" "$dldir/index.json")
+	if test -z "$source"; then
+		warn "Could not find the $os $version simulator in the downloadable simulator index."
+		return 1
+	fi
+	expectedSize=$(jq -r "first($query) | .fileSize // empty" "$dldir/index.json")
+
+	# The runtime dmgs require a download authorization cookie. No account is needed, but Apple's
+	# cdn rejects requests without the cookie, and requesting the download path from developerservices2
+	# hands out the cookie without requiring any authentication.
+	path=$(printf '%s' "$source" | sed -E 's,^https?://[^/]+,,')
+	log "Fetching a download authorization cookie..."
+	if ! curl --fail --location --silent --show-error --max-time 60 --cookie-jar "$dldir/cookies.txt" "https://developerservices2.apple.com/services/download?path=$path" --output /dev/null; then
+		warn "Failed to fetch a download authorization cookie for the $os $version simulator."
+		return 1
+	fi
+
+	dmg="$dldir/$(basename "$source")"
+	log "Downloading the $os $version simulator runtime from $source..."
+	if ! curl --fail --location --silent --show-error --cookie "$dldir/cookies.txt" "$source" --output "$dmg"; then
+		warn "Failed to download the $os $version simulator runtime."
+		return 1
+	fi
+
+	# Sanity check the size of the downloaded file (in case we got an error page instead of the dmg).
+	if test -n "$expectedSize"; then
+		actualSize=$(stat -f '%z' "$dmg")
+		if [[ "$actualSize" != "$expectedSize" ]]; then
+			warn "The downloaded $os $version simulator runtime has an unexpected size (expected $expectedSize bytes, got $actualSize bytes)."
+			return 1
+		fi
+	fi
+
+	log "Installing the $os $version simulator runtime..."
+	if ! xcrun simctl runtime add "$dmg" 2>&1 | sed 's/^/        /'; then
+		warn "Failed to install the $os $version simulator runtime."
+		return 1
+	fi
+
+	rm -rf -- "$dldir"
+	return 0
+}
+
 function check_old_simulators ()
 {
 	if test -n "$IGNORE_OLD_SIMULATORS"; then return; fi
@@ -1022,8 +1125,20 @@ function check_old_simulators ()
 			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
 		else
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
-			"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'
-			warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			if "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'; then
+				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
+			else
+				# Starting with Xcode 27 'xcodebuild -downloadPlatform' can't download the old simulators
+				# anymore (Apple removed them from the platform catalog xcodebuild uses), so fall back to
+				# downloading the runtime directly from Apple's downloadable simulator index (the same index
+				# Xcode's UI uses, which still has the old simulators).
+				warn "Failed to install the $os $version simulator using xcodebuild; falling back to Apple's downloadable simulator index..."
+				if install_old_simulator_from_index "$os" "$version"; then
+					ok "Successfully installed the $os $version simulator from the downloadable simulator index."
+				else
+					$action "The $os $version simulator is not installed, and it couldn't be downloaded."
+				fi
+			fi
 		fi
 	done
 }

@@ -158,6 +158,10 @@ namespace Extrospection {
 				if (attr.Kind != CX_AttrKind.CX_AttrKind_Availability)
 					continue;
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
+				// 'anyappleos' (Xcode 27+) means the API is available on every Apple platform,
+				// so treat it as if it targeted the platform we're currently checking.
+				if (availName == "anyappleos")
+					availName = platform;
 				// if the headers says it's not available then we won't report it as missing
 				if (attr.AvailabilityAttributeUnavailable && (availName == platform))
 					return false;
@@ -205,6 +209,8 @@ namespace Extrospection {
 			var availabilityAttrs = decl.Attrs.GetAvailabilityAttributes ().ToList ();
 			foreach (var attr in availabilityAttrs) {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
+				if (availName == "anyappleos")
+					availName = platform;
 				if (availName != platform)
 					continue;
 				if (!attr.Deprecated.IsEmptyVersionTuple)
@@ -213,6 +219,8 @@ namespace Extrospection {
 			// then check for introduced - there may be both, so we must check *all* attributes for deprecation before checking for introduced
 			foreach (var attr in availabilityAttrs) {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
+				if (availName == "anyappleos")
+					availName = platform;
 				if (availName != platform)
 					continue;
 				if (!attr.Introduced.IsEmptyVersionTuple)
@@ -300,6 +308,13 @@ namespace Extrospection {
 					} else if (ca.Constructor.DeclaringType.Name == "ProtocolAttribute") {
 						if (ca.HasConstructorArguments)
 							return (ca.ConstructorArguments [0].Value as string);
+						// [Protocol]'s native name is usually set through the 'Name' property, not a constructor argument
+						if (ca.HasProperties) {
+							foreach (var prop in ca.Properties) {
+								if (prop.Name == "Name" && prop.Argument.Value is string name && !string.IsNullOrEmpty (name))
+									return name;
+							}
+						}
 						return self.Name;
 					} else if (ca.Constructor.DeclaringType.Name == "NativeNameAttribute") {
 						return (string) ca.ConstructorArguments [0].Value;
@@ -456,6 +471,7 @@ namespace Extrospection {
 			case "libsystem_kernel": // getxattr, removexattr and setxattr
 				return "Foundation";
 			case "MPSCore":
+			case "MPSFunctions":
 			case "MPSImage":
 			case "MPSMatrix":
 			case "MPSNDArray":

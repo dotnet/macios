@@ -26,15 +26,13 @@ namespace Foundation {
 
 	public partial class NSRunLoop {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Stops the receiver's underlying run loop.</summary>
 		public void Stop ()
 		{
 			GetCFRunLoop ().Stop ();
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Wakes the receiver's underlying run loop.</summary>
 		public void WakeUp ()
 		{
 			GetCFRunLoop ().WakeUp ();
@@ -44,10 +42,10 @@ namespace Foundation {
 	static public partial class NSRunLoopModeExtensions {
 
 		// this is a less common pattern so it's not automatically generated
-		/// <param name="self">The instance on which this method operates.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the native constants for a collection of run loop modes.</summary>
+		/// <param name="self">The run loop modes to convert.</param>
+		/// <returns>The native constants corresponding to the specified run loop modes.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="self" /> is <see langword="null" />.</exception>
 		public static NSString [] GetConstants (this NSRunLoopMode [] self)
 		{
 			if (self is null)

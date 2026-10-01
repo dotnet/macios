@@ -166,7 +166,8 @@ namespace Introspection {
 					if (SkipField (p))
 						continue;
 
-					string symbolName = fieldAttr.SymbolName;
+					if (fieldAttr.SymbolName is not string symbolName)
+						continue;
 					string? libName = fieldAttr.LibraryName;
 
 					if (SkipLibrary (libName))

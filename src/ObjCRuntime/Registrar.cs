@@ -717,24 +717,30 @@ namespace Registrar {
 
 			public TType []? NativeParameters {
 				get {
-					if (native_parameters is null && Parameters is not null) {
-						// Put the parameters in a temporary variable, and only store them in the instance field once done,
-						// so that if an exception occurs, the same exception will be raised the next time too.
-						var native_parameters = new TType [parameters!.Length];
-						for (int i = 0; i < parameters.Length; i++) {
-							var originalType = Registrar.GetBindAsAttribute (this, i)?.OriginalType;
-							if (originalType is not null) {
-								if (!IsValidToManagedTypeConversion (originalType, parameters [i]))
-									throw Registrar.CreateException (4172, Method, Errors.MT4172, Registrar.GetTypeFullName (parameters [i]), originalType.FullName, Registrar.GetParameterName (Method, i), DescriptiveMethodName);
-								native_parameters [i] = originalType;
-							} else {
-								native_parameters [i] = parameters [i];
-							}
-						}
-						this.native_parameters = native_parameters;
-					}
+					PrepareNativeParameters ();
 					return native_parameters;
 				}
+			}
+
+			void PrepareNativeParameters ()
+			{
+				if (native_parameters is not null || Parameters is null)
+					return;
+
+				// Put the parameters in a temporary variable, and only store them in the instance field once done,
+				// so that if an exception occurs, the same exception will be raised the next time too.
+				var computedNativeParameters = new TType [parameters!.Length];
+				for (int i = 0; i < parameters.Length; i++) {
+					var originalType = Registrar.GetBindAsAttribute (this, i)?.OriginalType;
+					if (originalType is not null) {
+						if (!IsValidToManagedTypeConversion (originalType, parameters [i]))
+							throw Registrar.CreateException (4172, Method, Errors.MT4172, Registrar.GetTypeFullName (parameters [i]), originalType.FullName, Registrar.GetParameterName (Method, i), DescriptiveMethodName);
+						computedNativeParameters [i] = originalType;
+					} else {
+						computedNativeParameters [i] = parameters [i];
+					}
+				}
+				native_parameters = computedNativeParameters;
 			}
 
 			bool IsValidToManagedTypeConversion (TType inputType, TType outputType)
@@ -962,6 +968,7 @@ namespace Registrar {
 
 				if (signature is null) {
 					try {
+						PrepareNativeParameters ();
 						signature = ComputeSignature ();
 					} catch (ProductException mte) {
 						AddException (ref exceptions, mte);
@@ -1147,6 +1154,7 @@ namespace Registrar {
 		protected abstract bool IsAbstract (TType type);
 		protected abstract bool IsPointer (TType type);
 		protected abstract TType GetGenericTypeDefinition (TType type);
+		protected abstract IEnumerable<TType> GetGenericArguments (TType type);
 		public abstract bool VerifyIsConstrainedToNSObject (TType type, out TType? constrained_type);
 		protected abstract TType? GetEnumUnderlyingType (TType type);
 		protected abstract bool TryGetEnumUnderlyingType ([NotNullWhen (true)] TType? tr, [NotNullWhen (true)] out TType? underlyingType);
@@ -1229,6 +1237,25 @@ namespace Registrar {
 		{
 			var mthd = method.Method!;
 			var attrib = GetBindAsAttribute (mthd, parameter_index);
+			if (attrib is null && parameter_index >= 0 && !method.IsPropertyAccessor && !method.IsConstructor && !method.IsCategory && !IsInterface (method.DeclaringType.Type)) {
+				// Parameter attributes aren't inherited from protocol methods, so look up the mapped interface method.
+				var methodMap = PrepareMethodMapping (method.DeclaringType.Type);
+				if (methodMap is not null && methodMap.TryGetValue (mthd, out var interfaceMethods)) {
+					List<TMethod>? bindAsInterfaceMethods = null;
+					foreach (var interfaceMethod in interfaceMethods) {
+						var interfaceAttribute = GetBindAsAttribute (interfaceMethod, parameter_index);
+						if (interfaceAttribute is null)
+							continue;
+
+						bindAsInterfaceMethods ??= new List<TMethod> ();
+						bindAsInterfaceMethods.Add (interfaceMethod);
+						attrib = interfaceAttribute;
+					}
+
+					if (bindAsInterfaceMethods is not null && interfaceMethods.Count != 1)
+						throw new AggregateException (Shared.GetMT4127 (mthd, interfaceMethods));
+				}
+			}
 			if (attrib is not null) {
 				var type = parameter_index == -1 ? GetReturnType (mthd) : GetParameters (mthd)! [parameter_index];
 				if (parameter_index == -1) {
@@ -2753,6 +2780,9 @@ namespace Registrar {
 				return "#";
 
 			if (IsINativeObject (type)) {
+				if (IsGenericType (type))
+					VerifyGenericArguments (type, member);
+
 				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type)) {
 					ReportWarning (4179, Errors.MT4179, type.FullName, member?.FullName);
 				}
@@ -2782,6 +2812,17 @@ namespace Registrar {
 
 			success = false;
 			return string.Empty;
+		}
+
+		void VerifyGenericArguments (TType type, ObjCMember? member)
+		{
+			foreach (var argument in GetGenericArguments (type)) {
+				if (HasModelAttribute (argument))
+					throw CreateException (4192, member, Errors.MT4192, GetTypeFullName (argument), GetTypeFullName (type));
+
+				if (IsGenericType (argument))
+					VerifyGenericArguments (argument, member);
+			}
 		}
 
 		string ValueTypeSignature (TType type, ObjCMember member)

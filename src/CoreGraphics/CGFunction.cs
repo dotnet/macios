@@ -41,14 +41,11 @@ namespace CoreGraphics {
 	public class CGFunction : NativeObject {
 		CGFunctionEvaluate? evaluate;
 
-		static CGFunctionCallbacks cbacks;
-
-		unsafe static CGFunction ()
-		{
-			cbacks.version = 0;
-			cbacks.evaluate = &EvaluateCallback;
-			cbacks.release = &ReleaseCallback;
-		}
+		unsafe static CGFunctionCallbacks cbacks = new CGFunctionCallbacks {
+			version = 0,
+			evaluate = &EvaluateCallback,
+			release = &ReleaseCallback,
+		};
 
 		[Preserve (Conditional = true)]
 		internal CGFunction (NativeHandle handle, bool owns)

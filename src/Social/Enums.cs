@@ -13,13 +13,13 @@ namespace Social {
 	/// <summary>The HTTP verb associated with a social service request.</summary>
 	[Native]
 	public enum SLRequestMethod : long {
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP GET request.</summary>
 		Get,
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP POST request.</summary>
 		Post,
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP DELETE request.</summary>
 		Delete,
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP PUT request.</summary>
 		Put,
 	}
 
@@ -29,9 +29,9 @@ namespace Social {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SLComposeViewControllerResult : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The user cancelled composition.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The user completed composition.</summary>
 		Done,
 	}
 }

@@ -9,8 +9,8 @@ namespace AVFoundation {
 	/// <include file="../../docs/api/AVFoundation/AVSpeechSynthesizer.xml" path="/Documentation/Docs[@DocId='T:AVFoundation.AVSpeechSynthesizer']/*" />
 	public partial class AVSpeechSynthesizer {
 #if !XAMCORE_5_0
-		[SupportedOSPlatform ("tvos13.0")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]

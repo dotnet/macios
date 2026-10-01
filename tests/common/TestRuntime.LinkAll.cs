@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 // This is a small, dependency-free part of TestRuntime that can be compiled on its own (e.g. into the
 // BundledResources assembly, where compiling the full TestRuntime.cs isn't possible because it would
@@ -14,7 +15,7 @@ partial class TestRuntime {
 	public static bool IsLinkAll {
 		get {
 			if (!link_all.HasValue)
-				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel") is null;
+				link_all = typeof (TestRuntime).Assembly.GetType (typeof (TestRuntime).FullName + "+LinkerSentinel" + WorkAroundLinkerHeuristics) is null;
 			return link_all.Value;
 		}
 	}
@@ -34,7 +35,7 @@ partial class TestRuntime {
 				};
 				link_any = false;
 				foreach (var uncommonType in uncommonTypes) {
-					link_any = typeof (int).Assembly.GetType (uncommonType) is null;
+					link_any = typeof (int).Assembly.GetType (uncommonType + WorkAroundLinkerHeuristics) is null;
 					if (link_any == true)
 						break;
 				}
@@ -42,4 +43,24 @@ partial class TestRuntime {
 			return link_any.Value;
 		}
 	}
+
+	// When using NativeAOT on .NET 11+, ILLink isn't executed at all (ILC does all the trimming, see
+	// '_SkipILLink' in Xamarin.Shared.Sdk.targets), which means none of the custom trimmer steps that
+	// modify assemblies are applied to the app. In particular the attributes we'd otherwise remove
+	// (such as [Protocol]) are still there at runtime.
+	public static bool IsILLinkSkipped {
+		get {
+#if NATIVEAOT && NET11_0_OR_GREATER
+			return true;
+#else
+			return false;
+#endif
+		}
+	}
+
+	// Returns "" at runtime, but the linker can't constant-fold this, which prevents
+	// its dataflow analysis from resolving type names passed to Assembly.GetType.
+	[MethodImpl (MethodImplOptions.NoInlining)]
+	static string GetEmptyString () => string.Intern ("");
+	static string WorkAroundLinkerHeuristics => GetEmptyString ();
 }

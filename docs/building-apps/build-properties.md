@@ -11,11 +11,23 @@ MSBuild properties control the behavior of the
 They're specified within the project file, for example *MyApp.csproj*, within
 an MSBuild PropertyGroup.
 
+> [!IMPORTANT]
+> Runtime-specific Mono properties on this page apply to supported builds targeting
+> .NET 10 or earlier that use the Mono runtime. Starting with .NET 11, CoreCLR
+> is the default runtime for iOS, tvOS, and Mac Catalyst (NativeAOT remains a
+> separate option). Setting `UseMonoRuntime=true` on those platforms produces
+> `NETSDK1242`. On macOS, setting `UseMonoRuntime=true` instead produces the
+> existing `Only CoreCLR is supported on macOS` workload error.
+
 ## AltoolPath
 
 The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
+
+## ACToolExtraArgs
+
+Additional arguments to pass to `actool`.
 
 ## ACToolPath
 
@@ -167,8 +179,9 @@ This can be overriden by setting the `BundleCreateDump` property:
 
 Note: the `createdump` tool does currently not work for sandboxed apps ([#18961](https://github.com/dotnet/macios/issues/18961));
 
-Only applicable to projects that use the CoreCLR runtime (which, at the moment
-of this writing, is only macOS projects).
+Note: an alternative option is to enable the in-process crash reporter (see [EnableCrashReport](#enablecrashreport)). The in-process crash reporter also works for sandboxed apps.
+
+Only applicable to macOS projects.
 
 [createdump]: https://github.com/dotnet/runtime/blob/3b63eb1346f1ddbc921374a5108d025662fb5ffd/docs/design/coreclr/botr/xplat-minidump-generation.md
 
@@ -196,6 +209,27 @@ The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 
 > [!NOTE]
 > File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
+
+## CheckForIllegalCrossThreadCalls
+
+Controls whether the UI thread checks (the `[NS|UI]Application.EnsureUIThread`
+calls the generated bindings emit for UI code) are performed.
+
+When set to `true`, the checks are enabled: accessing UI API off the UI thread
+throws an exception. When set to `false`, the checks are disabled.
+
+This property is emitted as the `ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls`
+runtime feature switch, so it takes effect even when trimming is disabled: the
+`[NS|UI]Application.CheckForIllegalCrossThreadCalls` field reflects the property
+value at runtime, and the checks are enabled or disabled accordingly.
+
+When trimming is enabled and the checks are disabled, ILLink additionally stubs
+the `[NS|UI]Application.EnsureUIThread` method body and trims away the
+`CheckForIllegalCrossThreadCalls` field, making the app slightly smaller and
+faster.
+
+If this value is not specified, the checks are kept in debug builds and removed
+in release builds.
 
 ## CodesignAllocate
 
@@ -284,6 +318,27 @@ By default we require a provisioning profile if:
 * iOS, tvOS: building for device or an entitlements file has been specified (with the [CodesignEntitlements](#codesignentitlements) property).
 
 Setting this property to `true` or `false` will override the default logic.
+
+## ComputeInstructionSetForReadyToRun
+
+Controls whether to automatically compute and pass the instruction set to the ReadyToRun (R2R) compiler based on the deployment target.
+
+When `PublishReadyToRun` is `true`, the build system automatically computes the minimum CPU instruction set required based on:
+* The `SupportedOSPlatformVersion` (minimum OS version the app supports)
+* The `RuntimeIdentifier` (target architecture and platform)
+
+This computed instruction set is then passed to crossgen2 via the `--instruction-set` argument, enabling the R2R compiler to generate optimized native code using appropriate CPU instructions.
+
+Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
+
+Default: `true`
+
+Example:
+```xml
+<PropertyGroup>
+  <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
+</PropertyGroup>
+```
 
 ## CompressBindingResourcePackage
 
@@ -500,9 +555,50 @@ Removing the dynamic registrar requires a static registrar (`Registrar=static` o
 `Registrar=managed-static`) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.
 
+## TrimExportAttributes
+
+Controls whether `Foundation.ExportAttribute`, `Foundation.ActionAttribute`,
+and `Foundation.OutletAttribute` instances are removed during trimming.
+
+If this property is not specified, the build automatically removes these
+attributes when assembly preparation and post-processing are enabled, the
+trimmable static registrar is selected, dynamic registration is not required,
+and no runtime fallback needs the attributes.
+
+Set this property to `false` to preserve the attributes. Set it to `true` to
+require their removal; the build will fail if it detects that the attributes
+are needed at runtime.
+
 ## EmbedOnDemandResources
 
-If on-demand resources should be embedded in the app bundle.
+Controls where on-demand resource asset packs are placed, so that the on-demand
+resources APIs can find them at runtime. This property does **not** enable
+on-demand resources (use [EnableOnDemandResources](#enableondemandresources) for
+that) — it only affects how already-tagged asset packs are packaged.
+
+This is the property set by the "Embed on-demand resources in the app bundle"
+option in the IDE.
+
+When building for the **simulator**, the asset packs can't be hosted anywhere
+(there's no App Store nor a local hosting server), so they must be embedded in
+the app bundle for on-demand resources to work at all:
+
+* `true`: the asset packs are embedded in the `.app` bundle and served locally
+  by the app.
+* `false`: the asset packs are not embedded, so the on-demand resources APIs
+  won't find them on the simulator.
+
+When packaging an **IPA** for `AdHoc` distribution:
+
+* `true`: the asset packs are embedded in the `.app` bundle inside the IPA and
+  served locally by the app.
+* `false`: the asset packs are packaged separately (outside the app bundle) so
+  they can be streamed/hosted (for example on a web server).
+
+For `AppStore` distribution the asset packs are always placed outside the `.app`
+bundle (to be hosted by the App Store), regardless of this property.
+
+This property has no effect on a device debug build.
 
 Default: true
 
@@ -512,6 +608,24 @@ If code signing is enabled.
 
 Code signing is enabled by default for all platforms; this can be overridden with this property.
 
+## EnableCrashReport
+
+Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
+environment variable is set to `1` at startup, which makes the .NET runtime's
+in-process crash reporter write a JSON crash report when the app crashes.
+
+This setting is disabled by default, but it can be enabled like this:
+
+```xml
+<PropertyGroup>
+    <EnableCrashReport>true</EnableCrashReport>
+</PropertyGroup>
+```
+
+The crash reports are written to a subdirectory of the app's caches directory.
+
+See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+
 ## EnableDefaultCodesignEntitlements
 
 See [CodesignEntitlements](#codesignentitlements).
@@ -519,6 +633,26 @@ See [CodesignEntitlements](#codesignentitlements).
 ## EnableOnDemandResources
 
 If on-demand resources are enabled.
+
+When enabled, bundle resources that are tagged with `ResourceTags` metadata are
+placed into on-demand resource asset packs instead of being copied directly into
+the app bundle. A resource is tagged like this:
+
+```xml
+<ItemGroup>
+  <BundleResource Update="Resources\MyResource.dat" ResourceTags="MyTag" />
+</ItemGroup>
+```
+
+Use `Update` (not `Include`) when the file is already part of the project's
+default resources (for example anything under the `Resources` folder on iOS,
+which is automatically included as a `BundleResource`), otherwise the resource
+would be added twice and the untagged copy would win. In a .NET MAUI project the
+same `ResourceTags` metadata can be set on the corresponding `MauiAsset` item.
+
+This property only enables on-demand resources; it does not control how the asset
+packs are packaged for distribution — see
+[EmbedOnDemandResources](#embedondemandresources) for that.
 
 Default: false for macOS, true for all other platforms.
 
@@ -579,6 +713,13 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GenerateTrustedPlatformAssemblies
+
+A boolean property that specifies whether the trusted platform assembly list is
+generated at build time instead of discovered when the app launches.
+
+The default value is `false` for debug builds and `true` for other builds.
+
 ## GetApplicationArtifactsDependsOn
 
 A semi-colon delimited property that can be used to extend the
@@ -611,11 +752,27 @@ Example:
 
 ## HotReloadCompatibleBuild
 
-A boolean property that indicates whether the build must be compatible with Hot
-Reload. When enabled, the build tasks avoid modifying user (reloadable)
-assemblies, since such modifications would break Hot Reload.
+A boolean property that indicates whether the build must remain compatible
+with Hot Reload. When set to `true`, the build avoids modifying user
+assemblies so they stay byte-for-byte unchanged (a requirement for Hot
+Reload). This will disable a few minor optimizations, but will otherwies not
+affect anything.
 
-The default value is `true` for debug builds and `false` otherwise.
+The default value is `true` for non-NativeAOT debug builds that don't use the
+managed static registrar, and `false` otherwise (the managed static registrar
+modifies user assemblies, which is incompatible with Hot Reload).
+
+## IBToolExtraArgs
+
+Additional arguments to pass to `ibtool`.
+
+For example, to use the simulator-based Interface Builder compilation mode:
+
+```xml
+<PropertyGroup>
+  <IBToolExtraArgs>--cocoatouch-compiler-mode simulator</IBToolExtraArgs>
+</PropertyGroup>
+```
 
 ## IBToolPath
 
@@ -1068,7 +1225,7 @@ This property is deprecated, use [AppBundleExtraOptions](#appbundleextraoptions)
 
 ## MtouchInterpreter
 
-Enables the interpreter, and optionally takes a comma-separated list of
+Enables the Mono interpreter, and optionally takes a comma-separated list of
 assemblies to interpret (if prefixed with a minus sign, the assembly will be
 AOT-compiled instead). 'all' can be used to specify all assemblies. This
 argument can be specified multiple times.
@@ -1099,11 +1256,14 @@ Applicable to iOS, tvOS and Mac Catalyst apps (when not using NativeAOT).
 The default behavior is to not enable the interpreter.
 
 > [!NOTE]
-> MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
+> For .NET 10 and earlier, MAUI sets `UseInterpreter=true` for iOS and Mac
+> Catalyst Debug builds that use Mono. MAUI doesn't set this property for
+> supported .NET 11 iOS and Mac Catalyst Debug builds, which use CoreCLR.
 
-This property only has an effect when using the Mono runtime, and a warning
-will be shown if it's set when not using the Mono runtime (for instance when
-using CoreCLR).
+This property configures the Mono interpreter and doesn't configure the CoreCLR
+interpreter. It only has an effect when using Mono. A warning is shown and the
+property has no effect when using CoreCLR, including in .NET 11 iOS, tvOS, and
+Mac Catalyst projects.
 
 ## MtouchLink
 
@@ -1195,7 +1355,11 @@ A string property that specifies the resource url for on-demand resources.
 
 ## OptimizePNGs
 
-A boolean property that specifies whether png images should be optimized.
+A boolean property that specifies whether PNG bundle resources should be optimized using Apple's `pngcrush` tool.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePngImagesDependsOn
 
@@ -1216,7 +1380,11 @@ Example:
 
 ## OptimizePropertyLists
 
-A boolean property that specifies whether property lists (plists) should be optimized.
+A boolean property that specifies whether property list (`.plist`) and localization (`.strings`) bundle resources should be converted to binary property lists.
+
+In .NET 11 and later, this defaults to `true` for release builds on iOS, tvOS, and Mac Catalyst. It defaults to `false` for debug builds, macOS builds, and projects targeting earlier .NET versions. Set this property explicitly to opt in or out.
+
+The `Optimize` metadata on individual `BundleResource` items overrides this property.
 
 ## OptimizePropertyListsDependsOn
 
@@ -1283,6 +1451,14 @@ The default behavior is to use `xcrun productbuild`.
 The product definition template (`.plist`) to be used when creating the product definition to pass to the product build tool when creating packages (.pkg).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+## PublishReadyToRunComposite
+
+Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
+
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+
+Default: `true` (when `PublishReadyToRun` is `true`).
 
 ## RecommendedXcodeVersion
 
@@ -1556,11 +1732,37 @@ However, the either of the following works:
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
 
+## StripFrameworkHeaders
+
+A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and
+`Modules` directories are removed from embedded frameworks before code signing.
+
+The default value is `true`. Set it to `false` to preserve these directories.
+
 ## StripPath
 
 The full path to the `strip` command-line tool.
 
 The default behavior is to use `xcrun strip`.
+
+## StripMergeableLibraries
+
+A boolean property that specifies whether static linking metadata (`LC_ATOM_INFO`)
+is removed from mergeable libraries embedded in the app bundle.
+
+Mergeable libraries are dynamic libraries that also contain metadata for static
+linking. This metadata can roughly double the size of the library. When this
+property is `true`, the metadata is stripped to reduce app size.
+
+The default value is the value of the `Optimize` property, which means `Release`
+builds strip mergeable library metadata by default, while `Debug` builds preserve
+it.
+
+```xml
+<PropertyGroup>
+  <StripMergeableLibraries>true</StripMergeableLibraries>
+</PropertyGroup>
+```
 
 ## SupportedOSPlatformVersion
 
@@ -1599,6 +1801,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
 
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
+
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and
 [LinkMode](#linkmode) (for macOS) properties, but the valid properties values
@@ -1623,10 +1831,10 @@ The current (as of .NET 9) default values are:
 Exceptions:
 
 * The default value is always `full` when building with NativeAOT.
-* MAUI changes the default value to `copy` when building for the `Debug`
-  configuration _and_ the interpreter is enabled using
-  [UseInterpreter](#useinterpreter) (which MAUI also enables by default when
-  using the `"Debug"` configuration).
+* For iOS and Mac Catalyst Debug builds using Mono, MAUI changes the default
+  trim mode to `copy` when [UseInterpreter](#useinterpreter) is enabled. MAUI
+  enables `UseInterpreter` by default for these builds in .NET 10 and earlier,
+  but not for supported .NET 11 CoreCLR builds.
 
 > [!NOTE]
 > The default trim mode may change in the future.
@@ -1674,7 +1882,7 @@ Applicable to macOS and Mac Catalyst projects.
 
 ## UseInterpreter
 
-Enables the interpreter (for all assemblies).
+Enables the Mono interpreter (for all assemblies).
 
 This is equivalent to setting `MtouchInterpreter=all`.
 
@@ -1683,13 +1891,16 @@ Applicable to iOS, tvOS and Mac Catalyst apps (when not using NativeAOT).
 The default behavior is to not enable the interpreter.
 
 > [!NOTE]
-> MAUI changes the default by setting `UseInterpreter=true` for the `"Debug"` configuration.
+> For .NET 10 and earlier, MAUI sets `UseInterpreter=true` for iOS and Mac
+> Catalyst Debug builds that use Mono. MAUI doesn't set this property for
+> supported .NET 11 iOS and Mac Catalyst Debug builds, which use CoreCLR.
 
 See [MtouchInterpreter](#mtouchinterpreter) for more information.
 
-This property only has an effect when using the Mono runtime, and a warning
-will be shown if it's set when not using the Mono runtime (for instance when
-using CoreCLR).
+This property configures the Mono interpreter and doesn't configure the CoreCLR
+interpreter. It only has an effect when using Mono. A warning is shown and the
+property has no effect when using CoreCLR, including in .NET 11 iOS, tvOS, and
+Mac Catalyst projects.
 
 ## UseNativeHttpHandler
 

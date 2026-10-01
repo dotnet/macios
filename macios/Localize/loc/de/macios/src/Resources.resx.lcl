@@ -582,10 +582,13 @@
       </Item>
       <Item ItemId=";BI1050" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          <Val><![CDATA[[BindAs]5D; cannot be used on properties or return values inside Protocol or Model types. Type: {0}]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[[BindAs]5D; kann nicht innerhalb von Protokoll- oder Modelltypen verwendet werden. Typ: {0}]]></Val>
+            <Val><![CDATA[[BindAs]5D; kann nicht für Eigenschaften oder Rückgabewerte innerhalb von Protokoll- oder Modelltypen verwendet werden. Typ: {0}]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[[BindAs]5D; cannot be used inside Protocol or Model types. Type: {0}]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1140,6 +1143,39 @@
           <Val><![CDATA[Found a [Preserve]5D; attribute on {0}: [Preserve]5D; is deprecated; use [DynamicDependency]5D; instead.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Auf {0} wurde ein [Preserve]5D;-Attribut gefunden: [Preserve]5D; ist veraltet; verwenden Sie stattdessen [DynamicDependency]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1125" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; binding method '{0}.{1}' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed]5D; to the binding method so the generated factory method can return null when the native initializer fails.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1126" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '{2}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das [FactoryMethod]5D;-Attribut für "{0}.{1}" kann nur mit einem Objective-C-Selektor "init" verwendet werden (der Selektor muss "init" lauten oder mit "init" gefolgt von einem Großbuchstaben beginnen), aber der Selektor ist '{2}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1127" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [FactoryMethod]5D; attribute on '{0}.{1}' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod]5D; attribute; the name of the binding method is used instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Das [FactoryMethod]5D;-Attribut in "{0}.{1}" kann keinen Methodennamen angeben, wenn es auf eine Methode angewendet wird, die kein Konstruktor ist. Methodennamen aus dem [FactoryMethod]5D;-Attribut entfernen; Stattdessen wird der Name der Bindungsmethode verwendet.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1128" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The [Field]5D; member '{0}.{1}' sets SymbolAddress, but its type is '{2}'; only System.IntPtr is supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Der [Field]5D; Member "{0}.{1}" legt "SymbolAddress" fest, aber sein Typ ist '{2}'; wird nur System.IntPtr unterstützt.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

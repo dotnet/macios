@@ -53,11 +53,11 @@ xamarin_bridge_initialize ()
 {
 	if (xamarin_register_modules != NULL)
 		xamarin_register_modules ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tAOT register time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tAOT register time");
 
 #ifdef DEBUG
 	monotouch_start_debugging ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tDebug init time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tDebug init time");
 #endif
 	
 	if (xamarin_init_mono_debug)
@@ -68,7 +68,7 @@ xamarin_bridge_initialize ()
 
 #ifdef DEBUG
 	monotouch_start_profiling ();
-	DEBUG_LAUNCH_TIME_PRINT ("\tProfiler config time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tProfiler config time");
 #endif
 
 	mono_set_signal_chaining (TRUE);
@@ -82,7 +82,7 @@ xamarin_bridge_initialize ()
 	  This is wasteful, but there's no way to manipulate the preload hook list except by adding to it.
 	*/
 	mono_install_assembly_preload_hook (xamarin_assembly_preload_hook, NULL);
-	DEBUG_LAUNCH_TIME_PRINT ("\tJIT init time");
+	XAMARIN_LAUNCH_TIME_PRINT ("\tJIT init time");
 }
 
 void

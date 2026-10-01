@@ -47,7 +47,6 @@ The primary CI pipeline that triggers on commits to main and release branches.
 **Parameters:**
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `provisionatorChannel` | string | `latest` | Provisionator channel for dependencies |
 | `macOSName` | string | `Sequoia` | macOS version for build agents |
 | `runGovernanceTests` | boolean | `true` | Run security/compliance checks |
 | `forceInsertion` | boolean | `false` | Force VS insertion even on non-release branches |
@@ -175,6 +174,8 @@ stages:
 - `build.yml` - Windows test execution
 - `reenable-mac.yml` - Release reserved macOS agent
 
+Windows setup attempts to enable long paths. If the registry update fails with a permission-related `SecurityException`, it logs a warning and continues with the current setting. Other setup errors and test failures still fail the job.
+
 ### Release Templates (`templates/release/`)
 
 | Template | Purpose |
@@ -203,6 +204,8 @@ Core variables used across all pipelines:
 - Build pools: `PRBuildPool`, `CIBuildPool`
 - Environment: `xcodeChannel`, `minimumMacOSVersion`
 - Azure DevOps groups: `XamarinCompatLab`, `Xamarin-Secrets`, etc.
+
+For test pipelines, `useACES: true` selects `CIBuildPoolACES` (`AcesShared`) with `CIBuildPoolACESImage` for simulator tests, macOS test builds, and package builds when `buildPackages: true`. Set `useACES: false` to retain the traditional pool and demands.
 
 ### `api-scan.yml`
 APIScan-specific variables:
@@ -613,8 +616,11 @@ build-pull-request.yml (Entry Point - PR)
                             │
                             ├─► install-certificates.yml@yaml-templates
                             │
-                            ├─► provisionator@2 task
-                            │   └─► build-provisioning.csx
+                            ├─► templates/common/provision-xcode.yml
+                            │   ├─► scripts/bash/resolve-xcode-package.sh
+                            │   ├─► UniversalPackages@0
+                            │   └─► system-dependencies.sh
+                            │       └─► scripts/bash/install-xcode.sh
                             │
                             ├─► scripts/parse_pr_labels.ps1
                             │
@@ -680,7 +686,7 @@ run-post-pr-build-tests.yml ─────────────────�
         │       └─► templates/build/build-mac-tests.yml                      │
         │           └─► templates/build/build.yml (test build variant)       │
         │                                                                    │
-        ├─► Stage: mac_12_m1, mac_13_m1, mac_14_x64, mac_15_arm64, mac_26_arm64
+        ├─► Stage: mac_14_x64, mac_15_arm64, mac_26_arm64, mac_27_arm64      │
         │   └─► templates/mac/stage.yml (for each config)                    │
         │       └─► Job: run_tests                                           │
         │           └─► templates/mac/build.yml                              │

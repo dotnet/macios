@@ -1,0 +1,7 @@
+{
+  "author": "Microsoft",
+  "name": "iOS Test Project",
+  "description": "A project for creating a .NET iOS test project using MSTest",
+  "symbols/bundleId/description": "Overrides the ApplicationId in the project file",
+  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file"
+}

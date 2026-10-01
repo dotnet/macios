@@ -4,6 +4,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -477,16 +478,10 @@ namespace MonoTests.System.Net.Http {
 				handler.Credentials = new NetworkCredential (username, password);
 			}
 
-			HttpStatusCode statusCode = HttpStatusCode.NotFound;
-			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				using var client = new HttpClient (handler);
-				using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
-				statusCode = response.StatusCode;
-			}, out var ex);
+			using var client = new HttpClient (handler);
+			using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
 
-			Assert.That (done, Is.True, "Request timed out.");
-			Assert.That (ex, Is.Null, "Exception");
-			Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+			Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
 			Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
 			Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (expectAuthorizationHeader), "Authorization header presence.");
 		}
@@ -508,16 +503,10 @@ namespace MonoTests.System.Net.Http {
 					Credentials = new NetworkCredential ("origin-user", "origin-password"),
 				};
 
-				HttpStatusCode statusCode = HttpStatusCode.NotFound;
-				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-					using var client = new HttpClient (handler);
-					using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
-					statusCode = response.StatusCode;
-				}, out var ex);
+				using var client = new HttpClient (handler);
+				using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
 
-				Assert.That (done, Is.True, "Request timed out.");
-				Assert.That (ex, Is.Null, "Exception");
-				Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+				Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
 				Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
 				Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (allowSameOriginRedirectCredentials), "Authorization header presence.");
 			} finally {
@@ -547,13 +536,8 @@ namespace MonoTests.System.Net.Http {
 				cache.Add (new Uri (server.TargetUri, "protected"), "basic", new NetworkCredential ("origin-user", "origin-password"));
 
 				using (var primingHandler = new NSUrlSessionHandler { Credentials = cache }) {
-					var primingDone = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-						using var client = new HttpClient (primingHandler);
-						using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
-					}, out var primingEx);
-
-					Assert.That (primingDone, Is.True, "Priming request timed out.");
-					Assert.That (primingEx, Is.Null, "Priming exception");
+					using var primingClient = new HttpClient (primingHandler);
+					using var primingResponse = GetResponseWithTimeout (primingClient, new Uri (server.OriginUri, "start"));
 				}
 
 				// Record how many auth headers the server received from the priming request
@@ -568,16 +552,10 @@ namespace MonoTests.System.Net.Http {
 					Credentials = new NetworkCredential ("origin-user", "origin-password"),
 				};
 
-				HttpStatusCode statusCode = HttpStatusCode.NotFound;
-				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-					using var client = new HttpClient (handler);
-					using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
-					statusCode = response.StatusCode;
-				}, out var ex);
+				using var client = new HttpClient (handler);
+				using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
 
-				Assert.That (done, Is.True, "Request timed out.");
-				Assert.That (ex, Is.Null, "Exception");
-				Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+				Assert.That (response.StatusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
 
 				var authHeadersFromSecondRequest = server.TargetAuthorizationHeaders.Length - authHeadersAfterPriming;
 				Assert.That (authHeadersFromSecondRequest > 0, Is.EqualTo (expectSecondRequestAuthorizationHeader), "Authorization header on second request.");
@@ -838,7 +816,7 @@ namespace MonoTests.System.Net.Http {
 		{
 			NWListener? listener = null;
 			try {
-				listener = CreateNWTlsListener (requireClientCert: false);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -861,7 +839,7 @@ namespace MonoTests.System.Net.Http {
 		{
 			NWListener? listener = null;
 			try {
-				listener = CreateNWTlsListener (requireClientCert: true);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: true);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -889,7 +867,7 @@ namespace MonoTests.System.Net.Http {
 			NWListener? listener = null;
 			try {
 				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", true);
-				listener = CreateNWTlsListener (requireClientCert: true);
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: true);
 				var port = listener.Port;
 
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
@@ -912,75 +890,22 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
-		static NWListener CreateNWTlsListener (bool requireClientCert)
+		static HttpResponseMessage GetResponseWithTimeout (HttpClient client, Uri uri)
 		{
-			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx ();
-			using var secIdentity = SecIdentity.Import (pfxData, pfxPassword);
-			using var secIdentity2 = new SecIdentity2 (secIdentity);
-			using var readyEvent = new ManualResetEventSlim (false);
-			NWError? listenerError = null;
+			HttpResponseMessage? response = null;
+			var stopwatch = Stopwatch.StartNew ();
+			Console.WriteLine ($"RedirectBasicAuthServer entering TestRuntime.TryRunAsync for {uri}.");
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				Console.WriteLine ($"RedirectBasicAuthServer starting HttpClient.GetAsync for {uri} after {stopwatch.ElapsedMilliseconds} ms.");
+				var receivedResponse = await client.GetAsync (uri);
+				response = receivedResponse;
+				Console.WriteLine ($"RedirectBasicAuthServer completed HttpClient.GetAsync for {uri} with status {(int) receivedResponse.StatusCode} after {stopwatch.ElapsedMilliseconds} ms.");
+			}, out var exception);
+			Console.WriteLine ($"RedirectBasicAuthServer returned from TestRuntime.TryRunAsync for {uri}: done={done}, exception={exception?.GetType ().FullName ?? "<none>"}, elapsed={stopwatch.ElapsedMilliseconds} ms.");
 
-			var parameters = NWParameters.CreateSecureTcp (
-				configureTls: tlsOptions => {
-					var tls = (NWProtocolTlsOptions) tlsOptions;
-					var secOptions = tls.ProtocolOptions;
-					secOptions.SetLocalIdentity (secIdentity2);
-					secOptions.SetPeerAuthenticationRequired (requireClientCert);
-				});
-			using var localEndpoint = NWEndpoint.Create ("127.0.0.1", "0");
-			parameters.LocalEndpoint = localEndpoint;
-
-			var listener = NWListener.Create (parameters);
-			parameters.Dispose ();
-
-			listener.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
-
-			listener.SetStateChangedHandler ((state, error) => {
-				if (state == NWListenerState.Failed)
-					listenerError = error;
-				if (state == NWListenerState.Ready || state == NWListenerState.Failed)
-					readyEvent.Set ();
-			});
-
-			listener.SetNewConnectionHandler (connection => {
-				connection.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
-				connection.SetStateChangeHandler ((connState, connError) => {
-					if (connState == NWConnectionState.Ready) {
-						// Read the HTTP request (just consume it), then send a response
-						connection.ReceiveReadOnlyData (1, 4096, (data, context, isComplete, error) => {
-							var response = Encoding.UTF8.GetBytes ("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nOK");
-							connection.Send (response, NWContentContext.FinalMessage, true, sendError => {
-								connection.Cancel ();
-							});
-						});
-					}
-				});
-				connection.Start ();
-			});
-
-			listener.Start ();
-
-			if (!readyEvent.Wait (TimeSpan.FromSeconds (10)))
-				throw new TimeoutException ("NWListener did not become ready in time.");
-
-			if (listenerError is not null)
-				throw new InvalidOperationException ($"NWListener failed to start: {listenerError}");
-
-			return listener;
-		}
-
-		static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx ()
-		{
-			using var rsa = RSA.Create (2048);
-			var certRequest = new CertificateRequest (
-				"CN=localhost", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
-			var sanBuilder = new SubjectAlternativeNameBuilder ();
-			sanBuilder.AddIpAddress (IPAddress.Loopback);
-			sanBuilder.AddDnsName ("localhost");
-			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
-			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
-			var password = Guid.NewGuid ().ToString ();
-			return (cert.Export (X509ContentType.Pfx, password), password);
+			Assert.That (done, Is.True, $"Request to {uri} timed out.");
+			Assert.That (exception, Is.Null, $"Exception while requesting {uri}.");
+			return response ?? throw new InvalidOperationException ($"Request to {uri} completed without a response.");
 		}
 
 		sealed class RedirectBasicAuthServer : IDisposable {
@@ -1058,6 +983,8 @@ namespace MonoTests.System.Net.Http {
 				var response = context.Response;
 				response.StatusCode = (int) HttpStatusCode.Redirect;
 				response.RedirectLocation = new Uri (TargetUri, "protected").AbsoluteUri;
+				response.ContentLength64 = 0;
+				response.KeepAlive = false;
 				response.Close ();
 			}
 
@@ -1078,6 +1005,8 @@ namespace MonoTests.System.Net.Http {
 					response.StatusCode = (int) HttpStatusCode.Unauthorized;
 					response.AddHeader ("WWW-Authenticate", "Basic realm=\"redirect-target\"");
 				}
+				response.ContentLength64 = 0;
+				response.KeepAlive = false;
 				response.Close ();
 			}
 
@@ -1098,25 +1027,36 @@ namespace MonoTests.System.Net.Http {
 			{
 				const int MinPort = 49215;
 				const int MaxPort = 65535;
+				const int PortRange = MaxPort - MinPort;
+				const int MaxAttempts = 50;
+				Exception? lastException = null;
+				var stopwatch = Stopwatch.StartNew ();
 
-				for (var port = MinPort; port < MaxPort; port++) {
+				// Pick a random start port, then probe sequentially (with wraparound) so
+				// each attempt tries a distinct port while keeping the bounded retry behavior.
+				var startPort = Random.Shared.Next (MinPort, MaxPort);
+				for (var attempt = 0; attempt < MaxAttempts; attempt++) {
+					var port = MinPort + (startPort - MinPort + attempt) % PortRange;
 					var listener = new HttpListener ();
 					var url = $"http://127.0.0.1:{port}/";
 					listener.Prefixes.Add (url);
 					try {
 						listener.Start ();
 						uri = new Uri (url);
+						Console.WriteLine ($"RedirectBasicAuthServer listening on {uri} after {attempt + 1} attempt(s) in {stopwatch.ElapsedMilliseconds} ms.");
 						return listener;
-					} catch {
+					} catch (Exception ex) {
+						lastException = ex;
 						listener.Close ();
 					}
 				}
 
-				throw new InvalidOperationException ("Could not start a local HTTP listener.");
+				throw new InvalidOperationException ($"Could not start a local HTTP listener after {MaxAttempts} attempts.", lastException);
 			}
 
 			public void Dispose ()
 			{
+				Console.WriteLine ($"RedirectBasicAuthServer stopping origin {OriginUri} and target {TargetUri}.");
 				originListener.Close ();
 				targetListener?.Close ();
 
@@ -1128,6 +1068,7 @@ namespace MonoTests.System.Net.Http {
 				} catch {
 					// Listener disposal wakes the request loops.
 				}
+				Console.WriteLine ($"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
 			}
 		}
 

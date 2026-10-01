@@ -81,49 +81,11 @@ steps:
       MacDeveloper: $(mac-developer)
       HostedMacKeychainPassword: ${{ parameters.keyringPass }}
 
-  - bash: |
-      set -eo pipefail
-      set -x
-
-      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
-      if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
-        echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
-        exit 1
-      fi
-      export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
-      export DEVELOPER_DIR="$XCODE_PATH"
-
-      make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
-    displayName: 'Generate provisionator files.'
-
-  - template: ../common/provision.yml
+  - template: ../common/provision-xcode.yml
     parameters:
-      provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
-      displayName: 'Provision Products & Frameworks'
-      provisionatorChannel: $(PROVISIONATOR_CHANNEL)
-      retryCount: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
-
-  - bash: |
-      set -eo pipefail
-      set -x
-
-      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
-      if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
-        echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
-        exit 1
-      fi
-      export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
-      export DEVELOPER_DIR="$XCODE_PATH"
-      xcrun -k
-
-      ARGS=()
-      ARGS+=(--ignore-all)
-      ARGS+=(--provision-xcode-components)
-      $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-    displayName: 'Provision dependencies'
-    timeoutInMinutes: 250
-    env:
-      XCODE_CHANNEL: ${{ parameters.xcodeChannel }}
+      repositoryPath: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)
+      xcodeChannel: ${{ parameters.XcodeChannel }}
+      retryCount: ${{ parameters.retryCount }}
 
   # Use the env variables that were set by the label parsing in the configure step
   # print some useful logging to allow to know what is going on AND allow make some

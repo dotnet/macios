@@ -46,6 +46,45 @@ public class ReproTest : BaseClass {
 		Assert.That (normalizedLines, Is.EqualTo (normalizedLines2), "Repro arguments match");
 	}
 
+	[TestCase (ApplePlatform.iOS, false, false)]
+	[TestCase (ApplePlatform.iOS, false, true)]
+	public void BindingResourcePackageRoundTrip (ApplePlatform platform, bool isCoreCLR, bool zipped)
+	{
+		var code = @"public class SomeLibrary {}";
+		using var preparer = CreatePreparer (platform, isCoreCLR, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, testAssemblyHasOriginalInputPath: true);
+		var originalInputPath = testInfo.OriginalInputPath;
+		if (originalInputPath is null) {
+			Assert.Fail ("Original input path is null.");
+			return;
+		}
+		Assert.That (originalInputPath, Is.Not.EqualTo (testInfo.InputPath), "The original input path must differ from the assembly-preparer input");
+		var resourceDirectory = Path.ChangeExtension (originalInputPath, ".resources");
+		if (zipped) {
+			File.WriteAllText (resourceDirectory + ".zip", "");
+		} else {
+			Directory.CreateDirectory (resourceDirectory);
+			File.WriteAllText (Path.Combine (resourceDirectory, "resource"), "");
+		}
+
+		var reproPath = Xamarin.Cache.CreateTemporaryDirectory ();
+		Directory.Delete (reproPath);
+		preparer.MakeReproPath = reproPath;
+		AssertPrepare (preparer);
+
+		var copiedResourceDirectory = Path.ChangeExtension (Path.Combine (reproPath, Path.GetFileName (testInfo.OutputPath)), ".resources");
+		if (zipped) {
+			Assert.That (File.Exists (copiedResourceDirectory + ".zip"), Is.True, "The zipped binding resource package was copied");
+		} else {
+			Assert.That (File.Exists (Path.Combine (copiedResourceDirectory, "resource")), Is.True, "The binding resource package directory was copied");
+		}
+
+		using var replay = AssemblyPreparer.LoadFromReproPath (reproPath);
+		replay.Registrar = RegistrarMode.Dynamic;
+		var replayTestInfo = replay.Assemblies.Single (v => Path.GetFileName (v.InputPath) == "Test.dll");
+		Assert.That (replayTestInfo.OriginalInputPath, Is.EqualTo (Path.Combine (reproPath, "Test.dll")), "Original input path");
+		AssertPrepare (replay);
+	}
+
 	// This test is here only to easily debug the PrepareAssemblies task from a build that produced a binlog.
 	// Just copy the binlog to /tmp/assembly-preparer.binlog and run this test. It will find the PrepareAssemblies
 	// task in the binlog, extract the relevant parameters, and run the preparation logic with those parameters.
@@ -135,8 +174,11 @@ public class ReproTest : BaseClass {
 					var isTrimmableString = item.GetMetadata ("IsTrimmable");
 					var isTrimmable = string.IsNullOrEmpty (isTrimmableString) ? (bool?) null : string.Equals (isTrimmableString, "true", StringComparison.OrdinalIgnoreCase);
 					var trimMode = item.GetMetadata ("TrimMode");
+					var originalInputPath = item.GetMetadata ("OriginalItemSpec");
+					if (!string.IsNullOrEmpty (originalInputPath))
+						originalInputPath = Path.GetFullPath (originalInputPath, originalBinlogDirectory);
 
-					var rv = new AssemblyPreparerInfo (inputPath, outputPath, isTrimmable, trimMode);
+					var rv = new AssemblyPreparerInfo (inputPath, outputPath, originalInputPath, isTrimmable, trimMode);
 					return rv;
 				}
 
@@ -160,6 +202,7 @@ public class ReproTest : BaseClass {
 class TestLogger : IToolLog {
 	public int Verbosity => 0;
 	public required ApplePlatform Platform { get; set; }
+	public List<ProductException> Errors { get; } = [];
 
 	public void Log (string value)
 	{
@@ -178,6 +221,7 @@ class TestLogger : IToolLog {
 
 	public void LogError (ProductException ex)
 	{
+		Errors.Add (ex);
 		Console.WriteLine (ex.ToString ());
 	}
 

@@ -54,16 +54,7 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFArrayGetTypeID")]
 		internal extern static /* CFTypeID */ nint GetTypeID ();
 
-		// pointer to a const struct (REALLY APPLE?)
-		static IntPtr kCFTypeArrayCallbacks_ptr_value;
-		static IntPtr kCFTypeArrayCallbacks_ptr {
-			get {
-				// FIXME: right now we can't use [Fields] for GetIndirect
-				if (kCFTypeArrayCallbacks_ptr_value == IntPtr.Zero)
-					kCFTypeArrayCallbacks_ptr_value = Dlfcn.GetIndirect (Libraries.CoreFoundation.Handle, "kCFTypeArrayCallBacks");
-				return kCFTypeArrayCallbacks_ptr_value;
-			}
-		}
+		static IntPtr kCFTypeArrayCallbacks_ptr = _CFTypeArrayCallbacks;
 
 		internal static CFArray FromIntPtrs (params NativeHandle [] values)
 		{

@@ -1,17 +1,17 @@
 using CoreFoundation;
 
 namespace Symbols {
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSSymbolEffect : NSCopying, NSSecureCoding { }
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSSymbolContentTransition : NSCopying, NSSecureCoding { }
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSSymbolEffectOptions : NSCopying, NSSecureCoding {
@@ -73,7 +73,7 @@ namespace Symbols {
 		NSSymbolEffectOptions Get (NSSymbolEffectOptionsRepeatBehavior behavior);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolPulseEffect {
@@ -88,7 +88,7 @@ namespace Symbols {
 		NSSymbolPulseEffect WholeSymbol { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolBounceEffect {
@@ -111,7 +111,7 @@ namespace Symbols {
 		NSSymbolBounceEffect WholeSymbol { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolVariableColorEffect {
@@ -138,7 +138,7 @@ namespace Symbols {
 		NSSymbolVariableColorEffect DimInactiveLayers { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolScaleEffect {
@@ -161,7 +161,7 @@ namespace Symbols {
 		NSSymbolScaleEffect WholeSymbol { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolAppearEffect {
@@ -184,7 +184,7 @@ namespace Symbols {
 		NSSymbolAppearEffect WholeSymbol { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolEffect))]
 	[DisableDefaultCtor]
 	interface NSSymbolDisappearEffect {
@@ -207,7 +207,7 @@ namespace Symbols {
 		NSSymbolDisappearEffect WholeSymbol { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolContentTransition))]
 	[DisableDefaultCtor]
 	interface NSSymbolReplaceContentTransition {
@@ -239,7 +239,7 @@ namespace Symbols {
 		NSSymbolMagicReplaceContentTransition CreateMagicTransition (NSSymbolReplaceContentTransition fallback);
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSSymbolContentTransition))]
 	[DisableDefaultCtor]
 	interface NSSymbolAutomaticContentTransition {

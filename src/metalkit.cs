@@ -128,31 +128,23 @@ namespace MetalKit {
 		[NullAllowed, Export ("colorspace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("preferredDevice")]
 		IMTLDevice PreferredDevice { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("preferredDrawableSize")]
 		CGSize PreferredDrawableSize { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("depthStencilAttachmentTextureUsage", ArgumentSemantic.Assign)]
 		MTLTextureUsage DepthStencilAttachmentTextureUsage { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("multisampleColorAttachmentTextureUsage", ArgumentSemantic.Assign)]
 		MTLTextureUsage MultisampleColorAttachmentTextureUsage { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("depthStencilStorageMode", ArgumentSemantic.Assign)]
 		MTLStorageMode DepthStencilStorageMode { get; set; }
 
@@ -241,7 +233,7 @@ namespace MetalKit {
 		[Field ("MTKTextureLoaderOptionOrigin")]
 		NSString OriginKey { get; }
 
-		[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("MTKTextureLoaderOptionLoadAsArray")]
 		NSString LoadAsArrayKey { get; }
 
@@ -286,7 +278,7 @@ namespace MetalKit {
 		///         <remarks>To be added.</remarks>
 		bool Srgb { get; set; }
 
-		[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		bool LoadAsArray { get; set; }
 	}
 

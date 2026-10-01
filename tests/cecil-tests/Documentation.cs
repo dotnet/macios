@@ -242,6 +242,9 @@ namespace Cecil.Tests {
 					// It's not possible to add xml documentation to getters/setters (it's added to the property itself), so don't verify those.
 					if (md.IsPropertyAccessor ())
 						continue;
+					// It's not possible to add xml documentation to event add/remove accessors (it's added to the event itself), so don't verify those.
+					if (md.IsEventMethod ())
+						continue;
 					name = "M:" + GetDocId (md);
 				} else if (member is PropertyDefinition pd) {
 					name = "P:" + GetDocId (pd);
@@ -321,6 +324,11 @@ namespace Cecil.Tests {
 
 		static string GetDocId (TypeReference tr)
 		{
+			// Roslyn currently renders function pointers as an empty type name in DocIds (e.g. "M:C.M(,System.Int32)").
+			// Ref: https://github.com/dotnet/roslyn/issues/48363
+			if (tr is FunctionPointerType)
+				return "";
+
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;

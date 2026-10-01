@@ -9,6 +9,11 @@ namespace Xamarin.BindingTests {
 	public class ProtocolTest {
 		bool HasProtocolAttributes {
 			get {
+				// The [Protocol] attributes are removed by a custom trimmer step (RemoveAttributesStep),
+				// which doesn't run at all when ILLink is skipped, so the attributes are still around.
+				if (TestRuntime.IsILLinkSkipped)
+					return true;
+
 				if (TestRuntime.IsLinkAll) {
 #if OPTIMIZEALL
 					var registeredProtocols = true;
@@ -228,6 +233,85 @@ namespace Xamarin.BindingTests {
 			public NSString RequiredReadonlyProperty {
 				get { return null!; }
 			}
+		}
+
+		class BindAsProtocolImplementation : NSObject, IBindAsProtocol {
+			public StrongEnum Value { get; private set; }
+			public StrongEnum Other { get; private set; }
+
+			public void SetStrongEnum (StrongEnum value)
+			{
+				Value = value;
+			}
+
+			public void SetStrongEnums (StrongEnum value, StrongEnum other)
+			{
+				Value = value;
+				Other = other;
+			}
+
+			public void GetValues (string [] identifiers, StrongEnum value, Action<string []> handler)
+			{
+				Value = value;
+				handler (identifiers.Reverse ().ToArray ());
+			}
+		}
+
+		class BindAsProtocolModelSubclass : BindAsProtocol {
+			public StrongEnum Value { get; private set; }
+
+			public override void GetValues (string [] identifiers, StrongEnum value, Action<string []> handler)
+			{
+				Value = value;
+				handler (identifiers.Reverse ().ToArray ());
+			}
+		}
+
+		[Test]
+		public void BindAsProtocolParameter ()
+		{
+			using var implementation = new BindAsProtocolImplementation ();
+			var value = StrongEnum.B.GetConstant ();
+			if (value is null)
+				throw new InvalidOperationException ("Could not get the native StrongEnum.B value.");
+			Messaging.void_objc_msgSend_IntPtr (implementation.Handle, Selector.GetHandle ("setStrongEnum:"), value.Handle);
+			GC.KeepAlive (value);
+			Assert.That (implementation.Value, Is.EqualTo (StrongEnum.B));
+		}
+
+		[Test]
+		public void MultipleBindAsProtocolParameters ()
+		{
+			using var implementation = new BindAsProtocolImplementation ();
+			var value = StrongEnum.B.GetConstant ();
+			var other = StrongEnum.C.GetConstant ();
+			if (value is null || other is null)
+				throw new InvalidOperationException ("Could not get the native strong enum values.");
+			Messaging.void_objc_msgSend_IntPtr_IntPtr (implementation.Handle, Selector.GetHandle ("setStrongEnum:other:"), value.Handle, other.Handle);
+			GC.KeepAlive (value);
+			GC.KeepAlive (other);
+			Assert.That (implementation.Value, Is.EqualTo (StrongEnum.B));
+			Assert.That (implementation.Other, Is.EqualTo (StrongEnum.C));
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void BindAsProtocolParameterWithBlock (bool useModel)
+		{
+			using NSObject implementation = useModel ? new BindAsProtocolModelSubclass () : new BindAsProtocolImplementation ();
+			string []? values = null;
+			var callbackCount = 0;
+
+			// Use the generated messaging helper to avoid managed interface dispatch, including when legacy extensions are disabled.
+			IBindAsProtocol._GetValues ((IBindAsProtocol) implementation, ["first", "second"], StrongEnum.C, result => {
+				values = result;
+				callbackCount++;
+			});
+
+			var value = implementation is BindAsProtocolModelSubclass model ? model.Value : ((BindAsProtocolImplementation) implementation).Value;
+			Assert.That (value, Is.EqualTo (StrongEnum.C), "Strong enum");
+			Assert.That (callbackCount, Is.EqualTo (1), "Callback count");
+			Assert.That (values, Is.EqualTo (new [] { "second", "first" }), "Callback values");
 		}
 
 		void CleanupSignatures (objc_method_description [] methods)

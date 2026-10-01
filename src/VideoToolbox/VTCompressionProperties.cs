@@ -517,8 +517,8 @@ namespace VideoToolbox {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public VTAlphaChannelMode AlphaChannelMode {
 			get => VTAlphaChannelModeExtensions.GetValue (GetNSStringValue (VTCompressionPropertyKey.AlphaChannelMode)!);

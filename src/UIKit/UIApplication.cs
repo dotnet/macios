@@ -18,8 +18,7 @@ using CoreFoundation;
 namespace UIKit {
 	/// <include file="../../docs/api/UIKit/UIKitThreadAccessException.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIKitThreadAccessException']/*" />
 	public class UIKitThreadAccessException : Exception {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="UIKitThreadAccessException" /> class.</summary>
 		public UIKitThreadAccessException () : base ("UIKit Consistency error: you are calling a UIKit method that can only be invoked from the UI thread.")
 		{
 		}
@@ -27,27 +26,9 @@ namespace UIKit {
 
 	public partial class UIApplication
 	: UIResponder {
-		/// <summary>Determines whether the debug builds of MonoTouch will enforce that calls done to UIKit are only issued from the UI thread.</summary>
-		///         <remarks>
-		///           <para>
-		///             On debug builds, MonoTouch will enforce that calls made to
-		///             UIKit APIs are only done from the UIKit thread.  This is
-		///             useful to spot code that could inadvertently use UIKit from
-		///             a non-UI thread which can corrupt the UIKit state and could
-		///             lead to very hard to debug problems.
-		///           </para>
-		///           <para>
-		///             But sometimes it might be useful to disable this check,
-		///             either because you can ensure that UIKit is not in use at
-		///             this point or because MonoTouch might be enforcing the
-		///             checks in APIs that might have later been relaxed or made
-		///             thread safe by iOS.
-		///
-		///           </para>
-		///         </remarks>
-		public static bool CheckForIllegalCrossThreadCalls = true;
+		/// <inheritdoc cref="Runtime.CheckForIllegalCrossThreadCalls" />
+		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
-		///         <remarks>To be added.</remarks>
 		public static bool CheckForEventAndDelegateMismatches = true;
 
 		// We link with __Internal here so that this function is interposable from third-party native libraries.
@@ -72,6 +53,12 @@ namespace UIKit {
 		// NOTE: must be called from the main thread, e.g. for extensions
 		internal static void InitializeApplication ()
 		{
+			// The linker replaces the 'Runtime.CheckForIllegalCrossThreadCalls' getter with a constant value, so when the UI
+			// thread checks are disabled the assignment below (and the 'CheckForIllegalCrossThreadCalls' field
+			// itself, unless something else references it) is trimmed away.
+			if (Runtime.CheckForIllegalCrossThreadCalls)
+				CheckForIllegalCrossThreadCalls = true;
+
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
 		}
 
@@ -149,13 +136,9 @@ namespace UIKit {
 		}
 	}
 
-	/// <summary>Provides data for the  event.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>Provides data for the <see cref="UIContentSizeCategory" /> changed event.</summary>
 	public partial class UIContentSizeCategoryChangedEventArgs {
 		/// <summary>The new size of the content, e.g., the new font size, in points.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public UIContentSizeCategory NewValue {
 			get {
 				return UIContentSizeCategoryExtensions.GetValue (WeakNewValue);

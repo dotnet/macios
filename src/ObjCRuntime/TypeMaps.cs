@@ -19,7 +19,10 @@ abstract class NSObjectProxyAttribute : Attribute {
 
 	public abstract NSObject? CreateObject (IntPtr handle);
 	public abstract IntPtr GetClassHandle (out bool is_custom_type);
-	public abstract IntPtr LookupUnmanagedFunction (string? name);
+
+	// Most types don't have any UnmanagedCallersOnly methods, and the trimmable static registrar
+	// doesn't override this method for those types (which keeps the type map assemblies smaller).
+	public virtual IntPtr LookupUnmanagedFunction (string? name) => IntPtr.Zero;
 }
 
 // The trimmable static registrar makes this type public when needed.

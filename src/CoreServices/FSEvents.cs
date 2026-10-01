@@ -477,6 +477,8 @@ namespace CoreServices {
 			instance?.OnEvents (events);
 		}
 
+		/// <summary>Raised when the file system events stream reports one or more changes to the watched paths.</summary>
+		/// <remarks>The event argument provides the batch of <see cref="CoreServices.FSEvent" /> instances that describe the changes. Events are only delivered while the stream is scheduled on a run loop or dispatch queue and has been started.</remarks>
 		public event FSEventStreamEventsHandler? Events;
 
 		/// <param name="events">To be added.</param>

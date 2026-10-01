@@ -1,15 +1,34 @@
+using System.Collections.Generic;
+
 using AVFoundation;
 using CoreGraphics;
 using CoreVideo;
 using VideoToolbox;
 
 namespace SensitiveContentAnalysis {
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+	public enum SCSensitiveContentType {
+		[Field ("SCSensitiveContentTypeSexuallyExplicit")]
+		SexuallyExplicit,
+
+		[Field ("SCSensitiveContentTypeGoreOrViolence")]
+		GoreOrViolence,
+	}
+
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCSensitivityAnalysis {
 		[Export ("sensitive")]
 		bool Sensitive { [Bind ("isSensitive")] get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("detectedTypes", ArgumentSemantic.Copy)]
+		NSSet<NSString> WeakDetectedTypes { get; }
+
+		[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Wrap ("WeakDetectedTypes.ToHashSet (v => SCSensitiveContentTypeExtensions.GetValue (v))")]
+		HashSet<SCSensitiveContentType> DetectedTypes { get; }
 
 		// From the VideoStreamAnalysis (SCSensitiveAnalysis) category
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
@@ -27,7 +46,7 @@ namespace SensitiveContentAnalysis {
 		bool ShouldMuteAudio { get; }
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
 		Disabled = 0,
@@ -35,7 +54,7 @@ namespace SensitiveContentAnalysis {
 		DescriptiveInterventions = 2,
 	}
 
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SCSensitivityAnalyzer {
 		[Export ("analysisPolicy", ArgumentSemantic.Assign)]
@@ -74,9 +93,15 @@ namespace SensitiveContentAnalysis {
 		[NullAllowed]
 		SCVideoStreamAnalysisChangeHandler AnalysisChangedHandler { get; set; }
 
+		/// <summary>Creates a new <see cref="SCVideoStreamAnalyzer" /> instance with the specified participant and stream direction.</summary>
+		/// <param name="participantUuid">The unique identifier for a participant in the conference call.</param>
+		/// <param name="streamDirection">Specifies whether the stream comes from the local camera or a remote location.</param>
+		/// <param name="error">The error object if an error occurs.</param>
+		/// <returns>A new <see cref="SCVideoStreamAnalyzer" /> instance with the specified participant and stream direction if successful; otherwise, <see langword="null" />.</returns>
 		[Export ("initWithParticipantUUID:streamDirection:error:")]
-		[Internal]
-		NativeHandle _InitWithParticipantUuid (string participantUuid, SCVideoStreamAnalyzerStreamDirection streamDirection, [NullAllowed] out NSError error);
+		[FactoryMethod]
+		[return: NullAllowed]
+		NativeHandle Constructor (string participantUuid, SCVideoStreamAnalyzerStreamDirection streamDirection, [NullAllowed] out NSError error);
 
 		[Export ("analyzePixelBuffer:")]
 		void AnalyzePixelBuffer (CVPixelBuffer pixelBuffer);

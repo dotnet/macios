@@ -1,0 +1,2 @@
+# The "*.csproj.user" files here are intentionally checked in (they are what the test tests).
+!*.csproj.user

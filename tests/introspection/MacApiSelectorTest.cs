@@ -116,6 +116,10 @@ namespace Introspection {
 			if (SkipAccessibilitySelectors (type, selectorName))
 				return true;
 
+			if (type.Name == "AVCaptureDevice" && selectorName == "setContinuousAutoFocusTrackingLensPositionBias:")
+				// This setter is declared for macOS 27 but is not implemented in the macOS 27 runtime.
+				return true;
+
 			switch (selectorName) {
 			case "encodeWithCoder:":
 				switch (type.Name) {
@@ -201,6 +205,15 @@ namespace Introspection {
 			case "options":
 				switch (type.Name) {
 				case "AVAssetDownloadTask":
+					return true;
+				}
+				break;
+			// These Pro Video Storage selectors are declared for macOS 27 but are not implemented in the macOS 27 runtime.
+			case "isProVideoStorageSupported":
+			case "usesProVideoStorage":
+			case "setUsesProVideoStorage:":
+				switch (type.Name) {
+				case "AVAssetWriter":
 					return true;
 				}
 				break;

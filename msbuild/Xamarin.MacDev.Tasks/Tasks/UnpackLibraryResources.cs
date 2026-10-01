@@ -362,6 +362,11 @@ namespace Xamarin.MacDev.Tasks {
 					var item = new TaskItem (path);
 					item.SetMetadata ("LogicalName", rpath);
 					item.SetMetadata ("Optimize", "false");
+					// Original BundleResource items are embedded without processing. Mark them so that
+					// the consuming app can apply its own optimization settings after unpacking them,
+					// while resources already processed by a library remain untouched.
+					if (contentType == "item" && resourceType == ResourceType.BundleResource)
+						item.SetMetadata ("IsOriginalResource", "true");
 					item.SetMetadata ("BundledInAssembly", assembly);
 
 					if (file.Exists && file.LastWriteTimeUtc >= asmWriteTime) {

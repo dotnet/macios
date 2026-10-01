@@ -8,12 +8,6 @@
 	<dict>
 		<key>MacCatalyst</key>
 		<array>
-			<string>15.0</string>
-			<string>15.2</string>
-			<string>15.4</string>
-			<string>16.1</string>
-			<string>16.2</string>
-			<string>16.4</string>
 			<string>17.0</string>
 			<string>17.2</string>
 			<string>17.4</string>
@@ -29,6 +23,7 @@
 			<string>26.2</string>
 			<string>26.4</string>
 			<string>26.5</string>
+			<string>27.0</string>
 		</array>
 	</dict>
 	<key>SupportedTargetPlatformVersions</key>
@@ -68,6 +63,7 @@
 			<string>26.2</string>
 			<string>26.4</string>
 			<string>26.5</string>
+			<string>27.0</string>
 		</array>
 	</dict>
 	<key>MacCatalystVersionMap</key>
@@ -132,6 +128,8 @@
 		<string>26.4</string>
 		<key>26.5</key>
 		<string>26.5</string>
+		<key>27.0</key>
+		<string>27.0</string>
 	</dict>
 	<key>RecommendedXcodeVersion</key>
 	<string>@XCODE_VERSION@</string>
@@ -141,16 +139,10 @@
 	<key>Features</key>
 	<array>
 		<string>mlaunch-launchdevbundleid</string>
-		<string>mlaunch-observe-extension</string>
 		<string>mlaunch-launch-simulator</string>
 		<string>mlaunch-install-progress</string>
-		<string>mlaunch-watchos-complications</string>
 		<string>mlaunch-wireless-devices</string>
 		<string>http-client-handlers</string>
-		<string>mono-symbol-archive</string>
-		<string>sgen-concurrent-gc</string> <!-- this means experimental support for the concurrent GC -->
-		<string>sgen-concurrent</string> <!-- this means stable support for the concurrent GC -->
-		<string>arm64_32</string>
 		<string>altool</string>
 		<string>maccatalyst</string>
 	</array>

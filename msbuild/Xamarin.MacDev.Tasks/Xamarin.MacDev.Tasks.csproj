@@ -39,16 +39,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
     <ProjectReference Include="..\..\tools\assembly-preparer\assembly-preparer.csproj" />
-    <ProjectReference Include="..\Xamarin.Localization.MSBuild\Xamarin.Localization.MSBuild.csproj">
-      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
-    </ProjectReference>
     <!-- We need the net472 implementation, otherwise the Build agent needs to be a net5.0 app -->
     <Reference Include="ILLink.Tasks">
       <HintPath>$(PkgMicrosoft_NET_ILLink_Tasks)\tools\netframework\ILLink.Tasks.dll</HintPath>
     </Reference>
     <Reference Include="ILStrip">
       <!-- We need the net472 impl, otherwise the Build agent needs to be a net5.0 app -->
-      <HintPath>$(PkgMicrosoft_NET_Runtime_MonoTargets_Sdk)\tasks\net472\MonoTargetsTasks.dll</HintPath>
+      <HintPath>$(PkgMicrosoft_NET_Runtime_MonoTargets_Sdk)\tasks\netframework\MonoTargetsTasks.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -71,6 +68,9 @@
   </Target>
 
   <ItemGroup>
+    <Compile Include="..\Versions.g.cs">
+      <Link>Versions.g.cs</Link>
+    </Compile>
     <Compile Include="..\..\tools\common\JsonExtensions.cs">
       <Link>external\JsonExtensions.cs</Link>
     </Compile>
@@ -89,10 +89,77 @@
     <Compile Include="..\..\tools\common\NullableAttributes.cs">
       <Link>external\NullableAttributes.cs</Link>
     </Compile>
-    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add it again from the EmbeddedResource item, this avoids a warning about the file being compiled twice -->
+    <Compile Remove="Errors.designer.cs" /> <!-- The 'CoreResGen' target will add the generated file again from the EmbeddedResource item -->
     <Compile Include="..\..\tools\common\SdkVersions.cs">
       <Link>external\SdkVersions.cs</Link>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/MSBStrings.resx">
+      <Type>Resx</Type>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MSBStrings.Designer.cs</LastGenOutput>
+      <StronglyTypedFileName>$(IntermediateOutputPath)MSBStrings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
+      <StronglyTypedClassName>MSBStrings</StronglyTypedClassName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings</ManifestResourceName>
+      <GenerateResource>true</GenerateResource>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.cs.resx">
+      <Link>MSBStrings.cs.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.cs</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.de.resx">
+      <Link>MSBStrings.de.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.de</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.es.resx">
+      <Link>MSBStrings.es.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.es</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.fr.resx">
+      <Link>MSBStrings.fr.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.fr</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.it.resx">
+      <Link>MSBStrings.it.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.it</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ja.resx">
+      <Link>MSBStrings.ja.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ja</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ko.resx">
+      <Link>MSBStrings.ko.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ko</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.pl.resx">
+      <Link>MSBStrings.pl.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.pl</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.pt-BR.resx">
+      <Link>MSBStrings.pt-BR.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.pt-BR</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ru.resx">
+      <Link>MSBStrings.ru.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ru</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.tr.resx">
+      <Link>MSBStrings.tr.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.tr</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.zh-Hans.resx">
+      <Link>MSBStrings.zh-Hans.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.zh-Hans</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.zh-Hant.resx">
+      <Link>MSBStrings.zh-Hant.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.zh-Hant</ManifestResourceName>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -100,7 +167,7 @@
 
     <!--
 
-      The Xamarin.MacDev.Tasks.sln solution is build with dotnet, while other
+      The Xamarin.MacDev.Tasks.sln solution is built with dotnet, while other
       projects are still built with msbuild. This becomes a problem when
       generating Errors.designer.cs, because depending on the runtime the
       output is different.
@@ -110,7 +177,9 @@
       modified in git. This is quite annoying, but it also breaks the api
       comparison, which depends on the build not leaving modified files
       behind. So for now, we generate Errors.designer.cs separately
-      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version.
+      for Xamarin.MacDev.Tasks.sln to not conflict with the mtouch version,
+      and in each target framework's intermediate output directory so that
+      parallel builds don't write to the same file.
 
     -->
 
@@ -119,7 +188,7 @@
       <LastGenOutput>Errors.designer.cs</LastGenOutput>
       <CustomToolNamespace>Xamarin.Localization.MSBuild</CustomToolNamespace>
       <ManifestResourceName>Xamarin.Localization.MSBuild.Errors</ManifestResourceName>
-      <StronglyTypedFileName>Errors.designer.cs</StronglyTypedFileName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)Errors.designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
       <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
       <StronglyTypedClassName>Errors</StronglyTypedClassName>

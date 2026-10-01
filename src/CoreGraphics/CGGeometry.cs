@@ -34,15 +34,14 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGGeometry.h
 	/// <summary>Coordinates used to establish the edge in RectangleFExtensions.Divide.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CGRectEdge : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The edge with the minimum X-coordinate.</summary>
 		MinXEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The edge with the minimum Y-coordinate.</summary>
 		MinYEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The edge with the maximum X-coordinate.</summary>
 		MaxXEdge,
-		/// <summary>To be added.</summary>
+		/// <summary>The edge with the maximum Y-coordinate.</summary>
 		MaxYEdge,
 	}
 

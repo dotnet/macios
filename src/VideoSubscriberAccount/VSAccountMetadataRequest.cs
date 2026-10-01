@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 namespace VideoSubscriberAccount {
 
 	public partial class VSAccountMetadataRequest {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the authentication schemes supported by the account provider.</summary>
+		/// <value>An array of supported authentication schemes.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

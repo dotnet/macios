@@ -9,5 +9,6 @@
   "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file",
   "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net11.0-ios/description": "Target net11.0-ios",
   "symbols/Framework/choices/net10.0-ios/description": "Target net10.0-ios"
 }

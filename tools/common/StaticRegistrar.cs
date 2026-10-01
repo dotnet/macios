@@ -217,6 +217,7 @@ namespace Registrar {
 		const uint INVALID_TOKEN_REF = 0xFFFFFFFF;
 
 		Dictionary<ICustomAttribute, MethodDefinition>? protocol_member_method_map;
+		Dictionary<TypeReference, Dictionary<MethodDefinition, List<MethodDefinition>>?> cached_interface_method_mappings = new ();
 
 		public Dictionary<ICustomAttribute, MethodDefinition> ProtocolMemberMethodMap {
 			get {
@@ -367,14 +368,19 @@ namespace Registrar {
 		public Dictionary<MethodDefinition, List<MethodDefinition>>? PrepareInterfaceMethodMapping (TypeReference type)
 		{
 			TypeDefinition td = type.Resolve ();
+			if (cached_interface_method_mappings.TryGetValue (td, out var cachedMethodMapping))
+				return cachedMethodMapping;
+
 			List<TypeDefinition>? ifaces = null;
 			List<MethodDefinition> iface_methods;
 			Dictionary<MethodDefinition, List<MethodDefinition>>? rv = null;
 
 			CollectInterfaces (ref ifaces, td);
 
-			if (ifaces is null)
+			if (ifaces is null) {
+				cached_interface_method_mappings [td] = null;
 				return null;
+			}
 
 			iface_methods = new List<MethodDefinition> ();
 			foreach (var iface in ifaces) {
@@ -384,13 +390,24 @@ namespace Registrar {
 						if (!iface_methods.Contains (imethod))
 							iface_methods.Add (imethod);
 				}
-				if (!iface.HasMethods)
-					continue;
-
-				foreach (var imethod in iface.Methods) {
-					if (!iface_methods.Contains (imethod))
-						iface_methods.Add (imethod);
+				if (iface.HasMethods) {
+					foreach (var imethod in iface.Methods) {
+						if (!iface_methods.Contains (imethod))
+							iface_methods.Add (imethod);
+					}
 				}
+#if ASSEMBLY_PREPARER
+				// When post-processing assemblies, the protocol interface methods may have been trimmed
+				// away, and we're not in the same process as the trimmer, so we can't use the methods the
+				// trimmer stored for us. Instead look up any missing methods in the pre-trim assemblies.
+				if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+					var methodNames = new HashSet<string> (iface_methods.Select (v => v.FullName), StringComparer.Ordinal);
+					foreach (var imethod in GetPreTrimMethods (iface)) {
+						if (methodNames.Add (imethod.FullName))
+							iface_methods.Add (imethod);
+					}
+				}
+#endif
 			}
 
 			// We only care about implementators declared in 'type'.
@@ -402,13 +419,21 @@ namespace Registrar {
 
 				foreach (var ifaceMethod in impl.Overrides) {
 					var ifaceMethodDef = ifaceMethod.Resolve ();
-					if (!iface_methods.Contains (ifaceMethodDef)) {
-						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
-					} else {
-						iface_methods.Remove (ifaceMethodDef);
-
-						AddMethodMapping (ref rv, impl, ifaceMethodDef);
+					if (ifaceMethodDef is null || !iface_methods.Contains (ifaceMethodDef)) {
+						// 'iface_methods' may contain methods from the pre-trim assemblies, which won't be
+						// reference-equal to the resolved method (and the resolved method may not even exist
+						// anymore if it's been trimmed away), so also try matching by name.
+						ifaceMethodDef = iface_methods.FirstOrDefault (v => v.FullName == ifaceMethod.FullName);
 					}
+
+					if (ifaceMethodDef is null) {
+						// The type may implement interfaces which aren't protocol interfaces, so this is OK.
+						continue;
+					}
+
+					iface_methods.Remove (ifaceMethodDef);
+
+					AddMethodMapping (ref rv, impl, ifaceMethodDef);
 				}
 			}
 
@@ -425,6 +450,7 @@ namespace Registrar {
 				}
 			}
 
+			cached_interface_method_mappings [td] = rv;
 			return rv;
 		}
 
@@ -632,24 +658,108 @@ namespace Registrar {
 		// Look for linked away attributes as well as attributes on the attribute provider.
 		IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
 		{
+#if ASSEMBLY_PREPARER
+			var found = false;
+#endif
 #if !LEGACY_TOOLS
 			var dict = LinkContext?.Annotations?.GetCustomAnnotations (name);
 			if (dict?.TryGetValue (provider, out var annotations) == true) {
 				var attributes = (IEnumerable<ICustomAttribute>) annotations;
 				foreach (var attrib in attributes) {
-					if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					if (IsAttributeMatch (attrib, @namespace, name, inherits)) {
+#if ASSEMBLY_PREPARER
+						found = true;
+#endif
 						yield return attrib;
+					}
 				}
 			}
 #endif
 
 			if (provider.HasCustomAttributes) {
 				foreach (var attrib in provider.CustomAttributes) {
-					if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					if (IsAttributeMatch (attrib, @namespace, name, inherits)) {
+#if ASSEMBLY_PREPARER
+						found = true;
+#endif
 						yield return attrib;
+					}
 				}
 			}
+
+#if ASSEMBLY_PREPARER
+			if (found || !ShouldReadAttributeFromPreTrimAssembly (@namespace, name))
+				yield break;
+
+			var preTrimProvider = GetPreTrimAttributeProvider (provider);
+			if (preTrimProvider is null)
+				yield break;
+			foreach (var attrib in preTrimProvider.CustomAttributes) {
+				if (IsAttributeMatch (attrib, @namespace, name, inherits))
+					yield return attrib;
+			}
+#endif
 		}
+
+#if ASSEMBLY_PREPARER
+		bool ShouldReadAttributeFromPreTrimAssembly (string @namespace, string name)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
+				return false;
+
+			if (@namespace != Foundation)
+				return false;
+
+			if (name == StringConstants.ProtocolMemberAttribute)
+				return true;
+
+			return App.TrimExportAttributes == true && name == StringConstants.ExportAttribute;
+		}
+
+		ICustomAttributeProvider? GetPreTrimAttributeProvider (ICustomAttributeProvider postTrimProvider)
+		{
+			var resolver = App.PreTrimAssemblyResolver;
+			if (resolver is null)
+				throw new InvalidOperationException ("The pre-trim assembly resolver is not available.");
+
+			switch (postTrimProvider) {
+			case AssemblyDefinition assembly:
+				return resolver.Resolve (assembly.Name);
+			case ModuleDefinition module:
+				var preTrimAssembly = resolver.Resolve (module.Assembly.Name);
+				return GetSinglePreTrimProvider (preTrimAssembly.Modules, v => v.Name == module.Name, module);
+			case TypeDefinition type:
+				var preTrimModule = (ModuleDefinition?) GetPreTrimAttributeProvider (type.Module);
+				return preTrimModule?.GetType (type.FullName);
+			case MethodDefinition method:
+				var preTrimType = (TypeDefinition?) GetPreTrimAttributeProvider (method.DeclaringType);
+				return preTrimType is null ? null : GetSinglePreTrimProvider (preTrimType.Methods, v => v.FullName == method.FullName && v.GenericParameters.Count == method.GenericParameters.Count, method);
+			case PropertyDefinition property:
+				var preTrimPropertyType = (TypeDefinition?) GetPreTrimAttributeProvider (property.DeclaringType);
+				return preTrimPropertyType is null ? null : GetSinglePreTrimProvider (preTrimPropertyType.Properties, v => v.FullName == property.FullName, property);
+			case ParameterDefinition parameter:
+				var preTrimMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) parameter.Method);
+				if (preTrimMethod is null || parameter.Index < 0 || parameter.Index >= preTrimMethod.Parameters.Count)
+					return null;
+				return preTrimMethod.Parameters [parameter.Index];
+			case MethodReturnType returnType:
+				var preTrimReturnMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) returnType.Method);
+				return preTrimReturnMethod?.MethodReturnType;
+			default:
+				throw new InvalidOperationException ($"Unable to map the post-trim custom attribute provider '{postTrimProvider}' ({postTrimProvider.GetType ().FullName}) to a pre-trim provider.");
+			}
+		}
+
+		static T? GetSinglePreTrimProvider<T> (IEnumerable<T> providers, Func<T, bool> predicate, ICustomAttributeProvider postTrimProvider) where T : class, ICustomAttributeProvider
+		{
+			var matches = providers.Where (predicate).Take (2).ToArray ();
+			if (matches.Length == 1)
+				return matches [0];
+			if (matches.Length == 0)
+				return null;
+			throw new InvalidOperationException ($"The post-trim custom attribute provider '{postTrimProvider}' maps to multiple pre-trim providers.");
+		}
+#endif
 
 		public bool TryGetAttribute (ICustomAttributeProvider provider, string @namespace, string attributeName, [NotNullWhen (true)] out ICustomAttribute? attribute)
 		{
@@ -1156,6 +1266,13 @@ namespace Registrar {
 			return type;
 		}
 
+		protected override IEnumerable<TypeReference> GetGenericArguments (TypeReference type)
+		{
+			if (type is GenericInstanceType git)
+				return git.GenericArguments;
+			return [];
+		}
+
 		protected override bool AreEqual (TypeReference? a, TypeReference? b)
 		{
 			if (a == b)
@@ -1312,7 +1429,13 @@ namespace Registrar {
 
 		protected override bool TryGetAttribute (TypeReference type, string attributeNamespace, string attributeType, [NotNullWhen (true)] out object? attribute)
 		{
-			bool res = TryGetAttribute (type.Resolve (), attributeNamespace, attributeType, out var attrib);
+			var resolvedType = type.Resolve ();
+			if (resolvedType is null) {
+				attribute = null;
+				return false;
+			}
+
+			bool res = TryGetAttribute (resolvedType, attributeNamespace, attributeType, out var attrib);
 			attribute = attrib;
 			return res;
 		}
@@ -1527,23 +1650,28 @@ namespace Registrar {
 			return result;
 		}
 
+#if ASSEMBLY_PREPARER
+		// Returns the methods the given type had before it was trimmed. Returns an empty enumerable if the
+		// pre-trim assemblies aren't available (which is the case unless we're post-processing assemblies).
+		IEnumerable<MethodDefinition> GetPreTrimMethods (TypeDefinition type)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
+				return [];
+
+			var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (type.Module.Assembly.Name);
+			var preTrimType = preTrimAssembly?.MainModule.GetType (type.FullName);
+			if (preTrimType is null || !preTrimType.HasMethods)
+				return [];
+
+			return preTrimType.Methods;
+		}
+#endif
+
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{
 			var td = type.Resolve ();
 			if (td is null)
 				yield break;
-
-#if ASSEMBLY_PREPARER
-			// When post-processing assemblies with the trimmable static registrar, the [ProtocolMember]
-			// attributes have been removed by the trimmer, so read them from the pre-trim (untrimmed)
-			// assemblies instead.
-			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
-				var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (td.Module.Assembly.Name);
-				var preTrimType = preTrimAssembly?.MainModule.GetType (td.FullName);
-				if (preTrimType is not null)
-					td = preTrimType;
-			}
-#endif
 
 			foreach (var ca in GetCustomAttributes (td, Foundation, StringConstants.ProtocolMemberAttribute)) {
 				var rv = new ProtocolMemberAttribute ();
@@ -1693,6 +1821,76 @@ namespace Registrar {
 
 			return false;
 		}
+
+#if !LEGACY_TOOLS
+		IEnumerable<ICustomAttribute> GetAvailabilityAttributes (TypeReference type)
+		{
+			var td = type.Resolve ();
+			if (td is null)
+				yield break;
+
+			if (td.HasCustomAttributes) {
+				foreach (var attribute in td.CustomAttributes)
+					yield return attribute;
+			}
+
+			if (AvailabilityAnnotations is not null && AvailabilityAnnotations.TryGetValue (td, out var attributeObjects)) {
+				foreach (var attribute in (IEnumerable<ICustomAttribute>) attributeObjects)
+					yield return attribute;
+			}
+
+#if ASSEMBLY_PREPARER
+			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+				var preTrimAssembly = App.PreTrimAssemblyResolver.Resolve (td.Module.Assembly.Name);
+				var preTrimType = preTrimAssembly?.MainModule.GetType (td.FullName);
+				if (preTrimType is not null && preTrimType.HasCustomAttributes) {
+					foreach (var attribute in preTrimType.CustomAttributes)
+						yield return attribute;
+				}
+			}
+#endif
+		}
+
+		bool IsUnavailableAtDeploymentTarget (TypeReference type)
+		{
+			if (App.DeploymentTarget is null)
+				return false;
+
+			foreach (var attribute in GetAvailabilityAttributes (type)) {
+				if (!attribute.AttributeType.Is ("System.Runtime.Versioning", "UnsupportedOSPlatformAttribute"))
+					continue;
+
+				if (!GetDotNetAvailabilityAttribute (attribute, App.Platform, out var unavailableVersion, out _))
+					continue;
+
+				// Clang diagnoses obsoleted declarations using the deployment target, not the selected SDK version.
+				if (unavailableVersion is null || unavailableVersion <= App.DeploymentTarget)
+					return true;
+			}
+
+			return false;
+		}
+
+		bool IsUnavailablePlatformRegistrarType (ObjCType type)
+		{
+			if (!IsPlatformAssemblyType (type.Type))
+				return false;
+
+			if (IsUnavailableAtDeploymentTarget (type.Type))
+				return true;
+
+			foreach (var hierarchyType in GetProtocolConformanceHierarchy (type)) {
+				if (hierarchyType.Protocols is not null) {
+					foreach (var protocol in hierarchyType.Protocols) {
+						if (IsUnavailableAtDeploymentTarget (protocol.Type))
+							return true;
+					}
+				}
+			}
+
+			return false;
+		}
+#endif
 
 		public override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
 		{
@@ -1871,7 +2069,7 @@ namespace Registrar {
 			}
 		}
 
-		public static ExportAttribute? CreateExportAttribute (IMemberDefinition candidate)
+		public ExportAttribute? CreateExportAttribute (IMemberDefinition candidate)
 		{
 			bool is_variadic = false;
 			var attribute = GetExportAttribute (candidate);
@@ -1904,16 +2102,9 @@ namespace Registrar {
 		}
 
 		// [Export] is not sealed anymore - so we cannot simply compare strings
-		public static ICustomAttribute? GetExportAttribute (ICustomAttributeProvider candidate)
+		public ICustomAttribute? GetExportAttribute (ICustomAttributeProvider candidate)
 		{
-			if (!candidate.HasCustomAttributes)
-				return null;
-
-			foreach (CustomAttribute ca in candidate.CustomAttributes) {
-				if (ca.Constructor.DeclaringType.Inherits (Foundation, StringConstants.ExportAttribute))
-					return ca;
-			}
-			return null;
+			return GetCustomAttributes (candidate, Foundation, StringConstants.ExportAttribute, inherits: true).FirstOrDefault ();
 		}
 
 		PropertyDefinition GetBasePropertyInTypeHierarchy (PropertyDefinition property)
@@ -2040,24 +2231,39 @@ namespace Registrar {
 			return false;
 		}
 
+		IEnumerable<ObjCType> GetProtocolConformanceHierarchy (ObjCType type)
+		{
+			ObjCType? current = type;
+			while (current is not null && current != current.BaseType) {
+				if (current.IsWrapper)
+					yield break;
+				yield return current;
+				current = current.BaseType;
+			}
+		}
+
+		bool IsPlatformAssemblyType (TypeReference type)
+		{
+			string assemblyName;
+			if (type.Module is null) {
+				if (LinkContext?.GetLinkedAwayType (type, out var module) is not null) {
+					assemblyName = module?.Assembly?.Name?.Name ?? "<unknown module>";
+				} else {
+					assemblyName = string.Empty;
+				}
+			} else {
+				assemblyName = type.Module.Assembly.Name.Name;
+			}
+
+			return assemblyName == PlatformAssembly;
+		}
+
 		public bool IsPlatformType (TypeReference type)
 		{
 			if (type.IsNested)
 				return false;
 
-			string aname;
-			if (type.Module is null) {
-				// This type was probably linked away
-				if (LinkContext?.GetLinkedAwayType (type, out var module) is not null) {
-					aname = module?.Assembly?.Name?.Name ?? "<unknown module>";
-				} else {
-					aname = string.Empty;
-				}
-			} else {
-				aname = type.Module.Assembly.Name.Name;
-			}
-
-			if (aname != PlatformAssembly)
+			if (!IsPlatformAssemblyType (type))
 				return false;
 
 			return Driver.GetFrameworks (App).ContainsKey (type.Namespace);
@@ -2179,6 +2385,7 @@ namespace Registrar {
 				header.WriteLine ("#import <CoreTelephony/CTCall.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCallCenter.h>");
 				header.WriteLine ("#import <CoreTelephony/CTCarrier.h>");
+				header.WriteLine ("#import <CoreTelephony/CTQuickSwitch.h>");
 				header.WriteLine ("#import <CoreTelephony/CTTelephonyNetworkInfo.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriber.h>");
 				header.WriteLine ("#import <CoreTelephony/CTSubscriberInfo.h>");
@@ -2438,6 +2645,8 @@ namespace Registrar {
 				} else if (IsNSObject (td)) {
 					if (!IsPlatformType (td))
 						return "id";
+
+					CheckNamespace (td, exceptions);
 
 					if (HasProtocolAttribute (td)) {
 						return "id<" + GetExportedTypeName (td) + ">";
@@ -2763,7 +2972,7 @@ namespace Registrar {
 #endif
 		}
 
-		void Specialize (AutoIndentStringBuilder sb, out string initialization_method)
+		void Specialize (AutoIndentStringBuilder sb, out string initialization_method, AutoIndentStringBuilder? assembly_source, bool assembly_object)
 		{
 			if (interfaces is null)
 				throw ErrorHelper.CreateError (99, Errors.MX0099, "No interfaces?");
@@ -2833,7 +3042,9 @@ namespace Registrar {
 					// A class is skipped only if it had trampolines and none survived ILC. Every other class is
 					// emitted, so we must keep its entire base class chain (their @implementation is needed as
 					// superclasses), even if a base class itself had all its trampolines trimmed away.
-					if (!hadTrampolines || survived) {
+					// A class whose class handle is still looked up from managed code that survived ILC must
+					// also be kept, even if all its trampolines were trimmed away.
+					if (!hadTrampolines || survived || App.IsClassReferencedByInlinedClassGetHandle (type.ExportedName)) {
 						var keep = type;
 						while (keep is not null && classesToKeep.Add (keep))
 							keep = keep.SuperType;
@@ -2929,6 +3140,13 @@ namespace Registrar {
 				if (@class.IsWrapper && isPlatformType)
 					continue;
 
+#if !LEGACY_TOOLS
+				if (!@class.IsProtocol && !@class.IsCategory && IsUnavailablePlatformRegistrarType (@class)) {
+					App.Log (3, "Not emitting the registrar implementation for the platform type '{0}' because it or one of its implemented protocols is unavailable at the deployment target {1}.", @class.Type.FullName, App.DeploymentTarget);
+					continue;
+				}
+#endif
+
 				if (@class.Methods is null && isPlatformType && !@class.IsProtocol && !@class.IsCategory)
 					continue;
 
@@ -2963,10 +3181,7 @@ namespace Registrar {
 					declarations.AppendFormat ("@class {0};\n", class_name);
 				}
 				var implementedProtocols = new HashSet<string> ();
-				ObjCType? tp = @class;
-				while (tp is not null && tp != tp.BaseType) {
-					if (tp.IsWrapper)
-						break; // no need to declare protocols for wrapper types, they do it already in their headers.
+				foreach (var tp in GetProtocolConformanceHierarchy (@class)) {
 					if (tp.Protocols is not null) {
 						for (int p = 0; p < tp.Protocols.Length; p++) {
 							implementedProtocols.Add (tp.Protocols [p].ProtocolName);
@@ -2976,7 +3191,6 @@ namespace Registrar {
 					}
 					if (App.Optimizations.RegisterProtocols == true && tp.AdoptedProtocols is not null)
 						implementedProtocols.UnionWith (tp.AdoptedProtocols);
-					tp = tp.BaseType;
 				}
 				implementedProtocols.Remove ("UIAppearance"); // This is not a real protocol
 				if (implementedProtocols.Count > 0) {
@@ -3164,21 +3378,27 @@ namespace Registrar {
 				map.AppendLine ();
 			}
 
-			map.AppendLine ("static const MTAssembly __xamarin_registration_assemblies [] = {");
-			int count = 0;
-			foreach (var assembly in registered_assemblies) {
-				count++;
-				if (count > 1)
-					map.AppendLine (", ");
-				map.Append ("{ \"");
-				map.Append (assembly.Name);
-				map.Append ("\", \"");
-				map.Append (assembly.Assembly.MainModule.Mvid.ToString ());
-				map.Append ("\" }");
+			if (assembly_source is not null || assembly_object)
+				map.AppendLine ("extern const MTAssembly __xamarin_registration_assemblies [];");
+
+			var count = registered_assemblies.Count;
+			if (!assembly_object) {
+				var assembly_map = assembly_source ?? map;
+				assembly_map.AppendLine (assembly_source is null ? "static const MTAssembly __xamarin_registration_assemblies [] = {" : "extern \"C\" const MTAssembly __xamarin_registration_assemblies [] = {");
+				var index = 0;
+				foreach (var assembly in registered_assemblies) {
+					if (index++ > 0)
+						assembly_map.AppendLine (", ");
+					assembly_map.Append ("{ \"");
+					assembly_map.Append (assembly.Name);
+					assembly_map.Append ("\", \"");
+					assembly_map.Append (assembly.Assembly.MainModule.Mvid.ToString ());
+					assembly_map.Append ("\" }");
+				}
+				assembly_map.AppendLine ();
+				assembly_map.AppendLine ("};");
+				assembly_map.AppendLine ();
 			}
-			map.AppendLine ();
-			map.AppendLine ("};");
-			map.AppendLine ();
 
 			if (full_token_reference_count > 0) {
 				map.AppendLine ("static const MTFullTokenReference __xamarin_token_references [] = {");
@@ -3210,6 +3430,7 @@ namespace Registrar {
 						case "CAMetalDrawable": // The header isn't available for the simulator.
 						case "MTLResourceViewPool":
 						case "MTLTensor":
+						case "MTLTensorAuxiliaryPlane":
 						case "MTLTensorBinding":
 						case "MTLTextureViewPool":
 						case var protocolName when protocolName.StartsWith ("MTL4", StringComparison.Ordinal): // Metal 4 isn't available in the simulator
@@ -3217,6 +3438,10 @@ namespace Registrar {
 							break;
 						}
 					}
+#if !LEGACY_TOOLS
+					if (!use_dynamic && IsUnavailableAtDeploymentTarget (p.Protocol.Type))
+						use_dynamic = true;
+#endif
 					if (use_dynamic) {
 						map.AppendLine ("objc_getProtocol (\"{0}\"), /* {1} */", p.Protocol.ProtocolName, p.Protocol.Type.FullName);
 					} else {
@@ -5583,13 +5808,23 @@ namespace Registrar {
 			Generate (header_path, source_path, out initialization_method);
 		}
 
-		public void Generate (string header_path, string source_path, out string initialization_method)
+		public void Generate (string header_path, string source_path, out string initialization_method, string? assembly_source_path = null, string? assembly_object_path = null)
 		{
+			if (assembly_source_path is not null && assembly_object_path is not null)
+				throw new ArgumentException ("The assembly table can only be emitted as a source or an object file.");
+
 			var sb = new AutoIndentStringBuilder ();
 			header = new AutoIndentStringBuilder ();
 			declarations = new AutoIndentStringBuilder ();
 			methods = new AutoIndentStringBuilder ();
 			interfaces = new AutoIndentStringBuilder ();
+			AutoIndentStringBuilder? assembly_source = null;
+			if (assembly_source_path is not null) {
+				assembly_source = new AutoIndentStringBuilder ();
+				assembly_source.WriteLine ("// Copyright (c) Microsoft Corporation.");
+				assembly_source.WriteLine ("// Licensed under the MIT License.");
+				assembly_source.WriteLine ();
+			}
 
 			header.WriteLine ("#pragma clang diagnostic ignored \"-Wdeprecated-declarations\"");
 			header.WriteLine ("#pragma clang diagnostic ignored \"-Wtypedef-redefinition\""); // temporary hack until we can stop including glib.h
@@ -5599,15 +5834,18 @@ namespace Registrar {
 			if (App.EnableDebug) {
 				header.WriteLine ("#define DEBUG 1");
 				methods.WriteLine ("#define DEBUG 1");
+				assembly_source?.WriteLine ("#define DEBUG 1");
 			}
 
 			if (App.XamarinRuntime == XamarinRuntime.CoreCLR) {
 				header.WriteLine ("#define CORECLR_RUNTIME");
 				methods.WriteLine ("#define CORECLR_RUNTIME");
+				assembly_source?.WriteLine ("#define CORECLR_RUNTIME");
 			}
 
 			header.WriteLine ("#include <stdarg.h>");
 			methods.WriteLine ("#include <xamarin/xamarin.h>");
+			assembly_source?.WriteLine ("#include <xamarin/xamarin.h>");
 			header.WriteLine ("#include <objc/objc.h>");
 			header.WriteLine ("#include <objc/runtime.h>");
 			header.WriteLine ("#include <objc/message.h>");
@@ -5615,7 +5853,7 @@ namespace Registrar {
 			methods.WriteLine ($"#include \"{Path.GetFileName (header_path)}\"");
 			methods.StringBuilder.AppendLine ("extern \"C\" {");
 
-			Specialize (sb, out initialization_method);
+			Specialize (sb, out initialization_method, assembly_source, assembly_object_path is not null);
 
 			methods.WriteLine ();
 			methods.AppendLine ();
@@ -5626,6 +5864,16 @@ namespace Registrar {
 			FlushTrace ();
 
 			Driver.WriteIfDifferent (App, source_path, methods.ToString (), true);
+			if (assembly_source_path is not null && assembly_source is not null)
+				Driver.WriteIfDifferent (App, assembly_source_path, assembly_source.ToString ());
+			if (assembly_object_path is not null) {
+				if (App.DeploymentTarget is null || App.SdkVersion is null)
+					throw new InvalidOperationException ("A deployment target and SDK version are required to emit the registrar assembly object.");
+				var assemblies = registered_assemblies.Select (v => (v.Name, v.Assembly.MainModule.Mvid)).ToArray ();
+				// Mac Catalyst's build version uses the iOS SDK version, not the macOS SDK version.
+				var bytes = Xamarin.RegistrarAssembliesObjectWriter.Create (assemblies, App.Abi, App.Platform, App.IsSimulatorBuild, App.DeploymentTarget, App.SdkVersion);
+				Driver.WriteIfDifferent (App, assembly_object_path, bytes);
+			}
 
 			header.AppendLine ();
 			header.AppendLine (declarations);
@@ -5640,6 +5888,7 @@ namespace Registrar {
 			methods = null;
 			interfaces.Dispose ();
 			interfaces = null;
+			assembly_source?.Dispose ();
 			sb.Dispose ();
 		}
 

@@ -8,8 +8,8 @@ using MetalPerformanceShaders;
 namespace MetalPerformanceShadersGraph {
 	/// <summary>This enum is used to select how to initialize a new instance of a <see cref="MPSGraphExecutable" />.</summary>
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public enum MPSGraphExecutableInitializationOption {
 		/// <summary>The <c>packageUrl</c> parameter passed to the constructor is a url to a CoreML package.</summary>
@@ -29,8 +29,8 @@ namespace MetalPerformanceShadersGraph {
 		/// <param name="compilationDescriptor">The optional compilation descriptor use.</param>
 		/// <param name="option">Use this option to specify whether the package url points to a CoreML package or an MPSGraph package.</param>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public MPSGraphExecutable (NSUrl packageUrl, MPSGraphCompilationDescriptor? compilationDescriptor, MPSGraphExecutableInitializationOption option)
 			: base (NSObjectFlag.Empty)

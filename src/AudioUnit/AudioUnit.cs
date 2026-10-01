@@ -1351,6 +1351,8 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public bool IsAtEnd { get { return current is null; } }
 
+		/// <summary>A constructor used when creating managed representations of unmanaged objects. Called by the runtime.</summary>
+		/// <param name="ptr">Pointer (handle) to the unmanaged object.</param>
 		public AURenderEventEnumerator (NativeHandle ptr)
 			: this (ptr, false)
 		{
@@ -1458,8 +1460,8 @@ namespace AudioUnit {
 		Midi = 8,
 		/// <summary>To be added.</summary>
 		MidiSysEx = 9,
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		MidiEventList = 10,

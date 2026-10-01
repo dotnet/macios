@@ -3,5 +3,6 @@
   "name": "Biblioteka klas systemu macOS",
   "description": "Projekt służący do tworzenia biblioteki klas platformy .NET dla systemu macOS",
   "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net11.0-macos/description": "Target net11.0-macos",
   "symbols/Framework/choices/net10.0-macos/description": "Target net10.0-macos"
 }

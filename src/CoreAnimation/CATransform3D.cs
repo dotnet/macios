@@ -40,15 +40,13 @@ namespace CoreAnimation {
 		public nfloat M43;
 		public nfloat M44;
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		static public readonly CATransform3D Identity;
-
-		static CATransform3D ()
-		{
-			Identity = new CATransform3D ();
-			Identity.M11 = Identity.M22 = Identity.M33 = Identity.M44 = 1f;
-		}
+		/// <summary>The identity transform.</summary>
+		static public readonly CATransform3D Identity = new CATransform3D {
+			M11 = 1f,
+			M22 = 1f,
+			M33 = 1f,
+			M44 = 1f,
+		};
 
 		[DllImport (Constants.QuartzLibrary)]
 		extern static byte CATransform3DIsIdentity (CATransform3D t);

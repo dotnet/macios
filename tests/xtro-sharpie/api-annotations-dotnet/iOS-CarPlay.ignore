@@ -12,3 +12,4 @@
 ## the class, managed callback infrastructure, or API Apple removed/privatized - kept for compatibility
 ## (baseline for https://github.com/dotnet/macios/issues/26053)
 !unknown-selector! CPListImageRowItem::setImageTitles: not found
+!missing-null-allowed! 'System.Void CarPlay.ICPPlayableItem::set_PlaybackConfiguration(CarPlay.CPPlaybackConfiguration)' is missing an [NullAllowed] on parameter #0

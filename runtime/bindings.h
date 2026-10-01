@@ -130,6 +130,11 @@ typedef struct {
     vector_float3 max;
 } MPSAxisAlignedBoundingBox;
 
+typedef struct {
+    vector_float4 max;
+    vector_float4 min;
+} MPSFunctions_AABB;
+
 /*
  * iOS has a vector type (vector_float3) which can't be expressed
  * in P/Invoke signatures, so we need custom wrappers.
@@ -254,11 +259,17 @@ struct MPSAxisAlignedBoundingBoxWrapper {
     Vector3f max;
 };
 
+struct MPSFunctionsAxisAlignedBoundingBoxWrapper {
+    Vector4f max;
+    Vector4f min;
+};
+
 struct VectorUChar16 {
 	unsigned char values[16];
 };
 
 static_assert (sizeof (MPSImageHistogramInfoWrapper) == sizeof (MPSImageHistogramInfo), "Sizes aren't equal");
+static_assert (sizeof (MPSFunctionsAxisAlignedBoundingBoxWrapper) == sizeof (MPSFunctions_AABB), "Sizes aren't equal");
 
 struct Vector4f  xamarin_vector_float3__Vector4_objc_msgSend (id self, SEL sel);
 void             xamarin_vector_float3__Vector4_objc_msgSend_stret (struct Vector4f *v4, id self, SEL sel);

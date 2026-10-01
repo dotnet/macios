@@ -23,10 +23,6 @@ An unexpected error condition occurred. Please [file a bug report](https://githu
 
 ### <a name='BI0001'/>BI0001: The .NET runtime could not load the \* type. Message: \*
 
-### <a name='BI0002'/>BI0002: Could not compile the API bindings.
-
-This error is shown when the generator failed to compile the API bindings.
-
 ### <a name='BI0026'/>BI0026: Could not parse the command line argument '\*': \*
 
 ### <a name='BI0068'/>BI0068: Invalid value for target framework: \*.
@@ -69,10 +65,6 @@ This usually indicates a bug in the binding generator; please file a new issue o
 
 <!-- 1xxx: code generation -->
 <!-- 10xx: errors -->
-
-### <a name='BI1000'/>BI1000: Could not compile the generated API bindings.
-
-This indicates a bug in product itself; please file a new issue on [GitHub](https://github.com/dotnet/macios/issues/new) with a test case.
 
 ### <a name='BI1001'/>BI1001: Do not know how to make a trampoline for \*
 
@@ -178,7 +170,7 @@ This usually indicates a bug in the product; please [file a bug report](https://
 
 ### <a name='BI1049'/>BI1049: Could not unbox type \* from \* container used on \* member decorated with [BindAs].
 
-### <a name='BI1050'/>BI1050: [BindAs] cannot be used inside Protocol or Model types. Type: \*
+### <a name='BI1050'/>BI1050: [BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: \*
 
 ### <a name='BI1051'/>BI1051: Internal error: Don't know how to get attributes for \*. Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 
@@ -328,6 +320,38 @@ The `[NullAllowed]` attribute should not be allowed on methods but it could brea
 Historically it was used on property setters. However using the attribute on _other_ methods can be misleading, e.g. should it apply to all parameters, the return value... and its presence/action can be misinterpreted in code reviews leading to binding bugs.
 
 To fix this warning use the `[NullAllowed]` attribute only on parameters, properties or return values.
+
+### <a name='BI1125'/>BI1125: The [FactoryMethod] binding method '\*' has an 'out NSError' parameter, but its return value is not nullable. Add [return: NullAllowed] to the binding method so the generated factory method can return null when the native initializer fails.
+
+A binding method annotated with `[FactoryMethod]` that has an `out NSError`
+parameter is a failable initializer: it can fail and return `nil`. The
+generated factory method can only return `null` on failure if its return value
+is nullable.
+
+To fix this warning, add `[return: NullAllowed]` to the binding method.
+
+### <a name='BI1126'/>BI1126: The [FactoryMethod] attribute on '\*' can only be used with an Objective-C 'init' selector (the selector must be 'init' or start with 'init' followed by an uppercase letter), but the selector is '\*'.
+
+The `[FactoryMethod]` attribute generates a static factory method from a
+failable Objective-C initializer, so it can only be applied to a binding member
+whose selector is an `init` selector: either `init`, or a selector that starts
+with `init` followed by an uppercase letter (e.g. `initWithName:`).
+
+To fix this error, either use an `init` selector, or remove the
+`[FactoryMethod]` attribute.
+
+### <a name='BI1127'/>BI1127: The [FactoryMethod] attribute on '\*' can't specify a method name when applied to a method that isn't a constructor. Remove the method name from the [FactoryMethod] attribute; the name of the binding method is used instead.
+
+When `[FactoryMethod]` is applied to a binding method that isn't a constructor,
+the generated factory method is named after the binding method, so specifying an
+explicit name in the attribute is confusing and redundant.
+
+To fix this error, remove the method name from the `[FactoryMethod]` attribute,
+and rename the binding method if a different factory method name is desired.
+
+### <a name='BI1128'/>BI1128: The [Field] member '\*.\*' sets SymbolAddress, but its type is '\*'; only System.IntPtr is supported.
+
+### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->

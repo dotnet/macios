@@ -1,0 +1,9 @@
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 MetalFX.IMTLFXTemporalDenoisedScalerBase::get_ViewToClipMatrix(): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 MetalFX.IMTLFXTemporalDenoisedScalerBase::get_WorldToViewMatrix(): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! System.Void MetalFX.IMTLFXTemporalDenoisedScalerBase::set_ViewToClipMatrix(CoreGraphics.NMatrix4): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! System.Void MetalFX.IMTLFXTemporalDenoisedScalerBase::set_WorldToViewMatrix(CoreGraphics.NMatrix4): simd type: simd_float4x4
+## The accessors declare MarshalDirective metadata; the diagnostic is emitted for generated protocol-interface members.
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 MetalFX.IMTLFXFrameInterpolatorBase::get_ViewToClipMatrix(): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! CoreGraphics.NMatrix4 MetalFX.IMTLFXFrameInterpolatorBase::get_WorldToViewMatrix(): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! System.Void MetalFX.IMTLFXFrameInterpolatorBase::set_ViewToClipMatrix(CoreGraphics.NMatrix4): simd type: simd_float4x4
+!wrong-simd-missing-marshaldirective! System.Void MetalFX.IMTLFXFrameInterpolatorBase::set_WorldToViewMatrix(CoreGraphics.NMatrix4): simd type: simd_float4x4

@@ -224,7 +224,9 @@ namespace ObjCRuntime {
 			// can just call that new API instead of calling ObjectiveCMarshal.CreateReferenceTrackingHandle and
 			// freeing the returned handle.
 
+#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
 			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
+#pragma warning restore CA1416
 			// We only care about the tagged memory ('info'), so just free the GCHandle.
 			// We might want to request an API to just get the tagged memory at some point.
 			gchandle.Free ();

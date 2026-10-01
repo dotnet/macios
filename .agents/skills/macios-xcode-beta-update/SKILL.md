@@ -12,6 +12,8 @@ Run this workflow from the macios repository root.
 Collect or confirm:
 - Target Xcode version (for example `26.4`)
 - Beta number (for example `2`)
+- Azure Artifacts package version (for example `26.4.0-beta.2`)
+- Xcode product build version (for example `17E5212f`)
 - Xcode URL (for example `https://dl.internalx.com/internal-files/xcodes/Xcode_26.4_beta_2.xip`)
 - Optional prior bump PR to mirror
 - Whether to do this in two phases (non-test changes first, tests second)
@@ -26,8 +28,37 @@ Apply minimal, surgical changes in these files:
    - `NUGET_HARDCODED_PRERELEASE_IDENTIFIER=xcode<major.minor>`
    - `NUGET_HARDCODED_PRERELEASE_BRANCH=xcode<major.minor>`
    - `XCODE_VERSION=<major.minor>`
+   - `XCODE_PACKAGE_NAME=xcode-apple-silicon`
+   - `XCODE_PACKAGE_VERSION=<major.minor.patch-beta.number>`
+   - `XCODE_BUILD_VERSION=<ProductBuildVersion>`
    - `XCODE_URL=<user-provided-xip-url>`
    - `XCODE_DEVELOPER_ROOT=/Applications/Xcode_<major.minor>.0-beta<beta>.app/Contents/Developer` (for betas)
+
+   `XCODE_DEVELOPER_ROOT` must name the same application that `XCODE_PACKAGE_VERSION`
+   implies; `install-xcode.sh` refuses to run when the two disagree. The package version is
+   strict SemVer (Azure Artifacts requires it) while the application name follows this
+   repository's convention, so they are deliberately spelled differently:
+
+   | Release | `XCODE_PACKAGE_VERSION` | `XCODE_DEVELOPER_ROOT` application |
+   | --- | --- | --- |
+   | beta 1 | `27.0.0-beta` | `Xcode_27.0.0-beta.app` |
+   | beta 3 | `27.0.0-beta.3` | `Xcode_27.0.0-beta3.app` |
+   | RC 1 | `27.0.0-rc` | `Xcode_27.0.0-rc.app` |
+   | RC 2 | `27.0.0-rc.2` | `Xcode_27.0.0-rc.2.app` |
+   | stable | `27.0.0` | `Xcode_27.0.0.app` |
+   | patch | `27.0.1` | `Xcode_27.0.1.app` (`XCODE_VERSION` stays `27.0`) |
+
+   Betas drop the dot before the ordinal, release candidates keep it, and the first beta or
+   RC carries no ordinal at all. `Xcode_26.3.0-rc2.app` is wrong: it has been written twice
+   and corrected both times. Note that `XCODE_BUILD_VERSION` is what actually distinguishes
+   one beta or RC from the next, so a stale value passes every path check and only fails
+   once the package is installed.
+
+   Before queuing CI, verify that the matching immutable package exists — with its
+   Apple-signed XIP and `xcode-metadata.json` — in **both** feeds, because the two
+   pipelines resolve the same coordinates in their own organization:
+   - `devdiv/DevDiv/macios-tools-internal`
+   - `dnceng/internal/macios-tools-internal`
 
 2. `Make.versions`
    - Bump:

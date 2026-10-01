@@ -37,6 +37,10 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		base.TryProcess ();
 	}
 
+	// When false, we don't rewrite the Dlfcn call sites (to keep reloadable assemblies byte-for-byte
+	// unmodified for Hot Reload); instead we only collect the referenced native symbols (see ProcessMethod).
+	bool inlining_enabled = true;
+
 	protected override bool ModifyAssembly (AssemblyDefinition assembly)
 	{
 		// Dlfcn calls can only appear in assemblies that reference (or, for the platform assembly, define)
@@ -45,7 +49,40 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (!ReferencesDlfcn (assembly))
 			return false;
 
-		return base.ModifyAssembly (assembly);
+		// When building for Hot Reload compatibility, we must not modify reloadable (user) assemblies,
+		// i.e. assemblies that aren't being trimmed (AssemblyAction != Link), because inlining rewrites
+		// call sites and adds helper methods/fields, which would break Hot Reload. In that case we don't
+		// inline, but we still walk the assembly to collect the referenced native symbols, so the native
+		// linker keeps them alive (via RequiredSymbols -> GenerateReferencesStep) just like the inlined
+		// P/Invokes would have. Release builds don't set this property, so they keep inlining everywhere
+		// (even non-trimmed assemblies) for the optimization. NativeAOT is not compatible with Hot Reload,
+		// so we don't have to worry about the post-NativeAOT native symbol collection here.
+		inlining_enabled = !(Configuration.HotReloadCompatibleBuild && Annotations.GetAction (assembly) != AssemblyAction.Link);
+
+#if ASSEMBLY_PREPARER
+		// If we're not inlining anything, this task's only other purpose is to collect some information about native symbols.
+		// However, our product assembly doesn't have any native symbols we care about, so we don't need to process
+		// the product assembly at all in this case (which speeds up this task significantly for debug builds).
+		if (!inlining_enabled && Configuration.Profile.IsProductAssembly (assembly))
+			return false;
+#endif
+
+		var modified = base.ModifyAssembly (assembly);
+		inlining_enabled = true;
+		return modified;
+	}
+
+	// When inlining is disabled (Hot Reload compatible build + reloadable assembly), we don't rewrite the
+	// Dlfcn call site, but we still register the referenced native symbol so the native linker keeps it
+	// alive (GenerateReferencesStep turns RequiredSymbols into native references, just like the surviving
+	// inlined P/Invokes would). Returns true if the symbol was collected and the caller must not inline,
+	// false if inlining should proceed as usual.
+	bool CollectSymbolWithoutInlining (string symbolName)
+	{
+		if (inlining_enabled)
+			return false;
+		DerivedLinkContext.RequiredSymbols.AddField (symbolName);
+		return true;
 	}
 
 	bool ReferencesDlfcn (AssemblyDefinition assembly)
@@ -374,6 +411,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -475,6 +515,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
+
 		return rv;
 	}
 
@@ -528,6 +571,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr));
 		il.Append (il.Create (OpCodes.Stind_I));
 		il.Append (il.Create (OpCodes.Ret));
+
+		// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+		body.FinalizeGeneratedBody ();
 
 		return rv;
 	}
@@ -587,6 +633,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					continue;
 				}
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -665,6 +714,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				if (!InlineSymbol (symbolName))
 					continue;
 
+				if (CollectSymbolWithoutInlining (symbolName))
+					continue;
+
 
 				switch (mr.Name) {
 				case "dlsym":
@@ -692,6 +744,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				}
 
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -768,6 +823,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				}
 
 				if (!InlineSymbol (symbolName))
+					continue;
+
+				if (CollectSymbolWithoutInlining (symbolName))
 					continue;
 
 				switch (mr.Name) {
@@ -867,6 +925,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					il.Append (loadPointerInstructionStart); // il.Create (OpCodes.Ldloc, ptrVariable)
 					il.Append (il.Create (OpCodes.Ldind_I));
 					il.Append (il.Create (OpCodes.Ret));
+
+					// See the comment in CecilExtensions.FinalizeGeneratedBody for why this is needed.
+					method.Body.FinalizeGeneratedBody ();
 
 					modified = true;
 					return modified; // we replace the whole method body, so no need to continue processing the method

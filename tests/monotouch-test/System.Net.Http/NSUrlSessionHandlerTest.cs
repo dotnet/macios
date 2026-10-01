@@ -3,6 +3,8 @@
 //
 
 using System;
+using System.Collections.Concurrent;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -17,6 +19,12 @@ namespace MonoTests.System.Net.Http {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSUrlSessionHandlerTest {
+
+		// The proxy tests below use in-process servers bound to 127.0.0.1, so local network
+		// connections should be reliable and we don't want to hide any failures by ignoring them
+		// in CI. Set this to true to restore the usual "ignore transient network failures in CI"
+		// behavior if these tests ever turn out to be flaky on the bots.
+		bool ignoreLocalOnlyCIFailures = false;
 
 		// https://github.com/dotnet/macios/issues/23958
 		[Test]
@@ -399,6 +407,307 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		// https://github.com/dotnet/macios/issues/20345
+		[Test]
+		public void AlreadyCanceledRequestCompletesAsCanceled ()
+		{
+			using var handler = new NSUrlSessionHandler ();
+			using var client = new HttpClient (handler) {
+				Timeout = Timeout.InfiniteTimeSpan,
+			};
+			using var requestCts = new CancellationTokenSource ();
+			requestCts.Cancel ();
+
+			Task<HttpResponseMessage>? sendTask = null;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var request = new HttpRequestMessage (HttpMethod.Get, "http://127.0.0.1:1/");
+				sendTask = client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead, requestCts.Token);
+
+				try {
+					await sendTask.ConfigureAwait (false);
+					Assert.Fail ("The request completed successfully with an already-canceled token.");
+				} catch (OperationCanceledException) {
+					Assert.That (sendTask.IsCanceled, Is.True, "SendAsync task");
+				}
+			}, out var ex);
+
+			Assert.That (done, Is.True, "Test timed out");
+			Assert.That (ex, Is.Null, $"Unexpected exception: {ex}");
+		}
+
+		// https://github.com/dotnet/macios/issues/20345
+		[Test]
+		public void ConcurrentResponseDisposeAndCancellationDoesNotCrash ()
+		{
+			var duration = TestRuntime.IsInCI ? TimeSpan.FromSeconds (15) : TimeSpan.FromSeconds (3);
+			var seed = int.TryParse (Environment.GetEnvironmentVariable ("NSURLSESSIONHANDLER_STRESS_SEED"), out var configuredSeed) ? configuredSeed : Random.Shared.Next ();
+			var random = new Random (seed);
+			var seedMessage = $"Seed: {seed} (set NSURLSESSIONHANDLER_STRESS_SEED to replay)";
+			var started = 0L;
+			var responses = 0L;
+			var disposals = 0L;
+			var cancellations = 0L;
+			var handlerDisposals = 0L;
+			var pendingSendDisposals = 0L;
+
+			var done = TestRuntime.TryRunAsync (duration + TimeSpan.FromSeconds (30), async () => {
+				var server = new NSUrlSessionHandlerRaceServer (random);
+				server.Start ();
+
+				try {
+					using var handler = new NSUrlSessionHandler {
+						DisableCaching = true,
+						AllowAutoRedirect = false,
+					};
+					using var client = new HttpClient (handler) {
+						Timeout = Timeout.InfiniteTimeSpan,
+					};
+					using var runCts = new CancellationTokenSource (duration);
+					var workers = new Task [18];
+
+					for (var i = 0; i < workers.Length - 2; i++) {
+						workers [i] = Task.Run (async () => {
+							while (!runCts.IsCancellationRequested) {
+								using var requestCts = CancellationTokenSource.CreateLinkedTokenSource (runCts.Token);
+								HttpResponseMessage? response = null;
+								var requestNumber = Interlocked.Increment (ref started);
+
+								try {
+									using var request = new HttpRequestMessage (HttpMethod.Get, server.Url);
+									response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead, requestCts.Token).ConfigureAwait (false);
+									Interlocked.Increment (ref responses);
+
+									var stream = await response.Content.ReadAsStreamAsync (requestCts.Token).ConfigureAwait (false);
+									var readTask = DrainStreamAsync (stream, requestCts.Token);
+									var disposeTask = DisposeResponseAsync (response, random, () => Interlocked.Increment (ref disposals));
+									var cancelTask = CancelRequestAsync (requestCts, random, () => Interlocked.Increment (ref cancellations));
+
+									await Task.WhenAll (readTask, disposeTask, cancelTask).ConfigureAwait (false);
+								} catch (OperationCanceledException) {
+								} catch (HttpRequestException) {
+								} catch (IOException) {
+								} catch (ObjectDisposedException) {
+								} finally {
+									response?.Dispose ();
+								}
+
+								if ((requestNumber & 63) == 0)
+									GC.Collect ();
+
+								await Task.Delay (25).ConfigureAwait (false);
+							}
+						});
+					}
+
+					workers [^2] = Task.Run (async () => {
+						while (!runCts.IsCancellationRequested) {
+							try {
+								await DisposeHandlerWithActiveRequestAsync (server.HangingUrl, random, () => Interlocked.Increment (ref handlerDisposals)).ConfigureAwait (false);
+							} catch (OperationCanceledException) {
+							} catch (HttpRequestException) {
+							} catch (IOException) {
+							} catch (ObjectDisposedException) {
+							}
+
+							await Task.Delay (25).ConfigureAwait (false);
+						}
+					});
+
+					workers [^1] = Task.Run (async () => {
+						while (!runCts.IsCancellationRequested) {
+							await DisposeHandlerWithPendingRequestAsync (server, () => Interlocked.Increment (ref pendingSendDisposals)).ConfigureAwait (false);
+
+							await Task.Delay (25).ConfigureAwait (false);
+						}
+					});
+
+					await Task.WhenAll (workers).ConfigureAwait (false);
+				} finally {
+					await server.StopAsync ().ConfigureAwait (false);
+				}
+			}, out var ex);
+
+			Assert.That (done, Is.True, $"Stress test timed out. {seedMessage}");
+			Assert.That (ex, Is.Null, $"Unexpected exception: {ex}. {seedMessage}");
+			Assert.That (started, Is.GreaterThan (16), $"Requests started. {seedMessage}");
+			Assert.That (responses, Is.GreaterThan (0), $"Responses received. {seedMessage}");
+			Assert.That (disposals, Is.GreaterThan (0), $"Responses disposed. {seedMessage}");
+			Assert.That (cancellations, Is.GreaterThan (0), $"Requests cancelled. {seedMessage}");
+			Assert.That (handlerDisposals, Is.GreaterThan (0), $"Handlers disposed with active requests. {seedMessage}");
+			Assert.That (pendingSendDisposals, Is.GreaterThan (0), $"Handlers disposed with pending sends. {seedMessage}");
+		}
+
+		[Test]
+		public void ProxyRoutesRequestsThroughProxy ()
+		{
+			using var proxy = new ProxyTestServer ();
+
+			HttpStatusCode? statusCode = null;
+			bool viaProxy = false;
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				handler.Proxy = new WebProxy (proxy.Url);
+				Assert.That (handler.UseProxy, Is.True, "UseProxy default");
+				Assert.That (handler.SupportsProxy, Is.True, "SupportsProxy");
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync (NetworkResources.Httpbin.GetUrl).ConfigureAwait (false);
+				statusCode = response.StatusCode;
+				viaProxy = response.Headers.Contains ("Via-Test-Proxy");
+			}, out var ex);
+
+			if (!done) {
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			if (ignoreLocalOnlyCIFailures)
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Status code");
+			Assert.That (viaProxy, Is.True, "Response should have gone through the test proxy");
+			Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have forwarded at least one request");
+		}
+
+		[Test]
+		public void ProxyWithCredentialsAuthenticatesWithProxy ()
+		{
+			const string proxyUser = "proxyuser";
+			const string proxyPass = "proxypass";
+
+			// NSUrlSession only delivers a proxy authentication challenge to the delegate for CONNECT
+			// tunnels (i.e. HTTPS destinations); for a plain HTTP forward proxy it returns the 407
+			// directly to the caller. So we route an HTTPS request through the proxy's CONNECT support.
+			// We also request a non-local hostname: CFNetwork bypasses the proxy for localhost HTTPS
+			// destinations, so we must use a hostname that isn't local. The proxy tunnels every CONNECT
+			// to our local TLS test server regardless of the requested host.
+			Network.NWListener? destination = null;
+			HttpStatusCode? statusCode = null;
+
+			try {
+				destination = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
+				var destinationPort = destination.Port;
+				using var proxy = new ProxyTestServer (proxyUser, proxyPass, forceTunnelPort: (int) destinationPort);
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.Proxy = new WebProxy (proxy.Url) {
+						Credentials = new NetworkCredential (proxyUser, proxyPass),
+					};
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					var response = await client.GetAsync ("https://proxy-tunnel-target.example/").ConfigureAwait (false);
+					statusCode = response.StatusCode;
+				}, out var ex);
+
+				if (!done) {
+					if (ignoreLocalOnlyCIFailures)
+						TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					Assert.Inconclusive ("Request timed out.");
+				}
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
+				Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have established an authenticated tunnel");
+			} finally {
+				destination?.Cancel ();
+				destination?.Dispose ();
+			}
+		}
+
+		[Test]
+		public void ProxyWithDefaultProxyCredentialsAuthenticatesWithProxy ()
+		{
+			const string proxyUser = "proxyuser";
+			const string proxyPass = "proxypass";
+
+			// See ProxyWithCredentialsAuthenticatesWithProxy for why we use an HTTPS (CONNECT) request
+			// with a non-local hostname and tunnel every CONNECT to a local TLS test server.
+			Network.NWListener? destination = null;
+			HttpStatusCode? statusCode = null;
+
+			try {
+				destination = TlsTestServer.CreateNWTlsListener (requireClientCert: false);
+				var destinationPort = destination.Port;
+				using var proxy = new ProxyTestServer (proxyUser, proxyPass, forceTunnelPort: (int) destinationPort);
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.Proxy = new WebProxy (proxy.Url);
+					handler.DefaultProxyCredentials = new NetworkCredential (proxyUser, proxyPass);
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					var response = await client.GetAsync ("https://proxy-tunnel-target.example/").ConfigureAwait (false);
+					statusCode = response.StatusCode;
+				}, out var ex);
+
+				if (!done) {
+					if (ignoreLocalOnlyCIFailures)
+						TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					Assert.Inconclusive ("Request timed out.");
+				}
+				if (ignoreLocalOnlyCIFailures)
+					TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), $"Status code (default proxy credentials should have been used); status={statusCode}, requestCount={proxy.RequestCount}, authRequestCount={proxy.AuthenticatedRequestCount}");
+				Assert.That (proxy.AuthenticatedRequestCount, Is.GreaterThan (0), "Proxy should have established an authenticated tunnel");
+			} finally {
+				destination?.Cancel ();
+				destination?.Dispose ();
+			}
+		}
+
+		[Test]
+		public void ProxyWithUnsupportedSchemeThrows ()
+		{
+			// A secure ("https") proxy connection can't be expressed via NSUrlSession's connection proxy
+			// dictionary, so instead of silently connecting to the proxy over plain HTTP we should fail
+			// loudly.
+			using var handler = new NSUrlSessionHandler ();
+			handler.Proxy = new WebProxy ("https://127.0.0.1:8888");
+			using var client = new HttpClient (handler);
+
+			Exception? caught = null;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				try {
+					await client.GetAsync ("http://proxy-scheme-test.example/").ConfigureAwait (false);
+				} catch (Exception e) {
+					caught = e;
+				}
+			}, out var ex);
+
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+
+			// The NotSupportedException may be wrapped by HttpClient, so walk the inner exception chain.
+			var notSupported = caught;
+			while (notSupported is not null && notSupported is not NotSupportedException)
+				notSupported = notSupported.InnerException;
+			Assert.That (notSupported, Is.InstanceOf<NotSupportedException> (), $"Should have thrown a NotSupportedException for an unsupported proxy scheme, but was: {caught}");
+		}
+
+		[Test]
+		public void ProxyPropertiesBehaveCorrectly ()
+		{
+			using var handler = new NSUrlSessionHandler ();
+			Assert.That (handler.Proxy, Is.Null, "Proxy default");
+			Assert.That (handler.UseProxy, Is.True, "UseProxy default");
+			Assert.That (handler.SupportsProxy, Is.True, "SupportsProxy");
+			Assert.That (handler.DefaultProxyCredentials, Is.Null, "DefaultProxyCredentials default");
+
+			var proxy = new WebProxy ("http://127.0.0.1:8888");
+			handler.Proxy = proxy;
+			Assert.That (handler.Proxy, Is.SameAs (proxy), "Proxy set");
+
+			handler.UseProxy = false;
+			Assert.That (handler.UseProxy, Is.False, "UseProxy set to false");
+
+			var credentials = new NetworkCredential ("user", "pass");
+			handler.DefaultProxyCredentials = credentials;
+			Assert.That (handler.DefaultProxyCredentials, Is.SameAs (credentials), "DefaultProxyCredentials set");
+		}
+
 		static HttpListener? StartListenerOnAvailablePort (out int listeningPort)
 		{
 			// IANA suggested range for dynamic or private ports
@@ -420,6 +729,275 @@ namespace MonoTests.System.Net.Http {
 
 			listeningPort = -1;
 			return null;
+		}
+
+		static async Task DrainStreamAsync (Stream stream, CancellationToken token)
+		{
+			var buffer = new byte [4096];
+			try {
+				while (await stream.ReadAsync (buffer, token).ConfigureAwait (false) != 0) {
+				}
+			} catch (OperationCanceledException) {
+			} catch (IOException) {
+			} catch (ObjectDisposedException) {
+			}
+		}
+
+		static int NextRandom (Random random, int minValue, int maxValue)
+		{
+			lock (random)
+				return random.Next (minValue, maxValue);
+		}
+
+		static int NextRandom (Random random, int maxValue)
+		{
+			lock (random)
+				return random.Next (maxValue);
+		}
+
+		static async Task DisposeResponseAsync (HttpResponseMessage response, Random random, Action disposed)
+		{
+			await Task.Delay (NextRandom (random, 0, 40)).ConfigureAwait (false);
+			response.Dispose ();
+			disposed ();
+		}
+
+		static async Task CancelRequestAsync (CancellationTokenSource cts, Random random, Action cancelled)
+		{
+			await Task.Delay (NextRandom (random, 0, 40)).ConfigureAwait (false);
+			cts.Cancel ();
+			cancelled ();
+		}
+
+		static async Task DisposeHandlerWithActiveRequestAsync (string url, Random random, Action disposed)
+		{
+			var handler = new NSUrlSessionHandler {
+				DisableCaching = true,
+				AllowAutoRedirect = false,
+			};
+			using var client = new HttpClient (handler, disposeHandler: false) {
+				Timeout = Timeout.InfiniteTimeSpan,
+			};
+			using var requestCts = new CancellationTokenSource (TimeSpan.FromSeconds (30));
+			HttpResponseMessage? response = null;
+			var handlerDisposed = false;
+
+			try {
+				using var request = new HttpRequestMessage (HttpMethod.Get, url);
+				response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead, requestCts.Token).ConfigureAwait (false);
+				var stream = await response.Content.ReadAsStreamAsync (requestCts.Token).ConfigureAwait (false);
+				var readTask = DrainStreamAsync (stream, requestCts.Token);
+
+				await Task.Delay (NextRandom (random, 0, 40), requestCts.Token).ConfigureAwait (false);
+				handler.Dispose ();
+				handlerDisposed = true;
+				disposed ();
+
+				await readTask.WaitAsync (TimeSpan.FromSeconds (5)).ConfigureAwait (false);
+			} finally {
+				response?.Dispose ();
+				if (!handlerDisposed)
+					handler.Dispose ();
+			}
+		}
+
+		static async Task DisposeHandlerWithPendingRequestAsync (NSUrlSessionHandlerRaceServer server, Action disposed)
+		{
+			var handler = new NSUrlSessionHandler {
+				DisableCaching = true,
+				AllowAutoRedirect = false,
+			};
+			using var client = new HttpClient (handler, disposeHandler: false) {
+				Timeout = Timeout.InfiniteTimeSpan,
+			};
+			using var requestCts = new CancellationTokenSource (TimeSpan.FromSeconds (30));
+			var handlerDisposed = false;
+
+			try {
+				using var request = new HttpRequestMessage (HttpMethod.Get, server.NoHeadersUrl);
+				var sendTask = client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead, requestCts.Token);
+				await server.WaitForNoHeadersRequestAsync (requestCts.Token).ConfigureAwait (false);
+
+				handler.Dispose ();
+				handlerDisposed = true;
+				disposed ();
+
+				try {
+					await sendTask.WaitAsync (TimeSpan.FromSeconds (5)).ConfigureAwait (false);
+					throw new InvalidOperationException ("The pending request completed successfully after the handler was disposed.");
+				} catch (OperationCanceledException) {
+					if (!sendTask.IsCanceled)
+						throw new InvalidOperationException ("The pending request did not complete as canceled.");
+				}
+			} finally {
+				if (!handlerDisposed)
+					handler.Dispose ();
+			}
+		}
+
+		sealed class NSUrlSessionHandlerRaceServer {
+			readonly TcpListener listener = new TcpListener (IPAddress.Loopback, 0);
+			readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource ();
+			readonly ConcurrentBag<Task> clientTasks = new ConcurrentBag<Task> ();
+			readonly SemaphoreSlim noHeadersRequests = new SemaphoreSlim (0);
+			readonly Random random;
+			Task? acceptTask;
+
+			public NSUrlSessionHandlerRaceServer (Random random)
+			{
+				this.random = random;
+			}
+
+			public string Url {
+				get {
+					var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+					return $"http://127.0.0.1:{port}/race";
+				}
+			}
+
+			public string HangingUrl {
+				get {
+					var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+					return $"http://127.0.0.1:{port}/hang";
+				}
+			}
+
+			public string NoHeadersUrl {
+				get {
+					var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+					return $"http://127.0.0.1:{port}/no-headers";
+				}
+			}
+
+			public Task WaitForNoHeadersRequestAsync (CancellationToken token)
+			{
+				return noHeadersRequests.WaitAsync (token);
+			}
+
+			public void Start ()
+			{
+				listener.Start ();
+				acceptTask = AcceptLoopAsync ();
+			}
+
+			async Task AcceptLoopAsync ()
+			{
+				while (!cancellationTokenSource.IsCancellationRequested) {
+					try {
+						var client = await listener.AcceptTcpClientAsync (cancellationTokenSource.Token).ConfigureAwait (false);
+						clientTasks.Add (HandleClientAsync (client));
+					} catch (OperationCanceledException) {
+						break;
+					} catch (ObjectDisposedException) {
+						break;
+					} catch (SocketException) when (cancellationTokenSource.IsCancellationRequested) {
+						break;
+					}
+				}
+			}
+
+			async Task HandleClientAsync (TcpClient client)
+			{
+				using (client) {
+					try {
+						using var stream = client.GetStream ();
+						var requestLine = await DrainRequestHeadersAsync (stream, cancellationTokenSource.Token).ConfigureAwait (false);
+
+						if (requestLine.StartsWith ("GET /no-headers ", StringComparison.Ordinal)) {
+							noHeadersRequests.Release ();
+							await WaitForClientDisconnectAsync (stream, cancellationTokenSource.Token).ConfigureAwait (false);
+							return;
+						}
+
+						var headers = Encoding.ASCII.GetBytes (
+							"HTTP/1.1 200 OK\r\n" +
+							"Content-Type: application/octet-stream\r\n" +
+							"Transfer-Encoding: chunked\r\n" +
+							"Cache-Control: no-cache\r\n" +
+							"Connection: close\r\n\r\n");
+						await stream.WriteAsync (headers, cancellationTokenSource.Token).ConfigureAwait (false);
+
+						var chunk = Encoding.ASCII.GetBytes ("5\r\nhello\r\n");
+						if (requestLine.StartsWith ("GET /hang ", StringComparison.Ordinal)) {
+							await stream.WriteAsync (chunk, cancellationTokenSource.Token).ConfigureAwait (false);
+							await stream.FlushAsync (cancellationTokenSource.Token).ConfigureAwait (false);
+							await WaitForClientDisconnectAsync (stream, cancellationTokenSource.Token).ConfigureAwait (false);
+							return;
+						}
+
+						for (var i = 0; i < NextRandom (random, 1, 4); i++) {
+							await stream.WriteAsync (chunk, cancellationTokenSource.Token).ConfigureAwait (false);
+							await stream.FlushAsync (cancellationTokenSource.Token).ConfigureAwait (false);
+							await Task.Delay (NextRandom (random, 1, 25), cancellationTokenSource.Token).ConfigureAwait (false);
+						}
+
+						await Task.Delay (NextRandom (random, 0, 20), cancellationTokenSource.Token).ConfigureAwait (false);
+						switch (NextRandom (random, 3)) {
+						case 0:
+							client.LingerState = new LingerOption (true, 0);
+							client.Client.Close ();
+							break;
+						case 1:
+							await stream.WriteAsync (Encoding.ASCII.GetBytes ("0\r\n\r\n"), cancellationTokenSource.Token).ConfigureAwait (false);
+							client.Client.Shutdown (SocketShutdown.Both);
+							break;
+						default:
+							await WaitForClientDisconnectAsync (stream, cancellationTokenSource.Token).ConfigureAwait (false);
+							break;
+						}
+					} catch (OperationCanceledException) {
+					} catch (IOException) {
+					} catch (ObjectDisposedException) {
+					} catch (SocketException) {
+					}
+				}
+			}
+
+			static async Task WaitForClientDisconnectAsync (NetworkStream stream, CancellationToken token)
+			{
+				var buffer = new byte [1];
+				while (await stream.ReadAsync (buffer, token).ConfigureAwait (false) != 0) {
+				}
+			}
+
+			static async Task<string> DrainRequestHeadersAsync (NetworkStream stream, CancellationToken token)
+			{
+				var buffer = new byte [1];
+				var matched = 0;
+				var requestLine = new StringBuilder ();
+				var readingRequestLine = true;
+
+				while (matched < 4) {
+					if (await stream.ReadAsync (buffer, token).ConfigureAwait (false) == 0)
+						throw new EndOfStreamException ();
+
+					var value = buffer [0];
+					if (readingRequestLine) {
+						if (value == (byte) '\n')
+							readingRequestLine = false;
+						else if (value != (byte) '\r')
+							requestLine.Append ((char) value);
+					}
+
+					if ((matched is 0 or 2 && value == (byte) '\r') || (matched is 1 or 3 && value == (byte) '\n'))
+						matched++;
+					else
+						matched = value == (byte) '\r' ? 1 : 0;
+				}
+
+				return requestLine.ToString ();
+			}
+
+			public async Task StopAsync ()
+			{
+				cancellationTokenSource.Cancel ();
+				listener.Stop ();
+				if (acceptTask is not null)
+					await acceptTask.ConfigureAwait (false);
+				await Task.WhenAll (clientTasks).ConfigureAwait (false);
+				noHeadersRequests.Dispose ();
+				cancellationTokenSource.Dispose ();
+			}
 		}
 	}
 }

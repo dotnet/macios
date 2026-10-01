@@ -8,7 +8,7 @@ public partial class MainPage : ContentPage {
 		InitializeComponent ();
 	}
 
-	private void OnCounterClicked (object sender, EventArgs e)
+	private void OnCounterClicked (object? sender, EventArgs e)
 	{
 		count++;
 
@@ -20,4 +20,3 @@ public partial class MainPage : ContentPage {
 		SemanticScreenReader.Announce (CounterBtn.Text);
 	}
 }
-

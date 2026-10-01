@@ -129,6 +129,10 @@ namespace NearbyInteraction {
 		[Export ("setARSession:")]
 		void SetARSession (ARSession session);
 
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("updateMotionState:forObjectWithToken:")]
+		void UpdateMotionState (NIMotionActivityState motionState, NIDiscoveryToken token);
+
 		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("worldTransformForObject:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -196,6 +200,10 @@ namespace NearbyInteraction {
 		[iOS (16, 0), NoMac, NoTV, MacCatalyst (16, 0)]
 		[Export ("cameraAssistanceEnabled")]
 		bool CameraAssistanceEnabled { [Bind ("isCameraAssistanceEnabled")] get; set; }
+
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("initWithBluetoothChannelSoundingIdentifier:previousBluetoothIdentifier:")]
+		NativeHandle Constructor (NSUuid bluetoothIdentifier, [NullAllowed] NSUuid previousBluetoothIdentifier);
 	}
 
 	[iOS (16, 0), NoMac, NoTV, MacCatalyst (16, 0)]
@@ -239,6 +247,11 @@ namespace NearbyInteraction {
 		[Abstract]
 		[Export ("supportsDLTDOAMeasurement")]
 		bool SupportsDlTdoaMeasurement { get; }
+
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("supportsBluetoothChannelSounding")]
+		bool SupportsBluetoothChannelSounding { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
@@ -260,8 +273,25 @@ namespace NearbyInteraction {
 		[Export ("networkIdentifier")]
 		nint NetworkIdentifier { get; set; }
 
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("discoveryMethod", ArgumentSemantic.Assign)]
+		NIDlTdoaDiscoveryMethod DiscoveryMethod { get; set; }
+
 		[Export ("initWithNetworkIdentifier:")]
 		NativeHandle Constructor (nint networkIdentifier);
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("initWithNetworkIdentifier:discoveryMethod:")]
+		NativeHandle Constructor (nint networkIdentifier, NIDlTdoaDiscoveryMethod discoveryMethod);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+	[Native]
+	[NativeName ("NIDLTDOADiscoveryMethod")]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	public enum NIDlTdoaDiscoveryMethod : long {
+		WiFi = 0,
+		BluetoothLowEnergy = 1,
 	}
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
@@ -283,6 +313,18 @@ namespace NearbyInteraction {
 		Final = 2,
 	}
 
+	[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+	[BaseType (typeof (NSObject), Name = "NIDLTDOAMeasurementFloorElevation")]
+	[DisableDefaultCtor]
+	// DLTDOA = Down Link Time Difference of Arrival(DL-TDoA)
+	interface NIDlTdoaMeasurementFloorElevation : NSCopying {
+		[Export ("floorNumber")]
+		nint FloorNumber { get; }
+
+		[Export ("height")]
+		double Height { get; }
+	}
+
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject), Name = "NIDLTDOAMeasurement")]
 	[DisableDefaultCtor]
@@ -291,20 +333,38 @@ namespace NearbyInteraction {
 		[Export ("address")]
 		nuint Address { get; }
 
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("clusterInitiatorAddress")]
+		nuint ClusterInitiatorAddress { get; }
+
 		[Export ("measurementType", ArgumentSemantic.Assign)]
 		NIDlTdoaMeasurementType MeasurementType { get; }
 
 		[Export ("transmitTime")]
 		double TransmitTime { get; }
 
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("rawTransmitTime")]
+		ulong RawTransmitTime { get; }
+
 		[Export ("receiveTime")]
 		double ReceiveTime { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[Export ("rawReceiveTime")]
+		ulong RawReceiveTime { get; }
 
 		[Export ("signalStrength")]
 		double SignalStrength { get; }
 
 		[Export ("carrierFrequencyOffset")]
 		double CarrierFrequencyOffset { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[NullAllowed]
+		[BindAs (typeof (double?))]
+		[Export ("responderClockFrequencyOffset", ArgumentSemantic.Strong)]
+		NSNumber ResponderClockFrequencyOffset { get; }
 
 		[Export ("coordinatesType", ArgumentSemantic.Assign)]
 		NIDlTdoaCoordinatesType CoordinatesType { get; }
@@ -314,6 +374,11 @@ namespace NearbyInteraction {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (27, 0)]
+		[NullAllowed]
+		[Export ("floorElevation", ArgumentSemantic.Copy)]
+		NIDlTdoaMeasurementFloorElevation FloorElevation { get; }
 	}
 
 }

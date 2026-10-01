@@ -4,9 +4,9 @@ using NSErrorRef = System.IntPtr;
 #nullable enable
 
 namespace HealthKit {
-	[SupportedOSPlatform ("ios15.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos13.0")]
+	[SupportedOSPlatform ("macos")]
 	public static class HKAppleWalkingSteadiness {
 
 		[DllImport (Constants.HealthKitLibrary)]

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -45,7 +44,12 @@ namespace Xamarin.MacDev.Tasks {
 				var input = Input [i];
 				buffer.Clear ();
 				foreach (var im in InputMetadata) {
-					buffer.AddRange (Encoding.UTF8.GetBytes (input.GetMetadata (im.ItemSpec)));
+					var bytes = Encoding.UTF8.GetBytes (input.GetMetadata (im.ItemSpec));
+					buffer.Add ((byte) (bytes.Length >> 24));
+					buffer.Add ((byte) (bytes.Length >> 16));
+					buffer.Add ((byte) (bytes.Length >> 8));
+					buffer.Add ((byte) bytes.Length);
+					buffer.AddRange (bytes);
 				}
 				var hashBytes = sha.ComputeHash (buffer.ToArray ());
 				var hash = string.Join ("", hashBytes.Select (b => $"{b:x2}"));

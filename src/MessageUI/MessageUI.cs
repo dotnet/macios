@@ -35,11 +35,11 @@ namespace MessageUI {
 	/// <summary>An enumeration whose values specify the various results possible from a message being composed.</summary>
 	[Native]
 	public enum MessageComposeResult : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The message composition was cancelled by the user.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>The message was sent successfully.</summary>
 		Sent,
-		/// <summary>To be added.</summary>
+		/// <summary>The message failed to send.</summary>
 		Failed,
 	}
 }

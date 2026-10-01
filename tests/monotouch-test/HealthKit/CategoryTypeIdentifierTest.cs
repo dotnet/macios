@@ -135,6 +135,11 @@ namespace MonoTouchFixtures.HealthKit {
 					if (!TestRuntime.CheckXcodeVersion (26, 2))
 						continue;
 					break;
+				case HKCategoryTypeIdentifier.BleedingAfterMenopause:
+				case HKCategoryTypeIdentifier.MenopausalState:
+					if (!TestRuntime.CheckXcodeVersion (27, 0))
+						continue;
+					break;
 				default:
 					if (!TestRuntime.CheckXcodeVersion (7, 0))
 						continue;

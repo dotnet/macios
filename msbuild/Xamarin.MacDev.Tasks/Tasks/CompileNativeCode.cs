@@ -182,6 +182,21 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 			}
+
+			// Any files the source files need in order to compile (headers they #include,
+			// for instance) have to be copied to the Mac as well. Use the same filter as for
+			// any other input: if the local file doesn't exist or is empty, then it's the
+			// Mac's version that's the real one, and it must not be overwritten.
+			foreach (var info in CompileInfo) {
+				var dependencies = info.GetMetadata ("AdditionalDependencies");
+				if (string.IsNullOrEmpty (dependencies))
+					continue;
+				foreach (var dependency in dependencies.Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries)) {
+					var item = new TaskItem (dependency);
+					if (ShouldCopyToBuildServer (item))
+						yield return item;
+				}
+			}
 		}
 
 		public void Cancel ()

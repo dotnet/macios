@@ -11,7 +11,7 @@ using UIKit;
 
 namespace VisionKit {
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -27,7 +27,7 @@ namespace VisionKit {
 		string Title { get; }
 	}
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
 	interface VNDocumentCameraViewController {
@@ -48,7 +48,7 @@ namespace VisionKit {
 
 	interface IVNDocumentCameraViewControllerDelegate { }
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]

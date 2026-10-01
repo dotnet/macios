@@ -2,17 +2,34 @@ using CoreFoundation;
 
 namespace ThreadNetwork {
 
-	[iOS (15, 0), Mac (13, 0), MacCatalyst (16, 1), NoTV]
+	delegate void THClientEnableCredentialSharingModeCompletionHandler ([NullAllowed] NSError error);
+
+	/// <summary>Handler invoked with active credentials for nearby Thread networks.</summary>
+	/// <param name="credentials">The active credentials, or <see langword="null" /> if they could not be retrieved.</param>
+	/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+	delegate void THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler ([NullAllowed] NSSet<THCredentials> credentials, [NullAllowed] NSError error);
+
+	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface THClient {
 		[Async]
 		[Export ("retrieveAllCredentials:")]
 		void RetrieveAllCredentials (Action<NSSet<THCredentials>, NSError> completion);
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("retrieveAllActiveCredentials:")]
 		void RetrieveAllActiveCredentials (Action<NSSet<THCredentials>, NSError> completion);
+
+		/// <summary>Retrieves active credentials for nearby Thread networks.</summary>
+		/// <param name="completion">The handler to invoke when the credentials are available.</param>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously retrieves active credentials for nearby Thread networks.</summary>
+			<returns>A task that represents the asynchronous retrieval operation.</returns>
+			""")]
+		[Export ("retrieveActiveCredentialsForNearbyNetworksWithCompletion:")]
+		void RetrieveActiveCredentialsForNearbyNetworks (THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler completion);
 
 		[Async]
 		[Export ("deleteCredentialsForBorderAgent:completion:")]
@@ -40,13 +57,18 @@ namespace ThreadNetwork {
 		[Export ("checkPreferredNetworkForActiveOperationalDataset:completion:")]
 		void CheckPreferredNetwork (NSData activeOperationalDataSet, Action<bool> completion);
 
-		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Async]
 		[Export ("isPreferredNetworkAvailableWithCompletion:")]
 		void IsPreferredNetworkAvailable (Action<bool> completion);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("enableCredentialSharingModeForExtendedPANID:completion:")]
+		void EnableCredentialSharingMode (NSData extendedPanId, THClientEnableCredentialSharingModeCompletionHandler completion);
 	}
 
-	[iOS (15, 0), Mac (13, 0), MacCatalyst (16, 1), NoTV]
+	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface THCredentials : NSSecureCoding {

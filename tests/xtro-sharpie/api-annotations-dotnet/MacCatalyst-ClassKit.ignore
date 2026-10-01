@@ -6,3 +6,4 @@
 !missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FindContextsMatching(Foundation.NSPredicate,System.Action`2<ClassKit.CLSContext[],Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
 !missing-null-allowed! 'System.Void ClassKit.CLSDataStore::FindContextsMatching(System.String[],System.Action`2<ClassKit.CLSContext[],Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #1
 !missing-null-allowed! 'System.Void ClassKit.CLSDataStore::Save(System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0
+!missing-null-allowed! 'System.Void ClassKit.ICLSContextProvider::UpdateDescendants(ClassKit.CLSContext,System.Action`1<Foundation.NSError>)' is missing a '?' on parameter 'completion' block parameter #0

@@ -28,7 +28,7 @@ namespace UIKit {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 		public virtual UITraitCollection GetTraitCollectionByModifyingTraits (Func<IUIMutableTraits> mutations)
 		{

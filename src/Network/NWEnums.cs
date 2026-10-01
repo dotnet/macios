@@ -248,7 +248,7 @@ namespace Network {
 		Satisfied = 1,
 		/// <summary>The path has no usable route.</summary>
 		Unsatisfied = 2,
-		/// <summary>A connection attempt can trigger network attachment and make the path usable.</summary>
+		/// <summary>The path has no usable route, but a connection attempt will trigger network attachment.</summary>
 		Satisfiable = 3,
 	}
 

@@ -283,7 +283,7 @@ namespace Network {
 	/// <summary>Describes the result of looking up a key in a DNS TXT record.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWTxtRecordFindKey {
-		/// <summary>The key is invalid.</summary>
+		/// <summary>The key is empty, contains non-ASCII characters, or exceeds 255 bytes.</summary>
 		Invalid = 0,
 		/// <summary>The key is not present in the TXT record.</summary>
 		NotPresent = 1,

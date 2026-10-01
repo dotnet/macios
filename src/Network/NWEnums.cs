@@ -280,12 +280,18 @@ namespace Network {
 		Ce = 3,
 	}
 
+	/// <summary>Describes the result of looking up a key in a DNS TXT record.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWTxtRecordFindKey {
+		/// <summary>The key is invalid.</summary>
 		Invalid = 0,
+		/// <summary>The key is not present in the TXT record.</summary>
 		NotPresent = 1,
+		/// <summary>The key is present without an assigned value.</summary>
 		NoValue = 2,
+		/// <summary>The key is present with an empty value.</summary>
 		EmptyValue = 3,
+		/// <summary>The key is present with a non-empty value.</summary>
 		NonEmptyValue = 4,
 	}
 

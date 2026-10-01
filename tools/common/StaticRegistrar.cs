@@ -1573,6 +1573,9 @@ namespace Registrar {
 			switch (attrib.ConstructorArguments.Count) {
 			case 1:
 				var type = ((TypeReference) attrib.ConstructorArguments [0].Value).Resolve ();
+#if ASSEMBLY_PREPARER
+				type = GetPostTrimType (type);
+#endif
 				return new BlockProxyAttribute (type);
 			default:
 				throw ErrorHelper.CreateError (4124, Errors.MT4124, "BlockProxyAttribute", ((MethodReference) parameter.Method)?.FullName);
@@ -1587,6 +1590,9 @@ namespace Registrar {
 			switch (attrib.ConstructorArguments.Count) {
 			case 1:
 				var delegateType = ((TypeReference) attrib.ConstructorArguments [0].Value).Resolve ();
+#if ASSEMBLY_PREPARER
+				delegateType = GetPostTrimType (delegateType);
+#endif
 				return new DelegateProxyAttribute (delegateType);
 			default:
 				throw ErrorHelper.CreateError (4124, Errors.MT4124, "DelegateProxyAttribute", ((MethodReference) method)?.FullName);
@@ -1651,6 +1657,15 @@ namespace Registrar {
 		}
 
 #if ASSEMBLY_PREPARER
+		TypeDefinition GetPostTrimType (TypeDefinition type)
+		{
+			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null || App.Registrar != RegistrarMode.Static)
+				return type;
+
+			var postTrimAssembly = GetAssemblies ().FirstOrDefault (v => v.Name.Name == type.Module.Assembly.Name.Name);
+			return postTrimAssembly?.MainModule.GetType (type.FullName) ?? type;
+		}
+
 		// Returns the methods the given type had before it was trimmed. Returns an empty enumerable if the
 		// pre-trim assemblies aren't available (which is the case unless we're post-processing assemblies).
 		IEnumerable<MethodDefinition> GetPreTrimMethods (TypeDefinition type)

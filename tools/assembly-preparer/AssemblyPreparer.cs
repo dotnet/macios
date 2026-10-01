@@ -203,7 +203,7 @@ public class AssemblyPreparer : IDisposable {
 		return RunSteps (steps, out exceptions);
 	}
 
-	// Load the original assemblies so the managed static registrar can find protocol methods removed
+	// Load the original assemblies so the static registrars can find protocol methods removed
 	// during trimming (and the trimmable static registrar can read selected removed attributes).
 	// The assemblies are loaded into their own resolver (a separate, self-contained
 	// metadata universe from the post-trim assemblies), and stored on the Application for the registrar to
@@ -214,7 +214,7 @@ public class AssemblyPreparer : IDisposable {
 		if (PreTrimAssemblies.Count == 0)
 			return;
 
-		if (configuration.Application.Registrar != RegistrarMode.TrimmableStatic && configuration.Application.Registrar != RegistrarMode.ManagedStatic)
+		if (configuration.Application.Registrar != RegistrarMode.Static && configuration.Application.Registrar != RegistrarMode.TrimmableStatic && configuration.Application.Registrar != RegistrarMode.ManagedStatic)
 			return;
 
 		var resolver = new PreTrimAssemblyResolver (configuration.Logger, PreTrimAssemblies);

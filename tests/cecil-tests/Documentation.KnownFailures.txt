@@ -58228,7 +58228,6 @@ T:Network.NWMulticastGroup
 T:Network.NWMultipathVersion
 T:Network.NWMultiplexGroup
 T:Network.NWParametersAttribution
-T:Network.NWPathStatus
 T:Network.NWPathUnsatisfiedReason
 T:Network.NWPrivacyContext
 T:Network.NWProtocolIPOptions

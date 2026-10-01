@@ -239,15 +239,16 @@ namespace Network {
 	}
 
 	// this maps to `nw_path_status_t` in Network/Headers/path.h (and not the enum from NetworkExtension)
+	/// <summary>Describes whether a network path has a usable route.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWPathStatus {
-		/// <summary>To be added.</summary>
+		/// <summary>The path is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The path has a usable route for sending and receiving data.</summary>
 		Satisfied = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The path has no usable route.</summary>
 		Unsatisfied = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A connection attempt can trigger network attachment and make the path usable.</summary>
 		Satisfiable = 3,
 	}
 

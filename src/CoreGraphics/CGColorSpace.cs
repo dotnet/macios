@@ -274,11 +274,15 @@ namespace CoreGraphics {
 			}
 		}
 
-		static CGColorSpace? Create (IntPtr handle)
+		static CGColorSpace? Create (NSString? name)
 		{
-			if (handle == IntPtr.Zero)
+			if (name is null)
+				return null;
+			var handle = name.Handle;
+			if (handle == NativeHandle.Zero)
 				return null;
 			var r = CGColorSpaceCreateWithName (handle);
+			GC.KeepAlive (name);
 			return FromHandle (r, true);
 		}
 
@@ -291,7 +295,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericGray ()
 		{
-			return Create (CGColorSpaceNames.GenericGray.Handle);
+			return Create (CGColorSpaceNames.GenericGray);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents a generic RGB color space.</summary>
@@ -303,7 +307,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericRgb ()
 		{
-			return Create (CGColorSpaceNames.GenericRgb.Handle);
+			return Create (CGColorSpaceNames.GenericRgb);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents a generic CMYK color space.</summary>
@@ -315,7 +319,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericCmyk ()
 		{
-			return Create (CGColorSpaceNames.GenericCmyk.Handle);
+			return Create (CGColorSpaceNames.GenericCmyk);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents a generic linear RGB color space.</summary>
@@ -327,7 +331,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericRgbLinear ()
 		{
-			return Create (CGColorSpaceNames.GenericRgbLinear.Handle);
+			return Create (CGColorSpaceNames.GenericRgbLinear);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an Adobe RGB (1998) color space.</summary>
@@ -339,7 +343,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateAdobeRgb1988 ()
 		{
-			return Create (CGColorSpaceNames.AdobeRgb1998.Handle);
+			return Create (CGColorSpaceNames.AdobeRgb1998);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an sRGB color space.</summary>
@@ -351,7 +355,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateSrgb ()
 		{
-			return Create (CGColorSpaceNames.Srgb.Handle);
+			return Create (CGColorSpaceNames.Srgb);
 		}
 
 		/// <summary>Creates and returns a generic Gray color space with a gamma value of 2.2.</summary>
@@ -363,7 +367,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericGrayGamma2_2 ()
 		{
-			return Create (CGColorSpaceNames.GenericGrayGamma2_2.Handle);
+			return Create (CGColorSpaceNames.GenericGrayGamma2_2);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an device dependent CMYK color space.</summary>
@@ -375,7 +379,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateGenericXyz ()
 		{
-			return Create (CGColorSpaceNames.GenericXyz.Handle);
+			return Create (CGColorSpaceNames.GenericXyz);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an ACEScg color space.</summary>
@@ -387,7 +391,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateAcesCGLinear ()
 		{
-			return Create (CGColorSpaceNames.AcesCGLinear.Handle);
+			return Create (CGColorSpaceNames.AcesCGLinear);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an ITU-R BT.709 color space.</summary>
@@ -399,7 +403,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateItuR_709 ()
 		{
-			return Create (CGColorSpaceNames.ItuR_709.Handle);
+			return Create (CGColorSpaceNames.ItuR_709);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents an ITU-R BT.2020 color space.</summary>
@@ -411,7 +415,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateItuR_2020 ()
 		{
-			return Create (CGColorSpaceNames.ItuR_2020.Handle);
+			return Create (CGColorSpaceNames.ItuR_2020);
 		}
 
 		/// <summary>Creates and returns a <see cref="CoreGraphics.CGColorSpace" /> that represents a ROMM RGB color space.</summary>
@@ -423,7 +427,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		public static CGColorSpace? CreateRommRgb ()
 		{
-			return Create (CGColorSpaceNames.RommRgb.Handle);
+			return Create (CGColorSpaceNames.RommRgb);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -723,15 +727,15 @@ namespace CoreGraphics {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceUsesExtendedRange (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool UsesExtendedRange {
@@ -740,54 +744,54 @@ namespace CoreGraphics {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceUsesITUR_2100TF (/* CGColorSpaceRef */ IntPtr space);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool UsesItur2100TF => CGColorSpaceUsesITUR_2100TF (Handle) != 0;
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateLinearized (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CGColorSpace? CreateLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateLinearized (Handle), owns: true);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateExtended (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CGColorSpace? CreateExtended () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtended (Handle), owns: true);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateExtendedLinearized (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
-		[SupportedOSPlatform ("ios14.1")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CGColorSpace? CreateExtendedLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtendedLinearized (Handle), owns: true);
@@ -806,28 +810,28 @@ namespace CoreGraphics {
 		public CGColorSpace? CreateCopyWithStandardRange () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateCopyWithStandardRange (Handle), owns: true);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsHLGBased (/* CGColorSpace */ IntPtr space);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsHlgBased => CGColorSpaceIsHLGBased (Handle) != 0;
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGColorSpaceIsPQBased (/* CGColorSpace */ IntPtr space);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsPQBased => CGColorSpaceIsPQBased (Handle) != 0;
 

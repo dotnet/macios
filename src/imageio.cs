@@ -4031,6 +4031,11 @@ namespace ImageIO {
 		[Field ("kCGImageSourceTypeIdentifierHint")]
 		IntPtr kTypeIdentifierHint { get; }
 
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Internal]
+		[Field ("kCGImageSourceAllowableTypes")]
+		IntPtr kAllowableTypes { get; }
+
 		[Internal]
 		[Field ("kCGImageSourceShouldCache")]
 		IntPtr kShouldCache { get; }
@@ -4043,6 +4048,11 @@ namespace ImageIO {
 		[Internal]
 		[Field ("kCGImageSourceShouldAllowFloat")]
 		IntPtr kShouldAllowFloat { get; }
+
+		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
+		[Internal]
+		[Field ("kCGImageSourcePrioritizeQuality")]
+		IntPtr kPrioritizeQuality { get; }
 	}
 
 	/// <summary>Configuration options used when loading thumbnails using CGImageSource.</summary>

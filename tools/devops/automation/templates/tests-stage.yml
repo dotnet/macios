@@ -73,6 +73,18 @@ parameters:
         "Agent.HasDevices -equals False",
         "Agent.IsPaired -equals False"
       ]
+    },
+    {
+      stageName: 'mac_27_arm64',
+      displayName: 'arm64 - Mac Golden Gate (27)',
+      label: 'mac_golden_gate',
+      macPool: 'AcesShared',
+      useImage: false,
+      statusContext: 'arm64 - Mac Golden Gate (27)',
+      vmVendor: 'ACES',
+      demands: [
+        "ImageOverride -equals ACES_VM_SharedPool_GoldenGate"
+      ]
     }]
 
 - name: stageDisplayNamePrefix
@@ -166,14 +178,20 @@ stages:
         BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
         XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
         RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
-      pool:
-        name: $(PRBuildPool)
-        demands:
-        - Agent.OS -equals Darwin
-        - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-        - macOS.Name -equals ${{ parameters.macOSName }}
-        - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
-        - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+      ${{ if parameters.useACES }}:
+        pool:
+          name: $(CIBuildPoolACES)
+          demands:
+          - ImageOverride -equals $(CIBuildPoolACESImage)
+      ${{ else }}:
+        pool:
+          name: $(PRBuildPool)
+          demands:
+          - Agent.OS -equals Darwin
+          - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+          - macOS.Name -equals ${{ parameters.macOSName }}
+          - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
+          - XcodeChannel -equals ${{ parameters.xcodeChannel }}
       steps:
       - template: build/build-pkgs.yml
         parameters:
@@ -272,3 +290,4 @@ stages:
       xqaCertPass: $(xqa--certificates--password)
       postPipeline: ${{ not(parameters.buildPackages) }}
       label: ${{ config.label }}
+      vmVendor: ${{ config.vmVendor }}

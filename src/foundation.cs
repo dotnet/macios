@@ -31,8 +31,6 @@
 //
 //
 
-#define DOUBLE_BLOCKS
-
 global using nfloat = global::System.Runtime.InteropServices.NFloat;
 
 using CloudKit;
@@ -14387,11 +14385,17 @@ namespace Foundation {
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 		[Export ("preservationPriorityForTag:")]
 		double GetPreservationPriority (NSString tag);
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 		[Export ("setPreservationPriority:forTags:")]
 		void SetPreservationPriority (double priority, NSSet<NSString> tags);
 
@@ -14411,6 +14415,9 @@ namespace Foundation {
 
 	[NoMac]
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
+	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
+	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSBundleResourceRequest : NSProgressReporting {
@@ -14684,6 +14691,10 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	partial interface NSItemProvider : NSCopying {
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'NSItemProvider (INSItemProviderWriting)' constructor instead.")]
 		[DesignatedInitializer]
 		[Export ("initWithItem:typeIdentifier:")]
 		NativeHandle Constructor ([NullAllowed] NSObject item, string typeIdentifier);
@@ -14694,12 +14705,20 @@ namespace Foundation {
 		[Export ("registeredTypeIdentifiers", ArgumentSemantic.Copy)]
 		string [] RegisteredTypeIdentifiers { get; }
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'RegisterObject' method instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'RegisterObject' method instead.")]
 		[Export ("registerItemForTypeIdentifier:loadHandler:")]
 		void RegisterItemForTypeIdentifier (string typeIdentifier, NSItemProviderLoadHandler loadHandler);
 
 		[Export ("hasItemConformingToTypeIdentifier:")]
 		bool HasItemConformingTo (string typeIdentifier);
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use the 'LoadObject' method instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use the 'LoadObject' method instead.")]
 		[Async (XmlDocs = """
 			<param name="typeIdentifier">To be added.</param>
 			<param name="options">To be added.</param>
@@ -18379,7 +18398,6 @@ namespace Foundation {
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 		NSOperationQueue PresentedItemOperationQueue { get; }
 
-#if DOUBLE_BLOCKS
 		/// <param name="readerAction">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
@@ -18391,23 +18409,28 @@ namespace Foundation {
 		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToWriter:")]
 		void RelinquishPresentedItemToWriter (NSFilePresenterReacquirer writerAction);
-#endif
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("savePresentedItemChangesWithCompletionHandler:")]
-		void SavePresentedItemChanges (Action<NSError> completionHandler);
+#nullable enable
+		void SavePresentedItemChanges (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedItemDeletionWithCompletionHandler:")]
-		void AccommodatePresentedItemDeletion (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemDeletion (Action<NSError?> completionHandler);
+#nullable disable
 
 		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]
-		void AccommodatePresentedItemEviction (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemEviction (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="newURL">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -18443,7 +18466,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedSubitemDeletionAtURL:completionHandler:")]
-		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="atUrl">To be added.</param>
 		/// <summary>To be added.</summary>

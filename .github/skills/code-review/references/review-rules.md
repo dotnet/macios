@@ -7,6 +7,15 @@ and the repository's `.editorconfig`.
 
 ---
 
+## 0. PRs Excluded from Review
+
+Before reviewing a PR, retrieve its author. PRs authored by `csigs` are generated
+by the localization pipeline and must not be reviewed. Stop without reading the
+diff, posting inline comments, or submitting a review summary or verdict. Never
+rubber-stamp these PRs with a green verdict.
+
+---
+
 ## 1. Binding Definition Conventions
 
 Binding definitions (`src/*.cs`) are the core of this repository. They define the
@@ -53,6 +62,12 @@ Build tasks ship to customers. Getting them wrong causes broken builds.
 | **`Inputs`/`Outputs` for incremental builds** | Targets that write files must have `Inputs` and `Outputs` attributes. Missing them breaks incremental builds. |
 | **`FileWrites` for intermediate files** | Intermediate files must be added to `@(FileWrites)` so `IncrementalClean` doesn't delete them. Don't use `<Output TaskParameter="..." ItemName="FileWrites" />` — it won't evaluate when the target is skipped. |
 | **Condition evaluation timing** | `Condition` on a `<Target>` is evaluated *before* `DependsOnTargets` runs. Comments should document this when it matters. |
+
+**Localizable build messages:** In `msbuild/Xamarin.MacDev.Tasks` and
+`tools/assembly-preparer`, flag any user-visible error, warning, informational
+message, or exception text that is hard-coded instead of sourced from an English
+`.resx` resource (such as `MSBStrings.resx` or `Errors.resx`). See §15 for the rule on
+generated translations.
 
 ---
 

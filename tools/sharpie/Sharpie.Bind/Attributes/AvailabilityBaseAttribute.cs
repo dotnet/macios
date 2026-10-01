@@ -96,29 +96,51 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 
 	public static IEnumerable<AvailabilityBaseAttribute> FromClang (Attr attr)
 	{
-		var platform = GetPlatform (attr.AvailabilityAttributePlatformIdentifierName);
+		foreach (var platform in GetPlatforms (attr.AvailabilityAttributePlatformIdentifierName)) {
+			var shorthand = ShorthandFromClang (platform, attr);
+			if (shorthand is not null) {
+				yield return shorthand;
+				continue;
+			}
 
-		var shorthand = ShorthandFromClang (platform, attr);
-		if (shorthand is not null) {
-			yield return shorthand;
-			yield break;
+			if (attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmptyVersionTuple)
+				yield return new AvailabilityBaseAttribute (
+					AvailabilityKind.Introduced, platform, attr.AvailabilityAttributeIntroduced ?? default, attr.AvailabilityAttributeMessage);
+
+			if (attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple)
+				yield return new AvailabilityBaseAttribute (
+					AvailabilityKind.Deprecated, platform, attr.AvailabilityAttributeDeprecated.Value, attr.AvailabilityAttributeMessage);
+
+			if (attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmptyVersionTuple)
+				yield return new AvailabilityBaseAttribute (
+					AvailabilityKind.Obsoleted, platform, attr.AvailabilityAttributeObsoleted.Value, attr.AvailabilityAttributeMessage);
+
+			if (attr.AvailabilityAttributeUnavailable)
+				yield return new AvailabilityBaseAttribute (
+					AvailabilityKind.Unavailable, platform, VersionTuple.Empty, attr.AvailabilityAttributeMessage);
 		}
+	}
 
-		if (attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmptyVersionTuple)
-			yield return new AvailabilityBaseAttribute (
-				AvailabilityKind.Introduced, platform, attr.AvailabilityAttributeIntroduced ?? default, attr.AvailabilityAttributeMessage);
+	// 'anyAppleOS' is a meta-platform introduced in the Xcode 27 SDK that means "available on
+	// every Apple OS" (used as 'API_AVAILABLE(anyappleos(x))'). The clang we use to parse the
+	// headers doesn't understand it (it's reported as an unknown platform), so we expand it
+	// ourselves into the Apple platforms macios ships, all sharing the same version. watchOS and
+	// visionOS are intentionally left out (macios doesn't ship them); add them here if that changes.
+	static readonly PlatformName [] anyAppleOSPlatforms = new [] {
+		PlatformName.iOS,
+		PlatformName.MacOSX,
+		PlatformName.MacCatalyst,
+		PlatformName.TvOS,
+	};
 
-		if (attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple)
-			yield return new AvailabilityBaseAttribute (
-				AvailabilityKind.Deprecated, platform, attr.AvailabilityAttributeDeprecated.Value, attr.AvailabilityAttributeMessage);
-
-		if (attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmptyVersionTuple)
-			yield return new AvailabilityBaseAttribute (
-				AvailabilityKind.Obsoleted, platform, attr.AvailabilityAttributeObsoleted.Value, attr.AvailabilityAttributeMessage);
-
-		if (attr.AvailabilityAttributeUnavailable)
-			yield return new AvailabilityBaseAttribute (
-				AvailabilityKind.Unavailable, platform, VersionTuple.Empty, attr.AvailabilityAttributeMessage);
+	static IEnumerable<PlatformName> GetPlatforms (string? name)
+	{
+		if (string.Equals (name, "anyAppleOS", StringComparison.OrdinalIgnoreCase)) {
+			foreach (var platform in anyAppleOSPlatforms)
+				yield return platform;
+		} else {
+			yield return GetPlatform (name);
+		}
 	}
 
 	static PlatformName GetPlatform (string? name)

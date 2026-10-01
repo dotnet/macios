@@ -74,16 +74,16 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public bool IsTcp => nw_protocol_metadata_is_tcp (GetCheckedHandle ()) != 0;
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_protocol_metadata_is_quic (OS_nw_protocol_metadata metadata);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsQuic => nw_protocol_metadata_is_quic (GetCheckedHandle ()) != 0;
 

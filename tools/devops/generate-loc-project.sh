@@ -83,7 +83,7 @@ cat <<EOF
 EOF
 
 # Add entries for all template localization JSON files
-ABSTOP=$(cd "$TOP" && pwd)
+ABSTOP="$WORKING_DIRECTORY/../.."
 find "$ABSTOP/dotnet/Templates" -name 'templatestrings.en.json' | sort | while read -r f; do
 	dir=$(dirname "$f")
 	cat <<EOF

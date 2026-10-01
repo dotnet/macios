@@ -1,0 +1,7 @@
+{
+  "author": "Microsoft",
+  "name": "Mac Catalyst Test Project",
+  "description": "A project for creating a .NET Mac Catalyst test project using MSTest",
+  "symbols/bundleId/description": "Overrides the ApplicationId in the project file",
+  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file"
+}

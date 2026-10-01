@@ -124,6 +124,11 @@ namespace MonoTouchFixtures.AVFoundation {
 									if (!TestRuntime.CheckXcodeVersion (26, 0))
 										continue;
 									break;
+								case AVMetadataObjectType.FocusTrackedObject:
+								case AVMetadataObjectType.CinematicVideoMetadata:
+									if (!TestRuntime.CheckXcodeVersion (27, 0) || (metadataOutput.AvailableMetadataObjectTypes & val) != val)
+										continue;
+									break;
 								}
 								metadataOutput.MetadataObjectTypes = val;
 								all |= val;

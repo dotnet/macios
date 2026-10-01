@@ -403,7 +403,7 @@ namespace AppKit {
 		[Export ("duration")]
 		double Duration { get; set; }
 
-		[Export ("completionHandler", ArgumentSemantic.Copy)]
+		[NullAllowed, Export ("completionHandler", ArgumentSemantic.Copy)]
 		Action CompletionHandler { get; set; }
 
 		[Static]
@@ -1127,8 +1127,13 @@ namespace AppKit {
 		NSString ApplicationVersion { get; }
 	}
 
+	/// <summary>Handles a window during application window enumeration.</summary>
+	/// <param name="window">The window being enumerated.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop the enumeration.</param>
 	delegate void NSApplicationEnumerateWindowsHandler (NSWindow window, ref bool stop);
 
+	/// <summary>Provides the objects used to restore a continued user activity.</summary>
+	/// <param name="restorableObjects">The objects that participate in restoring the user activity.</param>
 	[NoMacCatalyst]
 	delegate void ContinueUserActivityRestorationHandler (INSUserActivityRestoring [] restorableObjects);
 
@@ -2837,6 +2842,19 @@ namespace AppKit {
 		[Export ("browser:selectionIndexesForProposedSelection:inColumn:")]
 		NSIndexSet SelectionIndexesForProposedSelection (NSBrowser browser, NSIndexSet proposedSelectionIndexes, nint inColumn);
 
+		[Mac (27, 0)]
+		[Export ("browser:pasteboardWriterForRow:column:")]
+		[return: NullAllowed]
+		INSPasteboardWriting GetPasteboardWriter (NSBrowser browser, nint row, nint column);
+
+		[Mac (27, 0)]
+		[Export ("browser:draggingSession:willBeginAtPoint:forRowsWithIndexes:column:")]
+		void DraggingSessionWillBegin (NSBrowser browser, NSDraggingSession draggingSession, CGPoint screenPoint, NSIndexSet rowIndexes, nint column);
+
+		[Mac (27, 0)]
+		[Export ("browser:draggingSession:endedAtPoint:operation:")]
+		void DraggingSessionEnded (NSBrowser browser, NSDraggingSession draggingSession, CGPoint screenPoint, NSDragOperation operation);
+
 	}
 
 	[NoMacCatalyst]
@@ -3858,7 +3876,7 @@ namespace AppKit {
 		void MoveItem (NSIndexPath indexPath, NSIndexPath newIndexPath);
 
 		[Export ("performBatchUpdates:completionHandler:")]
-		void PerformBatchUpdates (Action updates, Action<bool> completionHandler);
+		void PerformBatchUpdates ([NullAllowed] Action updates, [NullAllowed] Action<bool> completionHandler);
 
 		[Export ("scrollToItemsAtIndexPaths:scrollPosition:")]
 		void ScrollToItems (NSSet<NSIndexPath> indexPaths, NSCollectionViewScrollPosition scrollPosition);
@@ -5837,6 +5855,33 @@ namespace AppKit {
 		nuint IndexOfItem (NSComboBoxCell comboBox, string value);
 	}
 
+	[Mac (11, 0), NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSControlEvents : ulong {
+		TrackingBegan = 1uL << 0,
+		[Mac (27, 0)]
+		TrackingRepeated = 1uL << 1,
+		TrackingInside = 1uL << 2,
+		TrackingOutside = 1uL << 3,
+		TrackingEntered = 1uL << 4,
+		TrackingExited = 1uL << 5,
+		TrackingEndedInside = 1uL << 6,
+		TrackingEndedOutside = 1uL << 7,
+		TrackingCancelled = 1uL << 8,
+		[Mac (27, 0)]
+		ValueChanged = 1uL << 12,
+		[Mac (27, 0)]
+		PrimaryActionTriggered = 1uL << 13,
+		[Mac (27, 0)]
+		MenuActionTriggered = 1uL << 14,
+		AllTrackingEvents = 0x00000FFF,
+		[Mac (27, 0)]
+		ApplicationReserved = 0x0F000000,
+		SystemReserved = 0xF0000000,
+		AllEvents = 0xFFFFFFFF,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSView))]
 	partial interface NSControl {
@@ -6024,6 +6069,14 @@ namespace AppKit {
 
 		[Export ("endEditing:")]
 		void EndEditing ([NullAllowed] NSText textObj);
+
+		[Mac (11, 0)]
+		[Export ("addTarget:action:forControlEvents:")]
+		void AddTarget ([NullAllowed] NSObject target, Selector action, NSControlEvents controlEvents);
+
+		[Mac (11, 0)]
+		[Export ("removeTarget:action:forControlEvents:")]
+		void RemoveTarget ([NullAllowed] NSObject target, [NullAllowed] Selector action, NSControlEvents controlEvents);
 	}
 
 	[NoMacCatalyst]
@@ -6613,6 +6666,8 @@ namespace AppKit {
 		NSMenu DockMenu ();
 	}
 
+	/// <summary>Handles the completion of an asynchronous document operation.</summary>
+	/// <param name="nsErrorPointerOrZero">A native pointer to the error that occurred, or zero if the operation succeeded.</param>
 	delegate void NSDocumentCompletionHandler (IntPtr nsErrorPointerOrZero);
 
 	[NoMacCatalyst]
@@ -6994,7 +7049,11 @@ namespace AppKit {
 		INSPreviewRepresentableActivityItem [] PreviewRepresentableActivityItems { get; set; }
 	}
 
-	delegate void OpenDocumentCompletionHandler (NSDocument document, bool documentWasAlreadyOpen, NSError error);
+	/// <summary>Handles the result of opening a document.</summary>
+	/// <param name="document">The opened document, or <see langword="null"/> if opening failed.</param>
+	/// <param name="documentWasAlreadyOpen">Whether the document was already open.</param>
+	/// <param name="error">The error that prevented the document from opening, or <see langword="null"/> on success.</param>
+	delegate void OpenDocumentCompletionHandler ([NullAllowed] NSDocument document, bool documentWasAlreadyOpen, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[DesignatedDefaultCtor]
@@ -7155,6 +7214,8 @@ namespace AppKit {
 		NSString LabelKey { get; }
 	}
 
+	/// <summary>Provides the image components for a dragging item.</summary>
+	/// <returns>The image components to display during dragging.</returns>
 	[NoMacCatalyst]
 	delegate NSDraggingImageComponent [] NSDraggingItemImagesContentProvider ();
 
@@ -7291,6 +7352,10 @@ namespace AppKit {
 		bool WantsPeriodicDraggingUpdates { get; }
 	}
 
+	/// <summary>Handles an item while enumerating the items in a dragging session.</summary>
+	/// <param name="draggingItem">The item being enumerated.</param>
+	/// <param name="idx">The item's index in the enumeration.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop enumerating.</param>
 	[NoMacCatalyst]
 	delegate void NSDraggingEnumerator (NSDraggingItem draggingItem, nint idx, ref bool stop);
 
@@ -9002,10 +9067,21 @@ namespace AppKit {
 		CGRect BoundingBox { get; }
 	}
 
+	/// <summary>Handles events received by a global event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
 	[NoMacCatalyst]
 	delegate void GlobalEventHandler (NSEvent theEvent);
+	/// <summary>Filters events received by a local event monitor.</summary>
+	/// <param name="theEvent">The event received by the monitor.</param>
+	/// <returns>The event to dispatch, or <see langword="null"/> to suppress the event.</returns>
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSEvent LocalEventHandler (NSEvent theEvent);
+	/// <summary>Tracks progress during a swipe gesture.</summary>
+	/// <param name="gestureAmount">The current progress of the gesture.</param>
+	/// <param name="eventPhase">The current phase of the gesture.</param>
+	/// <param name="isComplete">Whether the gesture has completed.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop tracking.</param>
 	[NoMacCatalyst]
 	delegate void NSEventTrackHandler (nfloat gestureAmount, NSEventPhase eventPhase, bool isComplete, ref bool stop);
 
@@ -9319,6 +9395,11 @@ namespace AppKit {
 		[Export ("isSwipeTrackingFromScrollEventsEnabled")]
 		bool IsSwipeTrackingFromScrollEventsEnabled { get; }
 
+		[Mac (27, 0)]
+		[Static]
+		[Export ("isTouchSwipeNavigationEnabled")]
+		bool IsTouchSwipeNavigationEnabled { get; }
+
 		[Export ("trackSwipeEventWithOptions:dampenAmountThresholdMin:max:usingHandler:")]
 		void TrackSwipeEvent (NSEventSwipeTrackingOptions options, nfloat minDampenThreshold, nfloat maxDampenThreshold, NSEventTrackHandler trackingHandler);
 
@@ -9413,6 +9494,10 @@ namespace AppKit {
 
 		[Export ("delaysRotationEvents")]
 		bool DelaysRotationEvents { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("cancellableByScrollGesture")]
+		bool CancellableByScrollGesture { [Bind ("isCancellableByScrollGesture")] get; set; }
 
 		[Export ("locationInView:")]
 		CGPoint LocationInView ([NullAllowed] NSView view);
@@ -9858,6 +9943,14 @@ namespace AppKit {
 		CGRect ConfinementRectForMenu (NSMenu menu, NSScreen screen);
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSMenuItemImageVisibility : long {
+		Automatic = 0,
+		Visible = 1,
+		Hidden = 2,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe] // Not documented anywhere, but their Finder extension sample uses it on non-ui thread
@@ -9994,6 +10087,10 @@ namespace AppKit {
 		[NullAllowed]
 		[Export ("badge", ArgumentSemantic.Copy)]
 		NSMenuItemBadge Badge { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("preferredImageVisibility", ArgumentSemantic.Assign)]
+		NSMenuItemImageVisibility PreferredImageVisibility { get; set; }
 
 		[Export ("sectionHeader")]
 		bool IsSectionHeader { [Bind ("isSectionHeader")] get; }
@@ -13226,8 +13323,17 @@ namespace AppKit {
 		[Export ("velocityInView:")]
 		CGPoint VelocityInView (NSView view);
 
+		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'MinimumNumberOfTouches' instead.")]
 		[Export ("numberOfTouchesRequired")]
 		nint NumberOfTouchesRequired { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("minimumNumberOfTouches")]
+		nint MinimumNumberOfTouches { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("maximumNumberOfTouches")]
+		nint MaximumNumberOfTouches { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -13711,13 +13817,31 @@ namespace AppKit {
 		void DetectMetadata (HashSet<NSPasteboardMetadataType> types, NSPasteboardDetectMetadataCompletionHandler completionHandler);
 	}
 
+	/// <summary>Handles the patterns detected in a pasteboard.</summary>
+	/// <param name="detectedPatterns">The detected patterns, or <see langword="null"/> if none were detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectPatternsHandler ([NullAllowed] NSSet<NSString> detectedPatterns, [NullAllowed] NSError error);
+	/// <summary>Handles the typed patterns detected in a pasteboard.</summary>
+	/// <param name="detectedPatterns">The detected patterns, or <see langword="null"/> if none were detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectPatternsCompletionHandler ([NullAllowed] HashSet<NSPasteboardDetectionPattern> detectedPatterns, [NullAllowed] NSError error);
 
+	/// <summary>Handles the values detected in a pasteboard.</summary>
+	/// <param name="detectedValues">The detected values, or <see langword="null"/> if none were detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectValuesHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedValues, [NullAllowed] NSError error);
+	/// <summary>Handles the typed values detected in a pasteboard.</summary>
+	/// <param name="detectedValues">The detected values, or <see langword="null"/> if none were detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectValuesCompletionHandler ([NullAllowed] Dictionary<NSPasteboardDetectionPattern, DDMatch []> detectedValues, [NullAllowed] NSError error);
 
+	/// <summary>Handles the metadata detected in a pasteboard.</summary>
+	/// <param name="detectedMetadata">The detected metadata, or <see langword="null"/> if none was detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectMetadataHandler ([NullAllowed] NSDictionary<NSString, NSObject> detectedMetadata, [NullAllowed] NSError error);
+	/// <summary>Handles the typed metadata detected in a pasteboard.</summary>
+	/// <param name="detectedMetadata">The detected metadata, or <see langword="null"/> if none was detected.</param>
+	/// <param name="error">The detection error, or <see langword="null"/> if detection succeeded.</param>
 	delegate void NSPasteboardDetectMetadataCompletionHandler ([NullAllowed] Dictionary<NSPasteboardMetadataType, UTType> detectedMetadata, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
@@ -16040,6 +16164,8 @@ namespace AppKit {
 		Picas,
 	}
 
+	/// <summary>Handles the response when a save panel closes.</summary>
+	/// <param name="result">The modal response from the panel.</param>
 	delegate void NSSavePanelComplete (nint result);
 
 	[NoMacCatalyst]
@@ -16184,6 +16310,14 @@ namespace AppKit {
 		bool ShowsContentTypes { get; set; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSScreenTouchCapabilities : ulong {
+		None = 0x0,
+		MultiTouch = 1uL << 0,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	partial interface NSScreen {
@@ -16312,6 +16446,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("CGDirectDisplayID")]
 		uint CGDirectDisplayId { get; }
+
+		[Mac (27, 0)]
+		[Export ("touchCapabilities")]
+		NSScreenTouchCapabilities TouchCapabilities { get; }
 	}
 
 	[NoMacCatalyst]
@@ -16588,6 +16726,51 @@ namespace AppKit {
 
 		[Export ("addFloatingSubview:forAxis:")]
 		void AddFloatingSubview (NSView view, NSEventGestureAxis axis);
+
+		[Mac (27, 0)]
+		[Export ("touchScrollingEnabled")]
+		bool TouchScrollingEnabled { [Bind ("isTouchScrollingEnabled")] get; set; }
+
+		[Mac (27, 0)]
+		[Export ("minimumNumberOfTouchesForScrolling")]
+		nint MinimumNumberOfTouchesForScrolling { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("maximumNumberOfTouchesForScrolling")]
+		nint MaximumNumberOfTouchesForScrolling { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("scrollGestureForRelationships", ArgumentSemantic.Strong)]
+		NSGestureRecognizer ScrollGestureForRelationships { get; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("refreshController", ArgumentSemantic.Strong)]
+		NSRefreshController RefreshController { get; set; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSRefreshController {
+		[Export ("isRefreshing")]
+		bool IsRefreshing { get; }
+
+		[NullAllowed, Export ("tintColor", ArgumentSemantic.Strong)]
+		NSColor TintColor { get; set; }
+
+		[NullAllowed, Export ("attributedTitle", ArgumentSemantic.Copy)]
+		NSAttributedString AttributedTitle { get; set; }
+
+		[NullAllowed, Export ("target", ArgumentSemantic.Weak)]
+		NSObject Target { get; set; }
+
+		[NullAllowed, Export ("action", ArgumentSemantic.Assign)]
+		Selector Action { get; set; }
+
+		[Export ("beginRefreshing")]
+		void BeginRefreshing ();
+
+		[Export ("endRefreshing")]
+		void EndRefreshing ();
 	}
 
 	[NoMacCatalyst]
@@ -16727,6 +16910,14 @@ namespace AppKit {
 		bool SendsSearchStringImmediately { get; set; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSSegmentedControlRole : long {
+		Automatic = 0,
+		Tabs = 1,
+		ValueSelection = 2,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSControl))]
 	interface NSSegmentedControl : NSUserInterfaceCompression {
@@ -16844,6 +17035,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("borderShape", ArgumentSemantic.Assign)]
 		NSControlBorderShape BorderShape { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("role", ArgumentSemantic.Assign)]
+		NSSegmentedControlRole Role { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -17445,10 +17640,10 @@ namespace AppKit {
 		NSTextCheckingResult [] CheckString (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, out NSOrthography orthography, out nint wordCount);
 
 		[Export ("requestCheckingOfString:range:types:options:inSpellDocumentWithTag:completionHandler:")]
-		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, [NullAllowed] NSDictionary options, nint tag, Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
+		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, [NullAllowed] NSDictionary options, nint tag, [NullAllowed] Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
 
 		[Wrap ("RequestChecking (stringToCheck, range, checkingTypes, options.GetDictionary (), tag, completionHandler)")]
-		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
+		nint RequestChecking (string stringToCheck, NSRange range, NSTextCheckingTypes checkingTypes, NSTextCheckingOptions options, nint tag, [NullAllowed] Action<nint, NSTextCheckingResult [], NSOrthography, nint> completionHandler);
 
 		[Export ("menuForResult:string:options:atLocation:inView:")]
 		NSMenu MenuForResults (NSTextCheckingResult result, string checkedString, NSDictionary options, CGPoint location, NSView view);
@@ -17502,6 +17697,10 @@ namespace AppKit {
 
 		[Export ("setIgnoredWords:inSpellDocumentWithTag:")]
 		void SetIgnoredWords (string [] words, nint documentTag);
+
+		[Mac (27, 0)]
+		[Export ("ignoreGrammarRange:inSentence:inSpellDocumentWithTag:")]
+		void IgnoreGrammarRange (NSRange grammarRange, string sentence, nint documentTag);
 
 		[Export ("guessesForWordRange:inString:language:inSpellDocumentWithTag:")]
 		string [] GuessesForWordRange (NSRange range, string theString, string language, nint documentTag);
@@ -18346,6 +18545,41 @@ namespace AppKit {
 
 		[Export ("autosaveName")]
 		string AutosaveName { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("expandedInterfaceDelegate", ArgumentSemantic.Weak)]
+		NSObject WeakExpandedInterfaceDelegate { get; set; }
+
+		[Mac (27, 0)]
+		[Wrap ("WeakExpandedInterfaceDelegate")]
+		[NullAllowed]
+		INSStatusItemExpandedInterfaceDelegate ExpandedInterfaceDelegate { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("expandedInterfaceSession", ArgumentSemantic.Strong)]
+		NSStatusItemExpandedInterfaceSession ExpandedInterfaceSession { get; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSStatusItemExpandedInterfaceSession {
+		[Export ("cancel")]
+		void Cancel ();
+	}
+
+	interface INSStatusItemExpandedInterfaceDelegate { }
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSStatusItemExpandedInterfaceDelegate {
+		[Abstract]
+		[Export ("statusItem:didBeginExpandedInterfaceSession:")]
+		void DidBeginExpandedInterfaceSession (NSStatusItem statusItem, NSStatusItemExpandedInterfaceSession expandedInterfaceSession);
+
+		[Abstract]
+		[Export ("statusItemDidEndExpandedInterfaceSession:animated:")]
+		void DidEndExpandedInterfaceSession (NSStatusItem statusItem, bool animated);
 	}
 
 	[Static]
@@ -18555,6 +18789,10 @@ namespace AppKit {
 		NSString WritingToolsExclusion { get; }
 	}
 
+	/// <summary>Creates a storyboard controller using a coder.</summary>
+	/// <param name="coder">The coder containing the controller's archived state.</param>
+	/// <returns>The controller created for the storyboard, or <see langword="null"/> if none could be created.</returns>
+	[return: NullAllowed]
 	delegate NSObject NSStoryboardControllerCreator (NSCoder coder);
 
 	[NoMacCatalyst]
@@ -19877,6 +20115,130 @@ namespace AppKit {
 		[Mac (26, 0), NoMacCatalyst]
 		[Export ("rectForLayoutRegion:")]
 		CGRect GetRect (NSViewLayoutRegion layoutRegion);
+
+		[Mac (27, 0)]
+		[Export ("beginDraggingSessionWithItems:gesture:source:")]
+		[return: NullAllowed]
+		NSDraggingSession BeginDraggingSession (NSDraggingItem [] items, NSGestureRecognizer gesture, INSDraggingSource source);
+
+		[Mac (27, 0)]
+		[Export ("exclusiveGestureBehavior", ArgumentSemantic.Assign)]
+		NSViewExclusiveGestureBehavior ExclusiveGestureBehavior { get; set; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("cornerConfiguration", ArgumentSemantic.Copy)]
+		NSViewCornerConfiguration CornerConfiguration { get; }
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("effectiveCornerRadii", ArgumentSemantic.Copy)]
+		NSViewCornerRadii EffectiveCornerRadii { get; }
+
+		[Mac (27, 0)]
+		[Export ("viewDidChangeEffectiveCornerRadii")]
+		void ViewDidChangeEffectiveCornerRadii ();
+
+		[Mac (27, 0)]
+		[Export ("invalidateCornerConfiguration")]
+		void InvalidateCornerConfiguration ();
+
+		[Mac (27, 0)]
+		[NullAllowed, Export ("textSelectionManager", ArgumentSemantic.Strong)]
+		NSTextSelectionManager TextSelectionManager { get; set; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSViewExclusiveGestureBehavior : long {
+		Inherit = 0,
+		Exclusive = 1,
+		NotExclusive = 2,
+	}
+
+	[Mac (27, 0), MacCatalyst (27, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerRadius : NSCopying {
+		[Static]
+		[Export ("fixedRadius:")]
+		NSViewCornerRadius CreateFixed (nfloat radius);
+
+		[Static]
+		[Export ("containerConcentricRadiusWithMinimum:")]
+		NSViewCornerRadius CreateContainerConcentric (nfloat minimumRadius);
+
+		[Static]
+		[Export ("containerConcentricRadius", ArgumentSemantic.Copy)]
+		NSViewCornerRadius ContainerConcentricRadius { get; }
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerConfiguration {
+		[Static]
+		[Export ("configurationWithRadius:")]
+		NSViewCornerConfiguration CreateCorners (NSViewCornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithTopLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateCorners ([NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("capsuleCornerConfiguration", ArgumentSemantic.Copy)]
+		NSViewCornerConfiguration Capsule { get; }
+
+		[Static]
+		[Export ("capsuleCornerConfigurationWithMaximumRadius:")]
+		NSViewCornerConfiguration CreateCapsule (nfloat maximumRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:")]
+		NSViewCornerConfiguration CreateUniformCorners (NSViewCornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:topLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformCorners (NSViewCornerRadius radius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomRadius:")]
+		NSViewCornerConfiguration CreateUniformEdgesTopBottom (NSViewCornerRadius topRadius, NSViewCornerRadius bottomRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:rightRadius:")]
+		NSViewCornerConfiguration CreateUniformEdgesLeftRight (NSViewCornerRadius leftRadius, NSViewCornerRadius rightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomLeftRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformTopRadius (NSViewCornerRadius topRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformBottomRadius:topLeftRadius:topRightRadius:")]
+		NSViewCornerConfiguration CreateUniformBottomRadius (NSViewCornerRadius bottomRadius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius topRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:topRightRadius:bottomRightRadius:")]
+		NSViewCornerConfiguration CreateUniformLeftRadius (NSViewCornerRadius leftRadius, [NullAllowed] NSViewCornerRadius topRightRadius, [NullAllowed] NSViewCornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRightRadius:topLeftRadius:bottomLeftRadius:")]
+		NSViewCornerConfiguration CreateUniformRightRadius (NSViewCornerRadius rightRadius, [NullAllowed] NSViewCornerRadius topLeftRadius, [NullAllowed] NSViewCornerRadius bottomLeftRadius);
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSViewCornerRadii : NSCopying {
+		[Export ("topLeft")]
+		nfloat TopLeft { get; }
+
+		[Export ("topRight")]
+		nfloat TopRight { get; }
+
+		[Export ("bottomLeft")]
+		nfloat BottomLeft { get; }
+
+		[Export ("bottomRight")]
+		nfloat BottomRight { get; }
 	}
 
 	[NoMacCatalyst]
@@ -20043,7 +20405,7 @@ namespace AppKit {
 		void PresentViewController (NSViewController viewController, CGRect positioningRect, NSView positioningView, nuint preferredEdge, NSPopoverBehavior behavior);
 
 		[Export ("transitionFromViewController:toViewController:options:completionHandler:")]
-		void TransitionFromViewController (NSViewController fromViewController, NSViewController toViewController, NSViewControllerTransitionOptions options, Action completion);
+		void TransitionFromViewController (NSViewController fromViewController, NSViewController toViewController, NSViewControllerTransitionOptions options, [NullAllowed] Action completion);
 
 		[Export ("parentViewController")]
 		NSViewController ParentViewController { get; }
@@ -20461,6 +20823,9 @@ namespace AppKit {
 		}
 	}
 
+	/// <summary>Handles an available row view during table view enumeration.</summary>
+	/// <param name="rowView">The available row view.</param>
+	/// <param name="row">The row associated with the view.</param>
 	[NoMacCatalyst]
 	delegate void NSTableViewRowHandler (NSTableRowView rowView, nint row);
 
@@ -22084,67 +22449,6 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	[DesignatedDefaultCtor]
-	[BaseType (typeof (NSObject))]
-	interface NSTextBlock : NSCoding, NSCopying, NSSecureCoding {
-		[Export ("setValue:type:forDimension:")]
-		void SetValue (nfloat val, NSTextBlockValueType type, NSTextBlockDimension dimension);
-
-		[Export ("valueForDimension:")]
-		nfloat GetValue (NSTextBlockDimension dimension);
-
-		[Export ("valueTypeForDimension:")]
-		NSTextBlockValueType GetValueType (NSTextBlockDimension dimension);
-
-		[Export ("setContentWidth:type:")]
-		void SetContentWidth (nfloat val, NSTextBlockValueType type);
-
-		[Export ("contentWidth")]
-		nfloat ContentWidth { get; }
-
-		[Export ("contentWidthValueType")]
-		NSTextBlockValueType ContentWidthValueType { get; }
-
-		[Export ("setWidth:type:forLayer:edge:")]
-		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("setWidth:type:forLayer:")]
-		void SetWidth (nfloat val, NSTextBlockValueType type, NSTextBlockLayer layer);
-
-		[Export ("widthForLayer:edge:")]
-		nfloat GetWidth (NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("widthValueTypeForLayer:edge:")]
-		NSTextBlockValueType WidthValueTypeForLayer (NSTextBlockLayer layer, NSRectEdge edge);
-
-		[Export ("setBorderColor:forEdge:")]
-		void SetBorderColor (NSColor color, NSRectEdge edge);
-
-		[Export ("setBorderColor:")]
-		void SetBorderColor (NSColor color);
-
-		[Export ("borderColorForEdge:")]
-		NSColor GetBorderColor (NSRectEdge edge);
-
-		[Export ("rectForLayoutAtPoint:inRect:textContainer:characterRange:")]
-		CGRect GetRectForLayout (CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("boundsRectForContentRect:inRect:textContainer:characterRange:")]
-		CGRect GetBoundsRect (CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("drawBackgroundWithFrame:inView:characterRange:layoutManager:")]
-		void DrawBackground (CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-
-		//Detected properties
-		[Export ("verticalAlignment")]
-		NSTextBlockVerticalAlignment VerticalAlignment { get; set; }
-
-		[Export ("backgroundColor", ArgumentSemantic.Copy)]
-		NSColor BackgroundColor { get; set; }
-
-	}
-
-	[NoMacCatalyst]
 	[BaseType (typeof (NSControl), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextFieldDelegate) })]
 	partial interface NSTextField : NSAccessibilityNavigableStaticText, NSUserInterfaceValidations, NSTextContent {
 		[Export ("initWithFrame:")]
@@ -22281,6 +22585,10 @@ namespace AppKit {
 		[Mac (26, 0)]
 		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
 		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
+
+		[Mac (26, 0)]
+		[Export ("borderShape", ArgumentSemantic.Assign)]
+		NSControlBorderShape BorderShape { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -22785,56 +23093,6 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	[BaseType (typeof (NSTextBlock))]
-	[DisableDefaultCtor]
-	interface NSTextTableBlock {
-		[DesignatedInitializer]
-		[Export ("initWithTable:startingRow:rowSpan:startingColumn:columnSpan:")]
-		NativeHandle Constructor (NSTextTable table, nint row, nint rowSpan, nint col, nint colSpan);
-
-		[Export ("table")]
-		NSTextTable Table { get; }
-
-		[Export ("startingRow")]
-		nint StartingRow { get; }
-
-		[Export ("rowSpan")]
-		nint RowSpan { get; }
-
-		[Export ("startingColumn")]
-		nint StartingColumn { get; }
-
-		[Export ("columnSpan")]
-		nint ColumnSpan { get; }
-	}
-
-	[NoMacCatalyst]
-	[BaseType (typeof (NSTextBlock))]
-	interface NSTextTable {
-		[Export ("rectForBlock:layoutAtPoint:inRect:textContainer:characterRange:")]
-		CGRect GetRectForBlock (NSTextTableBlock block, CGPoint startingPoint, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("boundsRectForBlock:contentRect:inRect:textContainer:characterRange:")]
-		CGRect GetBoundsRect (NSTextTableBlock block, CGRect contentRect, CGRect rect, NSTextContainer textContainer, NSRange charRange);
-
-		[Export ("drawBackgroundForBlock:withFrame:inView:characterRange:layoutManager:")]
-		void DrawBackground (NSTextTableBlock block, CGRect frameRect, NSView controlView, NSRange charRange, NSLayoutManager layoutManager);
-
-		//Detected properties
-		[Export ("numberOfColumns")]
-		nint Columns { get; set; }
-
-		[Export ("layoutAlgorithm")]
-		NSTextTableLayoutAlgorithm LayoutAlgorithm { get; set; }
-
-		[Export ("collapsesBorders")]
-		bool CollapsesBorders { get; set; }
-
-		[Export ("hidesEmptyCells")]
-		bool HidesEmptyCells { get; set; }
-	}
-
-	[NoMacCatalyst]
 	[Protocol]
 	interface NSTextInput {
 		/// <param name="insertString">To be added.</param>
@@ -22922,14 +23180,117 @@ namespace AppKit {
 		NSString [] ValidAttributesForMarkedText { get; }
 	}
 
+	[Mac (27, 0), NoMacCatalyst]
+	[Native]
+	public enum NSTextSelectionMode : long {
+		Editable,
+		Selectable,
+		NonInteractive,
+	}
+
+	[Mac (27, 0), NoMacCatalyst]
+	[BaseType (typeof (NSObject))]
+	interface NSTextSelectionManager {
+		[Export ("textSelectionMode", ArgumentSemantic.Assign)]
+		NSTextSelectionMode TextSelectionMode { get; set; }
+
+		[Export ("delegate", ArgumentSemantic.Weak)]
+		[NullAllowed]
+		NSObject WeakDelegate { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		INSTextSelectionManagerDelegate Delegate { get; set; }
+
+		[Export ("textSelectionDataSource", ArgumentSemantic.Weak)]
+		[NullAllowed]
+		NSObject WeakTextSelectionDataSource { get; set; }
+
+		[Wrap ("WeakTextSelectionDataSource")]
+		[NullAllowed]
+		INSTextSelectionDataSource TextSelectionDataSource { get; set; }
+
+		[Export ("gesturesForFailureRequirements")]
+		NSGestureRecognizer [] GesturesForFailureRequirements { get; }
+	}
+
+	interface INSTextSelectionManagerDelegate { }
+
+	[Mac (27, 0), NoMacCatalyst]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSTextSelectionManagerDelegate {
+		[Abstract]
+		[NullAllowed, Export ("textSelection", ArgumentSemantic.Strong)]
+		NSTextSelection TextSelection { get; set; }
+
+		[Export ("selectionManager:shouldBeginSelectionAtPoint:")]
+		bool ShouldBeginSelection (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManagerWillBeginSelection:")]
+		void WillBeginSelection (NSTextSelectionManager selectionManager);
+
+		[Export ("selectionManagerDidEndSelection:")]
+		void DidEndSelection (NSTextSelectionManager selectionManager);
+
+		[Export ("selectionManager:locationOfTextContainerAtPoint:")]
+		[return: NullAllowed]
+		INSTextLocation GetLocationOfTextContainer (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManager:frameOfTextContainerAtPoint:")]
+		CGRect GetFrameOfTextContainer (NSTextSelectionManager selectionManager, CGPoint point);
+
+		[Export ("selectionManager:makeDraggingSessionWithGesture:")]
+		[return: NullAllowed]
+		NSDraggingSession MakeDraggingSession (NSTextSelectionManager selectionManager, NSGestureRecognizer gesture);
+	}
+
+	[NoMacCatalyst]
+	[Native]
+	[Flags]
+	public enum NSTextAttachmentViewProviderReusePolicy : ulong {
+		ScrollingOutOfViewport = 1uL << 0,
+		EditingInlineParagraphs = 1uL << 1,
+	}
+
 	[NoMacCatalyst]
 	[BaseType (typeof (NSText), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextViewDelegate) })]
 	partial interface NSTextView : NSTextInputClient, NSTextLayoutOrientationProvider, NSDraggingSource, NSAccessibilityNavigableStaticText, NSCandidateListTouchBarItemDelegate, NSTouchBarDelegate, NSMenuItemValidation, NSUserInterfaceValidations, NSTextInput, NSTextContent
 		, NSColorChanging // ChangeColor has the wrong param type
-	{
+		, NSTextViewportLayoutControllerDelegate {
 		[DesignatedInitializer]
 		[Export ("initWithFrame:textContainer:")]
 		NativeHandle Constructor (CGRect frameRect, [NullAllowed] NSTextContainer container);
+
+		[Mac (27, 0)]
+		[Export ("registerTextAttachmentViewProviderReusePolicy:forTextAttachmentViewProviderType:")]
+		void RegisterTextAttachmentViewProviderReusePolicy (NSTextAttachmentViewProviderReusePolicy policy, Class viewProviderType);
+
+		// 'new' since these are inlined from NSTextViewportLayoutControllerDelegate as NSTextView needs [RequiresSuper] and macOS 27 availability
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("viewportBoundsForTextViewportLayoutController:")]
+		new CGRect GetViewportBounds (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutController:configureRenderingSurfaceForTextLayoutFragment:")]
+		new void ConfigureRenderingSurface (NSTextViewportLayoutController textViewportLayoutController, NSTextLayoutFragment textLayoutFragment);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerWillLayout:")]
+		new void WillLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerDidLayout:")]
+		new void DidLayout (NSTextViewportLayoutController textViewportLayoutController);
+
+		[Mac (27, 0)]
+		[RequiresSuper]
+		[Export ("textViewportLayoutControllerReceivedSetNeedsLayout:")]
+		new void ReceivedSetNeedsLayout (NSTextViewportLayoutController textViewportLayoutController);
 
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
@@ -24600,6 +24961,14 @@ namespace AppKit {
 		string Text { get; }
 	}
 
+	[Mac (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum NSToolbarItemGroupRole : long {
+		Automatic = 0,
+		Tabs = 1,
+		ValueSelection = 2,
+	}
+
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSToolbarItem))]
 	interface NSToolbarItemGroup {
@@ -24639,6 +25008,10 @@ namespace AppKit {
 		[MacCatalyst (13, 1)]
 		[Export ("isSelectedAtIndex:")]
 		bool GetSelected (nint index);
+
+		[Mac (27, 0), MacCatalyst (27, 0)]
+		[Export ("role", ArgumentSemantic.Assign)]
+		NSToolbarItemGroupRole Role { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -25041,7 +25414,10 @@ namespace AppKit {
 
 	}
 
-	delegate void NSWindowTrackEventsMatchingCompletionHandler (NSEvent evt, ref bool stop);
+	/// <summary>Handles an event matched while a window tracks events.</summary>
+	/// <param name="evt">The matching event, or <see langword="null"/> when tracking finishes.</param>
+	/// <param name="stop">Set to <see langword="true"/> to stop tracking events.</param>
+	delegate void NSWindowTrackEventsMatchingCompletionHandler ([NullAllowed] NSEvent evt, ref bool stop);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSResponder), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSWindowDelegate) })]
@@ -26000,10 +26376,10 @@ namespace AppKit {
 		NSWindowOcclusionState OcclusionState { get; }
 
 		[Export ("beginSheet:completionHandler:")]
-		void BeginSheet (NSWindow sheetWindow, Action<nint> completionHandler);
+		void BeginSheet (NSWindow sheetWindow, [NullAllowed] Action<nint> completionHandler);
 
 		[Export ("beginCriticalSheet:completionHandler:")]
-		void BeginCriticalSheet (NSWindow sheetWindow, Action<nint> completionHandler);
+		void BeginCriticalSheet (NSWindow sheetWindow, [NullAllowed] Action<nint> completionHandler);
 
 		[Export ("endSheet:")]
 		void EndSheet (NSWindow sheetWindow);
@@ -26138,8 +26514,11 @@ namespace AppKit {
 		bool Emphasized { [Bind ("isEmphasized")] get; set; }
 	}
 
+	/// <summary>Handles completion of a window restoration request.</summary>
+	/// <param name="window">The restored window, or <see langword="null"/> if restoration failed.</param>
+	/// <param name="error">The restoration error, or <see langword="null"/> on success.</param>
 	[NoMacCatalyst]
-	delegate void NSWindowCompletionHandler (NSWindow window, NSError error);
+	delegate void NSWindowCompletionHandler ([NullAllowed] NSWindow window, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -26801,7 +27180,10 @@ namespace AppKit {
 		// The 'FileType' property has manual bindings.
 	}
 
-	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, NSError error);
+	/// <summary>Handles completion of a workspace URL operation.</summary>
+	/// <param name="newUrls">The resulting URLs.</param>
+	/// <param name="error">The operation error, or <see langword="null"/> on success.</param>
+	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, [NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -26897,10 +27279,10 @@ namespace AppKit {
 		NSColor [] FileLabelColors { get; }
 
 		[Export ("recycleURLs:completionHandler:"), ThreadSafe]
-		void RecycleUrls (NSArray urls, NSWorkspaceUrlHandler completionHandler);
+		void RecycleUrls (NSArray urls, [NullAllowed] NSWorkspaceUrlHandler completionHandler);
 
 		[Export ("duplicateURLs:completionHandler:"), ThreadSafe]
-		void DuplicateUrls (NSArray urls, NSWorkspaceUrlHandler completionHandler);
+		void DuplicateUrls (NSArray urls, [NullAllowed] NSWorkspaceUrlHandler completionHandler);
 
 		[Export ("getFileSystemInfoForPath:isRemovable:isWritable:isUnmountable:description:type:"), ThreadSafe]
 		bool GetFileSystemInfo (string fullPath, out bool removableFlag, out bool writableFlag, out bool unmountableFlag, out string description, out string fileSystemType);
@@ -27645,6 +28027,7 @@ namespace AppKit {
 
 	// Start of NSSharingService.h
 
+	/// <summary>Performs the custom action associated with a sharing service.</summary>
 	delegate void NSSharingServiceHandler ();
 
 	[NoMacCatalyst]
@@ -28552,7 +28935,9 @@ namespace AppKit {
 		void TerminateAutomaticallyTerminableApplications ();
 	}
 
-	delegate void NSSpellCheckerShowCorrectionIndicatorOfTypeHandler (string acceptedString);
+	/// <summary>Handles a spelling correction selected from the correction indicator.</summary>
+	/// <param name="acceptedString">The correction accepted by the user, or <see langword="null"/> if none was accepted.</param>
+	delegate void NSSpellCheckerShowCorrectionIndicatorOfTypeHandler ([NullAllowed] string acceptedString);
 
 	partial interface NSSpellChecker {
 		[Export ("correctionForWordRange:inString:language:inSpellDocumentWithTag:")]
@@ -28569,7 +28954,7 @@ namespace AppKit {
 
 		[Export ("showCorrectionIndicatorOfType:primaryString:alternativeStrings:forStringInRect:view:completionHandler:")]
 		void ShowCorrectionIndicatorOfType (NSCorrectionIndicatorType type, string primaryString, string [] alternativeStrings,
-			CGRect forStringInRect, NSRulerView view, NSSpellCheckerShowCorrectionIndicatorOfTypeHandler completionHandler);
+			CGRect forStringInRect, NSRulerView view, [NullAllowed] NSSpellCheckerShowCorrectionIndicatorOfTypeHandler completionHandler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -28673,6 +29058,14 @@ namespace AppKit {
 		[NoMacCatalyst]
 		[Field ("NSTextCheckingGenerateInlinePredictionsKey")]
 		NSString TextCheckingGenerateInlinePredictionsKey { get; }
+
+		[Mac (26, 0)]
+		[Field ("NSTextCheckingAutomaticCapitalizationEnabledKey")]
+		NSString TextCheckingAutomaticCapitalizationEnabledKey { get; }
+
+		[Mac (27, 0)]
+		[Field ("NSTextCheckingWaitForAllGrammarCheckingResultsKey")]
+		NSString TextCheckingWaitForAllGrammarCheckingResultsKey { get; }
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {
@@ -28796,6 +29189,9 @@ namespace AppKit {
 		NSColor FromCGColor (CGColor cgColor);
 	}
 
+	/// <summary>Draws the contents of a custom image representation.</summary>
+	/// <param name="dstRect">The rectangle in which to draw the image.</param>
+	/// <returns><see langword="true"/> if drawing succeeded; otherwise, <see langword="false"/>.</returns>
 	delegate bool NSCustomImageRepDrawingHandler (CGRect dstRect);
 
 	partial interface NSCustomImageRep {
@@ -28803,16 +29199,28 @@ namespace AppKit {
 		[Export ("initWithSize:flipped:drawingHandler:")]
 		NativeHandle Constructor (CGSize size, bool flipped, NSCustomImageRepDrawingHandler drawingHandler);
 
-		[Export ("drawingHandler")]
+		[NullAllowed, Export ("drawingHandler")]
 		NSCustomImageRepDrawingHandler DrawingHandler { get; }
 	}
 
+	/// <summary>Handles completion of an asynchronous document move.</summary>
+	/// <param name="didMove">Whether the document was moved.</param>
 	delegate void NSDocumentMoveCompletionHandler (bool didMove);
-	delegate void NSDocumentMoveToUrlCompletionHandler (NSError error);
+	/// <summary>Handles completion of moving a document to a URL.</summary>
+	/// <param name="error">The move error, or <see langword="null"/> on success.</param>
+	delegate void NSDocumentMoveToUrlCompletionHandler ([NullAllowed] NSError error);
+	/// <summary>Handles completion of locking a document.</summary>
+	/// <param name="didLock">Whether the document was locked.</param>
 	delegate void NSDocumentLockDocumentCompletionHandler (bool didLock);
+	/// <summary>Handles completion of unlocking a document.</summary>
+	/// <param name="didUnlock">Whether the document was unlocked.</param>
 	delegate void NSDocumentUnlockDocumentCompletionHandler (bool didUnlock);
-	delegate void NSDocumentLockCompletionHandler (NSError error);
-	delegate void NSDocumentUnlockCompletionHandler (NSError error);
+	/// <summary>Handles the completion of an asynchronous document lock operation.</summary>
+	/// <param name="error">The error that occurred, or <see langword="null"/> if the operation succeeded.</param>
+	delegate void NSDocumentLockCompletionHandler ([NullAllowed] NSError error);
+	/// <summary>Handles completion of an asynchronous document unlock operation.</summary>
+	/// <param name="error">The unlock error, or <see langword="null"/> on success.</param>
+	delegate void NSDocumentUnlockCompletionHandler ([NullAllowed] NSError error);
 
 	partial interface NSDocument : NSEditorRegistration, NSFilePresenter, NSMenuItemValidation
 	, NSUserInterfaceValidations // ValidateUserInterfaceItem was bound with NSObject and fix would break API compat  
@@ -28842,10 +29250,10 @@ namespace AppKit {
 		void MoveDocument (NSObject sender);
 
 		[Export ("moveDocumentWithCompletionHandler:")]
-		void MoveDocumentWithCompletionHandler (NSDocumentMoveCompletionHandler completionHandler);
+		void MoveDocumentWithCompletionHandler ([NullAllowed] NSDocumentMoveCompletionHandler completionHandler);
 
 		[Export ("moveToURL:completionHandler:")]
-		void MoveToUrl (NSUrl url, NSDocumentMoveToUrlCompletionHandler completionHandler);
+		void MoveToUrl (NSUrl url, [NullAllowed] NSDocumentMoveToUrlCompletionHandler completionHandler);
 
 		[Export ("lockDocument:")]
 		void LockDocument (NSObject sender);
@@ -28854,16 +29262,16 @@ namespace AppKit {
 		void UnlockDocument (NSObject sender);
 
 		[Export ("lockDocumentWithCompletionHandler:")]
-		void LockDocumentWithCompletionHandler (NSDocumentLockDocumentCompletionHandler completionHandler);
+		void LockDocumentWithCompletionHandler ([NullAllowed] NSDocumentLockDocumentCompletionHandler completionHandler);
 
 		[Export ("lockWithCompletionHandler:")]
-		void LockWithCompletionHandler (NSDocumentLockCompletionHandler completionHandler);
+		void LockWithCompletionHandler ([NullAllowed] NSDocumentLockCompletionHandler completionHandler);
 
 		[Export ("unlockDocumentWithCompletionHandler:")]
-		void UnlockDocumentWithCompletionHandler (NSDocumentUnlockDocumentCompletionHandler completionHandler);
+		void UnlockDocumentWithCompletionHandler ([NullAllowed] NSDocumentUnlockDocumentCompletionHandler completionHandler);
 
 		[Export ("unlockWithCompletionHandler:")]
-		void UnlockWithCompletionHandler (NSDocumentUnlockCompletionHandler completionHandler);
+		void UnlockWithCompletionHandler ([NullAllowed] NSDocumentUnlockCompletionHandler completionHandler);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -28882,7 +29290,11 @@ namespace AppKit {
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
 
-	delegate void NSDocumentControllerOpenPanelWithCompletionHandler (NSArray urlsToOpen);
+	/// <summary>Handles the completion of the document controller's open panel.</summary>
+	/// <param name="urlsToOpen">The URLs selected in the open panel, or <see langword="null"/> if the user canceled the panel.</param>
+	delegate void NSDocumentControllerOpenPanelWithCompletionHandler ([NullAllowed] NSArray urlsToOpen);
+	/// <summary>Handles the response from a document controller open panel.</summary>
+	/// <param name="result">The modal response returned by the open panel.</param>
 	delegate void NSDocumentControllerOpenPanelResultHandler (nint result);
 
 	partial interface NSDocumentController : NSMenuItemValidation
@@ -32423,7 +32835,7 @@ namespace AppKit {
 
 		[Abstract]
 		[Export ("filePromiseProvider:writePromiseToURL:completionHandler:")]
-		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, [NullAllowed] Action<NSError?> completionHandler);
+		void WritePromiseToUrl (NSFilePromiseProvider filePromiseProvider, NSUrl url, Action<NSError?> completionHandler);
 
 		/// <param name="filePromiseProvider">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -32447,7 +32859,7 @@ namespace AppKit {
 		string [] FileNames { get; }
 
 		[Export ("receivePromisedFilesAtDestination:options:operationQueue:reader:")]
-		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl?, NSError?> reader);
+		void ReceivePromisedFiles (NSUrl destinationDir, NSDictionary options, NSOperationQueue operationQueue, Action<NSUrl, NSError?> reader);
 	}
 
 	interface INSValidatedUserInterfaceItem { }
@@ -32560,6 +32972,10 @@ namespace AppKit {
 
 	public interface INSCandidateListTouchBarItemDelegate { }
 
+	/// <summary>Provides an attributed string for a candidate in a candidate list.</summary>
+	/// <param name="candidate">The candidate to represent.</param>
+	/// <param name="index">The index of the candidate in the list.</param>
+	/// <returns>The attributed string to display for the candidate.</returns>
 	delegate NSAttributedString AttributedStringForCandidateHandler (NSObject candidate, nint index);
 
 	[NoMacCatalyst]
@@ -33418,7 +33834,10 @@ namespace AppKit {
 		void CancelPrefetching (NSCollectionView collectionView, NSIndexPath [] indexPaths);
 	}
 
-	delegate bool DownloadFontAssetsRequestCompletionHandler (NSError error);
+	/// <summary>Handles an error or the successful completion of a font asset download.</summary>
+	/// <param name="error">The download error, or <see langword="null"/> when all fonts have downloaded.</param>
+	/// <returns><see langword="true"/> to continue downloading the remaining fonts; otherwise, <see langword="false"/> to stop.</returns>
+	delegate bool DownloadFontAssetsRequestCompletionHandler ([NullAllowed] NSError error);
 
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -33760,7 +34179,7 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	interface NSColorSampler {
 		[Export ("showSamplerWithSelectionHandler:")]
-		void ShowSampler (Action<NSColor> selectionHandler);
+		void ShowSampler (Action<NSColor?> selectionHandler);
 	}
 
 	[NoMacCatalyst]
@@ -33794,7 +34213,12 @@ namespace AppKit {
 		UIMenu ItemMenu { get; set; }
 	}
 
+	/// <summary>Provides a layout section for a collection view.</summary>
+	/// <param name="section">The index of the section to lay out.</param>
+	/// <param name="layout">The environment in which the section is laid out.</param>
+	/// <returns>The layout section to use, or <see langword="null"/> if none is available.</returns>
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSCollectionLayoutSection NSCollectionViewCompositionalLayoutSectionProvider (nint section, INSCollectionLayoutEnvironment layout);
 
 	[NoMacCatalyst]
@@ -34066,10 +34490,22 @@ namespace AppKit {
 		nint SpellCheckerDocumentTag { get; set; }
 	}
 
+	/// <summary>Provides an item for a collection view's diffable data source.</summary>
+	/// <param name="collectionView">The collection view requesting the item.</param>
+	/// <param name="indexPath">The index path of the item.</param>
+	/// <param name="itemIdentifierType">The identifier of the item.</param>
+	/// <returns>The item to display, or <see langword="null"/> if none is available.</returns>
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSCollectionViewItem NSCollectionViewDiffableDataSourceItemProvider (NSCollectionView collectionView, NSIndexPath indexPath, NSObject itemIdentifierType);
 
+	/// <summary>Provides a supplementary view for a collection view's diffable data source.</summary>
+	/// <param name="collectionView">The collection view requesting the supplementary view.</param>
+	/// <param name="str">The kind of supplementary view to provide.</param>
+	/// <param name="indexPath">The index path of the supplementary view.</param>
+	/// <returns>The supplementary view to display, or <see langword="null"/> if none is available.</returns>
 	[NoMacCatalyst]
+	[return: NullAllowed]
 	delegate NSView NSCollectionViewDiffableDataSourceSupplementaryViewProvider (NSCollectionView collectionView, string str, NSIndexPath indexPath);
 
 	[NoMacCatalyst]
@@ -34212,10 +34648,26 @@ namespace AppKit {
 		void EndSearchInteraction ();
 	}
 
+	/// <summary>Provides a cell view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the cell.</param>
+	/// <param name="column">The column containing the cell.</param>
+	/// <param name="row">The row containing the cell.</param>
+	/// <param name="itemId">The identifier of the item.</param>
+	/// <returns>The cell view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSTableViewDiffableDataSourceCellProvider (NSTableView tableView, NSTableColumn column, nint row, NSObject itemId);
+	/// <summary>Provides a row view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the row view.</param>
+	/// <param name="row">The index of the row.</param>
+	/// <param name="identifier">The identifier of the row's item.</param>
+	/// <returns>The row view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSTableRowView NSTableViewDiffableDataSourceRowProvider (NSTableView tableView, nint row, NSObject identifier);
+	/// <summary>Provides a section header view for a table view's diffable data source.</summary>
+	/// <param name="tableView">The table view requesting the header view.</param>
+	/// <param name="row">The index of the header row.</param>
+	/// <param name="sectionId">The identifier of the section.</param>
+	/// <returns>The header view to display.</returns>
 	[NoMacCatalyst]
 	delegate NSView NSTableViewDiffableDataSourceSectionHeaderViewProvider (NSTableView tableView, nint row, NSObject sectionId);
 
@@ -34844,6 +35296,10 @@ namespace AppKit {
 
 		[Export ("style")]
 		NSGlassEffectViewStyle Style { get; set; }
+
+		[Mac (27, 0)]
+		[Export ("effectIsInteractive")]
+		bool EffectIsInteractive { get; set; }
 	}
 
 	[NoMacCatalyst, Mac (26, 0)]

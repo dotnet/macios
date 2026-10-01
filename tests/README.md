@@ -112,3 +112,10 @@ And then (note that VARIATION has to be set for both 'make build' and 'make run'
     $ make build VARIATION=variation
     $ make run VARIATION=variation
 
+### Test-harness windows
+
+The macOS runner and `TestRuntime.RunAsync` disable animations on their own
+windows. On Tahoe CI hosts, stalled AppKit window animations can consume all 64
+dispatch workers and prevent unrelated Network and pasteboard callbacks from
+running. Test windows and images are still displayed; animation behavior of
+windows created by individual tests is unchanged.

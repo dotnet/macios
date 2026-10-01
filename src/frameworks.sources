@@ -204,6 +204,7 @@ AUDIOTOOLBOX_SOURCES = \
 	AudioToolbox/AudioFormatAvailability.cs \
 	AudioToolbox/AudioQueue.cs \
 	AudioToolbox/AudioServices.cs \
+	AudioToolbox/AudioServerPlugIn.cs \
 	AudioToolbox/AudioToolbox.cs \
 	AudioToolbox/SystemSound.cs \
 	AudioToolbox/MusicPlayer.cs \
@@ -226,6 +227,7 @@ AUDIOUNIT_SOURCES = \
 	AudioUnit/ExtAudioFile.cs \
 	AudioUnit/AUScheduledAudioFileRegion.cs \
 	AudioUnit/AUParameter.cs \
+	AudioUnit/AUHeadTrackingBinauralRenderer.cs \
 
 # AuthenticationServices
 
@@ -278,6 +280,7 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVOutputSettingsAssistant.cs \
 	AVFoundation/AVPlayerItem.cs \
 	AVFoundation/AVPlayerItemVideoOutput.cs \
+	AVFoundation/AVPlannedVideoSegmentWritingRequest.cs \
 	AVFoundation/AVPlayerLayer.cs \
 	AVFoundation/AVSampleBufferExtensions.cs \
 	AVFoundation/AVSampleCursor.cs \
@@ -320,6 +323,7 @@ BACKGROUNDASSETS_SOURCES = \
 # BrowserEngineKit
 
 BROWSERENGINEKIT_CORE_SOURCES = \
+	BrowserEngineKit/BEWebContentFilterEvaluateUrlWithMainFrameResult.cs \
 	BrowserEngineKit/BEStructs.cs \
 
 # BusinessChat
@@ -538,12 +542,14 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFArray.cs \
 	CoreGraphics/CGPDFContentStream.cs \
 	CoreGraphics/CGPDFDictionary.cs \
+	CoreGraphics/CGPDFMarkedContentItem.cs \
 	CoreGraphics/CGPDFObject.cs \
 	CoreGraphics/CGPDFOperatorTable.cs \
 	CoreGraphics/CGPDFPage.cs \
 	CoreGraphics/CGPDFScanner.cs \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
+	CoreGraphics/CGPDFStructureElement.cs \
 	CoreGraphics/CGPdfTagType.cs \
 	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \
@@ -931,6 +937,7 @@ FSKIT_CORE_SOURCES = \
 
 FSKIT_SOURCES = \
 	FSKit/FSBlockDeviceResource.cs \
+	FSKit/FSEntityIdentifier.cs \
 	FSKit/FSFileName.cs \
 	FSKit/FSKitFunctions.cs \
 
@@ -1469,6 +1476,7 @@ PHOTOS_API_SOURCES = \
 PHOTOS_SOURCES = \
 	Photos/PHAssetChangeRequest.cs \
 	Photos/PHAssetCreationRequest.cs \
+	Photos/PHCloudIdentifier.cs \
 	Photos/PHFetchResult.cs \
 	Photos/PHLivePhoto.cs \
 	Photos/PHPhotoLibrary.cs \
@@ -1588,8 +1596,12 @@ SECURITY_API_SOURCES = \
 	Security/SecureTransport.cs \
 
 SECURITY_CORE_SOURCES = \
+	Security/AuthorizationEngine.cs \
+	Security/AuthorizationEnums.cs \
 	Security/Certificate.cs \
 	Security/SecAccessControl.cs \
+	Security/SecKeychain.cs \
+	Security/SecKeychainSettings.cs \
 	Security/SecProtocolMetadata.cs \
 	Security/SecProtocolOptions.cs \
 	Security/Trust.cs \
@@ -1598,6 +1610,8 @@ SECURITY_CORE_SOURCES = \
 
 SECURITY_SOURCES = \
 	Security/Authorization.cs \
+	Security/AuthorizationCallbacks.cs \
+	Security/AuthorizationRights.cs \
 	Security/ImportExport.cs \
 	Security/Items.cs \
 	Security/Policy.cs \
@@ -1609,6 +1623,21 @@ SECURITY_SOURCES = \
 	Security/SecTrust.cs \
 	Security/SslConnection.cs \
 	Security/SslContext.cs \
+
+# SecurityInterface
+
+SECURITYINTERFACE_CORE_SOURCES = \
+	SecurityInterface/Enums.cs \
+
+SECURITYINTERFACE_SOURCES = \
+	SecurityInterface/SecurityInterfaceSheetDispatcher.cs \
+	SecurityInterface/SFCertificatePanel.cs \
+	SecurityInterface/SFCertificateView.cs \
+	SecurityInterface/SFChooseIdentityPanel.cs \
+	SecurityInterface/SFAuthorizationPluginView.cs \
+	SecurityInterface/SFAuthorizationView.cs \
+	SecurityInterface/SFKeychainSavePanel.cs \
+	SecurityInterface/SFKeychainSettingsPanel.cs \
 
 # SensitiveContentAnalysis
 
@@ -1996,20 +2025,24 @@ COMMON_FRAMEWORKS =         \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \
+	LinkSecurity            \
 	MetalFX                 \
 	NaturalLanguage         \
 	Network                 \
 	OSLog                   \
 	SceneKit                \
+	ScreenCaptureKit        \
 	ShazamKit               \
 	Symbols                 \
 	SoundAnalysis 			\
 	SpriteKit               \
+	StateReporting          \
 	StoreKit				\
 	UniformTypeIdentifiers  \
 
 MACOS_FRAMEWORKS =          \
 	$(COMMON_FRAMEWORKS)    \
+	AccessoryAccess         \
 	Accounts                \
 	AdServices              \
 	AdSupport               \
@@ -2101,13 +2134,13 @@ MACOS_FRAMEWORKS =          \
 	ReplayKit               \
 	SafariServices          \
 	SafetyKit               \
-	ScreenCaptureKit        \
 	ScreenTime              \
 	ScriptingBridge         \
 	SearchKit               \
 	SensitiveContentAnalysis \
 	ServiceManagement       \
 	Security                \
+	SecurityInterface       \
 	SecurityUI              \
 	SharedWithYou           \
 	SharedWithYouCore       \
@@ -2126,6 +2159,7 @@ IOS_FRAMEWORKS =         \
 	$(COMMON_FRAMEWORKS) \
 	AVKit \
 	AVRouting \
+	AVSystemRouting \
 	Accounts \
 	AccessorySetupKit \
 	AdServices \
@@ -2396,7 +2430,6 @@ MACCATALYST_FRAMEWORKS = \
 	ReplayKit \
 	SafariServices \
 	SafetyKit \
-	ScreenCaptureKit \
 	ScreenTime \
 	Security \
 	SecurityUI \

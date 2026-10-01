@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using ObjCRuntime;
 
+using Assembly = System.Reflection.Assembly;
+
 #nullable enable
 
 public class TypeCache {

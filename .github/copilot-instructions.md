@@ -140,6 +140,14 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+### Localizable Build Messages
+
+All user-visible messages in `msbuild/Xamarin.MacDev.Tasks` and `tools/assembly-preparer`
+must come from an English `.resx` resource, such as
+`msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx` or `tools/mtouch/Errors.resx`.
+This includes logged errors, warnings, informational messages, and exception messages
+shown to users. Do not hard-code these messages in C# or edit generated translations.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building
@@ -362,3 +370,7 @@ try {
 ## Process stdout/stderr Capture
 
 * Never redirect both `StandardOutput` and `StandardError` and then call `ReadToEnd ()` on both streams — this can deadlock. Instead, use the asynchronous event-based approach: set `RedirectStandardOutput = true` and `RedirectStandardError = true`, subscribe to `OutputDataReceived` and `ErrorDataReceived`, then call `BeginOutputReadLine ()` and `BeginErrorReadLine ()` after `Start ()`.
+
+## AI-Generated Content Disclosure
+
+When posting to GitHub under a user's credentials — PR descriptions, issue bodies, comments, review comments, or any other public-facing action — you **MUST** add a concise, visible note (e.g. a `> [!NOTE]` alert) at the bottom of the content indicating it was AI/Copilot-generated. Skip it only when posting from a recognized bot or Copilot app account (e.g. `github-actions[bot]`, `copilot`), where the AI origin is already apparent from the account identity, or when the user explicitly asks you to omit it.

@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using Assembly = System.Reflection.Assembly;
+
 #nullable enable
 
 public class TypeManager {

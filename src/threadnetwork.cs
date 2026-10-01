@@ -2,6 +2,13 @@ using CoreFoundation;
 
 namespace ThreadNetwork {
 
+	delegate void THClientEnableCredentialSharingModeCompletionHandler ([NullAllowed] NSError error);
+
+	/// <summary>Handler invoked with active credentials for nearby Thread networks.</summary>
+	/// <param name="credentials">The active credentials, or <see langword="null" /> if they could not be retrieved.</param>
+	/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
+	delegate void THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler ([NullAllowed] NSSet<THCredentials> credentials, [NullAllowed] NSError error);
+
 	[iOS (15, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface THClient {
@@ -13,6 +20,16 @@ namespace ThreadNetwork {
 		[Async]
 		[Export ("retrieveAllActiveCredentials:")]
 		void RetrieveAllActiveCredentials (Action<NSSet<THCredentials>, NSError> completion);
+
+		/// <summary>Retrieves active credentials for nearby Thread networks.</summary>
+		/// <param name="completion">The handler to invoke when the credentials are available.</param>
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously retrieves active credentials for nearby Thread networks.</summary>
+			<returns>A task that represents the asynchronous retrieval operation.</returns>
+			""")]
+		[Export ("retrieveActiveCredentialsForNearbyNetworksWithCompletion:")]
+		void RetrieveActiveCredentialsForNearbyNetworks (THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler completion);
 
 		[Async]
 		[Export ("deleteCredentialsForBorderAgent:completion:")]
@@ -44,6 +61,11 @@ namespace ThreadNetwork {
 		[Async]
 		[Export ("isPreferredNetworkAvailableWithCompletion:")]
 		void IsPreferredNetworkAvailable (Action<bool> completion);
+
+		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("enableCredentialSharingModeForExtendedPANID:completion:")]
+		void EnableCredentialSharingMode (NSData extendedPanId, THClientEnableCredentialSharingModeCompletionHandler completion);
 	}
 
 	[iOS (15, 0), MacCatalyst (16, 1), NoTV]

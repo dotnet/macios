@@ -95,14 +95,14 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? IsHardwareAccelerated { get; private set; }
 
-		[SupportedOSPlatform ("ios14.2")]
-		[SupportedOSPlatform ("tvos14.2")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool SupportsFrameReordering { get; private set; }
 
-		[SupportedOSPlatform ("ios15.0")]
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public bool IncludeStandardDefinitionDVEncoders { get; private set; }

@@ -132,6 +132,9 @@ namespace Xamarin.MacDev.Tasks {
 				} else if (referenceInfo.OnStack) {
 					// Referenced assembly is in stack and hence in the current SCC
 					info.LowLink = Math.Min (info.LowLink, referenceInfo.Index);
+				} else if (info.IsUpToDate && !referenceInfo.IsUpToDate) {
+					Log.LogMessage (MessageImportance.Low, $"The assembly {assemblyPath} is not up-to-date with regards to the reference {referenceInfo.TaskItem.ItemSpec}.");
+					info.IsUpToDate = false;
 				}
 			}
 

@@ -2,6 +2,7 @@
 using AVFoundation;
 using CoreAnimation;
 using CoreGraphics;
+using CoreVideo;
 using UniformTypeIdentifiers;
 #if MONOMAC
 using AppKit;
@@ -34,6 +35,10 @@ using UITextSelectionDisplayInteraction = Foundation.NSObject;
 using UITextSelectionRect = Foundation.NSObject;
 using UITextStorageDirection = Foundation.NSObject;
 using UIView = Foundation.NSObject;
+#endif
+
+#if MONOMAC || TVOS
+using BEWebContentFilterEvaluateUrlWithMainFrameResult = Foundation.NSObject;
 #endif
 
 #if MONOMAC
@@ -1020,9 +1025,13 @@ namespace BrowserEngineKit {
 		[Export ("createXPCRepresentation")]
 		OS_xpc_object CreateXpcRepresentation ();
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'BEProcessCapability.Activate' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'BEProcessCapability.Activate' instead.")]
 		[Export ("activateWithError:")]
 		bool Activate ([NullAllowed] out NSError error);
 
+		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'BEProcessCapability.Suspend' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'BEProcessCapability.Suspend' instead.")]
 		[Export ("suspendWithError:")]
 		bool Suspend ([NullAllowed] out NSError error);
 
@@ -1040,6 +1049,11 @@ namespace BrowserEngineKit {
 		[Export ("mediaPlaybackAndCaptureWithEnvironment:")]
 		BEProcessCapability CreateMediaPlaybackAndCaptureProcess (BEMediaEnvironment environment);
 
+		[NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Static]
+		[Export ("screenCaptureWithEnvironment:")]
+		BEProcessCapability CreateScreenCaptureProcess (BEMediaEnvironment environment);
+
 		[Static]
 		[Export ("background")]
 		BEProcessCapability CreateBackground ();
@@ -1054,6 +1068,14 @@ namespace BrowserEngineKit {
 
 		[Export ("requestWithError:")]
 		IBEProcessCapabilityGrant Request ([NullAllowed] out NSError error);
+
+		[NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("activateWithError:")]
+		bool Activate ([NullAllowed] out NSError error);
+
+		[NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("suspendWithError:")]
+		bool Suspend ([NullAllowed] out NSError error);
 	}
 
 	[TV (17, 5), Mac (14, 5), iOS (17, 5), MacCatalyst (17, 5)]
@@ -1097,6 +1119,14 @@ namespace BrowserEngineKit {
 		ScrollArea = 1uL << 9,
 		Alert = 1uL << 10,
 		DescriptionList = 1uL << 11,
+	}
+
+	[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum BEAccessibilityOrientation : long {
+		Unknown = 0,
+		Vertical,
+		Horizontal,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -1177,6 +1207,42 @@ namespace BrowserEngineKit {
 		[iOS (18, 2), TV (18, 2), MacCatalyst (18, 2), Mac (15, 2)]
 		[Export ("accessibilityLineRangeForPosition:")]
 		NSRange GetAccessibilityLineRangeForPosition (nint position);
+
+		// C# does not support extension properties, so bind these category properties as methods.
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("browserAccessibilityKeyboardShortcuts")]
+		[return: NullAllowed]
+		string GetBrowserAccessibilityKeyboardShortcuts ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("setBrowserAccessibilityKeyboardShortcuts:")]
+		void SetBrowserAccessibilityKeyboardShortcuts ([NullAllowed] string value);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("browserAccessibilityDetailsElements")]
+		NSObject [] GetBrowserAccessibilityDetailsElements ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("setBrowserAccessibilityDetailsElements:")]
+		void SetBrowserAccessibilityDetailsElements (NSObject [] value);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("browserAccessibilityOrientation")]
+		BEAccessibilityOrientation GetBrowserAccessibilityOrientation ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("setBrowserAccessibilityOrientation:")]
+		void SetBrowserAccessibilityOrientation (BEAccessibilityOrientation value);
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("browserAccessibilityImageDataSize")]
+		[return: NullAllowed]
+		NSValue GetBrowserAccessibilityImageDataSize ();
+
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Export ("browserAccessibilityImageData:")]
+		[return: NullAllowed, Release]
+		CVPixelBuffer GetBrowserAccessibilityImageData (NSDictionary attributes);
 	}
 
 	[BackingFieldType (typeof (ulong))]
@@ -1364,11 +1430,26 @@ namespace BrowserEngineKit {
 		NativeHandle Constructor (string identifier, int hostPid);
 	}
 
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	[Native]
+	public enum BEWebContentFilterPermissionDecision : long {
+		Error,
+		Allowed,
+		Denied,
+		Pending,
+	}
+
 	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
 	delegate void BEWebContentFilterEvaluateUrlCallback (bool allowed, [NullAllowed] NSData data);
 
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void BEWebContentFilterEvaluateUrlWithMainFrameCallback (bool shouldBlock, [NullAllowed] NSData blockPageRepresentation);
+
 	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
 	delegate void BEWebContentFilterAllowUrlCallback (bool allowed, [NullAllowed] NSError error);
+
+	[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+	delegate void BEWebContentFilterRequestPermissionCallback (BEWebContentFilterPermissionDecision decision, [NullAllowed] NSError error);
 
 	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
 	[BaseType (typeof (NSObject))]
@@ -1382,8 +1463,18 @@ namespace BrowserEngineKit {
 		[Export ("evaluateURL:completionHandler:")]
 		void EvaluateUrl (NSUrl url, BEWebContentFilterEvaluateUrlCallback completionHandler);
 
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Async (ResultType = typeof (BEWebContentFilterEvaluateUrlWithMainFrameResult))]
+		[Export ("evaluateURL:mainFrameURL:isMainFrame:completionHandler:")]
+		void EvaluateUrl (NSUrl url, NSUrl mainFrameUrl, bool isMainFrame, BEWebContentFilterEvaluateUrlWithMainFrameCallback completionHandler);
+
 		[Async]
 		[Export ("allowURL:completionHandler:")]
 		void AllowUrl (NSUrl url, BEWebContentFilterAllowUrlCallback completionHandler);
+
+		[NoTV, NoMac, iOS (27, 0), MacCatalyst (27, 0)]
+		[Async]
+		[Export ("requestPermissionForURL:referrerURL:presentingView:completionHandler:")]
+		void RequestPermission (NSUrl url, [NullAllowed] NSUrl referrerUrl, [NullAllowed] UIView presentingView, BEWebContentFilterRequestPermissionCallback completionHandler);
 	}
 }

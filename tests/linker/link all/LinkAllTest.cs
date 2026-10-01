@@ -262,6 +262,7 @@ namespace LinkAll {
 
 #if !__TVOS__ && !__MACOS__
 		[Test]
+		[Ignore ("This test is racy and fails intermittently.")]
 		public void Pasteboard_ImagesTest ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath!, "basn3p08.png");

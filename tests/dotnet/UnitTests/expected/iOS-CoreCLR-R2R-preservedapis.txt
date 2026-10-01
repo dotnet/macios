@@ -176,14 +176,14 @@ Microsoft.iOS.dll:Foundation.NSAsyncDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher..ctor()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3060_Foundation_NSAsyncDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3061_Foundation_NSAsyncDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3075_Foundation_NSAsyncDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSAsyncDispatcher/__Registrar_Callbacks__.callback_3076_Foundation_NSAsyncDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3063_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSAsyncSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3078_Foundation_NSAsyncSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSAutoreleasePool..cctor()
@@ -226,8 +226,8 @@ Microsoft.iOS.dll:Foundation.NSDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSDispatcher..ctor()
 Microsoft.iOS.dll:Foundation.NSDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_3055_Foundation_NSDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_3056_Foundation_NSDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_3070_Foundation_NSDispatcher__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSDispatcher/__Registrar_Callbacks__.callback_3071_Foundation_NSDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSException
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
@@ -331,8 +331,8 @@ Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3088_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3089_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3103_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3104_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -368,7 +368,7 @@ Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher..cctor()
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher..ctor(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher.Apply()
 Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3058_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSSynchronizationContextDispatcher/__Registrar_Callbacks__.callback_3073_Foundation_NSSynchronizationContextDispatcher_Apply(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSValue
 Microsoft.iOS.dll:Foundation.NSValue._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSValue..cctor()
@@ -646,8 +646,8 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out 
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|295_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|298_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|297_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -1302,7 +1302,7 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_593_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_605_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton..cctor()
@@ -8371,6 +8371,7 @@ System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/Coun
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumExistingThreads()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumProcessingWork()
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/ThreadCounts::NumThreadsGoal()
+System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::SpuriousDispatchNoSpinThreshold
 System.Private.CoreLib.dll:System.Int16 System.Threading.PortableThreadPool/WorkerThread::ThreadsToKeepAlive
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_version
 System.Private.CoreLib.dll:System.Int16 System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::Version()
@@ -10889,26 +10890,26 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.Runtime.Se
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String, System.Exception)
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|579_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|570_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.<CompareDecimalIeee754>g__InternalInfinityCompare|3_1`2(TValue, TValue)
 System.Private.CoreLib.dll:System.Number.<CompareDecimalIeee754>g__InternalUnsignedCompare|3_0`2(System.Number/DecodedDecimalIeee754`1<TValue>, System.Number/DecodedDecimalIeee754`1<TValue>)
 System.Private.CoreLib.dll:System.Number.<ConvertFloatToDecimalIeee754>g__MaterializePreferredZeros|85_0`3(System.Number/NumberBuffer&, System.Span`1<System.Byte>)
-System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|438_0(System.Int128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|430_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|434_0(System.Int64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|440_0(System.UInt128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|432_0(System.UInt32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|436_0(System.UInt64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|423_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
+System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|429_0(System.Int128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|421_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|425_0(System.Int64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|431_0(System.UInt128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|423_0(System.UInt32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|427_0(System.UInt64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|414_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
 System.Private.CoreLib.dll:System.Number.<NumberToDecimalIeee754Bits>g__ClampExponentOverflow|9_0`2(System.Number/NumberBuffer&, System.Int32)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|585_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|439_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|431_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|435_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|441_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|433_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|437_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|459_0(System.UInt32)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|576_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|430_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|422_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|426_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|432_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|424_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|428_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|450_0(System.UInt32)
 System.Private.CoreLib.dll:System.Number.AccumulateDecimalDigitsIntoBigInteger(System.Number/NumberBuffer&, System.UInt32, System.UInt32, out System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number.AddDecimalIeee754`2(TValue, TValue)
 System.Private.CoreLib.dll:System.Number.AlignmentScaleFactor`2(System.Int32)
@@ -15786,6 +15787,7 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.Elemen
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.FlushCurrentCache()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.HashShift(System.Runtime.CompilerServices.GenericCache`2/Entry<TKey,TValue>[])
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.HashToBucket(System.Runtime.CompilerServices.GenericCache`2/Entry<TKey,TValue>[], System.Int32)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.IsSentinel(System.Runtime.CompilerServices.GenericCache`2/Entry<TKey,TValue>[])
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.MaybeReplaceCacheWithLarger(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.TableData(System.Runtime.CompilerServices.GenericCache`2/Entry<TKey,TValue>[])
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2.TableMask(System.Runtime.CompilerServices.GenericCache`2/Entry<TKey,TValue>[])
@@ -20863,18 +20865,19 @@ System.Private.CoreLib.dll:System.Threading.PortableThreadPool/ThreadCounts.TryI
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.CreateWorkerThread()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineSpuriousDispatchNoSpinThreshold()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.DetermineThreadsToKeepAlive()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.MaybeAddWorkingWorker(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldExitWorker(System.Threading.PortableThreadPool, System.Threading.LowLevelLock)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.ShouldStopProcessingWorkNow(System.Threading.PortableThreadPool)
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool)
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.TryRemoveWorkingWorker(System.Threading.PortableThreadPool, out System.Int16&)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerDoWork(System.Threading.PortableThreadPool)
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread.WorkerThreadStart()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c System.Threading.PortableThreadPool/WorkerThread/<>c::<>9
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..cctor()
 System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c..ctor()
-System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__14_0()
+System.Private.CoreLib.dll:System.Threading.PortableThreadPool/WorkerThread/<>c.<.cctor>b__16_0()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache..cctor()
 System.Private.CoreLib.dll:System.Threading.ProcessorIdCache.GetCurrentProcessorId()

@@ -443,15 +443,15 @@ namespace AudioUnit {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern unsafe IntPtr AudioComponentCopyIcon (IntPtr comp);
 
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public UIImage? CopyIcon ()
@@ -705,8 +705,8 @@ namespace AudioUnit {
 		public static NSString ForceValidation = new NSString ("ForceValidation");
 
 		//		#define kAudioComponentValidationParameter_LoadOutOfProcess		 "LoadOutOfProcess"
-		[SupportedOSPlatform ("ios14.5")]
-		[SupportedOSPlatform ("tvos14.5")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static NSString LoadOutOfProcess = new NSString ("LoadOutOfProcess");

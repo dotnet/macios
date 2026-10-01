@@ -26,6 +26,7 @@ namespace MonoTouch.NUnit.UI {
 				app.InvokeOnMainThread (async () => {
 					var rect = new CGRect (0, 0, 200, 50);
 					var window = new NSWindow (rect, NSWindowStyle.Titled | NSWindowStyle.Closable | NSWindowStyle.Miniaturizable | NSWindowStyle.Resizable, NSBackingStore.Buffered, false);
+					window.AnimationBehavior = NSWindowAnimationBehavior.None;
 					window.Title = "Running tests...";
 					window.MakeKeyAndOrderFront (app);
 

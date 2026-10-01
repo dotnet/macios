@@ -85,6 +85,8 @@ namespace Xamarin.Linker {
 		List<Exception> exceptions = new List<Exception> ();
 
 		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
+		Dictionary<AssemblyDefinition, AssemblyDefinition?> relocatedCompanions = new ();
+		Dictionary<TypeDefinition, ILookup<string, MethodDefinition>> callbackMethodsByName = new ();
 
 		// Whether the registrar trampolines for the given method should be relocated into the
 		// per-assembly companion assembly (_<Asm>.TypeMap.dll) instead of being emitted into the
@@ -103,11 +105,17 @@ namespace Xamarin.Linker {
 		// pass (and the RegistrarCompanionAssemblies dictionary is empty because it's a fresh process).
 		AssemblyDefinition? FindRelocatedCompanionAssembly (AssemblyDefinition userAssembly)
 		{
-			var companionName = "_" + userAssembly.Name.Name + ".TypeMap";
+			if (relocatedCompanions.TryGetValue (userAssembly, out var companion))
+				return companion;
+
+			var companionName = RegistrarCompanionAssembly.GetName (userAssembly);
 			foreach (var assembly in Configuration.Assemblies) {
-				if (assembly.Name.Name == companionName)
+				if (assembly.Name.Name == companionName) {
+					relocatedCompanions.Add (userAssembly, assembly);
 					return assembly;
+				}
 			}
+			relocatedCompanions.Add (userAssembly, null);
 			return null;
 		}
 
@@ -241,7 +249,8 @@ namespace Xamarin.Linker {
 			// The factory methods must be added before trimming: either in the assembly preparer (when
 			// PrepareAssemblies=true), or inside ILLink itself (when PrepareAssemblies=false). They must not
 			// be added again when post-processing assemblies, since they're already there at that point.
-			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies) {
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface && !App.IsPostProcessingAssemblies
+				&& (!Configuration.HotReloadCompatibleBuild || Annotations.GetAction (type.Module.Assembly) == AssemblyAction.Link)) {
 				if (isNSObject) {
 					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
@@ -392,7 +401,11 @@ namespace Xamarin.Linker {
 				}
 			}
 
-			var candidates = callbackType.Methods.Where (v => v.Name == ucoName).ToArray ();
+			if (!callbackMethodsByName.TryGetValue (callbackType, out var callbackMethods)) {
+				callbackMethods = callbackType.Methods.ToLookup (v => v.Name);
+				callbackMethodsByName.Add (callbackType, callbackMethods);
+			}
+			var candidates = callbackMethods [ucoName].ToArray ();
 			if (candidates.Length != 1) {
 				AddException (ErrorHelper.CreateWarning (App, 99, method, $"Didn't find exactly one matching callback method in __Registrar_Callbacks__ for method {method.FullName}, found {candidates.Length}"));
 				return;
@@ -1763,14 +1776,24 @@ namespace Xamarin.Linker {
 			return IsOpenType (tr.Resolve ());
 		}
 
-		static void EnsureVisible (MethodDefinition caller, FieldDefinition field)
+		void EnsureVisible (MethodDefinition caller, FieldDefinition field)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (field.Module.Assembly);
+				return;
+			}
+
 			field.IsPublic = true;
 			EnsureVisible (caller, field.DeclaringType);
 		}
 
-		static void EnsureVisible (MethodDefinition caller, TypeDefinition type)
+		void EnsureVisible (MethodDefinition caller, TypeDefinition type)
 		{
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (type.Module.Assembly);
+				return;
+			}
+
 			if (type.IsNested) {
 				type.IsNestedPublic = true;
 				EnsureVisible (caller, type.DeclaringType);
@@ -1779,9 +1802,14 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		static void EnsureVisible (MethodDefinition caller, MethodReference method)
+		void EnsureVisible (MethodDefinition caller, MethodReference method)
 		{
 			var md = method.Resolve ();
+			if (ShouldRelocateTrampolines (caller)) {
+				Configuration.RegistrarCompanionAssemblies [caller.Module.Assembly].AccessesAssemblies.Add (md.Module.Assembly);
+				return;
+			}
+
 			md.IsPublic = true;
 			EnsureVisible (caller, md.DeclaringType);
 		}

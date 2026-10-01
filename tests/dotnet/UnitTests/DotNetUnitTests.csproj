@@ -15,6 +15,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\..\common\Touch.Unit\Touch.Client\Runner\ConsoleTextWriter.cs">
+			<Link>external\ConsoleTextWriter.cs</Link>
+		</Compile>
 		<Compile Include="..\..\common\Configuration.cs">
 			<Link>external\Configuration.cs</Link>
 		</Compile>
@@ -59,6 +62,9 @@
 		</Compile>
 		<Compile Include="..\..\..\tools\common\MachO.cs">
 			<Link>external\MachO.cs</Link>
+		</Compile>
+		<Compile Include="..\..\..\tools\common\RegistrarAssembliesObjectWriter.cs">
+			<Link>external\RegistrarAssembliesObjectWriter.cs</Link>
 		</Compile>
 		<Compile Include="..\..\..\tools\mtouch\Errors.designer.cs">
 			<Link>external\Errors.designer.cs</Link>

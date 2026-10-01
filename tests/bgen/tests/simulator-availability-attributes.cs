@@ -8,6 +8,15 @@ namespace NS {
 	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface UnsupportedOnAllSimulators {
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[Export ("unsupportedMethod")]
+		void UnsupportedMethod ();
+
+		[SupportedSimulator ("ios17.0")]
+		[SupportedSimulator ("tvos17.0")]
+		[Export ("supportedMethod")]
+		void SupportedMethod ();
 	}
 
 	[UnsupportedSimulator ("ios")]
@@ -26,6 +35,23 @@ namespace NS {
 	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NoSimulatorAttributes {
+	}
+
+	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
+	[BaseType (typeof (NSObject))]
+	interface SimulatorAvailabilityMethods {
+		[UnsupportedSimulator ("ios")]
+		[UnsupportedSimulator ("tvos")]
+		[Export ("unsupported")]
+		void Unsupported ();
+
+		[SupportedSimulator ("ios17.0")]
+		[SupportedSimulator ("tvos17.0")]
+		[Export ("supported")]
+		void Supported ();
+
+		[Export ("plain")]
+		void Plain ();
 	}
 
 	// A simulator attribute placed on a smart-enum [Field] member must be propagated

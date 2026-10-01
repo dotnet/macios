@@ -4,15 +4,14 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
 
 using Xamarin.Utils;
-using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging;
 using Xamarin.Messaging.Build.Client;
 
@@ -34,33 +33,25 @@ namespace Xamarin.MacDev.Tasks {
 
 		public ITaskItem [] AdditionalLibPaths { get; set; } = Array.Empty<ITaskItem> ();
 
-		public bool AllowUnsafeBlocks { get; set; }
-
 		[Required]
 		public string BaseLibDll { get; set; } = string.Empty;
 
-		[Required]
-		public ITaskItem [] ApiDefinitions { get; set; } = Array.Empty<ITaskItem> ();
-
 		public string AttributeAssembly { get; set; } = string.Empty;
 
+		[Required]
 		public ITaskItem? CompiledApiDefinitionAssembly { get; set; }
-
-		public ITaskItem [] CoreSources { get; set; } = Array.Empty<ITaskItem> ();
-
-		public string DefineConstants { get; set; } = string.Empty;
 
 		public bool EmitDebugInformation { get; set; }
 
 		public string ExtraArgs { get; set; } = string.Empty;
 
+		[Required]
 		public string GeneratedSourcesDir { get; set; } = string.Empty;
 
+		[Required]
 		public string GeneratedSourcesFileList { get; set; } = string.Empty;
 
 		public string Namespace { get; set; } = string.Empty;
-
-		public bool NoNFloatUsing { get; set; }
 
 		public ITaskItem [] NativeLibraries { get; set; } = Array.Empty<ITaskItem> ();
 
@@ -74,10 +65,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ProjectDir { get; set; } = string.Empty;
 
 		public ITaskItem [] References { get; set; } = Array.Empty<ITaskItem> ();
-
-		public ITaskItem [] Resources { get; set; } = Array.Empty<ITaskItem> ();
-
-		public ITaskItem [] Sources { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Required]
 		public string ResponseFilePath { get; set; } = string.Empty;
@@ -125,35 +112,10 @@ namespace Xamarin.MacDev.Tasks {
 			if (EmitDebugInformation)
 				cmd.Add ("/debug");
 
-			if (AllowUnsafeBlocks)
-				cmd.Add ("/unsafe");
-
 			if (!string.IsNullOrEmpty (Namespace))
 				cmd.Add ($"/ns:{Namespace}");
 
-			if (NoNFloatUsing)
-				cmd.Add ("/no-nfloat-using:true");
-
-			if (!string.IsNullOrEmpty (DefineConstants)) {
-				var strv = DefineConstants.Split (new [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-				foreach (var str in strv)
-					cmd.Add ($"/d:{str}");
-			}
-
 			//cmd.AppendSwitch ("/e");
-
-			foreach (var item in ApiDefinitions)
-				cmd.Add (Path.GetFullPath (item.ItemSpec));
-
-			if (CoreSources is not null) {
-				foreach (var item in CoreSources)
-					cmd.Add ($"/s:{Path.GetFullPath (item.ItemSpec)}");
-			}
-
-			if (Sources is not null) {
-				foreach (var item in Sources)
-					cmd.Add ($"/x:{Path.GetFullPath (item.ItemSpec)}");
-			}
 
 			if (AdditionalLibPaths is not null) {
 				foreach (var item in AdditionalLibPaths)
@@ -161,28 +123,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			HandleReferences (cmd);
-
-			if (Resources is not null) {
-				foreach (var item in Resources) {
-					var argument = item.ToString ();
-					var id = item.GetMetadata ("LogicalName");
-					if (!string.IsNullOrEmpty (id))
-						argument += "," + id;
-
-					cmd.Add ($"/res:{argument}");
-				}
-			}
-
-			if (NativeLibraries is not null) {
-				foreach (var item in NativeLibraries) {
-					var argument = item.ToString ();
-					var id = item.GetMetadata ("LogicalName");
-					if (string.IsNullOrEmpty (id))
-						id = Path.GetFileName (argument);
-
-					cmd.Add ($"/res:{argument},{id}");
-				}
-			}
 
 			if (!string.IsNullOrEmpty (GeneratedSourcesDir))
 				cmd.Add ($"/tmpdir:{Path.GetFullPath (GeneratedSourcesDir)}");
@@ -235,12 +175,23 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			var compiledApiDefinitionAssembly = CompiledApiDefinitionAssembly;
+			if (compiledApiDefinitionAssembly is null || string.IsNullOrEmpty (compiledApiDefinitionAssembly.ItemSpec)) {
+				Log.LogError ("A compiled API definition assembly is required.");
+				return false;
+			}
+			if (string.IsNullOrEmpty (GeneratedSourcesDir) || string.IsNullOrEmpty (GeneratedSourcesFileList)) {
+				Log.LogError ("A generated sources directory and file list are required.");
+				return false;
+			}
+
 			if (ShouldExecuteRemotely ()) {
 				try {
 					BGenToolPath = PlatformPath.GetPathForCurrentPlatform (BGenToolPath);
 					BaseLibDll = PlatformPath.GetPathForCurrentPlatform (BaseLibDll);
 
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
+					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, new [] { compiledApiDefinitionAssembly });
 
 					if (ExecuteRemotely (out var taskRunner)) {
 						GetGeneratedSourcesAsync (taskRunner).Wait ();
@@ -264,18 +215,12 @@ namespace Xamarin.MacDev.Tasks {
 				Directory.CreateDirectory (GeneratedSourcesDir);
 			}
 
-			if (ApiDefinitions.Length == 0) {
-				Log.LogError (MSBStrings.E0097);
-				return false;
-			}
-
 			var args = GenerateCommandLineArguments ();
 			if (Log.HasLoggedErrors)
 				return false;
 
-			var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
-			cancellationTokenSource = new CancellationTokenSource ();
 			if (UseExternalProcess) {
+				var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 				var env = new Dictionary<string, string?> ();
 				if (!string.IsNullOrEmpty (customHome))
 					env ["HOME"] = customHome;
@@ -284,31 +229,14 @@ namespace Xamarin.MacDev.Tasks {
 				var bgenExe = PathUtils.ConvertToMacPath (BGenToolExe);
 				args.Insert (0, Path.Combine (bgenPath, bgenExe));
 				var executable = this.GetDotNetPath ();
-				if (Log.HasLoggedErrors)
-					return false;
 
+				cancellationTokenSource = new CancellationTokenSource ();
 				ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 				return !Log.HasLoggedErrors;
 			}
 
-			var output = new StringBuilder ();
-			ThreadStaticTextWriter.ReplaceConsole (output);
-			int exitCode;
-			try {
-				exitCode = ExecuteBGen (args, customHome, cancellationTokenSource.Token);
-			} finally {
-				ThreadStaticTextWriter.RestoreConsole ();
-			}
-			if (exitCode != 0)
-				Log.LogError (output.ToString ());
-			else if (output.Length > 0)
-				Log.LogMessage (MessageImportance.Low, output.ToString ());
-			return !Log.HasLoggedErrors;
-		}
-
-		static int ExecuteBGen (List<string> args, string? customHome, CancellationToken cancellationToken)
-		{
-			return BindingTouch.Run (args.ToArray (), cancellationToken, customHome);
+			var exitCode = BindingTouch.Run (args.ToArray (), this);
+			return exitCode == 0 && !Log.HasLoggedErrors;
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsFrameworkItem ();
@@ -317,13 +245,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			if (ObjectiveCLibraries is null)
-				return new ITaskItem [0];
+			var compiledApiDefinitionAssembly = CompiledApiDefinitionAssembly?.ItemSpec;
+			if (!string.IsNullOrEmpty (compiledApiDefinitionAssembly)) {
+				var documentationFile = Path.ChangeExtension (compiledApiDefinitionAssembly, ".xml");
+				if (File.Exists (documentationFile))
+					yield return new TaskItem (documentationFile);
+			}
 
-			return ObjectiveCLibraries.Select (item => {
+			if (ObjectiveCLibraries is null)
+				yield break;
+
+			foreach (var item in ObjectiveCLibraries) {
 				var linkWithFileName = String.Concat (Path.GetFileNameWithoutExtension (item.ItemSpec), ".linkwith.cs");
-				return new TaskItem (linkWithFileName);
-			}).ToArray ();
+				yield return new TaskItem (linkWithFileName);
+			}
 		}
 
 		public void Cancel ()
@@ -353,81 +288,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			File.WriteAllLines (GeneratedSourcesFileList, localGeneratedSourcesFileNames);
-		}
-
-		sealed class ThreadStaticTextWriter : TextWriter {
-			[ThreadStatic]
-			static TextWriter? currentWriter;
-
-			static readonly ThreadStaticTextWriter instance = new ();
-			static readonly object lockObject = new ();
-			static int counter;
-			static TextWriter? originalStdout;
-			static TextWriter? originalStderr;
-
-			public override Encoding Encoding => Encoding.UTF8;
-
-			public static void ReplaceConsole (StringBuilder output)
-			{
-				lock (lockObject) {
-					if (counter == 0) {
-						originalStdout = Console.Out;
-						originalStderr = Console.Error;
-						Console.SetOut (instance);
-						Console.SetError (instance);
-					}
-					counter++;
-					currentWriter = new StringWriter (output);
-				}
-			}
-
-			public static void RestoreConsole ()
-			{
-				lock (lockObject) {
-					currentWriter?.Dispose ();
-					currentWriter = null;
-					counter--;
-					if (counter == 0) {
-						if (originalStdout is null || originalStderr is null)
-							throw new InvalidOperationException ("The original console writers were not captured.");
-						Console.SetOut (originalStdout);
-						Console.SetError (originalStderr);
-						originalStdout = null;
-						originalStderr = null;
-					}
-				}
-			}
-
-			TextWriter CurrentWriter {
-				get {
-					lock (lockObject)
-						return currentWriter ?? originalStdout ?? TextWriter.Null;
-				}
-			}
-
-			public override void Write (char value)
-			{
-				lock (lockObject)
-					CurrentWriter.Write (value);
-			}
-
-			public override void Write (string? value)
-			{
-				lock (lockObject)
-					CurrentWriter.Write (value);
-			}
-
-			public override void WriteLine ()
-			{
-				lock (lockObject)
-					CurrentWriter.WriteLine ();
-			}
-
-			public override void WriteLine (string? value)
-			{
-				lock (lockObject)
-					CurrentWriter.WriteLine (value);
-			}
 		}
 
 		string GetLocalRelativePath (string path)

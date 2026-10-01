@@ -98,6 +98,13 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "NSTextViewportRenderingSurfaceKey":
+				switch (type.Name) {
+				// Xcode 27 beta: conformance is declared in the headers but is not reported by the runtime (empty marker protocol)
+				case "NSTextLayoutFragment":
+					return true;
+				}
+				break;
 			case "NSCopying":
 				switch (type.Name) {
 				// undocumented conformance (up to 7.0) and conformity varies between iOS versions
@@ -465,6 +472,9 @@ namespace Introspection {
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
 					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -705,6 +715,9 @@ namespace Introspection {
 					return true;
 				// Xcode 26.4 Conformance not in headers
 				case "CNFetchRequest":
+					return true;
+				// Xcode 27.0 Conformance not in headers
+				case "PHPickerSearchText":
 					return true;
 				}
 				break;

@@ -14,6 +14,7 @@
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
     <NoWarn>$(NoWarn);8002</NoWarn> <!-- Referenced projects aren't signed: this doesn't matter, because we use ILMerge to merge into a single assembly which we sign -->
     <NoWarn>$(NoWarn);CS0618</NoWarn> <!-- AppleSdkSettings is [Obsolete] in favor of XcodeLocator; suppress until migration is complete -->
+    <NoWarn>$(NoWarn);CS8600;CS8602;CS8604</NoWarn> <!-- bgen sources are also compiled with their standalone nullable context -->
     <NoWarn>$(NoWarn);APL0003</NoWarn>
     <CopyLocalLockFileAssemblies Condition="'$(TargetFramework)' == 'net$(BundledNETCoreAppTargetFrameworkVersion)'">true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -41,9 +42,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
     <ProjectReference Include="..\..\tools\assembly-preparer\assembly-preparer.csproj" />
-    <ProjectReference Include="..\Xamarin.Localization.MSBuild\Xamarin.Localization.MSBuild.csproj">
-      <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
-    </ProjectReference>
     <!-- We need the net472 implementation, otherwise the Build agent needs to be a net5.0 app -->
     <Reference Include="ILLink.Tasks">
       <HintPath>$(PkgMicrosoft_NET_ILLink_Tasks)\tools\netframework\ILLink.Tasks.dll</HintPath>
@@ -94,6 +92,9 @@
     <Compile Include="..\..\src\ObjCRuntime\SupportedSimulatorAttribute.cs" />
     <Compile Include="..\..\src\ObjCRuntime\Registrar.core.cs" />
     <Compile Include="..\..\src\ObjCRuntime\RequiresSuperAttribute.cs" />
+    <Compile Include="..\Versions.g.cs">
+      <Link>Versions.g.cs</Link>
+    </Compile>
     <Compile Include="..\..\tools\common\JsonExtensions.cs">
       <Link>external\JsonExtensions.cs</Link>
     </Compile>
@@ -129,6 +130,73 @@
       <GenerateResource>true</GenerateResource>
       <PublicClass>false</PublicClass>
     </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/MSBStrings.resx">
+      <Type>Resx</Type>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MSBStrings.Designer.cs</LastGenOutput>
+      <StronglyTypedFileName>$(IntermediateOutputPath)MSBStrings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
+      <StronglyTypedClassName>MSBStrings</StronglyTypedClassName>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings</ManifestResourceName>
+      <GenerateResource>true</GenerateResource>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.cs.resx">
+      <Link>MSBStrings.cs.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.cs</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.de.resx">
+      <Link>MSBStrings.de.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.de</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.es.resx">
+      <Link>MSBStrings.es.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.es</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.fr.resx">
+      <Link>MSBStrings.fr.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.fr</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.it.resx">
+      <Link>MSBStrings.it.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.it</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ja.resx">
+      <Link>MSBStrings.ja.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ja</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ko.resx">
+      <Link>MSBStrings.ko.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ko</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.pl.resx">
+      <Link>MSBStrings.pl.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.pl</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.pt-BR.resx">
+      <Link>MSBStrings.pt-BR.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.pt-BR</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.ru.resx">
+      <Link>MSBStrings.ru.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.ru</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.tr.resx">
+      <Link>MSBStrings.tr.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.tr</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.zh-Hans.resx">
+      <Link>MSBStrings.zh-Hans.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.zh-Hans</ManifestResourceName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../Xamarin.Localization.MSBuild/TranslatedAssemblies/MSBStrings.zh-Hant.resx">
+      <Link>MSBStrings.zh-Hant.resx</Link>
+      <ManifestResourceName>Xamarin.Localization.MSBuild.MSBStrings.zh-Hant</ManifestResourceName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="../../tools/mtouch/Errors.resx">
 
     <!--

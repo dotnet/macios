@@ -304,6 +304,18 @@ namespace FileProvider {
 		DownloadEagerlyAndKeepDownloaded,
 	}
 
+	/// <summary>Specifies how the system materializes a file provider folder's namespace.</summary>
+	[Native]
+	[NoTV, NoMacCatalyst, Mac (27, 0), iOS (27, 0)]
+	public enum NSFileProviderNamespacePolicy : long {
+		/// <summary>Inherits the namespace policy from the parent folder.</summary>
+		Inherited,
+		/// <summary>Materializes a dataless folder's namespace when the folder is accessed.</summary>
+		MaterializeLazily,
+		/// <summary>Keeps the folder's namespace fully materialized and up to date.</summary>
+		MaterializeEagerly,
+	}
+
 	/// <summary>A batch of data to return from an enumerator.</summary>
 	[NoMacCatalyst]
 	[Static]
@@ -758,6 +770,15 @@ namespace FileProvider {
 		[NoTV, NoMacCatalyst, iOS (16, 0)]
 		[Export ("contentPolicy")]
 		NSFileProviderContentPolicy ContentPolicy { get; }
+
+		/// <summary>Gets the policy that controls how the item's namespace is materialized.</summary>
+		[NoTV, NoMacCatalyst, Mac (27, 0), iOS (27, 0)]
+		[Export ("namespacePolicy")]
+		NSFileProviderNamespacePolicy NamespacePolicy {
+			// Keep the generated extension method's availability in sync.
+			[NoTV, NoMacCatalyst, Mac (27, 0), iOS (27, 0)]
+			get;
+		}
 	}
 
 	/// <summary>A shared object that is accessible from both the containing app and the extension.</summary>

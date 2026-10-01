@@ -20,6 +20,9 @@ namespace MediaAccessibility {
 		Default = 0,
 		/// <summary>To be added.</summary>
 		User = 1,
+		/// <summary>Represents the caption appearance preferences for video conferencing.</summary>
+		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		VideoConferencing = 2,
 	}
 
 	/// <summary>Enumerates values that indicate whether to display captions only for translation, always, or only if an audio track language differs from the system.</summary>

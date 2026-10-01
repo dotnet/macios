@@ -72,6 +72,9 @@
 		<Compile Include="../common/MachO.cs">
 			<Link>external/tools/common/MachO.cs</Link>
 		</Compile>
+		<Compile Include="../common/RegistrarAssembliesObjectWriter.cs">
+			<Link>external/tools/common/RegistrarAssembliesObjectWriter.cs</Link>
+		</Compile>
 		<Compile Include="../common/NormalizedStringComparer.cs">
 			<Link>external/tools/common/NormalizedStringComparer.cs</Link>
 		</Compile>
@@ -380,10 +383,8 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-	<Target Name="BuildSdkVersions"
-			Inputs="../common/../SdkVersions.in.cs;../../common/ProductConstants.in.cs" Outputs="../../common/SdkVersions.cs;../../common/ProductConstants.cs"
-			BeforeTargets="CoreCompile"
-	>
-		<Exec Command="make generated-files -C $(MSBuildProjectDirectory)" IgnoreStandardErrorWarningFormat="true" />
+	<!-- Make tracks all generation inputs, including version configuration and the Git index. -->
+	<Target Name="BuildSdkVersions" BeforeTargets="CoreCompile">
+		<Exec Command="make generated-files -C &quot;$(MSBuildProjectDirectory)&quot;" IgnoreStandardErrorWarningFormat="true" />
 	</Target>
 </Project>

@@ -1,0 +1,2 @@
+!deprecated-attribute-missing! MTLFXTemporalDenoisedScalerBase::reactiveTextureUsage missing a [Deprecated] attribute
+!deprecated-attribute-missing! MTLFXTemporalScalerBase::reactiveTextureUsage missing a [Deprecated] attribute

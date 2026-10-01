@@ -159,10 +159,14 @@ namespace Network {
 		WillMarkReady = 2,
 	}
 
+	/// <summary>Specifies a preference for choosing a local IP address for an outbound connection.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWIPLocalAddressPreference {
+		/// <summary>Use the system's default address selection.</summary>
 		Default = 0,
+		/// <summary>Prefer a temporary address for privacy.</summary>
 		Temporary = 1,
+		/// <summary>Prefer a stable address.</summary>
 		Stable = 2,
 	}
 

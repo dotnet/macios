@@ -219,7 +219,6 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return false;
 
-			cancellationTokenSource = new CancellationTokenSource ();
 			if (UseExternalProcess) {
 				var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 				var env = new Dictionary<string, string?> ();
@@ -231,19 +230,20 @@ namespace Xamarin.MacDev.Tasks {
 				args.Insert (0, Path.Combine (bgenPath, bgenExe));
 				var executable = this.GetDotNetPath ();
 
+				cancellationTokenSource = new CancellationTokenSource ();
 				ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 				return !Log.HasLoggedErrors;
 			}
 
-			var exitCode = ExecuteBGen (args, cancellationTokenSource.Token);
+			var exitCode = ExecuteBGen (args);
 			if (exitCode != 0 && !Log.HasLoggedErrors)
-				Log.LogError (MSBStrings.E0098, BindingTouch.ToolName);
+				Log.LogError (MSBStrings.E7193 /* The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */);
 			return exitCode == 0 && !Log.HasLoggedErrors;
 		}
 
-		protected virtual int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
+		protected virtual int ExecuteBGen (List<string> args)
 		{
-			return BindingTouch.Run (args.ToArray (), this, cancellationToken);
+			return BindingTouch.Run (args.ToArray (), this);
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsFrameworkItem ();

@@ -1352,7 +1352,6 @@ public partial class Generator : IMemberGatherer {
 		TypeManager.SetTypesThatMustAlwaysBeGloballyNamed (api.Types);
 
 		foreach (Type t in api.Types) {
-			BindingTouch.ThrowIfCancellationRequested ();
 			if (t.IsUnavailable (this))
 				continue;
 
@@ -1523,7 +1522,6 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		foreach (Type t in api.Types) {
-			BindingTouch.ThrowIfCancellationRequested ();
 			if (t.IsUnavailable (this))
 				continue;
 

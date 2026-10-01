@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading;
 
 using Microsoft.Build.Utilities;
 
 using NUnit.Framework;
-
-using ThreadingTask = System.Threading.Tasks.Task;
 
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
@@ -110,26 +107,13 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		public void InProcessExecutionCanBeCanceled ()
-		{
-			var task = CreateTask<CancelableBGen> ();
-			InitializeExecutionTask (task);
-
-			var execution = ThreadingTask.Run (task.Execute);
-			Assert.That (task.ExecutionStarted.Wait (TimeSpan.FromSeconds (5)), Is.True, "Execution started");
-			task.Cancel ();
-
-			Assert.That (() => execution.GetAwaiter ().GetResult (), Throws.InstanceOf<OperationCanceledException> ());
-		}
-
-		[Test]
 		public void InProcessFailureWithoutDiagnosticLogsError ()
 		{
 			var task = CreateTask<FailingBGen> ();
 			InitializeExecutionTask (task);
 
 			ExecuteTask (task, expectedErrorCount: 1);
-			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Does.Contain ("bgen failed."));
+			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Does.Contain ("The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose."));
 		}
 
 		void InitializeExecutionTask (BGen task)
@@ -141,20 +125,8 @@ namespace Xamarin.MacDev.Tasks {
 			task.ResponseFilePath = Path.Combine (temporaryDirectory, "response-file.txt");
 		}
 
-		sealed class CancelableBGen : BGen {
-			public ManualResetEventSlim ExecutionStarted { get; } = new ();
-
-			protected override int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
-			{
-				ExecutionStarted.Set ();
-				cancellationToken.WaitHandle.WaitOne ();
-				cancellationToken.ThrowIfCancellationRequested ();
-				return 0;
-			}
-		}
-
 		sealed class FailingBGen : BGen {
-			protected override int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
+			protected override int ExecuteBGen (List<string> args)
 			{
 				return 1;
 			}

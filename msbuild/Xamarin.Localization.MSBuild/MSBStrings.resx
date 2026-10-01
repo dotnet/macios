@@ -1769,4 +1769,7 @@
             {1}: user-provided value
         </comment>
     </data>
+    <data name="E7193" xml:space="preserve">
+        <value>The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
 </root>

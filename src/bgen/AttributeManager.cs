@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
+using Assembly = System.Reflection.Assembly;
+
 #nullable enable
 
 public class AttributeManager {
@@ -396,7 +398,11 @@ public class AttributeManager {
 
 		Version? version = null;
 		if (arg.Length > len) {
+#if NET
 			if (!Version.TryParse (arg [len..], out version))
+#else
+			if (!Version.TryParse (arg.Substring (len), out version))
+#endif
 				throw new BindingException (1047, arg);
 		}
 		return (name, version);

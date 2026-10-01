@@ -70,5 +70,66 @@ namespace Xamarin.MacDev.Tasks {
 			args.AddRange (File.ReadAllLines (task.ResponseFilePath));
 			Assert.That (args.Contains ("-invalid"), "incorrect ExtraArg not causing an exception");
 		}
+
+		[Test]
+		public void ExecutesInProcess ()
+		{
+			var task = CreateTask<BGen> ();
+			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+
+			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolExe = "bgen.dll";
+			task.CompiledApiDefinitionAssembly = new TaskItem ("ignored.dll");
+			task.ExtraArgs = "/help";
+			task.GeneratedSourcesDir = temporaryDirectory;
+			task.GeneratedSourcesFileList = Path.Combine (temporaryDirectory, "generated-sources.txt");
+			task.ResponseFilePath = Path.Combine (temporaryDirectory, "response-file.txt");
+
+			ExecuteTask (task);
+		}
+
+		[Test]
+		public void ExecutesExternalProcess ()
+		{
+			var task = CreateTask<BGen> ();
+			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+
+			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolExe = "bgen.dll";
+			task.CompiledApiDefinitionAssembly = new TaskItem ("ignored.dll");
+			task.ExtraArgs = "/help";
+			task.GeneratedSourcesDir = temporaryDirectory;
+			task.GeneratedSourcesFileList = Path.Combine (temporaryDirectory, "generated-sources.txt");
+			task.ResponseFilePath = Path.Combine (temporaryDirectory, "response-file.txt");
+			task.UseExternalProcess = true;
+
+			ExecuteTask (task, expectedErrorCount: 1);
+		}
+
+		[Test]
+		public void InProcessFailureWithoutDiagnosticLogsError ()
+		{
+			var task = CreateTask<FailingBGen> ();
+			InitializeExecutionTask (task);
+
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Does.Contain ("The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose."));
+		}
+
+		void InitializeExecutionTask (BGen task)
+		{
+			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+			task.CompiledApiDefinitionAssembly = new TaskItem ("ignored.dll");
+			task.GeneratedSourcesDir = temporaryDirectory;
+			task.GeneratedSourcesFileList = Path.Combine (temporaryDirectory, "generated-sources.txt");
+			task.ResponseFilePath = Path.Combine (temporaryDirectory, "response-file.txt");
+		}
+
+		sealed class FailingBGen : BGen {
+			protected override int ExecuteBGen (List<string> args)
+			{
+				return 1;
+			}
+		}
 	}
 }

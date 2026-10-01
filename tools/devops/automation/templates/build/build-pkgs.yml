@@ -41,10 +41,6 @@ parameters:
   - name: XcodeChannel
     type: string
 
-  - name: enableSourceIndex
-    type: boolean
-    default: false
-
 steps:
   - template: build.yml
     parameters:
@@ -108,9 +104,6 @@ steps:
             path: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/package-test-libraries.zip
             artifact: '${{ parameters.uploadPrefix }}package-test-libraries'
             continueOnError: true
-
-        - ${{ if eq(parameters.enableSourceIndex, true) }}:
-            - template: source-index.yml
 
         - template: ../common/publish-pipeline-artifact.yml
           parameters:

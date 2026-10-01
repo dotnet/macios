@@ -1,17 +1,23 @@
 parameters:
   runAsPublic: false
+  sourceIndexUploadPackageVersion: 2.0.0-20260521.2
+  sourceIndexProcessBinlogPackageVersion: 1.0.1-20260521.2
   sourceIndexBuildCommand: powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "eng/common/build.ps1 -restore -build -binarylog -ci"
   preSteps: []
   binlogPath: artifacts/log/Debug/Build.binlog
+  repositoryName: $(Build.Repository.Name)
+  repositoryRoot: $(System.DefaultWorkingDirectory)
   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
   dependsOn: ''
   pool: ''
+  timeoutInMinutes: 60
   is1ESPipeline: ''
 
 jobs:
 - job: SourceIndexStage1
   dependsOn: ${{ parameters.dependsOn }}
   condition: ${{ parameters.condition }}
+  timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
   variables:
   - name: BinlogPath
     value: ${{ parameters.binlogPath }}
@@ -43,4 +49,9 @@ jobs:
 
   - template: /eng/common/core-templates/steps/source-index-stage1-publish.yml
     parameters:
+      sourceIndexUploadPackageVersion: ${{ parameters.sourceIndexUploadPackageVersion }}
+      sourceIndexProcessBinlogPackageVersion: ${{ parameters.sourceIndexProcessBinlogPackageVersion }}
       binLogPath: ${{ parameters.binLogPath }}
+      repositoryName: ${{ parameters.repositoryName }}
+      repositoryRoot: ${{ parameters.repositoryRoot }}
+      runAsPublic: ${{ parameters.runAsPublic }}

@@ -103,4 +103,35 @@ jobs:
           xqaCertPass: ${{ parameters.xqaCertPass }}
           use1ES: ${{ parameters.use1ES }}
           xcodeChannel: ${{ parameters.xcodeChannel }}
-          enableSourceIndex: ${{ parameters.enableSourceIndex }}
+
+  - ${{ if eq(parameters.enableSourceIndex, true) }}:
+      - template: /eng/common/templates-official/job/source-index-stage1.yml
+        parameters:
+          sourceIndexUploadPackageVersion: 2.0.0-20260722.1
+          sourceIndexProcessBinlogPackageVersion: 1.0.1-20260722.1
+          sourceIndexBuildCommand: make -C src source-index
+          preSteps:
+            - template: /tools/devops/automation/templates/build/source-index.yml
+              parameters:
+                repositoryAlias: ${{ parameters.repositoryAlias }}
+                commit: ${{ parameters.commit }}
+                xcodeChannel: ${{ parameters.xcodeChannel }}
+          binlogPath: $(System.DefaultWorkingDirectory)/src/build/dotnet/source-index.binlog
+          repositoryName: dotnet-macios
+          timeoutInMinutes: 300
+          ${{ if parameters.useACES }}:
+            pool:
+              os: macOS
+              name: $(CIBuildPoolACES)
+              demands:
+                - ImageOverride -equals $(CIBuildPoolACESImage)
+          ${{ else }}:
+            pool:
+              os: macOS
+              name: ${{ parameters.pool }}
+              demands:
+                - Agent.OS -equals Darwin
+                - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+                - macOS.Name -equals ${{ parameters.macOSName }}
+                - macOS.Architecture -equals arm64
+                - XcodeChannel -equals ${{ parameters.xcodeChannel }}

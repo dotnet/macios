@@ -1,47 +1,73 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
+parameters:
+  - name: repositoryAlias
+    type: string
+    default: self
+
+  - name: commit
+    type: string
+    default: HEAD
+
+  - name: xcodeChannel
+    type: string
+
 steps:
-  - bash: make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/src source-index
-    displayName: 'Source Index: Build'
-    timeoutInMinutes: 30
+  - template: sdk-unified/steps/checkout/v1.yml@yaml-templates
+    parameters:
+      resource: ${{ parameters.repositoryAlias }}
+      commit: ${{ parameters.commit }}
+      clean: true
+      submodules: recursive
+      path: s
+      fetchTags: false
+      retryCount: 3
 
-  - task: UseDotNet@2
-    displayName: 'Source Index: Use .NET 10 SDK'
-    inputs:
-      packageType: sdk
-      version: 10.0.x
-      installationPath: $(Agent.TempDirectory)/dotnet
-      workingDirectory: $(Agent.TempDirectory)
+  - template: ../common/provision-xcode.yml
+    parameters:
+      repositoryPath: $(System.DefaultWorkingDirectory)
+      xcodeChannel: ${{ parameters.xcodeChannel }}
+
+  - ${{ if contains(variables['Build.DefinitionName'], 'private') }}:
+      - task: PowerShell@2
+        displayName: Setup Private Feeds Credentials
+        inputs:
+          filePath: $(System.DefaultWorkingDirectory)/eng/common/SetupNugetSources.ps1
+          arguments: -ConfigFile $(System.DefaultWorkingDirectory)/NuGet.config******
+        env:
+          Token: $(dn-bot-dnceng-artifact-feeds-rw)
+
+      - bash: |
+          set -x
+          set -e
+          ARGS="--azure-feed \"https://dotnetclimsrc.blob.core.windows.net/dotnet\" -FeedCredential $CREDENTIALS"
+          echo "##vso[task.setvariable variable=DOTNET_INSTALL_EXTRA_ARGS]$ARGS"
+        env:
+          CREDENTIALS: $(dotnetclimsrc-read-sas-token)
+        displayName: "Configure install extra args"
+        timeoutInMinutes: 5
 
   - bash: |
-      set -e
-      rm -rf "$(Agent.TempDirectory)/.source-index"
-      mkdir -p "$(Agent.TempDirectory)/.source-index/tools"
-      "$(Agent.TempDirectory)/dotnet/dotnet" tool install BinLogToSln --version 1.0.1-20260722.1 --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json --tool-path "$(Agent.TempDirectory)/.source-index/tools"
-      "$(Agent.TempDirectory)/dotnet/dotnet" tool install UploadIndexStage1 --version 2.0.0-20260722.1 --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json --tool-path "$(Agent.TempDirectory)/.source-index/tools"
-    displayName: 'Source Index: Download tools'
-    workingDirectory: $(Agent.TempDirectory)
+      set -eo pipefail
+      set -x
+
+      ARGS=()
+      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+      if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+        ARGS+=("--xcode=$XCODE_PATH")
+      fi
+
+      ./configure "${ARGS[@]}"
+    displayName: "Configure source index build"
+    workingDirectory: $(System.DefaultWorkingDirectory)
+    timeoutInMinutes: 5
 
   - bash: |
-      set -e
-      "$(Agent.TempDirectory)/.source-index/tools/BinLogToSln" \
-        -i "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/src/build/dotnet/source-index.binlog" \
-        -r "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)" \
-        -n dotnet-macios \
-        -o "$(Agent.TempDirectory)/.source-index/stage1output"
-    displayName: 'Source Index: Process binlog'
-
-  - task: AzureCLI@2
-    displayName: 'Source Index: Upload stage 1 artifacts'
-    inputs:
-      azureSubscription: 'SourceDotNet Stage1 Publish'
-      addSpnToEnvironment: true
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        "$(Agent.TempDirectory)/.source-index/tools/UploadIndexStage1" \
-          -i "$(Agent.TempDirectory)/.source-index/stage1output" \
-          -n dotnet-macios \
-          -s netsourceindexstage1 \
-          -b stage1
+      set -ex
+      time make reset
+    displayName: 'Reset source index dependencies'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+    timeoutInMinutes: 10
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)

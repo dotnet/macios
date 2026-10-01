@@ -3,6 +3,9 @@ parameters:
   sourceIndexProcessBinlogPackageVersion: 1.0.1-20260521.2
   sourceIndexPackageSource: https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json
   binlogPath: artifacts/log/Debug/Build.binlog
+  repositoryName: $(Build.Repository.Name)
+  repositoryRoot: $(System.DefaultWorkingDirectory)
+  runAsPublic: false
 
 steps:
 - task: UseDotNet@2
@@ -20,7 +23,7 @@ steps:
   # Set working directory to temp directory so 'dotnet' doesn't try to use global.json and use the repo's sdk.
   workingDirectory: $(Agent.TempDirectory)
 
-- script: $(Agent.TempDirectory)/.source-index/tools/BinLogToSln -i ${{parameters.BinlogPath}} -r $(System.DefaultWorkingDirectory) -n $(Build.Repository.Name) -o .source-index/stage1output
+- script: $(Agent.TempDirectory)/.source-index/tools/BinLogToSln -i ${{parameters.BinlogPath}} -r ${{parameters.repositoryRoot}} -n ${{parameters.repositoryName}} -o $(System.DefaultWorkingDirectory)/.source-index/stage1output
   displayName: "Source Index: Process Binlog into indexable sln"
 
 - ${{ if and(ne(parameters.runAsPublic, 'true'), ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
@@ -29,7 +32,7 @@ steps:
     inputs:
       azureSubscription: 'SourceDotNet Stage1 Publish'
       addSpnToEnvironment: true
-      scriptType: 'ps'
+      scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
-        $(Agent.TempDirectory)/.source-index/tools/UploadIndexStage1 -i .source-index/stage1output -n $(Build.Repository.Name) -s netsourceindexstage1 -b stage1
+        & "$(Agent.TempDirectory)/.source-index/tools/UploadIndexStage1" -i "$(System.DefaultWorkingDirectory)/.source-index/stage1output" -n "${{parameters.repositoryName}}" -s netsourceindexstage1 -b stage1

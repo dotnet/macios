@@ -31,8 +31,6 @@
 //
 //
 
-#define DOUBLE_BLOCKS
-
 global using nfloat = global::System.Runtime.InteropServices.NFloat;
 
 using CloudKit;
@@ -18398,7 +18396,6 @@ namespace Foundation {
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 		NSOperationQueue PresentedItemOperationQueue { get; }
 
-#if DOUBLE_BLOCKS
 		/// <param name="readerAction">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
@@ -18410,23 +18407,28 @@ namespace Foundation {
 		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToWriter:")]
 		void RelinquishPresentedItemToWriter (NSFilePresenterReacquirer writerAction);
-#endif
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("savePresentedItemChangesWithCompletionHandler:")]
-		void SavePresentedItemChanges (Action<NSError> completionHandler);
+#nullable enable
+		void SavePresentedItemChanges (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedItemDeletionWithCompletionHandler:")]
-		void AccommodatePresentedItemDeletion (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemDeletion (Action<NSError?> completionHandler);
+#nullable disable
 
 		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]
-		void AccommodatePresentedItemEviction (Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedItemEviction (Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="newURL">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -18462,7 +18464,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedSubitemDeletionAtURL:completionHandler:")]
-		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError> completionHandler);
+#nullable enable
+		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError?> completionHandler);
+#nullable disable
 
 		/// <param name="atUrl">To be added.</param>
 		/// <summary>To be added.</summary>

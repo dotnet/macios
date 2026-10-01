@@ -79,23 +79,43 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestEnumerateProtocols ()
 		{
-			using var tcpManager = new ConnectionManager (tcp: true);
-			using var tcpConnection = tcpManager.CreateConnection (out var parameters);
-			using (parameters) {
-				try {
-					var completion = new TaskCompletionSource<NWEstablishmentReport> ();
-					tcpConnection.GetEstablishmentReport (DispatchQueue.DefaultGlobalQueue, completion.SetResult);
-					Assert.That (completion.Task.Wait (20000), Is.True, "Timed out fetching TCP establishment report");
-					using var tcpReport = completion.Task.Result;
-					var protocols = new List<IntPtr> ();
-					tcpReport.EnumerateProtocols ((protocol, duration, roundTripTime) => {
-						protocols.Add (protocol.Handle);
-					});
-					Assert.That (protocols, Is.Not.Empty, "Protocols");
-					Assert.That (protocols, Has.None.EqualTo (IntPtr.Zero), "Protocol handles");
-				} finally {
-					tcpConnection.Cancel ();
-				}
+			using var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "443");
+			using var parameters = NWParameters.CreateSecureTcp ();
+			using var tcpConnection = new NWConnection (endpoint, parameters);
+			using var tcpDefinition = NWProtocolDefinition.CreateTcpDefinition ();
+			using var tlsDefinition = NWProtocolDefinition.CreateTlsDefinition ();
+			var ready = new TaskCompletionSource<string> ();
+			var completion = new TaskCompletionSource<NWEstablishmentReport> ();
+			tcpConnection.SetQueue (DispatchQueue.DefaultGlobalQueue);
+			tcpConnection.SetStateChangeHandler ((state, error) => {
+				if (state == NWConnectionState.Ready)
+					ready.TrySetResult ("");
+				else if (state == NWConnectionState.Failed || state == NWConnectionState.Cancelled)
+					ready.TrySetResult ($"{state}: {error}");
+			});
+			try {
+				tcpConnection.Start ();
+				Assert.That (ready.Task.Wait (20000), Is.True, "Timed out establishing TLS connection");
+				Assert.That (ready.Task.Result, Is.EqualTo (""), "TLS connection error");
+				tcpConnection.GetEstablishmentReport (DispatchQueue.DefaultGlobalQueue, value => {
+					if (!completion.TrySetResult (value))
+						value.Dispose ();
+				});
+				Assert.That (completion.Task.Wait (20000), Is.True, "Timed out fetching TLS establishment report");
+				var protocols = new List<string> ();
+				completion.Task.Result.EnumerateProtocols ((protocol, duration, roundTripTime) => {
+					if (protocol.Equals (tcpDefinition))
+						protocols.Add ("TCP");
+					else if (protocol.Equals (tlsDefinition))
+						protocols.Add ("TLS");
+				});
+				Assert.That (protocols, Does.Contain ("TCP"), "TCP handshake");
+				Assert.That (protocols, Does.Contain ("TLS"), "TLS handshake");
+			} finally {
+				completion.TrySetCanceled ();
+				if (completion.Task.Status == TaskStatus.RanToCompletion)
+					completion.Task.Result.Dispose ();
+				tcpConnection.Cancel ();
 			}
 		}
 

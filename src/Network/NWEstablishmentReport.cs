@@ -65,8 +65,9 @@ namespace Network {
 				using (var nwSuccesfulEndpoint = new NWEndpoint (successful_endpoint, owns: false))
 				using (var nwPreferredEndpoint = new NWEndpoint (preferred_endpoint, owns: false))
 					del (source, TimeSpan.FromMilliseconds (milliseconds), endpoint_count, nwSuccesfulEndpoint, nwPreferredEndpoint);
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -92,8 +93,9 @@ namespace Network {
 			if (del is not null) {
 				using (var nwProtocolDefinition = new NWProtocolDefinition (protocol, owns: false))
 					del (nwProtocolDefinition, TimeSpan.FromMilliseconds (handshake_milliseconds), TimeSpan.FromMilliseconds (handshake_rtt_milliseconds));
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -135,7 +137,7 @@ namespace Network {
 		{
 			var del = BlockLiteral.GetTarget<Action<NWResolutionReport>> (block);
 			if (del is null)
-				return 1;
+				return 0;
 			using var nwReport = new NWResolutionReport (report, owns: false);
 			del (nwReport);
 			return 1;

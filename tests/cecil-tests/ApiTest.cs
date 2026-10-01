@@ -18,6 +18,28 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public partial class ApiTest {
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void GKTurnBasedMatch_DeclineInvite (AssemblyInfo info)
+		{
+			var match = info.Assembly.MainModule.GetType ("GameKit.GKTurnBasedMatch");
+			Assert.That (match, Is.Not.Null, "GKTurnBasedMatch");
+
+			var methodName = "DeclineInvite";
+#if !XAMCORE_5_0
+			var legacy = match.Methods.Single (m => m.Name == "DeclineInvite");
+			Assert.That (legacy.Parameters [0].ParameterType.FullName, Is.EqualTo ("System.Action`2<GameKit.GKTurnBasedMatch,Foundation.NSError>"), "Legacy callback signature");
+			Assert.That (legacy.IsVirtual, Is.True, "Legacy virtual method");
+			Assert.That (legacy.Parameters [0].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.False, "Legacy callback must not be marshaled directly");
+			Assert.That (legacy.Body.Instructions.Any (i => i.OpCode == OpCodes.Callvirt && i.Operand is MethodReference called && called.Name == "DeclineInviteWithError"), Is.True, "Legacy callback forwards through the native signature");
+			Assert.That (match.Methods.Single (m => m.Name == "DeclineInviteAsync").ReturnType.FullName, Is.EqualTo ("System.Threading.Tasks.Task`1<GameKit.GKTurnBasedMatch>"), "Legacy async signature");
+			methodName = "DeclineInviteWithError";
+#endif
+			var method = match.Methods.Single (m => m.Name == methodName);
+			Assert.That (method.Parameters [0].ParameterType.FullName, Is.EqualTo ("System.Action`1<Foundation.NSError>"), "Native callback signature");
+			Assert.That (method.Parameters [0].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, "Native callback block proxy");
+			Assert.That (match.Methods.Single (m => m.Name == methodName + "Async").ReturnType.FullName, Is.EqualTo ("System.Threading.Tasks.Task"), "Native async signature");
+		}
+
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{

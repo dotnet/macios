@@ -181,17 +181,18 @@ namespace Network {
 		Version6 = 2,
 	}
 
+	/// <summary>Identifies the underlying media of a network interface.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWInterfaceType {
-		/// <summary>To be added.</summary>
+		/// <summary>A virtual interface or an interface of an unknown type.</summary>
 		Other = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A Wi-Fi interface.</summary>
 		Wifi = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A cellular interface.</summary>
 		Cellular = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A wired Ethernet interface.</summary>
 		Wired = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>A loopback interface.</summary>
 		Loopback = 4,
 	}
 

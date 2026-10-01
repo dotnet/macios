@@ -58222,7 +58222,6 @@ T:Network.NWFramerInputDelegate
 T:Network.NWFramerMessage
 T:Network.NWFramerParseCompletionDelegate
 T:Network.NWInterfaceRadioType
-T:Network.NWInterfaceType
 T:Network.NWIPEcnFlag
 T:Network.NWIPMetadata
 T:Network.NWLinkQuality

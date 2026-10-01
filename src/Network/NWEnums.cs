@@ -170,13 +170,14 @@ namespace Network {
 		Stable = 2,
 	}
 
+	/// <summary>Specifies which version of the Internet Protocol a connection can use.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWIPVersion {
-		/// <summary>To be added.</summary>
+		/// <summary>Allow either IP version.</summary>
 		Any = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Use IPv4.</summary>
 		Version4 = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Use IPv6.</summary>
 		Version6 = 2,
 	}
 

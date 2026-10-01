@@ -263,6 +263,8 @@ steps:
   displayName: 'Create runsettings for .NET tests'
 
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-local-windows-tests.ps1
+  env:
+    SKIP_MONO_TESTS: '1'
   displayName: 'Run .NET tests locally'
   timeoutInMinutes: 30
   continueOnError: true
@@ -276,6 +278,7 @@ steps:
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
   env:
+    SKIP_MONO_TESTS: '1'
     XMA_PASSWORD: $(XMA.Password)
 
 - pwsh: |

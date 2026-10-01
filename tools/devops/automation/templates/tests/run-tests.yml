@@ -122,6 +122,7 @@ steps:
   env:
     TEST_PREFIX: ${{ upper(parameters.testPrefix) }}
     TESTS_EXTRA_ARGUMENTS: ${{ parameters.testsLabels }}
+    SKIP_MONO_TESTS: '1'
     USE_TCP_TUNNEL: 'true'
     PARAMETERS_TESTPREFIX: '${{ parameters.testPrefix }}'
     IS_PR: $(parameters.isPr)

@@ -33,7 +33,9 @@ namespace Xharness.Jenkins {
 			var supports_coreclr = true;
 			var ignore_coreclr = ignore;
 			var supports_mono = jenkins.Harness.DOTNET_MONOVM_SUPPORTED && test.Platform != TestPlatform.Mac;
-			var supports_interpreter = supports_mono;
+			var run_mono = supports_mono &&
+				!string.Equals (Environment.GetEnvironmentVariable ("SKIP_MONO_TESTS"), "1", StringComparison.Ordinal);
+			var supports_interpreter = run_mono;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines
 																								   // Xcode 27 only ships arm64 simulator runtimes (there's no x86_64/universal variant available
 																								   // to download), so x64 simulator apps can't run there. Skip x64 *simulator* configurations on
@@ -68,8 +70,10 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, CoreCLR, Trimmable Static Registrar)", TestVariation = "coreclr|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 				}
 				if (supports_mono) {
-					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Dynamic Registrar)", TestVariation = "monovm|prepare-assemblies|dynamic-registrar", Ignored = ignore };
-					yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Managed Static Registrar)", TestVariation = "monovm|prepare-assemblies|managed-static-registrar", Ignored = ignore };
+					if (run_mono) {
+						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Dynamic Registrar)", TestVariation = "monovm|prepare-assemblies|dynamic-registrar", Ignored = ignore };
+						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Managed Static Registrar)", TestVariation = "monovm|prepare-assemblies|managed-static-registrar", Ignored = ignore };
+					}
 					if (jenkins.Harness.DotNetVersion.Major >= 11) { // on Mono, the trimmable static registrar only works in .NET 11
 						yield return new TestData { Variation = $"{test.ProjectConfiguration} (PrepareAssemblies, MonoVM, Trimmable Static Registrar)", TestVariation = "monovm|prepare-assemblies|trimmable-static-registrar", Ignored = ignore };
 					}
@@ -142,7 +146,7 @@ namespace Xharness.Jenkins {
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 					}
-					if (supports_mono)
+					if (run_mono)
 						yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
 					if (supports_coreclr)

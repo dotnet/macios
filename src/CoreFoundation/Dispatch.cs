@@ -583,7 +583,7 @@ namespace CoreFoundation {
 		{
 			if (action is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
-			Submit (index => action (checked ((int) index)), (nint) times);
+			Submit (index => action (checked((int) index)), (nint) times);
 		}
 #endif // !XAMCORE_5_0
 

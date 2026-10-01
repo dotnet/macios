@@ -63,10 +63,16 @@ namespace Network {
 				var header = Marshal.PtrToStringAuto (headerPointer);
 				var value = Marshal.PtrToStringAuto (valuePointer);
 				del (header, value);
+				return 1;
 			}
-			return 1;
+			return 0;
 		}
 
+		/// <summary>Enumerates the additional HTTP headers in the WebSocket server's response.</summary>
+		/// <param name="handler">The callback invoked for each additional header, receiving its name and value.</param>
+		/// <returns><see langword="true" /> if enumeration completed; otherwise, <see langword="false" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="handler" /> is <see langword="null" />.</exception>
+		/// <remarks>The callback is invoked synchronously and cannot stop enumeration early.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool EnumerateAdditionalHeaders (Action<string?, string?> handler)
 		{

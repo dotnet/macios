@@ -5372,7 +5372,6 @@ F:Network.NWMultipathVersion.Version0
 F:Network.NWMultipathVersion.Version1
 F:Network.NWParametersAttribution.Developer
 F:Network.NWParametersAttribution.User
-F:Network.NWParametersExpiredDnsBehavior.Persistent
 F:Network.NWPathUnsatisfiedReason.CellularDenied
 F:Network.NWPathUnsatisfiedReason.LocalNetworkDenied
 F:Network.NWPathUnsatisfiedReason.NotAvailable
@@ -58229,7 +58228,6 @@ T:Network.NWMulticastGroup
 T:Network.NWMultipathVersion
 T:Network.NWMultiplexGroup
 T:Network.NWParametersAttribution
-T:Network.NWParametersExpiredDnsBehavior
 T:Network.NWPathStatus
 T:Network.NWPathUnsatisfiedReason
 T:Network.NWPrivacyContext

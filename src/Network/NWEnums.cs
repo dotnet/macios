@@ -224,14 +224,16 @@ namespace Network {
 		Aggregate = 3,
 	}
 
+	/// <summary>Specifies whether a connection can use expired DNS answers during establishment.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWParametersExpiredDnsBehavior {
-		/// <summary>To be added.</summary>
+		/// <summary>Let the system decide whether to use expired DNS answers.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allow the use of expired DNS answers.</summary>
 		Allow = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prohibit the use of expired DNS answers.</summary>
 		Prohibit = 2,
+		/// <summary>Allow expired DNS answers and cache answers persistently for the process.</summary>
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Persistent = 3,
 	}

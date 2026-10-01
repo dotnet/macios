@@ -22736,7 +22736,6 @@ M:Network.NWDataTransferReport.GetTransportSmoothedRoundTripTime(System.UInt32)
 M:Network.NWEndpoint.Create(System.String)
 M:Network.NWEstablishmentReport.EnumerateProtocols(System.Action{Network.NWProtocolDefinition,System.TimeSpan,System.TimeSpan})
 M:Network.NWEstablishmentReport.EnumerateResolutionReports(System.Action{Network.NWResolutionReport})
-M:Network.NWEstablishmentReport.EnumerateResolutions(System.Action{Network.NWReportResolutionSource,System.TimeSpan,System.Int32,Network.NWEndpoint,Network.NWEndpoint})
 M:Network.NWEthernetChannel.#ctor(System.UInt16,Network.NWInterface,Network.NWParameters)
 M:Network.NWEthernetChannel.#ctor(System.UInt16,Network.NWInterface)
 M:Network.NWEthernetChannel.Cancel

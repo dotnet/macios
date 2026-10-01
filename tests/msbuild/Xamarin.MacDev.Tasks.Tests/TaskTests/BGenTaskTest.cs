@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 using Microsoft.Build.Utilities;
 
 using NUnit.Framework;
+
+using ThreadingTask = System.Threading.Tasks.Task;
 
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
@@ -104,6 +107,57 @@ namespace Xamarin.MacDev.Tasks {
 			task.UseExternalProcess = true;
 
 			ExecuteTask (task, expectedErrorCount: 1);
+		}
+
+		[Test]
+		public void InProcessExecutionCanBeCanceled ()
+		{
+			var task = CreateTask<CancelableBGen> ();
+			InitializeExecutionTask (task);
+
+			var execution = ThreadingTask.Run (task.Execute);
+			Assert.That (task.ExecutionStarted.Wait (TimeSpan.FromSeconds (5)), Is.True, "Execution started");
+			task.Cancel ();
+
+			Assert.That (() => execution.GetAwaiter ().GetResult (), Throws.InstanceOf<OperationCanceledException> ());
+		}
+
+		[Test]
+		public void InProcessFailureWithoutDiagnosticLogsError ()
+		{
+			var task = CreateTask<FailingBGen> ();
+			InitializeExecutionTask (task);
+
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Does.Contain ("bgen failed."));
+		}
+
+		void InitializeExecutionTask (BGen task)
+		{
+			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
+			task.CompiledApiDefinitionAssembly = new TaskItem ("ignored.dll");
+			task.GeneratedSourcesDir = temporaryDirectory;
+			task.GeneratedSourcesFileList = Path.Combine (temporaryDirectory, "generated-sources.txt");
+			task.ResponseFilePath = Path.Combine (temporaryDirectory, "response-file.txt");
+		}
+
+		sealed class CancelableBGen : BGen {
+			public ManualResetEventSlim ExecutionStarted { get; } = new ();
+
+			protected override int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
+			{
+				ExecutionStarted.Set ();
+				cancellationToken.WaitHandle.WaitOne ();
+				cancellationToken.ThrowIfCancellationRequested ();
+				return 0;
+			}
+		}
+
+		sealed class FailingBGen : BGen {
+			protected override int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
+			{
+				return 1;
+			}
 		}
 	}
 }

@@ -219,6 +219,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return false;
 
+			cancellationTokenSource = new CancellationTokenSource ();
 			if (UseExternalProcess) {
 				var customHome = Environment.GetEnvironmentVariable ("DOTNET_CUSTOM_HOME");
 				var env = new Dictionary<string, string?> ();
@@ -230,13 +231,19 @@ namespace Xamarin.MacDev.Tasks {
 				args.Insert (0, Path.Combine (bgenPath, bgenExe));
 				var executable = this.GetDotNetPath ();
 
-				cancellationTokenSource = new CancellationTokenSource ();
 				ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 				return !Log.HasLoggedErrors;
 			}
 
-			var exitCode = BindingTouch.Run (args.ToArray (), this);
+			var exitCode = ExecuteBGen (args, cancellationTokenSource.Token);
+			if (exitCode != 0 && !Log.HasLoggedErrors)
+				Log.LogError (MSBStrings.E0098, BindingTouch.ToolName);
 			return exitCode == 0 && !Log.HasLoggedErrors;
+		}
+
+		protected virtual int ExecuteBGen (List<string> args, CancellationToken cancellationToken)
+		{
+			return BindingTouch.Run (args.ToArray (), this, cancellationToken);
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsFrameworkItem ();

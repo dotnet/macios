@@ -487,7 +487,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous SetDefaultLeaderboard operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SetDefaultLeaderboard ([NullAllowed] string leaderboardIdentifier, [NullAllowed] Action<NSError> notificationHandler);
+		void SetDefaultLeaderboard ([NullAllowed] string leaderboardIdentifier, [NullAllowed] Action<NSError?> notificationHandler);
 
 		[Export ("groupIdentifier", ArgumentSemantic.Retain)]
 		string GroupIdentifier { get; [NotImplemented] set; }
@@ -505,7 +505,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void LoadLeaderboards ([NullAllowed] Action<GKLeaderboard [], NSError> completionHandler);
+		void LoadLeaderboards ([NullAllowed] Action<GKLeaderboard []?, NSError?> completionHandler);
 
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LoadEntries' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LoadEntries' instead.")]
@@ -562,7 +562,7 @@ namespace GameKit {
 		[Static]
 		[Export ("submitScore:context:player:leaderboardIDs:completionHandler:")]
 		[Async]
-		void SubmitScore (nint score, nuint context, GKPlayer player, string [] leaderboardIds, Action<NSError> completionHandler);
+		void SubmitScore (nint score, nuint context, GKPlayer player, string [] leaderboardIds, Action<NSError?> completionHandler);
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -606,7 +606,7 @@ namespace GameKit {
 		[MacCatalyst (14, 0)]
 		[Export ("submitScore:context:player:completionHandler:")]
 		[Async]
-		void SubmitScore (nint score, nuint context, GKPlayer player, Action<NSError> completionHandler);
+		void SubmitScore (nint score, nuint context, GKPlayer player, Action<NSError?> completionHandler);
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -717,7 +717,7 @@ namespace GameKit {
 	interface GKCloudPlayer {
 		[Static]
 		[Export ("getCurrentSignedInPlayerForContainer:completionHandler:")]
-		void GetCurrentSignedInPlayer ([NullAllowed] string containerName, Action<GKCloudPlayer, NSError> handler);
+		void GetCurrentSignedInPlayer ([NullAllowed] string containerName, Action<GKCloudPlayer?, NSError?> handler);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -880,7 +880,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ReportScore operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ReportScore ([NullAllowed] Action<NSError> errorHandler);
+		void ReportScore ([NullAllowed] Action<NSError?> errorHandler);
 
 		[Export ("context", ArgumentSemantic.Assign)]
 		ulong Context { get; set; }
@@ -903,7 +903,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ReportScores operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ReportScores (GKScore [] scores, [NullAllowed] Action<NSError> completionHandler);
+		void ReportScores (GKScore [] scores, [NullAllowed] Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
@@ -919,7 +919,7 @@ namespace GameKit {
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ReportScores (GKScore [] scores, GKChallenge [] challenges, [NullAllowed] Action<NSError> completionHandler);
+		void ReportScores (GKScore [] scores, GKChallenge [] challenges, [NullAllowed] Action<NSError?> completionHandler);
 
 		[iOS (14, 0)]
 		[TV (14, 0)]
@@ -927,7 +927,7 @@ namespace GameKit {
 		[Static]
 		[Async]
 		[Export ("reportLeaderboardScores:withEligibleChallenges:withCompletionHandler:")]
-		void ReportLeaderboardScores (GKLeaderboardScore [] scores, GKChallenge [] eligibleChallenges, [NullAllowed] Action<NSError> completionHandler);
+		void ReportLeaderboardScores (GKLeaderboardScore [] scores, GKChallenge [] eligibleChallenges, [NullAllowed] Action<NSError?> completionHandler);
 
 		[NoMac]
 		[NoTV]
@@ -1081,7 +1081,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous Authenticate operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Authenticate ([NullAllowed] Action<NSError> handler);
+		void Authenticate ([NullAllowed] Action<NSError?> handler);
 
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
@@ -1092,7 +1092,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("loadRecentPlayersWithCompletionHandler:")]
-		void LoadRecentPlayers ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
+		void LoadRecentPlayers ([NullAllowed] Action<GKPlayer []?, NSError?> completionHandler);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'LoadRecentPlayers' instead.")]
@@ -1113,7 +1113,6 @@ namespace GameKit {
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }
 
-#nullable enable
 		[NullAllowed] // by default this property is null
 		[Export ("authenticateHandler", ArgumentSemantic.Copy)]
 		[MacCatalyst (13, 1)]
@@ -1122,7 +1121,6 @@ namespace GameKit {
 #else
 		Action<NSViewController?, NSError?> AuthenticateHandler { get; set; }
 #endif
-#nullable restore
 
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("isPresentingFriendRequestViewController")]
@@ -1149,7 +1147,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void LoadDefaultLeaderboardIdentifier ([NullAllowed] Action<string, NSError> completionHandler);
+		void LoadDefaultLeaderboardIdentifier ([NullAllowed] Action<string?, NSError?> completionHandler);
 
 		[Deprecated (PlatformName.iOS, 26, 2, message: "No longer supported.")]
 		[Deprecated (PlatformName.MacOSX, 26, 2, message: "No longer supported.")]
@@ -1163,7 +1161,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous SetDefaultLeaderboardIdentifier operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SetDefaultLeaderboardIdentifier (string leaderboardIdentifier, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultLeaderboardIdentifier (string leaderboardIdentifier, [NullAllowed] Action<NSError?> completionHandler);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'LoadDefaultLeaderboardIdentifier' instead.")]
@@ -1178,7 +1176,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void LoadDefaultLeaderboardCategoryID ([NullAllowed] Action<string, NSError> completionHandler);
+		void LoadDefaultLeaderboardCategoryID ([NullAllowed] Action<string?, NSError?> completionHandler);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'SetDefaultLeaderboardIdentifier' instead.")]
@@ -1192,7 +1190,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous SetDefaultLeaderboardCategoryID operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SetDefaultLeaderboardCategoryID ([NullAllowed] string categoryID, [NullAllowed] Action<NSError> completionHandler);
+		void SetDefaultLeaderboardCategoryID ([NullAllowed] string categoryID, [NullAllowed] Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("registerListener:")]
@@ -1243,27 +1241,27 @@ namespace GameKit {
 			        </remarks>
 			""")]
 		[Export ("loadFriendPlayersWithCompletionHandler:")]
-		void LoadFriendPlayers ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
+		void LoadFriendPlayers ([NullAllowed] Action<GKPlayer []?, NSError?> completionHandler);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("fetchSavedGamesWithCompletionHandler:")]
-		void FetchSavedGames ([NullAllowed] Action<GKSavedGame [], NSError> handler);
+		void FetchSavedGames ([NullAllowed] Action<GKSavedGame []?, NSError?> handler);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("saveGameData:withName:completionHandler:")]
-		void SaveGameData (NSData data, string name, [NullAllowed] Action<GKSavedGame, NSError> handler);
+		void SaveGameData (NSData data, string name, [NullAllowed] Action<GKSavedGame?, NSError?> handler);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("deleteSavedGamesWithName:completionHandler:")]
-		void DeleteSavedGames (string name, [NullAllowed] Action<NSError> handler);
+		void DeleteSavedGames (string name, [NullAllowed] Action<NSError?> handler);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("resolveConflictingSavedGames:withData:completionHandler:")]
-		void ResolveConflictingSavedGames (GKSavedGame [] conflictingSavedGames, NSData data, [NullAllowed] Action<GKSavedGame [], NSError> handler);
+		void ResolveConflictingSavedGames (GKSavedGame [] conflictingSavedGames, NSData data, [NullAllowed] Action<GKSavedGame []?, NSError?> handler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("multiplayerGamingRestricted")]
@@ -1272,7 +1270,7 @@ namespace GameKit {
 		[MacCatalyst (13, 1)]
 		[Export ("loadChallengableFriendsWithCompletionHandler:")]
 		[Async]
-		void LoadChallengeableFriends ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
+		void LoadChallengeableFriends ([NullAllowed] Action<GKPlayer []?, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -1290,19 +1288,19 @@ namespace GameKit {
 		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("loadFriendsAuthorizationStatus:")]
-		void LoadFriendsAuthorizationStatus (Action<GKFriendsAuthorizationStatus, NSError> completionHandler);
+		void LoadFriendsAuthorizationStatus (Action<GKFriendsAuthorizationStatus, NSError?> completionHandler);
 
 		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("loadFriends:")]
-		void LoadFriendsList (Action<GKPlayer [], NSError> completionHandler);
+		void LoadFriendsList (Action<GKPlayer []?, NSError?> completionHandler);
 
 		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("loadFriendsWithIdentifiers:completionHandler:")]
-		void LoadFriendsList (string [] identifiers, Action<GKPlayer [], NSError> completionHandler);
+		void LoadFriendsList (string [] identifiers, Action<GKPlayer []?, NSError?> completionHandler);
 	}
 
 	/// <summary>Contains information that is needed to locate and load a saved game.</summary>
@@ -1336,7 +1334,7 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void LoadData ([NullAllowed] Action<NSData, NSError> handler);
+		void LoadData ([NullAllowed] Action<NSData?, NSError?> handler);
 	}
 
 	/// <summary>Application developers override this class to respond to conflicts or player modifications in saved games.</summary>
@@ -1436,7 +1434,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ChooseBestHostPlayer (Action<string> completionHandler);
+		void ChooseBestHostPlayer (Action<string?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("rematchWithCompletionHandler:")]
@@ -1447,7 +1445,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Rematch ([NullAllowed] Action<GKMatch, NSError> completionHandler);
+		void Rematch ([NullAllowed] Action<GKMatch?, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("players")]
@@ -1465,7 +1463,7 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void ChooseBestHostingPlayer (Action<GKPlayer> completionHandler);
+		void ChooseBestHostingPlayer (Action<GKPlayer?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("sendData:toPlayers:dataMode:error:")]
@@ -1826,7 +1824,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous AddPlayers operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void AddPlayers (GKMatch toMatch, GKMatchRequest matchRequest, [NullAllowed] Action<NSError> completionHandler);
+		void AddPlayers (GKMatch toMatch, GKMatchRequest matchRequest, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("cancel")]
 		void Cancel ();
@@ -1862,7 +1860,7 @@ namespace GameKit {
 		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
 		[Async]
 		[Export ("queryQueueActivity:withCompletionHandler:")]
-		void QueryQueueActivity (string queueName, [NullAllowed] Action<nint, NSError> completionHandler);
+		void QueryQueueActivity (string queueName, [NullAllowed] Action<nint, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("matchForInvite:completionHandler:")]
@@ -1874,7 +1872,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Match (GKInvite invite, [NullAllowed] Action<GKMatch, NSError> completionHandler);
+		void Match (GKInvite invite, [NullAllowed] Action<GKMatch?, NSError?> completionHandler);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'CancelPendingInvite' instead.")]
@@ -1917,12 +1915,12 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void FindPlayersForHostedRequest (GKMatchRequest request, [NullAllowed] Action<GKPlayer [], NSError> completionHandler);
+		void FindPlayersForHostedRequest (GKMatchRequest request, [NullAllowed] Action<GKPlayer []?, NSError?> completionHandler);
 
 		[TV (17, 2), Mac (14, 2), iOS (17, 2), MacCatalyst (17, 2)]
 		[Async]
 		[Export ("findMatchedPlayers:withCompletionHandler:")]
-		void FindMatchedPlayers (GKMatchRequest request, Action<GKMatchedPlayers, NSError> completionHandler);
+		void FindMatchedPlayers (GKMatchRequest request, Action<GKMatchedPlayers?, NSError?> completionHandler);
 
 		// Not truly an [Async] method since the handler can be called multiple times, for each player found
 		[MacCatalyst (13, 1)]
@@ -2177,7 +2175,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ResetAchivements operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ResetAchivements ([NullAllowed] Action<NSError> completionHandler);
+		void ResetAchivements ([NullAllowed] Action<NSError?> completionHandler);
 
 		/// <summary>Default constructor that initializes a new instance of this class with no parameters.</summary>
 		/// <remarks>
@@ -2207,7 +2205,7 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use ReportAchievements '(GKAchievement[] achievements, Action<NSError> completionHandler)' instead.")]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use ReportAchievements '(GKAchievement[] achievements, Action<NSError> completionHandler)' instead.")]
-		void ReportAchievement ([NullAllowed] Action<NSError> completionHandler);
+		void ReportAchievement ([NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("showsCompletionBanner", ArgumentSemantic.Assign)]
 		bool ShowsCompletionBanner { get; set; }
@@ -2220,7 +2218,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ReportAchievements operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ReportAchievements (GKAchievement [] achievements, [NullAllowed] Action<NSError> completionHandler);
+		void ReportAchievements (GKAchievement [] achievements, [NullAllowed] Action<NSError?> completionHandler);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Pass 'GKPlayers' to 'ChallengeComposeController(GKPlayer[] players, string message, ...)' and present the view controller instead.")]
@@ -2244,7 +2242,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SelectChallengeablePlayerIDs ([NullAllowed] string [] playerIDs, [NullAllowed] Action<string [], NSError> completionHandler);
+		void SelectChallengeablePlayerIDs ([NullAllowed] string [] playerIDs, [NullAllowed] Action<string []?, NSError?> completionHandler);
 
 		[NoMac]
 		[NoTV]
@@ -2265,7 +2263,7 @@ namespace GameKit {
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ReportAchievements (GKAchievement [] achievements, GKChallenge [] challenges, [NullAllowed] Action<NSError> completionHandler);
+		void ReportAchievements (GKAchievement [] achievements, GKChallenge [] challenges, [NullAllowed] Action<NSError?> completionHandler);
 
 		[NullAllowed]
 		[MacCatalyst (13, 1)]
@@ -2342,7 +2340,7 @@ namespace GameKit {
 			        </remarks>
 			""")]
 		[Export ("selectChallengeablePlayers:withCompletionHandler:")]
-		void SelectChallengeablePlayers (GKPlayer [] players, [NullAllowed] Action<GKPlayer [], NSError> completionHandler);
+		void SelectChallengeablePlayers (GKPlayer [] players, [NullAllowed] Action<GKPlayer []?, NSError?> completionHandler);
 
 		[NoMac]
 		[NoTV]
@@ -2851,7 +2849,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous Remove operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Remove ([NullAllowed] Action<NSError> onCompletion);
+		void Remove ([NullAllowed] Action<NSError?> onCompletion);
 
 		[Export ("loadMatchDataWithCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -2876,7 +2874,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous EndTurnWithNextParticipant operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void EndTurnWithNextParticipant (GKTurnBasedParticipant nextParticipant, NSData matchData, [NullAllowed] Action<NSError> noCompletion);
+		void EndTurnWithNextParticipant (GKTurnBasedParticipant nextParticipant, NSData matchData, [NullAllowed] Action<NSError?> noCompletion);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'ParticipantQuitInTurn (GKTurnBasedMatchOutcome, GKTurnBasedParticipant[], double, NSData, Action<NSError>)' instead.")]
@@ -2892,7 +2890,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ParticipantQuitInTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ParticipantQuitInTurn (GKTurnBasedMatchOutcome matchOutcome, GKTurnBasedParticipant nextParticipant, NSData matchData, [NullAllowed] Action<NSError> onCompletion);
+		void ParticipantQuitInTurn (GKTurnBasedMatchOutcome matchOutcome, GKTurnBasedParticipant nextParticipant, NSData matchData, [NullAllowed] Action<NSError?> onCompletion);
 
 		[Export ("participantQuitOutOfTurnWithOutcome:withCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -2901,7 +2899,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ParticipantQuitOutOfTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ParticipantQuitOutOfTurn (GKTurnBasedMatchOutcome matchOutcome, [NullAllowed] Action<NSError> onCompletion);
+		void ParticipantQuitOutOfTurn (GKTurnBasedMatchOutcome matchOutcome, [NullAllowed] Action<NSError?> onCompletion);
 
 		[Export ("endMatchInTurnWithMatchData:completionHandler:")]
 		[Async (XmlDocs = """
@@ -2910,7 +2908,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous EndMatchInTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void EndMatchInTurn (NSData matchData, [NullAllowed] Action<NSError> onCompletion);
+		void EndMatchInTurn (NSData matchData, [NullAllowed] Action<NSError?> onCompletion);
 
 		[Static]
 		[Export ("loadMatchWithID:withCompletionHandler:")]
@@ -2922,7 +2920,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void LoadMatch (string matchId, [NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
+		void LoadMatch (string matchId, [NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
 
 		[Export ("acceptInviteWithCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -2932,7 +2930,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void AcceptInvite ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
+		void AcceptInvite ([NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
 
 		[Export ("declineInviteWithCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -2942,7 +2940,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void DeclineInvite ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
+		void DeclineInvite ([NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
 
 		[Export ("matchDataMaximumSize")]
 		nint MatchDataMaximumSize { get; }
@@ -2956,7 +2954,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Rematch ([NullAllowed] Action<GKTurnBasedMatch, NSError> completionHandler);
+		void Rematch ([NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("endTurnWithNextParticipants:turnTimeout:matchData:completionHandler:")]
@@ -2968,7 +2966,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous EndTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void EndTurn (GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError> completionHandler);
+		void EndTurn (GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("participantQuitInTurnWithOutcome:nextParticipants:turnTimeout:matchData:completionHandler:")]
@@ -2981,7 +2979,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous ParticipantQuitInTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void ParticipantQuitInTurn (GKTurnBasedMatchOutcome matchOutcome, GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError> completionHandler);
+		void ParticipantQuitInTurn (GKTurnBasedMatchOutcome matchOutcome, GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("saveCurrentTurnWithMatchData:completionHandler:")]
 		[Async (XmlDocs = """
@@ -2990,7 +2988,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous SaveCurrentTurn operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SaveCurrentTurn (NSData matchData, [NullAllowed] Action<NSError> completionHandler);
+		void SaveCurrentTurn (NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <summary>Represents the value associated with the constant GKTurnTimeoutDefault</summary>
 		///         <value>
@@ -3059,7 +3057,7 @@ namespace GameKit {
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void EndMatchInTurn (NSData matchData, [NullAllowed] GKScore [] scores, [NullAllowed] GKAchievement [] achievements, [NullAllowed] Action<NSError> completionHandler);
+		void EndMatchInTurn (NSData matchData, [NullAllowed] GKScore [] scores, [NullAllowed] GKAchievement [] achievements, [NullAllowed] Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("saveMergedMatchData:withResolvedExchanges:completionHandler:")]
@@ -3070,7 +3068,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous SaveMergedMatchData operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SaveMergedMatchData (NSData matchData, GKTurnBasedExchange [] exchanges, [NullAllowed] Action<NSError> completionHandler);
+		void SaveMergedMatchData (NSData matchData, GKTurnBasedExchange [] exchanges, [NullAllowed] Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("sendExchangeToParticipants:data:localizableMessageKey:arguments:timeout:completionHandler:")]
@@ -3086,7 +3084,7 @@ namespace GameKit {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void SendExchange (GKTurnBasedParticipant [] participants, NSData data, string localizableMessage, NSObject [] arguments, double timeout, [NullAllowed] Action<GKTurnBasedExchange, NSError> completionHandler);
+		void SendExchange (GKTurnBasedParticipant [] participants, NSData data, string localizableMessage, NSObject [] arguments, double timeout, [NullAllowed] Action<GKTurnBasedExchange?, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("sendReminderToParticipants:localizableMessageKey:arguments:completionHandler:")]
@@ -3101,14 +3099,14 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void SendReminder (GKTurnBasedParticipant [] participants, string localizableMessage, NSObject [] arguments, [NullAllowed] Action<NSError> completionHandler);
+		void SendReminder (GKTurnBasedParticipant [] participants, string localizableMessage, NSObject [] arguments, [NullAllowed] Action<NSError?> completionHandler);
 
 		[iOS (14, 0)]
 		[TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("endMatchInTurnWithMatchData:leaderboardScores:achievements:completionHandler:")]
 		[Async]
-		void EndMatchInTurn (NSData matchData, GKLeaderboardScore [] scores, NSObject [] achievements, Action<NSError> completionHandler);
+		void EndMatchInTurn (NSData matchData, GKLeaderboardScore [] scores, NSObject [] achievements, Action<NSError?> completionHandler);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -3259,7 +3257,7 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void LoadReceivedChallenges ([NullAllowed] Action<GKChallenge [], NSError> completionHandler);
+		void LoadReceivedChallenges ([NullAllowed] Action<GKChallenge []?, NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Export ("issuingPlayer", ArgumentSemantic.Copy)]
@@ -3609,7 +3607,7 @@ namespace GameKit {
 			<returns>A task that represents the asynchronous Cancel operation</returns>
 			<remarks>To be added.</remarks>
 			""")]
-		void Cancel (string localizableMessage, NSObject [] arguments, [NullAllowed] Action<NSError> completionHandler);
+		void Cancel (string localizableMessage, NSObject [] arguments, [NullAllowed] Action<NSError?> completionHandler);
 
 		[Export ("replyWithLocalizableMessageKey:arguments:data:completionHandler:")]
 		[Async (XmlDocs = """
@@ -3623,7 +3621,7 @@ namespace GameKit {
 			          <para copied="true">To be added.</para>
 			        </remarks>
 			""")]
-		void Reply (string localizableMessage, NSObject [] arguments, NSData data, [NullAllowed] Action<NSError> completionHandler);
+		void Reply (string localizableMessage, NSObject [] arguments, NSData data, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <summary>Represents the value associated with the constant GKExchangeTimeoutDefault</summary>
 		///         <value>
@@ -3865,7 +3863,7 @@ namespace GameKit {
 			""")]
 		[Static]
 		[Export ("createSessionInContainer:withTitle:maxConnectedPlayers:completionHandler:")]
-		void CreateSession ([NullAllowed] string containerName, string title, nint maxPlayers, Action<GKGameSession, NSError> completionHandler);
+		void CreateSession ([NullAllowed] string containerName, string title, nint maxPlayers, Action<GKGameSession?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="containerName">To be added.</param>
@@ -3877,7 +3875,7 @@ namespace GameKit {
 			""")]
 		[Static]
 		[Export ("loadSessionsInContainer:completionHandler:")]
-		void LoadSessions ([NullAllowed] string containerName, Action<GKGameSession [], NSError> completionHandler);
+		void LoadSessions ([NullAllowed] string containerName, Action<GKGameSession []?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="identifier">To be added.</param>
@@ -3889,7 +3887,7 @@ namespace GameKit {
 			""")]
 		[Static]
 		[Export ("loadSessionWithIdentifier:completionHandler:")]
-		void LoadSession (string identifier, Action<GKGameSession, NSError> completionHandler);
+		void LoadSession (string identifier, Action<GKGameSession?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="identifier">To be added.</param>
@@ -3899,7 +3897,7 @@ namespace GameKit {
 			""")]
 		[Static]
 		[Export ("removeSessionWithIdentifier:completionHandler:")]
-		void RemoveSession (string identifier, Action<NSError> completionHandler);
+		void RemoveSession (string identifier, Action<NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<summary>To be added.</summary>
@@ -3909,7 +3907,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("getShareURLWithCompletionHandler:")]
-		void GetShareUrl (Action<NSUrl, NSError> completionHandler);
+		void GetShareUrl (Action<NSUrl?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<summary>To be added.</summary>
@@ -3919,7 +3917,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("loadDataWithCompletionHandler:")]
-		void LoadData (Action<NSData, NSError> completionHandler);
+		void LoadData (Action<NSData?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="data">To be added.</param>
@@ -3930,7 +3928,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("saveData:completionHandler:")]
-		void SaveData (NSData data, Action<NSData, NSError> completionHandler);
+		void SaveData (NSData data, Action<NSData?, NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="state">To be added.</param>
@@ -3939,7 +3937,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("setConnectionState:completionHandler:")]
-		void SetConnectionState (GKConnectionState state, Action<NSError> completionHandler);
+		void SetConnectionState (GKConnectionState state, Action<NSError?> completionHandler);
 
 		[Export ("playersWithConnectionState:")]
 		GKCloudPlayer [] GetPlayers (GKConnectionState state);
@@ -3952,7 +3950,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("sendData:withTransportType:completionHandler:")]
-		void SendData (NSData data, GKTransportType transport, Action<NSError> completionHandler);
+		void SendData (NSData data, GKTransportType transport, Action<NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="key">To be added.</param>
@@ -3965,7 +3963,7 @@ namespace GameKit {
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("sendMessageWithLocalizedFormatKey:arguments:data:toPlayers:badgePlayers:completionHandler:")]
-		void SendMessage (string key, string [] arguments, [NullAllowed] NSData data, GKCloudPlayer [] players, bool badgePlayers, Action<NSError> completionHandler);
+		void SendMessage (string key, string [] arguments, [NullAllowed] NSData data, GKCloudPlayer [] players, bool badgePlayers, Action<NSError?> completionHandler);
 
 		[Async (XmlDocs = """
 			<param name="players">To be added.</param>
@@ -3977,7 +3975,7 @@ namespace GameKit {
 			        </remarks>
 			""")]
 		[Export ("clearBadgeForPlayers:completionHandler:")]
-		void ClearBadge (GKCloudPlayer [] players, Action<NSError> completionHandler);
+		void ClearBadge (GKCloudPlayer [] players, Action<NSError?> completionHandler);
 
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GKLocalPlayer.RegisterListener' instead.")]
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'GKLocalPlayer.RegisterListener' instead.")]

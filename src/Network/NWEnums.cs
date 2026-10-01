@@ -252,18 +252,19 @@ namespace Network {
 		Satisfiable = 3,
 	}
 
+	/// <summary>Specifies the network queuing priority for a connection's traffic.</summary>
 	public enum NWServiceClass {
-		/// <summary>To be added.</summary>
+		/// <summary>Use the default traffic priority.</summary>
 		BestEffort = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize bulk traffic below foreground traffic.</summary>
 		Background = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive video traffic.</summary>
 		InteractiveVideo = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive voice traffic.</summary>
 		InteractiveVoice = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive user data.</summary>
 		ResponsiveData = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize short, delay-sensitive signaling traffic.</summary>
 		Signaling = 5,
 	}
 

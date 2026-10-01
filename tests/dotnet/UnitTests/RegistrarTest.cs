@@ -120,7 +120,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "26.0", true, true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "27.0", false, false)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "26.0", false, true)]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "27.0", false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "27.0", false, true)]
 		public void UnavailablePlatformModelRegistrarOutput (ApplePlatform platform, string runtimeIdentifier, string deploymentTarget, bool expectNativeDeclaration, bool expectStaticProtocolLookup)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

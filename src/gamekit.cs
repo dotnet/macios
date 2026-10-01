@@ -1113,14 +1113,16 @@ namespace GameKit {
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }
 
+#nullable enable
 		[NullAllowed] // by default this property is null
 		[Export ("authenticateHandler", ArgumentSemantic.Copy)]
 		[MacCatalyst (13, 1)]
 #if !MONOMAC
-		Action<UIViewController, NSError> AuthenticateHandler { get; set; }
+		Action<UIViewController?, NSError?> AuthenticateHandler { get; set; }
 #else
-		Action<NSViewController, NSError> AuthenticateHandler { get; set; }
+		Action<NSViewController?, NSError?> AuthenticateHandler { get; set; }
 #endif
+#nullable restore
 
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("isPresentingFriendRequestViewController")]

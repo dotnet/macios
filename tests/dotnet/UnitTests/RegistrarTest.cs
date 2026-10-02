@@ -69,8 +69,8 @@ namespace Xamarin.Tests {
 		// This test does evil things that the AOT runtime complains about, so it only works when not running the AOT compiler (aka x64 when using Mono).
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
 		[TestCase (ApplePlatform.MacOSX, null, true)]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
 		public void InvalidStaticRegistrarValidation (ApplePlatform platform, string? runtimeIdentifiers, bool validated)
 		{
 			var project = "MyRegistrarApp";

@@ -5355,10 +5355,6 @@ F:Network.NWPathUnsatisfiedReason.CellularDenied
 F:Network.NWPathUnsatisfiedReason.LocalNetworkDenied
 F:Network.NWPathUnsatisfiedReason.NotAvailable
 F:Network.NWPathUnsatisfiedReason.WifiDenied
-F:Network.NWQuicStreamType.Bidirectional
-F:Network.NWQuicStreamType.Datagram
-F:Network.NWQuicStreamType.Unidirectional
-F:Network.NWQuicStreamType.Unknown
 F:NetworkExtension.NEAppPushManagerError.ConfigurationInvalid
 F:NetworkExtension.NEAppPushManagerError.ConfigurationNotLoaded
 F:NetworkExtension.NEAppPushManagerError.InactiveSession
@@ -58176,7 +58172,6 @@ T:Network.NWProtocolTlsOptions
 T:Network.NWProtocolUdpOptions
 T:Network.NWProxyConfig
 T:Network.NWQuicMetadata
-T:Network.NWQuicStreamType
 T:Network.NWRelayHop
 T:Network.NWResolutionReport
 T:Network.NWResolverConfig

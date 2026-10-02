@@ -450,11 +450,16 @@ namespace Network {
 		User = 2,
 	}
 
+	/// <summary>Identifies the direction or datagram nature of a QUIC stream.</summary>
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	public enum NWQuicStreamType {
+		/// <summary>The stream direction cannot be determined.</summary>
 		Unknown = 0,
+		/// <summary>Data can flow in both directions.</summary>
 		Bidirectional = 1,
+		/// <summary>Data flows in one direction.</summary>
 		Unidirectional = 2,
+		/// <summary>A QUIC datagram stream.</summary>
 		[TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
 		Datagram = 3,
 	}

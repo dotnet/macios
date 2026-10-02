@@ -353,10 +353,14 @@ namespace Network {
 		Version13 = 1,
 	}
 
+	/// <summary>Indicates whether a WebSocket server accepts a connection request.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWWebSocketResponseStatus {
+		/// <summary>An invalid response status.</summary>
 		Invalid = 0,
+		/// <summary>Accept the request and begin framing WebSocket data.</summary>
 		Accept = 1,
+		/// <summary>Reject the request and close the connection.</summary>
 		Reject = 2,
 	}
 

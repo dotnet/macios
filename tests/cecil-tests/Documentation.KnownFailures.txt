@@ -5387,9 +5387,6 @@ F:Network.NWReportResolutionProtocol.Udp
 F:Network.NWReportResolutionProtocol.Unknown
 F:Network.NWResolverConfigEndpointType.Https
 F:Network.NWResolverConfigEndpointType.Tls
-F:Network.NWWebSocketResponseStatus.Accept
-F:Network.NWWebSocketResponseStatus.Invalid
-F:Network.NWWebSocketResponseStatus.Reject
 F:NetworkExtension.NEAppPushManagerError.ConfigurationInvalid
 F:NetworkExtension.NEAppPushManagerError.ConfigurationNotLoaded
 F:NetworkExtension.NEAppPushManagerError.InactiveSession
@@ -58227,7 +58224,6 @@ T:Network.NWWebSocketMetadata
 T:Network.NWWebSocketOptions
 T:Network.NWWebSocketRequest
 T:Network.NWWebSocketResponse
-T:Network.NWWebSocketResponseStatus
 T:NetworkExtension.NEAppProxyFlowOpenCallback
 T:NetworkExtension.NEAppPushManager
 T:NetworkExtension.NEAppPushManagerError

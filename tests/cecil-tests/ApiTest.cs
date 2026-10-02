@@ -34,7 +34,10 @@ namespace Cecil.Tests {
 			Assert.That (legacy.CustomAttributes.Any (a => a.AttributeType.Is ("System.ComponentModel", "EditorBrowsableAttribute") && (int) a.ConstructorArguments [0].Value == (int) EditorBrowsableState.Never), Is.True, "Legacy callback is hidden from completion");
 			Assert.That (legacy.Parameters [0].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.False, "Legacy callback must not be marshaled directly");
 			Assert.That (legacy.Body.Instructions.Any (i => i.OpCode == OpCodes.Callvirt && i.Operand is MethodReference called && called.Name == "DeclineInviteWithError"), Is.True, "Legacy callback forwards through the native signature");
-			Assert.That (match.Methods.Single (m => m.Name == "DeclineInviteAsync").ReturnType.FullName, Is.EqualTo ("System.Threading.Tasks.Task`1<GameKit.GKTurnBasedMatch>"), "Legacy async signature");
+			var legacyAsync = match.Methods.Single (m => m.Name == "DeclineInviteAsync");
+			Assert.That (legacyAsync.ReturnType.FullName, Is.EqualTo ("System.Threading.Tasks.Task`1<GameKit.GKTurnBasedMatch>"), "Legacy async signature");
+			Assert.That (legacyAsync.CustomAttributes.Any (a => a.AttributeType.Is ("System", "ObsoleteAttribute")), Is.True, "Legacy async method is obsolete");
+			Assert.That (legacyAsync.CustomAttributes.Any (a => a.AttributeType.Is ("System.ComponentModel", "EditorBrowsableAttribute") && (int) a.ConstructorArguments [0].Value == (int) EditorBrowsableState.Never), Is.True, "Legacy async method is hidden from completion");
 			methodName = "DeclineInviteWithError";
 #endif
 			var method = match.Methods.Single (m => m.Name == methodName);

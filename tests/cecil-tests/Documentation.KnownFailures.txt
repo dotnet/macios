@@ -5351,8 +5351,6 @@ F:Network.NWLinkQuality.Good
 F:Network.NWLinkQuality.Minimal
 F:Network.NWLinkQuality.Moderate
 F:Network.NWLinkQuality.Unknown
-F:Network.NWParametersAttribution.Developer
-F:Network.NWParametersAttribution.User
 F:Network.NWPathUnsatisfiedReason.CellularDenied
 F:Network.NWPathUnsatisfiedReason.LocalNetworkDenied
 F:Network.NWPathUnsatisfiedReason.NotAvailable
@@ -58169,7 +58167,6 @@ T:Network.NWIPMetadata
 T:Network.NWLinkQuality
 T:Network.NWMulticastGroup
 T:Network.NWMultiplexGroup
-T:Network.NWParametersAttribution
 T:Network.NWPathUnsatisfiedReason
 T:Network.NWPrivacyContext
 T:Network.NWProtocolIPOptions

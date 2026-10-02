@@ -440,10 +440,13 @@ namespace Network {
 		CellEvdo = 0x88,
 	}
 
+	/// <summary>Identifies who selected the network content accessed using these parameters.</summary>
 	[TV (15, 0), iOS (15, 0)]
 	[MacCatalyst (15, 0)]
 	public enum NWParametersAttribution {
+		/// <summary>The developer selected the content.</summary>
 		Developer = 1,
+		/// <summary>The user selected the content.</summary>
 		User = 2,
 	}
 

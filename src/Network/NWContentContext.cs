@@ -184,8 +184,8 @@ namespace Network {
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolDefinition?, NWProtocolMetadata?>> (block);
 			if (del is not null) {
-				using NWProtocolDefinition? pdef = definition == IntPtr.Zero ? null : new NWProtocolDefinition (definition, owns: true);
-				using NWProtocolMetadata? meta = metadata == IntPtr.Zero ? null : new NWProtocolMetadata (metadata, owns: true);
+				using NWProtocolDefinition? pdef = definition == IntPtr.Zero ? null : new NWProtocolDefinition (definition, owns: false);
+				using NWProtocolMetadata? meta = metadata == IntPtr.Zero ? null : new NWProtocolMetadata (metadata, owns: false);
 
 				del (pdef, meta);
 			}
@@ -204,6 +204,7 @@ namespace Network {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineProtocolIterator;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWContentContext), nameof (TrampolineProtocolIterator));
 				nw_content_context_foreach_protocol_metadata (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 

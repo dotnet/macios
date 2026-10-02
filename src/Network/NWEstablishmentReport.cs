@@ -58,7 +58,7 @@ namespace Network {
 		unsafe static extern void nw_establishment_report_enumerate_resolutions (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
 		[UnmanagedCallersOnly]
-		static void TrampolineResolutionEnumeratorHandler (IntPtr block, NWReportResolutionSource source, nuint milliseconds, int endpoint_count, nw_endpoint_t successful_endpoint, nw_endpoint_t preferred_endpoint)
+		static byte TrampolineResolutionEnumeratorHandler (IntPtr block, NWReportResolutionSource source, nuint milliseconds, int endpoint_count, nw_endpoint_t successful_endpoint, nw_endpoint_t preferred_endpoint)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWReportResolutionSource, TimeSpan, int, NWEndpoint, NWEndpoint>> (block);
 			if (del is not null) {
@@ -66,6 +66,7 @@ namespace Network {
 				using (var nwPreferredEndpoint = new NWEndpoint (preferred_endpoint, owns: false))
 					del (source, TimeSpan.FromMilliseconds (milliseconds), endpoint_count, nwSuccesfulEndpoint, nwPreferredEndpoint);
 			}
+			return 1;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -75,9 +76,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, NWReportResolutionSource, nuint, int, nw_endpoint_t, nw_endpoint_t, void> trampoline = &TrampolineResolutionEnumeratorHandler;
+				delegate* unmanaged<IntPtr, NWReportResolutionSource, nuint, int, nw_endpoint_t, nw_endpoint_t, byte> trampoline = &TrampolineResolutionEnumeratorHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineResolutionEnumeratorHandler));
 				nw_establishment_report_enumerate_resolutions (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -85,13 +87,14 @@ namespace Network {
 		unsafe static extern void nw_establishment_report_enumerate_protocols (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
 		[UnmanagedCallersOnly]
-		static void TrampolineEnumerateProtocolsHandler (IntPtr block, nw_protocol_definition_t protocol, nuint handshake_milliseconds, nuint handshake_rtt_milliseconds)
+		static byte TrampolineEnumerateProtocolsHandler (IntPtr block, nw_protocol_definition_t protocol, nuint handshake_milliseconds, nuint handshake_rtt_milliseconds)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWProtocolDefinition, TimeSpan, TimeSpan>> (block);
 			if (del is not null) {
 				using (var nwProtocolDefinition = new NWProtocolDefinition (protocol, owns: false))
 					del (nwProtocolDefinition, TimeSpan.FromMilliseconds (handshake_milliseconds), TimeSpan.FromMilliseconds (handshake_rtt_milliseconds));
 			}
+			return 1;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -101,9 +104,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, nw_protocol_definition_t, nuint, nuint, void> trampoline = &TrampolineEnumerateProtocolsHandler;
+				delegate* unmanaged<IntPtr, nw_protocol_definition_t, nuint, nuint, byte> trampoline = &TrampolineEnumerateProtocolsHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineEnumerateProtocolsHandler));
 				nw_establishment_report_enumerate_protocols (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -129,13 +133,14 @@ namespace Network {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnmanagedCallersOnly]
-		static void TrampolineEnumerateResolutionReport (IntPtr block, nw_resolution_report_t report)
+		static byte TrampolineEnumerateResolutionReport (IntPtr block, nw_resolution_report_t report)
 		{
 			var del = BlockLiteral.GetTarget<Action<NWResolutionReport>> (block);
 			if (del is null)
-				return;
+				return 1;
 			using var nwReport = new NWResolutionReport (report, owns: false);
 			del (nwReport);
+			return 1;
 		}
 
 		[SupportedOSPlatform ("tvos")]
@@ -149,9 +154,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, nw_resolution_report_t, void> trampoline = &TrampolineEnumerateResolutionReport;
+				delegate* unmanaged<IntPtr, nw_resolution_report_t, byte> trampoline = &TrampolineEnumerateResolutionReport;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWEstablishmentReport), nameof (TrampolineEnumerateResolutionReport));
 				nw_establishment_report_enumerate_resolution_reports (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 	}

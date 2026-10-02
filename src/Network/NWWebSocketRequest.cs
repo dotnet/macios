@@ -27,7 +27,7 @@ namespace Network {
 		unsafe static extern byte nw_ws_request_enumerate_additional_headers (OS_nw_ws_request request, BlockLiteral* enumerator);
 
 		[UnmanagedCallersOnly]
-		static void TrampolineEnumerateHeaderHandler (IntPtr block, IntPtr headerPointer, IntPtr valuePointer)
+		static byte TrampolineEnumerateHeaderHandler (IntPtr block, IntPtr headerPointer, IntPtr valuePointer)
 		{
 			var del = BlockLiteral.GetTarget<Action<string?, string?>> (block);
 			if (del is not null) {
@@ -35,6 +35,7 @@ namespace Network {
 				var value = Marshal.PtrToStringAuto (valuePointer);
 				del (header, value);
 			}
+			return 1;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -44,9 +45,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateHeaderHandler;
+				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte> trampoline = &TrampolineEnumerateHeaderHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWWebSocketRequest), nameof (TrampolineEnumerateHeaderHandler));
 				nw_ws_request_enumerate_additional_headers (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -54,13 +56,14 @@ namespace Network {
 		unsafe static extern byte nw_ws_request_enumerate_subprotocols (OS_nw_ws_request request, BlockLiteral* enumerator);
 
 		[UnmanagedCallersOnly]
-		static void TrampolineEnumerateSubprotocolHandler (IntPtr block, IntPtr subprotocolPointer)
+		static byte TrampolineEnumerateSubprotocolHandler (IntPtr block, IntPtr subprotocolPointer)
 		{
 			var del = BlockLiteral.GetTarget<Action<string?>> (block);
 			if (del is not null) {
 				var subprotocol = Marshal.PtrToStringAuto (subprotocolPointer);
 				del (subprotocol);
 			}
+			return 1;
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -70,9 +73,10 @@ namespace Network {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
 
 			unsafe {
-				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateSubprotocolHandler;
+				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineEnumerateSubprotocolHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWWebSocketRequest), nameof (TrampolineEnumerateSubprotocolHandler));
 				nw_ws_request_enumerate_subprotocols (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 	}

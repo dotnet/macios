@@ -364,12 +364,18 @@ namespace Network {
 		Reject = 2,
 	}
 
+	/// <summary>Identifies the protocol used to resolve an endpoint in a resolution report.</summary>
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 	public enum NWReportResolutionProtocol {
+		/// <summary>The resolution protocol is unknown or not applicable.</summary>
 		Unknown = 0,
+		/// <summary>DNS over UDP.</summary>
 		Udp = 1,
+		/// <summary>DNS over TCP.</summary>
 		Tcp = 2,
+		/// <summary>DNS over TLS.</summary>
 		Tls = 3,
+		/// <summary>DNS over HTTPS.</summary>
 		Https = 4,
 	}
 

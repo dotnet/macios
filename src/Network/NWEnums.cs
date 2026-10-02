@@ -344,9 +344,12 @@ namespace Network {
 	}
 
 	// this maps to `nw_ws_version_t` in Network.framework/Headers/ws_options.h (and not the enum from NetworkExtension)
+	/// <summary>Identifies the WebSocket protocol version used by Network framework options.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWWebSocketVersion {
+		/// <summary>An invalid WebSocket protocol version.</summary>
 		Invalid = 0,
+		/// <summary>WebSocket protocol version 13, defined by RFC 6455.</summary>
 		Version13 = 1,
 	}
 

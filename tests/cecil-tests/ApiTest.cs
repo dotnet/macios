@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -29,6 +30,8 @@ namespace Cecil.Tests {
 			var legacy = match.Methods.Single (m => m.Name == "DeclineInvite");
 			Assert.That (legacy.Parameters [0].ParameterType.FullName, Is.EqualTo ("System.Action`2<GameKit.GKTurnBasedMatch,Foundation.NSError>"), "Legacy callback signature");
 			Assert.That (legacy.IsVirtual, Is.True, "Legacy virtual method");
+			Assert.That (legacy.CustomAttributes.Any (a => a.AttributeType.Is ("System", "ObsoleteAttribute")), Is.True, "Legacy callback is obsolete");
+			Assert.That (legacy.CustomAttributes.Any (a => a.AttributeType.Is ("System.ComponentModel", "EditorBrowsableAttribute") && (int) a.ConstructorArguments [0].Value == (int) EditorBrowsableState.Never), Is.True, "Legacy callback is hidden from completion");
 			Assert.That (legacy.Parameters [0].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.False, "Legacy callback must not be marshaled directly");
 			Assert.That (legacy.Body.Instructions.Any (i => i.OpCode == OpCodes.Callvirt && i.Operand is MethodReference called && called.Name == "DeclineInviteWithError"), Is.True, "Legacy callback forwards through the native signature");
 			Assert.That (match.Methods.Single (m => m.Name == "DeclineInviteAsync").ReturnType.FullName, Is.EqualTo ("System.Threading.Tasks.Task`1<GameKit.GKTurnBasedMatch>"), "Legacy async signature");

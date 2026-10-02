@@ -2942,6 +2942,8 @@ namespace GameKit {
 		[Export ("declineInviteWithCompletionHandler:")]
 		void DeclineInvite ([NullAllowed] Action<NSError?> completionHandler);
 #else
+		[Obsolete ("Use 'DeclineInviteWithError' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Async (XmlDocs = """
 			<summary>Asynchronously declines an invitation to a match.</summary>
 			<returns>A task whose match result is <see langword="null" /> when the operation succeeds.</returns>

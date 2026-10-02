@@ -14,6 +14,7 @@ namespace CoreMidi {
 	/// <summary>Provides access to the MIDI Bluetooth driver for managing Bluetooth MIDI connections.</summary>
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	public partial class MidiBluetoothDriver {
 		[SupportedOSPlatform ("ios16.0")]

@@ -159,120 +159,139 @@ namespace Network {
 		WillMarkReady = 2,
 	}
 
+	/// <summary>Specifies a preference for choosing a local IP address for an outbound connection.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWIPLocalAddressPreference {
+		/// <summary>Use the system's default address selection.</summary>
 		Default = 0,
+		/// <summary>Prefer a temporary address for privacy.</summary>
 		Temporary = 1,
+		/// <summary>Prefer a stable address.</summary>
 		Stable = 2,
 	}
 
+	/// <summary>Specifies which version of the Internet Protocol a connection can use.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWIPVersion {
-		/// <summary>To be added.</summary>
+		/// <summary>Allow either IP version.</summary>
 		Any = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Use IPv4.</summary>
 		Version4 = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Use IPv6.</summary>
 		Version6 = 2,
 	}
 
+	/// <summary>Identifies the underlying media of a network interface.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWInterfaceType {
-		/// <summary>To be added.</summary>
+		/// <summary>A virtual interface or an interface of an unknown type.</summary>
 		Other = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A Wi-Fi interface.</summary>
 		Wifi = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>A cellular interface.</summary>
 		Cellular = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>A wired Ethernet interface.</summary>
 		Wired = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>A loopback interface.</summary>
 		Loopback = 4,
 	}
 
+	/// <summary>Describes the state of a network listener.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWListenerState {
-		/// <summary>To be added.</summary>
+		/// <summary>The listener state is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener is waiting for a usable network.</summary>
 		Waiting = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener can accept incoming connections.</summary>
 		Ready = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener has irrecoverably failed or closed.</summary>
 		Failed = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The listener was cancelled.</summary>
 		Cancelled = 4,
 	}
 
+	/// <summary>Specifies how a connection can use multiple network interfaces.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWMultiPathService {
-		/// <summary>To be added.</summary>
+		/// <summary>Do not attempt multipath transport.</summary>
 		Disabled = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Use an expensive interface only when the primary interface is unavailable.</summary>
 		Handover = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Use an expensive interface more aggressively to reduce latency.</summary>
 		Interactive = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Use all available interfaces to improve throughput and latency.</summary>
 		Aggregate = 3,
 	}
 
+	/// <summary>Specifies whether a connection can use expired DNS answers during establishment.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWParametersExpiredDnsBehavior {
-		/// <summary>To be added.</summary>
+		/// <summary>Let the system decide whether to use expired DNS answers.</summary>
 		Default = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allow the use of expired DNS answers.</summary>
 		Allow = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prohibit the use of expired DNS answers.</summary>
 		Prohibit = 2,
+		/// <summary>Allow expired DNS answers and cache answers persistently for the process. Use only for hostnames whose resolutions do not change across networks.</summary>
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		Persistent = 3,
 	}
 
 	// this maps to `nw_path_status_t` in Network/Headers/path.h (and not the enum from NetworkExtension)
+	/// <summary>Describes whether a network path has a usable route.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWPathStatus {
-		/// <summary>To be added.</summary>
+		/// <summary>The path is invalid.</summary>
 		Invalid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The path has a usable route for sending and receiving data.</summary>
 		Satisfied = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The path has no usable route.</summary>
 		Unsatisfied = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The path has no usable route, but a connection attempt will trigger network attachment.</summary>
 		Satisfiable = 3,
 	}
 
+	/// <summary>Specifies the network queuing priority for a connection's traffic.</summary>
 	public enum NWServiceClass {
-		/// <summary>To be added.</summary>
+		/// <summary>Use the default traffic priority.</summary>
 		BestEffort = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize bulk traffic below foreground traffic.</summary>
 		Background = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive video traffic.</summary>
 		InteractiveVideo = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive voice traffic.</summary>
 		InteractiveVoice = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize interactive user data.</summary>
 		ResponsiveData = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Prioritize short, delay-sensitive signaling traffic.</summary>
 		Signaling = 5,
 	}
 
+	/// <summary>Identifies the explicit congestion notification (ECN) marking in an IP header.</summary>
 	public enum NWIPEcnFlag {
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is not ECN-capable.</summary>
 		NonEct = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is ECN-capable with the ECT(0) marking.</summary>
 		Ect = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The transport is ECN-capable with the ECT(1) marking.</summary>
 		Ect1 = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Congestion was experienced.</summary>
 		Ce = 3,
 	}
 
+	/// <summary>Describes the result of looking up a key in a DNS TXT record.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWTxtRecordFindKey {
+		/// <summary>The key is empty, contains non-ASCII characters, or exceeds 255 bytes.</summary>
 		Invalid = 0,
+		/// <summary>The key is not present in the TXT record.</summary>
 		NotPresent = 1,
+		/// <summary>The key is present without an assigned value.</summary>
 		NoValue = 2,
+		/// <summary>The key is present with an empty value.</summary>
 		EmptyValue = 3,
+		/// <summary>The key is present with a non-empty value.</summary>
 		NonEmptyValue = 4,
 	}
 

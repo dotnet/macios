@@ -55,7 +55,6 @@ public class ManagedRegistrarStepTests : BaseClass {
 		var typeMapDir = Path.Combine (tempDir, "typemaps");
 		var config = $@"
 		AssemblyName=Microsoft.iOS.dll
-		PrepareAssemblies=true
 		TypeMapAssemblyName=_TypeMap
 		TypeMapOutputDirectory={typeMapDir}
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
@@ -139,7 +138,6 @@ public class ManagedRegistrarStepTests : BaseClass {
 		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
 		var config = $@"
 		AssemblyName=Microsoft.iOS.dll
-		PrepareAssemblies=true
 		TypeMapAssemblyName=_TypeMap
 		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}

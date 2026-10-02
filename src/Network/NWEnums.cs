@@ -314,19 +314,32 @@ namespace Network {
 		Invalid = -1,
 	}
 
+	/// <summary>Indicates why a WebSocket connection was closed.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWWebSocketCloseCode : int {
+		/// <summary>The connection completed its intended purpose.</summary>
 		NormalClosure = 1000,
+		/// <summary>An endpoint is going away, such as a server shutting down.</summary>
 		GoingAway = 1001,
+		/// <summary>An endpoint closed the connection because of a protocol error.</summary>
 		ProtocolError = 1002,
+		/// <summary>An endpoint received a type of data it cannot accept.</summary>
 		UnsupportedData = 1003,
+		/// <summary>No status code was present in the close frame. This reserved code must not be sent in a close frame.</summary>
 		NoStatusReceived = 1005,
+		/// <summary>The connection closed abnormally, without a close frame. This reserved code must not be sent in a close frame.</summary>
 		AbnormalClosure = 1006,
+		/// <summary>The payload was inconsistent with the message type, such as non-UTF-8 text.</summary>
 		InvalidFramePayloadData = 1007,
+		/// <summary>An endpoint closed the connection because a message violated its policy.</summary>
 		PolicyViolation = 1008,
+		/// <summary>An endpoint received a message too large to process.</summary>
 		MessageTooBig = 1009,
+		/// <summary>The client expected an extension that the server did not negotiate.</summary>
 		MandatoryExtension = 1010,
+		/// <summary>The server encountered an unexpected condition while processing the request.</summary>
 		InternalServerError = 1011,
+		/// <summary>The TLS handshake failed. This reserved code must not be sent in a close frame.</summary>
 		TlsHandshake = 1015,
 	}
 

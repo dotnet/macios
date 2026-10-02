@@ -5387,18 +5387,6 @@ F:Network.NWReportResolutionProtocol.Udp
 F:Network.NWReportResolutionProtocol.Unknown
 F:Network.NWResolverConfigEndpointType.Https
 F:Network.NWResolverConfigEndpointType.Tls
-F:Network.NWWebSocketCloseCode.AbnormalClosure
-F:Network.NWWebSocketCloseCode.GoingAway
-F:Network.NWWebSocketCloseCode.InternalServerError
-F:Network.NWWebSocketCloseCode.InvalidFramePayloadData
-F:Network.NWWebSocketCloseCode.MandatoryExtension
-F:Network.NWWebSocketCloseCode.MessageTooBig
-F:Network.NWWebSocketCloseCode.NormalClosure
-F:Network.NWWebSocketCloseCode.NoStatusReceived
-F:Network.NWWebSocketCloseCode.PolicyViolation
-F:Network.NWWebSocketCloseCode.ProtocolError
-F:Network.NWWebSocketCloseCode.TlsHandshake
-F:Network.NWWebSocketCloseCode.UnsupportedData
 F:Network.NWWebSocketResponseStatus.Accept
 F:Network.NWWebSocketResponseStatus.Invalid
 F:Network.NWWebSocketResponseStatus.Reject
@@ -58237,7 +58225,6 @@ T:Network.NWTxtRecord.NWTxtRecordApplyDelegate
 T:Network.NWTxtRecord.NWTxtRecordGetRawByteDelegate
 T:Network.NWTxtRecord.NWTxtRecordGetValueDelegete
 T:Network.NWUdpMetadata
-T:Network.NWWebSocketCloseCode
 T:Network.NWWebSocketMetadata
 T:Network.NWWebSocketOptions
 T:Network.NWWebSocketRequest

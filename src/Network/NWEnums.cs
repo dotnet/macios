@@ -184,9 +184,9 @@ namespace Network {
 		/// <summary>Allow either IP version.</summary>
 		Any = 0,
 		/// <summary>Use IPv4.</summary>
-		Version4 = 1,
+		Version4 = 4,
 		/// <summary>Use IPv6.</summary>
-		Version6 = 2,
+		Version6 = 6,
 	}
 
 	/// <summary>Identifies the underlying media of a network interface.</summary>

@@ -379,10 +379,13 @@ namespace Network {
 		Https = 4,
 	}
 
+	/// <summary>Selects the encrypted DNS protocol for a resolver configuration.</summary>
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	public enum NWResolverConfigEndpointType {
+		/// <summary>Use a URL endpoint for DNS over HTTPS.</summary>
 		Https,
+		/// <summary>Use a server endpoint for DNS over TLS.</summary>
 		Tls,
 	}
 

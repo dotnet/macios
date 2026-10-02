@@ -5380,8 +5380,6 @@ F:Network.NWQuicStreamType.Bidirectional
 F:Network.NWQuicStreamType.Datagram
 F:Network.NWQuicStreamType.Unidirectional
 F:Network.NWQuicStreamType.Unknown
-F:Network.NWResolverConfigEndpointType.Https
-F:Network.NWResolverConfigEndpointType.Tls
 F:NetworkExtension.NEAppPushManagerError.ConfigurationInvalid
 F:NetworkExtension.NEAppPushManagerError.ConfigurationNotLoaded
 F:NetworkExtension.NEAppPushManagerError.InactiveSession
@@ -58206,7 +58204,6 @@ T:Network.NWQuicStreamType
 T:Network.NWRelayHop
 T:Network.NWResolutionReport
 T:Network.NWResolverConfig
-T:Network.NWResolverConfigEndpointType
 T:Network.NWTcpMetadata
 T:Network.NWTlsMetadata
 T:Network.NWTxtRecord

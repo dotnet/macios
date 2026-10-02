@@ -295,14 +295,22 @@ namespace Network {
 		NonEmptyValue = 4,
 	}
 
+	/// <summary>Identifies the type of a WebSocket frame.</summary>
 	[MacCatalyst (13, 1)]
 	public enum NWWebSocketOpCode : int {
+		/// <summary>A continuation frame. The WebSocket protocol handles these frames internally.</summary>
 		Cont = 0x0,
+		/// <summary>A text frame.</summary>
 		Text = 0x1,
+		/// <summary>A binary frame.</summary>
 		Binary = 0x2,
+		/// <summary>A close frame.</summary>
 		Close = 0x8,
+		/// <summary>A ping frame.</summary>
 		Ping = 0x9,
+		/// <summary>A pong frame.</summary>
 		Pong = 0xA,
+		/// <summary>An invalid frame.</summary>
 		Invalid = -1,
 	}
 

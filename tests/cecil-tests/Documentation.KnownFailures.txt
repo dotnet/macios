@@ -5399,13 +5399,6 @@ F:Network.NWWebSocketCloseCode.PolicyViolation
 F:Network.NWWebSocketCloseCode.ProtocolError
 F:Network.NWWebSocketCloseCode.TlsHandshake
 F:Network.NWWebSocketCloseCode.UnsupportedData
-F:Network.NWWebSocketOpCode.Binary
-F:Network.NWWebSocketOpCode.Close
-F:Network.NWWebSocketOpCode.Cont
-F:Network.NWWebSocketOpCode.Invalid
-F:Network.NWWebSocketOpCode.Ping
-F:Network.NWWebSocketOpCode.Pong
-F:Network.NWWebSocketOpCode.Text
 F:Network.NWWebSocketResponseStatus.Accept
 F:Network.NWWebSocketResponseStatus.Invalid
 F:Network.NWWebSocketResponseStatus.Reject
@@ -58246,7 +58239,6 @@ T:Network.NWTxtRecord.NWTxtRecordGetValueDelegete
 T:Network.NWUdpMetadata
 T:Network.NWWebSocketCloseCode
 T:Network.NWWebSocketMetadata
-T:Network.NWWebSocketOpCode
 T:Network.NWWebSocketOptions
 T:Network.NWWebSocketRequest
 T:Network.NWWebSocketResponse

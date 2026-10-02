@@ -401,25 +401,42 @@ namespace Network {
 		Version1 = 1,
 	}
 
+	/// <summary>Identifies the radio technology used by a network interface.</summary>
 	[TV (15, 0), iOS (15, 0)]
 	[MacCatalyst (15, 0)]
 	public enum NWInterfaceRadioType {
+		/// <summary>The radio technology is unknown.</summary>
 		Unknown = 0,
+		/// <summary>Wi-Fi using IEEE 802.11b.</summary>
 		WifiB = 1,
+		/// <summary>Wi-Fi using IEEE 802.11a.</summary>
 		WifiA = 2,
+		/// <summary>Wi-Fi using IEEE 802.11g.</summary>
 		WifiG = 3,
+		/// <summary>Wi-Fi using IEEE 802.11n.</summary>
 		WifiN = 4,
+		/// <summary>Wi-Fi using IEEE 802.11ac.</summary>
 		WifiAC = 5,
+		/// <summary>Wi-Fi using IEEE 802.11ax.</summary>
 		WifiAX = 6,
 
+		/// <summary>Cellular using 4G LTE.</summary>
 		CellLte = 0x80,
+		/// <summary>Cellular using LTE and 5G New Radio in the sub-6 GHz band.</summary>
 		CellEndcSub6 = 0x81,
+		/// <summary>Cellular using LTE and 5G New Radio in the millimeter-wave band.</summary>
 		CellEndcMmw = 0x82,
+		/// <summary>Cellular using standalone 5G New Radio in the sub-6 GHz band.</summary>
 		CellNrSaSub6 = 0x83,
+		/// <summary>Cellular using standalone 5G New Radio in the millimeter-wave band.</summary>
 		CellNrSaMmw = 0x84,
+		/// <summary>Cellular using 3G WCDMA.</summary>
 		CellWcdma = 0x85,
+		/// <summary>Cellular using 2G GSM.</summary>
 		CellGsm = 0x86,
+		/// <summary>Cellular using CDMA 1x data.</summary>
 		CellCdma = 0x87,
+		/// <summary>Cellular using EV-DO high-data-rate service.</summary>
 		CellEvdo = 0x88,
 	}
 

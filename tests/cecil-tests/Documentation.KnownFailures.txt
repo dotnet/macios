@@ -5367,9 +5367,6 @@ F:Network.NWLinkQuality.Good
 F:Network.NWLinkQuality.Minimal
 F:Network.NWLinkQuality.Moderate
 F:Network.NWLinkQuality.Unknown
-F:Network.NWMultipathVersion.Unspecified
-F:Network.NWMultipathVersion.Version0
-F:Network.NWMultipathVersion.Version1
 F:Network.NWParametersAttribution.Developer
 F:Network.NWParametersAttribution.User
 F:Network.NWPathUnsatisfiedReason.CellularDenied
@@ -58188,7 +58185,6 @@ T:Network.NWInterfaceRadioType
 T:Network.NWIPMetadata
 T:Network.NWLinkQuality
 T:Network.NWMulticastGroup
-T:Network.NWMultipathVersion
 T:Network.NWMultiplexGroup
 T:Network.NWParametersAttribution
 T:Network.NWPathUnsatisfiedReason

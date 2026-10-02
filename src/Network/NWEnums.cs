@@ -389,11 +389,15 @@ namespace Network {
 		Tls,
 	}
 
+	/// <summary>Identifies the Multipath TCP (MPTCP) protocol version.</summary>
 	[TV (15, 0), iOS (15, 0)]
 	[MacCatalyst (15, 0)]
 	public enum NWMultipathVersion {
+		/// <summary>No specific MPTCP version is selected.</summary>
 		Unspecified = -1,
+		/// <summary>MPTCP version 0.</summary>
 		Version0 = 0,
+		/// <summary>MPTCP version 1.</summary>
 		Version1 = 1,
 	}
 

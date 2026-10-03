@@ -43,6 +43,7 @@ host_runtime_contract.h: Makefile
 	$(Q) mv "$@.tmp" "$@"
 
 coreclr-bridge.m: coreclrhost.h host_runtime_contract.h
+runtime.m: host_runtime_contract.h
 
 xamarin/mono-runtime.h: mono-runtime.h.t4 exports.t4
 	$(Q_GEN) $(TT) $< -o $@

@@ -3953,7 +3953,9 @@ namespace UIKit {
 
 		[Abstract]
 		[Export ("synchronizeToBackingStore:")]
-		void Synchronize ([NullAllowed] Action<NSError> completionHandler);
+#nullable enable
+		void Synchronize ([NullAllowed] Action<NSError?> completionHandler);
+#nullable disable
 
 		[Export ("locationFromLocation:withOffset:")]
 		[return: NullAllowed]
@@ -4002,7 +4004,9 @@ namespace UIKit {
 
 		[Async]
 		[Export ("synchronizeTextLayoutManagers:")]
-		void SynchronizeTextLayoutManagers ([NullAllowed] Action<NSError> completionHandler);
+#nullable enable
+		void SynchronizeTextLayoutManagers ([NullAllowed] Action<NSError?> completionHandler);
+#nullable disable
 
 		[Export ("textElementsForRange:")]
 		NSTextElement [] GetTextElements (NSTextRange range);

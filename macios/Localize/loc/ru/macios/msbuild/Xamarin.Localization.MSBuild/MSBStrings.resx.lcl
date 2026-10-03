@@ -1258,6 +1258,9 @@
       <Item ItemId=";E0192" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Задача PrepareAssemblies завершилась сбоем без сообщения о конкретной ошибке. Для получения дополнительных сведений выполните повторную сборку с повышенным уровнем детализации.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2734,12 +2737,18 @@
       <Item ItemId=";E7165" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid DotNetRuntime value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Недопустимое значение DotNetRuntime: "{0}"]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";E7166" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Непредвиденное значение RuntimeLibLinkMode для 'NativeAOT': "{0}"]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2755,6 +2764,9 @@
       <Item ItemId=";E7170" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid RuntimeLibLinkMode value: '{0}']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Недопустимое значение RuntimeLibLinkMode: "{0}"]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2797,6 +2809,9 @@
       <Item ItemId=";E7181" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Невозможно повторно идентифицировать собственную библиотеку как "{0}", так как этот путь находится за пределами целевого выходного каталога "{1}".]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2812,6 +2827,9 @@
       <Item ItemId=";E7184" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Сбой Codesign с ошибкой "errSecInternalComponent". Обычно это означает, что связка ключей заблокирована. Такое часто происходит при сборке по SSH. Сначала разблокируйте связку ключей, например с помощью команды "security unlock-keychain ~/Library/Keychains/login.keychain-db".]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -2874,6 +2892,33 @@
           <Val><![CDATA[Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Недопустимое значение '{0}' для '{1}' записи манифеста приложения типа '{2}', указанной в группе элементов AppManifestEntry. Ожидается "true" или "false".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7192" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to parse the '{0}' value: {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Не удалось проанализировать "{0}" со значением: {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7193" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The cache does not contain any entries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Кэш не содержит записей.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7195" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[R2R input file '{0}' does not exist.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Входной файл R2R "{0}" не существует.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3225,6 +3270,15 @@
           <Val><![CDATA[Skipping {0} - {1} is empty.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Пропуск {0} — {1} пусто.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";M7197" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Hashed {0} of {1} R2R input files.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Хэшировано входных файлов R2R: {0} из {1}.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3840,6 +3894,24 @@
           <Val><![CDATA[Ignoring a native reference with no name in the binding resource package '{0}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Пропуск собственной ссылки без имени в пакете ресурсов привязки '{0}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7194" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignoring invalid R2R input hash cache '{0}': {1}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Пропуск недопустимого кэша хэша входных данных R2R '{0}': {1}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7196" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Ignoring invalid R2R input hash for '{0}' in cache '{1}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Пропуск недопустимого входного хэша R2R для '{0}' в кэше '{1}'.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

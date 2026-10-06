@@ -832,7 +832,7 @@ public class Frameworks : Dictionary<string, Framework> {
 #if !LEGACY_TOOLS
 							if (app.Profile.IsProductAssembly (assembly))
 #endif
-								hasLARight = true;
+							hasLARight = true;
 						}
 						continue;
 					}

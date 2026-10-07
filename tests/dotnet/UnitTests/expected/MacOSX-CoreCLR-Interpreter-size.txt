@@ -1,4 +1,4 @@
-AppBundleSize: 221,620,184 bytes (216,426.0 KB = 211.4 MB)
+AppBundleSize: 221,597,144 bytes (216,403.5 KB = 211.3 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     768 bytes (0.8 KB = 0.0 MB)
@@ -43,7 +43,7 @@ Contents/MonoBundle/.xamarin/osx-arm64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-arm64/netstandard.dll:
     101,160 bytes (98.8 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/SizeTestApp.dll:
-    5,632 bytes (5.5 KB = 0.0 MB)
+    5,120 bytes (5.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.AppContext.dll:
     15,184 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/System.Buffers.dll:
@@ -407,7 +407,7 @@ Contents/MonoBundle/.xamarin/osx-x64/mscorlib.dll:
 Contents/MonoBundle/.xamarin/osx-x64/netstandard.dll:
     101,160 bytes (98.8 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-x64/SizeTestApp.dll:
-    5,632 bytes (5.5 KB = 0.0 MB)
+    5,120 bytes (5.0 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.AppContext.dll:
     15,144 bytes (14.8 KB = 0.0 MB)
 Contents/MonoBundle/.xamarin/osx-x64/System.Buffers.dll:
@@ -765,6 +765,6 @@ Contents/MonoBundle/libSystem.Net.Security.Native.dylib:
 Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib:
     511,248 bytes (499.3 KB = 0.5 MB)
 Contents/MonoBundle/Microsoft.macOS.dll:
-    36,853,760 bytes (35,990.0 KB = 35.1 MB)
+    36,831,744 bytes (35,968.5 KB = 35.1 MB)
 Contents/PkgInfo:
     8 bytes (0.0 KB = 0.0 MB)

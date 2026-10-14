@@ -16,6 +16,25 @@ namespace Xamarin.Mac.Tests {
 		}
 
 		[Test]
+		public void AccessibilityIdentifier ()
+		{
+			using var accessibleView = new NSView ();
+			using var control = new NSControl ();
+			using var button = new NSPopUpButton ();
+
+			foreach (var element in new NSView [] { accessibleView, control, button }) {
+				element.AccessibilityIdentifier = "hello";
+				Assert.That (element.AccessibilityIdentifier, Is.EqualTo ("hello"), "Identifier");
+
+				element.AccessibilityIdentifier = "updated";
+				Assert.That (element.AccessibilityIdentifier, Is.EqualTo ("updated"), "Updated identifier");
+
+				element.AccessibilityIdentifier = null;
+				Assert.That (element.AccessibilityIdentifier, Is.Null, "Null identifier");
+			}
+		}
+
+		[Test]
 		public void NSViewShouldAddGestureRecognizer ()
 		{
 			var length = 0;

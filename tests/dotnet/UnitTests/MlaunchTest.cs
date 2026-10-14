@@ -187,6 +187,65 @@ namespace Xamarin.Tests {
 			};
 		}
 
+		[TestCase ("ComputeRunArguments")]
+		[TestCase ("ComputeMlaunchRunArguments")]
+		[TestCase ("Run")]
+		public void StartupHooksPreparedWhenComputingRunArguments (string target)
+		{
+			var projectPath = Path.Combine (Cache.CreateTemporaryDirectory (), "StartupHooks.proj");
+			// Isolate target scheduling from device discovery, file copying, and process launching.
+			File.WriteAllText (projectPath, """
+				<Project>
+					<Import Project="$(MobileTargetsPath)" />
+					<PropertyGroup>
+						<SdkIsMobile>true</SdkIsMobile>
+						<SdkIsDesktop>false</SdkIsDesktop>
+					</PropertyGroup>
+					<ItemGroup>
+						<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+							<Value>/host/startup-hook.dll</Value>
+						</RuntimeEnvironmentVariable>
+					</ItemGroup>
+					<Target Name="Restore" />
+					<Target Name="_ValidateHotReloadConfiguration" />
+					<Target Name="_DetectSdkLocations" />
+					<Target Name="_GenerateBundleName" />
+					<Target Name="_DetectAppManifest" />
+					<Target Name="ComputeAvailableDevices" />
+					<Target Name="ComputeRunArguments" />
+					<Target Name="_DeployToDevice" />
+					<Target Name="_CopyStartupHooksToDevice">
+						<ItemGroup>
+							<RuntimeEnvironmentVariable Remove="DOTNET_STARTUP_HOOKS" />
+							<RuntimeEnvironmentVariable Include="DOTNET_STARTUP_HOOKS">
+								<Value>/device/startup-hook.dll</Value>
+							</RuntimeEnvironmentVariable>
+							<MlaunchAdditionalArguments Include="--hotreload-url=ws://localhost:12345" />
+						</ItemGroup>
+					</Target>
+					<Target Name="_ComputeMlaunchRunArguments">
+						<Error Condition="'@(RuntimeEnvironmentVariable->'%(Value)')' != '/device/startup-hook.dll'" Text="Startup hook path was not prepared in the launch-argument build." />
+						<Error Condition="'@(MlaunchAdditionalArguments)' != '--hotreload-url=ws://localhost:12345'" Text="Hot reload forwarding was not prepared in the launch-argument build." />
+						<PropertyGroup>
+							<RunCommand>echo</RunCommand>
+							<RunArguments>Startup hooks prepared</RunArguments>
+						</PropertyGroup>
+					</Target>
+				</Project>
+				""");
+			var properties = new Dictionary<string, string> {
+				["MobileTargetsPath"] = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Microsoft.Sdk.Mobile.targets"),
+			};
+
+			var deploy = DotNet.AssertBuild (projectPath, properties, target: "DeployToDevice");
+			var deployTargets = BinLog.GetAllTargets (deploy.BinLogPath).Where (v => !v.Skipped).Select (v => v.TargetName).ToArray ();
+			Assert.That (deployTargets, Does.Not.Contain ("_CopyStartupHooksToDevice"), "Deployment must not prepare launch-only state.");
+
+			var run = DotNet.AssertBuild (projectPath, properties, target: target);
+			var runTargets = BinLog.GetAllTargets (run.BinLogPath).Where (v => !v.Skipped).Select (v => v.TargetName).ToArray ();
+			Assert.That (runTargets.Count (v => v == "_CopyStartupHooksToDevice"), Is.EqualTo (1), "Startup hooks must be prepared once in the launch-argument build.");
+		}
+
 		[Test]
 		[TestCaseSource (nameof (GetMlaunchRunArgumentsTestCases))]
 		public void GetMlaunchRunArguments (ApplePlatform platform, string runtimeIdentifiers, string device)

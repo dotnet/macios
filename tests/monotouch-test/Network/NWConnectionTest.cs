@@ -126,7 +126,7 @@ namespace MonoTouchFixtures.Network {
 			using (var endpoint = NWEndpoint.Create (host, "80")) {
 				using (var protocolStack = parameters.ProtocolStack) {
 					var ipOptions = protocolStack.InternetProtocol;
-					ipOptions.SetVersion (NWIPVersion.Version4);
+					ipOptions.SetVersion (NWIPVersion.IPv4);
 				}
 				var connection = new NWConnection (endpoint, parameters);
 				connection.SetQueue (DispatchQueue.DefaultGlobalQueue); // important, else we will get blocked

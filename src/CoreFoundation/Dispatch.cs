@@ -464,6 +464,26 @@ namespace CoreFoundation {
 			}
 		}
 
+		/// <summary>Executes a function synchronously on this dispatch queue and returns its result.</summary>
+		/// <typeparam name="T">The type of the result.</typeparam>
+		/// <param name="func">The function to execute.</param>
+		/// <returns>The value returned by <paramref name="func" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="func" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   This method waits until the function finishes executing. Calling it from the same serial queue causes a deadlock.
+		/// </remarks>
+		public T DispatchSync<T> (Func<T> func)
+		{
+			if (func is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (func));
+
+			var result = new T [1];
+			DispatchSync (() => {
+				result [0] = func ();
+			});
+			return result [0];
+		}
+
 		/// <param name="block">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

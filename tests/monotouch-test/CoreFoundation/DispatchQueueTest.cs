@@ -185,6 +185,46 @@ namespace MonoTouchFixtures.CoreFoundation {
 		}
 
 		[Test]
+		public void DispatchSyncNullFunc ()
+		{
+			using var queue = new DispatchQueue ("DispatchSyncNullFunc");
+			var exception = Assert.Throws<ArgumentNullException> (() => queue.DispatchSync ((Func<int>) null));
+			Assert.That (exception.ParamName, Is.EqualTo ("func"), "Parameter name");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void DispatchSyncResult (bool concurrent)
+		{
+			using var queue = new DispatchQueue ("DispatchSyncResult", concurrent);
+			var called = 0;
+			var result = queue.DispatchSync (() => {
+				called++;
+				return 42;
+			});
+			Assert.That (called, Is.EqualTo (1), "Function must run exactly once before DispatchSync returns");
+			Assert.That (result, Is.EqualTo (42), "Value type");
+			Assert.That (queue.DispatchSync (() => 0), Is.EqualTo (0), "Default value");
+
+			var expected = new object ();
+			Assert.That (queue.DispatchSync (() => expected), Is.SameAs (expected), "Reference type");
+			Assert.That (queue.DispatchSync<string> (() => null), Is.Null, "Null reference");
+			Assert.That (queue.DispatchSync<int?> (() => 42), Is.EqualTo (42), "Nullable value");
+			Assert.That (queue.DispatchSync<int?> (() => null), Is.Null, "Null nullable value");
+		}
+
+		[Test]
+		public void DispatchSyncResultQueueOrder ()
+		{
+			using var queue = new DispatchQueue ("DispatchSyncResultQueueOrder");
+			var value = 0;
+			queue.DispatchAsync (() => {
+				value = 42;
+			});
+			Assert.That (queue.DispatchSync (() => value), Is.EqualTo (42), "Previously submitted work must finish first");
+		}
+
+		[Test]
 		public void DispatchBarrierSync ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);

@@ -1135,16 +1135,14 @@ namespace UserNotifications {
 	interface UNTimeIntervalNotificationTrigger {
 
 		/// <summary>Gets the time interval after which the trigger is activated.</summary>
-		///         <value>Te time interval after which the trigger is activated.</value>
-		///         <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
+		/// <value>Te time interval after which the trigger is activated. This value is expressed in seconds.</value>
+		/// <remarks>Application developers can set <see cref="CoreLocation.CLRegion.NotifyOnEntry" /> and <see cref="CoreLocation.CLRegion.NotifyOnExit" /> to control when the trigger is activated.</remarks>
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 
-		/// <param name="timeInterval">To be added.</param>
-		///         <param name="repeats">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="UNTimeIntervalNotificationTrigger" /> instance.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
 		[Static]
 		[Export ("triggerWithTimeInterval:repeats:")]
 		UNTimeIntervalNotificationTrigger CreateTrigger (double timeInterval, bool repeats);

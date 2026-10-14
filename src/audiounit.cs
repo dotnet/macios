@@ -718,17 +718,15 @@ namespace AudioUnit {
 		void SetOutputProvider ([NullAllowed] AURenderPullInputBlock provider);
 
 		// the following are properties but we cannot have properties in Categories.
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the device input latency.</summary>
+		/// <returns>The time interval, in seconds.</returns>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("deviceInputLatency")]
 		double GetDeviceInputLatency ();
 
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the device output latency.</summary>
+		/// <returns>The time interval, in seconds.</returns>
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		[Export ("deviceOutputLatency")]
@@ -818,8 +816,8 @@ namespace AudioUnit {
 		NSNumber [] SupportedChannelLayoutTags { get; }
 
 		/// <summary>Gets or sets the latency of the processing context for the audio unit.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>For input units, this is the time, in seconds, since the arriving audio was acquired. For output units, this is the delay, in seconds, until the output is presented.</remarks>
+		/// <value>The context presentation latency, in seconds.</value>
+		/// <remarks>For input units, this is the time, in seconds, since the arriving audio was acquired. For output units, this is the delay, in seconds, until the output is presented.</remarks>
 		[Export ("contextPresentationLatency")]
 		double ContextPresentationLatency { get; set; }
 

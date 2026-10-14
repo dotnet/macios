@@ -414,6 +414,8 @@ namespace ARKit {
 		[Export ("imageResolution")]
 		CGSize ImageResolution { get; }
 
+		/// <summary>Gets the exposure duration.</summary>
+		/// <value>The exposure duration, in seconds.</value>
 		[Export ("exposureDuration")]
 		double ExposureDuration { get; }
 
@@ -483,6 +485,8 @@ namespace ARKit {
 	[DisableDefaultCtor]
 	interface ARFrame : NSCopying {
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -498,6 +502,8 @@ namespace ARKit {
 		[NullAllowed, Export ("capturedDepthData", ArgumentSemantic.Strong)]
 		AVDepthData CapturedDepthData { get; }
 
+		/// <summary>Gets the captured depth data timestamp.</summary>
+		/// <value>The captured depth data timestamp, in seconds.</value>
 		[Export ("capturedDepthDataTimestamp")]
 		double CapturedDepthDataTimestamp { get; }
 

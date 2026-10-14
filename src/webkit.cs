@@ -2218,16 +2218,15 @@ namespace WebKit {
 			""")]
 		void ChangedLocationWithinPage (WebView sender, WebFrame forFrame);
 
-		/// <param name="sender">To be added.</param>
-		/// <param name="toUrl">To be added.</param>
-		/// <param name="secondsDelay">To be added.</param>
-		/// <param name="fireDate">To be added.</param>
-		/// <param name="forFrame">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Notifies the delegate before a client-side redirect.</summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="toUrl">The to url.</param>
+		/// <param name="secondsDelay">The seconds delay, in seconds.</param>
+		/// <param name="fireDate">The fire date.</param>
+		/// <param name="forFrame">The for frame.</param>
 		[Export ("webView:willPerformClientRedirectToURL:delay:fireDate:forFrame:"), EventArgs ("WebFrameClientRedirect", XmlDocs = """
-			<summary>To be added.</summary>
-			<remarks>To be added.</remarks>
+			<summary>Raised for the <c>WillPerformClientRedirect</c> delegate callback.</summary>
+			<remarks>The <c>SecondsDelay</c> value is expressed in seconds.</remarks>
 			""")]
 		void WillPerformClientRedirect (WebView sender, NSUrl toUrl, double secondsDelay, NSDate fireDate, WebFrame forFrame);
 
@@ -2363,6 +2362,10 @@ namespace WebKit {
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "No longer supported.")]
 	[BaseType (typeof (NSObject))]
 	partial interface WebHistoryItem : NSCopying {
+		/// <summary>Creates a new <see cref="WebHistoryItem" /> instance.</summary>
+		/// <param name="urlString">The url string.</param>
+		/// <param name="title">The title.</param>
+		/// <param name="lastVisitedTimeInterval">The last visited time interval, in seconds.</param>
 		[Export ("initWithURLString:title:lastVisitedTimeInterval:")]
 		NativeHandle Constructor (string urlString, string title, double lastVisitedTimeInterval);
 
@@ -2375,6 +2378,8 @@ namespace WebKit {
 		[Export ("title")]
 		string Title { get; }
 
+		/// <summary>Gets the last visited time interval.</summary>
+		/// <value>The last visited time interval, in seconds.</value>
 		[Export ("lastVisitedTimeInterval")]
 		double LastVisitedTimeInterval { get; }
 

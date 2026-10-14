@@ -966,6 +966,10 @@ namespace ScreenCaptureKit {
 		[Export ("initWithDelegate:")]
 		NativeHandle Constructor ([NullAllowed] ISCClipBufferingOutputDelegate @delegate);
 
+		/// <summary>Exports a clip with the specified duration.</summary>
+		/// <param name="url">The url.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Async]
 		[Export ("exportClipToURL:duration:completionHandler:")]
 		void ExportClip (NSUrl url, double duration, [NullAllowed] SCClipBufferingOutputExportCompletionHandler completionHandler);

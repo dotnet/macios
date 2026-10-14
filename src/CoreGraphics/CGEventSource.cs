@@ -116,11 +116,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSourceFlagsState")]
 		public extern static CGEventFlags GetFlagsState (CGEventSourceStateID stateID);
 
-		/// <param name="stateID">To be added.</param>
-		///         <param name="eventType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the time elapsed since the last event of the specified type.</summary>
+		/// <param name="stateID">The event source state to query.</param>
+		/// <param name="eventType">The event type to query.</param>
+		/// <returns>The elapsed time, in seconds.</returns>
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSourceSecondsSinceLastEventType")]
 		public extern static double GetSecondsSinceLastEventType (CGEventSourceStateID stateID, CGEventType eventType);
 
@@ -193,9 +192,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
 		extern static double CGEventSourceGetLocalEventsSuppressionInterval (IntPtr handle);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the interval during which local events are suppressed after posting an event.</summary>
+		/// <value>The suppression interval, in seconds.</value>
 		public double LocalEventsSuppressionInterval {
 			get {
 				return CGEventSourceGetLocalEventsSuppressionInterval (Handle);
@@ -206,6 +204,8 @@ namespace CoreGraphics {
 		}
 
 #if !XAMCORE_5_0
+		/// <summary>Gets or sets the interval during which local events are suppressed after posting an event.</summary>
+		/// <value>The suppression interval, in seconds.</value>
 		[Obsolete ("Use 'LocalEventsSuppressionInterval' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public double LocalEventsSupressionInterval {

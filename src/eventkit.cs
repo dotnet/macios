@@ -207,6 +207,8 @@ namespace EventKit {
 	[BaseType (typeof (EKObject))]
 	[DisableDefaultCtor] // Documentation says to use the static methods FromDate/FromTimeInterval to create instances
 	interface EKAlarm : NSCopying {
+		/// <summary>Gets or sets the relative offset.</summary>
+		/// <value>The relative offset, in seconds.</value>
 		[Export ("relativeOffset")]
 		double RelativeOffset { get; set; }
 
@@ -218,6 +220,8 @@ namespace EventKit {
 		[Export ("alarmWithAbsoluteDate:")]
 		EKAlarm FromDate (NSDate date);
 
+		/// <summary>Creates a new <see cref="EKAlarm" /> instance.</summary>
+		/// <param name="offsetSeconds">The offset seconds, in seconds.</param>
 		[Static]
 		[Export ("alarmWithRelativeOffset:")]
 		EKAlarm FromTimeInterval (double offsetSeconds);

@@ -329,9 +329,9 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static double /* CFAbsoluteTime */ SecTrustGetVerifyTime (IntPtr /* SecTrustRef */ trust);
 
-		/// <summary>Get the verification time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>This is often used for digital signatures.</remarks>
+		/// <summary>Gets the verification time.</summary>
+		/// <returns>The verification time, in seconds since January 1, 2001 at 00:00:00 UTC.</returns>
+		/// <remarks>This is often used for digital signatures.</remarks>
 		public double GetVerifyTime ()
 		{
 			return SecTrustGetVerifyTime (GetCheckedHandle ());

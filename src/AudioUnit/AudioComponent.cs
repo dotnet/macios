@@ -497,9 +497,8 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern double AudioComponentGetLastActiveTime (IntPtr comp);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the time at which the audio component was last active.</summary>
+		/// <value>The last active time, in seconds since January 1, 2001 at 00:00:00 UTC.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]

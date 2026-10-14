@@ -54,9 +54,8 @@ namespace CoreMotion {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // will crash, see Extra.cs for compatibility stubs
 	interface CMLogItem : NSSecureCoding, NSCopying {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 	}
@@ -1020,9 +1019,8 @@ namespace CoreMotion {
 		[return: NullAllowed]
 		CMSensorDataList GetAccelerometerData (NSDate fromDate, NSDate toDate);
 
-		/// <param name="duration">To be added.</param>
-		///         <summary>Begins recording sensor data for <paramref name="duration" /> seconds.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Begins recording sensor data for <paramref name="duration" /> seconds.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("recordAccelerometerForDuration:")]
 		void RecordAccelerometer (double duration);
@@ -1172,6 +1170,8 @@ namespace CoreMotion {
 		[Export ("authorizationStatus")]
 		CMAuthorizationStatus AuthorizationStatus { get; }
 
+		/// <summary>Monitors movement symptoms for the specified duration.</summary>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Export ("monitorKinesiasForDuration:")]
 		void MonitorKinesias (double durationInSeconds);
 

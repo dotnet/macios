@@ -162,11 +162,10 @@ namespace CoreServices {
 		static extern ulong FSEventsGetLastEventIdForDeviceBeforeTime (
 			ulong device, double timeInSecondsSinceEpoch);
 
-		/// <param name="device">To be added.</param>
-		///         <param name="timeInSecondsSinceEpoch">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the last event identifier for a device before the specified time.</summary>
+		/// <param name="device">The device identifier.</param>
+		/// <param name="timeInSecondsSinceEpoch">The cutoff time, in seconds since January 1, 2001 at 00:00:00 UTC.</param>
+		/// <returns>The last event identifier before the specified time.</returns>
 		public static ulong GetLastEventIdForDeviceBeforeTime (ulong device, double timeInSecondsSinceEpoch)
 		{
 			return FSEventsGetLastEventIdForDeviceBeforeTime (device, timeInSecondsSinceEpoch);
@@ -259,6 +258,7 @@ namespace CoreServices {
 		/// before passing it along to the client via its callback. Specifying a larger value may result
 		/// in more effective temporal coalescing, resulting in fewer callbacks.
 		/// </summary>
+		/// <value>The delay, converted to seconds when the native event stream is created.</value>
 		public TimeSpan Latency { get; set; }
 
 		/// <summary>

@@ -133,6 +133,8 @@ namespace GameplayKit {
 		[Export ("rotation")]
 		float Rotation { get; set; }
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 	}
@@ -167,6 +169,8 @@ namespace GameplayKit {
 			set;
 		}
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 	}
@@ -241,6 +245,8 @@ namespace GameplayKit {
 		[Export ("entity", ArgumentSemantic.Weak)]
 		GKEntity Entity { get; }
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
@@ -290,6 +296,8 @@ namespace GameplayKit {
 		[Export ("removeComponent:")]
 		void RemoveComponent (TComponent component);
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
@@ -420,6 +428,8 @@ namespace GameplayKit {
 		[Export ("entity")]
 		GKEntity GetEntity ();
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
@@ -574,10 +584,16 @@ namespace GameplayKit {
 		[Export ("goalToFleeAgent:")]
 		GKGoal GetGoalToFleeAgent (GKAgent agent);
 
+		/// <summary>Gets the goal to avoid obstacles.</summary>
+		/// <param name="obstacles">The obstacles.</param>
+		/// <param name="maxPredictionTime">The max prediction time, in seconds.</param>
 		[Static]
 		[Export ("goalToAvoidObstacles:maxPredictionTime:")]
 		GKGoal GetGoalToAvoidObstacles (GKObstacle [] obstacles, double maxPredictionTime);
 
+		/// <summary>Gets the goal to avoid agents.</summary>
+		/// <param name="agents">The agents.</param>
+		/// <param name="maxPredictionTime">The max prediction time, in seconds.</param>
 		[Static]
 		[Export ("goalToAvoidAgents:maxPredictionTime:")]
 		GKGoal GetGoalToAvoidAgents (GKAgent [] agents, double maxPredictionTime);
@@ -602,14 +618,24 @@ namespace GameplayKit {
 		[Export ("goalToWander:")]
 		GKGoal GetGoalToWander (float speed);
 
+		/// <summary>Gets the goal to intercept agent.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="maxPredictionTime">The max prediction time, in seconds.</param>
 		[Static]
 		[Export ("goalToInterceptAgent:maxPredictionTime:")]
 		GKGoal GetGoalToInterceptAgent (GKAgent target, double maxPredictionTime);
 
+		/// <summary>Gets the goal to follow path.</summary>
+		/// <param name="path">The path.</param>
+		/// <param name="maxPredictionTime">The max prediction time, in seconds.</param>
+		/// <param name="forward">Whether to follow the path in the forward direction.</param>
 		[Static]
 		[Export ("goalToFollowPath:maxPredictionTime:forward:")]
 		GKGoal GetGoalToFollowPath (GKPath path, double maxPredictionTime, bool forward);
 
+		/// <summary>Gets the goal to stay on path.</summary>
+		/// <param name="path">The path.</param>
+		/// <param name="maxPredictionTime">The max prediction time, in seconds.</param>
 		[Static]
 		[Export ("goalToStayOnPath:maxPredictionTime:")]
 		GKGoal GetGoalToStayOnPath (GKPath path, double maxPredictionTime);
@@ -1565,6 +1591,8 @@ namespace GameplayKit {
 		[Export ("didEnterWithPreviousState:")]
 		void DidEnter ([NullAllowed] GKState previousState);
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
@@ -1592,6 +1620,8 @@ namespace GameplayKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (GKState [] states);
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="deltaTimeInSeconds">The delta time in seconds, in seconds.</param>
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 

@@ -26,11 +26,9 @@ namespace OpenGLES {
 				EAGLGetVersion (majorPtr, minorPtr);
 		}
 
-		/// <param name="target">To be added.</param>
-		/// <param name="presentationTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="presentationTime">The presentation time, in seconds.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
@@ -41,12 +39,10 @@ namespace OpenGLES {
 			return _PresentRenderbufferAtTime (target, presentationTime);
 		}
 
-		/// <param name="target">To be added.</param>
-		/// <param name="presentationTime">To be added.</param>
-		/// <param name="mode">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="presentationTime">The presentation time, in seconds.</param>
+		/// <param name="mode">The mode.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

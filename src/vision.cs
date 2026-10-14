@@ -4805,10 +4805,14 @@ namespace Vision {
 	[DisableDefaultCtor]
 	interface VNVideoProcessorTimeIntervalCadence {
 
+		/// <summary>Creates a new <see cref="VNVideoProcessorTimeIntervalCadence" /> instance.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
 		[Export ("initWithTimeInterval:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double timeInterval);
 
+		/// <summary>Gets the time interval.</summary>
+		/// <value>The time interval, in seconds.</value>
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 	}

@@ -662,9 +662,7 @@ namespace CoreLocation {
 		bool DeferredLocationUpdatesAvailable { get; }
 
 		/// <summary>Represents the value associated with the constant CLTimeInternalMax</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The maximum time interval, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("CLTimeIntervalMax")]
 		double MaxTimeInterval { get; }

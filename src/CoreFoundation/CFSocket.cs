@@ -472,14 +472,13 @@ namespace CoreFoundation {
 																	   delegate* unmanaged<IntPtr, nuint, IntPtr, IntPtr, IntPtr, void> callout,
 																	   CFSocketContext* context, double timeout);
 
-		/// <param name="family">To be added.</param>
-		///         <param name="type">To be added.</param>
-		///         <param name="proto">To be added.</param>
-		///         <param name="endpoint">To be added.</param>
-		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
-		///         <summary>Creates a connected socket by specifying an address family, socket type, protocol type as well as the endpoint to connect to.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a connected socket by specifying an address family, socket type, protocol type as well as the endpoint to connect to.</summary>
+		/// <param name="family">The address family.</param>
+		/// <param name="type">The socket type.</param>
+		/// <param name="proto">The protocol type.</param>
+		/// <param name="endpoint">The endpoint to connect to.</param>
+		/// <param name="timeout">The time, in seconds, to wait for the operation to complete. If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
+		/// <returns>The connected socket.</returns>
 		public static CFSocket CreateConnectedToSocketSignature (AddressFamily family, SocketType type,
 																 ProtocolType proto, IPEndPoint endpoint,
 																 double timeout)
@@ -594,10 +593,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketSendData (IntPtr handle, IntPtr address, IntPtr data, double timeout);
 
-		/// <param name="data">To be added.</param>
-		///         <param name="timeout">Time to wait for the operation to complete.  </param>
-		///         <summary>Sends data over the socket.</summary>
-		///         <remarks>This method raises an exception <see cref="CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
+		/// <summary>Sends data over the socket.</summary>
+		/// <param name="data">The data to send.</param>
+		/// <param name="timeout">The time, in seconds, to wait for the operation to complete.</param>
+		/// <remarks>This method raises an exception <see cref="CoreFoundation.CFSocketException" /> if the sending buffer is full, or the timeout expires before the data is sent.</remarks>
 		public void SendData (byte [] data, double timeout)
 		{
 			using (var buffer = new CFDataBuffer (data)) {
@@ -805,20 +804,20 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFSocketConnectToAddress (IntPtr handle, IntPtr address, double timeout);
 
-		/// <param name="address">To be added.</param>
-		///         <param name="port">To be added.</param>
-		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
-		///         <summary>Connects the socket to the specified IP address and port.</summary>
-		///         <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
+		/// <summary>Connects the socket to the specified IP address and port.</summary>
+		/// <param name="address">The IP address to connect to.</param>
+		/// <param name="port">The port to connect to.</param>
+		/// <param name="timeout">The time, in seconds, to wait for the operation to complete. If the value is negative, the operation takes place in the background without waiting.</param>
+		/// <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPAddress address, int port, double timeout)
 		{
 			Connect (new IPEndPoint (address, port), timeout);
 		}
 
-		/// <param name="endpoint">To be added.</param>
-		///         <param name="timeout">Time to wait for the operation to complete.   If the value is negative, no wait takes place, and instead the operation takes place in the background.</param>
-		///         <summary>Connects the socket to the specified endpoint.</summary>
-		///         <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
+		/// <summary>Connects the socket to the specified endpoint.</summary>
+		/// <param name="endpoint">The endpoint to connect to.</param>
+		/// <param name="timeout">The time, in seconds, to wait for the operation to complete. If the value is negative, the operation takes place in the background without waiting.</param>
+		/// <remarks>This method throws a <see cref="CoreFoundation.CFSocketException" /> if the timeout expires before being able to complete the operation.</remarks>
 		public void Connect (IPEndPoint endpoint, double timeout)
 		{
 			using (var address = new CFSocketAddress (endpoint)) {

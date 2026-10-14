@@ -404,6 +404,9 @@ namespace Phase {
 		[Export ("maximum")]
 		double Maximum { get; }
 
+		/// <summary>Changes the parameter to the specified value over a duration.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("fadeToValue:duration:")]
 		void Fade (double value, double duration);
 	}

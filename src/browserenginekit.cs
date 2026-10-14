@@ -223,6 +223,8 @@ namespace BrowserEngineKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BEScrollViewScrollUpdate {
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -402,6 +404,8 @@ namespace BrowserEngineKit {
 		[Export ("keyRepeating")]
 		bool KeyRepeating { [Bind ("isKeyRepeating")] get; }
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 	}

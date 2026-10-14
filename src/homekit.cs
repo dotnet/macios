@@ -2593,9 +2593,13 @@ namespace HomeKit {
 	[DisableDefaultCtor]
 	interface HMDurationEvent : NSMutableCopying {
 
+		/// <summary>Creates a new <see cref="HMDurationEvent" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithDuration:")]
 		NativeHandle Constructor (double duration);
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; [NotImplemented] set; }
 	}
@@ -2605,9 +2609,13 @@ namespace HomeKit {
 	[DisableDefaultCtor]
 	interface HMMutableDurationEvent {
 
+		/// <summary>Creates a new <see cref="HMMutableDurationEvent" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithDuration:")]
 		NativeHandle Constructor (double duration);
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Override]
 		[Export ("duration")]
 		double Duration { get; set; }

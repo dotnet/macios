@@ -320,6 +320,8 @@ namespace GameKit {
 		[Export ("available")]
 		bool Available { [Bind ("isAvailable")] get; set; }
 
+		/// <summary>Gets or sets the disconnect timeout.</summary>
+		/// <value>The disconnect timeout, in seconds.</value>
 		[Export ("disconnectTimeout", ArgumentSemantic.Assign)]
 		double DisconnectTimeout { get; set; }
 
@@ -343,6 +345,9 @@ namespace GameKit {
 		[Internal]
 		void _SetDataReceiveHandler (NSObject obj, IntPtr context);
 
+		/// <summary>Connects to the specified peer with a timeout.</summary>
+		/// <param name="peerID">The identifier of the peer.</param>
+		/// <param name="timeout">The timeout, in seconds.</param>
 		[Export ("connectToPeer:withTimeout:")]
 		void Connect (string peerID, double timeout);
 
@@ -569,6 +574,8 @@ namespace GameKit {
 		[Export ("baseLeaderboardID", ArgumentSemantic.Strong)]
 		string BaseLeaderboardId { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("duration")]
@@ -2644,14 +2651,18 @@ namespace GameKit {
 			""")]
 		void Show ([NullAllowed] string title, [NullAllowed] string message, [NullAllowed] Action onCompleted);
 
+		/// <summary>Shows a notification banner for the specified duration.</summary>
+		/// <param name="title">The title.</param>
+		/// <param name="message">The message.</param>
+		/// <param name="durationSeconds">The duration, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Export ("showBannerWithTitle:message:duration:completionHandler:"), Static]
 		[Async (XmlDocs = """
-			<param name="title">To be added.</param>
-			<param name="message">To be added.</param>
-			<param name="durationSeconds">To be added.</param>
-			<summary>To be added.</summary>
-			<returns>To be added.</returns>
-			<remarks>To be added.</remarks>
+			<summary>Shows a notification banner for the specified duration.</summary>
+			<param name="title">The title.</param>
+			<param name="message">The message.</param>
+			<param name="durationSeconds">The duration, in seconds.</param>
+			<returns>A task representing the asynchronous operation.</returns>
 			""")]
 		void Show ([NullAllowed] string title, [NullAllowed] string message, double durationSeconds, [NullAllowed] Action completionHandler);
 	}
@@ -2956,28 +2967,37 @@ namespace GameKit {
 			""")]
 		void Rematch ([NullAllowed] Action<GKTurnBasedMatch?, NSError?> completionHandler);
 
+		/// <summary>Ends the current turn with the specified timeout for the next turn.</summary>
+		/// <param name="nextParticipants">The participants eligible to take the next turn.</param>
+		/// <param name="timeoutSeconds">The timeout seconds, in seconds.</param>
+		/// <param name="matchData">The updated match data.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("endTurnWithNextParticipants:turnTimeout:matchData:completionHandler:")]
 		[Async (XmlDocs = """
-			<param name="nextParticipants">To be added.</param>
-			<param name="timeoutSeconds">To be added.</param>
-			<param name="matchData">To be added.</param>
 			<summary>Asynchronously ends the turn.</summary>
+			<param name="nextParticipants">The participants eligible to take the next turn.</param>
+			<param name="timeoutSeconds">The timeout seconds, in seconds.</param>
+			<param name="matchData">The updated match data.</param>
 			<returns>A task that represents the asynchronous EndTurn operation</returns>
-			<remarks>To be added.</remarks>
 			""")]
 		void EndTurn (GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
+		/// <summary>Resigns the current participant and specifies a timeout for the next turn.</summary>
+		/// <param name="matchOutcome">The outcome for the resigning participant.</param>
+		/// <param name="nextParticipants">The participants eligible to take the next turn.</param>
+		/// <param name="timeoutSeconds">The timeout seconds, in seconds.</param>
+		/// <param name="matchData">The updated match data.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("participantQuitInTurnWithOutcome:nextParticipants:turnTimeout:matchData:completionHandler:")]
 		[Async (XmlDocs = """
-			<param name="matchOutcome">To be added.</param>
-			<param name="nextParticipants">To be added.</param>
-			<param name="timeoutSeconds">To be added.</param>
-			<param name="matchData">To be added.</param>
 			<summary>Asynchronously resigns the current player from the match.</summary>
+			<param name="matchOutcome">The outcome for the resigning participant.</param>
+			<param name="nextParticipants">The participants eligible to take the next turn.</param>
+			<param name="timeoutSeconds">The timeout seconds, in seconds.</param>
+			<param name="matchData">The updated match data.</param>
 			<returns>A task that represents the asynchronous ParticipantQuitInTurn operation</returns>
-			<remarks>To be added.</remarks>
 			""")]
 		void ParticipantQuitInTurn (GKTurnBasedMatchOutcome matchOutcome, GKTurnBasedParticipant [] nextParticipants, double timeoutSeconds, NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
@@ -2991,17 +3011,13 @@ namespace GameKit {
 		void SaveCurrentTurn (NSData matchData, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <summary>Represents the value associated with the constant GKTurnTimeoutDefault</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The default timeout, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("GKTurnTimeoutDefault"), Static]
 		double DefaultTimeout { get; }
 
 		/// <summary>Represents the value associated with the constant GKTurnTimeoutNone</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>A value that disables the turn timeout; finite timeouts are measured in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("GKTurnTimeoutNone"), Static]
 		double NoTimeout { get; }
@@ -3070,19 +3086,25 @@ namespace GameKit {
 			""")]
 		void SaveMergedMatchData (NSData matchData, GKTurnBasedExchange [] exchanges, [NullAllowed] Action<NSError?> completionHandler);
 
+		/// <summary>Sends an exchange request with the specified timeout.</summary>
+		/// <param name="participants">The participants.</param>
+		/// <param name="data">The data.</param>
+		/// <param name="localizableMessage">The localizable message.</param>
+		/// <param name="arguments">The arguments.</param>
+		/// <param name="timeout">The timeout, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("sendExchangeToParticipants:data:localizableMessageKey:arguments:timeout:completionHandler:")]
 		[Async (XmlDocs = """
-			<param name="participants">To be added.</param>
-			<param name="data">To be added.</param>
-			<param name="localizableMessage">To be added.</param>
-			<param name="arguments">To be added.</param>
-			<param name="timeout">To be added.</param>
 			<summary>Sends exchange requests to the players who are listed in <paramref name="participants" />.</summary>
+			<param name="participants">The participants.</param>
+			<param name="data">The data.</param>
+			<param name="localizableMessage">The localizable message.</param>
+			<param name="arguments">The arguments.</param>
+			<param name="timeout">The timeout, in seconds.</param>
 			<returns>
-			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous SendExchange operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedExchange,Foundation.NSError&gt;.</para>
-			        </returns>
-			<remarks>To be added.</remarks>
+			  <para class="improve-task-t-return-type-description">A task that represents the asynchronous SendExchange operation.  The value of the TResult parameter is of type System.Action&lt;GameKit.GKTurnBasedExchange,Foundation.NSError&gt;.</para>
+			</returns>
 			""")]
 		void SendExchange (GKTurnBasedParticipant [] participants, NSData data, string localizableMessage, NSObject [] arguments, double timeout, [NullAllowed] Action<GKTurnBasedExchange?, NSError?> completionHandler);
 
@@ -3624,16 +3646,12 @@ namespace GameKit {
 		void Reply (string localizableMessage, NSObject [] arguments, NSData data, [NullAllowed] Action<NSError?> completionHandler);
 
 		/// <summary>Represents the value associated with the constant GKExchangeTimeoutDefault</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The default exchange timeout, in seconds.</value>
 		[Field ("GKExchangeTimeoutDefault")]
 		double TimeoutDefault { get; }
 
 		/// <summary>Represents the value associated with the constant GKExchangeTimeoutNone</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>A value that disables the exchange timeout; finite timeouts are measured in seconds.</value>
 		[Field ("GKExchangeTimeoutNone")]
 		double TimeoutNone { get; }
 	}
@@ -4514,6 +4532,8 @@ namespace GameKit {
 		[NullAllowed, Export ("endDate", ArgumentSemantic.Strong)]
 		NSDate EndDate { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

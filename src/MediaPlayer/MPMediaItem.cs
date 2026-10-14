@@ -580,11 +580,8 @@ namespace MediaPlayer {
 			}
 		}
 
-		/// <summary>The user bookmark time </summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets the user's bookmarked playback time.</summary>
+		/// <value>The bookmarked playback time, in seconds.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]

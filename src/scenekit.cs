@@ -3082,14 +3082,22 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void Render ();
 
+		/// <summary>Renders the scene at the specified time.</summary>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:")]
 		void Render (double timeInSeconds);
 
+		/// <summary>Creates a snapshot of the scene at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="antialiasingMode">The antialiasing mode.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("snapshotAtTime:withSize:antialiasingMode:")]
 		NSImage GetSnapshot (double time, CGSize size, SCNAntialiasingMode antialiasingMode);
 
+		/// <summary>Gets the next frame time in seconds.</summary>
+		/// <value>The next frame time in seconds, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("nextFrameTime")]
 		double NextFrameTimeInSeconds { get; }
@@ -3099,6 +3107,11 @@ namespace SceneKit {
 		[Export ("rendererWithDevice:options:")]
 		SCNRenderer FromDevice ([NullAllowed] IMTLDevice device, [NullAllowed] NSDictionary options);
 
+		/// <summary>Renders the scene at the specified time.</summary>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
+		/// <param name="viewport">The viewport.</param>
+		/// <param name="commandBuffer">The command buffer.</param>
+		/// <param name="renderPassDescriptor">The render pass descriptor.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:viewport:commandBuffer:passDescriptor:")]
 		void Render (double timeInSeconds, CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
@@ -3107,10 +3120,15 @@ namespace SceneKit {
 		[Export ("renderWithViewport:commandBuffer:passDescriptor:")]
 		void Render (CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
 
+		/// <summary>Updates the scene at the specified time.</summary>
+		/// <param name="lightProbes">The light probes.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("updateProbes:atTime:")]
 		void Update (SCNNode [] lightProbes, double time);
 
+		/// <summary>Updates the scene at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("updateAtTime:")]
 		void Update (double time);
@@ -3795,6 +3813,8 @@ namespace SceneKit {
 		[Export ("context")]
 		IntPtr Context { get; }
 
+		/// <summary>Gets or sets the current time.</summary>
+		/// <value>The current time, in seconds.</value>
 		[Abstract]
 		[NoTV]
 		[NoMacCatalyst]
@@ -3829,9 +3849,8 @@ namespace SceneKit {
 		[Export ("showsStatistics")]
 		bool ShowsStatistics { get; set; }
 
-		/// <summary>To be added.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the scene time in seconds.</summary>
+		/// <value>The scene time in seconds, in seconds.</value>
 		[Abstract]
 		[MacCatalyst (13, 1)]
 		[Export ("sceneTime")]
@@ -4051,50 +4070,44 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRendererDelegate {
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="scene">To be added.</param>
-		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>Developers may override this method to do processing immediately prior to the rendering of the scene.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="scene">The scene.</param>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[Export ("renderer:willRenderScene:atTime:")]
 		void WillRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="scene">To be added.</param>
-		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>This method is called shortly after the scene has been rendered.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="scene">The scene.</param>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[Export ("renderer:didRenderScene:atTime:")]
 		void DidRenderScene (ISCNSceneRenderer renderer, SCNScene scene, double timeInSeconds);
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>Developers may override this method to perform processing prior to any actions, animations, or physics simulations.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:updateAtTime:")]
 		void Update (ISCNSceneRenderer renderer, double timeInSeconds);
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>Developers may override this method to react to the completion of animations.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyAnimationsAtTime:")]
 		void DidApplyAnimations (ISCNSceneRenderer renderer, double timeInSeconds);
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>This method is called shortly after physics have been simulated.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didSimulatePhysicsAtTime:")]
 		void DidSimulatePhysics (ISCNSceneRenderer renderer, double timeInSeconds);
 
-		/// <param name="renderer">To be added.</param>
-		/// <param name="atTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Notifies the delegate after applying the scene constraints.</summary>
+		/// <param name="renderer">The renderer.</param>
+		/// <param name="atTime">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyConstraintsAtTime:")]
 		void DidApplyConstraints (ISCNSceneRenderer renderer, double atTime);
@@ -4261,6 +4274,8 @@ namespace SceneKit {
 		[Export ("setValue:forKey:")]
 		void SetValueForKey ([NullAllowed] NSObject value, NSString key);
 
+		/// <summary>Gets or sets the animation duration.</summary>
+		/// <value>The animation duration, in seconds.</value>
 		//Detected properties
 		[Static]
 		[Export ("animationDuration")]
@@ -4847,6 +4862,8 @@ namespace SceneKit {
 	}
 
 	/// <summary>Completion handler used with <see cref="SceneKit.SCNAction.CustomAction(System.Double,SceneKit.SCNActionNodeWithElapsedTimeHandler)" />.</summary>
+	/// <param name="node">The node.</param>
+	/// <param name="elapsedTime">The elapsed time, in seconds.</param>
 	[MacCatalyst (13, 1)]
 	delegate void SCNActionNodeWithElapsedTimeHandler (SCNNode node, nfloat elapsedTime);
 
@@ -4857,6 +4874,8 @@ namespace SceneKit {
 	[BaseType (typeof (NSObject))]
 	interface SCNAction : NSCopying, NSSecureCoding {
 
+		/// <summary>Gets or sets the duration in seconds.</summary>
+		/// <value>The duration in seconds, in seconds.</value>
 		[Export ("duration")]
 		double DurationInSeconds { get; set; }
 
@@ -4873,78 +4892,73 @@ namespace SceneKit {
 		[Export ("reversedAction")]
 		SCNAction ReversedAction ();
 
-		/// <param name="deltaX">To be added.</param>
-		/// <param name="deltaY">To be added.</param>
-		/// <param name="deltaZ">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that moves a node by the specified offset.</summary>
+		/// <param name="deltaX">The delta x.</param>
+		/// <param name="deltaY">The delta y.</param>
+		/// <param name="deltaZ">The delta z.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("moveByX:y:z:duration:")]
 		SCNAction MoveBy (nfloat deltaX, nfloat deltaY, nfloat deltaZ, double durationInSeconds);
 
+		/// <summary>Creates an action that moves a node by the specified offset.</summary>
+		/// <param name="delta">The delta.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("moveBy:duration:")]
 		SCNAction MoveBy (SCNVector3 delta, double durationInSeconds);
 
+		/// <summary>Creates an action that moves a node to the specified position.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("moveTo:duration:")]
 		SCNAction MoveTo (SCNVector3 location, double durationInSeconds);
 
-		/// <param name="xAngle">To be added.</param>
-		/// <param name="yAngle">To be added.</param>
-		/// <param name="zAngle">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node by the specified angles.</summary>
+		/// <param name="xAngle">The x angle.</param>
+		/// <param name="yAngle">The y angle.</param>
+		/// <param name="zAngle">The z angle.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("rotateByX:y:z:duration:")]
 		SCNAction RotateBy (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
-		/// <param name="angle">To be added.</param>
-		/// <param name="axis">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node by the specified angles.</summary>
+		/// <param name="angle">The angle.</param>
+		/// <param name="axis">The axis.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("rotateByAngle:aroundAxis:duration:")]
 		SCNAction RotateBy (nfloat angle, SCNVector3 axis, double durationInSeconds);
 
-		/// <param name="xAngle">To be added.</param>
-		/// <param name="yAngle">To be added.</param>
-		/// <param name="zAngle">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node to the specified orientation.</summary>
+		/// <param name="xAngle">The x angle.</param>
+		/// <param name="yAngle">The y angle.</param>
+		/// <param name="zAngle">The z angle.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("rotateToX:y:z:duration:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds);
 
-		/// <param name="xAngle">To be added.</param>
-		/// <param name="yAngle">To be added.</param>
-		/// <param name="zAngle">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <param name="shortestUnitArc">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node to the specified orientation.</summary>
+		/// <param name="xAngle">The x angle.</param>
+		/// <param name="yAngle">The y angle.</param>
+		/// <param name="zAngle">The z angle.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
+		/// <param name="shortestUnitArc">Whether to use the shortest rotation.</param>
 		[Static, Export ("rotateToX:y:z:duration:shortestUnitArc:")]
 		SCNAction RotateTo (nfloat xAngle, nfloat yAngle, nfloat zAngle, double durationInSeconds, bool shortestUnitArc);
 
+		/// <summary>Creates an action that rotates a node to the specified orientation.</summary>
+		/// <param name="axisAngle">The axis angle.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("rotateToAxisAngle:duration:")]
 		SCNAction RotateTo (SCNVector4 axisAngle, double durationInSeconds);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's scale by the specified factors.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("scaleBy:duration:")]
 		SCNAction ScaleBy (nfloat scale, double durationInSeconds);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that scales a node to the specified size or scale.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("scaleTo:duration:")]
 		SCNAction ScaleTo (nfloat scale, double durationInSeconds);
 
@@ -4965,31 +4979,36 @@ namespace SceneKit {
 		[Static, Export ("repeatActionForever:")]
 		SCNAction RepeatActionForever (SCNAction action);
 
+		/// <summary>Creates an action that fades a node in.</summary>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("fadeInWithDuration:")]
 		SCNAction FadeIn (double durationInSeconds);
 
+		/// <summary>Creates an action that fades a node out.</summary>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("fadeOutWithDuration:")]
 		SCNAction FadeOut (double durationInSeconds);
 
-		/// <param name="factor">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's opacity by the specified amount.</summary>
+		/// <param name="factor">The factor.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("fadeOpacityBy:duration:")]
 		SCNAction FadeOpacityBy (nfloat factor, double durationInSeconds);
 
-		/// <param name="opacity">To be added.</param>
-		/// <param name="durationInSeconds">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's opacity to the specified value.</summary>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("fadeOpacityTo:duration:")]
 		SCNAction FadeOpacityTo (nfloat opacity, double durationInSeconds);
 
+		/// <summary>Creates an action that waits for the specified duration.</summary>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
 		[Static, Export ("waitForDuration:")]
 		SCNAction Wait (double durationInSeconds);
 
+		/// <summary>Creates an action that waits for the specified duration.</summary>
+		/// <param name="durationInSeconds">The duration, in seconds.</param>
+		/// <param name="durationRange">The range of variation in the duration, in seconds.</param>
 		[Static, Export ("waitForDuration:withRange:")]
 		SCNAction Wait (double durationInSeconds, double durationRange);
 
@@ -5002,9 +5021,15 @@ namespace SceneKit {
 		[Static, Export ("runBlock:queue:")]
 		SCNAction Run (Action<SCNNode> handler, DispatchQueue queue);
 
+		/// <summary>Creates an action that runs the specified JavaScript.</summary>
+		/// <param name="script">The script.</param>
+		/// <param name="seconds">The duration, in seconds.</param>
 		[Static, Export ("javaScriptActionWithScript:duration:")]
 		SCNAction FromJavascript (string script, double seconds);
 
+		/// <summary>Creates an action that invokes a custom callback.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="handler">The callback to invoke.</param>
 		[Static, Export ("customActionWithDuration:actionBlock:")]
 		SCNAction CustomAction (double seconds, SCNActionNodeWithElapsedTimeHandler handler);
 
@@ -5341,6 +5366,11 @@ namespace SceneKit {
 	}
 
 	/// <summary>Delegate for the <see cref="SceneKit.SCNPhysicsField.CustomField(SceneKit.SCNFieldForceEvaluator)" /> method.</summary>
+	/// <param name="position">The position.</param>
+	/// <param name="velocity">The velocity.</param>
+	/// <param name="mass">The mass.</param>
+	/// <param name="charge">The charge.</param>
+	/// <param name="timeInSeconds">The time, in seconds.</param>
 	[MacCatalyst (13, 1)]
 	delegate SCNVector3 SCNFieldForceEvaluator (SCNVector3 position, SCNVector3 velocity, float /* float, not CGFloat */ mass, float /* float, not CGFloat */ charge, double timeInSeconds);
 
@@ -5467,6 +5497,8 @@ namespace SceneKit {
 		[Export ("speed")]
 		nfloat Speed { get; set; }
 
+		/// <summary>Gets or sets the time step.</summary>
+		/// <value>The time step, in seconds.</value>
 		[Export ("timeStep")]
 		double TimeStep { get; set; }
 
@@ -6438,6 +6470,8 @@ namespace SceneKit {
 		[Export ("animationWithCAAnimation:")]
 		SCNAnimation FromCAAnimation (CAAnimation caAnimation);
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; set; }
 
@@ -6447,9 +6481,13 @@ namespace SceneKit {
 		[Export ("timingFunction", ArgumentSemantic.Retain)]
 		SCNTimingFunction TimingFunction { get; set; }
 
+		/// <summary>Gets or sets the blend in duration.</summary>
+		/// <value>The blend in duration, in seconds.</value>
 		[Export ("blendInDuration")]
 		double BlendInDuration { get; set; }
 
+		/// <summary>Gets or sets the blend out duration.</summary>
+		/// <value>The blend out duration, in seconds.</value>
 		[Export ("blendOutDuration")]
 		double BlendOutDuration { get; set; }
 
@@ -6471,9 +6509,13 @@ namespace SceneKit {
 		[Export ("autoreverses")]
 		bool Autoreverses { get; set; }
 
+		/// <summary>Gets or sets the start delay.</summary>
+		/// <value>The start delay, in seconds.</value>
 		[Export ("startDelay")]
 		double StartDelay { get; set; }
 
+		/// <summary>Gets or sets the time offset.</summary>
+		/// <value>The time offset, in seconds.</value>
 		[Export ("timeOffset")]
 		double TimeOffset { get; set; }
 
@@ -6533,6 +6575,8 @@ namespace SceneKit {
 		[Export ("stop")]
 		void Stop ();
 
+		/// <summary>Stops playback with the specified blend-out duration.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
 		[Export ("stopWithBlendOutDuration:")]
 		void StopWithBlendOutDuration (double seconds);
 	}

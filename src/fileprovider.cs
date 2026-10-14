@@ -1070,6 +1070,8 @@ namespace FileProvider {
 		[NullAllowed, Export ("domainVersion")]
 		NSFileProviderDomainVersion DomainVersion { get; }
 
+		/// <summary>Gets the refresh interval.</summary>
+		/// <value>The refresh interval, in seconds.</value>
 		[Abstract]
 		[Export ("refreshInterval")]
 		double RefreshInterval { get; }

@@ -233,6 +233,9 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (NSAnimationDelegate) })]
 	interface NSAnimation : NSCoding, NSCopying {
+		/// <summary>Creates a new <see cref="NSAnimation" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="animationCurve">The animation curve.</param>
 		[DesignatedInitializer]
 		[Export ("initWithDuration:animationCurve:")]
 		NativeHandle Constructor (double duration, NSAnimationCurve animationCurve);
@@ -252,6 +255,8 @@ namespace AppKit {
 		[Export ("currentProgress")]
 		float CurrentProgress { get; set; } /* NSAnimationProgress = float */
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; set; }
 
@@ -399,6 +404,8 @@ namespace AppKit {
 		[Export ("currentContext")]
 		NSAnimationContext CurrentContext { get; }
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		//Detected properties
 		[Export ("duration")]
 		double Duration { get; set; }
@@ -6474,6 +6481,8 @@ namespace AppKit {
 		[Export ("dateValue", ArgumentSemantic.Copy)]
 		NSDate DateValue { get; set; }
 
+		/// <summary>Gets or sets the time interval.</summary>
+		/// <value>The time interval, in seconds.</value>
 		[Export ("timeInterval")]
 		double TimeInterval { get; set; }
 
@@ -6537,6 +6546,8 @@ namespace AppKit {
 		[Export ("dateValue", ArgumentSemantic.Copy)]
 		NSDate DateValue { get; set; }
 
+		/// <summary>Gets or sets the time interval.</summary>
+		/// <value>The time interval, in seconds.</value>
 		[Export ("timeInterval")]
 		double TimeInterval { get; set; }
 
@@ -6564,14 +6575,13 @@ namespace AppKit {
 	[Model]
 	[Protocol]
 	interface NSDatePickerCellDelegate {
-		/// <param name="aDatePickerCell">To be added.</param>
-		/// <param name="proposedDateValue">To be added.</param>
-		/// <param name="proposedTimeInterval">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Validates the proposed date and time interval.</summary>
+		/// <param name="aDatePickerCell">The date picker cell being validated.</param>
+		/// <param name="proposedDateValue">The proposed date, which can be changed by the delegate.</param>
+		/// <param name="proposedTimeInterval">The proposed time interval, in seconds.</param>
 		[Export ("datePickerCell:validateProposedDateValue:timeInterval:"), EventArgs ("NSDatePickerValidator", XmlDocs = """
-			<summary>To be added.</summary>
-			<remarks>To be added.</remarks>
+			<summary>Raised for the <c>ValidateProposedDateValue</c> delegate callback.</summary>
+			<remarks>The <c>ProposedTimeInterval</c> value is expressed in seconds.</remarks>
 			""")]
 		void ValidateProposedDateValue (NSDatePickerCell aDatePickerCell, ref NSDate proposedDateValue, double proposedTimeInterval);
 	}
@@ -7176,6 +7186,8 @@ namespace AppKit {
 		bool ValidateUserInterfaceItem (INSValidatedUserInterfaceItem anItem);
 #pragma warning restore
 
+		/// <summary>Gets or sets the autosaving delay.</summary>
+		/// <value>The autosaving delay, in seconds.</value>
 		//Detected properties
 		[Export ("autosavingDelay")]
 		double AutosavingDelay { get; set; }
@@ -9094,6 +9106,8 @@ namespace AppKit {
 		[Export ("modifierFlags")]
 		NSEventModifierMask ModifierFlags { get; }
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -9293,6 +9307,9 @@ namespace AppKit {
 		[Export ("touchesMatchingPhase:inView:")]
 		NSSet TouchesMatchingPhase (NSTouchPhase phase, NSView view);
 
+		/// <summary>Starts generating periodic events after the specified delay.</summary>
+		/// <param name="delay">The delay, in seconds.</param>
+		/// <param name="period">The period, in seconds.</param>
 		[Static]
 		[Export ("startPeriodicEventsAfterDelay:withPeriod:")]
 		void StartPeriodicEventsAfterDelay (double delay, double period);
@@ -9301,18 +9318,59 @@ namespace AppKit {
 		[Export ("stopPeriodicEvents")]
 		void StopPeriodicEvents ();
 
+		/// <summary>Creates a mouse event with the specified timestamp.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="location">The location.</param>
+		/// <param name="flags">The modifier flags for the event.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="wNum">The window number.</param>
+		/// <param name="context">The context.</param>
+		/// <param name="eNum">The event number.</param>
+		/// <param name="cNum">The click count.</param>
+		/// <param name="pressure">The pressure.</param>
 		[Static]
 		[Export ("mouseEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:clickCount:pressure:")]
 		NSEvent MouseEvent (NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, [NullAllowed] NSGraphicsContext context, nint eNum, nint cNum, float /* float, not CGFloat */ pressure);
 
+		/// <summary>Creates a keyboard event with the specified timestamp.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="location">The location.</param>
+		/// <param name="flags">The modifier flags for the event.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="wNum">The window number.</param>
+		/// <param name="context">The context.</param>
+		/// <param name="keys">The characters associated with the event.</param>
+		/// <param name="ukeys">The characters ignoring modifier keys.</param>
+		/// <param name="isARepeat">Whether this is a repeated key event.</param>
+		/// <param name="code">The key code.</param>
 		[Static]
 		[Export ("keyEventWithType:location:modifierFlags:timestamp:windowNumber:context:characters:charactersIgnoringModifiers:isARepeat:keyCode:")]
 		NSEvent KeyEvent (NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, [NullAllowed] NSGraphicsContext context, string keys, string ukeys, bool isARepeat, ushort code);
 
+		/// <summary>Creates a mouse-entered or mouse-exited event with the specified timestamp.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="location">The location.</param>
+		/// <param name="flags">The modifier flags for the event.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="wNum">The window number.</param>
+		/// <param name="context">The context.</param>
+		/// <param name="eNum">The event number.</param>
+		/// <param name="tNum">The tracking area number.</param>
+		/// <param name="data">The data.</param>
 		[Static]
 		[Export ("enterExitEventWithType:location:modifierFlags:timestamp:windowNumber:context:eventNumber:trackingNumber:userData:")]
 		NSEvent EnterExitEvent (NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, [NullAllowed] NSGraphicsContext context, nint eNum, nint tNum, IntPtr data);
 
+		/// <summary>Creates an event with the specified timestamp and application-defined data.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="location">The location.</param>
+		/// <param name="flags">The modifier flags for the event.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="wNum">The window number.</param>
+		/// <param name="context">The context.</param>
+		/// <param name="subtype">The subtype.</param>
+		/// <param name="d1">The first application-defined data value.</param>
+		/// <param name="d2">The second application-defined data value.</param>
 		[Static]
 		[Export ("otherEventWithType:location:modifierFlags:timestamp:windowNumber:context:subtype:data1:data2:")]
 		NSEvent OtherEvent (NSEventType type, CGPoint location, NSEventModifierMask flags, double time, nint wNum, [NullAllowed] NSGraphicsContext context, short subtype, nint d1, nint d2);
@@ -9329,14 +9387,20 @@ namespace AppKit {
 		[Export ("pressedMouseButtons")]
 		nuint CurrentPressedMouseButtons { get; }
 
+		/// <summary>Gets the double click interval.</summary>
+		/// <value>The double click interval, in seconds.</value>
 		[Static]
 		[Export ("doubleClickInterval")]
 		double DoubleClickInterval { get; }
 
+		/// <summary>Gets the key repeat delay.</summary>
+		/// <value>The key repeat delay, in seconds.</value>
 		[Static]
 		[Export ("keyRepeatDelay")]
 		double KeyRepeatDelay { get; }
 
+		/// <summary>Gets the key repeat interval.</summary>
+		/// <value>The key repeat interval, in seconds.</value>
 		[Static]
 		[Export ("keyRepeatInterval")]
 		double KeyRepeatInterval { get; }
@@ -13345,6 +13409,8 @@ namespace AppKit {
 		[Export ("buttonMask")]
 		nuint ButtonMask { get; set; }
 
+		/// <summary>Gets or sets the minimum press duration.</summary>
+		/// <value>The minimum press duration, in seconds.</value>
 		[Export ("minimumPressDuration")]
 		double MinimumPressDuration { get; set; }
 
@@ -16425,15 +16491,23 @@ namespace AppKit {
 		[Export ("maximumFramesPerSecond")]
 		nint MaximumFramesPerSecond { get; }
 
+		/// <summary>Gets the minimum refresh interval.</summary>
+		/// <value>The minimum refresh interval, in seconds.</value>
 		[Export ("minimumRefreshInterval")]
 		double MinimumRefreshInterval { get; }
 
+		/// <summary>Gets the maximum refresh interval.</summary>
+		/// <value>The maximum refresh interval, in seconds.</value>
 		[Export ("maximumRefreshInterval")]
 		double MaximumRefreshInterval { get; }
 
+		/// <summary>Gets the display update granularity.</summary>
+		/// <value>The display update granularity, in seconds.</value>
 		[Export ("displayUpdateGranularity")]
 		double DisplayUpdateGranularity { get; }
 
+		/// <summary>Gets the last display update timestamp.</summary>
+		/// <value>The last display update timestamp, in seconds.</value>
 		[Export ("lastDisplayUpdateTimestamp")]
 		double LastDisplayUpdateTimestamp { get; }
 
@@ -17867,6 +17941,8 @@ namespace AppKit {
 		[Export ("isPlaying")]
 		bool IsPlaying ();
 
+		/// <summary>Gets the duration of the sound.</summary>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("duration")]
 		double Duration ();
 
@@ -17889,6 +17965,8 @@ namespace AppKit {
 		[Export ("volume")]
 		float Volume { get; set; } /* float, not CGFloat */
 
+		/// <summary>Gets or sets the current time.</summary>
+		/// <value>The current time, in seconds.</value>
 		[Export ("currentTime")]
 		double CurrentTime { get; set; }
 
@@ -20247,6 +20325,9 @@ namespace AppKit {
 		[Export ("initWithViewAnimations:")]
 		NativeHandle Constructor (NSDictionary [] viewAnimations);
 
+		/// <summary>Creates a new <see cref="NSViewAnimation" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="animationCurve">The animation curve.</param>
 		[DesignatedInitializer]
 		[Export ("initWithDuration:animationCurve:")]
 		NativeHandle Constructor (double duration, NSAnimationCurve animationCurve);
@@ -22996,9 +23077,13 @@ namespace AppKit {
 		[Export ("tokenStyle")]
 		NSTokenStyle TokenStyle { get; set; }
 
+		/// <summary>Gets or sets the completion delay.</summary>
+		/// <value>The completion delay, in seconds.</value>
 		[Export ("completionDelay")]
 		double CompletionDelay { get; set; }
 
+		/// <summary>Gets the default completion delay.</summary>
+		/// <value>The default completion delay, in seconds.</value>
 		[Static]
 		[Export ("defaultCompletionDelay")]
 		double DefaultCompletionDelay { get; }
@@ -24324,9 +24409,13 @@ namespace AppKit {
 		[Export ("tokenStyle")]
 		NSTokenStyle TokenStyle { get; set; }
 
+		/// <summary>Gets or sets the completion delay.</summary>
+		/// <value>The completion delay, in seconds.</value>
 		[Export ("completionDelay")]
 		double CompletionDelay { get; set; }
 
+		/// <summary>Gets the default completion delay.</summary>
+		/// <value>The default completion delay, in seconds.</value>
 		[Static]
 		[Export ("defaultCompletionDelay")]
 		double DefaultCompletionDelay { get; }
@@ -25536,6 +25625,9 @@ namespace AppKit {
 		[ThreadSafe] // Bug 22909 - This can be called from a non-ui thread <= OS X 10.9
 		CGRect Frame { get; }
 
+		/// <summary>Gets the duration of an animated resize to the specified frame.</summary>
+		/// <param name="newFrame">The new frame.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("animationResizeTime:")]
 		double AnimationResizeTime (CGRect newFrame);
 
@@ -26363,6 +26455,11 @@ namespace AppKit {
 		[Export ("contentViewController", ArgumentSemantic.Strong)]
 		NSViewController ContentViewController { get; set; }
 
+		/// <summary>Tracks events matching the specified mask.</summary>
+		/// <param name="mask">The event types to track.</param>
+		/// <param name="timeout">The timeout, in seconds.</param>
+		/// <param name="mode">The mode.</param>
+		/// <param name="trackingHandler">The handler invoked for tracked events.</param>
 		[Export ("trackEventsMatchingMask:timeout:mode:handler:")]
 		void TrackEventsMatching (NSEventMask mask, double timeout, string mode, NSWindowTrackEventsMatchingCompletionHandler trackingHandler);
 
@@ -27014,23 +27111,21 @@ namespace AppKit {
 		[Export ("customWindowsToExitFullScreenForWindow:"), DelegateName ("NSWindowWindows"), DefaultValue (null)]
 		NSWindow [] CustomWindowsToExitFullScreen (NSWindow window);
 
-		/// <param name="window">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Starts the custom full-screen animation.</summary>
+		/// <param name="window">The window.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("window:startCustomAnimationToEnterFullScreenWithDuration:"), EventArgs ("NSWindowDuration", XmlDocs = """
-			<summary>To be added.</summary>
-			<remarks>To be added.</remarks>
+			<summary>Raised for the <c>StartCustomAnimationToEnterFullScreen</c> delegate callback.</summary>
+			<remarks>The <c>Duration</c> value is expressed in seconds.</remarks>
 			""")]
 		void StartCustomAnimationToEnterFullScreen (NSWindow window, double duration);
 
-		/// <param name="window">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Starts the custom full-screen animation.</summary>
+		/// <param name="window">The window.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("window:startCustomAnimationToExitFullScreenWithDuration:"), EventArgs ("NSWindowDuration", XmlDocs = """
-			<summary>To be added.</summary>
-			<remarks>To be added.</remarks>
+			<summary>Raised for the <c>StartCustomAnimationToExitFullScreen</c> delegate callback.</summary>
+			<remarks>The <c>Duration</c> value is expressed in seconds.</remarks>
 			""")]
 		void StartCustomAnimationToExitFullScreen (NSWindow window, double duration);
 
@@ -32914,9 +33009,19 @@ namespace AppKit {
 		[Export ("openGLContextForPixelFormat:")]
 		NSOpenGLContext GetOpenGLContext (NSOpenGLPixelFormat pixelFormat);
 
+		/// <summary>Determines whether the layer can draw at the specified time.</summary>
+		/// <param name="context">The context.</param>
+		/// <param name="pixelFormat">The pixel format.</param>
+		/// <param name="t">The time, in seconds.</param>
+		/// <param name="ts">The display timestamp.</param>
 		[Export ("canDrawInOpenGLContext:pixelFormat:forLayerTime:displayTime:")]
 		bool CanDraw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, ref CVTimeStamp ts);
 
+		/// <summary>Draws the layer at the specified time.</summary>
+		/// <param name="context">The context.</param>
+		/// <param name="pixelFormat">The pixel format.</param>
+		/// <param name="t">The time, in seconds.</param>
+		/// <param name="ts">The display timestamp.</param>
 		[Export ("drawInOpenGLContext:pixelFormat:forLayerTime:displayTime:")]
 		void Draw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, ref CVTimeStamp ts);
 	}

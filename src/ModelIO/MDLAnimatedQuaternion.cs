@@ -21,6 +21,9 @@ using Quaterniond = global::CoreGraphics.NQuaterniond;
 
 namespace ModelIO {
 	public partial class MDLAnimatedQuaternion {
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Quaternion [] values, double [] times)
 		{
 			if (values is null)
@@ -37,6 +40,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Quaterniond [] values, double [] times)
 		{
 			if (values is null)

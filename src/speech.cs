@@ -261,6 +261,9 @@ namespace Speech {
 		[Export ("speechRecognitionTask:didFinishSuccessfully:")]
 		void DidFinishSuccessfully (SFSpeechRecognitionTask task, bool successfully);
 
+		/// <summary>Notifies the delegate of the duration of audio processed.</summary>
+		/// <param name="task">The task.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[iOS (18, 0), TV (18, 0)]
 		[Export ("speechRecognitionTask:didProcessAudioDuration:")]
 		void DidProcessAudioDuration (SFSpeechRecognitionTask task, double duration);
@@ -347,12 +350,18 @@ namespace Speech {
 		[Export ("speakingRate")]
 		double SpeakingRate { get; }
 
+		/// <summary>Gets the average pause duration.</summary>
+		/// <value>The average pause duration, in seconds.</value>
 		[Export ("averagePauseDuration")]
 		double AveragePauseDuration { get; }
 
+		/// <summary>Gets the speech start timestamp.</summary>
+		/// <value>The speech start timestamp, in seconds.</value>
 		[Export ("speechStartTimestamp")]
 		double SpeechStartTimestamp { get; }
 
+		/// <summary>Gets the speech duration.</summary>
+		/// <value>The speech duration, in seconds.</value>
 		[Export ("speechDuration")]
 		double SpeechDuration { get; }
 
@@ -381,6 +390,8 @@ namespace Speech {
 		[Advice ("Use 'SpeakingRate' from 'SFSpeechRecognitionMetadata' instead.")]
 		double SpeakingRate { get; }
 
+		/// <summary>Gets the average pause duration.</summary>
+		/// <value>The average pause duration, in seconds.</value>
 		[Export ("averagePauseDuration")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
 		[MacCatalyst (13, 1)]
@@ -401,9 +412,13 @@ namespace Speech {
 		[Export ("substringRange")]
 		NSRange SubstringRange { get; }
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
@@ -430,6 +445,8 @@ namespace Speech {
 		[Export ("acousticFeatureValuePerFrame", ArgumentSemantic.Copy)]
 		NSNumber [] AcousticFeatureValuePerFrame { get; }
 
+		/// <summary>Gets the frame duration.</summary>
+		/// <value>The frame duration, in seconds.</value>
 		[Export ("frameDuration")]
 		double FrameDuration { get; }
 	}

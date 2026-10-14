@@ -42,11 +42,10 @@ namespace Foundation {
 			return CreateScheduledTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
-		/// <param name="seconds">To be added.</param>
-		///         <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates and schedules a repeating timer.</summary>
+		/// <param name="seconds">The interval between firings, in seconds.</param>
+		/// <param name="action">The action to invoke when the timer fires.</param>
+		/// <returns>The scheduled timer.</returns>
 		public static NSTimer CreateRepeatingScheduledTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
@@ -62,11 +61,10 @@ namespace Foundation {
 			return CreateScheduledTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
-		/// <param name="seconds">To be added.</param>
-		///         <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates and schedules a timer that fires once.</summary>
+		/// <param name="seconds">The delay before the timer fires, in seconds.</param>
+		/// <param name="action">The action to invoke when the timer fires.</param>
+		/// <returns>The scheduled timer.</returns>
 		public static NSTimer CreateScheduledTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateScheduledTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
@@ -82,11 +80,10 @@ namespace Foundation {
 			return CreateTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
 		}
 
-		/// <param name="seconds">To be added.</param>
-		///         <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an unscheduled repeating timer.</summary>
+		/// <param name="seconds">The interval between firings, in seconds.</param>
+		/// <param name="action">The action to invoke when the timer fires.</param>
+		/// <returns>The unscheduled timer.</returns>
 		public static NSTimer CreateRepeatingTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, true);
@@ -102,11 +99,10 @@ namespace Foundation {
 			return CreateTimer (when.TotalSeconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);
 		}
 
-		/// <param name="seconds">To be added.</param>
-		///         <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an unscheduled timer that fires once.</summary>
+		/// <param name="seconds">The delay before the timer fires, in seconds.</param>
+		/// <param name="action">The action to invoke when the timer fires.</param>
+		/// <returns>The unscheduled timer.</returns>
 		public static NSTimer CreateTimer (double seconds, Action<NSTimer> action)
 		{
 			return CreateTimer (seconds, new NSTimerActionDispatcher (action), NSTimerActionDispatcher.Selector, null, false);

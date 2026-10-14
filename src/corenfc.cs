@@ -175,16 +175,14 @@ namespace CoreNFC {
 		[Export ("initWithManufacturerCode:customCommandCode:requestParameters:")]
 		NativeHandle Constructor (nuint manufacturerCode, nuint customCommandCode, [NullAllowed] NSData requestParameters);
 
-		/// <param name="manufacturerCode">To be added.</param>
-		/// <param name="customCommandCode">To be added.</param>
+		/// <summary>Creates a new <see cref="NFCIso15693CustomCommandConfiguration" /> instance.</summary>
+		/// <param name="manufacturerCode">The manufacturer code.</param>
+		/// <param name="customCommandCode">The custom command code.</param>
 		/// <param name="requestParameters">
-		///           <para>To be added.</para>
-		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-		///         </param>
-		/// <param name="maximumRetries">To be added.</param>
-		/// <param name="retryInterval">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <param name="maximumRetries">The maximum number of retries.</param>
+		/// <param name="retryInterval">The retry interval, in seconds.</param>
 		[Export ("initWithManufacturerCode:customCommandCode:requestParameters:maximumRetries:retryInterval:")]
 		NativeHandle Constructor (nuint manufacturerCode, nuint customCommandCode, [NullAllowed] NSData requestParameters, nuint maximumRetries, double retryInterval);
 	}
@@ -213,12 +211,11 @@ namespace CoreNFC {
 		[Export ("initWithRange:chunkSize:")]
 		NativeHandle Constructor (NSRange range, nuint chunkSize);
 
-		/// <param name="range">To be added.</param>
-		/// <param name="chunkSize">To be added.</param>
-		/// <param name="maximumRetries">To be added.</param>
-		/// <param name="retryInterval">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="NFCIso15693ReadMultipleBlocksConfiguration" /> instance.</summary>
+		/// <param name="range">The range.</param>
+		/// <param name="chunkSize">The chunk size.</param>
+		/// <param name="maximumRetries">The maximum number of retries.</param>
+		/// <param name="retryInterval">The retry interval, in seconds.</param>
 		[Export ("initWithRange:chunkSize:maximumRetries:retryInterval:")]
 		NativeHandle Constructor (NSRange range, nuint chunkSize, nuint maximumRetries, double retryInterval);
 	}

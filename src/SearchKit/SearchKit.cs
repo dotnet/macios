@@ -64,6 +64,12 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		unsafe extern static byte SKSearchFindMatches (IntPtr handle, nint maxCount, IntPtr ids, IntPtr scores, double time, nint* foundCount);
 
+		/// <summary>Finds matching documents within the specified time limit.</summary>
+		/// <param name="maxCount">The maximum number of matches to return.</param>
+		/// <param name="ids">The array in which to store matching document identifiers.</param>
+		/// <param name="waitTime">The maximum time, in seconds, to spend searching.</param>
+		/// <param name="foundCount">On return, the number of matches found.</param>
+		/// <returns>Whether the search can return more matches.</returns>
 		public bool FindMatches (nint maxCount, ref nint [] ids, double waitTime, out nint foundCount)
 		{
 			if (ids is null)
@@ -82,6 +88,13 @@ namespace SearchKit {
 			}
 		}
 
+		/// <summary>Finds matching documents and their relevance scores within the specified time limit.</summary>
+		/// <param name="maxCount">The maximum number of matches to return.</param>
+		/// <param name="ids">The array in which to store matching document identifiers.</param>
+		/// <param name="scores">The array in which to store relevance scores, or <see langword="null" /> to omit scores.</param>
+		/// <param name="waitTime">The maximum time, in seconds, to spend searching.</param>
+		/// <param name="foundCount">On return, the number of matches found.</param>
+		/// <returns>Whether the search can return more matches.</returns>
 		public bool FindMatches (nint maxCount, ref nint [] ids, ref float []? scores, double waitTime, out nint foundCount)
 		{
 			if (ids is null)

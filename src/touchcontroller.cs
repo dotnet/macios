@@ -115,6 +115,8 @@ namespace TouchController {
 		[Export ("handleTouchEndedAtPoint:")]
 		void HandleTouchEnded (CGPoint point);
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 	}
@@ -187,6 +189,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 	}
@@ -357,6 +361,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 
@@ -443,6 +449,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 	}
@@ -502,6 +510,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 	}
@@ -676,6 +686,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 
@@ -804,6 +816,8 @@ namespace TouchController {
 		[Export ("colliderShape", ArgumentSemantic.Assign)]
 		TCColliderShape ColliderShape { get; set; }
 
+		/// <summary>Gets or sets the highlight duration.</summary>
+		/// <value>The highlight duration, in seconds.</value>
 		[Export ("highlightDuration")]
 		double HighlightDuration { get; set; }
 	}

@@ -1420,6 +1420,7 @@ namespace CoreImage {
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Async (XmlDocs = """
 			<summary>Asynchronously downloads on-demand resources required to decode the filter's image.</summary>
+			<param name="timeout">The timeout, in seconds.</param>
 			<returns>A task that represents the asynchronous download operation.</returns>
 			""")]
 		[Export ("downloadResourcesWithTimeout:completionHandler:")]
@@ -9021,9 +9022,8 @@ namespace CoreImage {
 	[DisableDefaultCtor] // no docs, but only returned from CIRenderTask.WaitUntilCompleted. Handle is null if created thru `init`
 	interface CIRenderInfo {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the kernel execution time.</summary>
+		/// <value>The kernel execution time, in seconds.</value>
 		[Export ("kernelExecutionTime")]
 		double KernelExecutionTime { get; }
 
@@ -9039,6 +9039,8 @@ namespace CoreImage {
 		[Export ("pixelsProcessed")]
 		nint PixelsProcessed { get; }
 
+		/// <summary>Gets the kernel compile time.</summary>
+		/// <value>The kernel compile time, in seconds.</value>
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("kernelCompileTime")]
 		double KernelCompileTime { get; }

@@ -15894,10 +15894,14 @@ namespace Intents {
 	[DisableDefaultCtor]
 	interface INTimeIntervalResolutionResult {
 
+		/// <summary>Gets the success.</summary>
+		/// <param name="resolvedTimeInterval">The resolved time interval, in seconds.</param>
 		[Static]
 		[Export ("successWithResolvedTimeInterval:")]
 		INTimeIntervalResolutionResult GetSuccess (double resolvedTimeInterval);
 
+		/// <summary>Creates a result requiring confirmation of the specified time interval.</summary>
+		/// <param name="timeIntervalToConfirm">The time interval to confirm, in seconds.</param>
 		[Static]
 		[Export ("confirmationRequiredWithTimeIntervalToConfirm:")]
 		INTimeIntervalResolutionResult ConfirmationRequired (double timeIntervalToConfirm);

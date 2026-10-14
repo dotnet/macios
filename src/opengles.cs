@@ -121,10 +121,16 @@ namespace OpenGLES {
 		[Export ("presentRenderbuffer:")]
 		bool PresentRenderBuffer (nuint target);
 
+		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="presentationTime">The presentation time, in seconds.</param>
 		[Internal]
 		[Export ("presentRenderbuffer:atTime:")]
 		bool _PresentRenderbufferAtTime (nuint target, double presentationTime);
 
+		/// <summary>Presents the renderbuffer after the specified minimum duration.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Internal]
 		[Export ("presentRenderbuffer:afterMinimumDuration:")]
 		bool _PresentRenderbufferAfterMinimumDuration (nuint target, double duration);

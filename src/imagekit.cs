@@ -1973,14 +1973,15 @@ namespace ImageKit {
 		IKSlideshow SharedSlideshow { get; }
 
 #if !XAMCORE_5_0
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the auto play delay.</summary>
+		/// <value>The auto play delay, in seconds.</value>
 		[Obsolete ("Use the 'AutoPlayDelay' property instead.")]
 		[Wrap ("AutoPlayDelay", IsVirtual = true)]
 		double autoPlayDelay { get; set; }
 #endif
 
+		/// <summary>Gets or sets the auto play delay.</summary>
+		/// <value>The auto play delay, in seconds.</value>
 		[Export ("autoPlayDelay")]
 		double AutoPlayDelay { get; set; }
 

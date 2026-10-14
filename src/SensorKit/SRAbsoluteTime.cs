@@ -15,14 +15,14 @@ namespace SensorKit {
 		public static extern /* SRAbsoluteTime */ double GetCurrent ();
 
 		/// <summary>Converts a Core Foundation absolute time value to a SensorKit absolute time value.</summary>
-		/// <param name="cfAbsoluteTime">The Core Foundation absolute time to convert.</param>
+		/// <param name="cfAbsoluteTime">The Core Foundation absolute time to convert, in seconds since January 1, 2001 at 00:00:00 UTC.</param>
 		/// <returns>The equivalent SensorKit absolute time value.</returns>
 		[DllImport (Constants.SensorKitLibrary, EntryPoint = "SRAbsoluteTimeFromCFAbsoluteTime")]
 		public static extern /* SRAbsoluteTime */ double FromCFAbsoluteTime (/* CFAbsoluteTime */ double cfAbsoluteTime);
 
 		/// <summary>Converts a SensorKit absolute time value to a Core Foundation absolute time value.</summary>
 		/// <param name="srAbsoluteTime">The SensorKit absolute time to convert.</param>
-		/// <returns>The equivalent Core Foundation absolute time value.</returns>
+		/// <returns>The equivalent Core Foundation absolute time, in seconds since January 1, 2001 at 00:00:00 UTC.</returns>
 		[DllImport (Constants.SensorKitLibrary, EntryPoint = "SRAbsoluteTimeToCFAbsoluteTime")]
 		public static extern /* CFAbsoluteTime */ double ToCFAbsoluteTime (double srAbsoluteTime);
 

@@ -410,6 +410,8 @@ namespace Messages {
 		[NullAllowed, Export ("sticker", ArgumentSemantic.Strong)]
 		MSSticker Sticker { get; set; }
 
+		/// <summary>Gets the animation duration.</summary>
+		/// <value>The animation duration, in seconds.</value>
 		[Export ("animationDuration")]
 		double AnimationDuration { get; }
 

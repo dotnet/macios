@@ -1977,6 +1977,8 @@ namespace MapKit {
 		[Export ("destination")]
 		MKMapItem Destination { get; }
 
+		/// <summary>Gets the expected travel time.</summary>
+		/// <value>The expected travel time, in seconds.</value>
 		[Export ("expectedTravelTime")]
 		double ExpectedTravelTime { get; }
 
@@ -2024,6 +2026,8 @@ namespace MapKit {
 		[Export ("distance")]
 		double Distance { get; }
 
+		/// <summary>Gets the expected travel time.</summary>
+		/// <value>The expected travel time, in seconds.</value>
 		[Export ("expectedTravelTime")]
 		double ExpectedTravelTime { get; }
 

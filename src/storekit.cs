@@ -123,6 +123,8 @@ namespace StoreKit {
 		[Export ("progress")]
 		float Progress { get; } /* float, not CGFloat */
 
+		/// <summary>Gets the time remaining.</summary>
+		/// <value>The time remaining, in seconds.</value>
 		[Export ("timeRemaining")]
 		double TimeRemaining { get; }
 
@@ -142,9 +144,7 @@ namespace StoreKit {
 		void DeleteContentForProduct (string productId);
 
 		/// <summary>Represents the value associated with the constant SKDownloadTimeRemainingUnknown</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>A value indicating that the remaining time is unknown; known remaining times are measured in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("SKDownloadTimeRemainingUnknown")]
 		double TimeRemainingUnknown { get; }

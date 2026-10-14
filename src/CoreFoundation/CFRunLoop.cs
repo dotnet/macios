@@ -377,6 +377,11 @@ namespace CoreFoundation {
 			return result;
 		}
 
+		/// <summary>Runs the run loop in the specified mode for the specified duration.</summary>
+		/// <param name="mode">The mode in which to run the run loop.</param>
+		/// <param name="seconds">The duration, in seconds. A value of zero performs a single pass.</param>
+		/// <param name="returnAfterSourceHandled">Whether to return after handling a single source.</param>
+		/// <returns>The reason the run loop stopped running.</returns>
 		public CFRunLoopExitReason RunInMode (string mode, double seconds, bool returnAfterSourceHandled)
 		{
 			return RunInMode ((NSString) mode, seconds, returnAfterSourceHandled);

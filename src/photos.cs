@@ -69,6 +69,8 @@ namespace Photos {
 		[NullAllowed]
 		CLLocation Location { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration", ArgumentSemantic.Assign)]
 		double Duration { get; }
 

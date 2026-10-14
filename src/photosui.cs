@@ -174,6 +174,11 @@ namespace PhotosUI {
 		[Export ("livePhotoView:didEndPlaybackWithStyle:")]
 		void DidEndPlayback (PHLivePhotoView livePhotoView, PHLivePhotoViewPlaybackStyle playbackStyle);
 
+		/// <summary>Gets the additional minimum touch duration before playback starts.</summary>
+		/// <param name="livePhotoView">The live photo view.</param>
+		/// <param name="touch">The touch.</param>
+		/// <param name="playbackStyle">The playback style.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("livePhotoView:extraMinimumTouchDurationForTouch:withStyle:")]

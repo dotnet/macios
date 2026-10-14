@@ -2103,8 +2103,7 @@ namespace CoreData {
 		bool RetainsRegisteredObjects { get; set; }
 
 		/// <summary>Gets or sets the maximum elapsed time after fetching which causes fault fulfillment to fetch new data.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The staleness interval, in seconds.</value>
 		[Export ("stalenessInterval")]
 		double StalenessInterval { get; set; }
 
@@ -3569,8 +3568,7 @@ namespace CoreData {
 		bool IsReadOnly { [Bind ("isReadOnly")] get; set; }
 
 		/// <summary>Gets or sets the connection timeout interval.</summary>
-		///         <value>The connection timeout interval.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The connection timeout interval. This value is expressed in seconds.</value>
 		[Export ("timeout")]
 		double Timeout { get; set; }
 

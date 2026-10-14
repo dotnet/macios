@@ -1278,9 +1278,13 @@ namespace GLKit {
 		[Export ("timeSinceLastResume")]
 		double TimeSinceLastResume { get; }
 
+		/// <summary>Gets the time since last update.</summary>
+		/// <value>The time since last update, in seconds.</value>
 		[Export ("timeSinceLastUpdate")]
 		double TimeSinceLastUpdate { get; }
 
+		/// <summary>Gets the time since last draw.</summary>
+		/// <value>The time since last draw, in seconds.</value>
 		[Export ("timeSinceLastDraw")]
 		double TimeSinceLastDraw { get; }
 

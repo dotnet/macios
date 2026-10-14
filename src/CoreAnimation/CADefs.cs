@@ -36,9 +36,8 @@ using CoreGraphics;
 namespace CoreAnimation {
 
 	partial class CAAnimation {
-		/// <summary>The current animation time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the current animation time.</summary>
+		/// <returns>The current animation time, in seconds.</returns>
 		[DllImport (Constants.QuartzLibrary, EntryPoint = "CACurrentMediaTime")]
 		public extern static /* CFTimeInterval */ double CurrentMediaTime ();
 	}

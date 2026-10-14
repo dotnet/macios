@@ -27,6 +27,109 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (ex.Message, Is.EqualTo (unavailableMessage), "Unavailable data");
 				Assert.That (count, Is.EqualTo (0), "An unavailable collection must not invoke the callback");
 				Console.WriteLine (unavailableMessage);
+				return;
+			}
+			Assert.That (count, Is.GreaterThan (0), "An accessible collection must invoke the callback");
+		}
+
+		[Test]
+		public void OptionalAccessRequiresCallbacks ()
+		{
+			const string unavailableMessage = "Unavailable";
+			Assert.Throws<AssertionException> (() =>
+				CheckOptionalAccess<int> (callback => { }, value => { }, unavailableMessage), "Missing callback");
+			CheckOptionalAccess<int> (callback => callback (42),
+				value => Assert.That (value, Is.EqualTo (42), "Callback value"), unavailableMessage);
+			CheckOptionalAccess<int> (callback => throw new InvalidOperationException (unavailableMessage),
+				value => Assert.Fail ("Unavailable callback"), unavailableMessage);
+		}
+
+		[Test]
+		public void SignatureAlgorithmsDuringChallenge ()
+		{
+			TestRuntime.AssertXcodeVersion (11, 0);
+
+			var (pfxData, password) = MonoTests.System.Net.Http.TlsTestServer.CreateSelfSignedServerCertificatePfx ();
+			using var identity = SecIdentity.Import (pfxData, password);
+			using var tlsIdentity = new SecIdentity2 (identity);
+			using var queue = new DispatchQueue ("SecProtocolMetadataTest.SignatureAlgorithmsDuringChallenge");
+			using var listenerReady = new ManualResetEvent (false);
+			using var challengeDone = new ManualResetEvent (false);
+			var algorithms = new List<ushort> ();
+			Exception challengeError = null;
+			var stopping = false;
+
+			using var serverParameters = NWParameters.CreateSecureTcp (configureTls: tlsOptions => {
+				using var options = ((NWProtocolTlsOptions) tlsOptions).ProtocolOptions;
+				options.SetLocalIdentity (tlsIdentity);
+				options.SetPeerAuthenticationRequired (true);
+				options.SetVerifyBlock ((metadata, trust, complete) => complete (true), queue);
+			});
+			using var clientParameters = NWParameters.CreateSecureTcp (configureTls: tlsOptions => {
+				using var options = ((NWProtocolTlsOptions) tlsOptions).ProtocolOptions;
+				options.SetVerifyBlock ((metadata, trust, complete) => complete (true), queue);
+				options.SetChallengeBlock ((metadata, complete) => {
+					if (stopping) {
+						complete (null);
+						return;
+					}
+					try {
+						metadata.SetSignatureAlgorithmsForPeerHandler (algorithm => algorithms.Add (algorithm));
+					} catch (Exception ex) {
+						// Report on the test thread rather than throwing across the native callback.
+						challengeError = ex;
+					} finally {
+						complete (tlsIdentity);
+						challengeDone.Set ();
+					}
+				}, queue);
+			});
+			using var localEndpoint = NWEndpoint.Create ("127.0.0.1", "0");
+			serverParameters.LocalEndpoint = localEndpoint;
+			using var listener = NWListener.Create (serverParameters);
+			Assert.That (listener, Is.Not.Null, "Listener");
+			listener.ConnectionLimit = 1;
+			var listenerState = NWListenerState.Invalid;
+			NWConnection client = null;
+			NWConnection server = null;
+			listener.SetQueue (queue);
+			listener.SetStateChangedHandler ((state, error) => {
+				listenerState = state;
+				if (state == NWListenerState.Ready || state == NWListenerState.Failed)
+					listenerReady.Set ();
+			});
+			listener.SetNewConnectionHandler (connection => {
+				server = connection;
+				server.SetQueue (queue);
+				server.Start ();
+			});
+			try {
+				listener.Start ();
+				Assert.That (listenerReady.WaitOne (TimeSpan.FromSeconds (10)), Is.True, "Listener state change");
+				Assert.That (listenerState, Is.EqualTo (NWListenerState.Ready), "Listener ready");
+
+				using var endpoint = NWEndpoint.Create ("127.0.0.1", listener.Port.ToString ());
+				client = new NWConnection (endpoint, clientParameters);
+				client.SetQueue (queue);
+				client.Start ();
+				Assert.That (challengeDone.WaitOne (TimeSpan.FromSeconds (10)), Is.True, "Client certificate challenge");
+				Assert.That (challengeError, Is.Null, "Signature enumeration must succeed during the challenge");
+				Assert.That (algorithms.Count, Is.GreaterThan (0), "Signature callback count");
+			} finally {
+				queue.DispatchSync (() => {
+					stopping = true;
+					listener.SetStateChangedHandler (null);
+					listener.SetNewConnectionHandler (null);
+					listener.Cancel ();
+					if (client is not null) {
+						client.Cancel ();
+						client.Dispose ();
+					}
+					if (server is not null) {
+						server.Cancel ();
+						server.Dispose ();
+					}
+				});
 			}
 		}
 

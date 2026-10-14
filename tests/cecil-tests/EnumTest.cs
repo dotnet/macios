@@ -6,12 +6,31 @@ using NUnit.Framework;
 
 using Mono.Cecil;
 
+using Xamarin.Utils;
+
 #nullable enable
 
 namespace Cecil.Tests {
 
 	[TestFixture]
 	public class EnumTest {
+
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void ICReturnCode_ExFatVolumeInvalid (AssemblyInfo info)
+		{
+			var type = info.Assembly.MainModule.GetType ("ImageCaptureCore.ICReturnCode");
+			if (info.Platform != ApplePlatform.MacOSX) {
+				Assert.That (type, Is.Null, "ImageCaptureCore is only bound on macOS.");
+				return;
+			}
+
+			Assert.That (type, Is.Not.Null, "ICReturnCode");
+			Assert.That (type.Fields.Single (f => f.Name == "value__").FieldType.FullName, Is.EqualTo ("System.Int64"), "Native signed backing type");
+			var field = type.Fields.SingleOrDefault (f => f.Name == "ExFatVolumeInvalid");
+			Assert.That (field, Is.Not.Null, "ICReturnExFATVolumeInvalid must be bound.");
+			Assert.That (field?.Constant, Is.EqualTo (21200L), "The native error code is positive, unlike ICReturnCodeOffset.ExFat.");
+		}
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		// https://github.com/dotnet/macios/issues/9724

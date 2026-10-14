@@ -2648,6 +2648,21 @@ third-party binding, please contact the vendor.
 
 ### MT4180: Cannot construct an instance of the type '*' from Objective-C because the type is abstract. [Runtime exception]
 
+### MT4199: The NSCell subclass '{type}' does not have a constructor that takes a single ObjCRuntime.NativeHandle argument.
+
+On macOS, copying an `NSCell` can create a native instance without calling a
+managed constructor. Every concrete managed subclass of `NSCell`, including
+indirect subclasses such as subclasses of `NSButtonCell`, should declare a
+constructor that takes a single `ObjCRuntime.NativeHandle` argument and passes
+it to the base constructor. Constructors are not inherited.
+
+### MT4200: The NSCell subclass '{type}' does not implement Copy (NSZone).
+
+On macOS, native `NSCell` copying does not copy managed fields. Implement or
+inherit a managed override of `Copy (NSZone)` that calls the base implementation
+and copies any required managed state to the returned instance. The native copy
+implementation inherited from `NSCell` does not satisfy this requirement.
+
 ## MT5xxx: GCC and toolchain error messages
 
 ### MT51xx: Compilation

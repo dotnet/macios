@@ -39,6 +39,9 @@
 
     <!-- warning CS8002: Referenced assembly 'Touch.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' does not have a strong name. -->
     <NoWarn>$(NoWarn);CS8002</NoWarn>
+
+    <!-- CustomCell intentionally does not override Copy (NSZone), to test the native copying trampoline. -->
+    <AppBundleExtraOptions Condition="$(TargetFramework.EndsWith('-macos'))">$(AppBundleExtraOptions) --nowarn:4200</AppBundleExtraOptions>
   </PropertyGroup>
 
   <ItemGroup>

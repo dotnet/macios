@@ -1,3 +1,2 @@
 # This requires binding the HIDDriverKit framework, which we haven't done
 !missing-selector! +GCController::supportsHIDDevice: not bound
-!deprecated-attribute-missing! GCDevice::physicalInputProfile missing a [Deprecated] attribute

@@ -655,6 +655,10 @@ namespace GameController {
 		[Export ("productCategory")]
 		new string ProductCategory { get; }
 
+		[TV (14, 0), iOS (14, 0), Mac (11, 0), MacCatalyst (14, 0)]
+		[Export ("physicalInputProfile", ArgumentSemantic.Strong)]
+		new GCPhysicalInputProfile PhysicalInputProfile { get; }
+
 		[MacCatalyst (13, 1)]
 		[Export ("snapshot")]
 		bool Snapshot { [Bind ("isSnapshot")] get; }
@@ -1233,6 +1237,10 @@ namespace GameController {
 		string ProductCategory { get; }
 
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'GCController.PhysicalInputProfile', 'GCKeyboard.KeyboardInput' or 'GCMouse.MouseInput' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'GCController.PhysicalInputProfile', 'GCKeyboard.KeyboardInput' or 'GCMouse.MouseInput' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'GCController.PhysicalInputProfile', 'GCKeyboard.KeyboardInput' or 'GCMouse.MouseInput' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'GCController.PhysicalInputProfile', 'GCKeyboard.KeyboardInput' or 'GCMouse.MouseInput' instead.")]
 		[Export ("physicalInputProfile", ArgumentSemantic.Strong)]
 		GCPhysicalInputProfile PhysicalInputProfile { get; }
 	}

@@ -3,15 +3,6 @@
 !missing-null-allowed! 'System.Void ImageCaptureCore.ICCameraDevice::RequestSendPtpCommand(Foundation.NSData,Foundation.NSData,Foundation.NSObject,ObjCRuntime.Selector,System.IntPtr)' is missing an [NullAllowed] on parameter #1
 
 # initial results
-!deprecated-attribute-missing! ICCameraDeviceDelegate::cameraDevice:didAddItem: missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICCameraDeviceDelegate::cameraDevice:didReceiveMetadataForItem: missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICCameraDeviceDelegate::cameraDevice:didRemoveItem: missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICCameraItem::largeThumbnailIfAvailable missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICCameraItem::metadataIfAvailable missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICCameraItem::thumbnailIfAvailable missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICDevice::moduleExecutableArchitecture missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICDevice::requestEjectOrDisconnect missing a [Deprecated] attribute
-!deprecated-attribute-missing! ICDevice::requestYield missing a [Deprecated] attribute
 !extra-enum-value! Managed value -21000 for ICReturnCode.ThumbnailNotAvailable not found in native headers
 !extra-enum-value! Managed value -21001 for ICReturnCode.ThumbnailAlreadyFetching not found in native headers
 !extra-enum-value! Managed value -21002 for ICReturnCode.ThumbnailCanceled not found in native headers

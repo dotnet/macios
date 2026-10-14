@@ -1,6 +1,6 @@
 namespace Extrospection {
 	public class DeprecatedCheck : BaseVisitor {
-		Dictionary<string, VersionTuple> ObjCDeprecatedItems = new Dictionary<string, VersionTuple> ();
+		Dictionary<(string Name, bool IsCategory), VersionTuple> ObjCDeprecatedItems = new Dictionary<(string Name, bool IsCategory), VersionTuple> ();
 		Dictionary<string, VersionTuple> ObjCDeprecatedSelectors = new Dictionary<string, VersionTuple> ();
 		Dictionary<string, VersionTuple> PlainCDeprecatedFunctions = new Dictionary<string, VersionTuple> ();
 
@@ -34,7 +34,7 @@ namespace Extrospection {
 		public override void EndVisit ()
 		{
 			foreach (var objcEntry in ObjCDeprecatedItems)
-				ProcessObjcEntry (objcEntry.Key, objcEntry.Value);
+				ProcessObjcEntry (objcEntry.Key.Name, objcEntry.Key.IsCategory, objcEntry.Value);
 
 			foreach (var objcEntry in ObjCDeprecatedSelectors)
 				ProcessObjcSelector (objcEntry.Key, objcEntry.Value);
@@ -43,9 +43,10 @@ namespace Extrospection {
 				ProcessCFunction (cEntry.Key, cEntry.Value);
 		}
 
-		void ProcessObjcEntry (string objcClassName, VersionTuple objcVersion)
+		void ProcessObjcEntry (string objcClassName, bool isCategory, VersionTuple objcVersion)
 		{
-			var managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName && x.IsPublic);
+			// Category names can collide with unrelated Objective-C class names.
+			var managedType = ManagedTypes.FirstOrDefault (x => Helpers.GetName (x) == objcClassName && x.IsPublic && (x.IsSealed && x.IsAbstract) == isCategory);
 			if (managedType is not null) {
 				var framework = Helpers.GetFramework (managedType);
 				if (framework is not null)
@@ -146,7 +147,7 @@ namespace Extrospection {
 				// `(anonymous)` has a null name
 				var name = decl.Name;
 				if (name is not null)
-					ObjCDeprecatedItems [name] = version;
+					ObjCDeprecatedItems [(name, decl is ObjCCategoryDecl)] = version;
 			}
 		}
 

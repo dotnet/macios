@@ -27,6 +27,9 @@
 # Accelerate
 
 ACCELERATE_SOURCES = \
+	Accelerate/Sparse.cs \
+	Accelerate/SparseFactorizationDouble.cs \
+	Accelerate/SparseFactorizationFloat.cs \
 	Accelerate/vImageTypes.cs \
 
 # Accessibility

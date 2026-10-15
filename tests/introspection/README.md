@@ -23,3 +23,27 @@ Cons
 
 * Incomplete - Not everything is encoded in the metadata / executable;
 * Too complete - Not every truth is good to be known (or published), which requires creating special cases in the tests
+
+## Structure sizes
+
+`ApiStructSizeTest` compares the marshaled size of managed structures with native
+`sizeof` values compiled against the current SDK for the target platform and
+architecture. The tests do not instantiate native objects, so they can also
+validate structures introduced in newer OS versions than the test device runs.
+
+The structure list is in `WriteStructSizeTests` in
+`tests/test-libraries/testgenerator.cs`. Add entries there to generate both a
+strongly typed test and a native size lookup. Use `ManagedName:NativeName` when
+the names differ, and matching managed/native platform conditions for types
+that are not available on every platform. When adding a framework, import its
+native headers in `tests/test-libraries/libstructsizes.m`. Only include structures
+whose managed representation is intended to match the native layout, not managed
+wrappers that require custom conversion.
+
+The `CVTime` size test is explicitly ignored: its public `TimeScale` field is
+currently a `long`, while the native field is `int32_t`. Correcting that existing
+layout mismatch requires an API-breaking change. Known failures use an explicit
+`ignoreReason` in the generator rather than changing the expected native size.
+
+Build `tests/test-libraries` before building introspection to generate the tests
+and the `libstructsizes.xcframework` native reference.

@@ -7,6 +7,8 @@
 extern "C" {
 #endif
 
+enum { XamarinSparseAllocationFailed = 1 };
+
 // Keep the overloaded inline functions and their semi-opaque structs on the native side.
 #define SPARSE_BINDINGS(suffix, scalar, precision) \
 void * \
@@ -14,7 +16,7 @@ xamarin_sparse_factor_##suffix (uint8_t type, int rows, int columns, long *start
 { \
 	SparseOpaqueFactorization_##precision *factor = (SparseOpaqueFactorization_##precision *) malloc (sizeof (*factor)); \
 	if (factor == NULL) { \
-		*status = SparseInternalError; \
+		*status = XamarinSparseAllocationFailed; \
 		return NULL; \
 	} \
 	SparseMatrix_##precision matrix = { \
@@ -48,11 +50,11 @@ xamarin_sparse_solve_##suffix (void *handle, int rows, int columns, int count, s
 	size_t per_rhs = factor->solveWorkspaceRequiredPerRHS; \
 	size_t fixed_size = factor->solveWorkspaceRequiredStatic; \
 	if (count <= 0 || per_rhs > (SIZE_MAX - fixed_size) / (size_t) count) \
-		return SparseInternalError; \
+		return XamarinSparseAllocationFailed; \
 	size_t size = fixed_size + (size_t) count * per_rhs; \
 	void *workspace = malloc (size == 0 ? 1 : size); \
 	if (workspace == NULL) \
-		return SparseInternalError; \
+		return XamarinSparseAllocationFailed; \
 	DenseMatrix_##precision b = { .rowCount = rows, .columnCount = count, .columnStride = rows, .data = rhs }; \
 	DenseMatrix_##precision x = { .rowCount = columns, .columnCount = count, .columnStride = columns, .data = solution }; \
 	SparseSolve (*factor, b, x, workspace); \

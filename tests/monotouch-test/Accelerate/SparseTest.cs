@@ -7,6 +7,7 @@ using System;
 using Accelerate;
 using Foundation;
 using NUnit.Framework;
+using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Accelerate {
 	[TestFixture]
@@ -90,7 +91,10 @@ namespace MonoTouchFixtures.Accelerate {
 		[TestCase (SparseFactorization.LuTpp)]
 		public void Lu (SparseFactorization type)
 		{
-			TestRuntime.AssertXcodeVersion (16, 4);
+			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 15, 5, throwIfOtherPlatform: false);
+			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 18, 5, throwIfOtherPlatform: false);
+			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 18, 5, throwIfOtherPlatform: false);
+			TestRuntime.AssertSystemVersion (ApplePlatform.MacCatalyst, 18, 5, throwIfOtherPlatform: false);
 			using var factor = SparseFactorizationDouble.Create (type, 2, 2, [0, 2, 4], [0, 1, 0, 1], [3, 2, 1, 4]);
 			double [] solution = new double [2];
 			factor.Solve ([5, 10], solution);
@@ -146,7 +150,7 @@ namespace MonoTouchFixtures.Accelerate {
 			Assert.Throws<ArgumentException> (() => factor.Solve (overlap.AsSpan (0, 2), overlap.AsSpan (1, 2)), "Overlap");
 			factor.Dispose ();
 			factor.Dispose ();
-			Assert.That (factor.Handle, Is.EqualTo (ObjCRuntime.NativeHandle.Zero), "Released");
+			Assert.That (factor.Handle, Is.EqualTo (global::ObjCRuntime.NativeHandle.Zero), "Released");
 			Assert.Throws<ObjectDisposedException> (() => factor.Solve ([6, 7], new double [2]), "Disposed");
 
 			using var single = SparseFactorizationFloat.Create (SparseFactorization.Cholesky, 2, 2, upperStarts, upperIndices, [4, 1, 3]);

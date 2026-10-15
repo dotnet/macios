@@ -243,6 +243,8 @@ namespace Introspection {
 			case "VTMotionEstimationSession":
 			case "MTLIOCompressionContext":
 			case "CGRenderingBufferProvider":
+			case "SparseFactorizationDouble": // Opaque solver storage, not a Core Foundation object.
+			case "SparseFactorizationFloat":
 				return true;
 			default:
 				return false;

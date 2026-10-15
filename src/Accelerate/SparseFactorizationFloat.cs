@@ -6,9 +6,9 @@
 namespace Accelerate {
 	/// <summary>Owns a reusable single-precision sparse matrix factorization.</summary>
 	/// <remarks>Dispose this object to release its native factors. Instance operations are not thread-safe.</remarks>
-	[SupportedOSPlatform ("ios11.0")]
-	[SupportedOSPlatform ("tvos11.0")]
-	[SupportedOSPlatform ("macos10.13")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public sealed class SparseFactorizationFloat : DisposableObject {
 		readonly int rows;
@@ -21,7 +21,7 @@ namespace Accelerate {
 		}
 
 		[DllImport ("__Internal")]
-		static extern unsafe IntPtr xamarin_sparse_factor_float (byte type, int rows, int columns, long* starts, int* indices, float* data, byte triangle, out int status);
+		static extern unsafe IntPtr xamarin_sparse_factor_float (byte type, int rows, int columns, long* starts, int* indices, float* data, byte triangle, int* status);
 
 		/// <summary>Factors a real matrix stored in compressed sparse column format.</summary>
 		/// <param name="type">The factorization algorithm.</param>
@@ -37,7 +37,7 @@ namespace Accelerate {
 		/// <exception cref="OutOfMemoryException">Native solver storage could not be allocated.</exception>
 		/// <remarks>
 		///   <para>The input spans are used only during this call. Symmetric factorizations require a square matrix with only the specified triangle stored. QR accepts rectangular matrices.</para>
-		///   <para>LU requires macOS 15.5, iOS 18.5, tvOS 18.5, or Mac Catalyst 18.5.</para>
+		///   <para>LU requires a square matrix and macOS 15.5, iOS 18.5, tvOS 18.5, or Mac Catalyst 18.5.</para>
 		/// </remarks>
 		public static SparseFactorizationFloat Create (SparseFactorization type, int rowCount, int columnCount, ReadOnlySpan<long> columnStarts, ReadOnlySpan<int> rowIndices, ReadOnlySpan<float> values, SparseTriangle triangle = SparseTriangle.Upper)
 		{
@@ -46,7 +46,8 @@ namespace Accelerate {
 				fixed (long* starts = columnStarts)
 				fixed (int* indices = rowIndices)
 				fixed (float* data = values) {
-					var handle = xamarin_sparse_factor_float ((byte) type, rowCount, columnCount, starts, indices, data, (byte) triangle, out var status);
+					int status;
+					var handle = xamarin_sparse_factor_float ((byte) type, rowCount, columnCount, starts, indices, data, (byte) triangle, &status);
 					SparseValidation.CheckStatus (status);
 					return new SparseFactorizationFloat (handle, type == SparseFactorization.CholeskyAtA ? columnCount : rowCount, columnCount);
 				}

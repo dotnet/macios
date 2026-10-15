@@ -5,9 +5,9 @@
 
 namespace Accelerate {
 	/// <summary>Specifies the algorithm used to factor a real sparse matrix.</summary>
-	[SupportedOSPlatform ("ios11.0")]
-	[SupportedOSPlatform ("tvos11.0")]
-	[SupportedOSPlatform ("macos10.13")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public enum SparseFactorization : byte {
 		/// <summary>Cholesky factorization of a symmetric positive-definite matrix.</summary>
@@ -51,9 +51,9 @@ namespace Accelerate {
 	}
 
 	/// <summary>Specifies which triangle stores a symmetric sparse matrix.</summary>
-	[SupportedOSPlatform ("ios11.0")]
-	[SupportedOSPlatform ("tvos11.0")]
-	[SupportedOSPlatform ("macos10.13")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public enum SparseTriangle : byte {
 		/// <summary>The upper triangle is stored.</summary>
@@ -62,9 +62,9 @@ namespace Accelerate {
 		Lower = 1,
 	}
 
-	[SupportedOSPlatform ("ios11.0")]
-	[SupportedOSPlatform ("tvos11.0")]
-	[SupportedOSPlatform ("macos10.13")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	static class SparseValidation {
 		internal static void ValidateMatrix (SparseFactorization type, int rowCount, int columnCount, ReadOnlySpan<long> columnStarts, ReadOnlySpan<int> rowIndices, int valueCount, SparseTriangle triangle)
@@ -135,7 +135,7 @@ namespace Accelerate {
 
 		internal static void CheckStatus (int status)
 		{
-			if (status == -3)
+			if (status == 1) // Allocation failure in the native bridge, distinct from SparseInternalError.
 				throw new OutOfMemoryException ("Accelerate could not allocate sparse solver storage.");
 			if (status != 0)
 				throw new InvalidOperationException ($"Accelerate sparse solver failed with status {status}.");

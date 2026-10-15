@@ -445,6 +445,7 @@ namespace Introspection {
 			{ "Latm", All }, //  Low Overhead Audio Transport Multiplex
 			{ "Lbc", All }, // audio codec acronym
 			{ "Ldaps", All }, // LDAP over TLS
+			{ "Ldlt", All }, // LDL transpose factorization
 			{ "Leibler", All }, // Kullback-Leibler divergence
 			{ "Lerp", All }, // linear interpolation
 			{ "libcompression", All }, // Apple library name
@@ -666,6 +667,7 @@ namespace Introspection {
 			{ "Rtp", All & ~ApplePlatform.MacOSX }, // Real-time Transport Protocol
 			{ "Rtsp", All }, // streaming control protocol
 			{ "Saml", All & ~ApplePlatform.MacCatalyst }, // acronym
+			{ "Sbk", All }, // supernode Bunch-Kaufman pivoting
 			{ "Sbr", All }, // Spectral Band Replication (AAC)
 			{ "Scc", All }, // subtitle/timing format
 			{ "Scn", All }, // SceneKit prefix
@@ -700,6 +702,7 @@ namespace Introspection {
 			{ "Sopen", ApplePlatform.MacOSX }, // Apple API abbreviation
 			{ "Spacei", All }, // Apple API selector fragment
 			{ "Spl", All }, // sound pressure level
+			{ "Spp", All }, // supernode partial pivoting
 			{ "Sqrt", All }, // square root function
 			{ "Srgb", All }, // standard RGB color space
 			{ "Ssid", All }, // Wi-Fi network identifier
@@ -760,6 +763,7 @@ namespace Introspection {
 			{ "Toci", All }, // Apple API selector fragment
 			{ "Tonemap", All }, // image processing term
 			{ "Touchpads", All }, // plural of touchpad
+			{ "Tpp", All }, // threshold partial pivoting
 			{ "Transceive", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // communications verb
 			{ "Trc", All }, // tone reproduction curve
 			{ "Tri", All }, // triangle abbreviation
@@ -785,6 +789,7 @@ namespace Introspection {
 			{ "Unmatch", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API verb
 			{ "Unorm", All }, // unsigned normalized format
 			{ "Unpair", ApplePlatform.MacOSX }, // device pairing verb
+			{ "Unpivoted", All }, // matrix factorization without pivoting
 			{ "Unpremultiplied", All }, // graphics term
 			{ "Unpremultiplying", All }, // graphics term
 			{ "Unprepare", All }, // API verb form

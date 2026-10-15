@@ -522,7 +522,7 @@ namespace MonoTouch.Dialog {
 #if !__TVOS__
 			if (refreshRequested is not null) {
 				RefreshControl = new UIRefreshControl ();
-				RefreshControl.AddTarget ((sender, args) => TriggerRefresh (), UIControlEvent.ValueChanged);
+				RefreshControl.AddTarget ((object? sender, EventArgs args) => TriggerRefresh (), UIControlEvent.ValueChanged);
 				return;
 			}
 #endif

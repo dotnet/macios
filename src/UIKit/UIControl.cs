@@ -15,12 +15,12 @@ using System.Runtime.CompilerServices;
 namespace UIKit {
 	[Register]
 	class UIControlEventProxy : NSObject {
-		EventHandler? eh;
+		Delegate? eh;
 		UIControl? source;
 		internal int Counter = 1;
-		internal const string BridgeSelector = "BridgeSelector";
+		internal const string BridgeSelector = "BridgeSelector:forEvent:";
 
-		public UIControlEventProxy (UIControl source, EventHandler eh)
+		public UIControlEventProxy (UIControl source, Delegate eh)
 		{
 			IsDirectBinding = false;
 			this.source = source;
@@ -29,13 +29,24 @@ namespace UIKit {
 
 		[Export (BridgeSelector)]
 		[Preserve (Conditional = true)]
-		public void Activated ()
+		public void Activated (UIControl sender, UIEvent? uievent)
 		{
 			if (eh is null)
 				return;
 
-			for (int i = 0; i < Counter; i++)
-				eh (source, EventArgs.Empty);
+			for (int i = 0; i < Counter; i++) {
+				switch (eh) {
+				case EventHandler handler:
+					handler (source, EventArgs.Empty);
+					break;
+				case Action<UIControl> action:
+					action (sender);
+					break;
+				case Action<UIControl, UIEvent?> actionWithEvent:
+					actionWithEvent (sender, uievent);
+					break;
+				}
+			}
 		}
 
 		/// <inheritdoc />
@@ -48,7 +59,7 @@ namespace UIKit {
 	}
 
 	public partial class UIControl {
-		static ConditionalWeakTable<UIControl, Dictionary<EventHandler, Dictionary<UIControlEvent, UIControlEventProxy>>>? allTargets;
+		static ConditionalWeakTable<UIControl, Dictionary<Delegate, Dictionary<UIControlEvent, UIControlEventProxy>>>? allTargets;
 
 		/// <summary>Adds an event handler for the specified set of events.</summary>
 		/// <param name="notification">The event handler to invoke.</param>
@@ -56,12 +67,36 @@ namespace UIKit {
 		/// <remarks>The <paramref name="notification" /> handler will be invoked when the control receives any of the events listed in the <paramref name="events" /> mask.</remarks>
 		public void AddTarget (EventHandler notification, UIControlEvent events)
 		{
+			AddTarget ((Delegate) notification, events);
+		}
+
+		/// <summary>Adds a callback that receives the control sending the specified events.</summary>
+		/// <param name="notification">The callback to invoke with the sending control.</param>
+		/// <param name="events">The event mask that will trigger the callback.</param>
+		public void AddTarget (Action<UIControl> notification, UIControlEvent events)
+		{
+			AddTarget ((Delegate) notification, events);
+		}
+
+		/// <summary>Adds a callback that receives the control and the native event.</summary>
+		/// <param name="notification">The callback to invoke with the sending control and the native event, or <see langword="null" /> if there is no native event.</param>
+		/// <param name="events">The event mask that will trigger the callback.</param>
+		/// <remarks>Use explicit parameter types or an <see cref="Action{T1, T2}" /> delegate to distinguish this overload from <see cref="AddTarget(EventHandler, UIControlEvent)" />.</remarks>
+		public void AddTarget (Action<UIControl, UIEvent?> notification, UIControlEvent events)
+		{
+			AddTarget ((Delegate) notification, events);
+		}
+
+		void AddTarget (Delegate notification, UIControlEvent events)
+		{
+			ArgumentNullException.ThrowIfNull (notification);
+
 			if (allTargets is null)
 				allTargets = new ();
 
 			var targets = allTargets.GetValue (this, k => {
 				MarkDirty ();
-				return new Dictionary<EventHandler, Dictionary<UIControlEvent, UIControlEventProxy>> ();
+				return new Dictionary<Delegate, Dictionary<UIControlEvent, UIControlEventProxy>> ();
 			});
 
 			if (!targets.TryGetValue (notification, out var t)) {
@@ -83,6 +118,27 @@ namespace UIKit {
 		/// <param name="events">The event mask to remove.</param>
 		public void RemoveTarget (EventHandler notification, UIControlEvent events)
 		{
+			RemoveTarget ((Delegate) notification, events);
+		}
+
+		/// <summary>Removes a previously installed callback that receives the sending control.</summary>
+		/// <param name="notification">The callback previously specified in <see cref="AddTarget(Action{UIControl}, UIControlEvent)" />.</param>
+		/// <param name="events">The event mask to remove.</param>
+		public void RemoveTarget (Action<UIControl> notification, UIControlEvent events)
+		{
+			RemoveTarget ((Delegate) notification, events);
+		}
+
+		/// <summary>Removes a previously installed callback that receives the control and native event.</summary>
+		/// <param name="notification">The callback previously specified in <see cref="AddTarget(Action{UIControl, UIEvent}, UIControlEvent)" />.</param>
+		/// <param name="events">The event mask to remove.</param>
+		public void RemoveTarget (Action<UIControl, UIEvent?> notification, UIControlEvent events)
+		{
+			RemoveTarget ((Delegate) notification, events);
+		}
+
+		void RemoveTarget (Delegate notification, UIControlEvent events)
+		{
 			if (allTargets is null)
 				return;
 
@@ -96,7 +152,7 @@ namespace UIKit {
 				return;
 
 			ep.Counter--;
-			if (ep.Counter > 1)
+			if (ep.Counter > 0)
 				return;
 
 			RemoveTarget (ep, Selector.GetHandle (UIControlEventProxy.BridgeSelector), events);

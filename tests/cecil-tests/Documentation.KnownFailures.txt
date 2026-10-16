@@ -58095,7 +58095,6 @@ T:ObjCRuntime.NativeHandle
 T:ObjCRuntime.NativeNameAttribute
 T:ObjCRuntime.NativeObjectExtensions
 T:ObjCRuntime.NMath
-T:ObjCRuntime.Runtime.ClassHandles
 T:OSLog.OSLogEntry
 T:OSLog.OSLogEntryActivity
 T:OSLog.OSLogEntryBoundary

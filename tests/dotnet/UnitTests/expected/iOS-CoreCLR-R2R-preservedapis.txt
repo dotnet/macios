@@ -585,7 +585,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIApplication::class_ptr
@@ -647,8 +646,8 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out 
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|298_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|297_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|297_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|296_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -879,9 +878,6 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.xamarin_log(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.xamarin_mono_object_retain(ObjCRuntime.Runtime/MonoObject*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.xamarin_mono_object_retain(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime/<>O
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles.InitializeClassHandles(System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles.SetHandle(System.Int32, ObjCRuntime.NativeHandle*, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime/Delegates
 Microsoft.iOS.dll:ObjCRuntime.Runtime/Delegates* ObjCRuntime.Runtime/InitializationOptions::Delegates
 Microsoft.iOS.dll:ObjCRuntime.Runtime/ExceptionType
@@ -1227,7 +1223,6 @@ Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::tramp
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.TransientCFString::ptr
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.TransientString::ptr
 Microsoft.iOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTProtocolMap::protocols
-Microsoft.iOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTRegistrationMap::classHandles
 Microsoft.iOS.dll:System.Object Foundation.NSAsyncSynchronizationContextDispatcher::state
 Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.iOS.dll:System.Object Foundation.NSSynchronizationContextDispatcher::state

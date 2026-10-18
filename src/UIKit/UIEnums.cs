@@ -3823,7 +3823,7 @@ namespace UIKit {
 		[Field ("UIWindowSceneSessionRoleAssistiveAccessApplication")]
 		AssistiveAccessApplication,
 
-		[NoTV, NoMacCatalyst, iOS (27, 1)]
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 		[Field ("UIWindowSceneSessionRoleCameraCaptureAccessory")]
 		CameraCaptureAccessory,
 	}
@@ -4938,7 +4938,7 @@ namespace UIKit {
 		EditingInlineParagraphs = 1uL << 1,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIArrangementViewControllerViewPlacement : long {
 		None = 0,
@@ -4946,7 +4946,7 @@ namespace UIKit {
 		Secondary = 2,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIBarButtonItemAxisBehavior : long {
 		Automatic = 0,
@@ -4956,7 +4956,7 @@ namespace UIKit {
 		VerticalPreferred = 2,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIHingeStatus : long {
 		Unknown = 0,
@@ -4965,14 +4965,14 @@ namespace UIKit {
 		FullyOpen = 3,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIVerticalBarBehavior : long {
 		Automatic = 0,
 		Disabled = 1,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIVerticalBarCompressionBehavior : long {
 		Automatic = 0,
@@ -4982,7 +4982,7 @@ namespace UIKit {
 		PrefersTabBar = 2,
 	}
 
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIVerticalBarEdge : long {
 		Unspecified = 0,
@@ -4993,11 +4993,23 @@ namespace UIKit {
 	}
 
 	[Flags]
-	[NoTV, NoMacCatalyst, iOS (27, 1)]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
 	[Native]
 	public enum UIViewReservedRegionQueryOptions : ulong {
 		None = 0,
 		IncludeInactive = 1uL << 0,
+	}
+
+	/// <summary>Specifies the alignment of a navigation item's title.</summary>
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
+	[Native]
+	public enum UINavigationItemTitleAlignment : long {
+		/// <summary>The system determines the alignment, or has not yet resolved a trait's alignment.</summary>
+		Automatic = 0,
+		/// <summary>The title is aligned to the leading edge.</summary>
+		Leading = 1,
+		/// <summary>The title uses centered alignment.</summary>
+		Center = 2,
 	}
 
 	// NSInteger -> NSTextTable.h

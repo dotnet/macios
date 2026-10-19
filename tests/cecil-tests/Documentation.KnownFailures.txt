@@ -52507,9 +52507,13 @@ P:Vision.VNGenerateOpticalFlowRequest.Revision
 P:Vision.VNGenerateOpticalFlowRequest.SupportedRevisions
 P:Vision.VNGenerateOpticalFlowRequest.WeakSupportedRevisions
 P:Vision.VNGeneratePersonInstanceMaskRequest.Results
+P:Vision.VNGeneratePersonSegmentationRequest.CurrentRevision
+P:Vision.VNGeneratePersonSegmentationRequest.DefaultRevision
 P:Vision.VNGeneratePersonSegmentationRequest.OutputPixelFormat
 P:Vision.VNGeneratePersonSegmentationRequest.QualityLevel
 P:Vision.VNGeneratePersonSegmentationRequest.Results
+P:Vision.VNGeneratePersonSegmentationRequest.SupportedRevisions
+P:Vision.VNGeneratePersonSegmentationRequest.WeakSupportedRevisions
 P:Vision.VNHomographicImageRegistrationRequest.CurrentRevision
 P:Vision.VNHomographicImageRegistrationRequest.DefaultRevision
 P:Vision.VNHomographicImageRegistrationRequest.Results
@@ -52605,9 +52609,13 @@ P:Vision.VNTrackObjectRequest.DefaultRevision
 P:Vision.VNTrackObjectRequest.Revision
 P:Vision.VNTrackObjectRequest.WeakSupportedRevisions
 P:Vision.VNTrackOpticalFlowRequest.ComputationAccuracy
+P:Vision.VNTrackOpticalFlowRequest.CurrentRevision
+P:Vision.VNTrackOpticalFlowRequest.DefaultRevision
 P:Vision.VNTrackOpticalFlowRequest.KeepNetworkOutput
 P:Vision.VNTrackOpticalFlowRequest.OutputPixelFormat
 P:Vision.VNTrackOpticalFlowRequest.Results
+P:Vision.VNTrackOpticalFlowRequest.SupportedRevisions
+P:Vision.VNTrackOpticalFlowRequest.WeakSupportedRevisions
 P:Vision.VNTrackRectangleRequest.CurrentRevision
 P:Vision.VNTrackRectangleRequest.DefaultRevision
 P:Vision.VNTrackRectangleRequest.Revision

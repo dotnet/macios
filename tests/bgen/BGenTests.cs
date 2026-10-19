@@ -32,6 +32,13 @@ namespace GeneratorTests {
 				var platform = profile.AsPlatform ().AsString ().ToLowerInvariant ();
 				Assert.That (newValue.CustomAttributes.Any (a => a.AttributeType.Name == "SupportedOSPlatformAttribute" && (string) a.ConstructorArguments [0].Value == $"{platform}26.0"), Is.True, $"{name}.NewValue availability");
 
+				var wrappedGetter = type.Methods.Single (m => m.Name == "get_WrappedValue");
+				Assert.That (wrappedGetter.IsStatic, Is.True, $"{name}.WrappedValue static");
+				var wrappedCalls = wrappedGetter.Body.Instructions
+					.Where (i => i.Operand is MethodReference m && m.Name == "get_Value")
+					.Select (i => ((MethodReference) i.Operand).DeclaringType.FullName);
+				Assert.That (wrappedCalls, Is.EqualTo (new [] { type.FullName }), $"{name}.WrappedValue uses the subclass property");
+
 				var dispatchedMethods = type.Methods.Where (m => m.Name == "get_IsSupported" || m.Name == "get_Value" || m.Name == "set_Value" || m.Name == "SupportsValue").ToArray ();
 				Assert.That (dispatchedMethods, Is.Not.Empty, $"{name} dispatched members");
 				foreach (var method in dispatchedMethods) {

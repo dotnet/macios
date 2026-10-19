@@ -20,6 +20,11 @@ namespace Propagation {
 
 		[PropagateToSubclasses]
 		[Static]
+		[Wrap ("Value")]
+		int WrappedValue { get; }
+
+		[PropagateToSubclasses]
+		[Static]
 		[Export ("supportsValue:")]
 		bool SupportsValue (int value);
 

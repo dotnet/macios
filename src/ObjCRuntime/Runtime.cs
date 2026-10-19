@@ -495,7 +495,6 @@ namespace ObjCRuntime {
 				return;
 
 			var exception = GetNSObject<NSException> (exception_handle);
-			ArgumentNullException.ThrowIfNull (exception);
 			handler (null, new UncaughtObjectiveCExceptionEventArgs (exception));
 		}
 

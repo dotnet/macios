@@ -62,6 +62,12 @@ namespace MySimpleApp {
 
 		static int RunUncaughtExceptionTest (int testCase)
 		{
+			// 3: Native-origin exception notifies the handler before termination.
+			// 4: A throwing handler is logged without replacing the native-origin exception.
+			// 5: An unsubscribed handler is not notified of the native-origin exception.
+			// 6: A native-origin exception is handled normally without any subscribers.
+			// 7: A managed-origin exception notifies the handler before the original managed exception is reported.
+			// 8: A throwing handler is logged without replacing the managed-origin exception.
 			var managedOrigin = testCase >= 7;
 			var throwsInHandler = testCase == 4 || testCase == 8;
 			using var exception = new NSException ("Uncaught test exception", "Uncaught test reason", null);
@@ -72,7 +78,7 @@ namespace MySimpleApp {
 					Console.WriteLine ("Unexpected sender");
 				if (!managedOrigin && !ReferenceEquals (args.Exception, exception))
 					Console.WriteLine ("Unexpected native exception");
-				Console.WriteLine ($"Uncaught event: {args.Exception.Name}: {args.Exception.Reason}");
+				Console.WriteLine ($"Uncaught event: {args.Exception?.Name}: {args.Exception?.Reason}");
 				if (throwsInHandler)
 					throw new InvalidOperationException ("Uncaught handler failure");
 			};

@@ -18,17 +18,15 @@ namespace ObjCRuntime {
 	/// <summary>The event arguments for the <see cref="Runtime.UncaughtObjectiveCException" /> event.</summary>
 	public class UncaughtObjectiveCExceptionEventArgs : EventArgs {
 		/// <summary>Creates a new <see cref="UncaughtObjectiveCExceptionEventArgs" /> instance.</summary>
-		/// <param name="exception">The uncaught Objective-C exception.</param>
-		/// <exception cref="ArgumentNullException"><paramref name="exception" /> is null.</exception>
-		public UncaughtObjectiveCExceptionEventArgs (NSException exception)
+		/// <param name="exception">The uncaught Objective-C exception, or null if no managed wrapper is available.</param>
+		public UncaughtObjectiveCExceptionEventArgs (NSException? exception)
 		{
-			ArgumentNullException.ThrowIfNull (exception);
 			Exception = exception;
 		}
 
 		/// <summary>Gets the uncaught Objective-C exception.</summary>
-		/// <value>The original Objective-C exception, including exceptions marshalled from managed code.</value>
-		public NSException Exception { get; }
+		/// <value>The original Objective-C exception, including exceptions marshalled from managed code, or null if no managed wrapper is available.</value>
+		public NSException? Exception { get; }
 	}
 
 	/// <summary>The event delegate for the <see cref="Runtime.MarshalObjectiveCException" /> event.</summary>

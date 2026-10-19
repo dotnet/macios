@@ -76,7 +76,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			using var exception = new NSException ("Test exception", "Test reason", null);
 			var args = new UncaughtObjectiveCExceptionEventArgs (exception);
 			Assert.That (args.Exception, Is.SameAs (exception), "Exception");
-			Assert.Throws<ArgumentNullException> (() => new UncaughtObjectiveCExceptionEventArgs (null));
+			Assert.That (new UncaughtObjectiveCExceptionEventArgs (null).Exception, Is.Null, "Null exception");
 		}
 
 		// Simulator/desktop only

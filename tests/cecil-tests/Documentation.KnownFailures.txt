@@ -34198,7 +34198,6 @@ P:AVFoundation.AVAssetReaderAudioMixOutput.AudioMix
 P:AVFoundation.AVAssetReaderAudioMixOutput.AudioTimePitchAlgorithm
 P:AVFoundation.AVAssetReaderAudioMixOutput.AudioTracks
 P:AVFoundation.AVAssetReaderOutput.AlwaysCopiesSampleData
-P:AVFoundation.AVAssetReaderOutput.MediaType
 P:AVFoundation.AVAssetReaderOutput.SupportsRandomAccess
 P:AVFoundation.AVAssetReaderOutputCaptionAdaptor.AssetReaderTrackOutput
 P:AVFoundation.AVAssetReaderOutputCaptionAdaptor.ValidationDelegate
@@ -34253,7 +34252,6 @@ P:AVFoundation.AVAssetTrack.ExtendedLanguageTag
 P:AVFoundation.AVAssetTrack.FormatDescriptionsAsObjects
 P:AVFoundation.AVAssetTrack.HasAudioSampleDependencies
 P:AVFoundation.AVAssetTrack.LanguageCode
-P:AVFoundation.AVAssetTrack.MediaType
 P:AVFoundation.AVAssetTrack.Metadata
 P:AVFoundation.AVAssetTrack.MinFrameDuration
 P:AVFoundation.AVAssetTrack.NaturalSize
@@ -34320,7 +34318,6 @@ P:AVFoundation.AVAssetWriterInput.LanguageCode
 P:AVFoundation.AVAssetWriterInput.MarksOutputTrackAsEnabled
 P:AVFoundation.AVAssetWriterInput.MediaDataLocation
 P:AVFoundation.AVAssetWriterInput.MediaTimeScale
-P:AVFoundation.AVAssetWriterInput.MediaType
 P:AVFoundation.AVAssetWriterInput.Metadata
 P:AVFoundation.AVAssetWriterInput.NaturalSize
 P:AVFoundation.AVAssetWriterInput.OutputSettings
@@ -34702,7 +34699,6 @@ P:AVFoundation.AVCaptureDeviceFormat.IsVideoHdrSupported
 P:AVFoundation.AVCaptureDeviceFormat.MaxExposureDuration
 P:AVFoundation.AVCaptureDeviceFormat.MaxISO
 P:AVFoundation.AVCaptureDeviceFormat.MaxSimulatedAperture
-P:AVFoundation.AVCaptureDeviceFormat.MediaType
 P:AVFoundation.AVCaptureDeviceFormat.MinExposureDuration
 P:AVFoundation.AVCaptureDeviceFormat.MinISO
 P:AVFoundation.AVCaptureDeviceFormat.MinSimulatedAperture
@@ -34788,7 +34784,6 @@ P:AVFoundation.AVCaptureInput.Ports
 P:AVFoundation.AVCaptureInputPort.Clock
 P:AVFoundation.AVCaptureInputPort.FormatDescription
 P:AVFoundation.AVCaptureInputPort.Input
-P:AVFoundation.AVCaptureInputPort.MediaType
 P:AVFoundation.AVCaptureInputPort.SourceDevicePosition
 P:AVFoundation.AVCaptureInputPort.SourceDeviceType
 P:AVFoundation.AVCaptureManualExposureBracketedStillImageSettings.ExposureDuration
@@ -35146,7 +35141,6 @@ P:AVFoundation.AVMediaSelectionOption.DisplayName
 P:AVFoundation.AVMediaSelectionOption.ExtendedLanguageTag
 P:AVFoundation.AVMediaSelectionOption.Locale
 P:AVFoundation.AVMediaSelectionOption.MediaSubTypes
-P:AVFoundation.AVMediaSelectionOption.MediaType
 P:AVFoundation.AVMediaSelectionOption.PropertyList
 P:AVFoundation.AVMetadataBodyObject.BodyId
 P:AVFoundation.AVMetadataFaceObject.FaceID

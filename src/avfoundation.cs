@@ -6574,8 +6574,27 @@ namespace AVFoundation {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** initialization method -init cannot be sent to an abstract object of class AVAssetReaderOutput: Create a concrete instance!
 	[DisableDefaultCtor]
 	interface AVAssetReaderOutput {
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType")]
+#if XAMCORE_5_0
+		string WeakMediaType { get; }
+#else
 		string MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType")]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		[return: NullAllowed, Release]
 		[Export ("copyNextSampleBuffer")]
@@ -7474,8 +7493,27 @@ namespace AVFoundation {
 		[Wrap ("Create(mediaType, outputSettings.GetDictionary (), sourceFormatHint)")]
 		AVAssetWriterInput Create (string mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType")]
+#if XAMCORE_5_0
+		string WeakMediaType { get; }
+#else
 		string MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType")]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		[Export ("outputSettings"), NullAllowed]
 		NSDictionary OutputSettings { get; }
@@ -7922,8 +7960,27 @@ namespace AVFoundation {
 		[NullAllowed, Export ("asset", ArgumentSemantic.Weak)]
 		AVAsset Asset { get; }
 
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType")]
+#if XAMCORE_5_0
+		string WeakMediaType { get; }
+#else
 		string MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType")]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -8368,8 +8425,27 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVMediaSelectionOption : NSCopying {
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType")]
+#if XAMCORE_5_0
+		string WeakMediaType { get; }
+#else
 		string MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType")]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		[Export ("mediaSubTypes")]
 		NSNumber [] MediaSubTypes { get; }
@@ -15952,8 +16028,27 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureInputPort {
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType")]
+#if XAMCORE_5_0
+		string WeakMediaType { get; }
+#else
 		string MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType")]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		[NullAllowed, Export ("formatDescription")]
 		CMFormatDescription FormatDescription { get; }
@@ -19707,8 +19802,27 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // crash -> immutable, it can be set but it should be selected from tha available formats (not a custom one)
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureDeviceFormat {
+		/// <summary>Gets the media type as a native string constant.</summary>
+#if XAMCORE_5_0
+		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#else
+		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
+#endif
 		[Export ("mediaType", ArgumentSemantic.Copy)]
+#if XAMCORE_5_0
+		NSString WeakMediaType { get; }
+#else
 		NSString MediaType { get; }
+#endif
+
+		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		[BindAs (typeof (AVMediaTypes))]
+		[Export ("mediaType", ArgumentSemantic.Copy)]
+#if XAMCORE_5_0
+		NSString MediaType { get; }
+#else
+		NSString MediaTypes { get; }
+#endif
 
 		[Export ("formatDescription", ArgumentSemantic.Copy)]
 		CMFormatDescription FormatDescription { get; }

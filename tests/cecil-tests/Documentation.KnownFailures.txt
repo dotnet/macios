@@ -9163,15 +9163,11 @@ M:AppKit.NSFont.AdvancementForGlyph(System.UInt32)
 M:AppKit.NSFont.BoundingRectForGlyph(System.UInt32)
 M:AppKit.NSFont.GetAdvancement(System.UInt16)
 M:AppKit.NSFont.GetBoundingRect(System.UInt16)
-M:AppKit.NSFont.GetFont(System.Runtime.InteropServices.NFloat)
-M:AppKit.NSFont.GetPreferredFont(System.String,Foundation.NSDictionary)
 M:AppKit.NSFont.GlyphWithName(System.String)
-M:AppKit.NSFont.MonospacedSystemFont(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:AppKit.NSFont.Set
 M:AppKit.NSFont.SetInContext(AppKit.NSGraphicsContext)
 M:AppKit.NSFont.SetUserFixedPitchFont(AppKit.NSFont)
 M:AppKit.NSFont.SetUserFont(AppKit.NSFont)
-M:AppKit.NSFont.SystemFontOfSize(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:AppKit.NSFont.SystemFontSizeForControlSize(AppKit.NSControlSize)
 M:AppKit.NSFontAssetRequest.#ctor(AppKit.NSFontDescriptor[],AppKit.NSFontAssetRequestOptions)
 M:AppKit.NSFontAssetRequest.DownloadFontAssets(AppKit.DownloadFontAssetsRequestCompletionHandler)
@@ -53792,7 +53788,6 @@ T:AppKit.NSEvent
 T:AppKit.NSEventModifierFlags
 T:AppKit.NSFilePromiseProvider
 T:AppKit.NSFilePromiseReceiver
-T:AppKit.NSFont
 T:AppKit.NSFontAssetRequest
 T:AppKit.NSFontCollection
 T:AppKit.NSFontDescriptor

@@ -19,6 +19,7 @@ using WebPreferences = Foundation.NSObject;
 #if !MONOMAC
 using NSColor = UIKit.UIColor;
 using NSFont = UIKit.UIFont;
+using XFontDescriptor = UIKit.UIFontDescriptor;
 #endif
 
 // dummy types to simplify build
@@ -47,6 +48,7 @@ using UITraitCollection = System.Object;
 #endif // !MONOMAC
 
 #if MONOMAC
+using XFontDescriptor = AppKit.NSFontDescriptor;
 using BezierPath = AppKit.NSBezierPath;
 using Image = AppKit.NSImage;
 using TextAlignment = AppKit.NSTextAlignment;
@@ -126,6 +128,496 @@ namespace AppKit {
 #else
 namespace UIKit {
 #endif
+
+#nullable enable
+
+	[BaseType (typeof (NSObject))]
+	[ThreadSafe]
+	[DisableDefaultCtor]
+#if __MACOS__
+	partial interface NSFont : NSCopying, NSSecureCoding {
+#else
+	interface UIFont : NSCopying, NSSecureCoding {
+#endif
+		[Static]
+		[Export ("systemFontOfSize:")]
+		[Internal] // bug 25511
+		IntPtr _SystemFontOfSize (nfloat size);
+
+		[MacCatalyst (13, 1)]
+		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
+		[Internal] // bug 25511
+		[Static]
+		[Export ("systemFontOfSize:weight:")]
+		IntPtr _SystemFontOfSize (nfloat size, nfloat weight);
+
+		[MacCatalyst (13, 1)]
+		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
+		[Internal] // bug 25511
+		[Static]
+		[Export ("monospacedDigitSystemFontOfSize:weight:")]
+		IntPtr _MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight);
+
+		[Static]
+		[Export ("boldSystemFontOfSize:")]
+		[Internal] // bug 25511
+		IntPtr _BoldSystemFontOfSize (nfloat size);
+
+		[Static]
+		[Export ("fontWithName:size:")]
+		[Internal] // bug 25511
+		IntPtr _FromName (string name, nfloat size);
+
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Internal] // bug https://xamarin.github.io/bugzilla-archives/25/25511/bug.html
+		[Export ("monospacedSystemFontOfSize:weight:")]
+		IntPtr _MonospacedSystemFontOfSize (nfloat fontSize, nfloat weight);
+
+		[Export ("fontWithSize:")]
+		[Internal] // bug 25511
+		IntPtr _WithSize (nfloat size);
+
+		[Export ("pointSize")]
+		nfloat PointSize { get; }
+
+		[Export ("ascender")]
+		nfloat Ascender { get; }
+
+		[Export ("descender")]
+		nfloat Descender { get; }
+
+		[Export ("leading")]
+		nfloat Leading { get; }
+
+		[Export ("capHeight")]
+		nfloat CapHeight { get; }
+
+		[Export ("xHeight")]
+		nfloat XHeight { get; }
+
+		[Export ("fontDescriptor")]
+		XFontDescriptor FontDescriptor { get; }
+
+		[Static, Export ("fontWithDescriptor:size:")]
+		[Internal] // bug 25511
+		IntPtr _FromDescriptor (XFontDescriptor descriptor, nfloat pointSize);
+
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[Static]
+		[Internal]
+		[Export ("systemFontOfSize:weight:width:")]
+		IntPtr _SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width);
+
+#if __MACOS__
+		[Export ("fontName")]
+		string FontName { get; }
+#else
+		[Export ("fontName", ArgumentSemantic.Retain)]
+		string Name { get; }
+#endif
+
+#if __MACOS__
+		[NullAllowed]
+		[Export ("familyName")]
+		string FamilyName { get; }
+#else
+		[Export ("familyName", ArgumentSemantic.Retain)]
+		string FamilyName { get; }
+#endif
+
+#if __MACOS__
+		//[Static]
+		//[Export ("fontWithName:matrix:")]
+		//NSFont FromFontName (string fontName, float [] fontMatrix);
+
+		[Static]
+		[Internal]
+		[Export ("fontWithDescriptor:textTransform:")]
+		IntPtr _FromDescriptor (NSFontDescriptor fontDescriptor, [NullAllowed] NSAffineTransform textTransform);
+
+		[Static]
+		[Internal]
+		[Export ("userFontOfSize:")]
+		IntPtr _UserFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("userFixedPitchFontOfSize:")]
+		IntPtr _UserFixedPitchFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Export ("setUserFont:")]
+		void SetUserFont ([NullAllowed] NSFont aFont);
+
+		[Static]
+		[Export ("setUserFixedPitchFont:")]
+		void SetUserFixedPitchFont ([NullAllowed] NSFont aFont);
+
+		[Static]
+		[Internal]
+		[Export ("labelFontOfSize:")]
+		IntPtr _LabelFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("titleBarFontOfSize:")]
+		IntPtr _TitleBarFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("menuFontOfSize:")]
+		IntPtr _MenuFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("menuBarFontOfSize:")]
+		IntPtr _MenuBarFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("messageFontOfSize:")]
+		IntPtr _MessageFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("paletteFontOfSize:")]
+		IntPtr _PaletteFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("toolTipsFontOfSize:")]
+		IntPtr _ToolTipsFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Internal]
+		[Export ("controlContentFontOfSize:")]
+		IntPtr _ControlContentFontOfSize (nfloat fontSize);
+
+		[Static]
+		[Export ("systemFontSize")]
+		nfloat SystemFontSize { get; }
+
+		[Static]
+		[Export ("smallSystemFontSize")]
+		nfloat SmallSystemFontSize { get; }
+
+		[Static]
+		[Export ("labelFontSize")]
+		nfloat LabelFontSize { get; }
+
+		[Static]
+		[Export ("systemFontSizeForControlSize:")]
+		nfloat SystemFontSizeForControlSize (NSControlSize controlSize);
+
+		//[Export ("matrix")]
+		//  FIXME
+		//IntPtr *float Matrix { get; }
+
+		[NullAllowed]
+		[Export ("displayName")]
+		string DisplayName { get; }
+
+		[Export ("textTransform")]
+		NSAffineTransform TextTransform { get; }
+
+		[Export ("numberOfGlyphs")]
+		nint GlyphCount { get; }
+
+		[Export ("mostCompatibleStringEncoding")]
+		NSStringEncoding MostCompatibleStringEncoding { get; }
+
+		[Export ("glyphWithName:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		uint GlyphWithName (string aName); /* NSGlyph = unsigned int */
+
+		[Export ("coveredCharacterSet")]
+		NSCharacterSet CoveredCharacterSet { get; }
+
+		[Export ("boundingRectForFont")]
+		CGRect BoundingRectForFont { get; }
+
+		[Export ("maximumAdvancement")]
+		CGSize MaximumAdvancement { get; }
+
+		[Export ("underlinePosition")]
+		nfloat UnderlinePosition { get; }
+
+		[Export ("underlineThickness")]
+		nfloat UnderlineThickness { get; }
+
+		[Export ("italicAngle")]
+		nfloat ItalicAngle { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Export ("isFixedPitch")]
+		bool IsFixedPitch { get; }
+
+		[Export ("boundingRectForGlyph:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		CGRect BoundingRectForGlyph (uint /* NSGlyph = unsigned int */ aGlyph);
+
+		[Export ("advancementForGlyph:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use the 'CGGlyph' APIs instead.")]
+		CGSize AdvancementForGlyph (uint /* NSGlyph = unsigned int */ aGlyph);
+
+		[Export ("set")]
+		void Set ();
+
+		[Export ("setInContext:")]
+		void SetInContext (NSGraphicsContext graphicsContext);
+
+		[Export ("printerFont")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[Internal]
+		IntPtr _PrinterFont { get; }
+
+		[Export ("screenFont")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[Internal]
+		IntPtr _ScreenFont { get; }
+
+		[Export ("screenFontWithRenderingMode:")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		[Internal]
+		IntPtr _ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode);
+
+		[Export ("renderingMode")]
+		[Deprecated (PlatformName.MacOSX, 10, 13)]
+		NSFontRenderingMode RenderingMode { get; }
+
+		[Export ("isVertical")]
+		bool IsVertical { get; }
+
+		//
+		// Not a property because this causes the creation of a new font on request in the specified configuration.
+		//
+		[Export ("verticalFont")]
+		[Internal]
+		IntPtr _GetVerticalFont ();
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFamilyAttribute")]
+		NSString FamilyAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontNameAttribute")]
+		NSString NameAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFaceAttribute")]
+		NSString FaceAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontSizeAttribute")]
+		NSString SizeAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVisibleNameAttribute")]
+		NSString VisibleNameAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontMatrixAttribute")]
+		NSString MatrixAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAttribute")]
+		NSString VariationAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontCharacterSetAttribute")]
+		NSString CharacterSetAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontCascadeListAttribute")]
+		NSString CascadeListAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontTraitsAttribute")]
+		NSString TraitsAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFixedAdvanceAttribute")]
+		NSString FixedAdvanceAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFeatureSettingsAttribute")]
+		NSString FeatureSettingsAttribute { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontSymbolicTrait")]
+		NSString SymbolicTrait { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontWeightTrait")]
+		NSString WeightTrait { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontWidthTrait")]
+		NSString WidthTrait { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontSlantTrait")]
+		NSString SlantTrait { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAxisIdentifierKey")]
+		NSString VariationAxisIdentifierKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAxisMinimumValueKey")]
+		NSString VariationAxisMinimumValueKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAxisMaximumValueKey")]
+		NSString VariationAxisMaximumValueKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAxisDefaultValueKey")]
+		NSString VariationAxisDefaultValueKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontVariationAxisNameKey")]
+		NSString VariationAxisNameKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFeatureTypeIdentifierKey")]
+		NSString FeatureTypeIdentifierKey { get; }
+
+		/// <summary>To be added.</summary>
+		///         <value>To be added.</value>
+		///         <remarks>To be added.</remarks>
+		[Field ("NSFontFeatureSelectorIdentifierKey")]
+		NSString FeatureSelectorIdentifierKey { get; }
+
+		[Export ("boundingRectForCGGlyph:")]
+		CGRect GetBoundingRect (CGGlyph glyph);
+
+		[Export ("advancementForCGGlyph:")]
+		CGSize GetAdvancement (CGGlyph glyph);
+
+		[Internal]
+		[Export ("getBoundingRects:forCGGlyphs:count:")]
+		void _GetBoundingRects (IntPtr bounds, IntPtr glyphs, nuint glyphCount);
+
+		[Internal]
+		[Export ("getAdvancements:forCGGlyphs:count:")]
+		void _GetAdvancements (IntPtr advancements, IntPtr glyphs, nuint glyphCount);
+
+		[Static]
+		[Export ("preferredFontForTextStyle:options:")]
+		[Internal]
+		IntPtr _GetPreferredFont (string textStyle, NSDictionary options);
+#else
+		[Static]
+		[Export ("italicSystemFontOfSize:")]
+		[Internal] // bug 25511
+		IntPtr _ItalicSystemFontOfSize (nfloat size);
+
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("labelFontSize")]
+		nfloat LabelFontSize { get; }
+
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("buttonFontSize")]
+		nfloat ButtonFontSize { get; }
+
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("smallSystemFontSize")]
+		nfloat SmallSystemFontSize { get; }
+
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("systemFontSize")]
+		nfloat SystemFontSize { get; }
+
+#if !XAMCORE_5_0
+		/// <summary>The size of the a lower cased "x", as measured in points.</summary>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
+		[Obsolete ("Use the 'XHeight' property instead.")]
+		[Wrap ("XHeight", IsVirtual = true)]
+		nfloat xHeight { get; }
+#endif
+
+		[Export ("lineHeight")]
+		nfloat LineHeight { get; }
+
+		[Static]
+		[Export ("familyNames")]
+		string [] FamilyNames { get; }
+
+		[Static]
+		[Export ("fontNamesForFamilyName:")]
+		string [] FontNamesForFamilyName (string familyName);
+
+		[Static, Export ("preferredFontForTextStyle:")]
+		[Internal] // bug 25511
+		IntPtr _GetPreferredFontForTextStyle (NSString uiFontTextStyle);
+
+		// FIXME the API is present but UITraitCollection is not exposed / rdar 27785753
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("preferredFontForTextStyle:compatibleWithTraitCollection:")]
+		[Internal]
+		IntPtr _GetPreferredFontForTextStyle (NSString uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
+#endif
+	}
+#nullable restore
 
 	/// <summary>A delegate used as the callback in <see cref="NSLayoutManager.EnumerateLineFragments(NSRange,NSTextLayoutEnumerateLineFragments)" />.</summary>
 	delegate void NSTextLayoutEnumerateLineFragments (CGRect rect, CGRect usedRectangle, NSTextContainer textContainer, NSRange glyphRange, out bool stop);

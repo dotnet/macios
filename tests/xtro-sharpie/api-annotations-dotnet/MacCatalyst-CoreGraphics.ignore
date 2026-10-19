@@ -1,8 +1,6 @@
 # ignored in macOS too
 !missing-enum! CGConfigureOption not bound
 !missing-enum! CGDisplayChangeSummaryFlags not bound
-!missing-enum! CGDisplayStreamFrameStatus not bound
-!missing-enum! CGDisplayStreamUpdateRectType not bound
 !missing-enum! CGGesturePhase not bound
 !missing-enum! CGMomentumScrollPhase not bound
 !missing-enum! CGScreenUpdateOperation not bound

@@ -534,6 +534,8 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGContentToneMappingInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \
+	CoreGraphics/CGDisplayStream.cs \
+	CoreGraphics/CGDisplayStreamUpdate.cs \
 	CoreGraphics/CGEventSource.cs \
 	CoreGraphics/CGEventTypes.cs \
 	CoreGraphics/CGFont.cs \

@@ -45,7 +45,7 @@ namespace Xamarin.MacDev.Tasks {
 					cached = JsonSerializer.Deserialize<Dictionary<string, CacheEntry>> (File.ReadAllText (CacheFile))
 						?? throw new JsonException (MSBStrings.E7193);
 				} catch (JsonException e) {
-					Log.LogWarning (MSBStrings.W7194, CacheFile, e.Message);
+					Log.LogWarning (7194, null, MSBStrings.W7194, CacheFile, e.Message);
 					cacheNeedsWriting = true;
 				}
 			}
@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (cached.TryGetValue (info.FullName, out var entry)) {
 					if (entry is null) {
-						Log.LogWarning (MSBStrings.W7196, info.FullName, CacheFile);
+						Log.LogWarning (7196, null, MSBStrings.W7196, info.FullName, CacheFile);
 					} else if (entry.Length == info.Length && entry.LastWriteTimeUtcTicks == info.LastWriteTimeUtc.Ticks) {
 						if (IsValidHash (entry.Hash)) {
 							file.SetMetadata ("FileHash", entry.Hash);
@@ -69,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 							current [info.FullName] = entry;
 							continue;
 						}
-						Log.LogWarning (MSBStrings.W7196, info.FullName, CacheFile);
+						Log.LogWarning (7196, null, MSBStrings.W7196, info.FullName, CacheFile);
 					}
 				}
 				filesToHash.Add (file);

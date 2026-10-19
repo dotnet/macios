@@ -99,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 			} catch (Exception ex) {
-				Log.LogWarning (MSBStrings.W0095, ex.Message, output);
+				Log.LogWarning (95, null, MSBStrings.W0095, ex.Message, output);
 			}
 		}
 

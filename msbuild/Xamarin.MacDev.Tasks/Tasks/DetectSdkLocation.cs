@@ -101,7 +101,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 					return;
 				}
-				Log.LogWarning (MSBStrings.E0173 /* The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'. */, PlatformName, requestedSdkVersion, sdkVersion);
+				Log.LogWarning (173, null, MSBStrings.E0173 /* The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'. */, PlatformName, requestedSdkVersion, sdkVersion);
 			}
 			SdkVersion = sdkVersion.ToString () ?? "";
 
@@ -150,16 +150,16 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (appleSdkSettings.SystemHasEnvironmentVariable) {
 				if (isNet11OrNewer) {
-					Log.LogWarning (MSBStrings.W7172 /* The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, XcodeLocator.EnvironmentVariableName);
+					Log.LogWarning (7172, null, MSBStrings.W7172 /* The environment variable '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, XcodeLocator.EnvironmentVariableName);
 				} else {
-					Log.LogWarning (MSBStrings.W7171 /* The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, XcodeLocator.EnvironmentVariableName);
+					Log.LogWarning (7171, null, MSBStrings.W7171 /* The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, XcodeLocator.EnvironmentVariableName);
 				}
 			}
 			foreach (var file in appleSdkSettings.SystemExistingSettingsFiles) {
 				if (isNet11OrNewer) {
-					Log.LogWarning (MSBStrings.W7174 /* The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, file);
+					Log.LogWarning (7174, null, MSBStrings.W7174 /* The settings file '{0}' is deprecated, and will be ignored. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, file);
 				} else {
-					Log.LogWarning (MSBStrings.W7173 /* The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, file);
+					Log.LogWarning (7173, null, MSBStrings.W7173 /* The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to use an Xcode other than the system's current default Xcode. */, file);
 				}
 			}
 

@@ -231,7 +231,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
 
 				if (rv.ExitCode != 0) {
-					Log.LogWarning (MSBStrings.W7176, simPlatform);
+					Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
 					return;
 				}
 
@@ -250,12 +250,12 @@ namespace Xamarin.MacDev.Tasks {
 				// User cancelled - don't emit diagnostics
 			} catch (OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
 			} catch (Exception ex) {
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
 				Log.LogMessage (MessageImportance.Low, "Exception while checking simulator runtime: {0}", ex.Message);
 			} finally {
 				File.Delete (jsonOutputFile);

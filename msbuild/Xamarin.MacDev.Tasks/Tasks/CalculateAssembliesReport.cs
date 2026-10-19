@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 						//Appending the file name, length and mvid like: Foo.dll/23189/768C814C-05C3-4563-9B53-35FEF571968E
 						reportEntriesBuilder.AppendLine ($"{Path.GetFileName (file)}/{fileInfo.Length}/{mvid}");
 					} catch (Exception) {
-						Log.LogWarning (MSBStrings.W7145 /* Unable to retrieve information from '{0}'. The file may not be a valid PE file."\ */, Path.GetFileName (file));
+						Log.LogWarning (7145, null, MSBStrings.W7145 /* Unable to retrieve information from '{0}'. The file may not be a valid PE file."\ */, Path.GetFileName (file));
 						continue;
 					}
 				}

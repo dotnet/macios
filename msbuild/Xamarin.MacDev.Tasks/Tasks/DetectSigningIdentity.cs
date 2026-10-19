@@ -500,7 +500,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (matches.Count == 0) {
-				Log.LogWarning (MSBStrings.W0137);
+				Log.LogWarning (137, null, MSBStrings.W0137);
 				return identity;
 			}
 

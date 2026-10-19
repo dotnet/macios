@@ -232,12 +232,12 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Always check for both windows and non-windows style path separators, because we can get both on either platform.
 			if (logicalName.StartsWith ("..\\", StringComparison.Ordinal) || logicalName.StartsWith ("../", StringComparison.Ordinal)) {
-				task.Log.LogWarning (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0100, logicalName);
+				task.Log.LogWarning (100, item.ItemSpec, MSBStrings.E0100, logicalName);
 				return false;
 			}
 
 			if (logicalName == "Info.plist") {
-				task.Log.LogWarning (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0101);
+				task.Log.LogWarning (101, item.ItemSpec, MSBStrings.E0101);
 				return false;
 			}
 

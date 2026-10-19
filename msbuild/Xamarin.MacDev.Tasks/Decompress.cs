@@ -54,13 +54,13 @@ namespace Xamarin.MacDev {
 			// Check if we have a zipped resources, and if so, extract the manifest from the zip file
 			if (IsCompressed (resources)) {
 				if (!File.Exists (resources)) {
-					log.LogWarning (MSBStrings.W7107 /* The zip file '{0}' does not exist */, resources);
+					log.LogWarning (7107, null, MSBStrings.W7107 /* The zip file '{0}' does not exist */, resources);
 					return null;
 				}
 				using var zip = ZipFile.OpenRead (resources);
 				var contentEntry = GetCanonicalizedEntry (zip, relativeFilePath);
 				if (contentEntry is null) {
-					log.LogWarning (MSBStrings.W7106 /* Expected a file named '{1}' in the zip file {0}. */, resources, relativeFilePath);
+					log.LogWarning (7106, null, MSBStrings.W7106 /* Expected a file named '{1}' in the zip file {0}. */, resources, relativeFilePath);
 					return null;
 				}
 
@@ -72,13 +72,13 @@ namespace Xamarin.MacDev {
 			}
 
 			if (!Directory.Exists (resources)) {
-				log.LogWarning (MSBStrings.W7111 /* The directory '{0}' does not exist. */, resources);
+				log.LogWarning (7111, null, MSBStrings.W7111 /* The directory '{0}' does not exist. */, resources);
 				return null;
 			}
 
 			var contentPath = Path.Combine (resources, relativeFilePath);
 			if (!File.Exists (contentPath)) {
-				log.LogWarning (MSBStrings.W7108 /* The file '{0}' does not exist. */, contentPath);
+				log.LogWarning (7108, null, MSBStrings.W7108 /* The file '{0}' does not exist. */, contentPath);
 				return null;
 			}
 
@@ -403,4 +403,3 @@ namespace Xamarin.MacDev {
 
 	}
 }
-

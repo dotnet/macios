@@ -256,7 +256,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			Log.LogWarning (MSBStrings.W7109 /* Unable to process the item '{0}' as a native reference: unknown type.* */, item.ItemSpec);
+			Log.LogWarning (7109, null, MSBStrings.W7109 /* Unable to process the item '{0}' as a native reference: unknown type.* */, item.ItemSpec);
 		}
 
 		/// <summary>
@@ -374,7 +374,7 @@ namespace Xamarin.MacDev.Tasks {
 				// A native reference without a (usable) name can't be processed; skip it instead of falling
 				// through and accidentally treating the managed reference itself as a native reference.
 				if (string.IsNullOrEmpty (name)) {
-					Log.LogWarning (MSBStrings.W7182 /* Ignoring a native reference with no name in the binding resource package '{0}'. */, r.ItemSpec);
+					Log.LogWarning (7182, null, MSBStrings.W7182 /* Ignoring a native reference with no name in the binding resource package '{0}'. */, r.ItemSpec);
 					continue;
 				}
 				// The 'Name' is combined with the binding resource package's directory to locate (and
@@ -423,7 +423,7 @@ namespace Xamarin.MacDev.Tasks {
 					t.SetMetadata ("Kind", "Static");
 					t.SetMetadata ("PublishFolderType", "StaticLibrary");
 				} else {
-					Log.LogWarning (MSBStrings.W7105 /* Unexpected extension '{0}' for native reference '{1}' in binding resource package '{2}'. */, Path.GetExtension (name), name, r.ItemSpec);
+					Log.LogWarning (7105, null, MSBStrings.W7105 /* Unexpected extension '{0}' for native reference '{1}' in binding resource package '{2}'. */, Path.GetExtension (name), name, r.ItemSpec);
 					t = r;
 				}
 
@@ -441,7 +441,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (attribute.NodeType != XmlNodeType.Element)
 						continue;
 					if (blockedManifestMetadata.Contains (attribute.Name)) {
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+						Log.LogWarning (7179, null, MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
 						continue;
 					}
 					try {
@@ -449,7 +449,7 @@ namespace Xamarin.MacDev.Tasks {
 					} catch (ArgumentException) {
 						// Reserved MSBuild metadata names (e.g. 'FullPath') can't be set and shouldn't appear
 						// in a manifest; ignore (and warn about) them rather than failing the build.
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+						Log.LogWarning (7179, null, MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
 					}
 				}
 

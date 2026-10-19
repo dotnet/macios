@@ -114,7 +114,7 @@ namespace Xamarin.MacDev.Tasks {
 					return false;
 				}
 			} else {
-				LogAppManifestWarning (MSBStrings.W7108 /* The file '{0}' does not exist. */, appManifest);
+				LogAppManifestWarning (7108, MSBStrings.W7108 /* The file '{0}' does not exist. */, appManifest);
 				plist = new PDictionary ();
 			}
 
@@ -383,14 +383,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		}
 
-		protected void LogAppManifestWarning (string format, params object [] args)
+		protected void LogAppManifestWarning (int code, string format, params object [] args)
 		{
 			// Log a warning linking to the Info.plist file
-			if (AppManifest is not null) {
-				Log.LogWarning (null, null, null, AppManifest.ItemSpec, 0, 0, 0, 0, format, args);
-			} else {
-				Log.LogWarning (format, args);
-			}
+			Log.LogWarning (code, AppManifest?.ItemSpec, format, args);
 		}
 
 		protected void SetValue (PDictionary dict, string key, string value)
@@ -399,7 +395,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 
 			if (string.IsNullOrEmpty (value))
-				LogAppManifestWarning (MSBStrings.W0106, key);
+				LogAppManifestWarning (106, MSBStrings.W0106, key);
 			else
 				dict [key] = value;
 		}
@@ -485,18 +481,18 @@ namespace Xamarin.MacDev.Tasks {
 					if (supportsIPhone) {
 						orientation = plist.GetUISupportedInterfaceOrientations (false);
 						if (orientation == IPhoneOrientation.None) {
-							LogAppManifestWarning (MSBStrings.W0019);
+							LogAppManifestWarning (19, MSBStrings.W0019);
 						} else if (!orientation.IsValidPair ()) {
-							LogAppManifestWarning (MSBStrings.W0020);
+							LogAppManifestWarning (20, MSBStrings.W0020);
 						}
 					}
 
 					if (supportsIPad) {
 						orientation = plist.GetUISupportedInterfaceOrientations (true);
 						if (orientation == IPhoneOrientation.None) {
-							LogAppManifestWarning (MSBStrings.W0021);
+							LogAppManifestWarning (21, MSBStrings.W0021);
 						} else if (!orientation.IsValidPair ()) {
-							LogAppManifestWarning (MSBStrings.W0022);
+							LogAppManifestWarning (22, MSBStrings.W0022);
 						}
 					}
 				}

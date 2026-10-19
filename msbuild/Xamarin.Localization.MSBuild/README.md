@@ -2,6 +2,18 @@
 
 Messages for new MSBuild error codes live in `MSBStrings.resx`.
 
+When logging a warning, pass its numeric resource code to the `LoggingExtensions.LogWarning`
+overload as well as the localized message. For example:
+
+```csharp
+Log.LogWarning (7171, null, MSBStrings.W7171, XcodeLocator.EnvironmentVariableName);
+```
+
+The helper adds the platform prefix and pads the code to four digits (for example,
+`MT0051`). Use the file-name argument when the warning refers to a specific file.
+Providing a code allows MSBuild's `MSBuildWarningsAsMessages` and `MSBuildWarningsNotAsErrors`
+properties to control the warning.
+
 * You can now make changes to `MSBStrings.resx` in the Visual Studio for Mac IDE or from any text editor.
 
 * If you make changes in the IDE, rebuild `Xamarin.MacDev.Tasks.csproj` to regenerate `MSBStrings.Designer.cs`.

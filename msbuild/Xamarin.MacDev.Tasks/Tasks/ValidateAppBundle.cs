@@ -61,14 +61,14 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7008, info, MSBStrings.E7008, name);
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0071, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (71, null, MSBStrings.W0071, name, shortVersionString, mainShortVersionString);
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0072, name);
+				Log.LogWarning (72, null, MSBStrings.W0072, name);
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0073, name, version, mainVersion);
+				Log.LogWarning (73, null, MSBStrings.W0073, name, version, mainVersion);
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
 			if (extension is null) {
@@ -114,7 +114,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7069, info, MSBStrings.E7069 /* Xamarin.iOS 14+ does not support watchOS 1 apps. Please migrate your project to watchOS 2+. */);
 				break;
 			default:
-				Log.LogWarning (MSBStrings.W0074, name, extensionPointIdentifier);
+				Log.LogWarning (74, null, MSBStrings.W0074, name, extensionPointIdentifier);
 				break;
 			}
 		}
@@ -141,17 +141,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			var shortVersionString = plist.GetCFBundleShortVersionString ();
 			if (string.IsNullOrEmpty (shortVersionString))
-				Log.LogWarning (MSBStrings.W0075, name);
+				Log.LogWarning (75, null, MSBStrings.W0075, name);
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0076, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (76, null, MSBStrings.W0076, name, shortVersionString, mainShortVersionString);
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0077, name);
+				Log.LogWarning (77, null, MSBStrings.W0077, name);
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0078, name, version, mainVersion);
+				Log.LogWarning (78, null, MSBStrings.W0078, name, version, mainVersion);
 
 			var watchDeviceFamily = plist.GetUIDeviceFamily ();
 			if (watchDeviceFamily != IPhoneDeviceType.Watch)
@@ -226,17 +226,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			var shortVersionString = plist.GetCFBundleShortVersionString ();
 			if (string.IsNullOrEmpty (shortVersionString))
-				Log.LogWarning (MSBStrings.W0079, name);
+				Log.LogWarning (79, null, MSBStrings.W0079, name);
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0080, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (80, null, MSBStrings.W0080, name, shortVersionString, mainShortVersionString);
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0081, name);
+				Log.LogWarning (81, null, MSBStrings.W0081, name);
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0082, name, version, mainVersion);
+				Log.LogWarning (82, null, MSBStrings.W0082, name, version, mainVersion);
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
 			if (extension is null) {

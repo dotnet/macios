@@ -180,12 +180,12 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (profile is null && IsDeviceOrDesktop) {
 				if (!warnedTeamIdentifierPrefix && pstr.Value.Contains ("$(TeamIdentifierPrefix)")) {
-					Log.LogWarning (null, null, null, Entitlements, 0, 0, 0, 0, MSBStrings.W0108b /* Cannot expand $(TeamIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}' */, key, pstr.Value);
+					Log.LogWarning (108, Entitlements, MSBStrings.W0108b /* Cannot expand $(TeamIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}' */, key, pstr.Value);
 					warnedTeamIdentifierPrefix = true;
 				}
 
 				if (!warnedAppIdentifierPrefix && pstr.Value.Contains ("$(AppIdentifierPrefix)")) {
-					Log.LogWarning (null, null, null, Entitlements, 0, 0, 0, 0, MSBStrings.W0109b /* Cannot expand $(AppIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}' */, key, pstr.Value);
+					Log.LogWarning (109, Entitlements, MSBStrings.W0109b /* Cannot expand $(AppIdentifierPrefix) in Entitlements.plist without a provisioning profile for key '{0}' with value '{1}' */, key, pstr.Value);
 					warnedAppIdentifierPrefix = true;
 				}
 			}

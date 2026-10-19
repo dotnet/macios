@@ -309,7 +309,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (useSecureTimestamp) {
 				if (disableTimestamp) {
 					// Conflicting '{0}' and '{1}' options. '{1}' will be ignored.
-					Log.LogWarning (MSBStrings.W0176, "UseSecureTimestamp", "DisableTimestamp");
+					Log.LogWarning (176, null, MSBStrings.W0176, "UseSecureTimestamp", "DisableTimestamp");
 				}
 				args.Add ("--timestamp");
 			} else

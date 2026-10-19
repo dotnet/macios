@@ -115,7 +115,7 @@ namespace Xamarin.MacDev.Tasks {
 					} else if (File.Exists (bindingOutputPath)) {
 						packagedFiles.Add (bindingOutputPath);
 					} else {
-						Log.LogWarning (MSBStrings.W7100, bindingOutputPath);
+						Log.LogWarning (7100, null, MSBStrings.W7100, bindingOutputPath);
 					}
 				}
 				packagedFiles.Add (manifestPath);

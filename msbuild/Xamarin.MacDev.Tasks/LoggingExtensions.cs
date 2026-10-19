@@ -101,12 +101,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
-			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+			log.LogWarning (null, $"{ErrorPrefix}{errorCode:D4}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
 		}
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
-			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+			log.LogWarning (null, $"{ErrorPrefix}{errorCode:D4}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
 		}
 
 		public static void LogMessage (this TaskLoggingHelper log, MessageImportance importance, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)

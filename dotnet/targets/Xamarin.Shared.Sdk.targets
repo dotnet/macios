@@ -971,6 +971,7 @@
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
 				PrepareAssemblies=$(PrepareAssemblies)
+				CanTrimRegistrarAttributes=$(_CanTrimRegistrarAttributes)
 				PublishReadyToRun=$(PublishReadyToRun)
 				PublishReadyToRunContainerFormat=$(PublishReadyToRunContainerFormat)
 				PublishTrimmed=$(PublishTrimmed)

@@ -198,6 +198,7 @@ public class AssemblyPreparer : IDisposable {
 		steps.Add (new TrimmableRegistrarStep ());
 		steps.Add (new ManagedRegistrarLookupTablesStep ());
 		steps.Add (new InlineClassGetHandleStep ());
+		steps.Add (new RemoveRegisterAttributesStep ());
 		steps.Add (new SaveAssembliesStep ());
 
 		return RunSteps (steps, out exceptions);

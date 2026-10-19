@@ -713,6 +713,9 @@ namespace Registrar {
 			if (name == StringConstants.ProtocolMemberAttribute)
 				return true;
 
+			if (name == StringConstants.RegisterAttribute)
+				return App.CanTrimRegistrarAttributes;
+
 			return App.TrimExportAttributes == true && name == StringConstants.ExportAttribute;
 		}
 

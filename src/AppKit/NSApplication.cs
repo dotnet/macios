@@ -40,7 +40,7 @@ namespace AppKit {
 		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public static bool CheckForEventAndDelegateMismatches = true;
+		public static bool CheckForEventAndDelegateMismatches;
 
 		[DllImport (Constants.AppKitLibrary)]
 		extern static int /* int */ NSApplicationMain (int /* int */ argc, IntPtr argv);
@@ -61,6 +61,9 @@ namespace AppKit {
 			// itself, unless something else references it) is trimmed away.
 			if (Runtime.CheckForIllegalCrossThreadCalls)
 				CheckForIllegalCrossThreadCalls = true;
+
+			if (Runtime.CheckForEventAndDelegateMismatches)
+				CheckForEventAndDelegateMismatches = true;
 
 			SynchronizationContext.SetSynchronizationContext (new AppKitSynchronizationContext ());
 		}

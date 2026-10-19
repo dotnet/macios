@@ -33,7 +33,7 @@ namespace UIKit {
 		/// </remarks>
 		public static bool CheckForIllegalCrossThreadCalls;
 		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
-		public static bool CheckForEventAndDelegateMismatches = true;
+		public static bool CheckForEventAndDelegateMismatches;
 
 		// We link with __Internal here so that this function is interposable from third-party native libraries.
 		// See: https://github.com/xamarin/MicrosoftInTune/issues/3 for an example.
@@ -62,6 +62,9 @@ namespace UIKit {
 			// itself, unless something else references it) is trimmed away.
 			if (Runtime.CheckForIllegalCrossThreadCalls)
 				CheckForIllegalCrossThreadCalls = true;
+
+			if (Runtime.CheckForEventAndDelegateMismatches)
+				CheckForEventAndDelegateMismatches = true;
 
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
 		}

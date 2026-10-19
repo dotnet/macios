@@ -24,8 +24,14 @@ namespace EnsureUIThreadApp {
 			if (args.Length > 1_000_000) {
 #if __MACOS__
 				AppKit.NSApplication.EnsureUIThread ();
+				using var field = new AppKit.NSComboBox ();
+				field.SelectionChanged += (sender, e) => { };
+				field.Delegate = new AppKit.NSComboBoxDelegate ();
 #else
 				UIKit.UIApplication.EnsureUIThread ();
+				using var field = new UIKit.UITextField ();
+				field.Started += (sender, e) => { };
+				field.Delegate = new UIKit.UITextFieldDelegate ();
 #endif
 				Runtime.GetNSObjectChecked<GenericObject<NSString>> (IntPtr.Zero);
 				Runtime.GetINativeObject<GenericObject<NSString>> (IntPtr.Zero, false);

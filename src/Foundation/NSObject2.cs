@@ -1291,6 +1291,8 @@ namespace Foundation {
 			}
 		}
 
+		internal virtual bool RequiresMainThreadRelease => true;
+
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
@@ -1299,7 +1301,7 @@ namespace Foundation {
 			disposed = true;
 
 			if (handle != NativeHandle.Zero) {
-				if (disposing) {
+				if (disposing || !RequiresMainThreadRelease) {
 					ReleaseManagedRef ();
 				} else {
 					NSObject_Disposer.Add (this);

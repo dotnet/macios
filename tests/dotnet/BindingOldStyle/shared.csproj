@@ -2,7 +2,6 @@
 <Project>
 	<PropertyGroup>
 		<IsBindingProject>true</IsBindingProject>
-		<NoBindingEmbedding>false</NoBindingEmbedding>
 	</PropertyGroup>
 
 	<ItemGroup>

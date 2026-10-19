@@ -12,6 +12,8 @@
 //    * Make the *array classes implement all the ICollection methods.
 //
 
+#nullable enable
+
 using System.ComponentModel;
 
 using CoreAnimation;
@@ -157,7 +159,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -322,7 +324,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -334,7 +336,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("error")]
+		[NullAllowed, Abstract, Export ("error")]
 		NSError Error { get; }
 
 		/// <summary>To be added.</summary>
@@ -372,13 +374,13 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("blitCommandEncoder")]
+		[NullAllowed, Abstract, Export ("blitCommandEncoder")]
 		IMTLBlitCommandEncoder BlitCommandEncoder { get; }
 
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("computeCommandEncoder")]
+		[NullAllowed, Abstract, Export ("computeCommandEncoder")]
 		IMTLComputeCommandEncoder ComputeCommandEncoder { get; }
 
 		[MacCatalyst (13, 1)]
@@ -438,6 +440,7 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("renderCommandEncoderWithDescriptor:")]
+		[return: NullAllowed]
 		IMTLRenderCommandEncoder CreateRenderCommandEncoder (MTLRenderPassDescriptor renderPassDescriptor);
 
 		/// <summary>Returns the time, in seconds, when the GPU started scheduling the command buffer.</summary>
@@ -495,22 +498,26 @@ namespace Metal {
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("computeCommandEncoderWithDescriptor:")]
+		[return: NullAllowed]
 		IMTLComputeCommandEncoder CreateComputeCommandEncoder (MTLComputePassDescriptor computePassDescriptor);
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("blitCommandEncoderWithDescriptor:")]
+		[return: NullAllowed]
 		IMTLBlitCommandEncoder CreateBlitCommandEncoder (MTLBlitPassDescriptor blitPassDescriptor);
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("resourceStateCommandEncoderWithDescriptor:")]
+		[return: NullAllowed]
 		IMTLResourceStateCommandEncoder CreateResourceStateCommandEncoder (MTLResourceStatePassDescriptor resourceStatePassDescriptor);
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("accelerationStructureCommandEncoder")]
+		[return: NullAllowed]
 		IMTLAccelerationStructureCommandEncoder CreateAccelerationStructureCommandEncoder ();
 
 		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
@@ -539,7 +546,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -625,21 +632,21 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setBuffer:offset:atIndex:")]
-		void SetBuffer (IMTLBuffer buffer, nuint offset, nuint index);
+		void SetBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		/// <param name="texture">To be added.</param>
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setTexture:atIndex:")]
-		void SetTexture (IMTLTexture texture, nuint index);
+		void SetTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:atIndex:")]
-		void SetSamplerState (IMTLSamplerState sampler, nuint index);
+		void SetSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="lodMinClamp">To be added.</param>
@@ -648,7 +655,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
-		void SetSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
+		void SetSamplerState ([NullAllowed] IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
 		/// <param name="length">To be added.</param>
 		/// <param name="index">To be added.</param>
@@ -912,23 +919,27 @@ namespace Metal {
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("functionHandleWithFunction:")]
+		[return: NullAllowed]
 		IMTLFunctionHandle CreateFunctionHandle (IMTLFunction function);
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("newComputePipelineStateWithAdditionalBinaryFunctions:error:")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction [] functions, [NullAllowed] out NSError error);
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("newVisibleFunctionTableWithDescriptor:")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLVisibleFunctionTable CreateVisibleFunctionTable (MTLVisibleFunctionTableDescriptor descriptor);
 
 		[Abstract (GenerateExtensionMethod = true)]
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Export ("newIntersectionFunctionTableWithDescriptor:")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLIntersectionFunctionTable CreateIntersectionFunctionTable (MTLIntersectionFunctionTableDescriptor descriptor);
 
@@ -1302,11 +1313,11 @@ namespace Metal {
 		/// <param name="pointer">The data to wrap.</param>
 		/// <param name="length">The length of the data to wrap.</param>
 		/// <param name="options">Options for creating the buffer.</param>
-		/// <param name="deallocator">The deallocator to use when deleting the buffer.</param>
+		/// <param name="deallocator">The deallocator to use when deleting the buffer, or <see langword="null" /> if no deallocation callback is needed.</param>
 		[Abstract, Export ("newBufferWithBytesNoCopy:length:options:deallocator:")]
 		[return: NullAllowed]
 		[return: Release]
-		IMTLBuffer CreateBufferNoCopy (IntPtr pointer, nuint length, MTLResourceOptions options, MTLDeallocator deallocator);
+		IMTLBuffer CreateBufferNoCopy (IntPtr pointer, nuint length, MTLResourceOptions options, [NullAllowed] MTLDeallocator deallocator);
 
 		/// <param name="descriptor">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -1361,6 +1372,7 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newDefaultLibrary")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLLibrary CreateDefaultLibrary ();
 
@@ -1370,13 +1382,15 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithFile:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLLibrary CreateLibrary (string filepath, out NSError error);
+		IMTLLibrary CreateLibrary (string filepath, [NullAllowed] out NSError error);
 
 		[Abstract]
 		[Export ("newLibraryWithData:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLLibrary CreateLibrary (DispatchData data, out NSError error);
+		IMTLLibrary CreateLibrary (DispatchData data, [NullAllowed] out NSError error);
 
 		/// <param name="source">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1385,8 +1399,9 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithSource:options:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLLibrary CreateLibrary (string source, MTLCompileOptions options, out NSError error);
+		IMTLLibrary CreateLibrary (string source, [NullAllowed] MTLCompileOptions options, [NullAllowed] out NSError error);
 
 		/// <param name="source">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1395,7 +1410,7 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newLibraryWithSource:options:completionHandler:")]
 		[Async]
-		void CreateLibrary (string source, MTLCompileOptions options, Action<IMTLLibrary, NSError> completionHandler);
+		void CreateLibrary (string source, [NullAllowed] MTLCompileOptions options, Action<IMTLLibrary?, NSError?> completionHandler);
 
 		/// <summary>Creates and returns a new library from the functions in the specified bundle.</summary>
 		[Abstract]
@@ -1403,7 +1418,7 @@ namespace Metal {
 		[Export ("newDefaultLibraryWithBundle:error:")]
 		[return: Release]
 		[return: NullAllowed]
-		IMTLLibrary CreateDefaultLibrary (NSBundle bundle, out NSError error);
+		IMTLLibrary CreateDefaultLibrary (NSBundle bundle, [NullAllowed] out NSError error);
 
 		/// <param name="descriptor">To be added.</param>
 		/// <param name="error">To be added.</param>
@@ -1411,15 +1426,16 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newRenderPipelineStateWithDescriptor:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, out NSError error);
+		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, [NullAllowed] out NSError error);
 
 		/// <param name="descriptor">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newRenderPipelineStateWithDescriptor:completionHandler:")]
-		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, Action<IMTLRenderPipelineState, NSError> completionHandler);
+		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, Action<IMTLRenderPipelineState?, NSError?> completionHandler);
 
 		/// <param name="descriptor">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1430,8 +1446,9 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newRenderPipelineStateWithDescriptor:options:reflection:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, out MTLRenderPipelineReflection reflection, out NSError error);
+		IMTLRenderPipelineState CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, [NullAllowed] out MTLRenderPipelineReflection reflection, [NullAllowed] out NSError error);
 
 		/// <param name="descriptor">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1440,7 +1457,7 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newRenderPipelineStateWithDescriptor:options:completionHandler:")]
-		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, Action<IMTLRenderPipelineState, MTLRenderPipelineReflection, NSError> completionHandler);
+		void CreateRenderPipelineState (MTLRenderPipelineDescriptor descriptor, MTLPipelineOption options, Action<IMTLRenderPipelineState?, MTLRenderPipelineReflection?, NSError?> completionHandler);
 
 		/// <param name="computeFunction">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1451,8 +1468,9 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newComputePipelineStateWithFunction:options:reflection:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, out MTLComputePipelineReflection reflection, out NSError error);
+		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, [NullAllowed] out MTLComputePipelineReflection reflection, [NullAllowed] out NSError error);
 
 		/// <param name="computeFunction">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
@@ -1460,7 +1478,7 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newComputePipelineStateWithFunction:completionHandler:")]
-		void CreateComputePipelineState (IMTLFunction computeFunction, Action<IMTLComputePipelineState, NSError> completionHandler);
+		void CreateComputePipelineState (IMTLFunction computeFunction, Action<IMTLComputePipelineState?, NSError?> completionHandler);
 
 		/// <param name="computeFunction">To be added.</param>
 		/// <param name="error">To be added.</param>
@@ -1468,8 +1486,9 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newComputePipelineStateWithFunction:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, out NSError error);
+		IMTLComputePipelineState CreateComputePipelineState (IMTLFunction computeFunction, [NullAllowed] out NSError error);
 
 		/// <param name="computeFunction">To be added.</param>
 		/// <param name="options">To be added.</param>
@@ -1477,14 +1496,15 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newComputePipelineStateWithFunction:options:completionHandler:")]
-		void CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, Action<IMTLComputePipelineState, MTLComputePipelineReflection, NSError> completionHandler);
+		void CreateComputePipelineState (IMTLFunction computeFunction, MTLPipelineOption options, Action<IMTLComputePipelineState?, MTLComputePipelineReflection?, NSError?> completionHandler);
 
 		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler, and stores reflection information in the <paramref name="reflection" /><see langword="out" /> parameter.</summary>
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newComputePipelineStateWithDescriptor:options:reflection:error:")]
+		[return: NullAllowed]
 		[return: Release]
-		IMTLComputePipelineState CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, out MTLComputePipelineReflection reflection, out NSError error);
+		IMTLComputePipelineState CreateComputePipelineState (MTLComputePipelineDescriptor descriptor, MTLPipelineOption options, [NullAllowed] out MTLComputePipelineReflection reflection, [NullAllowed] out NSError error);
 
 		/// <summary>Creates a new pipeline state from the specified compute pipeline descriptor, options, and completion handler.</summary>
 		[MacCatalyst (13, 1)]
@@ -1496,6 +1516,7 @@ namespace Metal {
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newFence")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLFence CreateFence ();
 
@@ -1902,7 +1923,7 @@ namespace Metal {
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		[Export ("newLibraryWithStitchedDescriptor:completionHandler:")]
-		void CreateLibrary (MTLStitchedLibraryDescriptor descriptor, Action<IMTLLibrary, NSError> completionHandler);
+		void CreateLibrary (MTLStitchedLibraryDescriptor descriptor, Action<IMTLLibrary?, NSError?> completionHandler);
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
@@ -1962,7 +1983,7 @@ namespace Metal {
 		[Export ("newLogStateWithDescriptor:error:")]
 		[return: NullAllowed]
 		[return: Release]
-		IMTLLogState GetNewLogState (MTLLogStateDescriptor descriptor, out NSError error);
+		IMTLLogState GetNewLogState (MTLLogStateDescriptor descriptor, [NullAllowed] out NSError error);
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Abstract]
@@ -1976,7 +1997,7 @@ namespace Metal {
 		[return: NullAllowed]
 		[Export ("newResidencySetWithDescriptor:error:")]
 		[return: Release]
-		IMTLResidencySet CreateResidencySet (MTLResidencySetDescriptor descriptor, out NSError error);
+		IMTLResidencySet CreateResidencySet (MTLResidencySetDescriptor descriptor, [NullAllowed] out NSError error);
 
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Abstract]
@@ -2172,7 +2193,7 @@ namespace Metal {
 		[Deprecated (PlatformName.MacOSX, 10, 12)]
 		[Deprecated (PlatformName.TvOS, 10, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
-		[Abstract, Export ("rootResource")]
+		[NullAllowed, Abstract, Export ("rootResource")]
 		IMTLResource RootResource { get; }
 
 		/// <summary>Returns the parent texture.</summary>
@@ -2593,7 +2614,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; }
 
 		/// <summary>To be added.</summary>
@@ -2791,7 +2812,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; }
 
 		/// <summary>To be added.</summary>
@@ -3170,7 +3191,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("vertexAttributes")]
+		[NullAllowed, Abstract, Export ("vertexAttributes")]
 		MTLVertexAttribute [] VertexAttributes { get; }
 
 		/// <summary>To be added.</summary>
@@ -3232,7 +3253,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -3252,6 +3273,7 @@ namespace Metal {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("newFunctionWithName:")]
+		[return: NullAllowed]
 		[return: Release]
 		IMTLFunction CreateFunction (string functionName);
 
@@ -3260,13 +3282,13 @@ namespace Metal {
 		[Export ("newFunctionWithName:constantValues:error:")]
 		[return: NullAllowed]
 		[return: Release]
-		IMTLFunction CreateFunction (string name, MTLFunctionConstantValues constantValues, out NSError error);
+		IMTLFunction CreateFunction (string name, MTLFunctionConstantValues constantValues, [NullAllowed] out NSError error);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("newFunctionWithName:constantValues:completionHandler:")]
 		[Async]
-		void CreateFunction (string name, MTLFunctionConstantValues constantValues, Action<IMTLFunction, NSError> completionHandler);
+		void CreateFunction (string name, MTLFunctionConstantValues constantValues, Action<IMTLFunction?, NSError?> completionHandler);
 
 		[Field ("MTLLibraryErrorDomain")]
 		NSString ErrorDomain { get; }
@@ -3275,7 +3297,7 @@ namespace Metal {
 		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("newFunctionWithDescriptor:completionHandler:")]
-		void CreateFunction (MTLFunctionDescriptor descriptor, Action<IMTLFunction, NSError> completionHandler);
+		void CreateFunction (MTLFunctionDescriptor descriptor, Action<IMTLFunction?, NSError?> completionHandler);
 
 		[iOS (14, 0), TV (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -3289,7 +3311,7 @@ namespace Metal {
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("newIntersectionFunctionWithDescriptor:completionHandler:")]
-		void CreateIntersectionFunction (MTLIntersectionFunctionDescriptor descriptor, Action<IMTLFunction, NSError> completionHandler);
+		void CreateIntersectionFunction (MTLIntersectionFunctionDescriptor descriptor, Action<IMTLFunction?, NSError?> completionHandler);
 
 		[iOS (14, 0), TV (16, 0), MacCatalyst (14, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
@@ -3485,7 +3507,7 @@ namespace Metal {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[Export ("label")]
+		[NullAllowed, Export ("label")]
 		string Label { get; }
 
 		/// <summary>To be added.</summary>
@@ -3602,21 +3624,21 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexBuffer:offset:atIndex:")]
-		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint index);
+		void SetVertexBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		/// <param name="texture">To be added.</param>
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexTexture:atIndex:")]
-		void SetVertexTexture (IMTLTexture texture, nuint index);
+		void SetVertexTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:atIndex:")]
-		void SetVertexSamplerState (IMTLSamplerState sampler, nuint index);
+		void SetVertexSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="lodMinClamp">To be added.</param>
@@ -3625,7 +3647,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setVertexSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
-		void SetVertexSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
+		void SetVertexSamplerState ([NullAllowed] IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
 		/// <param name="viewport">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -3682,7 +3704,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentBuffer:offset:atIndex:")]
-		void SetFragmentBuffer (IMTLBuffer buffer, nuint offset, nuint index);
+		void SetFragmentBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		/// <param name="offset">To be added.</param>
 		/// <param name="index">To be added.</param>
@@ -3701,14 +3723,14 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentTexture:atIndex:")]
-		void SetFragmentTexture (IMTLTexture texture, nuint index);
+		void SetFragmentTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:atIndex:")]
-		void SetFragmentSamplerState (IMTLSamplerState sampler, nuint index);
+		void SetFragmentSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
 		/// <param name="sampler">To be added.</param>
 		/// <param name="lodMinClamp">To be added.</param>
@@ -3717,7 +3739,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setFragmentSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
-		void SetFragmentSamplerState (IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
+		void SetFragmentSamplerState ([NullAllowed] IMTLSamplerState sampler, float /* float, not CGFloat */ lodMinClamp, float /* float, not CGFloat */ lodMaxClamp, nuint index);
 
 		/// <param name="red">To be added.</param>
 		/// <param name="green">To be added.</param>
@@ -3732,7 +3754,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract, Export ("setDepthStencilState:")]
-		void SetDepthStencilState (IMTLDepthStencilState depthStencilState);
+		void SetDepthStencilState ([NullAllowed] IMTLDepthStencilState depthStencilState);
 
 		/// <param name="referenceValue">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -4324,7 +4346,7 @@ namespace Metal {
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBuffer:offset:atIndex:")]
-		void SetObjectBuffer (IMTLBuffer buffer, nuint offset, nuint index);
+		void SetObjectBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
 		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
@@ -4871,7 +4893,7 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Abstract, Export ("label")]
+		[NullAllowed, Abstract, Export ("label")]
 		string Label { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -5509,12 +5531,12 @@ namespace Metal {
 		[Abstract]
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("addMeshRenderPipelineFunctionsWithDescriptor:error:")]
-		bool AddMeshRenderPipelineFunctions (MTLMeshRenderPipelineDescriptor descriptor, out NSError error);
+		bool AddMeshRenderPipelineFunctions (MTLMeshRenderPipelineDescriptor descriptor, [NullAllowed] out NSError error);
 
 		[Abstract]
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("addLibraryWithDescriptor:error:")]
-		bool AddLibrary (MTLStitchedLibraryDescriptor descriptor, out NSError error);
+		bool AddLibrary (MTLStitchedLibraryDescriptor descriptor, [NullAllowed] out NSError error);
 	}
 
 
@@ -6847,7 +6869,7 @@ namespace Metal {
 
 		[Abstract]
 		[Export ("refitAccelerationStructure:descriptor:destination:scratchBuffer:scratchBufferOffset:")]
-		void RefitAccelerationStructure (IMTLAccelerationStructure sourceAccelerationStructure, MTLAccelerationStructureDescriptor descriptor, [NullAllowed] IMTLAccelerationStructure destinationAccelerationStructure, IMTLBuffer scratchBuffer, nuint scratchBufferOffset);
+		void RefitAccelerationStructure (IMTLAccelerationStructure sourceAccelerationStructure, MTLAccelerationStructureDescriptor descriptor, [NullAllowed] IMTLAccelerationStructure destinationAccelerationStructure, [NullAllowed] IMTLBuffer scratchBuffer, nuint scratchBufferOffset);
 
 		[Abstract]
 		[Export ("copyAccelerationStructure:toAccelerationStructure:")]

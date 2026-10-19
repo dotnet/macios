@@ -61,7 +61,7 @@ namespace OSLog {
 		[NoTV, NoiOS, NoMacCatalyst]
 #endif
 #if !MONOMAC
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		System = 0,
 		CurrentProcessIdentifier = 1,

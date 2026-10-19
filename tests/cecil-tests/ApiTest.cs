@@ -18,6 +18,28 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public partial class ApiTest {
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void ARConfiguration_IsSupported (AssemblyInfo info)
+		{
+			var assembly = info.Assembly;
+			if (!assembly.EnumerateTypes (type => type.Is ("ARKit", "ARConfiguration")).Any ())
+				Assert.Ignore ("This assembly doesn't contain ARKit.ARConfiguration.");
+
+			var subclasses = assembly.EnumerateTypes (type => !type.Is ("ARKit", "ARConfiguration") && type.IsSubclassOf ("ARKit", "ARConfiguration")).ToArray ();
+			Assert.That (subclasses, Is.Not.Empty, "At least some subclasses");
+			foreach (var type in subclasses) {
+				var getter = type.Methods.SingleOrDefault (m => m.Name == "get_IsSupported" && m.IsPublic && m.IsStatic && !m.HasParameters);
+				Assert.That (getter, Is.Not.Null, $"{type.FullName} must declare its own IsSupported getter.");
+				if (getter is null)
+					continue;
+
+				var receivingClasses = getter.Body.Instructions
+					.Where (i => i.OpCode == OpCodes.Ldsfld && i.Operand is FieldReference field && field.Name == "class_ptr")
+					.Select (i => ((FieldReference) i.Operand).DeclaringType.FullName);
+				Assert.That (receivingClasses, Is.EqualTo (new [] { type.FullName }), $"{type.FullName}.IsSupported must dispatch to the subclass's native class.");
+			}
+		}
+
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{

@@ -12,6 +12,38 @@ namespace GeneratorTests {
 	[TestFixture ()]
 	[Parallelizable (ParallelScope.All)]
 	public class BGenTests : BGenBase {
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void PropagateToSubclasses (Profile profile)
+		{
+			var bgen = BuildFile (profile, "propagate-to-subclasses.cs");
+			foreach (var name in new [] { "Base", "Derived", "Grandchild", "Redeclared", "RedeclaredChild" }) {
+				var type = bgen.ApiAssembly.MainModule.GetType ("Propagation", name);
+				Assert.That (type.Properties.Count (p => p.Name == "IsSupported"), Is.EqualTo (1), $"{name}.IsSupported count");
+				Assert.That (type.Properties.Count (p => p.Name == "Value"), Is.EqualTo (1), $"{name}.Value count");
+				Assert.That (type.Methods.Count (m => m.Name == "SupportsValue"), Is.EqualTo (2), $"{name}.SupportsValue overload count");
+				Assert.That (type.Properties.Count (p => p.Name == "NotOnTV"), Is.EqualTo (profile == Profile.tvOS ? 0 : 1), $"{name}.NotOnTV count");
+				Assert.That (type.Properties.Count (p => p.Name == "NotPropagated"), Is.EqualTo (name == "Base" ? 1 : 0), $"{name}.NotPropagated count");
+				Assert.That (type.Methods.Count (m => m.Name == "NotPropagatedMethod"), Is.EqualTo (name == "Base" ? 1 : 0), $"{name}.NotPropagatedMethod count");
+
+				var newValue = type.Properties.Single (p => p.Name == "NewValue");
+				var platform = profile.AsPlatform ().AsString ().ToLowerInvariant ();
+				Assert.That (newValue.CustomAttributes.Any (a => a.AttributeType.Name == "SupportedOSPlatformAttribute" && (string) a.ConstructorArguments [0].Value == $"{platform}26.0"), Is.True, $"{name}.NewValue availability");
+
+				var dispatchedMethods = type.Methods.Where (m => m.Name == "get_IsSupported" || m.Name == "get_Value" || m.Name == "set_Value" || m.Name == "SupportsValue").ToArray ();
+				Assert.That (dispatchedMethods, Is.Not.Empty, $"{name} dispatched members");
+				foreach (var method in dispatchedMethods) {
+					Assert.That (method.IsStatic, Is.True, $"{name}.{method.Name} static");
+					var classLoads = method.Body.Instructions.Where (i => i.OpCode == OpCodes.Ldsfld && i.Operand is FieldReference f && f.Name == "class_ptr").ToArray ();
+					Assert.That (classLoads, Has.Length.EqualTo (1), $"{name}.{method.Name} class handle load");
+					Assert.That (((FieldReference) classLoads [0].Operand).DeclaringType.FullName, Is.EqualTo (type.FullName), $"{name}.{method.Name} receiving class");
+					Assert.That (method.Body.Instructions.Any (i => i.Operand is MethodReference m && m.Name.Contains ("objc_msgSend")), Is.True, $"{name}.{method.Name} native dispatch");
+				}
+			}
+		}
+
 		[Test]
 		public void PrecompiledApiAssemblyWithoutSources ()
 		{

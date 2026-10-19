@@ -33496,6 +33496,7 @@ P:ARKit.ARBodyTrackingConfiguration.AutomaticSkeletonScaleEstimationEnabled
 P:ARKit.ARBodyTrackingConfiguration.DetectionImages
 P:ARKit.ARBodyTrackingConfiguration.EnvironmentTexturing
 P:ARKit.ARBodyTrackingConfiguration.InitialWorldMap
+P:ARKit.ARBodyTrackingConfiguration.IsSupported
 P:ARKit.ARBodyTrackingConfiguration.MaximumNumberOfTrackedImages
 P:ARKit.ARBodyTrackingConfiguration.PlaneDetection
 P:ARKit.ARBodyTrackingConfiguration.SupportsAppClipCodeTracking
@@ -33542,6 +33543,7 @@ P:ARKit.ARFaceGeometry.TextureCoordinateCount
 P:ARKit.ARFaceGeometry.TriangleCount
 P:ARKit.ARFaceGeometry.VertexCount
 P:ARKit.ARFaceTrackingConfiguration.EnvironmentTexturingEnabled
+P:ARKit.ARFaceTrackingConfiguration.IsSupported
 P:ARKit.ARFaceTrackingConfiguration.MaximumNumberOfTrackedFaces
 P:ARKit.ARFaceTrackingConfiguration.SupportedNumberOfTrackedFaces
 P:ARKit.ARFaceTrackingConfiguration.SupportsWorldTracking
@@ -33584,6 +33586,7 @@ P:ARKit.ARGeoTrackingConfiguration.AutomaticImageScaleEstimationEnabled
 P:ARKit.ARGeoTrackingConfiguration.DetectionImages
 P:ARKit.ARGeoTrackingConfiguration.DetectionObjects
 P:ARKit.ARGeoTrackingConfiguration.EnvironmentTexturing
+P:ARKit.ARGeoTrackingConfiguration.IsSupported
 P:ARKit.ARGeoTrackingConfiguration.MaximumNumberOfTrackedImages
 P:ARKit.ARGeoTrackingConfiguration.PlaneDetection
 P:ARKit.ARGeoTrackingConfiguration.SupportsAppClipCodeTracking
@@ -33599,6 +33602,7 @@ P:ARKit.ARHitTestResult.Type
 P:ARKit.ARHitTestResult.WorldTransform
 P:ARKit.ARImageAnchor.EstimatedScaleFactor
 P:ARKit.ARImageAnchor.ReferenceImage
+P:ARKit.ARImageTrackingConfiguration.IsSupported
 P:ARKit.ARImageTrackingConfiguration.MaximumNumberOfTrackedImages
 P:ARKit.ARImageTrackingConfiguration.TrackingImages
 P:ARKit.ARLightEstimate.AmbientColorTemperature
@@ -33609,7 +33613,9 @@ P:ARKit.ARMeshGeometry.Faces
 P:ARKit.ARMeshGeometry.Normals
 P:ARKit.ARMeshGeometry.Vertices
 P:ARKit.ARObjectAnchor.ReferenceObject
+P:ARKit.ARObjectScanningConfiguration.IsSupported
 P:ARKit.ARObjectScanningConfiguration.PlaneDetection
+P:ARKit.AROrientationTrackingConfiguration.IsSupported
 P:ARKit.ARPlaneAnchor.Alignment
 P:ARKit.ARPlaneAnchor.Center
 P:ARKit.ARPlaneAnchor.Classification
@@ -33626,6 +33632,7 @@ P:ARKit.ARPlaneGeometry.TriangleCount
 P:ARKit.ARPlaneGeometry.VertexCount
 P:ARKit.ARPointCloud.Count
 P:ARKit.ARPositionalTrackingConfiguration.InitialWorldMap
+P:ARKit.ARPositionalTrackingConfiguration.IsSupported
 P:ARKit.ARPositionalTrackingConfiguration.PlaneDetection
 P:ARKit.ARQuickLookPreviewItem.AllowsContentScaling
 P:ARKit.ARQuickLookPreviewItem.CanonicalWebPageUrl
@@ -33692,6 +33699,7 @@ P:ARKit.ARWorldTrackingConfiguration.DetectionImages
 P:ARKit.ARWorldTrackingConfiguration.DetectionObjects
 P:ARKit.ARWorldTrackingConfiguration.EnvironmentTexturing
 P:ARKit.ARWorldTrackingConfiguration.InitialWorldMap
+P:ARKit.ARWorldTrackingConfiguration.IsSupported
 P:ARKit.ARWorldTrackingConfiguration.MaximumNumberOfTrackedImages
 P:ARKit.ARWorldTrackingConfiguration.PlaneDetection
 P:ARKit.ARWorldTrackingConfiguration.SceneReconstruction

@@ -100,19 +100,77 @@ namespace CoreFoundation {
 			}
 		}
 
-		public static unsafe NativeHandle Create (params INativeObject [] values)
+		/// <summary>Creates a native array from managed native objects.</summary>
+		/// <param name="values">The objects to include. Null elements are represented by <see cref="NSNull" />.</param>
+		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="values" /> is null.</exception>
+		public static unsafe NativeHandle Create (params INativeObject? [] values)
 		{
 			if (values is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
 			int c = values.Length;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
-				_values [i] = values [i].Handle;
+				_values [i] = values [i]?.Handle ?? CFNullHandle;
 			IntPtr rv;
 			fixed (IntPtr* pv = _values)
 				rv = CFArrayCreate (IntPtr.Zero, (IntPtr) pv, c, kCFTypeArrayCallbacks_ptr);
 			GC.KeepAlive (values);
 			return rv;
+		}
+
+		/// <summary>Creates a native array containing one native array for each row of a jagged array.</summary>
+		/// <param name="items">The rows of native objects. Rows and their elements must not be null.</param>
+		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="items" />, a row, or an element is null.</exception>
+		public static NativeHandle Create (params INativeObject [] [] items)
+		{
+			if (items is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (items));
+			var rows = new NativeHandle [items.Length];
+			try {
+				for (var i = 0; i < items.Length; i++) {
+					var row = items [i];
+					if (row is null)
+						throw new ArgumentNullException (nameof (items), $"Element [{i}] is null");
+					for (var j = 0; j < row.Length; j++) {
+						if (row [j] is null)
+							throw new ArgumentNullException (nameof (items), $"Element [{i}][{j}] is null");
+					}
+					rows [i] = Create (row);
+				}
+				return Create (rows);
+			} finally {
+				foreach (var row in rows)
+					ReleaseNative (row);
+			}
+		}
+
+		/// <summary>Creates a nested native array from a two-dimensional array of native objects.</summary>
+		/// <param name="items">The native objects, indexed by column and then row. Elements must not be null.</param>
+		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="items" /> or an element is null.</exception>
+		public static NativeHandle Create (INativeObject [,] items)
+		{
+			if (items is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (items));
+			var width = items.GetLength (0);
+			var height = items.GetLength (1);
+			var rows = new INativeObject [height] [];
+			for (var y = 0; y < height; y++) {
+				var row = new INativeObject [width];
+				for (var x = 0; x < width; x++)
+					row [x] = items [x, y];
+				rows [y] = row;
+			}
+			return Create (rows);
+		}
+
+		/// <summary>Releases a native <see cref="CFArray" /> handle.</summary>
+		/// <param name="handle">The native array handle to release, or <see cref="NativeHandle.Zero" />.</param>
+		public static void ReleaseNative (NativeHandle handle)
+		{
+			CFObject.SafeRelease (handle);
 		}
 
 		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>

@@ -855,9 +855,7 @@ public partial class Generator : IMemberGatherer {
 		if (pi.ParameterType.IsArray) {
 			//Type etype = pi.ParameterType.GetElementType ();
 
-			if (null_allowed_override || AttributeManager.IsNullable (pi))
-				return String.Format ("nsa_{0}.GetHandle ()", pi.Name);
-			return "nsa_" + pi.Name + ".Handle";
+			return "nsa_" + pi.Name;
 		}
 
 		//
@@ -3346,6 +3344,7 @@ public partial class Generator : IMemberGatherer {
 		by_ref_processing = new StringBuilder ();
 		by_ref_init = new StringBuilder ();
 		post_return = new StringBuilder ();
+		var arrayHandles = new List<string> ();
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
@@ -3384,20 +3383,13 @@ public partial class Generator : IMemberGatherer {
 					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 				} else if (HasBindAsAttribute (propInfo)) {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
-				} else if (etype == TypeCache.System_String) {
-					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNullableStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-					} else {
-						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-					}
 				} else if (etype == TypeCache.Selector) {
 					exceptions.Add (ErrorHelper.CreateError (1065, mai.Type.FullName, string.IsNullOrEmpty (pi.Name) ? $"#{pi.Position}" : pi.Name, mi.DeclaringType?.FullName, mi.Name));
 				} else {
-					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-					} else {
-						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNSObjects ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
-					}
+					var handle = "nsa_" + pi.Name;
+					arrayHandles.Add (handle);
+					var nullCheck = ParameterNeedsNullCheck (pi, mi, propInfo) ? "" : $"{safe_name} is null ? NativeHandle.Zero : ";
+					convs.AppendLine ($"{handle} = {nullCheck}CFArray.Create ({safe_name});");
 				}
 			} else if (mai.Type.IsSubclassOf (TypeCache.System_Delegate)) {
 				string trampoline_name = MakeTrampoline (pi.ParameterType).StaticName;
@@ -3462,11 +3454,13 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.AppendFormat ("NSString.CreateNative ({0}, true);\n", pi.Name.GetSafeParamName ());
 						by_ref_init.AppendFormat ("var {0}OriginalValue = {0}Value;\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
-						by_ref_init.Insert (0, string.Format ("NSArray {0}ArrayValue = NSArray.FromNSObjects ({0});\n", pi.Name.GetSafeParamName ()));
-						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
+						arrayHandles.Add ($"{safe_name}ArrayValue");
+						by_ref_init.Insert (0, $"{safe_name}ArrayValue = CFArray.Create ({safe_name} ?? []);\n");
+						by_ref_init.AppendFormat ("{0}ArrayValue;\n", safe_name);
 					} else if (isArrayOfString) {
-						by_ref_init.Insert (0, string.Format ("var {0}ArrayValue = NSArray.FromNullableStrings ({0});\n", pi.Name.GetSafeParamName ()));
-						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
+						arrayHandles.Add ($"{safe_name}ArrayValue");
+						by_ref_init.Insert (0, $"{safe_name}ArrayValue = {safe_name} is null ? NativeHandle.Zero : CFArray.Create ({safe_name});\n");
+						by_ref_init.AppendFormat ("{0}ArrayValue;\n", safe_name);
 					} else if (isNSObject || isINativeObjectSubclass) {
 						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
 					} else {
@@ -3480,7 +3474,7 @@ public partial class Generator : IMemberGatherer {
 					by_ref_processing.AppendFormat ("{0} = CFString.FromHandle ({0}Value)!;\n", pi.Name.GetSafeParamName ());
 				} else if (isArray) {
 					if (!pi.IsOut)
-						by_ref_processing.AppendFormat ("if ({0}Value != ({0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle))\n\t", pi.Name.GetSafeParamName ());
+						by_ref_processing.AppendFormat ("if ({0}Value != {0}ArrayValue)\n\t", pi.Name.GetSafeParamName ());
 
 					if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
 						by_ref_processing.AppendFormat ("{0} = CFArray.ArrayFromHandle<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementElementType!));
@@ -3489,9 +3483,6 @@ public partial class Generator : IMemberGatherer {
 					} else {
 						throw ErrorHelper.CreateError (88, mai.Type, mi);
 					}
-
-					if (!pi.IsOut)
-						by_ref_processing.AppendFormat ("{0}ArrayValue?.Dispose ();\n", pi.Name.GetSafeParamName ());
 				} else if (isNSObject && !isForcedType) {
 					by_ref_processing.AppendFormat ("{0} = Runtime.GetNSObject<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType));
 				} else if (isINativeObjectSubclass) {
@@ -3502,6 +3493,18 @@ public partial class Generator : IMemberGatherer {
 					throw ErrorHelper.CreateError (88, mai.Type, mi);
 				}
 			}
+		}
+
+		if (arrayHandles.Count > 0) {
+			var init = new StringBuilder ();
+			foreach (var handle in arrayHandles)
+				init.AppendLine ($"{NativeHandleType} {handle} = NativeHandle.Zero;");
+			init.AppendLine ("try {");
+			by_ref_init.Insert (0, init);
+			post_return.AppendLine ("} finally {");
+			foreach (var handle in arrayHandles.AsEnumerable ().Reverse ())
+				post_return.AppendLine ($"\tCFArray.ReleaseNative ({handle});");
+			post_return.AppendLine ("}");
 		}
 	}
 

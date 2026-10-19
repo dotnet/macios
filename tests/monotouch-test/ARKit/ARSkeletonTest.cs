@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using ARKit;
+using Vision;
 using Xamarin.Utils;
 
 namespace monotouchtest.ARKit {
@@ -22,6 +23,25 @@ namespace monotouchtest.ARKit {
 		{
 			using (var notKnownPoint = new NSString ("nariz"))
 				Assert.That (ARSkeleton.CreateJointName (notKnownPoint), Is.Null);
+		}
+
+		[TestCase (VNHumanBodyPoseObservationJointName.Root)]
+		[TestCase (VNHumanBodyPoseObservationJointName.LeftShoulder)]
+		[TestCase (VNHumanBodyPoseObservationJointName.RightShoulder)]
+		public void CreateJointNameTest (VNHumanBodyPoseObservationJointName recognizedPointKey)
+		{
+			using var expected = ARSkeleton.CreateJointName (recognizedPointKey.GetConstant ());
+			using var actual = ARSkeleton.CreateJointName (recognizedPointKey);
+			Assert.That (actual, Is.Not.Null, "Mapped joint");
+			Assert.That (actual, Is.EqualTo (expected), "NSString overload");
+		}
+
+		[TestCase (VNHumanBodyPoseObservationJointName.None)]
+		[TestCase ((VNHumanBodyPoseObservationJointName) (-1))]
+		public void InvalidJointNameTest (VNHumanBodyPoseObservationJointName recognizedPointKey)
+		{
+			var exception = Assert.Throws<ArgumentOutOfRangeException> (() => ARSkeleton.CreateJointName (recognizedPointKey));
+			Assert.That (exception.ParamName, Is.EqualTo ("recognizedPointKey"));
 		}
 
 	}

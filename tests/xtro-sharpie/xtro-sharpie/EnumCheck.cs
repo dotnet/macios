@@ -198,6 +198,7 @@ namespace Extrospection {
 
 			native_values.Clear ();
 			managed_values.Clear ();
+			var native_values_by_name = new Dictionary<string, (object Value, EnumConstantDecl Decl)> (StringComparer.OrdinalIgnoreCase);
 
 			// collect all the native enum values
 			var nativeConstant = signed ? (object) 0L : (object) 0UL;
@@ -218,6 +219,8 @@ namespace Extrospection {
 				} else {
 					native_values [nativeConstant] = new (value.ToString (), value);
 				}
+				if (!decl.IsDeprecated () && !value.IsDeprecated () && value.IsAvailable ())
+					native_values_by_name [value.Name] = (nativeConstant, value);
 				// assume, sequentially assigned (in case next `value.InitExpr` is null)
 				var t = nativeConstant.GetType ();
 				if (signed) {
@@ -241,6 +244,14 @@ namespace Extrospection {
 					managedValue = Convert.ToInt64 (f.Constant);
 				} else {
 					managedValue = Convert.ToUInt64 (f.Constant);
+				}
+				// Only infer names that follow the native enum name + managed member name convention.
+				if (f.IsAvailable () && native_values_by_name.TryGetValue (name + f.Name, out var nativeValue)) {
+					var matches = managedValue.Equals (nativeValue.Value);
+					if (!signed && native && (ulong) nativeValue.Value == UInt32.MaxValue && (ulong) managedValue == UInt64.MaxValue)
+						matches = true;
+					if (!matches)
+						Log.On (framework).Add ($"!wrong-enum-value! {type.Name}.{f.Name} managed value {managedValue} does not match native value {nativeValue.Decl.Name} = {nativeValue.Value}");
 				}
 				managed_values [managedValue] = new ManagedValue { Field = f };
 			}

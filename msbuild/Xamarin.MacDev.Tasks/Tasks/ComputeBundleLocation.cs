@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -96,7 +97,7 @@ namespace Xamarin.MacDev.Tasks {
 													// Compute the publish folder type if it's not specified
 				var publishFolderType = item.GetPublishFolderType ();
 				if (publishFolderType == PublishFolderType.Unset) {
-					publishFolderType = ComputePublishFolderType (list, item);
+					publishFolderType = ComputePublishFolderType (ResolvedFileToPublish, item);
 					item.SetMetadata ("PublishFolderType", publishFolderType.ToString ());
 				}
 
@@ -184,9 +185,52 @@ namespace Xamarin.MacDev.Tasks {
 				list.Add (item);
 			}
 
+			foreach (var item in list) {
+				switch (item.GetPublishFolderType ()) {
+				case PublishFolderType.StaticLibrary:
+				case PublishFolderType.DynamicLibrary:
+				case PublishFolderType.PluginLibrary:
+				case PublishFolderType.AppleFramework:
+				case PublishFolderType.CompressedAppleFramework:
+					ApplyNativeLibraryManifest (item);
+					break;
+				}
+			}
+
 			UpdatedResolvedFileToPublish = list.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		static string GetNativeLibraryManifestPath (string path)
+		{
+			if (TryGetFrameworkDirectory (path, out var frameworkDirectory) && frameworkDirectory is not null)
+				path = frameworkDirectory;
+			if (path.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))
+				path = Path.ChangeExtension (path, null);
+			return Path.ChangeExtension (path, ".manifest");
+		}
+
+		void ApplyNativeLibraryManifest (ITaskItem item)
+		{
+			var manifest = GetNativeLibraryManifestPath (item.ItemSpec);
+			if (!File.Exists (manifest))
+				return;
+
+			try {
+				var document = new XmlDocument ();
+				document.LoadXmlWithoutNetworkAccess (File.ReadAllText (manifest));
+				var name = Path.GetFileName (item.ItemSpec);
+				var references = document.DocumentElement?.SelectNodes ("NativeReference");
+				var matches = references?.Cast<XmlNode> ().Where (v => v.Attributes? ["Name"]?.Value == name).ToArray ();
+				if (document.DocumentElement?.Name != "BindingAssembly" || matches is null || matches.Length != 1) {
+					Log.LogError (MSBStrings.E7201 /* The native library manifest '{0}' must contain a BindingAssembly element with a NativeReference named '{1}'. */, manifest, name);
+					return;
+				}
+				ResolveNativeReferences.ApplyManifestMetadata (Log, item, matches [0], manifest);
+			} catch (Exception e) when (e is XmlException || e is IOException || e is UnauthorizedAccessException) {
+				Log.LogErrorFromException (e, true, false, manifest);
+			}
 		}
 
 		static string RemoveExtension (string path, string extension)
@@ -343,6 +387,18 @@ namespace Xamarin.MacDev.Tasks {
 			// We do this after checking for binding resource packages, because those might contain frameworks.
 			if (TryGetFrameworkDirectory (filename, out _))
 				return PublishFolderType.AppleFramework;
+
+			if (filename.EndsWith (".manifest", StringComparison.OrdinalIgnoreCase) && items.Any (v => {
+				var path = v.ItemSpec;
+				return (TryGetFrameworkDirectory (path, out _) ||
+					path.EndsWith (".a", StringComparison.OrdinalIgnoreCase) ||
+					path.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase) ||
+					path.EndsWith (".so", StringComparison.OrdinalIgnoreCase) ||
+					path.EndsWith (".framework.zip", StringComparison.OrdinalIgnoreCase) ||
+					path.EndsWith (".xcframework.zip", StringComparison.OrdinalIgnoreCase)) &&
+					GetNativeLibraryManifestPath (path) == filename;
+			}))
+				return PublishFolderType.None;
 
 			// resources (png, jpg, ...?)
 			var resourceExtensions = new string [] {

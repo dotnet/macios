@@ -1688,11 +1688,11 @@
 {0} - The stack trace of the offending call.</comment>
     </data>
     <data name="W7179" xml:space="preserve">
-        <value>Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest.</value>
+        <value>Ignoring the metadata '{0}' for the native reference '{1}' in '{2}': this metadata is computed by the build and can't be set in a native reference manifest.</value>
         <comment>Shown when a binding resource package's manifest contains build-controlled path/layout/identity metadata that isn't allowed to be set from a manifest.
 {0} - The name of the metadata (e.g. "RelativePath").
 {1} - The name of the native reference (e.g. "libfoo.dylib").
-{2} - The path to the binding resource package.</comment>
+{2} - The path to the binding resource package or native library manifest.</comment>
     </data>
     <data name="E7180" xml:space="preserve">
         <value>The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.</value>
@@ -1819,5 +1819,10 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
+    </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The native library manifest '{0}' must contain a BindingAssembly element with a NativeReference named '{1}'.</value>
+        <comment>{0} - The path to the native library manifest.
+{1} - The filename of the native library.</comment>
     </data>
 </root>

@@ -51,6 +51,48 @@ namespace MonoTouchFixtures.CoreText {
 			}
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void CTFontCreateWithNameAndMatrix (bool withOptions)
+		{
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			using var font = withOptions
+				? new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3), CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3));
+			using var refFont = withOptions
+				? new CTFont ("HoeflerText-Regular", 10, ref matrix, CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, ref matrix);
+			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
+			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
+			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
+			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void CTFontCreateWithFontDescriptorAndMatrix (bool withOptions)
+		{
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			using var descriptor = new CTFontDescriptor ("HoeflerText-Regular", 16);
+			using var font = withOptions
+				? new CTFont (descriptor, 10, CTFontOptions.Default, CGAffineTransform.MakeScale (2, 3))
+				: new CTFont (descriptor, 10, CGAffineTransform.MakeScale (2, 3));
+			using var refFont = withOptions
+				? new CTFont (descriptor, 10, CTFontOptions.Default, ref matrix)
+				: new CTFont (descriptor, 10, ref matrix);
+			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
+			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
+			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
+			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+			Assert.Throws<ArgumentNullException> (() => {
+				using var invalidFont = withOptions
+					? new CTFont ((CTFontDescriptor) null, 10, CTFontOptions.Default, matrix)
+					: new CTFont ((CTFontDescriptor) null, 10, matrix);
+			}, "Null descriptor");
+		}
+
 		[Test]
 		public void GetCascadeList ()
 		{

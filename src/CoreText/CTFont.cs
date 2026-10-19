@@ -2539,6 +2539,15 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>Creates a font with the specified name, size, and transformation matrix.</summary>
+		/// <param name="name">The font's PostScript or family name.</param>
+		/// <param name="size">The font size in points, or zero to use the default size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		public CTFont (string name, nfloat size, CGAffineTransform matrix)
+			: this (name, size, ref matrix)
+		{
+		}
+
 		static IntPtr Create (CTFontDescriptor descriptor, nfloat size)
 		{
 			if (descriptor is null)
@@ -2579,6 +2588,15 @@ namespace CoreText {
 
 		public CTFont (CTFontDescriptor descriptor, nfloat size, ref CGAffineTransform matrix)
 			: base (Create (descriptor, size, ref matrix), true)
+		{
+		}
+
+		/// <summary>Creates a font from a descriptor with the specified size and transformation matrix.</summary>
+		/// <param name="descriptor">The descriptor that specifies the font's attributes.</param>
+		/// <param name="size">The font size in points, or zero to use the descriptor's size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		public CTFont (CTFontDescriptor descriptor, nfloat size, CGAffineTransform matrix)
+			: this (descriptor, size, ref matrix)
 		{
 		}
 
@@ -2645,6 +2663,20 @@ namespace CoreText {
 		{
 		}
 
+		/// <summary>Creates a font with the specified name, size, transformation matrix, and options.</summary>
+		/// <param name="name">The font's PostScript or family name.</param>
+		/// <param name="size">The font size in points, or zero to use the default size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		/// <param name="options">The font creation options.</param>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		public CTFont (string name, nfloat size, CGAffineTransform matrix, CTFontOptions options)
+			: this (name, size, ref matrix, options)
+		{
+		}
+
 		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, CTFontOptions options)
 		{
 			if (descriptor is null)
@@ -2697,6 +2729,20 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos")]
 		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, ref CGAffineTransform matrix)
 			: base (Create (descriptor, size, options, ref matrix), true)
+		{
+		}
+
+		/// <summary>Creates a font from a descriptor with the specified size, options, and transformation matrix.</summary>
+		/// <param name="descriptor">The descriptor that specifies the font's attributes.</param>
+		/// <param name="size">The font size in points, or zero to use the descriptor's size.</param>
+		/// <param name="options">The font creation options.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, CGAffineTransform matrix)
+			: this (descriptor, size, options, ref matrix)
 		{
 		}
 

@@ -1864,14 +1864,14 @@ namespace GeneratorTests {
 			var constants = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "DelegateFields", "FieldConstants.g.cs"));
 			Assert.That (constants, Does.Contain ("public static Transformer RequiredTransformer"), "Required delegate");
 			Assert.That (constants, Does.Contain ("public static Transformer? NullableTransformer"), "Nullable delegate");
-			Assert.That (constants, Does.Contain ("public static Action Action"), "System delegate");
-			Assert.That (constants, Does.Contain ("public static Action<NSObject> GenericAction"), "Generic delegate");
-			Assert.That (constants, Does.Contain ("public static Func<NSObject, NSObject> GenericFunc"), "Generic return delegate");
+			Assert.That (constants, Does.Contain ("public static global::System.Action Action"), "System delegate");
+			Assert.That (constants, Does.Contain ("public static global::System.Action<NSObject> GenericAction"), "Generic delegate");
+			Assert.That (constants, Does.Contain ("public static global::System.Func<NSObject, NSObject> GenericFunc"), "Generic return delegate");
 			Assert.That (constants, Does.Contain ("[return: DelegateProxy (typeof (ObjCRuntime.Trampolines.SDTransformer))]"), "Delegate proxy");
 			Assert.That (constants, Does.Contain ("if (__mt_RequiredTransformer_var_static is null)"), "Cached delegate");
 			Assert.That (constants, Does.Contain ("__mt_RequiredTransformer_var_static = global::ObjCRuntime.Trampolines.NIDTransformer.Create (Dlfcn.GetIntPtr (Libraries.__Internal.Handle, \"RequiredTransformer\"))!;"), "Native block lookup");
 			Assert.That (constants, Does.Contain ("return __mt_RequiredTransformer_var_static;"), "Cached delegate return");
-			Assert.That (constants, Does.Contain ("public static IntPtr _RequiredTransformer"), "Legacy pointer property");
+			Assert.That (constants, Does.Contain ("public static nint _RequiredTransformer"), "Legacy pointer property");
 
 			var fieldObject = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "DelegateFields", "FieldObject.g.cs"));
 			Assert.That (fieldObject, Does.Contain ("public static Transformer RequiredTransformer"), "Delegate on NSObject subclass");

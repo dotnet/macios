@@ -49702,9 +49702,6 @@ P:UIKit.UICommand.Title
 P:UIKit.UICommandAlternate.Action
 P:UIKit.UICommandAlternate.ModifierFlags
 P:UIKit.UICommandAlternate.Title
-P:UIKit.UIConfigurationColorTransformer.Grayscale
-P:UIKit.UIConfigurationColorTransformer.MonochromeTint
-P:UIKit.UIConfigurationColorTransformer.PreferredTint
 P:UIKit.UIContentUnavailableButtonProperties.Enabled
 P:UIKit.UIContentUnavailableButtonProperties.Menu
 P:UIKit.UIContentUnavailableButtonProperties.PrimaryAction

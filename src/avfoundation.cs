@@ -15016,7 +15016,7 @@ namespace AVFoundation {
 		[Wrap ("""
 			_DetermineCompatibleFileTypes (compatibleFileTypesHandler is null
 				? throw new ArgumentNullException (nameof (compatibleFileTypesHandler))
-				: types => compatibleFileTypesHandler (AVFileTypesExtensions.ToEnumArray (types)!))
+				: types => compatibleFileTypesHandler (Array.ConvertAll (types, type => AVFileTypesExtensions.GetValue (type))))
 			""")]
 #if XAMCORE_5_0
 		void DetermineCompatibleFileTypes (Action<AVFileTypes []> compatibleFileTypesHandler);
@@ -16622,7 +16622,8 @@ namespace AVFoundation {
 
 		/// <summary>Gets the available recording file types as <see cref="AVFileTypes" /> values.</summary>
 		/// <returns>The available recording file types.</returns>
-		[Static, BindAs (typeof (AVFileTypes []))]
+		[Static]
+		[return: BindAs (typeof (AVFileTypes []))]
 		[Export ("availableOutputFileTypes")]
 #if XAMCORE_5_0
 		NSString [] AvailableOutputFileTypes ();
@@ -17110,7 +17111,7 @@ namespace AVFoundation {
 		/// <param name="outputFileType">The output file type.</param>
 		/// <returns>The supported video codecs.</returns>
 		[MacCatalyst (14, 0)]
-		[BindAs (typeof (AVVideoCodecType []))]
+		[return: BindAs (typeof (AVVideoCodecType []))]
 		[Export ("availableVideoCodecTypesForAssetWriterWithOutputFileType:")]
 		NSString [] GetAvailableVideoCodecTypes ([BindAs (typeof (AVFileTypes))] NSString outputFileType);
 
@@ -17677,10 +17678,12 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the raw photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
+#if !__MACOS__
 #if XAMCORE_5_0
 		/// <remarks>Use <see cref="RawFileType" /> for the strongly typed value.</remarks>
 #else
 		/// <remarks>Use <see cref="RawFileTypes" /> for the strongly typed value.</remarks>
+#endif
 #endif
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("rawFileType")]

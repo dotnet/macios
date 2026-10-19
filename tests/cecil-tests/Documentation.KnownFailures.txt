@@ -12347,7 +12347,6 @@ M:AVFoundation.AVAssetExportSession.CancelExport
 M:AVFoundation.AVAssetExportSession.ConfigureForResumableExport(System.Action{AVFoundation.AVAssetExportSessionResumptionState})
 M:AVFoundation.AVAssetExportSession.ConfigureForResumableExportAsync
 M:AVFoundation.AVAssetExportSession.DetermineCompatibilityOfExportPreset(System.String,AVFoundation.AVAsset,System.String,System.Action{System.Boolean})
-M:AVFoundation.AVAssetExportSession.DetermineCompatibleFileTypes(System.Action{System.String[]})
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDuration(System.Action{CoreMedia.CMTime,Foundation.NSError})
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDurationAsync
 M:AVFoundation.AVAssetExportSession.EstimateOutputFileLength(System.Action{System.Int64,Foundation.NSError})

@@ -7355,30 +7355,10 @@ namespace AVFoundation {
 		AVAssetWriterInput [] Inputs { get;  }
 #endif
 
-#if XAMCORE_5_0
 		/// <summary>Gets the available media types as native string constants.</summary>
-		/// <remarks>Use <see cref="AvailableMediaTypes" /> for the strongly typed values.</remarks>
-#else
-		/// <summary>Gets the available media types as native string constants.</summary>
-		/// <remarks>Use <see cref="AvailableMediaTypeValues" /> for the strongly typed values.</remarks>
-#endif
+		/// <remarks>The returned identifiers are not limited to the constants represented by <see cref="AVMediaTypes" />.</remarks>
 		[Export ("availableMediaTypes")]
-#if XAMCORE_5_0
-		[Sealed]
-		NSString [] WeakAvailableMediaTypes { get; }
-#else
 		NSString [] AvailableMediaTypes { get; }
-#endif
-
-		/// <summary>Gets the available media types as <see cref="AVMediaTypes" /> values.</summary>
-		[BindAs (typeof (AVMediaTypes []))]
-		[Export ("availableMediaTypes")]
-#if XAMCORE_5_0
-		NSString [] AvailableMediaTypes { get; }
-#else
-		[Sealed]
-		NSString [] AvailableMediaTypeValues { get; }
-#endif
 
 		[Export ("metadata", ArgumentSemantic.Copy)]
 		AVMetadataItem [] Metadata { get; set; }
@@ -14718,30 +14698,10 @@ namespace AVFoundation {
 		[Export ("presetName")]
 		string PresetName { get; }
 
-#if XAMCORE_5_0
 		/// <summary>Gets the supported output file types as native string constants.</summary>
-		/// <remarks>Use <see cref="SupportedFileTypes" /> for the strongly typed values.</remarks>
-#else
-		/// <summary>Gets the supported output file types as native string constants.</summary>
-		/// <remarks>Use <see cref="SupportedFileTypeValues" /> for the strongly typed values.</remarks>
-#endif
+		/// <remarks>The returned identifiers are not limited to the constants represented by <see cref="AVFileTypes" />.</remarks>
 		[Export ("supportedFileTypes")]
-#if XAMCORE_5_0
-		[Sealed]
-		string [] WeakSupportedFileTypes { get; }
-#else
 		string [] SupportedFileTypes { get; }
-#endif
-
-		/// <summary>Gets the supported output file types as <see cref="AVFileTypes" /> values.</summary>
-		[BindAs (typeof (AVFileTypes []))]
-		[Export ("supportedFileTypes")]
-#if XAMCORE_5_0
-		NSString [] SupportedFileTypes { get; }
-#else
-		[Sealed]
-		NSString [] SupportedFileTypeValues { get; }
-#endif
 
 #if XAMCORE_5_0
 		/// <summary>Gets or sets the output file type as a native string constant, or <see langword="null" /> if unset.</summary>
@@ -14760,6 +14720,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets or sets the output file type as an <see cref="AVFileTypes" /> value, or <see langword="null" /> if unset.</summary>
+		/// <remarks>The initial value is <see langword="null" />, but assigning <see langword="null" /> raises a native exception.</remarks>
 		[NullAllowed]
 		[BindAs (typeof (AVFileTypes?))]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
@@ -15006,46 +14967,17 @@ namespace AVFoundation {
 		[Wrap ("DetermineCompatibilityOfExportPreset (presetName, asset, outputFileType.GetConstant (), isCompatibleResult)")]
 		void DetermineCompatibilityOfExportPreset (string presetName, AVAsset asset, [NullAllowed] AVFileTypes outputFileType, Action<bool> isCompatibleResult);
 
+		/// <summary>Determines the compatible output file types as native string constants.</summary>
+		/// <param name="compatibleFileTypesHandler">The callback receiving the compatible file type identifiers.</param>
+		/// <remarks>The returned identifiers are not limited to the constants represented by <see cref="AVFileTypes" />.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("determineCompatibleFileTypesWithCompletionHandler:")]
 		[Async (XmlDocs = """
-			<summary>Produces the list of compatible file types with this export session.</summary>
-			<returns>
-			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous DetermineCompatibleFileTypes operation.  The value of the TResult parameter is of type System.Action&lt;System.String[]&gt;.</para>
-			        </returns>
-			<remarks>
-			          <para copied="true">The DetermineCompatibleFileTypesAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			        </remarks>
+			<summary>Asynchronously determines the compatible output file types as native string constants.</summary>
+			<returns>A task whose result contains the compatible file type identifiers.</returns>
+			<remarks>The returned identifiers are not limited to the constants represented by AVFileTypes.</remarks>
 			""")]
-#if XAMCORE_5_0
-		void WeakDetermineCompatibleFileTypes (Action<string []> compatibleFileTypesHandler);
-#else
 		void DetermineCompatibleFileTypes (Action<string []> compatibleFileTypesHandler);
-#endif
-
-		[Internal]
-		[Sealed]
-		[MacCatalyst (13, 1)]
-		[Export ("determineCompatibleFileTypesWithCompletionHandler:")]
-		void _DetermineCompatibleFileTypes (Action<NSString []> compatibleFileTypesHandler);
-
-		/// <summary>Determines the compatible output file types as <see cref="AVFileTypes" /> values.</summary>
-		/// <param name="compatibleFileTypesHandler">The callback receiving the compatible file types.</param>
-		[MacCatalyst (13, 1)]
-		[Async (XmlDocs = """
-			<summary>Asynchronously determines the compatible output file types as AVFileTypes values.</summary>
-			<returns>A task whose result contains the compatible file types.</returns>
-			""")]
-		[Wrap ("""
-			_DetermineCompatibleFileTypes (compatibleFileTypesHandler is null
-				? throw new ArgumentNullException (nameof (compatibleFileTypesHandler))
-				: types => compatibleFileTypesHandler (Array.ConvertAll (types, type => AVFileTypesExtensions.GetValue (type))))
-			""")]
-#if XAMCORE_5_0
-		void DetermineCompatibleFileTypes (Action<AVFileTypes []> compatibleFileTypesHandler);
-#else
-		void DetermineCompatibleFileTypeValues (Action<AVFileTypes []> compatibleFileTypesHandler);
-#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("metadataItemFilter", ArgumentSemantic.Retain), NullAllowed]

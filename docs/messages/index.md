@@ -243,7 +243,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT0009](mt0009.md): Error while loading assemblies: *.
 - [MT0010](mt0010.md): Could not parse the command line arguments: *.
 - [MT0011](mt0011.md): \* was built against a more recent runtime (\*) than MonoTouch supports. (historical)
-- [MT0012](mt0012.md): Incomplete data is provided to complete *. (historical)
+- [MT0012](mt0012.md): Could not parse TargetArchitectures '{0}'
 - [MT0013](mt0013.md): Profiling support requires sgen to be enabled too. (historical)
 - [MT0014](mt0014.md): The iOS \* SDK does not support building applications targeting \*. (historical)
 - [MT0015](mt0015.md): Invalid ABI: *. Supported ABIs are: i386, x86_64,  armv7, armv7+llvm, armv7+llvm+thumb2, armv7s, armv7s+llvm, armv7s+llvm+thumb2, arm64 and arm64+llvm.
@@ -583,7 +583,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT0150](mt0150.md): Internal error: The interpreter is currently only available for 64 bits. (historical)
 - [MT0156](mt0156.md): Internal error: byref array is neither string, NSObject or INativeObject. (historical)
 - [MT0157](mt0157.md): Internal error: can't convert from '{0}' to '{1}' in {2}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). (historical)
-- [MT0158](mt0158.md): Internal error: the smart enum {0} doesn't seem to be a smart enum after all. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). (historical)
+- [MT0158](mt0158.md): The file '{0}' does not exist.
 - [MT0159](mt0159.md): Internal error: unsupported tokentype ({0}) for {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). (historical)
 - [MT0160](mt0160.md): Internal error: the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional {0} argument to force a full build. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). (historical)
 - [MT0161](mt0161.md): Internal error: symbol without a name (type: {0}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). (historical)
@@ -1029,38 +1029,38 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 
 ## MT7xxx: MSBuild error messages
 
-- [MT7001](mt7001.md): Could not resolve host IPs for WiFi debugger settings. (historical)
-- [MT7002](mt7002.md): This machine does not have any network adapters. This is required when debugging or profiling on device over WiFi. (historical)
-- [MT7003](mt7003.md): The App Extension '*' does not contain an Info.plist. (historical)
-- [MT7004](mt7004.md): The App Extension '*' does not specify a CFBundleIdentifier. (historical)
-- [MT7005](mt7005.md): The App Extension '*' does not specify a CFBundleExecutable. (historical)
-- [MT7006](mt7006.md): The App Extension '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*). (historical)
-- [MT7007](mt7007.md): The App Extension '\*' has a CFBundleIdentifier (\*) that ends with the illegal suffix ".key". (historical)
-- [MT7008](mt7008.md): The App Extension '*' does not specify a CFBundleShortVersionString. (historical)
-- [MT7009](mt7009.md): The App Extension '*' has an invalid Info.plist: it does not contain an NSExtension dictionary. (historical)
-- [MT7010](mt7010.md): The App Extension '*' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value. (historical)
+- [MT7001](mt7001.md): Could not resolve host IPs for WiFi debugger settings.
+- [MT7002](mt7002.md): This machine does not have any network adapters. This is required when debugging or profiling on device over WiFi.
+- [MT7003](mt7003.md): The App Extension '*' does not contain an Info.plist.
+- [MT7004](mt7004.md): The App Extension '*' does not specify a CFBundleIdentifier.
+- [MT7005](mt7005.md): The App Extension '*' does not specify a CFBundleExecutable.
+- [MT7006](mt7006.md): The App Extension '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*).
+- [MT7007](mt7007.md): The App Extension '\*' has a CFBundleIdentifier (\*) that ends with the illegal suffix ".key".
+- [MT7008](mt7008.md): The App Extension '*' does not specify a CFBundleShortVersionString.
+- [MT7009](mt7009.md): The App Extension '*' has an invalid Info.plist: it does not contain an NSExtension dictionary.
+- [MT7010](mt7010.md): The App Extension '*' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value.
 - [MT7011](mt7011.md): The WatchKit Extension '*' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionAttributes dictionary. (historical)
 - [MT7012](mt7012.md): The WatchKit Extension '*' does not have exactly one watch app. (historical)
 - [MT7013](mt7013.md): The WatchKit Extension '*' has an invalid Info.plist: UIRequiredDeviceCapabilities must contain the 'watch-companion' capability. (historical)
-- [MT7014](mt7014.md): The Watch App '*' does not contain an Info.plist. (historical)
-- [MT7015](mt7015.md): The Watch App '*' does not specify a CFBundleIdentifier. (historical)
-- [MT7016](mt7016.md): The Watch App '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*). (historical)
-- [MT7017](mt7017.md): The Watch App '\*' does not have a valid UIDeviceFamily value. Expected 'Watch (4)' but found '\* (*)'. (historical)
-- [MT7018](mt7018.md): The Watch App '*' does not specify a CFBundleExecutable (historical)
-- [MT7019](mt7019.md): The Watch App '\*' has an invalid WKCompanionAppBundleIdentifier value ('\*'), it does not match the main app bundle's CFBundleIdentifier ('*'). (historical)
-- [MT7020](mt7020.md): The Watch App '*' has an invalid Info.plist: the WKWatchKitApp key must be present and have a value of 'true'. (historical)
-- [MT7021](mt7021.md): The Watch App '*' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present. (historical)
-- [MT7022](mt7022.md): The Watch App '*' does not contain a Watch Extension. (historical)
-- [MT7023](mt7023.md): The Watch Extension '*' does not contain an Info.plist. (historical)
-- [MT7024](mt7024.md): The Watch Extension '*' does not specify a CFBundleIdentifier. (historical)
-- [MT7025](mt7025.md): The Watch Extension '*' does not specify a CFBundleExecutable. (historical)
-- [MT7026](mt7026.md): The Watch Extension '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*). (historical)
-- [MT7027](mt7027.md): The Watch Extension '\*' has a CFBundleIdentifier (\*) that ends with the illegal suffix ".key". (historical)
-- [MT7028](mt7028.md): The Watch Extension '*' has an invalid Info.plist: it does not contain an NSExtension dictionary. (historical)
-- [MT7029](mt7029.md): The Watch Extension '*' has an invalid Info.plist: the NSExtensionPointIdentifier must be "com.apple.watchkit". (historical)
-- [MT7030](mt7030.md): The Watch Extension '*' has an invalid Info.plist: the NSExtension dictionary must contain NSExtensionAttributes. (historical)
-- [MT7031](mt7031.md): The Watch Extension '*' has an invalid Info.plist: the NSExtensionAttributes dictionary must contain a WKAppBundleIdentifier. (historical)
-- [MT7032](mt7032.md): The WatchKit Extension '*' has an invalid Info.plist: UIRequiredDeviceCapabilities should not contain the 'watch-companion' capability. (historical)
+- [MT7014](mt7014.md): The Watch App '*' does not contain an Info.plist.
+- [MT7015](mt7015.md): The Watch App '*' does not specify a CFBundleIdentifier.
+- [MT7016](mt7016.md): The Watch App '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*).
+- [MT7017](mt7017.md): The Watch App '\*' does not have a valid UIDeviceFamily value. Expected 'Watch (4)' but found '\* (*)'.
+- [MT7018](mt7018.md): The Watch App '*' does not specify a CFBundleExecutable
+- [MT7019](mt7019.md): The Watch App '\*' has an invalid WKCompanionAppBundleIdentifier value ('\*'), it does not match the main app bundle's CFBundleIdentifier ('*').
+- [MT7020](mt7020.md): The Watch App '*' has an invalid Info.plist: the WKWatchKitApp key must be present and have a value of 'true'.
+- [MT7021](mt7021.md): The Watch App '*' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present.
+- [MT7022](mt7022.md): The Watch App '*' does not contain a Watch Extension.
+- [MT7023](mt7023.md): The Watch Extension '*' does not contain an Info.plist.
+- [MT7024](mt7024.md): The Watch Extension '*' does not specify a CFBundleIdentifier.
+- [MT7025](mt7025.md): The Watch Extension '*' does not specify a CFBundleExecutable.
+- [MT7026](mt7026.md): The Watch Extension '\*' has an invalid CFBundleIdentifier (\*), it does not begin with the main app bundle's CFBundleIdentifier (*).
+- [MT7027](mt7027.md): The Watch Extension '\*' has a CFBundleIdentifier (\*) that ends with the illegal suffix ".key".
+- [MT7028](mt7028.md): The Watch Extension '*' has an invalid Info.plist: it does not contain an NSExtension dictionary.
+- [MT7029](mt7029.md): The Watch Extension '*' has an invalid Info.plist: the NSExtensionPointIdentifier must be "com.apple.watchkit".
+- [MT7030](mt7030.md): The Watch Extension '*' has an invalid Info.plist: the NSExtension dictionary must contain NSExtensionAttributes.
+- [MT7031](mt7031.md): The Watch Extension '*' has an invalid Info.plist: the NSExtensionAttributes dictionary must contain a WKAppBundleIdentifier.
+- [MT7032](mt7032.md): The WatchKit Extension '*' has an invalid Info.plist: UIRequiredDeviceCapabilities should not contain the 'watch-companion' capability.
 - [MT7033](mt7033.md): The Watch App '*' does not contain an Info.plist. (historical)
 - [MT7034](mt7034.md): The Watch App '*' does not specify a CFBundleIdentifier. (historical)
 - [MT7035](mt7035.md): The Watch App '\*' does not have a valid UIDeviceFamily value. Expected '\*' but found '\* (\*)'. (historical)
@@ -1068,37 +1068,46 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT7037](mt7037.md): The WatchKit Extension '{extensionName}' has an invalid WKAppBundleIdentifier value ('\*'), it does not match the Watch App's CFBundleIdentifier ('\*'). (historical)
 - [MT7038](mt7038.md): The Watch App '*' has an invalid Info.plist: the WKCompanionAppBundleIdentifier must exist and must match the main app bundle's CFBundleIdentifier. (historical)
 - [MT7039](mt7039.md): The Watch App '*' has an invalid Info.plist: the LSRequiresIPhoneOS key must not be present. (historical)
-- [MT7040](mt7040.md): The app bundle {AppBundlePath} does not contain an Info.plist. (historical)
-- [MT7041](mt7041.md): Main Info.plist path does not specify a CFBundleIdentifier. (historical)
-- [MT7042](mt7042.md): Main Info.plist path does not specify a CFBundleExecutable. (historical)
-- [MT7043](mt7043.md): Main Info.plist path does not specify a CFBundleSupportedPlatforms. (historical)
-- [MT7044](mt7044.md): Main Info.plist path does not specify a UIDeviceFamily. (historical)
-- [MT7045](mt7045.md): Unrecognized Format: *. (historical)
-- [MT7046](mt7046.md): Add: Entry, *, Incorrectly Specified. (historical)
-- [MT7047](mt7047.md): Add: Entry, *, Contains Invalid Array Index. (historical)
-- [MT7048](mt7048.md): Add: * Entry Already Exists. (historical)
-- [MT7049](mt7049.md): Add: Can't Add Entry, *, to Parent. (historical)
-- [MT7050](mt7050.md): Delete: Can't Delete Entry, *, from Parent. (historical)
-- [MT7051](mt7051.md): Delete: Entry, *, Contains Invalid Array Index. (historical)
-- [MT7052](mt7052.md): Delete: Entry, *, Does Not Exist. (historical)
-- [MT7053](mt7053.md): Import: Entry, *, Incorrectly Specified. (historical)
-- [MT7054](mt7054.md): Import: Entry, *, Contains Invalid Array Index. (historical)
-- [MT7055](mt7055.md): Import: Error Reading File: *. (historical)
-- [MT7056](mt7056.md): Import: Can't Add Entry, *, to Parent. (historical)
-- [MT7057](mt7057.md): Merge: Can't Add array Entries to dict. (historical)
-- [MT7058](mt7058.md): Merge: Specified Entry Must Be a Container. (historical)
-- [MT7059](mt7059.md): Merge: Entry, *, Contains Invalid Array Index. (historical)
-- [MT7060](mt7060.md): Merge: Entry, *, Does Not Exist. (historical)
-- [MT7061](mt7061.md): Merge: Error Reading File: *. (historical)
-- [MT7062](mt7062.md): Set: Entry, *, Incorrectly Specified. (historical)
-- [MT7063](mt7063.md): Set: Entry, *, Contains Invalid Array Index. (historical)
-- [MT7064](mt7064.md): Set: Entry, *, Does Not Exist. (historical)
-- [MT7065](mt7065.md): Unknown PropertyList editor action: *. (historical)
-- [MT7066](mt7066.md): Error loading '*': *. (historical)
-- [MT7067](mt7067.md): Error saving '*': *. (historical)
+- [MT7040](mt7040.md): The app bundle {AppBundlePath} does not contain an Info.plist.
+- [MT7041](mt7041.md): Main Info.plist path does not specify a CFBundleIdentifier.
+- [MT7042](mt7042.md): Main Info.plist path does not specify a CFBundleExecutable.
+- [MT7043](mt7043.md): Main Info.plist path does not specify a CFBundleSupportedPlatforms.
+- [MT7044](mt7044.md): Main Info.plist path does not specify a UIDeviceFamily.
+- [MT7045](mt7045.md): Unrecognized Format: *.
+- [MT7046](mt7046.md): Add: Entry, *, Incorrectly Specified.
+- [MT7047](mt7047.md): Add: Entry, *, Contains Invalid Array Index.
+- [MT7048](mt7048.md): Add: * Entry Already Exists.
+- [MT7049](mt7049.md): Add: Can't Add Entry, *, to Parent.
+- [MT7050](mt7050.md): Delete: Can't Delete Entry, *, from Parent.
+- [MT7051](mt7051.md): Delete: Entry, *, Contains Invalid Array Index.
+- [MT7052](mt7052.md): Delete: Entry, *, Does Not Exist.
+- [MT7053](mt7053.md): Import: Entry, *, Incorrectly Specified.
+- [MT7054](mt7054.md): Import: Entry, *, Contains Invalid Array Index.
+- [MT7055](mt7055.md): Import: Error Reading File: *.
+- [MT7056](mt7056.md): Import: Can't Add Entry, *, to Parent.
+- [MT7057](mt7057.md): Merge: Can't Add array Entries to dict.
+- [MT7058](mt7058.md): Merge: Specified Entry Must Be a Container.
+- [MT7059](mt7059.md): Merge: Entry, *, Contains Invalid Array Index.
+- [MT7060](mt7060.md): Merge: Entry, *, Does Not Exist.
+- [MT7061](mt7061.md): Merge: Error Reading File: *.
+- [MT7062](mt7062.md): Set: Entry, *, Incorrectly Specified.
+- [MT7063](mt7063.md): Set: Entry, *, Contains Invalid Array Index.
+- [MT7064](mt7064.md): Set: Entry, *, Does Not Exist.
+- [MT7065](mt7065.md): Unknown PropertyList editor action: *.
+- [MT7066](mt7066.md): Error loading '*': *.
+- [MT7067](mt7067.md): Error saving '*': *.
 - [MT7068](mt7068.md): Error loading '*': * (historical)
-- [MT7069](mt7069.md): Unknown response parameter: * (historical)
-- [MT7070](mt7070.md): All Intents must have a Title (historical)
+- [MT7069](mt7069.md): Unknown response parameter: *
+- [MT7070](mt7070.md): All Intents must have a Title
+- [MT7091](mt7091.md): File '{0}' is not a valid framework: {1}
+- [MT7094](mt7094.md): The file or directory '{0}' is not a framework nor a file within a framework.
+- [MT7138](mt7138.md): Invalid value '{0}' for the 'ValidateEntitlements' property. Valid values are: 'disable', 'warn' or 'error'.
+- [MT7144](mt7144.md): Did not extract {0} because it would write outside the target directory.
+- [MT7154](mt7154.md): The {0} item '{1}' imported from '{2}' was ignored, because there's already an existing item from the current project with the same LogicalName ('{3}')
+- [MT7155](mt7155.md): The {0} item '{1}' imported from '{2}' was ignored, because there's another item from a different assembly ({4}) with the same LogicalName ('{3}')
+- [MT7156](mt7156.md): The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')
+- [MT7157](mt7157.md): The {0} item '{1}' does not have a 'LogicalName' metadata.
+- [MT7158](mt7158.md): The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.
 
 ## MT8xxx: Runtime error messages
 

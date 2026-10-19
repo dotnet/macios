@@ -134,6 +134,28 @@ public class DocumentationTests {
 		Assert.That (() => Validated (), Throws.TypeOf<InvalidDataException> ().With.Message.Contains ("undocumented emitted diagnostic BI1234"));
 	}
 
+	[TestCase ("Log.LogError (1234, null, message);")]
+	[TestCase ("log.LogWarning (1234, null, message);")]
+	[TestCase ("Log.LogMessage (MessageImportance.Low, 1234, null, 0, message);")]
+	public void RejectsAnUndocumentedMsBuildEmitter (string statement)
+	{
+		var directory = Path.Combine (root, "msbuild", "Xamarin.MacDev.Tasks");
+		Directory.CreateDirectory (directory);
+		File.WriteAllText (Path.Combine (directory, "Emitter.cs"), statement);
+		Assert.That (() => Validated (), Throws.TypeOf<InvalidDataException> ().With.Message.Contains ("undocumented emitted diagnostic MT1234"));
+	}
+
+	[Test]
+	public void RequiresCurrentDocumentationForAnMsBuildEmitter ()
+	{
+		var path = Path.Combine (docs, "messages", "mt0003.md");
+		File.WriteAllText (path, File.ReadAllText (path).Replace ("\"current\"", "\"historical\""));
+		var directory = Path.Combine (root, "msbuild", "Xamarin.MacDev.Tasks");
+		Directory.CreateDirectory (directory);
+		File.WriteAllText (Path.Combine (directory, "Emitter.cs"), "Log.LogError (3, null, message);");
+		Assert.That (() => Validated (), Throws.TypeOf<InvalidDataException> ().With.Message.Contains ("emitted MSBuild diagnostic MT0003 must have current documentation"));
+	}
+
 	[Test]
 	public void RejectsAnEmitterUsingARetiredBindingNumber ()
 	{

@@ -140,7 +140,7 @@ public sealed class Documentation {
 
 	void ValidateEmitters ()
 	{
-		var call = new Regex (@"(?:ErrorHelper\.(?:CreateError|CreateWarning|Warning|Error)|new BindingException|ReportError)\s*\(\s*(?:[A-Za-z_.]+\s*,\s*)?(\d{1,4})\s*[,)]", RegexOptions.CultureInvariant);
+		var call = new Regex (@"(?:ErrorHelper\.(?:CreateError|CreateWarning|Warning|Error)|new BindingException|new ProductException|ReportError|(?<msbuild>\.Log(?:Error|Warning|Message)))\s*\(\s*(?:[A-Za-z_.]+\s*,\s*)?(?<number>\d{1,4})\s*[,)]", RegexOptions.CultureInvariant);
 		foreach (var directory in new [] { "src/bgen", "tools/common", "tools/mtouch", "tools/dotnet-linker", "tools/assembly-preparer", "msbuild/Xamarin.MacDev.Tasks" }) {
 			var source = Path.Combine (root, directory);
 			if (!Directory.Exists (source))
@@ -151,12 +151,15 @@ public sealed class Documentation {
 					path.EndsWith (".designer.cs", StringComparison.OrdinalIgnoreCase))
 					continue;
 				foreach (Match match in call.Matches (File.ReadAllText (path))) {
-					var number = int.Parse (match.Groups [1].Value, System.Globalization.CultureInfo.InvariantCulture).ToString ("0000", System.Globalization.CultureInfo.InvariantCulture);
-					var candidates = directory == "src/bgen" ? new [] { "BI" + number } : new [] { "MT" + number, "MM" + number, "MX" + number };
+					var number = int.Parse (match.Groups ["number"].Value, System.Globalization.CultureInfo.InvariantCulture).ToString ("0000", System.Globalization.CultureInfo.InvariantCulture);
+					var msbuild = match.Groups ["msbuild"].Success;
+					var candidates = directory == "src/bgen" ? new [] { "BI" + number } : msbuild ? new [] { "MT" + number } : new [] { "MT" + number, "MM" + number, "MX" + number };
 					if (!candidates.Any (pages.ContainsKey))
 						throw new InvalidDataException ($"{path}: undocumented emitted diagnostic {string.Join ("/", candidates)}.");
 					if (directory == "src/bgen" && pages.TryGetValue (candidates [0], out var page) && page.Status != "current")
 						throw new InvalidDataException ($"{path}: emits historical binding diagnostic {page.Code}; use its current allocation.");
+					if (msbuild && pages [candidates [0]].Status != "current")
+						throw new InvalidDataException ($"{path}: emitted MSBuild diagnostic {candidates [0]} must have current documentation.");
 				}
 			}
 		}

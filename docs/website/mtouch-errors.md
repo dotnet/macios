@@ -95,7 +95,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="mt0012-incomplete-data-is-provided-to-complete"></a>
 
-- [MT0012](https://learn.microsoft.com/dotnet/ios/messages/mt0012): Incomplete data is provided to complete *.
+- [MT0012](https://learn.microsoft.com/dotnet/ios/messages/mt0012): Could not parse TargetArchitectures '{0}'
 <a name="MT0013"></a>
 
 <a id="mt0013-profiling-support-requires-sgen-to-be-enabled-too"></a>

@@ -11,6 +11,10 @@ These are the authoritative diagnostic sources for .NET for iOS, tvOS, macOS and
 3. Add an explicit mapping in `allocations.json` for a new English resource. Resource keys are not always public codes: shared MX resources can produce MT or MM, while runtime exceptions expose numeric codes. Inspect the emitting code rather than infer the prefix from the resource name.
 4. Run `bash docs/update-diagnostic-docs.sh` and commit the pages, allocation mapping and regenerated indexes together. Run `bash docs/update-diagnostic-docs.sh check` to verify without changing files.
 
+The checker also scans numeric emitters, including MSBuild logging extensions. The current `Xamarin.MacDev.Tasks` assembly emits MT codes on all platforms; the MM branch in `LoggingExtensions` applies to the older `Xamarin.Mac.Tasks` assembly. MSBuild resource names such as `E7138` and `W7144` are message identifiers, not public prefixes, and must not be substituted for the code passed to the logger.
+
+Keep pages for emitted MSBuild diagnostics marked current, even when the legacy reference only described older project types. MT0012 and MT0158 had already acquired different MSBuild meanings before this migration; their pages explain the current message and preserve the retired message in a historical section.
+
 The commands use the repository SDK under `builds/downloads/dotnet` when available, or `dotnet` on PATH. Set `DOTNET` to an executable path to override it. If the required SDK is missing, follow the repository build setup instructions.
 
 `diagnostic_id` identifies a *meaning*, not a prefix. Pages sharing the same logical diagnostic use the same ID, even when the public prefixes differ. `diagnostic_status` is `current` or `historical`. Historical pages remain searchable and keep their original F1 keyword.

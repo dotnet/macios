@@ -9,7 +9,6 @@
 
 #if !__MACCATALYST__
 
-using System.Linq;
 using System.Collections.Generic;
 
 using CoreData;
@@ -40,10 +39,10 @@ namespace AppKit {
 			NSComparisonPredicateModifier modifier = NSComparisonPredicateModifier.Direct,
 			NSComparisonPredicateOptions options = NSComparisonPredicateOptions.None)
 			: this (
-				leftExpressions.ToArray (),
-				rightExpressions.ToArray (),
+				new List<NSExpression> (leftExpressions).ToArray (),
+				new List<NSExpression> (rightExpressions).ToArray (),
 				modifier,
-				operators.Select (o => NSNumber.FromUInt32 ((uint) o)).ToArray (),
+				new List<NSPredicateOperatorType> (operators).ConvertAll (o => NSNumber.FromUInt32 ((uint) o)).ToArray (),
 				options)
 		{
 		}
@@ -62,8 +61,8 @@ namespace AppKit {
 			NSComparisonPredicateModifier modifier = NSComparisonPredicateModifier.Direct,
 			NSComparisonPredicateOptions options = NSComparisonPredicateOptions.None)
 			: this (
-				leftExpressionsFromKeyPaths.Select (k => NSExpression.FromKeyPath (k)),
-				rightExpressionsFromConstants.Select (k => NSExpression.FromConstant (new NSString (k))),
+				new List<string> (leftExpressionsFromKeyPaths).ConvertAll (k => NSExpression.FromKeyPath (k)),
+				new List<string> (rightExpressionsFromConstants).ConvertAll (k => NSExpression.FromConstant (new NSString (k))),
 				operators,
 				modifier,
 				options)
@@ -128,10 +127,10 @@ namespace AppKit {
 			NSComparisonPredicateModifier modifier = NSComparisonPredicateModifier.Direct,
 			NSComparisonPredicateOptions options = NSComparisonPredicateOptions.None)
 			: this (
-				leftExpressions.ToArray (),
+				new List<NSExpression> (leftExpressions).ToArray (),
 				attributeType,
 				modifier,
-				operators.Select (o => NSNumber.FromUInt32 ((uint) o)).ToArray (),
+				new List<NSPredicateOperatorType> (operators).ConvertAll (o => NSNumber.FromUInt32 ((uint) o)).ToArray (),
 				options)
 		{
 		}
@@ -150,7 +149,7 @@ namespace AppKit {
 			NSComparisonPredicateModifier modifier = NSComparisonPredicateModifier.Direct,
 			NSComparisonPredicateOptions options = NSComparisonPredicateOptions.None)
 			: this (
-				leftExpressionsFromKeyPaths.Select (k => NSExpression.FromKeyPath (k)),
+				new List<string> (leftExpressionsFromKeyPaths).ConvertAll (k => NSExpression.FromKeyPath (k)),
 				attributeType,
 				operators,
 				modifier,

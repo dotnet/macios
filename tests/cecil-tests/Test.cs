@@ -92,6 +92,17 @@ namespace Cecil.Tests {
 				Assert.Fail ($"{assembly} has a reference to `System.Console`. Please use `Runtime.NSLog` inside the platform assemblies");
 		}
 
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void NoSystemLinqReference (AssemblyInfo info)
+		{
+			var references = new List<string> ();
+			foreach (var type in info.Assembly.MainModule.GetTypeReferences ()) {
+				if (type.Namespace == "System.Linq" || type.Namespace.StartsWith ("System.Linq.", StringComparison.Ordinal))
+					references.Add (type.FullName);
+			}
+			Assert.That (references, Is.Empty, $"{info.Assembly} must not use LINQ inside the platform assemblies.");
+		}
+
 		// we should not p/invoke into API that are banned (by MS) from the C runtime
 		// list is copied from binscope for mac (not all of them actually exists on macOS)
 		static HashSet<string> BannedCApi = new HashSet<string> () {

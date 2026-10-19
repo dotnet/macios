@@ -18,6 +18,18 @@ namespace ObjCRuntime {
 		protected BaseWrapper (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
+			Runtime.RegisterObject (this, handle);
+		}
+
+		internal new void ClearHandle ()
+		{
+			base.ClearHandle ();
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			Runtime.RemoveFromObjectMap (Handle, this);
+			base.Dispose (disposing);
 		}
 
 		protected internal override void Retain ()

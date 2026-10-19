@@ -172,6 +172,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.DoesNotThrow (() => Runtime.GetNSObject<NSDictionary> (handle), "A");
 			Assert.DoesNotThrow (() => Runtime.GetNSObject<NSDictionary<NSString, NSObject>> (handle), "B");
 			Assert.DoesNotThrow (() => Runtime.GetNSObject<NSDictionary<NSString, NSString>> (handle), "C");
+			Assert.That (Runtime.GetNSObject<NSDictionary<NSString, NSObject>> (handle), Is.SameAs (a), "Reuse first generic wrapper");
+			Assert.That (Runtime.GetNSObject<NSDictionary<NSString, NSString>> (handle), Is.SameAs (b), "Reuse second generic wrapper");
+
+			b.Dispose ();
+			c.Dispose ();
+			Assert.That (Runtime.GetNSObject<NSDictionary<NSString, NSObject>> (handle), Is.SameAs (a), "Keep surviving generic wrapper");
 		}
 
 		[Test]
@@ -870,9 +876,64 @@ Additional information:
 				// Just don't inspect the date variable in a debugger (it will most likely crash the app).
 				date = Runtime.GetINativeObject<NSDate> (str.Handle, true, false);
 				Assert.That (str.Handle, Is.EqualTo (date.Handle), "Same native pointer");
+				Assert.That (Runtime.GetNSObject (str.Handle), Is.SameAs (str), "Primary wrapper");
+				Assert.That (Runtime.GetINativeObject<NSDate> (str.Handle, true, false), Is.SameAs (date), "Reuse forced wrapper");
+				Assert.That (Runtime.GetINativeObject (str.Handle, false, typeof (NSDate)), Is.SameAs (date), "Reuse forced wrapper by type");
+				Assert.That (Runtime.GetNSObject<NSString> (str.Handle), Is.SameAs (str), "Reuse original wrapper");
 				date.Dispose ();
+				Assert.That (Runtime.GetNSObject (str.Handle), Is.SameAs (str), "Primary wrapper after disposal");
 				date = null;
 			}
+		}
+
+		[Test]
+		public void GetINativeObject_MultipleWrappers_DisposePrimary ()
+		{
+			using var str = new NSString ("Multiple managed wrappers");
+			var handle = str.Handle;
+			using var date = Runtime.GetINativeObject<NSDate> (handle, true, false);
+			str.Dispose ();
+			Assert.That (Runtime.GetNSObject (handle), Is.SameAs (date), "Remaining wrapper");
+			Assert.That (Runtime.GetINativeObject<NSDate> (handle, true, false), Is.SameAs (date), "Reuse remaining wrapper");
+			date.Dispose ();
+			Assert.That (Runtime.TryGetNSObject (handle), Is.Null, "All wrappers disposed");
+		}
+
+		class MultipleWrapperObject : NSObject {
+			public MultipleWrapperObject () { }
+
+			public MultipleWrapperObject (NativeHandle handle) : base (handle) { }
+		}
+
+		[Test]
+		public void GetINativeObject_MultipleWrappers_UserType ()
+		{
+			using var primary = new MultipleWrapperObject ();
+			using var secondary = Runtime.GetINativeObject<NSDate> (primary.Handle, true, false);
+			secondary.Dispose ();
+			Assert.That (secondary.Handle, Is.EqualTo (NativeHandle.Zero), "Secondary wrapper disposed");
+			Assert.That (Runtime.GetNSObject (primary.Handle), Is.SameAs (primary), "User type remains registered");
+		}
+
+		[Test]
+		public void GetINativeObject_ProtocolWrapper ()
+		{
+			using var str = new NSString ("Protocol wrapper");
+			using var primary = new MultipleWrapperObject (str.Handle);
+			var handle = primary.Handle;
+			str.Dispose ();
+
+			var copying = Runtime.GetINativeObject<INSCopying> (handle, false);
+			using var wrapper = (IDisposable) copying;
+			Assert.That (Runtime.GetINativeObject<INSCopying> (handle, false), Is.SameAs (copying), "Generic protocol lookup");
+			Assert.That (Runtime.GetINativeObject (handle, false, typeof (INSCopying)), Is.SameAs (copying), "Protocol lookup by type");
+			Assert.That (Runtime.GetNSObject (handle), Is.SameAs (primary), "Primary wrapper");
+
+			wrapper.Dispose ();
+			Assert.That (Runtime.GetNSObject (handle), Is.SameAs (primary), "Primary wrapper after protocol disposal");
+			var replacement = Runtime.GetINativeObject<INSCopying> (handle, false);
+			using var replacementWrapper = (IDisposable) replacement;
+			Assert.That (replacement, Is.Not.SameAs (copying), "Disposed protocol wrapper is not reused");
 		}
 
 		[Test]
@@ -1066,6 +1127,21 @@ Additional information:
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class RuntimeTest_GetINativeObjectTest {
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void GetINativeObjectTest_NSObject_NonGeneric (bool owns)
+		{
+			var handle = CreateNativeNSObject ();
+			using var obj = (NSObject) Runtime.GetINativeObject (handle, owns, typeof (NSObject));
+			Assert.That (GetRetainCount (handle), Is.EqualTo (owns ? 1 : 2), "New wrapper ownership");
+			if (!owns)
+				obj.DangerousRelease ();
+			obj.DangerousRetain ();
+			var existing = Runtime.GetINativeObject (handle, true, typeof (NSObject));
+			Assert.That (existing, Is.SameAs (obj), "Reuse existing wrapper");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "Existing wrapper ownership");
+		}
 
 		[Test]
 		public void GetINativeObjectTest_NSObject_Owns ()

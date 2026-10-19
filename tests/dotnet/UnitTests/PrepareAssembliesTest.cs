@@ -123,12 +123,22 @@ namespace Xamarin.Tests {
 			}
 
 			AssertExportMetadata (platformAssemblyPath, appAssemblyPath, !expectedRemoval);
+			var trimRegistrarAttributes = prepareAssemblies && postProcessAssemblies && registrar == "trimmable-static" && dynamicRegistrationSupported != "true";
+			AssertProtocolMemberMetadata (platformAssemblyPath, !trimRegistrarAttributes);
 
 			if (expectedRemoval) {
 				properties ["DynamicRegistrationSupported"] = "true";
 				DotNet.AssertBuild (projectPath, properties, target: target);
 				AssertExportMetadata (platformAssemblyPath, appAssemblyPath, true);
+				AssertProtocolMemberMetadata (platformAssemblyPath, true);
 			}
+		}
+
+		static void AssertProtocolMemberMetadata (string platformAssemblyPath, bool expected)
+		{
+			using var assembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath);
+			var protocol = assembly.MainModule.GetType ("Foundation.INSUrlSessionDelegate");
+			AssertAttribute (protocol, "ProtocolMemberAttribute", expected, "protocol members");
 		}
 
 		static void AssertExportMetadata (string platformAssemblyPath, string appAssemblyPath, bool expected)

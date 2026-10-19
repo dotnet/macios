@@ -569,6 +569,11 @@ Set this property to `false` to preserve the attributes. Set it to `true` to
 require their removal; the build will fail if it detects that the attributes
 are needed at runtime.
 
+The same assembly preparation, post-processing, and registrar requirements
+apply to removal of `Foundation.ProtocolMemberAttribute`. These attributes
+are retained when dynamic registration is required. The post-processing
+registrar recovers removed metadata from the prepared, pre-trim assemblies.
+
 ## EmbedOnDemandResources
 
 Controls where on-demand resource asset packs are placed, so that the on-demand

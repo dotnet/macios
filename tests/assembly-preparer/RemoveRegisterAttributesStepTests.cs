@@ -88,7 +88,9 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 		}, Code, out _, extraConfig: config);
 		AssertPrepare (preparer);
 
-		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (v.OutputPath, v.OutputPath, v.IsTrimmable, v.TrimMode)).ToArray ();
+		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (v.OutputPath, v.OutputPath, v.IsTrimmable, v.TrimMode))
+			.Concat (preparer.AddedAssemblies.Select (v => new AssemblyPreparerInfo (v.Path, v.Path, true, "link")))
+			.ToArray ();
 		var configPath = Path.Combine (Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, "..")), "config.txt");
 		var logger = new TestLogger { Platform = ApplePlatform.iOS };
 		using var postprocessor = new AssemblyPreparer (logger, infos, configPath) { Registrar = RegistrarMode.TrimmableStatic };

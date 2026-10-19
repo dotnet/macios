@@ -892,11 +892,16 @@ Additional information:
 			using var str = new NSString ("Multiple managed wrappers");
 			var handle = str.Handle;
 			using var date = Runtime.GetINativeObject<NSDate> (handle, true, false);
-			str.Dispose ();
-			Assert.That (Runtime.GetNSObject (handle), Is.SameAs (date), "Remaining wrapper");
-			Assert.That (Runtime.GetINativeObject<NSDate> (handle, true, false), Is.SameAs (date), "Reuse remaining wrapper");
-			date.Dispose ();
-			Assert.That (Runtime.TryGetNSObject (handle), Is.Null, "All wrappers disposed");
+			str.DangerousRetain ();
+			try {
+				str.Dispose ();
+				Assert.That (Runtime.GetNSObject (handle), Is.SameAs (date), "Remaining wrapper");
+				Assert.That (Runtime.GetINativeObject<NSDate> (handle, true, false), Is.SameAs (date), "Reuse remaining wrapper");
+				date.Dispose ();
+				Assert.That (Runtime.TryGetNSObject (handle), Is.Null, "All wrappers disposed");
+			} finally {
+				Messaging.void_objc_msgSend (handle, Selector.GetHandle ("release"));
+			}
 		}
 
 		class MultipleWrapperObject : NSObject {

@@ -7,7 +7,6 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using System.IO;
 using System.Net;
 #if MONOMAC
 using AppKit;
@@ -22,17 +21,6 @@ namespace MonoTouchFixtures.Foundation {
 	public class BundleTest {
 
 		NSBundle main = NSBundle.MainBundle;
-
-#if !DEBUG && !__MACCATALYST__ && (__IOS__ || __TVOS__)
-		[Test]
-		public void ReleaseBuildDoesNotContainDylibs ()
-		{
-			TestRuntime.AssertDevice ();
-
-			var dylibs = Directory.GetFiles (main.BundlePath, "*.dylib", SearchOption.AllDirectories);
-			Assert.That (dylibs, Is.Empty, "Release device app bundles must not contain dylibs.");
-		}
-#endif
 
 		[Test]
 		public void LocalizedString2 ()

@@ -7400,11 +7400,10 @@ namespace AVFoundation {
 		/// <param name="outputFileType">The output file type.</param>
 		/// <param name="error">The creation error, or <see langword="null" /> on success.</param>
 		/// <returns>The asset writer, or <see langword="null" /> if it could not be created.</returns>
-		[FactoryMethod]
-		[Sealed]
+		[Static]
 		[return: NullAllowed]
-		[Export ("initWithURL:fileType:error:")]
-		NativeHandle Constructor (NSUrl outputUrl, [BindAs (typeof (AVFileTypes))] NSString outputFileType, [NullAllowed] out NSError error);
+		[Export ("assetWriterWithURL:fileType:error:")]
+		AVAssetWriter Create (NSUrl outputUrl, [BindAs (typeof (AVFileTypes))] NSString outputFileType, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -8044,38 +8043,14 @@ namespace AVFoundation {
 		[Static, Export ("audiovisualMIMETypes")]
 		string [] AudiovisualMimeTypes { get; }
 
-#if XAMCORE_5_0
-		/// <summary>Gets the audiovisual file types supported by URL assets as native string constants.</summary>
-		/// <remarks>Use <see cref="AudiovisualTypes" /> for the strongly typed values.</remarks>
-#else
-		/// <summary>Gets the audiovisual file types supported by URL assets as native string constants.</summary>
-		/// <remarks>Use <see cref="AudiovisualTypeValues" /> for the strongly typed values.</remarks>
-#endif
+		/// <summary>Gets the uniform type identifiers of the audiovisual file types supported by URL assets.</summary>
+		/// <remarks>The returned identifiers can include types without a corresponding <see cref="AVFileTypes" /> constant.</remarks>
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
 		[Deprecated (PlatformName.iOS, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
 		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
 		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
 		[Static, Export ("audiovisualTypes")]
-#if XAMCORE_5_0
-		[Sealed]
-		string [] WeakAudiovisualTypes { get; }
-#else
 		string [] AudiovisualTypes { get; }
-#endif
-
-		/// <summary>Gets the audiovisual file types supported by URL assets as <see cref="AVFileTypes" /> values.</summary>
-		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'AudiovisualContentTypes' instead.")]
-		[Deprecated (PlatformName.iOS, 26, 0, "Use 'AudiovisualContentTypes' instead.")]
-		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'AudiovisualContentTypes' instead.")]
-		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'AudiovisualContentTypes' instead.")]
-		[Static, BindAs (typeof (AVFileTypes []))]
-		[Export ("audiovisualTypes")]
-#if XAMCORE_5_0
-		NSString [] AudiovisualTypes { get; }
-#else
-		[Sealed]
-		NSString [] AudiovisualTypeValues { get; }
-#endif
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Static]
@@ -13274,7 +13249,6 @@ namespace AVFoundation {
 		[Static]
 		[Export ("movieTypes")]
 #if XAMCORE_5_0
-		[Sealed]
 		string [] WeakMovieTypes { get; }
 #else
 		string [] MovieTypes { get; }
@@ -13286,7 +13260,6 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] MovieTypes { get; }
 #else
-		[Sealed]
 		NSString [] MovieTypeValues { get; }
 #endif
 
@@ -16670,7 +16643,6 @@ namespace AVFoundation {
 #endif
 		[Static, Export ("availableOutputFileTypes")]
 #if XAMCORE_5_0
-		[Sealed]
 		NSString [] WeakAvailableOutputFileTypes ();
 #else
 		NSString [] AvailableOutputFileTypes ();
@@ -16684,7 +16656,6 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] AvailableOutputFileTypes ();
 #else
-		[Sealed]
 		NSString [] GetAvailableOutputFileTypes ();
 #endif
 

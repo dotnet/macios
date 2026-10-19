@@ -101,6 +101,23 @@ namespace MonoTouchFixtures.AVFoundation {
 				Is.EquivalentTo (rawTypes), "Compatible file type constants");
 		}
 
+#if __MACOS__
+		[Test]
+		public void AudioFileTypes ()
+		{
+#if XAMCORE_5_0
+			var types = AVCaptureAudioFileOutput.AvailableOutputFileTypes ();
+			var rawTypes = AVCaptureAudioFileOutput.WeakAvailableOutputFileTypes ();
+#else
+			var types = AVCaptureAudioFileOutput.GetAvailableOutputFileTypes ();
+			var rawTypes = AVCaptureAudioFileOutput.AvailableOutputFileTypes ();
+#endif
+			Assert.That (types, Is.Not.Empty, "Audio file types");
+			Assert.That (Array.ConvertAll (types, type => (string?) type.GetConstant ()),
+				Is.EqualTo (Array.ConvertAll (rawTypes, type => type.ToString ())), "Audio file type constants");
+		}
+#endif
+
 #if !__TVOS__
 		[Test]
 		public void Movie ()

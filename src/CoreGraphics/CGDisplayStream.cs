@@ -15,10 +15,6 @@ namespace CoreGraphics {
 	/// <param name="frameSurface">The frame's pixel buffer, or <see langword="null" /> if no surface is available.</param>
 	/// <param name="update">The frame's update metadata, or <see langword="null" /> if the frame is not complete.</param>
 	/// <remarks>To use a surface after this callback returns, increment its use count before returning and decrement it when finished.</remarks>
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[UnsupportedOSPlatform ("ios")]
-	[UnsupportedOSPlatform ("tvos")]
 	public delegate void CGDisplayStreamFrameAvailableHandler (CGDisplayStreamFrameStatus status, ulong displayTime, IOSurface.IOSurface? frameSurface, CGDisplayStreamUpdate? update);
 
 	/// <summary>Captures a stream of display frames.</summary>

@@ -32,6 +32,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 		}
 
 		[Test]
+		public void InvalidDisplay ()
+		{
+			CGDisplayStreamFrameAvailableHandler handler = (status, displayTime, surface, update) => { };
+			using var runLoopStream = CGDisplayStream.Create (-1, 1, 1, CVPixelFormatType.CV32BGRA, null, handler);
+			Assert.That (runLoopStream, Is.Null, "Run loop");
+			using var queue = new DispatchQueue ("CGDisplayStreamTest");
+			using var queueStream = CGDisplayStream.Create (-1, 1, 1, CVPixelFormatType.CV32BGRA, null, queue, handler);
+			Assert.That (queueStream, Is.Null, "Dispatch queue");
+			using var noHandlerStream = CGDisplayStream.Create (-1, 1, 1, CVPixelFormatType.CV32BGRA, null, null);
+			Assert.That (noHandlerStream, Is.Null, "No handler");
+		}
+
+		[Test]
 		public void InvalidDimensions ()
 		{
 			Assert.Throws<ArgumentOutOfRangeException> (() => CGDisplayStream.Create (0, 0, 1, CVPixelFormatType.CV32BGRA, null, null), "Width");

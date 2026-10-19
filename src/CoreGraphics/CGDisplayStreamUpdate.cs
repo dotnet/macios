@@ -39,6 +39,7 @@ namespace CoreGraphics {
 			var result = new CGRect [checked ((int) count)];
 			for (var i = 0; i < result.Length; i++)
 				result [i] = rects [i];
+			GC.KeepAlive (this);
 			return result;
 		}
 

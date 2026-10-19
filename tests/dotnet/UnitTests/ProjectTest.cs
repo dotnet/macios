@@ -65,6 +65,24 @@ namespace Xamarin.Tests {
 			AssertAppContents (platform, appPath);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void ReleaseBuildDoesNotContainDylibs (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("MySimpleApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (appPath, Does.Exist, "App bundle existence");
+			var dylibs = Directory.GetFiles (appPath, "*.dylib", SearchOption.AllDirectories);
+			Assert.That (dylibs, Is.Empty, "Release device app bundles must not contain dylibs.");
+		}
+
 		[TestCase (ApplePlatform.MacOSX, "26.0", true)]
 		[TestCase (ApplePlatform.MacOSX, "27.0", false)]
 		[TestCase (ApplePlatform.MacOSX, null, false)]

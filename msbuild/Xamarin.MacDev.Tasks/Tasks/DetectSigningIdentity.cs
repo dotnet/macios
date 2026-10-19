@@ -522,6 +522,30 @@ namespace Xamarin.MacDev.Tasks {
 			return matches [0];
 		}
 
+		protected virtual IList<MobileProvision> GetMobileProvisions (MobileProvisionPlatform platform)
+		{
+			return MobileProvisionIndex.GetMobileProvisions (platform, includeExpired: true);
+		}
+
+		protected MobileProvision? GetMobileProvision (MobileProvisionPlatform platform)
+		{
+			var profiles = GetMobileProvisions (platform);
+			var profile = profiles.FirstOrDefault (v => v.Uuid == ProvisioningProfile);
+			if (profile is not null)
+				return profile;
+
+			var matches = profiles.Where (v => v.Name == ProvisioningProfile).GroupBy (v => v.Uuid).Select (v => v.First ()).ToArray ();
+			if (matches.Length == 1)
+				return matches [0];
+
+			if (matches.Length == 0) {
+				Log.LogError (MSBStrings.E0144, PlatformName, ProvisioningProfile);
+			} else {
+				Log.LogError (MSBStrings.MultipleProvisioningProfiles, matches.Length, ProvisioningProfile, string.Join ("', '", matches.Select (v => v.Uuid)));
+			}
+			return null;
+		}
+
 		public override bool Execute ()
 		{
 			try {
@@ -634,12 +658,10 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!IsAutoCodeSignProfile (ProvisioningProfile)) {
-				identity.Profile = MobileProvisionIndex.GetMobileProvision (platform, ProvisioningProfile);
+				identity.Profile = GetMobileProvision (platform);
 
-				if (identity.Profile is null) {
-					Log.LogError (MSBStrings.E0144, PlatformName, ProvisioningProfile);
+				if (identity.Profile is null)
 					return false;
-				}
 
 				var profile = identity.Profile; // capture ref for lambda
 

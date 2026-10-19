@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
@@ -12,6 +13,98 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class DetectSigningIdentityTaskTests : TestBase {
+		class ProfileLookupTask : DetectSigningIdentity {
+			public IList<MobileProvision> Profiles { get; set; } = [];
+
+			protected override IList<MobileProvision> GetMobileProvisions (MobileProvisionPlatform platform)
+			{
+				return Profiles;
+			}
+
+			public MobileProvision? ResolveProfile ()
+			{
+				return GetMobileProvision (MobileProvisionPlatform.iOS);
+			}
+		}
+
+		static MobileProvision CreateProfile (string name, string uuid)
+		{
+			var plist = new PDictionary {
+				{ "Name", new PString (name) },
+				{ "UUID", new PString (uuid) },
+			};
+			return MobileProvision.LoadFromData (plist.ToByteArray (PropertyListFormat.Xml));
+		}
+
+		ProfileLookupTask CreateProfileLookupTask (string provisioningProfile, params MobileProvision [] profiles)
+		{
+			var task = CreateTask<ProfileLookupTask> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
+			task.ProvisioningProfile = provisioningProfile;
+			task.Profiles = profiles;
+			return task;
+		}
+
+		[Test]
+		public void DuplicateProfileNames ()
+		{
+			var name = "VS: WildCard Development";
+			var firstUuid = "11111111-1111-1111-1111-111111111111";
+			var secondUuid = "22222222-2222-2222-2222-222222222222";
+			var task = CreateProfileLookupTask (name, CreateProfile (name, firstUuid), CreateProfile (name, secondUuid));
+
+			Assert.That (task.ResolveProfile (), Is.Null, "Profile");
+			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (
+				$"Found 2 provisioning profiles matching the name '{name}'. Set the CodesignProvision property to the UUID of the intended profile instead: '{firstUuid}', '{secondUuid}'."), "Error message");
+		}
+
+		[TestCase (0)]
+		[TestCase (1)]
+		public void DuplicateProfileNamesWithUuid (int profileIndex)
+		{
+			var profiles = new [] {
+				CreateProfile ("VS: WildCard Development", "11111111-1111-1111-1111-111111111111"),
+				CreateProfile ("VS: WildCard Development", "22222222-2222-2222-2222-222222222222"),
+			};
+			var task = CreateProfileLookupTask (profiles [profileIndex].Uuid, profiles);
+
+			Assert.That (task.ResolveProfile (), Is.SameAs (profiles [profileIndex]), "Profile");
+			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+		}
+
+		[Test]
+		public void ProfileUuidTakesPrecedenceOverName ()
+		{
+			var profile = CreateProfile ("Profile", "11111111-1111-1111-1111-111111111111");
+			var task = CreateProfileLookupTask (profile.Uuid, CreateProfile (profile.Uuid, "22222222-2222-2222-2222-222222222222"), profile);
+
+			Assert.That (task.ResolveProfile (), Is.SameAs (profile), "Profile");
+			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void UniqueProfileName (bool duplicateInstallation)
+		{
+			var profile = CreateProfile ("Profile", "11111111-1111-1111-1111-111111111111");
+			var profiles = duplicateInstallation ? new [] { profile, CreateProfile (profile.Name, profile.Uuid) } : new [] { profile };
+			var task = CreateProfileLookupTask (profile.Name, profiles);
+
+			Assert.That (task.ResolveProfile (), Is.SameAs (profile), "Profile");
+			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+		}
+
+		[Test]
+		public void ProfileNotFound ()
+		{
+			var task = CreateProfileLookupTask ("Missing", CreateProfile ("Other", "11111111-1111-1111-1111-111111111111"));
+
+			Assert.That (task.ResolveProfile (), Is.Null, "Profile");
+			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The specified iOS provisioning profile 'Missing' could not be found"), "Error message");
+		}
+
 		DetectSigningIdentity CreateTask (string? tmpdir = null, ApplePlatform platform = ApplePlatform.iOS, bool simulator = true)
 		{
 			if (string.IsNullOrEmpty (tmpdir))

@@ -21,6 +21,40 @@ namespace MonoTouchFixtures.CoreMedia {
 	[Preserve (AllMembers = true)]
 	public class CMFormatDescriptionTest {
 		[Test]
+		public void FormatDescriptionConstants ()
+		{
+			Assert.That (CMFormatDescriptionVendor.Apple.ToString (), Is.EqualTo ("appl"), "Apple");
+			Assert.That (CMTextFormatDescriptionColor.Red.ToString (), Is.EqualTo ("Red"), "Red");
+			Assert.That (CMTextFormatDescriptionColor.Green.ToString (), Is.EqualTo ("Green"), "Green");
+			Assert.That (CMTextFormatDescriptionColor.Blue.ToString (), Is.EqualTo ("Blue"), "Blue");
+			Assert.That (CMTextFormatDescriptionColor.Alpha.ToString (), Is.EqualTo ("Alpha"), "Alpha");
+			Assert.That (CMTextFormatDescriptionRect.Top.ToString (), Is.EqualTo ("Top"), "Top");
+			Assert.That (CMTextFormatDescriptionRect.Left.ToString (), Is.EqualTo ("Left"), "Left");
+			Assert.That (CMTextFormatDescriptionRect.Bottom.ToString (), Is.EqualTo ("Bottom"), "Bottom");
+			Assert.That (CMTextFormatDescriptionRect.Right.ToString (), Is.EqualTo ("Right"), "Right");
+			Assert.That (CMTextFormatDescriptionStyle.StartChar.ToString (), Is.EqualTo ("StartChar"), "StartChar");
+			Assert.That (CMTextFormatDescriptionStyle.Font.ToString (), Is.EqualTo ("Font"), "Font");
+			Assert.That (CMTextFormatDescriptionStyle.FontFace.ToString (), Is.EqualTo ("FontFace"), "FontFace");
+			Assert.That (CMTextFormatDescriptionStyle.ForegroundColor.ToString (), Is.EqualTo ("ForegroundColor"), "ForegroundColor");
+			Assert.That (CMTextFormatDescriptionStyle.FontSize.ToString (), Is.EqualTo ("FontSize"), "FontSize");
+			Assert.That (CMTextFormatDescriptionStyle.EndChar.ToString (), Is.EqualTo ("EndChar"), "EndChar");
+			Assert.That (CMTextFormatDescriptionStyle.Height.ToString (), Is.EqualTo ("Height"), "Height");
+			Assert.That (CMTextFormatDescriptionStyle.Ascent.ToString (), Is.EqualTo ("Ascent"), "Ascent");
+			Assert.That (CMTextFormatDescriptionExtension.DisplayFlags.ToString (), Is.EqualTo ("DisplayFlags"), "DisplayFlags");
+			Assert.That (CMTextFormatDescriptionExtension.BackgroundColor.ToString (), Is.EqualTo ("BackgroundColor"), "BackgroundColor");
+			Assert.That (CMTextFormatDescriptionExtension.DefaultTextBox.ToString (), Is.EqualTo ("DefaultTextBox"), "DefaultTextBox");
+			Assert.That (CMTextFormatDescriptionExtension.DefaultStyle.ToString (), Is.EqualTo ("DefaultStyle"), "DefaultStyle");
+			Assert.That (CMTextFormatDescriptionExtension.HorizontalJustification.ToString (), Is.EqualTo ("HorizontalJustification"), "HorizontalJustification");
+			Assert.That (CMTextFormatDescriptionExtension.VerticalJustification.ToString (), Is.EqualTo ("VerticalJustification"), "VerticalJustification");
+			Assert.That (CMTextFormatDescriptionExtension.FontTable.ToString (), Is.EqualTo ("FontTable"), "FontTable");
+			Assert.That (CMTextFormatDescriptionExtension.TextJustification.ToString (), Is.EqualTo ("TextJustification"), "TextJustification");
+			Assert.That (CMTextFormatDescriptionExtension.DefaultFontName.ToString (), Is.EqualTo ("DefaultFontName"), "DefaultFontName");
+			Assert.That (CMTimeCodeFormatDescriptionExtension.SourceReferenceName.ToString (), Is.EqualTo ("TimeCode_SourceReferenceName"), "SourceReferenceName");
+			Assert.That (CMTimeCodeFormatDescriptionKeys.Value.ToString (), Is.EqualTo ("TimeCode_SourceReferenceName_Value"), "Value");
+			Assert.That (CMTimeCodeFormatDescriptionKeys.LangCode.ToString (), Is.EqualTo ("TimeCode_SourceReferenceName_LangCode"), "LangCode");
+		}
+
+		[Test]
 		public void ClosedCaption ()
 		{
 			CMFormatDescriptionError fde;

@@ -265,13 +265,13 @@ namespace MonoTouchFixtures.XKit {
 			Assert.That (first.GetHashCode (), Is.EqualTo (second.GetHashCode ()), "Equal hashes");
 			Assert.That (first == different, Is.False, "Different fonts");
 			Assert.That (first != different, Is.True, "Different fonts inequality");
+			Assert.That (first.Equals ("not a font"), Is.False, "Unrelated object");
+			Assert.That (first.Name, Is.EqualTo (first.FontName), "Name aliases");
+			Assert.That (first.Equals ((object?) null), Is.False, "Object null");
 			Assert.That (first == missing, Is.False, "Font and null");
 			Assert.That (missing == first, Is.False, "Null and font");
 			Assert.That (missing == (XFont?) null, Is.True, "Two nulls");
 			Assert.That (missing != first, Is.True, "Null inequality");
-			Assert.That (first.Equals ((object?) null), Is.False, "Object null");
-			Assert.That (first.Equals ("not a font"), Is.False, "Unrelated object");
-			Assert.That (first.Name, Is.EqualTo (first.FontName), "Name aliases");
 		}
 
 		[Test]

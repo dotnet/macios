@@ -3102,7 +3102,7 @@ public partial class Generator : IMemberGatherer {
 				if (NamespaceCache.NamespacesThatConflictWithTypes.Contains (etype.Namespace!))
 					cast_a = "CFArray.ArrayFromHandle<global::" + etype + ">(";
 				else
-					cast_a = "CFArray.ArrayFromHandle<" + TypeManager.FormatType (mi.DeclaringType, etype) + ">(";
+					cast_a = "CFArray.ArrayFromHandle<" + TypeManager.FormatType (declaringType, etype) + ">(";
 				cast_b = $", {owns})!";
 			}
 		} else if (mi.ReturnType.Namespace == "System" && mi.ReturnType.Name == "nint") {

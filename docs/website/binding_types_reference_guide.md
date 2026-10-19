@@ -1751,6 +1751,21 @@ UIImage IconFile { get; set; }
 void SetImage ([NullAllowed] UIImage image, State forState);
 ```
 
+For a property whose getter returns a non-null value but whose setter accepts
+`null`, use `System.Diagnostics.CodeAnalysis.AllowNullAttribute` instead of
+`[NullAllowed]`:
+
+```csharp
+[Export ("view", ArgumentSemantic.Retain)]
+[System.Diagnostics.CodeAnalysis.AllowNull]
+UIView View { get; set; }
+```
+
+The generated property has a non-nullable type and retains `[AllowNull]`, so
+nullable analysis permits assigning `null` without requiring null checks when
+reading the property. The generated setter also allows `null` to pass to
+Objective-C.
+
 <a name="OverrideAttribute"></a>
 
 ### OverrideAttribute

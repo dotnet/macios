@@ -22633,7 +22633,7 @@ namespace UIKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		[Export ("view", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIView View { get; set; }
 
 		[Export ("loadView")]

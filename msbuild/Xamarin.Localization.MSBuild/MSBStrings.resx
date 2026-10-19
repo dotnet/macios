@@ -1816,6 +1816,12 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when a native framework's extension contains uppercase letters.
 {0} - The path to the framework. Do not translate '.framework'.</comment>
     </data>
+    <data name="W7201" xml:space="preserve">
+        <value>The '{0}' value '{1}' in Info.plist refers to a directory that does not exist.</value>
+        <comment>Shown when an app icon or launch image directory specified in Info.plist does not exist.
+{0} - The Info.plist key (XSAppIconAssets or XSLaunchImageAssets): don't translate.
+{1} - The path to the missing directory.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

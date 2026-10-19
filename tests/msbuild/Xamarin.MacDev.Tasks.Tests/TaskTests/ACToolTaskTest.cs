@@ -35,6 +35,73 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (arguments, Is.EqualTo (new [] { "--foo", "quoted value" }), "Arguments");
 		}
 
+		[TestCase ("XSAppIconAssets", "Resources/Images.xcassets/Missing.appiconset", false)]
+		[TestCase ("XSLaunchImageAssets", "Resources/Images.xcassets/Missing.launchimage", false)]
+		[TestCase ("XSAppIconAssets", "Missing.xcassets/Icon.appiconset", false)]
+		[TestCase ("XSLaunchImageAssets", "Missing.xcassets/Launch.launchimage", false)]
+		[TestCase ("XSAppIconAssets", "Resources/Images.xcassets/Missing.appiconset", true)]
+		[TestCase ("XSLaunchImageAssets", "Resources/Images.xcassets/Missing.launchimage", true)]
+		public void MissingAssetDirectory (string key, string value, bool includeAssets)
+		{
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var imageAssets = new List<string> ();
+			if (includeAssets) {
+				var directory = Path.Combine (projectDir, "Resources/Images.xcassets/Existing.imageset");
+				Directory.CreateDirectory (directory);
+				var file = Path.Combine (directory, "image.png");
+				File.WriteAllBytes (file, []);
+				imageAssets.Add (file + "|Resources/Images.xcassets/Existing.imageset/image.png");
+			}
+			var task = CreateACToolTask (ApplePlatform.iOS, projectDir, out var _, imageAssets.ToArray ());
+			if (key == "XSAppIconAssets")
+				task.XSAppIconAssets = value;
+			else
+				task.XSLaunchImageAssets = value;
+
+			ExecuteTask (task);
+
+			Assert.That (Engine.Logger.WarningsEvents.Select (v => v.Message), Is.EqualTo (new [] {
+				$"The '{key}' value '{value}' in Info.plist refers to a directory that does not exist.",
+			}), "Warnings");
+		}
+
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, true)]
+		public void ExistingAssetDirectories (bool linked, bool includeAssets)
+		{
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var assetRoot = linked ? Cache.CreateTemporaryDirectory () : projectDir;
+			var icon = "Resources/Images.xcassets/Icon.appiconset";
+			var launch = "Resources/Images.xcassets/Launch.launchimage";
+			var imageAssets = new List<string> ();
+			foreach (var directory in new [] { icon, launch }) {
+				var fullPath = Path.Combine (assetRoot, directory);
+				Directory.CreateDirectory (fullPath);
+				var file = Path.Combine (fullPath, "image.png");
+				File.WriteAllBytes (file, []);
+				if (includeAssets)
+					imageAssets.Add (file + "|" + directory + "/image.png");
+			}
+			var task = CreateACToolTask (ApplePlatform.iOS, projectDir, out var _, imageAssets.ToArray ());
+			task.XSAppIconAssets = icon;
+			task.XSLaunchImageAssets = launch;
+
+			ExecuteTask (task);
+
+			Assert.That (Engine.Logger.WarningsEvents, Is.Empty, "Warnings");
+		}
+
+		[Test]
+		public void EmptyAssetDirectories ()
+		{
+			var task = CreateACToolTask (ApplePlatform.iOS, Cache.CreateTemporaryDirectory (), out var _);
+
+			ExecuteTask (task);
+
+			Assert.That (Engine.Logger.WarningsEvents, Is.Empty, "Warnings");
+		}
+
 		[Test]
 		public void InvalidAdditionalArguments ()
 		{

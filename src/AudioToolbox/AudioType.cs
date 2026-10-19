@@ -2115,7 +2115,9 @@ namespace AudioToolbox {
 				byte* baddress = (byte*) bufferPtr;
 
 				var ptr = baddress + IntPtr.Size + index * sizeof (AudioBuffer);
+#pragma warning disable RBI0043 // This type must point to an unmanaged AudioBufferList, as documented above.
 				return (AudioBuffer*) ptr;
+#pragma warning restore RBI0043
 			}
 		}
 	}

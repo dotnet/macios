@@ -54,6 +54,20 @@ Set the `CheckForIllegalCrossThreadCalls` MSBuild property to override the defau
 
 [1]: /dotnet/api/UIKit.UIApplication.EnsureUIThread
 
+## Specialize registrations inherited from generic types
+
+The `specialize-generic-registrations` optimization emits closed forwarding
+methods for exported instance methods inherited by non-generic `NSObject`
+subclasses from generic base classes. The static registrar can then generate
+specialized native entry points instead of resolving the generic method on
+each Objective-C call. Virtual calls still dispatch to the managed override.
+
+This optimization is disabled by default because each closed subclass adds
+code, potentially increasing application size significantly. Enable it with
+`--optimize=+specialize-generic-registrations` in `AppBundleExtraOptions`.
+It requires a static registrar and
+trimming. Reloadable assemblies in Hot Reload-compatible builds are not modified.
+
 ## Inline NSObject.IsDirectBinding
 
 `NSObject.IsDirectBinding` is an instance property that determines whether a

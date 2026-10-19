@@ -168,6 +168,7 @@ public class AssemblyPreparer : IDisposable {
 		};
 		steps.Add (new ComputeMethodOverridesStep ());
 		steps.Add (new CoreTypeMapStep ());
+		steps.Add (new SpecializeGenericRegistrationsStep ());
 		steps.Add (new CollectFieldsStep ()); // ProcessExportedFields
 
 		// These steps only do anything for assemblies that are being trimmed (their IsActiveFor requires

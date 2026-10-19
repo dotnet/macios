@@ -12,6 +12,32 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class MutableSAttributedStringTest {
+		[TestCase ("prefix-text-suffix", 7, 4)]
+		[TestCase ("prefix-\u65e5\ud83e\udd14\0-suffix", 7, 4)]
+		[TestCase ("", 0, 0)]
+		[TestCase ("text", 4, 0)]
+		public void InitWithSpan (string value, int start, int length)
+		{
+			var span = value.AsSpan (start, length);
+			var expected = value.Substring (start, length);
+			using var plain = new NSMutableAttributedString (span);
+			using var noAttributes = new NSMutableAttributedString (span, (NSDictionary) null);
+			using var key = new NSString ("SpanTestAttribute");
+			using var attributeValue = new NSString ("value");
+			using var attributes = NSDictionary.FromObjectAndKey (attributeValue, key);
+			using var attributed = new NSMutableAttributedString (span, attributes);
+			Assert.That (plain.Value, Is.EqualTo (expected), "Plain value");
+			Assert.That (noAttributes.Value, Is.EqualTo (expected), "Null attributes value");
+			Assert.That (attributed.Value, Is.EqualTo (expected), "Attributed value");
+			if (length > 0) {
+				using var actual = attributed.GetAttributes (0, out var range);
+				Assert.That (actual [key], Is.EqualTo (attributeValue), "Attribute");
+				Assert.That (range, Is.EqualTo (new NSRange (0, length)), "Attribute range");
+			}
+			plain.Replace (new NSRange (0, length), "replacement");
+			Assert.That (plain.Value, Is.EqualTo ("replacement"), "Mutable value");
+		}
+
 
 		[Test]
 		public void InitWith ()

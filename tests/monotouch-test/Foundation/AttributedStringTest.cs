@@ -15,6 +15,49 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AttributedStringTest {
+		[TestCase ("prefix-text-suffix", 7, 4)]
+		[TestCase ("prefix-\u65e5\ud83e\udd14\0-suffix", 7, 4)]
+		[TestCase ("", 0, 0)]
+		[TestCase ("text", 4, 0)]
+		public void InitWithSpan (string value, int start, int length)
+		{
+			var span = value.AsSpan (start, length);
+			var expected = value.Substring (start, length);
+			using var plain = new NSAttributedString (span);
+			using var noAttributes = new NSAttributedString (span, (NSDictionary) null);
+			using var key = new NSString ("SpanTestAttribute");
+			using var attributeValue = new NSString ("value");
+			using var attributes = NSDictionary.FromObjectAndKey (attributeValue, key);
+			using var attributed = new NSAttributedString (span, attributes);
+			Assert.That (plain.Value, Is.EqualTo (expected), "Plain value");
+			Assert.That (noAttributes.Value, Is.EqualTo (expected), "Null attributes value");
+			Assert.That (attributed.Value, Is.EqualTo (expected), "Attributed value");
+			if (length > 0) {
+				using var actual = attributed.GetAttributes (0, out var range);
+				Assert.That (actual [key], Is.EqualTo (attributeValue), "Attribute");
+				Assert.That (range, Is.EqualTo (new NSRange (0, length)), "Attribute range");
+			}
+		}
+
+		[Test]
+		public void InitWithDefaultSpan ()
+		{
+			using var immutable = new NSAttributedString (default (ReadOnlySpan<char>));
+			using var mutable = new NSMutableAttributedString (default (ReadOnlySpan<char>));
+			Assert.That (immutable.Value, Is.EqualTo (""), "Immutable");
+			Assert.That (mutable.Value, Is.EqualTo (""), "Mutable");
+		}
+
+		[Test]
+		public void InitWithStackSpan ()
+		{
+			Span<char> value = stackalloc char [] { 'a', '\0', 'b' };
+			using var immutable = new NSAttributedString (value);
+			using var mutable = new NSMutableAttributedString (value);
+			value.Fill ('x');
+			Assert.That (immutable.Value, Is.EqualTo ("a\0b"), "Immutable copy");
+			Assert.That (mutable.Value, Is.EqualTo ("a\0b"), "Mutable copy");
+		}
 
 		CGColor red, yellow;
 		bool failEnum, t1, t2, tFont1, tFont2;

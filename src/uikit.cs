@@ -13785,7 +13785,7 @@ namespace UIKit {
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-	interface UINavigationItem : NSCoding {
+	interface UINavigationItem : NSCoding, UIAccessibility {
 		[DesignatedInitializer]
 		[Export ("initWithTitle:")]
 		NativeHandle Constructor (string title);
@@ -21592,6 +21592,12 @@ namespace UIKit {
 		, CMBodyIdentifiable
 #endif
 		, CALayerDelegate {
+		/// <summary>Gets or sets the accessibility elements in the order in which assistive technologies navigate them.</summary>
+		/// <value>The ordered accessibility elements, or <see langword="null" /> to use the default behavior.</value>
+		[MacCatalyst (13, 1)]
+		[NullAllowed, Export ("accessibilityElements", ArgumentSemantic.Strong)]
+		NSObject [] AccessibilityElements { get; set; }
+
 		[DesignatedInitializer]
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);

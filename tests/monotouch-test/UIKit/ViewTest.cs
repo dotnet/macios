@@ -14,6 +14,27 @@ namespace MonoTouchFixtures.UIKit {
 	public class ViewTest {
 
 		[Test]
+		public void AccessibilityElements ()
+		{
+			using var view = new UIView ();
+			using var first = new UIButton ();
+			using var second = new UIButton ();
+			view.AddSubview (first);
+			view.AddSubview (second);
+
+			Assert.That (view.AccessibilityElements, Is.Null, "Default");
+
+			view.AccessibilityElements = new NSObject [] { second, first };
+			Assert.That (view.AccessibilityElements, Is.EqualTo (new NSObject [] { second, first }), "Custom order");
+
+			view.AccessibilityElements = [];
+			Assert.That (view.AccessibilityElements, Is.Empty, "Empty");
+
+			view.AccessibilityElements = null;
+			Assert.That (view.AccessibilityElements, Is.Null, "Cleared");
+		}
+
+		[Test]
 		public void InitWithFrame ()
 		{
 			var frame = new CGRect (10, 10, 100, 100);

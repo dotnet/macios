@@ -36,10 +36,10 @@ namespace IOSurface {
 		/// <summary>Creates a Mach port that holds a reference to this surface.</summary>
 		/// <returns>A Mach send right that can be transferred to another process.</returns>
 		/// <remarks>The caller must deallocate the returned port with <c>mach_port_deallocate</c> when it is no longer needed.</remarks>
-		[SupportedOSPlatform ("ios11.0")]
-		[SupportedOSPlatform ("tvos11.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public uint CreateMachPort ()
 		{
 			if (Handle == NativeHandle.Zero)
@@ -56,10 +56,10 @@ namespace IOSurface {
 		/// <param name="port">The Mach send right referring to the surface.</param>
 		/// <returns>The surface, or <see langword="null" /> if the lookup fails.</returns>
 		/// <remarks>This method does not deallocate <paramref name="port" />.</remarks>
-		[SupportedOSPlatform ("ios11.0")]
-		[SupportedOSPlatform ("tvos11.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static IOSurface? LookupFromMachPort (uint port)
 		{
 			return Runtime.GetNSObject<IOSurface> (IOSurfaceLookupFromMachPort (port), owns: true);
@@ -71,10 +71,10 @@ namespace IOSurface {
 		/// <summary>Looks up a surface using its system-wide identifier.</summary>
 		/// <param name="surfaceId">The identifier of the surface to look up.</param>
 		/// <returns>The surface, or <see langword="null" /> if the surface does not exist or is not accessible to the calling process.</returns>
-		[SupportedOSPlatform ("ios11.0")]
-		[SupportedOSPlatform ("tvos11.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static IOSurface? Lookup (uint surfaceId)
 		{
 			return Runtime.GetNSObject<IOSurface> (IOSurfaceLookup (surfaceId), owns: true);
@@ -87,7 +87,7 @@ namespace IOSurface {
 		/// <summary>Creates an XPC object that holds a reference to this surface.</summary>
 		/// <returns>An XPC object that can be sent to another process. The caller must dispose of this object when it is no longer needed.</returns>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		public NSObject? CreateXpcObject ()
@@ -107,7 +107,7 @@ namespace IOSurface {
 		/// <returns>The surface, or <see langword="null" /> if the lookup fails.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="xpcObject" /> is <see langword="null" />.</exception>
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		public static IOSurface? LookupFromXpcObject (NSObject xpcObject)

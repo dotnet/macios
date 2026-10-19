@@ -636,6 +636,28 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "generic-type-nsobject.cs");
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void GenericBlocks (Profile profile)
+		{
+			var bgen = BuildFile (profile, "generic-blocks.cs");
+			var trampolines = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines");
+			var genericBridges = trampolines.NestedTypes.Where (v => v.HasGenericParameters && v.Name.StartsWith ("SD", StringComparison.Ordinal)).ToArray ();
+			Assert.That (genericBridges, Is.Not.Empty, "Generic managed bridges");
+			foreach (var type in trampolines.NestedTypes) {
+				foreach (var method in type.Methods.Where (v => v.CustomAttributes.Any (a => a.AttributeType.Name == "UnmanagedCallersOnlyAttribute"))) {
+					Assert.That (type.HasGenericParameters, Is.False, method.FullName);
+					Assert.That (method.HasGenericParameters, Is.False, method.FullName);
+				}
+			}
+			foreach (var type in genericBridges) {
+				foreach (var parameter in type.GenericParameters)
+					Assert.That (parameter.Constraints.Select (v => v.ConstraintType.FullName), Does.Contain ("Foundation.NSObject"), parameter.FullName);
+			}
+		}
+
 		[Test]
 		public void BindAsTests ()
 		{

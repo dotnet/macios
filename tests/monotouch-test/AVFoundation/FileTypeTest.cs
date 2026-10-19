@@ -22,9 +22,11 @@ namespace MonoTouchFixtures.AVFoundation {
 			var path = Path.Combine (Path.GetTempPath (), $"{Guid.NewGuid ()}.mov");
 			try {
 				using var url = NSUrl.FromFilename (path);
-				using var writer = new AVAssetWriter (url, AVFileTypes.QuickTimeMovie, out var error);
+				using var writer = AVAssetWriter.Create (url, AVFileTypes.QuickTimeMovie, out var error);
 				using var writerError = error;
 				Assert.That (error, Is.Null, "Creation error");
+				if (writer is null)
+					throw new AssertionException ("Could not create an asset writer.");
 
 #if XAMCORE_5_0
 				Assert.That (writer.OutputFileType, Is.EqualTo (AVFileTypes.QuickTimeMovie), "File type enum");

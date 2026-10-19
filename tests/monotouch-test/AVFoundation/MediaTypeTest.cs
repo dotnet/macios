@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void MediaTypes (AVMediaTypes mediaType, string constant)
 		{
 			using var composition = new AVMutableComposition ();
-			using var track = composition.AddMutableTrack (mediaType, 0);
+			using var track = composition.AddMutableTrack (mediaType, 0) ?? throw new AssertionException ("Could not create a composition track.");
 			using var output = new AVAssetReaderTrackOutput (track, (NSDictionary?) null);
 			using var input = new AVAssetWriterInput (constant, (AudioSettings?) null, null);
 			using var audioInput = new AVAssetWriterInput (mediaType, (AudioSettings?) null);

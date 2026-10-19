@@ -5976,7 +5976,12 @@ namespace AVFoundation {
 		/// <summary>Loads the fragmented asset tracks of the specified media type.</summary>
 		/// <param name="mediaType">The media type to load.</param>
 		/// <param name="completionHandler">The callback receiving the tracks and any loading error.</param>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the fragmented asset tracks of the specified media type.</summary>
+			<param name="This">The fragmented asset whose tracks to load.</param>
+			<param name="mediaType">The media type to load.</param>
+			<returns>A task whose result contains the matching fragmented asset tracks.</returns>
+			""")]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Wrap ("This.LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
 		void LoadTracksWithMediaType (AVMediaTypes mediaType, Action<NSArray<AVFragmentedAssetTrack>, NSError> completionHandler);
@@ -6582,14 +6587,16 @@ namespace AVFoundation {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** initialization method -init cannot be sent to an abstract object of class AVAssetReaderOutput: Create a concrete instance!
 	[DisableDefaultCtor]
 	interface AVAssetReaderOutput {
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -6601,6 +6608,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -7163,14 +7171,16 @@ namespace AVFoundation {
 		[Export ("assemblyTrackID")]
 		int AssemblyTrackId { get; }
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -7182,6 +7192,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -7276,14 +7287,16 @@ namespace AVFoundation {
 		[Export ("outputURL", ArgumentSemantic.Copy)]
 		NSUrl OutputURL { get; }
 
-		/// <summary>Gets the output file type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the output file type as a native string constant.</summary>
 		/// <remarks>Use <see cref="OutputFileType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the output file type as a native string constant.</summary>
 		/// <remarks>Use <see cref="OutputFileTypes" /> for the strongly typed value.</remarks>
 #endif
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakOutputFileType { get; }
 #else
 		string OutputFileType { get; }
@@ -7295,6 +7308,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString OutputFileType { get; }
 #else
+		[Sealed]
 		NSString OutputFileTypes { get; }
 #endif
 
@@ -7341,14 +7355,16 @@ namespace AVFoundation {
 		AVAssetWriterInput [] Inputs { get;  }
 #endif
 
-		/// <summary>Gets the available media types as native string constants.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the available media types as native string constants.</summary>
 		/// <remarks>Use <see cref="AvailableMediaTypes" /> for the strongly typed values.</remarks>
 #else
+		/// <summary>Gets the available media types as native string constants.</summary>
 		/// <remarks>Use <see cref="AvailableMediaTypeValues" /> for the strongly typed values.</remarks>
 #endif
 		[Export ("availableMediaTypes")]
 #if XAMCORE_5_0
+		[Sealed]
 		NSString [] WeakAvailableMediaTypes { get; }
 #else
 		NSString [] AvailableMediaTypes { get; }
@@ -7360,6 +7376,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] AvailableMediaTypes { get; }
 #else
+		[Sealed]
 		NSString [] AvailableMediaTypeValues { get; }
 #endif
 
@@ -7382,8 +7399,12 @@ namespace AVFoundation {
 		/// <param name="outputUrl">The URL of the file to create.</param>
 		/// <param name="outputFileType">The output file type.</param>
 		/// <param name="error">The creation error, or <see langword="null" /> on success.</param>
-		[Wrap ("this (outputUrl, outputFileType.GetConstant ()!, out error)")]
-		NativeHandle Constructor (NSUrl outputUrl, AVFileTypes outputFileType, [NullAllowed] out NSError error);
+		/// <returns>The asset writer, or <see langword="null" /> if it could not be created.</returns>
+		[FactoryMethod]
+		[Sealed]
+		[return: NullAllowed]
+		[Export ("initWithURL:fileType:error:")]
+		NativeHandle Constructor (NSUrl outputUrl, [BindAs (typeof (AVFileTypes))] NSString outputFileType, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
@@ -7626,14 +7647,16 @@ namespace AVFoundation {
 		[Wrap ("Create (mediaType.GetConstant ()!, outputSettings.GetDictionary (), sourceFormatHint)")]
 		AVAssetWriterInput Create (AVMediaTypes mediaType, [NullAllowed] AVVideoSettingsCompressed outputSettings, [NullAllowed] CMFormatDescription sourceFormatHint);
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -7645,6 +7668,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -8020,10 +8044,11 @@ namespace AVFoundation {
 		[Static, Export ("audiovisualMIMETypes")]
 		string [] AudiovisualMimeTypes { get; }
 
-		/// <summary>Gets the audiovisual file types supported by URL assets as native string constants.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the audiovisual file types supported by URL assets as native string constants.</summary>
 		/// <remarks>Use <see cref="AudiovisualTypes" /> for the strongly typed values.</remarks>
 #else
+		/// <summary>Gets the audiovisual file types supported by URL assets as native string constants.</summary>
 		/// <remarks>Use <see cref="AudiovisualTypeValues" /> for the strongly typed values.</remarks>
 #endif
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
@@ -8032,6 +8057,7 @@ namespace AVFoundation {
 		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'AudioVisualContentTypes' instead.")]
 		[Static, Export ("audiovisualTypes")]
 #if XAMCORE_5_0
+		[Sealed]
 		string [] WeakAudiovisualTypes { get; }
 #else
 		string [] AudiovisualTypes { get; }
@@ -8047,6 +8073,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] AudiovisualTypes { get; }
 #else
+		[Sealed]
 		NSString [] AudiovisualTypeValues { get; }
 #endif
 
@@ -8149,14 +8176,16 @@ namespace AVFoundation {
 		[NullAllowed, Export ("asset", ArgumentSemantic.Weak)]
 		AVAsset Asset { get; }
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -8168,6 +8197,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -8614,14 +8644,16 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVMediaSelectionOption : NSCopying {
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -8633,6 +8665,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -13231,15 +13264,17 @@ namespace AVFoundation {
 		[Field ("AVMovieShouldSupportAliasDataReferencesKey")]
 		NSString ShouldSupportAliasDataReferencesKey { get; }
 
-		/// <summary>Gets the supported movie file types as native string constants.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the supported movie file types as native string constants.</summary>
 		/// <remarks>Use <see cref="MovieTypes" /> for the strongly typed values.</remarks>
 #else
+		/// <summary>Gets the supported movie file types as native string constants.</summary>
 		/// <remarks>Use <see cref="MovieTypeValues" /> for the strongly typed values.</remarks>
 #endif
 		[Static]
 		[Export ("movieTypes")]
 #if XAMCORE_5_0
+		[Sealed]
 		string [] WeakMovieTypes { get; }
 #else
 		string [] MovieTypes { get; }
@@ -13251,6 +13286,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] MovieTypes { get; }
 #else
+		[Sealed]
 		NSString [] MovieTypeValues { get; }
 #endif
 
@@ -13671,8 +13707,9 @@ namespace AVFoundation {
 		/// <param name="mediaType">The media type of the new track.</param>
 		/// <param name="track">The track whose settings to copy, or <see langword="null" />.</param>
 		/// <param name="options">Options for creating the track, or <see langword="null" />.</param>
-		/// <returns>The new mutable track.</returns>
+		/// <returns>The new mutable track, or <see langword="null" /> if the track could not be added.</returns>
 		[Wrap ("This.AddMutableTrack (mediaType.GetConstant ()!, track, options)")]
+		[return: NullAllowed]
 		AVMutableMovieTrack AddMutableTrack (AVMediaTypes mediaType, [NullAllowed] AVAssetTrack track, [NullAllowed] NSDictionary<NSString, NSObject> options);
 
 		/// <param name="existingTracks">To be added.</param>
@@ -14548,8 +14585,9 @@ namespace AVFoundation {
 		/// <summary>Adds a mutable composition track of the specified media type.</summary>
 		/// <param name="mediaType">The media type of the new track.</param>
 		/// <param name="preferredTrackId">The preferred track identifier, or zero to choose one automatically.</param>
-		/// <returns>The new mutable track.</returns>
+		/// <returns>The new mutable track, or <see langword="null" /> if the track could not be added.</returns>
 		[Wrap ("AddMutableTrack (mediaType.GetConstant ()!, preferredTrackId)")]
+		[return: NullAllowed]
 		AVMutableCompositionTrack AddMutableTrack (AVMediaTypes mediaType, int preferredTrackId);
 
 		[Export ("removeTrack:")]
@@ -14631,7 +14669,12 @@ namespace AVFoundation {
 		/// <summary>Loads the mutable composition tracks of the specified media type.</summary>
 		/// <param name="mediaType">The media type to load.</param>
 		/// <param name="completionHandler">The callback receiving the tracks and any loading error.</param>
-		[Async]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads the mutable composition tracks of the specified media type.</summary>
+			<param name="This">The mutable composition whose tracks to load.</param>
+			<param name="mediaType">The media type to load.</param>
+			<returns>A task whose result contains the matching mutable composition tracks.</returns>
+			""")]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Wrap ("This.LoadTracksWithMediaType (mediaType.GetConstant ()!, completionHandler)")]
 		void LoadTracksWithMediaType (AVMediaTypes mediaType, Action<NSArray<AVMutableCompositionTrack>, NSError> completionHandler);
@@ -14702,14 +14745,16 @@ namespace AVFoundation {
 		[Export ("presetName")]
 		string PresetName { get; }
 
-		/// <summary>Gets the supported output file types as native string constants.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the supported output file types as native string constants.</summary>
 		/// <remarks>Use <see cref="SupportedFileTypes" /> for the strongly typed values.</remarks>
 #else
+		/// <summary>Gets the supported output file types as native string constants.</summary>
 		/// <remarks>Use <see cref="SupportedFileTypeValues" /> for the strongly typed values.</remarks>
 #endif
 		[Export ("supportedFileTypes")]
 #if XAMCORE_5_0
+		[Sealed]
 		string [] WeakSupportedFileTypes { get; }
 #else
 		string [] SupportedFileTypes { get; }
@@ -14721,18 +14766,21 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] SupportedFileTypes { get; }
 #else
+		[Sealed]
 		NSString [] SupportedFileTypeValues { get; }
 #endif
 
-		/// <summary>Gets or sets the output file type as a native string constant, or <see langword="null" /> if unset.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets or sets the output file type as a native string constant, or <see langword="null" /> if unset.</summary>
 		/// <remarks>Use <see cref="OutputFileType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets or sets the output file type as a native string constant, or <see langword="null" /> if unset.</summary>
 		/// <remarks>Use <see cref="OutputFileTypes" /> for the strongly typed value.</remarks>
 #endif
 		[NullAllowed]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakOutputFileType { get; set; }
 #else
 		string OutputFileType { get; set; }
@@ -14745,6 +14793,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString OutputFileType { get; set; }
 #else
+		[Sealed]
 		NSString OutputFileTypes { get; set; }
 #endif
 
@@ -15002,6 +15051,7 @@ namespace AVFoundation {
 #endif
 
 		[Internal]
+		[Sealed]
 		[MacCatalyst (13, 1)]
 		[Export ("determineCompatibleFileTypesWithCompletionHandler:")]
 		void _DetermineCompatibleFileTypes (Action<NSString []> compatibleFileTypesHandler);
@@ -16351,14 +16401,16 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureInputPort {
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -16370,6 +16422,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -16606,15 +16659,18 @@ namespace AVFoundation {
 		[NullAllowed]
 		AudioSettings AudioSettings { get; set; }
 
+#if XAMCORE_5_0
 		/// <summary>Gets the available recording file types as native string constants.</summary>
 		/// <returns>The available recording file types.</returns>
-#if XAMCORE_5_0
 		/// <remarks>Use <see cref="AvailableOutputFileTypes" /> for the strongly typed values.</remarks>
 #else
+		/// <summary>Gets the available recording file types as native string constants.</summary>
+		/// <returns>The available recording file types.</returns>
 		/// <remarks>Use <see cref="GetAvailableOutputFileTypes" /> for the strongly typed values.</remarks>
 #endif
 		[Static, Export ("availableOutputFileTypes")]
 #if XAMCORE_5_0
+		[Sealed]
 		NSString [] WeakAvailableOutputFileTypes ();
 #else
 		NSString [] AvailableOutputFileTypes ();
@@ -16628,6 +16684,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString [] AvailableOutputFileTypes ();
 #else
+		[Sealed]
 		NSString [] GetAvailableOutputFileTypes ();
 #endif
 
@@ -17111,6 +17168,7 @@ namespace AVFoundation {
 		/// <param name="outputFileType">The output file type.</param>
 		/// <returns>The supported video codecs.</returns>
 		[MacCatalyst (14, 0)]
+		[Sealed]
 		[return: BindAs (typeof (AVVideoCodecType []))]
 		[Export ("availableVideoCodecTypesForAssetWriterWithOutputFileType:")]
 		NSString [] GetAvailableVideoCodecTypes ([BindAs (typeof (AVFileTypes))] NSString outputFileType);
@@ -17653,15 +17711,17 @@ namespace AVFoundation {
 		[Export ("autoDualCameraFusionEnabled")]
 		bool AutoDualCameraFusionEnabled { [Bind ("isAutoDualCameraFusionEnabled")] get; set; }
 
-		/// <summary>Gets the processed photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the processed photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
 		/// <remarks>Use <see cref="ProcessedFileType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the processed photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
 		/// <remarks>Use <see cref="ProcessedFileTypes" /> for the strongly typed value.</remarks>
 #endif
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("processedFileType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakProcessedFileType { get; }
 #else
 		string ProcessedFileType { get; }
@@ -17674,20 +17734,23 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString ProcessedFileType { get; }
 #else
+		[Sealed]
 		NSString ProcessedFileTypes { get; }
 #endif
 
+#if __MACOS__
 		/// <summary>Gets the raw photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
-#if !__MACOS__
-#if XAMCORE_5_0
+#elif XAMCORE_5_0
+		/// <summary>Gets the raw photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
 		/// <remarks>Use <see cref="RawFileType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the raw photo file type as a native string constant, or <see langword="null" /> if unspecified.</summary>
 		/// <remarks>Use <see cref="RawFileTypes" /> for the strongly typed value.</remarks>
-#endif
 #endif
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("rawFileType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakRawFileType { get; }
 #else
 		string RawFileType { get; }
@@ -17701,6 +17764,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString RawFileType { get; }
 #else
+		[Sealed]
 		NSString RawFileTypes { get; }
 #endif
 
@@ -20305,14 +20369,16 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // crash -> immutable, it can be set but it should be selected from tha available formats (not a custom one)
 	[BaseType (typeof (NSObject))]
 	interface AVCaptureDeviceFormat {
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed <see cref="AVMediaTypes" /> value.</remarks>
 #endif
 		[Export ("mediaType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
+		[Sealed]
 		NSString WeakMediaType { get; }
 #else
 		NSString MediaType { get; }
@@ -20324,6 +20390,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -24287,14 +24354,16 @@ namespace AVFoundation {
 		[Wrap ("WeakVideoSettings")]
 		AVVideoSettingsUncompressed UnCompressedVideoSettings { get; }
 
-		/// <summary>Gets the output file type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the output file type as a native string constant.</summary>
 		/// <remarks>Use <see cref="OutputFileType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the output file type as a native string constant.</summary>
 		/// <remarks>Use <see cref="OutputFileTypes" /> for the strongly typed value.</remarks>
 #endif
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakOutputFileType { get; }
 #else
 		string OutputFileType { get; }
@@ -24306,6 +24375,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString OutputFileType { get; }
 #else
+		[Sealed]
 		NSString OutputFileTypes { get; }
 #endif
 
@@ -28234,14 +28304,16 @@ namespace AVFoundation {
 		[Export ("isMultivariantPlaylist")]
 		bool IsMultivariantPlaylist { get; }
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -28253,6 +28325,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -28270,14 +28343,16 @@ namespace AVFoundation {
 		[Export ("isMapSegment")]
 		bool IsMapSegment { get; }
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -28289,6 +28364,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 
@@ -28368,14 +28444,16 @@ namespace AVFoundation {
 		[Export ("contentKeySpecifier")]
 		AVContentKeySpecifier ContentKeySpecifier { get; }
 
-		/// <summary>Gets the media type as a native string constant.</summary>
 #if XAMCORE_5_0
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaType" /> for the strongly typed value.</remarks>
 #else
+		/// <summary>Gets the media type as a native string constant.</summary>
 		/// <remarks>Use <see cref="MediaTypes" /> for the strongly typed value.</remarks>
 #endif
 		[Export ("mediaType")]
 #if XAMCORE_5_0
+		[Sealed]
 		string WeakMediaType { get; }
 #else
 		string MediaType { get; }
@@ -28387,6 +28465,7 @@ namespace AVFoundation {
 #if XAMCORE_5_0
 		NSString MediaType { get; }
 #else
+		[Sealed]
 		NSString MediaTypes { get; }
 #endif
 

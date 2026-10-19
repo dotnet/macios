@@ -271,6 +271,82 @@ namespace GeneratorTests {
 			bgen.AssertError (1050, "[BindAs] cannot be used on properties or return values inside Protocol or Model types. Type: MyFooClass");
 		}
 
+		[TestCase ("int", "NSNumber", "System.Int32", true)]
+		[TestCase ("int?", "NSNumber", null, false)]
+		[TestCase ("CGRect", "NSValue", "CoreGraphics.CGRect", true)]
+		[TestCase ("CGRect?", "NSValue", null, false)]
+		[TestCase ("CAScroll", "NSNumber", "CoreAnimation.CAScroll", true)]
+		[TestCase ("CAScroll", "NSString", null, false)]
+		[TestCase ("CAScroll?", "NSString", null, false)]
+		[TestCase ("int []", "NSNumber []", null, false)]
+		public void BI1130 (string bindAsType, string nativeType, string diagnosticType, bool expectWarning)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			foreach (var memberKind in new [] { "Property", "ReadOnlyProperty", "Return", "Parameter" }) {
+				var member = memberKind switch {
+					"Property" => $"[NullAllowed, BindAs (typeof ({bindAsType})), Export (\"value\")] {nativeType} Value {{ get; set; }}",
+					"ReadOnlyProperty" => $"[NullAllowed, BindAs (typeof ({bindAsType})), Export (\"value\")] {nativeType} Value {{ get; }}",
+					"Return" => $"[return: NullAllowed, BindAs (typeof ({bindAsType}))] [Export (\"value\")] {nativeType} Value ();",
+					"Parameter" => $"[Export (\"setValue:\")] void Value ([NullAllowed, BindAs (typeof ({bindAsType}))] {nativeType} value);",
+					_ => throw new ArgumentException (nameof (memberKind)),
+				};
+				var bgen = new BGenTool { Profile = Profile.iOS };
+				bgen.CreateTemporaryBinding ($@"
+using Foundation;
+using ObjCRuntime;
+using CoreGraphics;
+using CoreAnimation;
+
+namespace BindAsNullability {{
+	[BaseType (typeof (NSObject))]
+	interface TestClass {{
+		{member}
+	}}
+}}");
+				bgen.AssertExecute (memberKind);
+				if (expectWarning) {
+					var target = "BindAsNullability.TestClass.Value";
+					if (memberKind == "Parameter")
+						target += " (parameter 'value')";
+					bgen.AssertWarning (1130, $"The nullable binding '{target}' uses the non-nullable [BindAs] type '{diagnosticType}'. Use a nullable type in [BindAs] to preserve null values.");
+					bgen.AssertWarningCount (1);
+				} else {
+					bgen.AssertNoWarnings ();
+				}
+			}
+		}
+
+		[TestCase (true)]
+		[TestCase (false)]
+		public void BI1130_WarningLevel (bool suppress)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				NoWarn = suppress ? "1130" : null,
+				WarnAsError = suppress ? "" : "1130",
+			};
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+using ObjCRuntime;
+
+namespace BindAsNullability {
+	[BaseType (typeof (NSObject))]
+	interface TestClass {
+		[NullAllowed, BindAs (typeof (int)), Export (""value"")]
+		NSNumber Value { get; set; }
+	}
+}");
+			if (suppress) {
+				bgen.AssertExecute ("suppressed warning");
+				bgen.AssertNoWarnings ();
+			} else {
+				bgen.AssertExecuteError ("warning as error");
+				bgen.AssertError (1130, "The nullable binding 'BindAsNullability.TestClass.Value' uses the non-nullable [BindAs] type 'System.Int32'. Use a nullable type in [BindAs] to preserve null values.");
+				bgen.AssertErrorCount (1);
+			}
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void BI1059 (Profile profile)

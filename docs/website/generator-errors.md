@@ -353,6 +353,19 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The availability attributes on '\*' are contradictory: it is both introduced and unavailable on '\*'. Remove one of the conflicting attributes.
+
+A binding type or member cannot be both introduced and unavailable on the same
+platform. For example, `[TV (14, 0)]` and `[NoTV]` contradict each other, as do
+`[SupportedOSPlatform ("tvos14.0")]` and `[UnsupportedOSPlatform ("tvos")]`.
+Remove the incorrect attribute.
+
+This error only applies to attributes declared on the same type or member.
+Availability inherited from a containing type or an inlined protocol is handled
+separately. A versioned `[UnsupportedOSPlatform]` attribute can be combined with
+`[SupportedOSPlatform]` to describe an API that is only available for certain
+versions.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

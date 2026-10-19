@@ -73,6 +73,9 @@ namespace NS {
 		[Export ("doSomethingElse:completionHandler:")]
 		void DoSomethingElse (NSObject obj, Action<NSObject?, NSError> completionHandler);
 
+		[Export ("prompt:defaultText:completionHandler:")]
+		void Prompt (string prompt, [NullAllowed] string defaultText, Action<string?> completionHandler);
+
 		// Async method with nullable NSError in completion handler
 		[Async]
 		[Export ("confirmAcquired:completionHandler:")]

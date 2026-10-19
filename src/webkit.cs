@@ -5936,10 +5936,6 @@ namespace WebKit {
 		bool AllowsDirectories { get; }
 	}
 
-#if XAMCORE_5_0
-	delegate void WKUIDelegateRunJavaScriptTextInputPanelCallback ([NullAllowed] string result);
-#endif
-
 	/// <summary>A delegate object that allows presenting native UI elements on behalf of a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKUIDelegate_Ref/index.html">Apple documentation for <c>WKUIDelegate</c></related>
@@ -5978,27 +5974,17 @@ namespace WebKit {
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptConfirmPanel (WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler);
 
-#if !XAMCORE_5_0
-		/// <param name="webView">To be added.</param>
-		/// <param name="prompt">To be added.</param>
-		/// <param name="defaultText">
-		///           <para>To be added.</para>
-		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-		///         </param>
-		/// <param name="frame">To be added.</param>
-		/// <param name="completionHandler">To be added.</param>
+#nullable enable
 		/// <summary>Shows a JavaScript text input box to the user.</summary>
-		/// <remarks>To be added.</remarks>
-		[Obsolete ("It's not possible to call the completion handler with a null value using this method. Please see https://github.com/dotnet/macios/issues/15728 for a workaround.")]
+		/// <param name="webView">The web view requesting the text input box.</param>
+		/// <param name="prompt">The message to display.</param>
+		/// <param name="defaultText">The initial text, or <see langword="null" /> if there is none.</param>
+		/// <param name="frame">The frame that initiated the request.</param>
+		/// <param name="completionHandler">The callback to invoke with the entered text, or <see langword="null" /> if the user cancels.</param>
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
-			WKFrameInfo frame, Action<string> completionHandler);
-#endif
-
-#if XAMCORE_5_0
-		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
-		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText, WKFrameInfo frame, WKUIDelegateRunJavaScriptTextInputPanelCallback completionHandler);
-#endif
+			WKFrameInfo frame, Action<string?> completionHandler);
+#nullable restore
 
 		/// <param name="webView">To be added.</param>
 		/// <param name="parameters">To be added.</param>

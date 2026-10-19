@@ -61,8 +61,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (CGColorSpace colorspace, nfloat [] components)
 		{
-			if (components is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
+			global::System.ArgumentNullException.ThrowIfNull (components);
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
@@ -105,8 +104,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (string name)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var nameHandle = CFString.CreateNative (name);
 			try {
@@ -136,8 +134,7 @@ namespace CoreGraphics {
 		static IntPtr Create (CGConstantColor color)
 		{
 			var constant = color.GetConstant ();
-			if (constant is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (color));
+			ArgumentNullException.ThrowIfNull (constant, nameof (color));
 			var handle = CGColorGetConstantColor (constant.Handle);
 			GC.KeepAlive (constant);
 			if (handle == IntPtr.Zero)
@@ -160,8 +157,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (CGColorSpace colorspace, CGPattern pattern, nfloat [] components)
 		{
-			if (components is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
+			global::System.ArgumentNullException.ThrowIfNull (components);
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
@@ -187,8 +183,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (CGColor source, nfloat alpha)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 			IntPtr result = CGColorCreateCopyWithAlpha (source.GetCheckedHandle (), alpha);
 			GC.KeepAlive (source);
 			return result;

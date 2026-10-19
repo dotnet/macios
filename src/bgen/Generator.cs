@@ -3535,8 +3535,7 @@ public partial class Generator : IMemberGatherer {
 				}
 				needsGCKeepAlives = true;
 			} else if (needs_null_check) {
-				print ("if ({0} is null)", safe_name);
-				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
+				print ("global::System.ArgumentNullException.ThrowIfNull ({0}, nameof ({0}));", safe_name);
 			}
 		}
 	}

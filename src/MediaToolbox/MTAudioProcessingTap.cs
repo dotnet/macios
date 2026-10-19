@@ -105,8 +105,7 @@ namespace MediaToolbox {
 
 		static Callbacks CreateCallbacks (MTAudioProcessingTapCallbacks callbacks, MTAudioProcessingTapCreationFlags flags)
 		{
-			if (callbacks is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callbacks));
+			ArgumentNullException.ThrowIfNull (callbacks);
 
 			const MTAudioProcessingTapCreationFlags all_flags = MTAudioProcessingTapCreationFlags.PreEffects | MTAudioProcessingTapCreationFlags.PostEffects;
 			if ((flags & all_flags) == all_flags)
@@ -227,8 +226,7 @@ namespace MediaToolbox {
 
 		public MTAudioProcessingTapError GetSourceAudio (nint frames, AudioBuffers bufferList, out MTAudioProcessingTapFlags flags, out CMTimeRange timeRange, out nint framesProvided)
 		{
-			if (bufferList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bufferList));
+			ArgumentNullException.ThrowIfNull (bufferList);
 
 			IntPtr result;
 			MTAudioProcessingTapError r;
@@ -358,8 +356,7 @@ namespace MediaToolbox {
 		///         <remarks>To be added.</remarks>
 		public MTAudioProcessingTapCallbacks (MTAudioProcessingTapProcessDelegate process)
 		{
-			if (process is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (process));
+			ArgumentNullException.ThrowIfNull (process);
 
 			Processing = process;
 		}

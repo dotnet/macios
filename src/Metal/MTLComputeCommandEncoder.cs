@@ -7,10 +7,8 @@ namespace Metal {
 
 		public static void SetBuffers (this IMTLComputeCommandEncoder table, IMTLBuffer [] buffers, nuint [] offsets, NSRange range)
 		{
-			if (buffers is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffers));
-			if (offsets is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (offsets));
+			ArgumentNullException.ThrowIfNull (buffers);
+			ArgumentNullException.ThrowIfNull (offsets);
 
 			var bufferPtrArray = buffers.Length <= 1024 ? stackalloc IntPtr [buffers.Length] : new IntPtr [buffers.Length];
 			// get all intptr from the array to pass to the lower level call

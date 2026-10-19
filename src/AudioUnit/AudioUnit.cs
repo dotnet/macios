@@ -170,8 +170,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public SamplerInstrumentData (CFUrl fileUrl, InstrumentType instrumentType)
 		{
-			if (fileUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fileUrl));
+			ArgumentNullException.ThrowIfNull (fileUrl);
 
 			this.FileUrl = fileUrl;
 			this.InstrumentType = instrumentType;
@@ -436,8 +435,7 @@ namespace AudioUnit {
 
 		static IntPtr Create (AudioComponent component)
 		{
-			if (component is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (component));
+			ArgumentNullException.ThrowIfNull (component);
 
 			IntPtr handle;
 			AudioUnitStatus err;
@@ -676,8 +674,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus LoadInstrument (SamplerInstrumentData instrumentData, AudioUnitScopeType scope = AudioUnitScopeType.Global, uint audioUnitElement = 0)
 		{
-			if (instrumentData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (instrumentData));
+			ArgumentNullException.ThrowIfNull (instrumentData);
 
 			var data = instrumentData.ToStruct ();
 			unsafe {
@@ -964,8 +961,7 @@ namespace AudioUnit {
 		public AudioComponentStatus AudioOutputUnitPublish (AudioComponentDescription description, string name, uint version = 1)
 		{
 
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var nameHandle = CFString.CreateNative (name);
 			try {
@@ -1055,7 +1051,7 @@ namespace AudioUnit {
 		public AudioUnitStatus Render (ref AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
 		{
 			if ((IntPtr) data == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+				throw new ArgumentNullException (nameof (data));
 			unsafe {
 				fixed (AudioUnitRenderActionFlags* actionFlagsPtr = &actionFlags) {
 					return AudioUnitRender (
@@ -1231,8 +1227,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetScheduledFileRegion (AUScheduledAudioFileRegion region)
 		{
-			if (region is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (region));
+			ArgumentNullException.ThrowIfNull (region);
 
 			var safr = region.GetAudioFileRegion ();
 			unsafe {
@@ -1261,8 +1256,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus SetScheduledFiles (AudioFile audioFile)
 		{
-			if (audioFile is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioFile));
+			ArgumentNullException.ThrowIfNull (audioFile);
 
 			var audioFilehandle = audioFile.Handle;
 			unsafe {
@@ -1282,8 +1276,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public unsafe AudioUnitStatus SetScheduledFiles (AudioFile [] audioFiles)
 		{
-			if (audioFiles is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioFiles));
+			ArgumentNullException.ThrowIfNull (audioFiles);
 
 			int count = audioFiles.Length;
 			IntPtr [] handles = new IntPtr [count];

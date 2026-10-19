@@ -21,8 +21,7 @@ namespace NaturalLanguage {
 
 		public string? []? this [NSString key] {
 			get {
-				if (key is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+				ArgumentNullException.ThrowIfNull (key);
 
 				var value = Dictionary.LowlevelObjectForKey (key);
 				return CFArray.StringArrayFromHandle (value);

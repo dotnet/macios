@@ -44,8 +44,7 @@ namespace CoreVideo {
 
 		static IntPtr Create (EAGLContext context, bool throwIfFailure = true)
 		{
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
+			ArgumentNullException.ThrowIfNull (context);
 
 			var handle = default (IntPtr);
 			int errorCode;
@@ -79,8 +78,7 @@ namespace CoreVideo {
 
 		public CVOpenGLESTexture? CreateTexture (CVImageBuffer imageBuffer, bool isTexture2d, int internalFormat, int width, int height, uint pixelFormat, uint pixelType, int planeIndex, out CVReturn errorCode)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
 
 			uint target = isTexture2d ? (uint) 0x0DE1 /* GL_TEXTURE_2D */ : (uint) 0x8D41 /* GL_RENDERBUFFER */;
 			var texture = default (IntPtr);

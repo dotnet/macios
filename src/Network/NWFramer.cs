@@ -43,8 +43,7 @@ namespace Network {
 
 		public void WriteOutput (DispatchData data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			nw_framer_write_output_data (GetCheckedHandle (), data.Handle);
 			GC.KeepAlive (data);
 		}
@@ -218,8 +217,7 @@ namespace Network {
 
 		public bool PrependApplicationProtocol (NWProtocolOptions options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 			bool result = nw_framer_prepend_application_protocol (GetCheckedHandle (), options.Handle) != 0;
 			GC.KeepAlive (options);
 			return result;
@@ -250,8 +248,7 @@ namespace Network {
 
 		public bool DeliverInputNoCopy (nuint length, NWFramerMessage message, bool isComplete)
 		{
-			if (message is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
+			ArgumentNullException.ThrowIfNull (message);
 			bool result = nw_framer_deliver_input_no_copy (GetCheckedHandle (), length, message.Handle, isComplete.AsByte ()) != 0;
 			GC.KeepAlive (message);
 			return result;
@@ -262,8 +259,7 @@ namespace Network {
 
 		public static T? CreateOptions<T> (NWProtocolDefinition protocolDefinition) where T : NWProtocolOptions
 		{
-			if (protocolDefinition is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
+			ArgumentNullException.ThrowIfNull (protocolDefinition);
 			var x = nw_framer_create_options (protocolDefinition.Handle);
 			GC.KeepAlive (protocolDefinition);
 			return Runtime.GetINativeObject<T> (x, owns: true);
@@ -318,8 +314,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool ParseOutput (nuint minimumIncompleteLength, nuint maximumLength, Memory<byte> tempBuffer, Action<Memory<byte>, bool> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, nuint, byte, void> trampoline = &TrampolineParseOutputHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWFramer), nameof (TrampolineParseOutputHandler));
@@ -350,8 +345,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool ParseInput (nuint minimumIncompleteLength, nuint maximumLength, Memory<byte> tempBuffer, NWFramerParseCompletionDelegate handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, nuint, byte, nuint> trampoline = &TrampolineParseInputHandler;
 				using var block = new BlockLiteral (trampoline, handler, typeof (NWFramer), nameof (TrampolineParseInputHandler));
@@ -368,8 +362,7 @@ namespace Network {
 
 		public void DeliverInput (ReadOnlySpan<byte> buffer, NWFramerMessage message, bool isComplete)
 		{
-			if (message is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
+			ArgumentNullException.ThrowIfNull (message);
 			unsafe {
 				fixed (byte* mh = buffer) {
 					nw_framer_deliver_input (GetCheckedHandle (), mh, (nuint) buffer.Length, message.Handle, isComplete.AsByte ());

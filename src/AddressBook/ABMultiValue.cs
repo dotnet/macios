@@ -281,10 +281,8 @@ namespace AddressBook {
 		internal ABMultiValue (NativeHandle handle, Converter<NativeHandle, T> toManaged, Converter<T, NativeHandle> toNative, bool owns)
 			: base (handle, owns)
 		{
-			if (toManaged is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (toManaged));
-			if (toNative is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (toNative));
+			ArgumentNullException.ThrowIfNull (toManaged);
+			ArgumentNullException.ThrowIfNull (toNative);
 
 			this.toManaged = toManaged;
 			this.toNative = toNative;

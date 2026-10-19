@@ -78,8 +78,7 @@ namespace CoreAnimation {
 		///         <remarks>To be added.</remarks>
 		public void SetFont (string fontName)
 		{
-			if (fontName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fontName));
+			ArgumentNullException.ThrowIfNull (fontName);
 			using (var nss = new NSString (fontName)) {
 				_Font = nss.Handle;
 			}
@@ -90,8 +89,7 @@ namespace CoreAnimation {
 		///         <remarks>To be added.</remarks>
 		public void SetFont (CGFont font)
 		{
-			if (font is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
+			ArgumentNullException.ThrowIfNull (font);
 			_Font = font.Handle;
 			GC.KeepAlive (font);
 		}
@@ -101,8 +99,7 @@ namespace CoreAnimation {
 		///         <remarks>To be added.</remarks>
 		public void SetFont (CTFont font)
 		{
-			if (font is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
+			ArgumentNullException.ThrowIfNull (font);
 			_Font = font.Handle;
 			GC.KeepAlive (font);
 		}
@@ -113,8 +110,7 @@ namespace CoreAnimation {
 		///         <remarks>To be added.</remarks>
 		public void SetFont (NSFont font)
 		{
-			if (font is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
+			ArgumentNullException.ThrowIfNull (font);
 			_Font = font.Handle;
 			GC.KeepAlive (font);
 		}

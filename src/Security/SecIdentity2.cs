@@ -37,8 +37,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public SecIdentity2 (SecIdentity identity)
 		{
-			if (identity is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
+			ArgumentNullException.ThrowIfNull (identity);
 
 			InitializeHandle (sec_identity_create (identity.Handle));
 			GC.KeepAlive (identity);
@@ -53,10 +52,8 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public SecIdentity2 (SecIdentity identity, params SecCertificate [] certificates)
 		{
-			if (identity is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
-			if (certificates is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificates));
+			ArgumentNullException.ThrowIfNull (identity);
+			ArgumentNullException.ThrowIfNull (certificates);
 			using (var nsarray = NSArray.FromObjects (certificates)) {
 				InitializeHandle (sec_identity_create_with_certificates (identity.Handle, nsarray.Handle));
 				GC.KeepAlive (identity);
@@ -108,8 +105,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool AccessCertificates (Action</* sec_identity_t */SecCertificate2> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineAccessCertificates;

@@ -93,8 +93,7 @@ namespace CoreVideo {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static CVDisplayLink? CreateFromDisplayIds (uint [] displayIds, out CVReturn error)
 		{
-			if (displayIds is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (displayIds));
+			ArgumentNullException.ThrowIfNull (displayIds);
 			error = 0;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {

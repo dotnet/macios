@@ -101,10 +101,8 @@ namespace CoreGraphics {
 		{
 			// those parameters are __nullable but would return a `nil` instance back,
 			// which is not something we can handle nicely from a .NET constructor
-			if (colorspace is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colorspace));
-			if (components is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
+			ArgumentNullException.ThrowIfNull (colorspace);
+			ArgumentNullException.ThrowIfNull (components);
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components, locationsPtr = locations) {
@@ -124,10 +122,8 @@ namespace CoreGraphics {
 		{
 			// those parameters are __nullable but would return a `nil` instance back,
 			// which is not something we can handle nicely from a .NET constructor
-			if (colorspace is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colorspace));
-			if (components is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (components));
+			ArgumentNullException.ThrowIfNull (colorspace);
+			ArgumentNullException.ThrowIfNull (components);
 
 			unsafe {
 				fixed (nfloat* componentsPtr = components) {
@@ -152,8 +148,7 @@ namespace CoreGraphics {
 		{
 			// colors is __nullable but would return a `nil` instance back,
 			// which is not something we can handle nicely from a .NET constructor
-			if (colors is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colors));
+			ArgumentNullException.ThrowIfNull (colors);
 
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {
@@ -173,8 +168,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (CGColorSpace? colorspace, CGColor [] colors)
 		{
-			if (colors is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colors));
+			ArgumentNullException.ThrowIfNull (colors);
 
 			using (var array = CFArray.FromNativeObjects (colors)) {
 				unsafe {

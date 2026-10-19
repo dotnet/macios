@@ -282,11 +282,9 @@ namespace CoreFoundation {
 		///         <remarks>See also: <see cref="CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, NSUrl targetURL)
 		{
-			if (proxyAutoConfigurationScript is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyAutoConfigurationScript));
+			ArgumentNullException.ThrowIfNull (proxyAutoConfigurationScript);
 
-			if (targetURL is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetURL));
+			ArgumentNullException.ThrowIfNull (targetURL);
 
 			var array = CopyProxiesForAutoConfigurationScript (proxyAutoConfigurationScript, targetURL);
 			var proxies = NSArray.DictionaryArrayFromHandleDropNullElements (array, (dict) => new CFProxy (dict), releaseHandle: true);
@@ -297,12 +295,10 @@ namespace CoreFoundation {
 		public static CFProxy []? GetProxiesForAutoConfigurationScript (NSString proxyAutoConfigurationScript, Uri targetUri)
 		{
 			// proxyAutoConfigurationScript checked later
-			if (targetUri is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUri));
+			ArgumentNullException.ThrowIfNull (targetUri);
 
 			using (var targetURL = NSUrl.FromString (targetUri.AbsoluteUri)) {
-				if (targetURL is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetURL));
+				ArgumentNullException.ThrowIfNull (targetURL);
 				return GetProxiesForAutoConfigurationScript (proxyAutoConfigurationScript, targetURL);
 			}
 		}
@@ -328,8 +324,7 @@ namespace CoreFoundation {
 		///         <remarks>See also: <see cref="CoreFoundation.CFNetwork.GetProxiesForUri(System.Uri,CoreFoundation.CFProxySettings)" /></remarks>
 		public static CFProxy []? GetProxiesForURL (NSUrl url, CFProxySettings? proxySettings)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			if (proxySettings is null)
 				proxySettings = GetSystemProxySettings ();
@@ -349,12 +344,10 @@ namespace CoreFoundation {
 		///         <remarks>This method serves as a convenience wrapper for <see cref="CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</remarks>
 		public static CFProxy []? GetProxiesForUri (Uri uri, CFProxySettings? proxySettings)
 		{
-			if (uri is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uri));
+			ArgumentNullException.ThrowIfNull (uri);
 
 			using (NSUrl? url = NSUrl.FromString (uri.AbsoluteUri)) {
-				if (url is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+				ArgumentNullException.ThrowIfNull (url);
 				return GetProxiesForURL (url, proxySettings);
 			}
 		}
@@ -557,11 +550,9 @@ namespace CoreFoundation {
 		public static CFProxy []? ExecuteProxyAutoConfigurationScript (string proxyAutoConfigurationScript, Uri targetUrl, out NSError? outError)
 		{
 			outError = null;
-			if (proxyAutoConfigurationScript is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyAutoConfigurationScript));
+			ArgumentNullException.ThrowIfNull (proxyAutoConfigurationScript);
 
-			if (targetUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUrl));
+			ArgumentNullException.ThrowIfNull (targetUrl);
 
 			using (var pacScript = new NSString (proxyAutoConfigurationScript))
 			using (var url = new NSUrl (targetUrl.AbsoluteUri)) {
@@ -583,11 +574,9 @@ namespace CoreFoundation {
 
 		public static async Task<(CFProxy []? proxies, NSError? error)> ExecuteProxyAutoConfigurationScriptAsync (string proxyAutoConfigurationScript, Uri targetUrl, CancellationToken cancellationToken)
 		{
-			if (proxyAutoConfigurationScript is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyAutoConfigurationScript));
+			ArgumentNullException.ThrowIfNull (proxyAutoConfigurationScript);
 
-			if (targetUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUrl));
+			ArgumentNullException.ThrowIfNull (targetUrl);
 
 			using (var pacScript = new NSString (proxyAutoConfigurationScript))
 			using (var url = new NSUrl (targetUrl.AbsoluteUri)) {
@@ -618,11 +607,9 @@ namespace CoreFoundation {
 		public static CFProxy []? ExecuteProxyAutoConfigurationUrl (Uri proxyAutoConfigurationUrl, Uri targetUrl, out NSError? outError)
 		{
 			outError = null;
-			if (proxyAutoConfigurationUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyAutoConfigurationUrl));
+			ArgumentNullException.ThrowIfNull (proxyAutoConfigurationUrl);
 
-			if (targetUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUrl));
+			ArgumentNullException.ThrowIfNull (targetUrl);
 
 			using (var pacUrl = new NSUrl (proxyAutoConfigurationUrl.AbsoluteUri)) // toll free bridge to CFUrl
 			using (var url = new NSUrl (targetUrl.AbsoluteUri)) {
@@ -645,11 +632,9 @@ namespace CoreFoundation {
 		public static async Task<(CFProxy []? proxies, NSError? error)> ExecuteProxyAutoConfigurationUrlAsync (Uri proxyAutoConfigurationUrl, Uri targetUrl, CancellationToken cancellationToken)
 		{
 			// similar to the sync method, but we will spawn a thread and wait in an async manner to an autoreset event to be fired
-			if (proxyAutoConfigurationUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyAutoConfigurationUrl));
+			ArgumentNullException.ThrowIfNull (proxyAutoConfigurationUrl);
 
-			if (targetUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUrl));
+			ArgumentNullException.ThrowIfNull (targetUrl);
 
 			using (var pacUrl = new NSUrl (proxyAutoConfigurationUrl.AbsoluteUri)) // toll free bridge to CFUrl
 			using (var url = new NSUrl (targetUrl.AbsoluteUri)) {
@@ -757,8 +742,7 @@ namespace CoreFoundation {
 				NetworkCredential? credentials = null;
 				Uri? proxy = null;
 
-				if (targetUri is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUri));
+				ArgumentNullException.ThrowIfNull (targetUri);
 
 				try {
 					CFProxySettings? settings = CFNetwork.GetSystemProxySettings ();
@@ -809,8 +793,7 @@ namespace CoreFoundation {
 
 			public bool IsBypassed (Uri targetUri)
 			{
-				if (targetUri is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUri));
+				ArgumentNullException.ThrowIfNull (targetUri);
 
 				return GetProxy (targetUri) == targetUri;
 			}

@@ -24,8 +24,7 @@ namespace NetworkExtension {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetAuthorization (Authorization authorization)
 		{
-			if (authorization is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (authorization));
+			ArgumentNullException.ThrowIfNull (authorization);
 
 			_SetAuthorization (authorization.Handle);
 			GC.KeepAlive (authorization);

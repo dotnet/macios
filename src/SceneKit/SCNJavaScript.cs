@@ -26,8 +26,7 @@ namespace SceneKit {
 		/// <param name="context">The JavaScript context to export SceneKit classes into.</param>
 		public static void ExportModule (JSContext context)
 		{
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
+			ArgumentNullException.ThrowIfNull (context);
 
 			SCNExportJavaScriptModule (context.Handle);
 			GC.KeepAlive (context);

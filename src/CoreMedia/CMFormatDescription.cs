@@ -526,8 +526,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static CMVideoFormatDescription? CreateForImageBuffer (CVImageBuffer imageBuffer, out CMFormatDescriptionError error)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
 
 			IntPtr desc;
 			unsafe {
@@ -565,8 +564,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("tvos")]
 		public static CMVideoFormatDescription? FromH264ParameterSets (List<byte []> parameterSets, int nalUnitHeaderLength, out CMFormatDescriptionError error)
 		{
-			if (parameterSets is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameterSets));
+			ArgumentNullException.ThrowIfNull (parameterSets);
 
 			if (parameterSets.Count < 2)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException ("parameterSets must contain at least two elements");
@@ -684,8 +682,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public bool VideoMatchesImageBuffer (CVImageBuffer imageBuffer)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
 			bool result = CMVideoFormatDescriptionMatchesImageBuffer (Handle, imageBuffer.Handle) != 0;
 			GC.KeepAlive (imageBuffer);
 			return result;
@@ -718,8 +715,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static CMVideoFormatDescription? FromHevcParameterSets (List<byte []> parameterSets, int nalUnitHeaderLength, NSDictionary extensions, out CMFormatDescriptionError error)
 		{
-			if (parameterSets is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameterSets));
+			ArgumentNullException.ThrowIfNull (parameterSets);
 
 			if (parameterSets.Count < 3)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (parameterSets), "must contain at least three elements");

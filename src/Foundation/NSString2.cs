@@ -52,8 +52,7 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public static NSString? FromData (NSData data, NSStringEncoding encoding)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			NSString? ret = null;
 			try {
 				ret = new NSString (data, encoding);

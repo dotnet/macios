@@ -17,8 +17,7 @@ namespace HealthKit {
 			nint classificationOut;
 			NSErrorRef errorPtr;
 
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 			classification = null;
 
 			byte rv;

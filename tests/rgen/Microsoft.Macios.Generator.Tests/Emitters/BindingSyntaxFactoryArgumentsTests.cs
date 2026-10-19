@@ -1287,8 +1287,7 @@ namespace NS {
 ";
 			yield return [
 				stringParameter,
-				$@"if (stringParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringParameter));
+				$@"{Global ("System.ArgumentNullException")}.ThrowIfNull (stringParameter, nameof (stringParameter));
 ",
 			];
 
@@ -1319,8 +1318,7 @@ namespace NS {
 ";
 			yield return [
 				stringArrayParameter,
-				$@"if (stringArrayParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (stringArrayParameter));
+				$@"{Global ("System.ArgumentNullException")}.ThrowIfNull (stringArrayParameter, nameof (stringArrayParameter));
 ",
 			];
 
@@ -1446,8 +1444,7 @@ namespace NS {
 ";
 			yield return [
 				nsObjectArrayParameter,
-				$@"if (nsObjectArrayParameter is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (nsObjectArrayParameter));
+				$@"{Global ("System.ArgumentNullException")}.ThrowIfNull (nsObjectArrayParameter, nameof (nsObjectArrayParameter));
 ",
 			];
 
@@ -1531,8 +1528,7 @@ namespace NS {
 
 			yield return [
 				inativeArrayParameter,
-				$@"if (inativeArray is null)
-	{Global ("ObjCRuntime")}.ThrowHelper.ThrowArgumentNullException (nameof (inativeArray));
+				$@"{Global ("System.ArgumentNullException")}.ThrowIfNull (inativeArray, nameof (inativeArray));
 ",
 			];
 

@@ -219,8 +219,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public void Enqueue (INativeObject cftypeBuffer)
 		{
-			if (cftypeBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cftypeBuffer));
+			ArgumentNullException.ThrowIfNull (cftypeBuffer);
 			lock (queueObjects) {
 				var cfh = cftypeBuffer.Handle;
 				CMBufferQueueEnqueue (Handle, cfh);

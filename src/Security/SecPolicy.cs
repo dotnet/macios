@@ -75,8 +75,7 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		static public SecPolicy CreatePolicy (NSString policyIdentifier, NSDictionary properties)
 		{
-			if (policyIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policyIdentifier));
+			ArgumentNullException.ThrowIfNull (policyIdentifier);
 			IntPtr dh = properties.GetHandle ();
 
 			// note: only accept known OIDs or return null (unit test will alert us if that change, FIXME in Apple code)

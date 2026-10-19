@@ -91,11 +91,9 @@ namespace AppKit {
 
 		void Initialize (NSColor [] colors, int? locationCount, IntPtr locations, NSColorSpace colorSpace)
 		{
-			if (colors is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (colors));
+			ArgumentNullException.ThrowIfNull (colors);
 
-			if (locationCount is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (locations));
+			ArgumentNullException.ThrowIfNull (locationCount, nameof (locations));
 
 			if (colors.Length != locationCount)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (locations), string.Format ("The number of colors ({0}) and the number of locations ({1}) must be equal.", colors.Length, locationCount));

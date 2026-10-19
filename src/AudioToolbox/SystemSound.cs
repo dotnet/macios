@@ -229,8 +229,7 @@ namespace AudioToolbox {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void PlayAlertSound (Action onCompletion)
 		{
-			if (onCompletion is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompletion));
+			ArgumentNullException.ThrowIfNull (onCompletion);
 
 			AssertNotDisposed ();
 
@@ -266,8 +265,7 @@ namespace AudioToolbox {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void PlaySystemSound (Action onCompletion)
 		{
-			if (onCompletion is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompletion));
+			ArgumentNullException.ThrowIfNull (onCompletion);
 
 			AssertNotDisposed ();
 
@@ -315,8 +313,7 @@ namespace AudioToolbox {
 			AudioServicesError error;
 			uint soundId;
 
-			if (fileUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fileUrl));
+			ArgumentNullException.ThrowIfNull (fileUrl);
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
@@ -346,8 +343,7 @@ namespace AudioToolbox {
 			AudioServicesError error;
 			uint soundId;
 
-			if (fileUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fileUrl));
+			ArgumentNullException.ThrowIfNull (fileUrl);
 
 			unsafe {
 				error = AudioServicesCreateSystemSoundID (fileUrl.Handle, &soundId);
@@ -367,8 +363,7 @@ namespace AudioToolbox {
 			AudioServicesError error;
 			uint soundId;
 
-			if (filename is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (filename));
+			ArgumentNullException.ThrowIfNull (filename);
 
 			using (var url = new NSUrl (filename)) {
 				unsafe {

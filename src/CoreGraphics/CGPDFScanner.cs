@@ -41,10 +41,8 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public CGPDFScanner (CGPDFContentStream cs, CGPDFOperatorTable table, object userInfo)
 		{
-			if (cs is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cs));
-			if (table is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (table));
+			ArgumentNullException.ThrowIfNull (cs);
+			ArgumentNullException.ThrowIfNull (table);
 
 			info = userInfo;
 			gch = GCHandle.Alloc (this);

@@ -54,8 +54,7 @@ namespace ObjCRuntime {
 
 		internal static T ThrowIfNull<T> (T? value, [CallerArgumentExpression ("value")] string paramName = "") where T : class
 		{
-			if (value is null)
-				ThrowArgumentNullException (paramName);
+			ArgumentNullException.ThrowIfNull (value, paramName);
 			return value;
 		}
 	}

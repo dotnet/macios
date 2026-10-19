@@ -98,8 +98,7 @@ namespace VideoToolbox {
 								 VTVideoDecoderSpecification? decoderSpecification = null, // hardware acceleration is default behavior on iOS. no opt-in required.
 								 CVPixelBufferAttributes? destinationImageBufferAttributes = null)
 		{
-			if (formatDescription is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (formatDescription));
+			ArgumentNullException.ThrowIfNull (formatDescription);
 
 			GCHandle? callbackHandle = null;
 			VTDecompressionOutputCallbackRecord callbackStruct = default;
@@ -154,8 +153,7 @@ namespace VideoToolbox {
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus DecodeFrame (CMSampleBuffer sampleBuffer, VTDecodeFrameFlags decodeFlags, IntPtr sourceFrame, out VTDecodeInfoFlags infoFlags)
 		{
-			if (sampleBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sampleBuffer));
+			ArgumentNullException.ThrowIfNull (sampleBuffer);
 
 			infoFlags = default;
 			unsafe {
@@ -226,8 +224,7 @@ namespace VideoToolbox {
 		public VTStatus CanAcceptFormatDescriptor (CMFormatDescription newDescriptor)
 #endif
 		{
-			if (newDescriptor is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newDescriptor));
+			ArgumentNullException.ThrowIfNull (newDescriptor);
 
 #if XAMCORE_5_0
 			var status = VTDecompressionSessionCanAcceptFormatDescription (GetCheckedHandle (), newDescriptor.Handle) != 0;
@@ -271,8 +268,7 @@ namespace VideoToolbox {
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus SetDecompressionProperties (VTDecompressionProperties options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 
 			var dictionary = options.Dictionary;
 			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);

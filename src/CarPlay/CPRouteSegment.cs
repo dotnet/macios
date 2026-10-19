@@ -8,8 +8,7 @@ namespace CarPlay {
 
 		public static unsafe CPRouteSegment Create (CPNavigationWaypoint origin, CPNavigationWaypoint destination, CPManeuver [] maneuvers, CPLaneGuidance [] laneGuidances, CPManeuver [] currentManeuvers, CPLaneGuidance currentLaneGuidance, CPTravelEstimates tripTravelEstimates, CPTravelEstimates maneuverTravelEstimates, CPLocationCoordinate3D [] coordinates)
 		{
-			if (coordinates is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coordinates));
+			ArgumentNullException.ThrowIfNull (coordinates);
 
 			fixed (CPLocationCoordinate3D* first = coordinates) {
 				return new CPRouteSegment (origin, destination, maneuvers, laneGuidances, currentManeuvers, currentLaneGuidance, tripTravelEstimates, maneuverTravelEstimates, (IntPtr) first, (nint) coordinates.Length);

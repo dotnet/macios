@@ -26,8 +26,7 @@ namespace MetalPerformanceShaders {
 		// Using 'NSArray<MPSState>' instead of `MPSState[]` because array 'Handle' matters.
 		public static nuint IncrementReadCount (NSArray<MPSState> stateBatch, nint amount)
 		{
-			if (stateBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
+			ArgumentNullException.ThrowIfNull (stateBatch);
 
 			nuint count = MPSStateBatchIncrementReadCount (stateBatch.Handle, amount);
 			GC.KeepAlive (stateBatch);
@@ -44,10 +43,8 @@ namespace MetalPerformanceShaders {
 		///         <remarks>To be added.</remarks>
 		public static void Synchronize (NSArray<MPSState> stateBatch, IMTLCommandBuffer commandBuffer)
 		{
-			if (stateBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
-			if (commandBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
+			ArgumentNullException.ThrowIfNull (stateBatch);
+			ArgumentNullException.ThrowIfNull (commandBuffer);
 
 			MPSStateBatchSynchronize (stateBatch.Handle, commandBuffer.Handle);
 			GC.KeepAlive (stateBatch);
@@ -72,8 +69,7 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static nuint GetResourceSize (NSArray<MPSState> stateBatch)
 		{
-			if (stateBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stateBatch));
+			ArgumentNullException.ThrowIfNull (stateBatch);
 
 			nuint size = MPSStateBatchResourceSize (stateBatch.Handle);
 			GC.KeepAlive (stateBatch);

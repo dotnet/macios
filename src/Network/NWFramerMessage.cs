@@ -37,8 +37,7 @@ namespace Network {
 		// https://github.com/dotnet/macios/pull/7256#discussion_r337066971
 		public static NWFramerMessage Create (NWProtocolDefinition protocolDefinition)
 		{
-			if (protocolDefinition is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (protocolDefinition));
+			ArgumentNullException.ThrowIfNull (protocolDefinition);
 			var result = new NWFramerMessage (nw_framer_protocol_create_message (protocolDefinition.Handle), owns: true);
 			GC.KeepAlive (protocolDefinition);
 			return result;
@@ -61,8 +60,7 @@ namespace Network {
 		public void SetData (string key, byte [] value)
 		{
 			// the method takes a callback to cleanup the data, but we do not need that since we are managed
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			// pin the handle so that is not collected,  let our callback release it
 			var pinned = GCHandle.Alloc (value, GCHandleType.Pinned);

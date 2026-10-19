@@ -405,8 +405,7 @@ namespace MediaAccessibility {
 				return CFString.FromHandle (MACaptionAppearanceCopyActiveProfileID (), true);
 			}
 			set {
-				if (value is null)
-					ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 				using var profileIdHandle = new TransientCFString (value);
 				MACaptionAppearanceSetActiveProfileID (profileIdHandle);
@@ -429,8 +428,7 @@ namespace MediaAccessibility {
 		[SupportedOSPlatform ("maccatalyst26.0")]
 		public static string? GetProfileName (string profileId)
 		{
-			if (profileId is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (profileId));
+			ArgumentNullException.ThrowIfNull (profileId);
 
 			using var profileIdHandle = new TransientCFString (profileId);
 			return CFString.FromHandle (MACaptionAppearanceCopyProfileName (profileIdHandle), true);
@@ -454,11 +452,9 @@ namespace MediaAccessibility {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ExecuteCallbackForProfile (string profileId, Action callback)
 		{
-			if (profileId is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (profileId));
+			ArgumentNullException.ThrowIfNull (profileId);
 
-			if (callback is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			using var profileIdHandle = new TransientCFString (profileId);
 

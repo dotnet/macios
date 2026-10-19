@@ -40,8 +40,7 @@ namespace Metal {
 		/// <param name="operations">The update operations.</param>
 		public void UpdateTextureMappings (IMTLTexture texture, IMTLHeap? heap, params MTL4UpdateSparseTextureMappingOperation [] operations)
 		{
-			if (operations is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (operations));
+			ArgumentNullException.ThrowIfNull (operations);
 
 			unsafe {
 				fixed (MTL4UpdateSparseTextureMappingOperation* ptr = operations) {
@@ -56,8 +55,7 @@ namespace Metal {
 		/// <param name="operations">The copy operations.</param>
 		public void CopyTextureMappings (IMTLTexture sourceTexture, IMTLTexture destinationTexture, params MTL4CopySparseTextureMappingOperation [] operations)
 		{
-			if (operations is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (operations));
+			ArgumentNullException.ThrowIfNull (operations);
 
 			unsafe {
 				fixed (MTL4CopySparseTextureMappingOperation* ptr = operations) {
@@ -72,8 +70,7 @@ namespace Metal {
 		/// <param name="operations">The update operations.</param>
 		public void UpdateBufferMappings (IMTLBuffer buffer, IMTLHeap? heap, params MTL4UpdateSparseBufferMappingOperation [] operations)
 		{
-			if (operations is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (operations));
+			ArgumentNullException.ThrowIfNull (operations);
 
 			unsafe {
 				fixed (MTL4UpdateSparseBufferMappingOperation* ptr = operations) {
@@ -88,8 +85,7 @@ namespace Metal {
 		/// <param name="operations">The copy operations.</param>
 		public void CopyBufferMappings (IMTLBuffer sourceBuffer, IMTLBuffer destinationBuffer, params MTL4CopySparseBufferMappingOperation [] operations)
 		{
-			if (operations is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (operations));
+			ArgumentNullException.ThrowIfNull (operations);
 
 			unsafe {
 				fixed (MTL4CopySparseBufferMappingOperation* ptr = operations) {

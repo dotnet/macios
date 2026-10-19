@@ -20,14 +20,10 @@ namespace Metal {
 		[UnsupportedOSPlatform ("tvos")]
 		public static void Update (this IMTLResourceStateCommandEncoder This, IMTLTexture texture, MTLSparseTextureMappingMode mode, MTLRegion [] regions, nuint [] mipLevels, nuint [] slices)
 		{
-			if (texture is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (texture));
-			if (regions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (regions));
-			if (mipLevels is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mipLevels));
-			if (slices is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (slices));
+			ArgumentNullException.ThrowIfNull (texture);
+			ArgumentNullException.ThrowIfNull (regions);
+			ArgumentNullException.ThrowIfNull (mipLevels);
+			ArgumentNullException.ThrowIfNull (slices);
 
 			var regionsHandle = GCHandle.Alloc (regions, GCHandleType.Pinned);
 			var mipLevelsHandle = GCHandle.Alloc (mipLevels, GCHandleType.Pinned);

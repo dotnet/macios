@@ -81,8 +81,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetBoolean (string key, out bool result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			using var keyPtr = new TransientString (key);
 			byte byteresult;
 			unsafe {
@@ -99,8 +98,7 @@ namespace CoreGraphics {
 
 		public bool GetInt (string key, out nint result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			using var keyPtr = new TransientString (key);
 			result = default;
 			unsafe {
@@ -117,8 +115,7 @@ namespace CoreGraphics {
 
 		public bool GetFloat (string key, out nfloat result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			using var keyPtr = new TransientString (key);
 			result = default;
@@ -140,8 +137,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetName (string key, out string? result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			using var keyPtr = new TransientString (key);
 			bool r;
 			IntPtr res;
@@ -163,8 +159,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetDictionary (string key, out CGPDFDictionary? result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			using var keyPtr = new TransientString (key);
 			IntPtr res;
@@ -187,8 +182,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetStream (string key, out CGPDFStream? result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			using var keyPtr = new TransientString (key);
 			bool r;
@@ -211,8 +205,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetArray (string key, out CGPDFArray? array)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			using var keyPtr = new TransientString (key);
 			bool r;
@@ -296,8 +289,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public bool GetString (string key, out string? result)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			using var keyPtr = new TransientString (key);
 			bool r;

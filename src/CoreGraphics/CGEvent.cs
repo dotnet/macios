@@ -173,8 +173,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (NSData source)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 
 			IntPtr result = CGEventCreateFromData (IntPtr.Zero, source.Handle);
 			GC.KeepAlive (source);
@@ -499,8 +498,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void SetEventSource (CGEventSource eventSource)
 		{
-			if (eventSource is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (eventSource));
+			ArgumentNullException.ThrowIfNull (eventSource);
 			CGEventSetSource (Handle, eventSource.Handle);
 			GC.KeepAlive (eventSource);
 		}
@@ -550,8 +548,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static void TapEnable (CFMachPort machPort)
 		{
-			if (machPort is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
+			ArgumentNullException.ThrowIfNull (machPort);
 			CGEventTapEnable (machPort.Handle, 1);
 			GC.KeepAlive (machPort);
 		}
@@ -561,8 +558,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static void TapDisable (CFMachPort machPort)
 		{
-			if (machPort is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
+			ArgumentNullException.ThrowIfNull (machPort);
 			CGEventTapEnable (machPort.Handle, 0);
 			GC.KeepAlive (machPort);
 		}
@@ -576,8 +572,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static bool IsTapEnabled (CFMachPort machPort)
 		{
-			if (machPort is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (machPort));
+			ArgumentNullException.ThrowIfNull (machPort);
 			bool result = CGEventTapIsEnabled (machPort.Handle) != 0;
 			GC.KeepAlive (machPort);
 			return result;
@@ -606,8 +601,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void SetUnicodeString (string value)
 		{
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 			using var valueStr = new TransientString (value, TransientString.Encoding.Unicode);
 			CGEventKeyboardSetUnicodeString (Handle, (nuint) value.Length, valueStr);
 		}
@@ -621,8 +615,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static void TapPostEven (IntPtr tapProxyEvent, CGEvent evt)
 		{
-			if (evt is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
+			ArgumentNullException.ThrowIfNull (evt);
 
 			CGEventTapPostEvent (tapProxyEvent, evt.Handle);
 			GC.KeepAlive (evt);
@@ -637,8 +630,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static void Post (CGEvent evt, CGEventTapLocation location)
 		{
-			if (evt is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
+			ArgumentNullException.ThrowIfNull (evt);
 
 			CGEventPost (location, evt.Handle);
 			GC.KeepAlive (evt);
@@ -651,8 +643,7 @@ namespace CoreGraphics {
 		/// <remarks>Deprecated, use <see cref="PostToPid(CGEvent,int)" /> instead.</remarks>
 		public static void PostToPSN (CGEvent evt, IntPtr processSerialNumber)
 		{
-			if (evt is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
+			ArgumentNullException.ThrowIfNull (evt);
 
 			CGEventPostToPSN (processSerialNumber, evt.Handle);
 			GC.KeepAlive (evt);
@@ -671,8 +662,7 @@ namespace CoreGraphics {
 		/// <summary>Post an event to a specific process</summary>
 		public static void PostToPid (CGEvent evt, int pid)
 		{
-			if (evt is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (evt));
+			ArgumentNullException.ThrowIfNull (evt);
 
 			CGEventPostToPid (pid, evt.Handle);
 			GC.KeepAlive (evt);

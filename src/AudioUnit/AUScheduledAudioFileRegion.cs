@@ -70,8 +70,7 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AUScheduledAudioFileRegion (AudioFile audioFile, AUScheduledAudioFileRegionCompletionHandler? completionHandler = null)
 		{
-			if (audioFile is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioFile));
+			ArgumentNullException.ThrowIfNull (audioFile);
 
 			AudioFile = audioFile;
 			this.completionHandler = completionHandler;

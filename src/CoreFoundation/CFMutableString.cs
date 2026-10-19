@@ -30,8 +30,7 @@ namespace CoreFoundation {
 		public CFMutableString (string @string = "", nint maxLength = default (nint))
 		{
 			// not really needed - but it's consistant with other .ctor
-			if (@string is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (@string));
+			ArgumentNullException.ThrowIfNull (@string, nameof (@string));
 			// NSMallocException Out of memory. We suggest restarting the application. If you have an unsaved document, create a backup copy in Finder, then try to save.
 			if (maxLength < 0)
 				throw new ArgumentException (nameof (maxLength));
@@ -50,8 +49,7 @@ namespace CoreFoundation {
 		/// <param name="maxLength">The maximum length of the new <see cref="CFMutableString" /> instance.</param>
 		public CFMutableString (CFString theString, nint maxLength = default (nint))
 		{
-			if (theString is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (theString));
+			ArgumentNullException.ThrowIfNull (theString);
 			// NSMallocException Out of memory. We suggest restarting the application. If you have an unsaved document, create a backup copy in Finder, then try to save.
 			if (maxLength < 0)
 				throw new ArgumentException (nameof (maxLength));
@@ -67,8 +65,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public void Append (string @string)
 		{
-			if (@string is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (@string));
+			ArgumentNullException.ThrowIfNull (@string, nameof (@string));
 			str = null; // destroy any cached value
 			using var stringPtr = new TransientString (@string, TransientString.Encoding.Unicode);
 			CFStringAppendCharacters (Handle, stringPtr, @string.Length);
@@ -137,7 +134,7 @@ namespace CoreFoundation {
 		bool Transform (ref CFRange range, IntPtr transform, bool reverse)
 		{
 			if (transform == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (transform));
+				throw new ArgumentNullException (nameof (transform));
 			str = null; // destroy any cached value
 			unsafe {
 				fixed (CFRange* rangePtr = &range) {
@@ -202,7 +199,7 @@ namespace CoreFoundation {
 		bool Transform (IntPtr transform, bool reverse)
 		{
 			if (transform == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (transform));
+				throw new ArgumentNullException (nameof (transform));
 			str = null; // destroy any cached value
 			unsafe {
 				return CFStringTransform (Handle, null, transform, reverse ? (byte) 1 : (byte) 0) != 0;

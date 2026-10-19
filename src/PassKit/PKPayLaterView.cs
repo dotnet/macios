@@ -33,8 +33,7 @@ namespace PassKit {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ValidateAmount (NSDecimalNumber amount, string currencyCode, PKPayLaterViewValidateAmountCallback callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, byte, void> trampoline = &TrampolineValidateAmount;

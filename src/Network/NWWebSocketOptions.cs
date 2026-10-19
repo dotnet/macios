@@ -45,8 +45,7 @@ namespace Network {
 
 		public void SetHeader (string header, string value)
 		{
-			if (header is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (header));
+			ArgumentNullException.ThrowIfNull (header);
 			using var headerPtr = new TransientString (header);
 			using var valuePtr = new TransientString (value);
 			nw_ws_options_add_additional_header (GetCheckedHandle (), headerPtr, valuePtr);
@@ -57,8 +56,7 @@ namespace Network {
 
 		public void AddSubprotocol (string subprotocol)
 		{
-			if (subprotocol is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (subprotocol));
+			ArgumentNullException.ThrowIfNull (subprotocol);
 			using var subprotocolPtr = new TransientString (subprotocol);
 			nw_ws_options_add_subprotocol (GetCheckedHandle (), subprotocolPtr);
 		}
@@ -124,10 +122,8 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetClientRequestHandler (DispatchQueue queue, NWWebSocketClientRequestHandler handler)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, nw_ws_request_t, IntPtr> trampoline = &TrampolineClientRequestHandler;

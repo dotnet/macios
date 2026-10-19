@@ -69,13 +69,11 @@ namespace ImageIO {
 
 		CGImageMetadataTag (NSString xmlns, NSString? prefix, NSString name, CGImageMetadataType type, IntPtr value)
 		{
-			if (xmlns is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (xmlns));
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (xmlns);
+			ArgumentNullException.ThrowIfNull (name);
 			// it won't crash - but the instance is invalid (null handle)
 			if (value == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				throw new ArgumentNullException (nameof (value));
 
 			InitializeHandle (CGImageMetadataTagCreate (xmlns.Handle, prefix.GetHandle (), name.Handle, type, value));
 			GC.KeepAlive (xmlns);

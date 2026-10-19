@@ -127,8 +127,7 @@ namespace CFNetwork {
 
 		public void SetProxy (CFProxySettings proxySettings)
 		{
-			if (proxySettings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxySettings));
+			ArgumentNullException.ThrowIfNull (proxySettings);
 
 			SetProperty (_Proxy, proxySettings.Dictionary);
 		}

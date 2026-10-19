@@ -102,7 +102,7 @@ namespace CoreFoundation {
 		public static CFException FromCFError (IntPtr cfErrorHandle, bool release)
 		{
 			if (cfErrorHandle == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cfErrorHandle));
+				throw new ArgumentNullException (nameof (cfErrorHandle));
 
 			var e = new CFException (
 					CFString.FromHandle (CFErrorCopyDescription (cfErrorHandle), releaseHandle: true),

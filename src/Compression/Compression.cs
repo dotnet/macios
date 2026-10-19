@@ -114,8 +114,7 @@ namespace Compression {
 		/// </summary>
 		public CompressionStream (Stream stream, CompressionMode mode, CompressionAlgorithm algorithm, bool leaveOpen)
 		{
-			if (stream is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (stream));
+			ArgumentNullException.ThrowIfNull (stream);
 
 			_stream = stream;
 			_leaveOpen = leaveOpen;
@@ -369,8 +368,7 @@ namespace Compression {
 
 		private void ValidateParameters (byte [] array, int offset, int count)
 		{
-			if (array is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (array));
+			ArgumentNullException.ThrowIfNull (array);
 
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException (nameof (offset));
@@ -812,10 +810,8 @@ namespace Compression {
 
 			public CopyToAsyncStream (CompressionStream deflateStream, Stream destination, int bufferSize, CancellationToken cancellationToken)
 			{
-				if (deflateStream is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (deflateStream));
-				if (destination is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
+				ArgumentNullException.ThrowIfNull (deflateStream);
+				ArgumentNullException.ThrowIfNull (destination);
 				if (bufferSize <= 0)
 					throw new ArgumentOutOfRangeException (nameof (bufferSize));
 

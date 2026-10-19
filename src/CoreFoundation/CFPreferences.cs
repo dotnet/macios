@@ -38,8 +38,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			return GetAppValue (key, CurrentApplication);
 		}
 
@@ -50,9 +49,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key, string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				return GetAppValue (key, nsApplicationId);
@@ -66,11 +63,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static object? GetAppValue (string key, NSString applicationId)
 		{
-			if (key is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			} else if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			IntPtr valuePtr;
 
@@ -98,8 +92,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object value)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			SetAppValue (key, value, CurrentApplication);
 		}
 
@@ -110,9 +103,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object? value, string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				SetAppValue (key, value, nsApplicationId);
@@ -126,11 +117,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void SetAppValue (string key, object? value, NSString applicationId)
 		{
-			if (key is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			} else if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var cfKey = new CFString (key)) {
 				if (value is null) {
@@ -178,8 +166,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveAppValue (string key)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			SetAppValue (key, null, CurrentApplication);
 		}
 
@@ -211,8 +198,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			return GetAppBooleanValue (key, CurrentApplication);
 		}
 
@@ -223,9 +209,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key, string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				return GetAppBooleanValue (key, nsApplicationId);
@@ -239,11 +223,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool GetAppBooleanValue (string key, NSString applicationId)
 		{
-			if (key is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			} else if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var cfKey = new CFString (key)) {
 				bool result = CFPreferencesGetAppBooleanValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero) != 0;
@@ -262,8 +243,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			return GetAppIntegerValue (key, CurrentApplication);
 		}
 
@@ -274,9 +254,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key, string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				return GetAppIntegerValue (key, nsApplicationId);
@@ -290,11 +268,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static nint GetAppIntegerValue (string key, NSString applicationId)
 		{
-			if (key is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			} else if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var cfKey = new CFString (key)) {
 				nint result = CFPreferencesGetAppIntegerValue (cfKey.Handle, applicationId.Handle, IntPtr.Zero);
@@ -311,8 +286,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (string suiteId)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			AddSuitePreferencesToApp (CurrentApplication, suiteId);
 		}
 
@@ -322,9 +296,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (string applicationId, string suiteId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				AddSuitePreferencesToApp (nsApplicationId, suiteId);
@@ -337,11 +309,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void AddSuitePreferencesToApp (NSString applicationId, string suiteId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			} else if (suiteId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (suiteId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
+			ArgumentNullException.ThrowIfNull (suiteId);
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesAddSuitePreferencesToApp (applicationId.Handle, cfSuiteId.Handle);
@@ -358,8 +327,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (string suiteId)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			RemoveSuitePreferencesFromApp (CurrentApplication, suiteId);
 		}
 
@@ -369,9 +337,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (string applicationId, string suiteId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				RemoveSuitePreferencesFromApp (nsApplicationId, suiteId);
@@ -384,11 +350,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveSuitePreferencesFromApp (NSString applicationId, string suiteId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			} else if (suiteId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (suiteId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
+			ArgumentNullException.ThrowIfNull (suiteId);
 
 			using (var cfSuiteId = new CFString (suiteId)) {
 				CFPreferencesRemoveSuitePreferencesFromApp (applicationId.Handle, cfSuiteId.Handle);
@@ -405,8 +368,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize ()
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			return AppSynchronize (CurrentApplication);
 		}
 
@@ -416,9 +378,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				return AppSynchronize (nsApplicationId);
@@ -431,9 +391,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppSynchronize (NSString applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			bool result = CFPreferencesAppSynchronize (applicationId.Handle) != 0;
 			GC.KeepAlive (applicationId);
@@ -449,8 +407,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key)
 		{
-			if (CurrentApplication is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (CurrentApplication));
+			ArgumentNullException.ThrowIfNull (CurrentApplication);
 			return AppValueIsForced (key, CurrentApplication);
 		}
 
@@ -461,9 +418,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, string applicationId)
 		{
-			if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var nsApplicationId = new NSString (applicationId)) {
 				return AppValueIsForced (key, nsApplicationId);
@@ -477,11 +432,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static bool AppValueIsForced (string key, NSString applicationId)
 		{
-			if (key is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			} else if (applicationId is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationId));
-			}
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (applicationId);
 
 			using (var cfKey = new CFString (key)) {
 				bool result = CFPreferencesAppValueIsForced (cfKey.Handle, applicationId.Handle) != 0;

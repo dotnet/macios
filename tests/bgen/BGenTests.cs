@@ -1899,6 +1899,24 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void NullArgumentChecks (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "null-argument-checks.cs");
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "NullArgumentChecks", "NullChecked.g.cs");
+			var contents = File.ReadAllText (generatedFile);
+
+			Assert.That (contents, Does.Contain ("global::System.ArgumentNullException.ThrowIfNull (@event, nameof (@event));"), "Escaped parameter");
+			Assert.That (contents, Does.Contain ("global::System.ArgumentNullException.ThrowIfNull (values, nameof (values));"), "Array parameter");
+			Assert.That (contents, Does.Not.Contain ("ThrowIfNull (optional"), "Nullable parameter");
+			Assert.That (contents, Does.Not.Contain ("ThrowHelper.ThrowArgumentNullException"), "Custom helper");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void GenericTypeNullability (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

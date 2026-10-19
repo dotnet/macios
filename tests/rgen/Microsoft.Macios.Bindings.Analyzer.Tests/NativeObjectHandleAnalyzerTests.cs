@@ -317,8 +317,7 @@ public class NativeObjectHandleAnalyzerTests : BaseGeneratorWithAnalyzerTestClas
 					public static CGRect DecodeCGRect (this NSCoder This, string key)
 					{
 						global::UIKit.UIApplication.EnsureUIThread ();
-						if (key is null)
-							ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+						ArgumentNullException.ThrowIfNull (key);
 						var nskey = CFString.CreateNative (key);
 						CGRect ret;
 						if (global::ObjCRuntime.Runtime.IsARM64CallingConvention) {

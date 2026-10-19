@@ -304,8 +304,7 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		static IntPtr Create (IPAddress ip)
 		{
-			if (ip is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ip));
+			ArgumentNullException.ThrowIfNull (ip);
 
 			var s = new sockaddr_in (ip);
 			unsafe {
@@ -339,8 +338,7 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		static IntPtr Create (string address)
 		{
-			if (address is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (address));
+			ArgumentNullException.ThrowIfNull (address);
 
 			using var addressStr = new TransientString (address);
 			return CheckFailure (SCNetworkReachabilityCreateWithName (IntPtr.Zero, addressStr));
@@ -575,11 +573,9 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		public bool Schedule (CFRunLoop runLoop, string mode)
 		{
-			if (runLoop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (runLoop));
+			ArgumentNullException.ThrowIfNull (runLoop);
 
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (mode);
 
 			using var modeHandle = new TransientCFString (mode);
 			bool result = SCNetworkReachabilityScheduleWithRunLoop (Handle, runLoop.GetCheckedHandle (), modeHandle) != 0;
@@ -628,11 +624,9 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		public bool Unschedule (CFRunLoop runLoop, string mode)
 		{
-			if (runLoop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (runLoop));
+			ArgumentNullException.ThrowIfNull (runLoop);
 
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (mode);
 
 			using var modeHandle = new TransientCFString (mode);
 			bool result = SCNetworkReachabilityUnscheduleFromRunLoop (Handle, runLoop.GetCheckedHandle (), modeHandle) != 0;

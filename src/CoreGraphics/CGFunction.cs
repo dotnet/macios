@@ -112,8 +112,7 @@ namespace CoreGraphics {
 				if ((range.Length % 2) != 0)
 					throw new ArgumentException ("The range array must consist of pairs of values", nameof (range));
 			}
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			this.evaluate = callback;
 

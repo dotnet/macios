@@ -103,7 +103,7 @@ namespace AddressBook {
 		internal static ABRecord FromHandle (IntPtr handle, ABAddressBook? addressbook, bool owns = true)
 		{
 			if (handle == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handle));
+				throw new ArgumentNullException (nameof (handle));
 			// TODO: does ABGroupCopyArrayOfAllMembers() have Create or Get
 			// semantics for the array elements?
 			var type = ABRecordGetRecordType (handle);

@@ -152,8 +152,7 @@ namespace AudioToolbox {
 				return new AUGraph (h, false);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 				MusicSequenceSetAUGraph (Handle, value.Handle);
 				GC.KeepAlive (value);
@@ -281,8 +280,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus GetTrackIndex (MusicTrack track, out int index)
 		{
-			if (track is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (track));
+			ArgumentNullException.ThrowIfNull (track);
 
 			index = 0;
 			unsafe {
@@ -321,8 +319,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus SetMidiEndpoint (MidiEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			MusicPlayerStatus status = MusicSequenceSetMIDIEndpoint (Handle, endpoint.handle);
 			GC.KeepAlive (endpoint);
 			return status;
@@ -453,8 +450,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus LoadFile (NSUrl url, MusicSequenceFileTypeID fileTypeId, MusicSequenceLoadFlags loadFlags = 0)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			MusicPlayerStatus status = MusicSequenceFileLoad (Handle, url.Handle, fileTypeId, loadFlags);
 			GC.KeepAlive (url);
@@ -472,8 +468,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus LoadData (NSData data, MusicSequenceFileTypeID fileTypeId, MusicSequenceLoadFlags loadFlags = 0)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			MusicPlayerStatus status = MusicSequenceFileLoadData (Handle, data.Handle, fileTypeId, loadFlags);
 			GC.KeepAlive (data);
@@ -494,8 +489,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public MusicPlayerStatus CreateFile (NSUrl url, MusicSequenceFileTypeID fileType, MusicSequenceFileFlags flags = 0, ushort resolution = 0)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			MusicPlayerStatus status = MusicSequenceFileCreate (Handle, url.Handle, fileType, flags, resolution);
 			GC.KeepAlive (url);

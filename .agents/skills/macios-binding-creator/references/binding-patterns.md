@@ -662,8 +662,7 @@ namespace FrameworkName {
 		/// <returns>A new <see cref="MyClass" /> instance.</returns>
 		public static unsafe MyClass Create (MyStruct [] coords)
 		{
-			if (coords is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
+			ArgumentNullException.ThrowIfNull (coords);
 
 			fixed (MyStruct* first = coords) {
 				return _Create ((IntPtr) first, coords.Length);
@@ -687,8 +686,7 @@ When the API definition has an `[Internal]` `Constructor`:
 		/// <returns>A new <see cref="MyClass" /> instance.</returns>
 		public static unsafe MyClass Create (MyStruct [] points)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 
 			fixed (MyStruct* first = points) {
 				return new MyClass ((IntPtr) first, (nuint) points.Length);

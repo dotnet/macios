@@ -34131,29 +34131,27 @@ namespace UIKit {
 
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-	[Static, Partial]
+	[Static]
 	interface UIConfigurationColorTransformer {
 
-		// Manually bound inside UIKit/UIConfigurationColorTransformer.cs
-		[Internal]
 		[Field ("UIConfigurationColorTransformerGrayscale")]
-		IntPtr _Grayscale { get; }
+		UIConfigurationColorTransformerHandler Grayscale { get; }
 
-#if XAMCORE_5_0
-		[Internal]
-#else
+		[Field ("UIConfigurationColorTransformerPreferredTint")]
+		UIConfigurationColorTransformerHandler PreferredTint { get; }
+
+		[Field ("UIConfigurationColorTransformerMonochromeTint")]
+		UIConfigurationColorTransformerHandler MonochromeTint { get; }
+
+#if !XAMCORE_5_0
 		[Obsolete ("Use the 'PreferredTint' property instead.")]
-#endif
 		[Field ("UIConfigurationColorTransformerPreferredTint")]
 		IntPtr _PreferredTint { get; }
 
-#if XAMCORE_5_0
-		[Internal]
-#else
 		[Obsolete ("Use the 'MonochromeTint' property instead.")]
-#endif
 		[Field ("UIConfigurationColorTransformerMonochromeTint")]
 		IntPtr _MonochromeTint { get; }
+#endif
 	}
 
 	[TV (14, 0), iOS (16, 0), MacCatalyst (16, 0)]

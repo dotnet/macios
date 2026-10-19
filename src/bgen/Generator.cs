@@ -6645,11 +6645,12 @@ public partial class Generator : IMemberGatherer {
 						fieldTypeName = TypeManager.FormatType (field_pi.DeclaringType, field_pi.PropertyType);
 
 					bool nullable = !field_pi.PropertyType.IsValueType && AttributeManager.IsNullable (field_pi);
+					var backingFieldName = field_pi.PropertyType.IsSubclassOf (TypeCache.System_Delegate) ? $"__mt_{field_pi.Name}_var_static" : $"_{field_pi.Name}";
 					// Value types we dont cache for now, to avoid Nullable<T>
 					if (!field_pi.PropertyType.IsValueType || smartEnumTypeName is not null) {
 						print_generated_code ();
 						PrintPreserveAttribute (field_pi);
-						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
+						print ("static {0}? {1};", fieldTypeName, backingFieldName);
 					}
 
 					if (BindingTouch.SupportsXmlDocumentation) {
@@ -6762,6 +6763,7 @@ public partial class Generator : IMemberGatherer {
 
 					PrintAttributes (field_pi, platform: true);
 					PrintAttributes (field_pi.GetGetMethod (), preserve: true, advice: true);
+					PrintDelegateProxy (field_pi.GetGetMethod ()!);
 					print ("get {");
 					indent++;
 					if (field_pi.PropertyType == TypeCache.NSString) {
@@ -6788,6 +6790,13 @@ public partial class Generator : IMemberGatherer {
 						print ("_{0} = Runtime.GetNSObject<UTType> (Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\"))!;", field_pi.Name, fieldAttr.SymbolName, library_name);
 						indent--;
 						print ("return _{0};", field_pi.Name);
+					} else if (field_pi.PropertyType.IsSubclassOf (TypeCache.System_Delegate)) {
+						var trampoline = MakeTrampoline (field_pi.PropertyType);
+						print ("if ({0} is null)", backingFieldName);
+						indent++;
+						print ("{0} = global::ObjCRuntime.Trampolines.{3}.Create (Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\"))!;", backingFieldName, fieldAttr.SymbolName, library_name, trampoline.NativeInvokerName);
+						indent--;
+						print ("return {0};", backingFieldName);
 					} else if (field_pi.PropertyType == TypeCache.System_Byte) {
 						print ("return Dlfcn.GetByte (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.System_SByte) {

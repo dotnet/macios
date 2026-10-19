@@ -289,14 +289,24 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (r.ToString (), Is.EqualTo (c.ToString ()), c.ToString ());
 		}
 
-		[Test]
-		public void UIConfigurationColorTransformerTest ()
+		[TestCase ("Grayscale")]
+		[TestCase ("PreferredTint")]
+		[TestCase ("MonochromeTint")]
+		public void UIConfigurationColorTransformerTest (string name)
 		{
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
-			var redColor = UIColor.Red;
-			var transformer = UIConfigurationColorTransformer.Grayscale;
-			var grayColor = transformer (redColor);
-			Assert.That (grayColor, Is.Not.Null, "Not null");
+			Func<UIConfigurationColorTransformerHandler> getter = name switch {
+				"Grayscale" => () => UIConfigurationColorTransformer.Grayscale,
+				"PreferredTint" => () => UIConfigurationColorTransformer.PreferredTint,
+				"MonochromeTint" => () => UIConfigurationColorTransformer.MonochromeTint,
+				_ => throw new ArgumentException (nameof (name)),
+			};
+			var transformer = getter ();
+			Assert.That (transformer, Is.Not.Null, "Delegate");
+			Assert.That (getter (), Is.SameAs (transformer), "Cached delegate");
+			using var redColor = UIColor.Red;
+			using var transformedColor = transformer (redColor);
+			Assert.That (transformedColor, Is.Not.Null, "Transformed color");
 		}
 
 		// nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure

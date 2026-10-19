@@ -1,0 +1,48 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+name: Build error or warning
+description: Report an unexpected or incorrect build diagnostic.
+body:
+  - type: input
+    id: diagnostic
+    attributes:
+      label: Diagnostic code and full message
+      placeholder: "MT0000: ..."
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Apple platform
+      multiple: true
+      options:
+        - iOS
+        - macOS
+        - Mac Catalyst
+        - tvOS
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: SDK and workload versions
+      description: Include the target framework, Xcode version, and output of dotnet --info and dotnet workload list.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected behavior
+      description: Include a minimal reproduction and explain why the diagnostic is unexpected.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Build logs
+      description: Attach a zipped binary build log from dotnet build -bl. Review logs for credentials and private information before uploading.
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround
+      description: Describe any workaround or guidance you already tried.

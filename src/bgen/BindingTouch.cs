@@ -209,7 +209,7 @@ public class BindingTouch : IDisposable, IToolLog {
 								ErrorHelper.SetWarningLevel (ErrorHelper.WarningLevel.Disable);
 							}
 						} catch (Exception ex) {
-							throw ErrorHelper.CreateError (27, "--nowarn", ex.Message);
+							throw ErrorHelper.CreateError (1902, "--nowarn", ex.Message);
 						}
 					}
 				},

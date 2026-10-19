@@ -1,4 +1,7 @@
-#!/bin/bash -eu
+#!/bin/bash
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+set -eu
 
 
 REVERSE=
@@ -13,7 +16,7 @@ while [ -n "${1:-}" ]; do
 			echo "        -h --help:                 Show this help"
 			echo "        -v | --verbose:            Enable verbose script"
 			echo "        --docs-mobile-repo=<path>: The path to the dotnet/docs-mobile repository. The script will try to to find this path if not specified."
-			echo "        -r | --reverse:            Copy the docs in the reverse directory: from dotnet/docs-mobile to this repository."
+			echo "        -r | --reverse:            Copy editable docs from dotnet/docs-mobile; verify and regenerate diagnostic indexes."
 			exit 0
 			;;
 		-v | --verbose)
@@ -25,10 +28,14 @@ while [ -n "${1:-}" ]; do
 			shift
 			;;
 		--docs-mobile-repo=*)
-			DOTNET_MOBILEDOCS_PATH="${1//*=/}"
+			DOTNET_MOBILEDOCS_PATH="${1#*=}"
 			shift
 			;;
 		--docs-mobile-repo)
+			if [ "$#" -lt 2 ] || [ -z "$2" ]; then
+				echo "--docs-mobile-repo requires a path." >&2
+				exit 1
+			fi
 			DOTNET_MOBILEDOCS_PATH="$2"
 			shift 2
 			;;
@@ -73,12 +80,44 @@ if test -z "${DOTNET_MOBILEDOCS_PATH:-}"; then
 	done
 fi
 
+if ! test -d "$DOTNET_MOBILEDOCS_PATH/docs/ios"; then
+	echo "Expected a docs-mobile checkout with docs/ios: $DOTNET_MOBILEDOCS_PATH" >&2
+	exit 1
+fi
+
+if test -z "$REVERSE"; then
+	bash ./update-diagnostic-docs.sh check
+	SOURCE=.
+	DESTINATION="$DOTNET_MOBILEDOCS_PATH/docs/ios"
+else
+	if ! test -d "$DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps"; then
+		echo "The incoming building-apps directory is missing." >&2
+		exit 1
+	fi
+	bash ./update-diagnostic-docs.sh check-incoming "$DOTNET_MOBILEDOCS_PATH/docs/ios"
+	SOURCE="$DOTNET_MOBILEDOCS_PATH/docs/ios"
+	DESTINATION=.
+fi
+
+# Copy only the owned publishing content; manifests and authoring instructions stay here.
+mkdir -p "$DESTINATION/messages" "$DESTINATION/includes/diagnostics"
+for file in "$SOURCE/messages/"*.md; do
+	if [ "$(basename "$file")" != README.md ]; then
+		cp "$file" "$DESTINATION/messages/"
+	fi
+done
+for file in "$SOURCE/includes/diagnostics/"*.md; do
+	cp "$file" "$DESTINATION/includes/diagnostics/"
+done
+
 if test -z "$REVERSE"; then
 	echo "Copying docs/building-apps/* to $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps"
-	cp -cr building-apps $DOTNET_MOBILEDOCS_PATH/docs/ios/
+	cp -R building-apps "$DOTNET_MOBILEDOCS_PATH/docs/ios/"
 	echo "✅ Successfully copied docs/building-apps/* to $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps."
 else
 	echo "Copying $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps/* to docs/building-apps"
-	cp -cr $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps .
-	echo "✅ Successfully copied $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps to docs/building-apps/building-apps."
+	cp -R "$DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps" .
+	bash ./update-diagnostic-docs.sh
+	echo "✅ Successfully copied $DOTNET_MOBILEDOCS_PATH/docs/ios/building-apps to docs/building-apps."
 fi
+echo "✅ Successfully synchronized diagnostic pages and shared includes."

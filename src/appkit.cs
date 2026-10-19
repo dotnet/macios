@@ -53,6 +53,7 @@ using UniformTypeIdentifiers;
 
 #if __MACCATALYST__
 using UIKit;
+using NSFont = UIKit.UIFont;
 #else
 using UIMenu = Foundation.NSObject;
 using UIMenuElement = Foundation.NSObject;
@@ -29141,14 +29142,6 @@ namespace AppKit {
 	partial interface NSColorPanel {
 		[Notification, Field ("NSColorPanelColorDidChangeNotification")]
 		NSString ColorChangedNotification { get; }
-	}
-
-	partial interface NSFont {
-		[Notification, Field ("NSAntialiasThresholdChangedNotification")]
-		NSString AntialiasThresholdChangedNotification { get; }
-
-		[Notification, Field ("NSFontSetChangedNotification")]
-		NSString FontSetChangedNotification { get; }
 	}
 
 	partial interface NSHelpManager {

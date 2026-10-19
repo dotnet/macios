@@ -554,6 +554,12 @@ namespace UIKit {
 		[Export ("preferredFontForTextStyle:options:")]
 		[Internal]
 		IntPtr _GetPreferredFont (string textStyle, NSDictionary options);
+
+		[Notification, Field ("NSAntialiasThresholdChangedNotification")]
+		NSString AntialiasThresholdChangedNotification { get; }
+
+		[Notification, Field ("NSFontSetChangedNotification")]
+		NSString FontSetChangedNotification { get; }
 #else
 		[Static]
 		[Export ("italicSystemFontOfSize:")]

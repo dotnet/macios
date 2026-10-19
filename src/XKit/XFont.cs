@@ -160,6 +160,10 @@ namespace UIKit {
 	/// <remarks>Font factories return independent managed wrappers, even when the system caches the native font. Each wrapper can be disposed independently.</remarks>
 	public partial class NSFont {
 #endif
+		// In this case we want to _always_ return a different managed instance
+		// so one can be disposed without affecting others
+		// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=25511
+
 #if !__MACOS__
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
 		/// <returns>A string containing the font name and point size.</returns>
@@ -416,6 +420,11 @@ namespace UIKit {
 			return new XFont (_SystemFontOfSize (fontSize, weight, width));
 		}
 
+		/// <summary>Creates a font with the same characteristics and a different size.</summary>
+		/// <param name="size">The new font size in points.</param>
+		/// <returns>A new, independently disposable managed font wrapper.</returns>
+		public XFont CreateWithSize (nfloat size) => WithSize (size);
+
 		/// <summary>Returns a new font based on the current one, with the specified size.</summary>
 		/// <param name="size">The new font size in points.</param>
 		/// <returns>A new <see cref="XFont" /> with the same characteristics as this font but with the specified size.</returns>
@@ -487,12 +496,14 @@ namespace UIKit {
 		/// <inheritdoc cref="FromName(string, nfloat)" />
 		public static NSFont? FromFontName (string fontName, nfloat fontSize)
 		{
+			ArgumentNullException.ThrowIfNull (fontName);
 			return FromName (fontName, fontSize);
 		}
 
 		/// <inheritdoc cref="FromDescriptor(NSFontDescriptor, nfloat)" />
 		public static NSFont? FromDescription (NSFontDescriptor fontDescriptor, nfloat fontSize)
 		{
+			ArgumentNullException.ThrowIfNull (fontDescriptor);
 			return FromDescriptor (fontDescriptor, fontSize);
 		}
 
@@ -633,10 +644,10 @@ namespace UIKit {
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont? PrinterFont {
+		public virtual NSFont PrinterFont {
 			get {
 				var ptr = _PrinterFont;
-				return ptr == IntPtr.Zero ? null : new NSFont (ptr);
+				return new NSFont (ptr);
 			}
 		}
 
@@ -644,32 +655,41 @@ namespace UIKit {
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont? ScreenFont {
+		public virtual NSFont ScreenFont {
 			get {
 				var ptr = _ScreenFont;
-				return ptr == IntPtr.Zero ? null : new NSFont (ptr);
+				return new NSFont (ptr);
 			}
 		}
 
 		/// <summary>Creates a screen font using the specified rendering mode.</summary>
 		/// <param name="renderingMode">The rendering mode to use.</param>
-		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
+		/// <returns>A new managed font wrapper.</returns>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.13")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont? ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode)
+		public virtual NSFont ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode)
 		{
 			var ptr = _ScreenFontWithRenderingMode (renderingMode);
-			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
+			return new NSFont (ptr);
 		}
 
 		/// <summary>Creates a vertical version of this font.</summary>
-		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
-		public virtual NSFont? GetVerticalFont ()
+		/// <returns>A new managed font wrapper.</returns>
+		public virtual NSFont GetVerticalFont ()
 		{
 			var ptr = _GetVerticalFont ();
-			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
+			return new NSFont (ptr);
 		}
+
+		/// <summary>Creates a vertical version of this font.</summary>
+		/// <returns>A new, independently disposable managed font wrapper.</returns>
+		public NSFont CreateVerticalFont () => GetVerticalFont ();
+
+		/// <summary>Gets the system font size for a control size.</summary>
+		/// <param name="controlSize">The control size.</param>
+		/// <returns>The system font size in points.</returns>
+		public static nfloat GetSystemFontSize (NSControlSize controlSize) => SystemFontSizeForControlSize (controlSize);
 
 		/// <inheritdoc cref="GetMonospacedSystemFont(nfloat, nfloat)" />
 		public static NSFont MonospacedSystemFont (nfloat fontSize, nfloat weight)
@@ -703,6 +723,11 @@ namespace UIKit {
 		/// <summary>Gets the font name.</summary>
 		public string Name => FontName;
 #else
+
+		/// <summary>Gets the names of the fonts in a font family.</summary>
+		/// <param name="familyName">The font family name.</param>
+		/// <returns>The font names available in the specified family.</returns>
+		public static string [] GetFontNames (string familyName) => FontNamesForFamilyName (familyName);
 
 		/// <summary>The preferred <see cref="UIFont" /> for the Headline text style.</summary>
 		/// <value>The preferred font for headline text.</value>
@@ -892,10 +917,6 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static UIFont GetMonospacedSystemFont (nfloat size, UIFontWeight weight) => GetMonospacedSystemFont (size, weight.GetWeight ());
-
-		// In this case we want to _always_ return a different managed instance
-		// so one can be disposed without affecting others
-		// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=25511
 
 		/// <summary>Creates a font using <see cref="GetPreferredFontForTextStyle(NSString)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="uiFontTextStyle">The text style.</param>

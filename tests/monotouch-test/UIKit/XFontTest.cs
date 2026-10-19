@@ -18,9 +18,9 @@ namespace MonoTouchFixtures.XKit {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class FontTest {
-		static TestCaseData Factory (string name, Func<XFont?> factory)
+		static TestCaseData Factory (string name, Func<XFont?> factory, bool nullable = false)
 		{
-			return new TestCaseData (factory).SetName ($"Factory_{name}");
+			return new TestCaseData (factory, nullable).SetName ($"Factory_{name}");
 		}
 
 		static XFont? FromDescriptor (bool legacy)
@@ -49,6 +49,10 @@ namespace MonoTouchFixtures.XKit {
 			yield return Factory ("WithSize", () => {
 				using var font = XFont.CreateSystemFont (10);
 				return font.WithSize (12);
+			});
+			yield return Factory ("CreateWithSize", () => {
+				using var font = XFont.CreateSystemFont (10);
+				return font.CreateWithSize (12);
 			});
 			yield return Factory ("CreateSystemFont_Width", () => {
 				TestRuntime.AssertXcodeVersion (14, 0);
@@ -84,10 +88,10 @@ namespace MonoTouchFixtures.XKit {
 				using var font = new CTFont ("Helvetica", 12);
 				return XFont.CreateFromCTFont (font);
 			});
-			yield return Factory ("CreateUserFont", () => XFont.CreateUserFont (12));
-			yield return Factory ("UserFontOfSize", () => XFont.UserFontOfSize (12));
-			yield return Factory ("CreateUserFixedPitchFont", () => XFont.CreateUserFixedPitchFont (12));
-			yield return Factory ("UserFixedPitchFontOfSize", () => XFont.UserFixedPitchFontOfSize (12));
+			yield return Factory ("CreateUserFont", () => XFont.CreateUserFont (12), nullable: true);
+			yield return Factory ("UserFontOfSize", () => XFont.UserFontOfSize (12), nullable: true);
+			yield return Factory ("CreateUserFixedPitchFont", () => XFont.CreateUserFixedPitchFont (12), nullable: true);
+			yield return Factory ("UserFixedPitchFontOfSize", () => XFont.UserFixedPitchFontOfSize (12), nullable: true);
 			yield return Factory ("CreateLabelFont", () => XFont.CreateLabelFont (12));
 			yield return Factory ("LabelFontOfSize", () => XFont.LabelFontOfSize (12));
 			yield return Factory ("CreateTitleBarFont", () => XFont.CreateTitleBarFont (12));
@@ -116,6 +120,14 @@ namespace MonoTouchFixtures.XKit {
 			yield return Factory ("GetFont", () => {
 				using var font = XFont.CreateSystemFont (10);
 				return font.GetFont (12);
+			});
+			yield return Factory ("CreateVerticalFont", () => {
+				using var font = XFont.CreateSystemFont (12);
+				return font.CreateVerticalFont ();
+			});
+			yield return Factory ("GetVerticalFont", () => {
+				using var font = XFont.CreateSystemFont (12);
+				return font.GetVerticalFont ();
 			});
 #else
 			yield return Factory ("CreateSystemFont_WeightEnum", () => XFont.CreateSystemFont (12, UIFontWeight.Regular));
@@ -170,10 +182,16 @@ namespace MonoTouchFixtures.XKit {
 		}
 
 		[TestCaseSource (nameof (FontFactories))]
-		public void FactoryReturnsIndependentWrappers (Func<XFont?> factory)
+		public void FactoryReturnsIndependentWrappers (Func<XFont?> factory, bool nullable)
 		{
-			using var first = factory () ?? throw new AssertionException ("First font is null.");
-			using var second = factory () ?? throw new AssertionException ("Second font is null.");
+			using var first = factory ();
+			using var second = factory ();
+			if (first is null || second is null) {
+				Assert.That (nullable, Is.True, "Only user-selected fonts may be unavailable.");
+				Assert.That (first, Is.Null, "First font");
+				Assert.That (second, Is.Null, "Second font");
+				return;
+			}
 			Assert.That (first, Is.Not.SameAs (second), "Managed wrappers");
 
 			var name = second.FontName;
@@ -184,9 +202,12 @@ namespace MonoTouchFixtures.XKit {
 			Assert.That (second.FontName, Is.EqualTo (name), "Surviving font name");
 			Assert.That (second.PointSize, Is.EqualTo (size), "Surviving font size");
 
-			using var third = factory ();
-			Assert.That (third, Is.Not.Null, "Font created after disposal");
+			using var third = factory () ?? throw new AssertionException ("Font created after disposal is null.");
 			Assert.That (third, Is.Not.SameAs (first), "New managed wrapper");
+			Assert.That (third, Is.Not.SameAs (second), "Surviving wrapper is not reused");
+			Assert.That (third.Handle, Is.Not.EqualTo (NativeHandle.Zero), "New font handle");
+			Assert.That (third.FontName, Is.EqualTo (name), "New font name");
+			Assert.That (third.PointSize, Is.EqualTo (size), "New font size");
 		}
 
 		[Test]
@@ -218,7 +239,12 @@ namespace MonoTouchFixtures.XKit {
 		{
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, 12), "Name");
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromDescriptor (null, 12), "Descriptor");
-#if !__MACOS__
+#if __MACOS__
+			var nameException = Assert.Throws<ArgumentNullException> (() => XFont.FromFontName (null, 12));
+			Assert.That (nameException?.ParamName, Is.EqualTo ("fontName"), "Legacy name parameter");
+			var descriptorException = Assert.Throws<ArgumentNullException> (() => XFont.FromDescription (null, 12));
+			Assert.That (descriptorException?.ParamName, Is.EqualTo ("fontDescriptor"), "Legacy descriptor parameter");
+#else
 			Assert.Throws<ArgumentNullException> (() => XFont.CreatePreferredFont (null), "Text style");
 			Assert.Throws<ArgumentOutOfRangeException> (() => XFont.CreatePreferredFont ((UIFontTextStyle) int.MaxValue), "Invalid text style");
 #endif
@@ -246,6 +272,16 @@ namespace MonoTouchFixtures.XKit {
 			Assert.That (first.Equals ((object?) null), Is.False, "Object null");
 			Assert.That (first.Equals ("not a font"), Is.False, "Unrelated object");
 			Assert.That (first.Name, Is.EqualTo (first.FontName), "Name aliases");
+		}
+
+		[Test]
+		public void FontInformation ()
+		{
+#if __MACOS__
+			Assert.That (XFont.GetSystemFontSize (NSControlSize.Small), Is.EqualTo (XFont.SystemFontSizeForControlSize (NSControlSize.Small)), "Control font size");
+#else
+			Assert.That (XFont.GetFontNames ("Helvetica"), Does.Contain ("Helvetica"), "Font family");
+#endif
 		}
 	}
 }

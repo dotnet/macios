@@ -42,6 +42,13 @@ namespace MySimpleApp {
 				thread.Start ();
 				System.Threading.Thread.Sleep (10000);
 				break;
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+				return RunUncaughtExceptionTest (testCase);
 			default:
 				Console.WriteLine ($"Unknown test case: {testCase}");
 				return 3;
@@ -49,14 +56,63 @@ namespace MySimpleApp {
 
 			return 1;
 		}
+
+		[DllImport ("__Internal")]
+		static extern void throw_uncaught_objc_exception (IntPtr exception);
+
+		static int RunUncaughtExceptionTest (int testCase)
+		{
+			var managedOrigin = testCase >= 7;
+			var throwsInHandler = testCase == 4 || testCase == 8;
+			using var exception = new NSException ("Uncaught test exception", "Uncaught test reason", null);
+			using var obj = new ThrowExceptionClass ();
+
+			UncaughtObjectiveCExceptionHandler handler = (sender, args) => {
+				if (sender is not null)
+					Console.WriteLine ("Unexpected sender");
+				if (!managedOrigin && !ReferenceEquals (args.Exception, exception))
+					Console.WriteLine ("Unexpected native exception");
+				Console.WriteLine ($"Uncaught event: {args.Exception.Name}: {args.Exception.Reason}");
+				if (throwsInHandler)
+					throw new InvalidOperationException ("Uncaught handler failure");
+			};
+
+			if (testCase != 6)
+				Runtime.UncaughtObjectiveCException += handler;
+			if (testCase == 5)
+				Runtime.UncaughtObjectiveCException -= handler;
+
+			AppDomain.CurrentDomain.UnhandledException += (sender, args) => {
+				if (ReferenceEquals (args.ExceptionObject, obj.Exception))
+					Console.WriteLine ("Original managed exception");
+			};
+
+			Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+			if (managedOrigin) {
+				Runtime.MarshalManagedException += (sender, args) => {
+					args.ExceptionMode = MarshalManagedExceptionMode.ThrowObjectiveCException;
+				};
+				using var thread = new NSThread (obj, new Selector ("throwException:"), null);
+				thread.Start ();
+				System.Threading.Thread.Sleep (10000);
+			} else {
+				throw_uncaught_objc_exception (exception.Handle);
+				System.Threading.Thread.Sleep (10000);
+			}
+
+			Console.WriteLine ("Uncaught exception did not terminate the process");
+			return 1;
+		}
 	}
 }
 
 class ThrowExceptionClass : NSObject {
+	public TestCaseException Exception { get; } = new TestCaseException ();
+
 	[Export ("throwException:")]
 	public void ThrowException (NSObject obj)
 	{
-		throw new TestCaseException ();
+		throw Exception;
 	}
 }
 

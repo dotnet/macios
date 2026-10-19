@@ -250,6 +250,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCEx
 Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
 Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
+Microsoft.MacCatalyst.dll:Foundation.NSException ObjCRuntime.UncaughtObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.MacCatalyst.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSException..cctor()
 Microsoft.MacCatalyst.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
@@ -831,8 +832,10 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.NSLog(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ObjectGetType(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.on_marshal_managed_exception(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.on_marshal_objectivec_exception(System.IntPtr, System.SByte, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.on_uncaught_objectivec_exception(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.OnMarshalManagedException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.OnMarshalObjectiveCException(System.IntPtr, System.SByte)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.OnUncaughtObjectiveCException(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.print_all_exceptions_wrapper(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.PrintAllExceptions(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.PrintException(System.Exception, System.Boolean, System.Text.StringBuilder)
@@ -1038,6 +1041,12 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer.Equals(System.UInt64, System.UInt64)
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer.GetHashCode(System.UInt64)
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs..ctor(Foundation.NSException)
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler ObjCRuntime.Runtime::UncaughtObjectiveCException
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler..ctor(System.Object, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler.Invoke(System.Object, ObjCRuntime.UncaughtObjectiveCExceptionEventArgs)
 Microsoft.MacCatalyst.dll:System.Boolean AppKit.ActionDispatcher::WorksWhenModal()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.IsReadOnly()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::disposed()
@@ -1197,6 +1206,7 @@ Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_ma
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_unmanaged_function
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_managed_exception
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_objectivec_exception
+Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_uncaught_objectivec_exception
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::print_all_exceptions_wrapper
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::reflection_type_get_full_name
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_assembly

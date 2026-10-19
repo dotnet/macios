@@ -17,6 +17,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		static List<MarshalObjectiveCExceptionEventArgs> objcEventArgs;
 		static List<MarshalManagedExceptionEventArgs> managedEventArgs;
+		static List<UncaughtObjectiveCExceptionEventArgs> uncaughtEventArgs;
 		static MarshalManagedExceptionMode? managedTargetMode;
 		static MarshalObjectiveCExceptionMode? objcTargetMode;
 
@@ -40,10 +41,16 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				args.ExceptionMode = managedTargetMode.Value;
 		}
 
+		static void UncaughtExceptionHandler (object sender, UncaughtObjectiveCExceptionEventArgs args)
+		{
+			uncaughtEventArgs.Add (args);
+		}
+
 		static void ClearExceptionData ()
 		{
 			objcEventArgs = new List<MarshalObjectiveCExceptionEventArgs> ();
 			managedEventArgs = new List<MarshalManagedExceptionEventArgs> ();
+			uncaughtEventArgs = new List<UncaughtObjectiveCExceptionEventArgs> ();
 			objcTargetMode = null;
 			managedTargetMode = null;
 		}
@@ -53,12 +60,23 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			ClearExceptionData ();
 			Runtime.MarshalManagedException += ManagedExceptionHandler;
 			Runtime.MarshalObjectiveCException += ObjExceptionHandler;
+			Runtime.UncaughtObjectiveCException += UncaughtExceptionHandler;
 		}
 
 		static void UninstallHandlers ()
 		{
 			Runtime.MarshalManagedException -= ManagedExceptionHandler;
 			Runtime.MarshalObjectiveCException -= ObjExceptionHandler;
+			Runtime.UncaughtObjectiveCException -= UncaughtExceptionHandler;
+		}
+
+		[Test]
+		public void UncaughtObjectiveCExceptionEventArgs ()
+		{
+			using var exception = new NSException ("Test exception", "Test reason", null);
+			var args = new UncaughtObjectiveCExceptionEventArgs (exception);
+			Assert.That (args.Exception, Is.SameAs (exception), "Exception");
+			Assert.Throws<ArgumentNullException> (() => new UncaughtObjectiveCExceptionEventArgs (null));
 		}
 
 		// Simulator/desktop only
@@ -92,6 +110,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					Assert.That (objcEventArgs [0].Exception.Handle, Is.EqualTo (thrownException.NSException.Handle), "objc exception");
 					Assert.That (objcEventArgs [0].ExceptionMode, Is.EqualTo (defaultObjectiveCExceptionMode), "objc mode");
 					Assert.That (managedEventArgs.Count, Is.EqualTo (0), "managed exception");
+					Assert.That (uncaughtEventArgs.Count, Is.EqualTo (0), "uncaught exception");
 				}
 			} finally {
 				UninstallHandlers ();

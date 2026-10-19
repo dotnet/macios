@@ -10,6 +10,27 @@
 
 namespace ObjCRuntime {
 
+	/// <summary>The event delegate for the <see cref="Runtime.UncaughtObjectiveCException" /> event.</summary>
+	/// <param name="sender">Always null.</param>
+	/// <param name="args">The uncaught Objective-C exception data.</param>
+	public delegate void UncaughtObjectiveCExceptionHandler (object? sender, UncaughtObjectiveCExceptionEventArgs args);
+
+	/// <summary>The event arguments for the <see cref="Runtime.UncaughtObjectiveCException" /> event.</summary>
+	public class UncaughtObjectiveCExceptionEventArgs : EventArgs {
+		/// <summary>Creates a new <see cref="UncaughtObjectiveCExceptionEventArgs" /> instance.</summary>
+		/// <param name="exception">The uncaught Objective-C exception.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="exception" /> is null.</exception>
+		public UncaughtObjectiveCExceptionEventArgs (NSException exception)
+		{
+			ArgumentNullException.ThrowIfNull (exception);
+			Exception = exception;
+		}
+
+		/// <summary>Gets the uncaught Objective-C exception.</summary>
+		/// <value>The original Objective-C exception, including exceptions marshalled from managed code.</value>
+		public NSException Exception { get; }
+	}
+
 	/// <summary>The event delegate for the <see cref="Runtime.MarshalObjectiveCException" /> event.</summary>
 	/// <param name="sender">Always null.</param>
 	/// <param name="args">The exception data for the Objective-C exception.</param>

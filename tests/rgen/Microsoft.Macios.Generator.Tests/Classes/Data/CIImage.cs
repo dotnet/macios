@@ -33,6 +33,10 @@ public partial class CIImage {
 	}
 
 	[SupportedOSPlatform ("maccatalyst13.1")]
+	[ObsoletedOSPlatform ("ios13.0", "Use 'Replacement' instead.")]
+	[ObsoletedOSPlatform ("tvos13.0", "Use 'Replacement' instead.")]
+	[ObsoletedOSPlatform ("macos10.15", "Use 'Replacement' instead.")]
+	[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'Replacement' instead.")]
 	[Field<Property> ("kCIFormatLA8", Flags = Property.Notification)]
 	public static partial NSString DidProcessEditingNotification { get; }
 

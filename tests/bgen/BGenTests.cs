@@ -1885,6 +1885,33 @@ namespace GeneratorTests {
 			bgen.AssertNoWarnings ();
 		}
 
+		[TestCase (Profile.iOS, "ios13.0")]
+		[TestCase (Profile.tvOS, "tvos13.0")]
+		[TestCase (Profile.MacCatalyst, "maccatalyst13.1")]
+		[TestCase (Profile.macOSMobile, "macos10.15")]
+		public void NotificationAvailability (Profile profile, string deprecatedPlatform)
+		{
+			var bgen = BuildFile (profile, "notification-availability.cs");
+			var source = bgen.ApiAssembly.MainModule.GetType ("NotificationAvailability", "NotificationSource");
+			var notifications = source.NestedTypes.Single (v => v.Name == "Notifications");
+
+			foreach (var name in new [] { "Changed", "TypedChanged", "Current" }) {
+				var property = source.Properties.Single (v => v.Name == name + "Notification");
+				var methods = notifications.Methods.Where (v => v.Name == "Observe" + name).ToArray ();
+				Assert.That (methods.Select (v => v.Parameters.Count), Is.EquivalentTo (new [] { 1, 2 }), name + " overloads");
+				foreach (var method in methods) {
+					Assert.That (RenderSupportedOSPlatformAttributes (method), Is.EqualTo (RenderSupportedOSPlatformAttributes (property)), method.FullName);
+					var deprecations = method.CustomAttributes.Where (v => v.AttributeType.Name == "ObsoletedOSPlatformAttribute").ToArray ();
+					if (name == "Current") {
+						Assert.That (deprecations, Is.Empty, method.FullName);
+					} else {
+						var platform = name == "Changed" ? deprecatedPlatform : profile.AsPlatform ().AsString ().ToLowerInvariant () + "27.0";
+						Assert.That (deprecations.Select (RenderSupportedOSPlatformAttribute), Does.Contain ($"[ObsoletedOSPlatform(\"{platform}\", \"Use 'Replacement' instead.\")]"), method.FullName + " deprecation");
+					}
+				}
+			}
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void DelegatesWithNullableReturnType (Profile profile)

@@ -707,6 +707,7 @@ namespace UIKit {
 		/// <param name="textStyle">The text style to use.</param>
 		/// <param name="options">The options used to select the font.</param>
 		/// <returns>A newly allocated managed wrapper for the preferred font.</returns>
+		[Export ("preferredFontForTextStyle:options:")]
 		public static NSFont GetPreferredFont (string textStyle, NSDictionary options)
 		{
 			return new NSFont (_GetPreferredFont (textStyle, options));
@@ -715,9 +716,10 @@ namespace UIKit {
 		/// <summary>Creates a font with the same characteristics and a different size.</summary>
 		/// <param name="fontSize">The new size in points.</param>
 		/// <returns>A newly allocated managed wrapper for the resized font.</returns>
+		[Export ("fontWithSize:")]
 		public virtual NSFont GetFont (nfloat fontSize)
 		{
-			return WithSize (fontSize);
+			return new NSFont (_WithSize (fontSize));
 		}
 
 		/// <summary>Gets the font name.</summary>

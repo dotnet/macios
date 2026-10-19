@@ -174,7 +174,11 @@ namespace UIKit {
 		[Export ("monospacedSystemFontOfSize:weight:")]
 		IntPtr _MonospacedSystemFontOfSize (nfloat fontSize, nfloat weight);
 
+#if __MACOS__
+		[Bind ("fontWithSize:", Virtual = true)]
+#else
 		[Export ("fontWithSize:")]
+#endif
 		[Internal] // bug 25511
 		IntPtr _WithSize (nfloat size);
 
@@ -551,7 +555,7 @@ namespace UIKit {
 		void _GetAdvancements (IntPtr advancements, IntPtr glyphs, nuint glyphCount);
 
 		[Static]
-		[Export ("preferredFontForTextStyle:options:")]
+		[Bind ("preferredFontForTextStyle:options:")]
 		[Internal]
 		IntPtr _GetPreferredFont (string textStyle, NSDictionary options);
 

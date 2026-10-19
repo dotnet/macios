@@ -258,157 +258,150 @@ namespace Foundation {
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a boolean.
+		/// Reads the boolean value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The boolean value of the <see cref="NSNumber"/>.</returns>
 		public static bool ToBool (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.BoolValue;
+			return Messaging.bool_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("boolValue")) != 0;
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a byte.
+		/// Reads the byte value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The byte value of the <see cref="NSNumber"/>.</returns>
 		public static byte ToByte (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.ByteValue;
+			return Messaging.byte_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("unsignedCharValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as an sbyte.
+		/// Reads the sbyte value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The sbyte value of the <see cref="NSNumber"/>.</returns>
 		public static sbyte ToSByte (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.SByteValue;
+			return Messaging.SByte_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("charValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a short.
+		/// Reads the short value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The short value of the <see cref="NSNumber"/>.</returns>
 		public static short ToInt16 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.Int16Value;
+			return Messaging.short_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("shortValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a ushort.
+		/// Reads the ushort value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The ushort value of the <see cref="NSNumber"/>.</returns>
 		public static ushort ToUInt16 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.UInt16Value;
+			return Messaging.UInt16_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("unsignedShortValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as an int.
+		/// Reads the int value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The int value of the <see cref="NSNumber"/>.</returns>
 		public static int ToInt32 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.Int32Value;
+			return Messaging.int_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("intValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a uint.
+		/// Reads the uint value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The uint value of the <see cref="NSNumber"/>.</returns>
 		public static uint ToUInt32 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.UInt32Value;
+			return Messaging.UInt32_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("unsignedIntValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a long.
+		/// Reads the long value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The long value of the <see cref="NSNumber"/>.</returns>
 		public static long ToInt64 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.Int64Value;
+			return Messaging.Int64_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("longLongValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a ulong.
+		/// Reads the ulong value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The ulong value of the <see cref="NSNumber"/>.</returns>
 		public static ulong ToUInt64 (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.UInt64Value;
+			return Messaging.UInt64_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("unsignedLongLongValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a float.
+		/// Reads the float value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The float value of the <see cref="NSNumber"/>.</returns>
 		public static float ToFloat (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.FloatValue;
+			return Messaging.float_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("floatValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as an <see cref="nfloat"/>.
+		/// Reads the <see cref="nfloat"/> value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The nfloat value of the <see cref="NSNumber"/>.</returns>
 		public static nfloat ToNFloat (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.NFloatValue;
+			return (nfloat) ToDouble (handle);
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a double.
+		/// Reads the double value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The double value of the <see cref="NSNumber"/>.</returns>
 		public static double ToDouble (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.DoubleValue;
+			return Messaging.Double_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("doubleValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as an <see cref="nint"/>.
+		/// Reads the <see cref="nint"/> value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The nint value of the <see cref="NSNumber"/>.</returns>
 		public static nint ToNInt (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.NIntValue;
+			return Messaging.IntPtr_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("integerValue"));
 		}
 
 		/// <summary>
-		/// Converts a <see cref="NativeHandle"/> to an <see cref="NSNumber"/> and returns its value as a <see cref="nuint"/>.
+		/// Reads the <see cref="nuint"/> value of a native <see cref="NSNumber"/> without creating a managed wrapper.
 		/// </summary>
 		/// <param name="handle">The <see cref="NativeHandle"/> to convert.</param>
 		/// <returns>The nuint value of the <see cref="NSNumber"/>.</returns>
 		public static nuint ToNUInt (NativeHandle handle)
 		{
-			using var num = Runtime.GetNSObject<NSNumber> (handle)!;
-			return num.NUIntValue;
+			return (nuint) Messaging.UIntPtr_objc_msgSend (GetNumberHandle (handle), Selector.GetHandle ("unsignedIntegerValue"));
+		}
+
+		static NativeHandle GetNumberHandle (NativeHandle handle)
+		{
+			if (handle == NativeHandle.Zero)
+				throw new NullReferenceException ();
+			return handle;
 		}
 
 		/// <summary>

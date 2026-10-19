@@ -182,20 +182,23 @@ namespace UIKit {
 			return new XFont (_MonospacedDigitSystemFontOfSize (size, weight));
 		}
 
-		/// <summary>Returns the system monospaced font specialized for digits, in the specified size and weight.</summary>
 #if __MACOS__
+		/// <summary>Returns the system monospaced font specialized for digits, in the specified size and weight.</summary>
 		/// <param name="fontSize">The size of the font in points.</param>
-#else
-		/// <param name="size">The size of the font in points.</param>
-#endif
 		/// <param name="weight">The weight of the font.</param>
 		/// <returns>The monospaced digit system font.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
-#if __MACOS__
 		public static XFont MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight) => CreateMonospacedDigitSystemFont (fontSize, weight);
 #else
+		/// <summary>Returns the system monospaced font specialized for digits, in the specified size and weight.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <param name="weight">The weight of the font.</param>
+		/// <returns>The monospaced digit system font.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont MonospacedDigitSystemFontOfSize (nfloat size, nfloat weight) => CreateMonospacedDigitSystemFont (size, weight);
 #endif
 
@@ -273,19 +276,21 @@ namespace UIKit {
 			return new XFont (_SystemFontOfSize (size));
 		}
 
-		/// <summary>Creates a system font of the specified size.</summary>
 #if __MACOS__
+		/// <summary>Creates a system font of the specified size.</summary>
 		/// <param name="fontSize">The size of the font in points.</param>
-#else
-		/// <param name="size">The size of the font in points.</param>
-#endif
 		/// <returns>A new system <see cref="XFont" /> of the specified size.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
-#if __MACOS__
 		public static XFont SystemFontOfSize (nfloat fontSize) => CreateSystemFont (fontSize);
 #else
+		/// <summary>Creates a system font of the specified size.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <returns>A new system <see cref="XFont" /> of the specified size.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat size) => CreateSystemFont (size);
 #endif
 
@@ -298,20 +303,23 @@ namespace UIKit {
 			return new XFont (_SystemFontOfSize (size, weight));
 		}
 
-		/// <summary>Returns the default system font in the specified size and weight.</summary>
 #if __MACOS__
+		/// <summary>Returns the default system font in the specified size and weight.</summary>
 		/// <param name="fontSize">The size of the font in points.</param>
-#else
-		/// <param name="size">The size of the font in points.</param>
-#endif
 		/// <param name="weight">The weight of the font.</param>
 		/// <returns>A new system <see cref="XFont" /> of the specified size and weight.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
-#if __MACOS__
 		public static XFont SystemFontOfSize (nfloat fontSize, nfloat weight) => CreateSystemFont (fontSize, weight);
 #else
+		/// <summary>Returns the default system font in the specified size and weight.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <param name="weight">The weight of the font.</param>
+		/// <returns>A new system <see cref="XFont" /> of the specified size and weight.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat size, nfloat weight) => CreateSystemFont (size, weight);
 #endif
 
@@ -323,19 +331,21 @@ namespace UIKit {
 			return new XFont (_BoldSystemFontOfSize (size));
 		}
 
-		/// <summary>Returns a bold system font of the specified size.</summary>
 #if __MACOS__
+		/// <summary>Returns a bold system font of the specified size.</summary>
 		/// <param name="fontSize">The size of the font in points.</param>
-#else
-		/// <param name="size">The size of the font in points.</param>
-#endif
 		/// <returns>A new bold system <see cref="XFont" /> of the specified size.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
-#if __MACOS__
 		public static XFont BoldSystemFontOfSize (nfloat fontSize) => CreateBoldSystemFont (fontSize);
 #else
+		/// <summary>Returns a bold system font of the specified size.</summary>
+		/// <param name="size">The size of the font in points.</param>
+		/// <returns>A new bold system <see cref="XFont" /> of the specified size.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont BoldSystemFontOfSize (nfloat size) => CreateBoldSystemFont (size);
 #endif
 
@@ -400,10 +410,13 @@ namespace UIKit {
 		/// <param name="weight">The font weight.</param>
 		/// <param name="width">The font width.</param>
 		/// <returns>A new managed font wrapper.</returns>
+#if __MACOS__
+		[SupportedOSPlatform ("macos")]
+#else
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+#endif
 		public static XFont CreateSystemFont (nfloat fontSize, nfloat weight, nfloat width) => SystemFontOfSize (fontSize, weight, width);
 
 		/// <summary>Creates a system font with the specified size, weight, and width.</summary>
@@ -411,10 +424,13 @@ namespace UIKit {
 		/// <param name="weight">The native font weight.</param>
 		/// <param name="width">The native font width.</param>
 		/// <returns>A newly allocated managed wrapper for the system font.</returns>
+#if __MACOS__
+		[SupportedOSPlatform ("macos")]
+#else
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+#endif
 		public static XFont SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width)
 		{
 			return new XFont (_SystemFontOfSize (fontSize, weight, width));
@@ -848,7 +864,7 @@ namespace UIKit {
 		}
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		static nfloat GetFontWidth (UIFontWidth width)
 		{
@@ -1013,7 +1029,7 @@ namespace UIKit {
 		/// <param name="width">The font width.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public static UIFont CreateSystemFont (nfloat fontSize, UIFontWeight weight, UIFontWidth width) => SystemFontOfSize (fontSize, weight, width);
 
@@ -1023,7 +1039,7 @@ namespace UIKit {
 		/// <param name="width">The width of the font.</param>
 		/// <returns>A new system <see cref="UIFont" /> of the specified size, weight, and width.</returns>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public static UIFont SystemFontOfSize (nfloat fontSize, UIFontWeight weight, UIFontWidth width)
 		{

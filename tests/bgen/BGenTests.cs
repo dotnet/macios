@@ -479,6 +479,33 @@ namespace GeneratorTests {
 			bgen.AssertNoWarnings ();
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void BlockObjectMarshalling (Profile profile)
+		{
+			var bgen = BuildFile (profile, "block-object-marshalling.cs");
+			var trampolines = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines");
+			foreach (var handler in new [] { "ErrorHandler", "OutErrorHandler", "BoundObjectHandler", "ForcedObjectHandler", "NativeObjectHandler", "ProtocolHandler" }) {
+				var trampoline = trampolines.NestedTypes.Single (v => v.Name == $"SD{handler}");
+				var invoke = trampoline.Methods.Single (v => v.Name == "Invoke");
+				var isNSObject = handler != "NativeObjectHandler" && handler != "ProtocolHandler";
+				var useGetNSObject = isNSObject && handler != "ForcedObjectHandler";
+				bgen.AssertApiCallsMethod (invoke, useGetNSObject ? "GetNSObject" : "GetINativeObject", handler);
+				bgen.AssertApiCallsMethod (invoke, isNSObject ? "RetainAndAutoreleaseNSObject" : "RetainAndAutoreleaseNativeObject", handler);
+				var calls = invoke.Body.Instructions
+					.Where (v => v.OpCode.FlowControl == FlowControl.Call)
+					.Select (v => v.Operand)
+					.OfType<MethodReference> ()
+					.Select (v => v.Name)
+					.ToArray ();
+				Assert.That (calls, Does.Not.Contain (useGetNSObject ? "GetINativeObject" : "GetNSObject"), handler);
+				Assert.That (calls, Does.Not.Contain (isNSObject ? "RetainAndAutoreleaseNativeObject" : "RetainAndAutoreleaseNSObject"), handler);
+				Assert.That (calls.Count (v => v == (isNSObject ? "RetainAndAutoreleaseNSObject" : "RetainAndAutoreleaseNativeObject")), Is.EqualTo (2), handler);
+			}
+		}
+
 		[Test]
 		public void Bug36457 ()
 		{
@@ -974,7 +1001,15 @@ namespace GeneratorTests {
 		[Test]
 		public void RefOutParameters ()
 		{
-			BuildFile (Profile.macOSMobile, true, "ref-out-parameters.cs");
+			var bgen = BuildFile (Profile.macOSMobile, true, "ref-out-parameters.cs");
+			var contents = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "BI1064", "RefOutParameters.g.cs"));
+			Assert.That (contents, Does.Contain ("refValuesArrayValue.GetHandle ()"), "Object array handle");
+			Assert.That (contents, Does.Contain ("refStringsArrayValue.GetHandle ()"), "String array handle");
+			Assert.That (contents, Does.Contain ("refValue.GetHandle ()"), "Native object handle");
+			Assert.That (contents, Does.Not.Contain ("is null ? NativeHandle.Zero"), "Null-safe handle access");
+			bgen.AssertApiCallsMethod ("BI1064", "RefOutParameters", "TestNSObject", "RetainAndAutoreleaseNSObject", "NSObject ref parameter");
+			bgen.AssertApiCallsMethod ("BI1064", "RefOutParameters", "TestCFBundle", "RetainAndAutoreleaseNativeObject", "Native object ref parameter");
+			bgen.AssertApiCallsMethod ("BI1064", "RefOutParameters", "TestINSCoding", "RetainAndAutoreleaseNativeObject", "Protocol ref parameter");
 		}
 
 		[Test]

@@ -870,6 +870,7 @@
 			<!-- The directory where the linker puts *.items files that will be loaded in the _LoadLinkerOutput target -->
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
 			<_LinkerItemsDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-items</_LinkerItemsDirectory>
+			<_RegistrarUnmanagedEntryPointsAssemblyFile Condition="'$(_UseNativeAot)' == 'true'">$(_LinkerItemsDirectory)/_RegistrarUnmanagedEntryPointsAssembly.items</_RegistrarUnmanagedEntryPointsAssemblyFile>
 
 			<!-- Set linker feature flags for device/simulator builds -->
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
@@ -2148,11 +2149,21 @@
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
 		</ItemGroup>
 
+		<ReadItemsFromFile
+			SessionId="$(BuildSessionId)"
+			File="$(_RegistrarUnmanagedEntryPointsAssemblyFile)">
+			<Output TaskParameter="Items" ItemName="_RegistrarUnmanagedEntryPointsAssembly" />
+		</ReadItemsFromFile>
+
 		<ItemGroup>
-			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
-			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
-			<_UnmanagedEntryPointsAssembliesToAdd Remove="System.Private.CoreLib" />
-			<UnmanagedEntryPointsAssembly Include="@(_UnmanagedEntryPointsAssembliesToAdd)" />
+			<!-- Only export registrar callbacks from assemblies that survived trimming. -->
+			<_AssembliesWithoutRegistrarEntryPoints Include="@(_UpdatedManagedAssemblyToLink)" />
+			<_AssembliesWithoutRegistrarEntryPoints Remove="@(_RegistrarUnmanagedEntryPointsAssembly)" MatchOnMetadata="Filename" />
+			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink)" Exclude="@(_AssembliesWithoutRegistrarEntryPoints)" />
+			<UnmanagedEntryPointsAssembly Include="@(_UnmanagedEntryPointsAssembliesToAdd->'%(Filename)')" Exclude="@(UnmanagedEntryPointsAssembly)" />
+			<!-- The platform assembly also has hand-written runtime entry points. -->
+			<UnmanagedEntryPointsAssembly Include="$(_PlatformAssemblyName)" Exclude="@(UnmanagedEntryPointsAssembly)" />
+			<FileWrites Include="$(_RegistrarUnmanagedEntryPointsAssemblyFile)" />
 
 			<!-- Link in the output from ILC -->
 			<_NativeExecutableObjectFiles Include="$(NativeObject)" />

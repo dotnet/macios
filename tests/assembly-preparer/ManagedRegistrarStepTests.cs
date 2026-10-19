@@ -11,6 +11,54 @@ using Xamarin.Linker;
 namespace AssemblyPreparerTests;
 
 public class ManagedRegistrarStepTests : BaseClass {
+	[TestCase (RegistrarMode.ManagedStatic, false, false)]
+	[TestCase (RegistrarMode.ManagedStatic, false, true)]
+	[TestCase (RegistrarMode.TrimmableStatic, false, true)]
+	[TestCase (RegistrarMode.TrimmableStatic, true, true)]
+	public void NativeAotEntryPointAssemblies (RegistrarMode registrar, bool relocate, bool hasCallbacks)
+	{
+		var itemsDirectory = Xamarin.Cache.CreateTemporaryDirectory ();
+		var configurationPath = Path.Combine (itemsDirectory, "config.txt");
+		File.WriteAllText (configurationPath, $@"
+		AreAnyAssembliesTrimmed=true
+		Platform=iOS
+		TargetFramework={TargetFramework.GetTargetFramework (ApplePlatform.iOS)}
+		ItemsDirectory={itemsDirectory}
+		");
+		var logger = new TestLogger { Platform = ApplePlatform.iOS };
+		using var preparer = new AssemblyPreparer (logger, [], configurationPath) { Registrar = registrar };
+		preparer.Configuration.Application.XamarinRuntime = XamarinRuntime.NativeAOT;
+
+		using var assembly = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Test", new Version (1, 0)), "Test.dll", ModuleKind.Dll);
+		using var companion = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("_Test.TypeMap", new Version (1, 0)), "_Test.TypeMap.dll", ModuleKind.Dll);
+		var callbacks = new AssemblyTrampolineInfo ();
+		preparer.Configuration.AssemblyTrampolineInfos.Add (assembly, callbacks);
+		if (hasCallbacks) {
+			var callbackAssembly = relocate ? companion : assembly;
+			var type = new TypeDefinition ("", "Callbacks", TypeAttributes.Public);
+			callbackAssembly.MainModule.Types.Add (type);
+			for (var i = 0; i < 2; i++) {
+				var method = new MethodDefinition ("Callback" + i, MethodAttributes.Public | MethodAttributes.Static, callbackAssembly.MainModule.TypeSystem.Void);
+				type.Methods.Add (method);
+				callbacks.Add (new TrampolineInfo (method, method, method.Name));
+			}
+		}
+		var context = preparer.Configuration.DerivedLinkContext;
+		new ManagedRegistrarStep ().Process (context);
+		preparer.Configuration.FlushOutputForMSBuild ();
+		Assert.That (logger.Errors, Is.Empty, "Registrar errors");
+
+		var outputPath = Path.Combine (itemsDirectory, "_RegistrarUnmanagedEntryPointsAssembly.items");
+		Assert.That (File.Exists (outputPath), Is.True, "Persisted entry-point assemblies");
+		var document = System.Xml.Linq.XDocument.Load (outputPath);
+		var assemblies = document.Descendants ()
+			.Where (v => v.Name.LocalName == "_RegistrarUnmanagedEntryPointsAssembly")
+			.Select (v => (string?) v.Attribute ("Include"))
+			.ToArray ();
+		var expected = hasCallbacks ? new [] { relocate ? "_Test.TypeMap.dll" : "Test.dll" } : [];
+		Assert.That (assemblies, Is.EquivalentTo (expected), "Only assemblies containing generated callbacks, without duplicates");
+	}
+
 	[Test]
 	public void FactoryMethodsNotAddedToReloadableAssemblies ()
 	{

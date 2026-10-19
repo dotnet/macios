@@ -3,6 +3,64 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class RegistrarTest : TestBaseClass {
+		[TestCase ("managed-static", false)]
+		[TestCase ("managed-static", true)]
+		[TestCase ("trimmable-static", false)]
+		[TestCase ("trimmable-static", true)]
+		public void NativeAotEntryPointAssemblies (string registrar, bool hasCallbacks)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+			var directory = Cache.CreateTemporaryDirectory ();
+			var linkedDirectory = Path.Combine (directory, "linked");
+			Directory.CreateDirectory (linkedDirectory);
+			var assemblies = new [] { "MyApp", "Microsoft.iOS", "CallbackLibrary", "_CallbackLibrary.TypeMap", "OrdinaryLibrary", "System.Runtime", "System.Private.CoreLib" };
+			foreach (var assembly in assemblies)
+				File.WriteAllBytes (Path.Combine (linkedDirectory, assembly + ".dll"), []);
+
+			var entryPointsFile = Path.Combine (directory, "entry-points.items");
+			File.WriteAllText (entryPointsFile, $@"
+<Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+	<ItemGroup>
+{(hasCallbacks ? @"
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""Microsoft.iOS.dll"" />
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""CallbackLibrary.dll"" />
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""_CallbackLibrary.TypeMap.dll"" />
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""TrimmedCallbacks.dll"" />" : "")}
+	</ItemGroup>
+</Project>");
+			var projectPath = Path.Combine (directory, "EntryPoints.csproj");
+			var targetsPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
+			var taskAssembly = Path.Combine (Configuration.EvaluateVariable ("DOTNET_DESTDIR"), Configuration.GetSdkNuGetName (ApplePlatform.iOS), "tools", "msbuild", Configuration.DotNetTfm, "Xamarin.MacDev.Tasks.dll");
+			File.WriteAllText (projectPath, $@"
+<Project>
+	<PropertyGroup>
+		<TargetFrameworkVersion>v{Configuration.DotNetTfm.Replace ("net", "")}</TargetFrameworkVersion>
+		<_PlatformName>iOS</_PlatformName>
+		<_TaskAssemblyName>{taskAssembly}</_TaskAssemblyName>
+		<Registrar>{registrar}</Registrar>
+		<IntermediateLinkDir>{linkedDirectory}/</IntermediateLinkDir>
+		<_RegistrarUnmanagedEntryPointsAssemblyFile>{entryPointsFile}</_RegistrarUnmanagedEntryPointsAssemblyFile>
+	</PropertyGroup>
+	<Import Project=""{targetsPath}"" />
+	<UsingTask TaskName=""Xamarin.MacDev.Tasks.ReadItemsFromFile"" AssemblyFile=""$(_TaskAssemblyName)"" />
+	<Target Name=""Restore"" />
+	<ItemGroup>
+		<ManagedAssemblyToLink Include=""{string.Join (";", assemblies.Select (v => Path.Combine (directory, "original", v + ".dll")))};original/TrimmedCallbacks.dll"" />
+		<UnmanagedEntryPointsAssembly Include=""MyApp;ExplicitLibrary;Microsoft.iOS"" />
+	</ItemGroup>
+</Project>");
+
+			for (var i = 0; i < 2; i++) {
+				using var document = System.Text.Json.JsonDocument.Parse (DotNet.GetItems (projectPath, "UnmanagedEntryPointsAssembly", target: "_XamarinComputeIlcCompileInputs"));
+				var actual = document.RootElement.GetProperty ("Items").GetProperty ("UnmanagedEntryPointsAssembly")
+					.EnumerateArray ().Select (v => v.GetProperty ("Identity").GetString ()).ToArray ();
+				var expected = hasCallbacks
+					? new [] { "MyApp", "ExplicitLibrary", "CallbackLibrary", "Microsoft.iOS", "_CallbackLibrary.TypeMap" }
+					: new [] { "MyApp", "ExplicitLibrary", "Microsoft.iOS" };
+				Assert.That (actual, Is.EquivalentTo (expected), $"Entry-point assemblies, build {i + 1}");
+			}
+		}
+
 		// The 'Registrar' property is computed inside the 'SelectRegistrar' target (not at evaluation
 		// time), so its value is only recorded in the binlog when MSBuild's property tracking is
 		// enabled. This isn't the case by default (in particular not on CI), so explicitly enable it

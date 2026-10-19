@@ -165,6 +165,17 @@ namespace Xamarin.Linker {
 			// Report back any exceptions that occurred during the processing.
 			exceptions = this.exceptions;
 
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && !App.IsPostProcessingAssemblies) {
+				var assemblies = Configuration.AssemblyTrampolineInfos.Values
+					.SelectMany (v => v)
+					.Select (v => v.Trampoline.Module.Assembly.Name.Name)
+					.Distinct ()
+					.OrderBy (v => v, StringComparer.Ordinal)
+					.Select (v => new MSBuildItem (v + ".dll"))
+					.ToList ();
+				Configuration.WriteOutputForMSBuild ("_RegistrarUnmanagedEntryPointsAssembly", assemblies);
+			}
+
 			if (App.PrepareAssemblies && !App.InCustomTrimmerStep) {
 				var ucoMapPath = Configuration.UnmanagedCallersOnlyMapPath;
 				using (var writer = new StreamWriter (ucoMapPath, false)) {

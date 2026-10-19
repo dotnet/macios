@@ -433,6 +433,23 @@ Example:
 
 Applicable to all platforms.
 
+## UnmanagedEntryPointsAssembly
+
+For NativeAOT builds, `UnmanagedEntryPointsAssembly` specifies assemblies whose
+methods with `[UnmanagedCallersOnly (EntryPoint = "...")]` are exported to native
+code. Use assembly names without a file extension:
+
+```xml
+<ItemGroup>
+    <UnmanagedEntryPointsAssembly Include="MyLibrary" />
+</ItemGroup>
+```
+
+The main application assembly, the platform assembly, and assemblies containing
+generated registrar callbacks are included automatically. Other referenced
+assemblies must be added explicitly if their named entry points are needed.
+Methods without an `EntryPoint` name do not require this item.
+
 ## XcodeProject
 
 `<XcodeProject>` can be used to build and consume the outputs

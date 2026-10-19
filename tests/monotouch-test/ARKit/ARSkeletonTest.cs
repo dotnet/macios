@@ -32,7 +32,6 @@ namespace monotouchtest.ARKit {
 		{
 			using var expected = ARSkeleton.CreateJointName (recognizedPointKey.GetConstant ());
 			using var actual = ARSkeleton.CreateJointName (recognizedPointKey);
-			Assert.That (actual, Is.Not.Null, "Mapped joint");
 			Assert.That (actual, Is.EqualTo (expected), "NSString overload");
 		}
 

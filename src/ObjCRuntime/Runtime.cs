@@ -1251,7 +1251,7 @@ namespace ObjCRuntime {
 							if (reference.Target is NSObject nsobj)
 								nsobj.ClearHandle ();
 							else if (reference.Target is BaseWrapper wrapper)
-								wrapper.ClearHandle ();
+								wrapper.ClearNativeHandle ();
 							reference.Free ();
 						}
 					}

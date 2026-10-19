@@ -21,7 +21,7 @@ namespace ObjCRuntime {
 			Runtime.RegisterObject (this, handle);
 		}
 
-		internal new void ClearHandle ()
+		internal void ClearNativeHandle ()
 		{
 			base.ClearHandle ();
 		}

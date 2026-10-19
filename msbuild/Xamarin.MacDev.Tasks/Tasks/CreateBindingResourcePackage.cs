@@ -44,12 +44,13 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			if (NativeReferences.Length == 0) {
+			var nativeReferences = NativeReferences.Where (v => !v.IsSystemFramework ()).ToArray ();
+			if (nativeReferences.Length == 0) {
 				// Nothing to do here
 				return true;
 			}
 
-			var nonexistent = NativeReferences.Where (v => !(Directory.Exists (v.ItemSpec) || File.Exists (v.ItemSpec)));
+			var nonexistent = nativeReferences.Where (v => !(Directory.Exists (v.ItemSpec) || File.Exists (v.ItemSpec)));
 			if (nonexistent.Any ()) {
 				foreach (var nonex in nonexistent)
 					Log.LogError (MSBStrings.E0190 /* The NativeResource item '{0}' does not exist. */, nonex.ItemSpec);
@@ -62,10 +63,10 @@ namespace Xamarin.MacDev.Tasks {
 			} else if (string.Equals (Compress, "false", StringComparison.OrdinalIgnoreCase)) {
 				compress = false;
 			} else if (string.Equals (Compress, "auto", StringComparison.OrdinalIgnoreCase)) {
-				if (ContainsSymlinks (NativeReferences)) {
+				if (ContainsSymlinks (nativeReferences)) {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7085 /* "Creating a compressed binding resource package because there are symlinks in the input." */);
 					compress = true;
-				} else if (NativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
+				} else if (nativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
 					compress = false;
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7161 /* "Not creating a compressed binding resource package, because all the native references are already compressed." */);
 				} else {
@@ -79,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (compress ? IntermediateOutputPath : BindingResourcePath);
 
 			var manifestDirectory = compress ? IntermediateOutputPath : BindingResourcePath;
-			var manifestPath = CreateManifest (manifestDirectory);
+			var manifestPath = CreateManifest (manifestDirectory, nativeReferences);
 			var packagedFiles = new List<string> ();
 
 			if (compress) {
@@ -89,7 +90,7 @@ namespace Xamarin.MacDev.Tasks {
 					File.Delete (zipFile);
 				Directory.CreateDirectory (Path.GetDirectoryName (zipFile)!);
 
-				var filesToZip = NativeReferences
+				var filesToZip = nativeReferences
 									// Canonicalize directory separators to the current platform
 									.Select (v => v.ItemSpec.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar))
 									.ToList ();
@@ -106,7 +107,7 @@ namespace Xamarin.MacDev.Tasks {
 				var bindingResourcePath = BindingResourcePath;
 				Log.LogMessage (MSBStrings.M0121, bindingResourcePath);
 				Directory.CreateDirectory (bindingResourcePath);
-				foreach (var nativeRef in NativeReferences) {
+				foreach (var nativeRef in nativeReferences) {
 					Xamarin.Bundler.FileCopier.UpdateDirectory (this, nativeRef.ItemSpec, bindingResourcePath);
 
 					var bindingOutputPath = Path.Combine (bindingResourcePath, Path.GetFileName (nativeRef.ItemSpec));
@@ -141,7 +142,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		string [] NativeReferenceAttributeNames = new string [] { "Kind", "ForceLoad", "SmartLink", "Frameworks", "WeakFrameworks", "LinkerFlags", "NeedsGccExceptionHandling", "IsCxx", "LinkWithSwiftSystemLibraries" };
 
-		string CreateManifest (string resourcePath)
+		string CreateManifest (string resourcePath, ITaskItem [] nativeReferences)
 		{
 			XmlWriterSettings settings = new XmlWriterSettings () {
 				OmitXmlDeclaration = true,
@@ -153,7 +154,7 @@ namespace Xamarin.MacDev.Tasks {
 			using (var writer = XmlWriter.Create (manifestPath, settings)) {
 				writer.WriteStartElement ("BindingAssembly");
 
-				foreach (var nativeRef in NativeReferences) {
+				foreach (var nativeRef in nativeReferences) {
 					writer.WriteStartElement ("NativeReference");
 					writer.WriteAttributeString ("Name", Path.GetFileName (nativeRef.ItemSpec));
 
@@ -178,10 +179,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			return CreateItemsForAllFilesRecursively (NativeReferences);
+			return CreateItemsForAllFilesRecursively (NativeReferences.Where (v => !v.IsSystemFramework ()));
 		}
 
-		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
+		public bool ShouldCopyToBuildServer (ITaskItem item) => !item.IsSystemFramework ();
 
 		public bool ShouldCreateOutputFile (ITaskItem item)
 		{

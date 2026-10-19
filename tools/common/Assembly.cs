@@ -163,20 +163,23 @@ namespace Xamarin.Bundler {
 			if (!StringUtils.IsNullOrEmpty (api.OriginalInputPath))
 				assemblyPaths.Add (api.OriginalInputPath);
 #endif
+			var hasBindingResourcePackage = false;
 			foreach (var asmPath in assemblyPaths) {
 				string resourceBundlePath = Path.ChangeExtension (asmPath, ".resources");
 				if (Directory.Exists (resourceBundlePath)) {
 					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {resourceBundlePath}, so not looking for any libraries embedded in the assembly.");
-					return;
+					hasBindingResourcePackage = true;
+					break;
 				}
 				var zipPath = resourceBundlePath + ".zip";
 				if (File.Exists (zipPath)) {
 					App.Log (3, $"Found a binding resource package for the assembly '{asmPath}' in {zipPath}, so not looking for any libraries embedded in the assembly.");
-					return;
+					hasBindingResourcePackage = true;
+					break;
 				}
 			}
 
-			ProcessLinkWithAttributes (assembly);
+			ProcessLinkWithAttributes (assembly, hasBindingResourcePackage);
 
 			// Make sure there are no duplicates between frameworks and weak frameworks.
 			// Keep the weak ones.
@@ -190,7 +193,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		void ProcessLinkWithAttributes (AssemblyDefinition assembly)
+		void ProcessLinkWithAttributes (AssemblyDefinition assembly, bool hasBindingResourcePackage)
 		{
 			//
 			// Tasks:
@@ -211,10 +214,14 @@ namespace Xamarin.Bundler {
 				if (!type.Is ("ObjCRuntime", "LinkWithAttribute"))
 					continue;
 
+				var linkWith = GetLinkWithAttribute (attr);
+				// Sidecars replace embedded libraries, but not framework-only linker options.
+				if (hasBindingResourcePackage && !StringUtils.IsNullOrEmpty (linkWith.LibraryName))
+					continue;
+
 				// Let the linker remove it the attribute from the assembly
 				HasLinkWithAttributes = true;
 
-				var linkWith = GetLinkWithAttribute (attr);
 				var metadata = new NativeReferenceMetadata (linkWith);
 
 				// If we've already processed this native library, skip it

@@ -553,6 +553,32 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MonoTouchTest"), "CFBundleDisplayName");
 		}
 
+		[TestCase (true, "true")]
+		[TestCase (true, "false")]
+		[TestCase (false, "false")]
+		public void BindSystemFramework (bool noBindingEmbedding, string compress)
+		{
+			var platform = ApplePlatform.MacOSX;
+			var runtimeIdentifier = "osx-arm64";
+			const string framework = "InputMethodKit";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("EmbeddedFrameworkInBindingProjectApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			properties ["NoBindingEmbedding"] = noBindingEmbedding.ToString ();
+			properties ["CompressBindingResourcePackage"] = compress;
+			properties ["SystemFramework"] = $"/System/Library/Frameworks/{framework}.framework";
+			DotNet.AssertBuild (projectPath, properties);
+
+			var executable = GetNativeExecutable (platform, appPath);
+			Assert.That (GetLinkedWithFrameworks (executable), Does.Contain ($"/System/Library/Frameworks/{framework}.framework/Versions/A/{framework}"), "System framework linkage");
+			Assert.That (Directory.GetDirectories (appPath, $"{framework}.framework", SearchOption.AllDirectories), Is.Empty, "System framework must not be bundled");
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, executable);
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]

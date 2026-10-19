@@ -11,5 +11,6 @@
 		<ObjcBindingApiDefinition Include="../ApiDefinition.cs" />
 		<ObjcBindingCoreSource Include="../StructsAndEnums.cs" />
 		<NativeReference Include="../../../test-libraries/.libs/$(NativeLibName)/XTest.framework" Kind="Framework" />
+		<NativeReference Include="$(SystemFramework)" Kind="Framework" Condition="'$(SystemFramework)' != ''" />
 	</ItemGroup>
 </Project>

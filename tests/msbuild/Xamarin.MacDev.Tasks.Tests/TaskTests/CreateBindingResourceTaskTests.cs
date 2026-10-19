@@ -60,8 +60,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-
-
 		[Test]
 		[TestCase (true)]
 		[TestCase (false)]
@@ -432,3 +430,4 @@ namespace Xamarin.MacDev.Tasks {
 
 	}
 }
+

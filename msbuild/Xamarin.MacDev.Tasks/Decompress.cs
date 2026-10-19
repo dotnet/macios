@@ -169,8 +169,6 @@ namespace Xamarin.MacDev {
 					}
 				}
 
-
-
 				var zipPattern = entry.FullName;
 				if (zipPattern.Length > 0) {
 					var last = zipPattern [zipPattern.Length - 1];
@@ -405,3 +403,4 @@ namespace Xamarin.MacDev {
 
 	}
 }
+

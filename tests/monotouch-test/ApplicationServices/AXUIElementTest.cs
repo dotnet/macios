@@ -89,6 +89,17 @@ namespace MonoTouchFixtures.ApplicationServices {
 			Assert.Throws<ObjectDisposedException> (() => element.GetAttributeNames (out var names), "Attribute names");
 			Assert.Throws<ObjectDisposedException> (() => element.PerformAction ("AXPress"), "Action");
 		}
+
+		[Test]
+		public void NativeWrapperOwnership ()
+		{
+			using var original = AXUIElement.CreateApplication (Environment.ProcessId);
+			using var wrapper = Runtime.GetINativeObject<AXUIElement> (original.Handle, false);
+			Assert.That (wrapper, Is.Not.Null, "Wrapper");
+			original.Dispose ();
+			Assert.That (wrapper.GetPid (out var pid), Is.EqualTo (AXError.Success), "Result");
+			Assert.That (pid, Is.EqualTo (Environment.ProcessId), "PID");
+		}
 	}
 }
 #endif

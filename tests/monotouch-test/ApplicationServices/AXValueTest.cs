@@ -5,6 +5,7 @@
 
 #if __MACOS__
 using ApplicationServices;
+using CoreGraphics;
 
 namespace MonoTouchFixtures.ApplicationServices {
 	[TestFixture]
@@ -87,6 +88,18 @@ namespace MonoTouchFixtures.ApplicationServices {
 			value.Dispose ();
 			Assert.Throws<ObjectDisposedException> (() => _ = value.ValueType, "Value type");
 			Assert.Throws<ObjectDisposedException> (() => value.TryGetValue (out CGPoint point), "Get value");
+		}
+
+		[Test]
+		public void NativeWrapperOwnership ()
+		{
+			using var original = new AXValue (AXError.NoValue);
+			using var wrapper = Runtime.GetINativeObject<AXValue> (original.Handle, false);
+			Assert.That (wrapper, Is.Not.Null, "Wrapper");
+			Assert.That (TestRuntime.CFGetRetainCount (original.Handle), Is.EqualTo ((nint) 2), "Retained");
+			original.Dispose ();
+			Assert.That (wrapper.TryGetValue (out AXError error), Is.True, "Get error");
+			Assert.That (error, Is.EqualTo (AXError.NoValue), "Error");
 		}
 	}
 }

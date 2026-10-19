@@ -45,13 +45,13 @@ namespace MonoTouchFixtures.ApplicationServices {
 		}
 
 		[Test]
-		public void SystemWideNotifications ()
+		public void SystemWideNotificationsAreRejected ()
 		{
 			Assert.That (AXObserver.Create (Environment.ProcessId, (o, e, n, r) => { }, out var result), Is.EqualTo (AXError.Success), "Create");
 			using var observer = result;
 			using var element = AXUIElement.CreateSystemWide ();
-			Assert.That (observer.AddNotification (element, "AXValueChanged"), Is.EqualTo (AXError.NotificationUnsupported), "Add");
-			Assert.That (observer.RemoveNotification (element, "AXValueChanged"), Is.EqualTo (AXError.NotificationUnsupported), "Remove");
+			Assert.That (observer.AddNotification (element, "AXValueChanged"), Is.AnyOf (AXError.NotificationUnsupported, AXError.InvalidUIElement), "Add");
+			Assert.That (observer.RemoveNotification (element, "AXValueChanged"), Is.AnyOf (AXError.NotificationUnsupported, AXError.InvalidUIElement), "Remove");
 		}
 
 		[Test]

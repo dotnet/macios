@@ -65,7 +65,13 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 		// filter to values we find in the app manifest, if it exists
 		if (File.Exists (AppBundleManifestPath)) {
-			var appManifest = PDictionary.OpenFile (AppBundleManifestPath);
+			PDictionary appManifest;
+			try {
+				appManifest = PDictionary.OpenFile (AppBundleManifestPath);
+			} catch (Exception ex) {
+				Log.LogError (null, null, null, AppBundleManifestPath, 0, 0, 0, 0, MSBStrings.E0010, AppBundleManifestPath, ex.Message);
+				return false;
+			}
 
 			var uiDeviceFamily = appManifest.GetUIDeviceFamily ();
 			// an iPhone app can run on an iPad, but an iPad app cannot run on an iPhone

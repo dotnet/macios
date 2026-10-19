@@ -1745,6 +1745,7 @@ UIKIT_SOURCES = \
 	UIKit/NSLayoutManager.cs \
 	UIKit/UIAccessibility.cs \
 	UIKit/UIAccessibilityCustomAction.cs \
+	UIKit/UIAction.cs \
 	UIKit/UIActionSheet.cs \
 	UIKit/UIAlertView.cs \
 	UIKit/UIAppearance.cs \

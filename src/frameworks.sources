@@ -2461,7 +2461,8 @@ IOS_DOTNET_SOURCES           := $(sort $(foreach framework,$(call uppercase,$(IO
 
 MACOS_DOTNET_CORE_SOURCES    := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))   $(SHARED_CORE_SOURCES))
 MACOS_DOTNET_API_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_API_SOURCES))    $(SHARED_API_SOURCES))
-MACOS_DOTNET_APIS            := $(sort $(foreach framework,$(call lowercase,$(MACOS_FRAMEWORKS)),$(framework).cs)                $(MACOS_DOTNET_API_SOURCES))
+# QuickLookUI's API definitions are shared with QuickLook in quicklook.cs.
+MACOS_DOTNET_APIS            := $(filter-out quicklookui.cs,$(sort $(foreach framework,$(call lowercase,$(MACOS_FRAMEWORKS)),$(framework).cs) $(MACOS_DOTNET_API_SOURCES)))
 MACOS_DOTNET_SOURCES         := $(sort $(foreach framework,$(call uppercase,$(MACOS_FRAMEWORKS)),$($(framework)_SOURCES))        $(SHARED_SOURCES) $(MACOS_DOTNET_CORE_SOURCES))
 
 TVOS_DOTNET_CORE_SOURCES     := $(sort $(foreach framework,$(call uppercase,$(TVOS_FRAMEWORKS)),$($(framework)_CORE_SOURCES))    $(SHARED_CORE_SOURCES))

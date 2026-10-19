@@ -192,6 +192,26 @@ namespace ObjCRuntime {
 			}
 		}
 
+		/// <summary>Returns the handle to the specified Objective-C selector.</summary>
+		/// <param name="name">The UTF-8 encoded selector name.</param>
+		/// <returns>The handle to the specified Objective-C selector.</returns>
+		/// <remarks>
+		///   The name does not need to be NUL-terminated. If it contains a NUL byte, only the bytes before the first NUL byte are used.
+		/// </remarks>
+		public static unsafe IntPtr GetHandle (ReadOnlySpan<byte> name)
+		{
+			if (!name.IsEmpty && name [name.Length - 1] == 0) {
+				fixed (byte* ptr = name)
+					return sel_registerName ((IntPtr) ptr);
+			}
+
+			Span<byte> buffer = name.Length < 256 ? stackalloc byte [name.Length + 1] : new byte [checked (name.Length + 1)];
+			name.CopyTo (buffer);
+			buffer [name.Length] = 0;
+			fixed (byte* ptr = buffer)
+				return sel_registerName ((IntPtr) ptr);
+		}
+
 		// objc/objc.h
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		extern static /* BOOL */ byte sel_isMapped (/* SEL */ IntPtr sel);

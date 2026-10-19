@@ -119,7 +119,7 @@ namespace LinkAll.Attributes {
 			// handle and is unconditionally preserved
 			var field = klass.GetField ("handle", BindingFlags.NonPublic | BindingFlags.Instance);
 			Assert.That (field, Is.Not.Null, "handle");
-			var method = klass.GetMethod ("GetHandle", BindingFlags.Public | BindingFlags.Static);
+			var method = klass.GetMethod ("GetHandle", BindingFlags.Public | BindingFlags.Static, null, new [] { typeof (string) }, null);
 			Assert.That (method, Is.Not.Null, "GetHandle");
 		}
 

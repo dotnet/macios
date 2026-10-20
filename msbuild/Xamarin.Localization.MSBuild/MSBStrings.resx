@@ -1815,4 +1815,11 @@
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
     </data>
+    <data name="E7200" xml:space="preserve">
+        <value>The bundle '{0}' enables the hardened runtime with ad-hoc signing and contains bundled native code ('{1}'). Hardened-runtime library validation requires the app and bundled native code to have the same certificate-derived Team ID, which ad-hoc signatures do not provide. Set 'CodesignKey' to a valid Apple signing identity.</value>
+        <comment>Shown when a hardened-runtime bundle uses ad-hoc signing and contains native libraries subject to library validation.
+{0} - The app or extension bundle.
+{1} - A bundled native library or framework.
+CodesignKey and Team ID should not be translated.</comment>
+    </data>
 </root>

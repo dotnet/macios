@@ -18,17 +18,25 @@ namespace Foundation {
 		public unsafe extern static nuint objc_msgSend (IntPtr receiver, IntPtr selector, NSFastEnumerationState* arg1, IntPtr* arg2, nuint arg3);
 	}
 
-	internal class NSFastEnumerator<T> : IEnumerator<T>
+	/// <summary>Enumerates the objects in a native collection using the NSFastEnumeration protocol.</summary>
+	/// <typeparam name="T">The managed native object or protocol type of each element.</typeparam>
+	public sealed class NSFastEnumerator<T> : IEnumerator<T>
 		where T : class, INativeObject {
 		unsafe NSFastEnumerationState* state;
-		NSObject collection;
+		INativeObject collection;
 		nuint count;
 		IntPtr mutationValue;
 		nuint current;
 		bool started;
+		bool finished;
 
-		public NSFastEnumerator (NSObject collection)
+		/// <summary>Creates an enumerator for a native collection.</summary>
+		/// <param name="collection">A native object that implements the NSFastEnumeration protocol.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="collection"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ObjectDisposedException"><paramref name="collection"/> has been disposed.</exception>
+		public NSFastEnumerator (INativeObject collection)
 		{
+			collection.GetNonNullHandle (nameof (collection));
 			this.collection = collection;
 
 			unsafe {
@@ -48,6 +56,12 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Releases the native enumeration state.</summary>
+		~NSFastEnumerator ()
+		{
+			FreeState ();
+		}
+
 		void Fetch ()
 		{
 			unsafe {
@@ -55,7 +69,8 @@ namespace Foundation {
 				GC.KeepAlive (collection);
 				if (!started) {
 					started = true;
-					mutationValue = *state->mutationsPtr;
+					if (count > 0)
+						mutationValue = *state->mutationsPtr;
 				}
 			}
 			current = 0;
@@ -65,15 +80,24 @@ namespace Foundation {
 		{
 			if (mutationValue != *state->mutationsPtr)
 				throw new InvalidOperationException ("Collection was modified");
+			GC.KeepAlive (this);
 		}
 
 		#region IEnumerator implementation
-		bool System.Collections.IEnumerator.MoveNext ()
+		/// <inheritdoc />
+		public bool MoveNext ()
 		{
+			ThrowIfDisposed ();
+			if (finished)
+				return false;
+			if (started)
+				VerifyNonMutated ();
 			if (!started || current == count - 1) {
 				Fetch ();
-				if (count == 0)
+				if (count == 0) {
+					finished = true;
 					return false;
+				}
 			} else {
 				current++;
 			}
@@ -81,24 +105,42 @@ namespace Foundation {
 			return true;
 		}
 
-		void System.Collections.IEnumerator.Reset ()
+		/// <inheritdoc />
+		public void Reset ()
 		{
+			ThrowIfDisposed ();
 			unsafe {
 				*state = new NSFastEnumerationState ();
 			}
 			started = false;
+			finished = false;
+			count = 0;
+			current = 0;
 		}
 
 		object System.Collections.IEnumerator.Current {
 			get {
-				VerifyNonMutated ();
 				return Current;
 			}
 		}
 		#endregion
 
 		#region IDisposable implementation
-		void IDisposable.Dispose ()
+		/// <inheritdoc />
+		public void Dispose ()
+		{
+			FreeState ();
+			GC.SuppressFinalize (this);
+		}
+
+		unsafe void ThrowIfDisposed ()
+		{
+			ObjectDisposedException.ThrowIf (state == null, this);
+			collection.GetNonNullHandle (nameof (collection));
+			GC.KeepAlive (collection);
+		}
+
+		void FreeState ()
 		{
 			unsafe {
 				Marshal.FreeHGlobal ((IntPtr) state);
@@ -108,13 +150,20 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerator<T> implementation
+		/// <inheritdoc />
 		public unsafe T Current {
 			get {
+				ThrowIfDisposed ();
+				if (!started || finished)
+					throw new InvalidOperationException ("Enumeration has not started or has already finished.");
+				VerifyNonMutated ();
 				IntPtr ptr;
 				unsafe {
 					ptr = state->itemsPtr [(int) current];
 				}
-				return Runtime.GetINativeObject<T> (ptr, false)!;
+				var value = Runtime.GetINativeObject<T> (ptr, false) ?? throw new InvalidOperationException ("The collection returned a null object.");
+				GC.KeepAlive (collection);
+				return value;
 			}
 		}
 		#endregion

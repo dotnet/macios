@@ -2786,7 +2786,7 @@ namespace GameController {
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> : INSFastEnumeration // # no generator support for FastEnumeration - https://github.com/dotnet/macios/issues/22516
+	interface GCPhysicalInputElementCollection<KeyIdentifierType, ElementIdentifierType> : INSFastEnumeration
 		where KeyIdentifierType : NSString
 		where ElementIdentifierType : IGCPhysicalInputElement /* id<GCPhysicalInputElement>> */
 	{

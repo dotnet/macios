@@ -1030,6 +1030,28 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.MacOSX)]
+		public void BindingWithObsoleteNativeLibrary (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath ("BindingOldStyle", platform: platform);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties ();
+			properties ["NoBindingEmbedding"] = "true";
+			for (var i = 0; i < 2; i++) {
+				var rv = DotNet.AssertBuild (project_path, properties);
+				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+				Assert.That (warnings.Length, Is.EqualTo (1), $"Warning count (build {i})");
+				Assert.That (warnings [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is deprecated. Use NativeReference instead."), $"Warning message (build {i})");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
 		public void BindingWithDefaultCompileInclude (ApplePlatform platform)
 		{
 			var project = "BindingWithDefaultCompileInclude";

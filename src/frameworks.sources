@@ -622,7 +622,18 @@ COREMEDIA_SOURCES = \
 	CoreMedia/CMCustomBlockAllocator.cs \
 	CoreMedia/CMBufferQueue.cs \
 	CoreMedia/CMMemoryPool.cs \
+	CoreMedia/CMSimpleQueue.cs \
 	CoreMedia/NSValue.cs \
+
+# CoreMediaIO
+
+COREMEDIAIO_API_SOURCES = \
+	CoreMediaIO/Enums.cs \
+
+COREMEDIAIO_SOURCES = \
+	CoreMediaIO/CMIODevice.cs \
+	CoreMediaIO/CMIOObject.cs \
+	CoreMediaIO/CMIOStream.cs \
 
 # CoreMidi
 
@@ -2069,6 +2080,7 @@ MACOS_FRAMEWORKS =          \
 	CoreHaptics             \
 	CoreImage               \
 	CoreLocation            \
+	CoreMediaIO             \
 	CoreMotion		\
 	CoreServices            \
 	CoreSpotlight           \
@@ -2373,6 +2385,7 @@ MACCATALYST_FRAMEWORKS = \
 	CoreImage \
 	CoreLocation \
 	CoreLocationUI \
+	CoreMediaIO \
 	CoreMotion \
 	CoreNFC \
 	CoreSpotlight \

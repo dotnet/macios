@@ -1,4 +1,4 @@
-#Icebox for now
+# Camera extension providers and remaining specialized hardware/sample-buffer APIs are not bound.
 !missing-enum! CMIOExtensionStreamClockType not bound
 !missing-enum! CMIOExtensionStreamDirection not bound
 !missing-enum! CMIOExtensionStreamDiscontinuityFlags not bound
@@ -34,10 +34,8 @@
 !missing-field! kCMIOSampleBufferAttachmentKey_CAAudioTimeStamp not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_ClientSequenceID not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_ClosedCaptionSampleBuffer not bound
-!missing-field! kCMIOSampleBufferAttachmentKey_DiscontinuityFlags not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_HDV1_PackData not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_HDV2_VAUX not bound
-!missing-field! kCMIOSampleBufferAttachmentKey_HostTime not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_MouseAndKeyboardModifiers not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_MuxedSourcePresentationTimeStamp not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_NativeSMPTEFrameCount not bound
@@ -46,23 +44,12 @@
 !missing-field! kCMIOSampleBufferAttachmentKey_NumberOfVideoFramesInGOP not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_PulldownCadenceInfo not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_RepeatedBufferContents not bound
-!missing-field! kCMIOSampleBufferAttachmentKey_SequenceNumber not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_SMPTETime not bound
 !missing-field! kCMIOSampleBufferAttachmentKey_SourceAudioFormatDescription not bound
 !missing-pinvoke! CMIODeviceProcessAVCCommand is not bound
 !missing-pinvoke! CMIODeviceProcessRS422Command is not bound
-!missing-pinvoke! CMIODeviceStartStream is not bound
-!missing-pinvoke! CMIODeviceStopStream is not bound
-!missing-pinvoke! CMIOObjectAddPropertyListener is not bound
 !missing-pinvoke! CMIOObjectAddPropertyListenerBlock is not bound
-!missing-pinvoke! CMIOObjectGetPropertyData is not bound
-!missing-pinvoke! CMIOObjectGetPropertyDataSize is not bound
-!missing-pinvoke! CMIOObjectHasProperty is not bound
-!missing-pinvoke! CMIOObjectIsPropertySettable is not bound
-!missing-pinvoke! CMIOObjectRemovePropertyListener is not bound
 !missing-pinvoke! CMIOObjectRemovePropertyListenerBlock is not bound
-!missing-pinvoke! CMIOObjectSetPropertyData is not bound
-!missing-pinvoke! CMIOObjectShow is not bound
 !missing-pinvoke! CMIOSampleBufferCopyNonRequiredAttachments is not bound
 !missing-pinvoke! CMIOSampleBufferCopySampleAttachments is not bound
 !missing-pinvoke! CMIOSampleBufferCreate is not bound
@@ -76,7 +63,6 @@
 !missing-pinvoke! CMIOStreamClockCreate is not bound
 !missing-pinvoke! CMIOStreamClockInvalidate is not bound
 !missing-pinvoke! CMIOStreamClockPostTimingEvent is not bound
-!missing-pinvoke! CMIOStreamCopyBufferQueue is not bound
 !missing-pinvoke! CMIOStreamDeckCueTo is not bound
 !missing-pinvoke! CMIOStreamDeckJog is not bound
 !missing-pinvoke! CMIOStreamDeckPlay is not bound

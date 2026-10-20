@@ -1998,6 +1998,19 @@ void MyMethod ()
 }
 ```
 
+<a name="MT2113"></a>
+
+### MT2113: The platform assembly '*' could not be found.
+
+The platform assembly (for example, `Microsoft.macOS.dll`) is required to build
+the app. If the app does not use any Apple APIs, trimming can remove this assembly.
+
+Add a reference to an Apple API in code that executes, for example in `Main`:
+
+```csharp
+System.GC.KeepAlive (typeof (Foundation.NSObject));
+```
+
 <a name="MT2200"></a>
 <a name="MT2201"></a>
 <a name="MT2202"></a>

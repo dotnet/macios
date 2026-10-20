@@ -51,7 +51,7 @@ namespace Xamarin.Linker {
 		public AssemblyDefinition PlatformAssembly {
 			get {
 				if (platform_assembly is null)
-					throw ErrorHelper.CreateError (99, "No platform assembly!");
+					throw ErrorHelper.CreateError (2113, Errors.MX2113, configuration.PlatformAssembly + ".dll");
 				return platform_assembly;
 			}
 		}

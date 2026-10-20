@@ -1094,6 +1094,11 @@
 	<data name="MX2112_B" xml:space="preserve">
 		<value>Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}.</value>
 	</data>
+
+	<data name="MX2113" xml:space="preserve">
+		<value>The platform assembly '{0}' could not be found. This can happen when the app does not use any Apple APIs and the assembly is removed by trimming. Add a reference to an Apple API in the app, for example: System.GC.KeepAlive (typeof (Foundation.NSObject));</value>
+		<comment>{0} is the platform assembly filename, such as Microsoft.macOS.dll. Do not translate the C# code example.</comment>
+	</data>
 	<!-- 2200 -> 2299 is used by/reserved for ExceptionalSubStep subclasses in the linker -->
 	<!-- 220x: PreserveSmartEnumConversionsSubStep -->
 	<!-- 221x: <unused> -->

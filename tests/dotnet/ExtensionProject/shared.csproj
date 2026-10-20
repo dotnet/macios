@@ -8,5 +8,6 @@
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+		<TrimmerRootAssembly Include="$(TestTrimmerRootAssembly)" Condition="'$(TestTrimmerRootAssembly)' != ''" />
 	</ItemGroup>
 </Project>

@@ -4,6 +4,58 @@ using Microsoft.Build.Logging.StructuredLogger;
 
 namespace Xamarin.Tests {
 	public class IncrementalBuildTest : TestBaseClass {
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		public void LinkModeChanges (ApplePlatform platform, string runtimeIdentifiers, bool customPublishDir)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GenerateProject (platform, nameof (LinkModeChanges), runtimeIdentifiers, out var appPath);
+			var projectDirectory = Path.GetDirectoryName (projectPath)!;
+			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), "class MainClass { static int Main () => 0; }");
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			var linkModeProperty = platform == ApplePlatform.MacOSX ? "LinkMode" : "MtouchLink";
+			if (customPublishDir)
+				properties ["PublishDir"] = Path.Combine (projectDirectory, "bin") + Path.DirectorySeparatorChar;
+
+			properties [linkModeProperty] = "None";
+			DotNet.AssertBuild (projectPath, properties);
+			var unlinkedFiles = GetManagedBundleFiles ();
+
+			properties [linkModeProperty] = "SdkOnly";
+			DotNet.AssertBuild (projectPath, properties);
+			var incrementalFiles = GetManagedBundleFiles ();
+
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetManagedBundleFiles (), Is.EquivalentTo (incrementalFiles), "Unchanged linked build");
+
+			properties [linkModeProperty] = "None";
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetManagedBundleFiles ().Keys, Is.EquivalentTo (unlinkedFiles.Keys), "Restored unlinked files");
+
+			properties [linkModeProperty] = "SdkOnly";
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetManagedBundleFiles (), Is.EquivalentTo (incrementalFiles), "Repeated link mode change");
+
+			Clean (projectPath);
+			DotNet.AssertBuild (projectPath, properties);
+			var cleanFiles = GetManagedBundleFiles ();
+			Assert.That (cleanFiles.Count, Is.LessThan (unlinkedFiles.Count), "Linking removes managed files");
+			Assert.That (incrementalFiles, Is.EquivalentTo (cleanFiles), "Incremental and clean linked file names and sizes");
+
+			Dictionary<string, long> GetManagedBundleFiles ()
+			{
+				var assemblyDirectory = Path.Combine (appPath!, GetRelativeAssemblyDirectory (platform));
+				return Directory.GetFiles (assemblyDirectory, "*", SearchOption.AllDirectories)
+					.Where (v => Path.GetExtension (v) == ".dll" || Path.GetExtension (v) == ".pdb")
+					.ToDictionary (v => Path.GetRelativePath (assemblyDirectory, v), v => new FileInfo (v).Length);
+			}
+		}
+
 		[Test]
 		// this test is fairly slow, so execute on one arch only
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]

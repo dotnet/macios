@@ -2762,6 +2762,22 @@
 	<PropertyGroup>
 		<BundleDebugSymbolFileForSdkAssembly Condition="'$(BundleDebugSymbolFileForSdkAssembly)' == ''">$(_BundlerDebug)</BundleDebugSymbolFileForSdkAssembly>
 	</PropertyGroup>
+	<Target Name="_IncludeAppBundleInPriorPublishFileWrites"
+		AfterTargets="_GetCurrentAndPriorPublishFileWrites"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_AppBundlePath)' != ''"
+		>
+		<!-- The SDK only cleans files under PublishDir, but our app bundle is normally outside that directory. -->
+		<FindUnderPath Path="$(_AppBundlePath)" Files="@(_UnfilteredAbsolutePriorPublishFileWrites)" UpdateToAbsolutePaths="true">
+			<Output TaskParameter="InPath" ItemName="_PriorPublishFileWrites" />
+		</FindUnderPath>
+		<ItemGroup>
+			<!-- Match FindUnderPath's normalized paths even when RelativePath contains '..'. -->
+			<_NormalizedCurrentPublishFileWrites Include="@(_CurrentPublishFileWrites -> '%(FullPath)')" />
+			<_CurrentPublishFileWrites Remove="@(_CurrentPublishFileWrites)" />
+			<_CurrentPublishFileWrites Include="@(_NormalizedCurrentPublishFileWrites)" />
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_AddDebugSymbolsToBundle"
 		DependsOnTargets="ResolveRuntimePackAssets;_ComputeFrameworkVariables"
 		BeforeTargets="_ResolveCopyLocalAssetsForPublish"

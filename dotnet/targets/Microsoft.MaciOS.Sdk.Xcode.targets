@@ -112,8 +112,40 @@ This file contains MSBuild targets that support building Xcode framework project
         WorkingDirectory="%(XcodeProject.RootDir)%(XcodeProject.Directory)" >
     </CreateXcFramework>
 
+    <GetFileSystemEntries
+        DirectoryPath="@(XcodeProject->'%(OutputPath)archives/%(SchemeName)$(TargetPlatformIdentifier).xcarchive/Products/Library/Frameworks')"
+        Pattern="*.framework"
+        Recursive="false"
+        IncludeDirectories="true" >
+      <Output TaskParameter="Entries" ItemName="_XcodeProjectFrameworks" />
+    </GetFileSystemEntries>
+
+    <!-- Create XCFRAMEWORKs for dependencies installed alongside the main framework. -->
+    <CreateXcFramework
+        Condition=" '%(_XcodeProjectFrameworks.Filename)' != '%(_XcodeProjectFrameworks.SchemeName)' "
+        XcArchivePath="%(_XcodeProjectFrameworks.OutputPath)archives"
+        FrameworkName="%(_XcodeProjectFrameworks.Filename).framework"
+        OutputPath="%(_XcodeProjectFrameworks.OutputPath)xcframeworks/%(_XcodeProjectFrameworks.Filename)$(TargetPlatformIdentifier).xcframework"
+        SdkDevPath="$(_SdkDevPath)"
+        WorkingDirectory="$(MSBuildProjectDirectory)" >
+    </CreateXcFramework>
+
+    <Touch Files="$(_BuildXcodeProjectsStamp)" AlwaysCreate="true" />
+  </Target>
+
+  <Target Name="_AddXcodeProjectNativeReferences"
+      AfterTargets="_BuildXcodeProjects"
+      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) " >
+    <GetFileSystemEntries
+        DirectoryPath="@(XcodeProject->'%(OutputPath)xcframeworks')"
+        Pattern="*.xcframework"
+        Recursive="false"
+        IncludeDirectories="true" >
+      <Output TaskParameter="Entries" ItemName="_XcodeProjectXcFrameworks" />
+    </GetFileSystemEntries>
+
     <ItemGroup>
-      <_XcodeProjectXcFrameworkOutputs Include="%(XcodeProject.OutputPath)xcframeworks/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier).xcframework"
+      <_XcodeProjectXcFrameworkOutputs Include="@(_XcodeProjectXcFrameworks)"
           Condition=" '%(CreateNativeReference)' == 'true' "
           ForceLoad="%(ForceLoad)"
           Frameworks="%(Frameworks)"
@@ -127,7 +159,6 @@ This file contains MSBuild targets that support building Xcode framework project
         Condition=" '@(_XcodeProjectXcFrameworkOutputs->Count())' != '0' "
     />
 
-    <Touch Files="$(_BuildXcodeProjectsStamp)" AlwaysCreate="true" />
     <ItemGroup>
       <!-- Add stamp and build outputs to FileWrites so they are not deleted on IncrementalClean -->
       <FileWrites Include="$(_BuildXcodeProjectsStamp);%(XcodeProject.OutputPath)**/*" />

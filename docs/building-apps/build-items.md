@@ -454,6 +454,7 @@ The following MSBuild metadata are supported:
     The default value is `Release`.
 
 - `%(CreateNativeReference)`: Output XCFRAMEWORK files will be added as a `@(NativeReference)` to the project.
+    This includes frameworks installed in the Xcode archive as dependencies of the selected scheme.
     Metadata supported by `@(NativeReference)` like `%(Kind)`, `%(Frameworks)`, or `%(SmartLink)` will be forwarded if set.
     The default value is `true`.
 

@@ -3145,6 +3145,24 @@
 		<Error Text="WinExe is not a valid output type for $(_PlatformName)" Condition="'$(OutputType)' == 'WinExe'"/>
 	</Target>
 
+	<ItemGroup>
+		<AdditionalTargetFrameworkInfoProperty Include="OutputType;IsAppExtension;MSBuildProjectFullPath" />
+	</ItemGroup>
+
+	<Target Name="_WarnOnExecutableProjectReferences"
+		AfterTargets="_GetProjectReferenceTargetFrameworkProperties"
+		Condition="'$(WarnOnExecutableProjectReferences)' != 'false' And '$(DesignTimeBuild)' != 'true'">
+		<XmlPeek
+			Condition="'%(_MSBuildProjectReferenceExistent.AdditionalPropertiesFromProject)' != '' And '%(_MSBuildProjectReferenceExistent.ReferenceOutputAssembly)' != 'false'"
+			XmlContent="%(_MSBuildProjectReferenceExistent.AdditionalPropertiesFromProject)"
+			Query="/AdditionalProjectProperties/*[local-name() = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)' or @Name = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)'][translate(OutputType, 'EXE', 'exe') = 'exe' and not(translate(IsAppExtension, 'TRUE', 'true') = 'true')]/MSBuildProjectFullPath/text()">
+			<Output TaskParameter="Result" ItemName="_ExecutableProjectReference" />
+		</XmlPeek>
+		<Warning
+			Condition="'@(_ExecutableProjectReference)' != ''"
+			Text="The referenced project '%(_ExecutableProjectReference.Identity)' is an executable. Resources from executable projects will not be included in the app bundle. Reference a class library instead, or set 'WarnOnExecutableProjectReferences' to 'false' to disable this warning." />
+	</Target>
+
 	<PropertyGroup>
 		<BuildDependsOn>
 			_ValidateRuntimeIdentifiers;

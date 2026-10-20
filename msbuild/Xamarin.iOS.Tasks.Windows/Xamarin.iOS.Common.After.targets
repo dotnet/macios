@@ -106,8 +106,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<Target Name="CopyIpaFromMac" Condition="'$(OutputType)' == 'Exe' And '$(SdkIsDevice)' == 'true' And '$(BuildIpa)' == 'true'">
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' == 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" TargetFile="$(DistributionPath)" />
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' != 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" />
-		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false'" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\%(_AssetPack.DirectoryName)" />
-		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false'" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\AssetPackManifest.plist" />
+		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false' And '@(_AssetPack)' != ''" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\%(_AssetPack.DirectoryName)" />
+		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false' And '@(_AssetPack)' != ''" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\AssetPackManifest.plist" />
 	</Target>
 	
 	<!-- Override Build -->

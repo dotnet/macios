@@ -600,6 +600,9 @@ bundle (to be hosted by the App Store), regardless of this property.
 
 This property has no effect on a device debug build.
 
+If the app has no on-demand resource asset packs, no asset packs or asset-pack
+manifest are exported, regardless of this property's value.
+
 Default: true
 
 ## EnableCodeSigning

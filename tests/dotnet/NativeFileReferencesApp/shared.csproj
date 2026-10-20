@@ -2,6 +2,7 @@
 <Project>
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 
 		<ApplicationTitle>NativeFileReferencesApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.nativefilereferences</ApplicationId>

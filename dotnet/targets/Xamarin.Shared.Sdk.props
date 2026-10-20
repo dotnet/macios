@@ -161,6 +161,7 @@
 
 	<!-- Set the default RuntimeIdentifier if not already specified. -->
 	<PropertyGroup Condition="'$(_RuntimeIdentifierIsRequired)' == 'true' And '$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' == '' ">
+		<_CleanAllRuntimeIdentifiers>true</_CleanAllRuntimeIdentifiers>
 		<!-- The _<platform>RuntimeIdentifier values are set from the IDE -->
 		<RuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">$(_iOSRuntimeIdentifier)</RuntimeIdentifier>
 		<RuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">$(_tvOSRuntimeIdentifier)</RuntimeIdentifier>

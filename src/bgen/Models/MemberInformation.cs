@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Foundation;
 
@@ -144,6 +145,9 @@ public class MemberInformation {
 	{
 		is_basewrapper_protocol_method = isBaseWrapperProtocolMethod;
 		foreach (ParameterInfo pi in mi.GetParameters ()) {
+			if (generator.AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi) || generator.AttributeManager.HasAttribute<PointerAsStructAttribute> (pi)) {
+				is_unsafe = true;
+			}
 			if (pi.ParameterType.IsSubclassOf (Generator.TypeCache.System_Delegate)) {
 				is_unsafe = true;
 				break;
@@ -200,6 +204,11 @@ public class MemberInformation {
 
 		if (is_static || is_category_extension || isInterfaceImpl || isExtensionMethod || is_type_sealed)
 			is_virtual_method = false;
+
+		if (mi.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi))) {
+			// The registrar cannot marshal native buffers into managed array overrides.
+			is_virtual_method = false;
+		}
 	}
 
 	public MemberInformation (Generator generator, IMemberGatherer gather, PropertyInfo pi, Type type, bool is_interface_impl = false)

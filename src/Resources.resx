@@ -644,4 +644,8 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>Invalid pointer binding for parameter '{0}' in '{1}.{2}': {3}</value>
+	</data>
 </root>

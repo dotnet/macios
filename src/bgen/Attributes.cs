@@ -51,6 +51,26 @@ public class ForcedTypeAttribute : Attribute {
 	public bool Owns;
 }
 
+[AttributeUsage (AttributeTargets.Parameter)]
+public sealed class PointerAsStructAttribute : Attribute {
+}
+
+[AttributeUsage (AttributeTargets.Parameter)]
+public sealed class PointerAsArrayAttribute : Attribute {
+	int length = -1;
+
+	public string? LengthFromParameter { get; set; }
+	public string? LengthFromMember { get; set; }
+	public int Length {
+		get => length;
+		set {
+			length = value;
+			HasLength = true;
+		}
+	}
+	internal bool HasLength { get; private set; }
+}
+
 #if !XAMCORE_5_0
 // Used to flag a type as needing to be turned into a protocol on output for Unified
 // For example:

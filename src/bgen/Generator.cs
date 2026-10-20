@@ -200,6 +200,9 @@ public partial class Generator : IMemberGatherer {
 		if (mai.IsAligned)
 			return "IntPtr";
 
+		if (mai.IsPointerArray)
+			return "IntPtr";
+
 		if (mai.Type.IsEnum)
 			return PrimitiveType (mai.Type, formatted);
 
@@ -606,6 +609,7 @@ public partial class Generator : IMemberGatherer {
 		pars.Add (new TrampolineParameterInfo ("IntPtr", "block"));
 		var parameters = mi.GetParameters ();
 		foreach (var pi in parameters) {
+			ValidatePointerParameter (pi);
 			var isForced = HasForcedAttribute (pi, out var isForcedOwns);
 
 			if (pi != parameters [0])
@@ -812,6 +816,14 @@ public partial class Generator : IMemberGatherer {
 
 		var safe_name = pi.Name.GetSafeParamName ();
 
+		if (AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi)) {
+			var elementType = TypeManager.FormatType (mi.DeclaringType, pi.ParameterType.GetElementType () ??
+				throw InvalidPointerParameter (pi, "The parameter must have a struct element type."));
+			by_ref_init.AppendLine ($"fixed ({elementType}* {safe_name}__pointer = {safe_name}) {{");
+			post_return.AppendLine ("}");
+			return $"(IntPtr) {safe_name}__pointer";
+		}
+
 		if (TypeManager.IsWrappedType (pi.ParameterType))
 			return safe_name + "__handle__";
 
@@ -998,6 +1010,7 @@ public partial class Generator : IMemberGatherer {
 			sb.Append ("_stret");
 
 		foreach (var pi in mi.GetParameters ()) {
+			ValidatePointerParameter (pi);
 			if (IsTarget (pi))
 				continue;
 			sb.Append ("_");
@@ -2939,6 +2952,7 @@ public partial class Generator : IMemberGatherer {
 		int parCount = parameters.Length;
 		for (int pari = 0; pari < parCount; pari++) {
 			var pi = parameters [pari];
+			ValidatePointerParameter (pi);
 
 			if (comma)
 				sb.Append (", ");
@@ -2988,7 +3002,7 @@ public partial class Generator : IMemberGatherer {
 				}
 				sb.Append (TypeManager.FormatType (declaringType, parType, nullabilityBytes));
 				// some `IntPtr` are decorated with `[NullAttribute]`
-				if (!parType.IsValueType) {
+				if (!parType.IsValueType && !parType.IsPointer) {
 					if (AttributeManager.IsNullable (pi)) {
 						sb.Append ('?');
 					} else if (pi.Position == 0 && mi is MethodInfo minfo) {
@@ -3380,7 +3394,9 @@ public partial class Generator : IMemberGatherer {
 				convs.AppendFormat (GenerateMarshalString (probe_null), pi.Name, pi.Name.GetSafeParamName ());
 				disposes.AppendFormat (GenerateDisposeString (probe_null), pi.Name);
 			} else if (mai.Type.TryIsArray (out var etype)) {
-				if (HasBindAsAttribute (pi)) {
+				if (mai.IsPointerArray) {
+					// The array is pinned by MarshalParameter instead of converted to NSArray.
+				} else if (HasBindAsAttribute (pi)) {
 					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
 				} else if (HasBindAsAttribute (propInfo)) {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
@@ -3514,6 +3530,7 @@ public partial class Generator : IMemberGatherer {
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
+			ValidatePointerParameter (pi);
 			if (!BindThirdPartyLibrary) {
 				if (!mi.IsSpecialName && IsModel (pi.ParameterType)) {
 					// don't warn on obsoleted API, there's likely a new version that fix this
@@ -3537,6 +3554,14 @@ public partial class Generator : IMemberGatherer {
 			} else if (needs_null_check) {
 				print ("if ({0} is null)", safe_name);
 				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
+			}
+			if (AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi)) {
+				var (length, signed) = GetPointerArrayLength (mi, pi);
+				var lengthName = $"__pointer_array_length_{pi.Position}";
+				print ($"var {lengthName} = {length};");
+				var negativeCheck = signed ? $"{lengthName} < 0 || " : "";
+				print ($"if ({negativeCheck}(ulong) {lengthName} > (ulong) ({safe_name}?.LongLength ?? 0))");
+				print ($"\tthrow new ArgumentOutOfRangeException (nameof ({safe_name}));");
 			}
 		}
 	}
@@ -4602,6 +4627,9 @@ public partial class Generator : IMemberGatherer {
 
 	void PrintExport (MemberInformation minfo)
 	{
+		if (minfo.Method?.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi)) == true)
+			return;
+
 		if (minfo.is_ctor && minfo.is_protocol_member)
 			return;
 

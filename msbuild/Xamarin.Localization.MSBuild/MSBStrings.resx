@@ -1816,6 +1816,12 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when a native framework's extension contains uppercase letters.
 {0} - The path to the framework. Do not translate '.framework'.</comment>
     </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The native framework reference '{0}' must be a path to a .framework directory or its library. To link a system framework, use LinkerArgument items instead: '-framework' followed by the framework name.</value>
+        <comment>Shown when a NativeReference with Kind=Framework does not point to a framework.
+{0} - The invalid native reference.
+Do not translate NativeReference, Kind, Framework, LinkerArgument, .framework, or -framework.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

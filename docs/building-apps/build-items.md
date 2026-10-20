@@ -317,6 +317,11 @@ See also the [GetApplicationArtifacts](build-targets.md#getapplicationartifacts)
 An item group that contains any native references that should be linked into
 or linked with when building the native executable.
 
+For frameworks, set the `Kind` metadata to `Framework` and specify the path to
+the `.framework` directory or the library inside it. To link a system framework
+by name instead, use [LinkerArgument](#linkerargument) items with `-framework`
+followed by the framework name.
+
 Native framework directory names must use the lowercase `.framework` extension.
 Other capitalization, such as `.Framework` or `.FRAMEWORK`, produces warning
 `MT7200` because the framework may not be linked or bundled

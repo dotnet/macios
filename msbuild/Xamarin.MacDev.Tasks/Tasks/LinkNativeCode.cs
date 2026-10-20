@@ -88,6 +88,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (NativeReferences.Length > 0) {
 				var linkerArguments = new LinkerOptions ();
 				linkerArguments.BuildNativeReferenceFlags (Log, NativeReferences);
+				if (Log.HasLoggedErrors)
+					return false;
 				foreach (var framework in linkerArguments.Frameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");

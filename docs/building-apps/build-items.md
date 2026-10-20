@@ -282,7 +282,7 @@ Example:
 <Target Name="WriteApplicationArtifacts" AfterTargets="Build">
     <WriteLinesToFile
         File="$(OutputPath)application-artifacts.txt"
-        Lines="%(ApplicationArtifact.Identity)|%(ApplicationArtifact.PackageFormat)"
+        Lines="@(ApplicationArtifact->'%(Identity)|%(PackageFormat)')"
         Overwrite="true" />
 </Target>
 ```

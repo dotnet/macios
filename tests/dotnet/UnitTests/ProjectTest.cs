@@ -726,6 +726,50 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false, false, false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, false, false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true, true, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, false, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, false, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, true, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, true, true)]
+		public void PInvokeStaticLibraryTargets (ApplePlatform platform, string runtimeIdentifier, bool remapped, bool prepareAssemblies, bool nativeAot)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("NativeFileReferencesApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["PrepareAssemblies"] = prepareAssemblies.ToString ();
+			properties ["MtouchExtraArgs"] = "-dlsym:true";
+			properties ["NoSymbolStrip"] = "false";
+			if (remapped)
+				properties ["AdditionalDefineConstants"] = "REMAPPED_PINVOKES";
+			if (nativeAot) {
+				properties ["Configuration"] = "Release";
+				properties ["PublishAot"] = "true";
+				properties ["_IsPublishing"] = "true";
+				properties.Remove ("MtouchExtraArgs");
+				appPath = GetAppPath (projectPath, platform, runtimeIdentifier, "Release");
+			}
+
+			foreach (var preserve in nativeAot ? new [] { true } : new [] { true, false, true }) {
+				properties ["PreserveRemappedPInvokes"] = (remapped && preserve).ToString ();
+				properties ["RemoveInternalPInvokeTarget"] = (!remapped && !preserve).ToString ();
+				DotNet.AssertBuild (projectPath, properties);
+
+				var executable = GetNativeExecutable (platform, appPath);
+				var symbols = Configuration.GetNativeSymbols (executable);
+				foreach (var symbol in new [] { "_theUltimateAnswer", "_getIntOfChocolate" }) {
+					Assert.That (symbols, preserve ? Does.Contain (symbol) : Does.Not.Contain (symbol), $"Symbol {symbol}, remapped={remapped}, preserve={preserve}");
+				}
+				if (preserve)
+					ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, executable);
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)] // Optimize=true should strip atom info
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)] // Optimize=false should preserve atom info
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]

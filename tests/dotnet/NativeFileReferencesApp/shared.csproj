@@ -18,4 +18,11 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(PreserveRemappedPInvokes)' == 'true'">
+		<PInvokeStaticLibraryTargets Include="RemapMe;RemapMe2" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(RemoveInternalPInvokeTarget)' == 'true'">
+		<PInvokeStaticLibraryTargets Remove="__Internal" />
+	</ItemGroup>
 </Project>

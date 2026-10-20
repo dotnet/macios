@@ -378,6 +378,46 @@ the `CollectAppManifestsDependsOn` property:
 </Target>
 ```
 
+## PInvokeStaticLibraryTargets
+
+An item group that lists P/Invoke library names whose entry points are linked
+statically into the app's native executable. The build asks the native linker
+to preserve these entry points so that they remain available at runtime, even
+when a library name is remapped with `NativeLibrary.SetDllImportResolver`.
+Library names are case-sensitive.
+
+This item group contains `__Internal` by default. Additional library names can
+be added in the project file:
+
+```xml
+<ItemGroup>
+    <PInvokeStaticLibraryTargets Include="RemapMe" />
+</ItemGroup>
+```
+
+The library name must match the value in the `DllImport` or `LibraryImport`
+attribute, not the path to the native library. This item group does not link
+the library into the app or configure runtime library resolution. Use
+[NativeReference](#nativereference) to link the static library and configure
+runtime resolution as needed.
+
+The default entry can also be removed:
+
+```xml
+<ItemGroup>
+    <PInvokeStaticLibraryTargets Remove="__Internal" />
+</ItemGroup>
+```
+
+For NativeAOT builds, P/Invokes to these libraries are direct P/Invokes.
+
+Use [ReferenceNativeSymbol](#referencenativesymbol) when individual symbols
+need to be preserved instead of all P/Invoke entry points for a library.
+C# does not permit an empty library name in a `DllImport` attribute (CS0591),
+and MSBuild items cannot have an empty `Include`. For P/Invokes with empty
+library names emitted by other tools, use `ReferenceNativeSymbol` to preserve
+the required entry points.
+
 ## ReferenceNativeSymbol
 
 The item group `ReferenceNativeSymbol` can be used to specify how we should

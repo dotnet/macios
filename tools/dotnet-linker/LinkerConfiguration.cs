@@ -62,6 +62,7 @@ namespace Xamarin.Linker {
 		public string MSBuildPostProcessOutputFile { get; private set; } = string.Empty;
 		public bool IsSimulatorBuild { get; private set; }
 		public string PartialStaticRegistrarLibrary { get; set; } = string.Empty;
+		public HashSet<string> PInvokeStaticLibraryTargets { get; private set; } = new HashSet<string> (StringComparer.Ordinal);
 		public ApplePlatform Platform { get; private set; }
 		public string PlatformAssembly { get; private set; } = string.Empty;
 		public bool PublishTrimmed { get; private set; }
@@ -499,6 +500,10 @@ namespace Xamarin.Linker {
 				{ "PartialStaticRegistrarLibrary", (
 					new LoadValue ((key, value) => PartialStaticRegistrarLibrary = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, PartialStaticRegistrarLibrary, storage))
+				)},
+				{ "PInvokeStaticLibraryTarget", (
+					new LoadValue ((key, value) => PInvokeStaticLibraryTargets.Add (value)),
+					new SaveValue ((key, storage) => storage.AddRange (PInvokeStaticLibraryTargets.OrderBy (v => v).Select (v => $"{key}={v}")))
 				)},
 				{ "Platform", (
 					new LoadValue ((key, value) => Platform = ApplePlatformExtensions.Parse (value)),

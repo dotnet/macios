@@ -3140,8 +3140,18 @@
 		<Error Text="WinExe is not a valid output type for $(_PlatformName)" Condition="'$(OutputType)' == 'WinExe'"/>
 	</Target>
 
+	<Target Name="_ValidateAssemblyName"
+		Condition="$(AssemblyName.Contains(`'`))">
+		<MacDevMessage
+			Error="true"
+			ResourceName="AssemblyNameContainsSingleQuote"
+			FormatArguments="$(AssemblyName)"
+		/>
+	</Target>
+
 	<PropertyGroup>
 		<BuildDependsOn>
+			_ValidateAssemblyName;
 			_ValidateRuntimeIdentifiers;
 			_VerifyValidOutputType;
 			$(BuildDependsOn);

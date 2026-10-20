@@ -3295,6 +3295,41 @@ namespace Xamarin.Tests {
 			AssertErrorMessages (errors, $"The property '{property}' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture.");
 		}
 
+		[TestCase (ApplePlatform.iOS, "What's Up")]
+		[TestCase (ApplePlatform.TVOS, "What's Up")]
+		[TestCase (ApplePlatform.MacOSX, "What's Up")]
+		[TestCase (ApplePlatform.MacCatalyst, "What's Up")]
+		[TestCase (ApplePlatform.iOS, "'Quoted'")]
+		[TestCase (ApplePlatform.iOS, "Quoted'")]
+		public void AssemblyNameWithSingleQuote (ApplePlatform platform, string assemblyName)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			Clean (projectPath);
+			var properties = GetDefaultProperties ();
+			properties ["AssemblyName"] = assemblyName;
+			properties ["ExcludeTouchUnitReference"] = "true";
+			var result = DotNet.AssertBuildFailure (projectPath, properties);
+			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, $"The AssemblyName value '{assemblyName}' contains a single quote, which is not supported. Remove single quotes from the AssemblyName property in the project file.");
+		}
+
+		[TestCase ("Whats Up")]
+		[TestCase ("Whats.Up")]
+		[TestCase ("Whats-Up")]
+		public void AssemblyNameWithoutSingleQuote (string assemblyName)
+		{
+			var platform = ApplePlatform.iOS;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			var properties = GetDefaultProperties ();
+			properties ["AssemblyName"] = assemblyName;
+			properties ["ExcludeTouchUnitReference"] = "true";
+			DotNet.AssertBuild (projectPath, properties, target: "_ValidateAssemblyName");
+		}
+
 		[Test]
 		[TestCase ("RunAotCompilation", "true")]
 		[TestCase ("AotAssemblies", "true")]

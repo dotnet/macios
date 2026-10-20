@@ -1801,4 +1801,9 @@
 {0} - The number of files hashed.
 {1} - The total number of input files.</comment>
     </data>
+    <data name="AssemblyNameContainsSingleQuote" xml:space="preserve">
+        <value>The AssemblyName value '{0}' contains a single quote, which is not supported. Remove single quotes from the AssemblyName property in the project file.</value>
+        <comment>AssemblyName is an MSBuild property name and should not be translated.
+{0} - The assembly name.</comment>
+    </data>
 </root>

@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using Microsoft.Build.Framework;
 
 using Xamarin.Localization.MSBuild;
+using Xamarin.Messaging.Build.Client;
 
 namespace Xamarin.MacDev.Tasks {
-	public class CreateXcArchive : XcodeBuildTask {
+	public class CreateXcArchive : XcodeBuildTask, ITaskCallback {
 
 		// Task input parameters
 		public string ProjectPath { get; set; } = string.Empty;
@@ -37,7 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (ProjectPath)) {
 				args.Add ("-project");
-				args.Add (ProjectPath);
+				args.Add (Path.GetFullPath (ProjectPath));
 			}
 
 			if (!string.IsNullOrEmpty (SchemeName)) {
@@ -77,6 +78,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (ShouldExecuteRemotely ()) {
+				ProjectPath = GetRemotePath (ProjectPath);
+				DerivedDataPath = GetRemotePath (DerivedDataPath);
+				PackageCachePath = GetRemotePath (PackageCachePath);
+				return base.Execute ();
+			}
+
 			if (!Directory.Exists (ProjectPath)) {
 				Log.LogError (MSBStrings.XcodeBuild_InvalidItem, ProjectPath);
 				return false;
@@ -84,6 +92,15 @@ namespace Xamarin.MacDev.Tasks {
 
 			return base.Execute ();
 		}
+
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			return CreateItemsForAllFilesRecursively (WorkingDirectory);
+		}
+
+		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
+
+		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
 	}
 }

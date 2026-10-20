@@ -123,7 +123,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_DetectBuildType">
 		<PropertyGroup>
-			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false' And '@(XcodeProject)' == ''">False</IsRemoteBuild>
 		</PropertyGroup>
 	</Target>
 
@@ -188,7 +188,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CreateBindingResourcePackage"
 		Condition="'$(_DisableBindingProjectBuild)' != 'true' And '$(NoBindingEmbedding)' == 'true'"
 		DependsOnTargets="_ExpandNativeReferences"
-		Inputs="$(MSBuildAllProjects);$(MSBuildProjectFullPath);@(ObjcBindingApiDefinition);@(ObjcBindingCoreSource);@(ReferencePath);@(ObjcBindingNativeLibrary);@(_FrameworkNativeReference);@(_FileNativeReference)"
+		Inputs="$(MSBuildAllProjects);$(MSBuildProjectFullPath);@(ObjcBindingApiDefinition);@(ObjcBindingCoreSource);@(ReferencePath);@(ObjcBindingNativeLibrary);@(_FrameworkNativeReference);@(_FileNativeReference);@(_XcodeProjectBuildStamp)"
 		Outputs="$(BindingResourcePath).stamp">
 
 		<!-- CompressBindingResourcePackage specifies whether the package should be compressed (zipped) or not
@@ -202,6 +202,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 
 		<CreateBindingResourcePackage
+			SessionId="$(_XcodeProjectBuildSessionId)"
 			NativeReferences="@(NativeReference)"
 			BindingResourcePath="$(BindingResourcePath)"
 			Compress="$(CompressBindingResourcePackage)"

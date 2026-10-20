@@ -120,6 +120,11 @@ namespace Xamarin.Linker {
 
 		string? user_optimize_flags;
 
+		string msbuildNoWarn = "";
+		bool msbuildTreatWarningsAsErrors;
+		string msbuildWarningsAsErrors = "";
+		string msbuildWarningsNotAsErrors = "";
+
 		Dictionary<string, List<MSBuildItem>> msbuild_items = new Dictionary<string, List<MSBuildItem>> ();
 
 		// MSBuild output properties (property name -> value), written (alphabetically sorted) to the
@@ -488,7 +493,23 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
 					new SaveValue ((key, storage) => saveNullableBool (key, Application.AotFloat32, storage))
 				)},
-				{ "NoWarn", ( // we should support '$(NoWarn)' at some point: https://github.com/dotnet/macios/issues/25645
+				{ "MSBuildNoWarn", (
+					new LoadValue ((key, value) => msbuildNoWarn = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, msbuildNoWarn, storage))
+				)},
+				{ "MSBuildTreatWarningsAsErrors", (
+					new LoadValue ((key, value) => loadBool (key, value, out msbuildTreatWarningsAsErrors)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, msbuildTreatWarningsAsErrors, storage))
+				)},
+				{ "MSBuildWarningsAsErrors", (
+					new LoadValue ((key, value) => msbuildWarningsAsErrors = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, msbuildWarningsAsErrors, storage))
+				)},
+				{ "MSBuildWarningsNotAsErrors", (
+					new LoadValue ((key, value) => msbuildWarningsNotAsErrors = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, msbuildWarningsNotAsErrors, storage))
+				)},
+				{ "NoWarn", (
 					new LoadValue ((key, value) => loadWarningLevel (key, value, ErrorHelper.WarningLevel.Disable)),
 					new SaveValue ((key, storage) => saveWarningLevel (key, storage, ErrorHelper.WarningLevel.Disable))
 				)},
@@ -797,6 +818,18 @@ namespace Xamarin.Linker {
 					throw new InvalidOperationException ($"Unknown configuration key '{key}' in {linker_file} at line {i + 1}.");
 				}
 			}
+
+			var warningPrefix = ErrorHelper.GetPrefix (Application);
+			ErrorHelper.ConfigureMSBuildWarnings (Application, warningPrefix, msbuildNoWarn, msbuildTreatWarningsAsErrors, msbuildWarningsAsErrors, msbuildWarningsNotAsErrors);
+#if ASSEMBLY_PREPARER
+			ErrorHelper.ConfigureMSBuildWarnings (Logger, warningPrefix, msbuildNoWarn, msbuildTreatWarningsAsErrors, msbuildWarningsAsErrors, msbuildWarningsNotAsErrors);
+			ErrorHelper.GetWarningLevels (Logger)?.Clear ();
+			var warningLevels = ErrorHelper.GetWarningLevels (Application);
+			if (warningLevels is not null) {
+				foreach (var kvp in warningLevels)
+					ErrorHelper.SetWarningLevel (Logger, kvp.Value, kvp.Key);
+			}
+#endif
 
 			// Optimizations.Parse can only be called after setting ErrorHelper.Platform
 			if (!StringUtils.IsNullOrEmpty (user_optimize_flags)) {

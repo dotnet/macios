@@ -1294,12 +1294,22 @@ namespace Xamarin.Bundler {
 
 		public void LogError (ProductException exception)
 		{
-			GetLog ().LogError (exception);
+			var log = GetLog ();
+			if (log is ConsoleLog) {
+				log.LogError (exception.ToString (this));
+			} else {
+				log.LogError (exception);
+			}
 		}
 
 		public void LogWarning (ProductException exception)
 		{
-			GetLog ().LogWarning (exception);
+			var log = GetLog ();
+			if (log is ConsoleLog) {
+				log.Log (exception.ToString (this));
+			} else {
+				log.LogWarning (exception);
+			}
 		}
 
 		public void LogException (Exception exception)

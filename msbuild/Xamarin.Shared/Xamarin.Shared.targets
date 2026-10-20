@@ -18,6 +18,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<PropertyGroup>
+		<MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);$(NoWarn.Replace(',', ';'))</MSBuildWarningsAsMessages>
+		<MSBuildWarningsAsErrors Condition="'$(WarningsAsErrors)' != ''">$(MSBuildWarningsAsErrors);$(WarningsAsErrors.Replace(',', ';'))</MSBuildWarningsAsErrors>
+		<MSBuildWarningsNotAsErrors>$(MSBuildWarningsNotAsErrors);$(WarningsNotAsErrors.Replace(',', ';'))</MSBuildWarningsNotAsErrors>
+		<MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == ''">$(TreatWarningsAsErrors)</MSBuildTreatWarningsAsErrors>
+	</PropertyGroup>
+
 	<!-- Tasks that override built-in tasks to support remoting from VS/Windows -->
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Copy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Delete" AssemblyFile="$(_TaskAssemblyName)" />

@@ -1341,6 +1341,25 @@ Example to keep debug symbols:
 </PropertyGroup>
 ```
 
+## NoWarn
+
+A semicolon- or comma-separated list of warning codes to suppress. This applies
+to MSBuild tasks, custom linker steps, and the assembly preparer, as well as the
+C# compiler.
+
+Use the full diagnostic code, including its prefix and leading zeros, for
+example `MT0137`, `MT7091`, or `MM2001`. Bare numbers refer to C# compiler
+warnings, not Apple workload warnings.
+
+```xml
+<PropertyGroup>
+  <NoWarn>$(NoWarn);MT0137;MM2001</NoWarn>
+</PropertyGroup>
+```
+
+Suppression takes precedence over [TreatWarningsAsErrors](#treatwarningsaserrors)
+and [WarningsAsErrors](#warningsaserrors). Errors cannot be suppressed.
+
 ## OnDemandResourcesInitialInstallTags
 
 A string property that specifies the initial install tags for on-demand resources.
@@ -1645,6 +1664,25 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
 
+## WarningsAsErrors
+
+A semicolon- or comma-separated list of full diagnostic codes to report as
+errors, even when [TreatWarningsAsErrors](#treatwarningsaserrors) is `false`.
+This applies to MSBuild tasks, custom linker steps, and the assembly preparer.
+For example, `MT7091;MM2001`.
+
+[NoWarn](#nowarn) takes precedence over this property.
+
+## WarningsNotAsErrors
+
+A semicolon- or comma-separated list of full diagnostic codes to leave as
+warnings when [TreatWarningsAsErrors](#treatwarningsaserrors) is `true`.
+This applies to MSBuild tasks, custom linker steps, and the assembly preparer.
+
+When `TreatWarningsAsErrors` is `true`, this exemption also applies to codes in
+[WarningsAsErrors](#warningsaserrors), matching MSBuild's warning handling.
+When `TreatWarningsAsErrors` is `false`, this property has no effect.
+
 ## WaitForExit
 
 If 'dotnet run' should wait for the app to exit before returning (defaults to
@@ -1780,6 +1818,16 @@ It's also possible to use a platform-specific property:
 The full path to the `TextureAtlas` tool.
 
 The default behavior is to use `xcrun TextureAtlas`.
+
+## TreatWarningsAsErrors
+
+Set to `true` to report warnings as errors, including warnings from MSBuild
+tasks, custom linker steps, and the assembly preparer.
+
+Use [WarningsNotAsErrors](#warningsnotaserrors) to exempt individual warning
+codes, or [NoWarn](#nowarn) to suppress them. Warnings already disabled by
+bundler options remain disabled; explicit bundler warning-as-error options
+remain in effect.
 
 ## TrimMode
 

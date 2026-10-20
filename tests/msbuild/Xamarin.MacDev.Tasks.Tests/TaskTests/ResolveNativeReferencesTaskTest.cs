@@ -171,9 +171,11 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 		// single arch request (subset are fine)
 		[TestCase (TargetFramework.DotNet_iOS_String, false, "arm64", "ios-arm64/Universal.framework/Universal")]
+		[TestCase (TargetFramework.DotNet_iOS_String, true, "arm64", "ios-arm64_x86_64-simulator/Universal.framework/Universal")]
 		[TestCase (TargetFramework.DotNet_iOS_String, true, "x86_64", "ios-arm64_x86_64-simulator/Universal.framework/Universal")] // subset
 		[TestCase (TargetFramework.DotNet_MacCatalyst_String, false, "x86_64", "ios-arm64_x86_64-maccatalyst/Universal.framework/Universal")] // subset
 		[TestCase (TargetFramework.DotNet_tvOS_String, false, "arm64", "tvos-arm64/Universal.framework/Universal")]
+		[TestCase (TargetFramework.DotNet_tvOS_String, true, "arm64", "tvos-arm64_x86_64-simulator/Universal.framework/Universal")]
 		[TestCase (TargetFramework.DotNet_tvOS_String, true, "x86_64", "tvos-arm64_x86_64-simulator/Universal.framework/Universal")] // subset
 		[TestCase (TargetFramework.DotNet_macOS_String, false, "x86_64", "macos-arm64_x86_64/Universal.framework/Universal")] // subset
 
@@ -196,6 +198,8 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		}
 
 		[TestCase (TargetFramework.DotNet_iOS_String, false, "ARMv7", "ios-arm64_armv7_armv7s/XTest.framework/XTest")]
+		[TestCase (TargetFramework.DotNet_iOS_String, false, "arm64", "ios-arm64_armv7_armv7s/XTest.framework/XTest")]
+		[TestCase (TargetFramework.DotNet_iOS_String, true, "x86_64", "ios-i386_x86_64-simulator/XTest.framework/XTest")]
 		public void PreXcode12 (string targetFrameworkMoniker, bool isSimulator, string architecture, string expected)
 		{
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "xcf-prexcode12.plist");
@@ -203,6 +207,29 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var frameworkPath);
 			Assert.That (!string.IsNullOrEmpty (expected), Is.EqualTo (result), "result");
 			Assert.That (frameworkPath, Is.EqualTo (expected), "frameworkPath");
+		}
+
+		[TestCase ("xcf-prexcode12.plist", TargetFramework.DotNet_iOS_String, true, "arm64", "ios", "simulator", "i386, x86_64")]
+		[TestCase ("xcf-prexcode12.plist", TargetFramework.DotNet_tvOS_String, true, "arm64", "tvos", "simulator", "x86_64")]
+		[TestCase ("xcf-prexcode12.plist", TargetFramework.DotNet_iOS_String, false, "x86_64", "ios", "", "arm64, armv7, armv7s")]
+		[TestCase ("xcf-prexcode12.plist", TargetFramework.DotNet_macOS_String, false, "arm64", "macos", "", "x86_64")]
+		[TestCase ("xcf-xcode12.2.plist", TargetFramework.DotNet_MacCatalyst_String, false, "i386", "ios", "maccatalyst", "arm64, x86_64")]
+		[TestCase ("xcf-prexcode12.plist", TargetFramework.DotNet_iOS_String, true, "x86_64, arm64", "ios", "simulator", "i386, x86_64")]
+		[SetUICulture ("en-US")]
+		public void UnsupportedArchitecture (string plistName, string targetFrameworkMoniker, bool isSimulator, string architectures, string platform, string variant, string supportedArchitectures)
+		{
+			var path = Path.Combine (AppContext.BaseDirectory, "Resources", plistName);
+			var plist = PDictionary.OpenFile (path);
+			var engine = new TestEngine ();
+			var testLog = new TaskLoggingHelper (engine, "ResolveNativeReferences");
+			var xcframeworkPath = "Vendor.xcframework";
+
+			var result = ResolveNativeReferences.TryResolveXCFramework (testLog, plist, xcframeworkPath, targetFrameworkMoniker, isSimulator, architectures, null, out var frameworkPath);
+
+			Assert.That (result, Is.False, "result");
+			Assert.That (frameworkPath, Is.Null, "frameworkPath");
+			Assert.That (engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "errors");
+			Assert.That (engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"The xcframework '{xcframeworkPath}' does not support the requested architectures '{architectures}' for platform '{platform}' and platform variant '{variant}'. Supported architectures: '{supportedArchitectures}'. Contact the vendor of the xcframework to obtain a version that supports these architectures."), "error message");
 		}
 
 		[Test]

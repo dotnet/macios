@@ -27,4 +27,15 @@ Additional documentation and references can be found below:
 * https://learn.microsoft.com/en-us/dotnet/communitytoolkit/maui/native-library-interop
 * https://github.com/CommunityToolkit/Maui.NativeLibraryInterop
 
+## Unsupported XCFramework architectures
+
+An XCFramework must contain a library for the target platform, platform variant
+(such as `simulator`), and every requested architecture. An `arm64` library built
+for an iOS device cannot be used in an `arm64` iOS simulator build.
+
+If a matching platform and variant are present but the requested architectures
+are not supported, the build error lists both the requested and supported
+architectures. Rebuild the XCFramework with support for the missing architectures,
+or contact its vendor to obtain an updated version.
+
 [0]: https://learn.microsoft.com/en-us/previous-versions/xamarin/cross-platform/macios/binding/objective-c-libraries?tabs=macos#The_API_definition_file

@@ -16,12 +16,12 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		public void NativeAotWithoutPlatformAssembly (ApplePlatform platform, string runtimeIdentifier)
+		public void NativeAotWithoutAppleApiUsage (ApplePlatform platform, string runtimeIdentifier)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 
-			var projectPath = GenerateProject (platform, nameof (NativeAotWithoutPlatformAssembly), runtimeIdentifier, out _);
+			var projectPath = GenerateProject (platform, nameof (NativeAotWithoutAppleApiUsage), runtimeIdentifier, out _);
 			var mainPath = Path.Combine (Path.GetDirectoryName (projectPath)!, "Main.cs");
 			File.WriteAllText (mainPath, """
 				class MainClass {
@@ -36,12 +36,7 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = "Release";
 			properties ["PublishAot"] = "true";
 			properties ["_IsPublishing"] = "true";
-			var result = DotNet.AssertBuildFailure (projectPath, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
-			var errorPrefix = platform == ApplePlatform.MacOSX ? "MM" : "MT";
-			var diagnostic = errors.Single (v => v.Code == $"{errorPrefix}2113");
-			Assert.That (diagnostic.Message, Is.EqualTo ($"The platform assembly '{Configuration.GetBaseLibraryName (platform)}' could not be found. This can happen when the app does not use any Apple APIs and the assembly is removed by trimming. Add a reference to an Apple API in the app, for example: System.GC.KeepAlive (typeof (Foundation.NSObject));"), "Missing platform assembly diagnostic");
-			Assert.That (errors.Select (v => v.Message), Does.Not.Contain ("No platform assembly!"), "Internal error");
+			DotNet.AssertBuild (projectPath, properties);
 
 			File.WriteAllText (mainPath, """
 				class MainClass {

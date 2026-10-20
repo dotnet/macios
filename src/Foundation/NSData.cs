@@ -212,6 +212,20 @@ namespace Foundation {
 				this.source = source;
 			}
 
+			public override int Read (Span<byte> buffer)
+			{
+				// The base span implementation uses a temporary array for derived streams.
+				var source = Source;
+				var bytesRead = (int) Math.Min (buffer.Length, Math.Max (0, Length - Position));
+				if (bytesRead == 0)
+					return 0;
+
+				new ReadOnlySpan<byte> (PositionPointer, bytesRead).CopyTo (buffer);
+				Position += bytesRead;
+				GC.KeepAlive (source);
+				return bytesRead;
+			}
+
 			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
@@ -251,6 +265,14 @@ namespace Foundation {
 					InvalidOperation ();
 
 				return base.ReadByte ();
+			}
+
+			public override int Read (Span<byte> buffer)
+			{
+				if (base_address != Source.Bytes)
+					InvalidOperation ();
+
+				return base.Read (buffer);
 			}
 
 			public override void Write (byte [] buffer, int offset, int count)

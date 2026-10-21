@@ -75,6 +75,9 @@ check_backports ()
 	local backports_file="$temporary_directory/backports.json"
 	local history_file="$temporary_directory/history.json"
 	local results_file="$temporary_directory/results.json"
+	local message prefix source_title index
+	local message_width=0
+	local messages=() prefixes=() titles=()
 
 	git fetch "$remote" "$target_branch" --quiet
 	target_ref=FETCH_HEAD
@@ -183,22 +186,30 @@ check_backports ()
 		return
 	fi
 
-	while IFS=$'\t' read -r result source_number source_url backport_number backport_state history_commit; do
+	while IFS=$'\t' read -r result source_number source_url backport_number backport_state history_commit source_title; do
+		prefix="${green}[OK]$reset      "
 		case "$result" in
 		already-targets-branch)
-			printf '  %s[OK]%s      #%s already targets %s\n' "$green" "$reset" "$source_number" "$target_branch"
+			printf -v message '#%s already targets %s' "$source_number" "$target_branch"
 			;;
 		found)
-			printf '  %s[OK]%s      #%s -> #%s (%s)\n' "$green" "$reset" "$source_number" "$backport_number" "$backport_state"
+			printf -v message '#%s -> #%s (%s)' "$source_number" "$backport_number" "$backport_state"
 			;;
 		found-in-history)
-			printf '  %s[OK]%s      #%s -> commit %.12s (in %s history)\n' "$green" "$reset" "$source_number" "$history_commit" "$target_branch"
+			printf -v message '#%s -> commit %.12s (in %s history)' "$source_number" "$history_commit" "$target_branch"
 			;;
 		missing)
-			printf '  %s[MISSING]%s #%s has no backport PR or commit: %s\n' "$red" "$reset" "$source_number" "$source_url"
+			prefix="${red}[MISSING]$reset "
+			printf -v message '#%s has no backport PR or commit: %s' "$source_number" "$source_url"
 			missing=1
 			;;
 		esac
+		prefixes+=("$prefix")
+		messages+=("$message")
+		titles+=("$source_title")
+		if [[ ${#message} -gt $message_width ]]; then
+			message_width=${#message}
+		fi
 	done < <(
 		jq -r '
 			.[] | [
@@ -207,10 +218,14 @@ check_backports ()
 				.url,
 				(.backport.number // "-"),
 				(.backport.state // "-"),
-				(.commit.commit // "-")
+				(.commit.commit // "-"),
+				.title
 			] | @tsv
 		' "$results_file"
 	)
+	for index in "${!messages[@]}"; do
+		printf '  %s%-*s  %s\n' "${prefixes[$index]}" "$message_width" "${messages[$index]}" "${titles[$index]}"
+	done
 	echo
 }
 

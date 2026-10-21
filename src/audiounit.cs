@@ -704,6 +704,14 @@ namespace AudioUnit {
 		[Export ("stopHardware")]
 		void StopHardware ();
 
+		/// <summary>Gets the workgroup to which this input/output audio unit belongs.</summary>
+		[MacCatalyst (14, 0)]
+		[Mac (11, 0)]
+		[iOS (14, 0)]
+		[TV (14, 0)]
+		[Export ("osWorkgroup")]
+		OSWorkgroup GetOSWorkgroup ();
+
 		/// <summary>Gets the output provider for this IO unit.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>

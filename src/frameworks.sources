@@ -206,6 +206,7 @@ AUDIOTOOLBOX_SOURCES = \
 	AudioToolbox/AudioServices.cs \
 	AudioToolbox/AudioServerPlugIn.cs \
 	AudioToolbox/AudioToolbox.cs \
+	AudioToolbox/AudioWorkInterval.cs \
 	AudioToolbox/SystemSound.cs \
 	AudioToolbox/MusicPlayer.cs \
 	AudioToolbox/MusicTrack.cs \
@@ -462,6 +463,7 @@ COREFOUNDATION_CORE_SOURCES = \
 	CoreFoundation/CFRunLoop.cs \
 	CoreFoundation/CFString.cs \
 	CoreFoundation/Dispatch.cs \
+	CoreFoundation/OSWorkgroup.cs \
 	CoreFoundation/DispatchData.cs \
 	CoreFoundation/NativeObject.cs \
 	CoreFoundation/Architecture.cs \

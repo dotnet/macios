@@ -386,9 +386,6 @@ namespace IOBluetooth {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface IOBluetoothHostController {
-		[NullAllowed, Wrap ("WeakDelegate")]
-		IOBluetoothHostControllerDelegate Delegate { get; set; }
-
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
@@ -1321,9 +1318,6 @@ namespace IOBluetooth {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface OBEXFileTransferServices {
-		[NullAllowed, Wrap ("WeakDelegate")]
-		OBEXFileTransferServicesDelegate Delegate { get; set; }
-
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }
 

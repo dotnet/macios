@@ -370,8 +370,7 @@ namespace IOBluetooth {
 	}
 
 	[NoMacCatalyst]
-	[Model]
-	[BaseType (typeof (NSObject))]
+	[Protocol (IsInformal = true)]
 	interface IOBluetoothHostControllerDelegate {
 		// BluetoothHCIRSSIInfo *
 		[Export ("readRSSIForDeviceComplete:device:info:error:")]
@@ -1274,8 +1273,7 @@ namespace IOBluetooth {
 	}
 
 	[NoMacCatalyst]
-	[Model]
-	[BaseType (typeof (NSObject))]
+	[Protocol (IsInformal = true)]
 	interface OBEXFileTransferServicesDelegate {
 		[Export ("fileTransferServicesConnectionComplete:error:")]
 		void ConnectionComplete (OBEXFileTransferServices services, int error);

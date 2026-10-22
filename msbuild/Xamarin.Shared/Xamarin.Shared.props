@@ -91,6 +91,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<PropertyGroup>
 		<ArchiveOnBuild Condition="'$(ArchiveOnBuild)' == ''">false</ArchiveOnBuild>
 		<IsAppExtension Condition="'$(IsAppExtension)' == ''">false</IsAppExtension>
+		<IsAppClip Condition="'$(IsAppClip)' == ''">false</IsAppClip>
 		<IsWatchExtension Condition="'$(IsWatchExtension)' == ''">false</IsWatchExtension>
 		<IsWatchApp Condition="'$(IsWatchApp)' == ''">false</IsWatchApp>
 

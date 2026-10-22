@@ -2704,6 +2704,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' != 'true'">$(_AppPlugInsRelativePath)</BundleRelativePath>
 				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' == 'true'">$(_AppXpcServicesRelativePath)</BundleRelativePath>
+				<BundleRelativePath Condition="'$(IsAppClip)' == 'true'">$(_AppClipsRelativePath)</BundleRelativePath>
 			</_CodesignBundle>
 
 			<!-- Set the SourceProjectPath metadata on all items that don't have it already -->
@@ -2834,7 +2835,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_ExtendAppExtensionReferences" DependsOnTargets="_ResolveAppExtensionReferences;_DetectSigningIdentity" Condition=" '@(AdditionalAppExtensions)' != ''">
+	<Target Name="_ExtendAppExtensionReferences" DependsOnTargets="_ResolveAppExtensionReferences;_DetectSigningIdentity" Condition=" '@(AdditionalAppExtensions)' != '' Or '@(AdditionalAppClips)' != ''">
 		<PropertyGroup>
 			<CodesignWarnIfNoEntitlements Condition="'$(CodesignWarnIfNoEntitlements)' == ''">true</CodesignWarnIfNoEntitlements>
 		</PropertyGroup>
@@ -2852,6 +2853,24 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<CodesignEntitlements Condition="'%(AdditionalAppExtensions.CodesignEntitlements)' != ''">%(AdditionalAppExtensions.CodesignEntitlements)</CodesignEntitlements>
 				<CodesignEntitlements Condition="'%(AdditionalAppExtensions.CodesignEntitlements)' == '' And Exists('%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements')">%(AdditionalAppExtensions.Identity)/%(AdditionalAppExtensions.Name).entitlements</CodesignEntitlements>
 				<CodesignWarnIfNoEntitlements Condition="'%(AdditionalAppExtensions.CodesignWarnIfNoEntitlements)' == ''">$(CodesignWarnIfNoEntitlements)</CodesignWarnIfNoEntitlements>
+				<CodesignKeychain>$(CodesignKeychain)</CodesignKeychain>
+				<CodesignResourceRules>$(_PreparedResourceRules)</CodesignResourceRules>
+				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
+				<CodesignUseHardenedRuntime>$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
+				<CodesignUseSecureTimestamp>$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
+				<EnableCodeSigning>$(EnableCodeSigning)</EnableCodeSigning>
+			</_CodesignBundle>
+
+			<!-- Prebuilt App Clips (for instance built by Xcode) -->
+			<_ResolvedAppExtensionReferences Include="%(AdditionalAppClips.Identity)/%(AdditionalAppClips.BuildOutput)/%(AdditionalAppClips.Name).app" />
+
+			<_CodesignBundle Include="$(_AppBundleName)$(AppBundleExtension)\$(_AppClipsRelativePath)%(AdditionalAppClips.Name).app">
+				<CodesignAllocate>$(_CodesignAllocate)</CodesignAllocate>
+				<CodesignDisableTimestamp>false</CodesignDisableTimestamp>
+				<CodesignDisableTimestamp Condition="'$(_SdkIsSimulator)' == 'true' Or '$(_BundlerDebug)' == 'true'">true</CodesignDisableTimestamp>
+				<CodesignEntitlements Condition="'%(AdditionalAppClips.CodesignEntitlements)' != ''">%(AdditionalAppClips.CodesignEntitlements)</CodesignEntitlements>
+				<CodesignEntitlements Condition="'%(AdditionalAppClips.CodesignEntitlements)' == '' And Exists('%(AdditionalAppClips.Identity)/%(AdditionalAppClips.Name).entitlements')">%(AdditionalAppClips.Identity)/%(AdditionalAppClips.Name).entitlements</CodesignEntitlements>
+				<CodesignWarnIfNoEntitlements Condition="'%(AdditionalAppClips.CodesignWarnIfNoEntitlements)' == ''">$(CodesignWarnIfNoEntitlements)</CodesignWarnIfNoEntitlements>
 				<CodesignKeychain>$(CodesignKeychain)</CodesignKeychain>
 				<CodesignResourceRules>$(_PreparedResourceRules)</CodesignResourceRules>
 				<CodesignSigningKey>$(_CodeSigningKey)</CodesignSigningKey>
@@ -2903,7 +2922,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_SeparateAppExtensionReferences" BeforeTargets="AssignProjectConfiguration">
-		<CreateItem Include="@(ProjectReference)" PreserveExistingMetadata="true" Condition="'%(Identity)' != '' And '%(ProjectReference.IsAppExtension)' == 'true'">
+		<CreateItem Include="@(ProjectReference)" PreserveExistingMetadata="true" Condition="'%(Identity)' != '' And ('%(ProjectReference.IsAppExtension)' == 'true' Or '%(ProjectReference.IsAppClip)' == 'true')">
 			<Output ItemName="_AppExtensionReference" TaskParameter="Include" />
 		</CreateItem>
 
@@ -2965,6 +2984,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			</_ResolvedAppExtensionReferences>
 			<_ResolvedAppExtensionReferences Condition="'%(_ResolvedAppExtensionReferences.Extension)' == '.xpc'">
 				<ContainerName>XPCServices</ContainerName>
+			</_ResolvedAppExtensionReferences>
+			<!-- App Clips are app bundles (.app) embedded in the AppClips directory -->
+			<_ResolvedAppExtensionReferences Condition="'%(_ResolvedAppExtensionReferences.Extension)' == '.app'">
+				<ContainerName>AppClips</ContainerName>
 			</_ResolvedAppExtensionReferences>
 		</ItemGroup>
 	</Target>
@@ -3617,13 +3640,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppXpcServicesRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'">XPCServices\</_AppXpcServicesRelativePath>
 			<_AppXpcServicesPath>$(_AppBundlePath)$(_AppXpcServicesRelativePath)</_AppXpcServicesPath>
 
+			<_AppClipsRelativePath>AppClips\</_AppClipsRelativePath>
+
 			<_AppBundleManifestPath>$(_AppBundlePath)$(_AppBundleManifestRelativePath)Info.plist</_AppBundleManifestPath>
 		</PropertyGroup>
-		<PropertyGroup Condition="'$(IsAppExtension)' == 'true'">
+		<PropertyGroup Condition="'$(IsAppExtension)' == 'true' Or '$(IsAppClip)' == 'true'">
 			<!-- needed for GetTargetPath/Build/Rebuild task outputs -->
 			<_AppExtensionBundlePath>$(MSBuildProjectDirectory)\$(AppBundleDir)</_AppExtensionBundlePath>
 		</PropertyGroup>
-		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
+		<ItemGroup Condition="'$(IsAppExtension)' == 'true' Or '$(IsAppClip)' == 'true'">
 			<_AppExtensionBundlePath Include="$(MSBuildProjectDirectory)\$(AppBundleDir)">
 				<!-- We need this metadata to fix the source in VS -->
 				<BuildSessionId>$(BuildSessionId)</BuildSessionId>

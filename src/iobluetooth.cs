@@ -1395,16 +1395,6 @@ namespace IOBluetooth {
 	[Category]
 	[BaseType (typeof (NSMutableDictionary))]
 	interface NSMutableDictionary_NSDictionaryOBEXExtensions {
-		[Static]
-		[Export ("dictionaryWithOBEXHeadersData:headersDataSize:")]
-		[return: NullAllowed]
-		NSMutableDictionary FromObexHeadersData (IntPtr headersData, nuint dataSize);
-
-		[Static]
-		[Export ("dictionaryWithOBEXHeadersData:")]
-		[return: NullAllowed]
-		NSMutableDictionary FromObexHeadersData (NSData headersData);
-
 		[Export ("getHeaderBytes")]
 		NSMutableData GetObexHeaderBytes ();
 

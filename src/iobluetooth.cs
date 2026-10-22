@@ -369,10 +369,8 @@ namespace IOBluetooth {
 		void ReplyUserConfirmation (bool reply);
 	}
 
-	interface IIOBluetoothHostControllerDelegate { }
-
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothHostControllerDelegate {
 		// BluetoothHCIRSSIInfo *
@@ -389,7 +387,7 @@ namespace IOBluetooth {
 	[DisableDefaultCtor]
 	interface IOBluetoothHostController {
 		[NullAllowed, Wrap ("WeakDelegate")]
-		IIOBluetoothHostControllerDelegate Delegate { get; set; }
+		IOBluetoothHostControllerDelegate Delegate { get; set; }
 
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
@@ -1278,10 +1276,8 @@ namespace IOBluetooth {
 		NSString ListingSize { get; }
 	}
 
-	interface IOBEXFileTransferServicesDelegate { }
-
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Model]
 	[BaseType (typeof (NSObject))]
 	interface OBEXFileTransferServicesDelegate {
 		[Export ("fileTransferServicesConnectionComplete:error:")]
@@ -1326,7 +1322,7 @@ namespace IOBluetooth {
 	[DisableDefaultCtor]
 	interface OBEXFileTransferServices {
 		[NullAllowed, Wrap ("WeakDelegate")]
-		IOBEXFileTransferServicesDelegate Delegate { get; set; }
+		OBEXFileTransferServicesDelegate Delegate { get; set; }
 
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Assign)]
 		NSObject WeakDelegate { get; set; }

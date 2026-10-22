@@ -17,8 +17,7 @@ namespace IOBluetoothUI {
 	[BaseType (typeof (NSWindowController))]
 	interface IOBluetoothDeviceSelectorController {
 		[Static]
-		[Export ("deviceSelector")]
-		[return: NullAllowed]
+		[NullAllowed, Export ("deviceSelector")]
 		IOBluetoothDeviceSelectorController DeviceSelector { get; }
 
 		[Export ("runModal")]
@@ -130,8 +129,7 @@ namespace IOBluetoothUI {
 	[BaseType (typeof (NSWindowController))]
 	interface IOBluetoothPairingController {
 		[Static]
-		[Export ("pairingController")]
-		[return: NullAllowed]
+		[NullAllowed, Export ("pairingController")]
 		IOBluetoothPairingController PairingController { get; }
 
 		[Export ("runModal")]

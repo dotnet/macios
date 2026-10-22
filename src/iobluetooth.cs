@@ -414,11 +414,11 @@ namespace IOBluetooth {
 		string NameAsString { get; }
 
 		[Notification]
-		[Field ("IOBluetoothHostControllerPoweredOnNotification", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHostControllerPoweredOnNotification", "IOBluetooth")]
 		NSString PoweredOnNotification { get; }
 
 		[Notification]
-		[Field ("IOBluetoothHostControllerPoweredOffNotification", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHostControllerPoweredOffNotification", "IOBluetooth")]
 		NSString PoweredOffNotification { get; }
 	}
 
@@ -678,11 +678,11 @@ namespace IOBluetooth {
 		IOBluetoothUserNotification RegisterForChannelCloseNotification (NSObject observer, Selector selector);
 
 		[Notification]
-		[Field ("IOBluetoothL2CAPChannelPublishedNotification", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothL2CAPChannelPublishedNotification", "IOBluetooth")]
 		NSString PublishedNotification { get; }
 
 		[Notification]
-		[Field ("IOBluetoothL2CAPChannelTerminatedNotification", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothL2CAPChannelTerminatedNotification", "IOBluetooth")]
 		NSString TerminatedNotification { get; }
 	}
 
@@ -809,76 +809,76 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[Static]
 	interface IOBluetoothHandsFreeKeys {
-		[Field ("IOBluetoothHandsFreeIndicatorService", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorService", "IOBluetooth")]
 		NSString IndicatorService { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorCall", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorCall", "IOBluetooth")]
 		NSString IndicatorCall { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorCallSetup", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorCallSetup", "IOBluetooth")]
 		NSString IndicatorCallSetup { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorCallHeld", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorCallHeld", "IOBluetooth")]
 		NSString IndicatorCallHeld { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorSignal", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorSignal", "IOBluetooth")]
 		NSString IndicatorSignal { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorRoam", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorRoam", "IOBluetooth")]
 		NSString IndicatorRoam { get; }
 
-		[Field ("IOBluetoothHandsFreeIndicatorBattChg", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeIndicatorBattChg", "IOBluetooth")]
 		NSString IndicatorBattChg { get; }
 
-		[Field ("IOBluetoothHandsFreeCallIndex", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallIndex", "IOBluetooth")]
 		NSString CallIndex { get; }
 
-		[Field ("IOBluetoothHandsFreeCallDirection", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallDirection", "IOBluetooth")]
 		NSString CallDirection { get; }
 
-		[Field ("IOBluetoothHandsFreeCallStatus", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallStatus", "IOBluetooth")]
 		NSString CallStatus { get; }
 
-		[Field ("IOBluetoothHandsFreeCallMode", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallMode", "IOBluetooth")]
 		NSString CallMode { get; }
 
-		[Field ("IOBluetoothHandsFreeCallMultiparty", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallMultiparty", "IOBluetooth")]
 		NSString CallMultiparty { get; }
 
-		[Field ("IOBluetoothHandsFreeCallNumber", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallNumber", "IOBluetooth")]
 		NSString CallNumber { get; }
 
-		[Field ("IOBluetoothHandsFreeCallType", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallType", "IOBluetooth")]
 		NSString CallType { get; }
 
-		[Field ("IOBluetoothHandsFreeCallName", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothHandsFreeCallName", "IOBluetooth")]
 		NSString CallName { get; }
 
-		[Field ("IOBluetoothPDUServicCenterAddress", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUServicCenterAddress", "IOBluetooth")]
 		NSString PduServiceCenterAddress { get; }
 
-		[Field ("IOBluetoothPDUServiceCenterAddressType", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUServiceCenterAddressType", "IOBluetooth")]
 		NSString PduServiceCenterAddressType { get; }
 
-		[Field ("IOBluetoothPDUType", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUType", "IOBluetooth")]
 		NSString PduType { get; }
 
-		[Field ("IOBluetoothPDUOriginatingAddress", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUOriginatingAddress", "IOBluetooth")]
 		NSString PduOriginatingAddress { get; }
 
-		[Field ("IOBluetoothPDUOriginatingAddressType", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUOriginatingAddressType", "IOBluetooth")]
 		NSString PduOriginatingAddressType { get; }
 
-		[Field ("IOBluetoothPDUProtocolID", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUProtocolID", "IOBluetooth")]
 		NSString PduProtocolId { get; }
 
-		[Field ("IOBluetoothPDUTimestamp", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUTimestamp", "IOBluetooth")]
 		NSString PduTimestamp { get; }
 
-		[Field ("IOBluetoothPDUEncoding", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUEncoding", "IOBluetooth")]
 		NSString PduEncoding { get; }
 
-		[Field ("IOBluetoothPDUUserData", Constants.IOBluetoothLibrary)]
+		[Field ("IOBluetoothPDUUserData", "IOBluetooth")]
 		NSString PduUserData { get; }
 	}
 
@@ -1250,31 +1250,31 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[Static]
 	interface OBEXFileTransferServicesKeys {
-		[Field ("kFTSProgressBytesTransferredKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressBytesTransferredKey", "IOBluetooth")]
 		NSString ProgressBytesTransferred { get; }
 
-		[Field ("kFTSProgressBytesTotalKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressBytesTotalKey", "IOBluetooth")]
 		NSString ProgressBytesTotal { get; }
 
-		[Field ("kFTSProgressPercentageKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressPercentageKey", "IOBluetooth")]
 		NSString ProgressPercentage { get; }
 
-		[Field ("kFTSProgressEstimatedTimeKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressEstimatedTimeKey", "IOBluetooth")]
 		NSString ProgressEstimatedTime { get; }
 
-		[Field ("kFTSProgressTimeElapsedKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressTimeElapsedKey", "IOBluetooth")]
 		NSString ProgressTimeElapsed { get; }
 
-		[Field ("kFTSProgressTransferRateKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSProgressTransferRateKey", "IOBluetooth")]
 		NSString ProgressTransferRate { get; }
 
-		[Field ("kFTSListingNameKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSListingNameKey", "IOBluetooth")]
 		NSString ListingName { get; }
 
-		[Field ("kFTSListingTypeKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSListingTypeKey", "IOBluetooth")]
 		NSString ListingType { get; }
 
-		[Field ("kFTSListingSizeKey", Constants.IOBluetoothLibrary)]
+		[Field ("kFTSListingSizeKey", "IOBluetooth")]
 		NSString ListingSize { get; }
 	}
 

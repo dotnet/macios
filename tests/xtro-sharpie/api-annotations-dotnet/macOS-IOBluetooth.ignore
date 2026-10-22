@@ -1,0 +1,162 @@
+# The C-level constants (HCI, L2CAP, LMP, LE, SDP, OBEX) are not bound
+!missing-enum! BluetoothAMPCommandRejectReason not bound
+!missing-enum! BluetoothAMPCreatePhysicalLinkResponseStatus not bound
+!missing-enum! BluetoothAMPDisconnectPhysicalLinkResponseStatus not bound
+!missing-enum! BluetoothAMPDiscoverResponseControllerStatus not bound
+!missing-enum! BluetoothAMPGetAssocResponseStatus not bound
+!missing-enum! BluetoothAMPGetInfoResponseStatus not bound
+!missing-enum! BluetoothAMPManagerCode not bound
+!missing-enum! BluetoothAuthenticationRequirementsValues not bound
+!missing-enum! BluetoothCompanyIdentifers not bound
+!missing-enum! BluetoothFeatureBits not bound
+!missing-enum! BluetoothHCIAFHChannelAssessmentModes not bound
+!missing-enum! BluetoothHCIAuthentionEnableModes not bound
+!missing-enum! BluetoothHCIConnectionModes not bound
+!missing-enum! BluetoothHCIDeleteStoredLinkKeyFlags not bound
+!missing-enum! BluetoothHCIEncryptionModes not bound
+!missing-enum! BluetoothHCIExtendedInquiryResponseDataTypes not bound
+!missing-enum! BluetoothHCIFECRequiredValues not bound
+!missing-enum! BluetoothHCIGeneralFlowControlStates not bound
+!missing-enum! BluetoothHCIHoldModeActivityStates not bound
+!missing-enum! BluetoothHCIInquiryModes not bound
+!missing-enum! BluetoothHCIInquiryScanTypes not bound
+!missing-enum! BluetoothHCILinkPolicySettingsValues not bound
+!missing-enum! BluetoothHCIPageScanEnableStates not bound
+!missing-enum! BluetoothHCIPageScanModes not bound
+!missing-enum! BluetoothHCIPageScanPeriodModes not bound
+!missing-enum! BluetoothHCIPageScanTypes not bound
+!missing-enum! BluetoothHCIReadStoredLinkKeysFlags not bound
+!missing-enum! BluetoothHCIRetransmissionEffortTypes not bound
+!missing-enum! BluetoothHCIRoles not bound
+!missing-enum! BluetoothHCISCOFlowControlStates not bound
+!missing-enum! BluetoothHCISimplePairingModes not bound
+!missing-enum! BluetoothHCITimeoutValues not bound
+!missing-enum! BluetoothHCITransmitReadPowerLevelTypes not bound
+!missing-enum! BluetoothHCIVersions not bound
+!missing-enum! BluetoothIOCapabilities not bound
+!missing-enum! BluetoothKeypressNotificationTypes not bound
+!missing-enum! BluetoothL2CAPCommandCode not bound
+!missing-enum! BluetoothL2CAPCommandRejectReason not bound
+!missing-enum! BluetoothL2CAPConfigurationOption not bound
+!missing-enum! BluetoothL2CAPConfigurationResult not bound
+!missing-enum! BluetoothL2CAPConfigurationRetransmissionAndFlowControlFlags not bound
+!missing-enum! BluetoothL2CAPConnectionResult not bound
+!missing-enum! BluetoothL2CAPConnectionStatus not bound
+!missing-enum! BluetoothL2CAPInformationExtendedFeaturesMask not bound
+!missing-enum! BluetoothL2CAPInformationResult not bound
+!missing-enum! BluetoothL2CAPInformationType not bound
+!missing-enum! BluetoothL2CAPQoSType not bound
+!missing-enum! BluetoothL2CAPSegmentationAndReassembly not bound
+!missing-enum! BluetoothL2CAPSupervisoryFuctionType not bound
+!missing-enum! BluetoothLEAddressType not bound
+!missing-enum! BluetoothLEAdvertisingType not bound
+!missing-enum! BluetoothLEConnectionInterval not bound
+!missing-enum! BluetoothLEFeatureBits not bound
+!missing-enum! BluetoothLEScan not bound
+!missing-enum! BluetoothLEScanDuplicateFilter not bound
+!missing-enum! BluetoothLEScanFilter not bound
+!missing-enum! BluetoothLEScanType not bound
+!missing-enum! BluetoothLESecurityManagerCommandCode not bound
+!missing-enum! BluetoothLESecurityManagerIOCapability not bound
+!missing-enum! BluetoothLESecurityManagerKeyDistributionFormat not bound
+!missing-enum! BluetoothLESecurityManagerKeypressNotificationType not bound
+!missing-enum! BluetoothLESecurityManagerOOBData not bound
+!missing-enum! BluetoothLESecurityManagerPairingFailedReasonCode not bound
+!missing-enum! BluetoothLESecurityManagerUserInputCapability not bound
+!missing-enum! BluetoothLESecurityManagerUserOutputCapability not bound
+!missing-enum! BluetoothLMPVersions not bound
+!missing-enum! BluetoothLinkTypes not bound
+!missing-enum! BluetoothOOBDataPresenceValues not bound
+!missing-enum! BluetoothSimplePairingDebugModes not bound
+!missing-enum! BluetoothTransportTypes not bound
+!missing-enum! IOBluetoothDeviceSearchOptionsBits not bound
+!missing-enum! IOBluetoothDeviceSearchTypesBits not bound
+!missing-enum! IOBluetoothL2CAPChannelEventType not bound
+!missing-enum! OBEXConnectFlagValues not bound
+!missing-enum! OBEXErrorCodes not bound
+!missing-enum! OBEXHeaderIdentifiers not bound
+!missing-enum! OBEXNonceFlagValues not bound
+!missing-enum! OBEXOpCodeCommandValues not bound
+!missing-enum! OBEXOpCodeResponseValues not bound
+!missing-enum! OBEXOpCodeSessionValues not bound
+!missing-enum! OBEXPutFlagValues not bound
+!missing-enum! OBEXRealmValues not bound
+!missing-enum! OBEXSessionEventTypes not bound
+!missing-enum! OBEXSessionParameterTags not bound
+!missing-enum! OBEXTransportEventTypes not bound
+!missing-enum! OBEXVersions not bound
+!missing-enum! ProtocolParameters not bound
+!missing-enum! SDPAttributeDeviceIdentificationRecord not bound
+!missing-enum! SDPAttributeIdentifierCodes not bound
+!missing-enum! SDPServiceClasses not bound
+
+# Informal protocols are bound as informal protocols (xtro doesn't detect them)
+!missing-selector! NSObject::fileTransferServicesAbortComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesConnectionComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesCopyRemoteFileComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesCopyRemoteFileProgress:transferProgress: not bound
+!missing-selector! NSObject::fileTransferServicesCreateFolderComplete:error:folder: not bound
+!missing-selector! NSObject::fileTransferServicesDisconnectionComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesFilePreparationComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesPathChangeComplete:error:finalPath: not bound
+!missing-selector! NSObject::fileTransferServicesRemoveItemComplete:error:removedItem: not bound
+!missing-selector! NSObject::fileTransferServicesRetrieveFolderListingComplete:error:listing: not bound
+!missing-selector! NSObject::fileTransferServicesSendFileComplete:error: not bound
+!missing-selector! NSObject::fileTransferServicesSendFileProgress:transferProgress: not bound
+!missing-selector! NSObject::readLinkQualityForDeviceComplete:device:info:error: not bound
+!missing-selector! NSObject::readRSSIForDeviceComplete:device:info:error: not bound
+
+# Deprecated / *Ref-based / OBEX transport APIs
+!missing-selector! +IOBluetoothRFCOMMChannel::withRFCOMMChannelRef: not bound
+!missing-selector! +IOBluetoothSDPDataElement::withSDPDataElementRef: not bound
+!missing-selector! +IOBluetoothSDPServiceRecord::withSDPServiceRecordRef: not bound
+!missing-selector! +NSMutableDictionary::dictionaryWithOBEXHeadersData: not bound
+!missing-selector! +NSMutableDictionary::dictionaryWithOBEXHeadersData:headersDataSize: not bound
+!missing-selector! IOBluetoothDevice::awakeAfterUsingCoder: not bound
+!missing-selector! IOBluetoothOBEXSession::closeTransportConnection not bound
+!missing-selector! IOBluetoothOBEXSession::hasOpenTransportConnection not bound
+!missing-selector! IOBluetoothOBEXSession::openTransportConnection:selectorTarget:refCon: not bound
+!missing-selector! IOBluetoothOBEXSession::sendDataToTransport:dataLength: not bound
+!missing-selector! IOBluetoothOBEXSession::setOBEXSessionOpenConnectionCallback:refCon: not bound
+!missing-selector! IOBluetoothOBEXSession::setOpenTransportConnectionAsyncSelector:target:refCon: not bound
+!missing-selector! IOBluetoothRFCOMMChannel::getRFCOMMChannelRef not bound
+!missing-selector! IOBluetoothSDPDataElement::getSDPDataElementRef not bound
+!missing-selector! IOBluetoothSDPServiceRecord::getSDPServiceRecordRef not bound
+!missing-selector! IOBluetoothSDPUUID::classForArchiver not bound
+!missing-selector! IOBluetoothSDPUUID::classForCoder not bound
+!missing-selector! IOBluetoothSDPUUID::classForPortCoder not bound
+!missing-selector! OBEXSession::setEventCallback: not bound
+!missing-selector! OBEXSession::setEventRefCon: not bound
+
+# C functions: deprecated, variadic, or covered by the Objective-C API
+!missing-pinvoke! IOBluetoothFindNumberOfRegistryEntriesOfClassName is not bound
+!missing-pinvoke! IOBluetoothGetUniqueFileNameAndPath is not bound
+!missing-pinvoke! IOBluetoothIgnoreHIDDevice is not bound
+!missing-pinvoke! IOBluetoothIsFileAppleDesignatedPIMData is not bound
+!missing-pinvoke! IOBluetoothL2CAPChannelRegisterForChannelCloseNotification is not bound
+!missing-pinvoke! IOBluetoothPackData is not bound
+!missing-pinvoke! IOBluetoothPackDataList is not bound
+!missing-pinvoke! IOBluetoothRemoveIgnoredHIDDevice is not bound
+!missing-pinvoke! IOBluetoothUnpackData is not bound
+!missing-pinvoke! IOBluetoothUnpackDataList is not bound
+!missing-pinvoke! IOBluetoothUserNotificationUnregister is not bound
+!missing-pinvoke! OBEXAddApplicationParameterHeader is not bound
+!missing-pinvoke! OBEXAddAuthorizationChallengeHeader is not bound
+!missing-pinvoke! OBEXAddAuthorizationResponseHeader is not bound
+!missing-pinvoke! OBEXAddBodyHeader is not bound
+!missing-pinvoke! OBEXAddByteSequenceHeader is not bound
+!missing-pinvoke! OBEXAddConnectionIDHeader is not bound
+!missing-pinvoke! OBEXAddCountHeader is not bound
+!missing-pinvoke! OBEXAddDescriptionHeader is not bound
+!missing-pinvoke! OBEXAddHTTPHeader is not bound
+!missing-pinvoke! OBEXAddLengthHeader is not bound
+!missing-pinvoke! OBEXAddNameHeader is not bound
+!missing-pinvoke! OBEXAddObjectClassHeader is not bound
+!missing-pinvoke! OBEXAddTargetHeader is not bound
+!missing-pinvoke! OBEXAddTime4ByteHeader is not bound
+!missing-pinvoke! OBEXAddTimeISOHeader is not bound
+!missing-pinvoke! OBEXAddTypeHeader is not bound
+!missing-pinvoke! OBEXAddUserDefinedHeader is not bound
+!missing-pinvoke! OBEXAddWhoHeader is not bound
+!missing-pinvoke! OBEXGetHeaders is not bound
+!missing-pinvoke! OBEXHeadersToBytes is not bound

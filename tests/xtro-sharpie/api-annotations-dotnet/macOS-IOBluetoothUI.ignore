@@ -1,0 +1,6 @@
+# Deprecated *Ref-based APIs, and C functions covered by the Objective-C API
+!missing-pinvoke! IOBluetoothGetDeviceSelectorController is not bound
+!missing-pinvoke! IOBluetoothGetPairingController is not bound
+!missing-pinvoke! IOBluetoothValidateHardwareWithDescription is not bound
+!missing-selector! +IOBluetoothServiceBrowserController::withServiceBrowserControllerRef: not bound
+!missing-selector! IOBluetoothServiceBrowserController::getServiceBrowserControllerRef not bound

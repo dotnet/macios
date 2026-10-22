@@ -1080,6 +1080,9 @@ INTENTS_SOURCES = \
 IOBLUETOOTH_API_SOURCES = \
 	IOBluetooth/Enums.cs \
 
+IOBLUETOOTH_CORE_SOURCES = \
+	IOBluetooth/Structs.cs \
+
 IOBLUETOOTH_SOURCES = \
 	IOBluetooth/IOBluetoothChannels.cs \
 	IOBluetooth/IOBluetoothUtilities.cs \

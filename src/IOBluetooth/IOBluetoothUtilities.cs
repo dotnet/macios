@@ -7,12 +7,15 @@ using System;
 using System.Runtime.InteropServices;
 
 using Foundation;
+using System.Runtime.Versioning;
+
 using ObjCRuntime;
 
 namespace IOBluetooth {
 
 	/// <summary>Utility functions for working with Bluetooth addresses and HID devices.</summary>
-	[NoMacCatalyst]
+	[SupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("maccatalyst")]
 	public static class IOBluetoothUtilities {
 		[DllImport (Constants.IOBluetoothLibrary)]
 		static extern int IOBluetoothNSStringToDeviceAddress (IntPtr nameString, ref BluetoothDeviceAddress outDeviceAddress);

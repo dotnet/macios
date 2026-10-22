@@ -9,7 +9,7 @@ namespace IOBluetooth {
 
 	/// <summary>The power state of a Bluetooth host controller.</summary>
 	[NoMacCatalyst]
-	public enum BluetoothHCIPowerState : byte {
+	public enum BluetoothHCIPowerState : uint {
 		/// <summary>The controller is powered off.</summary>
 		Off = 0x00,
 		/// <summary>The controller is powered on.</summary>

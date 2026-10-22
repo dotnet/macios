@@ -6,6 +6,7 @@
 // APIs that were deprecated in macOS 10.9 or earlier (including all the
 // *Ref-based accessors) are not bound.
 
+using CoreBluetooth;
 using Foundation;
 using ObjCRuntime;
 
@@ -29,12 +30,15 @@ namespace IOBluetooth {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothDeviceAsyncCallbacks {
+		[Abstract]
 		[Export ("remoteNameRequestComplete:status:")]
 		void RemoteNameRequestComplete (IOBluetoothDevice device, int status);
 
+		[Abstract]
 		[Export ("connectionComplete:status:")]
 		void ConnectionComplete (IOBluetoothDevice device, int status);
 
+		[Abstract]
 		[Export ("sdpQueryComplete:status:")]
 		void SdpQueryComplete (IOBluetoothDevice device, int status);
 	}
@@ -342,7 +346,7 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface IOBluetoothDevicePair {
+	interface IOBluetoothDevicePair : CBCentralManagerDelegate {
 		[NullAllowed, Wrap ("WeakDelegate")]
 		IIOBluetoothDevicePairDelegate Delegate { get; set; }
 
@@ -606,7 +610,7 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[BaseType (typeof (IOBluetoothObject))]
 	[DisableDefaultCtor]
-	interface IOBluetoothL2CAPChannel {
+	interface IOBluetoothL2CAPChannel : NSPortDelegate {
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:")]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector);
@@ -708,7 +712,7 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[BaseType (typeof (IOBluetoothObject))]
 	[DisableDefaultCtor]
-	interface IOBluetoothRFCOMMChannel {
+	interface IOBluetoothRFCOMMChannel : NSPortDelegate, NSStreamDelegate {
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:")]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector);
@@ -1253,6 +1257,9 @@ namespace IOBluetooth {
 		[Field ("kFTSProgressPercentageKey", "IOBluetooth")]
 		NSString ProgressPercentage { get; }
 
+		[Field ("kFTSProgressPrecentageKey", "IOBluetooth")]
+		NSString ProgressPrecentage { get; }
+
 		[Field ("kFTSProgressEstimatedTimeKey", "IOBluetooth")]
 		NSString ProgressEstimatedTime { get; }
 
@@ -1270,6 +1277,79 @@ namespace IOBluetooth {
 
 		[Field ("kFTSListingSizeKey", "IOBluetooth")]
 		NSString ListingSize { get; }
+	}
+
+	[NoMacCatalyst]
+	[Static]
+	interface OBEXHeaderIdKeys {
+		[Field ("kOBEXHeaderIDKeyName", "IOBluetooth")]
+		NSString Name { get; }
+
+		[Field ("kOBEXHeaderIDKeyType", "IOBluetooth")]
+		NSString Type { get; }
+
+		[Field ("kOBEXHeaderIDKeyDescription", "IOBluetooth")]
+		NSString Description { get; }
+
+		[Field ("kOBEXHeaderIDKeyTimeISO", "IOBluetooth")]
+		NSString TimeIso { get; }
+
+		[Field ("kOBEXHeaderIDKeyTime4Byte", "IOBluetooth")]
+		NSString Time4Byte { get; }
+
+		[Field ("kOBEXHeaderIDKeyTarget", "IOBluetooth")]
+		NSString Target { get; }
+
+		[Field ("kOBEXHeaderIDKeyHTTP", "IOBluetooth")]
+		NSString Http { get; }
+
+		[Field ("kOBEXHeaderIDKeyBody", "IOBluetooth")]
+		NSString Body { get; }
+
+		[Field ("kOBEXHeaderIDKeyEndOfBody", "IOBluetooth")]
+		NSString EndOfBody { get; }
+
+		[Field ("kOBEXHeaderIDKeyWho", "IOBluetooth")]
+		NSString Who { get; }
+
+		[Field ("kOBEXHeaderIDKeyAppParameters", "IOBluetooth")]
+		NSString AppParameters { get; }
+
+		[Field ("kOBEXHeaderIDKeyAuthorizationChallenge", "IOBluetooth")]
+		NSString AuthorizationChallenge { get; }
+
+		[Field ("kOBEXHeaderIDKeyAuthorizationResponse", "IOBluetooth")]
+		NSString AuthorizationResponse { get; }
+
+		[Field ("kOBEXHeaderIDKeyObjectClass", "IOBluetooth")]
+		NSString ObjectClass { get; }
+
+		[Field ("kOBEXHeaderIDKeyCount", "IOBluetooth")]
+		NSString Count { get; }
+
+		[Field ("kOBEXHeaderIDKeyLength", "IOBluetooth")]
+		NSString Length { get; }
+
+		[Field ("kOBEXHeaderIDKeyConnectionID", "IOBluetooth")]
+		NSString ConnectionId { get; }
+
+		[Field ("kOBEXHeaderIDKeyByteSequence", "IOBluetooth")]
+		NSString ByteSequence { get; }
+
+		[Field ("kOBEXHeaderIDKeyUnknownUnicodeText", "IOBluetooth")]
+		NSString UnknownUnicodeText { get; }
+
+		[Field ("kOBEXHeaderIDKeyUnknownByteSequence", "IOBluetooth")]
+		NSString UnknownByteSequence { get; }
+
+		[Field ("kOBEXHeaderIDKeyUnknown1ByteQuantity", "IOBluetooth")]
+		NSString Unknown1ByteQuantity { get; }
+
+		[Field ("kOBEXHeaderIDKeyUnknown4ByteQuantity", "IOBluetooth")]
+		NSString Unknown4ByteQuantity { get; }
+
+		[Field ("kOBEXHeaderIDKeyUserDefined", "IOBluetooth")]
+		NSString UserDefined { get; }
 	}
 
 	[NoMacCatalyst]

@@ -27,7 +27,7 @@ namespace IOBluetooth {
 	}
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothDeviceAsyncCallbacks {
 		[Abstract]
@@ -251,7 +251,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothDeviceInquiryDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothDeviceInquiryDelegate {
 		[Export ("deviceInquiryStarted:")]
@@ -315,7 +315,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothDevicePairDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothDevicePairDelegate {
 		[Export ("devicePairingStarted:")]
@@ -374,7 +374,7 @@ namespace IOBluetooth {
 	}
 
 	[NoMacCatalyst]
-	[Protocol (IsInformal = true)]
+	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false)]
 	interface IOBluetoothHostControllerDelegate {
 		// BluetoothHCIRSSIInfo *
 		[Export ("readRSSIForDeviceComplete:device:info:error:")]
@@ -687,7 +687,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothL2CAPChannelDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothL2CAPChannelDelegate {
 		[Export ("l2capChannelData:data:length:")]
@@ -776,7 +776,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothRFCOMMChannelDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothRFCOMMChannelDelegate {
 		[Export ("rfcommChannelData:data:length:")]
@@ -883,7 +883,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothHandsFreeDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothHandsFreeDelegate {
 		[Export ("handsFree:connected:")]
@@ -973,7 +973,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothHandsFreeAudioGatewayDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothHandsFreeAudioGatewayDelegate {
 		[Export ("handsFree:hangup:")]
@@ -1009,7 +1009,7 @@ namespace IOBluetooth {
 	interface IIOBluetoothHandsFreeDeviceDelegate { }
 
 	[NoMacCatalyst]
-	[Protocol, Model]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface IOBluetoothHandsFreeDeviceDelegate : IOBluetoothHandsFreeDelegate {
 		[Export ("handsFree:isServiceAvailable:")]
@@ -1353,7 +1353,7 @@ namespace IOBluetooth {
 	}
 
 	[NoMacCatalyst]
-	[Protocol (IsInformal = true)]
+	[Protocol (IsInformal = true, BackwardsCompatibleCodeGeneration = false)]
 	interface OBEXFileTransferServicesDelegate {
 		[Export ("fileTransferServicesConnectionComplete:error:")]
 		void ConnectionComplete (OBEXFileTransferServices services, int error);

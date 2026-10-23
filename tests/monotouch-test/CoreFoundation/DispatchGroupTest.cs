@@ -16,6 +16,28 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class DispatchGroupTest {
+		class RetainableDispatchGroup : DispatchGroup {
+			public void RetainForTest () => Retain ();
+			public void ReleaseForTest () => Release ();
+		}
+
+		[Test]
+		public void RetainRelease ()
+		{
+			var group = new RetainableDispatchGroup ();
+			try {
+				group.RetainForTest ();
+				group.ReleaseForTest ();
+				group.Enter ();
+				group.Leave ();
+				Assert.That (group.Wait (DispatchTime.Now), Is.True, "Group is usable after a balanced retain and release");
+			} finally {
+				group.Dispose ();
+			}
+			Assert.Throws<ObjectDisposedException> (() => group.RetainForTest (), "Retain after disposal");
+			Assert.Throws<ObjectDisposedException> (() => group.ReleaseForTest (), "Release after disposal");
+		}
+
 		[Test]
 		public void EmptyAndReusedGroup ()
 		{

@@ -103,16 +103,19 @@ namespace CoreFoundation {
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_retain (IntPtr o);
 
-		/// <inheritdoc />
+		/// <summary>Increments the native dispatch object's reference count.</summary>
+		/// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
 		protected internal override void Retain ()
 		{
-			dispatch_retain (Handle);
+			dispatch_retain (GetCheckedHandle ());
 		}
 
-		/// <inheritdoc />
+		/// <summary>Decrements the native dispatch object's reference count.</summary>
+		/// <exception cref="ObjectDisposedException">This object has been disposed.</exception>
+		/// <remarks>Normally called by disposal. Balance any manual retain and release operations.</remarks>
 		protected internal override void Release ()
 		{
-			dispatch_release (Handle);
+			dispatch_release (GetCheckedHandle ());
 		}
 
 		[DllImport (Constants.libcLibrary)]

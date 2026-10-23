@@ -15,6 +15,7 @@ using AppKit;
 using UIKit;
 #endif
 using System.Threading;
+using System.Threading.Tasks;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {
@@ -162,38 +163,58 @@ namespace MonoTouchFixtures.CoreFoundation {
 		[Test]
 		public void SetTargetQueue ()
 		{
-			int n = 0;
-			int ct = Thread.CurrentThread.ManagedThreadId;
-			int t0 = ct;
-			int t1 = ct;
-			int t2 = ct;
-			using (var q = new DispatchQueue ("my")) {
-				Console.WriteLine ();
-				q.DispatchAsync (delegate
-				{
-					t0 = Thread.CurrentThread.ManagedThreadId;
-					n++;
-				});
-				DispatchQueue.DefaultGlobalQueue.SetTargetQueue (DispatchQueue.MainQueue);
-				q.DispatchAsync (delegate
-				{
-					t1 = Thread.CurrentThread.ManagedThreadId;
-					n++;
-				});
-				DispatchQueue.DefaultGlobalQueue.SetTargetQueue (null);
-				q.DispatchAsync (delegate
-				{
-					t2 = Thread.CurrentThread.ManagedThreadId;
-					n++;
-				});
-				Assert.That (q.Label, Is.EqualTo ("my"), "label");
+			using var target = new DispatchQueue ("Target");
+			var attributes = new DispatchQueue.Attributes { IsInitiallyInactive = true };
+			using var queue = new DispatchQueue ("Child", attributes);
+			try {
+				queue.SetTargetQueue (target);
+			} finally {
+				queue.Activate ();
 			}
-			while (n != 3)
-				NSRunLoop.Current.RunUntil (NSDate.FromTimeIntervalSinceNow (1.0));
-			// ensure async dispatches were done on another thread
-			Assert.That (ct, Is.Not.EqualTo (t0), "t0");
-			Assert.That (ct, Is.Not.EqualTo (t1), "t1");
-			Assert.That (ct, Is.Not.EqualTo (t2), "t2");
+			Assert.That (queue.DispatchSync (() => DispatchQueue.CurrentQueueLabel), Is.EqualTo ("Child"), "Child label");
+
+			target.Suspend ();
+			var completed = new TaskCompletionSource<bool> ();
+			try {
+				queue.DispatchAsync (() => completed.SetResult (true));
+				Assert.That (completed.Task.IsCompleted, Is.False, "Child work cannot run on a suspended target");
+			} finally {
+				target.Resume ();
+			}
+			Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Target resumed");
+		}
+
+		[Test]
+		public void ResetTargetQueue ()
+		{
+			using var target = new DispatchQueue ("InitialTarget");
+			using var queue = new DispatchQueue ("ResetTarget", new DispatchQueue.Attributes { IsInitiallyInactive = true }, target);
+			try {
+				queue.SetTargetQueue (null);
+			} finally {
+				queue.Activate ();
+			}
+			target.Suspend ();
+			try {
+				var completed = new TaskCompletionSource<bool> ();
+				queue.DispatchAsync (() => completed.SetResult (true));
+				Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Reset removes the previous target");
+			} finally {
+				target.Resume ();
+			}
+		}
+
+		[Test]
+		public void DisposedTargetQueue ()
+		{
+			var target = new DispatchQueue ("DisposedTarget");
+			target.Dispose ();
+			using var queue = new DispatchQueue ("DisposedTargetChild", new DispatchQueue.Attributes { IsInitiallyInactive = true });
+			try {
+				Assert.Throws<ObjectDisposedException> (() => queue.SetTargetQueue (target), "Disposed target");
+			} finally {
+				queue.Activate ();
+			}
 		}
 
 		[Test]
@@ -236,6 +257,43 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 			var dt2 = new DispatchTime (dt, Int32.MaxValue);
 			Assert.That (dt2.Nanoseconds, Is.GreaterThan (dt.Nanoseconds), "later");
+		}
+
+		[TestCase (0L)]
+		[TestCase (1L)]
+		[TestCase (-1L)]
+		[TestCase (10000000L)]
+		[TestCase (-10000000L)]
+		public void DispatchTimeInterval (long ticks)
+		{
+			var reference = new DispatchTime (DispatchTime.Now, TimeSpan.FromSeconds (5));
+			var actual = new DispatchTime (reference, TimeSpan.FromTicks (ticks));
+			var expected = new DispatchTime (reference, ticks * 100);
+			Assert.That (actual.Nanoseconds, Is.EqualTo (expected.Nanoseconds), "TimeSpan ticks converted to nanoseconds");
+		}
+
+		[Test]
+		public void DispatchTimeIntervalOverflow ()
+		{
+			Assert.Throws<OverflowException> (() => new DispatchTime (DispatchTime.Now, TimeSpan.MaxValue), "Positive overflow");
+			Assert.Throws<OverflowException> (() => new DispatchTime (DispatchTime.Now, TimeSpan.MinValue), "Negative overflow");
+			Assert.Throws<OverflowException> (() => new DispatchTime (DispatchTime.Now, TimeSpan.FromTicks (long.MaxValue / 100 + 1)), "Positive boundary");
+			Assert.Throws<OverflowException> (() => new DispatchTime (DispatchTime.Now, TimeSpan.FromTicks (long.MinValue / 100 - 1)), "Negative boundary");
+			Assert.DoesNotThrow (() => new DispatchTime (DispatchTime.Now, TimeSpan.FromTicks (long.MaxValue / 100)), "Largest representable delta");
+			Assert.DoesNotThrow (() => new DispatchTime (DispatchTime.Now, TimeSpan.FromTicks (long.MinValue / 100)), "Smallest representable delta");
+		}
+
+		[Test]
+		public void DispatchWallTime ()
+		{
+			var before = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds ();
+			var wallTime = DispatchTime.Now.WallTime;
+			var after = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds ();
+			var milliseconds = -(long) wallTime.Nanoseconds / 1000000;
+			Assert.That (milliseconds, Is.InRange (before, after), "Wall-clock deadline encodes the current Unix time");
+			var later = new DispatchTime (wallTime, TimeSpan.FromSeconds (1));
+			Assert.That (-(long) later.Nanoseconds, Is.EqualTo (-(long) wallTime.Nanoseconds + 1000000000), "Wall-clock offset");
+			Assert.That (new DispatchTime (42).Nanoseconds, Is.EqualTo (42UL), "Raw native time");
 		}
 
 #if !MONOMAC // UIKitThreadAccessException and NSStringDrawing.WeakDrawString don't exist on mac

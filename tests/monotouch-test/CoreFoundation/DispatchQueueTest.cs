@@ -7,6 +7,7 @@
 // Copyright 2018 Microsoft Corp. All rights reserved.
 //
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -488,6 +489,60 @@ namespace MonoTouchFixtures.CoreFoundation {
 			target.SetSpecific (key, "target");
 			using var queue = new DispatchQueue ("SpecificChild", new DispatchQueue.Attributes (), target);
 			Assert.That (queue.GetSpecific (key), Is.Null, "Only searches the specified queue");
+		}
+
+		class SpecificValue {
+			public IntPtr Key { get; }
+
+			public SpecificValue (IntPtr key)
+			{
+				Key = key;
+			}
+
+			public override string ToString () => Key.ToString ();
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void SpecificConcurrentReplacement (bool separateWrapper)
+		{
+			using var queue = new DispatchQueue ("SpecificConcurrentReplacement");
+			using var alias = queue.DispatchSync (() => DispatchQueue.CurrentQueue);
+			Assert.That (alias, Is.Not.SameAs (queue), "Distinct managed wrappers");
+			Assert.That (alias.Handle, Is.EqualTo (queue.Handle), "Both wrappers refer to the same native queue");
+			var reader = separateWrapper ? alias : queue;
+			var keys = new IntPtr [] { (IntPtr) 1, (IntPtr) 2 };
+			foreach (var key in keys)
+				queue.SetSpecific (key, new SpecificValue (key));
+
+			var unexpected = new List<(IntPtr Key, object Value)> ();
+			var finished = 0;
+			using var start = new Barrier (2);
+			var writer = Task.Run (() => {
+				start.SignalAndWait ();
+				var iteration = 0;
+				do {
+					var key = keys [iteration++ % keys.Length];
+					queue.SetSpecific (key, new SpecificValue (key));
+					if (iteration % 1024 == 0)
+						GC.Collect (0);
+				} while (Volatile.Read (ref finished) == 0);
+			});
+			var reads = Task.Run (() => {
+				start.SignalAndWait ();
+				try {
+					for (var i = 0; i < 100000; i++) {
+						var key = keys [i % keys.Length];
+						var value = reader.GetSpecific (key);
+						if (value is not SpecificValue state || state.Key != key)
+							unexpected.Add ((key, value));
+					}
+				} finally {
+					Volatile.Write (ref finished, 1);
+				}
+			});
+			Task.WaitAll (writer, reads);
+			Assert.That (unexpected, Is.Empty, "Every read must return an object registered for that key");
 		}
 
 		[TestCase (false)]

@@ -430,10 +430,15 @@ namespace CoreFoundation {
 
 		}
 
+		// Synchronize native destruction with readers using any wrapper for the same queue.
+		static readonly object specific_lock = new object ();
+
 		[UnmanagedCallersOnly]
 		static void static_free_gchandle (IntPtr context)
 		{
-			GCHandle.FromIntPtr (context).Free ();
+			lock (specific_lock) {
+				GCHandle.FromIntPtr (context).Free ();
+			}
 		}
 
 		/// <summary>Schedules an action for asynchronous execution on this queue.</summary>
@@ -723,7 +728,8 @@ namespace CoreFoundation {
 		/// <exception cref="ObjectDisposedException">This queue has been disposed.</exception>
 		/// <remarks>
 		///   Replacing a value releases the previous managed reference. The queue retains the object until replacement
-		///   or native queue destruction. Synchronize replacements with reads of the same key.
+		///   or native queue destruction. Concurrent reads and replacements are supported, including through different
+		///   wrappers for the same native queue.
 		///   This API is not supported on global queues.
 		/// </remarks>
 		public void SetSpecific (IntPtr key, object context)
@@ -741,16 +747,18 @@ namespace CoreFoundation {
 		/// <returns>The associated object, or <see langword="null" /> if the key is unset.</returns>
 		/// <exception cref="ObjectDisposedException">This queue has been disposed.</exception>
 		/// <remarks>
-		///   Looks only on this queue, not its target queues. Only read values registered by <see cref="SetSpecific" />,
-		///   and synchronize reads with replacement of the same key.
+		///   Looks only on this queue, not its target queues. Only read values registered by <see cref="SetSpecific" />.
+		///   Concurrent reads and replacements are supported, including through different wrappers for the same native queue.
 		/// </remarks>
 		public object? GetSpecific (IntPtr key)
 		{
-			var context = dispatch_queue_get_specific (GetCheckedHandle (), key);
-			if (context == IntPtr.Zero)
-				return null;
-			GCHandle gchandle = (GCHandle) context;
-			return gchandle.Target;
+			lock (specific_lock) {
+				var context = dispatch_queue_get_specific (GetCheckedHandle (), key);
+				if (context == IntPtr.Zero)
+					return null;
+				GCHandle gchandle = (GCHandle) context;
+				return gchandle.Target;
+			}
 		}
 
 		/// <summary>Gets this queue's assigned quality-of-service class and relative priority.</summary>

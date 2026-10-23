@@ -693,20 +693,16 @@ namespace MonoTests.System.Net.Http {
 			// Assert.That (servicePointManagerCbWasExcuted, Is.True, "Executed");
 		}
 
-		[Ignore ("https://github.com/dotnet/macios/issues/21912")]
-		[TestCase ("https://self-signed.badssl.com/")]
-		[TestCase ("https://wrong.host.badssl.com/")]
-		public void AcceptSslCertificatesWithCustomValidationCallbackNSUrlSessionHandler (string url)
+		[TestCase (false)]
+		[TestCase (true)]
+		public void AcceptSslCertificatesWithCustomValidationCallbackNSUrlSessionHandler (bool wrongHostName)
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-
 			bool callbackWasExecuted = false;
 			HttpResponseMessage result = null;
 			X509Certificate2 serverCertificate = null;
 			SslPolicyErrors sslPolicyErrors = SslPolicyErrors.None;
 
-			var handler = new NSUrlSessionHandler {
+			using var handler = new NSUrlSessionHandler {
 				ServerCertificateCustomValidationCallback = (request, certificate, chain, errors) => {
 					callbackWasExecuted = true;
 					serverCertificate = certificate;
@@ -715,20 +711,27 @@ namespace MonoTests.System.Net.Http {
 				}
 			};
 
-			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				var client = new HttpClient (handler);
-				result = await client.GetAsync (url);
-			}, out var ex);
+			NWListener listener = null;
+			try {
+				listener = TlsTestServer.CreateNWTlsListener (requireClientCert: false, wrongHostName: wrongHostName);
+				using var client = new HttpClient (handler);
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					result = await client.GetAsync ($"https://127.0.0.1:{listener.Port}/");
+				}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
+				Assert.That (done, Is.True, "Request to localhost timed out.");
+				Assert.That (ex, Is.Null, "Exception wasn't expected.");
 				Assert.That (callbackWasExecuted, Is.True, "Validation Callback called");
 				Assert.That (sslPolicyErrors, Is.Not.EqualTo (SslPolicyErrors.None), "Callback was called with unexpected SslPolicyErrors");
 				Assert.That (serverCertificate, Is.Not.Null, "Server certificate is null");
-				Assert.That (ex, Is.Null, "Exception wasn't expected.");
+				Assert.That (serverCertificate.GetNameInfo (X509NameType.DnsName, false), Is.EqualTo (wrongHostName ? "not-localhost" : "localhost"), "Server certificate hostname");
 				Assert.That (result, Is.Not.Null, "Result was null");
-				Assert.That (result.IsSuccessStatusCode, Is.True, $"Status code was not success: {result.StatusCode}");
+				Assert.That (result.StatusCode, Is.EqualTo (HttpStatusCode.OK), "Status code");
+			} finally {
+				result?.Dispose ();
+				serverCertificate?.Dispose ();
+				listener?.Cancel ();
+				listener?.Dispose ();
 			}
 		}
 

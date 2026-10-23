@@ -8,6 +8,7 @@
 //
 
 using System.IO;
+using System.Runtime.InteropServices;
 using CoreGraphics;
 #if MONOMAC
 using AppKit;
@@ -15,7 +16,6 @@ using AppKit;
 using UIKit;
 #endif
 using System.Threading;
-using System.Threading.Tasks;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {
@@ -164,6 +164,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void SetTargetQueue ()
 		{
 			using var target = new DispatchQueue ("Target");
+			var key = (IntPtr) 0x31415926;
+			var state = new object ();
+			target.SetSpecific (key, state);
 			var attributes = new DispatchQueue.Attributes { IsInitiallyInactive = true };
 			using var queue = new DispatchQueue ("Child", attributes);
 			try {
@@ -172,37 +175,28 @@ namespace MonoTouchFixtures.CoreFoundation {
 				queue.Activate ();
 			}
 			Assert.That (queue.DispatchSync (() => DispatchQueue.CurrentQueueLabel), Is.EqualTo ("Child"), "Child label");
-
-			target.Suspend ();
-			var completed = new TaskCompletionSource<bool> ();
-			try {
-				queue.DispatchAsync (() => completed.SetResult (true));
-				Assert.That (completed.Task.IsCompleted, Is.False, "Child work cannot run on a suspended target");
-			} finally {
-				target.Resume ();
-			}
-			Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Target resumed");
+			var context = queue.DispatchSync (() => dispatch_get_specific (key));
+			Assert.That (context, Is.Not.EqualTo (IntPtr.Zero), "Child executes through the requested target");
+			Assert.That (GCHandle.FromIntPtr (context).Target, Is.SameAs (state), "Target's queue-specific state");
 		}
 
 		[Test]
 		public void ResetTargetQueue ()
 		{
 			using var target = new DispatchQueue ("InitialTarget");
+			var key = (IntPtr) 0x31415926;
+			target.SetSpecific (key, new object ());
 			using var queue = new DispatchQueue ("ResetTarget", new DispatchQueue.Attributes { IsInitiallyInactive = true }, target);
 			try {
 				queue.SetTargetQueue (null);
 			} finally {
 				queue.Activate ();
 			}
-			target.Suspend ();
-			try {
-				var completed = new TaskCompletionSource<bool> ();
-				queue.DispatchAsync (() => completed.SetResult (true));
-				Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Reset removes the previous target");
-			} finally {
-				target.Resume ();
-			}
+			Assert.That (queue.DispatchSync (() => dispatch_get_specific (key)), Is.EqualTo (IntPtr.Zero), "Reset removes the previous target");
 		}
+
+		[DllImport (Constants.libcLibrary)]
+		static extern IntPtr dispatch_get_specific (IntPtr key);
 
 		[Test]
 		public void DisposedTargetQueue ()

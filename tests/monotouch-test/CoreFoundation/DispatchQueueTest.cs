@@ -7,6 +7,7 @@
 // Copyright 2018 Microsoft Corp. All rights reserved.
 //
 
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -266,13 +267,16 @@ namespace MonoTouchFixtures.CoreFoundation {
 			using var queue = new DispatchQueue ("SynchronizationContextRestored");
 			var originalContext = SynchronizationContext.Current;
 			var context = customContext ? new SynchronizationContext () : null;
+			var callerThread = Environment.CurrentManagedThreadId;
 			SynchronizationContext.SetSynchronizationContext (context);
 			try {
 				SynchronizationContext callbackContext = null;
+				var callbackThread = 0;
 				queue.DispatchSync (() => {
 					callbackContext = SynchronizationContext.Current;
+					callbackThread = Environment.CurrentManagedThreadId;
 				});
-				if (customContext)
+				if (customContext && callerThread == callbackThread)
 					Assert.That (callbackContext, Is.SameAs (context), "User context is preserved");
 				else
 					Assert.That (callbackContext, Is.Not.Null, "Queue context is installed");
@@ -492,7 +496,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using var queue = new DispatchQueue ("DispatchAfter");
 			var completed = new TaskCompletionSource<bool> ();
-			var clock = System.Diagnostics.Stopwatch.StartNew ();
+			var clock = Stopwatch.StartNew ();
 			var deadline = new DispatchTime (DispatchTime.Now, TimeSpan.FromMilliseconds (50));
 			var elapsed = TimeSpan.Zero;
 			var label = "";
@@ -567,8 +571,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void GlobalQualityOfService (DispatchQualityOfService service)
 		{
 			using var queue = DispatchQueue.GetGlobalQueue (service);
-			Assert.That (queue.QualityOfService, Is.EqualTo (service), "Assigned quality of service");
-			Assert.That (queue.GetQualityOfService (out var priority), Is.EqualTo (service), "Quality of service method");
+			var expected = service == DispatchQualityOfService.Default ? DispatchQualityOfService.Unspecified : service;
+			Assert.That (queue.QualityOfService, Is.EqualTo (expected), "Assigned quality of service");
+			Assert.That (queue.GetQualityOfService (out var priority), Is.EqualTo (expected), "Quality of service method");
 			Assert.That (priority, Is.EqualTo (0), "Relative priority");
 			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Queue executes work");
 		}
@@ -577,8 +582,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 		[Test]
 		public void MainIteration ()
 		{
-			using var process = new System.Diagnostics.Process ();
-			process.StartInfo = new System.Diagnostics.ProcessStartInfo {
+			using var process = new Process ();
+			process.StartInfo = new ProcessStartInfo {
 				FileName = NSBundle.MainBundle.ExecutablePath,
 				Arguments = "--test-dispatch-main",
 				UseShellExecute = false,

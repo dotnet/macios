@@ -754,6 +754,7 @@ namespace CoreFoundation {
 		/// <param name="relative_priority">Receives the priority offset within the quality-of-service class.</param>
 		/// <returns>The queue's assigned quality-of-service class, or <see cref="DispatchQualityOfService.Unspecified" /> if none is assigned.</returns>
 		/// <exception cref="ObjectDisposedException">This queue has been disposed.</exception>
+		/// <remarks>The default global queue has no explicitly assigned quality-of-service class.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -769,6 +770,7 @@ namespace CoreFoundation {
 		/// <summary>Gets this queue's assigned quality-of-service class.</summary>
 		/// <value>The assigned class, or <see cref="DispatchQualityOfService.Unspecified" /> if none is assigned.</value>
 		/// <exception cref="ObjectDisposedException">This queue has been disposed.</exception>
+		/// <remarks>The default global queue has no explicitly assigned quality-of-service class.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

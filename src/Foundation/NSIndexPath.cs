@@ -140,13 +140,14 @@ namespace Foundation {
 		/// <remarks>The destination is pinned only during the call. Elements beyond the path length remain unchanged. An empty path does not modify the destination.</remarks>
 		public unsafe void GetIndexes (Span<nuint> indexes)
 		{
-			if (indexes.Length < Length)
+			var length = Length;
+			if (indexes.Length < length)
 				throw new ArgumentException ("The destination is shorter than the index path.", nameof (indexes));
-			if (Length == 0)
+			if (length == 0)
 				return;
 
 			fixed (nuint* ptr = indexes)
-				_GetIndexes ((IntPtr) ptr);
+				_GetIndexes ((IntPtr) ptr, new NSRange (0, length));
 			GC.KeepAlive (this);
 		}
 

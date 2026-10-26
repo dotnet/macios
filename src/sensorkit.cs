@@ -1163,8 +1163,8 @@ namespace SensorKit {
 		NSString _GetSensorForDeletionRecordsFromSensor ();
 	}
 
-		/// <summary>Gets the duration.</summary>
-		/// <value>The duration, in seconds.</value>
+	/// <summary>Gets the duration.</summary>
+	/// <value>The duration, in seconds.</value>
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SRTextInputSession /* privately conforms to NSCoding and NSSecureCoding */

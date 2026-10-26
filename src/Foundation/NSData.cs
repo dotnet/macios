@@ -212,6 +212,7 @@ namespace Foundation {
 				this.source = source;
 			}
 
+			/// <inheritdoc />
 			public override int Read (Span<byte> buffer)
 			{
 				// The base span implementation uses a temporary array for derived streams.
@@ -267,6 +268,7 @@ namespace Foundation {
 				return base.ReadByte ();
 			}
 
+			/// <inheritdoc />
 			public override int Read (Span<byte> buffer)
 			{
 				if (base_address != Source.Bytes)

@@ -1667,12 +1667,14 @@ namespace Foundation {
 				return ReadAsync (buffer, offset, count).Result;
 			}
 
+			/// <inheritdoc />
 			public override Task<int> ReadAsync (byte [] buffer, int offset, int count, CancellationToken cancellationToken)
 			{
 				ValidateBufferArguments (buffer, offset, count);
 				return ReadAsync (buffer.AsMemory (offset, count), cancellationToken).AsTask ();
 			}
 
+			/// <inheritdoc />
 			public override async ValueTask<int> ReadAsync (Memory<byte> buffer, CancellationToken cancellationToken = default)
 			{
 				// try to throw on enter

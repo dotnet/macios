@@ -12,10 +12,10 @@ using ObjCRuntime;
 namespace CoreFoundation {
 
 	/// <summary>The clock used for the timestamps of an <see cref="OSWorkgroupInterval" />.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public enum OSClockId : uint {
 		/// <summary>The Mach absolute time clock.</summary>
 		MachAbsoluteTime = 32,
@@ -26,10 +26,10 @@ namespace CoreFoundation {
 	/// The token must be disposed on the same thread that joined the workgroup.
 	/// This is a struct (and has no finalizer) because leaving a workgroup can't be done from the finalizer thread.
 	/// </remarks>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public struct OSWorkgroupJoinToken : IDisposable {
 #if !COREBUILD
 		// sizeof (os_workgroup_join_token_s) is 40 bytes; allocate extra room.
@@ -67,10 +67,10 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>A group of threads that work towards a common goal.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public class OSWorkgroup : NativeObject {
 #if !COREBUILD
 		[DllImport (Constants.libSystemLibrary)]
@@ -179,7 +179,7 @@ namespace CoreFoundation {
 		/// <param name="name">An optional name for the workgroup.</param>
 		/// <param name="machPort">The Mach port to create the workgroup from.</param>
 		/// <returns>The new workgroup, or <see langword="null" /> if it couldn't be created.</returns>
-		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -193,7 +193,7 @@ namespace CoreFoundation {
 		/// <summary>Get a Mach port that represents this workgroup.</summary>
 		/// <param name="machPort">The Mach port. The caller owns a send right to it.</param>
 		/// <returns>True if successful, false otherwise.</returns>
-		[SupportedOSPlatform ("macos11.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -205,10 +205,10 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>A workgroup whose threads work towards a repeating deadline.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public class OSWorkgroupInterval : OSWorkgroup {
 #if !COREBUILD
 		[DllImport (Constants.libSystemLibrary)]
@@ -256,10 +256,10 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>A workgroup whose threads are allowed to work in parallel.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public class OSWorkgroupParallel : OSWorkgroup {
 #if !COREBUILD
 		[DllImport (Constants.libSystemLibrary)]

@@ -11,10 +11,10 @@ using ObjCRuntime;
 namespace AudioToolbox {
 
 	/// <summary>Create workgroup intervals for use with audio realtime threads.</summary>
-	[SupportedOSPlatform ("ios14.0")]
-	[SupportedOSPlatform ("maccatalyst14.0")]
-	[SupportedOSPlatform ("macos11.0")]
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("tvos")]
 	public static class AudioWorkInterval {
 #if !COREBUILD
 		[DllImport (Constants.AudioToolboxLibrary)]

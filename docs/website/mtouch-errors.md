@@ -3510,7 +3510,17 @@ Where * can be:
 
 <a name="MT7199"></a>
 
-### MT7199: The app's Info.plist does not contain a UIApplicationSceneManifest dictionary.
+### MT7199: The framework '*' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.
+
+Native framework directory names must end in lowercase `.framework`. Other
+capitalization, such as `.Framework`, may prevent the framework from being linked
+or bundled correctly. Rename the directory and update the native reference.
+For frameworks inside an archive or binding resource package, correct the
+framework name in the package as well.
+
+<a name="MT7200"></a>
+
+### MT7200: The app's Info.plist does not contain a UIApplicationSceneManifest dictionary.
 
 Apps built against the iOS or Mac Catalyst 27.0 SDK or later must adopt the UIKit
 scene lifecycle to launch on iOS or macOS 27.0 or later. Add the scene manifest

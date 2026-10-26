@@ -37,7 +37,6 @@ void xamarin_dyn_objc_msgSend ();
 void xamarin_dyn_objc_msgSendSuper ();
 void xamarin_dyn_objc_msgSend_stret ();
 void xamarin_dyn_objc_msgSendSuper_stret ();
-void xamarin_add_internal_call (const char *name, const void *method);
 
 static inline size_t align_size (size_t target, uint64_t alignment)
 {

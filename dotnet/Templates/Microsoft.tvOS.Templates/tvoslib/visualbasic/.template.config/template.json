@@ -32,7 +32,7 @@
           "description": "Target net11.0-tvos"
         }
       ],
-      "replaces": "net11.0-tvos",
+      "replaces": "TFM",
       "defaultValue": "net12.0-tvos"
     }
   }

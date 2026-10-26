@@ -53,7 +53,7 @@
       "type": "parameter",
       "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
-      "replaces": "minOSVersion",
+      "replaces": "TFM",
       "datatype": "string",
       "defaultValue": "15.0"
     },
@@ -61,7 +61,7 @@
       "type": "parameter",
       "displayName": "Extension class name",
       "description": "The name of the notification service extension class",
-      "replaces": "NotificationServiceClass",
+      "replaces": "TFM",
       "datatype": "string",
       "defaultValue": "NotificationService"
     },
@@ -79,7 +79,7 @@
           "description": "Target net11.0-ios"
         }
       ],
-      "replaces": "net11.0-ios",
+      "replaces": "TFM",
       "defaultValue": "net12.0-ios"
     }
   },

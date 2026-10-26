@@ -40,7 +40,7 @@
       "type": "parameter",
       "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
-      "replaces": "minOSVersion",
+      "replaces": "TFM",
       "datatype": "string",
       "defaultValue": "15.0"
     },
@@ -81,7 +81,7 @@
           "description": "Target net11.0-ios"
         }
       ],
-      "replaces": "net11.0-ios",
+      "replaces": "TFM",
       "defaultValue": "net12.0-ios"
     }
   },

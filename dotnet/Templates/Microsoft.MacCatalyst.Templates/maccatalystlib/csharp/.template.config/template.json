@@ -32,7 +32,7 @@
           "description": "Target net11.0-maccatalyst"
         }
       ],
-      "replaces": "net11.0-maccatalyst",
+      "replaces": "TFM",
       "defaultValue": "net12.0-maccatalyst"
     }
   }

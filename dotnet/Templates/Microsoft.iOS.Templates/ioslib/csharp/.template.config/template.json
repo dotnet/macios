@@ -32,7 +32,7 @@
           "description": "Target net11.0-ios"
         }
       ],
-      "replaces": "net11.0-ios",
+      "replaces": "TFM",
       "defaultValue": "net12.0-ios"
     }
   }

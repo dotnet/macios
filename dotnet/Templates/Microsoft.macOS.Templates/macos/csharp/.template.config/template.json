@@ -40,7 +40,7 @@
       "type": "parameter",
       "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
-      "replaces": "minOSVersion",
+      "replaces": "TFM",
       "datatype": "string",
       "defaultValue": "14.0"
     },
@@ -58,7 +58,7 @@
           "description": "Target net11.0-macos"
         }
       ],
-      "replaces": "net11.0-macos",
+      "replaces": "TFM",
       "defaultValue": "net12.0-macos"
     }
   },

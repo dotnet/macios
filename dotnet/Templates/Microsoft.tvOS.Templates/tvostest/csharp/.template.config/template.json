@@ -37,7 +37,7 @@
           "description": "Target net11.0-tvos"
         }
       ],
-      "replaces": "net11.0-tvos",
+      "replaces": "TFM",
       "defaultValue": "net12.0-tvos"
     },
     "bundleId": {
@@ -49,7 +49,7 @@
     "minOSVersion": {
       "type": "parameter",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
-      "replaces": "minOSVersion",
+      "replaces": "TFM",
       "datatype": "string",
       "defaultValue": "15.0"
     }

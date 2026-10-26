@@ -158,14 +158,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<_ReferencesWithNativeReferencesToExpand Include="@(ReferencePath)" Condition="Exists('%(RelativeDir)%(Filename).resources.zip') Or Exists('%(RelativeDir)%(Filename).resources')" />
 			<_NativeReferencesToExpand Include="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)" />
+			<_NativeReferencesToValidate Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework'" />
 		</ItemGroup>
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0))"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToValidate->Count()) &gt; 0))"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
 			NativeReferences="@(_NativeReferencesToExpand)"
+			NativeReferencesToValidate="@(_NativeReferencesToValidate)"
 			References="@(_ReferencesWithNativeReferencesToExpand)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -704,7 +706,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifest"
 		Condition="'$(_BundleOriginalResources)' != 'true'"
 		DependsOnTargets="$(_CompileAppManifestDependsOn)"
-		Inputs="@(_CompileAppManifestInputFile)"
+		Inputs="@(_CompileAppManifestInputFile);$(AppBundleManifest)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
 
@@ -857,6 +859,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- $(_CompiledEntitlements) will be passed to the native compiler, it's used to embed the entitlements in the executable -->
 			<Output TaskParameter="EntitlementsInExecutable" PropertyName="_CompiledEntitlements" />
+			<Output TaskParameter="EntitlementsInExecutableHash" PropertyName="_CompiledEntitlementsHash" />
 
 			<!-- $(_CompiledCodesignEntitlements) will be used only with Codesign tasks when building for device or desktop. MUST NOT BE SET for iOS Simulator builds. -->
 			<Output TaskParameter="EntitlementsInSignature" PropertyName="_CompiledCodesignEntitlements" />
@@ -3734,11 +3737,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_AddAppleApplicationArtifactMetadata"
-		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And Exists('$(_AppBundleManifestPath)')">
 		<ReadAppManifest
-			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
 			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>

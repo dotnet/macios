@@ -1,2 +1,0 @@
-## enum size declared after the enum, e.g. `typedef NSInteger GKInviteeResponse;`, so we miss the metadata
-!unknown-native-enum! GKInviteeResponse bound

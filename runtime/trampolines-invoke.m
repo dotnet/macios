@@ -242,9 +242,11 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 			if (exception_gchandle != INVALID_GCHANDLE)
 				goto exception_handling;
 			if (nativeByref) {
-				char *modified_type = (char *) calloc (1, strlen (type) + 2);
+				const int max_type_length = 512; // this is just to have a maximum value, so that we can use strnlen instead of strlen
+				size_t typelen = strnlen (type, max_type_length);
+				char *modified_type = (char *) calloc (1, typelen + 2);
 				modified_type [0] = _C_PTR;
-				memcpy (&modified_type [1], type, strlen (type));
+				memcpy (&modified_type [1], type, typelen);
 				free_list = s_list_prepend (free_list, modified_type);
 				LOGZ ("    this argument will be passed by reference, processing will be done for the type '%s'\n", modified_type);
 				type = modified_type;

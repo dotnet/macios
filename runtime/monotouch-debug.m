@@ -1296,14 +1296,15 @@ monotouch_process_connection (int fd)
 					for (int i = 0; i < port_replacement_env_var_count; i++) {
 						char *value = port_replacement_env_vars [i].value;
 						char *replacement = strstr (value, "%FORWARD_PORT%");
+						const int max_env_var_length = 512; // this is just to have a maximum value, so that we can use strnlen instead of strlen
 						if (replacement != NULL) {
 							// Build the new value with the port substituted
 							size_t prefix_len = (size_t) (replacement - value);
-							size_t suffix_len = strlen (replacement + 14); // 14 = strlen("%FORWARD_PORT%")
-							char *new_value = (char *) malloc (prefix_len + strlen (port_str) + suffix_len + 1);
+							size_t suffix_len = strnlen (replacement + 14, max_env_var_length); // 14 = strlen("%FORWARD_PORT%")
+							char *new_value = (char *) calloc (1, prefix_len + strnlen (port_str, sizeof (port_str)) + suffix_len + 1);
 							memcpy (new_value, value, prefix_len);
-							memcpy (new_value + prefix_len, port_str, strlen (port_str));
-							memcpy (new_value + prefix_len + strlen (port_str), replacement + 14, suffix_len + 1);
+							memcpy (new_value + prefix_len, port_str, strnlen (port_str, sizeof (port_str)));
+							memcpy (new_value + prefix_len + strnlen (port_str, sizeof (port_str)), replacement + 14, suffix_len + 1);
 							setenv (port_replacement_env_vars [i].name, new_value, 1);
 							LOG (PRODUCT ": Port forwarding: set env %s=%s\n", port_replacement_env_vars [i].name, new_value);
 							free (new_value);
@@ -1314,7 +1315,7 @@ monotouch_process_connection (int fd)
 					}
 
 					// Start the forwarding thread
-					PortForwardData *fwd_data = (PortForwardData *) malloc (sizeof (PortForwardData));
+					PortForwardData *fwd_data = (PortForwardData *) calloc (1, sizeof (PortForwardData));
 					fwd_data->listen_fd = listen_fd;
 					fwd_data->dst_fd = fd;
 

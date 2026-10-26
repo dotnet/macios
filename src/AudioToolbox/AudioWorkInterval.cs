@@ -6,6 +6,7 @@
 using System.Runtime.InteropServices;
 
 using CoreFoundation;
+using ObjCRuntime;
 
 namespace AudioToolbox {
 
@@ -26,13 +27,9 @@ namespace AudioToolbox {
 		public static OSWorkgroupInterval? Create (string name, OSClockId clock = OSClockId.MachAbsoluteTime)
 		{
 			ArgumentNullException.ThrowIfNull (name);
-			var namePtr = Marshal.StringToCoTaskMemUTF8 (name);
-			try {
-				var handle = AudioWorkIntervalCreate (namePtr, (uint) clock, IntPtr.Zero);
-				return handle == IntPtr.Zero ? null : new OSWorkgroupInterval (handle, true);
-			} finally {
-				Marshal.FreeCoTaskMem (namePtr);
-			}
+			using var namePtr = new TransientString (name, TransientString.Encoding.Ansi);
+			var handle = AudioWorkIntervalCreate (namePtr, (uint) clock, IntPtr.Zero);
+			return handle == IntPtr.Zero ? null : new OSWorkgroupInterval (handle, true);
 		}
 #endif // !COREBUILD
 	}

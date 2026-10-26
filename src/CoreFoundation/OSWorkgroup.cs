@@ -22,12 +22,15 @@ namespace CoreFoundation {
 	}
 
 	/// <summary>A token returned when joining an <see cref="OSWorkgroup" />. Dispose it to leave the workgroup.</summary>
-	/// <remarks>The token must be disposed on the same thread that joined the workgroup.</remarks>
+	/// <remarks>
+	/// The token must be disposed on the same thread that joined the workgroup.
+	/// This is a struct (and has no finalizer) because leaving a workgroup can't be done from the finalizer thread.
+	/// </remarks>
 	[SupportedOSPlatform ("ios14.0")]
 	[SupportedOSPlatform ("maccatalyst14.0")]
 	[SupportedOSPlatform ("macos11.0")]
 	[SupportedOSPlatform ("tvos14.0")]
-	public sealed class OSWorkgroupJoinToken : IDisposable {
+	public struct OSWorkgroupJoinToken : IDisposable {
 		// sizeof (os_workgroup_join_token_s) is 40 bytes; allocate extra room.
 		const int TokenSize = 64;
 
@@ -50,18 +53,11 @@ namespace CoreFoundation {
 		{
 			if (token == IntPtr.Zero)
 				return;
-			os_workgroup_leave (workgroup!.Handle, token);
+			os_workgroup_leave (workgroup.GetHandle (), token);
 			Marshal.FreeHGlobal (token);
 			token = IntPtr.Zero;
 			GC.KeepAlive (workgroup);
 			workgroup = null;
-		}
-
-		~OSWorkgroupJoinToken ()
-		{
-			// Leaving from the finalizer thread would be wrong; just free the memory.
-			if (token != IntPtr.Zero)
-				Marshal.FreeHGlobal (token);
 		}
 	}
 
@@ -125,14 +121,10 @@ namespace CoreFoundation {
 		public static OSWorkgroup? Create (string? name, OSWorkgroup workgroup)
 		{
 			ArgumentNullException.ThrowIfNull (workgroup);
-			var namePtr = Marshal.StringToCoTaskMemUTF8 (name);
-			try {
-				var handle = os_workgroup_create_with_workgroup (namePtr, workgroup.GetCheckedHandle ());
-				GC.KeepAlive (workgroup);
-				return handle == IntPtr.Zero ? null : new OSWorkgroup (handle, true);
-			} finally {
-				Marshal.FreeCoTaskMem (namePtr);
-			}
+			using var namePtr = new TransientString (name, TransientString.Encoding.Ansi);
+			var handle = os_workgroup_create_with_workgroup (namePtr, workgroup.GetCheckedHandle ());
+			GC.KeepAlive (workgroup);
+			return handle == IntPtr.Zero ? null : new OSWorkgroup (handle, true);
 		}
 
 		/// <summary>Join the current thread to this workgroup.</summary>
@@ -140,13 +132,30 @@ namespace CoreFoundation {
 		/// <exception cref="InvalidOperationException">If the thread is already in a workgroup, or if the workgroup has been cancelled.</exception>
 		public OSWorkgroupJoinToken Join ()
 		{
-			var token = OSWorkgroupJoinToken.Allocate ();
-			var rv = os_workgroup_join (GetCheckedHandle (), token);
-			if (rv != 0) {
-				Marshal.FreeHGlobal (token);
-				throw new InvalidOperationException ($"Unable to join the workgroup (error {rv}).");
+			if (!TryJoin (out var token, out var error))
+				throw new InvalidOperationException ($"Unable to join the workgroup (error {error}).");
+			return token;
+		}
+
+		/// <summary>Try to join the current thread to this workgroup.</summary>
+		/// <param name="token">A token that must be disposed (on the same thread) to leave the workgroup. Only valid if this method returns true.</param>
+		/// <returns>True if the thread joined the workgroup, false otherwise (for instance if the thread is already in a workgroup, or if the workgroup has been cancelled).</returns>
+		public bool TryJoin (out OSWorkgroupJoinToken token)
+		{
+			return TryJoin (out token, out _);
+		}
+
+		bool TryJoin (out OSWorkgroupJoinToken token, out int error)
+		{
+			var tokenPtr = OSWorkgroupJoinToken.Allocate ();
+			error = os_workgroup_join (GetCheckedHandle (), tokenPtr);
+			if (error != 0) {
+				Marshal.FreeHGlobal (tokenPtr);
+				token = default;
+				return false;
 			}
-			return new OSWorkgroupJoinToken (this, token);
+			token = new OSWorkgroupJoinToken (this, tokenPtr);
+			return true;
 		}
 
 		/// <summary>Cancel the workgroup. Threads can no longer join a cancelled workgroup.</summary>
@@ -171,13 +180,9 @@ namespace CoreFoundation {
 		[UnsupportedOSPlatform ("tvos")]
 		public static OSWorkgroup? Create (string? name, uint machPort)
 		{
-			var namePtr = Marshal.StringToCoTaskMemUTF8 (name);
-			try {
-				var handle = os_workgroup_create_with_port (namePtr, machPort);
-				return handle == IntPtr.Zero ? null : new OSWorkgroup (handle, true);
-			} finally {
-				Marshal.FreeCoTaskMem (namePtr);
-			}
+			using var namePtr = new TransientString (name, TransientString.Encoding.Ansi);
+			var handle = os_workgroup_create_with_port (namePtr, machPort);
+			return handle == IntPtr.Zero ? null : new OSWorkgroup (handle, true);
 		}
 
 		/// <summary>Get a Mach port that represents this workgroup.</summary>
@@ -266,13 +271,9 @@ namespace CoreFoundation {
 		/// <returns>The new workgroup, or <see langword="null" /> if it couldn't be created.</returns>
 		public static OSWorkgroupParallel? Create (string? name)
 		{
-			var namePtr = Marshal.StringToCoTaskMemUTF8 (name);
-			try {
-				var handle = os_workgroup_parallel_create (namePtr, IntPtr.Zero);
-				return handle == IntPtr.Zero ? null : new OSWorkgroupParallel (handle, true);
-			} finally {
-				Marshal.FreeCoTaskMem (namePtr);
-			}
+			using var namePtr = new TransientString (name, TransientString.Encoding.Ansi);
+			var handle = os_workgroup_parallel_create (namePtr, IntPtr.Zero);
+			return handle == IntPtr.Zero ? null : new OSWorkgroupParallel (handle, true);
 		}
 #endif // !COREBUILD
 	}

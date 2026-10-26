@@ -63,7 +63,6 @@
 !missing-pinvoke! AudioCodecSetProperty is not bound
 !missing-pinvoke! AudioCodecUninitialize is not bound
 
-# ignored due to the Workgroups API missing: https://github.com/dotnet/macios/issues/9602 
 !missing-selector! AUAudioUnit::renderContextObserver not bound
 
 # ignored due to missing structs not yet implemented in CoreMidi

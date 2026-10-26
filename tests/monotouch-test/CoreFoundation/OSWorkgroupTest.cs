@@ -23,9 +23,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.That (wg.IsCancelled, Is.False, "IsCancelled 1");
 			Assert.That (wg.MaxParallelThreads, Is.GreaterThan (0), "MaxParallelThreads");
 
-			using (var token = wg.Join ()) {
-				Assert.That (token, Is.Not.Null, "token");
+			using (wg.Join ()) {
 			}
+
+			Assert.That (wg.TryJoin (out var token), Is.True, "TryJoin");
+			token.Dispose ();
 
 			wg.Cancel ();
 			Assert.That (wg.IsCancelled, Is.True, "IsCancelled 2");

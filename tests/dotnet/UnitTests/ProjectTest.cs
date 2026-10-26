@@ -2438,7 +2438,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet10_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10, isFuture: false);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 10, isFuture: false);
 		}
 
 		[Test]
@@ -2466,7 +2466,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		public void BuildNet13_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 13, isFuture: true);
 			// In .NET 13

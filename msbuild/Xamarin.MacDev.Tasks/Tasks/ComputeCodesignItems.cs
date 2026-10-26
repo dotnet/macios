@@ -216,7 +216,7 @@ namespace Xamarin.MacDev.Tasks {
 					return;
 			}
 
-			Log.LogError (MSBStrings.E7200, bundle.ItemSpec, library); // The bundle '{0}' enables the hardened runtime with ad-hoc signing and contains bundled native code ('{1}'). Hardened-runtime library validation requires the app and bundled native code to have the same certificate-derived Team ID, which ad-hoc signatures do not provide. Set 'CodesignKey' to a valid Apple signing identity.
+			Log.LogError (MSBStrings.E7201, bundle.ItemSpec, library); // The bundle '{0}' enables the hardened runtime with ad-hoc signing and contains bundled native code ('{1}'). Hardened-runtime library validation requires the app and bundled native code to have the same certificate-derived Team ID, which ad-hoc signatures do not provide. Set 'CodesignKey' to a valid Apple signing identity.
 		}
 
 		static bool IsInBundle (string path, string bundlePath)

@@ -148,6 +148,10 @@ must come from an English `.resx` resource, such as
 This includes logged errors, warnings, informational messages, and exception messages
 shown to users. Do not hard-code these messages in C# or edit generated translations.
 
+When adding or modifying a `Log.LogError` call that uses a localized resource,
+append the resource's English error text as a `//` comment at the end of the call.
+Keep the comment in sync with the resource text, including its format placeholders.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building

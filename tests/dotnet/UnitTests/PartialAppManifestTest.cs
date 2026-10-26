@@ -17,9 +17,12 @@ namespace Xamarin.Tests {
 			// The shared partial manifest supplies the scene configuration.
 			DotNet.AssertBuild (projectPath, properties, target: target);
 
-			// AppManifestEntry is applied after partial manifests and must also be validated.
-			properties ["ManifestKey"] = "UIApplicationSceneManifest";
-			properties ["ManifestValue"] = "invalid";
+			var invalidManifestPath = Path.Combine (Cache.CreateTemporaryDirectory (), "InvalidSceneManifest.plist");
+			var invalidManifest = new PDictionary {
+				{ "UIApplicationSceneManifest", new PString ("invalid") },
+			};
+			invalidManifest.Save (invalidManifestPath);
+			properties ["AdditionalPartialAppManifest"] = invalidManifestPath;
 			var result = DotNet.AssertBuildFailure (projectPath, properties, target: target);
 			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
 			Assert.That (errors.Length, Is.EqualTo (1), "Errors");
@@ -38,8 +41,7 @@ namespace Xamarin.Tests {
 			Assert.That (errors.Length, Is.EqualTo (1), "Re-enabled errors");
 			Assert.That (errors [0].Message, Does.Contain ("https://aka.ms/uiscene"), "Re-enabled validation");
 
-			properties.Remove ("ManifestKey");
-			properties.Remove ("ManifestValue");
+			properties.Remove ("AdditionalPartialAppManifest");
 			DotNet.AssertBuild (projectPath, properties, target: target);
 		}
 

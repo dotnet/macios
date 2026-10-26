@@ -31,6 +31,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos11.0")]
 	[SupportedOSPlatform ("tvos14.0")]
 	public struct OSWorkgroupJoinToken : IDisposable {
+#if !COREBUILD
 		// sizeof (os_workgroup_join_token_s) is 40 bytes; allocate extra room.
 		const int TokenSize = 64;
 
@@ -59,6 +60,10 @@ namespace CoreFoundation {
 			GC.KeepAlive (workgroup);
 			workgroup = null;
 		}
+#else
+		/// <summary>Leave the workgroup.</summary>
+		public void Dispose () { }
+#endif // !COREBUILD
 	}
 
 	/// <summary>A group of threads that work towards a common goal.</summary>

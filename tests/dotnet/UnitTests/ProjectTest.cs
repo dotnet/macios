@@ -2438,7 +2438,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet10_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10);
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10, isFuture: false);
 		}
 
 		[Test]
@@ -2458,9 +2458,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
-			// In .NET 12
-			// * Copy this test and create a new .NET 13 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 12);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 13, isFuture: true);
+			// In .NET 13
+			// * Copy this test and create a new .NET 14 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}

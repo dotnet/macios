@@ -157,6 +157,9 @@ steps:
     displayName: Download artifacts
     inputs:
       allowFailedBuilds: true
+      patterns: |
+        ${{ parameters.uploadPrefix }}not-signed-package/**
+        ${{ parameters.uploadPrefix }}WorkloadRollback/**
       path: $(Build.SourcesDirectory)/artifacts
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/install-workloads.sh

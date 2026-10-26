@@ -15894,7 +15894,7 @@ namespace Intents {
 	[DisableDefaultCtor]
 	interface INTimeIntervalResolutionResult {
 
-		/// <summary>Gets the success.</summary>
+		/// <summary>Creates a successful resolution result for the specified time interval.</summary>
 		/// <param name="resolvedTimeInterval">The resolved time interval, in seconds.</param>
 		[Static]
 		[Export ("successWithResolvedTimeInterval:")]

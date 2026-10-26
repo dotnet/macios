@@ -53,7 +53,7 @@ namespace ModelIO {
 		// 2. _GetTimes return value is ignored and could turn out useful at some point.
 		// 3. Lack of documentation at the moment of binding this.
 		// [1]: https://github.com/apple/swift/blob/cbdf0ff1e7bfbd192c33d64c9c7d31fbb11f712c/stdlib/public/SDK/ModelIO/ModelIO.swift#L50
-		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <summary>Gets the sample times for the animated value.</summary>
 		/// <returns>An array of sample times, in seconds.</returns>
 		public virtual double [] GetTimes ()
 		{

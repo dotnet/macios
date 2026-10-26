@@ -2737,7 +2737,7 @@ namespace SpriteKit {
 		[Export ("applyForce:atPoint:duration:")]
 		SKAction CreateApplyForce (CGVector force, CGPoint point, double duration);
 
-		/// <summary>Creates an action that applies to the specified valuerque.</summary>
+		/// <summary>Creates an action that applies torque.</summary>
 		/// <param name="torque">The torque.</param>
 		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]

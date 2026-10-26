@@ -39,10 +39,10 @@ namespace OpenGLES {
 			return _PresentRenderbufferAtTime (target, presentationTime);
 		}
 
-		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <summary>Presents the renderbuffer using the specified timing mode.</summary>
 		/// <param name="target">The target object.</param>
-		/// <param name="presentationTime">The presentation time, in seconds.</param>
-		/// <param name="mode">The mode.</param>
+		/// <param name="presentationTime">The presentation time or minimum duration, in seconds, as determined by <paramref name="mode" />.</param>
+		/// <param name="mode">The mode that determines how to interpret <paramref name="presentationTime" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

@@ -155,12 +155,14 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		var fn = presumedLoc.Value.FileName;
 		if (string.IsNullOrEmpty (fn))
 			return true;
+		fn = Path.GetFullPath (fn);
 		foreach (var dir in DirectoriesInScope) {
 			// Ensure the scope directory ends with a directory separator so that
 			// a scope of "/foo/bar" doesn't falsely match "/foo/barbaz/header.h".
-			var normalizedDir = dir.EndsWith (Path.DirectorySeparatorChar) || dir.EndsWith (Path.AltDirectorySeparatorChar)
-				? dir
-				: dir + Path.DirectorySeparatorChar;
+			var fullDir = Path.GetFullPath (dir);
+			var normalizedDir = fullDir.EndsWith (Path.DirectorySeparatorChar) || fullDir.EndsWith (Path.AltDirectorySeparatorChar)
+				? fullDir
+				: fullDir + Path.DirectorySeparatorChar;
 			if (fn.StartsWith (normalizedDir, StringComparison.Ordinal))
 				return true;
 		}
@@ -291,7 +293,10 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		var process = Execution.RunWithCallbacksAsync (SharpieToolPath, args, log: Console.Out, standardOutput: stdout.Add, standardError: stderr.Add).Result;
 
 		bindingResult.ExitCode = process.ExitCode;
-		if (bindingResult.ExitCode == 0) {
+		var errors = stderr.Select (BindingMessage.Parse).Where (m => m is not null && m.IsError).Select (v => v!);
+		var warnings = stdout.Select (BindingMessage.Parse).Where (m => m is not null && !m.IsError).Select (v => v!);
+		bindingResult.Messages = errors.Concat (warnings).ToList ();
+		if (bindingResult.ExitCode == 0 && !bindingResult.Warnings.Any (m => m.Code == 1001)) {
 			if (SplitDocuments) {
 				foreach (var fn in Directory.GetFiles (OutputDirectory, "*.cs")) {
 					var content = File.ReadAllText (fn);
@@ -304,10 +309,6 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			stdout.ForEach (Console.WriteLine);
 			stderr.ForEach (Console.Error.WriteLine);
 		}
-		var errors = stderr.Select (BindingMessage.Parse).Where (m => m is not null && m.IsError).Select (v => v!);
-		var warnings = stdout.Select (BindingMessage.Parse).Where (m => m is not null && !m.IsError).Select (v => v!);
-		bindingResult.Messages = errors.Concat (warnings).ToList ();
-
 		return bindingResult;
 	}
 
@@ -349,6 +350,14 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 
 	public TranslationUnit? CreateTranslationUnit ()
 	{
+		if (bindingResult.ExitCode != 0)
+			return null;
+
+		if (string.IsNullOrEmpty (SourceFile) && string.IsNullOrEmpty (SourceFramework)) {
+			bindingResult.ReportError (19 /* An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument. */);
+			return null;
+		}
+
 		if (string.IsNullOrEmpty (ClangResourceDirectory)) {
 			BindingResult.ReportError (10 /* The path to clang's resource directory is required. */);
 			return null;
@@ -381,6 +390,8 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 
 		if (!ResolveFramework ())
 			return null;
+
+		SourceFile = Path.GetFullPath (SourceFile);
 
 		var clangArgs = new List<string> (ClangArguments);
 		clangArgs.AddRange (GetSdk ().GetCflags ());
@@ -498,6 +509,11 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			}
 		}
 		massager.Massage (generator.SyntaxTree);
+
+		if (!generator.SyntaxTree.Descendants.Any (node => node is TypeDeclaration or DelegateDeclaration)) {
+			bindingResult.ReportWarning (1001 /* No bindings were generated. Check that the input contains bindable declarations, that the correct language is selected, and that --scope includes the input headers. */);
+			return bindingResult;
+		}
 
 		Directory.CreateDirectory (OutputDirectory);
 
@@ -667,7 +683,7 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 						xobjectivec = true;
 						clangArguments.Add ("-xobjective-c");
 					}
-					if (!fmodules && hint == "@import ") {
+					if (!fmodules && hint == "@import " && EnableModules != false) {
 						fmodules = true;
 						clangArguments.Add ("-fmodules");
 						clangArguments.Add ($"-fmodules-cache-path={ModuleCachePath}");

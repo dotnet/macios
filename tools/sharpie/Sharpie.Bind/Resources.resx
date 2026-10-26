@@ -96,11 +96,23 @@
 		<value>The framework '{0}' does not have an umbrella header or module map.</value>
 	</data>
 
+	<data name="SHARPIE0019" xml:space="preserve">
+		<value>An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument.</value>
+	</data>
+
+	<data name="SHARPIE0020" xml:space="preserve">
+		<value>Only one input header or framework can be specified.</value>
+	</data>
+
 	<data name="SHARPIE0099" xml:space="preserve">
 		<value>Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues.</value>
 	</data>
 
 	<data name="SHARPIE1000" xml:space="preserve">
 		<value>A warning occurred during compilation: {0}</value>
+	</data>
+
+	<data name="SHARPIE1001" xml:space="preserve">
+		<value>No bindings were generated. Check that the input contains bindable declarations, that the correct language is selected, and that --scope includes the input headers.</value>
 	</data>
 </root>

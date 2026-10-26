@@ -238,6 +238,24 @@ namespace Sharpie.Bind {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument..
+        /// </summary>
+        public static string SHARPIE0019 {
+            get {
+                return ResourceManager.GetString("SHARPIE0019", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only one input header or framework can be specified..
+        /// </summary>
+        public static string SHARPIE0020 {
+            get {
+                return ResourceManager.GetString("SHARPIE0020", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues..
         /// </summary>
         public static string SHARPIE0099 {
@@ -252,6 +270,15 @@ namespace Sharpie.Bind {
         public static string SHARPIE1000 {
             get {
                 return ResourceManager.GetString("SHARPIE1000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No bindings were generated. Check that the input contains bindable declarations, that the correct language is selected, and that --scope includes the input headers..
+        /// </summary>
+        public static string SHARPIE1001 {
+            get {
+                return ResourceManager.GetString("SHARPIE1001", resourceCulture);
             }
         }
     }

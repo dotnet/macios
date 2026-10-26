@@ -783,6 +783,7 @@ namespace Mono.Options
 
 		List<string> endOfParsingArguments = ["--"];
 		public List<string> EndOfParsingArguments => endOfParsingArguments;
+		public event Action ParsingEnded;
 
 		protected override string GetKeyForItem (Option item)
 		{
@@ -1021,8 +1022,9 @@ namespace Mono.Options
 			var ae = new ArgumentEnumerator (arguments);
 			foreach (string argument in ae) {
 				++c.OptionIndex;
-				if (endOfParsingArguments.Contains (argument)) {
+				if (process && endOfParsingArguments.Contains (argument)) {
 					process = false;
+					ParsingEnded?.Invoke ();
 					continue;
 				}
 				if (!process) {

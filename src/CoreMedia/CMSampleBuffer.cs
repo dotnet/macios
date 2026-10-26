@@ -1162,6 +1162,9 @@ namespace CoreMedia {
 			get {
 				return GetStringValue (CMSampleAttachmentKey.DroppedFrameReason);
 			}
+			set {
+				SetStringValue (CMSampleAttachmentKey.DroppedFrameReason, value);
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -1187,6 +1190,17 @@ namespace CoreMedia {
 					return LensStabilizationStatus.Off;
 
 				return LensStabilizationStatus.None;
+			}
+			set {
+				var reason = value switch {
+					LensStabilizationStatus.None => null,
+					LensStabilizationStatus.Active => CMSampleAttachmentKey.BufferLensStabilizationInfo_Active,
+					LensStabilizationStatus.OutOfRange => CMSampleAttachmentKey.BufferLensStabilizationInfo_OutOfRange,
+					LensStabilizationStatus.Unavailable => CMSampleAttachmentKey.BufferLensStabilizationInfo_Unavailable,
+					LensStabilizationStatus.Off => CMSampleAttachmentKey.BufferLensStabilizationInfo_Off,
+					_ => throw new ArgumentOutOfRangeException (nameof (value)),
+				};
+				SetStringValue (CMSampleAttachmentKey.StillImageLensStabilizationInfo, reason);
 			}
 		}
 #endif // !MONOMAC

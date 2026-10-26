@@ -610,7 +610,7 @@ namespace HealthKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSString ValidationError { get; }
+		NSString ValidationError { get; set; }
 	}
 
 	/// <summary>An <see cref="HealthKit.HKSample" /> whose value is one of an enumerated type.</summary>
@@ -1307,84 +1307,84 @@ namespace HealthKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("WeatherCondition")]
-		HKWeatherCondition WeatherCondition { get; }
+		HKWeatherCondition WeatherCondition { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("WeatherTemperature")]
-		HKQuantity WeatherTemperature { get; }
+		HKQuantity WeatherTemperature { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("WeatherHumidity")]
-		HKQuantity WeatherHumidity { get; }
+		HKQuantity WeatherHumidity { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("LapLength")]
-		NSString LapLength { get; }
+		NSString LapLength { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SwimmingLocationType")]
-		NSString SwimmingLocationType { get; }
+		NSString SwimmingLocationType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SwimmingStrokeStyle")]
-		NSString SwimmingStrokeStyle { get; }
+		NSString SwimmingStrokeStyle { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SyncIdentifier")]
-		string SyncIdentifier { get; }
+		string SyncIdentifier { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("SyncVersion")]
-		int SyncVersion { get; }
+		int SyncVersion { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("InsulinDeliveryReason")]
-		HKInsulinDeliveryReason InsulinDeliveryReason { get; }
+		HKInsulinDeliveryReason InsulinDeliveryReason { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("BloodGlucoseMealTime")]
-		HKBloodGlucoseMealTime BloodGlucoseMealTime { get; }
+		HKBloodGlucoseMealTime BloodGlucoseMealTime { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("VO2MaxTestType")]
-		HKVO2MaxTestType VO2MaxTestType { get; }
+		HKVO2MaxTestType VO2MaxTestType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("HeartRateMotionContext")]
-		HKHeartRateMotionContext HeartRateMotionContext { get; }
+		HKHeartRateMotionContext HeartRateMotionContext { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

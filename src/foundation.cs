@@ -19479,12 +19479,12 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Airline { get; }
+		string Airline { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Flight { get; }
+		string Flight { get; set; }
 	}
 
 	/// <summary>Contains the components of a recognized address.</summary>
@@ -19494,48 +19494,48 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Name { get; }
+		string Name { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string JobTitle { get; }
+		string JobTitle { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Organization { get; }
+		string Organization { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Street { get; }
+		string Street { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string City { get; }
+		string City { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string State { get; }
+		string State { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("ZipKey")]
-		string ZIP { get; }
+		string ZIP { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Country { get; }
+		string Country { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Phone { get; }
+		string Phone { get; set; }
 	}
 
 	/// <summary>Contains keys that identify text checking results.</summary>

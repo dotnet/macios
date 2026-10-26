@@ -749,25 +749,25 @@ namespace CoreML {
 		/// <summary>A developer-meaningful description of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Description { get; }
+		string Description { get; set; }
 		/// <summary>A developer-meaningful identifier of the version of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string VersionString { get; }
+		string VersionString { get; set; }
 		/// <summary>The author of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string Author { get; }
+		string Author { get; set; }
 		/// <summary>A name or short description of the license and link to a complete definition.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>This value should identify the license and provide a resource for the license's complete definition. For instance, "Creative Common License. More information available at http://places.csail.mit.edu"	.</para>
 		///         </remarks>
-		string License { get; }
+		string License { get; set; }
 		/// <summary>Additional metadata defined by the model's creator.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string CreatorDefined { get; }
+		string CreatorDefined { get; set; }
 	}
 
 	/// <summary>Represents an efficient multi-dimensional array.</summary>

@@ -109,6 +109,35 @@ namespace monotouchtest.CoreGraphics {
 		}
 
 		[Test]
+		public void ISOSpeedRatingsRoundTrip ()
+		{
+			var exif = new CGImagePropertiesExif ();
+			int [] ratings = [100, 200, 400];
+			exif.ISOSpeedRatings = ratings;
+			Assert.That (exif.ISOSpeedRatings, Is.EqualTo (ratings), "Ratings");
+
+			exif.ISOSpeedRatings = [];
+			Assert.That (exif.ISOSpeedRatings, Is.Empty, "Empty ratings");
+
+			exif.ISOSpeedRatings = null;
+			Assert.That (exif.ISOSpeedRatings, Is.Null, "Cleared ratings");
+			Assert.That (exif.Dictionary.Count, Is.EqualTo ((nuint) 0), "Removed key");
+		}
+
+		[Test]
+		public void ExifRoundTrip ()
+		{
+			var properties = new CGImageProperties ();
+			var exif = new CGImagePropertiesExif { Aperture = 2.8f };
+			properties.Exif = exif;
+			Assert.That (properties.Exif?.Aperture, Is.EqualTo (2.8f), "Nested dictionary");
+
+			properties.Exif = null;
+			Assert.That (properties.Exif, Is.Null, "Cleared dictionary");
+			Assert.That (properties.Dictionary.Count, Is.EqualTo ((nuint) 0), "Removed key");
+		}
+
+		[Test]
 		public void NullablePropertiesTest ()
 		{
 			var exif = new CGImagePropertiesExif ();

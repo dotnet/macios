@@ -32,6 +32,22 @@ namespace MonoTouchFixtures.CoreImage {
 		}
 
 		[Test]
+		public void CacheImmediatelyRoundTrip ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			var options = new CIImageInitializationOptions ();
+			Assert.That (options.CacheImmediately, Is.Null, "Default");
+			options.CacheImmediately = true;
+			Assert.That (options.CacheImmediately, Is.True, "Set");
+			options.CacheImmediately = false;
+			Assert.That (options.CacheImmediately, Is.False, "Reset");
+			options.CacheImmediately = null;
+			Assert.That (options.CacheImmediately, Is.Null, "Cleared");
+			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 0), "Removed key");
+		}
+
+		[Test]
 		public void ColorSpace ()
 		{
 			var options = new CIImageInitializationOptions () {

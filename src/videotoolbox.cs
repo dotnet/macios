@@ -516,13 +516,13 @@ namespace VideoToolbox {
 	[StrongDictionary ("VTCompressionPresetKey", Suffix = "")]
 	interface VTCompressionPreset {
 		// FIXME: investigate stronger typing that NSDictionary
-		NSDictionary HighQuality { get; }
-		NSDictionary Balanced { get; }
-		NSDictionary HighSpeed { get; }
-		NSDictionary VideoConferencing { get; }
+		NSDictionary HighQuality { get; set; }
+		NSDictionary Balanced { get; set; }
+		NSDictionary HighSpeed { get; set; }
+		NSDictionary VideoConferencing { get; set; }
 
 		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
-		NSDictionary ConsistentQuality { get; }
+		NSDictionary ConsistentQuality { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -543,19 +543,19 @@ namespace VideoToolbox {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("NumberOfPendingFrames")]
-		int NumberOfPendingFrames { get; }
+		int NumberOfPendingFrames { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("PixelBufferPoolIsShared")]
-		bool PixelBufferPoolIsShared { get; }
+		bool PixelBufferPoolIsShared { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("VideoEncoderPixelBufferAttributes")]
-		NSDictionary VideoEncoderPixelBufferAttributes { get; }
+		NSDictionary VideoEncoderPixelBufferAttributes { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -662,7 +662,7 @@ namespace VideoToolbox {
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("MaximumRealTimeFrameRate")]
-		double MaximumRealTimeFrameRate { get; }
+		double MaximumRealTimeFrameRate { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -679,17 +679,17 @@ namespace VideoToolbox {
 
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("ReferenceBufferCount")]
-		long ReferenceBufferCount { get; }
+		long ReferenceBufferCount { get; set; }
 
 		[Mac (14, 4), iOS (17, 4), TV (17, 4), MacCatalyst (17, 4)]
 		[Export ("CalculateMeanSquaredError")]
-		bool CalculateMeanSquaredError { get; }
+		bool CalculateMeanSquaredError { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("UsingHardwareAcceleratedVideoEncoder")]
-		bool UsingHardwareAcceleratedVideoEncoder { get; }
+		bool UsingHardwareAcceleratedVideoEncoder { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -756,15 +756,15 @@ namespace VideoToolbox {
 
 		[NoiOS, NoTV, NoMacCatalyst]
 		[Export ("RecommendedParallelizationLimit")]
-		int RecommendedParallelizationLimit { get; }
+		int RecommendedParallelizationLimit { get; set; }
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumFrameCount")]
-		ulong RecommendedParallelizedSubdivisionMinimumFrameCount { get; }
+		ulong RecommendedParallelizedSubdivisionMinimumFrameCount { get; set; }
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("RecommendedParallelizedSubdivisionMinimumDuration")]
-		NSDictionary RecommendedParallelizedSubdivisionMinimumDuration { get; }
+		NSDictionary RecommendedParallelizedSubdivisionMinimumDuration { get; set; }
 
 		[MacCatalyst (13, 1)]
 		[Export ("TargetQualityForAlpha")]
@@ -776,7 +776,7 @@ namespace VideoToolbox {
 
 		[MacCatalyst (13, 1)]
 		[Export ("UsingGpuRegistryId")]
-		uint UsingGpuRegistryId { get; }
+		uint UsingGpuRegistryId { get; set; }
 
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("ConstantBitRate")]
@@ -784,7 +784,7 @@ namespace VideoToolbox {
 
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("EstimatedAverageBytesPerFrame")]
-		long EstimatedAverageBytesPerFrame { get; }
+		long EstimatedAverageBytesPerFrame { get; set; }
 
 		[iOS (14, 1)]
 		[TV (14, 2)]
@@ -812,11 +812,11 @@ namespace VideoToolbox {
 
 		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("MinAllowedFrameQP")]
-		uint MinAllowedFrameQP { get; }
+		uint MinAllowedFrameQP { get; set; }
 
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("SupportsBaseFrameQP")]
-		bool SupportsBaseFrameQP { get; }
+		bool SupportsBaseFrameQP { get; set; }
 
 		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("OutputBitDepth")]
@@ -825,26 +825,26 @@ namespace VideoToolbox {
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("ProjectionKind")]
 #if XAMCORE_5_0
-		VTProjectionKind /* NSString */ ProjectionKind { get; }
+		VTProjectionKind /* NSString */ ProjectionKind { get; set; }
 #else
-		CMFormatDescriptionProjectionKind /* NSString */ ProjectionKind { get; }
+		CMFormatDescriptionProjectionKind /* NSString */ ProjectionKind { get; set; }
 #endif
 
 		[NoTV, Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("ViewPackingKind")]
 #if XAMCORE_5_0
-		VTViewPackingKind /* NSString */ ViewPackingKind { get; }
+		VTViewPackingKind /* NSString */ ViewPackingKind { get; set; }
 #else
-		CMFormatDescriptionViewPackingKind /* NSString */ ViewPackingKind { get; }
+		CMFormatDescriptionViewPackingKind /* NSString */ ViewPackingKind { get; set; }
 #endif
 
 		[NoTV, Mac (15, 0), NoiOS, NoMacCatalyst]
 		[Export ("SuggestedLookAheadFrameCount")]
-		nint /* NSNumber */ SuggestedLookAheadFrameCount { get; }
+		nint /* NSNumber */ SuggestedLookAheadFrameCount { get; set; }
 
 		[NoTV, Mac (15, 0), NoiOS, NoMacCatalyst]
 		[Export ("SpatialAdaptiveQPLevel")]
-		VTQPModulationLevel /* NSNumber */ SpatialAdaptiveQPLevel { get; }
+		VTQPModulationLevel /* NSNumber */ SpatialAdaptiveQPLevel { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("MvHevcVideoLayerIds")]
@@ -861,10 +861,10 @@ namespace VideoToolbox {
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HeroEye")]
 #if XAMCORE_5_0
-		VTHeroEye HeroEye { get; }
+		VTHeroEye HeroEye { get; set; }
 #else
 		[Obsolete ("Use the strongly typed 'VTHeroEye' instead.")]
-		string HeroEye { get; }
+		string HeroEye { get; set; }
 #endif
 
 #if !XAMCORE_6_0
@@ -873,16 +873,16 @@ namespace VideoToolbox {
 #endif
 		[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("HeroEye")]
-		VTHeroEye VTHeroEye { get; }
+		VTHeroEye VTHeroEye { get; set; }
 #endif
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("StereoCameraBaseline")]
-		uint StereoCameraBaseline { get; }
+		uint StereoCameraBaseline { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HorizontalDisparityAdjustment")]
-		int HorizontalDisparityAdjustment { get; }
+		int HorizontalDisparityAdjustment { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("HasLeftStereoEyeView")]
@@ -921,7 +921,7 @@ namespace VideoToolbox {
 
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("SupportedPresetDictionaries")]
-		VTCompressionPreset SupportedPresetDictionaries { get; }
+		VTCompressionPreset SupportedPresetDictionaries { get; set; }
 
 		[TV (27, 0), MacCatalyst (27, 0), Mac (27, 0), iOS (27, 0)]
 		[Export ("ConstantQualityFactor")]
@@ -1873,7 +1873,7 @@ namespace VideoToolbox {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("PixelBufferPoolIsShared")]
-		bool PixelBufferPoolIsShared { get; }
+		bool PixelBufferPoolIsShared { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1885,25 +1885,25 @@ namespace VideoToolbox {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("NumberOfFramesBeingDecoded")]
-		uint NumberOfFramesBeingDecoded { get; }
+		uint NumberOfFramesBeingDecoded { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("MinOutputPresentationTimeStampOfFramesBeingDecoded")]
-		NSDictionary MinOutputPresentationTimeStampOfFramesBeingDecoded { get; }
+		NSDictionary MinOutputPresentationTimeStampOfFramesBeingDecoded { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("MaxOutputPresentationTimeStampOfFramesBeingDecoded")]
-		NSDictionary MaxOutputPresentationTimeStampOfFramesBeingDecoded { get; }
+		NSDictionary MaxOutputPresentationTimeStampOfFramesBeingDecoded { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("ContentHasInterframeDependencies")]
-		bool ContentHasInterframeDependencies { get; }
+		bool ContentHasInterframeDependencies { get; set; }
 
 		// Hardware acceleration
 		// hardware acceleration is default behavior on iOS.  no opt-in required.
@@ -1913,7 +1913,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		[Export ("UsingHardwareAcceleratedVideoDecoder")]
 		[MacCatalyst (13, 1)]
-		bool UsingHardwareAcceleratedVideoDecoder { get; }
+		bool UsingHardwareAcceleratedVideoDecoder { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -1965,25 +1965,25 @@ namespace VideoToolbox {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("SuggestedQualityOfServiceTiers")]
-		NSDictionary [] SuggestedQualityOfServiceTiers { get; }
+		NSDictionary [] SuggestedQualityOfServiceTiers { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("SupportedPixelFormatsOrderedByQuality")]
-		CMPixelFormat [] SupportedPixelFormatsOrderedByQuality { get; }
+		CMPixelFormat [] SupportedPixelFormatsOrderedByQuality { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("SupportedPixelFormatsOrderedByPerformance")]
-		CMPixelFormat [] SupportedPixelFormatsOrderedByPerformance { get; }
+		CMPixelFormat [] SupportedPixelFormatsOrderedByPerformance { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("PixelFormatsWithReducedResolutionSupport")]
-		CMPixelFormat [] PixelFormatsWithReducedResolutionSupport { get; }
+		CMPixelFormat [] PixelFormatsWithReducedResolutionSupport { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -2003,7 +2003,7 @@ namespace VideoToolbox {
 
 		[MacCatalyst (13, 1)]
 		[Export ("UsingGpuRegistryId")]
-		uint UsingGpuRegistryId { get; }
+		uint UsingGpuRegistryId { get; set; }
 
 		[iOS (14, 1)]
 		[TV (14, 2)]
@@ -2017,23 +2017,23 @@ namespace VideoToolbox {
 
 		[Export ("GeneratePerFrameHdrDisplayMetadata")]
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		bool GeneratePerFrameHdrDisplayMetadata { get; }
+		bool GeneratePerFrameHdrDisplayMetadata { get; set; }
 
 		[Export ("AllowBitstreamToChangeFrameDimensions")]
 		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
-		bool AllowBitstreamToChangeFrameDimensions { get; }
+		bool AllowBitstreamToChangeFrameDimensions { get; set; }
 
 		[Export ("DecoderProducesRawOutput")]
 		[NoiOS, NoTV, NoMacCatalyst, Mac (15, 0)]
-		bool DecoderProducesRawOutput { get; }
+		bool DecoderProducesRawOutput { get; set; }
 
 		[Export ("RequestRawWOutput")]
 		[NoiOS, NoTV, NoMacCatalyst, Mac (15, 0)]
-		bool RequestRawWOutput { get; }
+		bool RequestRawWOutput { get; set; }
 
 		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
 		[Export ("RequestedMvHevcVideoLayerIds")]
-		NSNumber [] RequestedMvHevcVideoLayerIds { get; }
+		NSNumber [] RequestedMvHevcVideoLayerIds { get; set; }
 	}
 
 	/// <summary>Strongly typed set of options.</summary>
@@ -2056,13 +2056,13 @@ namespace VideoToolbox {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("RequiredDecoderGpuRegistryId")]
-		NSNumber RequiredDecoderGpuRegistryId { get; }
+		NSNumber RequiredDecoderGpuRegistryId { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("PreferredDecoderGpuRegistryId")]
-		NSNumber PreferredDecoderGpuRegistryId { get; }
+		NSNumber PreferredDecoderGpuRegistryId { get; set; }
 	}
 
 	/// <summary>A class that encapsulates keys necessary by <see cref="VideoToolbox.VTVideoDecoderSpecification" />.</summary>
@@ -2745,10 +2745,10 @@ namespace VideoToolbox {
 	interface VTRawProcessingProperty {
 		ulong MetalDeviceRegistryId { get; set; }
 
-		NSDictionary OutputColorAttachments { get; }
+		NSDictionary OutputColorAttachments { get; set; }
 
 		[Mac (26, 0)]
-		NSData MetadataForSidecarFile { get; }
+		NSData MetadataForSidecarFile { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -2758,20 +2758,20 @@ namespace VideoToolbox {
 		NSNumber RequireLtrAcknowledgementToken { get; set; }
 
 		[iOS (17, 4), TV (17, 4), Mac (14, 4), MacCatalyst (17, 4)]
-		VTSampleAttachmentQualityMetrics QualityMetrics { get; }
+		VTSampleAttachmentQualityMetrics QualityMetrics { get; set; }
 	}
 
 	[StrongDictionary ("VTSampleAttachmentQualityMetricsKey", Suffix = "")]
 	[iOS (17, 4), TV (17, 4), Mac (14, 4), MacCatalyst (17, 4)]
 	interface VTSampleAttachmentQualityMetrics {
 		// This can be either CFNumber or CFArray, so we have to bind it as NSObject
-		NSObject LumaMeanSquaredError { get; }
+		NSObject LumaMeanSquaredError { get; set; }
 
 		// This can be either CFNumber or CFArray, so we have to bind it as NSObject
-		NSObject ChromaBlueMeanSquaredError { get; }
+		NSObject ChromaBlueMeanSquaredError { get; set; }
 
 		// This can be either CFNumber or CFArray, so we have to bind it as NSObject
-		NSString ChromaRedMeanSquaredError { get; }
+		NSString ChromaRedMeanSquaredError { get; set; }
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0), Mac (15, 4)]

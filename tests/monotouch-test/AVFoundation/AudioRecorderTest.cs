@@ -12,6 +12,27 @@ namespace MonoTouchFixtures.AVFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AudioRecorderTest {
+		[Test]
+		public void ChannelLayoutRoundTrip ()
+		{
+			var settings = new AudioSettings ();
+			Assert.That (settings.ChannelLayout, Is.Null, "Default");
+			var layout = new AudioChannelLayout {
+				AudioTag = AudioChannelLayoutTag.Stereo,
+				Channels = [],
+			};
+			settings.ChannelLayout = layout;
+			var actual = settings.ChannelLayout;
+			Assert.That (actual, Is.Not.Null, "Layout");
+			Assert.That (actual.AudioTag, Is.EqualTo (layout.AudioTag), "Tag");
+			Assert.That (actual.ChannelUsage, Is.EqualTo (layout.ChannelUsage), "Channel usage");
+			Assert.That (actual.Channels, Is.Empty, "Channels");
+
+			settings.ChannelLayout = null;
+			Assert.That (settings.ChannelLayout, Is.Null, "Cleared");
+			Assert.That (settings.Dictionary.Count, Is.EqualTo ((nuint) 0), "Removed key");
+		}
+
 		NSObject [] Values = new NSObject []
 		{
 			NSNumber.FromFloat ((float)44100), //Sample Rate

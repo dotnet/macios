@@ -118,22 +118,22 @@ namespace VideoSubscriberAccount {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string SamlResponse { get; }
+		string SamlResponse { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string SamlResponseStatus { get; }
+		string SamlResponseStatus { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string UnsupportedProviderIdentifier { get; }
+		string UnsupportedProviderIdentifier { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string AccountProviderResponse { get; }
+		string AccountProviderResponse { get; set; }
 	}
 
 	interface IVSAccountManagerDelegate { }

@@ -2486,12 +2486,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("album");
 			}
+			set {
+				using (var key = new NSString ("album"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>An approximate duration in seconds.</summary>
 		public string? ApproximateDurationInSeconds {
 			get {
 				return GetStringValue ("approximate duration in seconds");
+			}
+			set {
+				using (var key = new NSString ("approximate duration in seconds"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2500,12 +2508,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("artist");
 			}
+			set {
+				using (var key = new NSString ("artist"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The channel layout.</summary>
 		public string? ChannelLayout {
 			get {
 				return GetStringValue ("channel layout");
+			}
+			set {
+				using (var key = new NSString ("channel layout"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2514,12 +2530,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("composer");
 			}
+			set {
+				using (var key = new NSString ("composer"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>Any comments.</summary>
 		public string? Comments {
 			get {
 				return GetStringValue ("comments");
+			}
+			set {
+				using (var key = new NSString ("comments"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2528,12 +2552,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("copyright");
 			}
+			set {
+				using (var key = new NSString ("copyright"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The encoding application.</summary>
 		public string? EncodingApplication {
 			get {
 				return GetStringValue ("encoding application");
+			}
+			set {
+				using (var key = new NSString ("encoding application"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2542,12 +2574,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("genre");
 			}
+			set {
+				using (var key = new NSString ("genre"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The ISRC (International Standard Recording Code) value.</summary>
 		public string? ISRC {
 			get {
 				return GetStringValue ("ISRC");
+			}
+			set {
+				using (var key = new NSString ("ISRC"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2556,12 +2596,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("key signature");
 			}
+			set {
+				using (var key = new NSString ("key signature"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The lyricist.</summary>
 		public string? Lyricist {
 			get {
 				return GetStringValue ("lyricist");
+			}
+			set {
+				using (var key = new NSString ("lyricist"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2570,12 +2618,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("nominal bit rate");
 			}
+			set {
+				using (var key = new NSString ("nominal bit rate"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The recorded date.</summary>
 		public string? RecordedDate {
 			get {
 				return GetStringValue ("recorded date");
+			}
+			set {
+				using (var key = new NSString ("recorded date"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2584,12 +2640,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("source bit depth");
 			}
+			set {
+				using (var key = new NSString ("source bit depth"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The source encoder.</summary>
 		public string? SourceEncoder {
 			get {
 				return GetStringValue ("source encoder");
+			}
+			set {
+				using (var key = new NSString ("source encoder"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2598,12 +2662,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("subtitle");
 			}
+			set {
+				using (var key = new NSString ("subtitle"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The tempo.</summary>
 		public string? Tempo {
 			get {
 				return GetStringValue ("tempo");
+			}
+			set {
+				using (var key = new NSString ("tempo"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2612,12 +2684,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("time signature");
 			}
+			set {
+				using (var key = new NSString ("time signature"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The title.</summary>
 		public string? Title {
 			get {
 				return GetStringValue ("title");
+			}
+			set {
+				using (var key = new NSString ("title"))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -2626,12 +2706,20 @@ namespace AudioToolbox {
 			get {
 				return GetStringValue ("track number");
 			}
+			set {
+				using (var key = new NSString ("track number"))
+					SetStringValue (key, value);
+			}
 		}
 
 		/// <summary>The year.</summary>
 		public string? Year {
 			get {
 				return GetStringValue ("year");
+			}
+			set {
+				using (var key = new NSString ("year"))
+					SetStringValue (key, value);
 			}
 		}
 	}

@@ -23,6 +23,9 @@ namespace VideoToolbox {
 			get {
 				return GetNativeValue<CVPixelBufferPool> (VTDecompressionPropertyKey.PixelBufferPool);
 			}
+			set {
+				SetNativeValue (VTDecompressionPropertyKey.PixelBufferPool, value);
+			}
 		}
 
 		/// <summary>To be added.</summary>

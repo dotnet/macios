@@ -72,6 +72,10 @@ namespace AudioUnit {
 				using (var key = new NSString (ManufacturerKey))
 					return (AudioComponentManufacturerType?) GetInt32Value (key);
 			}
+			set {
+				using (var key = new NSString (ManufacturerKey))
+					SetNumberValue (key, (int?) value);
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -80,6 +84,10 @@ namespace AudioUnit {
 		public string? Name {
 			get {
 				return GetStringValue (NameKey);
+			}
+			set {
+				using (var key = new NSString (NameKey))
+					SetStringValue (key, value);
 			}
 		}
 
@@ -90,6 +98,10 @@ namespace AudioUnit {
 			get {
 				using (var key = new NSString (TypeKey))
 					return (AudioComponentType?) GetInt32Value (key);
+			}
+			set {
+				using (var key = new NSString (TypeKey))
+					SetNumberValue (key, (int?) value);
 			}
 		}
 	}

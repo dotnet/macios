@@ -887,7 +887,7 @@ namespace CoreVideo {
 
 	[StrongDictionary ("CVMetalBufferCacheAttributeKeys")]
 	interface CVMetalBufferCacheAttributes {
-		double MaximumBufferAge { get; }
+		double MaximumBufferAge { get; set; }
 	}
 
 	[Partial]
@@ -1154,13 +1154,13 @@ namespace CoreVideo {
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 	[StrongDictionary ("CVImageBufferDisplayMaskRectangleKeys")]
 	interface CVImageBufferDisplayMaskRectangle {
-		ushort ReferenceRasterWidth { get; }
-		ushort ReferenceRasterHeight { get; }
-		ushort RectangleLeft { get; }
-		ushort RectangleWidth { get; }
-		ushort RectangleTop { get; }
-		ushort RectangleHeight { get; }
-		ushort [] LeftEdgePoints { get; }
-		ushort [] RightEdgePoints { get; }
+		ushort ReferenceRasterWidth { get; set; }
+		ushort ReferenceRasterHeight { get; set; }
+		ushort RectangleLeft { get; set; }
+		ushort RectangleWidth { get; set; }
+		ushort RectangleTop { get; set; }
+		ushort RectangleHeight { get; set; }
+		ushort [] LeftEdgePoints { get; set; }
+		ushort [] RightEdgePoints { get; set; }
 	}
 }

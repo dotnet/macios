@@ -315,7 +315,11 @@ namespace AVFoundation {
 		///         <value>
 		///         </value>
 		///         <remarks>The property uses constant AVChannelLayoutKey value to access the underlying dictionary.</remarks>
-		public AudioChannelLayout ChannelLayout {
+		public AudioChannelLayout? ChannelLayout {
+			get {
+				var data = GetNativeValue<NSData> (AVAudioSettings.AVChannelLayoutKey);
+				return data is null ? null : AudioChannelLayout.FromHandle (data.Bytes);
+			}
 			set {
 				SetNativeValue (AVAudioSettings.AVChannelLayoutKey, value is null ? null : value.AsData ());
 			}

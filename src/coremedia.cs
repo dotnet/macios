@@ -38,32 +38,32 @@ namespace CoreMedia {
 	[StrongDictionary ("CMFormatDescriptionCleanApertureKeys", Suffix = "")]
 	interface CMFormatDescriptionCleanAperture {
 		[NullAllowed]
-		float Width { get; }
+		float Width { get; set; }
 
 		[NullAllowed]
-		float Height { get; }
+		float Height { get; set; }
 
 		[NullAllowed]
-		float HorizontalOffset { get; }
+		float HorizontalOffset { get; set; }
 
 		[NullAllowed]
-		float VerticalOffset { get; }
+		float VerticalOffset { get; set; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="Width" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber [] WidthRational { get; }
+		NSNumber [] WidthRational { get; set; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="Height" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber [] HeightRational { get; }
+		NSNumber [] HeightRational { get; set; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="HorizontalOffset" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber [] HorizontalOffsetRational { get; }
+		NSNumber [] HorizontalOffsetRational { get; set; }
 
 		/// <remarks>Array of two numbers: numerator and denominator. Also set <see cref="VerticalOffset" /> because not all modules read the rational value.</remarks>
 		[NullAllowed]
-		NSNumber [] VerticalOffsetRational { get; }
+		NSNumber [] VerticalOffsetRational { get; set; }
 	}
 
 	enum CMFormatDescriptionFieldDetail {
@@ -302,28 +302,28 @@ namespace CoreMedia {
 
 	[StrongDictionary ("CMMetadataFormatDescriptionKeys", Suffix = "")]
 	interface CMMetadataFormatDescription {
-		uint Namespace { get; }
+		uint Namespace { get; set; }
 
-		NSData Value { get; }
+		NSData Value { get; set; }
 
-		uint LocalId { get; }
+		uint LocalId { get; set; }
 
-		NSData DataType { get; }
+		NSData DataType { get; set; }
 
-		int DataTypeNamespace { get; }
+		int DataTypeNamespace { get; set; }
 
 		/* Not sure what this is supposed to be, headers say "CFArray(CFDictionary) of DataType and DataTypeNamespace", which is not really clear, so binding as NSObject for now */
-		NSObject ConformingDataTypes { get; }
+		NSObject ConformingDataTypes { get; set; }
 
-		string LanguageTag { get; }
+		string LanguageTag { get; set; }
 
-		NSDictionary StructuralDependency { get; }
+		NSDictionary StructuralDependency { get; set; }
 
-		NSData SetupData { get; }
+		NSData SetupData { get; set; }
 
 		/// <summary>Gets the human-readable description of the metadata.</summary>
 		[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-		string HumanReadableString { get; }
+		string HumanReadableString { get; set; }
 	}
 
 	[Static]
@@ -550,7 +550,7 @@ namespace CoreMedia {
 
 		NSData ContentLightLevelInfo { get; set; }
 
-		CMMetadataFormatDescription MetadataKeyTable { get; }
+		CMMetadataFormatDescription MetadataKeyTable { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		NSData ContentColorVolume { get; set; }
@@ -602,7 +602,7 @@ namespace CoreMedia {
 		CMFormatDescriptionViewPackingKind ViewPackingKind { get; set; }
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
-		CMCompressionPropertyCameraCalibration [] CameraCalibrationDataLensCollection { get; }
+		CMCompressionPropertyCameraCalibration [] CameraCalibrationDataLensCollection { get; set; }
 	}
 
 

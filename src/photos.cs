@@ -1899,7 +1899,7 @@ namespace Photos {
 		/// <summary>Gets a Boolean value that tells whether rendering should happen at playback time.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		bool ShouldRenderAtPlaybackTime { get; }
+		bool ShouldRenderAtPlaybackTime { get; set; }
 	}
 
 	[NoiOS]

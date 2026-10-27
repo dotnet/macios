@@ -16,6 +16,33 @@ In order to make the managed static registrar easily testable and debuggable,
 it's also implemented for the other runtimes as well (Mono and CoreCLR), even
 when not using AOT in any form.
 
+## Suppressing registrar warnings
+
+Build-time registrar warnings can be suppressed with
+`System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute`:
+
+```csharp
+[UnconditionalSuppressMessage ("Registrar", "MT4179", Justification = "This signature is intentional.")]
+[Export ("method:")]
+public void Method (SomeNativeObject value)
+{
+}
+```
+
+Use the diagnostic ID shown in the build output (`MT` for iOS, tvOS, and
+Mac Catalyst; `MM` for macOS). The category is informational, and the ID may
+optionally include a colon followed by the diagnostic name.
+
+A suppression applies to the annotated member or type, including members of
+nested types. A property suppression also applies to its accessors. Assembly-
+and module-level suppressions can apply to the entire assembly or module, or
+use `Scope = "type"` or `Scope = "member"` and a documentation-comment ID in
+`Target` (optionally prefixed with `~`) to select a specific type or member.
+
+Suppressions take precedence over treating warnings as errors. Actual registrar
+errors cannot be suppressed. This does not affect dynamic registrar warnings
+emitted at runtime.
+
 ## Design
 
 ### Exported methods

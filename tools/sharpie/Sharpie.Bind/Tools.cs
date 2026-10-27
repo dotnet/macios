@@ -19,6 +19,7 @@ public static class Tools {
 	{
 		var showHelp = false;
 		var clangOnly = false;
+		var expectsClangValue = false;
 		var clangArgs = new List<string> ();
 		var binder = new BindTool ();
 
@@ -62,10 +63,15 @@ public static class Tools {
 			{ "deepsplit", "Split the generated binding into one file per source header.", v => binder.DeepSplit = true },
 			{ "custom-delegates", "Generate custom named delegates instead of Func<>/Action<>.", v => binder.UseCustomDelegates = true },
 			{ "<>", "An input header or .framework can also be specified as a positional argument. Pass compiler arguments after --clang.", v => {
-				if (!clangOnly && !v.StartsWith ("-", StringComparison.Ordinal))
+				if (!clangOnly && !expectsClangValue && !v.StartsWith ("-", StringComparison.Ordinal)) {
 					AddSource (v, false);
-				else
+				} else {
 					clangArgs.Add (v);
+					expectsClangValue = !clangOnly && !expectsClangValue && (v is
+						"-I" or "-F" or "-D" or "-U" or "-x" or "-arch" or "-target" or "--target" or
+						"-isystem" or "-iquote" or "-idirafter" or "-iframework" or "-isysroot" or
+						"-include" or "-imacros" or "-Xclang" or "-mllvm" or "-resource-dir");
+				}
 			} },
 		};
 

@@ -84,6 +84,29 @@ public class CommandLineTests {
 		Assert.That (binder.ClangArguments, Is.EqualTo (clangArguments), "Compiler arguments");
 	}
 
+	[TestCase ("-I", "include", false)]
+	[TestCase ("-I", "include", true)]
+	[TestCase ("-isysroot", "/path/to/sdk", false)]
+	[TestCase ("-x", "objective-c", false)]
+	[TestCase ("-include", "Other.h", false)]
+	[TestCase ("-Xclang", "-Werror", false)]
+	public void CompilerArgumentsBeforeDelimiter (string option, string value, bool positional)
+	{
+		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), option, value, positional ? "Input.h" : "--header=Input.h");
+		Assert.That (binder.SourceFile, Is.EqualTo ("Input.h"), "Source file");
+		Assert.That (binder.ClangArguments, Is.EqualTo (new [] { option, value }), "Compiler arguments");
+		Assert.That (binder.BindingResult.Errors, Is.Empty, "Parsing errors");
+	}
+
+	[Test]
+	public void CompilerFlagBeforeInput ()
+	{
+		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), "-Werror", "Input.h");
+		Assert.That (binder.SourceFile, Is.EqualTo ("Input.h"), "Source file");
+		Assert.That (binder.ClangArguments, Is.EqualTo (new [] { "-Werror" }), "Compiler arguments");
+		Assert.That (binder.BindingResult.Errors, Is.Empty, "Parsing errors");
+	}
+
 	[Test]
 	public void ResponseFile ()
 	{

@@ -6,12 +6,33 @@ using NUnit.Framework;
 
 using Mono.Cecil;
 
+using Xamarin.Utils;
+
 #nullable enable
 
 namespace Cecil.Tests {
 
 	[TestFixture]
 	public class EnumTest {
+
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		public void AVErrorParsingCompatibility (AssemblyInfo info)
+		{
+			var type = info.Assembly.MainModule.GetType ("AVFoundation.AVError");
+			var fileError = type.Fields.Single (v => v.Name == "FileFailedToParse");
+			Assert.That (fileError.Constant, Is.EqualTo (-11829L), "FileFailedToParse");
+			var dataError = type.Fields.Single (v => v.Name == "FailedToParse");
+#if XAMCORE_5_0
+			Assert.That (dataError.Constant, Is.EqualTo (-11853L), "FailedToParse");
+			Assert.That (type.Fields.Any (v => v.Name == "FailedToParse2"), Is.False, "Legacy alias removed");
+#else
+			Assert.That (dataError.Constant, Is.EqualTo (-11829L), "Legacy FailedToParse");
+			Assert.That (dataError.CustomAttributes.Any (v => v.AttributeType.Is ("System", "ObsoleteAttribute")), Is.True, "Legacy FailedToParse is obsolete");
+			var browsable = dataError.CustomAttributes.Single (v => v.AttributeType.Is ("System.ComponentModel", "EditorBrowsableAttribute"));
+			Assert.That (browsable.ConstructorArguments [0].Value, Is.EqualTo ((int) System.ComponentModel.EditorBrowsableState.Never), "Legacy FailedToParse is hidden");
+			Assert.That (type.Fields.Single (v => v.Name == "FailedToParse2").Constant, Is.EqualTo (-11853L), "FailedToParse2");
+#endif
+		}
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		// https://github.com/dotnet/macios/issues/9724

@@ -1885,6 +1885,7 @@ WEBKIT_SOURCES = \
 	WebKit/WKContentRuleListStore.cs \
 	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
+	WebKit/WKMediaPlaybackStateExtensions.cs \
 	WebKit/WKWindowFeatures.cs \
 
 #

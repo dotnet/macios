@@ -191,6 +191,13 @@ Common project structure for Apple platform apps:
 - Add appropriate platform availability attributes
 - Use the code style as defined in .editorconfig
 
+### XAMCORE_5_0
+
+Assume x64 support will have been removed by the time `XAMCORE_5_0` is enabled.
+When fixing enum values or other architecture-dependent APIs under `XAMCORE_5_0`,
+use the arm64 behavior directly; do not preserve x64 compatibility in that branch.
+Keep existing x64 compatibility in the non-`XAMCORE_5_0` code.
+
 ## Nullable Reference Types
 
 When opting C# code into nullable reference types:

@@ -725,6 +725,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.That (sslPolicyErrors, Is.Not.EqualTo (SslPolicyErrors.None), "Callback was called with unexpected SslPolicyErrors");
 				Assert.That (serverCertificate, Is.Not.Null, "Server certificate is null");
 				Assert.That (serverCertificate.GetNameInfo (X509NameType.DnsName, false), Is.EqualTo (wrongHostName ? "not-localhost" : "localhost"), "Server certificate hostname");
+				Assert.That (serverCertificate.MatchesHostname ("127.0.0.1"), Is.EqualTo (!wrongHostName), "Server certificate matches request hostname");
 				Assert.That (result, Is.Not.Null, "Result was null");
 				Assert.That (result.StatusCode, Is.EqualTo (HttpStatusCode.OK), "Status code");
 			} finally {

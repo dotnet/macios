@@ -40,7 +40,7 @@
       "type": "parameter",
       "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
-      "replaces": "TFM",
+      "replaces": "minOSVersion",
       "datatype": "string",
       "defaultValue": "14.0"
     },

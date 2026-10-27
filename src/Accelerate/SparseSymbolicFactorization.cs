@@ -13,15 +13,15 @@ namespace Accelerate {
 	public sealed unsafe class SparseSymbolicFactorization<T> : IDisposable where T : unmanaged {
 		readonly SparseHandle handle;
 		readonly SparseMatrix<T> structure;
-		readonly long[] starts;
-		readonly int[] indices;
+		readonly long [] starts;
+		readonly int [] indices;
 		readonly SparseFactorization type;
 		/// <summary>The required factor-storage capacity in bytes.</summary>
 		public nuint FactorStorageSize { get; }
 		/// <summary>The required numerical workspace length, including alignment padding.</summary>
 		public nuint FactorWorkspaceSize { get; }
 
-		SparseSymbolicFactorization (SparseHandle handle, SparseMatrix<T> structure, SparseFactorization type, nuint storageSize, nuint workspaceSize, long[] starts, int[] indices)
+		SparseSymbolicFactorization (SparseHandle handle, SparseMatrix<T> structure, SparseFactorization type, nuint storageSize, nuint workspaceSize, long [] starts, int [] indices)
 		{
 			this.handle = handle;
 			this.structure = structure;
@@ -48,7 +48,7 @@ namespace Accelerate {
 			var result = SparseNative.xamarin_sparse_symbolic_create (matrix.Scalar, (byte) type, &descriptor, &nativeOptions, sizes);
 			SparseNative.Check ();
 			int index = matrix.Scalar == 0 || matrix.Scalar == 2 ? 0 : 1;
-			return new SparseSymbolicFactorization<T> (new SparseHandle (result), matrix, type, sizes [index], checked (sizes [index + 2] + 15), matrix.CopyStarts (), matrix.CopyIndices ());
+			return new SparseSymbolicFactorization<T> (new SparseHandle (result), matrix, type, sizes [index], checked(sizes [index + 2] + 15), matrix.CopyStarts (), matrix.CopyIndices ());
 		}
 
 		/// <summary>Creates an independently disposable reference to this analysis.</summary>
@@ -74,7 +74,7 @@ namespace Accelerate {
 			using var matrixLease = new SparseLease (matrix.Handle);
 			using var storageLease = new SparseLease (storage?.Handle);
 			var descriptor = matrix.Descriptor;
-			if (descriptor.Rows != structure.Descriptor.Rows || descriptor.Columns != structure.Descriptor.Columns || descriptor.Kind != structure.Descriptor.Kind || descriptor.Triangle != structure.Descriptor.Triangle || descriptor.BlockSize != structure.BlockSize || descriptor.Operation != structure.Descriptor.Operation || !starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked ((int) descriptor.Starts [descriptor.Columns]))))
+			if (descriptor.Rows != structure.Descriptor.Rows || descriptor.Columns != structure.Descriptor.Columns || descriptor.Kind != structure.Descriptor.Kind || descriptor.Triangle != structure.Descriptor.Triangle || descriptor.BlockSize != structure.BlockSize || descriptor.Operation != structure.Descriptor.Operation || !starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked((int) descriptor.Starts [descriptor.Columns]))))
 				throw new ArgumentException ("Numerical factorization requires exactly the analyzed matrix structure.", nameof (matrix));
 			if (storage is not null && storage.Capacity < FactorStorageSize)
 				throw new ArgumentException ("Factor storage is too small.", nameof (storage));

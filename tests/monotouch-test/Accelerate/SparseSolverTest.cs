@@ -103,7 +103,7 @@ namespace MonoTouchFixtures.Accelerate {
 			return new Complex (number.Real, number.Imaginary);
 		}
 
-		static T[] Numbers<T> (params Complex[] values) where T : unmanaged
+		static T [] Numbers<T> (params Complex [] values) where T : unmanaged
 		{
 			var result = new T [values.Length];
 			for (int i = 0; i < values.Length; i++) result [i] = Number<T> (values [i]);
@@ -152,15 +152,15 @@ namespace MonoTouchFixtures.Accelerate {
 		static void Direct<T> () where T : unmanaged
 		{
 			using var matrix = Symmetric<T> ();
-			T[] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1), new Complex (2, 2), new Complex (4, -2));
-			T[] rhs = new T [4];
+			T [] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1), new Complex (2, 2), new Complex (4, -2));
+			T [] rhs = new T [4];
 			matrix.Multiply (expected, rhs, Number<T> (1), 2);
 			foreach (var type in new [] { SparseFactorization.Cholesky, SparseFactorization.Ldlt, SparseFactorization.LdltUnpivoted, SparseFactorization.LdltSbk, SparseFactorization.LdltTpp }) {
 				using var factor = SparseFactorization<T>.Create (matrix, type);
 				var actual = new T [4];
 				factor.Solve (rhs, actual, 2);
 				Equal<T> (actual, expected, type + " cached");
-				Span<byte> workspace = new byte [checked ((int) factor.GetSolveWorkspaceSize (2))];
+				Span<byte> workspace = new byte [checked((int) factor.GetSolveWorkspaceSize (2))];
 				factor.Solve (rhs, actual, workspace, 2);
 				Equal<T> (actual, expected, type + " caller workspace");
 				rhs.CopyTo (actual, 0);
@@ -186,7 +186,7 @@ namespace MonoTouchFixtures.Accelerate {
 			using var retained = symbolic.Retain ();
 			symbolic.Dispose ();
 			using var storage = new SparseFactorStorage (retained.FactorStorageSize);
-			Span<byte> workspace = new byte [checked ((int) retained.FactorWorkspaceSize)];
+			Span<byte> workspace = new byte [checked((int) retained.FactorWorkspaceSize)];
 			using var factor = retained.Factor (matrix, storage: storage, workspace: workspace);
 			storage.Dispose ();
 			retained.Dispose ();
@@ -197,7 +197,7 @@ namespace MonoTouchFixtures.Accelerate {
 			factor.Solve (rhs, actual);
 			Equal<T> (actual, expected, "Symbolic");
 			using var updated = Symmetric<T> (8);
-			Span<byte> refactorWorkspace = new byte [checked ((int) factor.GetRefactorWorkspaceSize ())];
+			Span<byte> refactorWorkspace = new byte [checked((int) factor.GetRefactorWorkspaceSize ())];
 			factor.Refactor (updated, workspace: refactorWorkspace);
 			updated.Multiply (expected, rhs, Number<T> (1));
 			factor.Solve (rhs, actual);
@@ -351,7 +351,7 @@ namespace MonoTouchFixtures.Accelerate {
 		static void LuAndPartialUpdate<T> () where T : unmanaged
 		{
 			using var matrix = SparseMatrix<T>.FromCompressedColumns (2, 2, [0, 2, 4], [0, 1, 0, 1], Numbers<T> (new Complex (3, 1), new Complex (2, -1), new Complex (1, -2), new Complex (4, 1)));
-			T[] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1));
+			T [] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1));
 			var rhs = new T [2];
 			var actual = new T [2];
 			matrix.Multiply (expected, rhs, Number<T> (1));
@@ -377,7 +377,7 @@ namespace MonoTouchFixtures.Accelerate {
 		static void RectangularQrAndLsmr<T> () where T : unmanaged
 		{
 			using var matrix = SparseMatrix<T>.FromCompressedColumns (4, 2, [0, 3, 6], [0, 2, 3, 1, 2, 3], Numbers<T> (new Complex (1, 1), 1, 2, new Complex (1, -1), 1, 1));
-			T[] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1));
+			T [] expected = Numbers<T> (new Complex (1, 1), new Complex (2, -1));
 			var rhs = new T [4];
 			var actual = new T [2];
 			matrix.Multiply (expected, rhs, Number<T> (1));
@@ -448,7 +448,7 @@ namespace MonoTouchFixtures.Accelerate {
 			using var factor = SparseFactorization<double>.Create (matrix, SparseFactorization.Cholesky);
 			nuint size = factor.GetSolveWorkspaceSize ();
 			Assert.That (size, Is.LessThanOrEqualTo ((nuint) 4096), "Bounded stack allocation");
-			Span<byte> workspace = stackalloc byte [checked ((int) size)];
+			Span<byte> workspace = stackalloc byte [checked((int) size)];
 			Span<double> actual = stackalloc double [2];
 			factor.Solve ([6, 7], actual, workspace);
 			Equal<double> (actual, [1, 2], "Stack workspace");
@@ -519,9 +519,12 @@ namespace MonoTouchFixtures.Accelerate {
 			var actual = new T [2];
 			matrix.Multiply (expected, rhs, Number<T> (1));
 			var options = new SparseFactorOptions<T> {
-				Order = SparseOrder.User, Permutation = new int [] { 1, 0 },
-				Scaling = SparseScaling.User, ScalingValues = new double [] { 2, 3 },
-				PivotTolerance = 0.05, ZeroTolerance = 1e-14,
+				Order = SparseOrder.User,
+				Permutation = new int [] { 1, 0 },
+				Scaling = SparseScaling.User,
+				ScalingValues = new double [] { 2, 3 },
+				PivotTolerance = 0.05,
+				ZeroTolerance = 1e-14,
 			};
 			using var factor = SparseFactorization<T>.Create (matrix, SparseFactorization.LdltTpp, options);
 			factor.Solve (rhs, actual);

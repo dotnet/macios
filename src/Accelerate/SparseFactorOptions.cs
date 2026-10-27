@@ -43,7 +43,7 @@ namespace Accelerate {
 		/// </remarks>
 		public unsafe void SetMemoryAllocator (delegate* unmanaged<nuint, IntPtr> allocate, delegate* unmanaged<IntPtr, void> deallocate)
 		{
-			if ((allocate == null) != (deallocate == null))
+			if ((allocate is null) != (deallocate is null))
 				throw new ArgumentException ("Allocation and deallocation callbacks must both be supplied or both be null.");
 			this.allocate = (IntPtr) allocate;
 			this.deallocate = (IntPtr) deallocate;
@@ -51,7 +51,7 @@ namespace Accelerate {
 
 		internal unsafe Pin PinOptions (SparseFactorization type, int rows, int columns, bool symbolicOnly = false)
 		{
-			int permutationLength = (byte) type >= 80 ? checked (rows + columns) : type == SparseFactorization.Qr ? Math.Min (rows, columns) : columns;
+			int permutationLength = (byte) type >= 80 ? checked(rows + columns) : type == SparseFactorization.Qr ? Math.Min (rows, columns) : columns;
 			if (!Permutation.IsEmpty && Permutation.Length != permutationLength)
 				throw new ArgumentException ("The permutation buffer has an incorrect length.", nameof (Permutation));
 			if (Order < SparseOrder.Default || Order > SparseOrder.MultithreadedMetis)
@@ -62,7 +62,7 @@ namespace Accelerate {
 				SparseNative.RequireVersion26 ();
 			if (Scaling == SparseScaling.HungarianAndOrdering && ((byte) type < 80 || symbolicOnly))
 				throw new ArgumentException ("Combined Hungarian scaling and ordering requires an all-in-one LU factorization.");
-			int scalingLength = (byte) type >= 80 ? checked (rows + columns) : columns;
+			int scalingLength = (byte) type >= 80 ? checked(rows + columns) : columns;
 			if (!ScalingValues.IsEmpty && ScalingValues.Length != scalingLength)
 				throw new ArgumentException ("The scaling buffer has an incorrect length.", nameof (ScalingValues));
 			if (Order == SparseOrder.User && !Permutation.IsEmpty) {
@@ -74,7 +74,7 @@ namespace Accelerate {
 				throw new ArgumentOutOfRangeException (nameof (PivotTolerance));
 			if (ZeroTolerance is double zero && (!double.IsFinite (zero) || zero < 0))
 				throw new ArgumentOutOfRangeException (nameof (ZeroTolerance));
-			int limit = (byte) type < 40 ? rows : checked (rows + columns);
+			int limit = (byte) type < 40 ? rows : checked(rows + columns);
 			foreach (int index in IgnoredRowsAndColumns.Span) {
 				if (index < 0 || index >= limit)
 					throw new ArgumentOutOfRangeException (nameof (IgnoredRowsAndColumns));
@@ -95,7 +95,7 @@ namespace Accelerate {
 		internal unsafe ref struct Pin {
 			MemoryHandle permutation, ignored, scaling;
 			readonly Memory<double> scalingValues;
-			readonly float[]? singleScaling;
+			readonly float []? singleScaling;
 			internal SparseNative.Options Options;
 			internal Pin (SparseFactorOptions<T> source)
 			{
@@ -114,16 +114,21 @@ namespace Accelerate {
 						scaling = scalingValues.Pin ();
 					}
 					if (!source.IgnoredRowsAndColumns.IsEmpty) {
-						var indices = new int [checked (source.IgnoredRowsAndColumns.Length + 1)];
+						var indices = new int [checked(source.IgnoredRowsAndColumns.Length + 1)];
 						source.IgnoredRowsAndColumns.Span.CopyTo (indices);
 						indices [indices.Length - 1] = -1;
 						ignored = indices.AsMemory ().Pin ();
 					}
 					Options = new SparseNative.Options {
-						Order = (int) source.Order, Permutation = (int*) permutation.Pointer,
-						Ignored = (int*) ignored.Pointer, Scaling = (int) source.Scaling, Scale = scaling.Pointer,
-						PivotTolerance = source.PivotTolerance ?? -1, ZeroTolerance = source.ZeroTolerance ?? -1,
-						Allocate = source.allocate, Deallocate = source.deallocate,
+						Order = (int) source.Order,
+						Permutation = (int*) permutation.Pointer,
+						Ignored = (int*) ignored.Pointer,
+						Scaling = (int) source.Scaling,
+						Scale = scaling.Pointer,
+						PivotTolerance = source.PivotTolerance ?? -1,
+						ZeroTolerance = source.ZeroTolerance ?? -1,
+						Allocate = source.allocate,
+						Deallocate = source.deallocate,
 					};
 				} catch {
 					permutation.Dispose ();

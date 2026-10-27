@@ -27,9 +27,9 @@ namespace Accelerate {
 		}
 
 		/// <summary>The number of scalar rows, after applying the matrix operation.</summary>
-		public int RowCount => checked ((Descriptor.Operation == (int) SparseOperation.None ? Descriptor.Rows : Descriptor.Columns) * Descriptor.BlockSize);
+		public int RowCount => checked((Descriptor.Operation == (int) SparseOperation.None ? Descriptor.Rows : Descriptor.Columns) * Descriptor.BlockSize);
 		/// <summary>The number of scalar columns, after applying the matrix operation.</summary>
-		public int ColumnCount => checked ((Descriptor.Operation == (int) SparseOperation.None ? Descriptor.Columns : Descriptor.Rows) * Descriptor.BlockSize);
+		public int ColumnCount => checked((Descriptor.Operation == (int) SparseOperation.None ? Descriptor.Columns : Descriptor.Rows) * Descriptor.BlockSize);
 		/// <summary>The size of each square stored block.</summary>
 		public int BlockSize => Descriptor.BlockSize;
 		/// <summary>The interpretation of implicitly stored entries.</summary>
@@ -53,8 +53,12 @@ namespace Accelerate {
 			if (triangle != SparseTriangle.Upper && triangle != SparseTriangle.Lower)
 				throw new ArgumentOutOfRangeException (nameof (triangle));
 			return new SparseNative.Matrix {
-				Rows = rowCount / blockSize, Columns = columnCount / blockSize, BlockSize = blockSize,
-				Kind = (int) kind, Triangle = (int) triangle, Operation = (int) SparseOperation.None,
+				Rows = rowCount / blockSize,
+				Columns = columnCount / blockSize,
+				BlockSize = blockSize,
+				Kind = (int) kind,
+				Triangle = (int) triangle,
+				Operation = (int) SparseOperation.None,
 			};
 		}
 
@@ -143,7 +147,7 @@ namespace Accelerate {
 			SparseNative.Check ();
 			var handle = new SparseHandle (result);
 			try {
-				ValidateDimensions (checked (descriptor.Rows * descriptor.BlockSize), checked (descriptor.Columns * descriptor.BlockSize), (SparseMatrixKind) descriptor.Kind, (SparseTriangle) descriptor.Triangle, descriptor.BlockSize);
+				ValidateDimensions (checked(descriptor.Rows * descriptor.BlockSize), checked(descriptor.Columns * descriptor.BlockSize), (SparseMatrixKind) descriptor.Kind, (SparseTriangle) descriptor.Triangle, descriptor.BlockSize);
 				return new SparseMatrix<T> (handle, descriptor);
 			} catch {
 				handle.Dispose ();
@@ -203,16 +207,16 @@ namespace Accelerate {
 			SparseNative.Check ();
 		}
 
-		internal long[] CopyStarts ()
+		internal long [] CopyStarts ()
 		{
 			using var lease = new SparseLease (Handle);
 			return new ReadOnlySpan<long> (Descriptor.Starts, Descriptor.Columns + 1).ToArray ();
 		}
 
-		internal int[] CopyIndices ()
+		internal int [] CopyIndices ()
 		{
 			using var lease = new SparseLease (Handle);
-			return new ReadOnlySpan<int> (Descriptor.Indices, checked ((int) Descriptor.Starts [Descriptor.Columns])).ToArray ();
+			return new ReadOnlySpan<int> (Descriptor.Indices, checked((int) Descriptor.Starts [Descriptor.Columns])).ToArray ();
 		}
 
 		/// <summary>Releases the native matrix storage.</summary>

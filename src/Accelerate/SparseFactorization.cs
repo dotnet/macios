@@ -75,7 +75,7 @@ namespace Accelerate {
 			using var lease = new SparseLease (Handle);
 			nuint size = SparseNative.xamarin_sparse_solve_size (Scalar, lease.Value, rightHandSideCount, subfactor ? (byte) 1 : (byte) 0);
 			SparseNative.Check ();
-			return checked (size + 15);
+			return checked(size + 15);
 		}
 
 		/// <summary>Solves systems using cached workspace.</summary>
@@ -144,14 +144,14 @@ namespace Accelerate {
 	[SupportedOSPlatform ("maccatalyst")]
 	public sealed unsafe class SparseFactorization<T> : SparseFactorOperator<T> where T : unmanaged {
 		readonly SparseMatrix<T> structure;
-		readonly long[] starts;
-		readonly int[] indices;
+		readonly long [] starts;
+		readonly int [] indices;
 		readonly bool transposed;
 		readonly bool conjugated;
 		/// <summary>The algorithm used to create the factorization.</summary>
 		public SparseFactorization Type { get; }
 
-		internal SparseFactorization (SparseHandle handle, SparseMatrix<T> matrix, SparseFactorization type, bool transposed = false, long[]? starts = null, int[]? indices = null, bool conjugated = false)
+		internal SparseFactorization (SparseHandle handle, SparseMatrix<T> matrix, SparseFactorization type, bool transposed = false, long []? starts = null, int []? indices = null, bool conjugated = false)
 			: base (handle, type == SparseFactorization.CholeskyAtA ? matrix.ColumnCount : transposed ? matrix.ColumnCount : matrix.RowCount, transposed ? matrix.RowCount : matrix.ColumnCount, false)
 		{
 			structure = matrix;
@@ -242,7 +242,7 @@ namespace Accelerate {
 				throw new ArgumentException ("Refactor requires the original matrix structure and an untransposed factor.", nameof (matrix));
 			using var matrixLease = new SparseLease (matrix.Handle);
 			var descriptor = matrix.Descriptor;
-			if (!starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked ((int) descriptor.Starts [descriptor.Columns]))))
+			if (!starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked((int) descriptor.Starts [descriptor.Columns]))))
 				throw new ArgumentException ("Refactor requires exactly the same nonzero structure.", nameof (matrix));
 			using var lease = new SparseLease (Handle);
 			using var pin = (options ?? new SparseFactorOptions<T> ()).PinOptions (Type, matrix.RowCount, matrix.ColumnCount);
@@ -267,7 +267,7 @@ namespace Accelerate {
 			using var lease = new SparseLease (Handle);
 			nuint size = SparseNative.xamarin_sparse_refactor_size (Scalar, lease.Value);
 			SparseNative.Check ();
-			return checked (size + 15);
+			return checked(size + 15);
 		}
 
 		/// <summary>Counts positive, zero, and negative pivots in an LDL transpose factorization with threshold partial pivoting.</summary>
@@ -311,7 +311,7 @@ namespace Accelerate {
 			using var lease = new SparseLease (Handle);
 			using var matrixLease = new SparseLease (update.Handle);
 			var descriptor = update.Descriptor;
-			if (descriptor.Rows != structure.Descriptor.Rows || descriptor.Columns != structure.Descriptor.Columns || descriptor.BlockSize != structure.BlockSize || descriptor.Kind != structure.Descriptor.Kind || descriptor.Triangle != structure.Descriptor.Triangle || descriptor.Operation != structure.Descriptor.Operation || !starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked ((int) descriptor.Starts [descriptor.Columns]))))
+			if (descriptor.Rows != structure.Descriptor.Rows || descriptor.Columns != structure.Descriptor.Columns || descriptor.BlockSize != structure.BlockSize || descriptor.Kind != structure.Descriptor.Kind || descriptor.Triangle != structure.Descriptor.Triangle || descriptor.Operation != structure.Descriptor.Operation || !starts.AsSpan ().SequenceEqual (new ReadOnlySpan<long> (descriptor.Starts, descriptor.Columns + 1)) || !indices.AsSpan ().SequenceEqual (new ReadOnlySpan<int> (descriptor.Indices, checked((int) descriptor.Starts [descriptor.Columns]))))
 				throw new ArgumentException ("Update requires exactly the original nonzero structure.", nameof (update));
 			int status = 0;
 			fixed (int* indices = updatedIndices)

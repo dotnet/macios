@@ -18,8 +18,8 @@ namespace Accelerate {
 		readonly SparseOperatorCallback<T> callback;
 		readonly SparsePreconditioner<T>? preconditioner;
 		readonly IntPtr nativePreconditioner;
-		readonly T[] rhs, residual, solutions;
-		readonly byte[] converged;
+		readonly T [] rhs, residual, solutions;
+		readonly byte [] converged;
 		readonly int rows, columns, count, scalar;
 		int iteration;
 		bool completed, failed;
@@ -59,7 +59,7 @@ namespace Accelerate {
 			solutions = initial.ToArray ();
 			converged = new byte [count];
 			ResidualStride = Math.Max (rows, 4);
-			residual = new T [checked (ResidualStride * count)];
+			residual = new T [checked(ResidualStride * count)];
 			apply (false, SparseOperation.None,
 				new SparseReadOnlyDenseMatrix<T> (solutions, columns, count, columns),
 				new SparseDenseMatrix<T> (residual, rows, count, ResidualStride));
@@ -117,7 +117,7 @@ namespace Accelerate {
 			for (int index = 0; index < count; index++)
 				converged [index] = convergence [index] ? (byte) 1 : (byte) 0;
 			Run (iteration);
-			iteration = checked (iteration + 1);
+			iteration = checked(iteration + 1);
 		}
 
 		/// <summary>Finalizes the solution estimates and computes exact residuals.</summary>

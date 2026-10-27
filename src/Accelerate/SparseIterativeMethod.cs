@@ -34,7 +34,7 @@ namespace Accelerate {
 			get {
 				if ((uint) row >= (uint) RowCount || (uint) column >= (uint) ColumnCount)
 					throw new ArgumentOutOfRangeException ();
-				return Values [checked (column * ColumnStride + row)];
+				return Values [checked(column * ColumnStride + row)];
 			}
 		}
 	}
@@ -69,7 +69,7 @@ namespace Accelerate {
 			get {
 				if ((uint) row >= (uint) RowCount || (uint) column >= (uint) ColumnCount)
 					throw new ArgumentOutOfRangeException ();
-				return ref Values [checked (column * ColumnStride + row)];
+				return ref Values [checked(column * ColumnStride + row)];
 			}
 		}
 	}
@@ -104,8 +104,10 @@ namespace Accelerate {
 			if (MaxIterations < 0 || !double.IsFinite (AbsoluteTolerance) || AbsoluteTolerance < 0 || !double.IsFinite (RelativeTolerance))
 				throw new ArgumentException ("Iteration limits and convergence tolerances are invalid.");
 			return new SparseNative.IterationOptions {
-				Method = method, MaxIterations = MaxIterations,
-				AbsoluteTolerance = AbsoluteTolerance, RelativeTolerance = RelativeTolerance,
+				Method = method,
+				MaxIterations = MaxIterations,
+				AbsoluteTolerance = AbsoluteTolerance,
+				RelativeTolerance = RelativeTolerance,
 			};
 		}
 	}
@@ -167,7 +169,7 @@ namespace Accelerate {
 		}
 		internal override void Apply (bool accumulate, SparseOperation operation, int inputRows, int inputColumns, int inputStride, void* input, int outputRows, int outputColumns, int outputStride, void* output)
 		{
-			var destination = new Span<T> (output, checked ((outputColumns - 1) * outputStride + outputRows));
+			var destination = new Span<T> (output, checked((outputColumns - 1) * outputStride + outputRows));
 			if (Error is not null) {
 				destination.Clear ();
 				return;
@@ -176,7 +178,7 @@ namespace Accelerate {
 				if (apply is null)
 					throw new InvalidOperationException ("No sparse operator callback was supplied.");
 				apply (accumulate, operation,
-					new SparseReadOnlyDenseMatrix<T> (new ReadOnlySpan<T> (input, checked ((inputColumns - 1) * inputStride + inputRows)), inputRows, inputColumns, inputStride),
+					new SparseReadOnlyDenseMatrix<T> (new ReadOnlySpan<T> (input, checked((inputColumns - 1) * inputStride + inputRows)), inputRows, inputColumns, inputStride),
 					new SparseDenseMatrix<T> (destination, outputRows, outputColumns, outputStride));
 			} catch {
 				destination.Clear ();

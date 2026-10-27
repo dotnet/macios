@@ -284,7 +284,7 @@ namespace MonoTouch.Dialog {
 					Tag = 1,
 					On = Value
 				};
-				sw.AddTarget (delegate (object? sender, EventArgs args)
+				sw.AddTarget (delegate
 				{
 					Value = sw.On;
 				}, UIControlEvent.ValueChanged);

@@ -73,6 +73,7 @@ namespace UIKit {
 		/// <summary>Adds a callback that receives the control sending the specified events.</summary>
 		/// <param name="notification">The callback to invoke with the sending control.</param>
 		/// <param name="events">The event mask that will trigger the callback.</param>
+		[OverloadResolutionPriority (-1)]
 		public void AddTarget (Action<UIControl> notification, UIControlEvent events)
 		{
 			AddTarget ((Delegate) notification, events);
@@ -81,7 +82,8 @@ namespace UIKit {
 		/// <summary>Adds a callback that receives the control and the native event.</summary>
 		/// <param name="notification">The callback to invoke with the sending control and the native event, or <see langword="null" /> if there is no native event.</param>
 		/// <param name="events">The event mask that will trigger the callback.</param>
-		/// <remarks>Use explicit parameter types or an <see cref="Action{T1, T2}" /> delegate to distinguish this overload from <see cref="AddTarget(EventHandler, UIControlEvent)" />.</remarks>
+		/// <remarks>When both overloads apply, <see cref="AddTarget(EventHandler, UIControlEvent)" /> is preferred. Use explicit parameter types or an <see cref="Action{T1, T2}" /> delegate to select this overload.</remarks>
+		[OverloadResolutionPriority (-1)]
 		public void AddTarget (Action<UIControl, UIEvent?> notification, UIControlEvent events)
 		{
 			AddTarget ((Delegate) notification, events);
@@ -124,6 +126,7 @@ namespace UIKit {
 		/// <summary>Removes a previously installed callback that receives the sending control.</summary>
 		/// <param name="notification">The callback previously specified in <see cref="AddTarget(Action{UIControl}, UIControlEvent)" />.</param>
 		/// <param name="events">The event mask to remove.</param>
+		[OverloadResolutionPriority (-1)]
 		public void RemoveTarget (Action<UIControl> notification, UIControlEvent events)
 		{
 			RemoveTarget ((Delegate) notification, events);
@@ -132,6 +135,7 @@ namespace UIKit {
 		/// <summary>Removes a previously installed callback that receives the control and native event.</summary>
 		/// <param name="notification">The callback previously specified in <see cref="AddTarget(Action{UIControl, UIEvent}, UIControlEvent)" />.</param>
 		/// <param name="events">The event mask to remove.</param>
+		[OverloadResolutionPriority (-1)]
 		public void RemoveTarget (Action<UIControl, UIEvent?> notification, UIControlEvent events)
 		{
 			RemoveTarget ((Delegate) notification, events);

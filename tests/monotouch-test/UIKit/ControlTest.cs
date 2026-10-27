@@ -63,8 +63,33 @@ namespace MonoTouchFixtures.UIKit {
 		public void AddTargetMakeDirty ()
 		{
 			using (var ctrl = new UIControl ()) {
-				ctrl.AddTarget ((object a, EventArgs b) => { }, UIControlEvent.EditingDidBegin);
+				ctrl.AddTarget ((a, b) => { }, UIControlEvent.EditingDidBegin);
 				Assert.That (TestRuntime.GetFlags (ctrl) & 0x8, Is.EqualTo (0x8), "RegisteredToggleRef");
+			}
+		}
+
+		[Test]
+		public void TargetOverloadResolution ()
+		{
+			using (var ctrl = new UIControl ()) {
+				ctrl.AddTarget ((sender, args) => Assert.That (args, Is.SameAs (EventArgs.Empty), "Lambda"), UIControlEvent.ValueChanged);
+				var count = 0;
+				ctrl.AddTarget (delegate { count++; }, UIControlEvent.ValueChanged);
+				ctrl.SendActionForControlEvents (UIControlEvent.ValueChanged);
+				Assert.That (count, Is.EqualTo (1), "Anonymous method");
+
+				void Handler (object sender, object args)
+				{
+					Assert.That (args, Is.SameAs (EventArgs.Empty), "Method group");
+					count++;
+				}
+
+				ctrl.AddTarget (Handler, UIControlEvent.EditingChanged);
+				ctrl.SendActionForControlEvents (UIControlEvent.EditingChanged);
+				Assert.That (count, Is.EqualTo (2), "Method group added");
+				ctrl.RemoveTarget (Handler, UIControlEvent.EditingChanged);
+				ctrl.SendActionForControlEvents (UIControlEvent.EditingChanged);
+				Assert.That (count, Is.EqualTo (2), "Method group removed");
 			}
 		}
 

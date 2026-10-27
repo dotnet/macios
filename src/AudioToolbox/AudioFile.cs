@@ -2471,6 +2471,7 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Metadata-like information relating to a particular audio file.</summary>
+	/// <remarks>Changes to this dictionary do not write metadata back to the audio file.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

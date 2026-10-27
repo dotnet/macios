@@ -19,6 +19,31 @@ namespace Cecil.Tests {
 	[TestFixture]
 	public partial class ApiTest {
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void StrongDictionaryPropertiesHaveGettersAndSetters (AssemblyInfo info)
+		{
+			var types = info.Assembly.EnumerateTypes (type => !type.Is ("Foundation", "DictionaryContainer") && type.IsSubclassOf ("Foundation", "DictionaryContainer")).ToArray ();
+			Assert.That (types, Is.Not.Empty, "Strong dictionary types");
+			List<string>? failures = null;
+
+			foreach (var type in types) {
+				foreach (var property in type.Properties) {
+					if (property.GetMethod?.IsPublic != true && property.SetMethod?.IsPublic != true)
+						continue;
+					if (property.GetMethod?.IsStatic == true || property.SetMethod?.IsStatic == true)
+						continue;
+
+					if (property.GetMethod?.IsPublic != true)
+						AddFailure (ref failures, $"{property.FullName} must have a public getter.");
+					if (property.SetMethod?.IsPublic != true)
+						AddFailure (ref failures, $"{property.FullName} must have a public setter.");
+				}
+			}
+
+			Assert.That (failures, Is.Null.Or.Empty, "Strong dictionary properties must have public getters and setters.");
+		}
+
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{
 			// all subclasses of ARConfiguration must (re)export 'GetSupportedVideoFormats'

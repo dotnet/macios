@@ -586,11 +586,11 @@ namespace CoreGraphics {
 	[NoiOS, NoTV, MacCatalyst (13, 1)]
 	[StrongDictionary ("CGSessionKeys")]
 	interface CGSessionProperties {
-		uint UserId { get; }
-		string UserName { get; }
-		uint ConsoleSet { get; }
-		bool OnConsole { get; }
-		bool LoginDone { get; }
+		uint UserId { get; set; }
+		string UserName { get; set; }
+		uint ConsoleSet { get; set; }
+		bool OnConsole { get; set; }
+		bool LoginDone { get; set; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -660,7 +660,7 @@ namespace CoreGraphics {
 
 		// property type: I've never seen floating-point nits, so use an integer type
 		[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
-		nint ContentAverageLightLevelNits { get; }
+		nint ContentAverageLightLevelNits { get; set; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

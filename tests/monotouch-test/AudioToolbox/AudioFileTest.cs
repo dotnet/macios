@@ -11,6 +11,25 @@ namespace MonoTouchFixtures.AudioToolbox {
 	public class AudioFileTest {
 
 		[Test]
+		public void InfoDictionaryRoundTrip ()
+		{
+			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");
+			using var url = CFUrl.FromFile (path);
+			using var file = AudioFile.Open (url, AudioFilePermission.Read, AudioFileType.CAF);
+			var info = file.InfoDictionary;
+			Assert.That (info, Is.Not.Null, "Info dictionary");
+
+			info.Title = "Test title";
+			Assert.That (info.Title, Is.EqualTo ("Test title"), "Title");
+			Assert.That (info.Dictionary ["title"]?.ToString (), Is.EqualTo ("Test title"), "Stored title");
+
+			info.Title = null;
+			Assert.That (info.Title, Is.Null, "Cleared title");
+			using var key = new NSString ("title");
+			Assert.That (info.Dictionary.ContainsKey (key), Is.False, "Removed key");
+		}
+
+		[Test]
 		public void ReadTest ()
 		{
 			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");

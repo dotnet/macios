@@ -252,6 +252,9 @@ namespace CoreGraphics {
 				var dict = GetNSDictionary (Keys.ExifDictionary);
 				return dict is null ? null : new CGImagePropertiesExif (dict);
 			}
+			set {
+				SetNativeValue (Keys.ExifDictionary, value?.Dictionary);
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -261,6 +264,9 @@ namespace CoreGraphics {
 			get {
 				var dict = GetNSDictionary (Keys.GPSDictionary);
 				return dict is null ? null : new CGImagePropertiesGps (dict);
+			}
+			set {
+				SetNativeValue (Keys.GPSDictionary, value?.Dictionary);
 			}
 		}
 
@@ -272,6 +278,9 @@ namespace CoreGraphics {
 				var dict = GetNSDictionary (Keys.IPTCDictionary);
 				return dict is null ? null : new CGImagePropertiesIptc (dict);
 			}
+			set {
+				SetNativeValue (Keys.IPTCDictionary, value?.Dictionary);
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -281,6 +290,9 @@ namespace CoreGraphics {
 			get {
 				var dict = GetNSDictionary (Keys.PNGDictionary);
 				return dict is null ? null : new CGImagePropertiesPng (dict);
+			}
+			set {
+				SetNativeValue (Keys.PNGDictionary, value?.Dictionary);
 			}
 		}
 
@@ -292,6 +304,9 @@ namespace CoreGraphics {
 				var dict = GetNSDictionary (Keys.JFIFDictionary);
 				return dict is null ? null : new CGImagePropertiesJfif (dict);
 			}
+			set {
+				SetNativeValue (Keys.JFIFDictionary, value?.Dictionary);
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -301,6 +316,9 @@ namespace CoreGraphics {
 			get {
 				var dict = GetNSDictionary (Keys.TIFFDictionary);
 				return dict is null ? null : new CGImagePropertiesTiff (dict);
+			}
+			set {
+				SetNativeValue (Keys.TIFFDictionary, value?.Dictionary);
 			}
 		}
 
@@ -494,6 +512,9 @@ namespace CoreGraphics {
 		public int []? ISOSpeedRatings {
 			get {
 				return GetArray (Keys.ExifISOSpeedRatings, l => new NSNumber (l).Int32Value);
+			}
+			set {
+				SetArrayValue (Keys.ExifISOSpeedRatings, value);
 			}
 		}
 

@@ -748,7 +748,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Obsolete ("Use 'UseSoftwareRenderer' instead.")]
 #endif
-		bool NullableUseSoftwareRenderer { get; }
+		bool NullableUseSoftwareRenderer { get; set; }
 #endif // !XAMCORE_6_0
 
 #if XAMCORE_5_0
@@ -758,7 +758,7 @@ namespace CoreImage {
 		/// <include file="../docs/api/CoreImage/CIContextOptions.xml" path="/Documentation/Docs[@DocId='P:CoreImage.CIContextOptions.UseSoftwareRenderer']/*" />
 #endif
 		[Export ("UseSoftwareRenderer")]
-		bool UseSoftwareRenderer { get; }
+		bool UseSoftwareRenderer { get; set; }
 #endif // XAMCORE_5_0
 
 		/// <summary>Gets or sets whether to request low priority from the GPU.</summary>
@@ -772,11 +772,11 @@ namespace CoreImage {
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
-		NSString MemoryLimit { get; }
+		NSString MemoryLimit { get; set; }
 
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIContextCVMetalTextureCache")]
-		NSString CVMetalTextureCache { get; }
+		NSString CVMetalTextureCache { get; set; }
 	}
 	/// <summary>Extension methods for <see cref="CoreImage.CIContext" /> that can generate common image formats.</summary>
 	[Category]
@@ -1890,7 +1890,7 @@ namespace CoreImage {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		NSSet ActiveKeys { get; }
+		NSSet ActiveKeys { get; set; }
 	}
 
 	/// <summary>Keys that can be used to get output results out of a CIFilter.</summary>
@@ -2924,19 +2924,19 @@ namespace CoreImage {
 		bool ToneMapHdrToSdr { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		bool CacheImmediately { get; }
+		bool CacheImmediately { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		bool ExpandToHdr { get; }
+		bool ExpandToHdr { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		float ContentHeadroom { get; }
+		float ContentHeadroom { get; set; }
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
-		float ContentAverageLightLevel { get; }
+		float ContentAverageLightLevel { get; set; }
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
-		bool ApplyCleanAperture { get; }
+		bool ApplyCleanAperture { get; set; }
 
 		/// <summary>Gets or sets the factor by which image data is downsampled while decoding.</summary>
 		/// <value>The integer value 2, 4, or 8.</value>
@@ -9256,20 +9256,20 @@ namespace CoreImage {
 		[iOS (14, 1)]
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
-		CIImage SemanticSegmentationGlassesMatteImage { get; }
+		CIImage SemanticSegmentationGlassesMatteImage { get; set; }
 
 		[iOS (14, 3), TV (14, 3)]
 		[MacCatalyst (14, 3)]
-		CIImage SemanticSegmentationSkyMatteImage { get; }
+		CIImage SemanticSegmentationSkyMatteImage { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		CIImage HdrImage { get; }
+		CIImage HdrImage { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		CIImage HdrGainMapImage { get; }
+		CIImage HdrGainMapImage { get; set; }
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
-		bool RepresentationHdrGainMapAsRgb { get; }
+		bool RepresentationHdrGainMapAsRgb { get; set; }
 	}
 
 	[iOS (14, 0)]

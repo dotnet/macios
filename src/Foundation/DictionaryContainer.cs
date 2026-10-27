@@ -525,7 +525,7 @@ namespace Foundation {
 		protected string? GetStringValue (string key)
 		{
 			using var keyHandle = new TransientCFString (key);
-			if (TryGetNativeValue ((IntPtr) keyHandle, out var value))
+			if (!TryGetNativeValue ((IntPtr) keyHandle, out var value))
 				return null;
 			return CFString.FromHandle (value);
 		}

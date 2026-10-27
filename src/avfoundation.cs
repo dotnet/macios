@@ -16524,13 +16524,13 @@ namespace AVFoundation {
 	[StrongDictionary ("AVCaptureAncillaryDataUserKeys")]
 	interface AVCaptureAncillaryDataUserData {
 		/// <summary>Gets the ancillary data instance identifier, or <see langword="null" /> if it is absent.</summary>
-		NSUuid Rdd18InstanceUid { get; }
+		NSUuid Rdd18InstanceUid { get; set; }
 
 		/// <summary>Gets the User Defined Acquisition Metadata set version, or <see langword="null" /> if it is absent.</summary>
-		ushort Rdd18UdamSetVersion { get; }
+		ushort Rdd18UdamSetVersion { get; set; }
 
 		/// <summary>Gets the dictionary of user tags and their values, or <see langword="null" /> if it is absent.</summary>
-		NSDictionary Rdd18UserItems { get; }
+		NSDictionary Rdd18UserItems { get; set; }
 	}
 
 	/// <summary>Encodes ancillary metadata accompanying video from a broadcast capture output.</summary>
@@ -21506,7 +21506,7 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSString AVVideoYCbCrMatrix { get; }
+		NSString AVVideoYCbCrMatrix { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -24629,12 +24629,12 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSNumber [] ProtocolVersions { get; }
+		NSNumber [] ProtocolVersions { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSData ServerChallenge { get; }
+		NSData ServerChallenge { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]

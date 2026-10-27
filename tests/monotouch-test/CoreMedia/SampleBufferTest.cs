@@ -18,6 +18,30 @@ namespace MonoTouchFixtures.CoreMedia {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SampleBufferTest {
+#if !MONOMAC
+		[TestCase (LensStabilizationStatus.None)]
+		[TestCase (LensStabilizationStatus.Active)]
+		[TestCase (LensStabilizationStatus.OutOfRange)]
+		[TestCase (LensStabilizationStatus.Unavailable)]
+		[TestCase (LensStabilizationStatus.Off)]
+		public void LensStabilizationStatusRoundTrip (LensStabilizationStatus status)
+		{
+			var settings = new CMSampleBufferAttachmentSettings ();
+			settings.StillImageLensStabilizationStatus = LensStabilizationStatus.Active;
+			settings.StillImageLensStabilizationStatus = status;
+			Assert.That (settings.StillImageLensStabilizationStatus, Is.EqualTo (status), "Status");
+			Assert.That (settings.Dictionary.Count, Is.EqualTo (status == LensStabilizationStatus.None ? (nuint) 0 : (nuint) 1), "Key count");
+		}
+
+		[Test]
+		public void InvalidLensStabilizationStatus ()
+		{
+			var settings = new CMSampleBufferAttachmentSettings ();
+			Assert.Throws<ArgumentOutOfRangeException> (() => settings.StillImageLensStabilizationStatus = (LensStabilizationStatus) int.MaxValue);
+			Assert.That (settings.Dictionary.Count, Is.EqualTo ((nuint) 0), "Unchanged dictionary");
+		}
+#endif
+
 		[Test]
 		public void CreateForImageBuffer ()
 		{

@@ -112,7 +112,7 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		bool RequiresAncs { get; set; }
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		bool EnableAutoReconnect { get; }
+		bool EnableAutoReconnect { get; set; }
 	}
 
 	[Static]

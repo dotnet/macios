@@ -507,14 +507,14 @@ namespace CoreText {
 
 	[StrongDictionary ("CTFontDescriptorMatchingKeys")]
 	interface CTFontDescriptorMatchingProgress {
-		CTFontDescriptor SourceDescriptor { get; }
-		CTFontDescriptor [] Descriptors { get; }
-		CTFontDescriptor [] Result { get; }
-		double Percentage { get; }
-		long CurrentAssetSize { get; }
-		long TotalDownloadedSize { get; }
-		long TotalAssetSize { get; }
-		NSError Error { get; }
+		CTFontDescriptor SourceDescriptor { get; set; }
+		CTFontDescriptor [] Descriptors { get; set; }
+		CTFontDescriptor [] Result { get; set; }
+		double Percentage { get; set; }
+		long CurrentAssetSize { get; set; }
+		long TotalDownloadedSize { get; set; }
+		long TotalAssetSize { get; set; }
+		NSError Error { get; set; }
 	}
 
 	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTStringAttributes" />.</summary>

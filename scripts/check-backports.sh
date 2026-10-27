@@ -12,12 +12,14 @@ net11_branch=${NET11_BRANCH:-release/11.0.1xx}
 
 red=""
 green=""
+blue=""
 yellow=""
 cyan=""
 reset=""
 if [[ -t 1 && -z ${NO_COLOR:-} && ${TERM:-} != "dumb" ]]; then
 	red=$'\033[31m'
 	green=$'\033[32m'
+	blue=$'\033[34m'
 	yellow=$'\033[33m'
 	cyan=$'\033[36m'
 	reset=$'\033[0m'
@@ -69,62 +71,54 @@ check_backports ()
 	local label=$1
 	local target_branch=$2
 	local target_ref
-	local source_issues_file="$temporary_directory/source-issues.json"
-	local source_details_file="$temporary_directory/source-details.json"
 	local sources_file="$temporary_directory/sources.json"
 	local backports_file="$temporary_directory/backports.json"
 	local history_file="$temporary_directory/history.json"
 	local results_file="$temporary_directory/results.json"
-	local message prefix source_title index
+	local message prefix source_title index remaining
 	local message_width=0
 	local messages=() prefixes=() titles=()
 
 	git fetch "$remote" "$target_branch" --quiet
 	target_ref=FETCH_HEAD
 
-	gh api \
+	# shellcheck disable=SC2016 # GraphQL variables are not shell variables.
+	gh api graphql \
 		--paginate \
 		--slurp \
-		--method GET \
-		"repos/$repository/issues" \
-		-f state=closed \
-		-f labels="$label" \
-		-f per_page=100 > "$source_issues_file"
-
-	: > "$source_details_file"
-	while IFS= read -r pull_request_url; do
-		gh api "$pull_request_url" >> "$source_details_file"
-	done < <(
-		jq -r 'add[] | select(.pull_request != null) | .pull_request.url' "$source_issues_file"
-	)
-
-	jq -s '
-		map(
-			select(.merged_at != null) |
-			{
-				number,
-				title,
-				url: .html_url,
-				baseRefName: .base.ref
+		-F owner="${repository%/*}" \
+		-F name="${repository#*/}" \
+		-f label="$label" \
+		-f query='
+			query($owner: String!, $name: String!, $label: String!, $endCursor: String) {
+				repository(owner: $owner, name: $name) {
+					pullRequests(first: 100, after: $endCursor, labels: [$label], states: MERGED, orderBy: {field: CREATED_AT, direction: DESC}) {
+						nodes { number title url baseRefName }
+						pageInfo { hasNextPage endCursor }
+					}
+				}
 			}
-		)
-	' "$source_details_file" > "$sources_file"
+		' |
+		jq '[.[].data.repository.pullRequests.nodes[]]' > "$sources_file"
 
-	gh api \
+	# shellcheck disable=SC2016 # GraphQL variables are not shell variables.
+	gh api graphql \
 		--paginate \
 		--slurp \
-		--method GET \
-		"repos/$repository/pulls" \
-		-f state=all \
-		-f base="$target_branch" \
-		-f per_page=100 |
-		jq 'add | map({
-			number,
-			title,
-			url: .html_url,
-			state: (if .merged_at == null then .state | ascii_upcase else "MERGED" end),
-			body
-		})' > "$backports_file"
+		-F owner="${repository%/*}" \
+		-F name="${repository#*/}" \
+		-f branch="$target_branch" \
+		-f query='
+			query($owner: String!, $name: String!, $branch: String!, $endCursor: String) {
+				repository(owner: $owner, name: $name) {
+					pullRequests(first: 100, after: $endCursor, baseRefName: $branch, orderBy: {field: CREATED_AT, direction: DESC}) {
+						nodes { number title url state body }
+						pageInfo { hasNextPage endCursor }
+					}
+				}
+			}
+		' |
+		jq '[.[].data.repository.pullRequests.nodes[]]' > "$backports_file"
 
 	git log --format='%H%x1f%B%x1e' "$target_ref" |
 		jq -Rs '
@@ -145,27 +139,28 @@ check_backports ()
 		--slurpfile backports "$backports_file" \
 		--slurpfile history "$history_file" \
 		'
-			def references_source($source):
-				(.body // "") | test(
-					"(?i)backport of (?:https://github\\.com/[^/\\s]+/[^/\\s]+/pull/)?#?"
-					+ ($source.number | tostring)
-					+ "(?:[^0-9]|$)"
+			def index_backports($items; $field):
+				reduce $items[] as $item (
+					{};
+					reduce (
+						($item[$field] // "") |
+						scan("(?i)backport of (?:https://github\\.com/[^/\\s]+/[^/\\s]+/pull/)?#?([0-9]+)") |
+						.[0]
+					) as $number (
+						.;
+						.[$number] //= $item
+					)
 				);
 
-			def commit_references_source($source):
-				(.message // "") | test(
-					"(?i)backport of (?:https://github\\.com/[^/\\s]+/[^/\\s]+/pull/)?#?"
-					+ ($source.number | tostring)
-					+ "(?:[^0-9]|$)"
-				);
-
+			index_backports($backports[0]; "body") as $backports_by_source |
+			index_backports($history[0]; "message") as $commits_by_source |
 			map(
 				. as $source
 				| if .baseRefName == $branch then
 					. + { backport: ., result: "already-targets-branch" }
 				else
-					([ $backports [0][] | select(references_source($source)) ] | first) as $backport
-					| ([ $history [0][] | select(commit_references_source($source)) ] | first) as $commit
+					($backports_by_source[$source.number | tostring]) as $backport
+					| ($commits_by_source[$source.number | tostring]) as $commit
 					| . + {
 						backport: $backport,
 						commit: $commit,
@@ -186,7 +181,7 @@ check_backports ()
 		return
 	fi
 
-	while IFS=$'\t' read -r result source_number source_url backport_number backport_state history_commit source_title; do
+	while IFS=$'\t' read -r result source_number backport_number backport_state history_commit source_title; do
 		prefix="${green}[OK]$reset      "
 		case "$result" in
 		already-targets-branch)
@@ -200,7 +195,7 @@ check_backports ()
 			;;
 		missing)
 			prefix="${red}[MISSING]$reset "
-			printf -v message '#%s has no backport PR or commit: %s' "$source_number" "$source_url"
+			printf -v message '#%s has no backport PR or commit' "$source_number"
 			missing=1
 			;;
 		esac
@@ -215,7 +210,6 @@ check_backports ()
 			.[] | [
 				.result,
 				.number,
-				.url,
 				(.backport.number // "-"),
 				(.backport.state // "-"),
 				(.commit.commit // "-"),
@@ -224,13 +218,27 @@ check_backports ()
 		' "$results_file"
 	)
 	for index in "${!messages[@]}"; do
-		printf '  %s%-*s  %s\n' "${prefixes[$index]}" "$message_width" "${messages[$index]}" "${titles[$index]}"
+		message=${messages[$index]}
+		printf '  %s' "${prefixes[$index]}"
+		remaining=$message
+		while [[ $remaining =~ ^([^#]*)#([0-9]+)(.*)$ ]]; do
+			printf '%s' "${BASH_REMATCH[1]}"
+			if [[ -t 1 && ${TERM:-} != "dumb" ]]; then
+				printf '\033]8;;https://github.com/%s/pull/%s\a#%s\033]8;;\a' "$repository" "${BASH_REMATCH[2]}" "${BASH_REMATCH[2]}"
+			else
+				printf '#%s' "${BASH_REMATCH[2]}"
+			fi
+			remaining=${BASH_REMATCH[3]}
+		done
+		remaining=${remaining//"(MERGED)"/"(${green}MERGED${reset})"}
+		remaining=${remaining//"(OPEN)"/"(${blue}OPEN${reset})"}
+		printf '%s%*s  %s\n' "$remaining" "$((message_width - ${#message}))" "" "${titles[$index]}"
 	done
 	echo
 }
 
-check_backports "backport-to-net10.0" "$net10_branch"
 check_backports "backport-to-net11.0" "$net11_branch"
+check_backports "backport-to-net10.0" "$net10_branch"
 
 if [[ $missing -ne 0 ]]; then
 	printf '%sOne or more backports are missing.%s\n' "$red" "$reset" >&2

@@ -302,7 +302,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCDecodeSupported ();
 
@@ -311,7 +311,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public static bool IsStereoMvHevcDecodeSupported ()
 		{
 			return VTIsStereoMVHEVCDecodeSupported () != 0;
@@ -320,7 +320,7 @@ namespace VideoToolbox {
 #if !__TVOS__
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe extern static /* OSStatus */ VTStatus VTDecompressionSessionDecodeFrameWithMultiImageCapableOutputHandler (
@@ -339,7 +339,7 @@ namespace VideoToolbox {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public unsafe VTStatus DecodeFrame (CMSampleBuffer sampleBuffer, VTDecodeFrameFlags decodeFlags, out VTDecodeInfoFlags infoFlags, VTDecompressionMultiImageCapableOutputHandler multiImageCapableOutputHandler)
 		{
@@ -394,7 +394,7 @@ namespace VideoToolbox {
 #if !__TVOS__
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTDecompressionSessionSetMultiImageCallback (
@@ -408,7 +408,7 @@ namespace VideoToolbox {
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus SetMultiImageCallback (VTDecompressionOutputMultiImageCallback outputMultiImageCallback, IntPtr outputMultiImageReference)

@@ -19,14 +19,14 @@ namespace HealthKit {
 	public partial class HKCategoryValueSleepAnalysisAsleep {
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.HealthKitLibrary)]
 		static extern NativeHandle HKCategoryValueSleepAnalysisAsleepValues ();
 
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		public static HashSet<HKCategoryValueSleepAnalysis> GetAsleepValues ()
 		{

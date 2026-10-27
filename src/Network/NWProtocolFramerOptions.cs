@@ -20,7 +20,7 @@ namespace Network {
 	[SupportedOSPlatform ("tvos16.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("maccatalyst16.0")]
 	public class NSProtocolFramerOptions : NWProtocolOptions {
 
 		[Preserve (Conditional = true)]

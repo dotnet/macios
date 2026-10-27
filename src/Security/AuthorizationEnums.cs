@@ -61,6 +61,8 @@ namespace Security {
 		/// <summary>Preauthorizes rights for later use.</summary>
 		PreAuthorize = 1 << 4,
 		/// <summary>Skips internal authorization checks.</summary>
+		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("macos")]
 		SkipInternalAuth = 1 << 9,
 		/// <summary>Prevents authorization data from being returned.</summary>
 		NoData = 1 << 20,

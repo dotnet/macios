@@ -74,7 +74,7 @@ namespace Foundation {
 		/// <value>An array of <see cref="Network.NWProxyConfig" /> objects representing the proxy configurations.</value>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public NWProxyConfig [] ProxyConfigurations {
 			get => NSArray.NonNullArrayFromHandleDropNullElements (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));

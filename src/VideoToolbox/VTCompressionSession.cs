@@ -369,7 +369,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* Boolean */ byte VTIsStereoMVHEVCEncodeSupported ();
 
@@ -378,7 +378,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public static bool IsStereoMvHevcEncodeSupported ()
 		{
 			return VTIsStereoMVHEVCEncodeSupported () != 0;
@@ -388,7 +388,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrame (
 			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
@@ -410,7 +410,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
 			infoFlags = default;
@@ -435,7 +435,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTCompressionSessionEncodeMultiImageFrameWithOutputHandler (
 			IntPtr /* CM_NONNULL VTCompressionSessionRef */ session,
@@ -457,7 +457,7 @@ namespace VideoToolbox {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus EncodeMultiImageFrame (CMTaggedBufferGroup taggedBufferGroup, CMTime presentationTimestamp, CMTime duration, NSDictionary? frameProperties, out VTEncodeInfoFlags infoFlags, VTCompressionOutputHandler outputHandler)
 		{

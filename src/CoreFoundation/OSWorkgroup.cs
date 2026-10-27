@@ -24,13 +24,13 @@ namespace CoreFoundation {
 	/// <summary>A token returned when joining an <see cref="OSWorkgroup" />. Dispose it to leave the workgroup.</summary>
 	/// <remarks>
 	/// The token must be disposed on the same thread that joined the workgroup.
-	/// This is a struct (and has no finalizer) because leaving a workgroup can't be done from the finalizer thread.
+	/// This class has no finalizer, because leaving a workgroup can't be done from the finalizer thread.
 	/// </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public struct OSWorkgroupJoinToken : IDisposable {
+	public sealed class OSWorkgroupJoinToken : IDisposable {
 #if !COREBUILD
 		// sizeof (os_workgroup_join_token_s) is 40 bytes; allocate extra room.
 		const int TokenSize = 64;
@@ -154,9 +154,10 @@ namespace CoreFoundation {
 		{
 			var tokenPtr = OSWorkgroupJoinToken.Allocate ();
 			error = os_workgroup_join (GetCheckedHandle (), tokenPtr);
+			GC.KeepAlive (this);
 			if (error != 0) {
 				Marshal.FreeHGlobal (tokenPtr);
-				token = default;
+				token = null!;
 				return false;
 			}
 			token = new OSWorkgroupJoinToken (this, tokenPtr);
@@ -167,13 +168,26 @@ namespace CoreFoundation {
 		public void Cancel ()
 		{
 			os_workgroup_cancel (GetCheckedHandle ());
+			GC.KeepAlive (this);
 		}
 
 		/// <summary>Whether the workgroup has been cancelled.</summary>
-		public bool IsCancelled => os_workgroup_testcancel (GetCheckedHandle ());
+		public bool IsCancelled {
+			get {
+				var rv = os_workgroup_testcancel (GetCheckedHandle ());
+				GC.KeepAlive (this);
+				return rv;
+			}
+		}
 
 		/// <summary>The maximum number of threads that can work in parallel on this workgroup.</summary>
-		public int MaxParallelThreads => os_workgroup_max_parallel_threads (GetCheckedHandle (), IntPtr.Zero);
+		public int MaxParallelThreads {
+			get {
+				var rv = os_workgroup_max_parallel_threads (GetCheckedHandle (), IntPtr.Zero);
+				GC.KeepAlive (this);
+				return rv;
+			}
+		}
 
 		/// <summary>Create a workgroup from a Mach port.</summary>
 		/// <param name="name">An optional name for the workgroup.</param>
@@ -199,7 +213,9 @@ namespace CoreFoundation {
 		[UnsupportedOSPlatform ("tvos")]
 		public bool TryCopyPort (out uint machPort)
 		{
-			return os_workgroup_copy_port (GetCheckedHandle (), out machPort) == 0;
+			var rv = os_workgroup_copy_port (GetCheckedHandle (), out machPort);
+			GC.KeepAlive (this);
+			return rv == 0;
 		}
 #endif // !COREBUILD
 	}
@@ -238,6 +254,7 @@ namespace CoreFoundation {
 		public void Start (ulong start, ulong deadline)
 		{
 			ThrowIfError (os_workgroup_interval_start (GetCheckedHandle (), start, deadline, IntPtr.Zero), "start");
+			GC.KeepAlive (this);
 		}
 
 		/// <summary>Update the deadline of a started interval.</summary>
@@ -245,12 +262,14 @@ namespace CoreFoundation {
 		public void Update (ulong deadline)
 		{
 			ThrowIfError (os_workgroup_interval_update (GetCheckedHandle (), deadline, IntPtr.Zero), "update");
+			GC.KeepAlive (this);
 		}
 
 		/// <summary>Finish the current interval.</summary>
 		public void Finish ()
 		{
 			ThrowIfError (os_workgroup_interval_finish (GetCheckedHandle (), IntPtr.Zero), "finish");
+			GC.KeepAlive (this);
 		}
 #endif // !COREBUILD
 	}

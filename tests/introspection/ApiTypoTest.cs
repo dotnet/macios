@@ -334,6 +334,7 @@ namespace Introspection {
 			{ "Girocard", All & ~ApplePlatform.TVOS }, // German payment network
 			{ "Gles", ApplePlatform.iOS | ApplePlatform.TVOS }, // OpenGL ES abbreviation
 			{ "Glorot", All }, // NN
+			{ "Gmres", All }, // generalized minimal residual
 			{ "Gop", All }, // acronym for Group Of Pictures
 			{ "Gpp", All }, // 3GPP standards acronym
 			{ "Gps", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Global Positioning System
@@ -458,6 +459,7 @@ namespace Introspection {
 			{ "Lowlevel", All }, // compound word
 			{ "Lpcm", All }, // Linear PCM audio
 			{ "Lsb", All }, // Least Significant Bit
+			{ "Lsmr", All }, // least-squares minimal residual
 			{ "Lstm", All }, // long short-term memory
 			{ "Lte", All }, // Long-Term Evolution
 			{ "Ltp", All }, // AAC Long Term Prediction
@@ -597,6 +599,7 @@ namespace Introspection {
 			{ "Placemark", All }, // mapping term
 			{ "Playout", All }, // broadcasting term
 			{ "Plessey", All }, // MSI/Plessey barcode symbology
+			{ "Plps", All }, // combined permutation, lower factor, and scaling
 			{ "Pnc", All }, // MIDI
 			{ "Pnorm", All }, // Lp norm notation
 			{ "Polyline", All }, // graphics geometry term
@@ -606,6 +609,7 @@ namespace Introspection {
 			{ "Ppd", ApplePlatform.MacOSX }, // PostScript Printer Description
 			{ "Ppk", All }, // Apple API abbreviation
 			{ "Preauthentication", ApplePlatform.MacOSX }, // compound word
+			{ "Preconditioner", All }, // iterative linear solver term
 			{ "Preds", All }, // predictions abbreviation
 			{ "Prefilter", All }, // compound word
 			{ "Prereleased", All }, // compound word
@@ -718,6 +722,7 @@ namespace Introspection {
 			{ "Subcaption", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
 			{ "Subcardioid", All & ~ApplePlatform.MacOSX }, // microphone polar pattern
 			{ "Subentities", All }, // valid English plural
+			{ "Subfactor", All }, // sparse factorization component
 			{ "Subfilter", All & ~ApplePlatform.TVOS }, // compound word
 			{ "Subfilters", All & ~ApplePlatform.TVOS }, // compound word
 			{ "Subheadline", All }, // compound word

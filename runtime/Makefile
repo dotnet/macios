@@ -22,7 +22,7 @@ SHIPPED_HEADERS +=         \
 	xamarin/monovm-bridge.h \
 	xamarin/coreclr-bridge.h \
 
-SHARED_SOURCES += mono-runtime.m bindings.m bindings-generated.m accelerate.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m monovm-bridge.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
+SHARED_SOURCES += mono-runtime.m bindings.m bindings-generated.m accelerate.m accelerate-sparse.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m monovm-bridge.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
 SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-x86_64-objc_msgSend.s trampolines-x86_64-objc_msgSendSuper.s trampolines-x86_64-objc_msgSend_stret.s trampolines-x86_64-objc_msgSendSuper_stret.s
 SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
 SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
@@ -185,6 +185,8 @@ DOTNET$(6)_$(2)_DYLIB_FLAGS = $(DOTNET_$(1)$(6)_DYLIB_FLAGS) -Wl,-install_name,l
 
 DOTNET_$(2)_$(4)_OBJECTS   = $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_SOURCE_STEMS)) $$(patsubst %,.libs/$(2)/%$(5).o,   $(MONOTOUCH_$(call uppercase,$(lastword $(subst -, ,$(2))))_SOURCE_STEMS))
 
+.libs/$(2)/accelerate-sparse$(5).o: $(2)_OBJC_FLAGS += -fno-objc-exceptions
+.libs/$(2)/accelerate-sparse$(5).o: Makefile
 
 .libs/$(2)/libxamarin$(5).a: $$(DOTNET_$(2)_$(4)_OBJECTS)
 	$$(Q) rm -f $$@

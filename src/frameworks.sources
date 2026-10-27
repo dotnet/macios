@@ -28,8 +28,17 @@
 
 ACCELERATE_SOURCES = \
 	Accelerate/Sparse.cs \
+	Accelerate/SparseFactorization.cs \
 	Accelerate/SparseFactorizationDouble.cs \
 	Accelerate/SparseFactorizationFloat.cs \
+	Accelerate/SparseFactorOptions.cs \
+	Accelerate/SparseIteration.cs \
+	Accelerate/SparseIterativeMethod.cs \
+	Accelerate/SparseMatrix.cs \
+	Accelerate/SparseNative.cs \
+	Accelerate/SparsePreconditioner.cs \
+	Accelerate/SparseSymbolicFactorization.cs \
+	Accelerate/SparseTypes.cs \
 	Accelerate/vImageTypes.cs \
 
 # Accessibility

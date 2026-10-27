@@ -419,6 +419,8 @@ namespace SensorKit {
 		[NullAllowed, Export ("bundleIdentifier")]
 		string BundleIdentifier { get; }
 
+		/// <summary>Gets the usage time.</summary>
+		/// <value>The usage time, in seconds.</value>
 		[Export ("usageTime")]
 		double /* NSTimeInterval */ UsageTime { get; }
 
@@ -434,6 +436,8 @@ namespace SensorKit {
 		[Export ("supplementalCategories", ArgumentSemantic.Copy)]
 		SRSupplementalCategory [] SupplementalCategories { get; }
 
+		/// <summary>Gets the relative start time.</summary>
+		/// <value>The relative start time, in seconds.</value>
 		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("relativeStartTime")]
 		double RelativeStartTime { get; }
@@ -490,6 +494,8 @@ namespace SensorKit {
 	[DisableDefaultCtor]
 	interface SRDeviceUsageReport {
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double /* NSTimeInterval */ Duration { get; }
 
@@ -508,6 +514,8 @@ namespace SensorKit {
 		[Export ("totalUnlocks")]
 		nint TotalUnlocks { get; }
 
+		/// <summary>Gets the total unlock duration.</summary>
+		/// <value>The total unlock duration, in seconds.</value>
 		[Export ("totalUnlockDuration")]
 		double /* NSTimeInterval */ TotalUnlockDuration { get; }
 
@@ -568,6 +576,8 @@ namespace SensorKit {
 	[DisableDefaultCtor]
 	interface SRKeyboardMetrics {
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double /* NSTimeInterval */ Duration { get; }
 
@@ -614,6 +624,8 @@ namespace SensorKit {
 		[Export ("totalPaths")]
 		nint TotalPaths { get; }
 
+		/// <summary>Gets the total path time.</summary>
+		/// <value>The total path time, in seconds.</value>
 		[Export ("totalPathTime")]
 		double TotalPathTime { get; }
 
@@ -647,6 +659,8 @@ namespace SensorKit {
 		[Export ("totalHitTestCorrections")]
 		nint TotalHitTestCorrections { get; }
 
+		/// <summary>Gets the total typing duration.</summary>
+		/// <value>The total typing duration, in seconds.</value>
 		[Export ("totalTypingDuration")]
 		double TotalTypingDuration { get; }
 
@@ -835,6 +849,8 @@ namespace SensorKit {
 	[DisableDefaultCtor]
 	interface SRMessagesUsageReport {
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double /* NSTimeInterval */ Duration { get; }
 
@@ -869,6 +885,8 @@ namespace SensorKit {
 	[DisableDefaultCtor]
 	interface SRPhoneUsageReport {
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double /* NSTimeInterval */ Duration { get; }
 
@@ -881,6 +899,8 @@ namespace SensorKit {
 		[Export ("totalUniqueContacts")]
 		nint TotalUniqueContacts { get; }
 
+		/// <summary>Gets the total phone call duration.</summary>
+		/// <value>The total phone call duration, in seconds.</value>
 		[Export ("totalPhoneCallDuration")]
 		double /* NSTimeInterval */ TotalPhoneCallDuration { get; }
 	}
@@ -1098,6 +1118,8 @@ namespace SensorKit {
 	[DisableDefaultCtor]
 	interface SRWebUsage {
 
+		/// <summary>Gets the total usage time.</summary>
+		/// <value>The total usage time, in seconds.</value>
 		[Export ("totalUsageTime")]
 		double /* NSTimeInterval */ TotalUsageTime { get; }
 	}
@@ -1141,6 +1163,8 @@ namespace SensorKit {
 		NSString _GetSensorForDeletionRecordsFromSensor ();
 	}
 
+	/// <summary>Gets the duration.</summary>
+	/// <value>The duration, in seconds.</value>
 	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SRTextInputSession /* privately conforms to NSCoding and NSSecureCoding */
@@ -1242,6 +1266,8 @@ namespace SensorKit {
 		[Export ("timestamp", ArgumentSemantic.Strong)]
 		NSDate Timestamp { get; }
 
+		/// <summary>Gets the time since audio start.</summary>
+		/// <value>The time since audio start, in seconds.</value>
 		[iOS (17, 2), MacCatalyst (17, 2)]
 		[Export ("timeSinceAudioStart")]
 		double TimeSinceAudioStart { get; }
@@ -1285,6 +1311,8 @@ namespace SensorKit {
 		[Export ("startDate", ArgumentSemantic.Strong)]
 		NSDate StartDate { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
@@ -1594,6 +1622,8 @@ namespace SensorKit {
 		[Export ("startDate", ArgumentSemantic.Strong)]
 		NSDate StartDate { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

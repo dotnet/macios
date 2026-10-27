@@ -2085,6 +2085,8 @@ namespace HealthKit {
 		[Export ("isMaximumDurationRestricted")]
 		bool IsMaximumDurationRestricted { get; }
 
+		/// <summary>Gets the maximum allowed duration.</summary>
+		/// <value>The maximum allowed duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("maximumAllowedDuration")]
 		double MaximumAllowedDuration { get; }
@@ -2093,6 +2095,8 @@ namespace HealthKit {
 		[Export ("isMinimumDurationRestricted")]
 		bool IsMinimumDurationRestricted { get; }
 
+		/// <summary>Gets the minimum allowed duration.</summary>
+		/// <value>The minimum allowed duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("minimumAllowedDuration")]
 		double MinimumAllowedDuration { get; }
@@ -2333,6 +2337,9 @@ namespace HealthKit {
 		[Export ("predicateForWorkoutsWithWorkoutActivityType:")]
 		NSPredicate GetPredicateForWorkouts (HKWorkoutActivityType workoutActivityType);
 
+		/// <summary>Gets the predicate for duration.</summary>
+		/// <param name="operatorType">The comparison operator.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static]
 		[Export ("predicateForWorkoutsWithOperatorType:duration:")]
 		NSPredicate GetPredicateForDuration (NSPredicateOperatorType operatorType, double duration);
@@ -2450,6 +2457,9 @@ namespace HealthKit {
 		[Export ("predicateForWorkoutActivitiesWithWorkoutActivityType:")]
 		NSPredicate GetPredicateForWorkoutActivities (HKWorkoutActivityType workoutActivityType);
 
+		/// <summary>Gets the predicate for workout activities.</summary>
+		/// <param name="operatorType">The comparison operator.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
 		[Static]
 		[Export ("predicateForWorkoutActivitiesWithOperatorType:duration:")]
@@ -4141,6 +4151,8 @@ namespace HealthKit {
 		[NullAllowed, Export ("workoutEvents")]
 		HKWorkoutEvent [] WorkoutEvents { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration", ArgumentSemantic.UnsafeUnretained)]
 		double Duration { get; }
 
@@ -4183,20 +4195,26 @@ namespace HealthKit {
 		[Static, Wrap ("Create (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, metadata.GetDictionary ())")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, HKWorkoutEvent [] workoutEvents, HKQuantity totalEnergyBurned, HKQuantity totalDistance, HKMetadata metadata);
 
+		/// <summary>Creates a new <see cref="HKWorkout" /> instance.</summary>
+		/// <param name="workoutActivityType">The workout activity type.</param>
+		/// <param name="startDate">The start date.</param>
+		/// <param name="endDate">The end date.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="totalEnergyBurned">The total energy burned.</param>
+		/// <param name="totalDistance">The total distance.</param>
+		/// <param name="metadata">The metadata.</param>
 		[Static, Export ("workoutWithActivityType:startDate:endDate:duration:totalEnergyBurned:totalDistance:metadata:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)] // this is not the one we want to be seen (compat only)
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] NSDictionary metadata);
 
-		/// <param name="workoutActivityType">To be added.</param>
-		///         <param name="startDate">To be added.</param>
-		///         <param name="endDate">To be added.</param>
-		///         <param name="duration">To be added.</param>
-		///         <param name="totalEnergyBurned">To be added.</param>
-		///         <param name="totalDistance">To be added.</param>
-		///         <param name="metadata">To be added.</param>
-		///         <summary>Creates an activity that lasts from <paramref name="startDate" /> to <paramref name="endDate" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an activity that lasts from <paramref name="startDate" /> to <paramref name="endDate" />.</summary>
+		/// <param name="workoutActivityType">The workout activity type.</param>
+		/// <param name="startDate">The start date.</param>
+		/// <param name="endDate">The end date.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="totalEnergyBurned">The total energy burned.</param>
+		/// <param name="totalDistance">The total distance.</param>
+		/// <param name="metadata">The metadata.</param>
 		[Static, Wrap ("Create (workoutActivityType, startDate, endDate, duration, totalEnergyBurned, totalDistance, metadata.GetDictionary ())")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, HKQuantity totalEnergyBurned, HKQuantity totalDistance, HKMetadata metadata);
 
@@ -4221,22 +4239,29 @@ namespace HealthKit {
 		[Wrap ("Create (workoutActivityType, startDate, endDate, workoutEvents, totalEnergyBurned, totalDistance, device, metadata.GetDictionary ())")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, HKWorkoutEvent [] workoutEvents, HKQuantity totalEnergyBurned, HKQuantity totalDistance, HKDevice device, HKMetadata metadata);
 
+		/// <summary>Creates a new <see cref="HKWorkout" /> instance.</summary>
+		/// <param name="workoutActivityType">The workout activity type.</param>
+		/// <param name="startDate">The start date.</param>
+		/// <param name="endDate">The end date.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="totalEnergyBurned">The total energy burned.</param>
+		/// <param name="totalDistance">The total distance.</param>
+		/// <param name="device">The device.</param>
+		/// <param name="metadata">The metadata.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("workoutWithActivityType:startDate:endDate:duration:totalEnergyBurned:totalDistance:device:metadata:")]
 		HKWorkout Create (HKWorkoutActivityType workoutActivityType, NSDate startDate, NSDate endDate, double duration, [NullAllowed] HKQuantity totalEnergyBurned, [NullAllowed] HKQuantity totalDistance, [NullAllowed] HKDevice device, [NullAllowed] NSDictionary metadata);
 
-		/// <param name="workoutActivityType">To be added.</param>
-		///         <param name="startDate">To be added.</param>
-		///         <param name="endDate">To be added.</param>
-		///         <param name="duration">To be added.</param>
-		///         <param name="totalEnergyBurned">To be added.</param>
-		///         <param name="totalDistance">To be added.</param>
-		///         <param name="device">To be added.</param>
-		///         <param name="metadata">To be added.</param>
-		///         <summary>Creates and returns a new <see cref="HealthKit.HKWorkout" /> with the provide values.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates and returns a new <see cref="HealthKit.HKWorkout" /> with the provide values.</summary>
+		/// <param name="workoutActivityType">The workout activity type.</param>
+		/// <param name="startDate">The start date.</param>
+		/// <param name="endDate">The end date.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="totalEnergyBurned">The total energy burned.</param>
+		/// <param name="totalDistance">The total distance.</param>
+		/// <param name="device">The device.</param>
+		/// <param name="metadata">The metadata.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (workoutActivityType, startDate, endDate, duration, totalEnergyBurned, totalDistance, device, metadata.GetDictionary ())")]
@@ -5167,6 +5192,9 @@ namespace HealthKit {
 		[Export ("discardWorkout")]
 		void DiscardWorkout ();
 
+		/// <summary>Gets the elapsed workout time at the specified date.</summary>
+		/// <param name="date">The date.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("elapsedTimeAtDate:")]
 		double GetElapsedTime (NSDate date);
 
@@ -5432,6 +5460,8 @@ namespace HealthKit {
 		[NullAllowed, Export ("dataSource", ArgumentSemantic.Strong)]
 		HKLiveWorkoutDataSource DataSource { get; set; }
 
+		/// <summary>Gets the elapsed time.</summary>
+		/// <value>The elapsed time, in seconds.</value>
 		[Export ("elapsedTime")]
 		double ElapsedTime { get; }
 
@@ -5536,6 +5566,10 @@ namespace HealthKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (HKHealthStore healthStore, [NullAllowed] HKDevice device, NSDate startDate);
 
+		/// <summary>Adds a heartbeat at the specified interval since the start of the series.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="precededByGap">Whether the heartbeat is preceded by a gap in the data.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Export ("addHeartbeatWithTimeIntervalSinceSeriesStartDate:precededByGap:completion:")]
 		[Async]
 		void AddHeartbeat (double timeInterval, bool precededByGap, HKHeartbeatSeriesBuilderCompletionHandler completion);
@@ -5549,11 +5583,20 @@ namespace HealthKit {
 		void FinishSeries (Action<HKHeartbeatSeriesSample, NSError> completion);
 	}
 
+	/// <summary>Receives heartbeat series data.</summary>
+	/// <param name="query">The query.</param>
+	/// <param name="timeSinceSeriesStart">The time since series start, in seconds.</param>
+	/// <param name="precededByGap">Whether the heartbeat is preceded by a gap in the data.</param>
+	/// <param name="done">Whether the query has finished returning data.</param>
+	/// <param name="error">The error, if the operation failed.</param>
 	delegate void HKHeartbeatSeriesQueryDataHandler (HKHeartbeatSeriesQuery query, double timeSinceSeriesStart, bool precededByGap, bool done, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (HKQuery))]
 	interface HKHeartbeatSeriesQuery {
+		/// <summary>Creates a new <see cref="HKHeartbeatSeriesQuery" /> instance.</summary>
+		/// <param name="heartbeatSeries">The heartbeat series.</param>
+		/// <param name="dataHandler">The callback, whose time interval argument is expressed in seconds.</param>
 		[Export ("initWithHeartbeatSeries:dataHandler:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (HKHeartbeatSeriesSample heartbeatSeries, HKHeartbeatSeriesQueryDataHandler dataHandler);
@@ -5597,6 +5640,8 @@ namespace HealthKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HKElectrocardiogramVoltageMeasurement : NSCopying {
+		/// <summary>Gets the time since sample start.</summary>
+		/// <value>The time since sample start, in seconds.</value>
 		[Export ("timeSinceSampleStart")]
 		double TimeSinceSampleStart { get; }
 
@@ -5974,6 +6019,8 @@ namespace HealthKit {
 		[NullAllowed, Export ("metadata", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> Metadata { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

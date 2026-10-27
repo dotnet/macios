@@ -252,9 +252,13 @@ namespace OSLog {
 		[Export ("positionWithDate:")]
 		OSLogPosition GetPosition (NSDate date);
 
+		/// <summary>Gets the position with time interval since end.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
 		[Export ("positionWithTimeIntervalSinceEnd:")]
 		OSLogPosition GetPositionWithTimeIntervalSinceEnd (double seconds);
 
+		/// <summary>Gets the position with time interval since latest boot.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
 		[Export ("positionWithTimeIntervalSinceLatestBoot:")]
 		OSLogPosition GetPositionWithTimeIntervalSinceLatestBoot (double seconds);
 	}

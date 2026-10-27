@@ -29,9 +29,8 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedValue {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key times.</summary>
+		/// <value>An array of key times, each measured in seconds.</value>
 		public double []? KeyTimes {
 			get {
 				var wkt = WeakKeyTimes;
@@ -54,9 +53,8 @@ namespace ModelIO {
 		// 2. _GetTimes return value is ignored and could turn out useful at some point.
 		// 3. Lack of documentation at the moment of binding this.
 		// [1]: https://github.com/apple/swift/blob/cbdf0ff1e7bfbd192c33d64c9c7d31fbb11f712c/stdlib/public/SDK/ModelIO/ModelIO.swift#L50
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the sample times for the animated value.</summary>
+		/// <returns>An array of sample times, in seconds.</returns>
 		public virtual double [] GetTimes ()
 		{
 			var count = TimeSampleCount;
@@ -73,10 +71,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedScalarArray {
 
-		/// <param name="array">To be added.</param>
-		///         <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (float [] array, double time)
 		{
 			if (array is null)
@@ -88,10 +85,9 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="array">To be added.</param>
-		///         <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (double [] array, double time)
 		{
 			if (array is null)
@@ -103,10 +99,8 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual float [] GetFloatValues (double time)
 		{
 			var count = ElementCount;
@@ -119,10 +113,8 @@ namespace ModelIO {
 			return timesArr;
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual double [] GetDoubleValues (double time)
 		{
 			var count = ElementCount;
@@ -135,10 +127,9 @@ namespace ModelIO {
 			return timesArr;
 		}
 
-		/// <param name="values">To be added.</param>
-		///         <param name="times">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (float [] values, double [] times)
 		{
 			if (values is null)
@@ -153,10 +144,9 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="values">To be added.</param>
-		///         <param name="times">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (double [] values, double [] times)
 		{
 			if (values is null)
@@ -206,6 +196,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector3Array {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (Vector3 [] array, double time)
 		{
 			if (array is null)
@@ -218,6 +211,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (Vector3d [] array, double time)
 		{
 			if (array is null)
@@ -230,10 +226,8 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual Vector3 [] GetNVector3Values (double time)
 		{
 			var count = ElementCount;
@@ -248,10 +242,8 @@ namespace ModelIO {
 			return timesArr;
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual Vector3d [] GetNVector3dValues (double time)
 		{
 			var count = ElementCount;
@@ -266,6 +258,9 @@ namespace ModelIO {
 			return timesArr;
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector3 [] values, double [] times)
 		{
 			if (values is null)
@@ -280,6 +275,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector3d [] values, double [] times)
 		{
 			if (values is null)
@@ -333,6 +331,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedQuaternionArray {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (Quaternion [] array, double time)
 		{
 			if (array is null)
@@ -345,6 +346,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual void SetValues (Quaterniond [] array, double time)
 		{
 			if (array is null)
@@ -357,10 +361,8 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual Quaternion [] GetQuaternionValues (double time)
 		{
 			var count = ElementCount;
@@ -375,10 +377,8 @@ namespace ModelIO {
 			return timesArr;
 		}
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		public virtual Quaterniond [] GetQuaterniondValues (double time)
 		{
 			var count = ElementCount;
@@ -393,6 +393,9 @@ namespace ModelIO {
 			return timesArr;
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Quaternion [] values, double [] times)
 		{
 			if (values is null)
@@ -407,6 +410,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Quaterniond [] values, double [] times)
 		{
 			if (values is null)
@@ -459,10 +465,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedScalar {
 
-		/// <param name="values">To be added.</param>
-		///         <param name="times">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (float [] values, double [] times)
 		{
 			if (values is null)
@@ -477,10 +482,9 @@ namespace ModelIO {
 			}
 		}
 
-		/// <param name="values">To be added.</param>
-		///         <param name="times">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (double [] values, double [] times)
 		{
 			if (values is null)
@@ -530,6 +534,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector2 {
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector2 [] values, double [] times)
 		{
 			if (values is null)
@@ -546,6 +553,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector2d [] values, double [] times)
 		{
 			if (values is null)
@@ -601,6 +611,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector3 {
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector3 [] values, double [] times)
 		{
 			if (values is null)
@@ -617,6 +630,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector3d [] values, double [] times)
 		{
 			if (values is null)
@@ -672,6 +688,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedVector4 {
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector4 [] values, double [] times)
 		{
 			if (values is null)
@@ -688,6 +707,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Vector4d [] values, double [] times)
 		{
 			if (values is null)
@@ -743,6 +765,9 @@ namespace ModelIO {
 	///     <remarks>To be added.</remarks>
 	public partial class MDLAnimatedMatrix4x4 {
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Matrix4 [] values, double [] times)
 		{
 			if (values is null)
@@ -759,6 +784,9 @@ namespace ModelIO {
 			}
 		}
 
+		/// <summary>Replaces the animation samples with the specified values and times.</summary>
+		/// <param name="values">The sample values.</param>
+		/// <param name="times">The sample times, in seconds.</param>
 		public virtual void Reset (Matrix4d [] values, double [] times)
 		{
 			if (values is null)

@@ -1258,21 +1258,18 @@ namespace MediaPlayer {
 		[Export ("playbackSessionID")]
 		string PlaybackSessionID { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the playback start offset.</summary>
+		/// <value>The playback start offset, in seconds.</value>
 		[Export ("playbackStartOffset")]
 		double PlaybackStartOffset { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the segments downloaded duration.</summary>
+		/// <value>The segments downloaded duration, in seconds.</value>
 		[Export ("segmentsDownloadedDuration")]
 		double SegmentsDownloadedDuration { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the duration watched.</summary>
+		/// <value>The duration watched, in seconds.</value>
 		[Export ("durationWatched")]
 		double DurationWatched { get; }
 
@@ -1466,9 +1463,8 @@ namespace MediaPlayer {
 		[Export ("isPreparedToPlay")]
 		bool IsPreparedToPlay { get; }
 
-		/// <summary>To be added.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the current playback time.</summary>
+		/// <value>The current playback time, in seconds.</value>
 		[Abstract]
 		[Export ("currentPlaybackTime")]
 		double CurrentPlaybackTime { get; set; }
@@ -1526,9 +1522,8 @@ namespace MediaPlayer {
 		[Export ("scalingMode")]
 		MPMovieScalingMode ScalingMode { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the initial playback time.</summary>
+		/// <value>The initial playback time, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("initialPlaybackTime")]
 		double InitialPlaybackTime { get; set; }
@@ -1651,11 +1646,9 @@ namespace MediaPlayer {
 
 		// Brought it from the MPMediaPlayback.h
 
-		/// <param name="time">To be added.</param>
-		///         <param name="timeOption">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a thumbnail image at the specified playback time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="timeOption">The option controlling how precisely to match the requested time.</param>
 		[Export ("thumbnailImageAtTime:timeOption:")]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'RequestThumbnails' instead.")]
 		[MacCatalyst (13, 1)]
@@ -1693,16 +1686,14 @@ namespace MediaPlayer {
 		[Export ("movieSourceType")]
 		MPMovieSourceType SourceType { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("duration")]
 		double Duration { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the playable duration.</summary>
+		/// <value>The playable duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("playableDuration")]
 		double PlayableDuration { get; }
@@ -1714,9 +1705,8 @@ namespace MediaPlayer {
 		[Export ("naturalSize")]
 		CGSize NaturalSize { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the end playback time.</summary>
+		/// <value>The end playback time, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("endPlaybackTime")]
 		double EndPlaybackTime { get; set; }
@@ -2014,8 +2004,7 @@ namespace MediaPlayer {
 		NSObject Value { get; }
 
 		/// <summary>The timestamp of the metadata, in the timebase of the media.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -3244,9 +3233,8 @@ namespace MediaPlayer {
 		[Export ("command")]
 		MPRemoteCommand Command { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double /* NSTimeInterval */ Timestamp { get; }
 	}
@@ -3304,9 +3292,8 @@ namespace MediaPlayer {
 	[DisableDefaultCtor] // NSGenericException Reason: MPSkipIntervalCommandEvents cannot be initialized externally.
 	interface MPSkipIntervalCommandEvent {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the interval.</summary>
+		/// <value>The interval, in seconds.</value>
 		[Export ("interval")]
 		double /* NSTimeInterval */ Interval { get; }
 	}
@@ -3591,9 +3578,8 @@ namespace MediaPlayer {
 	[BaseType (typeof (MPRemoteCommandEvent))]
 	[DisableDefaultCtor] // Objective-C exception thrown.  Name: NSGenericException Reason: MPChangePlaybackPositionCommandEvents cannot be initialized externally.
 	interface MPChangePlaybackPositionCommandEvent {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the position time.</summary>
+		/// <value>The position time, in seconds.</value>
 		[Export ("positionTime")]
 		double PositionTime { get; }
 	}
@@ -3692,17 +3678,15 @@ namespace MediaPlayer {
 		[NullAllowed, Export ("startItem", ArgumentSemantic.Strong)]
 		MPMediaItem StartItem { get; set; }
 
-		/// <param name="startTime">The time at which the media will start playing.</param>
-		///         <param name="mediaItem">The media item to modify.</param>
-		///         <summary>Sets the time that the media item will start playing.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the time that the media item will start playing.</summary>
+		/// <param name="startTime">The time at which the media will start playing. This value is expressed in seconds.</param>
+		/// <param name="mediaItem">The media item to modify.</param>
 		[Export ("setStartTime:forItem:")]
 		void SetStartTime (double startTime, MPMediaItem mediaItem);
 
-		/// <param name="endTime">The time at which the media will stop playing.</param>
-		///         <param name="mediaItem">The media item to modify.</param>
-		///         <summary>Sets the time that the media item will stop playing.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the time that the media item will stop playing.</summary>
+		/// <param name="endTime">The time at which the media will stop playing. This value is expressed in seconds.</param>
+		/// <param name="mediaItem">The media item to modify.</param>
 		[Export ("setEndTime:forItem:")]
 		void SetEndTime (double endTime, MPMediaItem mediaItem);
 	}
@@ -3738,17 +3722,15 @@ namespace MediaPlayer {
 		[NullAllowed, Export ("startItemID")]
 		string StartItemID { get; set; }
 
-		/// <param name="startTime">The time at which the item will start playing.</param>
-		///         <param name="storeID">The store ID of the item to start.</param>
-		///         <summary>Sets the time that the media item will start playing.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the time that the media item will start playing.</summary>
+		/// <param name="startTime">The time at which the item will start playing. This value is expressed in seconds.</param>
+		/// <param name="storeID">The store ID of the item to start.</param>
 		[Export ("setStartTime:forItemWithStoreID:")]
 		void SetStartTime (double startTime, string storeID);
 
-		/// <param name="endTime">The time at which the item will stop playing.</param>
-		///         <param name="storeID">The store ID of the item to stop.</param>
-		///         <summary>Sets the time that the media item will stop playing.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the time that the media item will stop playing.</summary>
+		/// <param name="endTime">The time at which the item will stop playing. This value is expressed in seconds.</param>
+		/// <param name="storeID">The store ID of the item to stop.</param>
 		[Export ("setEndTime:forItemWithStoreID:")]
 		void SetEndTime (double endTime, string storeID);
 	}
@@ -3869,17 +3851,15 @@ namespace MediaPlayer {
 		[NullAllowed, Export ("startItemPlayParameters", ArgumentSemantic.Strong)]
 		MPMusicPlayerPlayParameters StartItemPlayParameters { get; set; }
 
-		/// <param name="startTime">The time at which the described item will start playing.</param>
-		///         <param name="playParameters">The parameters that describe the item.</param>
-		///         <summary>Sets the start time for the item that is described by the provided play parameters.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the start time for the item that is described by the provided play parameters.</summary>
+		/// <param name="startTime">The time at which the described item will start playing. This value is expressed in seconds.</param>
+		/// <param name="playParameters">The parameters that describe the item.</param>
 		[Export ("setStartTime:forItemWithPlayParameters:")]
 		void SetStartTime (/* NSTimeInterval */ double startTime, MPMusicPlayerPlayParameters playParameters);
 
-		/// <param name="endTime">The time at which the described item will stop playing.</param>
-		///         <param name="playParameters">The parameters that describe the item.</param>
-		///         <summary>Sets the end time for the item that is described by the provided play parameters.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the end time for the item that is described by the provided play parameters.</summary>
+		/// <param name="endTime">The time at which the described item will stop playing. This value is expressed in seconds.</param>
+		/// <param name="playParameters">The parameters that describe the item.</param>
 		[Export ("setEndTime:forItemWithPlayParameters:")]
 		void SetEndTime (/* NSTimeInterval */ double endTime, MPMusicPlayerPlayParameters playParameters);
 	}

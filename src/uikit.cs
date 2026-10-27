@@ -760,6 +760,8 @@ namespace UIKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CoreMotion' instead.")]
 	[Obsoleted (PlatformName.MacCatalyst, 27, 0, message: "Use 'CoreMotion' instead.")]
 	interface UIAcceleration {
+		/// <summary>Gets the time.</summary>
+		/// <value>The time, in seconds.</value>
 		[Export ("timestamp")]
 		double Time { get; }
 
@@ -786,6 +788,8 @@ namespace UIKit {
 		[Export ("sharedAccelerometer")]
 		UIAccelerometer SharedAccelerometer { get; }
 
+		/// <summary>Gets or sets the update interval.</summary>
+		/// <value>The update interval, in seconds.</value>
 		[Export ("updateInterval")]
 		double UpdateInterval { get; set; }
 
@@ -2692,9 +2696,8 @@ namespace UIKit {
 		[Export ("startAnimation")]
 		void StartAnimation ();
 
-		/// <param name="delay">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Starts the animation after the specified delay.</summary>
+		/// <param name="delay">The delay, in seconds.</param>
 		[Abstract]
 		[Export ("startAnimationAfterDelay:")]
 		void StartAnimation (double delay);
@@ -2759,9 +2762,13 @@ namespace UIKit {
 		[NullAllowed, Export ("timingParameters", ArgumentSemantic.Copy)]
 		IUITimingCurveProvider TimingParameters { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
+		/// <summary>Gets the delay.</summary>
+		/// <value>The delay, in seconds.</value>
 		[Export ("delay")]
 		double Delay { get; }
 
@@ -2792,27 +2799,43 @@ namespace UIKit {
 		[Export ("flushUpdates")]
 		bool FlushUpdates { get; set; }
 
+		/// <summary>Creates a new <see cref="UIViewPropertyAnimator" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="parameters">The parameters.</param>
 		[Export ("initWithDuration:timingParameters:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double duration, IUITimingCurveProvider parameters);
 
+		/// <summary>Creates a new <see cref="UIViewPropertyAnimator" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="curve">The curve.</param>
+		/// <param name="animations">The changes to animate.</param>
 		[Export ("initWithDuration:curve:animations:")]
 		NativeHandle Constructor (double duration, UIViewAnimationCurve curve, [NullAllowed] Action animations);
 
+		/// <summary>Creates a new <see cref="UIViewPropertyAnimator" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="point1">The point1.</param>
+		/// <param name="point2">The point2.</param>
+		/// <param name="animations">The changes to animate.</param>
 		[Export ("initWithDuration:controlPoint1:controlPoint2:animations:")]
 		NativeHandle Constructor (double duration, CGPoint point1, CGPoint point2, [NullAllowed] Action animations);
 
-		/// <param name="duration">To be added.</param>
+		/// <summary>Constructs a new <see cref="UIKit.UIViewPropertyAnimator" /> with spring-based timing based on the <paramref name="ratio" />.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
 		/// <param name="ratio">Values must be in the range [0,1]. Values closer to 0 have less damping.</param>
 		/// <param name="animations">
-		///           <para>To be added.</para>
-		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-		///         </param>
-		/// <summary>Constructs a new <see cref="UIKit.UIViewPropertyAnimator" /> with spring-based timing based on the <paramref name="ratio" />.</summary>
-		/// <remarks>To be added.</remarks>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
 		[Export ("initWithDuration:dampingRatio:animations:")]
 		NativeHandle Constructor (double duration, nfloat ratio, [NullAllowed] Action animations);
 
+		/// <summary>Creates a new <see cref="UIViewPropertyAnimator" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="delay">The delay, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animations">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static]
 		[Export ("runningPropertyAnimatorWithDuration:delay:options:animations:completion:")]
 		UIViewPropertyAnimator CreateRunningPropertyAnimator (double duration, double delay, UIViewAnimationOptions options, Action animations, [NullAllowed] Action<UIViewAnimatingPosition> completion);
@@ -3202,6 +3225,8 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void SetStatusBarOrientation (UIInterfaceOrientation orientation, bool animated);
 
+		/// <summary>Gets the status bar orientation animation duration.</summary>
+		/// <value>The status bar orientation animation duration, in seconds.</value>
 		[NoTV]
 		[Export ("statusBarOrientationAnimationDuration")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the 'InterfaceOrientation' property of the window scene instead.")]
@@ -3368,6 +3393,8 @@ namespace UIKit {
 		[Export ("applicationState")]
 		UIApplicationState ApplicationState { get; }
 
+		/// <summary>Gets the background time remaining.</summary>
+		/// <value>The background time remaining, in seconds.</value>
 		[ThreadSafe]
 		[Export ("backgroundTimeRemaining")]
 		double BackgroundTimeRemaining { get; }
@@ -3388,6 +3415,9 @@ namespace UIKit {
 		[Export ("endBackgroundTask:")]
 		void EndBackgroundTask (nint taskId);
 
+		/// <summary>Sets the interval for invoking the keep-alive handler.</summary>
+		/// <param name="timeout">The timeout, in seconds.</param>
+		/// <param name="handler">The callback to invoke.</param>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'PushKit' instead.")]
 		[MacCatalyst (13, 1)]
@@ -3472,9 +3502,7 @@ namespace UIKit {
 		nint BackgroundTaskInvalid { get; }
 
 		/// <summary>Represents the value associated with the constant UIMinimumKeepAliveTimeout</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The minimum keep alive timeout, in seconds.</value>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'PushKit' for Voice Over IP applications.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'PushKit' for Voice Over IP applications.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PushKit' for Voice Over IP applications.")]
@@ -3634,21 +3662,19 @@ namespace UIKit {
 		nint BeginBackgroundTask ([NullAllowed] string taskName, [NullAllowed] Action expirationHandler);
 
 		/// <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalMinimum</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>A value requesting the minimum supported fetch interval; explicit fetch intervals are measured in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationBackgroundFetchIntervalMinimum")]
 		double BackgroundFetchIntervalMinimum { get; }
 
 		/// <summary>Represents the value associated with the constant UIApplicationBackgroundFetchIntervalNever</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <value>A value that disables background fetching; finite fetch intervals are measured in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationBackgroundFetchIntervalNever")]
 		double BackgroundFetchIntervalNever { get; }
 
+		/// <summary>Sets the minimum interval between background fetches.</summary>
+		/// <param name="minimumBackgroundFetchInterval">The minimum background fetch interval, in seconds.</param>
 		[Export ("setMinimumBackgroundFetchInterval:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use a 'BGAppRefreshTask' from 'BackgroundTasks' framework.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use a 'BGAppRefreshTask' from 'BackgroundTasks' framework.")]
@@ -4517,11 +4543,10 @@ namespace UIKit {
 		[Export ("applicationSignificantTimeChange:")]
 		void ApplicationSignificantTimeChange (UIApplication application);
 
-		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
-		/// <param name="newStatusBarOrientation">To be added.</param>
-		/// <param name="duration">To be added.</param>
 		/// <summary>Indicates that the orientation of the status bar is about to change.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
+		/// <param name="newStatusBarOrientation">The new status bar orientation.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoTV]
 		[Export ("application:willChangeStatusBarOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -7946,6 +7971,8 @@ namespace UIKit {
 		[Export ("itemsInRect:")]
 		IUIDynamicItem [] GetDynamicItems (CGRect rect);
 
+		/// <summary>Gets the elapsed time.</summary>
+		/// <value>The elapsed time, in seconds.</value>
 		[Export ("elapsedTime")]
 		double ElapsedTime { get; }
 
@@ -8200,11 +8227,20 @@ namespace UIKit {
 		[Export ("magneticField")]
 		UIFieldBehavior CreateMagneticField ();
 
+		/// <summary>Creates a new <see cref="UIFieldBehavior" /> instance.</summary>
+		/// <param name="evaluator">The callback, whose time interval argument is expressed in seconds.</param>
 		[Static]
 		[Export ("fieldWithEvaluationBlock:")]
 		UIFieldBehavior CreateCustomField (UIFieldCustomEvaluator evaluator);
 	}
 
+	/// <summary>Evaluates the force produced by a custom field.</summary>
+	/// <param name="field">The field.</param>
+	/// <param name="position">The position.</param>
+	/// <param name="velocity">The velocity.</param>
+	/// <param name="mass">The mass.</param>
+	/// <param name="charge">The charge.</param>
+	/// <param name="deltaTime">The delta time, in seconds.</param>
 	delegate CGVector UIFieldCustomEvaluator (UIFieldBehavior field, CGPoint position, CGVector velocity, nfloat mass, nfloat charge, double deltaTime);
 
 	[Static]
@@ -10431,6 +10467,8 @@ namespace UIKit {
 		[Export ("numberOfTouchesRequired")]
 		nuint NumberOfTouchesRequired { get; set; }
 
+		/// <summary>Gets or sets the minimum press duration.</summary>
+		/// <value>The minimum press duration, in seconds.</value>
 		[Export ("minimumPressDuration")]
 		double MinimumPressDuration { get; set; }
 
@@ -10921,18 +10959,28 @@ namespace UIKit {
 		[ThreadSafe]
 		nfloat CurrentScale { get; }
 
+		/// <summary>Creates a new <see cref="UIImage" /> instance.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("animatedImageNamed:duration:")]
 		[Autorelease]
 		[ThreadSafe]
 		[return: NullAllowed]
 		UIImage CreateAnimatedImage (string name, double duration);
 
+		/// <summary>Creates a new <see cref="UIImage" /> instance.</summary>
+		/// <param name="images">The images.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("animatedImageWithImages:duration:")]
 		[Autorelease]
 		[ThreadSafe]
 		[return: NullAllowed]
 		UIImage CreateAnimatedImage (UIImage [] images, double duration);
 
+		/// <summary>Creates a new <see cref="UIImage" /> instance.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="capInsets">The cap insets.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("animatedResizableImageNamed:capInsets:duration:")]
 		[Autorelease]
 		[ThreadSafe]
@@ -10971,6 +11019,8 @@ namespace UIKit {
 		[NullAllowed]
 		UIImage [] Images { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		[ThreadSafe]
 		double Duration { get; }
@@ -11047,6 +11097,11 @@ namespace UIKit {
 		[ThreadSafe]
 		UIImage CreateResizableImage (UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
 
+		/// <summary>Creates a new <see cref="UIImage" /> instance.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="capInsets">The cap insets.</param>
+		/// <param name="resizingMode">The resizing mode.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static]
 		[Export ("animatedResizableImageNamed:capInsets:resizingMode:duration:")]
 		[ThreadSafe]
@@ -11561,6 +11616,8 @@ namespace UIKit {
 		[Export ("subtype")]
 		UIEventSubtype Subtype { get; }
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -12602,6 +12659,8 @@ namespace UIKit {
 		[NullAllowed]
 		UIImage [] HighlightedAnimationImages { get; set; }
 
+		/// <summary>Gets or sets the animation duration.</summary>
+		/// <value>The animation duration, in seconds.</value>
 		[Export ("animationDuration")]
 		double AnimationDuration { get; set; }
 
@@ -12756,6 +12815,8 @@ namespace UIKit {
 		[NullAllowed]
 		NSDate MaximumDate { get; set; }
 
+		/// <summary>Gets or sets the count down duration.</summary>
+		/// <value>The count down duration, in seconds.</value>
 		[Export ("countDownDuration")]
 		double CountDownDuration { get; set; }
 
@@ -13200,6 +13261,8 @@ namespace UIKit {
 		[Export ("allowsEditing")]
 		bool AllowsEditing { get; set; }
 
+		/// <summary>Gets or sets the video maximum duration.</summary>
+		/// <value>The video maximum duration, in seconds.</value>
 		[Export ("videoMaximumDuration")]
 		double VideoMaximumDuration { get; set; }
 
@@ -15907,6 +15970,8 @@ namespace UIKit {
 		[Export ("maximumFramesPerSecond")]
 		nint MaximumFramesPerSecond { get; }
 
+		/// <summary>Gets the calibrated latency.</summary>
+		/// <value>The calibrated latency, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("calibratedLatency")]
 		double CalibratedLatency { get; }
@@ -21426,6 +21491,8 @@ namespace UIKit {
 		[Export ("tapCount")]
 		nint TapCount { get; }
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -21532,6 +21599,8 @@ namespace UIKit {
 		[Export ("videoPath", ArgumentSemantic.Copy)]
 		string VideoPath { get; set; }
 
+		/// <summary>Gets or sets the video maximum duration.</summary>
+		/// <value>The video maximum duration, in seconds.</value>
 		[Export ("videoMaximumDuration")]
 		double VideoMaximumDuration { get; set; }
 
@@ -21912,6 +21981,8 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please use the 'Action' handler based animation APIs instead.")]
 		void SetAnimationDidStopSelector (Selector sel);
 
+		/// <summary>Sets the duration of the animations.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static]
 		[Export ("setAnimationDuration:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Please use the 'Action' handler based animation APIs instead.")]
@@ -21919,6 +21990,8 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please use the 'Action' handler based animation APIs instead.")]
 		void SetAnimationDuration (double duration);
 
+		/// <summary>Sets the delay before the animations begin.</summary>
+		/// <param name="delay">The delay, in seconds.</param>
 		[Static]
 		[Export ("setAnimationDelay:")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Please use the 'Action' handler based animation APIs instead.")]
@@ -21983,9 +22056,16 @@ namespace UIKit {
 		[Export ("gestureRecognizers", ArgumentSemantic.Copy)]
 		UIGestureRecognizer [] GestureRecognizers { get; set; }
 
+		/// <summary>Animates the specified changes over the specified duration.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="animation">The changes to animate.</param>
 		[Static, Export ("animateWithDuration:animations:")]
 		void Animate (double duration, /* non null */ Action animation);
 
+		/// <summary>Animates the specified changes and invokes a completion callback.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="animation">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static, Export ("animateWithDuration:animations:completion:")]
 		[Async (XmlDocs = """
 			<param name="duration">Duration in seconds for the animation.</param>
@@ -21998,20 +22078,32 @@ namespace UIKit {
 			""")]
 		void AnimateNotify (double duration, /* non null */ Action animation, [NullAllowed] UICompletionHandler completion);
 
+		/// <summary>Animates the specified changes and invokes a completion callback.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="delay">The delay, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animation">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static, Export ("animateWithDuration:delay:options:animations:completion:")]
 		[Async (XmlDocs = """
+			<summary>Executes the specified <paramref name="animation" /> as an asynchronous operation.</summary>
 			<param name="duration">Duration in seconds for the animation.</param>
-			<param name="delay">Delay before the animation begins.</param>
+			<param name="delay">Delay before the animation begins. This value is expressed in seconds.</param>
 			<param name="options">Animation options.</param>
 			<param name="animation">The changes to be applied to the view.</param>
-			<summary>Executes the specified <paramref name="animation" /> as an asynchronous operation.</summary>
-			<returns>To be added.</returns>
+			<returns>A task representing the asynchronous operation.</returns>
 			<remarks>
-			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-			        </remarks>
+			  <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			</remarks>
 			""")]
 		void AnimateNotify (double duration, double delay, UIViewAnimationOptions options, /* non null */ Action animation, [NullAllowed] UICompletionHandler completion);
 
+		/// <summary>Animates a view transition and invokes a completion callback.</summary>
+		/// <param name="fromView">The from view.</param>
+		/// <param name="toView">The to view.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static, Export ("transitionFromView:toView:duration:options:completion:")]
 		[Async (XmlDocs = """
 			<param name="fromView">The initial view.</param>
@@ -22028,6 +22120,12 @@ namespace UIKit {
 			""")]
 		void TransitionNotify (UIView fromView, UIView toView, double duration, UIViewAnimationOptions options, [NullAllowed] UICompletionHandler completion);
 
+		/// <summary>Animates a view transition and invokes a completion callback.</summary>
+		/// <param name="withView">The with view.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animation">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static, Export ("transitionWithView:duration:options:animations:completion:")]
 		[Async (XmlDocs = """
 			<param name="withView">View whose state is being manipulated and in which the animation should occur.</param>
@@ -22223,6 +22321,12 @@ namespace UIKit {
 		[Export ("modifyAnimationsWithRepeatCount:autoreverses:animations:")]
 		void ModifyAnimations (nfloat count, bool autoreverses, Action animations);
 
+		/// <summary>Animates the specified keyframe changes.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="delay">The delay, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animations">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Static, Export ("animateKeyframesWithDuration:delay:options:animations:completion:")]
 		[Async (XmlDocs = """
 			<param name="duration">Duration in seconds for the animation.</param>
@@ -22263,25 +22367,38 @@ namespace UIKit {
 		[Export ("drawViewHierarchyInRect:afterScreenUpdates:")]
 		bool DrawViewHierarchy (CGRect rect, bool afterScreenUpdates);
 
-		/// <include file="../docs/api/UIKit/UIView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIView.AnimateNotify(System.Double,System.Double,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)']/*" />
+		/// <summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
+		/// <param name="duration">Duration in seconds for the animation.</param>
+		/// <param name="delay">Delay before the animation begins. This value is expressed in seconds.</param>
+		/// <param name="springWithDampingRatio">Damping ratio set for spring animation when it is approaching its quiescent state. Value between 0 and 1 representing the amount of damping to apply to the spring effect.</param>
+		/// <param name="initialSpringVelocity">Initial spring velocity prior to attachment. The initial velocity of the spring, in points per second.</param>
+		/// <param name="options">Animation options.</param>
+		/// <param name="animations">Code containing the changes that you will apply to your view.</param>
+		/// <param name="completion">
+		///   <para>The method to invoke when the animation has completed.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <remarks>
+		///   <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+		/// </remarks>
 		[Static]
 		[Export ("animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:")]
 		[Async (XmlDocs = """
+			<summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
 			<param name="duration">Duration in seconds for the animation.</param>
-			<param name="delay">Delay before the animation begins.</param>
+			<param name="delay">Delay before the animation begins. This value is expressed in seconds.</param>
 			<param name="springWithDampingRatio">Damping ratio set for spring animation when it is approaching its quiescent state. Value between 0 and 1 representing the amount of damping to apply to the spring effect.</param>
 			<param name="initialSpringVelocity">Initial spring velocity prior to attachment. The initial velocity of the spring, in points per second.</param>
 			<param name="options">Animation options.</param>
 			<param name="animations">Code containing the changes that you will apply to your view.</param>
-			<summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
 			<returns>
-			          <para>A task that represents the asynchronous AnimateNotify operation.   The value of the TResult parameter is a <see cref="UIKit.UICompletionHandler" />.</para>
-			        </returns>
+			  <para>A task that represents the asynchronous AnimateNotify operation.   The value of the TResult parameter is a <see cref="UIKit.UICompletionHandler" />.</para>
+			</returns>
 			<remarks>
-			          <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-			          <para copied="true">The AnimateNotifyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <para copied="true">The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-			        </remarks>
+			  <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			  <para copied="true">The AnimateNotifyAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			  <para copied="true">The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
+			</remarks>
 			""")]
 		void AnimateNotify (double duration, double delay, nfloat springWithDampingRatio, nfloat initialSpringVelocity, UIViewAnimationOptions options, Action animations, [NullAllowed] UICompletionHandler completion);
 
@@ -22358,6 +22475,8 @@ namespace UIKit {
 		[Export ("keyboardLayoutGuide")]
 		UIKeyboardLayoutGuide KeyboardLayoutGuide { get; }
 
+		/// <summary>Gets the inherited animation duration.</summary>
+		/// <value>The inherited animation duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("inheritedAnimationDuration")]
 		[Static]
@@ -22541,6 +22660,14 @@ namespace UIKit {
 		[NullAllowed, Export ("hoverStyle", ArgumentSemantic.Copy)]
 		UIHoverStyle HoverStyle { get; set; }
 
+		/// <summary>Animates the specified changes over the specified duration.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="bounce">The amount of bounce.</param>
+		/// <param name="velocity">The velocity.</param>
+		/// <param name="delay">The delay, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animations">The changes to animate.</param>
+		/// <param name="completion">The callback invoked when the operation completes.</param>
 		[Async]
 		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
@@ -22757,6 +22884,9 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Adaptive View Controllers instead.")]
 		UIInterfaceOrientation InterfaceOrientation { get; }
 
+		/// <summary>Notifies the controller before the rotation animation.</summary>
+		/// <param name="toInterfaceOrientation">The to interface orientation.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoTV]
 		[Export ("willRotateToInterfaceOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use Adaptive View Controllers instead.")]
@@ -22771,6 +22901,9 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Adaptive View Controllers instead.")]
 		void DidRotate (UIInterfaceOrientation fromInterfaceOrientation);
 
+		/// <summary>Notifies the controller before the rotation animation.</summary>
+		/// <param name="toInterfaceOrientation">The to interface orientation.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoTV]
 		[Export ("willAnimateRotationToInterfaceOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use Adaptive View Controllers instead.")]
@@ -22778,6 +22911,9 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Adaptive View Controllers instead.")]
 		void WillAnimateRotation (UIInterfaceOrientation toInterfaceOrientation, double duration);
 
+		/// <summary>Notifies the controller before the rotation animation.</summary>
+		/// <param name="toInterfaceOrientation">The to interface orientation.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoTV]
 		[Export ("willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 5, 0)]
@@ -22792,6 +22928,9 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void DidAnimateFirstHalfOfRotation (UIInterfaceOrientation toInterfaceOrientation);
 
+		/// <summary>Notifies the controller before the rotation animation.</summary>
+		/// <param name="fromInterfaceOrientation">The from interface orientation.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoTV]
 		[Export ("willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:")]
 		[Deprecated (PlatformName.iOS, 5, 0)]
@@ -23027,6 +23166,13 @@ namespace UIKit {
 		/*PROTECTED, MUSTCALLBASE*/
 		void RemoveFromParentViewController ();
 
+		/// <summary>Transitions between the specified child view controllers.</summary>
+		/// <param name="fromViewController">The from view controller.</param>
+		/// <param name="toViewController">The to view controller.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="animations">The changes to animate.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Export ("transitionFromViewController:toViewController:duration:options:animations:completion:")]
 		[Async (XmlDocs = """
 			<param name="fromViewController">The view controller that initiates the action and which is currently visible in the parent hierarchy.</param>
@@ -24106,10 +24252,9 @@ namespace UIKit {
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	partial interface UIViewControllerAnimatedTransitioning {
-		/// <param name="transitionContext">To be added.</param>
 		/// <summary>The duration, in seconds, of the transition.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="transitionContext">The transition context.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Abstract]
 		[Export ("transitionDuration:")]
 		double TransitionDuration (IUIViewControllerContextTransitioning transitionContext);
@@ -26912,11 +27057,18 @@ namespace UIKit {
 		[Export ("initWithDampingRatio:")]
 		NativeHandle Constructor (nfloat ratio);
 
+		/// <summary>Creates a new <see cref="UISpringTimingParameters" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="bounce">The amount of bounce.</param>
+		/// <param name="velocity">The velocity.</param>
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithDuration:bounce:initialVelocity:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double duration, nfloat bounce, CGVector velocity);
 
+		/// <summary>Creates a new <see cref="UISpringTimingParameters" /> instance.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="bounce">The amount of bounce.</param>
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithDuration:bounce:")]
 		NativeHandle Constructor (double duration, nfloat bounce);
@@ -28244,6 +28396,8 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface UIPress {
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double /* NSTimeInterval */ Timestamp { get; }
 
@@ -30852,6 +31006,8 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIPencilInteractionTap {
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -30864,6 +31020,8 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIPencilInteractionSqueeze {
 
+		/// <summary>Gets the timestamp.</summary>
+		/// <value>The timestamp, in seconds.</value>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -36323,6 +36481,8 @@ namespace UIKit {
 	[BaseType (typeof (UIPageControlProgress))]
 	[DisableDefaultCtor]
 	interface UIPageControlTimerProgress {
+		/// <summary>Creates a new <see cref="UIPageControlTimerProgress" /> instance.</summary>
+		/// <param name="preferredDuration">The preferred duration, in seconds.</param>
 		[Export ("initWithPreferredDuration:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double preferredDuration);
@@ -36346,12 +36506,20 @@ namespace UIKit {
 		[Export ("pauseTimer")]
 		void PauseTimer ();
 
+		/// <summary>Gets or sets the preferred duration.</summary>
+		/// <value>The preferred duration, in seconds.</value>
 		[Export ("preferredDuration")]
 		double PreferredDuration { get; set; }
 
+		/// <summary>Sets the duration for the specified page.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="page">The page.</param>
 		[Export ("setDuration:forPage:")]
 		void SetDuration (double duration, nint page);
 
+		/// <summary>Gets the duration for the specified page.</summary>
+		/// <param name="page">The page.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("durationForPage:")]
 		double GetDuration (nint page);
 	}
@@ -37710,12 +37878,18 @@ namespace UIKit {
 		[return: NullAllowed]
 		UIUpdateInfo GetCurrentUpdateInfo (UIView windowScene);
 
+		/// <summary>Gets the model time.</summary>
+		/// <value>The model time, in seconds.</value>
 		[Export ("modelTime")]
 		double ModelTime { get; }
 
+		/// <summary>Gets the completion deadline time.</summary>
+		/// <value>The completion deadline time, in seconds.</value>
 		[Export ("completionDeadlineTime")]
 		double CompletionDeadlineTime { get; }
 
+		/// <summary>Gets the estimated presentation time.</summary>
+		/// <value>The estimated presentation time, in seconds.</value>
 		[Export ("estimatedPresentationTime")]
 		double EstimatedPresentationTime { get; }
 

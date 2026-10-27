@@ -264,6 +264,10 @@ namespace ReplayKit {
 		[Export ("stopRecordingWithOutputURL:completionHandler:")]
 		void StopRecording (NSUrl url, [NullAllowed] Action<NSError> completionHandler);
 
+		/// <summary>Exports a clip with the specified duration.</summary>
+		/// <param name="url">The url.</param>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Async]
 		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
@@ -541,6 +545,8 @@ namespace ReplayKit {
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastConfiguration : NSCoding, NSSecureCoding {
+		/// <summary>Gets or sets the clip duration.</summary>
+		/// <value>The clip duration, in seconds.</value>
 		[Export ("clipDuration")]
 		double ClipDuration { get; set; }
 

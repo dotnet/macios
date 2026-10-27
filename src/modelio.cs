@@ -257,10 +257,8 @@ namespace ModelIO {
 		[Export ("loadTextures")]
 		void LoadTextures ();
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Gets the bounding box of the asset at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the bounding box of the asset at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("boundingBoxAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLAxisAlignedBoundingBox GetBoundingBox (double atTime);
@@ -274,20 +272,17 @@ namespace ModelIO {
 		}
 
 		/// <summary>Gets or sets the frame interval for timed data in the asset.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The frame interval, in seconds.</value>
 		[Export ("frameInterval")]
 		double FrameInterval { get; set; }
 
 		/// <summary>Gets the timestamp of the first timed data item in the asset, which is the lowest value to which all requested timed sample data are clamped.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The start time, in seconds.</value>
 		[Export ("startTime")]
 		double StartTime { get; set; }
 
 		/// <summary>Gets the timestamp of the last timed data item in the asset, which is the highest value to which all requested timed sample data are clamped.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The end time, in seconds.</value>
 		[Export ("endTime")]
 		double EndTime { get; set; }
 
@@ -1490,14 +1485,13 @@ namespace ModelIO {
 		[Export ("addAttributeWithName:format:type:data:stride:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride);
 
-		/// <param name="name">To be added.</param>
-		/// <param name="format">To be added.</param>
-		/// <param name="type">To be added.</param>
-		/// <param name="data">To be added.</param>
-		/// <param name="stride">To be added.</param>
-		/// <param name="time">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Adds vertex attribute data at the specified time.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="format">The format.</param>
+		/// <param name="type">The type.</param>
+		/// <param name="data">The data.</param>
+		/// <param name="stride">The stride.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:time:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride, double time);
@@ -2208,10 +2202,8 @@ namespace ModelIO {
 		[Export ("addChild:")]
 		void AddChild (MDLObject child);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the bounding box of the Model IO object at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the bounding box of the Model IO object at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("boundingBoxAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLAxisAlignedBoundingBox GetBoundingBox (double atTime);
@@ -3245,62 +3237,67 @@ namespace ModelIO {
 		[Export ("setIdentity")]
 		void SetIdentity ();
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the shear of the transform at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the shear of the transform at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("shearAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetShear (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the scale of the transform at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the scale of the transform at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("scaleAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetScale (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the translation of the transform at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the translation of the transform at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("translationAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetTranslation (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the rotation of the transform at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the rotation of the transform at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("rotationAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetRotation (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>Returns the rotation of the transform at the specified time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the rotation of the transform at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("rotationMatrixAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetRotationMatrix (double atTime);
 
+		/// <summary>Sets the shear.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setShear:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetShear (Vector3 scale, double time);
 
+		/// <summary>Sets the scale.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setScale:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetScale (Vector3 scale, double time);
 
+		/// <summary>Sets the translation.</summary>
+		/// <param name="translation">The translation.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setTranslation:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetTranslation (Vector3 translation, double time);
 
+		/// <summary>Sets the rotation.</summary>
+		/// <param name="rotation">The rotation.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setRotation:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetRotation (Vector3 rotation, double time);
 
+		/// <summary>Sets the matrix.</summary>
+		/// <param name="matrix">The matrix.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("setMatrix:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -3375,15 +3372,13 @@ namespace ModelIO {
 		bool ResetsTransform { get; set; }
 
 		/// <summary>Gets the first specified time in the transformation.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <value>The minimum time, in seconds.</value>
 		[Abstract]
 		[Export ("minimumTime")]
 		double MinimumTime { get; }
 
 		/// <summary>Gets the last specified time in the transformation.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
+		/// <value>The maximum time, in seconds.</value>
 		[Abstract]
 		[Export ("maximumTime")]
 		double MaximumTime { get; }
@@ -3398,6 +3393,8 @@ namespace ModelIO {
 		NSNumber [] KeyTimes { get; }
 
 		/// <summary>Causes this transform to represent the specified static transform.</summary>
+		/// <param name="transform">The transform.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setLocalTransform:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetLocalTransform (Matrix4 transform, double time);
@@ -3407,17 +3404,15 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetLocalTransform (Matrix4 transform);
 
-		/// <param name="atTime">The time for which to retrieve the local transform.</param>
 		/// <summary>Gets the local transform at the specified time.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="atTime">The time for which to retrieve the local transform. This value is expressed in seconds.</param>
 		[Export ("localTransformAtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Matrix4 GetLocalTransform (double atTime);
 
 		/// <summary>Creates and returns a global transform for the specified object at the specified time.</summary>
 		/// <param name="obj">The object that represents the spatial transform.</param>
-		/// <param name="atTime">The time at which to apply the transform.</param>
+		/// <param name="atTime">The time at which to apply the transform. This value is expressed in seconds.</param>
 		[Static]
 		[Export ("globalTransformWithObject:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -3507,9 +3502,8 @@ namespace ModelIO {
 		[Export ("bufferIndex", ArgumentSemantic.Assign)]
 		nuint BufferIndex { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the time.</summary>
+		/// <value>The time, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("time")]
 		double Time { get; set; }
@@ -4126,15 +4120,13 @@ namespace ModelIO {
 		[Export ("timeSampleCount")]
 		nuint TimeSampleCount { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the minimum time.</summary>
+		/// <value>The minimum time, in seconds.</value>
 		[Export ("minimumTime")]
 		double MinimumTime { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the maximum time.</summary>
+		/// <value>The maximum time, in seconds.</value>
 		[Export ("maximumTime")]
 		double MaximumTime { get; }
 
@@ -4144,9 +4136,8 @@ namespace ModelIO {
 		[Export ("interpolation", ArgumentSemantic.Assign)]
 		MDLAnimatedValueInterpolation Interpolation { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key times.</summary>
+		/// <value>An array of key times, each measured in seconds.</value>
 		[Protected]
 		[Export ("keyTimes")]
 		NSNumber [] WeakKeyTimes { get; }
@@ -4174,18 +4165,34 @@ namespace ModelIO {
 		[Export ("initWithElementCount:")]
 		NativeHandle Constructor (nuint arrayElementCount);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setFloatArray:count:atTime:")]
 		void _SetFloatArray (IntPtr array, nuint count, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setDoubleArray:count:atTime:")]
 		void _SetDoubleArray (IntPtr array, nuint count, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getFloatArray:maxCount:atTime:")]
 		nuint _GetFloatArray (IntPtr array, nuint maxCount, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getDoubleArray:maxCount:atTime:")]
 		nuint _GetDoubleArray (IntPtr array, nuint maxCount, double time);
@@ -4220,18 +4227,34 @@ namespace ModelIO {
 		[Export ("initWithElementCount:")]
 		NativeHandle Constructor (nuint arrayElementCount);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setFloat3Array:count:atTime:")]
 		void _SetFloat3Array (IntPtr array, nuint count, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setDouble3Array:count:atTime:")]
 		void _SetDouble3Array (IntPtr array, nuint count, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getFloat3Array:maxCount:atTime:")]
 		nuint _GetFloat3Array (IntPtr array, nuint maxCount, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getDouble3Array:maxCount:atTime:")]
 		nuint _GetDouble3Array (IntPtr array, nuint maxCount, double time);
@@ -4266,18 +4289,34 @@ namespace ModelIO {
 		[Export ("initWithElementCount:")]
 		NativeHandle Constructor (nuint arrayElementCount);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setFloatQuaternionArray:count:atTime:")]
 		void _SetFloatQuaternionArray (IntPtr array, nuint count, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="count">The number of values.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("setDoubleQuaternionArray:count:atTime:")]
 		void _SetDoubleQuaternionArray (IntPtr array, nuint count, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getFloatQuaternionArray:maxCount:atTime:")]
 		nuint _GetFloatQuaternionArray (IntPtr array, nuint maxCount, double time);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="array">The array of values.</param>
+		/// <param name="maxCount">The maximum number of values to retrieve.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Internal]
 		[Export ("getDoubleQuaternionArray:maxCount:atTime:")]
 		nuint _GetDoubleQuaternionArray (IntPtr array, nuint maxCount, double time);
@@ -4303,31 +4342,25 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedScalar {
 
-		/// <param name="value">To be added.</param>
-		///         <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setFloat:atTime:")]
 		void SetValue (float value, double time);
 
-		/// <param name="value">To be added.</param>
-		///         <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setDouble:atTime:")]
 		void SetValue (double value, double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("floatAtTime:")]
 		float GetFloat (double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("doubleAtTime:")]
 		double GetDouble (double time);
 
@@ -4352,26 +4385,28 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector2 {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setFloat2:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector2 value, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setDouble2:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector2d value, double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("float2AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetVector2Value (double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("double2AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2d GetVector2dValue (double time);
@@ -4397,26 +4432,28 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector3 {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setFloat3:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NVector3 value, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setDouble3:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NVector3d value, double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("float3AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NVector3 GetNVector3Value (double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("double3AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NVector3d GetNVector3dValue (double time);
@@ -4442,26 +4479,28 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector4 {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setFloat4:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector4 value, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setDouble4:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (Vector4d value, double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("float4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector4 GetVector4Value (double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("double4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector4d GetVector4dValue (double time);
@@ -4487,26 +4526,28 @@ namespace ModelIO {
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedMatrix4x4 {
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setFloat4x4:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NMatrix4 value, double time);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("setDouble4x4:atTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetValue (NMatrix4d value, double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4Value (double time);
 
-		/// <param name="time">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4dValue (double time);
@@ -4740,19 +4781,15 @@ namespace ModelIO {
 		[Export ("name")]
 		string Name { get; }
 
-		/// <param name="atTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the n matrix4.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Abstract]
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4 (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the n matrix4d.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Abstract]
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -4955,18 +4992,14 @@ namespace ModelIO {
 		[Export ("animatedValueWithName:")]
 		MDLAnimatedValue GetAnimatedValue (string name);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the n matrix4.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("float4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4 GetNMatrix4 (double atTime);
 
-		/// <param name="atTime">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the n matrix4d.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[Export ("double4x4AtTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NMatrix4d GetNMatrix4d (double atTime);
@@ -5033,18 +5066,28 @@ namespace ModelIO {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedQuaternion {
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="atTime">The time, in seconds.</param>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("setFloatQuaternion:atTime:")]
 		void SetQuaternion (Quaternion value, double atTime);
 
+		/// <summary>Sets the animated value at the specified time.</summary>
+		/// <param name="value">The value.</param>
+		/// <param name="atTime">The time, in seconds.</param>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("setDoubleQuaternion:atTime:")]
 		void SetQuaternion (Quaterniond value, double atTime);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("floatQuaternionAtTime:")]
 		Quaternion GetFloatQuaternion (double atTime);
 
+		/// <summary>Gets the animated value at the specified time.</summary>
+		/// <param name="atTime">The time, in seconds.</param>
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		[Export ("doubleQuaternionAtTime:")]
 		Quaterniond GetDoubleQuaternion (double atTime);

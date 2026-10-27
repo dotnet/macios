@@ -72,16 +72,14 @@ namespace CoreAnimation {
 	[Model]
 	[Protocol]
 	interface CAMediaTiming {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the begin time.</summary>
+		/// <value>The begin time, in seconds.</value>
 		[Abstract]
 		[Export ("beginTime")]
 		double BeginTime { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Abstract]
 		[Export ("duration")]
 		double Duration { get; set; }
@@ -93,9 +91,8 @@ namespace CoreAnimation {
 		[Export ("speed")]
 		float Speed { get; set; } /* float, not CGFloat */
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the time offset.</summary>
+		/// <value>The time offset, in seconds.</value>
 		[Abstract]
 		[Export ("timeOffset")]
 		double TimeOffset { get; set; }
@@ -107,9 +104,8 @@ namespace CoreAnimation {
 		[Export ("repeatCount")]
 		float RepeatCount { get; set; } /* float, not CGFloat */
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the repeat duration.</summary>
+		/// <value>The repeat duration, in seconds.</value>
 		[Abstract]
 		[Export ("repeatDuration")]
 		double RepeatDuration { get; set; }
@@ -290,11 +286,10 @@ namespace CoreAnimation {
 		void Invalidate ();
 
 		/// <summary>Timestamp for the last frame displayed.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///           <para>Developers can this value to compute which date should be displayed next.</para>
-		///         </remarks>
+		/// <value>The timestamp, in seconds.</value>
+		/// <remarks>
+		///   <para>Developers can this value to compute which date should be displayed next.</para>
+		/// </remarks>
 		[Export ("timestamp")]
 		double Timestamp { get; }
 
@@ -329,14 +324,12 @@ namespace CoreAnimation {
 		nint FrameInterval { get; set; }
 
 		/// <summary>The time between screen refreshes.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
 		/// <summary>Gets the time stamp for the desired time to start displaying the target of the display link.</summary>
-		///         <value>The time stamp for the desired time to start displaying the target of the display link.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The time stamp for the desired time to start displaying the target of the display link. This value is expressed in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("targetTimestamp")]
 		double TargetTimestamp { get; }
@@ -620,25 +613,23 @@ namespace CoreAnimation {
 		[Export ("convertRect:toLayer:")]
 		CGRect ConvertRectToLayer (CGRect rect, [NullAllowed] CALayer layer);
 
-		/// <param name="timeInterval">To be added.</param>
-		///         <param name="layer">
-		///           <para>They layer that will be used to convert the time from.</para>
-		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-		///         </param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts a time from the specified layer's time space to this layer's time space.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="layer">
+		///   <para>They layer that will be used to convert the time from.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <returns>The converted time, in seconds.</returns>
 		[Export ("convertTime:fromLayer:")]
 		double ConvertTimeFromLayer (double timeInterval, [NullAllowed] CALayer layer);
 
-		/// <param name="timeInterval">To be added.</param>
-		///         <param name="layer">
-		///           <para>The layer that will be used to convert the time to.</para>
-		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-		///         </param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts a time from this layer's time space to the specified layer's time space.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="layer">
+		///   <para>The layer that will be used to convert the time to.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <returns>The converted time, in seconds.</returns>
 		[Export ("convertTime:toLayer:")]
 		double ConvertTimeToLayer (double timeInterval, [NullAllowed] CALayer layer);
 
@@ -1485,9 +1476,8 @@ namespace CoreAnimation {
 		[Export ("layer"), New, Static]
 		CALayer Create ();
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the fade duration.</summary>
+		/// <value>The fade duration, in seconds.</value>
 		[Static]
 		[Export ("fadeDuration")]
 		double FadeDuration { get; }
@@ -1547,9 +1537,8 @@ namespace CoreAnimation {
 		[Export ("instanceCount")]
 		nint InstanceCount { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the instance delay.</summary>
+		/// <value>The instance delay, in seconds.</value>
 		[Export ("instanceDelay")]
 		double InstanceDelay { get; set; }
 
@@ -2562,8 +2551,7 @@ namespace CoreAnimation {
 		nfloat InitialVelocity { get; set; }
 
 		/// <summary>Gets the settling time for the animation.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The settling duration, in seconds.</value>
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
 
@@ -2571,10 +2559,15 @@ namespace CoreAnimation {
 		[Export ("allowsOverdamping")]
 		bool AllowsOverdamping { get; set; }
 
+		/// <summary>Creates a new <see cref="CASpringAnimation" /> instance.</summary>
+		/// <param name="perceptualDuration">The perceptual duration, in seconds.</param>
+		/// <param name="bounce">The amount of bounce.</param>
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithPerceptualDuration:bounce:")]
 		NativeHandle Constructor (double /* CFTimeInterval */ perceptualDuration, nfloat bounce);
 
+		/// <summary>Gets the perceptual duration.</summary>
+		/// <value>The perceptual duration, in seconds.</value>
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("perceptualDuration")]
 		double /* CFTimeInterval */ PerceptualDuration { get; }
@@ -2819,9 +2812,8 @@ namespace CoreAnimation {
 		[Export ("unlock")]
 		void Unlock ();
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the animation duration.</summary>
+		/// <value>The animation duration, in seconds.</value>
 		[Static]
 		[Export ("animationDuration")]
 		double AnimationDuration { get; set; }
@@ -3197,22 +3189,19 @@ namespace CoreAnimation {
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; set; }
 
-		/// <param name="glContext">To be added.</param>
-		///         <param name="pixelFormat">To be added.</param>
-		///         <param name="timeInterval">To be added.</param>
-		///         <param name="timeStamp">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Determines whether the layer can draw at the specified time.</summary>
+		/// <param name="glContext">The gl context.</param>
+		/// <param name="pixelFormat">The pixel format.</param>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="timeStamp">The display timestamp.</param>
 		[Export ("canDrawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
 		bool CanDrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
 
-		/// <param name="glContext">To be added.</param>
-		///         <param name="pixelFormat">To be added.</param>
-		///         <param name="timeInterval">To be added.</param>
-		///         <param name="timeStamp">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws the layer at the specified time.</summary>
+		/// <param name="glContext">The gl context.</param>
+		/// <param name="pixelFormat">The pixel format.</param>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
+		/// <param name="timeStamp">The display timestamp.</param>
 		[Export ("drawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
 		void DrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
 
@@ -3792,21 +3781,22 @@ namespace CoreAnimation {
 		[Export ("bounds", ArgumentSemantic.Assign)]
 		CGRect Bounds { get; set; }
 
-		/// <param name="timeInSeconds">To be added.</param>
-		///         <param name="ts">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Begins rendering a frame at the specified time.</summary>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
+		/// <param name="ts">The display timestamp.</param>
 		[Export ("beginFrameAtTime:timeStamp:")]
 		void BeginFrame (double timeInSeconds, ref CVTimeStamp ts);
 
+		/// <summary>Begins rendering a frame at the specified time.</summary>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
+		/// <param name="ts">The display timestamp.</param>
 		[Sealed]
 		[Internal] // since the timestamp is nullable
 		[Export ("beginFrameAtTime:timeStamp:")]
 		void BeginFrame (double timeInSeconds, IntPtr ts);
 
-		/// <param name="timeInSeconds">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Begins rendering a frame at the specified time.</summary>
+		/// <param name="timeInSeconds">The time, in seconds.</param>
 		[Wrap ("BeginFrame (timeInSeconds, IntPtr.Zero)")]
 		void BeginFrame (double timeInSeconds);
 
@@ -3827,9 +3817,8 @@ namespace CoreAnimation {
 		[Export ("render")]
 		void Render ();
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the time at which the next frame should be rendered.</summary>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("nextFrameTime")]
 		double /* CFTimeInterval */ GetNextFrameTime ();
 
@@ -3882,9 +3871,13 @@ namespace CoreAnimation {
 		[Export ("drawable")]
 		ICAMetalDrawable Drawable { get; }
 
+		/// <summary>Gets the target timestamp.</summary>
+		/// <value>The target timestamp, in seconds.</value>
 		[Export ("targetTimestamp")]
 		double /* CFTimeInterval */ TargetTimestamp { get; }
 
+		/// <summary>Gets the target presentation timestamp.</summary>
+		/// <value>The target presentation timestamp, in seconds.</value>
 		[Export ("targetPresentationTimestamp")]
 		double /* CFTimeInterval */ TargetPresentationTimestamp { get; }
 	}

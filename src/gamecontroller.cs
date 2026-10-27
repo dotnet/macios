@@ -1245,6 +1245,8 @@ namespace GameController {
 		[NullAllowed, Export ("device", ArgumentSemantic.Weak)]
 		IGCDevice Device { get; }
 
+		/// <summary>Gets the last event timestamp.</summary>
+		/// <value>The last event timestamp, in seconds.</value>
 		[Export ("lastEventTimestamp")]
 		double LastEventTimestamp { get; }
 
@@ -2814,10 +2816,14 @@ namespace GameController {
 		[NullAllowed, Export ("device", ArgumentSemantic.Weak)]
 		IGCDevice Device { get; }
 
+		/// <summary>Gets the last event timestamp.</summary>
+		/// <value>The last event timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastEventTimestamp")]
 		double LastEventTimestamp { get; }
 
+		/// <summary>Gets the last event latency.</summary>
+		/// <value>The last event latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastEventLatency")]
 		double LastEventLatency { get; }
@@ -2869,10 +2875,14 @@ namespace GameController {
 		[Export ("canWrap")]
 		bool CanWrap { get; }
 
+		/// <summary>Gets the last value timestamp.</summary>
+		/// <value>The last value timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueTimestamp")]
 		double LastValueTimestamp { get; }
 
+		/// <summary>Gets the last value latency.</summary>
+		/// <value>The last value latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
@@ -3028,10 +3038,14 @@ namespace GameController {
 		[Export ("canWrap")]
 		bool CanWrap { get; }
 
+		/// <summary>Gets the last value timestamp.</summary>
+		/// <value>The last value timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueTimestamp")]
 		double LastValueTimestamp { get; }
 
+		/// <summary>Gets the last value latency.</summary>
+		/// <value>The last value latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }
@@ -3078,10 +3092,14 @@ namespace GameController {
 		[Export ("pressed")]
 		bool Pressed { [Bind ("isPressed")] get; }
 
+		/// <summary>Gets the last pressed state timestamp.</summary>
+		/// <value>The last pressed state timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastPressedStateTimestamp")]
 		double LastPressedStateTimestamp { get; }
 
+		/// <summary>Gets the last pressed state latency.</summary>
+		/// <value>The last pressed state latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastPressedStateLatency")]
 		double LastPressedStateLatency { get; }
@@ -3109,10 +3127,14 @@ namespace GameController {
 		[Export ("analog")]
 		bool Analog { [Bind ("isAnalog")] get; }
 
+		/// <summary>Gets the last delta timestamp.</summary>
+		/// <value>The last delta timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastDeltaTimestamp")]
 		double LastDeltaTimestamp { get; }
 
+		/// <summary>Gets the last delta latency.</summary>
+		/// <value>The last delta latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastDeltaLatency")]
 		double LastDeltaLatency { get; }
@@ -3158,10 +3180,14 @@ namespace GameController {
 		[Export ("canWrap")]
 		bool CanWrap { get; }
 
+		/// <summary>Gets the last position timestamp.</summary>
+		/// <value>The last position timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastPositionTimestamp")]
 		double LastPositionTimestamp { get; }
 
+		/// <summary>Gets the last position latency.</summary>
+		/// <value>The last position latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastPositionLatency")]
 		double LastPositionLatency { get; }
@@ -3185,10 +3211,14 @@ namespace GameController {
 		[Export ("touched")]
 		bool Touched { [Bind ("isTouched")] get; }
 
+		/// <summary>Gets the last touched state timestamp.</summary>
+		/// <value>The last touched state timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastTouchedStateTimestamp")]
 		double LastTouchedStateTimestamp { get; }
 
+		/// <summary>Gets the last touched state latency.</summary>
+		/// <value>The last touched state latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastTouchedStateLatency")]
 		double LastTouchedStateLatency { get; }
@@ -3406,10 +3436,14 @@ namespace GameController {
 		[Export ("canWrap")]
 		bool CanWrap { get; }
 
+		/// <summary>Gets the last value timestamp.</summary>
+		/// <value>The last value timestamp, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueTimestamp")]
 		double LastValueTimestamp { get; }
 
+		/// <summary>Gets the last value latency.</summary>
+		/// <value>The last value latency, in seconds.</value>
 		[Abstract]
 		[Export ("lastValueLatency")]
 		double LastValueLatency { get; }

@@ -1664,10 +1664,19 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, NSCalendarUnit unit, nint value, NSCalendarOptions options);
 
+		/// <summary>Finds the next weekend after the specified date.</summary>
+		/// <param name="date">On return, the start date of the weekend.</param>
+		/// <param name="interval">On return, the interval, in seconds.</param>
+		/// <param name="options">The options.</param>
+		/// <param name="afterDate">The date after which to search.</param>
 		[Export ("nextWeekendStartDate:interval:options:afterDate:")]
 		[MacCatalyst (13, 1)]
 		bool FindNextWeekend (out NSDate date, out double /* NSTimeInterval */ interval, NSCalendarOptions options, NSDate afterDate);
 
+		/// <summary>Gets the start and duration of the weekend containing the specified date.</summary>
+		/// <param name="weekendStartDate">On return, the start date of the weekend.</param>
+		/// <param name="interval">On return, the interval, in seconds.</param>
+		/// <param name="date">The date.</param>
 		[Export ("rangeOfWeekendStartDate:interval:containingDate:")]
 		[MacCatalyst (13, 1)]
 		bool RangeOfWeekendContainingDate (out NSDate weekendStartDate, out double /* NSTimeInterval */ interval, NSDate date);
@@ -1687,6 +1696,11 @@ namespace Foundation {
 		[Export ("ordinalityOfUnit:inUnit:forDate:")]
 		nuint Ordinality (NSCalendarUnit smaller, NSCalendarUnit larger, NSDate date);
 
+		/// <summary>Gets the start and duration of the specified calendar unit containing the date.</summary>
+		/// <param name="unit">The unit.</param>
+		/// <param name="datep">On return, the start date of the range.</param>
+		/// <param name="interval">On return, the interval, in seconds.</param>
+		/// <param name="date">On return, the start date of the weekend.</param>
 		[Export ("rangeOfUnit:startDate:interval:forDate:")]
 		bool Range (NSCalendarUnit unit, [NullAllowed] out NSDate datep, out double /* NSTimeInterval */ interval, NSDate date);
 
@@ -2976,6 +2990,8 @@ namespace Foundation {
 		[Export ("stringFromDate:toDate:")]
 		string StringFromDate (NSDate startDate, NSDate endDate);
 
+		/// <summary>Formats the specified time interval.</summary>
+		/// <param name="ti">The time, in seconds.</param>
 		[Export ("stringFromTimeInterval:")]
 		string StringFromTimeInterval (double ti);
 
@@ -4019,6 +4035,8 @@ namespace Foundation {
 		[Export ("groupingAttributes", ArgumentSemantic.Copy)]
 		NSArray GroupingAttributes { get; set; }
 
+		/// <summary>Gets or sets the notification batching interval.</summary>
+		/// <value>The notification batching interval, in seconds.</value>
 		[Export ("notificationBatchingInterval")]
 		double NotificationBatchingInterval { get; set; }
 
@@ -5852,22 +5870,35 @@ namespace Foundation {
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface NSDate : NSSecureCoding, NSCopying, CKRecordValue {
+		/// <summary>Gets the seconds since reference date.</summary>
+		/// <value>The seconds since reference date, in seconds.</value>
 		[Export ("timeIntervalSinceReferenceDate")]
 		double SecondsSinceReferenceDate { get; }
 
+		/// <summary>Gets the time interval since the specified date.</summary>
+		/// <param name="anotherDate">The date to compare with.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("timeIntervalSinceDate:")]
 		double GetSecondsSince (NSDate anotherDate);
 
+		/// <summary>Gets the seconds since now.</summary>
+		/// <value>The seconds since now, in seconds.</value>
 		[Export ("timeIntervalSinceNow")]
 		double SecondsSinceNow { get; }
 
+		/// <summary>Gets the seconds since1970.</summary>
+		/// <value>The seconds since1970, in seconds.</value>
 		[Export ("timeIntervalSince1970")]
 		double SecondsSince1970 { get; }
 
+		/// <summary>Creates a new <see cref="NSDate" /> instance.</summary>
+		/// <param name="secs">The time interval, in seconds.</param>
 		[Export ("dateWithTimeIntervalSinceReferenceDate:")]
 		[Static]
 		NSDate FromTimeIntervalSinceReferenceDate (double secs);
 
+		/// <summary>Creates a new <see cref="NSDate" /> instance.</summary>
+		/// <param name="secs">The time interval, in seconds.</param>
 		[Static, Export ("dateWithTimeIntervalSince1970:")]
 		NSDate FromTimeIntervalSince1970 (double secs);
 
@@ -5883,9 +5914,13 @@ namespace Foundation {
 		[Static]
 		NSDate DistantFuture { get; }
 
+		/// <summary>Returns a date offset from this date by the specified interval.</summary>
+		/// <param name="seconds">The time interval, in seconds.</param>
 		[Export ("dateByAddingTimeInterval:")]
 		NSDate AddSeconds (double seconds);
 
+		/// <summary>Creates a new <see cref="NSDate" /> instance.</summary>
+		/// <param name="secs">The time interval, in seconds.</param>
 		[Export ("dateWithTimeIntervalSinceNow:")]
 		[Static]
 		NSDate FromTimeIntervalSinceNow (double secs);
@@ -7350,26 +7385,58 @@ namespace Foundation {
 	[DisableDefaultCtor]
 	interface NSTimer {
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="target">The target object.</param>
+		/// <param name="selector">The selector to invoke.</param>
+		/// <param name="userInfo">The user information associated with the timer.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
 		[Static, Export ("scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:")]
 		NSTimer CreateScheduledTimer (double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="interval">The interval, in seconds.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
+		/// <param name="block">The callback invoked when the timer fires.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("scheduledTimerWithTimeInterval:repeats:block:")]
 		NSTimer CreateScheduledTimer (double interval, bool repeats, Action<NSTimer> block);
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="target">The target object.</param>
+		/// <param name="selector">The selector to invoke.</param>
+		/// <param name="userInfo">The user information associated with the timer.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
 		[Static, Export ("timerWithTimeInterval:target:selector:userInfo:repeats:")]
 		NSTimer CreateTimer (double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="interval">The interval, in seconds.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
+		/// <param name="block">The callback invoked when the timer fires.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("timerWithTimeInterval:repeats:block:")]
 		NSTimer CreateTimer (double interval, bool repeats, Action<NSTimer> block);
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="date">The date.</param>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="target">The target object.</param>
+		/// <param name="selector">The selector to invoke.</param>
+		/// <param name="userInfo">The user information associated with the timer.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
 		[DesignatedInitializer]
 		[Export ("initWithFireDate:interval:target:selector:userInfo:repeats:")]
 		NativeHandle Constructor (NSDate date, double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
+		/// <summary>Creates a new <see cref="NSTimer" /> instance.</summary>
+		/// <param name="date">The date.</param>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="repeats">Whether the timer or trigger repeats.</param>
+		/// <param name="block">The callback invoked when the timer fires.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithFireDate:interval:repeats:block:")]
 		NativeHandle Constructor (NSDate date, double seconds, bool repeats, Action<NSTimer> block);
@@ -7391,12 +7458,16 @@ namespace Foundation {
 		[Export ("isValid")]
 		bool IsValid { get; }
 
+		/// <summary>Gets the time interval.</summary>
+		/// <value>The time interval, in seconds.</value>
 		[Export ("timeInterval")]
 		double TimeInterval { get; }
 
 		[Export ("userInfo")]
 		NSObject UserInfo { get; }
 
+		/// <summary>Gets or sets the tolerance.</summary>
+		/// <value>The tolerance, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("tolerance")]
 		double Tolerance { get; set; }
@@ -7435,6 +7506,9 @@ namespace Foundation {
 		[Export ("isDaylightSavingTimeForDate:")]
 		bool IsDaylightSavingsTime (NSDate date);
 
+		/// <summary>Gets the daylight saving time offset for the specified date.</summary>
+		/// <param name="date">The date.</param>
+		/// <returns>The time interval, in seconds.</returns>
 		[Export ("daylightSavingTimeOffsetForDate:")]
 		double DaylightSavingTimeOffset (NSDate date);
 
@@ -10622,35 +10696,36 @@ namespace Foundation {
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
 	interface NSUrlSessionStreamTask {
-		/// <param name="minBytes">To be added.</param>
-		/// <param name="maxBytes">To be added.</param>
-		/// <param name="timeout">To be added.</param>
-		/// <param name="completionHandler">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Reads data from the stream with the specified timeout.</summary>
+		/// <param name="minBytes">The minimum number of bytes to read.</param>
+		/// <param name="maxBytes">The maximum number of bytes to read.</param>
+		/// <param name="timeout">The timeout, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Export ("readDataOfMinLength:maxLength:timeout:completionHandler:")]
 		[Async (ResultTypeName = "NSUrlSessionStreamDataRead", XmlDocs = """
-			<param name="minBytes">To be added.</param>
-			<param name="maxBytes">To be added.</param>
-			<param name="timeout">To be added.</param>
-			<summary>To be added.</summary>
+			<summary>Reads data from the stream with the specified timeout.</summary>
+			<param name="minBytes">The minimum number of bytes to read.</param>
+			<param name="maxBytes">The maximum number of bytes to read.</param>
+			<param name="timeout">The timeout, in seconds.</param>
 			<returns>
-			          <para>A task that represents the asynchronous ReadData operation.   The value of the TResult parameter is of type Foundation.NSUrlSessionStreamDataRead.  To be added.</para>
-			        </returns>
-			<remarks>To be added.</remarks>
+			  <para>A task that represents the asynchronous ReadData operation.   The value of the TResult parameter is of type Foundation.NSUrlSessionStreamDataRead.  To be added.</para>
+			</returns>
 			""")]
 		void ReadData (nuint minBytes, nuint maxBytes, double timeout, NSUrlSessionDataRead completionHandler);
 
+		/// <summary>Writes data to the stream with the specified timeout.</summary>
+		/// <param name="data">The data.</param>
+		/// <param name="timeout">The timeout, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[Export ("writeData:timeout:completionHandler:")]
 		[Async (XmlDocs = """
-			<param name="data">To be added.</param>
-			<param name="timeout">To be added.</param>
-			<summary>To be added.</summary>
+			<summary>Writes data to the stream with the specified timeout.</summary>
+			<param name="data">The data.</param>
+			<param name="timeout">The timeout, in seconds.</param>
 			<returns>A task that represents the asynchronous WriteData operation</returns>
 			<remarks>
-			          <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
-			          <para copied="true">To be added.</para>
-			        </remarks>
+			  <para copied="true">The WriteDataAsync method is suitable to be used with C# async by returning control to the caller with a Task representing the operation.</para>
+			</remarks>
 			""")]
 		void WriteData (NSData data, double timeout, Action<NSError> completionHandler);
 
@@ -10905,9 +10980,13 @@ namespace Foundation {
 		[Export ("requestCachePolicy")]
 		NSUrlRequestCachePolicy RequestCachePolicy { get; set; }
 
+		/// <summary>Gets or sets the timeout interval for request.</summary>
+		/// <value>The timeout interval for request, in seconds.</value>
 		[Export ("timeoutIntervalForRequest")]
 		double TimeoutIntervalForRequest { get; set; }
 
+		/// <summary>Gets or sets the timeout interval for resource.</summary>
+		/// <value>The timeout interval for resource, in seconds.</value>
 		[Export ("timeoutIntervalForResource")]
 		double TimeoutIntervalForResource { get; set; }
 
@@ -11612,6 +11691,10 @@ namespace Foundation {
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <summary>Creates a new <see cref="NSUrlRequest" /> instance.</summary>
+		/// <param name="url">The url.</param>
+		/// <param name="cachePolicy">The cache policy.</param>
+		/// <param name="timeoutInterval">The timeout interval, in seconds.</param>
 		[DesignatedInitializer]
 		[Export ("initWithURL:cachePolicy:timeoutInterval:")]
 		NativeHandle Constructor (NSUrl url, NSUrlRequestCachePolicy cachePolicy, double timeoutInterval);
@@ -11626,6 +11709,8 @@ namespace Foundation {
 		[Export ("cachePolicy")]
 		NSUrlRequestCachePolicy CachePolicy { get; }
 
+		/// <summary>Gets the timeout interval.</summary>
+		/// <value>The timeout interval, in seconds.</value>
 		[Export ("timeoutInterval")]
 		double TimeoutInterval { get; }
 
@@ -11821,6 +11906,10 @@ namespace Foundation {
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
+		/// <summary>Creates a new <see cref="NSMutableUrlRequest" /> instance.</summary>
+		/// <param name="url">The url.</param>
+		/// <param name="cachePolicy">The cache policy.</param>
+		/// <param name="timeoutInterval">The timeout interval, in seconds.</param>
 		[Export ("initWithURL:cachePolicy:timeoutInterval:")]
 		NativeHandle Constructor (NSUrl url, NSUrlRequestCachePolicy cachePolicy, double timeoutInterval);
 
@@ -11833,6 +11922,8 @@ namespace Foundation {
 		[Export ("cachePolicy")]
 		NSUrlRequestCachePolicy CachePolicy { get; set; }
 
+		/// <summary>Gets or sets the timeout interval.</summary>
+		/// <value>The timeout interval, in seconds.</value>
 		[New]
 		[Export ("timeoutInterval")]
 		double TimeoutInterval { set; get; }
@@ -13017,12 +13108,21 @@ namespace Foundation {
 		[return: Release ()]
 		NSObject MutableCopy ();
 
+		/// <summary>Invokes the specified selector after a delay.</summary>
+		/// <param name="selector">The selector to invoke.</param>
+		/// <param name="withObject">The object passed to the selector.</param>
+		/// <param name="afterDelay">The after delay, in seconds.</param>
+		/// <param name="nsRunLoopModes">The run loop modes in which to invoke the selector.</param>
 		//
 		// Extra Perform methods, with selectors
 		//
 		[Export ("performSelector:withObject:afterDelay:inModes:")]
 		void PerformSelector (Selector selector, [NullAllowed] NSObject withObject, double afterDelay, NSString [] nsRunLoopModes);
 
+		/// <summary>Invokes the specified selector after a delay.</summary>
+		/// <param name="selector">The selector to invoke.</param>
+		/// <param name="withObject">The object passed to the selector.</param>
+		/// <param name="delay">The delay, in seconds.</param>
 		[Export ("performSelector:withObject:afterDelay:")]
 		void PerformSelector (Selector selector, [NullAllowed] NSObject withObject, double delay);
 
@@ -15351,6 +15451,8 @@ namespace Foundation {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Resolve (double)' instead.")]
 		void Resolve ();
 
+		/// <summary>Resolves the service with the specified timeout.</summary>
+		/// <param name="timeOut">The timeout, in seconds.</param>
 		[Export ("resolveWithTimeout:")]
 		void Resolve (double timeOut);
 
@@ -16779,6 +16881,8 @@ namespace Foundation {
 		[Static, Export ("sleepUntilDate:")]
 		void SleepUntil (NSDate date);
 
+		/// <summary>Suspends the current thread for the specified interval.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
 		[Static, Export ("sleepForTimeInterval:")]
 		void SleepFor (double timeInterval);
 
@@ -17118,6 +17222,8 @@ namespace Foundation {
 		[Export ("activeProcessorCount")]
 		nint ActiveProcessorCount { get; }
 
+		/// <summary>Gets the system uptime.</summary>
+		/// <value>The system uptime, in seconds.</value>
 		[Export ("systemUptime")]
 		double SystemUptime { get; }
 
@@ -19325,6 +19431,8 @@ namespace Foundation {
 		[Export ("timeZone")]
 		NSTimeZone TimeZone { get; }
 
+		/// <summary>Gets the time interval.</summary>
+		/// <value>The time interval, in seconds.</value>
 		[Export ("duration")]
 		double TimeInterval { get; }
 
@@ -19400,6 +19508,11 @@ namespace Foundation {
 		[Export ("dateCheckingResultWithRange:date:")]
 		NSTextCheckingResult DateCheckingResult (NSRange range, NSDate date);
 
+		/// <summary>Creates a text checking result for the specified date and duration.</summary>
+		/// <param name="range">The range.</param>
+		/// <param name="date">The date.</param>
+		/// <param name="timezone">The timezone.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static]
 		[Export ("dateCheckingResultWithRange:date:timeZone:duration:")]
 		NSTextCheckingResult DateCheckingResult (NSRange range, NSDate date, NSTimeZone timezone, double duration);
@@ -19739,9 +19852,14 @@ namespace Foundation {
 		[Export ("endDate", ArgumentSemantic.Copy)]
 		NSDate EndDate { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
+		/// <summary>Creates a new <see cref="NSDateInterval" /> instance.</summary>
+		/// <param name="startDate">The start date.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithStartDate:duration:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSDate startDate, double duration);
@@ -20242,9 +20360,13 @@ namespace Foundation {
 		[Static, Export ("allConnections")]
 		NSConnection [] AllConnections { get; }
 
+		/// <summary>Gets or sets the request timeout.</summary>
+		/// <value>The request timeout, in seconds.</value>
 		[Export ("requestTimeout")]
 		NSTimeInterval RequestTimeout { get; set; }
 
+		/// <summary>Gets or sets the reply timeout.</summary>
+		/// <value>The reply timeout, in seconds.</value>
 		[Export ("replyTimeout")]
 		NSTimeInterval ReplyTimeout { get; set; }
 
@@ -20633,6 +20755,10 @@ namespace Foundation {
 		[Export ("doubleValue")]
 		double DoubleValue { get; }
 
+		/// <summary>Sends an Apple event with the specified timeout.</summary>
+		/// <param name="sendOptions">The send options.</param>
+		/// <param name="timeoutInSeconds">The timeout in seconds, in seconds.</param>
+		/// <param name="error">On return, the error if the operation failed.</param>
 		[NoMacCatalyst]
 		[Export ("sendEventWithOptions:timeout:error:")]
 		[return: NullAllowed]
@@ -22515,6 +22641,8 @@ namespace Foundation {
 		[Export ("localizedStringFromDateComponents:")]
 		string GetLocalizedString (NSDateComponents dateComponents);
 
+		/// <summary>Formats the specified relative time interval.</summary>
+		/// <param name="timeInterval">The time interval, in seconds.</param>
 		[Export ("localizedStringFromTimeInterval:")]
 		string GetLocalizedString (double timeInterval);
 
@@ -22828,9 +22956,13 @@ namespace Foundation {
 		[Export ("repeats")]
 		bool Repeats { get; set; }
 
+		/// <summary>Gets or sets the interval.</summary>
+		/// <value>The interval, in seconds.</value>
 		[Export ("interval")]
 		double Interval { get; set; }
 
+		/// <summary>Gets or sets the tolerance.</summary>
+		/// <value>The tolerance, in seconds.</value>
 		[Export ("tolerance")]
 		double Tolerance { get; set; }
 

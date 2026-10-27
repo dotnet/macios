@@ -46,9 +46,15 @@ namespace CoreHaptics {
 		[Export ("value")]
 		float Value { get; set; }
 
+		/// <summary>Gets or sets the relative time.</summary>
+		/// <value>The relative time, in seconds.</value>
 		[Export ("relativeTime")]
 		double RelativeTime { get; set; }
 
+		/// <summary>Creates a new <see cref="CHHapticDynamicParameter" /> instance.</summary>
+		/// <param name="parameterId">The parameter identifier.</param>
+		/// <param name="value">The value.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("initWithParameterID:value:relativeTime:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([BindAs (typeof (CHHapticDynamicParameterId))] NSString parameterId, float value, double time);
@@ -59,12 +65,17 @@ namespace CoreHaptics {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CHHapticParameterCurveControlPoint {
+		/// <summary>Gets or sets the relative time.</summary>
+		/// <value>The relative time, in seconds.</value>
 		[Export ("relativeTime")]
 		double RelativeTime { get; set; }
 
 		[Export ("value")]
 		float Value { get; set; }
 
+		/// <summary>Creates a new <see cref="CHHapticParameterCurveControlPoint" /> instance.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="value">The value.</param>
 		[Export ("initWithRelativeTime:value:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double time, float value);
@@ -79,12 +90,18 @@ namespace CoreHaptics {
 		[Export ("parameterID")]
 		NSString ParameterId { get; }
 
+		/// <summary>Gets or sets the relative time.</summary>
+		/// <value>The relative time, in seconds.</value>
 		[Export ("relativeTime")]
 		double RelativeTime { get; set; }
 
 		[Export ("controlPoints")]
 		CHHapticParameterCurveControlPoint [] ControlPoints { get; }
 
+		/// <summary>Creates a new <see cref="CHHapticParameterCurve" /> instance.</summary>
+		/// <param name="parameterId">The parameter identifier.</param>
+		/// <param name="controlPoints">The control points.</param>
+		/// <param name="relativeTime">The relative time, in seconds.</param>
 		[Export ("initWithParameterID:controlPoints:relativeTime:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor ([BindAs (typeof (CHHapticDynamicParameterId))] NSString parameterId, CHHapticParameterCurveControlPoint [] controlPoints, double relativeTime);
@@ -102,21 +119,43 @@ namespace CoreHaptics {
 		[Export ("eventParameters")]
 		CHHapticEventParameter [] EventParameters { get; }
 
+		/// <summary>Gets or sets the relative time.</summary>
+		/// <value>The relative time, in seconds.</value>
 		[Export ("relativeTime")]
 		double RelativeTime { get; set; }
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; set; }
 
+		/// <summary>Creates a new <see cref="CHHapticEvent" /> instance.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="eventParams">The event parameters.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("initWithEventType:parameters:relativeTime:")]
 		NativeHandle Constructor ([BindAs (typeof (CHHapticEventType))] NSString type, CHHapticEventParameter [] eventParams, double time);
 
+		/// <summary>Creates a new <see cref="CHHapticEvent" /> instance.</summary>
+		/// <param name="type">The type.</param>
+		/// <param name="eventParams">The event parameters.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithEventType:parameters:relativeTime:duration:")]
 		NativeHandle Constructor ([BindAs (typeof (CHHapticEventType))] NSString type, CHHapticEventParameter [] eventParams, double time, double duration);
 
+		/// <summary>Creates a new <see cref="CHHapticEvent" /> instance.</summary>
+		/// <param name="resourceId">The audio resource identifier.</param>
+		/// <param name="eventParams">The event parameters.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("initWithAudioResourceID:parameters:relativeTime:")]
 		NativeHandle Constructor (nuint resourceId, CHHapticEventParameter [] eventParams, double time);
 
+		/// <summary>Creates a new <see cref="CHHapticEvent" /> instance.</summary>
+		/// <param name="resourceId">The audio resource identifier.</param>
+		/// <param name="eventParams">The event parameters.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithAudioResourceID:parameters:relativeTime:duration:")]
 		NativeHandle Constructor (nuint resourceId, CHHapticEventParameter [] eventParams, double time, double duration);
 	}
@@ -173,18 +212,32 @@ namespace CoreHaptics {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CHHapticPatternPlayer {
+		/// <summary>Starts playback at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("startAtTime:error:")]
 		bool Start (double time, [NullAllowed] out NSError outError);
 
+		/// <summary>Stops playback at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("stopAtTime:error:")]
 		bool Stop (double time, [NullAllowed] out NSError outError);
 
+		/// <summary>Sends dynamic parameters at the specified time.</summary>
+		/// <param name="parameters">The parameters.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("sendParameters:atTime:error:")]
 		bool Send (CHHapticDynamicParameter [] parameters, double time, [NullAllowed] out NSError outError);
 
+		/// <summary>Schedules a parameter curve at the specified time.</summary>
+		/// <param name="parameterCurve">The parameter curve.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("scheduleParameterCurve:atTime:error:")]
 		bool Schedule (CHHapticParameterCurve parameterCurve, double time, [NullAllowed] out NSError outError);
@@ -204,14 +257,23 @@ namespace CoreHaptics {
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface CHHapticAdvancedPatternPlayer : CHHapticPatternPlayer {
+		/// <summary>Pauses playback at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("pauseAtTime:error:")]
 		bool Pause (double time, [NullAllowed] out NSError outError);
 
+		/// <summary>Resumes playback at the specified time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("resumeAtTime:error:")]
 		bool Resume (double time, [NullAllowed] out NSError outError);
 
+		/// <summary>Seeks to the specified offset.</summary>
+		/// <param name="offsetTime">The offset time, in seconds.</param>
+		/// <param name="outError">On return, the error if the operation failed.</param>
 		[Abstract]
 		[Export ("seekToOffset:error:")]
 		bool Seek (double offsetTime, [NullAllowed] out NSError outError);
@@ -220,6 +282,8 @@ namespace CoreHaptics {
 		[Export ("loopEnabled")]
 		bool LoopEnabled { get; set; }
 
+		/// <summary>Gets or sets the loop end.</summary>
+		/// <value>The loop end, in seconds.</value>
 		[Abstract]
 		[Export ("loopEnd")]
 		double LoopEnd { get; set; }
@@ -247,6 +311,8 @@ namespace CoreHaptics {
 		[Export ("capabilitiesForHardware")]
 		ICHHapticDeviceCapability GetHardwareCapabilities ();
 
+		/// <summary>Gets the current time.</summary>
+		/// <value>The current time, in seconds.</value>
 		[Export ("currentTime")]
 		double CurrentTime { get; }
 
@@ -404,6 +470,8 @@ namespace CoreHaptics {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CHHapticPattern {
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

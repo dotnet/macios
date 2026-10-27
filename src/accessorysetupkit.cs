@@ -387,6 +387,8 @@ namespace AccessorySetupKit {
 		[Export ("defaultSettings")]
 		ASPickerDisplaySettings DefaultSettings { get; }
 
+		/// <summary>Gets or sets the discovery timeout.</summary>
+		/// <value>The discovery timeout, in seconds.</value>
 		[Export ("discoveryTimeout")]
 		double DiscoveryTimeout { get; set; }
 
@@ -397,18 +399,26 @@ namespace AccessorySetupKit {
 
 	[Static]
 	partial interface ASPickerDisplaySettingsDiscoveryTimeout {
+		/// <summary>Gets the short discovery timeout.</summary>
+		/// <value>A short discovery timeout, in seconds.</value>
 		[iOS (26, 0)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutShort")]
 		double Short { get; }
 
+		/// <summary>Gets the medium discovery timeout.</summary>
+		/// <value>A medium discovery timeout, in seconds.</value>
 		[iOS (26, 0)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutMedium")]
 		double Medium { get; }
 
+		/// <summary>Gets the long discovery timeout.</summary>
+		/// <value>A long discovery timeout, in seconds.</value>
 		[iOS (26, 0)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutLong")]
 		double Long { get; }
 
+		/// <summary>Gets the value for an unbounded discovery timeout.</summary>
+		/// <value>A value that disables the discovery timeout; finite discovery timeouts are measured in seconds.</value>
 		[iOS (26, 1)]
 		[Field ("ASPickerDisplaySettingsDiscoveryTimeoutUnbounded")]
 		double Unbounded { get; }

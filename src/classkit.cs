@@ -237,6 +237,8 @@ namespace ClassKit {
 		[Export ("progress")]
 		double Progress { get; set; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

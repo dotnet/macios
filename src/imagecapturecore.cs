@@ -547,6 +547,8 @@ namespace ImageCaptureCore {
 		[NullAllowed, Export ("mediaFiles")]
 		ICCameraItem [] MediaFiles { get; }
 
+		/// <summary>Gets the time offset.</summary>
+		/// <value>The time offset, in seconds.</value>
 		[Export ("timeOffset")]
 		double TimeOffset { get; }
 

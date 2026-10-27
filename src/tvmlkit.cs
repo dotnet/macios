@@ -583,6 +583,8 @@ namespace TVMLKit {
 		[Export ("containsExplicitContent")]
 		bool ExplicitContent { get; }
 
+		/// <summary>Gets the resume time.</summary>
+		/// <value>The resume time, in seconds.</value>
 		[Export ("resumeTime")]
 		/* NSInterval */
 		double ResumeTime { get; }
@@ -601,14 +603,20 @@ namespace TVMLKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface TVTimeRange {
+		/// <summary>Gets the start time.</summary>
+		/// <value>The start time, in seconds.</value>
 		[Export ("startTime")]
 		/* NSInterval */
 		double StartTime { get; }
 
+		/// <summary>Gets the end time.</summary>
+		/// <value>The end time, in seconds.</value>
 		[Export ("endTime")]
 		/* NSInterval */
 		double EndTime { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		/* NSInterval */
 		double Duration { get; }

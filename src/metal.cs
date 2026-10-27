@@ -416,17 +416,16 @@ namespace Metal {
 		[Export ("presentDrawable:")]
 		void PresentDrawable (IMTLDrawable drawable);
 
-		/// <param name="drawable">To be added.</param>
-		/// <param name="presentationTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <param name="drawable">The drawable.</param>
+		/// <param name="presentationTime">The presentation time, in seconds.</param>
 		[Abstract]
 		[Export ("presentDrawable:atTime:")]
 		void PresentDrawable (IMTLDrawable drawable, double presentationTime);
 
 		/// <summary>Presents the specified <paramref name="drawable" /> after the previous drawable has been displayed for <paramref name="duration" /> seconds.</summary>
 		/// <param name="drawable">The drawable to present immediately after the command buffer is scheduled to run.</param>
-		/// <param name="duration">The minimum display time of the previous drawable.</param>
+		/// <param name="duration">The minimum display time of the previous drawable. This value is expressed in seconds.</param>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentDrawable:afterMinimumDuration:")]
@@ -2123,14 +2122,13 @@ namespace Metal {
 		[Abstract, Export ("present")]
 		void Present ();
 
-		/// <param name="presentationTime">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Presents the drawable or renderbuffer at the specified time.</summary>
+		/// <param name="presentationTime">The presentation time, in seconds.</param>
 		[Abstract, Export ("presentAtTime:")]
 		void Present (double presentationTime);
 
 		/// <summary>Causes the drawable to be presented at least <paramref name="duration" /> seconds after the previous drawable has been presented.</summary>
-		/// <param name="duration">The minimum time after which to display the drawable.</param>
+		/// <param name="duration">The minimum time after which to display the drawable. This value is expressed in seconds.</param>
 		[Abstract]
 		[Introduced (PlatformName.MacCatalyst, 13, 4)]
 		[Export ("presentAfterMinimumDuration:")]
@@ -8202,10 +8200,14 @@ namespace Metal {
 		[NullAllowed]
 		NSError Error { get; }
 
+		/// <summary>Gets the gpu start time.</summary>
+		/// <value>The gpu start time, in seconds.</value>
 		[Abstract]
 		[Export ("GPUStartTime")]
 		double GpuStartTime { get; }
 
+		/// <summary>Gets the gpu end time.</summary>
+		/// <value>The gpu end time, in seconds.</value>
 		[Abstract]
 		[Export ("GPUEndTime")]
 		double GpuEndTime { get; }

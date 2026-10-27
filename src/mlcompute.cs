@@ -2346,6 +2346,10 @@ namespace MLCompute {
 		MLCYoloLossLayer Create (MLCYoloLossDescriptor lossDescriptor);
 	}
 
+	/// <summary>Receives the results and execution time of a graph operation.</summary>
+	/// <param name="resultTensor">The result tensor.</param>
+	/// <param name="error">The error, if the operation failed.</param>
+	/// <param name="executionTime">The execution time, in seconds.</param>
 	delegate void MLCGraphCompletionHandler ([NullAllowed] MLCTensor resultTensor, [NullAllowed] NSError error, /* NSTimeInterval */ double executionTime);
 
 	[TV (14, 0), iOS (14, 0)]

@@ -138,8 +138,7 @@ namespace LocalAuthentication {
 		string LocalizedCancelTitle { get; set; }
 
 		/// <summary>Represents the value that is associated with the LATouchIDAuthenticationMaximumAllowableReuseDuration constant.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The maximum allowable Touch ID authentication reuse duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Field ("LATouchIDAuthenticationMaximumAllowableReuseDuration")]
 		double /* NSTimeInterval */ TouchIdAuthenticationMaximumAllowableReuseDuration { get; }

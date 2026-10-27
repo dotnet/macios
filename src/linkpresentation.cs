@@ -96,6 +96,8 @@ namespace LinkPresentation {
 		[Export ("shouldFetchSubresources")]
 		bool ShouldFetchSubresources { get; set; }
 
+		/// <summary>Gets or sets the timeout.</summary>
+		/// <value>The timeout, in seconds.</value>
 		[Export ("timeout")]
 		double Timeout { get; set; }
 	}

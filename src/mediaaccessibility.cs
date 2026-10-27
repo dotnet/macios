@@ -71,6 +71,11 @@ namespace MediaAccessibility {
 		[Export ("canProcessSurface:")]
 		bool CanProcess (Surface surface);
 
+		/// <summary>Processes a surface to reduce flashing lights.</summary>
+		/// <param name="inSurface">The in surface.</param>
+		/// <param name="outSurface">The out surface.</param>
+		/// <param name="timestamp">The timestamp, in seconds.</param>
+		/// <param name="options">The options.</param>
 		[Export ("processSurface:outSurface:timestamp:options:")]
 		MAFlashingLightsProcessorResult Process (Surface inSurface, Surface outSurface, double timestamp, [NullAllowed] NSDictionary options);
 	}

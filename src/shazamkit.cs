@@ -68,9 +68,13 @@ namespace ShazamKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SHCatalog {
+		/// <summary>Gets the minimum query signature duration.</summary>
+		/// <value>The minimum query signature duration, in seconds.</value>
 		[Export ("minimumQuerySignatureDuration")]
 		double MinimumQuerySignatureDuration { get; }
 
+		/// <summary>Gets the maximum query signature duration.</summary>
+		/// <value>The maximum query signature duration, in seconds.</value>
 		[Export ("maximumQuerySignatureDuration")]
 		double MaximumQuerySignatureDuration { get; }
 	}
@@ -123,9 +127,13 @@ namespace ShazamKit {
 		[Export ("frequencySkew")]
 		float FrequencySkew { get; }
 
+		/// <summary>Gets the match offset.</summary>
+		/// <value>The match offset, in seconds.</value>
 		[Export ("matchOffset")]
 		double MatchOffset { get; }
 
+		/// <summary>Gets the predicted current match offset.</summary>
+		/// <value>The predicted current match offset, in seconds.</value>
 		[Export ("predictedCurrentMatchOffset")]
 		double PredictedCurrentMatchOffset { get; }
 
@@ -260,6 +268,8 @@ namespace ShazamKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSData dataRepresentation, [NullAllowed] out NSError error);
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 

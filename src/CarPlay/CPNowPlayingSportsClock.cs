@@ -22,7 +22,7 @@ namespace CarPlay {
 		}
 
 		/// <summary>Create a new <see cref="CPNowPlayingSportsClock" /> instance with the specified <c>time</c> and <c>paused</c> values.</summary>
-		/// <param name="time">The elapsed or remaining time of the clock.</param>
+		/// <param name="time">The elapsed or remaining time of the clock. This value is expressed in seconds.</param>
 		/// <param name="paused">If the clock is paused or not.</param>
 		/// <param name="type">Use this option to specify whether the <paramref name="time" /> parameter refers to elapsed time or remaining time.</param>
 		public CPNowPlayingSportsClock (double time, bool paused, CPNowPlayingSportsClockTimeOption type)

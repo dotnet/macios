@@ -541,7 +541,16 @@ namespace CoreBluetooth {
 		[Export ("centralManager:didUpdateANCSAuthorizationForPeripheral:"), EventArgs ("CBAncsAuthorizationUpdate")]
 		void DidUpdateAncsAuthorization (CBCentralManager central, CBPeripheral peripheral);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent")]
+		/// <summary>Notifies the delegate when a peripheral disconnects.</summary>
+		/// <param name="central">The central manager.</param>
+		/// <param name="peripheral">The peripheral.</param>
+		/// <param name="timestamp">The timestamp, in seconds.</param>
+		/// <param name="isReconnecting">Whether the central manager is reconnecting to the peripheral.</param>
+		/// <param name="error">The error, if the operation failed.</param>
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent", XmlDocs = """
+			<summary>Occurs when a peripheral disconnects.</summary>
+			<remarks>The <c>Timestamp</c> value is expressed in seconds.</remarks>
+			""")]
 		[Export ("centralManager:didDisconnectPeripheral:timestamp:isReconnecting:error:")]
 		void DidDisconnectPeripheral (CBCentralManager central, CBPeripheral peripheral, double timestamp, bool isReconnecting, [NullAllowed] NSError error);
 	}

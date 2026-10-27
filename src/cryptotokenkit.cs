@@ -645,9 +645,13 @@ namespace CryptoTokenKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
+		/// <summary>Gets or sets the initial timeout.</summary>
+		/// <value>The initial timeout, in seconds.</value>
 		[Export ("initialTimeout")]
 		double InitialTimeout { get; set; }
 
+		/// <summary>Gets or sets the interaction timeout.</summary>
+		/// <value>The interaction timeout, in seconds.</value>
 		[Export ("interactionTimeout")]
 		double InteractionTimeout { get; set; }
 

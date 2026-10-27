@@ -1526,14 +1526,35 @@ namespace CarPlay {
 	interface CPNavigationAlert : NSSecureCoding {
 
 
+		/// <summary>Creates a new <see cref="CPNavigationAlert" /> instance.</summary>
+		/// <param name="titleVariants">The alternative titles for the alert.</param>
+		/// <param name="subtitleVariants">The alternative subtitles for the alert.</param>
+		/// <param name="imageSet">The images for the alert.</param>
+		/// <param name="primaryAction">The primary action.</param>
+		/// <param name="secondaryAction">The secondary action.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use constructor that takes in 'UIImage' instead of 'CPImageSet'.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use constructor that takes in 'UIImage' instead of 'CPImageSet'.")]
 		[Export ("initWithTitleVariants:subtitleVariants:imageSet:primaryAction:secondaryAction:duration:")]
 		NativeHandle Constructor (string [] titleVariants, [NullAllowed] string [] subtitleVariants, [NullAllowed] CPImageSet imageSet, CPAlertAction primaryAction, [NullAllowed] CPAlertAction secondaryAction, double duration);
 
+		/// <summary>Creates a new <see cref="CPNavigationAlert" /> instance.</summary>
+		/// <param name="titleVariants">The alternative titles for the alert.</param>
+		/// <param name="subtitleVariants">The alternative subtitles for the alert.</param>
+		/// <param name="image">The image.</param>
+		/// <param name="primaryAction">The primary action.</param>
+		/// <param name="secondaryAction">The secondary action.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Export ("initWithTitleVariants:subtitleVariants:image:primaryAction:secondaryAction:duration:")]
 		NativeHandle Constructor (string [] titleVariants, [NullAllowed] string [] subtitleVariants, [NullAllowed] UIImage image, CPAlertAction primaryAction, [NullAllowed] CPAlertAction secondaryAction, double duration);
 
+		/// <summary>Creates a new <see cref="CPNavigationAlert" /> instance.</summary>
+		/// <param name="titleVariants">The alternative titles for the alert.</param>
+		/// <param name="subtitleVariants">The alternative subtitles for the alert.</param>
+		/// <param name="avatarImage">The avatar image.</param>
+		/// <param name="alertImage">The alert image.</param>
+		/// <param name="actions">The actions.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoMacCatalyst, iOS (27, 0)]
 		[Export ("initWithTitleVariants:subtitleVariants:avatarImage:alertImage:actions:duration:")]
 		NativeHandle Constructor (string [] titleVariants, string [] subtitleVariants, [NullAllowed] UIImage avatarImage, [NullAllowed] UIImage alertImage, CPAlertAction [] actions, double duration);
@@ -1541,6 +1562,13 @@ namespace CarPlay {
 		[Export ("updateTitleVariants:subtitleVariants:")]
 		void UpdateTitleVariants (string [] newTitleVariants, string [] newSubtitleVariants);
 
+		/// <summary>Updates the navigation alert's content and duration.</summary>
+		/// <param name="newTitleVariants">The updated alternative titles for the alert.</param>
+		/// <param name="newSubtitleVariants">The updated alternative subtitles for the alert.</param>
+		/// <param name="avatarImage">The avatar image.</param>
+		/// <param name="alertImage">The alert image.</param>
+		/// <param name="actions">The actions.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[NoMacCatalyst, iOS (27, 0)]
 		[Export ("updateTitleVariants:subtitleVariants:avatarImage:alertImage:actions:duration:")]
 		void UpdateTitleVariants (string [] newTitleVariants, string [] newSubtitleVariants, [NullAllowed] UIImage avatarImage, [NullAllowed] UIImage alertImage, CPAlertAction [] actions, double duration);
@@ -1571,6 +1599,8 @@ namespace CarPlay {
 		[NullAllowed, Export ("secondaryAction", ArgumentSemantic.Strong)]
 		CPAlertAction SecondaryAction { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
@@ -2062,15 +2092,27 @@ namespace CarPlay {
 	[DisableDefaultCtor]
 	interface CPTravelEstimates : NSSecureCoding {
 
+		/// <summary>Creates a new <see cref="CPTravelEstimates" /> instance.</summary>
+		/// <param name="distance">The distance.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("initWithDistanceRemaining:timeRemaining:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSMeasurement<NSUnitLength> distance, double time);
 
+		/// <summary>Creates a new <see cref="CPTravelEstimates" /> instance.</summary>
+		/// <param name="distanceRemaining">The distance remaining.</param>
+		/// <param name="distanceRemainingToDisplay">The distance remaining to display.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("initWithDistanceRemaining:distanceRemainingToDisplay:timeRemaining:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSMeasurement<NSUnitLength> distanceRemaining, NSMeasurement<NSUnitLength> distanceRemainingToDisplay, double time);
 
+		/// <summary>Creates a new <see cref="CPTravelEstimates" /> instance.</summary>
+		/// <param name="distanceRemaining">The distance remaining.</param>
+		/// <param name="distanceRemainingToDisplay">The distance remaining to display.</param>
+		/// <param name="time">The time, in seconds.</param>
+		/// <param name="routeDetails">The route details.</param>
 		[NoMacCatalyst, iOS (27, 0)]
 		[Export ("initWithDistanceRemaining:distanceRemainingToDisplay:timeRemaining:routeDetails:")]
 		[DesignatedInitializer]
@@ -2083,6 +2125,8 @@ namespace CarPlay {
 		[Export ("distanceRemaining", ArgumentSemantic.Copy)]
 		NSMeasurement<NSUnitLength> DistanceRemaining { get; }
 
+		/// <summary>Gets the time remaining.</summary>
+		/// <value>The time remaining, in seconds.</value>
 		[Export ("timeRemaining")]
 		double TimeRemaining { get; }
 
@@ -3248,14 +3292,22 @@ namespace CarPlay {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPNowPlayingSportsClock : INSSecureCoding {
+		/// <summary>Initializes a clock with the specified elapsed time.</summary>
+		/// <param name="elapsedTime">The elapsed time, in seconds.</param>
+		/// <param name="paused">Whether the clock is paused.</param>
 		[Internal]
 		[Export ("initWithElapsedTime:paused:")]
 		NativeHandle _InitWithElapsedTime (double elapsedTime, bool paused);
 
+		/// <summary>Initializes a clock with the specified remaining time.</summary>
+		/// <param name="timeRemaining">The time remaining, in seconds.</param>
+		/// <param name="paused">Whether the clock is paused.</param>
 		[Internal]
 		[Export ("initWithTimeRemaining:paused:")]
 		NativeHandle _InitWithRemainingTime (double timeRemaining, bool paused);
 
+		/// <summary>Gets the time value.</summary>
+		/// <value>The time value, in seconds.</value>
 		[Export ("timeValue")]
 		double TimeValue { get; }
 

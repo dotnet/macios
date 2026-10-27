@@ -1019,22 +1019,6 @@ UIView.CommitAnimations ();
     <altmember cref="UIKit.UIView.CommitAnimations" />
     <!-- TODO: Switch to UUID-based URL -->
   </Docs>
-  <Docs DocId="M:UIKit.UIView.AnimateNotify(System.Double,System.Double,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)">
-    <param name="duration">Duration in seconds for the animation.</param>
-    <param name="delay">Delay before the animation begins.</param>
-    <param name="springWithDampingRatio">Damping ratio set for spring animation when it is approaching its quiescent state. Value between 0 and 1 representing the amount of damping to apply to the spring effect.</param>
-    <param name="initialSpringVelocity">Initial spring velocity prior to attachment. The initial velocity of the spring, in points per second.</param>
-    <param name="options">Animation options.</param>
-    <param name="animations">Code containing the changes that you will apply to your view.</param>
-    <param name="completion">
-      <para>The method to invoke when the animation has completed.</para>
-      <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
-    </param>
-    <summary>Executes a view animation that uses a timing curve that corresponds to the activity of a physical spring.</summary>
-    <remarks>
-      <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-    </remarks>
-  </Docs>
   <Docs DocId="P:UIKit.UIView.AnnouncementDidFinishNotification">
         <summary>Notification constant for AnnouncementDidFinish</summary>
         <value>NSString constant, should be used as a token to NSNotificationCenter.</value>

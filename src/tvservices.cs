@@ -176,6 +176,8 @@ namespace TVServices {
 		[NullAllowed, Export ("genre")]
 		string Genre { get; set; }
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double /* NSTimeInterval */ Duration { get; set; }
 

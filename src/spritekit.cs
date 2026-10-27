@@ -68,6 +68,8 @@ namespace SpriteKit {
 		[Export ("scnScene", ArgumentSemantic.Retain)]
 		SCNScene ScnScene { get; set; }
 
+		/// <summary>Gets or sets the scene time.</summary>
+		/// <value>The scene time, in seconds.</value>
 		[Export ("sceneTime")]
 		double SceneTime { get; set; }
 
@@ -477,6 +479,11 @@ namespace SpriteKit {
 	}
 
 	/// <summary>A method that derives a force by applying the physics of a field to a body that is within the field.</summary>
+	/// <param name="position">The position.</param>
+	/// <param name="velocity">The velocity.</param>
+	/// <param name="mass">The mass.</param>
+	/// <param name="charge">The charge.</param>
+	/// <param name="time">The time, in seconds.</param>
 	delegate Vector3 SKFieldForceEvaluator (/* vector_float3 */ Vector4 position, /* vector_float3 */ Vector4 velocity, float /* float, not CGFloat */ mass, float /* float, not CGFloat */ charge, double time);
 
 	/// <summary>Applies physics effects within a portion of a scene.</summary>
@@ -625,6 +632,8 @@ namespace SpriteKit {
 		[NullAllowed]
 		SKView View { get; }
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="currentTime">The current time, in seconds.</param>
 		[Export ("update:")]
 		void Update (double currentTime);
 
@@ -690,10 +699,9 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKSceneDelegate {
-		/// <param name="currentTime">To be added.</param>
-		/// <param name="scene">To be added.</param>
 		/// <summary>Method that is called once per frame, if <paramref name="scene" /> is presented and not paused, before any animation takes place.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="currentTime">The current time, in seconds.</param>
+		/// <param name="scene">The scene.</param>
 		[Export ("update:forScene:")]
 		void Update (double currentTime, SKScene scene);
 
@@ -981,6 +989,8 @@ namespace SpriteKit {
 	[BaseType (typeof (SKNode))]
 	partial interface SKEmitterNode {
 
+		/// <summary>Advances the particle simulation by the specified interval.</summary>
+		/// <param name="sec">The interval to advance the simulation, in seconds.</param>
 		[Export ("advanceSimulationTime:")]
 		void AdvanceSimulationTime (double sec);
 
@@ -1713,11 +1723,9 @@ namespace SpriteKit {
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SKViewDelegate {
-		/// <param name="view">To be added.</param>
-		/// <param name="time">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Determines whether to render the view at the specified time.</summary>
+		/// <param name="view">The view.</param>
+		/// <param name="time">The time, in seconds.</param>
 		[Export ("view:shouldRenderAtTime:")]
 		bool ShouldRender (SKView view, double time);
 	}
@@ -1730,45 +1738,78 @@ namespace SpriteKit {
 	[DisableDefaultCtor]
 	partial interface SKTransition : NSCopying {
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("crossFadeWithDuration:")]
 		SKTransition CrossFadeWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeWithDuration:")]
 		SKTransition FadeWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeWithColor:duration:")]
 		SKTransition FadeWithColor (UIColor color, double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("flipHorizontalWithDuration:")]
 		SKTransition FlipHorizontalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("flipVerticalWithDuration:")]
 		SKTransition FlipVerticalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="direction">The direction.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("revealWithDirection:duration:")]
 		SKTransition RevealWithDirection (SKTransitionDirection direction, double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="direction">The direction.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("moveInWithDirection:duration:")]
 		SKTransition MoveInWithDirection (SKTransitionDirection direction, double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="direction">The direction.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("pushWithDirection:duration:")]
 		SKTransition PushWithDirection (SKTransitionDirection direction, double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("doorsOpenHorizontalWithDuration:")]
 		SKTransition DoorsOpenHorizontalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("doorsOpenVerticalWithDuration:")]
 		SKTransition DoorsOpenVerticalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("doorsCloseHorizontalWithDuration:")]
 		SKTransition DoorsCloseHorizontalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("doorsCloseVerticalWithDuration:")]
 		SKTransition DoorsCloseVerticalWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("doorwayWithDuration:")]
 		SKTransition DoorwayWithDuration (double sec);
 
+		/// <summary>Creates a transition with the specified duration.</summary>
+		/// <param name="filter">The filter.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("transitionWithCIFilter:duration:")]
 		SKTransition TransitionWithCIFilter (CIFilter filter, double sec);
@@ -2139,6 +2180,8 @@ namespace SpriteKit {
 	}
 
 	/// <summary>The delegate for a custom action, used with <see cref="SpriteKit.SKAction.CustomActionWithDuration(System.Double,SpriteKit.SKActionDurationHandler)" />.</summary>
+	/// <param name="node">The node.</param>
+	/// <param name="elapsedTime">The elapsed time, in seconds.</param>
 	delegate void SKActionDurationHandler (SKNode node, nfloat elapsedTime);
 
 	/// <include file="../docs/api/SpriteKit/SKAction.xml" path="/Documentation/Docs[@DocId='T:SpriteKit.SKAction']/*" />
@@ -2147,6 +2190,8 @@ namespace SpriteKit {
 	[DisableDefaultCtor] // <quote>To create an action, call the class method for the action you are interested in. </quote>
 	partial interface SKAction : NSSecureCoding, NSCopying {
 
+		/// <summary>Gets or sets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; set; }
 
@@ -2160,146 +2205,123 @@ namespace SpriteKit {
 		SKAction ReversedAction { get; }
 
 		// These are in a category
-		/// <param name="deltaX">To be added.</param>
-		/// <param name="deltaY">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that moves a node by the specified offset.</summary>
+		/// <param name="deltaX">The delta x.</param>
+		/// <param name="deltaY">The delta y.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("moveByX:y:duration:")]
 		SKAction MoveBy (nfloat deltaX, nfloat deltaY, double sec);
 
+		/// <summary>Creates an action that moves a node by the specified offset.</summary>
+		/// <param name="delta">The delta.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("moveBy:duration:")]
 		SKAction MoveBy (CGVector delta, double duration);
 
+		/// <summary>Creates an action that moves a node to the specified position.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("moveTo:duration:")]
 		SKAction MoveTo (CGPoint location, double sec);
 
-		/// <param name="x">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that moves a node to the specified x-coordinate.</summary>
+		/// <param name="x">The x.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("moveToX:duration:")]
 		SKAction MoveToX (nfloat x, double sec);
 
-		/// <param name="y">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that moves a node to the specified y-coordinate.</summary>
+		/// <param name="y">The y.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("moveToY:duration:")]
 		SKAction MoveToY (nfloat y, double sec);
 
-		/// <param name="radians">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node by the specified angle.</summary>
+		/// <param name="radians">The radians.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("rotateByAngle:duration:")]
 		SKAction RotateByAngle (nfloat radians, double sec);
 
-		/// <param name="radians">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node to the specified angle.</summary>
+		/// <param name="radians">The radians.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("rotateToAngle:duration:")]
 		SKAction RotateToAngle (nfloat radians, double sec);
 
-		/// <param name="radians">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <param name="shortedUnitArc">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that rotates a node to the specified angle.</summary>
+		/// <param name="radians">The radians.</param>
+		/// <param name="sec">The duration, in seconds.</param>
+		/// <param name="shortedUnitArc">Whether to use the shortest rotation.</param>
 		[Static, Export ("rotateToAngle:duration:shortestUnitArc:")]
 		SKAction RotateToAngle (nfloat radians, double sec, bool shortedUnitArc);
 
-		/// <param name="width">To be added.</param>
-		/// <param name="height">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's size by the specified amounts.</summary>
+		/// <param name="width">The width.</param>
+		/// <param name="height">The height.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("resizeByWidth:height:duration:")]
 		SKAction ResizeByWidth (nfloat width, nfloat height, double duration);
 
-		/// <param name="width">To be added.</param>
-		/// <param name="height">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that resizes a node to the specified dimensions.</summary>
+		/// <param name="width">The width.</param>
+		/// <param name="height">The height.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("resizeToWidth:height:duration:")]
 		SKAction ResizeTo (nfloat width, nfloat height, double duration);
 
-		/// <param name="width">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that resizes a node to the specified width.</summary>
+		/// <param name="width">The width.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("resizeToWidth:duration:")]
 		SKAction ResizeToWidth (nfloat width, double duration);
 
-		/// <param name="height">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that resizes a node to the specified height.</summary>
+		/// <param name="height">The height.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[Static, Export ("resizeToHeight:duration:")]
 		SKAction ResizeToHeight (nfloat height, double duration);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's scale by the specified factors.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleBy:duration:")]
 		SKAction ScaleBy (nfloat scale, double sec);
 
-		/// <param name="xScale">To be added.</param>
-		/// <param name="yScale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's scale by the specified factors.</summary>
+		/// <param name="xScale">The x scale.</param>
+		/// <param name="yScale">The y scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleXBy:y:duration:")]
 		SKAction ScaleBy (nfloat xScale, nfloat yScale, double sec);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that scales a node to the specified size or scale.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleTo:duration:")]
 		SKAction ScaleTo (nfloat scale, double sec);
 
-		/// <param name="xScale">To be added.</param>
-		/// <param name="yScale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that scales a node to the specified size or scale.</summary>
+		/// <param name="xScale">The x scale.</param>
+		/// <param name="yScale">The y scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleXTo:y:duration:")]
 		SKAction ScaleTo (nfloat xScale, nfloat yScale, double sec);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's horizontal scale.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleXTo:duration:")]
 		SKAction ScaleXTo (nfloat scale, double sec);
 
-		/// <param name="scale">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's vertical scale.</summary>
+		/// <param name="scale">The scale.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("scaleYTo:duration:")]
 		SKAction ScaleYTo (nfloat scale, double sec);
 
+		/// <summary>Creates an action that scales a node to the specified size or scale.</summary>
+		/// <param name="size">The size.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("scaleToSize:duration:")]
@@ -2322,25 +2344,25 @@ namespace SpriteKit {
 		[Static, Export ("repeatActionForever:")]
 		SKAction RepeatActionForever (SKAction action);
 
+		/// <summary>Creates an action that fades a node in.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeInWithDuration:")]
 		SKAction FadeInWithDuration (double sec);
 
+		/// <summary>Creates an action that fades a node out.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeOutWithDuration:")]
 		SKAction FadeOutWithDuration (double sec);
 
-		/// <param name="factor">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's alpha by the specified amount.</summary>
+		/// <param name="factor">The factor.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeAlphaBy:duration:")]
 		SKAction FadeAlphaBy (nfloat factor, double sec);
 
-		/// <param name="alpha">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's alpha to the specified value.</summary>
+		/// <param name="alpha">The alpha.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("fadeAlphaTo:duration:")]
 		SKAction FadeAlphaTo (nfloat alpha, double sec);
 
@@ -2352,35 +2374,44 @@ namespace SpriteKit {
 		[Static, Export ("setTexture:resize:")]
 		SKAction SetTexture (SKTexture texture, bool resize);
 
+		/// <summary>Creates an action that animates a node using the specified textures.</summary>
+		/// <param name="textures">The textures.</param>
+		/// <param name="sec">The time per frame, in seconds.</param>
 		[Static, Export ("animateWithTextures:timePerFrame:")]
 		SKAction AnimateWithTextures (SKTexture [] textures, double sec);
 
+		/// <summary>Creates an action that animates a node using the specified textures.</summary>
+		/// <param name="textures">The textures.</param>
+		/// <param name="sec">The time per frame, in seconds.</param>
+		/// <param name="resize">Whether to resize the node to match each texture.</param>
+		/// <param name="restore">Whether to restore the original texture after the animation.</param>
 		[Static, Export ("animateWithTextures:timePerFrame:resize:restore:")]
 		SKAction AnimateWithTextures (SKTexture [] textures, double sec, bool resize, bool restore);
 
 		[Static, Export ("playSoundFileNamed:waitForCompletion:")]
 		SKAction PlaySoundFileNamed (string soundFile, bool wait);
 
-		/// <param name="color">To be added.</param>
-		/// <param name="colorBlendFactor">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's color and color blend factor.</summary>
+		/// <param name="color">The color.</param>
+		/// <param name="colorBlendFactor">The color blend factor.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("colorizeWithColor:colorBlendFactor:duration:")]
 		SKAction ColorizeWithColor (UIColor color, nfloat colorBlendFactor, double sec);
 
-		/// <param name="colorBlendFactor">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's color blend factor.</summary>
+		/// <param name="colorBlendFactor">The color blend factor.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("colorizeWithColorBlendFactor:duration:")]
 		SKAction ColorizeWithColorBlendFactor (nfloat colorBlendFactor, double sec);
 
+		/// <summary>Creates an action that moves a node along the specified path.</summary>
+		/// <param name="path">The path.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("followPath:duration:")]
 		SKAction FollowPath (CGPath path, double sec);
 
+		/// <summary>Creates an action that moves a node along the specified path.</summary>
+		/// <remarks>The <paramref name="sec" /> parameter is expressed in seconds.</remarks>
 		[Static, Export ("followPath:asOffset:orientToPath:duration:")]
 #if XAMCORE_5_0
 		SKAction FollowPath (CGPath path, bool offset, bool orientToPath, double sec);
@@ -2412,25 +2443,26 @@ namespace SpriteKit {
 		SKAction FollowPath (CGPath path, bool offset, bool orient, nfloat speed);
 #endif
 
-		/// <param name="speed">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's speed by the specified amount.</summary>
+		/// <param name="speed">The speed.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("speedBy:duration:")]
 		SKAction SpeedBy (nfloat speed, double sec);
 
-		/// <param name="speed">To be added.</param>
-		/// <param name="sec">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that changes a node's speed to the specified value.</summary>
+		/// <param name="speed">The speed.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("speedTo:duration:")]
 		SKAction SpeedTo (nfloat speed, double sec);
 
+		/// <summary>Creates an action that waits for the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
 		[Static, Export ("waitForDuration:")]
 		SKAction WaitForDuration (double sec);
 
+		/// <summary>Creates an action that waits for the specified duration.</summary>
+		/// <param name="sec">The duration, in seconds.</param>
+		/// <param name="durationRange">The range of variation in the duration, in seconds.</param>
 		[Static, Export ("waitForDuration:withRange:")]
 		SKAction WaitForDuration (double sec, double durationRange);
 
@@ -2449,6 +2481,9 @@ namespace SpriteKit {
 		[Static, Export ("runAction:onChildWithName:")]
 		SKAction RunAction (SKAction action, string name);
 
+		/// <summary>Creates an action that invokes a custom callback.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="actionHandler">The callback invoked as the action progresses.</param>
 		[Static, Export ("customActionWithDuration:actionBlock:")]
 		SKAction CustomActionWithDuration (double seconds, SKActionDurationHandler actionHandler);
 
@@ -2463,6 +2498,10 @@ namespace SpriteKit {
 		[Static, Export ("unhide")]
 		SKAction Unhide ();
 
+		/// <summary>Creates an action that moves a joint chain to the specified position.</summary>
+		/// <param name="position">The position.</param>
+		/// <param name="rootNode">The root node.</param>
+		/// <param name="secs">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("reachTo:rootNode:duration:")]
 		SKAction ReachTo (CGPoint position, SKNode rootNode, double secs);
@@ -2477,6 +2516,10 @@ namespace SpriteKit {
 		[Static, Export ("reachTo:rootNode:velocity:")]
 		SKAction ReachTo (CGPoint position, SKNode rootNode, nfloat velocity);
 
+		/// <summary>Creates an action that moves a joint chain to the specified node.</summary>
+		/// <param name="node">The node.</param>
+		/// <param name="rootNode">The root node.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("reachToNode:rootNode:duration:")]
 		SKAction ReachToNode (SKNode node, SKNode rootNode, double sec);
@@ -2491,10 +2534,16 @@ namespace SpriteKit {
 		[Static, Export ("reachToNode:rootNode:velocity:")]
 		SKAction ReachToNode (SKNode node, SKNode rootNode, nfloat velocity);
 
+		/// <summary>Creates an action that changes a field node's strength to the specified value.</summary>
+		/// <param name="strength">The strength.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("strengthTo:duration:")]
 		SKAction StrengthTo (float /* float, not CGFloat */ strength, double sec);
 
+		/// <summary>Creates an action that changes a field node's strength by the specified amount.</summary>
+		/// <param name="strength">The strength.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("strengthBy:duration:")]
 		SKAction StrengthBy (float /* float, not CGFloat */ strength, double sec);
@@ -2517,10 +2566,16 @@ namespace SpriteKit {
 		SKActionTimingFunction TimingFunction { get; set; }
 #endif
 
+		/// <summary>Creates an action that changes a field node's falloff by the specified amount.</summary>
+		/// <param name="to">The change in falloff.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static, Export ("falloffBy:duration:")]
 		SKAction FalloffBy (float /* float, not CGFloat */ to, double duration);
 
+		/// <summary>Creates an action that changes a field node's falloff to the specified value.</summary>
+		/// <param name="falloff">The falloff.</param>
+		/// <param name="sec">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("falloffTo:duration:")]
@@ -2533,6 +2588,9 @@ namespace SpriteKit {
 		[return: NullAllowed]
 		SKAction Create (string name);
 
+		/// <summary>Creates an action that runs the named action over the specified duration.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("actionNamed:duration:")]
@@ -2545,6 +2603,10 @@ namespace SpriteKit {
 		[return: NullAllowed]
 		SKAction Create (string name, NSUrl url);
 
+		/// <summary>Creates an action that runs the named action over the specified duration.</summary>
+		/// <param name="name">The name.</param>
+		/// <param name="url">The url.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("actionNamed:fromURL:duration:")]
@@ -2561,11 +2623,19 @@ namespace SpriteKit {
 		[Export ("setNormalTexture:resize:")]
 		SKAction SetNormalTexture (SKTexture texture, bool resize);
 
+		/// <summary>Creates an action that animates a node using the specified normal textures.</summary>
+		/// <param name="textures">The textures.</param>
+		/// <param name="secondsPerFrame">The seconds per frame, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("animateWithNormalTextures:timePerFrame:")]
 		SKAction AnimateWithNormalTextures (SKTexture [] textures, double secondsPerFrame);
 
+		/// <summary>Creates an action that animates a node using the specified normal textures.</summary>
+		/// <param name="textures">The textures.</param>
+		/// <param name="secondsPerFrame">The seconds per frame, in seconds.</param>
+		/// <param name="resize">Whether to resize the node to match each texture.</param>
+		/// <param name="restore">Whether to restore the original texture after the animation.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("animateWithNormalTextures:timePerFrame:resize:restore:")]
@@ -2586,81 +2656,115 @@ namespace SpriteKit {
 		[Export ("stop")]
 		SKAction CreateStop ();
 
+		/// <summary>Creates an action that changes playback rate.</summary>
+		/// <param name="playbackRate">The playback rate.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changePlaybackRateTo:duration:")]
 		SKAction CreateChangePlaybackRate (float playbackRate, double duration);
 
+		/// <summary>Creates an action that changes playback rate by the specified amount.</summary>
+		/// <param name="playbackRate">The playback rate.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changePlaybackRateBy:duration:")]
 		SKAction CreateChangePlaybackRateBy (float playbackRate, double duration);
 
+		/// <summary>Creates an action that changes volume.</summary>
+		/// <param name="newVolume">The new volume.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeVolumeTo:duration:")]
 		SKAction CreateChangeVolume (float newVolume, double duration);
 
+		/// <summary>Creates an action that changes volume by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeVolumeBy:duration:")]
 		SKAction CreateChangeVolumeBy (float by, double duration);
 
+		/// <summary>Creates an action that changes charge to the specified value.</summary>
+		/// <param name="newCharge">The new charge.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeChargeTo:duration:")]
 		SKAction CreateChangeChargeTo (float newCharge, double duration);
 
+		/// <summary>Creates an action that changes charge by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeChargeBy:duration:")]
 		SKAction CreateChangeChargeBy (float by, double duration);
 
+		/// <summary>Creates an action that changes mass to the specified value.</summary>
+		/// <param name="newMass">The new mass.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeMassTo:duration:")]
 		SKAction CreateChangeMassTo (float newMass, double duration);
 
+		/// <summary>Creates an action that changes mass by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeMassBy:duration:")]
 		SKAction CreateChangeMassBy (float by, double duration);
 
+		/// <summary>Creates an action that applies force.</summary>
+		/// <param name="force">The force.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyForce:duration:")]
 		SKAction CreateApplyForce (CGVector force, double duration);
 
+		/// <summary>Creates an action that applies force.</summary>
+		/// <param name="force">The force.</param>
+		/// <param name="point">The point.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyForce:atPoint:duration:")]
 		SKAction CreateApplyForce (CGVector force, CGPoint point, double duration);
 
-		/// <param name="torque">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that applies torque.</summary>
+		/// <param name="torque">The torque.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyTorque:duration:")]
 		SKAction CreateApplyTorque (nfloat torque, double duration);
 
+		/// <summary>Creates an action that applies impulse.</summary>
+		/// <param name="impulse">The impulse.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyImpulse:duration:")]
 		SKAction CreateApplyImpulse (CGVector impulse, double duration);
 
+		/// <summary>Creates an action that applies impulse.</summary>
+		/// <param name="impulse">The impulse.</param>
+		/// <param name="point">The point.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyImpulse:atPoint:duration:")]
 		SKAction CreateApplyImpulse (CGVector impulse, CGPoint point, double duration);
 
-		/// <param name="impulse">To be added.</param>
-		/// <param name="duration">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates an action that applies angular impulse.</summary>
+		/// <param name="impulse">The impulse.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("applyAngularImpulse:duration:")]
@@ -2668,41 +2772,65 @@ namespace SpriteKit {
 
 		// SKAction_SKAudioNode inlined
 
+		/// <summary>Creates an action that changes stereo pan to the specified value.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("stereoPanTo:duration:")]
 		SKAction CreateStereoPanTo (float target, double duration);
 
+		/// <summary>Creates an action that changes stereo pan by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("stereoPanBy:duration:")]
 		SKAction CreateStereoPanBy (float by, double duration);
 
+		/// <summary>Creates an action that changes reverb to the specified value.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeReverbTo:duration:")]
 		SKAction CreateChangeReverbTo (float target, double duration);
 
+		/// <summary>Creates an action that changes reverb by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeReverbBy:duration:")]
 		SKAction CreateChangeReverbBy (float by, double duration);
 
+		/// <summary>Creates an action that changes obstruction to the specified value.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeObstructionTo:duration:")]
 		SKAction CreateChangeObstructionTo (float target, double duration);
 
+		/// <summary>Creates an action that changes obstruction by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeObstructionBy:duration:")]
 		SKAction CreateChangeObstructionBy (float by, double duration);
 
+		/// <summary>Creates an action that changes occlusion to the specified value.</summary>
+		/// <param name="target">The target object.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeOcclusionTo:duration:")]
 		SKAction CreateChangeOcclusionTo (float target, double duration);
 
+		/// <summary>Creates an action that changes occlusion by the specified amount.</summary>
+		/// <param name="by">The amount by which to change the value.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("changeOcclusionBy:duration:")]
@@ -2710,6 +2838,9 @@ namespace SpriteKit {
 
 		// SKAction_SKWarpable
 
+		/// <summary>Creates an action that warps a node to the specified geometry.</summary>
+		/// <param name="warp">The warp.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("warpTo:duration:")]
@@ -3838,6 +3969,8 @@ namespace SpriteKit {
 		[Export ("renderWithViewport:renderCommandEncoder:renderPassDescriptor:commandQueue:")]
 		void Render (CGRect viewport, IMTLRenderCommandEncoder renderCommandEncoder, MTLRenderPassDescriptor renderPassDescriptor, IMTLCommandQueue commandQueue);
 
+		/// <summary>Updates the object for the specified time.</summary>
+		/// <param name="currentTime">The current time, in seconds.</param>
 		[Export ("updateAtTime:")]
 		void Update (double currentTime);
 

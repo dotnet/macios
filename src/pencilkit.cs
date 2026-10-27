@@ -653,6 +653,10 @@ namespace PencilKit {
 		[Export ("enumerateInterpolatedPointsInRange:strideByDistance:usingBlock:")]
 		void EnumerateInterpolatedPointsByDistanceStep (PKFloatRange range, nfloat distanceStep, PKInterpolatedPointsEnumeratorHandler enumeratorHandler);
 
+		/// <summary>Enumerates interpolated stroke points at the specified time step.</summary>
+		/// <param name="range">The range.</param>
+		/// <param name="timeStep">The time step, in seconds.</param>
+		/// <param name="enumeratorHandler">The callback invoked for each interpolated point.</param>
 		[Export ("enumerateInterpolatedPointsInRange:strideByTime:usingBlock:")]
 		void EnumerateInterpolatedPointsByTimeStep (PKFloatRange range, double timeStep, PKInterpolatedPointsEnumeratorHandler enumeratorHandler);
 
@@ -662,6 +666,9 @@ namespace PencilKit {
 		[Export ("parametricValue:offsetByDistance:")]
 		nfloat GetParametricValue (nfloat parametricValue, nfloat distanceStep);
 
+		/// <summary>Gets the parametric value offset by the specified time step.</summary>
+		/// <param name="parametricValue">The parametric value.</param>
+		/// <param name="timeStep">The time step, in seconds.</param>
 		[Export ("parametricValue:offsetByTime:")]
 		nfloat GetParametricValue (nfloat parametricValue, double timeStep);
 	}
@@ -671,20 +678,58 @@ namespace PencilKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKStrokePoint : NSCopying {
+		/// <summary>Creates a new <see cref="PKStrokePoint" /> instance.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="timeOffset">The time offset, in seconds.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="force">The force.</param>
+		/// <param name="azimuth">The azimuth.</param>
+		/// <param name="altitude">The altitude.</param>
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude);
 
+		/// <summary>Creates a new <see cref="PKStrokePoint" /> instance.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="timeOffset">The time offset, in seconds.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="force">The force.</param>
+		/// <param name="azimuth">The azimuth.</param>
+		/// <param name="altitude">The altitude.</param>
+		/// <param name="secondaryScale">The secondary scale.</param>
 		[iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale);
 
+		/// <summary>Creates a new <see cref="PKStrokePoint" /> instance.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="timeOffset">The time offset, in seconds.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="force">The force.</param>
+		/// <param name="azimuth">The azimuth.</param>
+		/// <param name="altitude">The altitude.</param>
+		/// <param name="secondaryScale">The secondary scale.</param>
+		/// <param name="threshold">The threshold.</param>
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:threshold:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale, nfloat threshold);
 
+		/// <summary>Creates a new <see cref="PKStrokePoint" /> instance.</summary>
+		/// <param name="location">The location.</param>
+		/// <param name="timeOffset">The time offset, in seconds.</param>
+		/// <param name="size">The size.</param>
+		/// <param name="opacity">The opacity.</param>
+		/// <param name="force">The force.</param>
+		/// <param name="azimuth">The azimuth.</param>
+		/// <param name="altitude">The altitude.</param>
+		/// <param name="secondaryScale">The secondary scale.</param>
+		/// <param name="threshold">The threshold.</param>
+		/// <param name="lateralJitter">The lateral jitter.</param>
 		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:threshold:lateralJitter:")]
 		[DesignatedInitializer]
@@ -693,6 +738,8 @@ namespace PencilKit {
 		[Export ("location")]
 		CGPoint Location { get; }
 
+		/// <summary>Gets the time offset.</summary>
+		/// <value>The time offset, in seconds.</value>
 		[Export ("timeOffset")]
 		double TimeOffset { get; }
 

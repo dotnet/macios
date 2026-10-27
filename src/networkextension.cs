@@ -4927,6 +4927,9 @@ namespace NetworkExtension {
 		[Async]
 		void LoadAllManagersFromPreferences (Action<NSArray<NERelayManager>, NSError> completionHandler);
 
+		/// <summary>Gets client errors from the specified recent time interval.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
+		/// <param name="completionHandler">The callback invoked when the operation completes.</param>
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("getLastClientErrors:completionHandler:")]
 		[Async]

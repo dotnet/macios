@@ -2029,16 +2029,14 @@ namespace AVFoundation {
 		[Export ("AUAudioUnit")]
 		AUAudioUnit AUAudioUnit { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the latency.</summary>
+		/// <value>The latency, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("latency")]
 		double Latency { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the output presentation latency.</summary>
+		/// <value>The output presentation latency, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("outputPresentationLatency")]
 		double OutputPresentationLatency { get; }
@@ -2052,8 +2050,7 @@ namespace AVFoundation {
 	[DisableDefaultCtor] // documented as a base class - returned Handle is nil
 	interface AVAudioIONode {
 		/// <summary>The presentation, or hardware, latency.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The presentation latency, in seconds.</value>
 		[Export ("presentationLatency")]
 		double PresentationLatency { get; }
 
@@ -2252,6 +2249,8 @@ namespace AVFoundation {
 		[Export ("numberOfChannels")]
 		nuint NumberOfChannels { get; }
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
@@ -2277,14 +2276,15 @@ namespace AVFoundation {
 		[Export ("volume")]
 		float Volume { get; set; } // defined as 'float'
 
-		/// <param name="volume">To be added.</param>
-		///         <param name="duration">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Changes the volume over the specified duration.</summary>
+		/// <param name="volume">The volume.</param>
+		/// <param name="duration">The duration, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("setVolume:fadeDuration:")]
 		void SetVolume (float volume, double duration);
 
+		/// <summary>Gets or sets the current time.</summary>
+		/// <value>The current time, in seconds.</value>
 		[Export ("currentTime")]
 		double CurrentTime { get; set; }
 
@@ -2316,8 +2316,7 @@ namespace AVFoundation {
 		float AveragePower (nuint channelNumber); // defined as 'float'
 
 		/// <summary>A value that increases while the <see cref="AVFoundation.AVAudioPlayer" /> is playing or paused. Used for synchronizing multiple audio players.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The device current time, in seconds.</value>
 		[Export ("deviceCurrentTime")]
 		double DeviceCurrentTime { get; }
 
@@ -2327,10 +2326,9 @@ namespace AVFoundation {
 		[Export ("pan")]
 		float Pan { get; set; } // defined as 'float'
 
-		/// <param name="time">To be added.</param>
-		///         <summary>Begins playback at a certain delay, relative to the current playback time.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>
+		/// <summary>Begins playback at a certain delay, relative to the current playback time.</summary>
+		/// <param name="time">The time, in seconds.</param>
+		/// <remarks>
 		///           <para>The value of <paramref name="time" /> must be greater than or equal to the <see cref="AVFoundation.AVAudioPlayer.DeviceCurrentTime" /> property (use <see cref="AVFoundation.AVAudioPlayer.CurrentTime" /> to move the playhead back in time, if necessary). </para>
 		///           <para>Multiple <see cref="AVFoundation.AVAudioPlayer" />s can be synchronized using this method:</para>
 		///           <example>
@@ -2827,6 +2825,8 @@ namespace AVFoundation {
 		double currentTime { get; }
 #endif
 
+		/// <summary>Gets the current time.</summary>
+		/// <value>The current time, in seconds.</value>
 		[Export ("currentTime")]
 		double CurrentTime { get; }
 
@@ -2892,8 +2892,7 @@ namespace AVFoundation {
 		bool RecordAt (double time, double duration);
 
 		/// <summary>A value that increases while the <see cref="AVFoundation.AVAudioRecorder" /> is recording or paused. May be used for synchronizing multiple recorders.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The device current time, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("deviceCurrentTime")]
 		double DeviceCurrentTime { get; }
@@ -3128,12 +3127,11 @@ namespace AVFoundation {
 		[Export ("setPreferredHardwareSampleRate:error:")]
 		bool SetPreferredHardwareSampleRate (double sampleRate, out NSError outError);
 
-		/// <param name="duration">To be added.</param>
-		///         <param name="outError">On failure, this contains the error details.</param>
-		///         <summary>Sets the preferred duration, in seconds, of the IO buffer.</summary>
-		///         <returns>
-		///           <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the preferred duration, in seconds, of the IO buffer.</summary>
+		/// <param name="duration">The duration, in seconds.</param>
+		/// <param name="outError">On failure, this contains the error details.</param>
+		/// <returns>
+		///   <see langword="true" /> if the request was successful, otherwise the outError parameter contains an instance of NSError describing the problem.</returns>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("setPreferredIOBufferDuration:error:")]
@@ -5305,17 +5303,14 @@ namespace AVFoundation {
 		[Static, Export ("timeWithHostTime:sampleTime:atRate:")]
 		AVAudioTime FromHostTime (ulong hostTime, long sampleTime, double sampleRate);
 
-		/// <param name="seconds">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts seconds to host clock ticks.</summary>
+		/// <param name="seconds">The duration, in seconds.</param>
 		[Static, Export ("hostTimeForSeconds:")]
 		ulong HostTimeForSeconds (double seconds);
 
-		/// <param name="hostTime">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts host clock ticks to seconds.</summary>
+		/// <param name="hostTime">The host time, in host clock ticks.</param>
+		/// <returns>The corresponding time, in seconds.</returns>
 		[Static, Export ("secondsForHostTime:")]
 		double SecondsForHostTime (ulong hostTime);
 
@@ -5979,14 +5974,22 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVFragmentedAssetMinder {
 
+		/// <summary>Creates a new <see cref="AVFragmentedAssetMinder" /> instance.</summary>
+		/// <param name="asset">The asset.</param>
+		/// <param name="mindingInterval">The minding interval, in seconds.</param>
 		[Static]
 		[Export ("fragmentedAssetMinderWithAsset:mindingInterval:")]
 		AVFragmentedAssetMinder FromAsset (AVAsset asset, double mindingInterval);
 
+		/// <summary>Creates a new <see cref="AVFragmentedAssetMinder" /> instance.</summary>
+		/// <param name="asset">The asset.</param>
+		/// <param name="mindingInterval">The minding interval, in seconds.</param>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithAsset:mindingInterval:")]
 		NativeHandle Constructor (IAVFragmentMinding asset, double mindingInterval);
 
+		/// <summary>Gets or sets the minding interval.</summary>
+		/// <value>The minding interval, in seconds.</value>
 		[Export ("mindingInterval")]
 		double MindingInterval { get; set; }
 
@@ -12906,6 +12909,8 @@ namespace AVFoundation {
 		[Export ("initWithData:soundBankURL:error:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] NSUrl sounddBankUrl, out NSError outError);
 
+		/// <summary>Gets the duration.</summary>
+		/// <value>The duration, in seconds.</value>
 		[Export ("duration")]
 		double Duration { get; }
 
@@ -13560,14 +13565,22 @@ namespace AVFoundation {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVFragmentedAssetMinder))]
 	interface AVFragmentedMovieMinder {
+		/// <summary>Creates a new <see cref="AVFragmentedMovieMinder" /> instance.</summary>
+		/// <param name="movie">The movie.</param>
+		/// <param name="mindingInterval">The minding interval, in seconds.</param>
 		[Static]
 		[Export ("fragmentedMovieMinderWithMovie:mindingInterval:")]
 		AVFragmentedMovieMinder FromMovie (AVFragmentedMovie movie, double mindingInterval);
 
+		/// <summary>Creates a new <see cref="AVFragmentedMovieMinder" /> instance.</summary>
+		/// <param name="movie">The movie.</param>
+		/// <param name="mindingInterval">The minding interval, in seconds.</param>
 		[Export ("initWithMovie:mindingInterval:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (AVFragmentedMovie movie, double mindingInterval);
 
+		/// <summary>Gets or sets the minding interval.</summary>
+		/// <value>The minding interval, in seconds.</value>
 		[Export ("mindingInterval")]
 		double MindingInterval { get; set; }
 
@@ -20726,6 +20739,8 @@ namespace AVFoundation {
 		[Export ("canUseNetworkResourcesForLiveStreamingWhilePaused", ArgumentSemantic.Assign)]
 		bool CanUseNetworkResourcesForLiveStreamingWhilePaused { get; set; }
 
+		/// <summary>Gets or sets the preferred forward buffer duration.</summary>
+		/// <value>The preferred forward buffer duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("preferredForwardBufferDuration")]
 		double PreferredForwardBufferDuration { get; set; }
@@ -21184,10 +21199,9 @@ namespace AVFoundation {
 		[Export ("isContentAuthorizedForPlayback")]
 		bool IsContentAuthorizedForPlayback ();
 
-		/// <param name="timeoutInterval">To be added.</param>
-		/// <param name="handler">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Requests authorization to play protected content with the specified timeout.</summary>
+		/// <param name="timeoutInterval">The timeout interval, in seconds.</param>
+		/// <param name="handler">The callback to invoke.</param>
 		[NoMacCatalyst]
 		[Export ("requestContentAuthorizationAsynchronouslyWithTimeoutInterval:completionHandler:")]
 		void RequestContentAuthorizationAsynchronously (/* NSTimeInterval */ double timeoutInterval, Action handler);
@@ -21240,6 +21254,8 @@ namespace AVFoundation {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** initialization method -init cannot be sent to an abstract object of class AVPlayerItemOutput: Create a concrete instance!
 	[DisableDefaultCtor]
 	interface AVPlayerItemOutput {
+		/// <summary>Converts a host time to an item time.</summary>
+		/// <param name="hostTimeInSeconds">The time, in seconds.</param>
 		[Export ("itemTimeForHostTime:")]
 		CMTime GetItemTime (double hostTimeInSeconds);
 
@@ -21338,6 +21354,8 @@ namespace AVFoundation {
 		[Export ("delegateQueue"), NullAllowed]
 		DispatchQueue DelegateQueue { get; }
 
+		/// <summary>Gets or sets the advance interval for delegate invocation.</summary>
+		/// <value>The advance interval for delegate invocation, in seconds.</value>
 		[Export ("advanceIntervalForDelegateInvocation")]
 		double AdvanceIntervalForDelegateInvocation { get; set; }
 
@@ -21754,6 +21772,8 @@ namespace AVFoundation {
 		[Export ("setDelegate:queue:")]
 		void SetDelegate ([NullAllowed] IAVPlayerItemOutputPullDelegate delegateClass, [NullAllowed] DispatchQueue delegateQueue);
 
+		/// <summary>Requests notification before new media data becomes available.</summary>
+		/// <param name="advanceInterval">The advance interval, in seconds.</param>
 		[Export ("requestNotificationOfMediaDataChangeWithAdvanceInterval:")]
 		void RequestNotificationOfMediaDataChange (double advanceInterval);
 	}
@@ -21823,6 +21843,8 @@ namespace AVFoundation {
 		[NullAllowed, Export ("delegateQueue", ArgumentSemantic.Copy)]
 		DispatchQueue DelegateQueue { get; }
 
+		/// <summary>Gets or sets the advance interval for delegate invocation.</summary>
+		/// <value>The advance interval for delegate invocation, in seconds.</value>
 		[Export ("advanceIntervalForDelegateInvocation")]
 		double AdvanceIntervalForDelegateInvocation { get; set; }
 
@@ -21899,12 +21921,18 @@ namespace AVFoundation {
 		[Export ("playbackSessionID"), NullAllowed]
 		string PlaybackSessionID { get; }
 
+		/// <summary>Gets the playback start offset.</summary>
+		/// <value>The playback start offset, in seconds.</value>
 		[Export ("playbackStartOffset")]
 		double PlaybackStartOffset { get; }
 
+		/// <summary>Gets the segments downloaded duration.</summary>
+		/// <value>The segments downloaded duration, in seconds.</value>
 		[Export ("segmentsDownloadedDuration")]
 		double SegmentsDownloadedDuration { get; }
 
+		/// <summary>Gets the duration watched.</summary>
+		/// <value>The duration watched, in seconds.</value>
 		[Export ("durationWatched")]
 		double DurationWatched { get; }
 
@@ -21940,6 +21968,8 @@ namespace AVFoundation {
 		[Export ("numberOfMediaRequests")]
 		nint NumberOfMediaRequests { get; }
 
+		/// <summary>Gets the startup time.</summary>
+		/// <value>The startup time, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("startupTime")]
 		double StartupTime { get; }
@@ -21980,6 +22010,8 @@ namespace AVFoundation {
 		[Export ("switchBitrate")]
 		double SwitchBitrate { get; }
 
+		/// <summary>Gets the transfer duration.</summary>
+		/// <value>The transfer duration, in seconds.</value>
 		[MacCatalyst (13, 1)]
 		[Export ("transferDuration")]
 		double TransferDuration { get; }
@@ -23783,17 +23815,14 @@ namespace AVFoundation {
 		[Export ("dataWithSMPTEResolution:error:")]
 		NSData GetData (nint smpteResolution, out NSError outError);
 
-		/// <param name="beats">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts a position or duration in beats to seconds.</summary>
+		/// <param name="beats">The position or duration, in beats.</param>
+		/// <returns>The corresponding time, in seconds.</returns>
 		[Export ("secondsForBeats:")]
 		double GetSeconds (double beats);
 
-		/// <param name="seconds">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts a position or duration in seconds to beats.</summary>
+		/// <param name="seconds">The position or duration, in seconds.</param>
 		[Export ("beatsForSeconds:")]
 		double GetBeats (double seconds);
 
@@ -23815,15 +23844,13 @@ namespace AVFoundation {
 		// AVAudioSequencer_Player Category
 		// Inlined due to properties
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the current position in seconds.</summary>
+		/// <value>The current position in seconds, in seconds.</value>
 		[Export ("currentPositionInSeconds")]
 		double CurrentPositionInSeconds { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the current position in beats.</summary>
+		/// <value>The current position, in beats.</value>
 		[Export ("currentPositionInBeats")]
 		double CurrentPositionInBeats { get; set; }
 
@@ -23957,9 +23984,8 @@ namespace AVFoundation {
 		[Export ("lengthInBeats")]
 		double LengthInBeats { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the length in seconds.</summary>
+		/// <value>The length in seconds, in seconds.</value>
 		[Export ("lengthInSeconds")]
 		double LengthInSeconds { get; set; }
 
@@ -24335,6 +24361,8 @@ namespace AVFoundation {
 		[Export ("contentTimeForTransition")]
 		CMTime ContentTimeForTransition { get; }
 
+		/// <summary>Gets or sets the automatic acceptance interval.</summary>
+		/// <value>The automatic acceptance interval, in seconds.</value>
 		[Export ("automaticAcceptanceInterval")]
 		double AutomaticAcceptanceInterval { get; set; }
 
@@ -26717,6 +26745,8 @@ namespace AVFoundation {
 		[Export ("numberOfFramesDisplayedUsingOptimizedCompositing")]
 		nint NumberOfFramesDisplayedUsingOptimizedCompositing { get; }
 
+		/// <summary>Gets the total accumulated frame delay.</summary>
+		/// <value>The total accumulated frame delay, in seconds.</value>
 		[Export ("totalAccumulatedFrameDelay")]
 		double TotalAccumulatedFrameDelay { get; }
 	}
@@ -27331,6 +27361,8 @@ namespace AVFoundation {
 		[NullAllowed, Export ("delegateQueue")]
 		DispatchQueue DelegateQueue { get; }
 
+		/// <summary>Gets or sets the advance interval for delegate invocation.</summary>
+		/// <value>The advance interval for delegate invocation, in seconds.</value>
 		[Export ("advanceIntervalForDelegateInvocation")]
 		double AdvanceIntervalForDelegateInvocation { get; set; }
 
@@ -27504,9 +27536,13 @@ namespace AVFoundation {
 		[Export ("mediaResourceRequestCount")]
 		nint MediaResourceRequestCount { get; }
 
+		/// <summary>Gets the time spent recovering from stall.</summary>
+		/// <value>The time spent recovering from stall, in seconds.</value>
 		[Export ("timeSpentRecoveringFromStall")]
 		double TimeSpentRecoveringFromStall { get; }
 
+		/// <summary>Gets the time spent in initial startup.</summary>
+		/// <value>The time spent in initial startup, in seconds.</value>
 		[Export ("timeSpentInInitialStartup")]
 		double TimeSpentInInitialStartup { get; }
 
@@ -27524,6 +27560,8 @@ namespace AVFoundation {
 		[NullAllowed, Export ("variant")]
 		AVAssetVariant Variant { get; }
 
+		/// <summary>Gets the time taken.</summary>
+		/// <value>The time taken, in seconds.</value>
 		[Export ("timeTaken")]
 		double TimeTaken { get; }
 
@@ -27617,6 +27655,8 @@ namespace AVFoundation {
 		[Export ("indexFileURL")]
 		NSUrl IndexFileUrl { get; }
 
+		/// <summary>Gets the segment duration.</summary>
+		/// <value>The segment duration, in seconds.</value>
 		[MacCatalyst (26, 0), iOS (26, 0), Mac (26, 0), TV (26, 0)]
 		[Export ("segmentDuration")]
 		double SegmentDuration { get; }
@@ -27882,6 +27922,8 @@ namespace AVFoundation {
 		[Export ("bytesDownloadedCount")]
 		nint BytesDownloadedCount { get; }
 
+		/// <summary>Gets the download duration.</summary>
+		/// <value>The download duration, in seconds.</value>
 		[Export ("downloadDuration")]
 		double DownloadDuration { get; }
 
@@ -28039,9 +28081,13 @@ namespace AVFoundation {
 		[Export ("setDelegate:queue:")]
 		void SetDelegate ([NullAllowed] IAVCaptureTimecodeGeneratorDelegate @delegate, [NullAllowed] DispatchQueue callbackQueue);
 
+		/// <summary>Gets or sets the synchronization timeout.</summary>
+		/// <value>The synchronization timeout, in seconds.</value>
 		[Export ("synchronizationTimeout")]
 		double SynchronizationTimeout { get; set; }
 
+		/// <summary>Gets or sets the timecode alignment offset.</summary>
+		/// <value>The timecode alignment offset, in seconds.</value>
 		[Export ("timecodeAlignmentOffset")]
 		double TimecodeAlignmentOffset { get; set; }
 

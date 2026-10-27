@@ -176,7 +176,7 @@ namespace UIKit {
 		}
 
 		/// <param name="duration">Duration in seconds for the animation.</param>
-		///         <param name="delay">Delay before the animation begins.</param>
+		///         <param name="delay">Delay, in seconds, before the animation begins.</param>
 		///         <param name="options">Animation options</param>
 		///         <param name="animation">Code containing the changes that you will apply to your view.</param>
 		///         <param name="completion">Code that is invoked when the animation completes.</param>
@@ -214,7 +214,7 @@ namespace UIKit {
 		}
 
 		/// <param name="withView">The view that performs the transition.</param>
-		///         <param name="duration">Duration set for transition animation.</param>
+		///         <param name="duration">Duration, in seconds, of the transition animation.</param>
 		///         <param name="options">A mask of options defining animations performance.</param>
 		///         <param name="animation">Action object containing  changes to make to the specified view.</param>
 		///         <param name="completion">Action object for execution when the animation sequence completes.</param>

@@ -69,7 +69,7 @@ namespace CoreGraphics {
 			return tapData.Callback (tapProxyEvent, eventType, eventRef, tapData.UserInfo);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreate (CGEventTapLocation location, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
 
 		static CFMachPort? CreateMachPortAndAddToTable (IntPtr machPort, TapData data)
@@ -106,7 +106,7 @@ namespace CoreGraphics {
 			return CreateMachPortAndAddToTable (r, tapData);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreateForPSN (IntPtr processSerialNumer, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
 
 #if !XAMCORE_5_0
@@ -147,7 +147,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static unsafe IntPtr CGEventTapCreateForPid (int pid, CGEventTapPlacement place, CGEventTapOptions options, CGEventMask mask, delegate* unmanaged<IntPtr, CGEventType, IntPtr, IntPtr, IntPtr> cback, IntPtr data);
 
 		/// <summary>Create an event tap monitoring the specified process</summary>
@@ -168,7 +168,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateFromData (IntPtr allocator, IntPtr nsdataSource);
 
 		static IntPtr Create (NSData source)
@@ -189,7 +189,7 @@ namespace CoreGraphics {
 		{
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreate (IntPtr eventSourceHandle);
 
 		/// <param name="eventSource">To be added.</param>
@@ -207,7 +207,7 @@ namespace CoreGraphics {
 		{
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateMouseEvent (IntPtr source, CGEventType mouseType, CGPoint mouseCursorPosition, CGMouseButton mouseButton);
 
 		/// <param name="source">To be added.</param>
@@ -222,7 +222,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (source);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateKeyboardEvent (IntPtr source, ushort virtualKey, byte keyDown);
 
 		/// <param name="source">To be added.</param>
@@ -236,7 +236,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (source);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateScrollWheelEvent2 (IntPtr source, CGScrollEventUnit units, uint /* uint32_t */ wheelCount, int /* uint32_t */ wheel1, int /* uint32_t */ wheel2, int /* uint32_t */ wheel3);
 
 		static IntPtr Create (CGEventSource? source, CGScrollEventUnit units, params int [] wheel)
@@ -275,7 +275,7 @@ namespace CoreGraphics {
 		{
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateCopy (IntPtr handle);
 
 		/// <summary>To be added.</summary>
@@ -286,7 +286,7 @@ namespace CoreGraphics {
 			return new CGEvent (CGEventCreateCopy (Handle), true);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateData (IntPtr allocator, IntPtr handle);
 
 		/// <summary>To be added.</summary>
@@ -297,7 +297,7 @@ namespace CoreGraphics {
 			return Runtime.GetNSObject<NSData> (CGEventCreateData (IntPtr.Zero, Handle), true);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventCreateSourceFromEvent (IntPtr evthandle);
 
 		/// <summary>To be added.</summary>
@@ -312,10 +312,10 @@ namespace CoreGraphics {
 		}
 
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPoint CGEventGetLocation (IntPtr handle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSetLocation (IntPtr handle, CGPoint location);
 
 		/// <summary>To be added.</summary>
@@ -330,7 +330,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGPoint CGEventGetUnflippedLocation (IntPtr handle);
 
 		/// <summary>To be added.</summary>
@@ -348,10 +348,10 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventGetFlags")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventGetFlags")]
 		public extern static CGEventFlags GetFlags (IntPtr eventHandle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		internal extern static void CGEventSetFlags (IntPtr eventHandle, CGEventFlags flags);
 
 		/// <summary>To be added.</summary>
@@ -366,16 +366,16 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventGetIntegerValueField")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventGetIntegerValueField")]
 		extern static long GetLong (IntPtr eventHandle, CGEventField eventField);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSetIntegerValueField")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSetIntegerValueField")]
 		extern static void SetLong (IntPtr eventHandle, CGEventField eventField, long value);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventGetDoubleValueField")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventGetDoubleValueField")]
 		extern static double GetDouble (IntPtr eventHandle, CGEventField eventField);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSetDoubleValueField")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSetDoubleValueField")]
 		extern static void SetDouble (IntPtr eventHandle, CGEventField eventField, double value);
 
 		/// <summary>Get the 64-bit integer value of the specified event field.</summary>
@@ -492,7 +492,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventSetSource (IntPtr handle, IntPtr source);
 
 		/// <param name="eventSource">To be added.</param>
@@ -506,10 +506,10 @@ namespace CoreGraphics {
 			GC.KeepAlive (eventSource);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGEventType CGEventGetType (IntPtr handle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSetType (IntPtr handle, CGEventType evtType);
 
 		/// <summary>To be added.</summary>
@@ -525,10 +525,10 @@ namespace CoreGraphics {
 		}
 
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static ulong CGEventGetTimestamp (IntPtr handle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSetTimestamp (IntPtr handle, ulong timeStampp);
 
 		/// <summary>To be added.</summary>
@@ -543,7 +543,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventTapEnable (IntPtr machPort, byte enable);
 
 		/// <param name="machPort">To be added.</param>
@@ -568,7 +568,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (machPort);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGEventTapIsEnabled (IntPtr machPort);
 
 		/// <param name="machPort">To be added.</param>
@@ -584,7 +584,7 @@ namespace CoreGraphics {
 			return result;
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGEventKeyboardGetUnicodeString (IntPtr handle, nuint maxLen, nuint* actualLen, ushort* buffer);
 
 		/// <summary>To be added.</summary>
@@ -599,7 +599,7 @@ namespace CoreGraphics {
 			return new String ((char*) buffer, 0, (int) actual);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGEventKeyboardSetUnicodeString (IntPtr handle, nuint len, IntPtr buffer);
 
 		/// <param name="value">To be added.</param>
@@ -613,7 +613,7 @@ namespace CoreGraphics {
 			CGEventKeyboardSetUnicodeString (Handle, (nuint) value.Length, valueStr);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventTapPostEvent (IntPtr proxy, IntPtr evtHandle);
 
 		/// <param name="tapProxyEvent">To be added.</param>
@@ -629,7 +629,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (evt);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventPost (CGEventTapLocation location, IntPtr handle);
 
 		/// <param name="evt">To be added.</param>
@@ -645,7 +645,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (evt);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventPostToPSN (IntPtr processSerialNumber, IntPtr handle);
 
 		/// <summary>Post an event to a specific process</summary>
@@ -666,7 +666,7 @@ namespace CoreGraphics {
 			PostToPSN (this, processSerialNumber);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventPostToPid (int pid, IntPtr handle);
 
 		/// <summary>Post an event to a specific process</summary>
@@ -685,7 +685,7 @@ namespace CoreGraphics {
 			PostToPid (this, pid);
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static int /* CGError = int32_t */ CGGetEventTapList (
 			uint /* uint32_t */ maxNumberOfTaps,
 			CGEventTapInformation* tapList,
@@ -709,7 +709,7 @@ namespace CoreGraphics {
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGPreflightListenEventAccess ();
 
 		[SupportedOSPlatform ("macos")]
@@ -718,7 +718,7 @@ namespace CoreGraphics {
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGRequestListenEventAccess")]
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGRequestListenEventAccess")]
 		static extern byte CGRequestListenEventAccess ();
 
 		[SupportedOSPlatform ("macos")]
@@ -727,7 +727,7 @@ namespace CoreGraphics {
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGPreflightPostEventAccess ();
 
 		[SupportedOSPlatform ("macos")]
@@ -736,7 +736,7 @@ namespace CoreGraphics {
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern byte CGRequestPostEventAccess ();
 
 		[SupportedOSPlatform ("macos")]

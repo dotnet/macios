@@ -30,6 +30,9 @@ namespace Xamarin.Tests {
 			var proj = Path.Combine (outputDir, $"{template}.csproj");
 
 			var isDesktop = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+			if (isDesktop && !CanExecute (platform, DotNet.GetProperty (proj, "RuntimeIdentifier", GetDefaultProperties ())))
+				return;
+
 			var log = ConsoleLogger.Instance;
 			var simService = new SimulatorService (log);
 			SimulatorDeviceInfo? device = null;

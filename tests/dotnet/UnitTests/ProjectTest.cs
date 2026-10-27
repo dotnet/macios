@@ -721,7 +721,7 @@ namespace Xamarin.Tests {
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");
-				ExecuteWithMagicWordAndAssert (appExecutable);
+				ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, appExecutable);
 			}
 		}
 
@@ -2918,7 +2918,7 @@ namespace Xamarin.Tests {
 			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.dylib");
 			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.so");
 
-			ExecuteWithMagicWordAndAssert (appExecutable);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, appExecutable);
 		}
 
 		[Test]
@@ -4583,6 +4583,9 @@ namespace Xamarin.Tests {
 			var stderr = Path.Combine (tmpdir, "stderr.txt");
 
 			var properties = GetDefaultProperties ();
+			if (!CanExecute (platform, DotNet.GetProperty (project_path, "RuntimeIdentifier", properties)))
+				return;
+
 			var dotnetRunEnvironment = new Dictionary<string, string> ();
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";

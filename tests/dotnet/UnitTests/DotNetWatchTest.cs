@@ -54,6 +54,9 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
 			var projectPath = GetProjectPath ("HotReloadTestApp", platform: platform);
+			if ((platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) && !CanExecute (platform, DotNet.GetProperty (projectPath, "RuntimeIdentifier", GetDefaultProperties ())))
+				return;
+
 			var projectDirectory = Path.GetDirectoryName (projectPath)!;
 
 			var tmpdir = Cache.CreateTemporaryDirectory ();

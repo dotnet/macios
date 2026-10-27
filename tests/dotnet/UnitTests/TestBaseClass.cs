@@ -592,7 +592,7 @@ namespace Xamarin.Tests {
 
 			var appPath = GetAppPath (csproj, platform, runtimeIdentifiers);
 			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (appExecutable);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
 		protected bool IsRuntimeIdentifierSigned (string runtimeIdentifiers)

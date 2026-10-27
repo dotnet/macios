@@ -794,14 +794,14 @@ namespace CoreGraphics {
 
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern IntPtr CGColorSpaceCreateCopyWithStandardRange (/* CGColorSpaceRef cg_nullable */ IntPtr s);
 
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		public CGColorSpace? CreateCopyWithStandardRange () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateCopyWithStandardRange (Handle), owns: true);
 

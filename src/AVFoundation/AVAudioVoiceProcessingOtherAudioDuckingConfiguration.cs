@@ -3,7 +3,7 @@
 
 namespace AVFoundation {
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos14.0")]
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 	public struct AVAudioVoiceProcessingOtherAudioDuckingConfiguration {

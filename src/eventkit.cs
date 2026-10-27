@@ -171,7 +171,7 @@ namespace EventKit {
 		[Export ("calendarsForEntityType:")]
 		NSSet GetCalendars (EKEntityType entityType);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("isDelegate", ArgumentSemantic.Assign)]
 		bool IsDelegate { get; }
 	}
@@ -707,17 +707,17 @@ namespace EventKit {
 			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestFullAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestWriteOnlyAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestWriteOnlyAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requestFullAccessToRemindersWithCompletion:")]
 		[Async]
 		void RequestFullAccessToReminders (EKEventStoreRequestAccessCompletionHandler completion);

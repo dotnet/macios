@@ -16,7 +16,7 @@ namespace Xamarin {
 		public const string TVOS = "27.0";
 		public const string MacCatalyst = "27.0";
 
-		public const string MinOSX = "14.0";
+		public const string MinOSX = "12.0";
 		public const string MiniOS = "15.0";
 		public const string MinTVOS = "15.0";
 		public const string MinMacCatalyst = "15.0";

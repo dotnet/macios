@@ -133,7 +133,7 @@ namespace PassKit {
 		Credit = 1 << 2,
 		/// <summary>Supports debit cards.</summary>
 		Debit = 1 << 3,
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), NoTV, MacCatalyst (17, 0)]
 		InstantFundsOut = 1 << 7,
 	}
 
@@ -385,7 +385,7 @@ namespace PassKit {
 		RegionNotSupported = 8,
 	}
 
-	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	[ErrorDomain ("PKShareSecureElementPassErrorDomain")]
 	public enum PKShareSecureElementPassErrorCode : long {
@@ -401,7 +401,7 @@ namespace PassKit {
 		Failed,
 	}
 
-	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	public enum PKVehicleConnectionErrorCode : long {
 		Unknown = 0,
@@ -409,7 +409,7 @@ namespace PassKit {
 		SessionNotActive,
 	}
 
-	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 	[Native]
 	public enum PKVehicleConnectionSessionConnectionState : long {
 		Disconnected = 0,
@@ -418,7 +418,7 @@ namespace PassKit {
 		FailedToConnect,
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum PKApplePayLaterAvailability : long {
 		Available,

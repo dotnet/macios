@@ -14,7 +14,7 @@ using CoreMedia;
 using CoreVideo;
 
 namespace VideoToolbox {
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
 	[SupportedOSPlatform ("tvos16.0")]

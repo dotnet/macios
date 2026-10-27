@@ -52,7 +52,7 @@ namespace CoreText {
 		/// <summary>Prevents font activation.</summary>
 		PreventAutoActivation = 1 << 0,
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		PreventAutoDownload = 1 << 1,

@@ -758,7 +758,7 @@ namespace Metal {
 
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("tvos16.0")]
 	[NativeName ("MTLResourceID")]
 	[StructLayout (LayoutKind.Sequential)]

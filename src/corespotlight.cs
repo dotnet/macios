@@ -148,12 +148,12 @@ namespace CoreSpotlight {
 		NativeHandle Constructor (string name, [NullAllowed] NSString protectionClass);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), NoTV]
 		[Export ("initWithName:protectionClass:bundleIdentifier:options:")]
 		NativeHandle Constructor (string name, [NullAllowed] NSString protectionClass, string bundleIdentifier, nint options);
 
 		[Wrap ("this (name, protectionClass.GetConstant (), bundleIdentifier, options)")]
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), NoTV]
 		NativeHandle Constructor (string name, NSFileProtectionType protectionClass, string bundleIdentifier, nint options);
 
 		/// <param name="items">The items to index.</param>
@@ -222,12 +222,12 @@ namespace CoreSpotlight {
 		// from interface CSExternalProvider (CSSearchableIndex)
 
 		[Async (ResultTypeName = "CSSearchableIndexBundleDataResult")]
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("provideDataForBundle:identifier:type:completionHandler:")]
 		void ProvideData (string bundle, string identifier, string type, Action<NSData, NSError> completionHandler);
 
 		[Async (ResultTypeName = "CSSearchableIndexBundleDataResult")]
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("fetchDataForBundleIdentifier:itemIdentifier:contentType:completionHandler:")]
 		void FetchData (string bundleIdentifier, string itemIdentifier, UTType contentType, Action<NSData, NSError> completionHandler);
 	}
@@ -448,7 +448,7 @@ namespace CoreSpotlight {
 		[Export ("attributeSet", ArgumentSemantic.Strong)]
 		CSSearchableItemAttributeSet AttributeSet { get; set; }
 
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 		[Export ("compareByRank:")]
 		NSComparisonResult CompareByRank (CSSearchableItem other);
 
@@ -2566,7 +2566,7 @@ namespace CoreSpotlight {
 		[Export ("initWithQueryString:attributes:")]
 		NativeHandle Constructor (string queryString, [NullAllowed] string [] attributes);
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithQueryString:queryContext:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string queryString, [NullAllowed] CSSearchQueryContext queryContext);
@@ -2626,7 +2626,7 @@ namespace CoreSpotlight {
 		bool Update (CSSearchableItemAttributeSet attributes, NSUrl contentUrl, [NullAllowed] out NSError error);
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CSSearchQuery))]
 	[DisableDefaultCtor]
 	interface CSUserQuery {
@@ -2670,7 +2670,7 @@ namespace CoreSpotlight {
 		void UserEngaged (CSSuggestion suggestion, CSSuggestion [] visibleSuggestions, CSUserInteraction userInteractionType);
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CSSearchQueryContext))]
 	[DisableDefaultCtor]
 	interface CSUserQueryContext {
@@ -2701,7 +2701,7 @@ namespace CoreSpotlight {
 	}
 
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CSSuggestion : NSSecureCoding, NSCopying {
@@ -2721,16 +2721,16 @@ namespace CoreSpotlight {
 		[Export ("compareByRank:")]
 		NSComparisonResult CompareByRank (CSSuggestion other);
 
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0), NoTV]
 		[Export ("score")]
 		NSNumber Score { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0), NoTV]
 		[Export ("suggestionDataSources")]
 		NSObject [] SuggestionDataSources { get; }
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CSSearchQueryContext : NSSecureCoding, NSCopying {
 		[Export ("fetchAttributes", ArgumentSemantic.Strong)]
@@ -2758,7 +2758,7 @@ namespace CoreSpotlight {
 
 #if XAMCORE_5_0
 	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
-	[NoTV, NoiOS, NoMacCatalyst]
+	[NoTV, NoiOS, NoMacCatalyst, Mac (13, 0)]
 #else
 #if !__MACOS__
 	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
@@ -2767,7 +2767,7 @@ namespace CoreSpotlight {
 #else
 	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
 #endif
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 #endif
 	[Flags]
 	[Native]

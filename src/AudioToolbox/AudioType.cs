@@ -1333,32 +1333,32 @@ namespace AudioToolbox {
 
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_3_0 = AC3_3_0,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_4_0 = Wave_4_0_B,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_5_0 = (212U << 16) | 5,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_5_1 = (213U << 16) | 6,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_6_1 = (214U << 16) | 7,
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		Ogg_7_1 = (215U << 16) | 8,

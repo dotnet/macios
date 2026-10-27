@@ -1927,12 +1927,12 @@ namespace GameKit {
 		[Export ("startBrowsingForNearbyPlayersWithHandler:")]
 		void StartBrowsingForNearbyPlayers ([NullAllowed] Action<GKPlayer, bool> handler);
 
-		[iOS (16, 2), NoTV]
+		[Mac (13, 1), iOS (16, 2), NoTV]
 		[MacCatalyst (16, 2)]
 		[Export ("startGroupActivityWithPlayerHandler:")]
 		void StartGroupActivity (Action<GKPlayer> handler);
 
-		[iOS (16, 2), NoTV]
+		[Mac (13, 1), iOS (16, 2), NoTV]
 		[MacCatalyst (16, 2)]
 		[Export ("stopGroupActivity")]
 		void StopGroupActivity ();
@@ -2318,7 +2318,7 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 26, 0)]
 		[Deprecated (PlatformName.TvOS, 26, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
 		UIViewController ChallengeComposeControllerWithMessage ([NullAllowed] string message, GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler2 completionHandler);
@@ -2436,7 +2436,7 @@ namespace GameKit {
 		[Export ("placeholderCompletedAchievementImage")]
 		UIImage PlaceholderCompletedAchievementImage { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("rarityPercent", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber RarityPercent { get; }
@@ -4295,7 +4295,7 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 26, 0)]
 		[Deprecated (PlatformName.TvOS, 26, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
 		UIViewController ChallengeComposeControllerWithMessage ([NullAllowed] string message, [NullAllowed] GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler2 completionHandler);

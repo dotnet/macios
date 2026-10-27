@@ -613,7 +613,7 @@ namespace CoreML {
 		void LoadContents (NSUrl url, MLModelConfiguration configuration, Action<MLModel, NSError> handler);
 
 		[Async (ResultTypeName = "MLModelCompilationLoadResult")]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Static]
 		[Export ("loadModelAsset:configuration:completionHandler:")]
 		void Load (MLModelAsset asset, MLModelConfiguration configuration, Action<MLModel, NSError> handler);
@@ -631,23 +631,23 @@ namespace CoreML {
 		NSUrl CompileModel (NSUrl modelUrl, out NSError error);
 
 		[Async (ResultTypeName = "MLModelCompilationResult")]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Static]
 		[Export ("compileModelAtURL:completionHandler:")]
 		void CompileModel (NSUrl modelUrl, Action<NSUrl, NSError> handler);
 
 		[Async]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("predictionFromFeatures:completionHandler:")]
 		void GetPrediction (IMLFeatureProvider input, Action<IMLFeatureProvider, NSError> completionHandler);
 
 		[Async]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("predictionFromFeatures:options:completionHandler:")]
 		void GetPrediction (IMLFeatureProvider input, MLPredictionOptions options, Action<IMLFeatureProvider, NSError> completionHandler);
 
 		// from the category MLComputeDevice (MLModel)
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("availableComputeDevices", ArgumentSemantic.Copy)]
 		IMLComputeDeviceProtocol [] AvailableComputeDevices { get; }
@@ -891,12 +891,12 @@ namespace CoreML {
 		MLMultiArray Concat (MLMultiArray [] multiArrays, nint axis, MLMultiArrayDataType dataType);
 
 		[Async (ResultTypeName = "MLMultiArrayDataPointer")]
-		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("getBytesWithHandler:")]
 		void GetBytes (Action<IntPtr, nint> handler);
 
 		[Async (ResultTypeName = "MLMultiArrayMutableDataPointer")]
-		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("getMutableBytesWithHandler:")]
 		void GetMutableBytes (Action<IntPtr, nint, NSArray<NSNumber>> handler);
 
@@ -1289,7 +1289,7 @@ namespace CoreML {
 		[Export ("optimizationHints", ArgumentSemantic.Copy)]
 		MLOptimizationHints OptimizationHints { get; set; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("modelDisplayName")]
 		string ModelDisplayName { get; set; }
 
@@ -1599,11 +1599,11 @@ namespace CoreML {
 	delegate void MLModelAssetGetModelDescriptionCompletionHandler ([NullAllowed] MLModelDescription modelDescription, [NullAllowed] NSError error);
 	delegate void MLModelAssetGetFunctionNamesCompletionHandler ([NullAllowed] string [] functionNames, [NullAllowed] NSError error);
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLModelAsset {
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("modelAssetWithSpecificationData:error:")]
@@ -1638,12 +1638,12 @@ namespace CoreML {
 
 	interface IMLComputeDeviceProtocol { }
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol]
 	interface MLComputeDeviceProtocol {
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLNeuralEngineComputeDevice : MLComputeDeviceProtocol {
@@ -1651,13 +1651,13 @@ namespace CoreML {
 		nint TotalCoreCount { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject), Name = "MLCPUComputeDevice")]
 	[DisableDefaultCtor]
 	interface MLCpuComputeDevice : MLComputeDeviceProtocol {
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject), Name = "MLGPUComputeDevice")]
 	[DisableDefaultCtor]
 	interface MLGpuComputeDevice : MLComputeDeviceProtocol {

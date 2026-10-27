@@ -4979,7 +4979,7 @@ namespace WebKit {
 		void DeleteRow (int /* int, not NSInteger */ index);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum WKFullscreenState : long {
 		NotInFullscreen,
@@ -4988,7 +4988,7 @@ namespace WebKit {
 		ExitingFullscreen,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 	[Native]
 	public enum WKDialogResult : long {
 		ShowDefault = 1,
@@ -4996,14 +4996,14 @@ namespace WebKit {
 		Handled,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum WKCookiePolicy : long {
 		Allow,
 		Disallow,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum WKInactiveSchedulingPolicy : long {
 		Suspend,
@@ -5011,7 +5011,7 @@ namespace WebKit {
 		None,
 	}
 
-	[NoiOS, NoMacCatalyst]
+	[NoiOS, Mac (14, 0), NoMacCatalyst]
 	[Native]
 	public enum WKUserInterfaceDirectionPolicy : long {
 		Content,
@@ -5187,12 +5187,12 @@ namespace WebKit {
 		[Export ("removeObserver:")]
 		void RemoveObserver (IWKHttpCookieStoreObserver observer);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("setCookiePolicy:completionHandler:")]
 		[Async]
 		void SetCookiePolicy (WKCookiePolicy policy, [NullAllowed] Action completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("getCookiePolicy:")]
 		[Async]
 		void GetCookiePolicy (Action<WKCookiePolicy> completionHandler);
@@ -5522,7 +5522,7 @@ namespace WebKit {
 		[Export ("fraudulentWebsiteWarningEnabled")]
 		bool FraudulentWebsiteWarningEnabled { [Bind ("isFraudulentWebsiteWarningEnabled")] get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("shouldPrintBackgrounds")]
 		bool ShouldPrintBackgrounds { get; set; }
 
@@ -5538,15 +5538,15 @@ namespace WebKit {
 		[Export ("isTextInteractionEnabled")]
 		bool _NewGetTextInteractionEnabled ();
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("siteSpecificQuirksModeEnabled")]
 		bool SiteSpecificQuirksModeEnabled { [Bind ("isSiteSpecificQuirksModeEnabled")] get; set; }
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("elementFullscreenEnabled")]
 		bool ElementFullscreenEnabled { [Bind ("isElementFullscreenEnabled")] get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("inactiveSchedulingPolicy", ArgumentSemantic.Assign)]
 		WKInactiveSchedulingPolicy InactiveSchedulingPolicy { get; set; }
 	}
@@ -5774,19 +5774,19 @@ namespace WebKit {
 		[Field ("WKWebsiteDataTypeServiceWorkerRegistrations")]
 		NSString ServiceWorkerRegistrations { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Field ("WKWebsiteDataTypeFileSystem")]
 		NSString FileSystem { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("WKWebsiteDataTypeSearchFieldRecentSearches")]
 		NSString SearchFieldRecentSearches { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("WKWebsiteDataTypeMediaKeys")]
 		NSString MediaKeys { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("WKWebsiteDataTypeHashSalt")]
 		NSString HashSalt { get; }
 
@@ -5795,7 +5795,7 @@ namespace WebKit {
 		NSString TypeScreenTime { get; }
 	}
 
-	[NoiOS, NoMacCatalyst]
+	[NoiOS, NoMacCatalyst, Mac (14, 0)]
 	[Static]
 	interface WebViewNotification {
 		[Notification]
@@ -5886,28 +5886,28 @@ namespace WebKit {
 		[Export ("httpCookieStore")]
 		WKHttpCookieStore HttpCookieStore { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("identifier")]
 		NSUuid Identifier { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("dataStoreForIdentifier:")]
 		WKWebsiteDataStore Create (NSUuid identifier);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Async]
 		[Export ("removeDataStoreForIdentifier:completionHandler:")]
 		void Remove (NSUuid identifier, Action<NSError> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Async]
 		[Export ("fetchAllDataStoreIdentifiers:")]
 		void FetchAllDataStoreIdentifiers (Action<NSArray<NSUuid>> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy), NullAllowed]
 		NWProxyConfig [] ProxyConfigurations { get; set; }
 
@@ -6640,19 +6640,19 @@ namespace WebKit {
 		[NullAllowed, Export ("underPageBackgroundColor", ArgumentSemantic.Copy)]
 		UIColor UnderPageBackgroundColor { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
 		[Export ("fullscreenState")]
 		WKFullscreenState FullscreenState { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("minimumViewportInset")]
 		UIEdgeInsets MinimumViewportInset { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("maximumViewportInset")]
 		UIEdgeInsets MaximumViewportInset { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("setMinimumViewportInset:maximumViewportInset:")]
 		void SetViewportInsets (UIEdgeInsets minimumViewportInset, UIEdgeInsets maximumViewportInset);
 
@@ -6665,27 +6665,27 @@ namespace WebKit {
 		[NullAllowed]
 		UIFindInteraction FindInteraction { get; }
 
-		[MacCatalyst (16, 4), iOS (16, 4), NoTV]
+		[Mac (13, 3), MacCatalyst (16, 4), iOS (16, 4), NoTV]
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst, Mac (14, 0)]
 		[Export ("goBack:")]
 		void GoBack ([NullAllowed] NSObject sender);
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst, Mac (14, 0)]
 		[Export ("goForward:")]
 		void GoForward ([NullAllowed] NSObject sender);
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst, Mac (14, 0)]
 		[Export ("reload:")]
 		void Reload ([NullAllowed] NSObject sender);
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst, Mac (14, 0)]
 		[Export ("reloadFromOrigin:")]
 		void ReloadFromOrigin ([NullAllowed] NSObject sender);
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, NoMacCatalyst, Mac (14, 0)]
 		[Export ("stopLoading:")]
 		void StopLoading ([NullAllowed] NSObject sender);
 
@@ -6834,11 +6834,11 @@ namespace WebKit {
 		[Export ("upgradeKnownHostsToHTTPS")]
 		bool UpgradeKnownHostsToHttps { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowsInlinePredictions")]
 		bool AllowsInlinePredictions { get; set; }
 
-		[NoiOS, NoMacCatalyst]
+		[NoiOS, Mac (14, 0), NoMacCatalyst]
 		[Export ("userInterfaceDirectionPolicy", ArgumentSemantic.Assign)]
 		WKUserInterfaceDirectionPolicy UserInterfaceDirectionPolicy { get; set; }
 
@@ -7003,7 +7003,7 @@ namespace WebKit {
 		[Export ("allowsContentJavaScript")]
 		bool AllowsContentJavaScript { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("lockdownModeEnabled")]
 		bool LockdownModeEnabled { [Bind ("isLockdownModeEnabled")] get; set; }
 
@@ -7151,7 +7151,7 @@ namespace WebKit {
 		[Export ("rect", ArgumentSemantic.Assign)]
 		CGRect Rect { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("allowTransparentBackground")]
 		bool AllowTransparentBackground { get; set; }
 	}

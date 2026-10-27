@@ -76,11 +76,14 @@
 
 
 	<!--
-		Exclude user assemblies from R2R composite so they run interpreted for debugging.
+		Exclude user assemblies from R2R composite so they run interpreted for debugging,
+		and compute a combined content hash of R2R input assemblies so incremental builds
+		detect both upgrades and downgrades of NuGet packages (whose DLLs keep their
+		package build timestamps, which may be older than the existing R2R output).
 		User assembly is defined as anything not coming from a NuGet package.
 	-->
 	<Target Name="_SelectR2RAssemblies"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+			Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
 		<ItemGroup>
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == '' And ('%(ResolvedFileToPublish.PublishFolderType)' == '' Or '%(ResolvedFileToPublish.PublishFolderType)' == 'Assembly')" />
@@ -88,8 +91,10 @@
 				Include="@(_ResolvedAssembliesToPublish)"
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
-			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
-			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+			<PublishReadyToRunExclude Condition="'$(FilterReadyToRunAssemblies)' == 'true'" Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
+			<PublishReadyToRunCompositeRoots Condition="'$(FilterReadyToRunAssemblies)' == 'true'" Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+			<_R2RHashInputAssemblies Condition="'$(FilterReadyToRunAssemblies)' == 'true'" Include="@(_NonUserAssemblies)" />
+			<_R2RHashInputAssemblies Condition="'$(FilterReadyToRunAssemblies)' != 'true'" Include="@(_ResolvedAssembliesToPublish)" />
 		</ItemGroup>
 
 		<PropertyGroup>
@@ -101,11 +106,11 @@
 		</ReadLinesFromFile>
 
 		<!-- Assume changed contents have a changed timestamp; keep the combined content hash so touched inputs don't trigger R2R compilation. -->
-		<GetCachedFileHash Files="@(_NonUserAssemblies)" CacheFile="$(_R2RInputHashesCacheFile)">
-			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
+		<GetCachedFileHash Files="@(_R2RHashInputAssemblies)" CacheFile="$(_R2RInputHashesCacheFile)">
+			<Output TaskParameter="Items" ItemName="_R2RHashInputAssembliesWithHash" />
 			<Output TaskParameter="FilesHashed" PropertyName="_R2RInputFilesHashed" />
 		</GetCachedFileHash>
-		<Hash ItemsToHash="@(_NonUserAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
+		<Hash ItemsToHash="@(_R2RHashInputAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
 			<Output TaskParameter="HashResult" PropertyName="_R2RInputHash" />
 		</Hash>
 
@@ -130,6 +135,8 @@
 			<_ReadyToRunCompositeBuildReferences
 				Include="@(_ReadyToRunAssembliesToReference)"
 				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput)" />
+			<!-- Include $(_R2RInputHashFile) so that package downgrades (whose DLLs have older timestamps than existing R2R outputs) trigger _CreateR2RImages -->
+			<_ReadyToRunPgoFiles Include="$(_R2RInputHashFile)" Condition="Exists('$(_R2RInputHashFile)')" />
 		</ItemGroup>
 	</Target>
 

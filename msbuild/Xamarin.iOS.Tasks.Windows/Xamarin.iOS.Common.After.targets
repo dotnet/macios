@@ -270,6 +270,20 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			Files="@(_ResolvedFileToPublishAlwaysToServer)" />
 	</Target>
 
+	<!-- Copies files needed by _CopyResolvedFilesToPublishIfDifferent to the sever -->
+	<Target Name="_CopyResolvedFilesToPublishIfDifferentToServer" BeforeTargets="_CopyResolvedFilesToPublishIfDifferent">
+		<ItemGroup>
+			<_ResolvedFileToPublishIfDifferentToServer Include="@(_ResolvedFileToPublishIfDifferent)">
+				<TargetPath>%(Identity)</TargetPath>
+			</_ResolvedFileToPublishIfDifferentToServer>
+		</ItemGroup>
+
+		<CopyFilesToBuildServer 
+			Condition="'$(IsMacEnabled)' == 'true'" 
+			SessionId="$(BuildSessionId)" 
+			Files="@(_ResolvedFileToPublishIfDifferentToServer)" />
+	</Target>
+
 	<!-- This overrides the NET SDK target, it does the same thing but we add the SessionId property so the copy is also executed remotely -->
 	<!-- https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/targets/Microsoft.NET.Publish.targets#L222-L250 -->
 	<Target Name="_CopyResolvedFilesToPublishPreserveNewest"
@@ -312,6 +326,28 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			SourceFiles = "@(_ResolvedFileToPublishAlways)"
 			DestinationFiles="@(_ResolvedFileToPublishAlways->'$(PublishDir)%(RelativePath)')"
 			SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
+			OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
+			Retries="$(CopyRetryCount)"
+			RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
+			UseHardlinksIfPossible="$(CreateHardLinksForPublishFilesIfPossible)"
+			UseSymboliclinksIfPossible="$(CreateSymbolicLinksForPublishFilesIfPossible)">
+
+			<Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
+
+		</Copy>
+	</Target>
+
+	<!-- This overrides the NET SDK target, it does the same thing but we add the SessionId property so the copy is also executed remotely -->
+	<Target Name="_CopyResolvedFilesToPublishIfDifferent" DependsOnTargets="_ComputeResolvedFilesToPublishTypes">
+
+		<!--
+		Using SkipUnchangedFiles="true" because we want only differing files.
+		-->
+		<Copy Condition="'$(IsMacEnabled)' == 'true'"
+			SessionId="$(BuildSessionId)"
+			SourceFiles = "@(_ResolvedFileToPublishIfDifferent)"
+			DestinationFiles="@(_ResolvedFileToPublishIfDifferent->'$(PublishDir)%(RelativePath)')"
+			SkipUnchangedFiles="true"
 			OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
 			Retries="$(CopyRetryCount)"
 			RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"

@@ -56,28 +56,33 @@ namespace Xamarin.MacDev.Tasks {
 			var survivingSymbols = new HashSet<string> ();
 			foreach (var item in TrimmedAssemblies) {
 				var assemblyPath = item.ItemSpec;
-				if (!File.Exists (assemblyPath))
+				var assemblyInfo = new FileInfo (assemblyPath);
+				if (!assemblyInfo.Exists)
 					continue;
 
 				var assemblyName = Path.GetFileNameWithoutExtension (assemblyPath);
 				var cacheFile = Path.Combine (CacheDirectory, assemblyName + ".internal-symbols.cache");
+				var expectedHeader = $"# Length={assemblyInfo.Length};LastWriteTimeUtcTicks={assemblyInfo.LastWriteTimeUtc.Ticks}";
 
-				string []? cachedSymbols = null;
-				if (File.Exists (cacheFile) && File.GetLastWriteTimeUtc (cacheFile) >= File.GetLastWriteTimeUtc (assemblyPath)) {
-					cachedSymbols = File.ReadAllLines (cacheFile);
-					Log.LogMessage (MessageImportance.Low, "Using cached internal symbols for {0}", assemblyName);
+				if (File.Exists (cacheFile)) {
+					var cachedLines = File.ReadAllLines (cacheFile);
+					if (cachedLines.Length > 0 && cachedLines [0] == expectedHeader) {
+						Log.LogMessage (MessageImportance.Low, "Using cached internal symbols for {0}", assemblyName);
 
-					survivingSymbols.UnionWith (cachedSymbols);
-				} else {
-					var assemblySymbols = new HashSet<string> ();
-					CollectInternalSymbolsFromAssembly (assemblyPath, assemblySymbols);
-
-					// Write per-assembly cache (sorted for stability).
-					var sortedAssemblySymbols = assemblySymbols.OrderBy (s => s).ToArray ();
-					File.WriteAllLines (cacheFile, sortedAssemblySymbols);
-
-					survivingSymbols.UnionWith (assemblySymbols);
+						survivingSymbols.UnionWith (cachedLines.Skip (1));
+						continue;
+					}
 				}
+
+				var assemblySymbols = new HashSet<string> ();
+				CollectInternalSymbolsFromAssembly (assemblyPath, assemblySymbols);
+
+				// Write per-assembly cache (sorted for stability).
+				var linesToWrite = new List<string> (assemblySymbols.Count + 1) { expectedHeader };
+				linesToWrite.AddRange (assemblySymbols.OrderBy (s => s));
+				File.WriteAllLines (cacheFile, linesToWrite);
+
+				survivingSymbols.UnionWith (assemblySymbols);
 			}
 
 			WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, FilterToDlfcnSymbols (survivingSymbols));

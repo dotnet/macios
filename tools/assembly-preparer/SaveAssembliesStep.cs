@@ -120,11 +120,13 @@ namespace MonoTouch.Tuner {
 
 		void CopyIfNeeded (string source, string target)
 		{
-			if (!File.Exists (source))
+			var sourceInfo = new FileInfo (source);
+			if (!sourceInfo.Exists)
 				return;
 
 			// Skip if target is already up-to-date.
-			if (File.Exists (target) && File.GetLastWriteTimeUtc (source) <= File.GetLastWriteTimeUtc (target)) {
+			var targetInfo = new FileInfo (target);
+			if (targetInfo.Exists && sourceInfo.Length == targetInfo.Length && sourceInfo.LastWriteTimeUtc == targetInfo.LastWriteTimeUtc) {
 				Configuration.Log ($"Not copying '{source}' to '{target}' because it's already up-to-date.");
 				return;
 			}

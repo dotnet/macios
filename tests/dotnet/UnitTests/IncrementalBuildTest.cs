@@ -386,5 +386,92 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			// With the partial static registrar on CoreCLR, _LinkNativeExecutable should be skipped.
 			AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "SdkOnly")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "None")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "SdkOnly")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "None")]
+		public void PackageVersionDowngradeAndUpgrade (ApplePlatform platform, string runtimeIdentifiers, string linkMode)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GenerateProject (platform, TestName, runtimeIdentifiers, out var appPath);
+			var projectDir = Path.GetDirectoryName (projectPath)!;
+			var mainFile = Path.Combine (projectDir, "Main.cs");
+			var linkModeProperty = platform == ApplePlatform.MacOSX ? "LinkMode" : "MtouchLink";
+
+			var projectContents = File.ReadAllText (projectPath);
+			projectContents = projectContents.Replace (
+				"</Project>",
+				"""
+					<ItemGroup Condition="'$(NewtonsoftVersion)' != ''">
+						<PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftVersion)" />
+					</ItemGroup>
+				</Project>
+				""");
+			File.WriteAllText (projectPath, projectContents);
+
+			File.WriteAllText (mainFile, """
+				using System;
+				using System.Reflection;
+				using Foundation;
+
+				class MainClass {
+					static int Main (string [] args)
+					{
+						GC.KeepAlive (typeof (NSObject));
+						var version = typeof (Newtonsoft.Json.JsonConvert)
+							.Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute> ()?
+							.InformationalVersion ?? "unknown";
+						Console.WriteLine ($"Newtonsoft.Json={version}");
+						Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+						return args.Length;
+					}
+				}
+				""");
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties [linkModeProperty] = linkMode;
+
+			var bundledAssemblyPath = Path.Combine (appPath!, GetRelativeAssemblyDirectory (platform), "Newtonsoft.Json.dll");
+			var appExecutable = GetNativeExecutable (platform, appPath!);
+
+			// 1. Build with newer package version (13.0.4)
+			properties ["NewtonsoftVersion"] = "13.0.4";
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetAssemblyFileVersion (bundledAssemblyPath), Does.StartWith ("13.0.4"), "Initial 13.0.4 bundle version");
+			if (CanExecute (platform, runtimeIdentifiers)) {
+				var output = ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+				Assert.That (output, Does.Contain ("Newtonsoft.Json=13.0.4"), "Initial 13.0.4 runtime version");
+			}
+
+			// 2. Downgrade to older package version (13.0.1) without cleaning
+			properties ["NewtonsoftVersion"] = "13.0.1";
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetAssemblyFileVersion (bundledAssemblyPath), Does.StartWith ("13.0.1"), "Downgraded 13.0.1 bundle version");
+			if (CanExecute (platform, runtimeIdentifiers)) {
+				var output = ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+				Assert.That (output, Does.Contain ("Newtonsoft.Json=13.0.1"), "Downgraded 13.0.1 runtime version");
+			}
+
+			// 3. Upgrade back to newer package version (13.0.4) without cleaning
+			properties ["NewtonsoftVersion"] = "13.0.4";
+			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (GetAssemblyFileVersion (bundledAssemblyPath), Does.StartWith ("13.0.4"), "Upgraded 13.0.4 bundle version");
+			if (CanExecute (platform, runtimeIdentifiers)) {
+				var output = ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+				Assert.That (output, Does.Contain ("Newtonsoft.Json=13.0.4"), "Upgraded 13.0.4 runtime version");
+			}
+		}
+
+		static string GetAssemblyFileVersion (string assemblyPath)
+		{
+			Assert.That (assemblyPath, Does.Exist, "Bundled assembly exists");
+			using var ad = Mono.Cecil.AssemblyDefinition.ReadAssembly (assemblyPath);
+			var attr = ad.CustomAttributes.FirstOrDefault (a => a.AttributeType.FullName == "System.Reflection.AssemblyInformationalVersionAttribute");
+			return attr?.ConstructorArguments [0].Value as string ?? "";
+		}
 	}
 }

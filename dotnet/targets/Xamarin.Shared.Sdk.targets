@@ -1209,6 +1209,8 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<_LinkerCache Include="$(_CustomLinkerOptions)" />
+			<_LinkerCache Include="@(ReferencePath)" />
+			<_LinkerCache Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' Or '%(ResolvedFileToPublish.Extension)' == '.exe'" />
 		</ItemGroup>
 
 		<Hash
@@ -1386,12 +1388,12 @@
 				<!-- Rewrite the relative path so that everything ends up in the app bundle -->
 				<RelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_DylibPublishDir)\%(Filename)%(Extension)</RelativePath>
 				<RelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$(_RelativeAppBundlePath)\%(_FileNativeReference.RelativePath)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</_DynamicLibraryToPublish>
 
 			<!-- Add all the dynamic libraries to ResolvedFileToPublish -->
 			<ResolvedFileToPublish Include="@(_DynamicLibraryToPublish)">
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -1520,7 +1522,7 @@
 			<_TypeMapAssemblies Include="$(_TypeMapOutputDirectory)/*.dll" />
 			<ResolvedFileToPublish Include="@(_ManagedAssemblyToLinkFromLinker)">
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 				<RelativePath>$(_AssemblyPublishDir)%(Filename)%(Extension)</RelativePath>
 				<OriginalRelativePath>%(Filename)%(Extension)</OriginalRelativePath>
 			</ResolvedFileToPublish>
@@ -1553,7 +1555,7 @@
 	<Target
 		Name="_ExecutePostprocessAssembliesAfterIlc"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
-		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp);$(NativeObject)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
@@ -1970,7 +1972,7 @@
 		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
 			<ResolvedFileToPublish Include="$(_DedupAssembly)">
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
 				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
 			</ResolvedFileToPublish>
@@ -2096,7 +2098,7 @@
 			<!-- copy the aotdata files to the .app -->
 			<ResolvedFileToPublish Include="%(_AssembliesToAOT.AOTData)" >
 				<RelativePath>$(_AssemblyPublishDir)\%(_AssembliesToAOT.Filename).aotdata.%(_AssembliesToAOT.Arch)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -2146,6 +2148,8 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
+			<!-- Include $(_LinkerCachePath2) so that package downgrades (whose DLLs have older timestamps than the existing ILC output) trigger IlcCompile -->
+			<RdXmlFile Include="$(_LinkerCachePath2)" Condition="Exists('$(_LinkerCachePath2)')" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -2695,7 +2699,7 @@
 			<!-- Copy the executable from the intermediate directory to the .app -->
 			<ResolvedFileToPublish Include="$(_IntermediateNativeLibraryDir)$(_NativeExecutableName)">
 				<RelativePath>$(_NativeExecutablePublishDir)\$(_NativeExecutableName)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -2809,7 +2813,7 @@
 			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'">
 				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 
 			<!--
@@ -2999,6 +3003,8 @@
 
 			<!-- Rewrite the relative path so that everything ends up in the app bundle -->
 			<ResolvedFileToPublish RelativePath="$(_RelativeAppBundlePath)\%(RelativePath)" OriginalRelativePath="%(RelativePath)" />
+			<!-- Use IfDifferent instead of PreserveNewest so that package downgrades (whose files have older timestamps than the existing bundle) are still copied to the app bundle -->
+			<ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.CopyToPublishDirectory)' == 'PreserveNewest'" CopyToPublishDirectory="IfDifferent" />
 		</ItemGroup>
 
 		<!-- resolve any .xcframeworks and binding resource packages -->

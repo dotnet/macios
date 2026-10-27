@@ -180,6 +180,8 @@ static class C {
 	{
 		var native = new StringBuilder ();
 		var managed = new StringBuilder ();
+		var testedStructs = new StringBuilder ("\t\tstatic readonly HashSet<Type> testedStructs = [\n");
+		var excludedStructs = new StringBuilder ("\t\tstatic readonly Dictionary<string, string> excludedStructs = new () {\n");
 		const string license = "// Copyright (c) Microsoft Corporation.\n// Licensed under the MIT License.\n";
 		native.AppendLine (license);
 		managed.AppendLine (license);
@@ -189,8 +191,10 @@ static class C {
 
 		void Add (string ns, string [] types, string? managedCondition = null, string? nativeCondition = null, string? ignoreReason = null)
 		{
-			if (managedCondition is not null)
+			if (managedCondition is not null) {
 				managed.AppendLine ($"#if {managedCondition}");
+				testedStructs.AppendLine ($"#if {managedCondition}");
+			}
 			if (nativeCondition is not null)
 				native.AppendLine ($"#if {nativeCondition}");
 
@@ -198,44 +202,91 @@ static class C {
 				var names = type.Split (':');
 				var managedName = names [0];
 				var nativeName = names.Length == 2 ? names [1] : managedName;
+				testedStructs.AppendLine ($"\t\t\ttypeof ({ns}.{managedName}),");
 				native.AppendLine ($"CHECK_SIZE ({nativeName});");
 				managed.AppendLine ("\t\t[Test]");
 				if (ignoreReason is not null)
 					managed.AppendLine ($"\t\t[Ignore (\"{ignoreReason}\")]");
-				managed.AppendLine ($"\t\tpublic void Size_{ns.Replace ('.', '_')}_{managedName} ()");
+				managed.AppendLine ($"\t\tpublic void Size_{ns.Replace ('.', '_')}_{managedName.Replace ('.', '_')} ()");
 				managed.AppendLine ("\t\t{");
 				managed.AppendLine ($"\t\t\tCheckSize<{ns}.{managedName}> (\"{nativeName}\");");
 				managed.AppendLine ("\t\t}");
 				managed.AppendLine ();
 			}
 
-			if (managedCondition is not null)
+			if (managedCondition is not null) {
 				managed.AppendLine ("#endif");
+				testedStructs.AppendLine ("#endif");
+			}
 			if (nativeCondition is not null)
 				native.AppendLine ("#endif");
+		}
+
+		void Exclude (string ns, string [] types, string reason, string? managedCondition = null)
+		{
+			if (managedCondition is not null)
+				excludedStructs.AppendLine ($"#if {managedCondition}");
+			foreach (var type in types)
+				excludedStructs.AppendLine ($"\t\t\t{{ \"{ns}.{type}\", \"{reason}\" }},");
+			if (managedCondition is not null)
+				excludedStructs.AppendLine ("#endif");
 		}
 
 		Add ("Foundation", [
 			"NSRange", "NSDecimal", "NSOperatingSystemVersion",
 		]);
+		Add ("AVFoundation", [
+			"AVAudio3DAngularOrientation", "AVAudio3DVectorOrientation", "AVAudioConverterPrimeInfo",
+			"AVBeatRange", "AVEdgeWidths", "AVPixelAspectRatio",
+			"AVSampleCursorStorageRange", "AVCaptureTimecode", "AVPlannedVideoSegmentBoundaryGuidelines",
+		]);
+		Add ("AVFoundation", [
+			"AVCaptureWhiteBalanceChromaticityValues", "AVCaptureWhiteBalanceGains", "AVCaptureWhiteBalanceTemperatureAndTintValues",
+		], "!__MACOS__", "!TARGET_OS_OSX");
+		Add ("AVFoundation", [
+			"AVCaptionDimension", "AVCaptionPoint", "AVCaptionSize", "AVAudioVoiceProcessingOtherAudioDuckingConfiguration",
+		], "!__TVOS__", "!TARGET_OS_TV");
+		Add ("AVKit", [
+			"AVLegibleMediaOptionsMenuState",
+		], "!__TVOS__", "!TARGET_OS_TV");
+		Add ("Accelerate", [
+			"vImageBuffer:vImage_Buffer", "vImageAffineTransformFloat:vImage_AffineTransform",
+			"vImageAffineTransformDouble:vImage_AffineTransform_Double",
+			"PixelFFFF:Pixel_FFFF", "Pixel8888:Pixel_8888", "PixelARGB16S:Pixel_ARGB_16S", "PixelARGB16U:Pixel_ARGB_16U",
+		]);
+		Add ("CoreFoundation", [
+			"CFRange", "CFStreamClientContext", "CGAffineTransformComponents",
+		]);
 		Add ("CoreGraphics", [
 			"CGPoint", "CGSize", "CGRect", "CGVector", "CGAffineTransform",
+			"CGBitmapParameters", "CGContentInfo", "CGContentToneMappingInfo",
 			"NVector3:vector_float3",
 			"NVector2i:vector_int2", "NVector3i:vector_int3", "NVector4i:vector_int4",
 			"NVector2d:vector_double2", "NVector3d:vector_double3", "NVector4d:vector_double4",
 			"NVector16b:vector_uchar16", "NQuaterniond:simd_quatd",
 			"NMatrix2:matrix_float2x2", "NMatrix3:matrix_float3x3", "NMatrix4:matrix_float4x4",
 			"NMatrix4x3:matrix_float4x3", "NMatrix4d:matrix_double4x4",
+			"RMatrix3:GLKMatrix3",
 		]);
 		Add ("System.Numerics", [
 			"Vector2:vector_float2", "Vector4:vector_float4", "Quaternion:simd_quatf",
 		]);
+		Add ("CoreGraphics", [
+			"CGEventTapInformation",
+		], "__MACOS__ || __MACCATALYST__", "TARGET_OS_OSX || TARGET_OS_MACCATALYST");
 		Add ("CoreAnimation", [
 			"CATransform3D", "CAFrameRateRange",
 		]);
 		Add ("CoreMedia", [
-			"CMTime", "CMTimeRange", "CMTimeMapping", "CMSampleTimingInfo", "CMVideoDimensions",
+			"CMTime", "CMTimeRange", "CMTimeMapping", "CMSampleTimingInfo", "CMVideoDimensions", "CMTag",
 		]);
+		Add ("CoreMidi", [
+			"Midi2DeviceManufacturer:MIDI2DeviceManufacturer", "Midi2DeviceRevisionLevel:MIDI2DeviceRevisionLevel",
+			"MidiCIDeviceIdentification:MIDICIDeviceIdentification", "MidiCIProfileId:MIDICIProfileID",
+			"MidiCIProfileIdStandard:MIDICIProfileIDStandard", "MidiCIProfileIdManufacturerSpecific:MIDICIProfileIDManufacturerSpecific",
+			"MidiControlTransform:MIDIControlTransform", "MidiThruConnectionEndpoint:MIDIThruConnectionEndpoint",
+			"MidiTransform:MIDITransform",
+		], "!__TVOS__", "!TARGET_OS_TV");
 		Add ("CoreVideo", [
 			"CVTime",
 		], ignoreReason: "CVTime.TimeScale is a long, but native timeScale is int32_t. Fixing the layout requires an API-breaking change.");
@@ -243,6 +294,7 @@ static class C {
 		Add ("CoreVideo", [
 			"CVTimeStamp", "CVSMPTETime", "CVPlanarComponentInfo",
 			"CVPlanarPixelBufferInfo_YCbCrPlanar", "CVPlanarPixelBufferInfo_YCbCrBiPlanar",
+			"CVFillExtendedPixelsCallBackDataStruct:CVFillExtendedPixelsCallBackData",
 		]);
 		Add ("CoreLocation", [
 			"CLLocationCoordinate2D",
@@ -262,6 +314,7 @@ static class C {
 			"MTLQuadTessellationFactorsHalf", "MTLTriangleTessellationFactorsHalf",
 			"MTLTextureSwizzleChannels",
 			"MTLVertexAmplificationViewMapping", "MTLCoordinate2D", "MTLAccelerationStructureSizes", "MTLResourceId:MTLResourceID",
+			"MTL4BufferRange",
 		]);
 		Add ("Metal", [
 			"MTLIndirectCommandBufferExecutionRange",
@@ -272,6 +325,13 @@ static class C {
 			"MPSImageCoordinate", "MPSImageRegion", "MPSImageHistogramInfo", "MPSMatrixCopyOffsets",
 			"MPSImageReadWriteParams", "MPSImageKeypointRangeInfo", "MPSStateTextureInfo",
 			"MPSMatrixOffset", "MPSNDArrayOffsets", "MPSNDArraySizes",
+			"MPSFunctionsAxisAlignedBoundingBox:MPSFunctions_AABB",
+		]);
+		Add ("ModelIO", [
+			"MDLVoxelIndexExtent",
+		]);
+		Add ("GameplayKit", [
+			"GKQuad",
 		]);
 		Add ("SceneKit", [
 			"SCNVector3", "SCNVector4", "SCNQuaternion", "SCNMatrix4",
@@ -279,19 +339,160 @@ static class C {
 		Add ("GameController", [
 			"GCAcceleration", "GCRotationRate", "GCQuaternion",
 			"GCDualSenseAdaptiveTriggerPositionalAmplitudes", "GCDualSenseAdaptiveTriggerPositionalResistiveStrengths",
+			"GCExtendedGamepadSnapShotDataV100", "GCGamepadSnapShotDataV100", "GCMicroGamepadSnapShotDataV100",
+			"GCMicroGamepadSnapshotData", "GCPoint2",
 		]);
 		Add ("AudioToolbox", [
 			"AudioStreamBasicDescription", "AudioStreamPacketDescription", "AudioChannelDescription",
 			"SmpteTime:SMPTETime", "AudioTimeStamp", "AudioBuffer", "AudioValueRange", "AudioClassDescription",
 			"AudioConverterPrimeInfo", "AudioQueueParameterEvent", "AudioQueueLevelMeterState", "AudioFilePacketTableInfo",
+			"AudioStreamPacketDependencyDescription", "AudioFileSmpteTime:AudioFile_SMPTE_Time", "AudioFileMarker",
+			"AudioPacketRangeByteCountTranslation", "AudioPacketRollDistanceTranslation", "AudioIndependentPacketTranslation",
+			"AudioPacketDependencyInfoTranslation", "AudioFormat:AudioFormatListItem", "AudioQueueBuffer", "AudioQueueChannelAssignment",
+			"CABarBeatTime", "MidiChannelMessage:MIDIChannelMessage", "MidiNoteMessage:MIDINoteMessage",
 		]);
+		Add ("AudioUnit", [
+			"AudioComponentDescription", "AudioUnitParameterEvent",
+			"AUParameterObserverToken", "AURecordedParameterEvent", "AUParameterAutomationEvent",
+		]);
+		Add ("AudioUnit", [
+			"AURenderEventHeader", "AUParameterEvent",
+		], ignoreReason: "Native events use 4-byte packing, but the public managed structures use default packing. Changing the layout is API-breaking.");
+		Add ("AudioUnit", [
+			"AURenderEvent",
+		], ignoreReason: "The public managed union omits native MIDI event variants and uses different packing. Changing the layout is API-breaking.");
+		Add ("FileProvider", [
+			"NSFileProviderTypeAndCreator",
+		], "!__TVOS__ && !__MACCATALYST__", "!TARGET_OS_TV && !TARGET_OS_MACCATALYST");
+		Add ("PrintCore", [
+			"PMPaperMargins", "PMRect", "PMResolution",
+		], "__MACOS__", "TARGET_OS_OSX");
+		Add ("Security", [
+			"AuthorizationCallbacks", "SecKeychainSettings",
+		], "__MACOS__", "TARGET_OS_OSX");
+		Add ("Darwin", [
+			"KernelEvent:struct kevent", "TimeSpec:struct timespec",
+		], "__MACOS__", "TARGET_OS_OSX");
+		Add ("SensorKit", [
+			"SRAmbientLightChromaticity",
+		], "HAS_SENSORKIT", "!TARGET_OS_TV && !TARGET_OS_OSX");
+		Add ("BrowserEngineKit", [
+			"BEDirectionalTextRange",
+		], "HAS_BROWSERENGINEKIT && !__TVOS__ && !__MACOS__", "!TARGET_OS_TV && !TARGET_OS_OSX");
+		Add ("CarPlay", [
+			"CPLocationCoordinate3D",
+		], "HAS_CARPLAY", "TARGET_OS_IOS && !TARGET_OS_MACCATALYST");
 		Add ("UIKit", [
 			"UIEdgeInsets", "UIOffset", "UIFloatRange", "NSDirectionalEdgeInsets",
 		], "HAS_UIKIT", "!TARGET_OS_OSX");
 		Add ("AppKit", [
+			"NSEdgeInsets",
+		], "__MACCATALYST__", "TARGET_OS_MACCATALYST");
+		Add ("AppKit", [
 			"NSEdgeInsets", "NSDirectionalEdgeInsets",
 		], "__MACOS__", "TARGET_OS_OSX");
 
+		Exclude ("CoreVideo", ["CVPlanarPixelBufferInfo"], "Managed wrapper for a variable-length native array.");
+		Exclude ("BrowserEngineKit", ["BEDirectionalTextRange"], "BrowserEngineKit is not available in the native tvOS SDK.", "__TVOS__");
+		Exclude ("AVFoundation", [
+			"AVCaptureWhiteBalanceChromaticityValues", "AVCaptureWhiteBalanceGains", "AVCaptureWhiteBalanceTemperatureAndTintValues",
+		], "Not available in the native macOS SDK.", "__MACOS__");
+		Exclude ("AVFoundation", ["AVAudioVoiceProcessingOtherAudioDuckingConfiguration"],
+			"Not available in the native tvOS SDK.", "__TVOS__");
+		Exclude ("FileProvider", ["NSFileProviderTypeAndCreator"],
+			"Not available in the native Mac Catalyst SDK.", "__MACCATALYST__");
+		Exclude ("MetalPerformanceShaders", ["MPSAxisAlignedBoundingBox"], "Uses custom SIMD marshaling.");
+		Exclude ("ModelIO", ["MDLAxisAlignedBoundingBox"], "Uses custom SIMD marshaling.");
+		Exclude ("GameplayKit", ["GKBox", "GKTriangle"], "Uses custom SIMD marshaling.");
+		Exclude ("Metal", ["MTLClearValue"], "Managed convenience union with no corresponding native SDK type.");
+		Exclude ("Metal", [
+			"MTL4CopySparseBufferMappingOperation", "MTL4CopySparseTextureMappingOperation",
+			"MTL4UpdateSparseBufferMappingOperation", "MTL4UpdateSparseTextureMappingOperation",
+		], "The SDK does not expose these sparse mapping operation structures.");
+		Exclude ("AVFoundation", [
+			"AVSampleCursorSyncInfo", "AVSampleCursorDependencyInfo", "AVSampleCursorChunkInfo",
+		], "Boolean fields use a separate blittable representation for native calls.");
+		Add ("AVFoundation", ["AVSampleCursorAudioDependencyInfo"]);
+		Exclude ("AddressBook", ["ABMultiValueEntry`1"], "Generic managed entry wrapper, not a native structure.");
+		Exclude ("AudioToolbox", ["AudioBufferList", "AudioFileRegion"], "Managed view of a variable-length native structure.");
+		Exclude ("AudioToolbox", ["ExtendedNoteOnEvent"], "Represents the fixed header without the variable-length native controls array.");
+		Exclude ("CoreMidi", ["MidiValueMap"], "Managed array copied explicitly when marshaling MidiThruConnectionParams.");
+		Exclude ("AudioUnit", [
+			"AudioUnitParameterEvent+EventValuesStruct", "AudioUnitParameterEvent+EventValuesStruct+ImmediateStruct",
+			"AudioUnitParameterEvent+EventValuesStruct+RampStruct",
+		], "Anonymous native member layouts are covered by the enclosing AudioUnitParameterEvent size test.");
+		Exclude ("CoreFoundation", ["CFBundle+PackageInfo"], "Managed return value combining two native output parameters.");
+		Exclude ("CoreFoundation", ["CFSocketNativeHandle", "DispatchTime"], "Managed wrapper for a native scalar.");
+		Exclude ("CoreGraphics", ["CGColorConversionInfoTriple"], "Managed argument grouping for a variadic function, not a native structure.");
+		Exclude ("CoreGraphics", ["CGPathElement"], "Managed copy of native point data instead of a native pointer.");
+		Exclude ("CoreMedia", ["CMTimeScale"], "Managed wrapper for a native scalar.");
+		Exclude ("CoreMedia", ["TextMarkupColor"], "Managed color components converted to a CFArray.");
+		Exclude ("CoreServices", ["FSEvent"], "Managed event assembled from native callback arguments.");
+		Exclude ("CoreVideo", ["CVFillExtendedPixelsCallBackData"], "Managed callback converted to CVFillExtendedPixelsCallBackDataStruct.");
+		Exclude ("GameController", ["GCExtendedGamepadSnapshotData"], "Uses a separate blittable representation for native calls.");
+		Exclude ("GLKit", ["GLKVertexAttributeParameters"], "Uses a separate blittable representation for native calls.");
+		Exclude ("ObjCRuntime", ["NativeHandle"], "Managed wrapper for a native pointer.");
+		Exclude ("ObjCRuntime", [
+			"BlockDescriptor", "BlockLiteral", "Class+objc_attribute_prop", "IntPtrTypeValueTuple", "ObjCSuper",
+			"Runtime+Delegates", "Runtime+InitializationOptions", "Runtime+MTAssembly", "Runtime+MTClassMap",
+			"Runtime+MTFullTokenReference", "Runtime+MTManagedClassMap", "Runtime+MTProtocolMap", "Runtime+MTProtocolWrapperMap",
+			"Runtime+MTRegistrationMap", "Runtime+MonoMethodSignature", "Runtime+MonoObject", "Runtime+NXArchInfo",
+			"Runtime+Trampolines", "TransientCFObject", "TransientCFString", "TransientString", "XamarinBlockDescriptor",
+		], "Runtime implementation detail, not an Apple SDK structure binding.");
+		Exclude ("PassKit", ["PKMerchantCategoryCode"], "Managed wrapper for a native scalar.");
+		Exclude ("UIKit", ["UIPointerAccessoryPosition"], "Uses custom SIMD marshaling.");
+		Exclude ("VideoToolbox", ["VTDataRateLimit"], "Managed data-rate values converted to an NSArray.");
+
+		Exclude ("AVFoundation", [
+			"AVSampleCursorSyncInfo_Blittable", "AVSampleCursorDependencyInfo_Blittable", "AVSampleCursorChunkInfo_Blittable",
+			"AVSampleCursorAudioDependencyInfo_Blittable",
+		], "Internal marshaling representation.");
+		Exclude ("AudioToolbox", [
+			"AudioBalanceFade+Layout", "AudioBytePacketTranslation", "AudioFileTypeAndFormatID", "AudioFormatInfo",
+			"AudioFramePacketTranslation", "AudioPanningInfo+Layout",
+		], "Internal native-call implementation detail.");
+		Exclude ("AudioUnit", [
+			"AURenderCallbackStruct", "AUSamplerInstrumentData", "AUScheduledAudioFileRegion+ScheduledAudioFileRegion",
+			"AudioObjectPropertyAddress", "AudioUnitConnection", "AudioUnitParameterInfoNative",
+		], "Internal native-call implementation detail.");
+		Exclude ("CFNetwork", ["CFHTTPMessage+CFStreamError"], "Internal native-call implementation detail.");
+		Exclude ("Compression", ["CompressionStreamStruct"], "Internal native-call implementation detail.");
+		Exclude ("CoreFoundation", [
+			"CFMessagePort+ContextProxy", "CFNetwork+PACProxyCallbackData", "CFRunLoopSourceContext", "CFSocketContext", "CFSocketSignature",
+		], "Internal native-call implementation detail.");
+		Exclude ("CoreGraphics", ["CGFunction+CGFunctionCallbacks", "CGPatternCallbacks"], "Internal callback representation.");
+		Exclude ("CoreMedia", [
+			"CMBufferQueue+CMBufferCallbacks", "CMBufferQueue+CMBufferCallbacks2", "CMCustomBlockAllocator+CMBlockBufferCustomBlockSource",
+		], "Internal callback representation.");
+		Exclude ("CoreMidi", [
+			"MidiCIDeviceIdentification_Blittable", "MidiClient+MidiIOErrorNotification", "MidiClient+MidiObjectAddRemoveNotification",
+			"MidiClient+MidiObjectPropertyChangeNotification", "MidiThruConnectionParamsStruct",
+		], "Internal native-call implementation detail.");
+		Exclude ("CoreServices", ["FSEventStreamContext"], "Internal callback representation.");
+		Exclude ("CoreText", [
+			"CTParagraphStyleSetting", "CTParagraphStyleSettingValue", "CTRunDelegateCallbacks",
+		], "Internal native-call implementation detail.");
+		Exclude ("Foundation", [
+			"NSFastEnumerationState", "NSObject+objc_super", "NSObjectData",
+		], "Runtime implementation detail, not an Apple SDK structure binding.");
+		Exclude ("GameController", [
+			"GCDualSenseAdaptiveTriggerPositionalAmplitudes_Blittable", "GCDualSenseAdaptiveTriggerPositionalResistiveStrengths_Blittable",
+			"GCExtendedGamepadSnapshotData_Blittable",
+		], "Internal marshaling representation.");
+		Exclude ("GLKit", ["GLKVertexAttributeParametersInternal"], "Internal marshaling representation.");
+		Exclude ("MediaToolbox", ["MTAudioProcessingTap+Callbacks"], "Internal callback representation.");
+		Exclude ("Security", [
+			"AuthorizationItem", "AuthorizationItemNative", "AuthorizationItemSet", "AuthorizationRightsNative",
+		], "Internal native-call implementation detail.");
+		Exclude ("SystemConfiguration", [
+			"NetworkReachability+SCNetworkReachabilityContext", "NetworkReachability+sockaddr_in",
+		], "Internal native-call implementation detail.");
+		Exclude ("VideoToolbox", ["VTDecompressionSession+VTDecompressionOutputCallbackRecord"], "Internal callback representation.");
+
+		testedStructs.AppendLine ("\t\t];");
+		excludedStructs.AppendLine ("\t\t};");
+		managed.Append (testedStructs);
+		managed.Append (excludedStructs);
 		managed.AppendLine ("\t}");
 		managed.AppendLine ("}");
 		File.WriteAllText ("libstructsizes.generated.h", native.ToString ());

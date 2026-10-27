@@ -112,7 +112,7 @@ namespace MonoTouchFixtures.Foundation {
 			using var unsignedPath = NSIndexPath.Create (unsigned);
 			signed [0] = 42;
 			unsigned [0] = 42;
-			Assert.That (signedPath.GetIndexes (), Is.EqualTo (new nuint [] { 0, nuint.MaxValue, unchecked ((nuint) nint.MinValue), (nuint) nint.MaxValue }), "Signed");
+			Assert.That (signedPath.GetIndexes (), Is.EqualTo (new nuint [] { 0, nuint.MaxValue, unchecked((nuint) nint.MinValue), (nuint) nint.MaxValue }), "Signed");
 			Assert.That (unsignedPath.GetIndexes (), Is.EqualTo (new nuint [] { 0, nuint.MaxValue, (nuint) nint.MaxValue + 1 }), "Unsigned");
 
 			using var signedParams = NSIndexPath.Create ((nint) 1, (nint) 2);
@@ -127,7 +127,7 @@ namespace MonoTouchFixtures.Foundation {
 			nint [] source = { 42, 0, -1, nint.MinValue, nint.MaxValue, 42 };
 			using var path = NSIndexPath.Create ((ReadOnlySpan<nint>) source.AsSpan (1, 4));
 			source [1] = 42;
-			Assert.That (path.GetIndexes (), Is.EqualTo (new nuint [] { 0, nuint.MaxValue, unchecked ((nuint) nint.MinValue), (nuint) nint.MaxValue }), "Slice copy");
+			Assert.That (path.GetIndexes (), Is.EqualTo (new nuint [] { 0, nuint.MaxValue, unchecked((nuint) nint.MinValue), (nuint) nint.MaxValue }), "Slice copy");
 
 			using var stackPath = NSIndexPath.Create ((ReadOnlySpan<nint>) stackalloc nint [] { -1, 123 });
 			Assert.That (stackPath.GetIndexes (), Is.EqualTo (new nuint [] { nuint.MaxValue, 123 }), "Stack");
@@ -157,7 +157,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void CreateSignedSpan ()
 		{
 			int [] source = { 42, 0, -1, int.MinValue, int.MaxValue, 42 };
-			nuint [] expected = { 0, nuint.MaxValue, unchecked ((nuint) (nint) int.MinValue), int.MaxValue };
+			nuint [] expected = { 0, nuint.MaxValue, unchecked((nuint) (nint) int.MinValue), int.MaxValue };
 			using var path = NSIndexPath.Create ((ReadOnlySpan<int>) source.AsSpan (1, 4));
 			using var arrayPath = NSIndexPath.Create (new int [] { 0, -1, int.MinValue, int.MaxValue });
 			source [1] = 42;

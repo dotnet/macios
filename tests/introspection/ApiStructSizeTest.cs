@@ -27,6 +27,7 @@ namespace Introspection {
 		{
 			return types.Where (type => type.IsValueType && !type.IsPrimitive && !type.IsEnum && !IsCompilerGenerated (type))
 				.Where (type => !testedStructs.Contains (type) && !excludedStructs.ContainsKey (type.FullName ?? type.Name))
+				.Where (type => !unavailableStructs.Contains (type.FullName ?? type.Name))
 				.OrderBy (type => type.FullName, StringComparer.Ordinal)
 				.ToArray ();
 		}
@@ -35,8 +36,8 @@ namespace Introspection {
 		public void AllStructsAreListed ()
 		{
 			Assert.That (excludedStructs.Values, Is.All.Not.Empty, "Every excluded struct must have a reason.");
-			Assert.That (testedStructs.Select (type => type.FullName).Intersect (excludedStructs.Keys), Is.Empty,
-				"A struct must not be both tested and excluded.");
+			Assert.That (testedStructs.Select (type => type.FullName).Intersect (excludedStructs.Keys.Concat (unavailableStructs)), Is.Empty,
+				"A struct must not be both tested and excluded or unavailable.");
 			var unlisted = GetUnlistedStructs (typeof (NSObject).Assembly.GetTypes ());
 			Assert.That (unlisted, Is.Empty, "Add these structs to WriteStructSizeTests in tests/test-libraries/testgenerator.cs:\n" +
 				string.Join ("\n", unlisted.Select (type => type.FullName)));
@@ -57,6 +58,7 @@ namespace Introspection {
 			Assert.That (GetUnlistedStructs ([
 				typeof (UnlistedStruct), typeof (GeneratedStruct), typeof (GeneratedStruct.NestedStruct),
 				typeof (NSRange), typeof (ObjCRuntime.NativeHandle), typeof (int), typeof (string), typeof (DayOfWeek),
+				typeof (AVFoundation.AVCaptureWhiteBalanceGains),
 			]),
 				Is.EqualTo (new [] { typeof (UnlistedStruct) }));
 		}

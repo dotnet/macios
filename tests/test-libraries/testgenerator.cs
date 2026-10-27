@@ -15,6 +15,15 @@ static class C {
 		// Arm64 is never stret
 	}
 
+	[Flags]
+	enum StructPlatforms {
+		iOS = 1,
+		tvOS = 2,
+		macOS = 4,
+		MacCatalyst = 8,
+		All = iOS | tvOS | macOS | MacCatalyst,
+	}
+
 	// X86: structs > 8 + structs with 3 members.
 	// X64: structs > 16
 	// ARM32: all structs, except those matching an integral platform type (i.e. a struct with a single int, but not a struct with a single float).
@@ -181,7 +190,14 @@ static class C {
 		var native = new StringBuilder ();
 		var managed = new StringBuilder ();
 		var testedStructs = new StringBuilder ("\t\tstatic readonly HashSet<Type> testedStructs = [\n");
+		var unavailableStructs = new StringBuilder ("\t\tstatic readonly HashSet<string> unavailableStructs = [\n");
 		var excludedStructs = new StringBuilder ("\t\tstatic readonly Dictionary<string, string> excludedStructs = new () {\n");
+		var platformConditions = new [] {
+			(Platform: StructPlatforms.iOS, Managed: "__IOS__", Native: "(TARGET_OS_IOS && !TARGET_OS_MACCATALYST)"),
+			(Platform: StructPlatforms.tvOS, Managed: "__TVOS__", Native: "TARGET_OS_TV"),
+			(Platform: StructPlatforms.macOS, Managed: "__MACOS__", Native: "TARGET_OS_OSX"),
+			(Platform: StructPlatforms.MacCatalyst, Managed: "__MACCATALYST__", Native: "TARGET_OS_MACCATALYST"),
+		};
 		const string license = "// Copyright (c) Microsoft Corporation.\n// Licensed under the MIT License.\n";
 		native.AppendLine (license);
 		managed.AppendLine (license);
@@ -189,20 +205,24 @@ static class C {
 		managed.AppendLine ("namespace Introspection {");
 		managed.AppendLine ("\tpublic partial class ApiStructSizeTest {");
 
-		void Add (string ns, string [] types, string? managedCondition = null, string? nativeCondition = null, string? ignoreReason = null)
+		void Add (string ns, string [] types, StructPlatforms platforms, string? ignoreReason = null)
 		{
-			if (managedCondition is not null) {
-				managed.AppendLine ($"#if {managedCondition}");
-				testedStructs.AppendLine ($"#if {managedCondition}");
-			}
-			if (nativeCondition is not null)
-				native.AppendLine ($"#if {nativeCondition}");
+			if (platforms == 0 || (platforms & ~StructPlatforms.All) != 0)
+				throw new ArgumentOutOfRangeException (nameof (platforms));
+			var conditions = platformConditions.Where (condition => (platforms & condition.Platform) != 0).ToArray ();
+			var managedCondition = string.Join (" || ", conditions.Select (condition => condition.Managed));
+			var nativeCondition = string.Join (" || ", conditions.Select (condition => condition.Native));
+			managed.AppendLine ($"#if {managedCondition}");
+			testedStructs.AppendLine ($"#if {managedCondition}");
+			unavailableStructs.AppendLine ($"#if !({managedCondition})");
+			native.AppendLine ($"#if {nativeCondition}");
 
 			foreach (var type in types) {
 				var names = type.Split (':');
 				var managedName = names [0];
 				var nativeName = names.Length == 2 ? names [1] : managedName;
 				testedStructs.AppendLine ($"\t\t\ttypeof ({ns}.{managedName}),");
+				unavailableStructs.AppendLine ($"\t\t\t\"{ns}.{managedName.Replace ('.', '+')}\",");
 				native.AppendLine ($"CHECK_SIZE ({nativeName});");
 				managed.AppendLine ("\t\t[Test]");
 				if (ignoreReason is not null)
@@ -214,49 +234,43 @@ static class C {
 				managed.AppendLine ();
 			}
 
-			if (managedCondition is not null) {
-				managed.AppendLine ("#endif");
-				testedStructs.AppendLine ("#endif");
-			}
-			if (nativeCondition is not null)
-				native.AppendLine ("#endif");
+			managed.AppendLine ("#endif");
+			testedStructs.AppendLine ("#endif");
+			unavailableStructs.AppendLine ("#endif");
+			native.AppendLine ("#endif");
 		}
 
-		void Exclude (string ns, string [] types, string reason, string? managedCondition = null)
+		void Exclude (string ns, string [] types, string reason)
 		{
-			if (managedCondition is not null)
-				excludedStructs.AppendLine ($"#if {managedCondition}");
 			foreach (var type in types)
 				excludedStructs.AppendLine ($"\t\t\t{{ \"{ns}.{type}\", \"{reason}\" }},");
-			if (managedCondition is not null)
-				excludedStructs.AppendLine ("#endif");
 		}
 
 		Add ("Foundation", [
 			"NSRange", "NSDecimal", "NSOperatingSystemVersion",
-		]);
+		], StructPlatforms.All);
 		Add ("AVFoundation", [
 			"AVAudio3DAngularOrientation", "AVAudio3DVectorOrientation", "AVAudioConverterPrimeInfo",
 			"AVBeatRange", "AVEdgeWidths", "AVPixelAspectRatio",
 			"AVSampleCursorStorageRange", "AVCaptureTimecode", "AVPlannedVideoSegmentBoundaryGuidelines",
-		]);
+		], StructPlatforms.All);
 		Add ("AVFoundation", [
 			"AVCaptureWhiteBalanceChromaticityValues", "AVCaptureWhiteBalanceGains", "AVCaptureWhiteBalanceTemperatureAndTintValues",
-		], "!__MACOS__", "!TARGET_OS_OSX");
+		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.MacCatalyst);
 		Add ("AVFoundation", [
 			"AVCaptionDimension", "AVCaptionPoint", "AVCaptionSize", "AVAudioVoiceProcessingOtherAudioDuckingConfiguration",
-		], "!__TVOS__", "!TARGET_OS_TV");
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("AVKit", [
 			"AVLegibleMediaOptionsMenuState",
-		], "!__TVOS__", "!TARGET_OS_TV");
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("Accelerate", [
 			"vImageBuffer:vImage_Buffer", "vImageAffineTransformFloat:vImage_AffineTransform",
 			"vImageAffineTransformDouble:vImage_AffineTransform_Double",
 			"PixelFFFF:Pixel_FFFF", "Pixel8888:Pixel_8888", "PixelARGB16S:Pixel_ARGB_16S", "PixelARGB16U:Pixel_ARGB_16U",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreFoundation", [
 			"CFRange", "CFStreamClientContext", "CGAffineTransformComponents",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreGraphics", [
 			"CGPoint", "CGSize", "CGRect", "CGVector", "CGAffineTransform",
 			"CGBitmapParameters", "CGContentInfo", "CGContentToneMappingInfo",
@@ -267,45 +281,45 @@ static class C {
 			"NMatrix2:matrix_float2x2", "NMatrix3:matrix_float3x3", "NMatrix4:matrix_float4x4",
 			"NMatrix4x3:matrix_float4x3", "NMatrix4d:matrix_double4x4",
 			"RMatrix3:GLKMatrix3",
-		]);
+		], StructPlatforms.All);
 		Add ("System.Numerics", [
 			"Vector2:vector_float2", "Vector4:vector_float4", "Quaternion:simd_quatf",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreGraphics", [
 			"CGEventTapInformation",
-		], "__MACOS__ || __MACCATALYST__", "TARGET_OS_OSX || TARGET_OS_MACCATALYST");
+		], StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("CoreAnimation", [
 			"CATransform3D", "CAFrameRateRange",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreMedia", [
 			"CMTime", "CMTimeRange", "CMTimeMapping", "CMSampleTimingInfo", "CMVideoDimensions", "CMTag",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreMidi", [
 			"Midi2DeviceManufacturer:MIDI2DeviceManufacturer", "Midi2DeviceRevisionLevel:MIDI2DeviceRevisionLevel",
 			"MidiCIDeviceIdentification:MIDICIDeviceIdentification", "MidiCIProfileId:MIDICIProfileID",
 			"MidiCIProfileIdStandard:MIDICIProfileIDStandard", "MidiCIProfileIdManufacturerSpecific:MIDICIProfileIDManufacturerSpecific",
 			"MidiControlTransform:MIDIControlTransform", "MidiThruConnectionEndpoint:MIDIThruConnectionEndpoint",
 			"MidiTransform:MIDITransform",
-		], "!__TVOS__", "!TARGET_OS_TV");
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("CoreVideo", [
 			"CVTime",
-		], ignoreReason: "CVTime.TimeScale is a long, but native timeScale is int32_t. Fixing the layout requires an API-breaking change.");
+		], StructPlatforms.All, ignoreReason: "CVTime.TimeScale is a long, but native timeScale is int32_t. Fixing the layout requires an API-breaking change.");
 		// CVPlanarPixelBufferInfo wraps a variable-length array, not a fixed native layout.
 		Add ("CoreVideo", [
 			"CVTimeStamp", "CVSMPTETime", "CVPlanarComponentInfo",
 			"CVPlanarPixelBufferInfo_YCbCrPlanar", "CVPlanarPixelBufferInfo_YCbCrBiPlanar",
 			"CVFillExtendedPixelsCallBackDataStruct:CVFillExtendedPixelsCallBackData",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreLocation", [
 			"CLLocationCoordinate2D",
-		]);
+		], StructPlatforms.All);
 		Add ("CoreMotion", [
 			"CMAcceleration", "CMRotationRate", "CMRotationMatrix", "CMQuaternion",
 			"CMMagneticField", "CMCalibratedMagneticField",
-		], "HAS_COREMOTION", "!TARGET_OS_TV");
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("MapKit", [
 			"MKCoordinateSpan", "MKCoordinateRegion", "MKMapPoint", "MKMapSize", "MKMapRect", "MKTileOverlayPath",
-		], "HAS_MAPKIT");
+		], StructPlatforms.All);
 		Add ("Metal", [
 			"MTLOrigin", "MTLSize", "MTLRegion", "MTLScissorRect", "MTLViewport", "MTLSamplePosition", "MTLClearColor",
 			"MTLDispatchThreadgroupsIndirectArguments", "MTLStageInRegionIndirectArguments",
@@ -315,10 +329,10 @@ static class C {
 			"MTLTextureSwizzleChannels",
 			"MTLVertexAmplificationViewMapping", "MTLCoordinate2D", "MTLAccelerationStructureSizes", "MTLResourceId:MTLResourceID",
 			"MTL4BufferRange",
-		]);
+		], StructPlatforms.All);
 		Add ("Metal", [
 			"MTLIndirectCommandBufferExecutionRange",
-		], "__MACOS__", "TARGET_OS_OSX");
+		], StructPlatforms.macOS);
 		// MPSAxisAlignedBoundingBox uses custom SIMD marshaling instead of matching the native layout.
 		Add ("MetalPerformanceShaders", [
 			"MPSOffset", "MPSOrigin", "MPSSize", "MPSDimensionSlice", "MPSRegion", "MPSScaleTransform",
@@ -326,22 +340,22 @@ static class C {
 			"MPSImageReadWriteParams", "MPSImageKeypointRangeInfo", "MPSStateTextureInfo",
 			"MPSMatrixOffset", "MPSNDArrayOffsets", "MPSNDArraySizes",
 			"MPSFunctionsAxisAlignedBoundingBox:MPSFunctions_AABB",
-		]);
+		], StructPlatforms.All);
 		Add ("ModelIO", [
 			"MDLVoxelIndexExtent",
-		]);
+		], StructPlatforms.All);
 		Add ("GameplayKit", [
 			"GKQuad",
-		]);
+		], StructPlatforms.All);
 		Add ("SceneKit", [
 			"SCNVector3", "SCNVector4", "SCNQuaternion", "SCNMatrix4",
-		]);
+		], StructPlatforms.All);
 		Add ("GameController", [
 			"GCAcceleration", "GCRotationRate", "GCQuaternion",
 			"GCDualSenseAdaptiveTriggerPositionalAmplitudes", "GCDualSenseAdaptiveTriggerPositionalResistiveStrengths",
 			"GCExtendedGamepadSnapShotDataV100", "GCGamepadSnapShotDataV100", "GCMicroGamepadSnapShotDataV100",
 			"GCMicroGamepadSnapshotData", "GCPoint2",
-		]);
+		], StructPlatforms.All);
 		Add ("AudioToolbox", [
 			"AudioStreamBasicDescription", "AudioStreamPacketDescription", "AudioChannelDescription",
 			"SmpteTime:SMPTETime", "AudioTimeStamp", "AudioBuffer", "AudioValueRange", "AudioClassDescription",
@@ -350,57 +364,49 @@ static class C {
 			"AudioPacketRangeByteCountTranslation", "AudioPacketRollDistanceTranslation", "AudioIndependentPacketTranslation",
 			"AudioPacketDependencyInfoTranslation", "AudioFormat:AudioFormatListItem", "AudioQueueBuffer", "AudioQueueChannelAssignment",
 			"CABarBeatTime", "MidiChannelMessage:MIDIChannelMessage", "MidiNoteMessage:MIDINoteMessage",
-		]);
+		], StructPlatforms.All);
 		Add ("AudioUnit", [
 			"AudioComponentDescription", "AudioUnitParameterEvent",
 			"AUParameterObserverToken", "AURecordedParameterEvent", "AUParameterAutomationEvent",
-		]);
+		], StructPlatforms.All);
 		Add ("AudioUnit", [
 			"AURenderEventHeader", "AUParameterEvent",
-		], ignoreReason: "Native events use 4-byte packing, but the public managed structures use default packing. Changing the layout is API-breaking.");
+		], StructPlatforms.All, ignoreReason: "Native events use 4-byte packing, but the public managed structures use default packing. Changing the layout is API-breaking.");
 		Add ("AudioUnit", [
 			"AURenderEvent",
-		], ignoreReason: "The public managed union omits native MIDI event variants and uses different packing. Changing the layout is API-breaking.");
+		], StructPlatforms.All, ignoreReason: "The public managed union omits native MIDI event variants and uses different packing. Changing the layout is API-breaking.");
 		Add ("FileProvider", [
 			"NSFileProviderTypeAndCreator",
-		], "!__TVOS__ && !__MACCATALYST__", "!TARGET_OS_TV && !TARGET_OS_MACCATALYST");
+		], StructPlatforms.iOS | StructPlatforms.macOS);
 		Add ("PrintCore", [
 			"PMPaperMargins", "PMRect", "PMResolution",
-		], "__MACOS__", "TARGET_OS_OSX");
+		], StructPlatforms.macOS);
 		Add ("Security", [
 			"AuthorizationCallbacks", "SecKeychainSettings",
-		], "__MACOS__", "TARGET_OS_OSX");
+		], StructPlatforms.macOS);
 		Add ("Darwin", [
 			"KernelEvent:struct kevent", "TimeSpec:struct timespec",
-		], "__MACOS__", "TARGET_OS_OSX");
+		], StructPlatforms.macOS);
 		Add ("SensorKit", [
 			"SRAmbientLightChromaticity",
-		], "HAS_SENSORKIT", "!TARGET_OS_TV && !TARGET_OS_OSX");
+		], StructPlatforms.iOS | StructPlatforms.MacCatalyst);
 		Add ("BrowserEngineKit", [
 			"BEDirectionalTextRange",
-		], "HAS_BROWSERENGINEKIT && !__TVOS__ && !__MACOS__", "!TARGET_OS_TV && !TARGET_OS_OSX");
+		], StructPlatforms.iOS);
 		Add ("CarPlay", [
 			"CPLocationCoordinate3D",
-		], "HAS_CARPLAY", "TARGET_OS_IOS && !TARGET_OS_MACCATALYST");
+		], StructPlatforms.iOS);
 		Add ("UIKit", [
 			"UIEdgeInsets", "UIOffset", "UIFloatRange", "NSDirectionalEdgeInsets",
-		], "HAS_UIKIT", "!TARGET_OS_OSX");
+		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.MacCatalyst);
 		Add ("AppKit", [
 			"NSEdgeInsets",
-		], "__MACCATALYST__", "TARGET_OS_MACCATALYST");
+		], StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("AppKit", [
-			"NSEdgeInsets", "NSDirectionalEdgeInsets",
-		], "__MACOS__", "TARGET_OS_OSX");
+			"NSDirectionalEdgeInsets",
+		], StructPlatforms.macOS);
 
 		Exclude ("CoreVideo", ["CVPlanarPixelBufferInfo"], "Managed wrapper for a variable-length native array.");
-		Exclude ("BrowserEngineKit", ["BEDirectionalTextRange"], "BrowserEngineKit is not available in the native tvOS SDK.", "__TVOS__");
-		Exclude ("AVFoundation", [
-			"AVCaptureWhiteBalanceChromaticityValues", "AVCaptureWhiteBalanceGains", "AVCaptureWhiteBalanceTemperatureAndTintValues",
-		], "Not available in the native macOS SDK.", "__MACOS__");
-		Exclude ("AVFoundation", ["AVAudioVoiceProcessingOtherAudioDuckingConfiguration"],
-			"Not available in the native tvOS SDK.", "__TVOS__");
-		Exclude ("FileProvider", ["NSFileProviderTypeAndCreator"],
-			"Not available in the native Mac Catalyst SDK.", "__MACCATALYST__");
 		Exclude ("MetalPerformanceShaders", ["MPSAxisAlignedBoundingBox"], "Uses custom SIMD marshaling.");
 		Exclude ("ModelIO", ["MDLAxisAlignedBoundingBox"], "Uses custom SIMD marshaling.");
 		Exclude ("GameplayKit", ["GKBox", "GKTriangle"], "Uses custom SIMD marshaling.");
@@ -412,7 +418,7 @@ static class C {
 		Exclude ("AVFoundation", [
 			"AVSampleCursorSyncInfo", "AVSampleCursorDependencyInfo", "AVSampleCursorChunkInfo",
 		], "Boolean fields use a separate blittable representation for native calls.");
-		Add ("AVFoundation", ["AVSampleCursorAudioDependencyInfo"]);
+		Add ("AVFoundation", ["AVSampleCursorAudioDependencyInfo"], StructPlatforms.All);
 		Exclude ("AddressBook", ["ABMultiValueEntry`1"], "Generic managed entry wrapper, not a native structure.");
 		Exclude ("AudioToolbox", ["AudioBufferList", "AudioFileRegion"], "Managed view of a variable-length native structure.");
 		Exclude ("AudioToolbox", ["ExtendedNoteOnEvent"], "Represents the fixed header without the variable-length native controls array.");
@@ -490,8 +496,10 @@ static class C {
 		Exclude ("VideoToolbox", ["VTDecompressionSession+VTDecompressionOutputCallbackRecord"], "Internal callback representation.");
 
 		testedStructs.AppendLine ("\t\t];");
+		unavailableStructs.AppendLine ("\t\t];");
 		excludedStructs.AppendLine ("\t\t};");
 		managed.Append (testedStructs);
+		managed.Append (unavailableStructs);
 		managed.Append (excludedStructs);
 		managed.AppendLine ("\t}");
 		managed.AppendLine ("}");

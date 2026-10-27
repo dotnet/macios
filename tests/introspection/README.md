@@ -33,9 +33,13 @@ validate structures introduced in newer OS versions than the test device runs.
 
 The structure list is in `WriteStructSizeTests` in
 `tests/test-libraries/testgenerator.cs`. Add entries there to generate both a
-strongly typed test and a native size lookup. Use `ManagedName:NativeName` when
-the names differ, and matching managed/native platform conditions for types
-that are not available on every platform. When adding a framework, import its
+strongly typed test and a native size lookup. Each entry must specify its
+`StructPlatforms` flags (or `StructPlatforms.All`), identifying the platforms
+where the native structure is available and the managed binding exists. These
+flags generate matching managed/native platform conditions and per-platform
+catalogs; structures unavailable on the current platform are automatically
+accounted for without manual exclusions. Use `ManagedName:NativeName` when
+the names differ. When adding a framework, import its
 native headers in `tests/test-libraries/libstructsizes.m`. Only include structures
 whose managed representation is intended to match the native layout, not managed
 wrappers that require custom conversion.
@@ -45,9 +49,14 @@ assembly, including non-public and nested types, and compares them with the
 generated catalog. Any new structure must have either a size test (`Add`) or an
 exact-name exclusion with a reason (`Exclude`) in `WriteStructSizeTests`.
 Exclusions account for managed wrappers, custom marshaling, implementation
-details, and types unavailable in the native SDK. Compiler-generated types
-(including types nested in compiler-generated types), enums, and primitives are
-not considered structure bindings. A structure cannot be both tested and excluded.
+details, and types with no corresponding native SDK structure. Compiler-generated
+types (including types nested in compiler-generated types), enums, and primitives are
+not considered structure bindings. A structure cannot be both tested and excluded
+or unavailable.
+
+Coverage is not limited to P/Invoke and `UnmanagedCallersOnly` signatures:
+structures can also cross the native boundary through untyped pointers,
+manually marshaled buffers (including `NSData`), callbacks, and nested fields.
 
 The `CVTime` size test is explicitly ignored: its public `TimeScale` field is
 currently a `long`, while the native field is `int32_t`. Correcting that existing

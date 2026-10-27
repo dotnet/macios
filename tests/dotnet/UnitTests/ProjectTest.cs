@@ -4583,9 +4583,6 @@ namespace Xamarin.Tests {
 			var stderr = Path.Combine (tmpdir, "stderr.txt");
 
 			var properties = GetDefaultProperties ();
-			if (!CanExecute (platform, DotNet.GetProperty (project_path, "RuntimeIdentifier", properties)))
-				return;
-
 			var dotnetRunEnvironment = new Dictionary<string, string> ();
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";

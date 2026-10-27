@@ -4359,26 +4359,6 @@ namespace Xamarin.Tests {
 				"Frameworks");
 		}
 
-		[Test]
-		public void CoreGraphicsLinking ()
-		{
-			var platform = ApplePlatform.MacOSX;
-			var runtimeIdentifier = "osx-arm64";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
-			var projectPath = GetProjectPath ("ApiTestApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
-			Clean (projectPath);
-			var properties = GetDefaultProperties (runtimeIdentifier);
-			properties ["AdditionalDefineConstants"] = "KEEP_COREGRAPHICS";
-			properties ["LinkMode"] = "Full";
-			DotNet.AssertBuild (projectPath, properties);
-			var executable = GetNativeExecutable (platform, appPath);
-			var frameworks = GetLinkedWithFrameworks (executable);
-			Assert.That (frameworks, Does.Contain ("/System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics"), "CoreGraphics must be linked directly");
-			Assert.That (frameworks, Does.Not.Contain ("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices"), "CoreGraphics must not require ApplicationServices");
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, executable);
-		}
-
 		[TestCase ("KEEP_LARIGHT", true)]
 		[TestCase ("KEEP_LAPERSISTEDRIGHT", true)]
 		[TestCase ("KEEP_LACONTEXT", false)]

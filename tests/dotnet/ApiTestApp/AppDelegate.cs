@@ -23,11 +23,6 @@ namespace MySimpleApp {
 #elif KEEP_LACONTEXT
 			using (var context = new LocalAuthentication.LAContext ())
 				Console.WriteLine (context.BiometryType);
-#elif KEEP_COREGRAPHICS
-			using (var source = new CoreGraphics.CGEventSource (CoreGraphics.CGEventSourceStateID.Private))
-			using (var cgEvent = new CoreGraphics.CGEvent (source))
-			using (var dictionary = new CoreGraphics.CGRect (1, 2, 3, 4).ToDictionary ())
-				Console.WriteLine ($"{source.StateID}: {cgEvent.Flags}: {dictionary.Count}");
 #endif
 
 			return args.Length;

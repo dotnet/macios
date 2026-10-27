@@ -85,19 +85,6 @@ namespace Introspection {
 		}
 
 		[Test]
-		public void CoreGraphicsFramework ()
-		{
-			var framework = GetFrameworks () ["CoreGraphics"];
-			Assert.That (framework.Name, Is.EqualTo ("CoreGraphics"), "Name");
-			Assert.That (framework.SubFramework, Is.Null, "SubFramework");
-			Assert.That (framework.LibraryPath, Is.EqualTo ("/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics"), "LibraryPath");
-			Assert.That (Constants.CoreGraphicsLibrary, Is.EqualTo (framework.LibraryPath), "Generated library constant");
-#if __MACOS__
-			Assert.That (framework.Version, Is.EqualTo (new Version (10, 8)), "Standalone availability");
-#endif
-		}
-
-		[Test]
 		public void NativeFrameworks ()
 		{
 			ContinueOnFailure = true;

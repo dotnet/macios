@@ -344,10 +344,9 @@ namespace CoreGraphics {
 
 		// Keep this public, as we want to avoid creating instances of the object
 		// just to peek at the flags
-		/// <param name="eventHandle">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the flags associated with a native event without creating a managed <see cref="CGEvent" /> instance.</summary>
+		/// <param name="eventHandle">The native handle of the event whose flags to retrieve.</param>
+		/// <returns>The modifier and event flags associated with the event.</returns>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventGetFlags")]
 		public extern static CGEventFlags GetFlags (IntPtr eventHandle);
 

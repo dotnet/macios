@@ -109,26 +109,24 @@ namespace CoreGraphics {
 		public static bool GetKeyState (CGEventSourceStateID stateID, ushort keycode)
 			=> CGEventSourceKeyState (stateID, keycode) != 0;
 
-		/// <param name="stateID">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the current event flags for an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <returns>The modifier and event flags in the specified state table.</returns>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceFlagsState")]
 		public extern static CGEventFlags GetFlagsState (CGEventSourceStateID stateID);
 
-		/// <param name="stateID">To be added.</param>
-		///         <param name="eventType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the elapsed time since the last event of the specified type was recorded in an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <param name="eventType">The type of event to query.</param>
+		/// <returns>The number of seconds since the last event of the specified type.</returns>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceSecondsSinceLastEventType")]
 		public extern static double GetSecondsSinceLastEventType (CGEventSourceStateID stateID, CGEventType eventType);
 
-		/// <param name="stateID">To be added.</param>
-		///         <param name="eventType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the number of events of the specified type recorded in an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <param name="eventType">The type of event to count.</param>
+		/// <returns>The number of events of the specified type recorded since the Window Server started.</returns>
+		/// <remarks>Key autorepeat events are not counted.</remarks>
 		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceCounterForEventType")]
 		public extern static uint /* uint32_t */ GetCounterForEventType (CGEventSourceStateID stateID, CGEventType eventType);
 

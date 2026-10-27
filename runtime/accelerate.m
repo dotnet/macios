@@ -11,14 +11,20 @@ enum { XamarinSparseAllocationFailed = 1 };
 
 // Keep the overloaded inline functions and their semi-opaque structs on the native side.
 #define SPARSE_BINDINGS(suffix, scalar, precision) \
+struct XamarinSparseFactor_##suffix { \
+	SparseOpaqueFactorization_##precision factor; \
+	void *workspace; \
+	size_t workspace_capacity; \
+}; \
 void * \
 xamarin_sparse_factor_##suffix (uint8_t type, int rows, int columns, long *starts, int *indices, scalar *data, uint8_t triangle, int *status) \
 { \
-	SparseOpaqueFactorization_##precision *factor = (SparseOpaqueFactorization_##precision *) malloc (sizeof (*factor)); \
-	if (factor == NULL) { \
+	XamarinSparseFactor_##suffix *storage = (XamarinSparseFactor_##suffix *) calloc (1, sizeof (*storage)); \
+	if (storage == NULL) { \
 		*status = XamarinSparseAllocationFailed; \
 		return NULL; \
 	} \
+	SparseOpaqueFactorization_##precision *factor = &storage->factor; \
 	SparseMatrix_##precision matrix = { \
 		.structure = { \
 			.rowCount = rows, \
@@ -38,35 +44,41 @@ xamarin_sparse_factor_##suffix (uint8_t type, int rows, int columns, long *start
 	*status = factor->status; \
 	if (*status != SparseStatusOK) { \
 		SparseCleanup (*factor); \
-		free (factor); \
+		free (storage); \
 		return NULL; \
 	} \
-	return factor; \
+	return storage; \
 } \
 int \
 xamarin_sparse_solve_##suffix (void *handle, int rows, int columns, int count, scalar *rhs, scalar *solution) \
 { \
-	SparseOpaqueFactorization_##precision *factor = (SparseOpaqueFactorization_##precision *) handle; \
+	XamarinSparseFactor_##suffix *storage = (XamarinSparseFactor_##suffix *) handle; \
+	SparseOpaqueFactorization_##precision *factor = &storage->factor; \
 	size_t per_rhs = factor->solveWorkspaceRequiredPerRHS; \
 	size_t fixed_size = factor->solveWorkspaceRequiredStatic; \
 	if (count <= 0 || per_rhs > (SIZE_MAX - fixed_size) / (size_t) count) \
 		return XamarinSparseAllocationFailed; \
 	size_t size = fixed_size + (size_t) count * per_rhs; \
-	void *workspace = malloc (size == 0 ? 1 : size); \
-	if (workspace == NULL) \
-		return XamarinSparseAllocationFailed; \
+	if (size == 0) size = 1; \
+	if (storage->workspace_capacity < size) { \
+		void *workspace = malloc (size); \
+		if (workspace == NULL) return XamarinSparseAllocationFailed; \
+		free (storage->workspace); \
+		storage->workspace = workspace; \
+		storage->workspace_capacity = size; \
+	} \
 	DenseMatrix_##precision b = { .rowCount = rows, .columnCount = count, .columnStride = rows, .data = rhs }; \
 	DenseMatrix_##precision x = { .rowCount = columns, .columnCount = count, .columnStride = columns, .data = solution }; \
-	SparseSolve (*factor, b, x, workspace); \
-	free (workspace); \
+	SparseSolve (*factor, b, x, storage->workspace); \
 	return SparseStatusOK; \
 } \
 void \
 xamarin_sparse_cleanup_##suffix (void *handle) \
 { \
-	SparseOpaqueFactorization_##precision *factor = (SparseOpaqueFactorization_##precision *) handle; \
-	SparseCleanup (*factor); \
-	free (factor); \
+	XamarinSparseFactor_##suffix *storage = (XamarinSparseFactor_##suffix *) handle; \
+	SparseCleanup (storage->factor); \
+	free (storage->workspace); \
+	free (storage); \
 }
 
 SPARSE_BINDINGS (double, double, Double)

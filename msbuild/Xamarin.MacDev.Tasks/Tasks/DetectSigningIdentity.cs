@@ -527,23 +527,19 @@ namespace Xamarin.MacDev.Tasks {
 			return MobileProvisionIndex.GetMobileProvisions (platform, includeExpired: true);
 		}
 
-		protected MobileProvision? GetMobileProvision (MobileProvisionPlatform platform)
+		protected void ReportSigningIdentityMismatch (MobileProvisionPlatform platform, MobileProvision profile)
 		{
-			var profiles = GetMobileProvisions (platform);
-			var profile = profiles.FirstOrDefault (v => v.Uuid == ProvisioningProfile);
-			if (profile is not null)
-				return profile;
-
-			var matches = profiles.Where (v => v.Name == ProvisioningProfile).GroupBy (v => v.Uuid).Select (v => v.First ()).ToArray ();
-			if (matches.Length == 1)
-				return matches [0];
-
-			if (matches.Length == 0) {
-				Log.LogError (MSBStrings.E0144, PlatformName, ProvisioningProfile);
-			} else {
-				Log.LogError (MSBStrings.MultipleProvisioningProfiles, matches.Length, ProvisioningProfile, string.Join ("', '", matches.Select (v => v.Uuid)));
+			if (profile.Uuid == ProvisioningProfile) {
+				Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+				return;
 			}
-			return null;
+
+			var matches = GetMobileProvisions (platform).Where (v => v.Name == ProvisioningProfile).Select (v => v.Uuid).Distinct ().ToArray ();
+			if (matches.Length > 1) {
+				Log.LogError (MSBStrings.MultipleProvisioningProfiles, matches.Length, ProvisioningProfile, string.Join ("', '", matches));
+			} else {
+				Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+			}
 		}
 
 		public override bool Execute ()
@@ -658,17 +654,19 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!IsAutoCodeSignProfile (ProvisioningProfile)) {
-				identity.Profile = GetMobileProvision (platform);
+				identity.Profile = MobileProvisionIndex.GetMobileProvision (platform, ProvisioningProfile);
 
-				if (identity.Profile is null)
+				if (identity.Profile is null) {
+					Log.LogError (MSBStrings.E0144, PlatformName, ProvisioningProfile);
 					return false;
+				}
 
 				var profile = identity.Profile; // capture ref for lambda
 
 				if (certs.Count > 0) {
 					identity.SigningKey = certs.FirstOrDefault (c => profile.DeveloperCertificates.Any (p => p.Thumbprint == c.Thumbprint));
 					if (identity.SigningKey is null) {
-						Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+						ReportSigningIdentityMismatch (platform, profile);
 						return false;
 					}
 				}

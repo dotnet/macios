@@ -15,15 +15,17 @@ namespace Xamarin.MacDev.Tasks {
 	public class DetectSigningIdentityTaskTests : TestBase {
 		class ProfileLookupTask : DetectSigningIdentity {
 			public IList<MobileProvision> Profiles { get; set; } = [];
+			public int ProfileLookupCount { get; private set; }
 
 			protected override IList<MobileProvision> GetMobileProvisions (MobileProvisionPlatform platform)
 			{
+				ProfileLookupCount++;
 				return Profiles;
 			}
 
-			public MobileProvision? ResolveProfile ()
+			public void ReportMismatch (MobileProvision profile)
 			{
-				return GetMobileProvision (MobileProvisionPlatform.iOS);
+				ReportSigningIdentityMismatch (MobileProvisionPlatform.iOS, profile);
 			}
 		}
 
@@ -53,7 +55,7 @@ namespace Xamarin.MacDev.Tasks {
 			var secondUuid = "22222222-2222-2222-2222-222222222222";
 			var task = CreateProfileLookupTask (name, CreateProfile (name, firstUuid), CreateProfile (name, secondUuid));
 
-			Assert.That (task.ResolveProfile (), Is.Null, "Profile");
+			task.ReportMismatch (task.Profiles [0]);
 			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (
 				$"Found 2 provisioning profiles matching the name '{name}'. Set the CodesignProvision property to the UUID of the intended profile instead: '{firstUuid}', '{secondUuid}'."), "Error message");
@@ -69,18 +71,22 @@ namespace Xamarin.MacDev.Tasks {
 			};
 			var task = CreateProfileLookupTask (profiles [profileIndex].Uuid, profiles);
 
-			Assert.That (task.ResolveProfile (), Is.SameAs (profiles [profileIndex]), "Profile");
-			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+			task.ReportMismatch (profiles [profileIndex]);
+			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"No iOS signing identities match the specified provisioning profile '{profiles [profileIndex].Uuid}'."), "Error message");
+			Assert.That (task.ProfileLookupCount, Is.EqualTo (0), "Profile lookup count");
 		}
 
 		[Test]
-		public void ProfileUuidTakesPrecedenceOverName ()
+		public void ProfileUuidMismatchDoesNotCheckNames ()
 		{
 			var profile = CreateProfile ("Profile", "11111111-1111-1111-1111-111111111111");
 			var task = CreateProfileLookupTask (profile.Uuid, CreateProfile (profile.Uuid, "22222222-2222-2222-2222-222222222222"), profile);
 
-			Assert.That (task.ResolveProfile (), Is.SameAs (profile), "Profile");
-			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+			task.ReportMismatch (profile);
+			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"No iOS signing identities match the specified provisioning profile '{profile.Uuid}'."), "Error message");
+			Assert.That (task.ProfileLookupCount, Is.EqualTo (0), "Profile lookup count");
 		}
 
 		[TestCase (false)]
@@ -91,18 +97,20 @@ namespace Xamarin.MacDev.Tasks {
 			var profiles = duplicateInstallation ? new [] { profile, CreateProfile (profile.Name, profile.Uuid) } : new [] { profile };
 			var task = CreateProfileLookupTask (profile.Name, profiles);
 
-			Assert.That (task.ResolveProfile (), Is.SameAs (profile), "Profile");
-			Assert.That (Engine.Logger.ErrorEvents, Is.Empty, "Errors");
+			task.ReportMismatch (profile);
+			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"No iOS signing identities match the specified provisioning profile '{profile.Name}'."), "Error message");
 		}
 
 		[Test]
-		public void ProfileNotFound ()
+		public void ProfileRemovedBeforeMismatch ()
 		{
-			var task = CreateProfileLookupTask ("Missing", CreateProfile ("Other", "11111111-1111-1111-1111-111111111111"));
+			var profile = CreateProfile ("Missing", "11111111-1111-1111-1111-111111111111");
+			var task = CreateProfileLookupTask (profile.Name);
 
-			Assert.That (task.ResolveProfile (), Is.Null, "Profile");
+			task.ReportMismatch (profile);
 			Assert.That (Engine.Logger.ErrorEvents, Has.Count.EqualTo (1), "Errors");
-			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The specified iOS provisioning profile 'Missing' could not be found"), "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("No iOS signing identities match the specified provisioning profile 'Missing'."), "Error message");
 		}
 
 		DetectSigningIdentity CreateTask (string? tmpdir = null, ApplePlatform platform = ApplePlatform.iOS, bool simulator = true)

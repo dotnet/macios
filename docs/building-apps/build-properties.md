@@ -304,7 +304,8 @@ Only applicable to macOS and Mac Catalyst apps, but it's recommended to use the 
 
 Specifies the provisioning profile to use when signing the app bundle.
 The value can be the profile's name or UUID. If multiple profiles have the same
-name, specify the UUID to uniquely identify the intended profile.
+name and signing identity detection fails, the error lists their UUIDs. Specify
+the UUID to uniquely identify the intended profile.
 
 ## CodesignResourceRules
 

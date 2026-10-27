@@ -67,5 +67,16 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (task, expectedErrorCount: 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.StartWith ("Could not map the macOS version 10.0 to a corresponding Mac Catalyst version. Valid macOS versions are:"));
 		}
+
+		[Test]
+		public void DisableMinimumOSVersion ()
+		{
+			var task = CreateTask (platform: ApplePlatform.MacCatalyst, (plist) => {
+				plist.SetMinimumSystemVersion ("10.0");
+			});
+			task.DisableMinimumOSVersion = true;
+			ExecuteTask (task);
+			Assert.That (task.MinimumOSVersion, Is.Null, "MinimumOSVersion");
+		}
 	}
 }

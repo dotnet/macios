@@ -29,9 +29,8 @@ public class CommandLineTests {
 		return Tools.CreateBindTool (args.ToArray ()) ?? throw new InvalidOperationException ("Expected a bind tool.");
 	}
 
-	[TestCase (false)]
-	[TestCase (true)]
-	public void RelativeHeaderWithScope (bool positional)
+	[Test]
+	public void RelativeHeaderWithScope ()
 	{
 		var tmpdir = Cache.CreateTemporaryDirectory ();
 		var headers = Path.Combine (tmpdir, "Headers");
@@ -41,7 +40,7 @@ public class CommandLineTests {
 		var relativeHeader = Path.GetRelativePath (Environment.CurrentDirectory, header);
 		var relativeScope = Path.GetRelativePath (Environment.CurrentDirectory, headers);
 		var output = Path.Combine (tmpdir, "output");
-		using var binder = CreateTool (output, "--scope=" + relativeScope, positional ? relativeHeader : "--header=" + relativeHeader);
+		using var binder = CreateTool (output, "--scope=" + relativeScope, "--header=" + relativeHeader);
 		Assert.That (binder.SourceFile, Is.EqualTo (relativeHeader), "Source file before parsing");
 		var result = binder.BindInOrOut ();
 		result.AssertSuccess (null);
@@ -49,7 +48,6 @@ public class CommandLineTests {
 		Assert.That (File.ReadAllText (binder.OutputApiDefinitionPath), Does.Contain ("interface CommandLineClass"), "Binding");
 	}
 
-	[TestCase ("positional")]
 	[TestCase ("--framework=")]
 	[TestCase ("--header=")]
 	public void FrameworkInput (string option)
@@ -60,7 +58,7 @@ public class CommandLineTests {
 		Directory.CreateDirectory (headers);
 		File.WriteAllText (Path.Combine (headers, "CommandLineKit.h"), headerCode);
 		var relativeFramework = Path.GetRelativePath (Environment.CurrentDirectory, framework) + Path.DirectorySeparatorChar;
-		using var binder = CreateTool (Path.Combine (tmpdir, "output"), option == "positional" ? relativeFramework : option + relativeFramework);
+		using var binder = CreateTool (Path.Combine (tmpdir, "output"), option + relativeFramework);
 		Assert.That (binder.SourceFramework, Is.EqualTo (relativeFramework), "Source framework");
 		var result = binder.BindInOrOut ();
 		result.AssertSuccess (null);
@@ -84,24 +82,28 @@ public class CommandLineTests {
 		Assert.That (binder.ClangArguments, Is.EqualTo (clangArguments), "Compiler arguments");
 	}
 
-	[TestCase ("-I", "include", false)]
-	[TestCase ("-I", "include", true)]
-	[TestCase ("-isysroot", "/path/to/sdk", false)]
-	[TestCase ("-x", "objective-c", false)]
-	[TestCase ("-include", "Other.h", false)]
-	[TestCase ("-Xclang", "-Werror", false)]
-	public void CompilerArgumentsBeforeDelimiter (string option, string value, bool positional)
+	[TestCase ("-I", "include")]
+	[TestCase ("-isysroot", "/path/to/sdk")]
+	[TestCase ("-x", "objective-c")]
+	[TestCase ("-include", "Other.h")]
+	[TestCase ("-include-pch", "Prefix.pch")]
+	[TestCase ("-ivfsoverlay", "overlay.yaml")]
+	[TestCase ("-working-directory", "work")]
+	[TestCase ("-iframeworkwithsysroot", "/path/to/frameworks")]
+	[TestCase ("-isystem-after", "/path/to/include")]
+	[TestCase ("-Xclang", "-Werror")]
+	public void CompilerArgumentsBeforeDelimiter (string option, string value)
 	{
-		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), option, value, positional ? "Input.h" : "--header=Input.h");
+		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), option, value, "--header=Input.h");
 		Assert.That (binder.SourceFile, Is.EqualTo ("Input.h"), "Source file");
 		Assert.That (binder.ClangArguments, Is.EqualTo (new [] { option, value }), "Compiler arguments");
 		Assert.That (binder.BindingResult.Errors, Is.Empty, "Parsing errors");
 	}
 
 	[Test]
-	public void CompilerFlagBeforeInput ()
+	public void CompilerFlagBeforeHeader ()
 	{
-		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), "-Werror", "Input.h");
+		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), "-Werror", "--header=Input.h");
 		Assert.That (binder.SourceFile, Is.EqualTo ("Input.h"), "Source file");
 		Assert.That (binder.ClangArguments, Is.EqualTo (new [] { "-Werror" }), "Compiler arguments");
 		Assert.That (binder.BindingResult.Errors, Is.Empty, "Parsing errors");
@@ -112,18 +114,16 @@ public class CommandLineTests {
 	{
 		var tmpdir = Cache.CreateTemporaryDirectory ();
 		var responseFile = Path.Combine (tmpdir, "arguments.rsp");
-		File.WriteAllText (responseFile, "Input.h\n--namespace=FromResponseFile\n--clang\n-I\ninclude\nOther.h\n");
+		File.WriteAllText (responseFile, "--header=Input.h\n--namespace=FromResponseFile\n--clang\n-I\ninclude\nOther.h\n");
 		using var binder = CreateTool (tmpdir, "@" + responseFile);
 		Assert.That (binder.SourceFile, Is.EqualTo ("Input.h"), "Source file");
 		Assert.That (binder.Namespace, Is.EqualTo ("FromResponseFile"), "Namespace");
 		Assert.That (binder.ClangArguments, Is.EqualTo (new [] { "-I", "include", "Other.h" }), "Compiler arguments");
 	}
 
-	[TestCase ("Input.h", "Other.h", 20)]
-	[TestCase ("--header=Input.h", "Other.h", 20)]
 	[TestCase ("--header=Input.h", "--header=Other.h", 20)]
-	[TestCase ("Input.framework", "Other.framework", 20)]
-	[TestCase ("Input.framework", "Other.h", 16)]
+	[TestCase ("--framework=Input.framework", "--framework=Other.framework", 20)]
+	[TestCase ("--framework=Input.framework", "--header=Other.h", 16)]
 	public void MultipleInputs (string first, string second, int error)
 	{
 		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), first, second);
@@ -137,7 +137,17 @@ public class CommandLineTests {
 	{
 		using var binder = new BindTool ();
 		var result = binder.Bind ();
-		result.AssertErrors ((19, "An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument.", null, null));
+		result.AssertErrors ((19, "An input header or framework must be specified with --header or --framework.", null, null));
+		result.AssertNoWarnings ();
+	}
+
+	[TestCase ("Input.h")]
+	[TestCase ("Input.framework")]
+	public void PositionalInput (string input)
+	{
+		using var binder = CreateTool (Cache.CreateTemporaryDirectory (), input);
+		var result = binder.Bind ();
+		result.AssertErrors ((19, "An input header or framework must be specified with --header or --framework.", null, null));
 		result.AssertNoWarnings ();
 	}
 

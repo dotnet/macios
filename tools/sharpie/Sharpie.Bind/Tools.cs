@@ -18,9 +18,6 @@ public static class Tools {
 	public static BindTool? CreateBindTool (string [] args)
 	{
 		var showHelp = false;
-		var clangOnly = false;
-		var expectsClangValue = false;
-		var clangArgs = new List<string> ();
 		var binder = new BindTool ();
 
 		void AddSource (string path, bool framework)
@@ -62,24 +59,12 @@ public static class Tools {
 			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
 			{ "deepsplit", "Split the generated binding into one file per source header.", v => binder.DeepSplit = true },
 			{ "custom-delegates", "Generate custom named delegates instead of Func<>/Action<>.", v => binder.UseCustomDelegates = true },
-			{ "<>", "An input header or .framework can also be specified as a positional argument. Pass compiler arguments after --clang.", v => {
-				if (!clangOnly && !expectsClangValue && !v.StartsWith ("-", StringComparison.Ordinal)) {
-					AddSource (v, false);
-				} else {
-					clangArgs.Add (v);
-					expectsClangValue = !clangOnly && !expectsClangValue && (v is
-						"-I" or "-F" or "-D" or "-U" or "-x" or "-arch" or "-target" or "--target" or
-						"-isystem" or "-iquote" or "-idirafter" or "-iframework" or "-isysroot" or
-						"-include" or "-imacros" or "-Xclang" or "-mllvm" or "-resource-dir");
-				}
-			} },
 		};
 
 		os.EndOfParsingArguments.Clear ();
 		os.EndOfParsingArguments.AddRange (["-c", "--clang"]);
-		os.ParsingEnded += () => clangOnly = true;
 
-		os.Parse (args);
+		var clangArgs = os.Parse (args);
 
 		if (showHelp) {
 			os.WriteOptionDescriptions (Console.Out);

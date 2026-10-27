@@ -97,7 +97,7 @@
 	</data>
 
 	<data name="SHARPIE0019" xml:space="preserve">
-		<value>An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument.</value>
+		<value>An input header or framework must be specified with --header or --framework.</value>
 	</data>
 
 	<data name="SHARPIE0020" xml:space="preserve">

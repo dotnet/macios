@@ -354,7 +354,7 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			return null;
 
 		if (string.IsNullOrEmpty (SourceFile) && string.IsNullOrEmpty (SourceFramework)) {
-			bindingResult.ReportError (19 /* An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument. */);
+			bindingResult.ReportError (19 /* An input header or framework must be specified with --header or --framework. */);
 			return null;
 		}
 

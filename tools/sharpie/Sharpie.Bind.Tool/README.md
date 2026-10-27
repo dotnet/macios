@@ -13,7 +13,7 @@ Bind a framework with `sharpie bind -f ./MyFramework.framework -o Binding`, or b
 sharpie bind --header=Headers/MyFramework-Swift.h --scope=Headers --sdk=iphoneos -o Binding
 ```
 
-A single header or `.framework` may also be passed as a positional argument.
+Specify the input with `--header` or `--framework` (`-f`); positional inputs are not supported.
 Pass any additional compiler arguments after `--clang`.
 Use `xcodebuild -showsdks` to list installed SDKs.
 Generated files are named `ApiDefinition.cs` and `StructsAndEnums.cs`, depending on the declarations found.

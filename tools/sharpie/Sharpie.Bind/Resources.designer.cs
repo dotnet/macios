@@ -238,7 +238,7 @@ namespace Sharpie.Bind {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An input header or framework must be specified. Use --header or --framework, or pass the input as a positional argument..
+        ///   Looks up a localized string similar to An input header or framework must be specified with --header or --framework..
         /// </summary>
         public static string SHARPIE0019 {
             get {

@@ -441,7 +441,7 @@ namespace Foundation {
 			}
 		}
 
-		internal static T GetOrCreateNSObjectForConstructor<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (IntPtr handle, uint flags)
+		internal static T? TryGetNSObjectForConstructor<T> (IntPtr handle, uint flags)
 			where T : NSObject
 		{
 			var existing = Runtime.TryGetNSObjectFromIvar (handle);
@@ -449,6 +449,16 @@ namespace Foundation {
 				existing.flags |= (Flags) flags;
 				return typedExisting;
 			}
+
+			return null;
+		}
+
+		internal static T GetOrCreateNSObjectForConstructor<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] T> (IntPtr handle, uint flags)
+			where T : NSObject
+		{
+			var existing = TryGetNSObjectForConstructor<T> (handle, flags);
+			if (existing is not null)
+				return existing;
 
 			var obj = (T) RuntimeHelpers.GetUninitializedObject (typeof (T));
 			obj.handle = handle;

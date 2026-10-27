@@ -4,6 +4,7 @@
 #nullable enable
 
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace Accelerate {
 	/// <summary>Owns an immutable sparse matrix in compressed sparse column or block-column format.</summary>
@@ -125,6 +126,47 @@ namespace Accelerate {
 				var result = SparseNative.xamarin_sparse_coordinate (SparseNative.Scalar<T> (), &matrix, rows.Length, r, c, v);
 				SparseNative.Check ();
 				return new SparseMatrix<T> (new SparseHandle (result), matrix);
+			}
+		}
+
+		/// <summary>Converts a native SparseBLAS matrix into independently owned solver storage.</summary>
+		/// <param name="matrix">A nonzero opaque SparseBLAS matrix handle whose scalar type matches <typeparamref name="T" />.</param>
+		/// <returns>An independently disposable solver matrix.</returns>
+		/// <remarks>The source handle is borrowed only during conversion and is not released. It must remain valid throughout the call. Use the <see cref="FromSparseBlas(SafeHandle)" /> overload to retain a safely owned source handle during conversion. SparseBLAS creation and editing are separate APIs.</remarks>
+		public static SparseMatrix<T> FromSparseBlas (IntPtr matrix)
+		{
+			if (matrix == IntPtr.Zero)
+				throw new ArgumentException ("The opaque SparseBLAS matrix handle must not be zero.", nameof (matrix));
+			int scalar = SparseNative.Scalar<T> ();
+			var descriptor = new SparseNative.Matrix ();
+			var result = SparseNative.xamarin_sparse_from_opaque (scalar, matrix, &descriptor);
+			SparseNative.Check ();
+			var handle = new SparseHandle (result);
+			try {
+				ValidateDimensions (checked (descriptor.Rows * descriptor.BlockSize), checked (descriptor.Columns * descriptor.BlockSize), (SparseMatrixKind) descriptor.Kind, (SparseTriangle) descriptor.Triangle, descriptor.BlockSize);
+				return new SparseMatrix<T> (handle, descriptor);
+			} catch {
+				handle.Dispose ();
+				throw;
+			}
+		}
+
+		/// <summary>Converts a safely owned native SparseBLAS matrix into independently owned solver storage.</summary>
+		/// <param name="matrix">An open, valid SparseBLAS handle whose scalar type matches <typeparamref name="T" />.</param>
+		/// <returns>A solver matrix that remains valid after the source handle is disposed.</returns>
+		/// <remarks>The handle is retained only for the duration of conversion. Its ownership is not transferred.</remarks>
+		public static SparseMatrix<T> FromSparseBlas (SafeHandle matrix)
+		{
+			ArgumentNullException.ThrowIfNull (matrix);
+			bool retained = false;
+			try {
+				matrix.DangerousAddRef (ref retained);
+				if (matrix.IsInvalid)
+					throw new ArgumentException ("The opaque SparseBLAS matrix handle must be valid.", nameof (matrix));
+				return FromSparseBlas (matrix.DangerousGetHandle ());
+			} finally {
+				if (retained)
+					matrix.DangerousRelease ();
 			}
 		}
 

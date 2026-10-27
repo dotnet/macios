@@ -25,6 +25,8 @@ struct XamarinSparseOptions {
 	int scaling;
 	void *scale;
 	double pivot_tolerance, zero_tolerance;
+	void *(*allocate) (size_t);
+	void (*deallocate) (void *);
 };
 
 typedef void (*XamarinSparseOperator) (void *, uint8_t, int, int, int, int, void *, int, int, int, void *);
@@ -91,9 +93,10 @@ struct SparseResource {
 	}
 };
 
-#define SPARSE_TRAITS(name, scalar, suffix, attributes, structure, is_complex) \
+#define SPARSE_TRAITS(name, scalar, suffix, opaque, attributes, structure, is_complex) \
 struct name { \
 	using Scalar = scalar; \
+	using Opaque = opaque; \
 	using Matrix = SparseMatrix_##suffix; \
 	using Dense = DenseMatrix_##suffix; \
 	using Factor = SparseOpaqueFactorization_##suffix; \
@@ -106,10 +109,10 @@ struct name { \
 	{ return SparseGetStateSize_##suffix (method, preconditioner, m, n, count); } \
 };
 
-SPARSE_TRAITS (SparseDouble, double, Double, SparseAttributes_t, SparseMatrixStructure, false)
-SPARSE_TRAITS (SparseFloat, float, Float, SparseAttributes_t, SparseMatrixStructure, false)
-SPARSE_TRAITS (SparseComplexDouble, __SPARSE_double_complex, Complex_Double, SparseAttributesComplex_t, SparseMatrixStructureComplex, true)
-SPARSE_TRAITS (SparseComplexFloat, __SPARSE_float_complex, Complex_Float, SparseAttributesComplex_t, SparseMatrixStructureComplex, true)
+SPARSE_TRAITS (SparseDouble, double, Double, sparse_matrix_double, SparseAttributes_t, SparseMatrixStructure, false)
+SPARSE_TRAITS (SparseFloat, float, Float, sparse_matrix_float, SparseAttributes_t, SparseMatrixStructure, false)
+SPARSE_TRAITS (SparseComplexDouble, __SPARSE_double_complex, Complex_Double, sparse_matrix_double_complex, SparseAttributesComplex_t, SparseMatrixStructureComplex, true)
+SPARSE_TRAITS (SparseComplexFloat, __SPARSE_float_complex, Complex_Float, sparse_matrix_float_complex, SparseAttributesComplex_t, SparseMatrixStructureComplex, true)
 
 static void set_operation (SparseAttributes_t &attributes, int operation) { attributes.transpose = operation != CblasNoTrans; }
 static void set_kind (SparseAttributes_t &attributes, int kind)
@@ -127,6 +130,9 @@ static void set_operation (SparseAttributesComplex_t &attributes, int operation)
 	attributes.transpose = operation != CblasNoTrans;
 	attributes.conjugate_transpose = operation == CblasConjTrans;
 }
+
+static int get_operation (SparseAttributes_t attributes) { return attributes.transpose ? CblasTrans : CblasNoTrans; }
+static int get_operation (SparseAttributesComplex_t attributes) { return attributes.conjugate_transpose ? CblasConjTrans : attributes.transpose ? CblasTrans : CblasNoTrans; }
 
 template<class T> static typename T::Matrix
 sparse_matrix (const XamarinSparseMatrix *input)
@@ -162,8 +168,8 @@ sparse_symbolic_options (const XamarinSparseOptions *input)
 	result.orderMethod = input ? (SparseOrder_t) input->order : SparseOrderDefault;
 	result.order = input ? input->permutation : nullptr;
 	result.ignoreRowsAndColumns = input ? input->ignored : nullptr;
-	result.malloc = malloc;
-	result.free = free;
+	result.malloc = input && input->allocate ? input->allocate : malloc;
+	result.free = input && input->deallocate ? input->deallocate : free;
 	result.reportError = sparse_report_error;
 	return result;
 }
@@ -442,28 +448,99 @@ sparse_coordinate (XamarinSparseMatrix *matrix, long count, const int *rows, con
 	return result;
 }
 
+template<class T> static bool
+sparse_matrix_storage (SparseResource *result, XamarinSparseMatrix *matrix, long count)
+{
+	size_t starts_size = ((size_t) matrix->columns + 1) * sizeof (long);
+	size_t indices_size = (size_t) count * sizeof (int);
+	size_t block_bytes = (size_t) matrix->block_size * (size_t) matrix->block_size * sizeof (typename T::Scalar);
+	if (count < 0 || !block_bytes || (size_t) count > SIZE_MAX / block_bytes || starts_size > SIZE_MAX - indices_size - 15 ||
+		(size_t) count * block_bytes > SIZE_MAX - starts_size - indices_size - 15) {
+		sparse_report_error ("Sparse matrix storage size overflow.");
+		return false;
+	}
+	size_t values_size = (size_t) count * block_bytes;
+	char *storage = (char *) result->reserve (starts_size + indices_size + 15 + values_size);
+	if (!storage) return false;
+	char *data = (char *) (((uintptr_t) (storage + starts_size + indices_size) + 15) & ~(uintptr_t) 15);
+	matrix->starts = (long *) storage;
+	matrix->indices = (int *) (storage + starts_size);
+	matrix->data = data;
+	return true;
+}
+
 template<class T> static void *
 sparse_matrix_create (XamarinSparseMatrix *matrix, long count)
 {
 	auto result = sparse_allocate<SparseMatrixResource<T>> ();
 	if (!result) return nullptr;
-	size_t starts_size = ((size_t) matrix->columns + 1) * sizeof (long);
-	size_t indices_size = (size_t) count * sizeof (int);
-	size_t values_size = (size_t) count * (size_t) matrix->block_size * (size_t) matrix->block_size * sizeof (typename T::Scalar);
-	if (starts_size > SIZE_MAX - indices_size - 15 || values_size > SIZE_MAX - starts_size - indices_size - 15) {
-		sparse_report_error ("Sparse matrix storage size overflow.");
+	auto input = *matrix;
+	if (!sparse_matrix_storage<T> (result, matrix, count)) { sparse_destroy (result); return nullptr; }
+	memcpy (matrix->starts, input.starts, ((size_t) matrix->columns + 1) * sizeof (long));
+	if (count) {
+		memcpy (matrix->indices, input.indices, (size_t) count * sizeof (int));
+		memcpy (matrix->data, input.data, (size_t) count * (size_t) matrix->block_size * (size_t) matrix->block_size * sizeof (typename T::Scalar));
+	}
+	result->matrix = sparse_matrix<T> (matrix);
+	return result;
+}
+
+static double sparse_conjugate (double value) { return value; }
+static float sparse_conjugate (float value) { return value; }
+static __SPARSE_double_complex sparse_conjugate (__SPARSE_double_complex value) { return { value.real (), -value.imag () }; }
+static __SPARSE_float_complex sparse_conjugate (__SPARSE_float_complex value) { return { value.real (), -value.imag () }; }
+
+template<class T> static void *
+sparse_from_opaque (void *opaque, XamarinSparseMatrix *matrix)
+{
+	auto result = sparse_allocate<SparseMatrixResource<T>> ();
+	if (!result) return nullptr;
+	result->matrix = SparseConvertFromOpaque ((typename T::Opaque) opaque);
+	auto source = result->matrix;
+	auto &structure = source.structure;
+	if (!structure.columnStarts) {
+		sparse_report_error ("Could not convert the opaque SparseBLAS matrix.");
 		sparse_destroy (result);
 		return nullptr;
 	}
-	char *storage = (char *) result->reserve (starts_size + indices_size + 15 + values_size);
-	if (!storage) { sparse_destroy (result); return nullptr; }
-	memcpy (storage, matrix->starts, starts_size);
-	if (indices_size) memcpy (storage + starts_size, matrix->indices, indices_size);
-	char *data = (char *) (((uintptr_t) (storage + starts_size + indices_size) + 15) & ~(uintptr_t) 15);
-	if (values_size) memcpy (data, matrix->data, values_size);
-	matrix->starts = (long *) storage;
-	matrix->indices = (int *) (storage + starts_size);
-	matrix->data = data;
+	int operation = get_operation (structure.attributes);
+	bool transpose = operation != CblasNoTrans;
+	matrix->rows = transpose ? structure.columnCount : structure.rowCount;
+	matrix->columns = transpose ? structure.rowCount : structure.columnCount;
+	matrix->starts = structure.columnStarts;
+	matrix->indices = structure.rowIndices;
+	matrix->data = source.data;
+	matrix->kind = structure.attributes.kind;
+	matrix->triangle = transpose ? (structure.attributes.triangle == SparseUpperTriangle ? SparseLowerTriangle : SparseUpperTriangle) : structure.attributes.triangle;
+	matrix->block_size = structure.blockSize;
+	matrix->operation = CblasNoTrans;
+	if (!transpose) return result;
+
+	// SparseBLAS may export transposed CSR storage; normalize it for complex QR.
+	long count = structure.columnStarts [structure.columnCount];
+	if (!sparse_matrix_storage<T> (result, matrix, count)) { sparse_destroy (result); return nullptr; }
+	memset (matrix->starts, 0, ((size_t) matrix->columns + 1) * sizeof (long));
+	for (long index = 0; index < count; index++)
+		matrix->starts [structure.rowIndices [index] + 1]++;
+	for (int column = 0; column < matrix->columns; column++)
+		matrix->starts [column + 1] += matrix->starts [column];
+	int block = matrix->block_size;
+	for (int column = 0; column < structure.columnCount; column++) {
+		for (long index = structure.columnStarts [column]; index < structure.columnStarts [column + 1]; index++) {
+			long destination = matrix->starts [structure.rowIndices [index]]++;
+			matrix->indices [destination] = column;
+			for (int j = 0; j < block; j++) {
+				for (int i = 0; i < block; i++) {
+					auto value = source.data [index * block * block + i + j * block];
+					((typename T::Scalar *) matrix->data) [destination * block * block + j + i * block] = operation == CblasConjTrans ? sparse_conjugate (value) : value;
+				}
+			}
+		}
+	}
+	for (int column = matrix->columns; column > 0; column--)
+		matrix->starts [column] = matrix->starts [column - 1];
+	matrix->starts [0] = 0;
+	if (result->matrix.structure.attributes._allocatedBySparse) SparseCleanup (result->matrix);
 	result->matrix = sparse_matrix<T> (matrix);
 	return result;
 }
@@ -676,6 +753,11 @@ void *xamarin_sparse_matrix_create (int scalar, XamarinSparseMatrix *matrix, lon
 {
 	SparseCall call;
 	SPARSE_DISPATCH (sparse_matrix_create, matrix, count)
+}
+void *xamarin_sparse_from_opaque (int scalar, void *opaque, XamarinSparseMatrix *matrix)
+{
+	SparseCall call;
+	SPARSE_DISPATCH (sparse_from_opaque, opaque, matrix)
 }
 void *xamarin_sparse_preconditioner_create (int scalar, const XamarinSparseMatrix *matrix, int type, SparseUserPreconditioner *user)
 {

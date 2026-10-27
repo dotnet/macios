@@ -131,7 +131,29 @@ workspaces for concurrent work.
 
 ## Native interoperability
 
-These APIs cover the numerical solver families with owned managed lifetimes.
-They do not expose native symbolic malloc/free callbacks or conversion from
-opaque SparseBLAS handles (SparseBLAS is a separate API). Use compressed-column
-or coordinate input and `SparseFactorStorage` for explicit storage ownership.
+`SparseMatrix<T>.FromSparseBlas` converts an existing opaque SparseBLAS matrix
+into independently owned solver storage. Its scalar type must match `T`.
+The `SafeHandle` overload retains the source during conversion; the `IntPtr`
+overload requires the caller to keep the source alive throughout the call.
+Neither overload transfers source ownership, and the converted matrix remains
+valid after the source is destroyed. SparseBLAS matrix creation and editing
+remain separate APIs.
+
+`SparseFactorOptions<T>.SetMemoryAllocator` accepts native allocation and
+deallocation function pointers. Both callbacks must be supplied together;
+passing null for both restores the system allocator for future analyses.
+The allocation callback accepts a byte count and returns a 16-byte-aligned
+pointer, or a null pointer on failure. The deallocation callback must accept
+null. Callbacks have no context parameter and may run on native threads.
+They must not throw, and their code and any associated external state must
+remain valid until all derived symbolic analyses, numerical factors, and
+subfactors have been released. Managed implementations must use static
+`[UnmanagedCallersOnly]` methods.
+
+These are deliberately native callbacks rather than managed delegates so they
+work with ahead-of-time compilation without dynamically generated trampolines.
+The callbacks are saved by symbolic analysis and also govern later numerical
+factorization and refactoring; changing the options does not change existing
+factors. They do not replace the binding's matrix or cached workspace allocator.
+Use `SparseFactorStorage` and workspace spans for explicit storage ownership
+without native allocator callbacks.

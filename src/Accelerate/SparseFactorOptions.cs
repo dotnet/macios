@@ -14,6 +14,8 @@ namespace Accelerate {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public sealed class SparseFactorOptions<T> where T : unmanaged {
+		IntPtr allocate, deallocate;
+
 		/// <summary>Creates default ordering and numerical factorization options.</summary>
 		public SparseFactorOptions () { }
 		/// <summary>The fill-reducing ordering method.</summary>
@@ -30,6 +32,22 @@ namespace Accelerate {
 		public double? PivotTolerance { get; set; }
 		/// <summary>The zero tolerance, or null to use the precision-specific native default.</summary>
 		public double? ZeroTolerance { get; set; }
+
+		/// <summary>Sets the native memory callbacks saved in a new symbolic factorization.</summary>
+		/// <param name="allocate">An unmanaged callback returning a 16-byte-aligned allocation, or null on allocation failure.</param>
+		/// <param name="deallocate">An unmanaged callback releasing an allocation; it must accept a null pointer.</param>
+		/// <remarks>
+		///   <para>Pass null for both callbacks to restore the system allocator. Supplying only one callback is invalid.</para>
+		///   <para>The callbacks have no context parameter. They must be thread-safe, must not throw, and must remain callable until all derived symbolic analyses, numerical factors, and subfactors are released. For managed implementations, use static methods marked with <see cref="System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute" />.</para>
+		///   <para>These callbacks control native factor allocations, not the binding's matrix or cached workspace storage. Changing them does not change an existing factorization's allocator. Numerical factorization from existing symbolic analysis and refactoring use the callbacks saved by that analysis.</para>
+		/// </remarks>
+		public unsafe void SetMemoryAllocator (delegate* unmanaged<nuint, IntPtr> allocate, delegate* unmanaged<IntPtr, void> deallocate)
+		{
+			if ((allocate == null) != (deallocate == null))
+				throw new ArgumentException ("Allocation and deallocation callbacks must both be supplied or both be null.");
+			this.allocate = (IntPtr) allocate;
+			this.deallocate = (IntPtr) deallocate;
+		}
 
 		internal unsafe Pin PinOptions (SparseFactorization type, int rows, int columns, bool symbolicOnly = false)
 		{
@@ -105,6 +123,7 @@ namespace Accelerate {
 						Order = (int) source.Order, Permutation = (int*) permutation.Pointer,
 						Ignored = (int*) ignored.Pointer, Scaling = (int) source.Scaling, Scale = scaling.Pointer,
 						PivotTolerance = source.PivotTolerance ?? -1, ZeroTolerance = source.ZeroTolerance ?? -1,
+						Allocate = source.allocate, Deallocate = source.deallocate,
 					};
 				} catch {
 					permutation.Dispose ();

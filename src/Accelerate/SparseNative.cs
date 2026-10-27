@@ -31,6 +31,7 @@ namespace Accelerate {
 			internal int Scaling;
 			internal void* Scale;
 			internal double PivotTolerance, ZeroTolerance;
+			internal IntPtr Allocate, Deallocate;
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
@@ -100,6 +101,8 @@ namespace Accelerate {
 		internal static extern IntPtr xamarin_sparse_matrix_create (int scalar, Matrix* matrix, long count);
 		[DllImport ("__Internal")]
 		internal static extern IntPtr xamarin_sparse_coordinate (int scalar, Matrix* matrix, long count, int* rows, int* columns, void* values);
+		[DllImport ("__Internal")]
+		internal static extern IntPtr xamarin_sparse_from_opaque (int scalar, IntPtr matrix, Matrix* descriptor);
 		[DllImport ("__Internal")]
 		internal static extern void xamarin_sparse_matrix_multiply (int scalar, Matrix* matrix, int count, void* input, void* output, void* alpha, byte accumulate);
 		[DllImport ("__Internal")]

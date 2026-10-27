@@ -5,6 +5,8 @@
 
 using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
+using System.Threading;
 using Accelerate;
 using Foundation;
 using NUnit.Framework;
@@ -14,6 +16,76 @@ namespace MonoTouchFixtures.Accelerate {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SparseSolverTest {
+		const string AccelerateLibrary = "/System/Library/Frameworks/Accelerate.framework/Accelerate";
+		static int nativeAllocations, nativeDeallocations;
+
+		[DllImport ("/usr/lib/libSystem.B.dylib")]
+		static extern IntPtr malloc (nuint size);
+		[DllImport ("/usr/lib/libSystem.B.dylib")]
+		static extern void free (IntPtr pointer);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_create_double (ulong rows, ulong columns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_create_float (ulong rows, ulong columns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_create_double_complex (ulong rows, ulong columns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_create_float_complex (ulong rows, ulong columns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_block_create_double (ulong rows, ulong columns, ulong blockRows, ulong blockColumns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_block_create_float (ulong rows, ulong columns, ulong blockRows, ulong blockColumns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_block_create_double_complex (ulong rows, ulong columns, ulong blockRows, ulong blockColumns);
+		[DllImport (AccelerateLibrary)]
+		static extern IntPtr sparse_matrix_block_create_float_complex (ulong rows, ulong columns, ulong blockRows, ulong blockColumns);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_entries_double (IntPtr matrix, ulong count, void* values, long* rows, long* columns);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_entries_float (IntPtr matrix, ulong count, void* values, long* rows, long* columns);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_entries_double_complex (IntPtr matrix, ulong count, void* values, long* rows, long* columns);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_entries_float_complex (IntPtr matrix, ulong count, void* values, long* rows, long* columns);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_block_double (IntPtr matrix, void* values, ulong rowStride, ulong columnStride, long row, long column);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_block_float (IntPtr matrix, void* values, ulong rowStride, ulong columnStride, long row, long column);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_block_double_complex (IntPtr matrix, void* values, ulong rowStride, ulong columnStride, long row, long column);
+		[DllImport (AccelerateLibrary)]
+		static extern unsafe int sparse_insert_block_float_complex (IntPtr matrix, void* values, ulong rowStride, ulong columnStride, long row, long column);
+		[DllImport (AccelerateLibrary)]
+		static extern int sparse_commit (IntPtr matrix);
+		[DllImport (AccelerateLibrary)]
+		static extern int sparse_matrix_destroy (IntPtr matrix);
+
+		sealed class SparseBlasHandle : SafeHandle {
+			internal SparseBlasHandle (IntPtr handle) : base (IntPtr.Zero, true) => SetHandle (handle);
+			public override bool IsInvalid => handle == IntPtr.Zero;
+			protected override bool ReleaseHandle () => sparse_matrix_destroy (handle) == 0;
+		}
+
+		[UnmanagedCallersOnly]
+		static IntPtr Allocate (nuint size)
+		{
+			var pointer = malloc (size);
+			if (pointer != IntPtr.Zero)
+				Interlocked.Increment (ref nativeAllocations);
+			return pointer;
+		}
+
+		[UnmanagedCallersOnly]
+		static void Deallocate (IntPtr pointer)
+		{
+			if (pointer != IntPtr.Zero)
+				Interlocked.Increment (ref nativeDeallocations);
+			free (pointer);
+		}
+
+		[UnmanagedCallersOnly]
+		static IntPtr RejectAllocation (nuint size) => IntPtr.Zero;
+
 		static T Number<T> (Complex value) where T : unmanaged
 		{
 			if (typeof (T) == typeof (double)) return (T) (object) value.Real;
@@ -470,6 +542,122 @@ namespace MonoTouchFixtures.Accelerate {
 			Assert.Throws<ArgumentException> (() => symbolic.Factor (otherStructure), "Changed symbolic structure");
 			options.Permutation = new int [] { 0, 0 };
 			Assert.Throws<ArgumentException> (() => SparseFactorization<T>.Create (matrix, SparseFactorization.Cholesky, options), "Invalid user permutation");
+		}
+
+		[Test]
+		public unsafe void NativeInteropValidation ()
+		{
+			var options = new SparseFactorOptions<double> ();
+			Assert.Throws<ArgumentException> (() => options.SetMemoryAllocator (&Allocate, null), "Missing deallocator");
+			Assert.Throws<ArgumentException> (() => options.SetMemoryAllocator (null, &Deallocate), "Missing allocator");
+			options.SetMemoryAllocator (null, null);
+			Assert.Throws<ArgumentException> (() => SparseMatrix<double>.FromSparseBlas (IntPtr.Zero), "Null opaque matrix");
+			using var invalid = new SparseBlasHandle (IntPtr.Zero);
+			Assert.Throws<ArgumentException> (() => SparseMatrix<double>.FromSparseBlas (invalid), "Invalid opaque owner");
+			using var matrix = Symmetric<double> ();
+			options.SetMemoryAllocator (&RejectAllocation, &Deallocate);
+			Assert.Throws<InvalidOperationException> (() => SparseSymbolicFactorization<double>.Create (matrix, SparseFactorization.Cholesky, options), "Native allocation failure");
+		}
+
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
+		[TestCase (3)]
+		[NonParallelizable]
+		public void NativeAllocator (int scalar) => EachScalar (NativeAllocator<double>, NativeAllocator<float>, NativeAllocator<Complex>, NativeAllocator<SparseComplexFloat>, scalar);
+
+		static unsafe void NativeAllocator<T> () where T : unmanaged
+		{
+			nativeAllocations = nativeDeallocations = 0;
+			using var matrix = Symmetric<T> ();
+			var expected = Numbers<T> (1, 2);
+			var rhs = new T [2];
+			var actual = new T [2];
+			matrix.Multiply (expected, rhs, Number<T> (1));
+			var options = new SparseFactorOptions<T> ();
+			options.SetMemoryAllocator (&Allocate, &Deallocate);
+			using (var factor = SparseFactorization<T>.Create (matrix, SparseFactorization.Cholesky, options)) {
+				Assert.That (nativeAllocations, Is.GreaterThan (0), "All-in-one custom allocations");
+				options.SetMemoryAllocator (null, null);
+				using var retained = factor.Retain ();
+				factor.Dispose ();
+				retained.Solve (rhs, actual);
+				Equal<T> (actual, expected, "Custom allocation retained factor");
+			}
+			Assert.That (nativeDeallocations, Is.EqualTo (nativeAllocations), "All-in-one allocation balance");
+			options.SetMemoryAllocator (&Allocate, &Deallocate);
+			using (var symbolic = SparseSymbolicFactorization<T>.Create (matrix, SparseFactorization.Cholesky, options)) {
+				using var factor = symbolic.Factor (matrix);
+				symbolic.Dispose ();
+				options.SetMemoryAllocator (null, null);
+				factor.Refactor (matrix);
+				factor.Solve (rhs, actual);
+				Equal<T> (actual, expected, "Symbolic allocator retained through refactor");
+			}
+			Assert.That (nativeDeallocations, Is.EqualTo (nativeAllocations), "Symbolic allocation balance");
+		}
+
+		[TestCase (0, false)]
+		[TestCase (1, false)]
+		[TestCase (2, false)]
+		[TestCase (3, false)]
+		[TestCase (0, true)]
+		[TestCase (1, true)]
+		[TestCase (2, true)]
+		[TestCase (3, true)]
+		public void OpaqueMatrix (int scalar, bool blocked = false) => EachScalar (() => OpaqueMatrix<double> (blocked), () => OpaqueMatrix<float> (blocked), () => OpaqueMatrix<Complex> (blocked), () => OpaqueMatrix<SparseComplexFloat> (blocked), scalar);
+
+		static unsafe void OpaqueMatrix<T> (bool blocked) where T : unmanaged
+		{
+			IntPtr pointer = blocked ?
+				typeof (T) == typeof (double) ? sparse_matrix_block_create_double (2, 1, 2, 2) :
+				typeof (T) == typeof (float) ? sparse_matrix_block_create_float (2, 1, 2, 2) :
+				typeof (T) == typeof (Complex) ? sparse_matrix_block_create_double_complex (2, 1, 2, 2) : sparse_matrix_block_create_float_complex (2, 1, 2, 2) :
+				typeof (T) == typeof (double) ? sparse_matrix_create_double (3, 2) :
+				typeof (T) == typeof (float) ? sparse_matrix_create_float (3, 2) :
+				typeof (T) == typeof (Complex) ? sparse_matrix_create_double_complex (3, 2) : sparse_matrix_create_float_complex (3, 2);
+			using var source = new SparseBlasHandle (pointer);
+			Assert.That (source.IsInvalid, Is.False, "Opaque source creation");
+			var values = blocked ?
+				Numbers<T> (4, 0, new Complex (1, IsComplex<T> () ? 1 : 0), 3, new Complex (2, IsComplex<T> () ? -1 : 0), 0, 0, 2) :
+				Numbers<T> (4, new Complex (1, IsComplex<T> () ? 1 : 0), 3, new Complex (2, IsComplex<T> () ? -1 : 0));
+			long* rows = stackalloc long [4] { 0, 0, 1, 2 };
+			long* columns = stackalloc long [4] { 0, 1, 1, 0 };
+			fixed (T* data = values) {
+				if (blocked) {
+					for (int block = 0; block < 2; block++) {
+						int status = typeof (T) == typeof (double) ? sparse_insert_block_double (pointer, data + block * 4, 1, 2, block, 0) :
+							typeof (T) == typeof (float) ? sparse_insert_block_float (pointer, data + block * 4, 1, 2, block, 0) :
+							typeof (T) == typeof (Complex) ? sparse_insert_block_double_complex (pointer, data + block * 4, 1, 2, block, 0) : sparse_insert_block_float_complex (pointer, data + block * 4, 1, 2, block, 0);
+						Assert.That (status, Is.EqualTo (0), "Opaque block insertion");
+					}
+				} else {
+					int status = typeof (T) == typeof (double) ? sparse_insert_entries_double (pointer, 4, data, rows, columns) :
+						typeof (T) == typeof (float) ? sparse_insert_entries_float (pointer, 4, data, rows, columns) :
+						typeof (T) == typeof (Complex) ? sparse_insert_entries_double_complex (pointer, 4, data, rows, columns) : sparse_insert_entries_float_complex (pointer, 4, data, rows, columns);
+					Assert.That (status, Is.EqualTo (0), "Opaque insertion");
+				}
+			}
+			Assert.That (sparse_commit (pointer), Is.EqualTo (0), "Opaque commit");
+			using var matrix = SparseMatrix<T>.FromSparseBlas (source);
+			using var raw = SparseMatrix<T>.FromSparseBlas (pointer);
+			Assert.That (source.IsClosed, Is.False, "Source ownership preserved");
+			source.Dispose ();
+			Assert.Throws<ObjectDisposedException> (() => SparseMatrix<T>.FromSparseBlas (source), "Closed opaque source");
+			Assert.That (matrix.RowCount, Is.EqualTo (blocked ? 4 : 3), "Converted rows");
+			Assert.That (matrix.ColumnCount, Is.EqualTo (2), "Converted columns");
+			var expected = blocked ?
+				Numbers<T> (new Complex (6, IsComplex<T> () ? 2 : 0), 6, new Complex (2, IsComplex<T> () ? -1 : 0), 4) :
+				Numbers<T> (new Complex (6, IsComplex<T> () ? 2 : 0), 6, new Complex (2, IsComplex<T> () ? -1 : 0));
+			var actual = new T [expected.Length];
+			matrix.Multiply (Numbers<T> (1, 2), actual, Number<T> (1));
+			Equal<T> (actual, expected, "Converted matrix survives source destruction");
+			raw.Multiply (Numbers<T> (1, 2), actual, Number<T> (1));
+			Equal<T> (actual, expected, "Raw converted matrix survives source destruction");
+			using var factor = SparseFactorization<T>.Create (matrix, SparseFactorization.Qr);
+			var solution = new T [2];
+			factor.Solve (expected, solution);
+			Equal<T> (solution, Numbers<T> (1, 2), "Converted matrix factorization");
 		}
 
 		[Test]

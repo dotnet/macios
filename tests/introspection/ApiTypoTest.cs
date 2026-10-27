@@ -142,6 +142,7 @@ namespace Introspection {
 			{ "Bgrx", All }, // blue-green-red-unused
 			{ "Bim", All }, // BIM file/code term
 			{ "Bitangent", All }, // geometry term
+			{ "Blas", All }, // Basic Linear Algebra Subprograms
 			{ "Blinn", All }, // Blinn shading model
 			{ "Blit", All }, // graphics copy operation
 			{ "Blockmap", ApplePlatform.MacOSX }, // compound word

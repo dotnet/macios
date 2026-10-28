@@ -64,15 +64,13 @@ namespace ObjCRuntime {
 
 			switch (encoding) {
 			case Encoding.Auto:
+			case Encoding.Ansi:
 			case Encoding.Utf8:
 				byteCount = System.Text.Encoding.UTF8.GetByteCount (str);
 				break;
 			case Encoding.BStr:
 			case Encoding.Unicode:
 				byteCount = System.Text.Encoding.Unicode.GetByteCount (str);
-				break;
-			case Encoding.Ansi:
-				byteCount = System.Text.Encoding.ASCII.GetByteCount (str);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException (nameof (encoding));

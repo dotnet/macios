@@ -112,8 +112,8 @@ namespace ObjCRuntime {
 
 		internal static void protocol_addProperty (IntPtr protocol, string name, string? [] attributes, int count, bool isRequired, bool isInstance)
 		{
-			using var namePtr = new TransientString (name);
-			var propArr = TransientString.AllocStringArray (attributes);
+			using var namePtr = new TransientString (name, TransientString.Encoding.Utf8);
+			var propArr = TransientString.AllocStringArray (attributes, TransientString.Encoding.Utf8);
 			protocol_addProperty (protocol, namePtr, propArr, count, isRequired.AsByte (), isInstance.AsByte ());
 			TransientString.FreeStringArray (propArr, attributes.Length);
 		}

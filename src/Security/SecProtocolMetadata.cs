@@ -287,8 +287,8 @@ namespace Security {
 		{
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
-			using var labelPtr = new TransientString (label, TransientString.Encoding.Utf8);
-			return CreateDispatchData (sec_protocol_metadata_create_secret (GetCheckedHandle (), (nuint) label.Length, labelPtr, exporterLength));
+			using var labelPtr = new TransientString (label, out var labelLength, TransientString.Encoding.Utf8);
+			return CreateDispatchData (sec_protocol_metadata_create_secret (GetCheckedHandle (), (nuint) labelLength, labelPtr, exporterLength));
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -300,9 +300,9 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
-			using var labelPtr = new TransientString (label, TransientString.Encoding.Utf8);
+			using var labelPtr = new TransientString (label, out var labelLength, TransientString.Encoding.Utf8);
 			fixed (byte* p = context)
-				return CreateDispatchData (sec_protocol_metadata_create_secret_with_context (GetCheckedHandle (), (nuint) label.Length, labelPtr, (nuint) context.Length, p, exporterLength));
+				return CreateDispatchData (sec_protocol_metadata_create_secret_with_context (GetCheckedHandle (), (nuint) labelLength, labelPtr, (nuint) context.Length, p, exporterLength));
 		}
 
 		// API returning `OS_dispatch_data` can also return `null` and

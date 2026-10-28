@@ -2148,8 +2148,11 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
-			<!-- Include $(_LinkerCachePath2) so that package downgrades (whose DLLs have older timestamps than the existing ILC output) trigger IlcCompile -->
-			<RdXmlFile Include="$(_LinkerCachePath2)" Condition="Exists('$(_LinkerCachePath2)')" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!-- Include $(_LinkerCacheHash) in IlcArg (via a runtime knob) so that when any input assembly changes (including NuGet downgrades with older timestamps), %(ManagedBinary.IlcRspFile) is rewritten and triggers IlcCompile -->
+			<IlcArg Include="--runtimeknob:ObjCRuntime.LinkerCacheHash=$(_LinkerCacheHash)" Condition="'$(_LinkerCacheHash)' != ''" />
 		</ItemGroup>
 
 		<ItemGroup>

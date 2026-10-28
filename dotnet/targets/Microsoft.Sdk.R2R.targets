@@ -135,8 +135,6 @@
 			<_ReadyToRunCompositeBuildReferences
 				Include="@(_ReadyToRunAssembliesToReference)"
 				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput)" />
-			<!-- Include $(_R2RInputHashFile) so that package downgrades (whose DLLs have older timestamps than existing R2R outputs) trigger _CreateR2RImages -->
-			<_ReadyToRunPgoFiles Include="$(_R2RInputHashFile)" Condition="Exists('$(_R2RInputHashFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -147,6 +145,14 @@
 			BeforeTargets="_CreateR2RImages">
 		<Touch Files="%(_ReadyToRunCompileList.OutputR2RImage)"
 			Condition="Exists('%(_ReadyToRunCompileList.OutputR2RImage)')" />
+	</Target>
+
+	<!-- Delete R2R outputs when the R2R input hash changed, so that package downgrades (whose DLLs have older timestamps than existing R2R outputs) still trigger _CreateR2RImages -->
+	<Target Name="_InvalidateR2ROutputs"
+			Condition="'$(_R2RInputHashChanged)' == 'true'"
+			AfterTargets="_PrepareForReadyToRunCompilation"
+			BeforeTargets="_CreateR2RImages">
+		<Delete Files="%(_ReadyToRunCompileList.OutputR2RImage);%(_ReadyToRunCompileList.OutputPDBImage)" />
 	</Target>
 
 	<Target Name="_DedupUnrootedReadyToRunPublish"

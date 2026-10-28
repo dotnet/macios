@@ -687,17 +687,28 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static int /* CGError = int32_t */ CGGetEventTapList (
 			uint /* uint32_t */ maxNumberOfTaps,
+#if XAMCORE_5_0
+			CGEventTapInformation* tapList,
+#else
 			CGEventTapInformation_Blittable* tapList,
+#endif
 			uint* /* uint32_t* */ eventTapCount);
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a list of currently installed event taps.</summary>
+		/// <returns>An array of <see cref="CGEventTapInformation" /> structures describing the active event taps, or <see langword="null" /> if the query fails.</returns>
 		public unsafe CGEventTapInformation []? GetEventTapList ()
 		{
 			uint count;
 			if (CGGetEventTapList (0, null, &count) != 0)
 				return null;
+#if XAMCORE_5_0
+			var result = new CGEventTapInformation [count];
+			fixed (CGEventTapInformation* p = result) {
+				if (CGGetEventTapList (count, p, &count) != 0)
+					return null;
+			}
+			return result;
+#else
 			var result = new CGEventTapInformation_Blittable [count];
 			fixed (CGEventTapInformation_Blittable* p = result) {
 				if (CGGetEventTapList (count, p, &count) != 0)
@@ -707,6 +718,7 @@ namespace CoreGraphics {
 			for (var i = 0; i < count; i++)
 				rv [i] = result [i].ToCGEventTapInformation ();
 			return rv;
+#endif
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -748,43 +760,118 @@ namespace CoreGraphics {
 	}
 
 #if !COREBUILD
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Contains information about an event tap.</summary>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct CGEventTapInformation {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		uint /* uint32_t */ eventTapID;
+		CGEventTapLocation tapPoint;
+		CGEventTapOptions options;
+		CGEventMask eventsOfInterest;
+		int /* pid_t = int */ tappingProcess;
+		int /* pid_t = int */ processBeingTapped;
+		byte /* bool */ enabled;
+		float /* float */ minUsecLatency;
+		float /* float */ avgUsecLatency;
+		float /* float */ maxUsecLatency;
+
+		/// <summary>Gets or sets the unique identifier for the event tap.</summary>
+		/// <value>The unique identifier for the event tap.</value>
+		public uint EventTapID {
+			get => eventTapID;
+			set => eventTapID = value;
+		}
+
+		/// <summary>Gets or sets the location in the event stream where the event tap is placed.</summary>
+		/// <value>The tap placement location.</value>
+		public CGEventTapLocation TapPoint {
+			get => tapPoint;
+			set => tapPoint = value;
+		}
+
+		/// <summary>Gets or sets the options that specify whether the event tap is an active filter or passive listener.</summary>
+		/// <value>The event tap options.</value>
+		public CGEventTapOptions Options {
+			get => options;
+			set => options = value;
+		}
+
+		/// <summary>Gets or sets the mask of events monitored by the event tap.</summary>
+		/// <value>The mask of monitored event types.</value>
+		public CGEventMask EventsOfInterest {
+			get => eventsOfInterest;
+			set => eventsOfInterest = value;
+		}
+
+		/// <summary>Gets or sets the process ID of the application that created the event tap.</summary>
+		/// <value>The process ID of the tapping process.</value>
+		public int TappingProcess {
+			get => tappingProcess;
+			set => tappingProcess = value;
+		}
+
+		/// <summary>Gets or sets the process ID of the target application being tapped, or 0 if all processes are tapped.</summary>
+		/// <value>The process ID of the process being tapped, or 0 if all processes are tapped.</value>
+		public int ProcessBeingTapped {
+			get => processBeingTapped;
+			set => processBeingTapped = value;
+		}
+
+		/// <summary>Gets or sets a value that indicates whether the event tap is currently enabled.</summary>
+		/// <value><see langword="true" /> if the event tap is enabled; otherwise, <see langword="false" />.</value>
+		public bool Enabled {
+			get => enabled != 0;
+			set => enabled = value.AsByte ();
+		}
+
+		/// <summary>Gets or sets the minimum latency, in microseconds, observed for the event tap.</summary>
+		/// <value>The minimum latency in microseconds.</value>
+		public float MinUsecLatency {
+			get => minUsecLatency;
+			set => minUsecLatency = value;
+		}
+
+		/// <summary>Gets or sets the average latency, in microseconds, observed for the event tap.</summary>
+		/// <value>The average latency in microseconds.</value>
+		public float AvgUsecLatency {
+			get => avgUsecLatency;
+			set => avgUsecLatency = value;
+		}
+
+		/// <summary>Gets or sets the maximum latency, in microseconds, observed for the event tap.</summary>
+		/// <value>The maximum latency in microseconds.</value>
+		public float MaxUsecLatency {
+			get => maxUsecLatency;
+			set => maxUsecLatency = value;
+		}
+#else
+		/// <summary>The unique identifier for the event tap.</summary>
 		public uint /* uint32_t */ EventTapID;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The location in the event stream where the event tap is placed.</summary>
 		public CGEventTapLocation TapPoint;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The options that specify whether the event tap is an active filter or passive listener.</summary>
 		public CGEventTapOptions Options;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The mask of events monitored by the event tap.</summary>
 		public CGEventMask EventsOfInterest;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The process ID of the application that created the event tap.</summary>
 		public int /* pid_t = int */ TappingProcess;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The process ID of the target application being tapped, or 0 if all processes are tapped.</summary>
 		public int /* pid_t = int */ ProcessBeingTapped;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Whether the event tap is currently enabled.</summary>
 		public bool /* bool */ Enabled;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The minimum latency, in microseconds, observed for the event tap.</summary>
 		public float /* float */ MinUsecLatency;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The average latency, in microseconds, observed for the event tap.</summary>
 		public float /* float */ AvgUsecLatency;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The maximum latency, in microseconds, observed for the event tap.</summary>
 		public float /* float */ MaxUsecLatency;
+#endif
 	};
 
+#if !XAMCORE_5_0
+	[StructLayout (LayoutKind.Sequential)]
 	struct CGEventTapInformation_Blittable {
 		public uint /* uint32_t */ EventTapID;
 		public CGEventTapLocation TapPoint;
@@ -813,6 +900,7 @@ namespace CoreGraphics {
 			};
 		}
 	};
+#endif // !XAMCORE_5_0
 #endif // !COREBUILD
 
 }

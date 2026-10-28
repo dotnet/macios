@@ -292,9 +292,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextAddRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
-		/// <param name="rects">An array of rectangles.</param>
-		///         <summary>Adds an array of rectangular paths to the current path.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds an array of rectangular paths to the current path.</summary>
+		/// <param name="rects">An array of rectangles to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
 		public void AddRects (CGRect [] rects)
 		{
 			if (rects is null)
@@ -308,7 +308,15 @@ namespace CoreGraphics {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextAddLines (/* CGContextRef */ IntPtr c, CGPoint* points, /* size_t */ nint count);
-		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])']/*" />
+
+		/// <summary>Adds a sequence of connected straight line segments to the current path.</summary>
+		/// <param name="points">An array of two or more <see cref="CGPoint" /> values. Straight line segments are added between sequential points.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   <para>
+		///     Lines are added to the current path, with the first line segment beginning at <c><paramref name="points" />[0]</c>. A line is not added from <see cref="GetPathCurrentPoint" />.
+		///   </para>
+		/// </remarks>
 		public void AddLines (CGPoint [] points)
 		{
 			if (points is null)
@@ -480,9 +488,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextFillRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
-		/// <param name="rects">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Fills the specified rectangles using the current fill color and resets the current path.</summary>
+		/// <param name="rects">An array of rectangles to fill.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
 		public void ContextFillRects (CGRect [] rects)
 		{
 			if (rects is null)
@@ -553,9 +561,8 @@ namespace CoreGraphics {
 			/* const CGPoint* __nullable */ CGPoint* points,
 			/* size_t */ nint count);
 
-		/// <param name="points">An array of points, defining starting and ending positions of the lines. The array must contain an even number of points.</param>
-		///         <summary>Strokes the lines defined by the pairs in <paramref name="points" />. Afterwards, the current path is reset.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Strokes the lines defined by the point pairs in <paramref name="points" /> and resets the current path.</summary>
+		/// <param name="points">An array of points defining the starting and ending positions of each line segment. The array must contain an even number of points.</param>
 		public void StrokeLineSegments (CGPoint []? points)
 		{
 			unsafe {
@@ -646,9 +653,9 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextClipToRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
-		/// <param name="rects">An array of rectangles.</param>
-		///         <summary>Modifies the current clipping path to be the insersection of the current clipping path and the region specified by the supplied rectangles.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Modifies the current clipping path to be the intersection of the current clipping path and the region specified by the supplied rectangles.</summary>
+		/// <param name="rects">An array of rectangles defining the clipping region.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
 		public void ClipToRects (CGRect [] rects)
 		{
 			if (rects is null)
@@ -1053,11 +1060,10 @@ namespace CoreGraphics {
 			/* const CGGlyph * __nullable */ ushort* glyphs,
 			/* const CGPoint * __nullable */ CGPoint* positions, /* size_t */ nint count);
 
-		/// <param name="glyphs">To be added.</param>
-		///         <param name="positions">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws a set of glyphs at the corresponding positions in user space.</summary>
+		/// <param name="glyphs">An array of glyphs to draw, or <see langword="null" />.</param>
+		/// <param name="positions">An array of positions corresponding to each glyph in <paramref name="glyphs" />, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs to draw, or a negative value to draw all elements in <paramref name="glyphs" />.</param>
 		public void ShowGlyphsAtPositions (ushort []? glyphs, CGPoint []? positions, int count = -1)
 		{
 			if (glyphs is null)
@@ -1126,10 +1132,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextShowText (/* CGContextRef */ IntPtr c, /* const char* __nullable */ byte* bytes, /* size_t */ nint length);
 
-		/// <param name="bytes">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws the specified number of bytes of text at the current text position. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="bytes">The text bytes to draw, or <see langword="null" />.</param>
+		/// <param name="count">The number of bytes from <paramref name="bytes" /> to draw.</param>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="bytes" />.</exception>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1149,9 +1155,8 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="bytes">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws the specified text bytes at the current text position. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="bytes">The text bytes to draw, or <see langword="null" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1218,6 +1223,11 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGContextShowTextAtPoint (/* CGContextRef */ IntPtr c, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* const char* */ byte* bytes, /* size_t */ nint length);
 
+		/// <summary>Draws the specified number of bytes of text at the given point in user space. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="x">The x-coordinate at which to draw the text.</param>
+		/// <param name="y">The y-coordinate at which to draw the text.</param>
+		/// <param name="bytes">The text bytes to draw, or <see langword="null" />.</param>
+		/// <param name="length">The number of bytes from <paramref name="bytes" /> to draw.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1235,6 +1245,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Draws the specified text bytes at the given point in user space. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="x">The x-coordinate at which to draw the text.</param>
+		/// <param name="y">The y-coordinate at which to draw the text.</param>
+		/// <param name="bytes">The text bytes to draw, or <see langword="null" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1262,9 +1276,8 @@ namespace CoreGraphics {
 		unsafe extern static void CGContextShowGlyphs (/* CGContextRef __nullable */ IntPtr c,
 			/* const CGGlyph * __nullable */ ushort* glyphs, /* size_t */ nint count);
 
-		/// <param name="glyphs">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws an array of glyphs at the current text position. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="glyphs">The glyphs to draw, or <see langword="null" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1280,10 +1293,10 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="glyphs">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws the specified number of glyphs at the current text position. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="glyphs">The glyphs to draw, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs from <paramref name="glyphs" /> to draw.</param>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="glyphs" />.</exception>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1313,6 +1326,12 @@ namespace CoreGraphics {
 		unsafe extern static void CGContextShowGlyphsAtPoint (/* CGContextRef */ IntPtr context, /* CGFloat */ nfloat x,
 			/* CGFloat */ nfloat y, /* const CGGlyph * __nullable */ ushort* glyphs, /* size_t */ nint count);
 
+		/// <summary>Draws the specified number of glyphs at the given point in user space. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="x">The x-coordinate at which to draw the glyphs.</param>
+		/// <param name="y">The y-coordinate at which to draw the glyphs.</param>
+		/// <param name="glyphs">The glyphs to draw, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs from <paramref name="glyphs" /> to draw.</param>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="glyphs" />.</exception>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1332,6 +1351,10 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Draws an array of glyphs at the given point in user space. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="x">The x-coordinate at which to draw the glyphs.</param>
+		/// <param name="y">The y-coordinate at which to draw the glyphs.</param>
+		/// <param name="glyphs">The glyphs to draw, or <see langword="null" />.</param>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -1358,11 +1381,11 @@ namespace CoreGraphics {
 			/* const CGGlyph * __nullable */ ushort* glyphs,
 			/* const CGSize * __nullable */ CGSize* advances, /* size_t */ nint count);
 
-		/// <param name="glyphs">To be added.</param>
-		///         <param name="advances">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws a set of glyphs with varying advances. This method has been deprecated in favor of <see cref="CoreText" />.</summary>
+		/// <param name="glyphs">An array of glyphs to draw, or <see langword="null" />.</param>
+		/// <param name="advances">An array of offset values specifying the advance for each glyph, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs to draw.</param>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="glyphs" /> or <paramref name="advances" />.</exception>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

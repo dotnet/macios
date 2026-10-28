@@ -75,11 +75,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe extern static void CTRunGetAdvances (IntPtr h, NSRange range, CGSize* buffer);
-		/// <param name="range">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>Copies a range of glyph advances into the provided buffer, or allocates a new buffer if <paramref name="buffer" /> is <see langword="null" />.</summary>
+		/// <param name="range">The range of glyph advances to copy. If the length is 0, copies from the start index through the end of the run.</param>
+		/// <param name="buffer">An optional destination buffer for the advances, or <see langword="null" /> to allocate a new array.</param>
+		/// <returns>An array containing the glyph advances.</returns>
+		/// <exception cref="ArgumentException"><paramref name="buffer" /> is non-null and too small to hold the requested range.</exception>
 		public CGSize [] GetAdvances (NSRange range, CGSize []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -148,11 +149,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe extern static void CTRunGetGlyphs (IntPtr h, NSRange range, ushort* buffer);
-		/// <param name="range">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>Copies a range of glyphs into the provided buffer, or allocates a new buffer if <paramref name="buffer" /> is <see langword="null" />.</summary>
+		/// <param name="range">The range of glyphs to copy. If the length is 0, copies from the start index through the end of the run.</param>
+		/// <param name="buffer">An optional destination buffer for the glyphs, or <see langword="null" /> to allocate a new array.</param>
+		/// <returns>An array containing the glyphs.</returns>
+		/// <exception cref="ArgumentException"><paramref name="buffer" /> is non-null and too small to hold the requested range.</exception>
 		public ushort [] GetGlyphs (NSRange range, ushort []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -199,11 +201,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe extern static void CTRunGetPositions (IntPtr h, NSRange range, CGPoint* buffer);
-		/// <param name="range">To be added.</param>
-		///         <param name="buffer">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>Copies a range of glyph positions into the provided buffer, or allocates a new buffer if <paramref name="buffer" /> is <see langword="null" />.</summary>
+		/// <param name="range">The range of glyph positions to copy. If the length is 0, copies from the start index through the end of the run.</param>
+		/// <param name="buffer">An optional destination buffer for the positions, or <see langword="null" /> to allocate a new array.</param>
+		/// <returns>An array containing the glyph positions.</returns>
+		/// <exception cref="ArgumentException"><paramref name="buffer" /> is non-null and too small to hold the requested range.</exception>
 		public CGPoint [] GetPositions (NSRange range, CGPoint []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -247,6 +250,12 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe extern static void CTRunGetStringIndices (IntPtr h, NSRange range, nint /* CFIndex */ * buffer);
+
+		/// <summary>Copies a range of string indices into the provided buffer, or allocates a new buffer if <paramref name="buffer" /> is <see langword="null" />.</summary>
+		/// <param name="range">The range of glyph string indices to copy. If the length is 0, copies from the start index through the end of the run.</param>
+		/// <param name="buffer">An optional destination buffer for the string indices, or <see langword="null" /> to allocate a new array.</param>
+		/// <returns>An array containing the string indices corresponding to the glyphs in the run.</returns>
+		/// <exception cref="ArgumentException"><paramref name="buffer" /> is non-null and too small to hold the requested range.</exception>
 		public nint [] GetStringIndices (NSRange range, nint []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
@@ -302,6 +311,12 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe extern static double CTRunGetTypographicBounds (IntPtr h, NSRange range, nfloat* ascent, nfloat* descent, nfloat* leading);
 
+		/// <summary>Calculates the typographic bounds for a range of glyphs in the run.</summary>
+		/// <param name="range">The range of glyphs to measure. If the length is 0, measures from the start index through the end of the run.</param>
+		/// <param name="ascent">When this method returns, contains the ascent of the run.</param>
+		/// <param name="descent">When this method returns, contains the descent of the run.</param>
+		/// <param name="leading">When this method returns, contains the leading of the run.</param>
+		/// <returns>The typographic width of the specified glyph range, or 0 if the run or range is invalid.</returns>
 		public double GetTypographicBounds (NSRange range, out nfloat ascent, out nfloat descent, out nfloat leading)
 		{
 			ascent = 0;
@@ -314,9 +329,8 @@ namespace CoreText {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Calculates the typographic width of the entire run.</summary>
+		/// <returns>The typographic width of the run, or 0 if the run is invalid.</returns>
 		public double GetTypographicBounds ()
 		{
 			NSRange range = new NSRange () { Location = 0, Length = 0 };
@@ -332,6 +346,10 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTRunGetBaseAdvancesAndOrigins (/* CTRunRef */ IntPtr runRef, /* CFRange */ NSRange range, CGSize* advancesBuffer, CGPoint* originsBuffer);
 
+		/// <summary>Copies the base advances and origins for a range of glyphs in the run.</summary>
+		/// <param name="range">The range of glyphs to query. If the length is 0, copies from the start index through the end of the run.</param>
+		/// <param name="advancesBuffer">When this method returns, contains an array of base advance sizes for the glyphs.</param>
+		/// <param name="originsBuffer">When this method returns, contains an array of base origin points for the glyphs.</param>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

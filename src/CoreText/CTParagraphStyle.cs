@@ -421,9 +421,9 @@ namespace CoreText {
 		#region Paragraph Style Creation
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTParagraphStyleCreate (CTParagraphStyleSetting* settings, nint settingCount);
-		/// <param name="settings">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>Initializes a new <see cref="CTParagraphStyle" /> instance with the specified settings.</summary>
+		/// <param name="settings">The paragraph style settings to apply, or <see langword="null" /> to create a default paragraph style.</param>
 		public unsafe CTParagraphStyle (CTParagraphStyleSettings? settings)
 			: base (settings is null ? CTParagraphStyleCreate (null, 0) : CreateFromSettings (settings), true, true)
 		{

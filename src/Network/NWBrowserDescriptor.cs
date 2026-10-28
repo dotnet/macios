@@ -88,15 +88,19 @@ namespace Network {
 			set => nw_browse_descriptor_set_include_txt_record (GetCheckedHandle (), value.AsByte ());
 		}
 
-		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_browse_descriptor_get_bonjour_service_type (OS_nw_browse_descriptor descriptor);
 
+		/// <summary>Gets the Bonjour service type for this browse descriptor.</summary>
+		/// <value>The Bonjour service type, or <see langword="null" /> if not applicable.</value>
 		public string? BonjourType
 			=> Marshal.PtrToStringAnsi (nw_browse_descriptor_get_bonjour_service_type (GetCheckedHandle ()));
 
-		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_browse_descriptor_get_bonjour_service_domain (OS_nw_browse_descriptor descriptor);
 
+		/// <summary>Gets the Bonjour service domain for this browse descriptor.</summary>
+		/// <value>The Bonjour service domain, or <see langword="null" /> if not applicable.</value>
 		public string? BonjourDomain
 			=> Marshal.PtrToStringAnsi (nw_browse_descriptor_get_bonjour_service_domain (GetCheckedHandle ()));
 	}

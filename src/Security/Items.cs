@@ -539,17 +539,16 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainItemFreeContent (IntPtr attrList, IntPtr data);
 
-		/// <param name="serverName">To be added.</param>
-		///         <param name="accountName">To be added.</param>
-		///         <param name="password">To be added.</param>
-		///         <param name="protocolType">To be added.</param>
-		///         <param name="port">To be added.</param>
-		///         <param name="path">To be added.</param>
-		///         <param name="authenticationType">To be added.</param>
-		///         <param name="securityDomain">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds an internet password to the default keychain.</summary>
+		/// <param name="serverName">The server name associated with the password.</param>
+		/// <param name="accountName">The account name for the password.</param>
+		/// <param name="password">The password data bytes.</param>
+		/// <param name="protocolType">The network protocol associated with the password.</param>
+		/// <param name="port">The network port number, or 0 for the default port.</param>
+		/// <param name="path">The path on the server, or <see langword="null" />.</param>
+		/// <param name="authenticationType">The authentication scheme used for the password.</param>
+		/// <param name="securityDomain">The security domain on the server, or <see langword="null" />.</param>
+		/// <returns>A <see cref="SecStatusCode" /> indicating the result of the operation.</returns>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -704,12 +703,11 @@ namespace Security {
 			}
 		}
 
-		/// <param name="serviceName">To be added.</param>
-		///         <param name="accountName">To be added.</param>
-		///         <param name="password">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds a generic password to the default keychain.</summary>
+		/// <param name="serviceName">The service name associated with the password.</param>
+		/// <param name="accountName">The account name for the password.</param>
+		/// <param name="password">The password data bytes.</param>
+		/// <returns>A <see cref="SecStatusCode" /> indicating the result of the operation.</returns>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]

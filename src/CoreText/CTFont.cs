@@ -3144,6 +3144,11 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontGetGlyphsForCharacters (IntPtr font, ushort* characters, CGGlyph* glyphs, nint count);
 
+		/// <summary>Gets the glyphs for an array of Unicode characters.</summary>
+		/// <param name="characters">An array of UTF-16 characters to map to glyphs.</param>
+		/// <param name="glyphs">An output array that receives the resulting glyphs.</param>
+		/// <param name="count">The number of characters to map.</param>
+		/// <returns><see langword="true" /> if the font could encode all characters in <paramref name="characters" />; otherwise, <see langword="false" />.</returns>
 		public bool GetGlyphsForCharacters (char [] characters, CGGlyph [] glyphs, nint count)
 		{
 			AssertCount (count);
@@ -3159,11 +3164,10 @@ namespace CoreText {
 			}
 		}
 
-		/// <param name="characters">To be added.</param>
-		///         <param name="glyphs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the glyphs for an array of Unicode characters.</summary>
+		/// <param name="characters">An array of UTF-16 characters to map to glyphs.</param>
+		/// <param name="glyphs">An output array that receives the resulting glyphs.</param>
+		/// <returns><see langword="true" /> if the font could encode all characters; otherwise, <see langword="false" />.</returns>
 		public bool GetGlyphsForCharacters (char [] characters, CGGlyph [] glyphs)
 		{
 			return GetGlyphsForCharacters (characters, glyphs, Math.Min (characters.Length, glyphs.Length));
@@ -3337,6 +3341,13 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern CGRect CTFontGetBoundingRectsForGlyphs (IntPtr font, CTFontOrientation orientation, CGGlyph* glyphs, CGRect* boundingRects, nint count);
+
+		/// <summary>Calculates the bounding rectangles for an array of glyphs and returns the overall bounding rectangle for the run.</summary>
+		/// <param name="orientation">The intended drawing orientation of the glyphs.</param>
+		/// <param name="glyphs">An array of glyphs whose bounding rectangles to compute.</param>
+		/// <param name="boundingRects">An optional output array that receives the individual glyph bounding rectangles, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs in <paramref name="glyphs" /> to process.</param>
+		/// <returns>The overall bounding rectangle for the specified glyphs.</returns>
 		public CGRect GetBoundingRects (CTFontOrientation orientation, CGGlyph [] glyphs, CGRect []? boundingRects, nint count)
 		{
 			AssertCount (count);
@@ -3355,6 +3366,12 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern CGRect CTFontGetOpticalBoundsForGlyphs (IntPtr font, CGGlyph* glyphs, CGRect* boundingRects, nint count, nuint options);
 
+		/// <summary>Calculates the optical bounding rectangles for an array of glyphs and returns the overall optical bounding rectangle for the run.</summary>
+		/// <param name="glyphs">An array of glyphs whose optical bounds to compute.</param>
+		/// <param name="boundingRects">An output array that receives the individual optical bounding rectangles for each glyph, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs in <paramref name="glyphs" /> to process.</param>
+		/// <param name="options">Options controlling the optical bounds calculation.</param>
+		/// <returns>The overall optical bounding rectangle for the specified glyphs.</returns>
 		public CGRect GetOpticalBounds (CGGlyph [] glyphs, CGRect [] boundingRects, nint count, CTFontOptions options = 0)
 		{
 			AssertCount (count);
@@ -3370,11 +3387,11 @@ namespace CoreText {
 			}
 		}
 
-		/// <param name="orientation">To be added.</param>
-		///         <param name="glyphs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Calculates the overall bounding rectangle for an array of glyphs.</summary>
+		/// <param name="orientation">The intended drawing orientation of the glyphs.</param>
+		/// <param name="glyphs">An array of glyphs whose bounding rectangle to compute.</param>
+		/// <returns>The overall bounding rectangle for the specified glyphs.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="glyphs" /> is <see langword="null" />.</exception>
 		public CGRect GetBoundingRects (CTFontOrientation orientation, CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -3384,6 +3401,13 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern double CTFontGetAdvancesForGlyphs (IntPtr font, CTFontOrientation orientation, CGGlyph* glyphs, CGSize* advances, nint count);
+
+		/// <summary>Calculates the advances for an array of glyphs and returns the summed advance.</summary>
+		/// <param name="orientation">The intended drawing orientation of the glyphs.</param>
+		/// <param name="glyphs">An array of glyphs whose advances to compute.</param>
+		/// <param name="advances">An optional output array that receives the individual glyph advances, or <see langword="null" />.</param>
+		/// <param name="count">The number of glyphs in <paramref name="glyphs" /> to process.</param>
+		/// <returns>The summed advance of all processed glyphs.</returns>
 		public double GetAdvancesForGlyphs (CTFontOrientation orientation, CGGlyph [] glyphs, CGSize []? advances, nint count)
 		{
 			AssertCount (count);
@@ -3399,11 +3423,11 @@ namespace CoreText {
 			}
 		}
 
-		/// <param name="orientation">To be added.</param>
-		///         <param name="glyphs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Calculates the summed advance for an array of glyphs.</summary>
+		/// <param name="orientation">The intended drawing orientation of the glyphs.</param>
+		/// <param name="glyphs">An array of glyphs whose summed advance to compute.</param>
+		/// <returns>The summed advance of all glyphs in <paramref name="glyphs" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="glyphs" /> is <see langword="null" />.</exception>
 		public double GetAdvancesForGlyphs (CTFontOrientation orientation, CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -3413,6 +3437,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTFontGetVerticalTranslationsForGlyphs (IntPtr font, CGGlyph* glyphs, CGSize* translations, nint count);
+
+		/// <summary>Calculates the vertical origin translations for an array of glyphs.</summary>
+		/// <param name="glyphs">An array of glyphs whose vertical translations to compute.</param>
+		/// <param name="translations">An output array that receives the vertical translation offsets for each glyph.</param>
+		/// <param name="count">The number of glyphs in <paramref name="glyphs" /> to process.</param>
 		public void GetVerticalTranslationsForGlyphs (CGGlyph [] glyphs, CGSize [] translations, nint count)
 		{
 			AssertCount (count);
@@ -3468,11 +3497,12 @@ namespace CoreText {
 			CGGlyph* glyphs, CGPoint* positions, nint count,
 			/* CGContextRef __nonnull */ IntPtr context);
 
-		/// <param name="context">To be added.</param>
-		///         <param name="glyphs">To be added.</param>
-		///         <param name="positions">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Draws an array of glyphs at the corresponding positions in the specified graphics context.</summary>
+		/// <param name="context">The graphics context in which to draw the glyphs.</param>
+		/// <param name="glyphs">An array of glyphs to draw.</param>
+		/// <param name="positions">An array of positions for each glyph, in user space coordinates.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="context" />, <paramref name="glyphs" />, or <paramref name="positions" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="glyphs" /> and <paramref name="positions" /> do not have the same length.</exception>
 		public void DrawGlyphs (CGContext context, CGGlyph [] glyphs, CGPoint [] positions)
 		{
 			if (context is null)

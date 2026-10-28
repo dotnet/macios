@@ -77,6 +77,14 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <summary>Initializes a new <see cref="CGBitmapContext" /> backed by the specified byte array and alpha channel configuration.</summary>
+		/// <param name="data">The destination buffer in memory where drawing is rendered, or <see langword="null" /> to let Core Graphics manage the memory.</param>
+		/// <param name="width">The width, in pixels, of the bitmap.</param>
+		/// <param name="height">The height, in pixels, of the bitmap.</param>
+		/// <param name="bitsPerComponent">The number of bits for each color component of a pixel.</param>
+		/// <param name="bytesPerRow">The number of bytes per row of the bitmap, or 0 to compute it automatically when <paramref name="data" /> is <see langword="null" />.</param>
+		/// <param name="colorSpace">The color space for the bitmap context.</param>
+		/// <param name="bitmapInfo">Constants specifying whether the bitmap contains an alpha channel and how it is generated.</param>
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
 			: base (Create (data, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo, out var buffer), true)
 		{
@@ -93,6 +101,14 @@ namespace CoreGraphics {
 			return result;
 		}
 
+		/// <summary>Initializes a new <see cref="CGBitmapContext" /> backed by the specified byte array and bitmap layout flags.</summary>
+		/// <param name="data">The destination buffer in memory where drawing is rendered, or <see langword="null" /> to let Core Graphics manage the memory.</param>
+		/// <param name="width">The width, in pixels, of the bitmap.</param>
+		/// <param name="height">The height, in pixels, of the bitmap.</param>
+		/// <param name="bitsPerComponent">The number of bits for each color component of a pixel.</param>
+		/// <param name="bytesPerRow">The number of bytes per row of the bitmap, or 0 to compute it automatically when <paramref name="data" /> is <see langword="null" />.</param>
+		/// <param name="colorSpace">The color space for the bitmap context.</param>
+		/// <param name="bitmapInfo">Flags specifying the component format, byte order, and alpha channel information.</param>
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)
 			: base (Create (data, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo, out var buffer), true)
 		{

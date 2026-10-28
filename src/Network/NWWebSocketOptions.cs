@@ -40,9 +40,13 @@ namespace Network {
 
 		public NWWebSocketOptions (NWWebSocketVersion version) : base (nw_ws_create_options (version), true) { }
 
-		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_ws_options_add_additional_header (OS_nw_protocol_options options, IntPtr name, IntPtr value);
 
+		/// <summary>Adds an additional HTTP header to the WebSocket client handshake request.</summary>
+		/// <param name="header">The HTTP header field name.</param>
+		/// <param name="value">The HTTP header field value.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="header" /> is <see langword="null" />.</exception>
 		public void SetHeader (string header, string value)
 		{
 			if (header is null)
@@ -52,9 +56,12 @@ namespace Network {
 			nw_ws_options_add_additional_header (GetCheckedHandle (), headerPtr, valuePtr);
 		}
 
-		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_ws_options_add_subprotocol (OS_nw_protocol_options options, IntPtr subprotocol);
 
+		/// <summary>Adds a WebSocket subprotocol to offer during the WebSocket handshake.</summary>
+		/// <param name="subprotocol">The subprotocol identifier to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="subprotocol" /> is <see langword="null" />.</exception>
 		public void AddSubprotocol (string subprotocol)
 		{
 			if (subprotocol is null)

@@ -516,6 +516,22 @@ namespace Accelerate {
 										 Pixel8888 backgroundColor,
 										 vImageFlags flags);
 
+		/// <summary>Convolves a region of interest in an ARGB8888 source buffer with four separate 16-bit integer kernels.</summary>
+		/// <param name="src">The source image buffer.</param>
+		/// <param name="dest">The destination image buffer.</param>
+		/// <param name="tempBuffer">A pointer to a temporary buffer, or <see cref="IntPtr.Zero" /> to allocate one internally.</param>
+		/// <param name="srcOffsetToROI_X">The horizontal offset, in pixels, to the upper-left corner of the region of interest within <paramref name="src" />.</param>
+		/// <param name="srcOffsetToROI_Y">The vertical offset, in pixels, to the upper-left corner of the region of interest within <paramref name="src" />.</param>
+		/// <param name="kernels">An array of four convolution kernels, one for each channel.</param>
+		/// <param name="kernel_height">The height of each convolution kernel, which must be an odd number.</param>
+		/// <param name="kernel_width">The width of each convolution kernel, which must be an odd number.</param>
+		/// <param name="divisors">An array of four divisors applied to the convolved channel sums.</param>
+		/// <param name="biases">An array of four bias values added to each channel before dividing.</param>
+		/// <param name="backgroundColor">The background pixel color used when <see cref="vImageFlags.BackgroundColorFill" /> is set.</param>
+		/// <param name="flags">The options to use when performing the convolution.</param>
+		/// <returns>A <see cref="vImageError" /> value indicating whether the operation succeeded.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="kernels" />, <paramref name="divisors" />, or <paramref name="biases" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="kernels" />, <paramref name="divisors" />, or <paramref name="biases" /> contains fewer than four elements.</exception>
 		public static vImageError ConvolveMultiKernelARGB8888 (ref vImageBuffer src,
 									ref vImageBuffer dest,
 									IntPtr tempBuffer,
@@ -580,6 +596,21 @@ namespace Accelerate {
 										 PixelFFFF backgroundColor,
 										 vImageFlags flags);
 
+		/// <summary>Convolves a region of interest in an ARGBFFFF floating-point source buffer with four separate floating-point kernels.</summary>
+		/// <param name="src">The source image buffer.</param>
+		/// <param name="dest">The destination image buffer.</param>
+		/// <param name="tempBuffer">A pointer to a temporary buffer, or <see cref="IntPtr.Zero" /> to allocate one internally.</param>
+		/// <param name="srcOffsetToROI_X">The horizontal offset, in pixels, to the upper-left corner of the region of interest within <paramref name="src" />.</param>
+		/// <param name="srcOffsetToROI_Y">The vertical offset, in pixels, to the upper-left corner of the region of interest within <paramref name="src" />.</param>
+		/// <param name="kernels">An array of four floating-point convolution kernels, one for each channel.</param>
+		/// <param name="kernel_height">The height of each convolution kernel, which must be an odd number.</param>
+		/// <param name="kernel_width">The width of each convolution kernel, which must be an odd number.</param>
+		/// <param name="biases">An array of four bias values added to each convolved channel result.</param>
+		/// <param name="backgroundColor">The background pixel color used when <see cref="vImageFlags.BackgroundColorFill" /> is set.</param>
+		/// <param name="flags">The options to use when performing the convolution.</param>
+		/// <returns>A <see cref="vImageError" /> value indicating whether the operation succeeded.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="kernels" /> or <paramref name="biases" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="kernels" /> or <paramref name="biases" /> contains fewer than four elements.</exception>
 		public static vImageError ConvolveMultiKernelARGBFFFF (ref vImageBuffer src,
 									   ref vImageBuffer dest,
 									   IntPtr tempBuffer,
@@ -746,16 +777,17 @@ namespace Accelerate {
 									int* post_bias,     //Must be an array of 4 int32_t's. NULL is okay.
 									vImageFlags flags);
 
-		/// <param name="src">Source image data..</param>
-		///         <param name="dest">Target image data.</param>
-		///         <param name="matrix">To be added.</param>
-		///         <param name="divisor">To be added.</param>
-		///         <param name="pre_bias">To be added.</param>
-		///         <param name="post_bias">To be added.</param>
-		///         <param name="flags">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Multiplies each 4-channel pixel in an ARGB8888 source buffer by a 4x4 matrix.</summary>
+		/// <param name="src">The source image buffer.</param>
+		/// <param name="dest">The destination image buffer.</param>
+		/// <param name="matrix">A 16-element array representing the 4x4 matrix.</param>
+		/// <param name="divisor">The divisor applied to normalize the matrix multiplication result.</param>
+		/// <param name="pre_bias">An optional 4-element array of bias values added to each source channel before multiplication, or <see langword="null" />.</param>
+		/// <param name="post_bias">An optional 4-element array of bias values added to each channel after multiplication and before division, or <see langword="null" />.</param>
+		/// <param name="flags">The options to use when performing the operation.</param>
+		/// <returns>A <see cref="vImageError" /> value indicating whether the operation succeeded.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="matrix" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="pre_bias" /> or <paramref name="post_bias" /> is non-null and does not contain exactly four elements.</exception>
 		public static vImageError MatrixMultiplyARGB8888 (ref vImageBuffer src,
 								   ref vImageBuffer dest,
 								   short [] matrix, // matrix is [4*4],

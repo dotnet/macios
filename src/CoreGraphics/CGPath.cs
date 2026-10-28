@@ -369,10 +369,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddRects (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGRect* rects, /* size_t */ nint count);
 
-		/// <param name="m">To be added.</param>
-		///         <param name="rects">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends an array of rectangles, transformed by the specified affine transformation, to the path.</summary>
+		/// <param name="m">The affine transformation to apply to each rectangle before adding it to the path.</param>
+		/// <param name="rects">The array of rectangles to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects)
 		{
 			if (rects is null)
@@ -382,11 +382,12 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="m">To be added.</param>
-		///         <param name="rects">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends the specified number of rectangles from an array, transformed by the specified affine transformation, to the path.</summary>
+		/// <param name="m">The affine transformation to apply to each rectangle before adding it to the path.</param>
+		/// <param name="rects">The array of rectangles to add.</param>
+		/// <param name="count">The number of rectangles from <paramref name="rects" /> to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="rects" />.</exception>
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects, int count)
 		{
 			if (rects is null)
@@ -398,9 +399,9 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="rects">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends an array of rectangles to the path.</summary>
+		/// <param name="rects">The array of rectangles to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
 		public unsafe void AddRects (CGRect [] rects)
 		{
 			if (rects is null)
@@ -410,10 +411,11 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="rects">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends the specified number of rectangles from an array to the path.</summary>
+		/// <param name="rects">The array of rectangles to add.</param>
+		/// <param name="count">The number of rectangles from <paramref name="rects" /> to add.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="rects" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="rects" />.</exception>
 		public unsafe void AddRects (CGRect [] rects, int count)
 		{
 			if (rects is null)
@@ -428,10 +430,10 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddLines (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGPoint* points, /* size_t */ nint count);
 
-		/// <param name="m">To be added.</param>
-		///         <param name="points">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends a sequence of connected straight line segments, transformed by the specified affine transformation, to the path.</summary>
+		/// <param name="m">The affine transformation to apply to each point before adding it to the path.</param>
+		/// <param name="points">An array of points defining the connected line segments.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points)
 		{
 			if (points is null)
@@ -441,11 +443,12 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="m">To be added.</param>
-		///         <param name="points">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends a sequence of connected straight line segments from the first <paramref name="count" /> points, transformed by the specified affine transformation, to the path.</summary>
+		/// <param name="m">The affine transformation to apply to each point before adding it to the path.</param>
+		/// <param name="points">An array of points defining the connected line segments.</param>
+		/// <param name="count">The number of points from <paramref name="points" /> to use.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="points" />.</exception>
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points, int count)
 		{
 			if (points is null)
@@ -457,9 +460,9 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="points">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends a sequence of connected straight line segments to the path.</summary>
+		/// <param name="points">An array of points defining the connected line segments.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
 		public unsafe void AddLines (CGPoint [] points)
 		{
 			if (points is null)
@@ -469,10 +472,11 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="points">To be added.</param>
-		///         <param name="count">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends a sequence of connected straight line segments from the first <paramref name="count" /> points to the path.</summary>
+		/// <param name="points">An array of points defining the connected line segments.</param>
+		/// <param name="count">The number of points from <paramref name="points" /> to use.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="count" /> exceeds the length of <paramref name="points" />.</exception>
 		public unsafe void AddLines (CGPoint [] points, int count)
 		{
 			if (points is null)

@@ -138,31 +138,72 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Specifies the range of histogram data in a histogram, the number of entries, and whether to encode the alpha channel.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Explicit)]
 	public struct MPSImageHistogramInfo {
-		/// <summary>Specifies  the number of entries in a histogram.</summary>
-		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		[FieldOffset (0)]
+		nuint numberOfHistogramEntries;
+		[FieldOffset (8)]
+		byte histogramForAlpha;
+		[FieldOffset (16)]
+		Vector4 minPixelValue;
+		[FieldOffset (32)]
+		Vector4 maxPixelValue;
+
+		/// <summary>Gets or sets the number of entries in a histogram.</summary>
+		/// <value>The number of entries in the histogram.</value>
+		public nuint NumberOfHistogramEntries {
+			get => numberOfHistogramEntries;
+			set => numberOfHistogramEntries = value;
+		}
+
+		/// <summary>Gets or sets a value that specifies whether to encode the alpha channel in the histogram.</summary>
+		/// <value><see langword="true" /> to encode the alpha channel in the histogram; otherwise, <see langword="false" />.</value>
+		public bool HistogramForAlpha {
+			get => histogramForAlpha != 0;
+			set => histogramForAlpha = value.AsByte ();
+		}
+
+		/// <summary>Gets or sets the minimum value of histogram data in a histogram.</summary>
+		/// <value>The minimum pixel value for each channel.</value>
+		public Vector4 MinPixelValue {
+			get => minPixelValue;
+			set => minPixelValue = value;
+		}
+
+		/// <summary>Gets or sets the maximum value of histogram data in a histogram.</summary>
+		/// <value>The maximum pixel value for each channel.</value>
+		public Vector4 MaxPixelValue {
+			get => maxPixelValue;
+			set => maxPixelValue = value;
+		}
+#else
+		/// <summary>Specifies the number of entries in a histogram.</summary>
 		[FieldOffset (0)]
 		public nuint NumberOfHistogramEntries;
-		/// <summary>Specifies whether to encode the alpha channel in the histogram..</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Specifies whether to encode the alpha channel in the histogram.</summary>
 		[FieldOffset (8)]
 		public bool HistogramForAlpha;
 		/// <summary>Specifies the minimum value of histogram data in a histogram.</summary>
-		///         <remarks>To be added.</remarks>
 		[FieldOffset (16)]
 		public Vector4 MinPixelValue;
 		/// <summary>Specifies the maximum value of histogram data in a histogram.</summary>
-		///         <remarks>To be added.</remarks>
 		[FieldOffset (32)]
 		public Vector4 MaxPixelValue;
+
+		[System.Diagnostics.CodeAnalysis.UnscopedRef]
+		internal ref MPSImageHistogramInfo_Blittable ToBlittable ()
+		{
+			return ref System.Runtime.CompilerServices.Unsafe.As<MPSImageHistogramInfo, MPSImageHistogramInfo_Blittable> (ref this);
+		}
+#endif
 	}
 
+#if !XAMCORE_5_0
 	[StructLayout (LayoutKind.Explicit)]
 	[NativeName ("MPSImageHistogramInfo")]
 #if COREBUILD
@@ -188,6 +229,7 @@ namespace MetalPerformanceShaders {
 			};
 		}
 	}
+#endif // !XAMCORE_5_0
 
 	// MPSTypes.h
 	// FIXME: public delegate IMTLTexture MPSCopyAllocator (MPSKernel filter, IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture);

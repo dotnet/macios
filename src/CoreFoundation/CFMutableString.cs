@@ -62,9 +62,9 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern void CFStringAppendCharacters (/* CFMutableStringRef* */ IntPtr theString, IntPtr chars, nint numChars);
 
-		/// <param name="string">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Appends the characters of the specified string to this mutable string.</summary>
+		/// <param name="string">The string to append.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="string" /> is <see langword="null" />.</exception>
 		public void Append (string @string)
 		{
 			if (@string is null)

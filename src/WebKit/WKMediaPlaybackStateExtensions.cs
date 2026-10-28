@@ -3,7 +3,7 @@
 
 #nullable enable
 
-#if !__TVOS__
+#if !__TVOS__ && !XAMCORE_5_0
 
 namespace WebKit {
 	/// <summary>Converts media playback states between managed and native representations.</summary>
@@ -17,7 +17,6 @@ namespace WebKit {
 		/// <returns>The native playback state.</returns>
 		public static nuint ToNative (WKMediaPlaybackState value)
 		{
-#if !XAMCORE_5_0
 			switch (value) {
 			case WKMediaPlaybackState.Playing:
 				return 1;
@@ -26,7 +25,6 @@ namespace WebKit {
 			case WKMediaPlaybackState.Suspended:
 				return 3;
 			}
-#endif
 			return (nuint) (ulong) value;
 		}
 
@@ -35,7 +33,6 @@ namespace WebKit {
 		/// <returns>The managed playback state.</returns>
 		public static WKMediaPlaybackState ToManaged (nuint value)
 		{
-#if !XAMCORE_5_0
 			switch (value) {
 			case 1:
 				return WKMediaPlaybackState.Playing;
@@ -44,7 +41,6 @@ namespace WebKit {
 			case 3:
 				return WKMediaPlaybackState.Suspended;
 			}
-#endif
 			return (WKMediaPlaybackState) (ulong) value;
 		}
 	}

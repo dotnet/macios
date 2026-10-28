@@ -276,7 +276,7 @@ namespace AVFoundation {
 		/// <summary>Indicates that the file could not be parsed.</summary>
 		FileFailedToParse = -11829,
 #if !XAMCORE_5_0
-		/// <summary>Indicates that the data could not be parsed.</summary>
+		/// <summary>This value corresponds to <see cref="FileFailedToParse" />. Use <see cref="FileFailedToParse" /> for file parsing errors or <see cref="FailedToParse2" /> for data parsing errors.</summary>
 		[Obsolete ("This value corresponds to 'FileFailedToParse'. Use 'FileFailedToParse' for file parsing errors or 'FailedToParse2' for data parsing errors.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		FailedToParse = -11829, // Should have been FileFailedToParse

@@ -51,7 +51,7 @@ namespace Xamarin.Linker {
 		public AssemblyDefinition PlatformAssembly {
 			get {
 				if (platform_assembly is null)
-					throw ErrorHelper.CreateError (2113, Errors.MX2113, configuration.PlatformAssembly + ".dll");
+					throw ErrorHelper.CreateError (2113, Errors.MX2113, configuration.PlatformAssembly + ".dll"); // The platform assembly '{0}' could not be found. This can happen when the app does not use any Apple APIs and the assembly is removed by trimming. Add a reference to an Apple API in the app, for example: System.GC.KeepAlive (typeof (Foundation.NSObject));
 				return platform_assembly;
 			}
 		}

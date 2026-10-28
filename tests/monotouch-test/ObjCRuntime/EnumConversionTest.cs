@@ -3,13 +3,14 @@
 
 #nullable enable
 
+#if !__TVOS__
+
 using System.Runtime.InteropServices;
+using CoreGraphics;
 #if __MACOS__
 using AppKit;
 #endif
-#if !__TVOS__
 using WebKit;
-#endif
 
 namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
@@ -56,8 +57,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #if !XAMCORE_5_0
 			if (!Runtime.IsARM64CallingConvention)
 				native = (nint) (long) managed;
-#endif
-#if !XAMCORE_5_0
 			Assert.That (NSImageResizingModeExtensions.ToNative (managed), Is.EqualTo (native), "ToNative");
 			Assert.That (NSImageResizingModeExtensions.ToManaged (native), Is.EqualTo (managed), "ToManaged");
 #endif
@@ -78,8 +77,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 #if !XAMCORE_5_0
 			if (!Runtime.IsARM64CallingConvention)
 				native = (nuint) (ulong) managed;
-#endif
-#if !XAMCORE_5_0
 			Assert.That (NSTextAlignmentExtensions.ToNative (managed), Is.EqualTo (native), "ToNative");
 			Assert.That (NSTextAlignmentExtensions.ToManaged (native), Is.EqualTo (managed), "ToManaged");
 #endif
@@ -106,10 +103,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (GetNativeValue (slider.Handle, Selector.GetHandle ("tickMarkPosition")), Is.EqualTo ((nuint) native), "Native getter");
 			Assert.That (slider.TickMarkPosition, Is.EqualTo ((NSTickMarkPosition) native), "Canonical managed getter");
 		}
-
 #endif
 
-#if !__TVOS__
 #if !XAMCORE_5_0
 		[TestCase (WKMediaPlaybackState.None, 0)]
 		[TestCase (WKMediaPlaybackState.Playing, 1)]
@@ -122,7 +117,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (WKMediaPlaybackStateExtensions.ToNative (managed), Is.EqualTo ((nuint) native), "ToNative");
 			Assert.That (WKMediaPlaybackStateExtensions.ToManaged ((nuint) native), Is.EqualTo (managed), "ToManaged");
 		}
-
 #endif
 
 		[TestCase (1, WKMediaPlaybackState.Playing)]
@@ -144,7 +138,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			public nuint NativeState { get; set; }
 
 			public MediaPlaybackStateWebView (WKWebViewConfiguration configuration)
-				: base (CoreGraphics.CGRect.Empty, configuration)
+				: base (CGRect.Empty, configuration)
 			{
 			}
 
@@ -169,6 +163,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				block->GetDelegateForBlock<NativeCompletion> () (completion, NativeState);
 			}
 		}
-#endif
 	}
 }
+
+#endif

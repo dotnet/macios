@@ -962,9 +962,6 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static unsafe extern byte xamarin_is_object_valid (IntPtr obj, IntPtr* error_message);
 
-		[DllImport ("__Internal")]
-		static extern void xamarin_free (IntPtr ptr);
-
 		internal unsafe static bool TryGetClass (IntPtr obj, out IntPtr cls, [NotNullWhen (false)] out string? error_message)
 		{
 			error_message = null;
@@ -972,8 +969,7 @@ namespace ObjCRuntime {
 				IntPtr error_str;
 				var rv = xamarin_is_object_valid (obj, &error_str);
 				if (rv == 0) {
-					error_message = Marshal.PtrToStringAuto (error_str)!;
-					xamarin_free (error_str);
+					error_message = TransientString.ToStringAndFree (error_str)!;
 					Runtime.NSLog ($"Found invalid id reference 0x{obj.ToString ("x")}: {error_message}");
 					Runtime.NSLog (Environment.StackTrace);
 					cls = IntPtr.Zero;
@@ -1009,44 +1005,16 @@ namespace ObjCRuntime {
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		internal extern static IntPtr class_getInstanceMethod (IntPtr cls, IntPtr sel);
 
-		[DllImport (Messaging.LIBOBJC_DYLIB, CharSet = CharSet.Ansi)]
-		extern unsafe static byte class_addProperty (IntPtr cls, IntPtr name, IntPtr* attributes, int count);
+		[DllImport (Messaging.LIBOBJC_DYLIB)]
+		extern static byte class_addProperty (IntPtr cls, IntPtr name, IntPtr attributes, int count);
 
-		internal static bool class_addProperty (IntPtr cls, string name, objc_attribute_prop [] attributes, int count)
+		internal static bool class_addProperty (IntPtr cls, string name, string? [] attributes, int count)
 		{
 			using var namePtr = new TransientString (name, TransientString.Encoding.Utf8);
-			var ptrs = PropertyStringsToPtrs (attributes);
-			bool retval = false;
-			unsafe {
-				fixed (IntPtr* ptrsPtr = ptrs) {
-					retval = class_addProperty (cls, namePtr, ptrsPtr, count) != 0;
-				}
-			}
-			FreeStringPtrs (ptrs);
+			var ptrs = TransientString.AllocStringArray (attributes);
+			var retval = class_addProperty (cls, namePtr, ptrs, count) != 0;
+			TransientString.FreeStringArray (ptrs, attributes.Length);
 			return retval;
-		}
-
-		internal static IntPtr [] PropertyStringsToPtrs (objc_attribute_prop [] props)
-		{
-			var ptrs = new IntPtr [props.Length * 2];
-			var index = 0;
-			foreach (var prop in props) {
-				ptrs [index++] = Marshal.StringToHGlobalAnsi (prop.name);
-				ptrs [index++] = Marshal.StringToHGlobalAnsi (prop.value);
-			}
-			return ptrs;
-		}
-
-		internal static void FreeStringPtrs (IntPtr [] ptrs)
-		{
-			foreach (var ptr in ptrs) {
-				Marshal.FreeHGlobal (ptr);
-			}
-		}
-
-		internal struct objc_attribute_prop {
-			internal string name;
-			internal string value;
 		}
 #endif // !COREBUILD
 	}

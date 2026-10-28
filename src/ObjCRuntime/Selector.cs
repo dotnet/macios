@@ -184,12 +184,8 @@ namespace ObjCRuntime {
 		///         </remarks>
 		public static IntPtr GetHandle (string name)
 		{
-			var ptr = Marshal.StringToHGlobalAnsi (name);
-			try {
-				return sel_registerName (ptr);
-			} finally {
-				Marshal.FreeHGlobal (ptr);
-			}
+			using var ptr = new TransientString (name);
+			return sel_registerName (ptr);
 		}
 
 		// objc/objc.h

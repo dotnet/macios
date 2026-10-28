@@ -402,7 +402,7 @@ namespace Security {
 		extern unsafe static /* OSStatus */ SslStatus SSLGetPeerDomainName (/* SSLContextRef */ IntPtr context, /* char* */ byte* peerName, /* size_t */ nint* peerNameLen);
 
 		[DllImport (Constants.SecurityLibrary)]
-		extern unsafe static /* OSStatus */ SslStatus SSLSetPeerDomainName (/* SSLContextRef */ IntPtr context, /* char* */ byte* peerName, /* size_t */ nint peerNameLen);
+		extern static /* OSStatus */ SslStatus SSLSetPeerDomainName (/* SSLContextRef */ IntPtr context, /* char* */ IntPtr peerName, /* size_t */ nint peerNameLen);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -425,16 +425,10 @@ namespace Security {
 			}
 			set {
 				if (value is null) {
-					unsafe {
-						result = SSLSetPeerDomainName (Handle, null, 0);
-					}
+					result = SSLSetPeerDomainName (Handle, IntPtr.Zero, 0);
 				} else {
-					var bytes = Encoding.UTF8.GetBytes (value);
-					unsafe {
-						fixed (byte* bytesPtr = bytes) {
-							result = SSLSetPeerDomainName (Handle, bytesPtr, bytes.Length);
-						}
-					}
+					using var valuePtr = new TransientString (value);
+					result = SSLSetPeerDomainName (Handle, valuePtr, Encoding.UTF8.GetByteCount (value));
 				}
 			}
 		}

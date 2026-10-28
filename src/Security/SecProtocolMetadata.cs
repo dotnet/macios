@@ -51,11 +51,7 @@ namespace Security {
 					return Marshal.PtrToStringAnsi (sec_protocol_metadata_get_negotiated_protocol (GetCheckedHandle ()));
 
 				var rv = sec_protocol_metadata_copy_negotiated_protocol (GetCheckedHandle ());
-				var str = Marshal.PtrToStringUTF8 (rv);
-				unsafe {
-					NativeMemory.Free ((void*) rv);
-				}
-				return str;
+				return TransientString.ToStringAndFree (rv, TransientString.Encoding.Utf8);
 			}
 		}
 
@@ -344,11 +340,7 @@ namespace Security {
 					return Marshal.PtrToStringAnsi (sec_protocol_metadata_get_server_name (GetCheckedHandle ()));
 
 				var rv = sec_protocol_metadata_copy_server_name (GetCheckedHandle ());
-				var str = Marshal.PtrToStringUTF8 (rv);
-				unsafe {
-					NativeMemory.Free ((void*) rv);
-				}
-				return str;
+				return TransientString.ToStringAndFree (rv, TransientString.Encoding.Utf8);
 			}
 		}
 

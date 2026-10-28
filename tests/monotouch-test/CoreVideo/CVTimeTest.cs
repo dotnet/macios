@@ -66,6 +66,18 @@ public class CVTimeTest {
 	[Test]
 	[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test inspects internal CVTime2 conversion helpers via reflection.")]
 	[UnconditionalSuppressMessage ("Trimming", "IL2075", Justification = "This test inspects internal CVTime2 conversion helpers via reflection.")]
+	[DynamicDependency ("ToCVTime2", typeof (CVTime))]
+#if __MACOS__
+	[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods, "CoreVideo.CVTime2", "Microsoft.macOS")]
+#elif __TVOS__
+	[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods, "CoreVideo.CVTime2", "Microsoft.tvOS")]
+#elif __MACCATALYST__
+	[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods, "CoreVideo.CVTime2", "Microsoft.MacCatalyst")]
+#elif __IOS__
+	[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods, "CoreVideo.CVTime2", "Microsoft.iOS")]
+#else
+#error Unknown platform
+#endif
 	public void CVTime2Conversion ()
 	{
 		var cvTime2Type = typeof (NSObject).Assembly.GetType ("CoreVideo.CVTime2", throwOnError: true)!;

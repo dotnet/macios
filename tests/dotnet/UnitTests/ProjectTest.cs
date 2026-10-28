@@ -2438,7 +2438,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet10_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 10, isFuture: false);
 		}
 
 		[Test]
@@ -2458,9 +2458,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
-			// In .NET 12
-			// * Copy this test and create a new .NET 13 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 12);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet13_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 13, isFuture: true);
+			// In .NET 13
+			// * Copy this test and create a new .NET 14 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}
@@ -3417,10 +3427,9 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["NoSymbolStrip"] = "false";
-			DotNet.AssertBuild (project_path, properties);
-
-			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			AssertErrorMessages (BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray (),
+				"Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
 		}
 
 		[Test]

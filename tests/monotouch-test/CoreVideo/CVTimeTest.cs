@@ -80,20 +80,26 @@ public class CVTimeTest {
 #endif
 	public void CVTime2Conversion ()
 	{
-		var cvTime2Type = typeof (NSObject).Assembly.GetType ("CoreVideo.CVTime2", throwOnError: true)!;
+		var cvTime2Type = typeof (NSObject).Assembly.GetType ("CoreVideo.CVTime2", throwOnError: true);
+		Assert.That (cvTime2Type, Is.Not.Null, "CVTime2");
+		if (cvTime2Type is null)
+			return;
+
 		var toCVTime2 = typeof (CVTime).GetMethod ("ToCVTime2", BindingFlags.Instance | BindingFlags.NonPublic);
 		var toCVTime = cvTime2Type.GetMethod ("ToCVTime", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 		Assert.That (toCVTime2, Is.Not.Null, "ToCVTime2");
 		Assert.That (toCVTime, Is.Not.Null, "ToCVTime");
+		if (toCVTime2 is null || toCVTime is null)
+			return;
 
 		var valid = new CVTime {
 			TimeValue = 1234567890123L,
 			TimeScale = 600,
 			TimeFlags = CVTimeFlags.IsIndefinite,
 		};
-		var cvTime2 = toCVTime2!.Invoke (valid, null);
+		var cvTime2 = toCVTime2.Invoke (valid, null);
 		Assert.That (cvTime2, Is.Not.Null, "cvTime2");
-		var roundtrip = (CVTime) toCVTime!.Invoke (cvTime2, null)!;
+		var roundtrip = toCVTime.Invoke (cvTime2, null);
 		Assert.That (roundtrip, Is.EqualTo (valid), "Roundtrip");
 
 		var tooLarge = new CVTime {

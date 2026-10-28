@@ -143,9 +143,12 @@ namespace CoreVideo {
 #endif
 	struct CVTime2 : IEquatable<CVTime2> {
 #endif
-		/* int64_t */ long timeValue;
-		/* int32_t */ int timeScale;
-		/* int32_t */ CVTimeFlags timeFlags;
+		/* int64_t */
+		long timeValue;
+		/* int32_t */
+		int timeScale;
+		/* int32_t */
+		CVTimeFlags timeFlags;
 
 		/// <summary>Determines how many TimeValues are represented by this CVTime.</summary>
 		public long TimeValue {

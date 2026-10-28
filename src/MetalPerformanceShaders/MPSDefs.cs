@@ -163,6 +163,32 @@ namespace MetalPerformanceShaders {
 		public Vector4 MaxPixelValue;
 	}
 
+	[StructLayout (LayoutKind.Explicit)]
+	[NativeName ("MPSImageHistogramInfo")]
+#if COREBUILD
+	public
+#endif
+	struct MPSImageHistogramInfo_Blittable {
+		[FieldOffset (0)]
+		public nuint NumberOfHistogramEntries;
+		[FieldOffset (8)]
+		public byte HistogramForAlpha;
+		[FieldOffset (16)]
+		public Vector4 MinPixelValue;
+		[FieldOffset (32)]
+		public Vector4 MaxPixelValue;
+
+		public MPSImageHistogramInfo ToMPSImageHistogramInfo ()
+		{
+			return new MPSImageHistogramInfo {
+				NumberOfHistogramEntries = NumberOfHistogramEntries,
+				HistogramForAlpha = HistogramForAlpha != 0,
+				MinPixelValue = MinPixelValue,
+				MaxPixelValue = MaxPixelValue,
+			};
+		}
+	}
+
 	// MPSTypes.h
 	// FIXME: public delegate IMTLTexture MPSCopyAllocator (MPSKernel filter, IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture);
 	/// <param name="filter">The <see cref="MetalPerformanceShaders.MPSKernel" /> that is requesting the memory.</param>

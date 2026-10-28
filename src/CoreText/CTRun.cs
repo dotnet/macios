@@ -300,13 +300,18 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static double CTRunGetTypographicBounds (IntPtr h, NSRange range, out nfloat ascent, out nfloat descent, out nfloat leading);
+		unsafe extern static double CTRunGetTypographicBounds (IntPtr h, NSRange range, nfloat* ascent, nfloat* descent, nfloat* leading);
 
-		[DllImport (Constants.CoreTextLibrary)]
-		extern static double CTRunGetTypographicBounds (IntPtr h, NSRange range, IntPtr ascent, IntPtr descent, IntPtr leading);
 		public double GetTypographicBounds (NSRange range, out nfloat ascent, out nfloat descent, out nfloat leading)
 		{
-			return CTRunGetTypographicBounds (Handle, range, out ascent, out descent, out leading);
+			ascent = 0;
+			descent = 0;
+			leading = 0;
+			unsafe {
+				fixed (nfloat* ascentPtr = &ascent, descentPtr = &descent, leadingPtr = &leading) {
+					return CTRunGetTypographicBounds (Handle, range, ascentPtr, descentPtr, leadingPtr);
+				}
+			}
 		}
 
 		/// <summary>To be added.</summary>
@@ -315,7 +320,9 @@ namespace CoreText {
 		public double GetTypographicBounds ()
 		{
 			NSRange range = new NSRange () { Location = 0, Length = 0 };
-			return CTRunGetTypographicBounds (Handle, range, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			unsafe {
+				return CTRunGetTypographicBounds (Handle, range, null, null, null);
+			}
 		}
 
 		[SupportedOSPlatform ("tvos")]

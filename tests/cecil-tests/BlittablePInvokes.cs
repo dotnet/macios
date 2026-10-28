@@ -139,7 +139,7 @@ namespace Cecil.Tests {
 		}
 
 		struct TypeAndIndex {
-			public TypeAndIndex (TypeReference type, int index, IMarshalInfoProvider provider)
+			public TypeAndIndex (TypeReference type, int index, IMarshalInfoProvider? provider)
 			{
 				Type = type;
 				Index = index;
@@ -147,7 +147,7 @@ namespace Cecil.Tests {
 			}
 			public TypeReference Type;
 			public int Index;
-			public IMarshalInfoProvider Provider;
+			public IMarshalInfoProvider? Provider;
 		}
 		struct BlitAndReason {
 			public BlitAndReason (bool isBlittable, string reason)
@@ -214,6 +214,18 @@ namespace Cecil.Tests {
 		}
 
 		[Test]
+		public void HasDisableRuntimeMarshallingAttribute ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				var assembly = info.Assembly;
+				var hasAttr = assembly.CustomAttributes.Any (ca => ca.AttributeType.FullName == "System.Runtime.CompilerServices.DisableRuntimeMarshallingAttribute");
+				Assert.That (hasAttr, Is.True, $"The assembly {info.Path} must have a [DisableRuntimeMarshalling] attribute.");
+			}
+		}
+
+		[Test]
 		public void NoMarshalAsAttributes ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -275,6 +287,13 @@ namespace Cecil.Tests {
 		MethodBlitResult IsMethodBlittable (AssemblyDefinition assembly, MethodDefinition method, Dictionary<string, BlitAndReason> blitCache)
 		{
 			var result = new MethodBlitResult (true, method);
+			if (method.HasPInvokeInfo) {
+				var pinfo = method.PInvokeInfo;
+				if (!pinfo.IsCharSetNotSpec) {
+					result.IsBlittable = false;
+					result.Result.Append ($"The P/Invoke specifies a CharSet ({pinfo.Attributes & PInvokeAttributes.CharSetMask})\n");
+				}
+			}
 			var localResult = new StringBuilder ();
 			var types = TypesFromMethod (method);
 			foreach (var typeIndex in types) {
@@ -301,9 +320,9 @@ namespace Cecil.Tests {
 				yield return new TypeAndIndex (parameter.ParameterType, i++, parameter);
 		}
 
-		bool IsTypeBlittable (AssemblyDefinition assembly, TypeReference type, IMarshalInfoProvider provider, StringBuilder result, Dictionary<string, BlitAndReason> blitCache)
+		bool IsTypeBlittable (AssemblyDefinition assembly, TypeReference type, IMarshalInfoProvider? provider, StringBuilder result, Dictionary<string, BlitAndReason> blitCache)
 		{
-			if (provider.HasMarshalInfo) {
+			if (provider?.HasMarshalInfo == true) {
 				result.Append ($" has a [MarshalAs] attribute");
 				return false;
 			}
@@ -318,7 +337,7 @@ namespace Cecil.Tests {
 				return true;
 			}
 			var localResult = new StringBuilder ();
-			if (IsBlittablePointer (assembly, type, provider, localResult, blitCache)) {
+			if (IsBlittablePointer (assembly, type, localResult, blitCache)) {
 				blitCache [type.FullName] = new BlitAndReason (true, "");
 				return true;
 			}
@@ -350,7 +369,6 @@ namespace Cecil.Tests {
 			"System.Single",
 			"System.Double",
 			"System.Runtime.InteropServices.NFloat",
-			"System.Runtime.InteropServices.NFloat&",
 		};
 
 		bool IsBlittableTypesWeLike (TypeReference t)
@@ -358,20 +376,41 @@ namespace Cecil.Tests {
 			return typesWeLike.Contains (t.ToString ());
 		}
 
-		bool IsBlittablePointer (AssemblyDefinition assembly, TypeReference type, IMarshalInfoProvider provider, StringBuilder result, Dictionary<string, BlitAndReason> blitCache)
+		bool IsBlittablePointer (AssemblyDefinition assembly, TypeReference type, StringBuilder result, Dictionary<string, BlitAndReason> blitCache)
 		{
-			if (type.IsFunctionPointer)
+			if (type is FunctionPointerType fnPtr) {
+				var allBlittable = true;
+				var fnResult = new StringBuilder ();
+				var returnLocalResult = new StringBuilder ();
+				if (fnPtr.ReturnType is not null && !IsTypeBlittable (assembly, fnPtr.ReturnType, fnPtr.MethodReturnType, returnLocalResult, blitCache)) {
+					fnResult.Append ($" {type.FullName}: return type {fnPtr.ReturnType} is not blittable: {returnLocalResult}");
+					allBlittable = false;
+				}
+				if (fnPtr.HasParameters) {
+					for (var i = 0; i < fnPtr.Parameters.Count; i++) {
+						var p = fnPtr.Parameters [i];
+						var paramLocalResult = new StringBuilder ();
+						if (!IsTypeBlittable (assembly, p.ParameterType, p, paramLocalResult, blitCache)) {
+							fnResult.Append ($" {type.FullName}: parameter #{i} ({p.ParameterType}) is not blittable: {paramLocalResult}");
+							allBlittable = false;
+						}
+					}
+				}
+				if (!allBlittable) {
+					result.Append (fnResult);
+					return false;
+				}
 				return true;
+			}
 
 			if (!type.IsPointer)
 				return false;
 
 			var localResult = new StringBuilder ();
-			if (!IsTypeBlittable (assembly, type.GetElementType (), provider, localResult, blitCache)) {
+			if (!IsTypeBlittable (assembly, type.GetElementType (), null, localResult, blitCache)) {
 				var pointerResult = new StringBuilder ();
 				pointerResult.Append ($" {type.Name}: {localResult}");
 				result.Append (pointerResult);
-				blitCache [type.FullName] = new BlitAndReason (false, pointerResult.ToString ());
 				return false;
 			}
 
@@ -389,6 +428,22 @@ namespace Cecil.Tests {
 				result.Append ($" {type.Name}: Type is an array.\n");
 				return false;
 			}
+			if (type.IsGenericInstance) {
+				result.Append ($" {type.FullName}: Type is a generic type.\n");
+				return false;
+			}
+			if (type.IsRequiredModifier || type.IsOptionalModifier) {
+				result.Append ($" {type.FullName}: Type has a modifier.\n");
+				return false;
+			}
+			if (type.IsPrimitive) {
+				// Any primitive type that is blittable is already in typesWeLike.
+				// System.Boolean and System.Char are primitive types that are NOT blittable,
+				// and in BCL their struct definitions have a single instance field of their own type,
+				// which would otherwise pass the struct field recursion check below.
+				result.Append ($" {type.FullName}: Primitive type is not blittable.\n");
+				return false;
+			}
 			TypeDefinition? typeDefinition = type.Resolve ();
 			if (typeDefinition is null) {
 				result.Append ($" {type.FullName}: Unable to load type.");
@@ -404,6 +459,10 @@ namespace Cecil.Tests {
 			}
 			if (typeDefinition.IsEnum) {
 				return true;
+			}
+			if (typeDefinition.IsAutoLayout) {
+				result.Append ($" {type.FullName}: Struct has AutoLayout.\n");
+				return false;
 			}
 			var allBlittable = true;
 			// if we get here then this is a struct. We can presume
@@ -428,7 +487,6 @@ namespace Cecil.Tests {
 			}
 			if (!allBlittable) {
 				result.Append (fieldsResult);
-				blitCache [type.FullName] = new BlitAndReason (false, fieldsResult.ToString ());
 			}
 			return allBlittable;
 		}

@@ -40,7 +40,7 @@ namespace Network {
 
 		public NWWebSocketOptions (NWWebSocketVersion version) : base (nw_ws_create_options (version), true) { }
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
 		static extern void nw_ws_options_add_additional_header (OS_nw_protocol_options options, IntPtr name, IntPtr value);
 
 		public void SetHeader (string header, string value)
@@ -52,7 +52,7 @@ namespace Network {
 			nw_ws_options_add_additional_header (GetCheckedHandle (), headerPtr, valuePtr);
 		}
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
 		static extern void nw_ws_options_add_subprotocol (OS_nw_protocol_options options, IntPtr subprotocol);
 
 		public void AddSubprotocol (string subprotocol)

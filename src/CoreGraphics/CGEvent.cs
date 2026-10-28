@@ -687,7 +687,7 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static int /* CGError = int32_t */ CGGetEventTapList (
 			uint /* uint32_t */ maxNumberOfTaps,
-			CGEventTapInformation* tapList,
+			CGEventTapInformation_Blittable* tapList,
 			uint* /* uint32_t* */ eventTapCount);
 
 		/// <summary>To be added.</summary>
@@ -698,12 +698,15 @@ namespace CoreGraphics {
 			uint count;
 			if (CGGetEventTapList (0, null, &count) != 0)
 				return null;
-			var result = new CGEventTapInformation [count];
-			fixed (CGEventTapInformation* p = result) {
+			var result = new CGEventTapInformation_Blittable [count];
+			fixed (CGEventTapInformation_Blittable* p = result) {
 				if (CGGetEventTapList (count, p, &count) != 0)
 					return null;
 			}
-			return result;
+			var rv = new CGEventTapInformation [count];
+			for (var i = 0; i < count; i++)
+				rv [i] = result [i].ToCGEventTapInformation ();
+			return rv;
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -780,6 +783,35 @@ namespace CoreGraphics {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		public float /* float */ MaxUsecLatency;
+	};
+
+	struct CGEventTapInformation_Blittable {
+		public uint /* uint32_t */ EventTapID;
+		public CGEventTapLocation TapPoint;
+		public CGEventTapOptions Options;
+		public CGEventMask EventsOfInterest;
+		public int /* pid_t = int */ TappingProcess;
+		public int /* pid_t = int */ ProcessBeingTapped;
+		public byte /* bool */ Enabled;
+		public float /* float */ MinUsecLatency;
+		public float /* float */ AvgUsecLatency;
+		public float /* float */ MaxUsecLatency;
+
+		public CGEventTapInformation ToCGEventTapInformation ()
+		{
+			return new CGEventTapInformation {
+				EventTapID = EventTapID,
+				TapPoint = TapPoint,
+				Options = Options,
+				EventsOfInterest = EventsOfInterest,
+				TappingProcess = TappingProcess,
+				ProcessBeingTapped = ProcessBeingTapped,
+				Enabled = Enabled != 0,
+				MinUsecLatency = MinUsecLatency,
+				AvgUsecLatency = AvgUsecLatency,
+				MaxUsecLatency = MaxUsecLatency,
+			};
+		}
 	};
 #endif // !COREBUILD
 

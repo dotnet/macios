@@ -237,14 +237,19 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern double CTLineGetTypographicBounds (IntPtr line, out nfloat ascent, out nfloat descent, out nfloat leading);
+		unsafe static extern double CTLineGetTypographicBounds (IntPtr line, nfloat* ascent, nfloat* descent, nfloat* leading);
 		public double GetTypographicBounds (out nfloat ascent, out nfloat descent, out nfloat leading)
 		{
-			return CTLineGetTypographicBounds (Handle, out ascent, out descent, out leading);
+			ascent = 0;
+			descent = 0;
+			leading = 0;
+			unsafe {
+				fixed (nfloat* ascentPtr = &ascent, descentPtr = &descent, leadingPtr = &leading) {
+					return CTLineGetTypographicBounds (Handle, ascentPtr, descentPtr, leadingPtr);
+				}
+			}
 		}
 
-		[DllImport (Constants.CoreTextLibrary)]
-		static extern double CTLineGetTypographicBounds (IntPtr line, IntPtr ascent, IntPtr descent, IntPtr leading);
 		/// <summary>Returns the typorgraphic width of the line.</summary>
 		///         <returns>The width of the line, or zero if there are any errors.</returns>
 		///         <remarks>
@@ -257,7 +262,9 @@ namespace CoreText {
 		///         </remarks>
 		public double GetTypographicBounds ()
 		{
-			return CTLineGetTypographicBounds (Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			unsafe {
+				return CTLineGetTypographicBounds (Handle, null, null, null);
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -283,17 +290,22 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, out nfloat secondaryOffset);
+		unsafe static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, nfloat* secondaryOffset);
 		public nfloat GetOffsetForStringIndex (nint charIndex, out nfloat secondaryOffset)
 		{
-			return CTLineGetOffsetForStringIndex (Handle, charIndex, out secondaryOffset);
+			secondaryOffset = 0;
+			unsafe {
+				fixed (nfloat* secondaryOffsetPtr = &secondaryOffset) {
+					return CTLineGetOffsetForStringIndex (Handle, charIndex, secondaryOffsetPtr);
+				}
+			}
 		}
 
-		[DllImport (Constants.CoreTextLibrary)]
-		static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, IntPtr secondaryOffset);
 		public nfloat GetOffsetForStringIndex (nint charIndex)
 		{
-			return CTLineGetOffsetForStringIndex (Handle, charIndex, IntPtr.Zero);
+			unsafe {
+				return CTLineGetOffsetForStringIndex (Handle, charIndex, null);
+			}
 		}
 
 		/// <param name="offset">To be added.</param>

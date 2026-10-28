@@ -24,7 +24,7 @@ namespace Network {
 		[Preserve (Conditional = true)]
 		internal NWWebSocketResponse (NativeHandle handle, bool owns) : base (handle, owns) { }
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
 		static extern unsafe OS_nw_ws_response nw_ws_response_create (NWWebSocketResponseStatus status, IntPtr selected_subprotocol);
 
 		static unsafe OS_nw_ws_response nw_ws_response_create (NWWebSocketResponseStatus status, string selected_subprotocol)
@@ -36,7 +36,7 @@ namespace Network {
 		public NWWebSocketResponse (NWWebSocketResponseStatus status, string subprotocol)
 			=> InitializeHandle (nw_ws_response_create (status, subprotocol));
 
-		[DllImport (Constants.NetworkLibrary, EntryPoint = "nw_ws_response_get_selected_subprotocol", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, EntryPoint = "nw_ws_response_get_selected_subprotocol", CallingConvention = CallingConvention.Cdecl)]
 		static extern IntPtr nw_ws_response_get_selected_subprotocol_ptr (OS_nw_ws_response response);
 
 		static string nw_ws_response_get_selected_subprotocol (OS_nw_ws_response response)
@@ -88,7 +88,7 @@ namespace Network {
 			}
 		}
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, CallingConvention = CallingConvention.Cdecl)]
 		static extern void nw_ws_response_add_additional_header (OS_nw_ws_response response, IntPtr name, IntPtr value);
 
 		static void nw_ws_response_add_additional_header (OS_nw_ws_response response, string name, string value)

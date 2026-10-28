@@ -59,7 +59,7 @@ namespace CoreFoundation {
 			GC.KeepAlive (theString);
 		}
 
-		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
+		[DllImport (Constants.CoreFoundationLibrary)]
 		static extern void CFStringAppendCharacters (/* CFMutableStringRef* */ IntPtr theString, IntPtr chars, nint numChars);
 
 		/// <param name="string">To be added.</param>

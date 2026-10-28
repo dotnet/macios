@@ -3141,7 +3141,7 @@ namespace CoreText {
 			return CFArray.StringArrayFromHandle (cfArrayRef, true)!;
 		}
 
-		[DllImport (Constants.CoreTextLibrary, CharSet = CharSet.Unicode)]
+		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern byte CTFontGetGlyphsForCharacters (IntPtr font, ushort* characters, CGGlyph* glyphs, nint count);
 
 		public bool GetGlyphsForCharacters (char [] characters, CGGlyph [] glyphs, nint count)

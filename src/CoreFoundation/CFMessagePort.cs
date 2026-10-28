@@ -75,10 +75,10 @@ namespace CoreFoundation {
 		unsafe struct ContextProxy {
 			/* CFIndex */
 			nint version; // must be 0
-			internal /* void * */ IntPtr info;
-			internal delegate* unmanaged<IntPtr, IntPtr> retain;
-			internal delegate* unmanaged<IntPtr, void> release;
-			internal delegate* unmanaged<IntPtr, IntPtr> copyDescription;
+			public /* void * */ IntPtr info;
+			public delegate* unmanaged<IntPtr, IntPtr> retain;
+			public delegate* unmanaged<IntPtr, void> release;
+			public delegate* unmanaged<IntPtr, IntPtr> copyDescription;
 		}
 
 		/// <summary>Handles a message received by a local message port.</summary>

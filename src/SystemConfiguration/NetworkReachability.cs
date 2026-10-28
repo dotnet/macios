@@ -207,11 +207,11 @@ namespace SystemConfiguration {
 		// SCNetworkReachability.h
 		[StructLayout (LayoutKind.Sequential)]
 		struct SCNetworkReachabilityContext {
-			internal /* CFIndex */ IntPtr version;
-			internal /* void* */ IntPtr info;
-			internal IntPtr retain;
-			internal IntPtr release;
-			internal IntPtr copyDescription;
+			public /* CFIndex */ IntPtr version;
+			public /* void* */ IntPtr info;
+			public IntPtr retain;
+			public IntPtr release;
+			public IntPtr copyDescription;
 
 			public SCNetworkReachabilityContext (IntPtr val)
 			{

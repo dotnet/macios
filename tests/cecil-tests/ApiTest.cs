@@ -267,7 +267,7 @@ namespace Cecil.Tests {
 
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
-				foreach (var type in info.Assembly.EnumerateTypes (t => t.IsValueType && !t.IsEnum && !t.IsCompilerGenerated ())) {
+				foreach (var type in info.Assembly.EnumerateTypes (t => t.IsValueType && !t.IsEnum && t.IsPubliclyVisible ())) {
 					if (!type.HasFields)
 						continue;
 
@@ -275,9 +275,7 @@ namespace Cecil.Tests {
 					foreach (var field in type.Fields) {
 						if (field.IsStatic)
 							continue;
-						if (field.IsCompilerGenerated ())
-							continue;
-						if (field.IsPublic || field.IsFamily || field.IsFamilyOrAssembly)
+						if (field.IsPubliclyVisible ())
 							publiclyVisibleFields.Add (field);
 					}
 
@@ -288,7 +286,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			Helper.AssertFailures (failures, knownFailuresNoPublicStructFields, nameof (knownFailuresNoPublicStructFields), "Structs must not have publicly accessible instance fields (use private fields and public properties instead).", (v) => $"{v.Location}: {v.Message}");
+			Helper.AssertFailures (failures, knownFailuresNoPublicStructFields, nameof (knownFailuresNoPublicStructFields), "Public structs must not have publicly accessible instance fields (use private fields and public properties instead).", (v) => $"{v.Location}: {v.Message}");
 		}
 	}
 }

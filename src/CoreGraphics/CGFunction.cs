@@ -87,9 +87,9 @@ namespace CoreGraphics {
 
 		[StructLayout (LayoutKind.Sequential)]
 		struct CGFunctionCallbacks {
-			internal /* unsigned int */ uint version;
-			internal unsafe delegate* unmanaged<IntPtr, nfloat*, nfloat*, void> evaluate;
-			internal unsafe delegate* unmanaged<IntPtr, void> release;
+			public /* unsigned int */ uint version;
+			public unsafe delegate* unmanaged<IntPtr, nfloat*, nfloat*, void> evaluate;
+			public unsafe delegate* unmanaged<IntPtr, void> release;
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

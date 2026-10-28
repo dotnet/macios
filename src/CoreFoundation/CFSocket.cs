@@ -259,7 +259,7 @@ namespace CoreFoundation {
 	[StructLayout (LayoutKind.Sequential)]
 	struct CFSocketContext {
 		nint Version; // CFIndex
-		internal /* void*/ IntPtr Info;
+		public /* void*/ IntPtr Info;
 		unsafe delegate* unmanaged<IntPtr, IntPtr> Retain;
 		unsafe delegate* unmanaged<IntPtr, void> Release;
 		IntPtr CopyDescription;

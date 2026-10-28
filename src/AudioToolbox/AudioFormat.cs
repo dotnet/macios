@@ -144,10 +144,10 @@ namespace AudioToolbox {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
 		struct Layout {
-			internal float LeftRightBalance;
-			internal float BackFrontFade;
-			internal AudioBalanceFadeType Type;
-			internal IntPtr ChannelLayoutWeak;
+			public float LeftRightBalance;
+			public float BackFrontFade;
+			public AudioBalanceFadeType Type;
+			public IntPtr ChannelLayoutWeak;
 		}
 
 		/// <param name="channelLayout">To be added.</param>
@@ -244,13 +244,13 @@ namespace AudioToolbox {
 #if !COREBUILD
 		[StructLayout (LayoutKind.Sequential)]
 		struct Layout {
-			internal PanningMode PanningMode;
-			internal AudioChannelFlags CoordinateFlags;
-			internal float Coord0;
-			internal float Coord1;
-			internal float Coord2;
-			internal float GainScale;
-			internal IntPtr OutputChannelMapWeak;
+			public PanningMode PanningMode;
+			public AudioChannelFlags CoordinateFlags;
+			public float Coord0;
+			public float Coord1;
+			public float Coord2;
+			public float GainScale;
+			public IntPtr OutputChannelMapWeak;
 		}
 
 		/// <param name="outputChannelMap">To be added.</param>

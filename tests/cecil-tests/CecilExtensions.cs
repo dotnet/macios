@@ -162,19 +162,6 @@ namespace Xamarin.Utils {
 			return attribute.AttributeType.Is ("System.Runtime.Versioning", "ObsoletedOSPlatformAttribute");
 		}
 
-		public static bool IsCompilerGenerated (this ICustomAttributeProvider? provider)
-		{
-			if (provider?.HasCustomAttributes != true)
-				return false;
-
-			foreach (var attrib in provider.CustomAttributes) {
-				if (attrib.AttributeType.Is ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
-					return true;
-			}
-
-			return false;
-		}
-
 		public static bool HasEditorBrowseableNeverAttribute (this ICustomAttributeProvider? provider)
 		{
 			if (provider?.HasCustomAttributes != true)

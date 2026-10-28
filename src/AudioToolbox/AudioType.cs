@@ -221,9 +221,9 @@ namespace AudioToolbox {
 
 	[StructLayout (LayoutKind.Sequential)]
 	unsafe struct AudioFormatInfo {
-		internal AudioStreamBasicDescription AudioStreamBasicDescription;
-		internal byte* MagicCookieWeak;
-		internal int MagicCookieSize;
+		public AudioStreamBasicDescription AudioStreamBasicDescription;
+		public byte* MagicCookieWeak;
+		public int MagicCookieSize;
 	}
 
 	/// <include file="../../docs/api/AudioToolbox/AudioStreamBasicDescription.xml" path="/Documentation/Docs[@DocId='T:AudioToolbox.AudioStreamBasicDescription']/*" />

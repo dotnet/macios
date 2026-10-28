@@ -9,11 +9,11 @@ namespace Compression {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	struct CompressionStreamStruct {
-		internal IntPtr Destination; // uint8_t * dst_ptr
-		internal nint DestinationSize; // size_t dst_size;
-		internal IntPtr Source; // const uint8_t * src_ptr;
-		internal nint SourceSize; // size_t src_size;
-		internal IntPtr State; // void * __nullable state;
+		public IntPtr Destination; // uint8_t * dst_ptr
+		public nint DestinationSize; // size_t dst_size;
+		public IntPtr Source; // const uint8_t * src_ptr;
+		public nint SourceSize; // size_t src_size;
+		public IntPtr State; // void * __nullable state;
 
 
 		[DllImport (Constants.libcompressionLibrary)]

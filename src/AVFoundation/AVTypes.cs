@@ -727,7 +727,7 @@ namespace AVFoundation {
 	public
 #endif
 	struct AVSampleCursorChunkInfo_Blittable {
-		internal long SampleCount;
+		public long SampleCount;
 
 		byte hasUniformSampleSizes;
 		public bool HasUniformSampleSizes {
@@ -795,7 +795,7 @@ namespace AVFoundation {
 			get => isIndependentlyDecodable != 0;
 			set => isIndependentlyDecodable = value.AsByte ();
 		}
-		internal nint PacketRefreshCount;
+		public nint PacketRefreshCount;
 		public AVSampleCursorAudioDependencyInfo ToAVSampleCursorAudioDependencyInfo ()
 		{
 			var rv = new AVSampleCursorAudioDependencyInfo ();

@@ -65,18 +65,18 @@ namespace ObjCRuntime {
 		// This struct must be kept in sync with the _MonoObject struct in coreclr-bridge.h
 		[StructLayout (LayoutKind.Sequential)]
 		internal struct MonoObject {
-			internal int ReferenceCount;
-			internal IntPtr GCHandle;
-			internal IntPtr StructValue;
+			public int ReferenceCount;
+			public IntPtr GCHandle;
+			public IntPtr StructValue;
 		}
 
 		// This struct must be kept in sync with the _MonoMethodSignature struct in coreclr-bridge.h
 		[StructLayout (LayoutKind.Sequential)]
 		unsafe struct MonoMethodSignature {
-			internal MonoObject* Method;
-			internal int ParameterCount;
-			internal MonoObject* ReturnType;
-			internal MonoObject* Parameters;
+			public MonoObject* Method;
+			public int ParameterCount;
+			public MonoObject* ReturnType;
+			public MonoObject* Parameters;
 		}
 
 #if TRACK_MONOOBJECTS

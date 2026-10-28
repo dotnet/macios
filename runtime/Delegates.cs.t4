@@ -26,7 +26,7 @@ namespace ObjCRuntime {
 	public unsafe partial class Runtime {
 		internal struct Delegates {
 <# foreach (var d in delegates) { #>
-			internal IntPtr <#= d.SimpleEntryPoint #>;
+			public IntPtr <#= d.SimpleEntryPoint #>;
 <# } #>
 		}
 

@@ -57,16 +57,16 @@ namespace CoreFoundation {
 	// CFRunLoop.h
 	[StructLayout (LayoutKind.Sequential)]
 	internal unsafe struct CFRunLoopSourceContext {
-		internal CFIndex Version;
-		internal IntPtr Info;
-		internal IntPtr Retain;
-		internal IntPtr Release;
-		internal IntPtr CopyDescription;
-		internal IntPtr Equal;
-		internal IntPtr Hash;
-		internal delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Schedule;
-		internal delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Cancel;
-		internal delegate* unmanaged<IntPtr, void> Perform;
+		public CFIndex Version;
+		public IntPtr Info;
+		public IntPtr Retain;
+		public IntPtr Release;
+		public IntPtr CopyDescription;
+		public IntPtr Equal;
+		public IntPtr Hash;
+		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Schedule;
+		public delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> Cancel;
+		public delegate* unmanaged<IntPtr, void> Perform;
 	}
 
 	/// <summary>An input source that generates asynchronous events and is intended to be used with a <see cref="CoreFoundation.CFRunLoop" />.</summary>

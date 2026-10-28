@@ -121,8 +121,8 @@ namespace Foundation {
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
 	internal struct NSObjectData {
-		internal NativeHandle handle;
-		internal NSObject.Flags flags;
+		public NativeHandle handle;
+		public NSObject.Flags flags;
 	}
 
 	// This type wraps native memory that will track an NSObject, and free the native memory
@@ -278,8 +278,8 @@ namespace Foundation {
 
 		[StructLayout (LayoutKind.Sequential)]
 		internal struct objc_super {
-			internal IntPtr Handle;
-			internal IntPtr ClassHandle;
+			public IntPtr Handle;
+			public IntPtr ClassHandle;
 		}
 
 		bool disposed {

@@ -128,18 +128,18 @@ namespace CoreText {
 	}
 
 	internal struct CTParagraphStyleSetting {
-		internal CTParagraphStyleSpecifier spec;
-		internal nuint /* size_t */ valueSize;
-		internal IntPtr value;
+		public CTParagraphStyleSpecifier spec;
+		public nuint /* size_t */ valueSize;
+		public IntPtr value;
 	}
 	#endregion
 
 	[StructLayout (LayoutKind.Explicit)]
 	internal struct CTParagraphStyleSettingValue {
-		[FieldOffset (0)] internal byte int8;
-		[FieldOffset (0)] internal nfloat single;
-		[FieldOffset (0)] internal nuint native_uint;
-		[FieldOffset (0)] internal IntPtr pointer;
+		[FieldOffset (0)] public byte int8;
+		[FieldOffset (0)] public nfloat single;
+		[FieldOffset (0)] public nuint native_uint;
+		[FieldOffset (0)] public IntPtr pointer;
 	}
 
 	internal abstract class CTParagraphStyleSpecifierValue {

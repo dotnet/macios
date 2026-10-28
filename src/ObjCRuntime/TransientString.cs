@@ -47,7 +47,7 @@ namespace ObjCRuntime {
 				ptr = Marshal.StringToHGlobalUni (str);
 				break;
 			case Encoding.Utf8:
-				ptr = Marshal.StringToCoTaskMemUTF8 (str);
+				ptr = Marshal.StringToHGlobalAnsi (str);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException (nameof (encoding));

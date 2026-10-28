@@ -71,6 +71,14 @@ namespace MonoTouchFixtures.CoreMediaIO {
 			Assert.That (CMIOObject.SetPropertyData (0, in address, [], new byte [4]), Is.Not.Zero, "Write status");
 			Assert.That (CMIODevice.StartStream (0, 0), Is.Not.Zero, "Start");
 			Assert.That (CMIODevice.StopStream (0, 0), Is.Not.Zero, "Stop");
+			Assert.That (CMIODevice.ProcessAvcCommand (0, [0], new byte [16], out var avcUsed), Is.Not.Zero, "AV/C");
+			Assert.That (avcUsed, Is.Zero, "AV/C response length");
+			Assert.That (CMIODevice.ProcessRS422Command (0, [0], new byte [16], out var rs422Used), Is.Not.Zero, "RS-422");
+			Assert.That (rs422Used, Is.Zero, "RS-422 response length");
+			Assert.That (CMIOStream.DeckPlay (0), Is.Not.Zero, "Deck play");
+			Assert.That (CMIOStream.DeckStop (0), Is.Not.Zero, "Deck stop");
+			Assert.That (CMIOStream.DeckJog (0, 0), Is.Not.Zero, "Deck jog");
+			Assert.That (CMIOStream.DeckCueTo (0, 0, true), Is.Not.Zero, "Deck cue");
 			Assert.That (CMIOStream.CopyBufferQueue (0, null, IntPtr.Zero, out var queue), Is.Not.Zero, "Queue status");
 			Assert.That (queue, Is.Null, "Queue");
 		}
@@ -81,6 +89,10 @@ namespace MonoTouchFixtures.CoreMediaIO {
 			Assert.That (CMIOSampleBufferAttachmentKey.SequenceNumber, Is.Not.Null, "SequenceNumber");
 			Assert.That (CMIOSampleBufferAttachmentKey.HostTime, Is.Not.Null, "HostTime");
 			Assert.That (CMIOSampleBufferAttachmentKey.DiscontinuityFlags, Is.Not.Null, "DiscontinuityFlags");
+			Assert.That (CMIOSampleBufferAttachmentKey.NoDataMarker, Is.Not.Null, "NoDataMarker");
+			Assert.That (CMIOSampleBufferAttachmentKey.AudioTimeStamp, Is.Not.Null, "AudioTimeStamp");
+			Assert.That (CMIOMouseAndKeyboardModifiersKey.CursorPositionX, Is.Not.Null, "CursorPositionX");
+			Assert.That (CMIOBlockBufferAttachmentKey.PixelBufferReference, Is.Not.Null, "PixelBufferReference");
 		}
 	}
 }

@@ -634,6 +634,8 @@ COREMEDIAIO_SOURCES = \
 	CoreMediaIO/CMIODevice.cs \
 	CoreMediaIO/CMIOObject.cs \
 	CoreMediaIO/CMIOStream.cs \
+	CoreMediaIO/CMIOStreamClock.cs \
+	CoreMediaIO/CMIOSampleBuffer.cs \
 
 # CoreMidi
 

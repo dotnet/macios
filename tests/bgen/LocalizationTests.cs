@@ -32,6 +32,11 @@ namespace GeneratorTests {
 			var source = ReadResources (Path.Combine (Configuration.SourceRoot, "src", "Resources.resx"));
 			var entries = ReadResources (Path.Combine (Configuration.SourceRoot, "src", "TranslatedAssemblies", $"Resources.{language}.resx"));
 
+			foreach (var platform in Configuration.GetIncludedPlatforms ()) {
+				var satellite = Path.Combine (Configuration.GetSdkRoot (platform), "lib", "bgen", language, "bgen.resources.dll");
+				Assert.That (satellite, Does.Exist, $"Installed satellite: {platform}: {language}");
+			}
+
 			using var resources = manager.GetResourceSet (CultureInfo.GetCultureInfo (language), true, false)
 				?? throw new InvalidOperationException ($"Missing bgen satellite resources for {language}.");
 

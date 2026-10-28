@@ -1014,7 +1014,7 @@ namespace ObjCRuntime {
 
 		internal static bool class_addProperty (IntPtr cls, string name, objc_attribute_prop [] attributes, int count)
 		{
-			using var namePtr = new TransientString (name, TransientString.Encoding.Ansi);
+			using var namePtr = new TransientString (name, TransientString.Encoding.Utf8);
 			var ptrs = PropertyStringsToPtrs (attributes);
 			bool retval = false;
 			unsafe {

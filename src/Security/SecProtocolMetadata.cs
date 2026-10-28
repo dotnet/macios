@@ -291,7 +291,7 @@ namespace Security {
 		{
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
-			using var labelPtr = new TransientString (label, TransientString.Encoding.Ansi);
+			using var labelPtr = new TransientString (label, TransientString.Encoding.Utf8);
 			return CreateDispatchData (sec_protocol_metadata_create_secret (GetCheckedHandle (), (nuint) label.Length, labelPtr, exporterLength));
 		}
 
@@ -304,7 +304,7 @@ namespace Security {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 			if (context is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
-			using var labelPtr = new TransientString (label, TransientString.Encoding.Ansi);
+			using var labelPtr = new TransientString (label, TransientString.Encoding.Utf8);
 			fixed (byte* p = context)
 				return CreateDispatchData (sec_protocol_metadata_create_secret_with_context (GetCheckedHandle (), (nuint) label.Length, labelPtr, (nuint) context.Length, p, exporterLength));
 		}

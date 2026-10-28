@@ -2026,7 +2026,7 @@ namespace Xamarin.Linker {
 
 			var allocationCtor = new MethodDefinition (ctor.Name, ctor.Attributes, ctor.ReturnType);
 			allocationCtor.IsPublic = false;
-			// The internal dummy parameter keeps this signature distinct from user constructors.
+			// The internal placeholder parameter keeps this signature distinct from user constructors.
 			var handleParameter = allocationCtor.AddParameter (abr.System_IntPtr);
 			allocationCtor.AddParameter (abr.ObjCRuntime_IManagedRegistrar);
 

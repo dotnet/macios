@@ -427,8 +427,8 @@ namespace Security {
 				if (value is null) {
 					result = SSLSetPeerDomainName (Handle, IntPtr.Zero, 0);
 				} else {
-					using var valuePtr = new TransientString (value);
-					result = SSLSetPeerDomainName (Handle, valuePtr, Encoding.UTF8.GetByteCount (value));
+					using var valuePtr = new TransientString (value, out var byteCount);
+					result = SSLSetPeerDomainName (Handle, valuePtr, byteCount);
 				}
 			}
 		}

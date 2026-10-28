@@ -102,7 +102,7 @@ namespace Security {
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10")]
 		[DllImport (Constants.SecurityLibrary)]
-		extern static unsafe OSStatus SecKeychainGetPath (IntPtr keychainRef, uint* ioPathLength, IntPtr pathName);
+		extern static unsafe OSStatus SecKeychainGetPath (IntPtr keychainRef, uint* ioPathLength, byte* pathName);
 
 		/// <summary>Gets the file system path of this keychain.</summary>
 		/// <param name="status">The status returned by the native operation.</param>
@@ -111,16 +111,23 @@ namespace Security {
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public string? GetPath (out OSStatus status)
 		{
-			var pathLength = 1024u;
-			using var path = new TransientString ((nint) pathLength);
+			var buffer = new byte [1024];
+			var pathLength = (uint) buffer.Length;
 			unsafe {
-				status = SecKeychainGetPath (GetCheckedHandle (), &pathLength, path);
+				fixed (byte* path = buffer) {
+					status = SecKeychainGetPath (GetCheckedHandle (), &pathLength, path);
+				}
 			}
 			GC.KeepAlive (this);
 			if (status != 0)
 				return null;
 
-			return (string?) path;
+			var length = checked((int) pathLength);
+			if (length > buffer.Length)
+				throw new InvalidOperationException ("The native keychain path exceeded the supplied buffer.");
+			if (length > 0 && buffer [length - 1] == 0)
+				length--;
+			return Encoding.UTF8.GetString (buffer, 0, length);
 		}
 #endif // !COREBUILD
 	}

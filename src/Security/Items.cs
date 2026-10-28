@@ -565,22 +565,22 @@ namespace Security {
 			SecAuthenticationType authenticationType = SecAuthenticationType.Default,
 			string? securityDomain = null)
 		{
-			using var serverNamePtr = new TransientString (String.IsNullOrEmpty (serverName) ? null : serverName);
-			using var securityDomainPtr = new TransientString (String.IsNullOrEmpty (securityDomain) ? null : securityDomain);
-			using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName);
-			using var pathPtr = new TransientString (String.IsNullOrEmpty (path) ? null : path);
+			using var serverNamePtr = new TransientString (String.IsNullOrEmpty (serverName) ? null : serverName, out var serverNameLength);
+			using var securityDomainPtr = new TransientString (String.IsNullOrEmpty (securityDomain) ? null : securityDomain, out var securityDomainLength);
+			using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName, out var accountNameLength);
+			using var pathPtr = new TransientString (String.IsNullOrEmpty (path) ? null : path, out var pathLength);
 
 			unsafe {
 				fixed (byte* passwordPtr = password) {
 					return SecKeychainAddInternetPassword (
 						IntPtr.Zero,
-						String.IsNullOrEmpty (serverName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (serverName),
+						serverNameLength,
 						serverNamePtr,
-						String.IsNullOrEmpty (securityDomain) ? 0 : System.Text.Encoding.UTF8.GetByteCount (securityDomain),
+						securityDomainLength,
 						securityDomainPtr,
-						String.IsNullOrEmpty (accountName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (accountName),
+						accountNameLength,
 						accountNamePtr,
-						String.IsNullOrEmpty (path) ? 0 : System.Text.Encoding.UTF8.GetByteCount (path),
+						pathLength,
 						pathPtr,
 						port,
 						SecProtocolKeys.FromSecProtocol (protocolType),
@@ -624,10 +624,10 @@ namespace Security {
 			IntPtr passwordPtr = IntPtr.Zero;
 
 			try {
-				using var serverPtr = new TransientString (String.IsNullOrEmpty (serverName) ? null : serverName);
-				using var securityDomainPtr = new TransientString (String.IsNullOrEmpty (securityDomain) ? null : securityDomain);
-				using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName);
-				using var pathStrPtr = new TransientString (String.IsNullOrEmpty (path) ? null : path);
+				using var serverPtr = new TransientString (String.IsNullOrEmpty (serverName) ? null : serverName, out var serverLength);
+				using var securityDomainPtr = new TransientString (String.IsNullOrEmpty (securityDomain) ? null : securityDomain, out var securityDomainLength);
+				using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName, out var accountNameLength);
+				using var pathStrPtr = new TransientString (String.IsNullOrEmpty (path) ? null : path, out var pathLength);
 
 				int passwordLength = 0;
 
@@ -635,13 +635,13 @@ namespace Security {
 				unsafe {
 					code = SecKeychainFindInternetPassword (
 						IntPtr.Zero,
-						String.IsNullOrEmpty (serverName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (serverName),
+						serverLength,
 						serverPtr,
-						String.IsNullOrEmpty (securityDomain) ? 0 : System.Text.Encoding.UTF8.GetByteCount (securityDomain),
+						securityDomainLength,
 						securityDomainPtr,
-						String.IsNullOrEmpty (accountName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (accountName),
+						accountNameLength,
 						accountNamePtr,
-						String.IsNullOrEmpty (path) ? 0 : System.Text.Encoding.UTF8.GetByteCount (path),
+						pathLength,
 						pathStrPtr,
 						port,
 						SecProtocolKeys.FromSecProtocol (protocolType),
@@ -677,16 +677,16 @@ namespace Security {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static SecStatusCode AddGenericPassword (string serviceName, string accountName, byte [] password)
 		{
-			using var serviceNamePtr = new TransientString (String.IsNullOrEmpty (serviceName) ? null : serviceName);
-			using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName);
+			using var serviceNamePtr = new TransientString (String.IsNullOrEmpty (serviceName) ? null : serviceName, out var serviceNameLength);
+			using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName, out var accountNameLength);
 
 			unsafe {
 				fixed (byte* passwordPtr = password) {
 					return SecKeychainAddGenericPassword (
 						IntPtr.Zero,
-						String.IsNullOrEmpty (serviceName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (serviceName),
+						serviceNameLength,
 						serviceNamePtr,
-						String.IsNullOrEmpty (accountName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (accountName),
+						accountNameLength,
 						accountNamePtr,
 						password?.Length ?? 0,
 						passwordPtr,
@@ -714,8 +714,8 @@ namespace Security {
 			IntPtr passwordPtr = IntPtr.Zero;
 
 			try {
-				using var serviceNamePtr = new TransientString (String.IsNullOrEmpty (serviceName) ? null : serviceName);
-				using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName);
+				using var serviceNamePtr = new TransientString (String.IsNullOrEmpty (serviceName) ? null : serviceName, out var serviceNameLength);
+				using var accountNamePtr = new TransientString (String.IsNullOrEmpty (accountName) ? null : accountName, out var accountNameLength);
 
 				int passwordLength = 0;
 
@@ -723,9 +723,9 @@ namespace Security {
 				unsafe {
 					code = SecKeychainFindGenericPassword (
 						IntPtr.Zero,
-						String.IsNullOrEmpty (serviceName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (serviceName),
+						serviceNameLength,
 						serviceNamePtr,
-						String.IsNullOrEmpty (accountName) ? 0 : System.Text.Encoding.UTF8.GetByteCount (accountName),
+						accountNameLength,
 						accountNamePtr,
 						&passwordLength,
 						&passwordPtr,

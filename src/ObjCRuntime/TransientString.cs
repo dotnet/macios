@@ -54,6 +54,31 @@ namespace ObjCRuntime {
 			}
 		}
 
+		public TransientString (string? str, out int byteCount, Encoding encoding = Encoding.Auto)
+			: this (str, encoding)
+		{
+			if (str is null) {
+				byteCount = 0;
+				return;
+			}
+
+			switch (encoding) {
+			case Encoding.Auto:
+			case Encoding.Utf8:
+				byteCount = System.Text.Encoding.UTF8.GetByteCount (str);
+				break;
+			case Encoding.BStr:
+			case Encoding.Unicode:
+				byteCount = System.Text.Encoding.Unicode.GetByteCount (str);
+				break;
+			case Encoding.Ansi:
+				byteCount = System.Text.Encoding.ASCII.GetByteCount (str);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException (nameof (encoding));
+			}
+		}
+
 		public void Dispose ()
 		{
 			if (ptr != IntPtr.Zero) {

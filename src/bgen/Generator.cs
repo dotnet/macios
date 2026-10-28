@@ -4058,6 +4058,13 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
+	void PrintReadOnlySetter (NotImplementedAttribute attribute)
+	{
+		var message = attribute.Message ?? "This property is read-only. A mutable subclass may support setting this property.";
+		// Avoid re-indenting multiline string literals, which would change the message.
+		sw!.Write ('\t', indent).WriteLine ($"throw new NotSupportedException ({message.Quote ()});");
+	}
+
 	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false, bool is_appearance = false)
 	{
 		var export = GetExportAttribute (pi, out var wrap);
@@ -4232,7 +4239,7 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 
 				if (not_implemented_attr is not null)
-					print ("throw new NotImplementedException ({0});", not_implemented_attr.Message is null ? "" : $@"""{not_implemented_attr.Message}""");
+					PrintReadOnlySetter (not_implemented_attr);
 				else
 					print ($"{minfo.wpmi?.WrapSetter};");
 
@@ -4330,7 +4337,9 @@ public partial class Generator : IMemberGatherer {
 				}
 
 				if (not_implemented_attr is not null) {
-					print ("\tthrow new NotImplementedException ({0});", not_implemented_attr.Message is null ? "" : "\"" + not_implemented_attr.Message + "\"");
+					indent++;
+					PrintReadOnlySetter (not_implemented_attr);
+					indent--;
 				} else if (is_model)
 					print ("\tthrow new ModelNotImplementedException ();");
 				else if (minfo.is_abstract && !minfo.is_protocol_member && !minfo.is_protocol_implementation_method)

@@ -3158,9 +3158,11 @@
 			Query="/AdditionalProjectProperties/*[local-name() = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)' or @Name = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)'][translate(OutputType, 'EXE', 'exe') = 'exe' and not(translate(IsAppExtension, 'TRUE', 'true') = 'true')]/MSBuildProjectFullPath/text()">
 			<Output TaskParameter="Result" ItemName="_ExecutableProjectReference" />
 		</XmlPeek>
-		<Warning
+		<MacDevMessage
+			Warning="true"
 			Condition="'@(_ExecutableProjectReference)' != ''"
-			Text="The referenced project '%(_ExecutableProjectReference.Identity)' is an executable. Resources from executable projects will not be included in the app bundle. Reference a class library instead, or set 'WarnOnExecutableProjectReferences' to 'false' to disable this warning." />
+			ResourceName="W7201"
+			FormatArguments="%(_ExecutableProjectReference.Identity)" />
 	</Target>
 
 	<PropertyGroup>

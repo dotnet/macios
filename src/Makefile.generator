@@ -11,7 +11,7 @@ $(DOTNET_BUILD_DIR)/bgen.csproj.inc: bgen/bgen.csproj.inc
 
 $(DOTNET_BUILD_DIR)/bgen/bgen:  $(bgen_dependencies) Makefile.generator $(DOTNET_BUILD_DIR)/generator-frameworks.g.cs | $(DOTNET_BUILD_DIR)/bgen
 	$(Q_DOTNET_BUILD) $(DOTNET) publish bgen/bgen.csproj $(DOTNET_BUILD_VERBOSITY) /p:Configuration=Debug /p:IntermediateOutputPath=$(abspath $(DOTNET_BUILD_DIR)/IDE/obj/common/bgen)/ /p:OutputPath=$(abspath $(DOTNET_BUILD_DIR)/IDE/bin/common/bgen/)/
-	$(Q) $(CP) $(DOTNET_BUILD_DIR)/IDE/bin/common/bgen/publish/* $(dir $@)
+	$(Q) $(CP) -r $(DOTNET_BUILD_DIR)/IDE/bin/common/bgen/publish/* $(dir $@)
 	$(Q) printf 'exec $(DOTNET) "$$(dirname "$$0")"/bgen.dll $$@\n' > $@
 	$(Q) chmod +x $@
 
@@ -77,4 +77,3 @@ $(RSP_DIR)/dotnet/%-defines-dotnet.rsp: frameworks.sources Makefile.generator $(
 
 $(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll: bgen/Attributes.cs bgen/PlatformName.cs bgen/DotNetGlobals.cs Makefile Makefile.generator | $(DOTNET_BUILD_DIR)
 	$(Q_DOTNET_BUILD) $(DOTNET_CSC) $(DOTNET_FLAGS) -d:BINDING_ATTRIBUTES_DLL -out:$@ bgen/Attributes.cs bgen/PlatformName.cs bgen/DotNetGlobals.cs
-

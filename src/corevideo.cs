@@ -10,16 +10,28 @@ using Metal;
 
 namespace CoreVideo {
 
+#if XAMCORE_5_0
 	struct CVTime { }
+#else
+	struct CVTime2 { }
+#endif
 
 	[Static]
 	[Internal]
 	interface CVTimeFields {
 		[Field ("kCVZeroTime")]
+#if XAMCORE_5_0
 		CVTime ZeroTime { get; }
+#else
+		CVTime2 ZeroTime { get; }
+#endif
 
 		[Field ("kCVIndefiniteTime")]
+#if XAMCORE_5_0
 		CVTime IndefiniteTime { get; }
+#else
+		CVTime2 IndefiniteTime { get; }
+#endif
 	}
 
 	/// <summary>Manages pixel buffer pool allocation settings.</summary>

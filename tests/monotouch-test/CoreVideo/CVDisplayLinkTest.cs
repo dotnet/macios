@@ -111,6 +111,20 @@ namespace MonoTouchFixtures.CoreVideo {
 				displayLink.Stop ();
 			}
 		}
+
+		[Test]
+		public void VideoRefreshPeriodAndLatencyTest ()
+		{
+			TestRuntime.AssertNotVSTS ();
+			TestRuntime.IgnoreIfLockedScreen ();
+			using var displayLink = new CVDisplayLink ();
+			var refreshPeriod = displayLink.NominalOutputVideoRefreshPeriod;
+			var latency = displayLink.OutputVideoLatency;
+			Assert.Multiple (() => {
+				Assert.That (refreshPeriod.TimeScale, Is.GreaterThanOrEqualTo (0), "RefreshPeriod.TimeScale");
+				Assert.That (latency.TimeScale, Is.GreaterThanOrEqualTo (0), "Latency.TimeScale");
+			});
+		}
 	}
 }
 #endif

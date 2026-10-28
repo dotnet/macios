@@ -315,9 +315,15 @@ static class C {
 			"MidiControlTransform:MIDIControlTransform", "MidiThruConnectionEndpoint:MIDIThruConnectionEndpoint",
 			"MidiTransform:MIDITransform",
 		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
+#if XAMCORE_5_0
 		Add ("CoreVideo", [
 			"CVTime",
-		], StructPlatforms.All, ignoreReason: "CVTime.TimeScale is a long, but native timeScale is int32_t. Fixing the layout requires an API-breaking change.");
+		], StructPlatforms.All);
+#else
+		Add ("CoreVideo", [
+			"CVTime2:CVTime",
+		], StructPlatforms.All, isInternal: true);
+#endif
 		// CVPlanarPixelBufferInfo wraps a variable-length array, not a fixed native layout.
 		Add ("CoreVideo", [
 			"CVTimeStamp", "CVSMPTETime", "CVPlanarComponentInfo",
@@ -469,6 +475,9 @@ static class C {
 		Exclude ("CoreMedia", ["TextMarkupColor"], "Managed color components converted to a CFArray.");
 		Exclude ("CoreServices", ["FSEvent"], "Managed event assembled from native callback arguments.");
 		Exclude ("CoreVideo", ["CVFillExtendedPixelsCallBackData"], "Managed callback converted to CVFillExtendedPixelsCallBackDataStruct.");
+#if !XAMCORE_5_0
+		Exclude ("CoreVideo", ["CVTime"], "Managed structure with a 64-bit TimeScale field converted to CVTime2 for native calls.");
+#endif
 		Exclude ("GameController", ["GCExtendedGamepadSnapshotData"], "Uses a separate blittable representation for native calls.");
 		Exclude ("GLKit", ["GLKVertexAttributeParameters"], "Uses a separate blittable representation for native calls.");
 		Exclude ("ObjCRuntime", ["NativeHandle"], "Managed wrapper for a native pointer.");

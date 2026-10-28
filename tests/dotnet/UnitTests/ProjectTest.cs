@@ -2985,14 +2985,15 @@ namespace Xamarin.Tests {
 		public void ExportedSymbolsFile (bool hasExportedSymbols)
 		{
 			var platform = ApplePlatform.iOS;
-			var runtimeIdentifiers = "ios-arm64";
+			var runtimeIdentifiers = "iossimulator-arm64";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
 			var project_path = GetProjectPath ("TrimmerMetadata", platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["UseMonoRuntime"] = "false";
+			properties ["Registrar"] = "dynamic";
+			properties ["PrepareAssemblies"] = "true";
 			properties ["_ExportSymbolsExplicitly"] = "true";
 			if (hasExportedSymbols)
 				properties ["TestReferenceNativeSymbol"] = "xamarin_release_managed_ref";

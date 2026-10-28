@@ -16,5 +16,7 @@
 	<ItemGroup>
 		<ProjectReference Include="../Library/TrimmerMetadataLibrary.csproj" />
 		<ReferenceNativeSymbol Include="$(TestReferenceNativeSymbol)" Condition="'$(TestReferenceNativeSymbol)' != ''" SymbolType="Function" />
+		<LinkerArgument Include="-framework" />
+		<LinkerArgument Include="Foundation" />
 	</ItemGroup>
 </Project>

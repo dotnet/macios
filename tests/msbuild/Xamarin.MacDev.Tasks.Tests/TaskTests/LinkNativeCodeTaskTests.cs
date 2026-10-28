@@ -25,6 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task, 1);
 
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT7201"), "Error code");
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"The native framework reference '{path}' must be a path to a .framework directory or its library. To link a system framework, use LinkerArgument items instead: '-framework' followed by the framework name."));
 		}
 

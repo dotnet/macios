@@ -57,7 +57,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (!path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
 						path = Path.GetDirectoryName (path)!;
 					if (string.IsNullOrEmpty (path) || !path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
-						Log.LogError (MSBStrings.E7201, item.ItemSpec); // The native framework reference '{0}' must be a path to a .framework directory or its library. To link a system framework, use LinkerArgument items instead: '-framework' followed by the framework name.
+						Log.LogError (7201, null, MSBStrings.E7201, item.ItemSpec); // The native framework reference '{0}' must be a path to a .framework directory or its library. To link a system framework, use LinkerArgument items instead: '-framework' followed by the framework name.
 						continue;
 					}
 					Frameworks.Add (path);

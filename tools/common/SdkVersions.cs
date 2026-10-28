@@ -128,7 +128,7 @@ namespace Xamarin {
 	}
 
 	static class DotNetVersions {
-		public const string Tfm = "net11.0";
-		public const string Version = "11.0";
+		public const string Tfm = "net12.0";
+		public const string Version = "12.0";
 	}
 }

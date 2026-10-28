@@ -2923,6 +2923,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7198" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Codesign failed because '{0}' contains files with extended attributes such as 'com.apple.FinderInfo' or 'com.apple.ResourceFork' that are not allowed when signing. Run 'xattr -lr "{0}"' to locate the affected files. Remove the unwanted attributes from the original source files (for example, with 'xattr -cr "path/to/source/files"'), then clean and rebuild. See https://developer.apple.com/library/archive/qa/qa1940/_index.html for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Error de firma de código porque '{0}' contiene archivos con atributos extendidos como "com.apple.FinderInfo" o "com.apple.ResourceFork" que no se permiten al firmar. Ejecute "xattr -lr "{0}"" para localizar los archivos afectados. Quite los atributos no deseados de los archivos de código fuente originales (por ejemplo, con 'xattr -cr "path/to/source/files"') y, a continuación, limpie y vuelva a compilar. Consulte https://developer.apple.com/library/archive/qa/qa1940/_index.html para obtener más información.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3265,6 +3274,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";M0170" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Simulator does not support arm64.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El simulador no admite arm64.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";M7159" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Skipping {0} - {1} is empty.]]></Val>
@@ -3279,6 +3297,15 @@
           <Val><![CDATA[Hashed {0} of {1} R2R input files.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Se calculó el hash {0} de {1} archivos de entrada de R2R.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";UseNativeHttpHandlerHasNoEffectOnMacOS" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La propiedad "UseNativeHttpHandler" no tiene ningún efecto en macOS. Pasa directamente una instancia de NSUrlSessionHandler al constructor de HttpClient para usar el controlador HTTP nativo.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3912,6 +3939,15 @@
           <Val><![CDATA[Ignoring invalid R2R input hash for '{0}' in cache '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Se omitirá el hash de entrada R2R no válido para "{0}" en la memoria caché "{1}".]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El marco '{0}' tiene una extensión con mayúsculas incorrectas. Cámbiele el nombre para usar la extensión ".framework" en minúsculas para asegurarse de que está vinculado y agrupado correctamente.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

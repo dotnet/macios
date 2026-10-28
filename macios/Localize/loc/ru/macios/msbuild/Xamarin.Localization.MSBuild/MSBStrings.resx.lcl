@@ -2923,6 +2923,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7198" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Codesign failed because '{0}' contains files with extended attributes such as 'com.apple.FinderInfo' or 'com.apple.ResourceFork' that are not allowed when signing. Run 'xattr -lr "{0}"' to locate the affected files. Remove the unwanted attributes from the original source files (for example, with 'xattr -cr "path/to/source/files"'), then clean and rebuild. See https://developer.apple.com/library/archive/qa/qa1940/_index.html for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Не удалось выполнить Codesign, так как '{0}' содержит файлы с расширенными атрибутами, такими как "com.apple.FinderInfo" или "com.apple.ResourceFork", которые запрещены при подписании. Выполните команду "xattr -lr "{0}"", чтобы найти затронутые файлы. Удалите ненужные атрибуты из исходных файлов (например, с помощью "xattr -cr "path/to/source/files""), затем очистите и повторите сборку. Дополнительные сведения см. в https://developer.apple.com/library/archive/qa/qa1940/_index.html.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3265,6 +3274,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";M0170" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Simulator does not support arm64.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Симулятор не поддерживает arm64.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";M7159" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Skipping {0} - {1} is empty.]]></Val>
@@ -3279,6 +3297,15 @@
           <Val><![CDATA[Hashed {0} of {1} R2R input files.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Хэшировано входных файлов R2R: {0} из {1}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";UseNativeHttpHandlerHasNoEffectOnMacOS" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Свойство UseNativeHttpHandler не действует в macOS. Чтобы использовать нативный обработчик HTTP, передайте экземпляр NSUrlSessionHandler непосредственно в конструктор HttpClient.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3912,6 +3939,15 @@
           <Val><![CDATA[Ignoring invalid R2R input hash for '{0}' in cache '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Пропуск недопустимого входного хэша R2R для '{0}' в кэше '{1}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Платформа "{0}" содержит расширение с неправильным использованием прописных букв. Переименуйте его, используя расширение ".framework" в нижнем регистре, чтобы обеспечить правильное связывание и включение в пакет.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

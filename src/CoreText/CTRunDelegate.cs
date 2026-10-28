@@ -38,11 +38,11 @@ namespace CoreText {
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct CTRunDelegateCallbacks {
-		public /* CFIndex */ nint version;
-		public unsafe delegate* unmanaged<IntPtr, void> dealloc;
-		public unsafe delegate* unmanaged<IntPtr, nfloat> getAscent;
-		public unsafe delegate* unmanaged<IntPtr, nfloat> getDescent;
-		public unsafe delegate* unmanaged<IntPtr, nfloat> getWidth;
+		internal /* CFIndex */ nint version;
+		internal unsafe delegate* unmanaged<IntPtr, void> dealloc;
+		internal unsafe delegate* unmanaged<IntPtr, nfloat> getAscent;
+		internal unsafe delegate* unmanaged<IntPtr, nfloat> getDescent;
+		internal unsafe delegate* unmanaged<IntPtr, nfloat> getWidth;
 	}
 	#endregion
 

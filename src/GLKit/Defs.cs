@@ -270,9 +270,9 @@ namespace GLKit {
 #if !XAMCORE_5_0
 	[StructLayout (LayoutKind.Sequential)]
 	struct GLKVertexAttributeParametersInternal {
-		public uint Type;
-		public uint Size;
-		public byte Normalized;
+		internal uint Type;
+		internal uint Size;
+		internal byte Normalized;
 	}
 #endif // !XAMCORE_5_0
 }

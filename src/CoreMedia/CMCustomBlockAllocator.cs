@@ -42,10 +42,10 @@ namespace CoreMedia {
 		// 1:1 mapping to the real underlying structure
 		[StructLayout (LayoutKind.Sequential, Pack = 4)] // it's 28 bytes (not 32) on 64 bits iOS
 		internal struct CMBlockBufferCustomBlockSource {
-			public uint Version;
-			public unsafe delegate* unmanaged<IntPtr, nuint, IntPtr> Allocate;
-			public unsafe delegate* unmanaged<IntPtr, IntPtr, nuint, void> Free;
-			public IntPtr RefCon;
+			internal uint Version;
+			internal unsafe delegate* unmanaged<IntPtr, nuint, IntPtr> Allocate;
+			internal unsafe delegate* unmanaged<IntPtr, IntPtr, nuint, void> Free;
+			internal IntPtr RefCon;
 		}
 		internal CMBlockBufferCustomBlockSource Cblock;
 

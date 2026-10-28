@@ -324,8 +324,8 @@ namespace AudioToolbox {
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct AudioFileTypeAndFormatID {
-		public AudioFileType FileType;
-		public AudioFormatType FormatType;
+		internal AudioFileType FileType;
+		internal AudioFormatType FormatType;
 	}
 
 	enum AudioFileGlobalProperty : uint // UInt32 AudioFileTypeID

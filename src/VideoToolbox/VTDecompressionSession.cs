@@ -45,8 +45,8 @@ namespace VideoToolbox {
 
 		[StructLayout (LayoutKind.Sequential)]
 		struct VTDecompressionOutputCallbackRecord {
-			public unsafe delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTDecodeInfoFlags, /* CVImageBuffer */ IntPtr, CMTime, CMTime, void> Proc;
-			public IntPtr DecompressionOutputRefCon;
+			internal unsafe delegate* unmanaged</* void* */ IntPtr, /* void* */ IntPtr, /* OSStatus */ VTStatus, VTDecodeInfoFlags, /* CVImageBuffer */ IntPtr, CMTime, CMTime, void> Proc;
+			internal IntPtr DecompressionOutputRefCon;
 		}
 
 		/// <summary>A delegate that will be called for each decompressed frame.</summary>

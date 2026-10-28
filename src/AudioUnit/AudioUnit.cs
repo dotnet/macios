@@ -132,18 +132,18 @@ namespace AudioUnit {
 	[StructLayout (LayoutKind.Sequential)]
 	unsafe struct AURenderCallbackStruct {
 #if COREBUILD
-		public delegate* unmanaged<IntPtr, int*, AudioTimeStamp*, uint, uint, IntPtr, int> Proc;
+		internal delegate* unmanaged<IntPtr, int*, AudioTimeStamp*, uint, uint, IntPtr, int> Proc;
 #else
-		public delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> Proc;
+		internal delegate* unmanaged<IntPtr, AudioUnitRenderActionFlags*, AudioTimeStamp*, uint, uint, IntPtr, AudioUnitStatus> Proc;
 #endif
-		public IntPtr ProcRefCon;
+		internal IntPtr ProcRefCon;
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct AudioUnitConnection {
-		public IntPtr SourceAudioUnit;
-		public uint /* UInt32 */ SourceOutputNumber;
-		public uint /* UInt32 */ DestInputNumber;
+		internal IntPtr SourceAudioUnit;
+		internal uint /* UInt32 */ SourceOutputNumber;
+		internal uint /* UInt32 */ DestInputNumber;
 	}
 
 	/// <summary>Describes a sampler instrument. Used with <see cref="AudioUnit.LoadInstrument(SamplerInstrumentData,AudioUnitScopeType,System.UInt32)" />.</summary>
@@ -213,45 +213,45 @@ namespace AudioUnit {
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct AUSamplerInstrumentData {
-		public IntPtr FileUrl;
+		internal IntPtr FileUrl;
 #if COREBUILD
 		// keep structure size identical across builds
-		public byte InstrumentType;
+		internal byte InstrumentType;
 #else
-		public InstrumentType InstrumentType;
+		internal InstrumentType InstrumentType;
 #endif // !COREBUILD
-		public byte BankMSB;
-		public byte BankLSB;
-		public byte PresetID;
+		internal byte BankMSB;
+		internal byte BankLSB;
+		internal byte PresetID;
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
 	unsafe struct AudioUnitParameterInfoNative // AudioUnitParameterInfo in Obj-C
 	{
 		fixed byte /* char[52] */ name [52]; // unused
-		public IntPtr /* CFStringRef */ UnitName;
+		internal IntPtr /* CFStringRef */ UnitName;
 #if COREBUILD
 		// keep structure size identical across builds
-		public uint ClumpID;
+		internal uint ClumpID;
 #else
-		public AudioUnitClumpID /* UInt32 */ ClumpID;
+		internal AudioUnitClumpID /* UInt32 */ ClumpID;
 #endif // !COREBUILD
-		public IntPtr /* CFStringRef */ NameString;
+		internal IntPtr /* CFStringRef */ NameString;
 
 #if COREBUILD
 		// keep structure size identical across builds
-		public uint Unit;
+		internal uint Unit;
 #else
-		public AudioUnitParameterUnit /* AudioUnitParameterUnit */ Unit;
+		internal AudioUnitParameterUnit /* AudioUnitParameterUnit */ Unit;
 #endif // !COREBUILD
-		public float /* AudioUnitParameterValue = Float32 */ MinValue;
-		public float /* AudioUnitParameterValue = Float32 */ MaxValue;
-		public float /* AudioUnitParameterValue = Float32 */ DefaultValue;
+		internal float /* AudioUnitParameterValue = Float32 */ MinValue;
+		internal float /* AudioUnitParameterValue = Float32 */ MaxValue;
+		internal float /* AudioUnitParameterValue = Float32 */ DefaultValue;
 #if COREBUILD
 		// keep structure size identical across builds
-		public uint Flags;
+		internal uint Flags;
 #else
-		public AudioUnitParameterFlag /* UInt32 */ Flags;
+		internal AudioUnitParameterFlag /* UInt32 */ Flags;
 #endif // !COREBUILD
 	}
 
@@ -1304,9 +1304,9 @@ namespace AudioUnit {
 	[StructLayout (LayoutKind.Sequential)]
 	struct AudioObjectPropertyAddress {
 #if !COREBUILD
-		public uint /* UInt32 */ Selector;
-		public uint /* UInt32 */ Scope;
-		public uint /* UInt32 */ Element;
+		internal uint /* UInt32 */ Selector;
+		internal uint /* UInt32 */ Scope;
+		internal uint /* UInt32 */ Element;
 
 		public AudioObjectPropertyAddress (uint selector, uint scope, uint element)
 		{

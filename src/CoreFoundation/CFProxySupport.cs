@@ -400,9 +400,9 @@ namespace CoreFoundation {
 
 		// helper struct to contain all the data that was used in the callback
 		struct PACProxyCallbackData {
-			public IntPtr ProxyListPtr; // Pointer to a CFArray to later be parsed
-			public IntPtr ErrorPtr; // Pointer to the Error
-			public IntPtr CFRunLoopPtr; // Pointer to the runloop, needed to be stopped
+			internal IntPtr ProxyListPtr; // Pointer to a CFArray to later be parsed
+			internal IntPtr ErrorPtr; // Pointer to the Error
+			internal IntPtr CFRunLoopPtr; // Pointer to the runloop, needed to be stopped
 
 			public CFProxy []? ProxyList {
 				get {

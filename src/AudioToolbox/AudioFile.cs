@@ -295,17 +295,17 @@ namespace AudioToolbox {
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct AudioFramePacketTranslation {
-		public long Frame;
-		public long Packet;
-		public int FrameOffsetInPacket;
+		internal long Frame;
+		internal long Packet;
+		internal int FrameOffsetInPacket;
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct AudioBytePacketTranslation {
-		public long Byte;
-		public long Packet;
-		public int ByteOffsetInPacket;
-		public BytePacketTranslationFlags Flags;
+		internal long Byte;
+		internal long Packet;
+		internal int ByteOffsetInPacket;
+		internal BytePacketTranslationFlags Flags;
 	}
 
 	[Flags]

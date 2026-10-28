@@ -761,29 +761,29 @@ namespace CoreMidi {
 		// sizeof (MIDIObjectAddRemoveNotification): 24 (on x86_64), 
 		[StructLayout (LayoutKind.Sequential)]
 		struct MidiObjectAddRemoveNotification {
-			public MidiNotificationMessageId id;
-			public int MessageSize; // UInt32
-			public MidiObjectRef Parent;
-			public MidiObjectType ParentType;
-			public MidiObjectRef Child;
-			public MidiObjectType ChildType;
+			internal MidiNotificationMessageId id;
+			internal int MessageSize; // UInt32
+			internal MidiObjectRef Parent;
+			internal MidiObjectType ParentType;
+			internal MidiObjectRef Child;
+			internal MidiObjectType ChildType;
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
 		struct MidiObjectPropertyChangeNotification {
-			public MidiNotificationMessageId id;
-			public int MessageSize; // UInt32
-			public MidiObjectRef ObjectHandle;
-			public MidiObjectType ObjectType;
-			public IntPtr PropertyName; // CFStringRef
+			internal MidiNotificationMessageId id;
+			internal int MessageSize; // UInt32
+			internal MidiObjectRef ObjectHandle;
+			internal MidiObjectType ObjectType;
+			internal IntPtr PropertyName; // CFStringRef
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
 		struct MidiIOErrorNotification {
-			public MidiNotificationMessageId id;
-			public int MessageSize; // UInt32
-			public MidiDeviceRef DeviceRef;
-			public int ErrorCode; // OSStatus = SInt32
+			internal MidiNotificationMessageId id;
+			internal int MessageSize; // UInt32
+			internal MidiDeviceRef DeviceRef;
+			internal int ErrorCode; // OSStatus = SInt32
 		}
 #endif // !COREBUILD
 	}

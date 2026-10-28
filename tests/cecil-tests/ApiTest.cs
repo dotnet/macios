@@ -259,5 +259,36 @@ namespace Cecil.Tests {
 
 			Helper.AssertFailures (failures, knownFailuresBannedAttributes, nameof (knownFailuresBannedAttributes), "APIs with [Preserve] - alternative solutions must be found!", (v) => $"{v.Location}: {v.Message}");
 		}
+
+		[Test]
+		public void NoPublicStructFields ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var failures = new Dictionary<string, (string Message, string Location)> ();
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				foreach (var type in info.Assembly.EnumerateTypes (t => t.IsValueType && !t.IsEnum && !t.IsCompilerGenerated ())) {
+					if (!type.HasFields)
+						continue;
+
+					var publiclyVisibleFields = new List<FieldDefinition> ();
+					foreach (var field in type.Fields) {
+						if (field.IsStatic)
+							continue;
+						if (field.IsCompilerGenerated ())
+							continue;
+						if (field.IsPublic || field.IsFamily || field.IsFamilyOrAssembly)
+							publiclyVisibleFields.Add (field);
+					}
+
+					if (publiclyVisibleFields.Count > 0) {
+						var fullname = type.FullName;
+						failures [fullname] = (Message: $"The struct '{fullname}' has publicly accessible instance field(s): {string.Join (", ", publiclyVisibleFields.Select (v => v.Name))}", Location: type.RenderLocation ());
+					}
+				}
+			}
+
+			Helper.AssertFailures (failures, knownFailuresNoPublicStructFields, nameof (knownFailuresNoPublicStructFields), "Structs must not have publicly accessible instance fields (use private fields and public properties instead).", (v) => $"{v.Location}: {v.Message}");
+		}
 	}
 }

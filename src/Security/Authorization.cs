@@ -71,17 +71,17 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[StructLayout (LayoutKind.Sequential)]
 	struct AuthorizationItem {
-		public IntPtr /* AuthorizationString = const char * */ name;
-		public nint /* size_t */ valueLen;
-		public IntPtr /* void* */ value;
-		public int /* UInt32 */ flags;  // zero
+		internal IntPtr /* AuthorizationString = const char * */ name;
+		internal nint /* size_t */ valueLen;
+		internal IntPtr /* void* */ value;
+		internal int /* UInt32 */ flags;  // zero
 	}
 
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	unsafe struct AuthorizationItemSet {
-		public int /* UInt32 */ count;
-		public AuthorizationItem* /* AuthorizationItem* */ ptrToAuthorization;
+		internal int /* UInt32 */ count;
+		internal AuthorizationItem* /* AuthorizationItem* */ ptrToAuthorization;
 	}
 
 	/// <summary>To be added.</summary>

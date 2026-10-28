@@ -328,25 +328,25 @@ namespace GameController {
 #if !XAMCORE_5_0
 	[StructLayout (LayoutKind.Sequential, Pack = 1)]
 	struct GCExtendedGamepadSnapshotData_Blittable {
-		public ushort Version;
-		public ushort Size;
-		public float DPadX;
-		public float DPadY;
-		public float ButtonA;
-		public float ButtonB;
-		public float ButtonX;
-		public float ButtonY;
-		public float LeftShoulder;
-		public float RightShoulder;
-		public float LeftThumbstickX;
-		public float LeftThumbstickY;
-		public float RightThumbstickX;
-		public float RightThumbstickY;
-		public float LeftTrigger;
-		public float RightTrigger;
-		public byte SupportsClickableThumbsticks;
-		public byte LeftThumbstickButton;
-		public byte RightThumbstickButton;
+		internal ushort Version;
+		internal ushort Size;
+		internal float DPadX;
+		internal float DPadY;
+		internal float ButtonA;
+		internal float ButtonB;
+		internal float ButtonX;
+		internal float ButtonY;
+		internal float LeftShoulder;
+		internal float RightShoulder;
+		internal float LeftThumbstickX;
+		internal float LeftThumbstickY;
+		internal float RightThumbstickX;
+		internal float RightThumbstickY;
+		internal float LeftTrigger;
+		internal float RightTrigger;
+		internal byte SupportsClickableThumbsticks;
+		internal byte LeftThumbstickButton;
+		internal byte RightThumbstickButton;
 	}
 #endif // !XAMORE_5_0
 

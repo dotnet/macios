@@ -43,18 +43,18 @@ namespace ObjCRuntime {
 #pragma warning disable 649 //  Field 'XamarinBlockDescriptor.ref_count' is never assigned to, and will always have its default value 0
 	[StructLayout (LayoutKind.Sequential)]
 	struct BlockDescriptor {
-		public IntPtr reserved;
-		public IntPtr size;
-		public IntPtr copy_helper;
-		public IntPtr dispose;
-		public IntPtr signature;
+		internal IntPtr reserved;
+		internal IntPtr size;
+		internal IntPtr copy_helper;
+		internal IntPtr dispose;
+		internal IntPtr signature;
 	}
 #pragma warning restore 649
 
 	struct XamarinBlockDescriptor {
 #pragma warning disable 649 // Field 'XamarinBlockDescriptor.descriptor' is never assigned to, and will always have its default value
-		public BlockDescriptor descriptor;
-		public volatile int ref_count;
+		internal BlockDescriptor descriptor;
+		internal volatile int ref_count;
 #pragma warning restore 649
 		// followed by variable-length string (the signature)
 	}

@@ -30,13 +30,13 @@ namespace AudioUnit {
 
 		[StructLayout (LayoutKind.Sequential)]
 		internal struct ScheduledAudioFileRegion {
-			public AudioTimeStamp TimeStamp;
-			public unsafe delegate* unmanaged<IntPtr, IntPtr, AudioUnitStatus, void> CompletionHandler;
-			public /* void * */ IntPtr CompletionHandlerUserData;
-			public IntPtr AudioFile;
-			public uint LoopCount;
-			public long StartFrame;
-			public uint FramesToPlay;
+			internal AudioTimeStamp TimeStamp;
+			internal unsafe delegate* unmanaged<IntPtr, IntPtr, AudioUnitStatus, void> CompletionHandler;
+			internal /* void * */ IntPtr CompletionHandlerUserData;
+			internal IntPtr AudioFile;
+			internal uint LoopCount;
+			internal long StartFrame;
+			internal uint FramesToPlay;
 		}
 
 		GCHandle handle;

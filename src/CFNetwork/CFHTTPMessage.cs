@@ -225,8 +225,8 @@ namespace CFNetwork {
 
 		// CFStream.h
 		struct CFStreamError {
-			public /* CFIndex (CFStreamErrorDomain) */ nint domain;
-			public /* SInt32 */ int code;
+			internal /* CFIndex (CFStreamErrorDomain) */ nint domain;
+			internal /* SInt32 */ int code;
 		}
 
 		// untyped enum -> CFHTTPAuthentication.h

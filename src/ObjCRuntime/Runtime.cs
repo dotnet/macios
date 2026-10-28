@@ -60,20 +60,20 @@ namespace ObjCRuntime {
 
 #pragma warning disable 649 // Field 'X' is never assigned to, and will always have its default value
 		internal unsafe struct MTRegistrationMap {
-			public IntPtr product_hash;
-			public MTAssembly* assemblies;
-			public MTClassMap* map;
-			public MTFullTokenReference* full_token_references;
-			public MTManagedClassMap* skipped_map;
-			public MTProtocolWrapperMap* protocol_wrapper_map;
-			public MTProtocolMap protocol_map;
-			public int assembly_count;
-			public int map_count;
-			public int full_token_reference_count;
-			public int skipped_map_count;
-			public int protocol_wrapper_count;
-			public int protocol_count;
-			public IntPtr* classHandles;
+			internal IntPtr product_hash;
+			internal MTAssembly* assemblies;
+			internal MTClassMap* map;
+			internal MTFullTokenReference* full_token_references;
+			internal MTManagedClassMap* skipped_map;
+			internal MTProtocolWrapperMap* protocol_wrapper_map;
+			internal MTProtocolMap protocol_map;
+			internal int assembly_count;
+			internal int map_count;
+			internal int full_token_reference_count;
+			internal int skipped_map_count;
+			internal int protocol_wrapper_count;
+			internal int protocol_count;
+			internal IntPtr* classHandles;
 		}
 #pragma warning restore 649
 
@@ -105,68 +105,68 @@ namespace ObjCRuntime {
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal unsafe struct MTFullTokenReference {
-			public uint assembly_index;
-			public uint module_token;
-			public uint token;
+			internal uint assembly_index;
+			internal uint module_token;
+			internal uint token;
 		}
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal struct MTClassMap {
-			public IntPtr handle;
-			public uint type_reference;
-			public MTTypeFlags flags;
+			internal IntPtr handle;
+			internal uint type_reference;
+			internal MTTypeFlags flags;
 		}
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal struct MTManagedClassMap {
-			public uint skipped_reference; // implied token type: TypeDef
-			public uint actual_reference; // implied token type: TypeDef
+			internal uint skipped_reference; // implied token type: TypeDef
+			internal uint actual_reference; // implied token type: TypeDef
 		}
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal struct MTProtocolWrapperMap {
-			public uint protocol_token;
-			public uint wrapper_token;
+			internal uint protocol_token;
+			internal uint wrapper_token;
 		}
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal unsafe struct MTProtocolMap {
-			public uint* protocol_tokens;
-			public IntPtr* protocols;
+			internal uint* protocol_tokens;
+			internal IntPtr* protocols;
 		}
 
 		[StructLayout (LayoutKind.Sequential, Pack = 1)]
 		internal unsafe struct MTAssembly {
-			public IntPtr name;
-			public IntPtr mvid;
+			internal IntPtr name;
+			internal IntPtr mvid;
 		}
 
 		/* Keep Delegates, Trampolines and InitializationOptions in sync with monotouch-glue.m */
 #pragma warning disable 649 // Field 'X' is never assigned to, and will always have its default value
 		internal struct Trampolines {
-			public IntPtr tramp;
-			public IntPtr stret_tramp;
-			public IntPtr fpret_single_tramp;
-			public IntPtr fpret_double_tramp;
-			public IntPtr release_tramp;
-			public IntPtr retain_tramp;
-			public IntPtr static_tramp;
-			public IntPtr ctor_tramp;
-			public IntPtr static_fpret_single_tramp;
-			public IntPtr static_fpret_double_tramp;
-			public IntPtr static_stret_tramp;
-			public IntPtr long_tramp;
-			public IntPtr static_long_tramp;
+			internal IntPtr tramp;
+			internal IntPtr stret_tramp;
+			internal IntPtr fpret_single_tramp;
+			internal IntPtr fpret_double_tramp;
+			internal IntPtr release_tramp;
+			internal IntPtr retain_tramp;
+			internal IntPtr static_tramp;
+			internal IntPtr ctor_tramp;
+			internal IntPtr static_fpret_single_tramp;
+			internal IntPtr static_fpret_double_tramp;
+			internal IntPtr static_stret_tramp;
+			internal IntPtr long_tramp;
+			internal IntPtr static_long_tramp;
 #if MONOMAC
-			public IntPtr copy_with_zone_1;
-			public IntPtr copy_with_zone_2;
+			internal IntPtr copy_with_zone_1;
+			internal IntPtr copy_with_zone_2;
 #endif
-			public IntPtr get_gchandle_tramp;
-			public IntPtr set_gchandle_tramp;
-			public IntPtr get_gchandle_flags_tramp;
-			public IntPtr set_gchandle_flags_tramp;
-			public IntPtr retainWeakReference_tramp;
-			public IntPtr get_nsobject_data_tramp;
+			internal IntPtr get_gchandle_tramp;
+			internal IntPtr set_gchandle_tramp;
+			internal IntPtr get_gchandle_flags_tramp;
+			internal IntPtr set_gchandle_flags_tramp;
+			internal IntPtr retainWeakReference_tramp;
+			internal IntPtr get_nsobject_data_tramp;
 		}
 #pragma warning restore 649
 
@@ -183,23 +183,23 @@ namespace ObjCRuntime {
 
 		[StructLayout (LayoutKind.Sequential)]
 		internal unsafe struct InitializationOptions {
-			public int Size;
-			public InitializationFlags Flags;
-			public Delegates* Delegates;
-			public Trampolines* Trampolines;
-			public MTRegistrationMap* RegistrationMap;
-			public MarshalObjectiveCExceptionMode MarshalObjectiveCExceptionMode;
-			public MarshalManagedExceptionMode MarshalManagedExceptionMode;
+			internal int Size;
+			internal InitializationFlags Flags;
+			internal Delegates* Delegates;
+			internal Trampolines* Trampolines;
+			internal MTRegistrationMap* RegistrationMap;
+			internal MarshalObjectiveCExceptionMode MarshalObjectiveCExceptionMode;
+			internal MarshalManagedExceptionMode MarshalManagedExceptionMode;
 			IntPtr AssemblyLocations;
 
-			public IntPtr xamarin_objc_msgsend;
-			public IntPtr xamarin_objc_msgsend_super;
-			public IntPtr xamarin_objc_msgsend_stret;
-			public IntPtr xamarin_objc_msgsend_super_stret;
-			public IntPtr unhandled_exception_handler;
-			public IntPtr reference_tracking_begin_end_callback;
-			public IntPtr reference_tracking_is_referenced_callback;
-			public IntPtr reference_tracking_tracked_object_entered_finalization;
+			internal IntPtr xamarin_objc_msgsend;
+			internal IntPtr xamarin_objc_msgsend_super;
+			internal IntPtr xamarin_objc_msgsend_stret;
+			internal IntPtr xamarin_objc_msgsend_super_stret;
+			internal IntPtr unhandled_exception_handler;
+			internal IntPtr reference_tracking_begin_end_callback;
+			internal IntPtr reference_tracking_is_referenced_callback;
+			internal IntPtr reference_tracking_tracked_object_entered_finalization;
 
 			public bool IsSimulator {
 				get {
@@ -2920,9 +2920,9 @@ namespace ObjCRuntime {
 		[StructLayout (LayoutKind.Sequential)]
 		struct NXArchInfo {
 			IntPtr name; // const char *
-			public int CpuType; // cpu_type_t -> integer_t -> int
-			public int CpuSubType; // cpu_subtype_t -> integer_t -> int
-			public NXByteOrder ByteOrder;
+			internal int CpuType; // cpu_type_t -> integer_t -> int
+			internal int CpuSubType; // cpu_subtype_t -> integer_t -> int
+			internal NXByteOrder ByteOrder;
 			IntPtr description; // const char *
 
 			public string Name {
@@ -3173,8 +3173,8 @@ namespace ObjCRuntime {
 		static readonly IEqualityComparer<IntPtr> item1Comparer = Runtime.IntPtrEqualityComparer;
 		static readonly IEqualityComparer<Type> item2Comparer = Runtime.TypeEqualityComparer;
 
-		public readonly IntPtr Item1;
-		public readonly Type Item2;
+		internal readonly IntPtr Item1;
+		internal readonly Type Item2;
 
 		public IntPtrTypeValueTuple (IntPtr item1, Type item2)
 		{

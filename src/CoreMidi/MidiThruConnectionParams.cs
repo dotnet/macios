@@ -179,8 +179,8 @@ namespace CoreMidi {
 
 	[StructLayout (LayoutKind.Sequential)]
 	struct MidiThruConnectionParamsStruct {
-		public uint Version;
-		public uint NumSources;
+		internal uint Version;
+		internal uint NumSources;
 
 		MidiThruConnectionEndpoint Sources_0;
 		MidiThruConnectionEndpoint Sources_1;
@@ -228,7 +228,7 @@ namespace CoreMidi {
 				NumSources = (uint) (value?.Length ?? 0);
 			}
 		}
-		public uint NumDestinations;
+		internal uint NumDestinations;
 
 		MidiThruConnectionEndpoint Destinations_0;
 		MidiThruConnectionEndpoint Destinations_1;
@@ -323,29 +323,29 @@ namespace CoreMidi {
 			}
 		}
 
-		public byte LowVelocity;
-		public byte HighVelocity;
-		public byte LowNote;
-		public byte HighNote;
-		public MidiTransform NoteNumber;
-		public MidiTransform Velocity;
-		public MidiTransform KeyPressure;
-		public MidiTransform ChannelPressure;
-		public MidiTransform ProgramChange;
-		public MidiTransform PitchBend;
+		internal byte LowVelocity;
+		internal byte HighVelocity;
+		internal byte LowNote;
+		internal byte HighNote;
+		internal MidiTransform NoteNumber;
+		internal MidiTransform Velocity;
+		internal MidiTransform KeyPressure;
+		internal MidiTransform ChannelPressure;
+		internal MidiTransform ProgramChange;
+		internal MidiTransform PitchBend;
 
-		public byte FilterOutSysEx;
-		public byte FilterOutMtc;
-		public byte FilterOutBeatClock;
-		public byte FilterOutTuneRequest;
+		internal byte FilterOutSysEx;
+		internal byte FilterOutMtc;
+		internal byte FilterOutBeatClock;
+		internal byte FilterOutTuneRequest;
 
 		byte Reserved2_0;
 		byte Reserved2_1;
 		byte Reserved2_2;
-		public byte FilterOutAllControls;
+		internal byte FilterOutAllControls;
 
-		public ushort NumControlTransforms;
-		public ushort NumMaps;
+		internal ushort NumControlTransforms;
+		internal ushort NumMaps;
 
 		ushort Reserved3_0;
 		ushort Reserved3_1;

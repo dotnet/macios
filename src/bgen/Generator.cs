@@ -7065,7 +7065,6 @@ public partial class Generator : IMemberGatherer {
 
 					var noDefaultValue = new List<MethodInfo> ();
 
-					print ("#pragma warning disable 672");
 					print ("[Register]");
 					if (isProtocolEventBacked)
 						print ("internal class _{0} : {1}I{2} {{ ", dtype.Name, shouldOverride ? "_" + interfaceName + ", " : "NSObject, ", dtype.Name);
@@ -7126,6 +7125,7 @@ public partial class Generator : IMemberGatherer {
 						if (isProtocolEventBacked)
 							print ("[Export (\"{0}\")]", FindSelector (dtype, mi));
 
+						PrintObsoleteAttributes (mi);
 						print ("public {0}{1} {2} ({3})", shouldOverrideDelegateString, TypeManager.RenderType (mi.ReturnType, mi.ReturnTypeCustomAttributes), mi.Name, RenderParameterDecl (pars));
 						print ("{"); indent++;
 
@@ -7268,8 +7268,6 @@ public partial class Generator : IMemberGatherer {
 
 					indent--;
 					print ("}");
-
-					print ("#pragma warning restore 672");
 				}
 				print ("");
 

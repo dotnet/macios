@@ -93,7 +93,7 @@ namespace IOBluetoothUI {
 	[BaseType (typeof (NSWindowController))]
 	interface IOBluetoothObjectPushUIController {
 		[Export ("initObjectPushWithBluetoothDevice:withFiles:delegate:")]
-		NativeHandle Constructor (IOBluetoothDevice device, NSArray files, [NullAllowed] NSObject delegateObject);
+		NativeHandle Constructor (IOBluetoothDevice device, string [] files, [NullAllowed] NSObject delegateObject);
 
 		[Export ("runModal")]
 		void RunModal ();

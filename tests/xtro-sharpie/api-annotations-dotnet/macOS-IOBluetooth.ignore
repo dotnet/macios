@@ -160,3 +160,6 @@
 !missing-pinvoke! OBEXAddWhoHeader is not bound
 !missing-pinvoke! OBEXGetHeaders is not bound
 !missing-pinvoke! OBEXHeadersToBytes is not bound
+
+# Misspelled constant kept by Apple for backward compatibility
+!missing-field! kFTSProgressPrecentageKey not bound

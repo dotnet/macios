@@ -1085,6 +1085,7 @@ IOBLUETOOTH_CORE_SOURCES = \
 
 IOBLUETOOTH_SOURCES = \
 	IOBluetooth/IOBluetoothChannels.cs \
+	IOBluetooth/IOBluetoothDevice.cs \
 	IOBluetooth/IOBluetoothUtilities.cs \
 
 # IOBluetoothUI

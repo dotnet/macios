@@ -49,9 +49,11 @@ namespace IOBluetooth {
 	interface IOBluetoothDevice : NSCoding, NSSecureCoding {
 		[Static]
 		[Export ("registerForConnectNotifications:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForConnectNotifications (NSObject observer, Selector selector);
 
 		[Export ("registerForDisconnectNotification:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForDisconnectNotification (NSObject observer, Selector selector);
 
 		[Static]
@@ -64,26 +66,32 @@ namespace IOBluetooth {
 		[return: NullAllowed]
 		IOBluetoothDevice FromAddressString (string address);
 
+		[Internal]
 		[Export ("openL2CAPChannelSync:withPSM:delegate:")]
-		int OpenL2CapChannelSync ([NullAllowed] out IOBluetoothL2CAPChannel newChannel, ushort psm, [NullAllowed] NSObject channelDelegate);
+		int _OpenL2CapChannelSync (out IntPtr newChannel, ushort psm, [NullAllowed] NSObject channelDelegate);
 
+		[Internal]
 		[Export ("openL2CAPChannelAsync:withPSM:delegate:")]
-		int OpenL2CapChannelAsync ([NullAllowed] out IOBluetoothL2CAPChannel newChannel, ushort psm, [NullAllowed] NSObject channelDelegate);
+		int _OpenL2CapChannelAsync (out IntPtr newChannel, ushort psm, [NullAllowed] NSObject channelDelegate);
 
+		[Internal]
 		[Export ("openL2CAPChannelSync:withPSM:withConfiguration:delegate:")]
-		int OpenL2CapChannelSync ([NullAllowed] out IOBluetoothL2CAPChannel newChannel, ushort psm, [NullAllowed] NSDictionary channelConfiguration, [NullAllowed] NSObject channelDelegate);
+		int _OpenL2CapChannelSyncWithConfiguration (out IntPtr newChannel, ushort psm, [NullAllowed] NSDictionary channelConfiguration, [NullAllowed] NSObject channelDelegate);
 
+		[Internal]
 		[Export ("openL2CAPChannelAsync:withPSM:withConfiguration:delegate:")]
-		int OpenL2CapChannelAsync ([NullAllowed] out IOBluetoothL2CAPChannel newChannel, ushort psm, [NullAllowed] NSDictionary channelConfiguration, [NullAllowed] NSObject channelDelegate);
+		int _OpenL2CapChannelAsyncWithConfiguration (out IntPtr newChannel, ushort psm, [NullAllowed] NSDictionary channelConfiguration, [NullAllowed] NSObject channelDelegate);
 
 		[Export ("sendL2CAPEchoRequest:length:")]
 		int SendL2CapEchoRequest (IntPtr data, ushort length);
 
+		[Internal]
 		[Export ("openRFCOMMChannelSync:withChannelID:delegate:")]
-		int OpenRfcommChannelSync ([NullAllowed] out IOBluetoothRFCOMMChannel rfcommChannel, byte channelId, [NullAllowed] NSObject channelDelegate);
+		int _OpenRfcommChannelSync (out IntPtr rfcommChannel, byte channelId, [NullAllowed] NSObject channelDelegate);
 
+		[Internal]
 		[Export ("openRFCOMMChannelAsync:withChannelID:delegate:")]
-		int OpenRfcommChannelAsync ([NullAllowed] out IOBluetoothRFCOMMChannel rfcommChannel, byte channelId, [NullAllowed] NSObject channelDelegate);
+		int _OpenRfcommChannelAsync (out IntPtr rfcommChannel, byte channelId, [NullAllowed] NSObject channelDelegate);
 
 		[Export ("classOfDevice")]
 		uint ClassOfDevice { get; }
@@ -175,7 +183,7 @@ namespace IOBluetooth {
 		int PerformSdpQuery ([NullAllowed] NSObject target);
 
 		[Export ("performSDPQuery:uuids:")]
-		int PerformSdpQuery ([NullAllowed] NSObject target, [NullAllowed] NSArray uuidArray);
+		int PerformSdpQuery ([NullAllowed] NSObject target, [NullAllowed] IOBluetoothSDPUUID [] uuids);
 
 		[NullAllowed, Export ("services")]
 		IOBluetoothSDPServiceRecord [] Services { get; }
@@ -219,33 +227,18 @@ namespace IOBluetooth {
 
 		[Export ("setSupervisionTimeout:")]
 		int SetSupervisionTimeout (ushort timeout);
-	}
 
-	[NoMacCatalyst]
-	[Category]
-	[BaseType (typeof (IOBluetoothDevice))]
-	interface IOBluetoothDevice_HandsFreeDeviceAdditions {
-		[return: NullAllowed]
-		[Export ("handsFreeAudioGatewayServiceRecord")]
-		IOBluetoothSDPServiceRecord GetHandsFreeAudioGatewayServiceRecord ();
+		[NullAllowed, Export ("handsFreeAudioGatewayServiceRecord")]
+		IOBluetoothSDPServiceRecord HandsFreeAudioGatewayServiceRecord { get; }
 
-		[Export ("isHandsFreeAudioGateway")]
-		bool GetIsHandsFreeAudioGateway ();
+		[Export ("handsFreeAudioGateway")]
+		bool IsHandsFreeAudioGateway { [Bind ("isHandsFreeAudioGateway")] get; }
 
-		[return: NullAllowed]
-		[Export ("handsFreeDeviceServiceRecord")]
-		IOBluetoothSDPServiceRecord GetHandsFreeDeviceServiceRecord ();
+		[NullAllowed, Export ("handsFreeDeviceServiceRecord")]
+		IOBluetoothSDPServiceRecord HandsFreeDeviceServiceRecord { get; }
 
-		[Export ("isHandsFreeDevice")]
-		bool GetIsHandsFreeDevice ();
-	}
-
-	[NoMacCatalyst]
-	[Category]
-	[BaseType (typeof (IOBluetoothSDPServiceRecord))]
-	interface IOBluetoothSDPServiceRecord_HandsFreeSDPServiceRecordAdditions {
-		[Export ("handsFreeSupportedFeatures")]
-		ushort GetHandsFreeSupportedFeatures ();
+		[Export ("handsFreeDevice")]
+		bool IsHandsFreeDevice { [Bind ("isHandsFreeDevice")] get; }
 	}
 
 	interface IIOBluetoothDeviceInquiryDelegate { }
@@ -595,16 +588,19 @@ namespace IOBluetooth {
 		bool MatchesUuid16 (ushort uuid16);
 
 		[Export ("matchesUUIDArray:")]
-		bool MatchesUuidArray (NSArray uuidArray);
+		bool MatchesUuidArray (IOBluetoothSDPUUID [] uuidArray);
 
 		[Export ("matchesSearchArray:")]
 		bool MatchesSearchArray (NSArray searchArray);
 
 		[Export ("hasServiceFromArray:")]
-		bool HasServiceFromArray (NSArray array);
+		bool HasServiceFromArray (IOBluetoothSDPUUID [] array);
+
+		[Export ("handsFreeSupportedFeatures")]
+		ushort HandsFreeSupportedFeatures { get; }
 
 		[NullAllowed, Export ("sortedAttributes", ArgumentSemantic.Copy)]
-		NSArray SortedAttributes { get; }
+		IOBluetoothSDPServiceAttribute [] SortedAttributes { get; }
 	}
 
 	[NoMacCatalyst]
@@ -613,10 +609,12 @@ namespace IOBluetooth {
 	interface IOBluetoothL2CAPChannel : NSPortDelegate {
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector);
 
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:withPSM:direction:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector, ushort psm, IOBluetoothUserNotificationChannelDirection direction);
 
 		[Static]
@@ -673,6 +671,7 @@ namespace IOBluetooth {
 		bool IsIncoming { get; }
 
 		[Export ("registerForChannelCloseNotification:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelCloseNotification (NSObject observer, Selector selector);
 
 		[Notification]
@@ -715,10 +714,12 @@ namespace IOBluetooth {
 	interface IOBluetoothRFCOMMChannel : NSPortDelegate, NSStreamDelegate {
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector);
 
 		[Static]
 		[Export ("registerForChannelOpenNotifications:selector:withChannelID:direction:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelOpenNotifications (NSObject target, Selector selector, byte channelId, IOBluetoothUserNotificationChannelDirection direction);
 
 		[Static]
@@ -770,6 +771,7 @@ namespace IOBluetooth {
 		nuint GetObjectId ();
 
 		[Export ("registerForChannelCloseNotification:selector:")]
+		[return: NullAllowed]
 		IOBluetoothUserNotification RegisterForChannelCloseNotification (NSObject observer, Selector selector);
 	}
 
@@ -975,7 +977,7 @@ namespace IOBluetooth {
 	[NoMacCatalyst]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
-	interface IOBluetoothHandsFreeAudioGatewayDelegate {
+	interface IOBluetoothHandsFreeAudioGatewayDelegate : IOBluetoothHandsFreeDelegate {
 		[Export ("handsFree:hangup:")]
 		void Hangup (IOBluetoothHandsFreeAudioGateway device, NSNumber hangup);
 
@@ -1257,9 +1259,6 @@ namespace IOBluetooth {
 		[Field ("kFTSProgressPercentageKey", "IOBluetooth")]
 		NSString ProgressPercentage { get; }
 
-		[Field ("kFTSProgressPrecentageKey", "IOBluetooth")]
-		NSString ProgressPrecentage { get; }
-
 		[Field ("kFTSProgressEstimatedTimeKey", "IOBluetooth")]
 		NSString ProgressEstimatedTime { get; }
 
@@ -1365,16 +1364,16 @@ namespace IOBluetooth {
 		void AbortComplete (OBEXFileTransferServices services, int error);
 
 		[Export ("fileTransferServicesRemoveItemComplete:error:removedItem:")]
-		void RemoveItemComplete (OBEXFileTransferServices services, int error, string itemName);
+		void RemoveItemComplete (OBEXFileTransferServices services, int error, [NullAllowed] string itemName);
 
 		[Export ("fileTransferServicesCreateFolderComplete:error:folder:")]
-		void CreateFolderComplete (OBEXFileTransferServices services, int error, string folderName);
+		void CreateFolderComplete (OBEXFileTransferServices services, int error, [NullAllowed] string folderName);
 
 		[Export ("fileTransferServicesPathChangeComplete:error:finalPath:")]
-		void PathChangeComplete (OBEXFileTransferServices services, int error, string path);
+		void PathChangeComplete (OBEXFileTransferServices services, int error, [NullAllowed] string path);
 
 		[Export ("fileTransferServicesRetrieveFolderListingComplete:error:listing:")]
-		void RetrieveFolderListingComplete (OBEXFileTransferServices services, int error, NSArray listing);
+		void RetrieveFolderListingComplete (OBEXFileTransferServices services, int error, [NullAllowed] NSDictionary [] listing);
 
 		[Export ("fileTransferServicesFilePreparationComplete:error:")]
 		void FilePreparationComplete (OBEXFileTransferServices services, int error);
@@ -1407,7 +1406,7 @@ namespace IOBluetooth {
 		[Export ("initWithOBEXSession:")]
 		NativeHandle Constructor (IOBluetoothOBEXSession session);
 
-		[Export ("currentPath")]
+		[NullAllowed, Export ("currentPath")]
 		string CurrentPath { get; }
 
 		[Export ("isBusy")]
@@ -1450,7 +1449,7 @@ namespace IOBluetooth {
 		int CopyRemoteFile (string remoteFileName, string localPathAndName);
 
 		[Export ("sendData:type:name:")]
-		int SendData (NSData data, string type, string name);
+		int SendData (NSData data, [NullAllowed] string type, string name);
 
 		[Export ("getDefaultVCard:")]
 		int GetDefaultVCard (string localPathAndName);

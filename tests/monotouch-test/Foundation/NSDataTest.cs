@@ -186,7 +186,10 @@ namespace MonoTouchFixtures.Foundation {
 			stream.Position = 10;
 			Assert.That (stream.Read (buffer.AsSpan ()), Is.Zero, "Position beyond EOF");
 			stream.Dispose ();
-			Assert.Throws<ObjectDisposedException> (() => stream.Read (buffer.AsSpan ()), "Disposed stream");
+			Assert.Throws<ObjectDisposedException> (() => {
+				var bytesRead = stream.Read (buffer.AsSpan ());
+				Assert.Fail ($"Read returned {bytesRead} bytes instead of throwing for a disposed stream.");
+			}, "Disposed stream");
 		}
 
 		[Test]
@@ -200,7 +203,10 @@ namespace MonoTouchFixtures.Foundation {
 			var originalBytes = data.Bytes;
 			data.Length = 1024 * 1024;
 			Assert.That (data.Bytes, Is.Not.EqualTo (originalBytes), "Underlying buffer was reallocated");
-			Assert.Throws<InvalidOperationException> (() => stream.Read (buffer.AsSpan ()), "Changed underlying buffer");
+			Assert.Throws<InvalidOperationException> (() => {
+				var bytesRead = stream.Read (buffer.AsSpan ());
+				Assert.Fail ($"Read returned {bytesRead} bytes instead of throwing for a changed underlying buffer.");
+			}, "Changed underlying buffer");
 		}
 
 		[Test]

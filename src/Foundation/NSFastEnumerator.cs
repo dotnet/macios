@@ -135,7 +135,7 @@ namespace Foundation {
 
 		unsafe void ThrowIfDisposed ()
 		{
-			ObjectDisposedException.ThrowIf (state == null, this);
+			ObjectDisposedException.ThrowIf (state is null, this);
 			collection.GetNonNullHandle (nameof (collection));
 			GC.KeepAlive (collection);
 		}

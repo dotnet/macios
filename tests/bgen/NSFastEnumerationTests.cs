@@ -5,7 +5,10 @@
 
 using System.Linq;
 
+using Mono.Cecil;
+
 using Xamarin.Tests;
+using Xamarin.Utils;
 
 namespace GeneratorTests {
 	[TestFixture]
@@ -23,6 +26,7 @@ namespace GeneratorTests {
 				("UntypedCollection", "Foundation.NSObject"),
 				("StringCollection", "Foundation.NSString"),
 				("GenericCollection`1", "T"),
+				("GenericKeyCollection`2", "TKey"),
 				("ProtocolCollection", "Foundation.NSString"),
 				("ProtocolElementCollection", "Foundation.INSCopying"),
 				("TypedDerivedCollection", "Foundation.NSString"),
@@ -41,6 +45,12 @@ namespace GeneratorTests {
 			var protocol = module.GetType ("FastEnumeration", "IStringCollectionProtocol");
 			Assert.That (protocol.Interfaces.Select (v => v.InterfaceType.FullName), Does.Contain ("System.Collections.Generic.IEnumerable`1<Foundation.NSString>"), "Protocol interface");
 			Assert.That (protocol.Methods.Count (v => v.Name.EndsWith ("GetEnumerator") && v.HasBody), Is.EqualTo (2), "Default implementations");
+
+			var targetFramework = TargetFramework.Parse (BGenTool.GetTargetFramework (profile));
+			using var platformAssembly = AssemblyDefinition.ReadAssembly (Configuration.GetBaseLibrary (targetFramework));
+			var inputCollection = platformAssembly.MainModule.GetType ("GameController", "GCPhysicalInputElementCollection`2");
+			Assert.That (inputCollection.Interfaces.Select (v => v.InterfaceType.FullName), Does.Contain ("System.Collections.Generic.IEnumerable`1<KeyIdentifierType>"), "GameController enumerates keys");
+			Assert.That (inputCollection.Methods.Single (v => v.Name == "GetEnumerator").ReturnType.FullName, Is.EqualTo ("System.Collections.Generic.IEnumerator`1<KeyIdentifierType>"), "Generated GameController enumerator");
 		}
 
 		[TestCase ("typeof (int)", 1130)]

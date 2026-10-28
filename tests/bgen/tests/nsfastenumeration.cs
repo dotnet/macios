@@ -36,6 +36,13 @@ namespace FastEnumeration {
 	interface GenericCollection<T> where T : NSObject {
 	}
 
+	[BaseType (typeof (NSObject))]
+	[NSFastEnumeration ("TKey")]
+	interface GenericKeyCollection<TKey, TElement>
+		where TKey : NSString
+		where TElement : GameController.IGCPhysicalInputElement {
+	}
+
 	[Protocol]
 	[NSFastEnumeration (typeof (NSString))]
 	interface StringCollectionProtocol {

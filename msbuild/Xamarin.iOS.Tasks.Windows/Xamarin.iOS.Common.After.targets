@@ -278,9 +278,9 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			</_ResolvedFileToPublishIfDifferentToServer>
 		</ItemGroup>
 
-		<CopyFilesToBuildServer 
-			Condition="'$(IsMacEnabled)' == 'true'" 
-			SessionId="$(BuildSessionId)" 
+		<CopyFilesToBuildServer
+			Condition="'$(IsMacEnabled)' == 'true'"
+			SessionId="$(BuildSessionId)"
 			Files="@(_ResolvedFileToPublishIfDifferentToServer)" />
 	</Target>
 

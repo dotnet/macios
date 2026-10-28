@@ -1388,12 +1388,12 @@
 				<!-- Rewrite the relative path so that everything ends up in the app bundle -->
 				<RelativePath Condition="'%(_FileNativeReference.RelativePath)' == ''">$(_DylibPublishDir)\%(Filename)%(Extension)</RelativePath>
 				<RelativePath Condition="'%(_FileNativeReference.RelativePath)' != ''">$(_RelativeAppBundlePath)\%(_FileNativeReference.RelativePath)</RelativePath>
-				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 			</_DynamicLibraryToPublish>
 
 			<!-- Add all the dynamic libraries to ResolvedFileToPublish -->
 			<ResolvedFileToPublish Include="@(_DynamicLibraryToPublish)">
-				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -2702,7 +2702,7 @@
 			<!-- Copy the executable from the intermediate directory to the .app -->
 			<ResolvedFileToPublish Include="$(_IntermediateNativeLibraryDir)$(_NativeExecutableName)">
 				<RelativePath>$(_NativeExecutablePublishDir)\$(_NativeExecutableName)</RelativePath>
-				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -3006,8 +3006,11 @@
 
 			<!-- Rewrite the relative path so that everything ends up in the app bundle -->
 			<ResolvedFileToPublish RelativePath="$(_RelativeAppBundlePath)\%(RelativePath)" OriginalRelativePath="%(RelativePath)" />
-			<!-- Use IfDifferent instead of PreserveNewest so that package downgrades (whose files have older timestamps than the existing bundle) are still copied to the app bundle -->
-			<ResolvedFileToPublish Update="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.CopyToPublishDirectory)' == 'PreserveNewest'" CopyToPublishDirectory="IfDifferent" />
+			<!-- Use IfDifferent instead of PreserveNewest for managed assemblies (and their symbols/configs/aotdata) so that package downgrades (whose files have older timestamps than the existing bundle) are still copied to the app bundle. Do not use IfDifferent for native binaries (the executable, .dylib, .so), because post-processing (strip, codesign) modifies them in-place inside the app bundle, changing their size and causing IfDifferent to recopy the unsigned/unstripped intermediate on subsequent incremental builds. -->
+			<ResolvedFileToPublish
+				Update="@(ResolvedFileToPublish)"
+				Condition="'%(ResolvedFileToPublish.CopyToPublishDirectory)' == 'PreserveNewest' And ('%(Extension)' == '.dll' Or '%(Extension)' == '.exe' Or '%(Extension)' == '.pdb' Or '%(Extension)' == '.config')"
+				CopyToPublishDirectory="IfDifferent" />
 		</ItemGroup>
 
 		<!-- resolve any .xcframeworks and binding resource packages -->

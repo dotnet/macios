@@ -116,7 +116,7 @@ namespace CoreMedia {
 		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_ForceKeyFrame")]
 		ForceKeyFrame,
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		// Declared available at iOS/tvOS 16.0 but only added to the simulator runtimes in a later release.
 		[SupportedSimulator ("ios16.1")]

@@ -3,9 +3,9 @@
 
 namespace AVFoundation {
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos14.0")]
 	[UnsupportedOSPlatform ("tvos")]
-	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("maccatalyst17.0")]
 	public struct AVAudioVoiceProcessingOtherAudioDuckingConfiguration {
 		byte enableAdvancedDucking;
 #pragma warning disable CS0169 // The field 'AVAudioVoiceProcessingOtherAudioDuckingConfiguration.duckingLevel' is never used

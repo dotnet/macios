@@ -32,7 +32,7 @@ namespace JavaScriptCore {
 		[Export ("name")]
 		string Name { get; set; }
 
-		[iOS (16, 4), TV (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), TV (16, 4), MacCatalyst (16, 4)]
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 

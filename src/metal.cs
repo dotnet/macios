@@ -250,7 +250,7 @@ namespace Metal {
 		[return: Release]
 		IMTLBuffer CreateRemoteBuffer (IMTLDevice device);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuAddress")]
 		ulong GpuAddress { get; }
@@ -513,7 +513,7 @@ namespace Metal {
 		[Export ("accelerationStructureCommandEncoder")]
 		IMTLAccelerationStructureCommandEncoder CreateAccelerationStructureCommandEncoder ();
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("accelerationStructureCommandEncoderWithDescriptor:")]
 		IMTLAccelerationStructureCommandEncoder CreateAccelerationStructureCommandEncoder (MTLAccelerationStructurePassDescriptor descriptor);
@@ -823,22 +823,22 @@ namespace Metal {
 		[Export ("setAccelerationStructure:atBufferIndex:")]
 		void SetAccelerationStructure ([NullAllowed] IMTLAccelerationStructure accelerationStructure, nuint bufferIndex);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setBuffer:offset:attributeStride:atIndex:")]
 		void SetBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setBuffers:offsets:attributeStrides:withRange:")]
 		void SetBuffers (IntPtr /* IMTLBuffer[] */ buffers, IntPtr /* nuint[] */ offsets, IntPtr /* nuint[] */ strides, NSRange range);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setBufferOffset:attributeStride:atIndex:")]
 		void SetBufferOffset (nuint offset, nuint stride, nuint index);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setBytes:length:attributeStride:atIndex:")]
 		void SetBytes (IntPtr bytes, nuint length, nuint stride, nuint index);
@@ -859,7 +859,7 @@ namespace Metal {
 		[Export ("arguments")]
 		MTLArgument [] Arguments { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("bindings")]
 		IMTLBinding [] Bindings { get; }
 	}
@@ -932,7 +932,7 @@ namespace Metal {
 		[return: Release]
 		IMTLIntersectionFunctionTable CreateIntersectionFunctionTable (MTLIntersectionFunctionTableDescriptor descriptor);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -1904,55 +1904,55 @@ namespace Metal {
 		[Export ("newLibraryWithStitchedDescriptor:completionHandler:")]
 		void CreateLibrary (MTLStitchedLibraryDescriptor descriptor, Action<IMTLLibrary, NSError> completionHandler);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("architecture")]
 		MTLArchitecture Architecture { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("heapAccelerationStructureSizeAndAlignWithDescriptor:")]
 		MTLSizeAndAlign GetHeapAccelerationStructureSizeAndAlign (MTLAccelerationStructureDescriptor descriptor);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("heapAccelerationStructureSizeAndAlignWithSize:")]
 		MTLSizeAndAlign GetHeapAccelerationStructureSizeAndAlign (nuint size);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("newArgumentEncoderWithBufferBinding:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (IMTLBufferBinding bufferBinding);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("newRenderPipelineStateWithMeshDescriptor:options:reflection:error:")]
 		[return: NullAllowed]
 		[return: Release]
 		IMTLRenderPipelineState CreateRenderPipelineState (MTLMeshRenderPipelineDescriptor descriptor, MTLPipelineOption options, [NullAllowed] out MTLRenderPipelineReflection reflection, [NullAllowed] out NSError error);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("newRenderPipelineStateWithMeshDescriptor:options:completionHandler:")]
 		void CreateRenderPipelineState (MTLMeshRenderPipelineDescriptor descriptor, MTLPipelineOption options, MTLNewRenderPipelineStateWithReflectionCompletionHandler completionHandler);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("sparseTileSizeInBytesForSparsePageSize:")]
 		nuint GetSparseTileSizeInBytes (MTLSparsePageSize sparsePageSize);
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("sparseTileSizeWithTextureType:pixelFormat:sampleCount:sparsePageSize:")]
 		MTLSize GetSparseTileSize (MTLTextureType textureType, MTLPixelFormat pixelFormat, nuint sampleCount, MTLSparsePageSize sparsePageSize);
 
-		[iOS (26, 1), TV (26, 1), MacCatalyst (26, 0)]
+		[iOS (26, 1), Mac (13, 3), TV (26, 1), MacCatalyst (26, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("maximumConcurrentCompilationTaskCount")]
 		nuint MaximumConcurrentCompilationTaskCount { get; }
 
-		[NoiOS, NoTV, NoMacCatalyst]
+		[NoiOS, Mac (13, 3), NoTV, NoMacCatalyst]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("shouldMaximizeConcurrentCompilation")]
 		bool ShouldMaximizeConcurrentCompilation { get; set; }
@@ -2277,7 +2277,7 @@ namespace Metal {
 		bool AllowGpuOptimizedContents { get; }
 
 		[Abstract (GenerateExtensionMethod = true)]
-		[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+		[Mac (12, 5), iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
 		[Export ("compressionType")]
 		MTLTextureCompressionType CompressionType { get; }
 
@@ -2392,7 +2392,7 @@ namespace Metal {
 		[return: Release]
 		IMTLTexture CreateRemoteTexture (IMTLDevice device);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -2500,7 +2500,7 @@ namespace Metal {
 		[Export ("allowGPUOptimizedContents")]
 		bool AllowGpuOptimizedContents { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0), TV (17, 0)]
+		[Mac (12, 5), iOS (15, 0), MacCatalyst (15, 0), TV (17, 0)]
 		[Export ("compressionType")]
 		MTLTextureCompressionType CompressionType { get; set; }
 
@@ -2602,7 +2602,7 @@ namespace Metal {
 		[Abstract, Export ("device")]
 		IMTLDevice Device { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -2856,32 +2856,32 @@ namespace Metal {
 		[return: Release]
 		IMTLRenderPipelineState NewRenderPipelineStateWithAdditionalBinaryFunctions (MTLRenderPipelineFunctionsDescriptor additionalBinaryFunctions, [NullAllowed] out NSError error);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract]
 		[Export ("meshThreadExecutionWidth")]
 		nuint MeshThreadExecutionWidth { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract]
 		[Export ("maxTotalThreadgroupsPerMeshGrid")]
 		nuint MaxTotalThreadgroupsPerMeshGrid { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("maxTotalThreadsPerMeshThreadgroup")]
 		nuint MaxTotalThreadsPerMeshThreadgroup { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("maxTotalThreadsPerObjectThreadgroup")]
 		nuint MaxTotalThreadsPerObjectThreadgroup { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("objectThreadExecutionWidth")]
 		nuint ObjectThreadExecutionWidth { get; }
@@ -3359,19 +3359,19 @@ namespace Metal {
 		[Export ("preserveInvariance")]
 		bool PreserveInvariance { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("optimizationLevel", ArgumentSemantic.Assign)]
 		MTLLibraryOptimizationLevel OptimizationLevel { get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
 		[Export ("compileSymbolVisibility", ArgumentSemantic.Assign)]
 		MTLCompileSymbolVisibility CompileSymbolVisibility { get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
 		[Export ("allowReferencingUndefinedSymbols")]
 		bool AllowReferencingUndefinedSymbols { get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
 		[Export ("maxTotalThreadsPerThreadgroup")]
 		nuint MaxTotalThreadsPerThreadgroup { get; set; }
 
@@ -4246,147 +4246,147 @@ namespace Metal {
 		[Export ("setTileVisibleFunctionTables:withBufferRange:")]
 		void SetTileVisibleFunctionTables (IMTLVisibleFunctionTable [] functionTables, NSRange range);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setVertexBuffer:offset:attributeStride:atIndex:")]
 		void SetVertexBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setVertexBuffers:offsets:attributeStrides:withRange:")]
 		void SetVertexBuffers (IntPtr buffers, IntPtr offsets, IntPtr strides, NSRange range);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setVertexBufferOffset:attributeStride:atIndex:")]
 		void SetVertexBufferOffset (nuint offset, nuint stride, nuint index);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setVertexBytes:length:attributeStride:atIndex:")]
 		void SetVertexBytes (IntPtr bytes, nuint length, nuint stride, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (MTLSize threadgroupsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("drawMeshThreadgroupsWithIndirectBuffer:indirectBufferOffset:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (IMTLBuffer indirectBuffer, nuint indirectBufferOffset, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreads (MTLSize threadsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshBufferOffset:atIndex:")]
 		void SetMeshBufferOffset (nuint offset, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshBuffers:offsets:withRange:")]
 		void SetMeshBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshTexture:atIndex:")]
 		void SetMeshTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshTextures:withRange:")]
 		void SetMeshTextures (IntPtr textures, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshSamplerState:atIndex:")]
 		void SetMeshSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshSamplerStates:withRange:")]
 		void SetMeshSamplerStates (IntPtr samplers, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetMeshSamplerState ([NullAllowed] IMTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetMeshSamplerStates (IntPtr samplers, IntPtr lodMinClamps, IntPtr lodMaxClamps, NSRange range);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBuffer:offset:atIndex:")]
 		void SetObjectBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBufferOffset:atIndex:")]
 		void SetObjectBufferOffset (nuint offset, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBuffers:offsets:withRange:")]
 		void SetObjectBuffers (IntPtr buffers, IntPtr offsets, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBytes:length:atIndex:")]
 		void SetObjectBytes (IntPtr bytes, nuint length, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshBuffer:offset:atIndex:")]
 		void SetMeshBuffer ([NullAllowed] IMTLBuffer buffer, nuint offset, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshBytes:length:atIndex:")]
 		void SetMeshBytes (IntPtr bytes, nuint length, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectSamplerState:atIndex:")]
 		void SetObjectSamplerState ([NullAllowed] IMTLSamplerState sampler, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectSamplerState:lodMinClamp:lodMaxClamp:atIndex:")]
 		void SetObjectSamplerState ([NullAllowed] IMTLSamplerState sampler, float lodMinClamp, float lodMaxClamp, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectSamplerStates:lodMinClamps:lodMaxClamps:withRange:")]
 		void SetObjectSamplerStates (IntPtr samplers, IntPtr lodMinClamps, IntPtr lodMaxClamps, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectSamplerStates:withRange:")]
 		void SetObjectSamplerStates (IntPtr samplers, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectTexture:atIndex:")]
 		void SetObjectTexture ([NullAllowed] IMTLTexture texture, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectTextures:withRange:")]
 		void SetObjectTextures (IntPtr textures, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectThreadgroupMemoryLength:atIndex:")]
 		void SetObjectThreadgroupMemoryLength (nuint length, nuint index);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract]
 		[Export ("setColorAttachmentMap:")]
 		void SetColorAttachmentMap ([NullAllowed] MTLLogicalToPhysicalColorAttachmentMap mapping);
@@ -4461,23 +4461,23 @@ namespace Metal {
 		[NullAllowed, Export ("tileArguments")]
 		MTLArgument [] TileArguments { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("vertexBindings")]
 		IMTLBinding [] VertexBindings { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("fragmentBindings")]
 		IMTLBinding [] FragmentBindings { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("tileBindings")]
 		IMTLBinding [] TileBindings { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("objectBindings")]
 		IMTLBinding [] ObjectBindings { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("meshBindings")]
 		IMTLBinding [] MeshBindings { get; }
 	}
@@ -4710,7 +4710,7 @@ namespace Metal {
 		[Export ("type", ArgumentSemantic.Assign)]
 		MTLHeapType Type { get; set; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("sparsePageSize", ArgumentSemantic.Assign)]
 		MTLSparsePageSize SparsePageSize { get; set; }
 
@@ -4837,25 +4837,25 @@ namespace Metal {
 		IMTLTexture CreateTexture (MTLTextureDescriptor descriptor, nuint offset);
 
 		[Abstract (GenerateExtensionMethod = true)]
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithSize:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (nuint size);
 
 		[Abstract (GenerateExtensionMethod = true)]
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithDescriptor:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (MTLAccelerationStructureDescriptor descriptor);
 
 		[Abstract (GenerateExtensionMethod = true)]
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithSize:offset:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (nuint size, nuint offset);
 
 		[Abstract (GenerateExtensionMethod = true)]
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("newAccelerationStructureWithDescriptor:offset:")]
 		[return: NullAllowed, Release]
 		IMTLAccelerationStructure CreateAccelerationStructure (MTLAccelerationStructureDescriptor descriptor, nuint offset);
@@ -5760,42 +5760,42 @@ namespace Metal {
 		[Export ("reset")]
 		void Reset ();
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setVertexBuffer:offset:attributeStride:atIndex:")]
 		void SetVertexBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectThreadgroupMemoryLength:atIndex:")]
 		void SetObjectThreadgroupMemoryLength (nuint length, nuint index);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setObjectBuffer:offset:atIndex:")]
 		void SetObjectBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setMeshBuffer:offset:atIndex:")]
 		void SetMeshBuffer (IMTLBuffer buffer, nuint offset, nuint index);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("drawMeshThreadgroups:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreadgroups (MTLSize threadgroupsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("drawMeshThreads:threadsPerObjectThreadgroup:threadsPerMeshThreadgroup:")]
 		void DrawMeshThreads (MTLSize threadsPerGrid, MTLSize threadsPerObjectThreadgroup, MTLSize threadsPerMeshThreadgroup);
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setBarrier")]
 		void SetBarrier ();
 
-		[iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (18, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("clearBarrier")]
 		void ClearBarrier ();
@@ -5879,27 +5879,27 @@ namespace Metal {
 		[Export ("maxKernelBufferBindCount")]
 		nuint MaxKernelBufferBindCount { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("maxKernelThreadgroupMemoryBindCount")]
 		nuint MaxKernelThreadgroupMemoryBindCount { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("maxObjectBufferBindCount")]
 		nuint MaxObjectBufferBindCount { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("maxMeshBufferBindCount")]
 		nuint MaxMeshBufferBindCount { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("maxObjectThreadgroupMemoryBindCount")]
 		nuint MaxObjectThreadgroupMemoryBindCount { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportDynamicAttributeStride")]
 		bool SupportDynamicAttributeStride { get; set; }
 
-		[iOS (16, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportRayTracing")]
 		bool SupportRayTracing { get; set; }
 
@@ -5940,7 +5940,7 @@ namespace Metal {
 		[Export ("indirectComputeCommandAtIndex:")]
 		IMTLIndirectComputeCommand GetIndirectComputeCommand (nuint commandIndex);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceID { get; }
@@ -6153,7 +6153,7 @@ namespace Metal {
 		[Export ("waitForFence:")]
 		void Wait (IMTLFence fence);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		// @optional in macOS and Mac Catalyst
 #if !__MACOS__ && !__MACCATALYST__
 		[Abstract (GenerateExtensionMethod = true)]
@@ -6222,7 +6222,7 @@ namespace Metal {
 		[Export ("setImageblockWidth:height:")]
 		void SetImageblock (nuint width, nuint height);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("setKernelBuffer:offset:attributeStride:atIndex:")]
 		void SetKernelBuffer (IMTLBuffer buffer, nuint offset, nuint stride, nuint index);
@@ -6308,7 +6308,7 @@ namespace Metal {
 		[Export ("size")]
 		nuint Size { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -6344,7 +6344,7 @@ namespace Metal {
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureDescriptor : NSCopying {
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Export ("usage", ArgumentSemantic.Assign)]
 		MTLAccelerationStructureUsage Usage { get; set; }
 	}
@@ -6368,19 +6368,19 @@ namespace Metal {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("primitiveDataBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer PrimitiveDataBuffer { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("primitiveDataBufferOffset")]
 		nuint PrimitiveDataBufferOffset { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("primitiveDataStride")]
 		nuint PrimitiveDataStride { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("primitiveDataElementSize")]
 		nuint PrimitiveDataElementSize { get; set; }
 	}
@@ -6416,15 +6416,15 @@ namespace Metal {
 		[Export ("descriptor")]
 		MTLAccelerationStructureTriangleGeometryDescriptor Create ();
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("vertexFormat", ArgumentSemantic.Assign)]
 		MTLAttributeFormat VertexFormat { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[NullAllowed, Export ("transformationMatrixBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer TransformationMatrixBuffer { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("transformationMatrixBufferOffset")]
 		nuint TransformationMatrixBufferOffset { get; set; }
 
@@ -6894,7 +6894,7 @@ namespace Metal {
 		[Export ("writeCompactedAccelerationStructureSize:toBuffer:offset:sizeDataType:")]
 		void WriteCompactedAccelerationStructureSize (IMTLAccelerationStructure accelerationStructure, IMTLBuffer buffer, nuint offset, MTLDataType sizeDataType);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("refitAccelerationStructure:descriptor:destination:scratchBuffer:scratchBufferOffset:options:")]
 		void RefitAccelerationStructure (IMTLAccelerationStructure sourceAccelerationStructure, MTLAccelerationStructureDescriptor descriptor, [NullAllowed] IMTLAccelerationStructure destinationAccelerationStructure, [NullAllowed] IMTLBuffer scratchBuffer, nuint scratchBufferOffset, MTLAccelerationStructureRefitOptions options);
@@ -6915,7 +6915,7 @@ namespace Metal {
 		[Export ("setFunctions:withRange:")]
 		void SetFunctions (IMTLFunctionHandle [] functions, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -6967,7 +6967,7 @@ namespace Metal {
 		[Export ("setOpaqueCurveIntersectionFunctionWithSignature:withRange:")]
 		void SetOpaqueCurveIntersectionFunction (MTLIntersectionFunctionSignature signature, NSRange range);
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("gpuResourceID")]
 		MTLResourceId GpuResourceId { get; }
@@ -7206,15 +7206,15 @@ namespace Metal {
 		[Export ("descriptor")]
 		MTLAccelerationStructureMotionTriangleGeometryDescriptor Create ();
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("vertexFormat", ArgumentSemantic.Assign)]
 		MTLAttributeFormat VertexFormat { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("transformationMatrixBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer TransformationMatrixBuffer { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("transformationMatrixBufferOffset")]
 		nuint TransformationMatrixBufferOffset { get; set; }
 
@@ -7244,7 +7244,7 @@ namespace Metal {
 
 	interface IMTLBinding { }
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface MTLBinding {
 		[Abstract]
@@ -7274,7 +7274,7 @@ namespace Metal {
 
 	interface IMTLBufferBinding { }
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface MTLBufferBinding : MTLBinding {
 		[Abstract]
@@ -7299,7 +7299,7 @@ namespace Metal {
 	}
 
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface MTLObjectPayloadBinding : MTLBinding {
 		[Abstract]
@@ -7311,7 +7311,7 @@ namespace Metal {
 		nuint ObjectPayloadDataSize { get; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface MTLTextureBinding : MTLBinding {
 		[Abstract]
@@ -7331,7 +7331,7 @@ namespace Metal {
 		nuint ArrayLength { get; }
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
 	interface MTLAccelerationStructureCurveGeometryDescriptor {
 		[NullAllowed, Export ("controlPointBuffer", ArgumentSemantic.Retain)]
@@ -7390,7 +7390,7 @@ namespace Metal {
 		MTLAccelerationStructureCurveGeometryDescriptor GetDescriptor ();
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
 	interface MTLAccelerationStructureMotionCurveGeometryDescriptor {
 		[Export ("controlPointBuffers", ArgumentSemantic.Copy)]
@@ -7443,14 +7443,14 @@ namespace Metal {
 		MTLAccelerationStructureMotionCurveGeometryDescriptor GetDescriptor ();
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLArchitecture : NSCopying {
 		[Export ("name")]
 		string Name { get; }
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
 	interface MTLIndirectInstanceAccelerationStructureDescriptor {
 		[NullAllowed, Export ("instanceDescriptorBuffer", ArgumentSemantic.Retain)]
@@ -7506,7 +7506,7 @@ namespace Metal {
 		nuint MotionTransformStride { get; set; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
@@ -7574,19 +7574,19 @@ namespace Metal {
 		[Export ("stencilAttachmentPixelFormat", ArgumentSemantic.Assign)]
 		MTLPixelFormat StencilAttachmentPixelFormat { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportIndirectCommandBuffers")]
 		bool SupportIndirectCommandBuffers { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("objectLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions ObjectLinkedFunctions { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("meshLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions MeshLinkedFunctions { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("fragmentLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions FragmentLinkedFunctions { get; set; }
 
@@ -7610,7 +7610,7 @@ namespace Metal {
 		MTLSize RequiredThreadsPerMeshThreadgroup { get; set; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
@@ -7625,7 +7625,7 @@ namespace Metal {
 		nuint EndOfEncoderSampleIndex { get; set; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
@@ -7637,7 +7637,7 @@ namespace Metal {
 		void SetObject ([NullAllowed] MTLAccelerationStructurePassSampleBufferAttachmentDescriptor attachment, nuint attachmentIndex);
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
@@ -7650,7 +7650,7 @@ namespace Metal {
 		MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray SampleBufferAttachments { get; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface MTLThreadgroupBinding : MTLBinding {
 		[Abstract]

@@ -125,7 +125,7 @@ namespace MetalPerformanceShaders {
 		AlternateEncodingBit = 0x80000000,
 		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
 		Bool = AlternateEncodingBit | 8,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0), Mac (14, 0)]
 		BFloat16 = AlternateEncodingBit | Float16,
 
 		/// <summary>To be added.</summary>

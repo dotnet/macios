@@ -373,16 +373,16 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_protocol_options nw_framer_copy_options (OS_nw_framer framer);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst16.0")]
 		public NSProtocolFramerOptions? ProtocolOptions {
 			get {
 				var x = nw_framer_copy_options (GetCheckedHandle ());

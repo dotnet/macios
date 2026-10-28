@@ -111,7 +111,7 @@ namespace CoreBluetooth {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		bool RequiresAncs { get; set; }
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		bool EnableAutoReconnect { get; }
 	}
 
@@ -134,7 +134,7 @@ namespace CoreBluetooth {
 		[MacCatalyst (13, 1)]
 		[Field ("CBConnectPeripheralOptionRequiresANCS")]
 		NSString RequiresAncsKey { get; }
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("CBConnectPeripheralOptionEnableAutoReconnect")]
 		NSString EnableAutoReconnectKey { get; }
 	}
@@ -541,7 +541,7 @@ namespace CoreBluetooth {
 		[Export ("centralManager:didUpdateANCSAuthorizationForPeripheral:"), EventArgs ("CBAncsAuthorizationUpdate")]
 		void DidUpdateAncsAuthorization (CBCentralManager central, CBPeripheral peripheral);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent")]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0), EventArgs ("CBPeripheralDiconnectionEvent")]
 		[Export ("centralManager:didDisconnectPeripheral:timestamp:isReconnecting:error:")]
 		void DidDisconnectPeripheral (CBCentralManager central, CBPeripheral peripheral, double timestamp, bool isReconnecting, [NullAllowed] NSError error);
 	}

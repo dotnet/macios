@@ -108,7 +108,7 @@ namespace CoreData {
 		[Field ("NSAffectedStoresErrorKey")]
 		NSString AffectedStoresForErrorKey { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("NSPersistentStoreStagedMigrationManagerOptionKey")]
 		NSString StagedMigrationManagerOptionKey { get; }
 
@@ -2578,13 +2578,13 @@ namespace CoreData {
 		NSDictionary EntityVersionHashesByName { get; }
 #endif
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Static]
 		[Export ("checksumsForVersionedModelAtURL:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSString> ChecksumsForVersionedModel (NSUrl modelUrl, [NullAllowed] out NSError error);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("versionChecksum")]
 		string VersionChecksum { get; }
 	}
@@ -5305,7 +5305,7 @@ namespace CoreData {
 		NSPersistentCloudKitContainerEventResultType ResultType { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSStagedMigrationManager {
@@ -5320,14 +5320,14 @@ namespace CoreData {
 		NativeHandle Constructor (NSMigrationStage [] stages);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationStage {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSManagedObjectModelReference {
@@ -5350,7 +5350,7 @@ namespace CoreData {
 		NativeHandle Constructor (string modelName, [NullAllowed] NSBundle bundle, string versionChecksum);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSLightweightMigrationStage {
@@ -5362,14 +5362,14 @@ namespace CoreData {
 		NativeHandle Constructor (string [] versionChecksums);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSAttributeDescription))]
 	interface NSCompositeAttributeDescription {
 		[Export ("elements", ArgumentSemantic.Copy)]
 		NSAttributeDescription [] Elements { get; set; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSCustomMigrationStage {

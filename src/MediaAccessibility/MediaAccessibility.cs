@@ -509,20 +509,20 @@ namespace MediaAccessibility {
 	}
 
 	[SupportedOSPlatform ("ios16.4")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("maccatalyst16.4")]
+	[SupportedOSPlatform ("macos13.3")]
 	[SupportedOSPlatform ("tvos16.4")]
 	public static partial class MAVideoAccommodations {
 		[SupportedOSPlatform ("ios16.4")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst16.4")]
+		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern byte MADimFlashingLightsEnabled ();
 
 		[SupportedOSPlatform ("ios16.4")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst16.4")]
+		[SupportedOSPlatform ("macos13.3")]
 		[SupportedOSPlatform ("tvos16.4")]
 		public static bool IsDimFlashingLightsEnabled () => MADimFlashingLightsEnabled () != 0;
 	}

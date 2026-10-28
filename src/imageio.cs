@@ -111,7 +111,7 @@ namespace ImageIO {
 		[Field ("kCGImagePropertyTGADictionary")]
 		NSString TgaDictionary { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Field ("kCGImagePropertyAVISDictionary")]
 		NSString AvisDictionary { get; }
 
@@ -3854,19 +3854,19 @@ namespace ImageIO {
 		[Field ("kCGImagePropertyGroupTypeAlternate")]
 		NSString GroupTypeAlternate { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("kCGImagePropertyGroupImageBaseline")]
 		NSString GroupImageBaseline { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("kCGImagePropertyGroupImageDisparityAdjustment")]
 		NSString GroupImageDisparityAdjustment { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("kCGImagePropertyHEIFDictionary")]
 		NSString HeifDictionary { get; }
 
-		[iOS (16, 4), TV (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), Mac (13, 3), TV (16, 4), MacCatalyst (16, 4)]
 		[Field ("kCGImagePropertyOpenEXRCompression")]
 		NSString OpenExrCompression { get; }
 
@@ -4081,7 +4081,7 @@ namespace ImageIO {
 	}
 
 	[Partial]
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	interface CGImageDecodeOptions {
 		[Internal]
 		[Field ("kCGImageSourceDecodeRequest")]
@@ -4248,7 +4248,7 @@ namespace ImageIO {
 		[Export ("TgaDictionary")]
 		NSDictionary TgaDictionary { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		[Export ("AvisDictionary")]
 		NSDictionary AvisDictionary { get; set; }
 
@@ -4403,7 +4403,7 @@ namespace ImageIO {
 		[Wrap ("CGImageProperties.TgaDictionary")]
 		NSString TgaDictionary { get; }
 
-		[iOS (17, 0), TV (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0)]
 		[MacCatalyst (17, 0)]
 		[Static]
 		[Wrap ("CGImageProperties.AvisDictionary")]
@@ -4660,7 +4660,7 @@ namespace ImageIO {
 	}
 
 	[Static]
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 	interface IOCameraExtrinsics {
 		[Field ("kIIOCameraExtrinsics_CoordinateSystemID")]
 		NSString CoordinateSystemId { get; }
@@ -4673,19 +4673,19 @@ namespace ImageIO {
 	}
 
 	[Static]
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 	interface IOCameraModel {
 		[Field ("kIIOCameraModel_Intrinsics")]
 		NSString Intrinsics { get; }
 
-		[iOS (16, 0)]
+		[Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Field ("kIIOCameraModel_ModelType")]
 		NSString ModelType { get; }
 	}
 
 	[Static]
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 	interface IOCameraModelType {
 		[Field ("kIIOCameraModelType_SimplifiedPinhole")]
 		NSString SimplifiedPinhole { get; }
@@ -4705,7 +4705,7 @@ namespace ImageIO {
 	}
 
 	[Static]
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 	interface IOMetadata {
 		[Field ("kIIOMetadata_CameraExtrinsicsKey")]
 		NSString CameraExtrinsicsKey { get; }

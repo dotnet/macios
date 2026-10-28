@@ -2059,19 +2059,19 @@ namespace SceneKit {
 		SCNMaterialProperty Create (NSObject contents);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithURL:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSUrl url, out NSError error);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithData:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSData url, out NSError error);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentDataForContents:device:error:")]
 		NSData GetPrecomputedLightingEnvironmentData (NSObject contents, [NullAllowed] IMTLDevice device, out NSError error);
@@ -4033,7 +4033,7 @@ namespace SceneKit {
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 #if XAMCORE_5_0
 		[Abstract]
 #endif

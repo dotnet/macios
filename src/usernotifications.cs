@@ -660,7 +660,7 @@ namespace UserNotifications {
 		[Export ("relevanceScore")]
 		double RelevanceScore { get; }
 
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("filterCriteria")]
 		[NullAllowed]
 		string FilterCriteria { get; }
@@ -779,7 +779,7 @@ namespace UserNotifications {
 		[Export ("relevanceScore")]
 		double RelevanceScore { get; set; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("filterCriteria")]
 		string FilterCriteria { get; set; }
 	}
@@ -1394,7 +1394,7 @@ namespace UserNotifications {
 		void RemoveAllDeliveredNotifications ();
 
 		[Async]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("setBadgeCount:withCompletionHandler:")]
 		void SetBadgeCount (nint newBadgeCount, [NullAllowed] Action<NSError> completionHandler);
 	}

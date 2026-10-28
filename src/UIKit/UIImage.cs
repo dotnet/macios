@@ -169,13 +169,13 @@ namespace UIKit {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern /* NSData */ IntPtr UIImageHEICRepresentation (/* UIImage */ IntPtr image);
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public NSData? HeicRepresentation
 			=> Runtime.GetNSObject<NSData> (UIImageHEICRepresentation (Handle));
 

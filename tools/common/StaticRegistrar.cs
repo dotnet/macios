@@ -1176,6 +1176,14 @@ namespace Registrar {
 			return HasAttribute (td, ObjCRuntime, StringConstants.NativeAttribute);
 		}
 
+		public bool HasNativeEnumConversion (TypeReference type)
+		{
+			var td = type.Resolve ();
+			if (td is null || !td.IsEnum || !TryGetAttribute (td, ObjCRuntime, StringConstants.NativeAttribute, out var attribute))
+				return false;
+			return attribute.Properties.Any (v => (v.Name == "ConvertToManaged" || v.Name == "ConvertToNative") && !string.IsNullOrEmpty (v.Argument.Value as string));
+		}
+
 		public override bool IsNullable (TypeReference type)
 		{
 			return GetNullableType (type) is not null;
@@ -3714,6 +3722,23 @@ namespace Registrar {
 				var td = ResolveType (type);
 				var isVariadic = i + 1 == num_arg && method.IsVariadic;
 
+				if (type == nativetype && HasNativeEnumConversion (isRef ? GetElementType (type) : type)) {
+					body_setup.AppendLine ($"uint64_t converted_enum{i} = 0;");
+					body_setup.AppendLine ($"MonoType *enum_type{i} = NULL;");
+					cleanup.AppendLine ($"xamarin_mono_object_release (&enum_type{i});");
+					setup_call_stack.AppendLine ($"enum_type{i} = xamarin_get_parameter_type (managed_method, {i});");
+					if (!isOut) {
+						setup_call_stack.AppendLine ($"converted_enum{i} = xamarin_convert_native_enum_value (enum_type{i}, {(isRef ? $"*p{i}" : $"p{i}")}, true, &exception_gchandle);");
+						setup_call_stack.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE) goto exception_handling;");
+					}
+					setup_call_stack.AppendLine ($"arg_ptrs [{i}] = &converted_enum{i};");
+					if (isRef) {
+						copyback.AppendLine ($"*p{i} = ({ToObjCParameterType (GetElementType (type), descriptiveMethodName, exceptions, mthd)}) xamarin_convert_native_enum_value (enum_type{i}, converted_enum{i}, false, &exception_gchandle);");
+						copyback.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE) goto exception_handling;");
+					}
+					continue;
+				}
+
 				if (type != nativetype) {
 					body_setup.AppendLine ("MonoClass *paramclass{0} = NULL;", i);
 					cleanup.AppendLine ("xamarin_mono_object_release (&paramclass{0});", i);
@@ -4640,6 +4665,12 @@ namespace Registrar {
 				setup_call_stack.AppendLine ("retparamtype = xamarin_get_parameter_type (managed_method, -1);");
 				setup_call_stack.AppendLine ("retparamclass = mono_class_from_mono_type (retparamtype);");
 				GenerateConversionToNative (returntype, method.NativeReturnType, setup_return, descriptiveMethodName, ref exceptions, method, "retval", "res", "retparamclass");
+			} else if (HasNativeEnumConversion (returntype)) {
+				body_setup.AppendLine ("MonoType *enum_return_type = NULL;");
+				cleanup.AppendLine ("xamarin_mono_object_release (&enum_return_type);");
+				setup_return.AppendLine ("enum_return_type = xamarin_get_parameter_type (managed_method, -1);");
+				setup_return.AppendLine ("res = ({0}) xamarin_convert_native_enum_value (enum_return_type, *(uint64_t *) mono_object_unbox ((MonoObject *) retval), false, &exception_gchandle);", rettype);
+				setup_return.AppendLine ("if (exception_gchandle != INVALID_GCHANDLE) goto exception_handling;");
 			} else if (returntype.IsValueType) {
 				setup_return.AppendLine ("res = *({0} *) mono_object_unbox ((MonoObject *) retval);", rettype);
 			} else if (isArray) {

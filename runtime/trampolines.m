@@ -94,6 +94,23 @@ xamarin_get_primitive_size (char type)
 	}
 }
 
+uint64_t
+xamarin_convert_native_enum_value (MonoType *type, uint64_t value, bool to_managed, GCHandle *exception_gchandle)
+{
+	MonoClass *klass = mono_class_from_mono_type (type);
+	if (!mono_class_is_enum (klass)) {
+		xamarin_mono_object_release (&klass);
+		return value;
+	}
+	MonoType *enum_type = mono_class_get_type (klass);
+	MonoReflectionType *reflection_type = mono_type_get_object (mono_domain_get (), enum_type);
+	uint64_t rv = xamarin_convert_native_enum (reflection_type, value, to_managed, exception_gchandle);
+	xamarin_mono_object_release (&reflection_type);
+	xamarin_mono_object_release (&enum_type);
+	xamarin_mono_object_release (&klass);
+	return rv;
+}
+
 static void *
 xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject *retval, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle)
 {
@@ -237,7 +254,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 		case _C_VOID:
 			return (void *) 0x0;
 		default:
-			return *(void **) mono_object_unbox (retval);
+			return (void *) (uintptr_t) xamarin_convert_native_enum_value (mtype, (uint64_t) (uintptr_t) *(void **) mono_object_unbox (retval), false, exception_gchandle);
 	}
 }
 

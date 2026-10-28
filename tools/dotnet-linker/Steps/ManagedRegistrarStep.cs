@@ -1300,6 +1300,19 @@ namespace Xamarin.Linker {
 
 		// This emits a conversion between the native and the managed representation of a parameter or return value,
 		// and returns the corresponding native type. The returned nativeType will (must) be a blittable type.
+		void EmitNativeEnumConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged)
+		{
+			var value = il.Body.AddVariable (method.Module.TypeSystem.UInt64);
+			il.Emit (OpCodes.Conv_U8);
+			il.Emit (OpCodes.Stloc, value);
+			il.Emit (OpCodes.Ldtoken, type);
+			il.Emit (OpCodes.Call, abr.Type_GetTypeFromHandle);
+			il.Emit (OpCodes.Ldloc, value);
+			il.EmitLdc (toManaged);
+			EnsureVisible (method, abr.Runtime_ConvertNativeEnumValue);
+			il.Emit (OpCodes.Call, abr.Runtime_ConvertNativeEnumValue);
+		}
+
 		bool EmitConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged, int parameter, [NotNullWhen (true)] out TypeReference? nativeType, List<Instruction> postProcessing, bool isOutParameter = false, int nativeParameterIndex = -1)
 		{
 			nativeType = null;
@@ -1336,6 +1349,12 @@ namespace Xamarin.Linker {
 			}
 
 			if (type.IsValueType) {
+				if (StaticRegistrar.HasNativeEnumConversion (type)) {
+					EmitNativeEnumConversion (method, il, type, toManaged);
+					nativeType = type;
+					return true;
+				}
+
 				if (type.Is ("System", "Boolean")) {
 					// no conversion necessary either way
 					nativeType = abr.System_Byte;
@@ -1378,6 +1397,28 @@ namespace Xamarin.Linker {
 					}
 
 					if (elementType.IsValueType) {
+						if (StaticRegistrar.HasNativeEnumConversion (elementType)) {
+							var value = il.Body.AddVariable (elementType);
+							if (!isOutParameter) {
+								il.Emit (OpCodes.Ldind_I8);
+								EmitNativeEnumConversion (method, il, elementType, true);
+								il.Emit (OpCodes.Stloc, value);
+							}
+							il.Emit (OpCodes.Ldloca, value);
+							var conversion = abr.Runtime_ConvertNativeEnumValue;
+							EnsureVisible (method, conversion);
+							postProcessing.Add (il.CreateLoadArgument (nativeParameterIndex));
+							postProcessing.Add (il.Create (OpCodes.Ldtoken, elementType));
+							postProcessing.Add (il.Create (OpCodes.Call, abr.Type_GetTypeFromHandle));
+							postProcessing.Add (il.Create (OpCodes.Ldloc, value));
+							postProcessing.Add (il.Create (OpCodes.Conv_U8));
+							postProcessing.Add (il.CreateLdc (false));
+							postProcessing.Add (il.Create (OpCodes.Call, conversion));
+							postProcessing.Add (il.Create (OpCodes.Stind_I8));
+							nativeType = new PointerType (elementType);
+							return true;
+						}
+
 						// call !!0& [System.Runtime]System.Runtime.CompilerServices.Unsafe::AsRef<int32>(void*)
 						var mr = new GenericInstanceMethod (abr.CurrentAssembly.MainModule.ImportReference (abr.Unsafe_AsRef));
 						if (isOutParameter)

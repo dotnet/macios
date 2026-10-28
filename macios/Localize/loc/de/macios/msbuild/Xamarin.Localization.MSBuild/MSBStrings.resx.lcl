@@ -2932,6 +2932,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The app's Info.plist does not contain a UIApplicationSceneManifest dictionary. Apps built with the iOS or Mac Catalyst 27.0 SDK or later must use the UIKit scene lifecycle or they will crash at launch on iOS or macOS 27.0 or later. Add a scene manifest and scene delegate, and migrate custom lifecycle handlers as described at https://aka.ms/uiscene. To skip this build-time validation, set the MSBuild property ValidateSceneManifest to false; this does not disable the operating system's requirement.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Die Info.plist der App enthält kein UIApplicationSceneManifest-Wörterbuch. Apps, die mit dem iOS oder Mac Catalyst 27.0 SDK oder höher erstellt wurden, müssen den UIKit-Szenenlebenszyklus verwenden. Andernfalls stürzen sie beim Start unter iOS oder macOS 27.0 oder höher ab. Fügen Sie ein Szenenmanifest und ein Szenendelegat hinzu, und migrieren Sie benutzerdefinierte Lebenszyklus-Handler wie unter https://aka.ms/uiscene beschrieben. Um diese Buildzeitvalidierung zu überspringen, legen Sie die MSBuild-Eigenschaft ValidateSceneManifest auf „false“ fest. Dadurch wird die Anforderung des Betriebssystems nicht deaktiviert.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3943,7 +3952,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+      <Item ItemId=";W7200" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

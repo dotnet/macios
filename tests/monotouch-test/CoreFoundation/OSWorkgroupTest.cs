@@ -29,8 +29,17 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.That (wg.TryJoin (out var token), Is.True, "TryJoin");
 			token.Dispose ();
 
+			// Leaving must work even if the workgroup instance has been disposed first.
+			var wg2 = OSWorkgroupParallel.Create ("monotouch-test-2");
+			var token2 = wg2.Join ();
+			wg2.Dispose ();
+			token2.Dispose ();
+
 			wg.Cancel ();
 			Assert.That (wg.IsCancelled, Is.True, "IsCancelled 2");
+			Assert.That (wg.TryJoin (out var token3, out var error), Is.False, "TryJoin cancelled");
+			Assert.That (token3, Is.Null, "token3");
+			Assert.That (error, Is.Not.EqualTo (0), "error");
 		}
 
 		[Test]

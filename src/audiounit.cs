@@ -709,6 +709,7 @@ namespace AudioUnit {
 		[Mac (11, 0)]
 		[iOS (14, 0)]
 		[TV (14, 0)]
+		[return: NullAllowed]
 		[Export ("osWorkgroup")]
 		OSWorkgroup GetOSWorkgroup ();
 

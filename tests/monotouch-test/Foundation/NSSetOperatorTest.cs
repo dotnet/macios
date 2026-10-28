@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+
+#nullable enable
 
 namespace MonoTouchFixtures.Foundation {
 
@@ -108,7 +111,7 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		static void TestOperators<TFirst, TSecond, TResult> (Func<NSString [], TFirst> createFirst, Func<NSString [], TSecond> createSecond,
-			Func<TFirst, TSecond, TResult> add, Func<TFirst, TSecond, TResult> subtract)
+			Func<TFirst?, TSecond?, TResult?> add, Func<TFirst?, TSecond?, TResult?> subtract)
 			where TFirst : NSObject, IEnumerable<NSObject>
 			where TSecond : NSObject, IEnumerable<NSObject>
 			where TResult : NSObject, IEnumerable<NSObject>
@@ -117,12 +120,12 @@ namespace MonoTouchFixtures.Foundation {
 			using var two = new NSString ("2");
 			using var three = new NSString ("3");
 			using var four = new NSString ("4");
-			NSString [] [] inputs = [null, [], [one, two], [two, three], [three, four]];
+			NSString []? [] inputs = [null, [], [one, two], [two, three], [three, four]];
 
 			for (var i = 0; i < inputs.Length; i++) {
 				for (var j = 0; j < inputs.Length; j++) {
-					using var first = inputs [i] is null ? null : createFirst (inputs [i]);
-					using var second = inputs [j] is null ? null : createSecond (inputs [j]);
+					using var first = inputs [i] is { } firstInput ? createFirst (firstInput) : null;
+					using var second = inputs [j] is { } secondInput ? createSecond (secondInput) : null;
 					NSObject [] firstValues = first is null ? [] : first.ToArray ();
 					NSObject [] secondValues = second is null ? [] : second.ToArray ();
 					var message = $"Inputs {i}, {j}";
@@ -159,10 +162,11 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
-		static void AssertResult<T> (T result, NSObject [] expected, NSObject first, NSObject second, string message)
+		static void AssertResult<T> ([NotNull] T? result, NSObject [] expected, NSObject? first, NSObject? second, string message)
 			where T : NSObject, IEnumerable<NSObject>
 		{
 			Assert.That (result, Is.Not.Null, message);
+			ArgumentNullException.ThrowIfNull (result);
 			Assert.That (result, Is.Not.SameAs (first), $"{message}: not first");
 			Assert.That (result, Is.Not.SameAs (second), $"{message}: not second");
 			Assert.That (result.ToArray (), Is.EquivalentTo (expected), $"{message}: contents");

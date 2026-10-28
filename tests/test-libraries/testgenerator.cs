@@ -190,10 +190,11 @@ static class C {
 		var native = new StringBuilder ();
 		var managed = new StringBuilder ();
 		var testedStructs = new StringBuilder ("\t\tstatic readonly HashSet<Type> testedStructs = [\n");
+		var testedInternalStructs = new StringBuilder ("\t\tstatic readonly HashSet<string> testedInternalStructs = [\n");
 		var unavailableStructs = new StringBuilder ("\t\tstatic readonly HashSet<string> unavailableStructs = [\n");
 		var excludedStructs = new StringBuilder ("\t\tstatic readonly Dictionary<string, string> excludedStructs = new () {\n");
 		var platformConditions = new [] {
-			(Platform: StructPlatforms.iOS, Managed: "__IOS__", Native: "(TARGET_OS_IOS && !TARGET_OS_MACCATALYST)"),
+			(Platform: StructPlatforms.iOS, Managed: "(__IOS__ && !__MACCATALYST__)", Native: "(TARGET_OS_IOS && !TARGET_OS_MACCATALYST)"),
 			(Platform: StructPlatforms.tvOS, Managed: "__TVOS__", Native: "TARGET_OS_TV"),
 			(Platform: StructPlatforms.macOS, Managed: "__MACOS__", Native: "TARGET_OS_OSX"),
 			(Platform: StructPlatforms.MacCatalyst, Managed: "__MACCATALYST__", Native: "TARGET_OS_MACCATALYST"),
@@ -205,7 +206,7 @@ static class C {
 		managed.AppendLine ("namespace Introspection {");
 		managed.AppendLine ("\tpublic partial class ApiStructSizeTest {");
 
-		void Add (string ns, string [] types, StructPlatforms platforms, string? ignoreReason = null)
+		void Add (string ns, string [] types, StructPlatforms platforms, string? ignoreReason = null, bool isInternal = false)
 		{
 			if (platforms == 0 || (platforms & ~StructPlatforms.All) != 0)
 				throw new ArgumentOutOfRangeException (nameof (platforms));
@@ -213,7 +214,10 @@ static class C {
 			var managedCondition = string.Join (" || ", conditions.Select (condition => condition.Managed));
 			var nativeCondition = string.Join (" || ", conditions.Select (condition => condition.Native));
 			managed.AppendLine ($"#if {managedCondition}");
-			testedStructs.AppendLine ($"#if {managedCondition}");
+			if (isInternal)
+				testedInternalStructs.AppendLine ($"#if {managedCondition}");
+			else
+				testedStructs.AppendLine ($"#if {managedCondition}");
 			unavailableStructs.AppendLine ($"#if !({managedCondition})");
 			native.AppendLine ($"#if {nativeCondition}");
 
@@ -221,21 +225,31 @@ static class C {
 				var names = type.Split (':');
 				var managedName = names [0];
 				var nativeName = names.Length == 2 ? names [1] : managedName;
-				testedStructs.AppendLine ($"\t\t\ttypeof ({ns}.{managedName}),");
-				unavailableStructs.AppendLine ($"\t\t\t\"{ns}.{managedName.Replace ('.', '+')}\",");
+				var fullManagedName = $"{ns}.{managedName.Replace ('.', '+')}";
+				if (isInternal)
+					testedInternalStructs.AppendLine ($"\t\t\t\"{fullManagedName}\",");
+				else
+					testedStructs.AppendLine ($"\t\t\ttypeof ({ns}.{managedName}),");
+				unavailableStructs.AppendLine ($"\t\t\t\"{fullManagedName}\",");
 				native.AppendLine ($"CHECK_SIZE ({nativeName});");
 				managed.AppendLine ("\t\t[Test]");
 				if (ignoreReason is not null)
 					managed.AppendLine ($"\t\t[Ignore (\"{ignoreReason}\")]");
 				managed.AppendLine ($"\t\tpublic void Size_{ns.Replace ('.', '_')}_{managedName.Replace ('.', '_')} ()");
 				managed.AppendLine ("\t\t{");
-				managed.AppendLine ($"\t\t\tCheckSize<{ns}.{managedName}> (\"{nativeName}\");");
+				if (isInternal)
+					managed.AppendLine ($"\t\t\tCheckSize (\"{fullManagedName}\", \"{nativeName}\");");
+				else
+					managed.AppendLine ($"\t\t\tCheckSize<{ns}.{managedName}> (\"{nativeName}\");");
 				managed.AppendLine ("\t\t}");
 				managed.AppendLine ();
 			}
 
 			managed.AppendLine ("#endif");
-			testedStructs.AppendLine ("#endif");
+			if (isInternal)
+				testedInternalStructs.AppendLine ("#endif");
+			else
+				testedStructs.AppendLine ("#endif");
 			unavailableStructs.AppendLine ("#endif");
 			native.AppendLine ("#endif");
 		}
@@ -418,7 +432,27 @@ static class C {
 		Exclude ("AVFoundation", [
 			"AVSampleCursorSyncInfo", "AVSampleCursorDependencyInfo", "AVSampleCursorChunkInfo",
 		], "Boolean fields use a separate blittable representation for native calls.");
+		Add ("AVFoundation", [
+			"AVSampleCursorSyncInfo_Blittable:AVSampleCursorSyncInfo",
+			"AVSampleCursorDependencyInfo_Blittable:AVSampleCursorDependencyInfo",
+			"AVSampleCursorChunkInfo_Blittable:AVSampleCursorChunkInfo",
+		], StructPlatforms.All, isInternal: true);
+		Add ("AVFoundation", [
+			"AVSampleCursorAudioDependencyInfo_Blittable:AVSampleCursorAudioDependencyInfo",
+		], StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true);
 		Add ("AVFoundation", ["AVSampleCursorAudioDependencyInfo"], StructPlatforms.All);
+		Add ("CoreMidi", [
+			"MidiCIDeviceIdentification_Blittable:MIDICIDeviceIdentification",
+			"MidiThruConnectionParamsStruct:MIDIThruConnectionParams",
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true);
+		Add ("GameController", [
+			"GCDualSenseAdaptiveTriggerPositionalAmplitudes_Blittable:GCDualSenseAdaptiveTriggerPositionalAmplitudes",
+			"GCDualSenseAdaptiveTriggerPositionalResistiveStrengths_Blittable:GCDualSenseAdaptiveTriggerPositionalResistiveStrengths",
+			"GCExtendedGamepadSnapshotData_Blittable:GCExtendedGamepadSnapshotData",
+		], StructPlatforms.All, isInternal: true);
+		Add ("GLKit", [
+			"GLKVertexAttributeParametersInternal:GLKVertexAttributeParameters",
+		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.macOS, isInternal: true);
 		Exclude ("AddressBook", ["ABMultiValueEntry`1"], "Generic managed entry wrapper, not a native structure.");
 		Exclude ("AudioToolbox", ["AudioBufferList", "AudioFileRegion"], "Managed view of a variable-length native structure.");
 		Exclude ("AudioToolbox", ["ExtendedNoteOnEvent"], "Represents the fixed header without the variable-length native controls array.");
@@ -449,10 +483,6 @@ static class C {
 		Exclude ("UIKit", ["UIPointerAccessoryPosition"], "Uses custom SIMD marshaling.");
 		Exclude ("VideoToolbox", ["VTDataRateLimit"], "Managed data-rate values converted to an NSArray.");
 
-		Exclude ("AVFoundation", [
-			"AVSampleCursorSyncInfo_Blittable", "AVSampleCursorDependencyInfo_Blittable", "AVSampleCursorChunkInfo_Blittable",
-			"AVSampleCursorAudioDependencyInfo_Blittable",
-		], "Internal marshaling representation.");
 		Exclude ("AudioToolbox", [
 			"AudioBalanceFade+Layout", "AudioBytePacketTranslation", "AudioFileTypeAndFormatID", "AudioFormatInfo",
 			"AudioFramePacketTranslation", "AudioPanningInfo+Layout",
@@ -471,8 +501,8 @@ static class C {
 			"CMBufferQueue+CMBufferCallbacks", "CMBufferQueue+CMBufferCallbacks2", "CMCustomBlockAllocator+CMBlockBufferCustomBlockSource",
 		], "Internal callback representation.");
 		Exclude ("CoreMidi", [
-			"MidiCIDeviceIdentification_Blittable", "MidiClient+MidiIOErrorNotification", "MidiClient+MidiObjectAddRemoveNotification",
-			"MidiClient+MidiObjectPropertyChangeNotification", "MidiThruConnectionParamsStruct",
+			"MidiClient+MidiIOErrorNotification", "MidiClient+MidiObjectAddRemoveNotification",
+			"MidiClient+MidiObjectPropertyChangeNotification",
 		], "Internal native-call implementation detail.");
 		Exclude ("CoreServices", ["FSEventStreamContext"], "Internal callback representation.");
 		Exclude ("CoreText", [
@@ -481,11 +511,6 @@ static class C {
 		Exclude ("Foundation", [
 			"NSFastEnumerationState", "NSObject+objc_super", "NSObjectData",
 		], "Runtime implementation detail, not an Apple SDK structure binding.");
-		Exclude ("GameController", [
-			"GCDualSenseAdaptiveTriggerPositionalAmplitudes_Blittable", "GCDualSenseAdaptiveTriggerPositionalResistiveStrengths_Blittable",
-			"GCExtendedGamepadSnapshotData_Blittable",
-		], "Internal marshaling representation.");
-		Exclude ("GLKit", ["GLKVertexAttributeParametersInternal"], "Internal marshaling representation.");
 		Exclude ("MediaToolbox", ["MTAudioProcessingTap+Callbacks"], "Internal callback representation.");
 		Exclude ("Security", [
 			"AuthorizationItem", "AuthorizationItemNative", "AuthorizationItemSet", "AuthorizationRightsNative",
@@ -496,9 +521,11 @@ static class C {
 		Exclude ("VideoToolbox", ["VTDecompressionSession+VTDecompressionOutputCallbackRecord"], "Internal callback representation.");
 
 		testedStructs.AppendLine ("\t\t];");
+		testedInternalStructs.AppendLine ("\t\t];");
 		unavailableStructs.AppendLine ("\t\t];");
 		excludedStructs.AppendLine ("\t\t};");
 		managed.Append (testedStructs);
+		managed.Append (testedInternalStructs);
 		managed.Append (unavailableStructs);
 		managed.Append (excludedStructs);
 		managed.AppendLine ("\t}");

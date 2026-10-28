@@ -27,7 +27,11 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <GameplayKit/GameplayKit.h>
 #import <ModelIO/ModelIO.h>
+#if !TARGET_OS_MACCATALYST
+#import <GLKit/GLKit.h>
+#else
 #import <GLKit/GLKMathTypes.h>
+#endif
 
 #if TARGET_OS_IOS && !TARGET_OS_MACCATALYST
 #import <CarPlay/CarPlay.h>

@@ -39,7 +39,8 @@ where the native structure is available and the managed binding exists. These
 flags generate matching managed/native platform conditions and per-platform
 catalogs; structures unavailable on the current platform are automatically
 accounted for without manual exclusions. Use `ManagedName:NativeName` when
-the names differ. When adding a framework, import its
+the names differ, and pass `isInternal: true` when the managed structure is not
+public. When adding a framework, import its
 native headers in `tests/test-libraries/libstructsizes.m`. Only include structures
 whose managed representation is intended to match the native layout, not managed
 wrappers that require custom conversion.

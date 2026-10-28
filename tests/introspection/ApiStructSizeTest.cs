@@ -17,16 +17,30 @@ namespace Introspection {
 			Assert.That (Marshal.SizeOf<T> (), Is.EqualTo (nativeSize), $"{typeof (T).FullName} / {nativeName}");
 		}
 
+		static void CheckSize (string managedTypeName, string nativeName)
+		{
+			var type = typeof (NSObject).Assembly.GetType (managedTypeName, throwOnError: true)!;
+			var nativeSize = x_get_struct_size (nativeName);
+			Assert.That (nativeSize, Is.GreaterThan (0), $"No native size for {nativeName}");
+			Assert.That (Marshal.SizeOf (type), Is.EqualTo (nativeSize), $"{type.FullName} / {nativeName}");
+		}
+
 		static bool IsCompilerGenerated (Type type)
 		{
 			return type.IsDefined (typeof (CompilerGeneratedAttribute), false) ||
 				(type.DeclaringType is not null && IsCompilerGenerated (type.DeclaringType));
 		}
 
+		static bool IsStructTypeForTesting (Type type)
+		{
+			return type.IsValueType && !type.IsPrimitive && !type.IsEnum && !IsCompilerGenerated (type);
+		}
+
 		static Type [] GetUnlistedStructs (IEnumerable<Type> types)
 		{
-			return types.Where (type => type.IsValueType && !type.IsPrimitive && !type.IsEnum && !IsCompilerGenerated (type))
-				.Where (type => !testedStructs.Contains (type) && !excludedStructs.ContainsKey (type.FullName ?? type.Name))
+			var testedTypes = testedStructs.Concat (testedInternalStructs.Select (name => typeof (NSObject).Assembly.GetType (name, throwOnError: true)!)).ToHashSet ();
+			return types.Where (IsStructTypeForTesting)
+				.Where (type => !testedTypes.Contains (type) && !excludedStructs.ContainsKey (type.FullName ?? type.Name))
 				.Where (type => !unavailableStructs.Contains (type.FullName ?? type.Name))
 				.OrderBy (type => type.FullName, StringComparer.Ordinal)
 				.ToArray ();
@@ -36,8 +50,13 @@ namespace Introspection {
 		public void AllStructsAreListed ()
 		{
 			Assert.That (excludedStructs.Values, Is.All.Not.Empty, "Every excluded struct must have a reason.");
-			Assert.That (testedStructs.Select (type => type.FullName).Intersect (excludedStructs.Keys.Concat (unavailableStructs)), Is.Empty,
+			var testedNames = testedStructs.Select (type => type.FullName).Concat (testedInternalStructs).ToArray ();
+			Assert.That (testedNames.Intersect (excludedStructs.Keys.Concat (unavailableStructs)), Is.Empty,
 				"A struct must not be both tested and excluded or unavailable.");
+			foreach (var name in testedInternalStructs) {
+				var type = typeof (NSObject).Assembly.GetType (name, throwOnError: true)!;
+				Assert.That (IsStructTypeForTesting (type), Is.True, $"{name} is not a testable struct.");
+			}
 			var unlisted = GetUnlistedStructs (typeof (NSObject).Assembly.GetTypes ());
 			Assert.That (unlisted, Is.Empty, "Add these structs to WriteStructSizeTests in tests/test-libraries/testgenerator.cs:\n" +
 				string.Join ("\n", unlisted.Select (type => type.FullName)));
@@ -74,6 +93,7 @@ namespace Introspection {
 		public void IncorrectStructSize ()
 		{
 			Assert.Throws<AssertionException> (() => CheckSize<int> ("MTLQuadTessellationFactorsHalf"));
+			Assert.Throws<AssertionException> (() => CheckSize ("Foundation.NSRange", "MTLQuadTessellationFactorsHalf"));
 		}
 	}
 }

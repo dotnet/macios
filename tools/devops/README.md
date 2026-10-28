@@ -114,8 +114,8 @@ Both `build-pipeline.yml` and `build-pull-request.yml` include the independent
 `templates/governance/devskim.yml` stage. It runs without Xcode or a product build,
 using `Microsoft.CST.DevSkim.CLI` **1.0.100** on a Linux agent with .NET 10.
 It follows the existing pipelines' branch and path triggers.
-Installation uses `tools/devops/governance/devskim.nuget.config`, which selects
-only the `dotnet-public` Azure Artifacts mirror and clears inherited sources.
+Installation explicitly uses the repository's top-level `NuGet.config`, which
+includes the `dotnet-public` Azure Artifacts mirror and clears inherited sources.
 This avoids direct nuget.org access on network-isolated agents.
 
 The scan covers `runtime`, `src`, `tools`, `msbuild`, `external`, `dotnet`,
@@ -154,7 +154,7 @@ repository="$PWD"
 # Install outside the repository with a .NET 10 SDK:
 (cd /tmp && dotnet tool install Microsoft.CST.DevSkim.CLI --version 1.0.100 \
   --tool-path /tmp/macios-devskim \
-  --configfile "$repository/tools/devops/governance/devskim.nuget.config")
+  --configfile "$repository/NuGet.config")
 # Run from the repository root; keep reports outside the scanned trees:
 mkdir -p /tmp/macios-devskim-reports
 reports=()

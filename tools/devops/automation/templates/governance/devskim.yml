@@ -40,7 +40,7 @@ stages:
         dotnet tool install Microsoft.CST.DevSkim.CLI \
           --version 1.0.100 \
           --tool-path "$(Agent.TempDirectory)/devskim-tool" \
-          --configfile "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/devskim.nuget.config" \
+          --configfile "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/NuGet.config" \
           2>&1 | tee "$REPORTS/install.log"
       displayName: Install pinned DevSkim
       workingDirectory: $(Agent.TempDirectory)

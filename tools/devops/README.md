@@ -114,6 +114,9 @@ Both `build-pipeline.yml` and `build-pull-request.yml` include the independent
 `templates/governance/devskim.yml` stage. It runs without Xcode or a product build,
 using `Microsoft.CST.DevSkim.CLI` **1.0.100** on a Linux agent with .NET 10.
 It follows the existing pipelines' branch and path triggers.
+Installation uses `tools/devops/governance/devskim.nuget.config`, which selects
+only the `dotnet-public` Azure Artifacts mirror and clears inherited sources.
+This avoids direct nuget.org access on network-isolated agents.
 
 The scan covers `runtime`, `src`, `tools`, `msbuild`, `external`, `dotnet`,
 `scripts`, `builds`, and `eng`, including the recursively checked-out
@@ -129,7 +132,9 @@ best-practice/manual-review rules. Other findings remain in the reports for
 triage. Scanner failures, missing/malformed reports, and explicit SARIF execution
 errors also fail the job. The `devskim` pipeline artifact publishes SARIF and
 console logs even when the scan or gate fails; if provisioning fails before the
-scan starts, no report is available.
+scan starts, no SARIF report is available. The diagnostics directory is created
+before provisioning, and tool installation output is retained as `install.log`
+even when installation fails.
 
 **Initial findings require security-owner triage.** The integration does not add
 baselines, exclusions for individual APIs, or suppressions. In particular,
@@ -145,8 +150,11 @@ repository (to avoid its `global.json` SDK requirement), and scan each source tr
 
 ```bash
 git submodule update --init --recursive
-# Run from a directory outside the repository with a .NET 10 SDK:
-dotnet tool install Microsoft.CST.DevSkim.CLI --version 1.0.100 --tool-path /tmp/macios-devskim
+repository="$PWD"
+# Install outside the repository with a .NET 10 SDK:
+(cd /tmp && dotnet tool install Microsoft.CST.DevSkim.CLI --version 1.0.100 \
+  --tool-path /tmp/macios-devskim \
+  --configfile "$repository/tools/devops/governance/devskim.nuget.config")
 # Run from the repository root; keep reports outside the scanned trees:
 mkdir -p /tmp/macios-devskim-reports
 reports=()

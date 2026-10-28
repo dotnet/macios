@@ -22,6 +22,13 @@ stages:
       submodules: recursive
       fetchTags: false
 
+    - bash: |
+        set -euo pipefail
+        mkdir -p "$REPORTS"
+      displayName: Initialize DevSkim diagnostics
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
     - task: UseDotNet@2
       displayName: Install .NET for DevSkim
       inputs:
@@ -33,9 +40,12 @@ stages:
         dotnet tool install Microsoft.CST.DevSkim.CLI \
           --version 1.0.100 \
           --tool-path "$(Agent.TempDirectory)/devskim-tool" \
-          --source https://api.nuget.org/v3/index.json
+          --configfile "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/devskim.nuget.config" \
+          2>&1 | tee "$REPORTS/install.log"
       displayName: Install pinned DevSkim
       workingDirectory: $(Agent.TempDirectory)
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
 
     - bash: |
         set -euo pipefail

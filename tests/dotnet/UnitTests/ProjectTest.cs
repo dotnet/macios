@@ -509,34 +509,41 @@ namespace Xamarin.Tests {
 			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
 			if (platform == ApplePlatform.iOS)
 				properties ["NativeLibName"] = "ios";
-			DotNet.AssertBuild (projectPath, properties);
 
 			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
-			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
-			using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
-			var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
-			var embeddedFramework = resource.GetResourceData ();
-			Assert.That (embeddedFramework.Length, Is.GreaterThan (0), "The binding must contain the embedded framework");
-			var executable = File.ReadAllBytes (GetNativeExecutable (platform, appPath));
-			Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
+			// Device and simulator frameworks share the binding project's output paths.
+			Clean (bindingProjectPath);
+			try {
+				DotNet.AssertBuild (projectPath, properties);
 
-			var substitutionsPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "nativeaot-resource-substitutions.xml");
-			if (prepareAssemblies) {
-				var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
-				Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
-					.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
+				var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
+				using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
+				var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
+				var embeddedFramework = resource.GetResourceData ();
+				Assert.That (embeddedFramework.Length, Is.GreaterThan (0), "The binding must contain the embedded framework");
+				var executable = File.ReadAllBytes (GetNativeExecutable (platform, appPath));
+				Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
 
-				var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
-				var result = DotNet.AssertBuild (projectPath, properties);
-				AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
-				Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
+				var substitutionsPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "nativeaot-resource-substitutions.xml");
+				if (prepareAssemblies) {
+					var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
+					Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
+						.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
 
-				File.Delete (substitutionsPath);
-				result = DotNet.AssertBuild (projectPath, properties);
-				AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
-				Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
-			} else {
-				Assert.That (substitutionsPath, Does.Not.Exist, "ILLink removes native resources without a substitution file");
+					var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
+					var result = DotNet.AssertBuild (projectPath, properties);
+					AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
+					Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
+
+					File.Delete (substitutionsPath);
+					result = DotNet.AssertBuild (projectPath, properties);
+					AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
+					Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
+				} else {
+					Assert.That (substitutionsPath, Does.Not.Exist, "ILLink removes native resources without a substitution file");
+				}
+			} finally {
+				Clean (bindingProjectPath);
 			}
 		}
 

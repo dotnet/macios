@@ -254,7 +254,7 @@ xamarin_marshal_return_value_impl (MonoType *mtype, const char *type, MonoObject
 		case _C_VOID:
 			return (void *) 0x0;
 		default:
-			return (void *) (uintptr_t) xamarin_convert_native_enum_value (mtype, (uint64_t) (uintptr_t) *(void **) mono_object_unbox (retval), false, exception_gchandle);
+			return *(void **) mono_object_unbox (retval);
 	}
 }
 

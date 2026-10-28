@@ -1298,8 +1298,6 @@ namespace Xamarin.Linker {
 			return attribute;
 		}
 
-		// This emits a conversion between the native and the managed representation of a parameter or return value,
-		// and returns the corresponding native type. The returned nativeType will (must) be a blittable type.
 		void EmitNativeEnumConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged)
 		{
 			var value = il.Body.AddVariable (method.Module.TypeSystem.UInt64);
@@ -1313,6 +1311,8 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Call, abr.Runtime_ConvertNativeEnumValue);
 		}
 
+		// This emits a conversion between the native and the managed representation of a parameter or return value,
+		// and returns the corresponding native type. The returned nativeType will (must) be a blittable type.
 		bool EmitConversion (MethodDefinition method, ILProcessor il, TypeReference type, bool toManaged, int parameter, [NotNullWhen (true)] out TypeReference? nativeType, List<Instruction> postProcessing, bool isOutParameter = false, int nativeParameterIndex = -1)
 		{
 			nativeType = null;

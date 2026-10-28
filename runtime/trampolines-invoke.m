@@ -566,10 +566,17 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 						break;
 					}
 				}
-				default:
+				case _C_LNG:
+				case _C_ULNG:
+				case _C_LNG_LNG:
+				case _C_ULNG_LNG:
 					arg_frame [ofs] = (void *) (uintptr_t) xamarin_convert_native_enum_value (p, (uint64_t) (uintptr_t) arg, true, &exception_gchandle);
 					if (exception_gchandle != INVALID_GCHANDLE)
 						goto exception_handling;
+					arg_ptrs [i + mofs] = &arg_frame [frameofs];
+					break;
+				default:
+					arg_frame [ofs] = arg;
 					arg_ptrs [i + mofs] = &arg_frame [frameofs];
 					break;
 			}

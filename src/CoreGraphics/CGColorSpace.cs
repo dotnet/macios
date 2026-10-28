@@ -231,14 +231,19 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateIndexed (/* CGColorSpaceRef */ IntPtr baseSpace,
-			/* size_t */ nint lastIndex, /* const unsigned char* */ byte [] colorTable);
+		unsafe extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateIndexed (/* CGColorSpaceRef */ IntPtr baseSpace,
+			/* size_t */ nint lastIndex, /* const unsigned char* */ byte* colorTable);
 
 		/// <include file="../../docs/api/CoreGraphics/CGColorSpace.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGColorSpace.CreateIndexed(CoreGraphics.CGColorSpace,System.Int32,System.Byte[])']/*" />
 		public static CGColorSpace? CreateIndexed (CGColorSpace baseSpace, int lastIndex, byte [] colorTable)
 		{
-			var ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTable);
-			GC.KeepAlive (baseSpace);
+			IntPtr ptr;
+			unsafe {
+				fixed (byte* colorTablePtr = colorTable) {
+					ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTablePtr);
+					GC.KeepAlive (baseSpace);
+				}
+			}
 			return FromHandle (ptr, true);
 		}
 
@@ -470,7 +475,7 @@ namespace CoreGraphics {
 		extern static /* size_t */ nint CGColorSpaceGetColorTableCount (/* CGColorSpaceRef */ IntPtr space);
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGColorSpaceGetColorTable (/* CGColorSpaceRef */ IntPtr space, /* uint8_t* */ byte [] table);
+		unsafe extern static void CGColorSpaceGetColorTable (/* CGColorSpaceRef */ IntPtr space, /* uint8_t* */ byte* table);
 
 		/// <summary>Return the entries of the color table used in an indexed color space</summary>
 		///         <returns>An array of bytes with the same format that was provided to the CreateIndexed method</returns>
@@ -482,7 +487,11 @@ namespace CoreGraphics {
 				return Array.Empty<byte> ();
 
 			byte [] table = new byte [n * GetBaseColorSpace ()!.Components];
-			CGColorSpaceGetColorTable (Handle, table);
+			unsafe {
+				fixed (byte* tablePtr = table) {
+					CGColorSpaceGetColorTable (Handle, tablePtr);
+				}
+			}
 			return table;
 		}
 

@@ -67,16 +67,12 @@ namespace CoreGraphics {
 			GC.KeepAlive (colorSpace);
 		}
 
-		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static IntPtr CGBitmapContextCreate (/* void* */ byte []? data, /* size_t */ nint width, /* size_t */ nint height, /* size_t */ nint bitsPerComponent,
-			/* size_t */ nint bytesPerRow, /* CGColorSpaceRef */ IntPtr colorSpace, /* CGBitmapInfo = uint32_t */ uint bitmapInfo);
-
 		static IntPtr Create (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo, out GCHandle buffer)
 		{
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (buffer.IsAllocated ? buffer.AddrOfPinnedObject () : IntPtr.Zero, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
 			GC.KeepAlive (colorSpace);
 			return result;
 		}
@@ -92,7 +88,7 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (buffer.IsAllocated ? buffer.AddrOfPinnedObject () : IntPtr.Zero, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
 			GC.KeepAlive (colorSpace);
 			return result;
 		}

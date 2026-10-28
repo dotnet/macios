@@ -187,7 +187,7 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTFrameGetLineOrigins (IntPtr handle, NSRange range, [Out] CGPoint [] origins);
+		unsafe extern static void CTFrameGetLineOrigins (IntPtr handle, NSRange range, CGPoint* origins);
 		/// <param name="range">To be added.</param>
 		///         <param name="origins">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -200,7 +200,11 @@ namespace CoreText {
 				throw new ArgumentException ("origins must contain at least range.Length elements.", nameof (origins));
 			else if (origins.Length < CFArray.GetCount (CTFrameGetLines (Handle)))
 				throw new ArgumentException ("origins must contain at least GetLines().Length elements.", nameof (origins));
-			CTFrameGetLineOrigins (Handle, range, origins);
+			unsafe {
+				fixed (CGPoint* originsPtr = origins) {
+					CTFrameGetLineOrigins (Handle, range, originsPtr);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

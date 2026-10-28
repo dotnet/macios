@@ -290,7 +290,7 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextAddRects (/* CGContextRef */ IntPtr c, CGRect [] rects, /* size_t */ nint count);
+		unsafe extern static void CGContextAddRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
 		/// <param name="rects">An array of rectangles.</param>
 		///         <summary>Adds an array of rectangular paths to the current path.</summary>
@@ -299,17 +299,25 @@ namespace CoreGraphics {
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGContextAddRects (Handle, rects, rects.Length);
+			unsafe {
+				fixed (CGRect* rectsPtr = rects) {
+					CGContextAddRects (Handle, rectsPtr, rects.Length);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextAddLines (/* CGContextRef */ IntPtr c, CGPoint [] points, /* size_t */ nint count);
+		unsafe extern static void CGContextAddLines (/* CGContextRef */ IntPtr c, CGPoint* points, /* size_t */ nint count);
 		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])']/*" />
 		public void AddLines (CGPoint [] points)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-			CGContextAddLines (Handle, points, points.Length);
+			unsafe {
+				fixed (CGPoint* pointsPtr = points) {
+					CGContextAddLines (Handle, pointsPtr, points.Length);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -470,7 +478,7 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextFillRects (/* CGContextRef */ IntPtr c, CGRect [] rects, /* size_t */ nint count);
+		unsafe extern static void CGContextFillRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
 		/// <param name="rects">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -479,7 +487,11 @@ namespace CoreGraphics {
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGContextFillRects (Handle, rects, rects.Length);
+			unsafe {
+				fixed (CGRect* rectsPtr = rects) {
+					CGContextFillRects (Handle, rectsPtr, rects.Length);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -537,8 +549,8 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextStrokeLineSegments (/* CGContextRef __nullable */ IntPtr c,
-			/* const CGPoint* __nullable */ CGPoint []? points,
+		unsafe extern static void CGContextStrokeLineSegments (/* CGContextRef __nullable */ IntPtr c,
+			/* const CGPoint* __nullable */ CGPoint* points,
 			/* size_t */ nint count);
 
 		/// <param name="points">An array of points, defining starting and ending positions of the lines. The array must contain an even number of points.</param>
@@ -546,7 +558,11 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void StrokeLineSegments (CGPoint []? points)
 		{
-			CGContextStrokeLineSegments (Handle, points, points is null ? 0 : points.Length);
+			unsafe {
+				fixed (CGPoint* pointsPtr = points) {
+					CGContextStrokeLineSegments (Handle, pointsPtr, points is null ? 0 : points.Length);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -628,7 +644,7 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextClipToRects (/* CGContextRef */ IntPtr c, CGRect [] rects, /* size_t */ nint count);
+		unsafe extern static void CGContextClipToRects (/* CGContextRef */ IntPtr c, CGRect* rects, /* size_t */ nint count);
 
 		/// <param name="rects">An array of rectangles.</param>
 		///         <summary>Modifies the current clipping path to be the insersection of the current clipping path and the region specified by the supplied rectangles.</summary>
@@ -637,7 +653,11 @@ namespace CoreGraphics {
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGContextClipToRects (Handle, rects, rects.Length);
+			unsafe {
+				fixed (CGRect* rectsPtr = rects) {
+					CGContextClipToRects (Handle, rectsPtr, rects.Length);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1029,9 +1049,9 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowGlyphsAtPositions (/* CGContextRef __nullable */ IntPtr context,
-			/* const CGGlyph * __nullable */ ushort []? glyphs,
-			/* const CGPoint * __nullable */ CGPoint []? positions, /* size_t */ nint count);
+		unsafe extern static void CGContextShowGlyphsAtPositions (/* CGContextRef __nullable */ IntPtr context,
+			/* const CGGlyph * __nullable */ ushort* glyphs,
+			/* const CGPoint * __nullable */ CGPoint* positions, /* size_t */ nint count);
 
 		/// <param name="glyphs">To be added.</param>
 		///         <param name="positions">To be added.</param>
@@ -1044,7 +1064,13 @@ namespace CoreGraphics {
 				count = 0;
 			else if (count < 0)
 				count = glyphs.Length;
-			CGContextShowGlyphsAtPositions (Handle, glyphs, positions, count);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					fixed (CGPoint* positionsPtr = positions) {
+						CGContextShowGlyphsAtPositions (Handle, glyphsPtr, positionsPtr, count);
+					}
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1098,7 +1124,7 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowText (/* CGContextRef */ IntPtr c, /* const char* __nullable */ byte []? bytes, /* size_t */ nint length);
+		unsafe extern static void CGContextShowText (/* CGContextRef */ IntPtr c, /* const char* __nullable */ byte* bytes, /* size_t */ nint length);
 
 		/// <param name="bytes">To be added.</param>
 		///         <param name="count">To be added.</param>
@@ -1116,7 +1142,11 @@ namespace CoreGraphics {
 				count = 0;
 			else if (count > bytes.Length)
 				throw new ArgumentException (nameof (count));
-			CGContextShowText (Handle, bytes, count);
+			unsafe {
+				fixed (byte* bytesPtr = bytes) {
+					CGContextShowText (Handle, bytesPtr, count);
+				}
+			}
 		}
 
 		/// <param name="bytes">To be added.</param>
@@ -1130,7 +1160,11 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		public void ShowText (byte []? bytes)
 		{
-			CGContextShowText (Handle, bytes, bytes is null ? 0 : bytes.Length);
+			unsafe {
+				fixed (byte* bytesPtr = bytes) {
+					CGContextShowText (Handle, bytesPtr, bytes is null ? 0 : bytes.Length);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1182,7 +1216,7 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowTextAtPoint (/* CGContextRef */ IntPtr c, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* const char* */ byte []? bytes, /* size_t */ nint length);
+		unsafe extern static void CGContextShowTextAtPoint (/* CGContextRef */ IntPtr c, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* const char* */ byte* bytes, /* size_t */ nint length);
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1194,7 +1228,11 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		public void ShowTextAtPoint (nfloat x, nfloat y, byte []? bytes, int length)
 		{
-			CGContextShowTextAtPoint (Handle, x, y, bytes, length);
+			unsafe {
+				fixed (byte* bytesPtr = bytes) {
+					CGContextShowTextAtPoint (Handle, x, y, bytesPtr, length);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1207,7 +1245,11 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		public void ShowTextAtPoint (nfloat x, nfloat y, byte []? bytes)
 		{
-			CGContextShowTextAtPoint (Handle, x, y, bytes, bytes is null ? 0 : bytes.Length);
+			unsafe {
+				fixed (byte* bytesPtr = bytes) {
+					CGContextShowTextAtPoint (Handle, x, y, bytesPtr, bytes is null ? 0 : bytes.Length);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1217,8 +1259,8 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowGlyphs (/* CGContextRef __nullable */ IntPtr c,
-			/* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
+		unsafe extern static void CGContextShowGlyphs (/* CGContextRef __nullable */ IntPtr c,
+			/* const CGGlyph * __nullable */ ushort* glyphs, /* size_t */ nint count);
 
 		/// <param name="glyphs">To be added.</param>
 		///         <summary>This method has been deprecated in favor of <see cref="CoreText" />.</summary>
@@ -1231,7 +1273,11 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		public void ShowGlyphs (ushort []? glyphs)
 		{
-			CGContextShowGlyphs (Handle, glyphs, glyphs is null ? 0 : glyphs.Length);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					CGContextShowGlyphs (Handle, glyphsPtr, glyphs is null ? 0 : glyphs.Length);
+				}
+			}
 		}
 
 		/// <param name="glyphs">To be added.</param>
@@ -1250,7 +1296,11 @@ namespace CoreGraphics {
 				count = 0;
 			else if (count > glyphs.Length)
 				throw new ArgumentException (nameof (count));
-			CGContextShowGlyphs (Handle, glyphs, count);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					CGContextShowGlyphs (Handle, glyphsPtr, count);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1260,8 +1310,8 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowGlyphsAtPoint (/* CGContextRef */ IntPtr context, /* CGFloat */ nfloat x,
-			/* CGFloat */ nfloat y, /* const CGGlyph * __nullable */ ushort []? glyphs, /* size_t */ nint count);
+		unsafe extern static void CGContextShowGlyphsAtPoint (/* CGContextRef */ IntPtr context, /* CGFloat */ nfloat x,
+			/* CGFloat */ nfloat y, /* const CGGlyph * __nullable */ ushort* glyphs, /* size_t */ nint count);
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1275,7 +1325,11 @@ namespace CoreGraphics {
 				count = 0;
 			else if (count > glyphs.Length)
 				throw new ArgumentException (nameof (count));
-			CGContextShowGlyphsAtPoint (Handle, x, y, glyphs, count);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					CGContextShowGlyphsAtPoint (Handle, x, y, glyphsPtr, count);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1286,7 +1340,11 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		public void ShowGlyphsAtPoint (nfloat x, nfloat y, ushort []? glyphs)
 		{
-			CGContextShowGlyphsAtPoint (Handle, x, y, glyphs, glyphs is null ? 0 : glyphs.Length);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					CGContextShowGlyphsAtPoint (Handle, x, y, glyphsPtr, glyphs is null ? 0 : glyphs.Length);
+				}
+			}
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1296,9 +1354,9 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("macos10.9")]
 		[ObsoletedOSPlatform ("ios7.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGContextShowGlyphsWithAdvances (/* CGContextRef __nullable */ IntPtr c,
-			/* const CGGlyph * __nullable */ ushort []? glyphs,
-			/* const CGSize * __nullable */ CGSize []? advances, /* size_t */ nint count);
+		unsafe extern static void CGContextShowGlyphsWithAdvances (/* CGContextRef __nullable */ IntPtr c,
+			/* const CGGlyph * __nullable */ ushort* glyphs,
+			/* const CGSize * __nullable */ CGSize* advances, /* size_t */ nint count);
 
 		/// <param name="glyphs">To be added.</param>
 		///         <param name="advances">To be added.</param>
@@ -1317,7 +1375,13 @@ namespace CoreGraphics {
 				count = 0;
 			if (count > (glyphs?.Length ?? 0) || count > (advances?.Length ?? 0))
 				throw new ArgumentException (nameof (count));
-			CGContextShowGlyphsWithAdvances (Handle, glyphs, advances, count);
+			unsafe {
+				fixed (ushort* glyphsPtr = glyphs) {
+					fixed (CGSize* advancesPtr = advances) {
+						CGContextShowGlyphsWithAdvances (Handle, glyphsPtr, advancesPtr, count);
+					}
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

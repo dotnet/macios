@@ -459,14 +459,14 @@ namespace Security {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
-		extern static SecStatusCode SecKeychainAddGenericPassword (
+		unsafe extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
 			int serviceNameLength,
-			byte []? serviceName,
+			byte* serviceName,
 			int accountNameLength,
-			byte []? accountName,
+			byte* accountName,
 			int passwordLength,
-			byte [] passwordData,
+			byte* passwordData,
 			IntPtr itemRef);
 
 		[SupportedOSPlatform ("macos")]
@@ -491,21 +491,21 @@ namespace Security {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
-		extern static SecStatusCode SecKeychainAddInternetPassword (
+		unsafe extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
 			int serverNameLength,
-			byte []? serverName,
+			byte* serverName,
 			int securityDomainLength,
-			byte []? securityDomain,
+			byte* securityDomain,
 			int accountNameLength,
-			byte []? accountName,
+			byte* accountName,
 			int pathLength,
-			byte []? path,
+			byte* path,
 			short port,
 			IntPtr protocol,
 			IntPtr authenticationType,
 			int passwordLength,
-			byte [] passwordData,
+			byte* passwordData,
 			IntPtr itemRef);
 
 		[SupportedOSPlatform ("macos")]
@@ -582,22 +582,34 @@ namespace Security {
 			if (!String.IsNullOrEmpty (path))
 				pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
 
-			return SecKeychainAddInternetPassword (
-				IntPtr.Zero,
-				serverNameBytes?.Length ?? 0,
-				serverNameBytes,
-				securityDomainBytes?.Length ?? 0,
-				securityDomainBytes,
-				accountNameBytes?.Length ?? 0,
-				accountNameBytes,
-				pathBytes?.Length ?? 0,
-				pathBytes,
-				port,
-				SecProtocolKeys.FromSecProtocol (protocolType),
-				KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
-				password?.Length ?? 0,
-				password!,
-				IntPtr.Zero);
+			unsafe {
+				fixed (byte* serverNamePtr = serverNameBytes) {
+					fixed (byte* securityDomainPtr = securityDomainBytes) {
+						fixed (byte* accountNamePtr = accountNameBytes) {
+							fixed (byte* pathPtr = pathBytes) {
+								fixed (byte* passwordPtr = password) {
+									return SecKeychainAddInternetPassword (
+										IntPtr.Zero,
+										serverNameBytes?.Length ?? 0,
+										serverNamePtr,
+										securityDomainBytes?.Length ?? 0,
+										securityDomainPtr,
+										accountNameBytes?.Length ?? 0,
+										accountNamePtr,
+										pathBytes?.Length ?? 0,
+										pathPtr,
+										port,
+										SecProtocolKeys.FromSecProtocol (protocolType),
+										KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
+										password?.Length ?? 0,
+										passwordPtr,
+										IntPtr.Zero);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 
@@ -714,16 +726,24 @@ namespace Security {
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
 
-			return SecKeychainAddGenericPassword (
-				IntPtr.Zero,
-				serviceNameBytes?.Length ?? 0,
-				serviceNameBytes,
-				accountNameBytes?.Length ?? 0,
-				accountNameBytes,
-				password?.Length ?? 0,
-				password!,
-				IntPtr.Zero
-				);
+			unsafe {
+				fixed (byte* serviceNamePtr = serviceNameBytes) {
+					fixed (byte* accountNamePtr = accountNameBytes) {
+						fixed (byte* passwordPtr = password) {
+							return SecKeychainAddGenericPassword (
+								IntPtr.Zero,
+								serviceNameBytes?.Length ?? 0,
+								serviceNamePtr,
+								accountNameBytes?.Length ?? 0,
+								accountNamePtr,
+								password?.Length ?? 0,
+								passwordPtr,
+								IntPtr.Zero
+								);
+						}
+					}
+				}
+			}
 		}
 
 		/// <param name="serviceName">To be added.</param>

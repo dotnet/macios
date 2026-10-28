@@ -3336,18 +3336,24 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern CGRect CTFontGetBoundingRectsForGlyphs (IntPtr font, CTFontOrientation orientation, [In] CGGlyph [] glyphs, [Out] CGRect []? boundingRects, nint count);
+		unsafe static extern CGRect CTFontGetBoundingRectsForGlyphs (IntPtr font, CTFontOrientation orientation, CGGlyph* glyphs, CGRect* boundingRects, nint count);
 		public CGRect GetBoundingRects (CTFontOrientation orientation, CGGlyph [] glyphs, CGRect []? boundingRects, nint count)
 		{
 			AssertCount (count);
 			AssertLength ("glyphs", glyphs, count);
 			AssertLength ("boundingRects", boundingRects, count, true);
 
-			return CTFontGetBoundingRectsForGlyphs (Handle, orientation, glyphs, boundingRects, count);
+			unsafe {
+				fixed (CGGlyph* glyphsPtr = glyphs) {
+					fixed (CGRect* boundingRectsPtr = boundingRects) {
+						return CTFontGetBoundingRectsForGlyphs (Handle, orientation, glyphsPtr, boundingRectsPtr, count);
+					}
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern CGRect CTFontGetOpticalBoundsForGlyphs (IntPtr font, [In] CGGlyph [] glyphs, [Out] CGRect [] boundingRects, nint count, nuint options);
+		unsafe static extern CGRect CTFontGetOpticalBoundsForGlyphs (IntPtr font, CGGlyph* glyphs, CGRect* boundingRects, nint count, nuint options);
 
 		public CGRect GetOpticalBounds (CGGlyph [] glyphs, CGRect [] boundingRects, nint count, CTFontOptions options = 0)
 		{
@@ -3355,7 +3361,13 @@ namespace CoreText {
 			AssertLength ("glyphs", glyphs, count);
 			AssertLength ("boundingRects", boundingRects, count, true);
 
-			return CTFontGetOpticalBoundsForGlyphs (Handle, glyphs, boundingRects, count, (nuint) (ulong) options);
+			unsafe {
+				fixed (CGGlyph* glyphsPtr = glyphs) {
+					fixed (CGRect* boundingRectsPtr = boundingRects) {
+						return CTFontGetOpticalBoundsForGlyphs (Handle, glyphsPtr, boundingRectsPtr, count, (nuint) (ulong) options);
+					}
+				}
+			}
 		}
 
 		/// <param name="orientation">To be added.</param>
@@ -3371,14 +3383,20 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern double CTFontGetAdvancesForGlyphs (IntPtr font, CTFontOrientation orientation, [In] CGGlyph [] glyphs, [Out] CGSize []? advances, nint count);
+		unsafe static extern double CTFontGetAdvancesForGlyphs (IntPtr font, CTFontOrientation orientation, CGGlyph* glyphs, CGSize* advances, nint count);
 		public double GetAdvancesForGlyphs (CTFontOrientation orientation, CGGlyph [] glyphs, CGSize []? advances, nint count)
 		{
 			AssertCount (count);
 			AssertLength ("glyphs", glyphs, count);
 			AssertLength ("advances", advances, count, true);
 
-			return CTFontGetAdvancesForGlyphs (Handle, orientation, glyphs, advances, count);
+			unsafe {
+				fixed (CGGlyph* glyphsPtr = glyphs) {
+					fixed (CGSize* advancesPtr = advances) {
+						return CTFontGetAdvancesForGlyphs (Handle, orientation, glyphsPtr, advancesPtr, count);
+					}
+				}
+			}
 		}
 
 		/// <param name="orientation">To be added.</param>
@@ -3394,14 +3412,20 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern void CTFontGetVerticalTranslationsForGlyphs (IntPtr font, [In] CGGlyph [] glyphs, [Out] CGSize [] translations, nint count);
+		unsafe static extern void CTFontGetVerticalTranslationsForGlyphs (IntPtr font, CGGlyph* glyphs, CGSize* translations, nint count);
 		public void GetVerticalTranslationsForGlyphs (CGGlyph [] glyphs, CGSize [] translations, nint count)
 		{
 			AssertCount (count);
 			AssertLength ("glyphs", glyphs, count);
 			AssertLength ("translations", translations, count);
 
-			CTFontGetVerticalTranslationsForGlyphs (Handle, glyphs, translations, count);
+			unsafe {
+				fixed (CGGlyph* glyphsPtr = glyphs) {
+					fixed (CGSize* translationsPtr = translations) {
+						CTFontGetVerticalTranslationsForGlyphs (Handle, glyphsPtr, translationsPtr, count);
+					}
+				}
+			}
 		}
 
 		/// <param name="glyph">To be added.</param>
@@ -3440,8 +3464,8 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern void CTFontDrawGlyphs (/* CTFontRef __nonnull */ IntPtr font,
-			[In] CGGlyph [] glyphs, [In] CGPoint [] positions, nint count,
+		unsafe static extern void CTFontDrawGlyphs (/* CTFontRef __nonnull */ IntPtr font,
+			CGGlyph* glyphs, CGPoint* positions, nint count,
 			/* CGContextRef __nonnull */ IntPtr context);
 
 		/// <param name="context">To be added.</param>
@@ -3460,8 +3484,14 @@ namespace CoreText {
 			int gl = glyphs.Length;
 			if (gl != positions.Length)
 				throw new ArgumentException ("array sizes fo context and glyphs differ");
-			CTFontDrawGlyphs (Handle, glyphs, positions, gl, context.Handle);
-			GC.KeepAlive (context);
+			unsafe {
+				fixed (CGGlyph* glyphsPtr = glyphs) {
+					fixed (CGPoint* positionsPtr = positions) {
+						CTFontDrawGlyphs (Handle, glyphsPtr, positionsPtr, gl, context.Handle);
+						GC.KeepAlive (context);
+					}
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

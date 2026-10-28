@@ -503,16 +503,16 @@ namespace Accelerate {
 		}
 
 		[DllImport (Constants.AccelerateImageLibrary)]
-		extern static nint vImageConvolveMultiKernel_ARGB8888 (vImageBuffer* src,
+		unsafe extern static nint vImageConvolveMultiKernel_ARGB8888 (vImageBuffer* src,
 										 vImageBuffer* dest,
 										 IntPtr tempBuffer,
 										 vImagePixelCount srcOffsetToROI_X,
 										 vImagePixelCount srcOffsetToROI_Y,
-										 short* [] kernels,         // must be 4
+										 short** kernels,         // must be 4
 										 uint kernel_height,
 										 uint kernel_width,
-										 int [] divisors,       // must be 4
-										 int [] biases,     // must be 4
+										 int* divisors,       // must be 4
+										 int* biases,     // must be 4
 										 Pixel8888 backgroundColor,
 										 vImageFlags flags);
 
@@ -546,16 +546,18 @@ namespace Accelerate {
 					fixed (short* f2 = kernels [1]) {
 						fixed (short* f3 = kernels [2]) {
 							fixed (short* f4 = kernels [3]) {
-								var ptrs = new short* [4];
+								var ptrs = stackalloc short* [4];
 								ptrs [0] = f1;
 								ptrs [1] = f2;
 								ptrs [2] = f3;
 								ptrs [3] = f4;
 								fixed (vImageBuffer* srcPtr = &src, destPtr = &dest) {
-									return (vImageError) (long) vImageConvolveMultiKernel_ARGB8888 (
-										srcPtr,
-										destPtr,
-										tempBuffer, srcOffsetToROI_X, srcOffsetToROI_Y, ptrs, kernel_height, kernel_width, divisors, biases, backgroundColor, flags);
+									fixed (int* divisorsPtr = divisors, biasesPtr = biases) {
+										return (vImageError) (long) vImageConvolveMultiKernel_ARGB8888 (
+											srcPtr,
+											destPtr,
+											tempBuffer, srcOffsetToROI_X, srcOffsetToROI_Y, ptrs, kernel_height, kernel_width, divisorsPtr, biasesPtr, backgroundColor, flags);
+									}
 								}
 							}
 						}
@@ -566,15 +568,15 @@ namespace Accelerate {
 
 		[DllImport (Constants.AccelerateImageLibrary)]
 		// Convolution.h
-		extern static nint vImageConvolveMultiKernel_ARGBFFFF (vImageBuffer* src,
+		unsafe extern static nint vImageConvolveMultiKernel_ARGBFFFF (vImageBuffer* src,
 										 vImageBuffer* dest,
 										 IntPtr tempBuffer,
 										 vImagePixelCount srcOffsetToROI_X,
 										 vImagePixelCount srcOffsetToROI_Y,
-										 float* [] kernels,   //must be 4, defined as 'float*[4]'
+										 float** kernels,   //must be 4, defined as 'float*[4]'
 										 uint kernel_height,
 										 uint kernel_width,
-										 float [] biases,    // must be 4
+										 float* biases,    // must be 4
 										 PixelFFFF backgroundColor,
 										 vImageFlags flags);
 
@@ -603,16 +605,18 @@ namespace Accelerate {
 					fixed (float* f2 = kernels [1]) {
 						fixed (float* f3 = kernels [2]) {
 							fixed (float* f4 = kernels [3]) {
-								var ptrs = new float* [4];
+								var ptrs = stackalloc float* [4];
 								ptrs [0] = f1;
 								ptrs [1] = f2;
 								ptrs [2] = f3;
 								ptrs [3] = f4;
 								fixed (vImageBuffer* srcPtr = &src, destPtr = &dest) {
-									return (vImageError) (long) vImageConvolveMultiKernel_ARGBFFFF (
-										srcPtr,
-										destPtr,
-										tempBuffer, srcOffsetToROI_X, srcOffsetToROI_Y, ptrs, kernel_height, kernel_width, biases, backgroundColor, flags);
+									fixed (float* biasesPtr = biases) {
+										return (vImageError) (long) vImageConvolveMultiKernel_ARGBFFFF (
+											srcPtr,
+											destPtr,
+											tempBuffer, srcOffsetToROI_X, srcOffsetToROI_Y, ptrs, kernel_height, kernel_width, biasesPtr, backgroundColor, flags);
+									}
 								}
 							}
 						}
@@ -734,12 +738,12 @@ namespace Accelerate {
 
 		#region Transform
 		[DllImport (Constants.AccelerateImageLibrary)]
-		extern static nint vImageMatrixMultiply_ARGB8888 (vImageBuffer* src,
+		unsafe extern static nint vImageMatrixMultiply_ARGB8888 (vImageBuffer* src,
 									vImageBuffer* dest,
-									short [] matrix, // matrix is [4*4],
+									short* matrix, // matrix is [4*4],
 									int divisor,
-									short []? pre_bias,      //Must be an array of 4 int16_t's. NULL is okay.
-									int []? post_bias,     //Must be an array of 4 int32_t's. NULL is okay.
+									short* pre_bias,      //Must be an array of 4 int16_t's. NULL is okay.
+									int* post_bias,     //Must be an array of 4 int32_t's. NULL is okay.
 									vImageFlags flags);
 
 		/// <param name="src">Source image data..</param>
@@ -767,10 +771,14 @@ namespace Accelerate {
 			if (post_bias is not null && post_bias.Length != 4)
 				throw new ArgumentException ("Must have four elements", nameof (post_bias));
 			fixed (vImageBuffer* srcPtr = &src, destPtr = &dest) {
-				return (vImageError) (long) vImageMatrixMultiply_ARGB8888 (
-					srcPtr,
-					destPtr,
-					matrix, divisor, pre_bias, post_bias, flags);
+				fixed (short* matrixPtr = matrix, preBiasPtr = pre_bias) {
+					fixed (int* postBiasPtr = post_bias) {
+						return (vImageError) (long) vImageMatrixMultiply_ARGB8888 (
+							srcPtr,
+							destPtr,
+							matrixPtr, divisor, preBiasPtr, postBiasPtr, flags);
+					}
+				}
 			}
 		}
 

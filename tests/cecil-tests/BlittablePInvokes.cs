@@ -278,6 +278,7 @@ namespace Cecil.Tests {
 			var localResult = new StringBuilder ();
 			var types = TypesFromMethod (method);
 			foreach (var typeIndex in types) {
+				localResult.Clear ();
 				if (!IsTypeBlittable (assembly, typeIndex.Type, typeIndex.Provider, localResult, blitCache)) {
 					result.IsBlittable &= false;
 					if (typeIndex.Index < 0) {
@@ -307,28 +308,28 @@ namespace Cecil.Tests {
 				return false;
 			}
 
-			if (blitCache.TryGetValue (type.Name, out var cachedResult)) {
+			if (blitCache.TryGetValue (type.FullName, out var cachedResult)) {
 				if (!cachedResult.IsBlittable)
 					result.Append ($" {cachedResult.Reason}");
 				return cachedResult.IsBlittable;
 			}
 			if (IsBlittableTypesWeLike (type)) {
-				blitCache [type.Name] = new BlitAndReason (true, "");
+				blitCache [type.FullName] = new BlitAndReason (true, "");
 				return true;
 			}
 			var localResult = new StringBuilder ();
 			if (IsBlittablePointer (assembly, type, provider, localResult, blitCache)) {
-				blitCache [type.Name] = new BlitAndReason (true, "");
+				blitCache [type.FullName] = new BlitAndReason (true, "");
 				return true;
 			}
 			result.Append (localResult);
 			localResult.Clear ();
 			if (IsBlittableValueType (assembly, type, localResult, blitCache)) {
-				blitCache [type.Name] = new BlitAndReason (true, "");
+				blitCache [type.FullName] = new BlitAndReason (true, "");
 				return true;
 			}
 			result.Append (localResult);
-			blitCache [type.Name] = new BlitAndReason (false, result.ToString ());
+			blitCache [type.FullName] = new BlitAndReason (false, result.ToString ());
 			return false;
 		}
 
@@ -370,7 +371,7 @@ namespace Cecil.Tests {
 				var pointerResult = new StringBuilder ();
 				pointerResult.Append ($" {type.Name}: {localResult}");
 				result.Append (pointerResult);
-				blitCache [type.Name] = new BlitAndReason (false, pointerResult.ToString ());
+				blitCache [type.FullName] = new BlitAndReason (false, pointerResult.ToString ());
 				return false;
 			}
 
@@ -382,6 +383,10 @@ namespace Cecil.Tests {
 		{
 			if (type.IsByReference) {
 				result.Append ($" {type.Name}: Type is an out or ref type.\n");
+				return false;
+			}
+			if (type.IsArray) {
+				result.Append ($" {type.Name}: Type is an array.\n");
 				return false;
 			}
 			TypeDefinition? typeDefinition = type.Resolve ();
@@ -404,7 +409,7 @@ namespace Cecil.Tests {
 			// if we get here then this is a struct. We can presume
 			// that a struct will be blittable until we know otherwise
 			// this will prevent infinite recursion
-			blitCache [type.Name] = new BlitAndReason (true, "");
+			blitCache [type.FullName] = new BlitAndReason (true, "");
 			var fieldsResult = new StringBuilder ();
 
 			// if we're here, this is a struct
@@ -423,7 +428,7 @@ namespace Cecil.Tests {
 			}
 			if (!allBlittable) {
 				result.Append (fieldsResult);
-				blitCache [type.Name] = new BlitAndReason (false, fieldsResult.ToString ());
+				blitCache [type.FullName] = new BlitAndReason (false, fieldsResult.ToString ());
 			}
 			return allBlittable;
 		}

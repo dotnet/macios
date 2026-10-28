@@ -367,7 +367,7 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		unsafe extern static void CGPathAddRects (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGRect [] rects, /* size_t */ nint count);
+		unsafe extern static void CGPathAddRects (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGRect* rects, /* size_t */ nint count);
 
 		/// <param name="m">To be added.</param>
 		///         <param name="rects">To be added.</param>
@@ -377,7 +377,9 @@ namespace CoreGraphics {
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGPathAddRects (Handle, &m, rects, rects.Length);
+			fixed (CGRect* rectsPtr = rects) {
+				CGPathAddRects (Handle, &m, rectsPtr, rects.Length);
+			}
 		}
 
 		/// <param name="m">To be added.</param>
@@ -391,7 +393,9 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
 			if (count > rects.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddRects (Handle, &m, rects, count);
+			fixed (CGRect* rectsPtr = rects) {
+				CGPathAddRects (Handle, &m, rectsPtr, count);
+			}
 		}
 
 		/// <param name="rects">To be added.</param>
@@ -401,7 +405,9 @@ namespace CoreGraphics {
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGPathAddRects (Handle, null, rects, rects.Length);
+			fixed (CGRect* rectsPtr = rects) {
+				CGPathAddRects (Handle, null, rectsPtr, rects.Length);
+			}
 		}
 
 		/// <param name="rects">To be added.</param>
@@ -414,11 +420,13 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
 			if (count > rects.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddRects (Handle, null, rects, count);
+			fixed (CGRect* rectsPtr = rects) {
+				CGPathAddRects (Handle, null, rectsPtr, count);
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		unsafe extern static void CGPathAddLines (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGPoint [] points, /* size_t */ nint count);
+		unsafe extern static void CGPathAddLines (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, CGPoint* points, /* size_t */ nint count);
 
 		/// <param name="m">To be added.</param>
 		///         <param name="points">To be added.</param>
@@ -428,7 +436,9 @@ namespace CoreGraphics {
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-			CGPathAddLines (Handle, &m, points, points.Length);
+			fixed (CGPoint* pointsPtr = points) {
+				CGPathAddLines (Handle, &m, pointsPtr, points.Length);
+			}
 		}
 
 		/// <param name="m">To be added.</param>
@@ -442,7 +452,9 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
 			if (count > points.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddLines (Handle, &m, points, count);
+			fixed (CGPoint* pointsPtr = points) {
+				CGPathAddLines (Handle, &m, pointsPtr, count);
+			}
 		}
 
 		/// <param name="points">To be added.</param>
@@ -452,7 +464,9 @@ namespace CoreGraphics {
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-			CGPathAddLines (Handle, null, points, points.Length);
+			fixed (CGPoint* pointsPtr = points) {
+				CGPathAddLines (Handle, null, pointsPtr, points.Length);
+			}
 		}
 
 		/// <param name="points">To be added.</param>
@@ -465,7 +479,9 @@ namespace CoreGraphics {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
 			if (count > points.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddLines (Handle, null, points, count);
+			fixed (CGPoint* pointsPtr = points) {
+				CGPathAddLines (Handle, null, pointsPtr, count);
+			}
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]

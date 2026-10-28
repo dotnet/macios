@@ -74,7 +74,7 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTRunGetAdvances (IntPtr h, NSRange range, [In, Out] CGSize []? buffer);
+		unsafe extern static void CTRunGetAdvances (IntPtr h, NSRange range, CGSize* buffer);
 		/// <param name="range">To be added.</param>
 		///         <param name="buffer">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -84,7 +84,11 @@ namespace CoreText {
 		{
 			buffer = GetBuffer (range, buffer);
 
-			CTRunGetAdvances (Handle, range, buffer);
+			unsafe {
+				fixed (CGSize* bufferPtr = buffer) {
+					CTRunGetAdvances (Handle, range, bufferPtr);
+				}
+			}
 
 			return buffer;
 		}
@@ -143,7 +147,7 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTRunGetGlyphs (IntPtr h, NSRange range, [In, Out] ushort []? buffer);
+		unsafe extern static void CTRunGetGlyphs (IntPtr h, NSRange range, ushort* buffer);
 		/// <param name="range">To be added.</param>
 		///         <param name="buffer">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -153,7 +157,11 @@ namespace CoreText {
 		{
 			buffer = GetBuffer (range, buffer);
 
-			CTRunGetGlyphs (Handle, range, buffer);
+			unsafe {
+				fixed (ushort* bufferPtr = buffer) {
+					CTRunGetGlyphs (Handle, range, bufferPtr);
+				}
+			}
 
 			return buffer;
 		}
@@ -190,7 +198,7 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTRunGetPositions (IntPtr h, NSRange range, [In, Out] CGPoint []? buffer);
+		unsafe extern static void CTRunGetPositions (IntPtr h, NSRange range, CGPoint* buffer);
 		/// <param name="range">To be added.</param>
 		///         <param name="buffer">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -200,7 +208,11 @@ namespace CoreText {
 		{
 			buffer = GetBuffer (range, buffer);
 
-			CTRunGetPositions (Handle, range, buffer);
+			unsafe {
+				fixed (CGPoint* bufferPtr = buffer) {
+					CTRunGetPositions (Handle, range, bufferPtr);
+				}
+			}
 
 			return buffer;
 		}
@@ -234,12 +246,16 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTRunGetStringIndices (IntPtr h, NSRange range, [In, Out] nint /* CFIndex */ []? buffer);
+		unsafe extern static void CTRunGetStringIndices (IntPtr h, NSRange range, nint /* CFIndex */ * buffer);
 		public nint [] GetStringIndices (NSRange range, nint []? buffer)
 		{
 			buffer = GetBuffer (range, buffer);
 
-			CTRunGetStringIndices (Handle, range, buffer);
+			unsafe {
+				fixed (nint* bufferPtr = buffer) {
+					CTRunGetStringIndices (Handle, range, bufferPtr);
+				}
+			}
 
 			return buffer;
 		}
@@ -307,7 +323,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern void CTRunGetBaseAdvancesAndOrigins (/* CTRunRef */ IntPtr runRef, /* CFRange */ NSRange range, CGSize [] advancesBuffer, CGPoint [] originsBuffer);
+		unsafe static extern void CTRunGetBaseAdvancesAndOrigins (/* CTRunRef */ IntPtr runRef, /* CFRange */ NSRange range, CGSize* advancesBuffer, CGPoint* originsBuffer);
 
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
@@ -317,7 +333,13 @@ namespace CoreText {
 		{
 			advancesBuffer = GetBuffer<CGSize> (range, null);
 			originsBuffer = GetBuffer<CGPoint> (range, null);
-			CTRunGetBaseAdvancesAndOrigins (Handle, range, advancesBuffer, originsBuffer);
+			unsafe {
+				fixed (CGSize* advancesBufferPtr = advancesBuffer) {
+					fixed (CGPoint* originsBufferPtr = originsBuffer) {
+						CTRunGetBaseAdvancesAndOrigins (Handle, range, advancesBufferPtr, originsBufferPtr);
+					}
+				}
+			}
 		}
 	}
 }

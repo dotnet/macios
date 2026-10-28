@@ -24,15 +24,17 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException"><paramref name="buffer" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException"><paramref name="len" /> exceeds the buffer length.</exception>
 		/// <remarks>A length of zero is passed to the native write method and may change the stream's state.</remarks>
-		public nint Write (byte [] buffer, nuint len)
+		public unsafe nint Write (byte [] buffer, nuint len)
 		{
 			if (buffer is null)
 				throw new ArgumentNullException (nameof (buffer));
 			if (len > (nuint) buffer.Length)
 				throw new ArgumentException ();
-			var result = objc_msgSend (Handle, Selector.GetHandle (selWriteMaxLength), buffer, len);
-			GC.KeepAlive (this);
-			return result;
+			fixed (byte* ptr = buffer) {
+				var result = objc_msgSend (Handle, Selector.GetHandle (selWriteMaxLength), (IntPtr) ptr, len);
+				GC.KeepAlive (this);
+				return result;
+			}
 		}
 
 		/// <summary>Writes bytes from a range of the provided buffer to the stream.</summary>
@@ -73,9 +75,6 @@ namespace Foundation {
 				return result;
 			}
 		}
-
-		[DllImport (Messaging.LIBOBJC_DYLIB)]
-		static extern nint objc_msgSend (IntPtr handle, IntPtr sel, [In, Out] byte [] buffer, nuint len);
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		static extern nint objc_msgSend (IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);

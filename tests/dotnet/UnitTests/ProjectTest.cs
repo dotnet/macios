@@ -512,6 +512,9 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			var project = "EmbeddedFrameworkInBindingProjectApp";
+			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
+			// The binding output is shared by device and simulator builds, but embeds different native frameworks.
+			Clean (bindingProjectPath);
 			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
@@ -524,7 +527,6 @@ namespace Xamarin.Tests {
 				properties ["NativeLibName"] = "ios";
 			DotNet.AssertBuild (projectPath, properties);
 
-			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
 			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
 			using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
 			var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
@@ -3436,6 +3438,8 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
+			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
+			Clean (bindingProjectPath);
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);

@@ -268,6 +268,9 @@ namespace Foundation {
 			IsCustomType = 128,
 		}
 
+		// Enum members are preserved by the trimmer; a separate constant can be removed when opting out.
+		const Flags RequiresMainThreadRelease = (Flags) 256;
+
 		// Must be kept in sync with the same enum in trampolines.h
 		enum XamarinGCHandleFlags : uint {
 			None = 0,
@@ -435,6 +438,8 @@ namespace Foundation {
 				var obj = (NSObject) RuntimeHelpers.GetUninitializedObject (type);
 				obj.handle = handle;
 				obj.flags = flags;
+				if (!ForceMainThreadFinalization)
+					obj.InitializeMainThreadRelease ();
 				return Runtime.AllocGCHandle (obj);
 			} catch (Exception e) {
 				throw ErrorHelper.CreateError (8041, e, Errors.MX8041 /* Unable to create an instance of the type {0} */, type.FullName);
@@ -453,6 +458,8 @@ namespace Foundation {
 			var obj = (T) RuntimeHelpers.GetUninitializedObject (typeof (T));
 			obj.handle = handle;
 			obj.flags = (Flags) flags;
+			if (!ForceMainThreadFinalization)
+				obj.InitializeMainThreadRelease ();
 			return obj;
 		}
 
@@ -540,6 +547,9 @@ namespace Foundation {
 
 		private void InitializeObject (bool alloced)
 		{
+			if (!ForceMainThreadFinalization)
+				InitializeMainThreadRelease ();
+
 			if (alloced && handle == NativeHandle.Zero && Class.ThrowOnInitFailure) {
 				if (ClassHandle == NativeHandle.Zero)
 					throw new Exception ($"Could not create an native instance of the type '{GetType ().FullName}': the native class hasn't been loaded.\n{Constants.SetThrowOnInitFailureToFalse}.");
@@ -1291,7 +1301,16 @@ namespace Foundation {
 			}
 		}
 
-		internal virtual bool RequiresMainThreadRelease => true;
+		[FeatureSwitchDefinition ("Foundation.NSObject.ForceMainThreadFinalization")]
+		internal static bool ForceMainThreadFinalization => AppContext.TryGetSwitch ("Foundation.NSObject.ForceMainThreadFinalization", out var value) && value;
+
+		void InitializeMainThreadRelease ()
+		{
+			// Only the built-in string wrappers are known to be safe; subclasses may own UI state.
+			var type = GetType ();
+			if (type != typeof (NSString) && type != typeof (NSMutableString))
+				flags |= RequiresMainThreadRelease;
+		}
 
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
@@ -1301,7 +1320,9 @@ namespace Foundation {
 			disposed = true;
 
 			if (handle != NativeHandle.Zero) {
-				if (disposing || !RequiresMainThreadRelease) {
+				if (!ForceMainThreadFinalization)
+					disposing |= (flags & RequiresMainThreadRelease) == 0;
+				if (disposing) {
 					ReleaseManagedRef ();
 				} else {
 					NSObject_Disposer.Add (this);

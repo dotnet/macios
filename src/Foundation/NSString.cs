@@ -53,14 +53,6 @@ namespace Foundation {
 		/// <summary>An <see cref="NSString" /> instance for an empty (zero-length) string.</summary>
 		public static readonly NSString Empty = new NSString (String.Empty) { RemoveFromObjectMap = true };
 
-		internal override bool RequiresMainThreadRelease {
-			get {
-				// Subclasses can add state that must be released on the main thread.
-				var type = GetType ();
-				return type != typeof (NSString) && type != typeof (NSMutableString);
-			}
-		}
-
 		internal NSString (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

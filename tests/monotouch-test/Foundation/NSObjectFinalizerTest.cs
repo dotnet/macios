@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 using CoreFoundation;
@@ -9,6 +10,9 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSObjectFinalizerTest {
+		[FeatureSwitchDefinition ("Foundation.NSObject.ForceMainThreadFinalization")]
+		static bool ForceMainThreadFinalization => AppContext.TryGetSwitch ("Foundation.NSObject.ForceMainThreadFinalization", out var value) && value;
+
 		class StringSubclass : NSString {
 			public StringSubclass () : base (new string ('x', 100))
 			{
@@ -55,8 +59,8 @@ namespace MonoTouchFixtures.Foundation {
 				GC.WaitForPendingFinalizers ();
 
 				var target = (NSObject) reference.Target;
-				if (subclass) {
-					Assert.That (target, Is.Not.Null, "Subclasses must remain queued for main-thread release.");
+				if (subclass || ForceMainThreadFinalization) {
+					Assert.That (target, Is.Not.Null, "Objects requiring main-thread release must remain queued.");
 					Assert.That (target.Handle, Is.EqualTo (handle), "Queued handle");
 					Assert.That (TestRuntime.CFGetRetainCount (handle), Is.EqualTo (retainCount), "Queued retain count");
 				} else {
@@ -67,6 +71,25 @@ namespace MonoTouchFixtures.Foundation {
 				if (!subclass)
 					NSObject.DangerousRelease (handle);
 			}
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference CreateObject ()
+		{
+			return new WeakReference (new NSObject (), true);
+		}
+
+		[Test]
+		public void NSObjectFinalizerRemainsQueued ()
+		{
+			Assert.That (NSThread.IsMain, Is.True, "Main thread");
+			var reference = CreateObject ();
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+
+			var target = (NSObject) reference.Target;
+			Assert.That (target, Is.Not.Null, "NSObject must remain queued for main-thread release.");
+			Assert.That (target.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Queued handle");
 		}
 
 		[TestCase (false)]

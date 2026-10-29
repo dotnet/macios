@@ -4060,9 +4060,12 @@ public partial class Generator : IMemberGatherer {
 
 	void PrintReadOnlySetter (NotImplementedAttribute attribute)
 	{
+		if (sw is null)
+			throw new InvalidOperationException ("The generator output writer is not initialized.");
+
 		var message = attribute.Message ?? "This property is read-only. A mutable subclass may support setting this property.";
 		// Avoid re-indenting multiline string literals, which would change the message.
-		sw!.Write ('\t', indent).WriteLine ($"throw new NotSupportedException ({message.Quote ()});");
+		sw.Write ('\t', indent).WriteLine ($"throw new NotSupportedException ({message.Quote ()});");
 	}
 
 	void GenerateProperty (Type type, PropertyInfo pi, List<string>? instance_fields_to_clear_on_dispose, bool is_model, bool is_interface_impl = false, bool is_protocol_member = false, bool? is_protocol_member_required = null, bool is_protocol_implementation_method = false, bool is_appearance = false)

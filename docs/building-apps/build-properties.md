@@ -1344,7 +1344,7 @@ Example to keep debug symbols:
 ## NoWarn
 
 A semicolon- or comma-separated list of warning codes to suppress. This applies
-to MSBuild tasks, custom linker steps, and the assembly preparer, as well as the
+to MSBuild tasks and the assembly preparer, as well as the
 C# compiler.
 
 Use the full diagnostic code, including its prefix and leading zeros, for
@@ -1668,7 +1668,7 @@ Note: this can also be accomplished by passing `--stdin ...` using the [OpenArgu
 
 A semicolon- or comma-separated list of full diagnostic codes to report as
 errors, even when [TreatWarningsAsErrors](#treatwarningsaserrors) is `false`.
-This applies to MSBuild tasks, custom linker steps, and the assembly preparer.
+This applies to MSBuild tasks and the assembly preparer.
 For example, `MT7091;MM2001`.
 
 [NoWarn](#nowarn) takes precedence over this property.
@@ -1677,7 +1677,7 @@ For example, `MT7091;MM2001`.
 
 A semicolon- or comma-separated list of full diagnostic codes to leave as
 warnings when [TreatWarningsAsErrors](#treatwarningsaserrors) is `true`.
-This applies to MSBuild tasks, custom linker steps, and the assembly preparer.
+This applies to MSBuild tasks and the assembly preparer.
 
 When `TreatWarningsAsErrors` is `true`, this exemption also applies to codes in
 [WarningsAsErrors](#warningsaserrors), matching MSBuild's warning handling.
@@ -1822,7 +1822,7 @@ The default behavior is to use `xcrun TextureAtlas`.
 ## TreatWarningsAsErrors
 
 Set to `true` to report warnings as errors, including warnings from MSBuild
-tasks, custom linker steps, and the assembly preparer.
+tasks and the assembly preparer.
 
 Use [WarningsNotAsErrors](#warningsnotaserrors) to exempt individual warning
 codes, or [NoWarn](#nowarn) to suppress them. Warnings already disabled by

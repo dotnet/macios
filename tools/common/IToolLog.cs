@@ -45,6 +45,13 @@ public static class IToolLogExtensions {
 public class ConsoleLog : IToolLog {
 	public readonly static IToolLog Instance = new ConsoleLog ();
 
+	readonly IToolLog? diagnosticContext;
+
+	public ConsoleLog (IToolLog? diagnosticContext = null)
+	{
+		this.diagnosticContext = diagnosticContext;
+	}
+
 #if TESTS
 	int verbosity = 0;
 #elif BGENERATOR
@@ -55,7 +62,7 @@ public class ConsoleLog : IToolLog {
 
 	public int Verbosity { get => verbosity; }
 
-	public ApplePlatform Platform => ApplePlatform.None;
+	public ApplePlatform Platform => diagnosticContext?.Platform ?? ApplePlatform.None;
 
 	public void Log (string message)
 	{
@@ -69,12 +76,20 @@ public class ConsoleLog : IToolLog {
 
 	public void LogError (ProductException exception)
 	{
+#if BGENERATOR
 		Console.Error.WriteLine (exception);
+#else
+		Console.Error.WriteLine (exception.ToString (diagnosticContext ?? this));
+#endif
 	}
 
 	public void LogWarning (ProductException exception)
 	{
+#if BGENERATOR
 		Console.WriteLine (exception);
+#else
+		Console.WriteLine (exception.ToString (diagnosticContext ?? this));
+#endif
 	}
 
 	public void LogException (Exception exception)

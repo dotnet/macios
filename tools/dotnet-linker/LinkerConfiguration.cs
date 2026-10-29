@@ -780,6 +780,8 @@ namespace Xamarin.Linker {
 
 			Profile = new BaseProfile (this);
 			Application = new Application (this);
+			if (log is ConsoleLog)
+				Logger = new ConsoleLog (Application);
 
 #if ASSEMBLY_PREPARER
 			AssemblyResolver = new DotNetResolver (Application);

@@ -1273,12 +1273,14 @@ namespace Xamarin.Bundler {
 			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
 		}
 
+		IToolLog? consoleLog;
+
 		IToolLog GetLog ()
 		{
 #if LEGACY_TOOLS
-			return ConsoleLog.Instance;
+			return consoleLog ??= new ConsoleLog (this);
 #else
-			return Configuration.Logger ?? ConsoleLog.Instance;
+			return Configuration.Logger ?? (consoleLog ??= new ConsoleLog (this));
 #endif
 		}
 
@@ -1294,22 +1296,12 @@ namespace Xamarin.Bundler {
 
 		public void LogError (ProductException exception)
 		{
-			var log = GetLog ();
-			if (log is ConsoleLog) {
-				log.LogError (exception.ToString (this));
-			} else {
-				log.LogError (exception);
-			}
+			GetLog ().LogError (exception);
 		}
 
 		public void LogWarning (ProductException exception)
 		{
-			var log = GetLog ();
-			if (log is ConsoleLog) {
-				log.Log (exception.ToString (this));
-			} else {
-				log.LogWarning (exception);
-			}
+			GetLog ().LogWarning (exception);
 		}
 
 		public void LogException (Exception exception)

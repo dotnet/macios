@@ -88,14 +88,28 @@ public class WarningConfigurationTests {
 		AssertLevels (replay.Application);
 
 		var previousError = Console.Error;
+		var previousOutput = Console.Out;
 		using var errorOutput = new StringWriter ();
+		using var warningOutput = new StringWriter ();
 		try {
 			Console.SetError (errorOutput);
+			Console.SetOut (warningOutput);
 			replay.Application.LogError (new ProductException (1235, false, "Test warning"));
+			replay.Logger.LogError (new ProductException (1235, false, "Direct warning"));
+			replay.Application.LogWarning (new ProductException (1236, false, "Exempt warning"));
+			replay.Logger.LogWarning (new ProductException (1236, false, "Direct exempt warning"));
 		} finally {
 			Console.SetError (previousError);
+			Console.SetOut (previousOutput);
 		}
-		Assert.That (errorOutput.ToString ().Trim (), Is.EqualTo ($"error {prefix}1235: Test warning"), "Promoted console diagnostic");
+		Assert.That (errorOutput.ToString ().Split (Environment.NewLine, StringSplitOptions.RemoveEmptyEntries), Is.EqualTo (new [] {
+			$"error {prefix}1235: Test warning",
+			$"error {prefix}1235: Direct warning",
+		}), "Promoted console diagnostics");
+		Assert.That (warningOutput.ToString ().Split (Environment.NewLine, StringSplitOptions.RemoveEmptyEntries), Is.EqualTo (new [] {
+			$"warning {prefix}1236: Exempt warning",
+			$"warning {prefix}1236: Direct exempt warning",
+		}), "Exempt console diagnostics");
 
 		void AssertLevels (IToolLog log)
 		{

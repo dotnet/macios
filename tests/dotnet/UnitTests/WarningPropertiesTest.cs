@@ -25,10 +25,18 @@ namespace Xamarin.Tests {
 						<TreatWarningsAsErrors>{treatWarningsAsErrors}</TreatWarningsAsErrors>
 						<WarningsAsErrors>{warningsAsErrors}</WarningsAsErrors>
 						<WarningsNotAsErrors>{warningsNotAsErrors}</WarningsNotAsErrors>
+						<MSBuildWarningsAsMessages>MT9001</MSBuildWarningsAsMessages>
+						<MSBuildWarningsAsErrors>MT9002</MSBuildWarningsAsErrors>
+						<MSBuildWarningsNotAsErrors>MT9003</MSBuildWarningsNotAsErrors>
 					</PropertyGroup>
 					<Import Project="{targetsPath}" />
 					<Target Name="Restore" />
 					<Target Name="Build">
+						<Error Condition="'$(_AppleMSBuildWarningsAsMessages)' != '{noWarn.Replace (',', ';')}'" Text="Incorrect private warning suppression property" />
+						<Error Condition="'$(_AppleMSBuildWarningsAsErrors)' != '{warningsAsErrors.Replace (',', ';')}'" Text="Incorrect private warning promotion property" />
+						<Error Condition="'$(_AppleMSBuildWarningsNotAsErrors)' != '{warningsNotAsErrors.Replace (',', ';')}'" Text="Incorrect private warning exemption property" />
+						<Error Condition="'$(_AppleMSBuildTreatWarningsAsErrors)' != '{treatWarningsAsErrors}'" Text="Incorrect private global warning property" />
+						<Warning Code="MT9001" Text="Previously suppressed warning" />
 						<Warning Code="MT1234" Text="Test warning" />
 					</Target>
 				</Project>

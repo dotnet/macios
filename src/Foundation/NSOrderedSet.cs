@@ -226,6 +226,17 @@ namespace Foundation {
 				return false;
 			return Contains (nsobj);
 		}
+
+		public NSOrderedCollectionDifference? GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest)
+		{
+			if (equivalenceTest is null)
+				throw new ArgumentNullException (nameof (equivalenceTest));
+
+			unsafe {
+				using var block = NSOrderedCollectionDifference.CreateEquivalenceTestBlock ((first, second) => equivalenceTest (Runtime.GetNSObject (first), Runtime.GetNSObject (second)));
+				return Runtime.GetNSObject<NSOrderedCollectionDifference> (_GetDifference (other, options, &block));
+			}
+		}
 	}
 
 	public partial class NSMutableOrderedSet {
@@ -260,36 +271,5 @@ namespace Foundation {
 			}
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
-		delegate bool NSOrderedCollectionDifferenceEquivalenceTestProxy (IntPtr blockLiteral, /* NSObject */ IntPtr first, /* NSObject */ IntPtr second);
-		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEquality = DiffEqualityHandler;
-
-		[MonoPInvokeCallback (typeof (NSOrderedCollectionDifferenceEquivalenceTestProxy))]
-		static bool DiffEqualityHandler (IntPtr block, IntPtr first, IntPtr second)
-		{
-			var callback = BlockLiteral.GetTarget<NSOrderedCollectionDifferenceEquivalenceTest> (block);
-			if (callback is not null) {
-				var nsFirst = Runtime.GetNSObject<NSObject> (first, false);
-				var nsSecond = Runtime.GetNSObject<NSObject> (second, false);
-				return callback (nsFirst, nsSecond);
-			}
-			return false;
-		}
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference GetDifference (NSOrderedSet other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest)
-		{
-			if (equivalenceTest is null)
-				throw new ArgumentNullException (nameof (equivalenceTest));
-
-			var block = new BlockLiteral ();
-			block.SetupBlock (static_DiffEquality, equivalenceTest);
-			try {
-				return Runtime.GetNSObject<NSOrderedCollectionDifference> (_GetDifference (other, options, ref block));
-			} finally {
-				block.CleanupBlock ();
-			}
-		}
-#endif
 	}
 }

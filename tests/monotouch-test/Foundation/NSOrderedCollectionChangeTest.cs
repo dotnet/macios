@@ -1,6 +1,5 @@
 
 namespace MonoTouchFixtures.Foundation {
-#if false // https://github.com/dotnet/macios/issues/15577
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSOrderedCollectionChangeTest {
@@ -27,6 +26,16 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (change.Index, Is.EqualTo ((nuint)0), "Index");
 			Assert.That (change.AssociatedIndex, Is.EqualTo ((nuint)1));
 		}
+
+		[Test]
+		public void NullObject ()
+		{
+			using var change = new NSOrderedCollectionChange (null, NSCollectionChangeType.Insert, 0);
+			using var associatedChange = new NSOrderedCollectionChange (null, NSCollectionChangeType.Remove, 1, 0);
+			using var factoryChange = NSOrderedCollectionChange.ChangeWithObject (null, NSCollectionChangeType.Insert, 0);
+			Assert.That (change.Object, Is.Null, "Constructor");
+			Assert.That (associatedChange.Object, Is.Null, "Associated constructor");
+			Assert.That (factoryChange.Object, Is.Null, "Factory");
+		}
 	}
-#endif
 }

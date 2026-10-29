@@ -264,51 +264,27 @@ namespace Foundation {
 			return (int) GetNativeHash ();
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other, options));
 
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet other)
+		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other)
 			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other));
 
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
+		public new NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
 		{
 			var ptr = _GetOrderedSet (difference); 
 			return Runtime.GetNSObject<NSOrderedSet<TKey>> (ptr);
 		}
 
-		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEqualityGeneric = DiffEqualityHandlerGeneric;
-
-		[MonoPInvokeCallback (typeof (NSOrderedCollectionDifferenceEquivalenceTestProxy))]
-		static bool DiffEqualityHandlerGeneric (IntPtr block, IntPtr first, IntPtr second)
-		{
-			var callback = BlockLiteral.GetTarget<NSOrderedCollectionDifferenceEquivalenceTest<TKey>> (block);
-			if (callback is not null) {
-				var nsFirst = Runtime.GetINativeObject<TKey> (first, false);
-				var nsSecond = Runtime.GetINativeObject<TKey> (second, false);
-				return callback (nsFirst, nsSecond);
-			}
-			return false;
-		}
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));
 
-			var block = new BlockLiteral ();
-			block.SetupBlock (static_DiffEqualityGeneric, equivalenceTest);
-			try {
-				return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (other, options, ref block));
-			} finally {
-				block.CleanupBlock ();
+			unsafe {
+				using var block = NSOrderedCollectionDifference.CreateEquivalenceTestBlock ((first, second) => equivalenceTest (Runtime.GetINativeObject<TKey> (first, false), Runtime.GetINativeObject<TKey> (second, false)));
+				return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (other, options, &block));
 			}
 		}
-#endif
 	}
 }

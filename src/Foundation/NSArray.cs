@@ -33,9 +33,7 @@ using CoreFoundation;
 
 namespace Foundation {
 
-#if false // https://github.com/dotnet/macios/issues/15577
-	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest (NSObject first, NSObject second);
-#endif
+	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest (NSObject? first, NSObject? second);
 
 	public partial class NSArray : IEnumerable<NSObject> {
 		/// <summary>Creates an NSArray from a C# array of NSObjects.</summary>
@@ -1057,36 +1055,18 @@ namespace Foundation {
 			return new NSFastEnumerator<NSObject> (this);
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
+		public NSObject? []? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
+			=> NSArray.ArrayFromHandle<NSObject> (_GetArrayByApplyingDifference (difference));
 
-		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEquality = DiffEqualityHandler;
-
-		[MonoPInvokeCallback (typeof (NSOrderedCollectionDifferenceEquivalenceTestProxy))]
-		static bool DiffEqualityHandler (IntPtr block, IntPtr first, IntPtr second)
-		{
-			var callback = BlockLiteral.GetTarget<NSOrderedCollectionDifferenceEquivalenceTest> (block);
-			if (callback is not null) {
-				var nsFirst = Runtime.GetNSObject<NSObject> (first, false);
-				var nsSecond = Runtime.GetNSObject<NSObject> (second, false);
-				return callback (nsFirst, nsSecond);
-			}
-			return false;
-		}
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest) 
+		public NSOrderedCollectionDifference? GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest) 
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));
 
-			var block = new BlockLiteral ();
-			block.SetupBlock (static_DiffEquality, equivalenceTest);
-			try {
-				return Runtime.GetNSObject<NSOrderedCollectionDifference> (_GetDifferenceFromArray (other, options, ref block));
-			} finally {
-				block.CleanupBlock ();
+			unsafe {
+				using var block = NSOrderedCollectionDifference.CreateEquivalenceTestBlock ((first, second) => equivalenceTest (Runtime.GetNSObject (first), Runtime.GetNSObject (second)));
+				return Runtime.GetNSObject<NSOrderedCollectionDifference> (_GetDifferenceFromArray (other, options, &block));
 			}
 		}
-#endif
 	}
 }

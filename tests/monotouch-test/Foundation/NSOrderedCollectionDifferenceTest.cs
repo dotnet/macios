@@ -1,7 +1,6 @@
 using System.Collections;
 
 namespace MonoTouchFixtures.Foundation {
-#if false // https://github.com/dotnet/macios/issues/15577
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSOrderedCollectionDifferenceTest {
@@ -13,17 +12,49 @@ namespace MonoTouchFixtures.Foundation {
 			using var change = NSOrderedCollectionChange.ChangeWithObject (data, NSCollectionChangeType.Insert, 0);
 			var changes = new NSOrderedCollectionChange [] { change };
 			using var diff = new NSOrderedCollectionDifference (changes);
-			Assert.DoesNotThrow (() => {
-				var i = diff.Insertions;
+			Assert.That (diff.Insertions.Length, Is.EqualTo (1), "Insertions");
+			Assert.That (diff.Insertions [0].Object, Is.EqualTo (data), "Inserted object");
+			Assert.That (diff.Removals, Is.Empty, "Removals");
+			Assert.That (diff.HasChanges, Is.True, "HasChanges");
+		}
+
+		[Test]
+		public void TransformChanges ()
+		{
+			using var original = new NSString ("Original");
+			using var replacement = new NSString ("Replacement");
+			using var change = new NSOrderedCollectionChange (original, NSCollectionChangeType.Insert, 0);
+			using var diff = new NSOrderedCollectionDifference (new [] { change });
+			var calls = 0;
+			using var transformed = diff.GetDifference (item => {
+				calls++;
+				Assert.That (item.Object, Is.EqualTo (original), "Callback object");
+				return new NSOrderedCollectionChange (replacement, item.ChangeType, item.Index, item.AssociatedIndex);
 			});
-			Assert.DoesNotThrow (() => {
-				var r = diff.Removals;
+			Assert.That (calls, Is.EqualTo (1), "Callback count");
+			Assert.That (transformed?.Insertions [0].Object, Is.EqualTo (replacement), "Transformed object");
+			using var inverse = transformed?.GetInverseDifference ();
+			Assert.That (inverse?.Removals [0].Object, Is.EqualTo (replacement), "Inverse object");
+		}
+
+		[Test]
+		public void OrderedSetEquivalence ()
+		{
+			using var first = new NSString ("First");
+			using var second = new NSString ("Second");
+			using var original = new NSOrderedSet ((NSObject) first);
+			using var changed = new NSOrderedSet (new NSObject [] { first, second });
+			var calls = 0;
+			using var difference = changed.GetDifference (original, 0, (a, b) => {
+				calls++;
+				return a?.ToString () == b?.ToString ();
 			});
-			// https://github.com/dotnet/macios/issues/15577 - Did not rewrite tests that were disabled
-			// Any reason for not asserting on the returned value?
-			// Assert.That (diff.Insertions.Length, Is.EqualTo (1), "insertions");
-			// (or whatever it's supposed to return)
+			Assert.That (calls, Is.GreaterThan (0), "Callback count");
+			Assert.That (difference?.Insertions [0].Object, Is.EqualTo (second), "Inserted object");
+			using var mutable = new NSMutableOrderedSet ((NSObject) first);
+			mutable.ApplyDifference (difference);
+			Assert.That (mutable.Count, Is.EqualTo ((nint) 2), "Mutable set count");
+			Assert.That (mutable [1], Is.EqualTo (second), "Mutable set object");
 		}
 	}
-#endif
 }

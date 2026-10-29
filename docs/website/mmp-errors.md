@@ -415,7 +415,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="mm2016-invalid-tlsprovider-0-option-the-only-valid-value-1-will-be-used"></a>
 
-- [MM2016](https://learn.microsoft.com/dotnet/ios/messages/mm2016): Invalid TlsProvider `{0}` option. The only valid value `{1}` will be used.
+- [MM2016](https://learn.microsoft.com/dotnet/ios/messages/mm2016): Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed.
 <a name="MM2017"></a>
 
 <a id="mm2017-could-not-process-xml-description-0"></a>

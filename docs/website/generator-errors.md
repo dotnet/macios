@@ -51,7 +51,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="bi0088-monotouch-binding-projects-are-not-supported-anymore-please-upgrade-the-binding-project-to-a-xamarinios-unified-binding-project"></a>
 
-- [BI0088](https://learn.microsoft.com/dotnet/ios/messages/bi0088): MonoTouch binding projects are not supported anymore. Please upgrade the binding project to a Xamarin.iOS (Unified) binding project.
+- [BI0088](https://learn.microsoft.com/dotnet/ios/messages/bi0088): Internal error: don't know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
 <a name="BI0099"></a>
 
 <a id="bi0099-internal-error--please-file-a-bug-report-with-a-test-case-httpsgithubcomdotnetmaciosissuesnew"></a>
@@ -409,7 +409,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="bi1072-missing-coreimagefilterproperty-attribute-on--property"></a>
 
-- [BI1072](https://learn.microsoft.com/dotnet/ios/messages/bi1072): Missing [CoreImageFilterProperty] attribute on \* property \*
+- [BI1072](https://learn.microsoft.com/dotnet/ios/messages/bi1072): The BindAs type for the parameter "{0}" in the method "{1}.{2}" must be an array when the parameter's type is an array.
 
 # BI11xx: warnings
 

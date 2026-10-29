@@ -197,6 +197,7 @@ namespace ObjCRuntime {
 		/// <returns>The handle to the specified Objective-C selector.</returns>
 		/// <remarks>
 		///   The name does not need to be NUL-terminated. If it contains a NUL byte, only the bytes before the first NUL byte are used.
+		///   Passing a span that ends with a NUL byte is faster because it avoids allocating a temporary buffer and copying the name.
 		/// </remarks>
 		public static unsafe IntPtr GetHandle (ReadOnlySpan<byte> name)
 		{

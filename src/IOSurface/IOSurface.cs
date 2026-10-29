@@ -42,9 +42,7 @@ namespace IOSurface {
 		[SupportedOSPlatform ("maccatalyst")]
 		public uint CreateMachPort ()
 		{
-			if (Handle == NativeHandle.Zero)
-				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
-			var port = IOSurfaceCreateMachPort (Handle);
+			var port = IOSurfaceCreateMachPort (this.GetNonNullHandle (nameof (IOSurface)));
 			GC.KeepAlive (this);
 			return port;
 		}
@@ -92,9 +90,7 @@ namespace IOSurface {
 		[UnsupportedOSPlatform ("tvos")]
 		public NSObject? CreateXpcObject ()
 		{
-			if (Handle == NativeHandle.Zero)
-				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
-			var handle = IOSurfaceCreateXPCObject (Handle);
+			var handle = IOSurfaceCreateXPCObject (this.GetNonNullHandle (nameof (IOSurface)));
 			GC.KeepAlive (this);
 			return Runtime.GetNSObject (handle, owns: true);
 		}

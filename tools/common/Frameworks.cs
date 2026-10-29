@@ -147,7 +147,6 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "AppKit", 10, 0 },
 					{ "CoreAudio", "CoreAudio", 10, 0 },
 					{ "CoreFoundation", "CoreFoundation", 10, 0 },
-					{ "CoreGraphics", "ApplicationServices", 10, 0, "CoreGraphics" },
 					// The CoreImage framework by itself was introduced in 10.11
 					// Up until 10.10 it was a sub framework in the QuartzCore umbrella framework
 					// They both existed until 10.13, when the sub framework was removed.
@@ -200,6 +199,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "Accounts", 10, 8 },
 					{ "AudioVideoBridging", 10, 8 },
 					{ "CFNetwork", 10, 8 },
+					{ "CoreGraphics", 10, 8 },
 					{ "EventKit", 10, 8 },
 					{ "GameKit", 10, 8 },
 					{ "GLKit", 10, 8 },

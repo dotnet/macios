@@ -171,6 +171,8 @@ If a target or task creates a file, that file must be added to the `FileWrites` 
 
 ### Project Templates
 
+Never replace `net$(BundledNETCoreAppTargetFrameworkVersion)` with a specific TFM.
+
 Common project structure for Apple platform apps:
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">

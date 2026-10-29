@@ -63,6 +63,19 @@ namespace MonoTouchFixtures.XKit {
 				return XFont.SystemFontOfSize (12, (nfloat) 0, (nfloat) 0);
 			});
 #if __MACOS__
+			yield return Factory ("CreateFromName_Matrix", () => XFont.CreateFromName ("Helvetica", new nfloat [] { 12, 0, 0, 12, 0, 0 }));
+			yield return Factory ("PrinterFont", () => {
+				using var font = XFont.CreateSystemFont (12);
+				return font.PrinterFont;
+			});
+			yield return Factory ("ScreenFont", () => {
+				using var font = XFont.CreateSystemFont (12);
+				return font.ScreenFont;
+			});
+			yield return Factory ("ScreenFontWithRenderingMode", () => {
+				using var font = XFont.CreateSystemFont (12);
+				return font.ScreenFontWithRenderingMode (NSFontRenderingMode.Default);
+			});
 			yield return Factory ("FromFontName", () => XFont.FromFontName ("Helvetica", 12));
 			yield return Factory ("FromDescription_Size", () => {
 				using var font = XFont.CreateSystemFont (12);
@@ -240,6 +253,8 @@ namespace MonoTouchFixtures.XKit {
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, 12), "Name");
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromDescriptor (null, 12), "Descriptor");
 #if __MACOS__
+			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, XFont.IdentityMatrix), "Matrix name");
+			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName ("Helvetica", (nfloat []?) null), "Matrix");
 			var nameException = Assert.Throws<ArgumentNullException> (() => XFont.FromFontName (null, 12));
 			Assert.That (nameException?.ParamName, Is.EqualTo ("fontName"), "Legacy name parameter");
 			var descriptorException = Assert.Throws<ArgumentNullException> (() => XFont.FromDescription (null, 12));
@@ -280,6 +295,36 @@ namespace MonoTouchFixtures.XKit {
 			using var font = XFont.CreateSystemFont (12);
 			Assert.That (font.ToString (), Is.EqualTo ($"{font.FontName} {font.PointSize}"), "Font name and size");
 		}
+
+#if __MACOS__
+		[Test]
+		public void FontMatrix ()
+		{
+			nfloat [] matrix = { 12, 0, 0, 12, 0, 0 };
+			using var font = XFont.CreateFromName ("Helvetica", matrix) ?? throw new AssertionException ("Font is null.");
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Round-trip matrix");
+			var copy = font.Matrix;
+			copy [0] = 100;
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Native matrix is not exposed");
+			Assert.That (XFont.IdentityMatrix, Is.EqualTo (new nfloat [] { 1, 0, 0, 1, 0, 0 }), "Identity matrix");
+			using var missing = XFont.CreateFromName ("This font does not exist - issue 6241", matrix);
+			Assert.That (missing, Is.Null, "Missing matrix font");
+			Assert.Throws<ArgumentException> (() => XFont.CreateFromName ("Helvetica", new nfloat [5]), "Invalid matrix size");
+		}
+
+		[Test]
+		public void LegacyGlyphMetrics ()
+		{
+			using var font = XFont.CreateFromName ("Helvetica", 12) ?? throw new AssertionException ("Font is null.");
+			var glyph = font.GlyphWithName ("A");
+			Assert.That (glyph, Is.Not.Zero, "Glyph");
+			Assert.That (font.GetBoundingRects (new uint [] { glyph }), Is.EqualTo (new [] { font.BoundingRectForGlyph (glyph) }), "Bounds");
+			Assert.That (font.GetAdvancements (new uint [] { glyph }), Is.EqualTo (new [] { font.AdvancementForGlyph (glyph) }), "Advancements");
+			uint [] empty = [];
+			Assert.That (font.GetBoundingRects (empty), Is.Empty, "Empty bounds");
+			Assert.That (font.GetAdvancements (empty), Is.Empty, "Empty advancements");
+		}
+#endif
 
 		[Test]
 		public void FontInformation ()

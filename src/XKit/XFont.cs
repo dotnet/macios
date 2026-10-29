@@ -122,7 +122,7 @@ namespace UIKit {
 	///     character set supported by the font and forces the system to
 	///     use a glyph from the list of fallback fonts in the system.
 	///     For example, if you were to use the Menlo font, the following
-	///     example would remove the use of the Melon Snowman character
+	///     example would remove the use of the Menlo snowman character
 	///     (At Unicode 0x2603), and fall back to the system snowman:
 	///   </para>
 	///   <example>
@@ -189,18 +189,6 @@ namespace UIKit {
 			return String.Format ("{0} {1}", FontName, PointSize);
 		}
 
-		/// <summary>Creates the system monospaced font specialized for digits, in the specified size and weight.</summary>
-		/// <param name="size">The font size in points.</param>
-		/// <param name="weight">The font weight.</param>
-		/// <returns>A new managed font wrapper.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont CreateMonospacedDigitSystemFont (nfloat size, nfloat weight)
-		{
-			return new XFont (_MonospacedDigitSystemFontOfSize (size, weight));
-		}
-
 		/// <inheritdoc cref="CreateMonospacedDigitSystemFont(nfloat, nfloat)" />
 #if __MACOS__
 		public static XFont MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight) => CreateMonospacedDigitSystemFont (fontSize, weight);
@@ -214,64 +202,24 @@ namespace UIKit {
 		/// <returns>A new managed font wrapper.</returns>
 		public static XFont CreateMonospacedSystemFont (nfloat size, nfloat weight) => GetMonospacedSystemFont (size, weight);
 
-		/// <summary>Gets the monospaced system font of the specified size and weight.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <param name="weight">The weight of the font.</param>
-		/// <returns>The monospaced system font.</returns>
-		public static XFont GetMonospacedSystemFont (nfloat size, nfloat weight)
-		{
-			var ptr = _MonospacedSystemFontOfSize (size, weight);
-			return new XFont (ptr);
-		}
-
 		/// <summary>Creates a font matching a font descriptor.</summary>
 		/// <param name="descriptor">The descriptor to match.</param>
 		/// <param name="pointSize">The font size in points, or zero to use the descriptor's size.</param>
 		/// <returns>A new managed font wrapper, or <see langword="null" /> if no matching font exists.</returns>
 		public static XFont? CreateFromDescriptor (XFontDescriptor descriptor, nfloat pointSize) => FromDescriptor (descriptor, pointSize);
 
-		/// <summary>Creates a <see cref="XFont" /> from the specified font descriptor.</summary>
+		/// <summary>Creates a font from the specified font descriptor.</summary>
 		/// <param name="descriptor">The font descriptor describing the font to create.</param>
-		/// <param name="pointSize">The point size of the font to create. If 0, the size from the descriptor is used.</param>
+		/// <param name="pointSize">The point size, or zero to use the descriptor's size.</param>
 		/// <returns>A new font based on the descriptor, or <see langword="null" /> if no matching font exists.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont? FromDescriptor (XFontDescriptor descriptor, nfloat pointSize)
-		{
-			var ptr = _FromDescriptor (descriptor, pointSize);
-			return ptr == IntPtr.Zero ? null : new XFont (ptr);
-		}
+		/// <remarks>The nullable return type is shared across platforms, although UIKit always supplies a matching font.</remarks>
+		public static XFont? FromDescriptor (XFontDescriptor descriptor, nfloat pointSize) => _FromDescriptor (descriptor, pointSize);
 
 		/// <summary>Creates a font using <see cref="FromName(string, nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="name">The font name.</param>
 		/// <param name="size">The font size in points.</param>
 		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
 		public static XFont? CreateFromName (string name, nfloat size) => FromName (name, size);
-
-		/// <summary>Creates a font with the specified name and size.</summary>
-		/// <param name="name">The name of the font to create.</param>
-		/// <param name="size">The size of the font in points.</param>
-		/// <returns>A new <see cref="XFont" /> with the specified name and size, or <see langword="null" /> if the font could not be found.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont? FromName (string name, nfloat size)
-		{
-			var ptr = _FromName (name, size);
-			return ptr == IntPtr.Zero ? null : new XFont (ptr);
-		}
-
-		/// <summary>Creates a system font of the specified size.</summary>
-		/// <param name="size">The font size in points.</param>
-		/// <returns>A new managed font wrapper.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont CreateSystemFont (nfloat size)
-		{
-			return new XFont (_SystemFontOfSize (size));
-		}
 
 		/// <inheritdoc cref="CreateSystemFont(nfloat)" />
 #if __MACOS__
@@ -280,35 +228,12 @@ namespace UIKit {
 		public static XFont SystemFontOfSize (nfloat size) => CreateSystemFont (size);
 #endif
 
-		/// <summary>Creates the default system font in the specified size and weight.</summary>
-		/// <param name="size">The font size in points.</param>
-		/// <param name="weight">The font weight.</param>
-		/// <returns>A new managed font wrapper.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont CreateSystemFont (nfloat size, nfloat weight)
-		{
-			return new XFont (_SystemFontOfSize (size, weight));
-		}
-
 		/// <inheritdoc cref="CreateSystemFont(nfloat, nfloat)" />
 #if __MACOS__
 		public static XFont SystemFontOfSize (nfloat fontSize, nfloat weight) => CreateSystemFont (fontSize, weight);
 #else
 		public static XFont SystemFontOfSize (nfloat size, nfloat weight) => CreateSystemFont (size, weight);
 #endif
-
-		/// <summary>Creates a bold system font of the specified size.</summary>
-		/// <param name="size">The font size in points.</param>
-		/// <returns>A new managed font wrapper.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static XFont CreateBoldSystemFont (nfloat size)
-		{
-			return new XFont (_BoldSystemFontOfSize (size));
-		}
 
 		/// <inheritdoc cref="CreateBoldSystemFont(nfloat)" />
 #if __MACOS__
@@ -387,28 +312,12 @@ namespace UIKit {
 #endif
 		public static XFont CreateSystemFont (nfloat fontSize, nfloat weight, nfloat width) => SystemFontOfSize (fontSize, weight, width);
 
-		/// <summary>Creates a system font with the specified size, weight, and width.</summary>
-		/// <param name="fontSize">The font size in points.</param>
-		/// <param name="weight">The native font weight.</param>
-		/// <param name="width">The native font width.</param>
-		/// <returns>A newly allocated managed wrapper for the system font.</returns>
-#if __MACOS__
-		[SupportedOSPlatform ("macos")]
-#else
-		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("maccatalyst")]
-#endif
-		public static XFont SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width)
-		{
-			return new XFont (_SystemFontOfSize (fontSize, weight, width));
-		}
-
 		/// <summary>Creates a font with the same characteristics and a different size.</summary>
 		/// <param name="size">The new font size in points.</param>
 		/// <returns>A new, independently disposable managed font wrapper.</returns>
 		public XFont CreateWithSize (nfloat size) => WithSize (size);
 
+#if __MACOS__
 		/// <summary>Returns a new font based on the current one, with the specified size.</summary>
 		/// <param name="size">The new font size in points.</param>
 		/// <returns>A new <see cref="XFont" /> with the same characteristics as this font but with the specified size.</returns>
@@ -417,11 +326,45 @@ namespace UIKit {
 		/// </remarks>
 		public virtual XFont WithSize (nfloat size)
 		{
-			var ptr = _WithSize (size);
-			return new XFont (ptr);
+			return GetFont (size);
 		}
 
-#if __MACOS__
+		/// <summary>Creates a font with the specified name and transformation matrix.</summary>
+		/// <param name="name">The PostScript font name.</param>
+		/// <param name="matrix">The six matrix elements in the order a, b, c, d, tx, ty.</param>
+		/// <returns>An independently disposable font wrapper, or <see langword="null" /> if the font is unavailable.</returns>
+		/// <exception cref="ArgumentNullException">The name or matrix is null.</exception>
+		/// <exception cref="ArgumentException">The matrix does not contain exactly six elements.</exception>
+		public static unsafe NSFont? CreateFromName (string name, nfloat [] matrix)
+		{
+			ArgumentNullException.ThrowIfNull (name);
+			ArgumentNullException.ThrowIfNull (matrix);
+			if (matrix.Length != 6)
+				throw new ArgumentException ("A font matrix must contain exactly six elements.", nameof (matrix));
+			fixed (nfloat* pointer = matrix)
+				return _FromName (name, (IntPtr) pointer);
+		}
+
+		/// <summary>Gets a copy of the font's six-element transformation matrix.</summary>
+		public unsafe nfloat [] Matrix {
+			get {
+				var matrix = new ReadOnlySpan<nfloat> ((void*) _Matrix, 6).ToArray ();
+				GC.KeepAlive (this);
+				return matrix;
+			}
+		}
+
+		/// <summary>Gets a copy of the six-element identity font matrix.</summary>
+		public static unsafe nfloat [] IdentityMatrix {
+			get {
+				var matrix = _IdentityMatrix;
+				// AppKit uses a null pointer to represent the identity matrix.
+				if (matrix == IntPtr.Zero)
+					return [1, 0, 0, 1, 0, 0];
+				return new ReadOnlySpan<nfloat> ((void*) matrix, 6).ToArray ();
+			}
+		}
+
 		/// <summary>Creates a font using <see cref="FromCTFont(CTFont)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="font">The Core Text font to wrap.</param>
 		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
@@ -477,6 +420,40 @@ namespace UIKit {
 			return advancements;
 		}
 
+		/// <summary>Gets the bounding rectangles of legacy glyphs.</summary>
+		/// <param name="glyphs">The legacy glyph identifiers.</param>
+		/// <returns>The bounding rectangles in the same order as the glyphs.</returns>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.13", "Use 'GetBoundingRects' with Core Graphics glyphs instead.")]
+		public unsafe CGRect [] GetBoundingRects (uint [] glyphs)
+		{
+			ArgumentNullException.ThrowIfNull (glyphs);
+			var bounds = new CGRect [glyphs.Length];
+			if (glyphs.Length == 0)
+				return bounds;
+			fixed (CGRect* boundsPointer = bounds)
+			fixed (uint* glyphsPointer = glyphs)
+				_GetBoundingRectsForGlyphs ((IntPtr) boundsPointer, (IntPtr) glyphsPointer, (nuint) glyphs.Length);
+			return bounds;
+		}
+
+		/// <summary>Gets the advancements of legacy glyphs.</summary>
+		/// <param name="glyphs">The legacy glyph identifiers.</param>
+		/// <returns>The advancements in the same order as the glyphs.</returns>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.13", "Use 'GetAdvancements' with Core Graphics glyphs instead.")]
+		public unsafe CGSize [] GetAdvancements (uint [] glyphs)
+		{
+			ArgumentNullException.ThrowIfNull (glyphs);
+			var advancements = new CGSize [glyphs.Length];
+			if (glyphs.Length == 0)
+				return advancements;
+			fixed (CGSize* advancementsPointer = advancements)
+			fixed (uint* glyphsPointer = glyphs)
+				_GetAdvancementsForGlyphs ((IntPtr) advancementsPointer, (IntPtr) glyphsPointer, (nuint) glyphs.Length);
+			return advancements;
+		}
+
 		/// <inheritdoc cref="FromName(string, nfloat)" />
 		public static NSFont? FromFontName (string fontName, nfloat fontSize)
 		{
@@ -491,16 +468,6 @@ namespace UIKit {
 			return FromDescriptor (fontDescriptor, fontSize);
 		}
 
-		/// <summary>Creates a font matching a descriptor and an optional text transform.</summary>
-		/// <param name="fontDescriptor">The font descriptor to match.</param>
-		/// <param name="textTransform">The text transform, or <see langword="null" /> to use the descriptor's transform.</param>
-		/// <returns>A new font wrapper, or <see langword="null" /> if no matching font exists.</returns>
-		public static NSFont? CreateFromDescriptor (NSFontDescriptor fontDescriptor, NSAffineTransform? textTransform)
-		{
-			var ptr = _FromDescriptor (fontDescriptor, textTransform);
-			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
-		}
-
 		/// <inheritdoc cref="CreateFromDescriptor(NSFontDescriptor, NSAffineTransform)" />
 		public static NSFont? FromDescription (NSFontDescriptor fontDescriptor, NSAffineTransform? textTransform) => CreateFromDescriptor (fontDescriptor, textTransform);
 
@@ -509,162 +476,50 @@ namespace UIKit {
 		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
 		public static NSFont? CreateUserFont (nfloat fontSize) => UserFontOfSize (fontSize);
 
-		/// <inheritdoc cref="CreateUserFont(nfloat)" />
-		public static NSFont? UserFontOfSize (nfloat fontSize)
-		{
-			var ptr = _UserFontOfSize (fontSize);
-			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="UserFixedPitchFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper, or <see langword="null" /> if the font could not be created.</returns>
 		public static NSFont? CreateUserFixedPitchFont (nfloat fontSize) => UserFixedPitchFontOfSize (fontSize);
-
-		/// <inheritdoc cref="CreateUserFixedPitchFont(nfloat)" />
-		public static NSFont? UserFixedPitchFontOfSize (nfloat fontSize)
-		{
-			var ptr = _UserFixedPitchFontOfSize (fontSize);
-			return ptr == IntPtr.Zero ? null : new NSFont (ptr);
-		}
 
 		/// <summary>Creates a font using <see cref="LabelFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateLabelFont (nfloat fontSize) => LabelFontOfSize (fontSize);
 
-		/// <inheritdoc cref="CreateLabelFont(nfloat)" />
-		public static NSFont LabelFontOfSize (nfloat fontSize)
-		{
-			var ptr = _LabelFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="TitleBarFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateTitleBarFont (nfloat fontSize) => TitleBarFontOfSize (fontSize);
-
-		/// <inheritdoc cref="CreateTitleBarFont(nfloat)" />
-		public static NSFont TitleBarFontOfSize (nfloat fontSize)
-		{
-			var ptr = _TitleBarFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
 
 		/// <summary>Creates a font using <see cref="MenuFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateMenuFont (nfloat fontSize) => MenuFontOfSize (fontSize);
 
-		/// <inheritdoc cref="CreateMenuFont(nfloat)" />
-		public static NSFont MenuFontOfSize (nfloat fontSize)
-		{
-			var ptr = _MenuFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="MenuBarFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateMenuBarFont (nfloat fontSize) => MenuBarFontOfSize (fontSize);
-
-		/// <inheritdoc cref="CreateMenuBarFont(nfloat)" />
-		public static NSFont MenuBarFontOfSize (nfloat fontSize)
-		{
-			var ptr = _MenuBarFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
 
 		/// <summary>Creates a font using <see cref="MessageFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateMessageFont (nfloat fontSize) => MessageFontOfSize (fontSize);
 
-		/// <inheritdoc cref="CreateMessageFont(nfloat)" />
-		public static NSFont MessageFontOfSize (nfloat fontSize)
-		{
-			var ptr = _MessageFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="PaletteFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreatePaletteFont (nfloat fontSize) => PaletteFontOfSize (fontSize);
-
-		/// <inheritdoc cref="CreatePaletteFont(nfloat)" />
-		public static NSFont PaletteFontOfSize (nfloat fontSize)
-		{
-			var ptr = _PaletteFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
 
 		/// <summary>Creates a font using <see cref="ToolTipsFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateToolTipsFont (nfloat fontSize) => ToolTipsFontOfSize (fontSize);
 
-		/// <inheritdoc cref="CreateToolTipsFont(nfloat)" />
-		public static NSFont ToolTipsFontOfSize (nfloat fontSize)
-		{
-			var ptr = _ToolTipsFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="ControlContentFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="fontSize">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreateControlContentFont (nfloat fontSize) => ControlContentFontOfSize (fontSize);
-
-		/// <inheritdoc cref="CreateControlContentFont(nfloat)" />
-		public static NSFont ControlContentFontOfSize (nfloat fontSize)
-		{
-			var ptr = _ControlContentFontOfSize (fontSize);
-			return new NSFont (ptr);
-		}
-
-		/// <summary>Gets an independently disposable wrapper for the printer font.</summary>
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.13")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont PrinterFont {
-			get {
-				var ptr = _PrinterFont;
-				return new NSFont (ptr);
-			}
-		}
-
-		/// <summary>Gets an independently disposable wrapper for the screen font.</summary>
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.13")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont ScreenFont {
-			get {
-				var ptr = _ScreenFont;
-				return new NSFont (ptr);
-			}
-		}
-
-		/// <summary>Creates a screen font using the specified rendering mode.</summary>
-		/// <param name="renderingMode">The rendering mode to use.</param>
-		/// <returns>A new managed font wrapper.</returns>
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.13")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		public virtual NSFont ScreenFontWithRenderingMode (NSFontRenderingMode renderingMode)
-		{
-			var ptr = _ScreenFontWithRenderingMode (renderingMode);
-			return new NSFont (ptr);
-		}
-
-		/// <summary>Creates a vertical version of this font.</summary>
-		/// <returns>A new managed font wrapper.</returns>
-		public virtual NSFont GetVerticalFont ()
-		{
-			var ptr = _GetVerticalFont ();
-			return new NSFont (ptr);
-		}
 
 		/// <summary>Creates a vertical version of this font.</summary>
 		/// <returns>A new, independently disposable managed font wrapper.</returns>
@@ -686,25 +541,6 @@ namespace UIKit {
 		/// <param name="options">The font selection options.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static NSFont CreatePreferredFont (string textStyle, NSDictionary options) => GetPreferredFont (textStyle, options);
-
-		/// <summary>Creates a font for the specified text style and options.</summary>
-		/// <param name="textStyle">The text style to use.</param>
-		/// <param name="options">The options used to select the font.</param>
-		/// <returns>A newly allocated managed wrapper for the preferred font.</returns>
-		[Export ("preferredFontForTextStyle:options:")]
-		public static NSFont GetPreferredFont (string textStyle, NSDictionary options)
-		{
-			return new NSFont (_GetPreferredFont (textStyle, options));
-		}
-
-		/// <summary>Creates a font with the same characteristics and a different size.</summary>
-		/// <param name="fontSize">The new size in points.</param>
-		/// <returns>A newly allocated managed wrapper for the resized font.</returns>
-		[Export ("fontWithSize:")]
-		public virtual NSFont GetFont (nfloat fontSize)
-		{
-			return new NSFont (_WithSize (fontSize));
-		}
 
 		/// <summary>Gets the font name.</summary>
 		public string Name => FontName;
@@ -909,35 +745,6 @@ namespace UIKit {
 		/// <returns>A new managed font wrapper.</returns>
 		public static UIFont CreatePreferredFont (NSString uiFontTextStyle) => GetPreferredFontForTextStyle (uiFontTextStyle);
 
-		/// <summary>Gets the preferred font for the specified text style.</summary>
-		/// <param name="uiFontTextStyle">Name of one of the built-in system text styles.</param>
-		/// <returns>The preferred <see cref="UIFont" /> for the specified text style.</returns>
-		/// <remarks>
-		///   <para>You can instead use the <see cref="PreferredBody" />, <see cref="PreferredCaption1" />, <see cref="PreferredCaption2" />, <see cref="PreferredHeadline" />, <see cref="PreferredSubheadline" /> properties to get this information.</para>
-		///   <para>Using these methods to obtain an initial font during view initialization is not sufficient to implement dynamic type. After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that should be resized. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
-		///   <example>
-		///     <code lang="csharp lang-csharp"><![CDATA[
-		/// UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {
-		/// 	SetDynamicTypeFonts();
-		/// });
-		///
-		/// //Call this when initializing, and also in response to ObserveContentSizeCategoryChanged notifications
-		/// private void SetDynamicTypeFonts()
-		/// {
-		/// 	headlineLabel.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Headline);
-		/// 	bodyText.Font = UIFont.PreferredFontForTextStyle(UIFontTextStyle.Body);
-		///   //...etc...
-		/// }
-		///     ]]></code>
-		///   </example>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static UIFont GetPreferredFontForTextStyle (NSString uiFontTextStyle)
-		{
-			var ptr = _GetPreferredFontForTextStyle (uiFontTextStyle);
-			return new UIFont (ptr);
-		}
-
 		/// <summary>Creates a font using <see cref="GetPreferredFontForTextStyle(UIFontTextStyle)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="uiFontTextStyle">The text style.</param>
 		/// <returns>A new managed font wrapper.</returns>
@@ -959,19 +766,6 @@ namespace UIKit {
 		/// <param name="traitCollection">The trait collection, or null for the current traits.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static UIFont CreatePreferredFont (NSString uiFontTextStyle, UITraitCollection? traitCollection) => GetPreferredFontForTextStyle (uiFontTextStyle, traitCollection);
-
-		/// <summary>Gets the preferred font for the specified text style and trait collection.</summary>
-		/// <param name="uiFontTextStyle">The style for which to get the preferred font.</param>
-		/// <param name="traitCollection">The trait collection for which to get the preferred font.</param>
-		/// <returns>The preferred <see cref="UIFont" /> for the specified text style and trait collection.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static UIFont GetPreferredFontForTextStyle (NSString uiFontTextStyle, UITraitCollection? traitCollection)
-		{
-			var ptr = _GetPreferredFontForTextStyle (uiFontTextStyle, traitCollection);
-			return new UIFont (ptr);
-		}
 
 		/// <summary>Creates a font using <see cref="GetPreferredFontForTextStyle(UIFontTextStyle, UITraitCollection)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="uiFontTextStyle">The text style.</param>
@@ -1011,26 +805,13 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos16.0")]
 		public static UIFont SystemFontOfSize (nfloat fontSize, UIFontWeight weight, UIFontWidth width)
 		{
-			var ptr = _SystemFontOfSize (fontSize, weight.GetWeight (), GetFontWidth (width));
-			return new UIFont (ptr);
+			return SystemFontOfSize (fontSize, weight.GetWeight (), GetFontWidth (width));
 		}
 
 		/// <summary>Creates a font using <see cref="ItalicSystemFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
 		/// <param name="size">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
 		public static UIFont CreateItalicSystemFont (nfloat size) => ItalicSystemFontOfSize (size);
-
-		/// <summary>Creates an italicized system font of the specified size.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <returns>A new italic system <see cref="UIFont" /> of the specified size.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
-		public static UIFont ItalicSystemFontOfSize (nfloat size)
-		{
-			var ptr = _ItalicSystemFontOfSize (size);
-			return new UIFont (ptr);
-		}
 
 		/// <summary>Gets the font name.</summary>
 		public string FontName => Name;

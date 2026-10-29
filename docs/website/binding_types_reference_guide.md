@@ -2019,6 +2019,25 @@ PersonRelationship PresenceType {
 }
 ```
 
+The same accessor-level syntax supports indexers:
+
+```csharp
+MTLBlitPassSampleBufferAttachmentDescriptor this [nuint index] {
+    [Wrap ("GetObject (index)")]
+    get;
+    [Wrap ("SetObject (value, index)")]
+    set;
+}
+```
+
+The generator preserves the index parameters and forwards each accessor to its
+wrap expression. Bind the underlying methods separately with `[Export]`; the
+indexer itself must not have `[Export]`, `[Field]`, or a property-level `[Wrap]`.
+Generated indexers are non-virtual instance members. Read-only and write-only
+indexers, overloaded indexers, multiple index parameters, and `params` arrays are
+supported. Each declared accessor requires `[Wrap]`, except that a setter can use
+`[NotImplemented]` instead.
+
 ## Parameter attributes
 
 This section describes the attributes that you can apply to the parameters in

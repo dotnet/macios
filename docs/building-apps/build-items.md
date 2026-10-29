@@ -212,6 +212,10 @@ Only applicable to iOS and tvOS projects.
 An item group that contains image assets, including files inside asset catalogs
 (\*.xcassets) and Icon Composer directories (\*.icon).
 
+If `XSAppIconAssets` or `XSLaunchImageAssets` in Info.plist refers to a missing
+directory, the build emits a warning. These paths are relative to the project
+directory, or use the virtual project paths specified by linked `ImageAsset` items.
+
 ## InterfaceDefinition
 
 An item group that contains interface definitions (\*.xib or \*.storyboard files).

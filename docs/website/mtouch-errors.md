@@ -3535,6 +3535,17 @@ or bundled correctly. Rename the directory and update the native reference.
 For frameworks inside an archive or binding resource package, correct the
 framework name in the package as well.
 
+<a name="MT7201"></a>
+
+### MT7201: The '*' value '*' in Info.plist refers to a directory that does not exist.
+
+The `XSAppIconAssets` or `XSLaunchImageAssets` entry in Info.plist refers to a
+missing directory. Correct the path, restore the directory, or remove the entry
+if it is no longer needed. Paths are relative to the project directory; linked
+`ImageAsset` items can also provide the directory through their virtual project paths.
+
+*MSBuild task: ACTool*
+
 ## MT8xxx: Runtime error messages
 
 <!--

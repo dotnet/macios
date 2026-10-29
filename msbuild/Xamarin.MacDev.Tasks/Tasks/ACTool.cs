@@ -260,6 +260,25 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
+		void ValidateAssetDirectory (string value, string key, AssetInfo [] imageAssets)
+		{
+			if (string.IsNullOrEmpty (value))
+				return;
+
+			var directory = Path.GetFullPath (Path.Combine (ProjectDir, value.Replace ('\\', '/')));
+			if (Directory.Exists (directory))
+				return;
+
+			var prefix = directory.TrimEnd (Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
+			foreach (var asset in imageAssets) {
+				var path = Path.GetFullPath (Path.Combine (ProjectDir, asset.VirtualProjectPath));
+				if (path.StartsWith (prefix, StringComparison.Ordinal) && File.Exists (asset.Item.GetMetadata ("FullPath")))
+					return;
+			}
+
+			Log.LogWarning (7201, null, MSBStrings.W7201, key, value);
+		}
+
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
@@ -313,6 +332,9 @@ namespace Xamarin.MacDev.Tasks {
 					return true;
 				})
 				.ToArray ();
+
+			ValidateAssetDirectory (XSAppIconAssets, "XSAppIconAssets", imageAssets);
+			ValidateAssetDirectory (XSLaunchImageAssets, "XSLaunchImageAssets", imageAssets);
 
 			for (int i = 0; i < imageAssets.Length; i++) {
 				var asset = imageAssets [i];

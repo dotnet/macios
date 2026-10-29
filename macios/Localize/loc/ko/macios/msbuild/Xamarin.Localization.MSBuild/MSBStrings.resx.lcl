@@ -2932,6 +2932,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The app's Info.plist does not contain a UIApplicationSceneManifest dictionary. Apps built with the iOS or Mac Catalyst 27.0 SDK or later must use the UIKit scene lifecycle or they will crash at launch on iOS or macOS 27.0 or later. Add a scene manifest and scene delegate, and migrate custom lifecycle handlers as described at https://aka.ms/uiscene. To skip this build-time validation, set the MSBuild property ValidateSceneManifest to false; this does not disable the operating system's requirement.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[앱의 Info.plist에 UIApplicationSceneManifest 사전이 포함되어 있지 않습니다. iOS 또는 Mac Catalyst 27.0 SDK 이상으로 빌드한 앱은 UIKit 장면 수명 주기를 사용해야 합니다. 그렇지 않으면 iOS 또는 macOS 27.0 이상에서 앱을 시작할 때 충돌합니다. https://aka.ms/uiscene에 설명된 대로 장면 매니페스트와 장면 대리자를 추가하고 사용자 지정 수명 주기 처리기를 마이그레이션하세요. 이 빌드 시 유효성 검사를 건너뛰려면 MSBuild 속성 ValidateSceneManifest를 false로 설정하세요. 이렇게 설정해도 운영 체제의 요구 사항이 비활성화되지는 않습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3943,7 +3952,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+      <Item ItemId=";W7200" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">

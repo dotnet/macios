@@ -11,6 +11,17 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		[Test]
 		public void ServiceData ()
 		{
+			using var result = GetServiceData ();
+			using var firstUuid = CBUUID.FromString ("180D");
+			using var secondUuid = CBUUID.FromString ("180F");
+			Assert.That (result, Is.Not.Null, "ServiceData");
+			Assert.That (result.Count, Is.EqualTo ((nuint) 2), "Count");
+			Assert.That (result [firstUuid].ToArray (), Is.EqualTo (new byte [] { 1, 2, 3 }), "First data");
+			Assert.That (result [secondUuid].ToArray (), Is.EqualTo (new byte [] { 4, 5 }), "Second data");
+		}
+
+		static NSDictionary<CBUUID, NSData> GetServiceData ()
+		{
 			using var firstUuid = CBUUID.FromString ("180D");
 			using var secondUuid = CBUUID.FromString ("180F");
 			using var firstData = NSData.FromArray (new byte [] { 1, 2, 3 });
@@ -21,11 +32,9 @@ namespace MonoTouchFixtures.CoreBluetooth {
 			using var dictionary = new NSDictionary (CBAdvertisement.DataServiceDataKey, serviceData);
 			var advertisement = new AdvertisementData (dictionary);
 
-			using var result = advertisement.ServiceData;
-			Assert.That (result, Is.Not.Null, "ServiceData");
-			Assert.That (result.Count, Is.EqualTo ((nuint) 2), "Count");
-			Assert.That (result [firstUuid].ToArray (), Is.EqualTo (new byte [] { 1, 2, 3 }), "First data");
-			Assert.That (result [secondUuid].ToArray (), Is.EqualTo (new byte [] { 4, 5 }), "Second data");
+			var result = advertisement.ServiceData;
+			serviceData.Clear ();
+			return result;
 		}
 	}
 }

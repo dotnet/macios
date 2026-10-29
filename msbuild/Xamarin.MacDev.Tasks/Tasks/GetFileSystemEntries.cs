@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -73,7 +74,7 @@ namespace Xamarin.MacDev.Tasks {
 						return false;
 					}
 					var recursiveDir = entry.Substring (path.Length + 1);
-					var newItem = new TaskItem (entry);
+					var newItem = new TaskItem (ProjectCollection.Escape (entry));
 					item.CopyMetadataTo (newItem);
 					newItem.SetMetadata ("RecursiveDir", recursiveDir);
 					newItem.SetMetadata ("OriginalItemSpec", item.ItemSpec);

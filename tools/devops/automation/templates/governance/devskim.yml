@@ -49,7 +49,7 @@ stages:
 
     - bash: |
         set -euo pipefail
-        python3 -m unittest discover -s tools/devops/automation/scripts -p test_devskim.py
+        python3 -m unittest discover -s tools/devops/automation/scripts -p 'test_devskim*.py'
       displayName: Test DevSkim report gate
       workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
 
@@ -77,6 +77,20 @@ stages:
       env:
         REPORTS: $(Build.ArtifactStagingDirectory)/devskim
 
+    - bash: |
+        set -euo pipefail
+        reports=()
+        for source in runtime src tools msbuild external dotnet scripts builds eng; do
+          reports+=("$REPORTS/$source.sarif")
+        done
+        python3 tools/devops/automation/scripts/report_devskim.py \
+          --output-directory "$REPORTS" --scan-status "$AGENT_JOBSTATUS" "${reports[@]}"
+      displayName: Create DevSkim HTML report
+      condition: succeededOrFailed()
+      workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
     - template: ../common/publish-pipeline-artifact.yml
       parameters:
         use1ES: true
@@ -84,3 +98,46 @@ stages:
         path: $(Build.ArtifactStagingDirectory)/devskim
         artifact: devskim
         condition: always()
+
+  - job: publish_devskim
+    displayName: Publish DevSkim HTML report
+    dependsOn: devskim
+    condition: succeededOrFailed()
+    timeoutInMinutes: 30
+    pool:
+      name: AzurePipelines-EO
+      image: 1ESPT-Windows2022
+      os: windows
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      path: s/$(BUILD_REPOSITORY_TITLE)
+      clean: true
+      fetchTags: false
+
+    - task: DownloadPipelineArtifact@2
+      displayName: Download DevSkim reports
+      inputs:
+        artifactName: devskim
+        targetPath: $(Pipeline.Workspace)/devskim-report
+
+    - task: artifactDropTask@1
+      displayName: Publish DevSkim HTML report to VSDrops
+      inputs:
+        dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
+        dropMetadataContainerName: 'DropMetadata-DevSkim-$(System.JobAttempt)'
+        buildNumber: '$(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)'
+        sourcePath: $(Pipeline.Workspace)/devskim-report
+        detailedLog: true
+        usePat: true
+      timeoutInMinutes: 15
+
+    - pwsh: |
+        python "$env:PIPELINE_WORKSPACE/s/$env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/comment_devskim.py" `
+          "$env:PIPELINE_WORKSPACE/devskim-report/summary.json"
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      displayName: Comment on PR only for DevSkim failures
+      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+      env:
+        GITHUB_TOKEN: $(GitHub.Token)

@@ -136,6 +136,21 @@ scan starts, no SARIF report is available. The diagnostics directory is created
 before provisioning, and tool installation output is retained as `install.log`
 even when installation fails.
 
+After the scan (including failed scans), `scripts/report_devskim.py` generates
+`index.html` and `summary.json` alongside the SARIF and logs. The self-contained
+HTML report shows blocking and non-blocking counts, scan errors, searchable
+findings, severity/category filters, source links at the scanned revision, and
+rule guidance. Missing or invalid SARIF reports are shown as incomplete coverage,
+not as a passing scan.
+
+A separate Windows publishing job downloads the `devskim` artifact and uploads
+it using the existing Artifact Services Drop task. The report is available at
+`https://vsdrop.corp.microsoft.com/file/v1/<repository>/devskim/<build-number>/<build-id>-<publish-job-attempt>/;/index.html`.
+After a successful upload, PR builds post a link only when there are banned-API
+findings or scan errors. Clean scans (including scans with only non-blocking
+findings) do not post a comment; branch builds never post PR comments.
+Upload and comment failures fail the publishing job rather than being ignored.
+
 **Initial findings require security-owner triage.** The integration does not add
 baselines, exclusions for individual APIs, or suppressions. In particular,
 DevSkim's banned-function rules flag APIs such as `printf`, `snprintf`, `getenv`,
@@ -167,7 +182,19 @@ for source in runtime src tools msbuild external dotnet scripts builds eng; do
     --ignore-globs '**/.git,**/.git/**' || exit
 done
 python3 tools/devops/automation/scripts/check_devskim.py "${reports[@]}"
-python3 -m unittest discover -s tools/devops/automation/scripts -p test_devskim.py
+python3 tools/devops/automation/scripts/report_devskim.py \
+  --output-directory /tmp/macios-devskim-reports "${reports[@]}"
+python3 -m unittest discover -s tools/devops/automation/scripts -p 'test_devskim*.py'
+```
+
+For an existing download of the `devskim` artifact, generate the report without
+re-running the scan (pass every expected source so missing files remain visible):
+
+```bash
+reports=/path/to/downloaded/devskim
+python3 tools/devops/automation/scripts/report_devskim.py --output-directory "$reports" \
+  "$reports"/{runtime,src,tools,msbuild,external,dotnet,scripts,builds,eng}.sarif
+open "$reports/index.html" # macOS default browser
 ```
 
 `--disable-supression` is the CLI's spelling. When updating the pinned version,

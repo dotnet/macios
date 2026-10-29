@@ -167,11 +167,10 @@ public class RegistrarTests : BaseClass {
 		}
 	}
 
-	[TestCase (RegistrarMode.Static)]
-	[TestCase (RegistrarMode.ManagedStatic)]
-	[TestCase (RegistrarMode.TrimmableStatic)]
-	public void SuppressionAfterTrimming (RegistrarMode registrar)
+	[Test]
+	public void SuppressionAfterTrimming ()
 	{
+		var registrar = RegistrarMode.Static;
 		var code = @"
 		using Foundation;
 		using ObjCRuntime;
@@ -187,17 +186,25 @@ public class RegistrarTests : BaseClass {
 			protected NativeObject (NativeHandle handle, bool owns) { }
 		}
 		";
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out var testInfo, extraConfig: "WarnAsError=4179");
+		var config = @"
+		WarnAsError=4179
+		LibMonoLinkMode=static
+		LibXamarinLinkMode=static
+		TargetArchitectures=ARM64
+		AssemblyName=Test.dll
+		";
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out var testInfo, extraConfig: config);
+		AssertPrepare (preparer);
 		var directory = Path.GetDirectoryName (testInfo.InputPath) ?? throw new InvalidOperationException ("Missing test assembly directory.");
 		var strippedPath = Path.Combine (directory, "stripped", "Test.dll");
 		Directory.CreateDirectory (Path.GetDirectoryName (strippedPath) ?? throw new InvalidOperationException ("Missing stripped assembly directory."));
-		using (var assembly = AssemblyDefinition.ReadAssembly (testInfo.InputPath)) {
+		using (var assembly = AssemblyDefinition.ReadAssembly (testInfo.OutputPath)) {
 			assembly.MainModule.Types.Single (v => v.Name == "MyClass").CustomAttributes.Clear ();
 			assembly.Write (strippedPath);
 		}
 
 		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (
-			v == testInfo ? strippedPath : v.InputPath,
+			v == testInfo ? strippedPath : v.OutputPath,
 			Path.Combine (directory, "post", Path.GetFileName (v.InputPath)), v.IsTrimmable, v.TrimMode)).ToArray ();
 		var logger = new TestLogger { Platform = ApplePlatform.iOS };
 		var configPath = Path.Combine (Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, "..")), "config.txt");

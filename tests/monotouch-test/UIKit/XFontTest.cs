@@ -275,6 +275,13 @@ namespace MonoTouchFixtures.XKit {
 		}
 
 		[Test]
+		public void StringRepresentation ()
+		{
+			using var font = XFont.CreateSystemFont (12);
+			Assert.That (font.ToString (), Is.EqualTo ($"{font.FontName} {font.PointSize}"), "Font name and size");
+		}
+
+		[Test]
 		public void FontInformation ()
 		{
 #if __MACOS__

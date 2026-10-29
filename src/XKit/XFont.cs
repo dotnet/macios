@@ -99,7 +99,7 @@ namespace UIKit {
 	///	  </para>
 	///   <example>
 	///     <code lang="csharp lang-csharp"><![CDATA[
-	/// UIFont CustomizeFont (UIFont font)
+	/// UIFont? CustomizeFont (UIFont font)
 	/// {
 	///     var originalDescriptor = font.FontDescriptor;
 	///
@@ -156,49 +156,55 @@ namespace UIKit {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIFont_Class/index.html">Apple documentation for <c>UIFont</c></related>
 	public partial class UIFont {
 #else
-	/// <summary>Represents a font used by AppKit.</summary>
-	/// <remarks>Font factories return independent managed wrappers, even when the system caches the native font. Each wrapper can be disposed independently.</remarks>
+	/// <summary>Font representation for AppKit classes.</summary>
+	/// <remarks>
+	///   <para>
+	///     <see cref="NSFont" /> objects are not instantiated directly, but instead are created from static methods on this class.
+	///     Use <see cref="CreateFromName(string, nfloat)" /> to create a named font, or
+	///     <see cref="CreateFromDescriptor(NSFontDescriptor, nfloat)" /> to create a font matching a font descriptor.
+	///     These methods return <see langword="null" /> when no matching font exists.
+	///   </para>
+	///   <para>
+	///     Use <see cref="CreateSystemFont(nfloat)" />, <see cref="CreateBoldSystemFont(nfloat)" />, or
+	///     <see cref="CreateMonospacedSystemFont(nfloat, nfloat)" /> to create system fonts.
+	///     <see cref="FontDescriptor" /> describes an existing font, and <see cref="CreateWithSize(nfloat)" />
+	///     creates a font with the same characteristics at a different point size.
+	///   </para>
+	///   <para>
+	///     Font factories return independent managed wrappers, even when the system caches the native font.
+	///     Each wrapper can be disposed independently.
+	///   </para>
+	///   <para tool="threads">The members of this class can be used from a background thread.</para>
+	/// </remarks>
 	public partial class NSFont {
 #endif
 		// In this case we want to _always_ return a different managed instance
 		// so one can be disposed without affecting others
 		// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=25511
 
-#if !__MACOS__
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
 		/// <returns>A string containing the font name and point size.</returns>
 		public override string ToString ()
 		{
 			return String.Format ("{0} {1}", FontName, PointSize);
 		}
-#endif
 
-		/// <summary>Creates a font using <see cref="MonospacedDigitSystemFontOfSize(nfloat, nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
+		/// <summary>Creates the system monospaced font specialized for digits, in the specified size and weight.</summary>
 		/// <param name="size">The font size in points.</param>
 		/// <param name="weight">The font weight.</param>
 		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont CreateMonospacedDigitSystemFont (nfloat size, nfloat weight)
 		{
 			return new XFont (_MonospacedDigitSystemFontOfSize (size, weight));
 		}
 
+		/// <inheritdoc cref="CreateMonospacedDigitSystemFont(nfloat, nfloat)" />
 #if __MACOS__
-		/// <summary>Returns the system monospaced font specialized for digits, in the specified size and weight.</summary>
-		/// <param name="fontSize">The size of the font in points.</param>
-		/// <param name="weight">The weight of the font.</param>
-		/// <returns>The monospaced digit system font.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight) => CreateMonospacedDigitSystemFont (fontSize, weight);
 #else
-		/// <summary>Returns the system monospaced font specialized for digits, in the specified size and weight.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <param name="weight">The weight of the font.</param>
-		/// <returns>The monospaced digit system font.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont MonospacedDigitSystemFontOfSize (nfloat size, nfloat weight) => CreateMonospacedDigitSystemFont (size, weight);
 #endif
 
@@ -221,32 +227,20 @@ namespace UIKit {
 		/// <summary>Creates a font matching a font descriptor.</summary>
 		/// <param name="descriptor">The descriptor to match.</param>
 		/// <param name="pointSize">The font size in points, or zero to use the descriptor's size.</param>
-		/// <returns>A new managed font wrapper, or <see langword="null" /> if no matching font exists on macOS.</returns>
-#if __MACOS__
+		/// <returns>A new managed font wrapper, or <see langword="null" /> if no matching font exists.</returns>
 		public static XFont? CreateFromDescriptor (XFontDescriptor descriptor, nfloat pointSize) => FromDescriptor (descriptor, pointSize);
-#else
-		public static XFont CreateFromDescriptor (XFontDescriptor descriptor, nfloat pointSize) => FromDescriptor (descriptor, pointSize);
-#endif
 
 		/// <summary>Creates a <see cref="XFont" /> from the specified font descriptor.</summary>
 		/// <param name="descriptor">The font descriptor describing the font to create.</param>
 		/// <param name="pointSize">The point size of the font to create. If 0, the size from the descriptor is used.</param>
-		/// <returns>A new font based on the descriptor, or <see langword="null" /> if no matching font exists on macOS.</returns>
+		/// <returns>A new font based on the descriptor, or <see langword="null" /> if no matching font exists.</returns>
 		/// <remarks>
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
-#if __MACOS__
 		public static XFont? FromDescriptor (XFontDescriptor descriptor, nfloat pointSize)
-#else
-		public static XFont FromDescriptor (XFontDescriptor descriptor, nfloat pointSize)
-#endif
 		{
 			var ptr = _FromDescriptor (descriptor, pointSize);
-#if __MACOS__
 			return ptr == IntPtr.Zero ? null : new XFont (ptr);
-#else
-			return new XFont (ptr);
-#endif
 		}
 
 		/// <summary>Creates a font using <see cref="FromName(string, nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
@@ -268,84 +262,58 @@ namespace UIKit {
 			return ptr == IntPtr.Zero ? null : new XFont (ptr);
 		}
 
-		/// <summary>Creates a font using <see cref="SystemFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
+		/// <summary>Creates a system font of the specified size.</summary>
 		/// <param name="size">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont CreateSystemFont (nfloat size)
 		{
 			return new XFont (_SystemFontOfSize (size));
 		}
 
+		/// <inheritdoc cref="CreateSystemFont(nfloat)" />
 #if __MACOS__
-		/// <summary>Creates a system font of the specified size.</summary>
-		/// <param name="fontSize">The size of the font in points.</param>
-		/// <returns>A new system <see cref="XFont" /> of the specified size.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat fontSize) => CreateSystemFont (fontSize);
 #else
-		/// <summary>Creates a system font of the specified size.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <returns>A new system <see cref="XFont" /> of the specified size.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat size) => CreateSystemFont (size);
 #endif
 
-		/// <summary>Creates a font using <see cref="SystemFontOfSize(nfloat, nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
+		/// <summary>Creates the default system font in the specified size and weight.</summary>
 		/// <param name="size">The font size in points.</param>
 		/// <param name="weight">The font weight.</param>
 		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont CreateSystemFont (nfloat size, nfloat weight)
 		{
 			return new XFont (_SystemFontOfSize (size, weight));
 		}
 
+		/// <inheritdoc cref="CreateSystemFont(nfloat, nfloat)" />
 #if __MACOS__
-		/// <summary>Returns the default system font in the specified size and weight.</summary>
-		/// <param name="fontSize">The size of the font in points.</param>
-		/// <param name="weight">The weight of the font.</param>
-		/// <returns>A new system <see cref="XFont" /> of the specified size and weight.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat fontSize, nfloat weight) => CreateSystemFont (fontSize, weight);
 #else
-		/// <summary>Returns the default system font in the specified size and weight.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <param name="weight">The weight of the font.</param>
-		/// <returns>A new system <see cref="XFont" /> of the specified size and weight.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont SystemFontOfSize (nfloat size, nfloat weight) => CreateSystemFont (size, weight);
 #endif
 
-		/// <summary>Creates a font using <see cref="BoldSystemFontOfSize(nfloat)" />. The returned wrapper can be disposed independently of other fonts.</summary>
+		/// <summary>Creates a bold system font of the specified size.</summary>
 		/// <param name="size">The font size in points.</param>
 		/// <returns>A new managed font wrapper.</returns>
+		/// <remarks>
+		///   <para tool="threads">This can be used from a background thread.</para>
+		/// </remarks>
 		public static XFont CreateBoldSystemFont (nfloat size)
 		{
 			return new XFont (_BoldSystemFontOfSize (size));
 		}
 
+		/// <inheritdoc cref="CreateBoldSystemFont(nfloat)" />
 #if __MACOS__
-		/// <summary>Returns a bold system font of the specified size.</summary>
-		/// <param name="fontSize">The size of the font in points.</param>
-		/// <returns>A new bold system <see cref="XFont" /> of the specified size.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont BoldSystemFontOfSize (nfloat fontSize) => CreateBoldSystemFont (fontSize);
 #else
-		/// <summary>Returns a bold system font of the specified size.</summary>
-		/// <param name="size">The size of the font in points.</param>
-		/// <returns>A new bold system <see cref="XFont" /> of the specified size.</returns>
-		/// <remarks>
-		///   <para tool="threads">This can be used from a background thread.</para>
-		/// </remarks>
 		public static XFont BoldSystemFontOfSize (nfloat size) => CreateBoldSystemFont (size);
 #endif
 

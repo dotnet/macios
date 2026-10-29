@@ -242,7 +242,12 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 			if (exception_gchandle != INVALID_GCHANDLE)
 				goto exception_handling;
 			if (nativeByref) {
-				const int max_type_length = 512; // this is just to have a maximum value, so that we can use strnlen instead of strlen
+				// We use strnlen instead of strlen because strlen is a banned API, but we don't know
+				// how long an Objective-C type encoding can be (its length is effectively unbounded,
+				// for instance for deeply nested or long-named structs), and truncating it would
+				// produce an invalid type encoding. Use INT_MAX as the upper bound instead of a
+				// smaller value.
+				const size_t max_type_length = INT_MAX;
 				size_t typelen = strnlen (type, max_type_length);
 				char *modified_type = (char *) calloc (1, typelen + 2);
 				modified_type [0] = _C_PTR;

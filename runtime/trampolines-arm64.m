@@ -203,7 +203,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		return;
 
 	// a struct with only 2-4 floats or 2-4 doubles (but not a 2-4 mix of floats and doubles) can be passed in floating point registers.
-	size_t struct_length = strnlen (struct_name, 4);
+	size_t struct_length = strnlen (struct_name, sizeof (struct_name));
 	size_t field_count = struct_length;
 	bool is_struct = field_count > 1;
 

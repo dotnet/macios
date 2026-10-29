@@ -8591,7 +8591,7 @@ namespace Metal {
 
 		[Abstract]
 		[Export ("setArgumentTable:")]
-		void SetArgumentTable (IMTL4ArgumentTable argumentTable);
+		void SetArgumentTable ([NullAllowed] IMTL4ArgumentTable argumentTable);
 
 		[Abstract]
 		[Export ("dispatchNetworkWithIntermediatesHeap:")]
@@ -8800,7 +8800,7 @@ namespace Metal {
 
 		[Abstract]
 		[Export ("setArgumentTable:atStages:")]
-		void SetArgumentTable (IMTL4ArgumentTable argumentTable, MTLRenderStages stages);
+		void SetArgumentTable ([NullAllowed] IMTL4ArgumentTable argumentTable, MTLRenderStages stages);
 
 		[Abstract]
 		[Export ("setFrontFacingWinding:")]

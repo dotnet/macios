@@ -20,5 +20,3 @@
 !deprecated-attribute-missing! MTLRenderCommandEncoder::useHeaps:count: missing a [Deprecated] attribute
 !deprecated-attribute-missing! MTLRenderCommandEncoder::useResource:usage: missing a [Deprecated] attribute
 !deprecated-attribute-missing! MTLRenderCommandEncoder::useResources:count:usage: missing a [Deprecated] attribute
-!missing-null-allowed! 'System.Void Metal.IMTL4MachineLearningCommandEncoder::SetArgumentTable(Metal.IMTL4ArgumentTable)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void Metal.IMTL4RenderCommandEncoder::SetArgumentTable(Metal.IMTL4ArgumentTable,Metal.MTLRenderStages)' is missing an [NullAllowed] on parameter #0

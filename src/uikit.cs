@@ -34259,30 +34259,38 @@ namespace UIKit {
 		bool Pinned { [Bind ("isPinned")] get; set; }
 	}
 
-	// TODO: Our trampolines generator does not support generic delegate definitions
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface UICollectionViewDiffableDataSourceSectionSnapshotHandlers<ItemType> : NSCopying
 		where ItemType : NSObject {
 
-		// 	[NullAllowed, Export ("shouldExpandItemHandler", ArgumentSemantic.Copy)]
-		// 	Func<ItemType, bool> ShouldExpandItemHandler { get; set; }
+		/// <summary>Gets or sets the callback that determines whether an item can expand.</summary>
+		/// <value>A callback that returns whether the specified item can expand, or <see langword="null" />.</value>
+		[NullAllowed, Export ("shouldExpandItemHandler", ArgumentSemantic.Copy)]
+		Func<ItemType, bool> ShouldExpandItemHandler { get; set; }
 
-		// 	[NullAllowed, Export ("willExpandItemHandler", ArgumentSemantic.Copy)]
-		// 	Action<ItemType> WillExpandItemHandler { get; set; }
+		/// <summary>Gets or sets the callback invoked before an item expands.</summary>
+		/// <value>A callback that receives the item about to expand, or <see langword="null" />.</value>
+		[NullAllowed, Export ("willExpandItemHandler", ArgumentSemantic.Copy)]
+		Action<ItemType> WillExpandItemHandler { get; set; }
 
-		// 	[NullAllowed, Export ("shouldCollapseItemHandler", ArgumentSemantic.Copy)]
-		// 	Func<ItemType, bool> ShouldCollapseItemHandler { get; set; }
+		/// <summary>Gets or sets the callback that determines whether an item can collapse.</summary>
+		/// <value>A callback that returns whether the specified item can collapse, or <see langword="null" />.</value>
+		[NullAllowed, Export ("shouldCollapseItemHandler", ArgumentSemantic.Copy)]
+		Func<ItemType, bool> ShouldCollapseItemHandler { get; set; }
 
-		// 	[NullAllowed, Export ("willCollapseItemHandler", ArgumentSemantic.Copy)]
-		// 	Action<ItemType> WillCollapseItemHandler { get; set; }
+		/// <summary>Gets or sets the callback invoked before an item collapses.</summary>
+		/// <value>A callback that receives the item about to collapse, or <see langword="null" />.</value>
+		[NullAllowed, Export ("willCollapseItemHandler", ArgumentSemantic.Copy)]
+		Action<ItemType> WillCollapseItemHandler { get; set; }
 
-		// 	[NullAllowed, Export ("snapshotForExpandingParentItemHandler", ArgumentSemantic.Copy)]
-		// 	Func<ItemType, NSDiffableDataSourceSectionSnapshot<ItemType>, NSDiffableDataSourceSectionSnapshot<ItemType>> SnapshotForExpandingParentItemHandler { get; set; }
+		/// <summary>Gets or sets the callback that provides a section snapshot when a parent item expands.</summary>
+		/// <value>A callback that receives the parent item and current section snapshot and returns the snapshot to use, or <see langword="null" />.</value>
+		[NullAllowed, Export ("snapshotForExpandingParentItemHandler", ArgumentSemantic.Copy)]
+		Func<ItemType, NSDiffableDataSourceSectionSnapshot<ItemType>, NSDiffableDataSourceSectionSnapshot<ItemType>> SnapshotForExpandingParentItemHandler { get; set; }
 	}
 
-	// TODO: Our trampolines generator does not support generic delegate definitions
 	[TV (14, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
@@ -34290,14 +34298,20 @@ namespace UIKit {
 		where SectionType : NSObject
 		where ItemType : NSObject {
 
-		// [NullAllowed, Export ("canReorderItemHandler", ArgumentSemantic.Copy)]
-		// Func<ItemType, bool> CanReorderItemHandler { get; set; }
+		/// <summary>Gets or sets the callback that determines whether an item can be reordered.</summary>
+		/// <value>A callback that returns whether the specified item can be reordered, or <see langword="null" />.</value>
+		[NullAllowed, Export ("canReorderItemHandler", ArgumentSemantic.Copy)]
+		Func<ItemType, bool> CanReorderItemHandler { get; set; }
 
-		// [NullAllowed, Export ("willReorderHandler", ArgumentSemantic.Copy)]
-		// Action<NSDiffableDataSourceTransaction<SectionType, ItemType>> WillReorderHandler { get; set; }
+		/// <summary>Gets or sets the callback invoked before items are reordered.</summary>
+		/// <value>A callback that receives the reordering transaction, or <see langword="null" />.</value>
+		[NullAllowed, Export ("willReorderHandler", ArgumentSemantic.Copy)]
+		Action<NSDiffableDataSourceTransaction<SectionType, ItemType>> WillReorderHandler { get; set; }
 
-		// [NullAllowed, Export ("didReorderHandler", ArgumentSemantic.Copy)]
-		// Action<NSDiffableDataSourceTransaction<SectionType, ItemType>> DidReorderHandler { get; set; }
+		/// <summary>Gets or sets the callback invoked after items are reordered.</summary>
+		/// <value>A callback that receives the reordering transaction, or <see langword="null" />.</value>
+		[NullAllowed, Export ("didReorderHandler", ArgumentSemantic.Copy)]
+		Action<NSDiffableDataSourceTransaction<SectionType, ItemType>> DidReorderHandler { get; set; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]

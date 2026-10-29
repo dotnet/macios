@@ -447,6 +447,7 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			var projectPath = GetProjectPath ("EmbeddedFrameworkInBindingProjectApp", platform: platform);
 			Clean (projectPath);
+			Clean (GetProjectPath ("BindingWithEmbeddedFramework", platform: platform));
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["PublishAot"] = "true";
@@ -3096,6 +3097,8 @@ namespace Xamarin.Tests {
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (project_path);
+			// Device and simulator tests share the binding output, including its embedded native framework.
+			Clean (GetProjectPath ("BindingWithEmbeddedFramework", platform: platform));
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["NoSymbolStrip"] = "false";

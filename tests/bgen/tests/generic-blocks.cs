@@ -42,10 +42,23 @@ namespace NS {
 		[return: NullAllowed]
 		[Export ("getCallback")]
 		GenericTransform<T> GetCallback ();
+
+		[return: NullAllowed]
+		[Export ("getPairCallback")]
+		Func<T, T, T> GetPairCallback ();
 	}
 
 	[BaseType (typeof (NSObject))]
 	interface GenericPairBlocks<T1, T2> where T1 : NSObject where T2 : NSObject {
+		[NullAllowed, Export ("secondAction", ArgumentSemantic.Copy)]
+		Action<T2> SecondAction { get; set; }
+
+		[NullAllowed, Export ("reversed", ArgumentSemantic.Copy)]
+		Func<T2, T1> Reversed { get; set; }
+
+		[NullAllowed, Export ("nestedAction", ArgumentSemantic.Copy)]
+		Action<TwoGenericTypes<T1, T2>> NestedAction { get; set; }
+
 		[NullAllowed, Export ("transform", ArgumentSemantic.Copy)]
 		Func<T1, bool, T2> Transform { get; set; }
 

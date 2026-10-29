@@ -67,6 +67,7 @@ public class TrampolineInfo {
 
 	public string NativeInvokerTypeName => "NI" + DelegateName;
 	public string NativeInvokerAttributeName => NativeInvokerTypeName + OpenGenericArguments;
+	public string StaticAttributeName => "S" + DelegateName + OpenGenericArguments;
 }
 
 class TrampolineParameterInfo {

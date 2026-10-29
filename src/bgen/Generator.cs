@@ -1702,6 +1702,18 @@ public partial class Generator : IMemberGatherer {
 			if (isGeneric) {
 				print ("internal readonly {0} Callback;", ti.UserDelegate);
 				print ("internal {0} ({1} callback) {{ Callback = callback; }}", nativeStaticName, ti.UserDelegate);
+				print ("internal static readonly Type TrampolineType = typeof ({0});", nativeStaticName);
+				print ("internal static Tuple<Delegate, Delegate> CreateContext ({0} callback)", ti.UserDelegate);
+				print ("{"); indent++;
+				print ("return new Tuple<Delegate, Delegate> (new {0} (new {1} (callback).Invoke), callback);", ti.DelegateName, ti.StaticName);
+				indent--; print ("}");
+				print ("[DynamicDependency (nameof (CreateContext))]");
+				print ("[DynamicDependency (nameof (TrampolineType))]");
+				print ("[DynamicDependency (\"Invoke\", typeof ({0}))]", nativeStaticName);
+				print ("static {0} ()", nativeStaticName);
+				print ("{"); indent++;
+				print ("GC.KeepAlive (null);");
+				indent--; print ("}");
 			} else {
 				print ("[UnmanagedCallersOnly]");
 				print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
@@ -1763,7 +1775,7 @@ public partial class Generator : IMemberGatherer {
 			indent++;
 			if (isGeneric) {
 				print ("delegate* unmanaged<{0}> trampoline = &{1}.Invoke;", ti.FunctionPointerSignature, nativeStaticName);
-				print ("var context = new Tuple<Delegate, Delegate> (new {0} (new {1} (callback).Invoke), callback);", ti.DelegateName, ti.StaticName);
+				print ("var context = CreateContext (callback);");
 				print ("return new BlockLiteral (trampoline, context, typeof ({0}), nameof ({0}.Invoke));", nativeStaticName);
 			} else {
 				print ("delegate* unmanaged<{0}> trampoline = &Invoke;", ti.FunctionPointerSignature);
@@ -4680,7 +4692,7 @@ public partial class Generator : IMemberGatherer {
 	{
 		if (mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) {
 			var ti = MakeTrampoline (mi.ReturnType);
-			print ("[return: DelegateProxy (typeof (ObjCRuntime.Trampolines.S{0}))]", ti.DelegateName);
+			print ("[return: DelegateProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.StaticAttributeName);
 		}
 	}
 
@@ -5246,7 +5258,7 @@ public partial class Generator : IMemberGatherer {
 				sb.Append (", ReturnType = typeof (").Append (TypeManager.RenderType (retType)).Append (")");
 				if (retType.IsSubclassOf (TypeCache.System_Delegate)) {
 					var ti = MakeTrampoline (retType);
-					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.S{ti.DelegateName})");
+					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticAttributeName})");
 				}
 			}
 			var parameters = mi.GetParameters ();
@@ -5325,7 +5337,7 @@ public partial class Generator : IMemberGatherer {
 				if (pi.SetMethod is not null)
 					sb.Append ($", ParameterBlockProxy = new Type [] {{ typeof (ObjCRuntime.Trampolines.{ti.NativeInvokerAttributeName}) }}");
 				if (pi.GetMethod is not null)
-					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.S{ti.DelegateName})");
+					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticAttributeName})");
 			}
 			sb.Append (")]");
 			print (sb.ToString ());

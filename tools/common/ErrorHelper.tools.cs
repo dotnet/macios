@@ -298,7 +298,7 @@ namespace Xamarin.Bundler {
 
 		static bool HasSuppression (IToolLog log, int code, ICustomAttributeProvider provider, MemberReference? target = null)
 		{
-			var checkId = GetPrefix (log) + code.ToString ("0000");
+			var checkId = code.ToString ("0000");
 			IEnumerable<ICustomAttribute> attributes = log is Application app
 				? app.StaticRegistrar.GetCustomAttributes (provider, "System.Diagnostics.CodeAnalysis", "UnconditionalSuppressMessageAttribute")
 				: provider.CustomAttributes;
@@ -307,6 +307,9 @@ namespace Xamarin.Bundler {
 					continue;
 				if (attribute.ConstructorArguments.Count != 2 || attribute.ConstructorArguments [1].Value is not string id)
 					continue;
+				if (!id.StartsWith ("MX", StringComparison.Ordinal) && !id.StartsWith ("MT", StringComparison.Ordinal) && !id.StartsWith ("MM", StringComparison.Ordinal))
+					continue;
+				id = id.Substring (2);
 				if (id != checkId && !id.StartsWith (checkId + ":", StringComparison.Ordinal))
 					continue;
 				if (target is null || MatchesSuppressionTarget (attribute, target))

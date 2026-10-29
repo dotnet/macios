@@ -22,16 +22,17 @@ Build-time registrar warnings can be suppressed with
 `System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute`:
 
 ```csharp
-[UnconditionalSuppressMessage ("Registrar", "MT4179", Justification = "This signature is intentional.")]
+[UnconditionalSuppressMessage ("Registrar", "MX4179", Justification = "This signature is intentional.")]
 [Export ("method:")]
 public void Method (SomeNativeObject value)
 {
 }
 ```
 
-Use the diagnostic ID shown in the build output (`MT` for iOS, tvOS, and
-Mac Catalyst; `MM` for macOS). The category is informational, and the ID may
-optionally include a colon followed by the diagnostic name.
+Use the diagnostic number with the `MX` prefix, regardless of the target
+platform. The legacy platform-specific prefixes are also accepted and treated
+identically. The category is informational, and the ID may optionally include a
+colon followed by the diagnostic name.
 
 A suppression applies to the annotated member or type, including members of
 nested types. A property suppression also applies to its accessors. Assembly-

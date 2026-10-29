@@ -1006,6 +1006,7 @@ Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientStri
 Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Auto
 Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::BStr
 Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Unicode
+Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Utf8
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::TypeEqualityComparer
 Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer..ctor()

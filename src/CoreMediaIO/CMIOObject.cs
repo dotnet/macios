@@ -110,7 +110,7 @@ namespace CoreMediaIO {
 		/// <remarks>The callback receives the object identifier, address count, address array, and client data, and must return zero. Keep the callback and client data valid until the listener has been successfully removed. Exceptions must not escape the callback.</remarks>
 		public static unsafe int AddPropertyListener (uint objectId, in CMIOObjectPropertyAddress address, delegate* unmanaged<uint, uint, CMIOObjectPropertyAddress*, IntPtr, int> listener, IntPtr clientData)
 		{
-			if (listener == null)
+			if (listener is null)
 				throw new ArgumentNullException (nameof (listener));
 			return CMIOObjectAddPropertyListener (objectId, in address, listener, clientData);
 		}
@@ -121,7 +121,7 @@ namespace CoreMediaIO {
 		/// <summary>Removes a listener using the same address, callback, and client data used to register it, returning an OSStatus error code or zero on success.</summary>
 		public static unsafe int RemovePropertyListener (uint objectId, in CMIOObjectPropertyAddress address, delegate* unmanaged<uint, uint, CMIOObjectPropertyAddress*, IntPtr, int> listener, IntPtr clientData)
 		{
-			if (listener == null)
+			if (listener is null)
 				throw new ArgumentNullException (nameof (listener));
 			return CMIOObjectRemovePropertyListener (objectId, in address, listener, clientData);
 		}

@@ -18,9 +18,9 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>12.0.100-alpha.1.26523.103</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet110_270PackageVersion>27.0.12214</MicrosoftiOSSdknet110_270PackageVersion>
-    <MicrosoftMacCatalystSdknet110_270PackageVersion>27.0.12268</MicrosoftMacCatalystSdknet110_270PackageVersion>
-    <MicrosoftmacOSSdknet110_270PackageVersion>27.0.12268</MicrosoftmacOSSdknet110_270PackageVersion>
-    <MicrosofttvOSSdknet110_270PackageVersion>27.0.12268</MicrosofttvOSSdknet110_270PackageVersion>
+    <MicrosoftMacCatalystSdknet110_270PackageVersion>27.0.12269</MicrosoftMacCatalystSdknet110_270PackageVersion>
+    <MicrosoftmacOSSdknet110_270PackageVersion>27.0.12269</MicrosoftmacOSSdknet110_270PackageVersion>
+    <MicrosofttvOSSdknet110_270PackageVersion>27.0.12269</MicrosofttvOSSdknet110_270PackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26526.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>

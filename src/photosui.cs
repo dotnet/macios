@@ -299,7 +299,8 @@ namespace PhotosUI {
 		/// <param name="category">The category of project types to describe.</param>
 		/// <param name="invalidator">The object to notify when the project type descriptions change.</param>
 		/// <returns>The data source for the requested category.</returns>
-		[Wrap ("GetTypeDescriptionDataSource (category.GetConstant ()!, invalidator)")]
+		/// <exception cref="ArgumentOutOfRangeException">The category does not have a corresponding native constant.</exception>
+		[Wrap ("GetTypeDescriptionDataSource (category.GetConstant () ?? throw new ArgumentOutOfRangeException (nameof (category)), invalidator)")]
 		IPHProjectTypeDescriptionDataSource GetTypeDescriptionDataSource (PHProjectCategory category, IPHProjectTypeDescriptionInvalidator invalidator);
 	}
 

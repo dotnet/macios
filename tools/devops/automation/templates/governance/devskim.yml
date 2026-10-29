@@ -68,7 +68,7 @@ stages:
             --confidence High,Medium,Low \
             --disable-supression \
             --disable-parallel \
-            --ignore-globs '**/.git,**/.git/**' \
+            --options-json "$PWD/tools/devops/governance/devskim-options.json" \
             2>&1 | tee "$REPORTS/$source.log"
         done
         python3 tools/devops/automation/scripts/check_devskim.py "${reports[@]}"

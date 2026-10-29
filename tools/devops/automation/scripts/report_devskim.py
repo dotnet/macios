@@ -55,8 +55,15 @@ def collect_reports(paths, scan_status):
                 region = location.get("region", {})
                 uri = location.get("artifactLocation", {}).get("uri", path.name)
                 line = region.get("startLine", 1)
+                banned = BANNED_FUNCTION_TAG in properties["tags"]
+                message = result.get("message", {}).get("text", result["ruleId"])
+                snippet = region.get("snippet", {}).get("text", "")
+                if banned:
+                    api = re.match(r"\s*([A-Za-z_]\w*)\s*(?:\(|$)", snippet)
+                    if api and not re.search(rf"\b{re.escape(api[1])}\b", message):
+                        message += f": {api[1]}"
                 findings.append({
-                    "banned": BANNED_FUNCTION_TAG in properties["tags"],
+                    "banned": banned,
                     "rule": result["ruleId"],
                     "severity": properties.get("DevSkimSeverity",
                                                rule.get("properties", {}).get("DevSkimSeverity",
@@ -66,8 +73,8 @@ def collect_reports(paths, scan_status):
                     "file": uri,
                     "line": line,
                     "url": source_url(run, uri, line),
-                    "message": result.get("message", {}).get("text", result["ruleId"]),
-                    "snippet": region.get("snippet", {}).get("text", ""),
+                    "message": message,
+                    "snippet": snippet,
                     "guidance": rule.get("help", {}).get("text", ""),
                     "help_url": web_url(rule.get("helpUri", "")),
                 })

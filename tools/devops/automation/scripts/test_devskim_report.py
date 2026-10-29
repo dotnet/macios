@@ -63,6 +63,27 @@ class DevSkimReportTests(unittest.TestCase):
             self.assertIn("Moderate", rendered)
             self.assertIn("<pre>printf</pre>", rendered)
 
+    def test_banned_api_is_visible_outside_collapsed_details(self):
+        cases = [
+            ("Banned C function detected", "printf", "Banned C function detected: printf"),
+            ("Banned C function detected", "snprintf (buffer, size, format)",
+             "Banned C function detected: snprintf"),
+            ("Banned C function detected (strcpy)", "strcpy(dst, src)", "Banned C function detected (strcpy)"),
+            ("Banned C function detected", "", "Banned C function detected"),
+        ]
+        for message, snippet, expected in cases:
+            with self.subTest(snippet=snippet), tempfile.TemporaryDirectory() as directory:
+                result = finding()
+                result["message"] = {"text": message}
+                result["locations"] = [{
+                    "physicalLocation": {"region": {"snippet": {"text": snippet}}},
+                }]
+                path = self.create_report(directory, [result])
+                findings, summary = report_devskim.collect_reports([path], "Succeeded")
+                self.assertEqual(expected, findings[0]["message"])
+                rendered = report_devskim.render_html(findings, summary, [])
+                self.assertIn(f'<td class="issue">{expected}', rendered)
+
     def test_untrusted_sarif_is_escaped(self):
         with tempfile.TemporaryDirectory() as directory:
             result = finding()

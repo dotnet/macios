@@ -1,0 +1,7 @@
+{
+  "Globs": [
+    "**/.git",
+    "**/.git/**",
+    "**/tools/sharpie/clang/include/**"
+  ]
+}

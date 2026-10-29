@@ -721,7 +721,7 @@ namespace Xamarin.Tests {
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");
-				ExecuteWithMagicWordAndAssert (appExecutable);
+				ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, appExecutable);
 			}
 		}
 
@@ -862,6 +862,45 @@ namespace Xamarin.Tests {
 				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 				Assert.That (errors.Length, Is.GreaterThan (0), "Error count");
 				Assert.That (errors [0].Message, Does.Match (failureMessagePattern), "Message failure");
+			}
+		}
+
+		[Test]
+		public void CleanAppBundleRootDirectoryWithQuotes ([Values (ApplePlatform.MacOSX, ApplePlatform.MacCatalyst)] ApplePlatform platform, [Values ("", "'", "\"", "`", "%27", "'\"`")] string quote, [Values (false, true)] bool enableAutomaticCleanup)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			var appPath = Path.Combine (Cache.CreateTemporaryDirectory (), "MySimpleApp.app");
+			var resourceDirectory = Path.Combine (appPath, "Contents", "Resources", $"Quoted{quote}Directory");
+			Directory.CreateDirectory (resourceDirectory);
+			var resourcePath = Path.Combine (resourceDirectory, $"Rolf{quote}s Quote.txt");
+			File.WriteAllText (resourcePath, "A bundled resource");
+			var rootFile = Path.Combine (appPath, $"Other{quote}File.txt");
+			File.WriteAllText (rootFile, "An extraneous file");
+			var rootDirectory = Path.Combine (appPath, $"Other{quote}Directory");
+			Directory.CreateDirectory (rootDirectory);
+			var nestedFile = Path.Combine (rootDirectory, $"Other{quote}File.txt");
+			File.WriteAllText (nestedFile, "An extraneous nested file");
+			var crashDump = Path.Combine (appPath, $"mono_crash.{quote}123.blob");
+			File.WriteAllText (crashDump, "A crash dump");
+
+			var runtimeIdentifier = platform == ApplePlatform.MacOSX ? "osx-arm64" : "maccatalyst-arm64";
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["AppBundleDir"] = appPath;
+			properties ["EnableAutomaticAppBundleRootDirectoryCleanup"] = enableAutomaticCleanup ? "true" : "false";
+			var result = DotNet.AssertBuild (projectPath, properties, target: "_CleanAppBundleRootDirectory");
+			var warnings = BinLog.GetBuildLogWarnings (result.BinLogPath).FilterWarnings (platform).ToArray ();
+
+			Assert.That (File.ReadAllText (resourcePath), Is.EqualTo ("A bundled resource"), "Bundled resource contents");
+			Assert.That (File.Exists (rootFile), Is.EqualTo (!enableAutomaticCleanup), "Extraneous file");
+			Assert.That (Directory.Exists (rootDirectory), Is.EqualTo (!enableAutomaticCleanup), "Extraneous directory");
+			Assert.That (File.Exists (nestedFile), Is.EqualTo (!enableAutomaticCleanup), "Extraneous nested file");
+			Assert.That (File.Exists (crashDump), Is.EqualTo (!enableAutomaticCleanup), "Crash dump");
+			Assert.That (warnings.Length, Is.EqualTo (enableAutomaticCleanup ? 0 : 1), "Warning count");
+			if (!enableAutomaticCleanup) {
+				Assert.That (warnings [0].Message, Does.Contain (rootFile), "Extraneous file warning");
+				Assert.That (warnings [0].Message, Does.Contain (nestedFile), "Extraneous nested file warning");
+				Assert.That (warnings [0].Message, Does.Not.Contain (resourcePath), "Bundled resources must not be reported");
 			}
 		}
 
@@ -2928,7 +2967,7 @@ namespace Xamarin.Tests {
 			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.dylib");
 			AssertThatDylibExistsAndIsReidentified (appPath, "/subdir/libframework.so");
 
-			ExecuteWithMagicWordAndAssert (appExecutable);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, appExecutable);
 		}
 
 		[Test]
@@ -3460,7 +3499,6 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "macOS")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "MacCatalyst")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64;", "tvOS")]
-		[Ignore ("https://github.com/dotnet/runtime/issues/115145")]
 		public void SourcelinkTest (ApplePlatform platform, string runtimeIdentifiers, string platformName)
 		{
 			// Sourcelink uses the latest commit and tests to see if

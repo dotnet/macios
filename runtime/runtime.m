@@ -7,6 +7,7 @@
 */
 
 #include <pthread.h>
+#include <limits.h>
 #include <objc/runtime.h>
 #include <sys/stat.h>
 #include <dlfcn.h>
@@ -1425,15 +1426,22 @@ xamarin_objc_type_size (const char *type)
 			xamarin_assertion_message ("Unhandled type encoding: %s", type);
 			break;
 		case _C_ARY_B: {
-			unsigned long size = 0;
-			unsigned long len = (unsigned long) atol (type+1);
-			do {
-				type++;
-			} while (isdigit (*type));
+			if (type [1] < '0' || type [1] > '9')
+				xamarin_assertion_message ("Invalid array length in type encoding: %s", original_type);
+			char *element_type = NULL;
+			errno = 0;
+			unsigned long len = strtoul (type + 1, &element_type, 10);
+			if (errno == ERANGE || *element_type == 0)
+				xamarin_assertion_message ("Invalid array length in type encoding: %s", original_type);
+			type = element_type;
 
-			size = xamarin_objc_type_size (type);
+			unsigned long size = xamarin_objc_type_size (type);
+			if (size > ULONG_MAX - (sizeof (void *) - 1))
+				xamarin_assertion_message ("Array element size overflow in type encoding: %s", original_type);
 
 			size = (size + (sizeof (void *) - 1)) & ~((sizeof (void *) - 1));
+			if (size != 0 && len > ULONG_MAX / size)
+				xamarin_assertion_message ("Array size overflow in type encoding: %s", original_type);
 
 			return len * size;
 		}

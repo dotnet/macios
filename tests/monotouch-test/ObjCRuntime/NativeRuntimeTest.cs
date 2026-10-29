@@ -5,6 +5,18 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NativeRuntimeTest {
+		[DllImport ("__Internal")]
+		static extern nuint xamarin_objc_type_size (string type);
+
+		[TestCase ("[0i]", 0)]
+		[TestCase ("[1i]", 1)]
+		[TestCase ("[123i]", 123)]
+		[TestCase ("[2[3i]]", 6)]
+		public void ArrayTypeSize (string encoding, int pointerCount)
+		{
+			Assert.That (xamarin_objc_type_size (encoding), Is.EqualTo ((nuint) (pointerCount * IntPtr.Size)), encoding);
+		}
+
 		// bool xamarin_collapse_struct_name (const char *type, char struct_name[], int max_char, GCHandle *exception_gchandle)
 		[DllImport ("__Internal")]
 		unsafe static extern byte xamarin_collapse_struct_name (string type, StringBuilder struct_name, int max_char, ref IntPtr exception_gchandle);

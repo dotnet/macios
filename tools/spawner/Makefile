@@ -18,7 +18,7 @@ define SpawnerTemplate
 .libs/$(1):
 	$$(Q) mkdir -p $$@
 
-.libs/$(1)/spawner.o: spawner.c | .libs/$(1)
+.libs/$(1)/spawner.o: spawner.c $$(TOP)/runtime/native-support.h | .libs/$(1)
 	$$(Q_CC) $$(CLANG) -arch $(1) -isysroot $$(SPAWNER_SDK) -c $$< -o $$@
 
 .libs/$(1)/spawner: .libs/$(1)/spawner.o

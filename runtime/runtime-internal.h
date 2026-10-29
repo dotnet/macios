@@ -12,6 +12,7 @@
 #define __RUNTIME_INTERNAL_H__
 
 #include "xamarin/xamarin.h"
+#include "native-support.h"
 
 #define PRINT(...) do { xamarin_printf (__VA_ARGS__); } while (0);
 #define LOG(...) do { if (xamarin_log_level > 0) xamarin_printf (__VA_ARGS__); } while (0);

@@ -9,6 +9,17 @@
 #include <unistd.h>
 #include <zlib.h>
 #include "libtest.h"
+#include "../../runtime/native-support.h"
+
+int
+x_test_error_description (int error, char *buffer, size_t size)
+{
+	errno = EBUSY;
+	struct XamarinErrorDescription description = xamarin_error_description (error);
+	int saved_errno = errno;
+	strlcpy (buffer, description.text, size);
+	return saved_errno;
+}
 
 NSString *x_GlobalString = @"There's nothing cruvus here!";
 

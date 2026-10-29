@@ -288,7 +288,7 @@ $(1)_TARGETS = \
 
 all-local:: $$($(1)_TARGETS) $(GENERATED_FILES)
 
-EXTRA_DEPENDENCIES = libtest.h $(GENERATED_FILES) rename.h
+EXTRA_DEPENDENCIES = libtest.h $(GENERATED_FILES) rename.h $(TOP)/runtime/native-support.h
 
 .libs/$(1)/lib%.a: .libs/$(1)/lib%.o
 	$(Q) rm -f $$@

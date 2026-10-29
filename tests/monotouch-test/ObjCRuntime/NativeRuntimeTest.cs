@@ -6,6 +6,21 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class NativeRuntimeTest {
 		[DllImport ("__Internal")]
+		static extern int x_test_error_description (int error, StringBuilder buffer, nuint size);
+
+		[TestCase (2)]
+		[TestCase (int.MinValue)]
+		[TestCase (int.MaxValue)]
+		public void ErrorDescription (int error)
+		{
+			var buffer = new StringBuilder (256);
+			Assert.That (x_test_error_description (error, buffer, (nuint) buffer.Capacity), Is.EqualTo (16), "Preserved errno");
+			Assert.That (buffer.ToString (), Is.Not.Empty, "Description");
+			if (error != 2)
+				Assert.That (buffer.ToString (), Does.Contain (error.ToString (System.Globalization.CultureInfo.InvariantCulture)), "Numeric fallback");
+		}
+
+		[DllImport ("__Internal")]
 		static extern nuint xamarin_objc_type_size (string type);
 
 		[TestCase ("[0i]", 0)]

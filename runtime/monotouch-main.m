@@ -60,13 +60,13 @@ xamarin_load_aot_data (MonoAssembly *assembly, int size, gpointer user_data, voi
 	
 	int fd = open (path, O_RDONLY);
 	if (fd < 0) {
-		LOG (PRODUCT ": Could not load the aot data for %s from %s: %s\n", aname, path, strerror (errno));
+		LOG (PRODUCT ": Could not load the aot data for %s from %s: %s\n", aname, path, xamarin_error_description (errno).text);
 		return NULL;
 	}
 
 	void *ptr = mmap (NULL, (size_t) size, PROT_READ, MAP_FILE | MAP_PRIVATE, fd, 0);
 	if (ptr == MAP_FAILED) {
-		LOG (PRODUCT ": Could not map the aot file for %s: %s\n", aname, strerror (errno));
+		LOG (PRODUCT ": Could not map the aot file for %s: %s\n", aname, xamarin_error_description (errno).text);
 		close (fd);
 		return NULL;
 	}

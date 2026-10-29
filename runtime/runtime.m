@@ -2900,7 +2900,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
 		if (snprintf (path, pathlen, "%s/%s/%s", root, culture, resource) < 0) {
-			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s'): %s", root, culture, resource, strerror (errno));
+			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s'): %s", root, culture, resource, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
 			return true;
@@ -2909,7 +2909,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	// arch-specific extension
 	if (snprintf (path, pathlen, "%s/%s.%s", root, resource, xamarin_arch_name) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (4): %s", resource, strerror (errno));
+		LOG (PRODUCT ": Failed to construct path for resource: %s (4): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2918,7 +2918,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 #if !MONOMAC
 	// pointer-size subdirectory with arch-specific extension
 	if (snprintf (path, pathlen, "%s/%s/%s.%s", root, ARCH_SUBDIR, resource, xamarin_arch_name) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2926,7 +2926,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	// pointer-size subdirectory
 	if (snprintf (path, pathlen, "%s/%s/%s", root, ARCH_SUBDIR, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2935,7 +2935,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	// RID-specific subdirectory
 	if (snprintf (path, pathlen, "%s/.xamarin/%s/%s", root, RUNTIMEIDENTIFIER, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2944,7 +2944,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
 		if (snprintf (path, pathlen, "%s/%s/.xamarin/%s/%s", root, culture, RUNTIMEIDENTIFIER, resource) < 0) {
-			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s', runtimeidentifier: %s): %s", root, culture, resource, RUNTIMEIDENTIFIER, strerror (errno));
+			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s', runtimeidentifier: %s): %s", root, culture, resource, RUNTIMEIDENTIFIER, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
 			return true;
@@ -2953,7 +2953,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	// just the file, no extensions, etc.
 	if (snprintf (path, pathlen, "%s/%s", root, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (6): %s", resource, strerror (errno));
+		LOG (PRODUCT ": Failed to construct path for resource: %s (6): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;

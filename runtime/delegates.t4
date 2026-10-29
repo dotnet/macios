@@ -6,6 +6,15 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#
 	var delegates = new XDelegates {
+		new XDelegate ("uint64_t", "ulong", "xamarin_convert_native_enum",
+			"GCHandle->MonoReflectionType *", "IntPtr", "type",
+			"uint64_t", "ulong", "value",
+			"int8_t", "sbyte", "to_managed"
+		) {
+			WrappedManagedFunction = "ConvertNativeEnum",
+			OnlyDynamicUsage = false,
+		},
+
 		new XDelegate ("void", "void", "xamarin_gc_collect") {
 			WrappedManagedFunction = "GCCollect",
 		},

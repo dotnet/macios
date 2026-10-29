@@ -352,7 +352,7 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 	case _C_ULNG:
 	case _C_LNG_LNG:
 	case _C_ULNG_LNG:
-		it->state->x0 = *(uint64_t *) mono_object_unbox (value);
+		it->state->x0 = xamarin_convert_native_enum_value (mtype, *(uint64_t *) mono_object_unbox (value), false, exception_gchandle);
 		break;
 
 	// For pointer types we get the value itself.

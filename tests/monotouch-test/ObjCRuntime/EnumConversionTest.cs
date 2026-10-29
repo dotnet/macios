@@ -23,6 +23,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[DllImport (Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
 		static extern void SetNativeValue (IntPtr handle, IntPtr selector, nuint value);
 
+		[DllImport (Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
+		static extern nuint ExchangeNativeValues (IntPtr handle, IntPtr selector, ref nuint value, out nuint output);
+
+		[DllImport (Constants.ObjectiveCLibrary, EntryPoint = "objc_msgSend")]
+		static extern nint InvokeSignedNativeValue (IntPtr handle, IntPtr selector, nint value);
+
 #if !XAMCORE_5_0
 		[TestCase (NSImageInterpolation.Default, 0)]
 		[TestCase (NSImageInterpolation.None, 1)]
@@ -47,6 +53,113 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (GetNativeValue (context.Handle, Selector.GetHandle ("imageInterpolation")), Is.EqualTo ((nuint) native), "Native getter");
 			SetNativeValue (context.Handle, Selector.GetHandle ("setImageInterpolation:"), (nuint) native);
 			Assert.That (context.ImageInterpolation, Is.EqualTo (managed), "Managed getter");
+		}
+
+		[TestCase (NSImageInterpolation.Medium, 4)]
+		[TestCase (NSImageInterpolation.High, 3)]
+		[TestCase ((NSImageInterpolation) 42, 42)]
+		public void ImageInterpolationOverride (NSImageInterpolation managed, int native)
+		{
+			using var context = new InterpolationContext ();
+			SetNativeValue (context.Handle, Selector.GetHandle ("setImageInterpolation:"), (nuint) native);
+			Assert.That (context.LastSetValue, Is.EqualTo (managed), "Override setter argument");
+			context.ReturnValue = managed;
+			Assert.That (GetNativeValue (context.Handle, Selector.GetHandle ("imageInterpolation")), Is.EqualTo ((nuint) native), "Override getter return value");
+		}
+
+		[Preserve (AllMembers = true)]
+		class InterpolationContext : NSGraphicsContext {
+			public NSImageInterpolation LastSetValue { get; private set; }
+			public NSImageInterpolation ReturnValue { get; set; }
+			public override NSImageInterpolation ImageInterpolation {
+				get => ReturnValue;
+				set => LastSetValue = value;
+			}
+		}
+
+		[TestCase (NSTextAlignment.Center, 1)]
+		[TestCase (NSTextAlignment.Right, 2)]
+		public void TextAlignmentOverride (NSTextAlignment managed, int arm64Native)
+		{
+			var native = (nuint) arm64Native;
+#if !XAMCORE_5_0
+			if (!Runtime.IsARM64CallingConvention)
+				native = (nuint) (ulong) managed;
+#endif
+			using var field = new AlignmentField ();
+			SetNativeValue (field.Handle, Selector.GetHandle ("setAlignment:"), native);
+			Assert.That (field.LastSetValue, Is.EqualTo (managed), "Override setter argument");
+			Assert.That (field.Alignment, Is.EqualTo (managed), "Forwarded base setter");
+			Assert.That (GetNativeValue (field.Handle, Selector.GetHandle ("alignment")), Is.EqualTo (native), "Override getter forwarding to base");
+		}
+
+		[Preserve (AllMembers = true)]
+		class AlignmentField : NSTextField {
+			public NSTextAlignment LastSetValue { get; private set; }
+
+			public override NSTextAlignment Alignment {
+				get => base.Alignment;
+				set {
+					LastSetValue = value;
+					base.Alignment = value;
+				}
+			}
+		}
+
+		[TestCase (NSImageInterpolation.Medium, 4)]
+		[TestCase (NSImageInterpolation.High, 3)]
+		[TestCase ((NSImageInterpolation) 42, 42)]
+		public void NativeEnumRefOut (NSImageInterpolation managed, int native)
+		{
+			using var callbacks = new EnumCallbacks ();
+			callbacks.ReturnValue = managed;
+			var value = (nuint) native;
+			var result = ExchangeNativeValues (callbacks.Handle, Selector.GetHandle ("exchange:output:"), ref value, out var output);
+			Assert.That (callbacks.ReceivedValue, Is.EqualTo (managed), "Ref argument");
+			Assert.That (value, Is.EqualTo ((nuint) native), "Ref writeback");
+			Assert.That (output, Is.EqualTo ((nuint) native), "Out writeback");
+			Assert.That (result, Is.EqualTo ((nuint) native), "Return value");
+		}
+
+		[TestCase (NSImageResizingMode.Stretch, 1)]
+		[TestCase (NSImageResizingMode.Tile, 0)]
+		[TestCase ((NSImageResizingMode) (-1), -1)]
+		public void SignedNativeEnumCallback (NSImageResizingMode managed, int arm64Native)
+		{
+			var native = (nint) arm64Native;
+#if !XAMCORE_5_0
+			if (!Runtime.IsARM64CallingConvention)
+				native = (nint) (long) managed;
+#endif
+			using var callbacks = new EnumCallbacks ();
+			callbacks.ResizingMode = managed;
+			var result = InvokeSignedNativeValue (callbacks.Handle, Selector.GetHandle ("resize:"), native);
+			Assert.That (callbacks.ReceivedResizingMode, Is.EqualTo (managed), "Signed argument");
+			Assert.That (result, Is.EqualTo (native), "Signed return value");
+		}
+
+		[Preserve (AllMembers = true)]
+		class EnumCallbacks : NSObject {
+			public NSImageInterpolation ReceivedValue { get; private set; }
+			public NSImageInterpolation ReturnValue { get; set; }
+			public NSImageResizingMode ReceivedResizingMode { get; private set; }
+			public NSImageResizingMode ResizingMode { get; set; }
+
+			[Export ("exchange:output:")]
+			public NSImageInterpolation Exchange (ref NSImageInterpolation value, out NSImageInterpolation output)
+			{
+				ReceivedValue = value;
+				value = ReturnValue;
+				output = ReturnValue;
+				return ReturnValue;
+			}
+
+			[Export ("resize:")]
+			public NSImageResizingMode Resize (NSImageResizingMode value)
+			{
+				ReceivedResizingMode = value;
+				return ResizingMode;
+			}
 		}
 
 		[TestCase (NSImageResizingMode.Stretch, 1)]

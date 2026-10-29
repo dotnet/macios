@@ -366,7 +366,27 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 						default: {
 							MonoClass *p_klass = mono_class_from_mono_type (p);
 							ADD_TO_MONOOBJECT_RELEASE_LIST  (p_klass);
-							if (mono_class_is_delegate (p_klass)) {
+							if (mono_type_is_byref (p) && mono_class_is_enum (p_klass) && mono_class_value_size (p_klass, NULL) == sizeof (uint64_t) && arg != NULL) {
+								MonoReflectionMethod *rmethod = mono_method_get_object (domain, method, NULL);
+								ADD_TO_MONOOBJECT_RELEASE_LIST (rmethod);
+								bool is_out = xamarin_is_parameter_out (rmethod, (int) i, &exception_gchandle) != 0;
+								if (exception_gchandle != INVALID_GCHANDLE)
+									goto exception_handling;
+								uint64_t *value = (uint64_t *) xamarin_calloc (sizeof (uint64_t));
+								free_list = s_list_prepend (free_list, value);
+								if (!is_out) {
+									*value = xamarin_convert_native_enum_value (p, *(uint64_t *) arg, true, &exception_gchandle);
+									if (exception_gchandle != INVALID_GCHANDLE)
+										goto exception_handling;
+								}
+								arg_ptrs [i + mofs] = value;
+								if (!needs_writeback) {
+									needs_writeback = TRUE;
+									arg_copy = (void **) xamarin_calloc (managed_arg_count * sizeof (void *));
+									writeback = (bool *) xamarin_calloc (managed_arg_count * sizeof (bool));
+								}
+								writeback [i + mofs] = TRUE;
+							} else if (mono_class_is_delegate (p_klass)) {
 								MonoObject *del = xamarin_get_delegate_for_block_parameter (method, INVALID_TOKEN_REF, (int) i, arg, &exception_gchandle);
 								if (exception_gchandle != INVALID_GCHANDLE)
 									goto exception_handling;
@@ -546,6 +566,15 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 						break;
 					}
 				}
+				case _C_LNG:
+				case _C_ULNG:
+				case _C_LNG_LNG:
+				case _C_ULNG_LNG:
+					arg_frame [ofs] = (void *) (uintptr_t) xamarin_convert_native_enum_value (p, (uint64_t) (uintptr_t) arg, true, &exception_gchandle);
+					if (exception_gchandle != INVALID_GCHANDLE)
+						goto exception_handling;
+					arg_ptrs [i + mofs] = &arg_frame [frameofs];
+					break;
 				default:
 					arg_frame [ofs] = arg;
 					arg_ptrs [i + mofs] = &arg_frame [frameofs];
@@ -701,6 +730,10 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 					goto exception_handling;
 				}
 				*(NSObject **) arg = obj;
+			} else if (type [0] == _C_PTR && mono_type_is_byref (p)) {
+				*(uint64_t *) arg = xamarin_convert_native_enum_value (p, *(uint64_t *) arg_ptrs [i + mofs], false, &exception_gchandle);
+				if (exception_gchandle != INVALID_GCHANDLE)
+					goto exception_handling;
 			} else {
 				exception_gchandle = xamarin_get_exception_for_parameter (8030, 0, "Unable to marshal the out/ref parameter", sel, method, p, (int) i, false);
 				goto exception_handling;

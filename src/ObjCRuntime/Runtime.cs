@@ -543,6 +543,22 @@ namespace ObjCRuntime {
 #pragma warning restore RBI0014
 		}
 
+		static ulong ConvertNativeEnum (IntPtr type, ulong value, sbyte toManaged)
+		{
+			if (GetGCHandleTarget (type) is not Type enumType)
+				throw new ArgumentException ("Expected an enum type handle.", nameof (type));
+			return ConvertNativeEnumValue (enumType, value, toManaged != 0);
+		}
+
+		internal static ulong ConvertNativeEnumValue (Type type, ulong value, bool toManaged)
+		{
+			ConvertNativeEnumValue (type, ref value, toManaged);
+			return value;
+		}
+
+		// The binding generator emits direct calls to the NativeAttribute conversion helpers.
+		static partial void ConvertNativeEnumValue (Type type, ref ulong value, bool toManaged);
+
 
 		// value: native NSString *
 		// returns: GCHandle to a (smart) enum value. Caller must free the GCHandle.

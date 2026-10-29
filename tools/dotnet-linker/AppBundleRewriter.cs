@@ -1055,6 +1055,13 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference Runtime_ConvertNativeEnumValue {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_Runtime, "ConvertNativeEnumValue",
+					v => v.IsStatic && v.Parameters.Count == 3 && v.Parameters [1].ParameterType.Is ("System", "UInt64"));
+			}
+		}
+
 		public MethodReference Runtime_HasNSObject {
 			get {
 				return GetMethodReference (PlatformAssembly,

@@ -1546,7 +1546,45 @@ public partial class Generator : IMemberGatherer {
 		if (libraries.Count > 0)
 			GenerateLibraryHandles ();
 
+		if (!BindThirdPartyLibrary)
+			GenerateNativeEnumConversions ();
+
 		ThrowIfExceptions ();
+	}
+
+	void GenerateNativeEnumConversions ()
+	{
+		sw = GetOutputStream ("ObjCRuntime", "Runtime.NativeEnumConversions");
+		Header (sw);
+		print ("namespace ObjCRuntime {");
+		print ("public partial class Runtime {");
+		print ("static partial void ConvertNativeEnumValue (Type type, ref ulong value, bool toManaged)");
+		print ("{");
+		indent++;
+		foreach (var type in api.Types.Concat (TypeCache.NSObject.Assembly.GetTypes ()).Where (v => v.IsEnum).DistinctBy (v => v.FullName).OrderBy (v => v.FullName, StringComparer.Ordinal)) {
+			if (type.IsUnavailable (this))
+				continue;
+			var native = AttributeManager.GetCustomAttribute<NativeAttribute> (type);
+			if (native is null || string.IsNullOrEmpty (native.ConvertToManaged) || string.IsNullOrEmpty (native.ConvertToNative))
+				continue;
+			var enumType = TypeManager.RenderType (type);
+			var signed = type.GetEnumUnderlyingType () == TypeCache.System_Int64;
+			string Qualify (string method)
+			{
+				return method.StartsWith ("global::", StringComparison.Ordinal) ? method : $"global::{type.Namespace}.{method}";
+			}
+			print ($"if (type == typeof ({enumType})) {{");
+			indent++;
+			print ($"value = unchecked (toManaged ? (ulong) {Qualify (native.ConvertToManaged)} (({(signed ? "nint" : "nuint")}) value) : (ulong) {Qualify (native.ConvertToNative)} (({enumType}) value));");
+			print ("return;");
+			indent--;
+			print ("}");
+		}
+		indent--;
+		print ("}");
+		print ("}");
+		print ("}");
+		sw.Close ();
 	}
 
 	void ThrowIfExceptions ()

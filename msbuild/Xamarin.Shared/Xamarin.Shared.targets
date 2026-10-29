@@ -1107,7 +1107,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ACTool
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('@(ImageAsset)' != '' Or ('@(_ProcessedImageAssets)' == '' And ('$(_XSAppIconAssets)' != '' Or '$(_XSLaunchImageAssets)' != '')))"
+			Condition="'$(IsMacEnabled)' == 'true' And ('@(ImageAsset->Count())' != '0' Or ('@(_ProcessedImageAssets->Count())' == '0' And ('$(_XSAppIconAssets)' != '' Or '$(_XSLaunchImageAssets)' != '')))"
 			ToolPath="$(ACToolPath)"
 			AdditionalArguments="$(ACToolExtraArgs)"
 			AdditionalArgumentsPropertyName="ACToolExtraArgs"

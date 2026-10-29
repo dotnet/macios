@@ -63,6 +63,7 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Engine.Logger.WarningsEvents.Select (v => v.Message), Is.EqualTo (new [] {
 				$"The '{key}' value '{value}' in Info.plist refers to a directory that does not exist.",
 			}), "Warnings");
+			Assert.That (Engine.Logger.WarningsEvents.Single ().Code, Is.EqualTo ("MT7201"), "Warning code");
 		}
 
 		[TestCase (false, false)]

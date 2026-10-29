@@ -276,7 +276,7 @@ namespace Xamarin.MacDev.Tasks {
 					return;
 			}
 
-			Log.LogWarning (MSBStrings.W7201, key, value);
+			Log.LogWarning (7201, null, MSBStrings.W7201, key, value);
 		}
 
 		public override bool Execute ()

@@ -12,7 +12,7 @@ using CoreLocation;
 
 namespace SafetyKit {
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	// SafetyKit (Crash Detection) is device-only; the framework was only added to the iOS simulator later.
 	[SupportedSimulator ("ios16.4")]
 	[BaseType (typeof (NSObject))]
@@ -30,7 +30,7 @@ namespace SafetyKit {
 
 	delegate void SACrashDetectionManagerRequestAuthorizationCompletionHandler (SAAuthorizationStatus status, [NullAllowed] NSError error);
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[SupportedSimulator ("ios16.4")]
 	[BaseType (typeof (NSObject))]
 	interface SACrashDetectionManager {
@@ -55,7 +55,7 @@ namespace SafetyKit {
 
 	interface ISACrashDetectionDelegate { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SACrashDetectionDelegate {
@@ -65,7 +65,7 @@ namespace SafetyKit {
 
 	delegate void SAEmergencyResponseManagerDialVoiceCallCompletionHandler (bool requestAccepted, [NullAllowed] NSError error);
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[SupportedSimulator ("ios16.4")]
 	[BaseType (typeof (NSObject))]
 	interface SAEmergencyResponseManager {
@@ -83,7 +83,7 @@ namespace SafetyKit {
 
 	interface ISAEmergencyResponseDelegate { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SAEmergencyResponseDelegate {

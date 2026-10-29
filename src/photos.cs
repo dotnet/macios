@@ -373,12 +373,12 @@ namespace Photos {
 		[return: NullAllowed]
 		PHAssetResource GetAssetResource (PHAssetResourceUploadJob uploadJob);
 
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("pixelWidth")]
 		nint PixelWidth { get; }
 
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("pixelHeight")]
 		nint PixelHeight { get; }
@@ -1030,15 +1030,15 @@ namespace Photos {
 		[Export ("renderedContentURL", ArgumentSemantic.Copy)]
 		NSUrl RenderedContentUrl { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("defaultRenderedContentType", ArgumentSemantic.Copy)]
 		UTType DefaultRenderedContentType { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("supportedRenderedContentTypes", ArgumentSemantic.Copy)]
 		UTType [] SupportedRenderedContentTypes { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("renderedContentURLForType:error:")]
 		[return: NullAllowed]
 		NSUrl GetRenderedContentUrl (UTType type, [NullAllowed] out NSError error);
@@ -1188,7 +1188,7 @@ namespace Photos {
 		[NullAllowed]
 		PHAssetImageProgressHandler ProgressHandler { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowSecondaryDegradedImage")]
 		bool AllowSecondaryDegradedImage { get; set; }
 
@@ -1525,13 +1525,13 @@ namespace Photos {
 		[Field ("PHLocalIdentifiersErrorKey")]
 		NSString LocalIdentifiersErrorKey { get; }
 
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("fetchPersistentChangesSinceToken:error:")]
 		[return: NullAllowed]
 		PHPersistentChangeFetchResult FetchPersistentChanges (PHPersistentChangeToken since, [NullAllowed] out NSError error);
 
-		[TV (16, 0), iOS (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("currentChangeToken")]
 		PHPersistentChangeToken CurrentChangeToken { get; }
@@ -2000,7 +2000,7 @@ namespace Photos {
 		NSError Error { get; }
 	}
 
-	[TV (16, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2016,7 +2016,7 @@ namespace Photos {
 	delegate void PHPersistentChangeFetchResultEnumerator (PHPersistentChange change, ref bool stop);
 
 
-	[TV (16, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2025,14 +2025,14 @@ namespace Photos {
 		void EnumerateChanges (PHPersistentChangeFetchResultEnumerator block);
 	}
 
-	[TV (16, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PHPersistentChangeToken : NSCopying, NSSecureCoding {
 	}
 
-	[TV (16, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

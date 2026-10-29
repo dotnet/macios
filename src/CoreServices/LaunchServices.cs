@@ -59,7 +59,7 @@ namespace CoreServices {
 	public enum LSResult {
 		/// <summary>To be added.</summary>
 		Success = 0,
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos13.0")]
 		MalformedLocErr = -10400,
 		/// <summary>To be added.</summary>
 		AppInTrash = -10660,

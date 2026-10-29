@@ -607,7 +607,7 @@ namespace AudioUnit {
 		[Export ("isLoadedInProcess")]
 		bool IsLoadedInProcess { get; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("migrateFromPlugin")]
 		NSData [] MigrateFromPlugin { get; }
 	}

@@ -18,9 +18,9 @@ using OS_nw_protocol_options = ObjCRuntime.NativeHandle;
 
 namespace Network {
 	[SupportedOSPlatform ("tvos16.0")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos13.0")]
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("maccatalyst16.0")]
 	public class NSProtocolFramerOptions : NWProtocolOptions {
 
 		[Preserve (Conditional = true)]

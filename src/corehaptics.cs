@@ -313,7 +313,7 @@ namespace CoreHaptics {
 		[Export ("playPatternFromData:error:")]
 		bool PlayPattern (NSData data, [NullAllowed] out NSError outError);
 
-		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
 		[Export ("playsAudioOnly")]
 		bool PlaysAudioOnly { get; set; }
 	}
@@ -366,7 +366,7 @@ namespace CoreHaptics {
 		[Field ("CHHapticPatternKeyEventWaveformUseVolumeEnvelope")]
 		NSString EventWaveformUseVolumeEnvelopeKey { get; }
 
-		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
 		[Field ("CHHapticPatternKeyEventWaveformLoopEnabled")]
 		NSString EventWaveformLoopEnabledKey { get; }
 	}
@@ -419,7 +419,7 @@ namespace CoreHaptics {
 		[Wrap ("this (patternDefinition.GetDictionary ()!, out outError)")]
 		NativeHandle Constructor (CHHapticPatternDefinition patternDefinition, [NullAllowed] out NSError outError);
 
-		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
 		[Export ("initWithContentsOfURL:error:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] out NSError error);
 
@@ -440,7 +440,7 @@ namespace CoreHaptics {
 		[Field ("CHHapticAudioResourceKeyUseVolumeEnvelope")]
 		NSString UseVolumeEnvelopeKey { get; }
 
-		[TV (16, 0), MacCatalyst (16, 0), iOS (16, 0)]
+		[TV (16, 0), MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0)]
 		[Field ("CHHapticAudioResourceKeyLoopEnabled")]
 		NSString LoopEnabledKey { get; }
 

@@ -6,7 +6,7 @@ using NSErrorRef = System.IntPtr;
 namespace HealthKit {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("macos13.0")]
 	public static class HKAppleWalkingSteadiness {
 
 		[DllImport (Constants.HealthKitLibrary)]

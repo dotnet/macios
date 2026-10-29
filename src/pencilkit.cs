@@ -38,7 +38,7 @@ namespace PencilKit {
 	enum PKEraserType : long {
 		Vector,
 		Bitmap,
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), Mac (13, 3), MacCatalyst (16, 4)]
 		FixedWidthBitmap,
 	}
 
@@ -53,19 +53,19 @@ namespace PencilKit {
 		[Field ("PKInkTypeMarker")]
 		Marker,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("PKInkTypeMonoline")]
 		Monoline,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("PKInkTypeFountainPen")]
 		FountainPen,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("PKInkTypeWatercolor")]
 		Watercolor,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Field ("PKInkTypeCrayon")]
 		Crayon,
 
@@ -83,7 +83,7 @@ namespace PencilKit {
 		PencilOnly,
 	}
 
-	[iOS (17, 0)]
+	[iOS (17, 0), Mac (14, 0)]
 	[Introduced (PlatformName.MacCatalyst, 17, 0)]
 	[Native]
 	public enum PKContentVersion : long {
@@ -225,7 +225,7 @@ namespace PencilKit {
 		[Export ("drawingByErasingStrokePath:mask:transform:")]
 		PKDrawing GetDrawing (PKStrokePath eraserPath, [NullAllowed] BezierPath mask, CGAffineTransform transform);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
@@ -242,26 +242,26 @@ namespace PencilKit {
 		[Export ("initWithEraserType:")]
 		NativeHandle Constructor (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithEraserType:width:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKEraserType eraserType, nfloat width);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("width")]
 		nfloat Width { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Static]
 		[Export ("defaultWidthForEraserType:")]
 		nfloat GetDefaultWidth (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Static]
 		[Export ("minimumWidthForEraserType:")]
 		nfloat GetMinimumWidth (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Static]
 		[Export ("maximumWidthForEraserType:")]
 		nfloat GetMaximumWidth (PKEraserType eraserType);
@@ -326,7 +326,7 @@ namespace PencilKit {
 		[Export ("ink")]
 		PKInk Ink { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 
@@ -495,7 +495,7 @@ namespace PencilKit {
 		[Export ("color")]
 		UIColor Color { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
@@ -530,7 +530,7 @@ namespace PencilKit {
 		[Export ("initWithInk:strokePath:transform:mask:")]
 		NativeHandle Constructor (PKInk ink, PKStrokePath path, CGAffineTransform transform, [NullAllowed] BezierPath mask);
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithInk:strokePath:transform:mask:randomSeed:")]
 		NativeHandle Constructor (PKInk ink, PKStrokePath strokePath, CGAffineTransform transform, [NullAllowed] BezierPath mask, uint randomSeed);
 
@@ -560,7 +560,7 @@ namespace PencilKit {
 		[Export ("maskedPathRanges")]
 		PKFloatRange [] MaskedPathRanges { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("randomSeed")]
 		uint RandomSeed { get; }
 
@@ -576,7 +576,7 @@ namespace PencilKit {
 		[Export ("substrokeWithRange:")]
 		PKStroke GetSubStroke (PKFloatRange range);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
@@ -675,7 +675,7 @@ namespace PencilKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale);
@@ -711,7 +711,7 @@ namespace PencilKit {
 		[Export ("altitude")]
 		nfloat Altitude { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("secondaryScale")]
 		nfloat SecondaryScale { get; }
 

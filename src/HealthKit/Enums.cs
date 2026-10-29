@@ -3,6 +3,7 @@ using CoreFoundation;
 namespace HealthKit {
 	// NSInteger -> HKDefines.h
 	/// <summary>Enumerates the frequences for background delivery of data (see <see cref="HealthKit.HKHealthStore.EnableBackgroundDelivery(HealthKit.HKObjectType,HealthKit.HKUpdateFrequency,System.Action{System.Boolean,Foundation.NSError})" />).</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKUpdateFrequency : long {
@@ -18,6 +19,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKDefines.h
 	/// <summary>Enumerates the permission of the app to read or write health data.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationStatus : long {
@@ -31,6 +33,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKDefines.h
 	/// <summary>Enumerates the biological sexes.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBiologicalSex : long {
@@ -47,6 +50,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKDefines.h
 	/// <summary>Enumerates known blood types.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodType : long {
@@ -72,6 +76,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKMetadata.h
 	/// <summary>Enumerates the positions at which a thermometer takes its reading.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBodyTemperatureSensorLocation : long {
@@ -103,6 +108,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKMetadata.h
 	/// <summary>Enumerates the locations at which a heart rate monitor is attached.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKHeartRateSensorLocation : long {
@@ -124,6 +130,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKObjectType.h
 	/// <summary>Enumerates whether an <see cref="HealthKit.HKQuantityType" /> is a cumulative measure (for instance, "active energy burned") or a discrete value (such as "blood alcohol content").</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKQuantityAggregationStyle : long {
@@ -143,6 +150,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKObjectType.h
 	/// <summary>Enumerates the states of the slumberer: whether they are asleep or merely resting in bed.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueSleepAnalysis : long {
@@ -153,16 +161,17 @@ namespace HealthKit {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		Awake,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		AsleepCore = 3,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		AsleepDeep = 4,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		AsleepREM = 5,
 	}
 
 	// NSUInteger -> HKQuery.h
 	/// <summary>Enumerates options available for use with the <see cref="HealthKit.HKQuery.GetPredicateForSamples(Foundation.NSDate,Foundation.NSDate,HealthKit.HKQueryOptions)" /> method.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -177,6 +186,7 @@ namespace HealthKit {
 
 	// NSUInteger -> HKStatistics.h
 	/// <summary>Enumerates options applicable to <see cref="HealthKit.HKStatisticsQuery" /> and <see cref="HealthKit.HKStatisticsCollectionQuery" /> objets.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
@@ -201,6 +211,7 @@ namespace HealthKit {
 
 	// NSInteger -> HKUnit.h
 	/// <summary>Enumerates metric prefixes, e.g., Centi-, Deca-, Deci-. Used with factory methods of <see cref="HealthKit.HKUnit" />.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKMetricPrefix : long {
@@ -236,6 +247,7 @@ namespace HealthKit {
 
 	/// <summary>Enumerates various activities that are considered workouts.</summary>
 	[Native]
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum HKWorkoutActivityType : ulong {
 		/// <summary>American football.</summary>
@@ -423,11 +435,11 @@ namespace HealthKit {
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		Cooldown = 80,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		SwimBikeRun = 82,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		Transition = 83,
-		[MacCatalyst (17, 0), iOS (17, 0), NoTV]
+		[MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0), NoTV]
 		UnderwaterDiving,
 		/// <summary>Another kind of workout.</summary>
 		[MacCatalyst (13, 1)]
@@ -436,6 +448,7 @@ namespace HealthKit {
 
 	/// <summary>Enumerates events that can occur during a workout (Pause, Resume).</summary>
 	[Native]
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum HKWorkoutEventType : long {
 		/// <summary>The activity was paused.</summary>
@@ -463,6 +476,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Contains a single value that indicates that a category value is not applicable to the category.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValue : long {
@@ -471,6 +485,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates the user's cervical mucus quality.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueCervicalMucusQuality : long {
@@ -501,6 +516,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates the amount of menstrual flow.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'HKCategoryValueVaginalBleeding' instead.")]
@@ -533,6 +549,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates the results of an ovulation test.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueOvulationTestResult : long {
@@ -553,6 +570,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates whether the user stood or not during an hour.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueAppleStandHour : long {
@@ -562,6 +580,7 @@ namespace HealthKit {
 		Idle,
 	}
 
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueAudioExposureEvent : long {
@@ -569,6 +588,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates skin types using the Fitzpatrick scale.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKFitzpatrickSkinType : long {
@@ -589,6 +609,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates constants that describe wheelchair use.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKWheelchairUse : long {
@@ -601,6 +622,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates weather types.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKWeatherCondition : long {
@@ -662,6 +684,7 @@ namespace HealthKit {
 		Tornado,
 	}
 
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKWorkoutSwimmingLocationType : long {
@@ -673,6 +696,7 @@ namespace HealthKit {
 		OpenWater,
 	}
 
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKSwimmingStrokeStyle : long {
@@ -688,11 +712,12 @@ namespace HealthKit {
 		Breaststroke,
 		/// <summary>To be added.</summary>
 		Butterfly,
-		[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+		[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 		Kickboard = 6,
 	}
 
 	/// <summary>Enumerates the reasons for why insulin was provided.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKInsulinDeliveryReason : long {
@@ -703,6 +728,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates values that tell whether a blood glucose level was taken before or after a meal.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKBloodGlucoseMealTime : long {
@@ -713,6 +739,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates the testing process used for establishing VO2 Max.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKVO2MaxTestType : long {
@@ -727,6 +754,7 @@ namespace HealthKit {
 	}
 
 	/// <summary>Enumerates Fast Healthcare Interoperability Resources (FHIR) types.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum HKFhirResourceType {
 		/// <summary>Indicates allergy or intolerance information.</summary>
@@ -761,15 +789,16 @@ namespace HealthKit {
 		[MacCatalyst (14, 0)]
 		[Field ("HKFHIRResourceTypeCoverage")]
 		Coverage,
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4), Mac (13, 3)]
 		[Field ("HKFHIRResourceTypeDiagnosticReport")]
 		DiagnosticReport,
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4), Mac (13, 3)]
 		[Field ("HKFHIRResourceTypeDocumentReference")]
 		DocumentReference,
 	}
 
 	/// <summary>Enumerates clinical record type identifiers.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum HKClinicalTypeIdentifier {
 
@@ -798,13 +827,14 @@ namespace HealthKit {
 		[MacCatalyst (14, 0)]
 		[Field ("HKClinicalTypeIdentifierCoverageRecord")]
 		CoverageRecord,
-		[iOS (16, 4)]
+		[iOS (16, 4), Mac (13, 3)]
 		[MacCatalyst (16, 4)]
 		[Field ("HKClinicalTypeIdentifierClinicalNoteRecord")]
 		ClinicalNoteRecord,
 	}
 
 	/// <summary>Enumerates values that tell when an app should request user permission for access.</summary>
+	[Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKAuthorizationRequestStatus : long {
@@ -816,7 +846,7 @@ namespace HealthKit {
 		Unnecessary,
 	}
 
-	[iOS (13, 6)]
+	[iOS (13, 6), Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueAppetiteChanges : long {
@@ -826,7 +856,7 @@ namespace HealthKit {
 		Increased,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKAppleEcgAlgorithmVersion : long {
@@ -834,14 +864,14 @@ namespace HealthKit {
 		Version2 = 2,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKCategoryValueEnvironmentalAudioExposureEvent : long {
 		MomentaryLimit = 1,
 	}
 
-	[iOS (13, 6)]
+	[iOS (13, 6), Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValuePresence : long {
@@ -849,7 +879,7 @@ namespace HealthKit {
 		NotPresent,
 	}
 
-	[iOS (13, 6)]
+	[iOS (13, 6), Mac (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum HKCategoryValueSeverity : long {
@@ -860,7 +890,7 @@ namespace HealthKit {
 		Severe,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKDevicePlacementSide : long {
@@ -870,7 +900,7 @@ namespace HealthKit {
 		Central,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKElectrocardiogramClassification : long {
@@ -884,14 +914,14 @@ namespace HealthKit {
 		Unrecognized = 100,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKElectrocardiogramLead : long {
 		AppleWatchSimilarToLeadI = 1,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	[Native]
 	public enum HKElectrocardiogramSymptomsStatus : long {
@@ -900,7 +930,7 @@ namespace HealthKit {
 		Present = 2,
 	}
 
-	[iOS (14, 0)]
+	[iOS (14, 0), Mac (13, 0)]
 	[MacCatalyst (14, 0)]
 	public enum HKFhirRelease {
 		[Field ("HKFHIRReleaseDSTU2")]
@@ -911,7 +941,7 @@ namespace HealthKit {
 		Unknown,
 	}
 
-	[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+	[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 	[Native]
 	public enum HKHeartRateRecoveryTestType : long {
 		MaxExercise = 1,
@@ -919,7 +949,7 @@ namespace HealthKit {
 		PredictionNonExercise,
 	}
 
-	[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+	[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 	[Native]
 	public enum HKPrismBase : long {
 		None = 0,
@@ -929,7 +959,7 @@ namespace HealthKit {
 		Out,
 	}
 
-	[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+	[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 	[Native]
 	public enum HKUserMotionContext : long {
 		NotSet = 0,
@@ -937,21 +967,21 @@ namespace HealthKit {
 		Active,
 	}
 
-	[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+	[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 	[Native]
 	public enum HKVisionEye : long {
 		Left = 1,
 		Right,
 	}
 
-	[MacCatalyst (16, 0), iOS (16, 0), NoTV]
+	[MacCatalyst (16, 0), Mac (13, 0), iOS (16, 0), NoTV]
 	[Native]
 	public enum HKVisionPrescriptionType : ulong {
 		Glasses = 1,
 		Contacts,
 	}
 
-	[MacCatalyst (17, 0), iOS (17, 0)]
+	[MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 	[Native]
 	public enum HKCyclingFunctionalThresholdPowerTestType : long {
 		MaxExercise60Minute = 1,
@@ -960,14 +990,14 @@ namespace HealthKit {
 		PredictionExercise,
 	}
 
-	[MacCatalyst (17, 0), iOS (17, 0)]
+	[MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 	[Native]
 	public enum HKPhysicalEffortEstimationType : long {
 		ActivityLookup = 1,
 		DeviceSensed,
 	}
 
-	[MacCatalyst (17, 0), iOS (17, 0)]
+	[MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 	[Native]
 	public enum HKWaterSalinity : long {
 		FreshWater = 1,

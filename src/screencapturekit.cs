@@ -103,7 +103,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[ErrorDomain ("SCStreamErrorDomain")]
 	[Native]
 	enum SCStreamErrorCode : long {
@@ -135,7 +135,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[Native]
 	enum SCFrameStatus : long {
 		Complete,
@@ -148,24 +148,25 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[Native]
 	enum SCStreamOutputType : long {
 		Screen,
+		[Mac (13, 0)]
 		Audio,
 		[NoTV, Mac (15, 0)]
 		Microphone,
 	}
 
 	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use 'SCShareableContentStyle' instead.")]
-	[NoiOS, NoTV, NoMacCatalyst]
+	[NoiOS, NoTV, Mac (14, 0), NoMacCatalyst]
 	[Native]
 	public enum SCStreamType : long {
 		Window,
 		Display,
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[Native]
 	public enum SCPresenterOverlayAlertSetting : long {
 		System,
@@ -173,7 +174,7 @@ namespace ScreenCaptureKit {
 		Always,
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[Native]
 	public enum SCCaptureResolutionType : long {
 		Automatic,
@@ -181,7 +182,7 @@ namespace ScreenCaptureKit {
 		Nominal,
 	}
 
-	[Flags, NoiOS, NoTV, MacCatalyst (18, 2)]
+	[Flags, NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[Native]
 	public enum SCContentSharingPickerMode : ulong {
 		SingleWindow = 1 << 0,
@@ -193,7 +194,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (14, 0), MacCatalyst (18, 2)]
 	[Native]
 	public enum SCShareableContentStyle : long {
 		None,
@@ -240,7 +241,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[Static]
 	interface SCStreamFrameInfoKeys {
 
@@ -263,10 +264,11 @@ namespace ScreenCaptureKit {
 		[Field ("SCStreamFrameInfoDirtyRects")]
 		NSString DirtyRects { get; }
 
+		[Mac (13, 1)]
 		[Field ("SCStreamFrameInfoScreenRect")]
 		NSString ScreenRect { get; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Field ("SCStreamFrameInfoBoundingRect")]
 		NSString BoundingRect { get; }
 
@@ -279,7 +281,7 @@ namespace ScreenCaptureKit {
 		NSString VideoOrientation { get; }
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCRunningApplication {
@@ -294,7 +296,7 @@ namespace ScreenCaptureKit {
 		int ProcessId { get; }
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCWindow {
@@ -317,12 +319,13 @@ namespace ScreenCaptureKit {
 		[Export ("onScreen")]
 		bool OnScreen { [Bind ("isOnScreen")] get; }
 
+		[Mac (13, 1)]
 		[Export ("active")]
 		bool Active { [Bind ("isActive")] get; }
 	}
 
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCDisplay {
@@ -340,7 +343,7 @@ namespace ScreenCaptureKit {
 		CGRect Frame { get; }
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCShareableContent {
@@ -380,6 +383,7 @@ namespace ScreenCaptureKit {
 		[Export ("applications")]
 		SCRunningApplication [] Applications { get; }
 
+		[Mac (14, 0)]
 		[Static]
 		[Export ("infoForFilter:")]
 		SCShareableContentInfo GetInfo (SCContentFilter filter);
@@ -387,7 +391,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCContentFilter {
@@ -420,15 +424,19 @@ namespace ScreenCaptureKit {
 		// but return types are SCStreamType and SCShareableContentStyle are 14.0+
 		[Deprecated (PlatformName.MacOSX, 14, 2, message: "Use 'Style' instead.")]
 		[NoiOS, NoTV, NoMacCatalyst]
+		[Mac (14, 0)]
 		[Export ("streamType")]
 		SCStreamType StreamType { get; }
 
+		[Mac (14, 0)]
 		[Export ("style")]
 		SCShareableContentStyle Style { get; }
 
+		[Mac (14, 0)]
 		[Export ("pointPixelScale")]
 		float PointPixelScale { get; }
 
+		[Mac (14, 0)]
 		[Export ("contentRect")]
 		CGRect ContentRect { get; }
 
@@ -459,7 +467,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	interface SCStreamConfiguration {
 
@@ -513,56 +521,60 @@ namespace ScreenCaptureKit {
 		[Export ("colorSpaceName", ArgumentSemantic.Assign)]
 		NSString WeakColorSpaceName { get; set; }
 
+		[Mac (13, 0)]
 		[Export ("capturesAudio")]
 		bool CapturesAudio { get; set; }
 
+		[Mac (13, 0)]
 		[Export ("sampleRate")]
 		nint SampleRate { get; set; }
 
+		[Mac (13, 0)]
 		[Export ("channelCount")]
 		nint ChannelCount { get; set; }
 
+		[Mac (13, 0)]
 		[Export ("excludesCurrentProcessAudio")]
 		bool ExcludesCurrentProcessAudio { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("preservesAspectRatio")]
 		bool PreservesAspectRatio { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[NullAllowed]
 		[Export ("streamName", ArgumentSemantic.Strong)]
 		string StreamName { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("ignoreShadowsDisplay")]
 		bool IgnoreShadowsDisplay { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("ignoreShadowsSingleWindow")]
 		bool IgnoreShadowsSingleWindow { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("captureResolution", ArgumentSemantic.Assign)]
 		SCCaptureResolutionType CaptureResolution { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("capturesShadowsOnly")]
 		bool CapturesShadowsOnly { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("shouldBeOpaque")]
 		bool ShouldBeOpaque { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("ignoreGlobalClipDisplay")]
 		bool IgnoreGlobalClipDisplay { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("ignoreGlobalClipSingleWindow")]
 		bool IgnoreGlobalClipSingleWindow { get; set; }
 
-		[NoiOS, NoTV, MacCatalyst (18, 2)]
+		[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 		[Export ("presenterOverlayPrivacyAlertSetting", ArgumentSemantic.Assign)]
 		SCPresenterOverlayAlertSetting PresenterOverlayPrivacyAlertSetting { get; set; }
 
@@ -594,7 +606,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCStream {
@@ -626,6 +638,7 @@ namespace ScreenCaptureKit {
 		[Export ("stopCaptureWithCompletionHandler:")]
 		void StopCapture ([NullAllowed] Action<NSError> completionHandler);
 
+		[Mac (13, 0)]
 		[Export ("synchronizationClock")]
 		[NullAllowed]
 		CMClock SynchronizationClock { get; }
@@ -663,7 +676,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -681,11 +694,11 @@ namespace ScreenCaptureKit {
 		void UserDidStop (SCStream stream);
 #endif
 
-		[iOS (27, 0), TV (27, 0)]
+		[iOS (27, 0), TV (27, 0), Mac (14, 0)]
 		[Export ("outputVideoEffectDidStartForStream:")]
 		void OutputVideoEffectDidStart (SCStream stream);
 
-		[iOS (27, 0), TV (27, 0)]
+		[iOS (27, 0), TV (27, 0), Mac (14, 0)]
 		[Export ("outputVideoEffectDidStopForStream:")]
 		void OutputVideoEffectDidStop (SCStream stream);
 
@@ -706,7 +719,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (12, 3), MacCatalyst (18, 2)]
 	[Protocol]
 	interface SCStreamOutput {
 
@@ -716,7 +729,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (14, 0), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	interface SCContentSharingPickerConfiguration {
 		[NoiOS, NoTV, MacCatalyst (18, 2)]
@@ -746,7 +759,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (14, 0), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCContentSharingPicker {
@@ -803,7 +816,7 @@ namespace ScreenCaptureKit {
 
 	[UnsupportedSimulator ("ios")]
 	[UnsupportedSimulator ("tvos")]
-	[iOS (27, 0), TV (27, 0), MacCatalyst (18, 2)]
+	[iOS (27, 0), TV (27, 0), Mac (14, 0), MacCatalyst (18, 2)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -821,7 +834,7 @@ namespace ScreenCaptureKit {
 		void DidFail (NSError error);
 	}
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCShareableContentInfo {
@@ -841,7 +854,7 @@ namespace ScreenCaptureKit {
 	[NoiOS, NoTV, Mac (26, 0), MacCatalyst (26, 0)]
 	delegate void SCScreenshotManagerCaptureScreenshotCallback ([NullAllowed] SCScreenshotOutput output, [NullAllowed] NSError error);
 
-	[NoiOS, NoTV, MacCatalyst (18, 2)]
+	[NoiOS, NoTV, Mac (14, 0), MacCatalyst (18, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCScreenshotManager {

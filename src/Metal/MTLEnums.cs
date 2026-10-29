@@ -374,9 +374,9 @@ namespace Metal {
 		[MacCatalyst (13, 1)]
 		Half = 53,
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		FloatRG11B10 = 54,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		FloatRgb9E5 = 55,
 	}
 
@@ -844,9 +844,9 @@ namespace Metal {
 		[TV (16, 0)]
 		[MacCatalyst (14, 0)]
 		Intersection = 6,
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		Mesh = 7,
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		Object = 8,
 	}
 
@@ -1013,7 +1013,7 @@ namespace Metal {
 		/// <summary>A value that indicates that the texture will be used for creating new textures.</summary>
 		PixelFormatView = 0x0010,
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		ShaderAtomic = 0x20,
 	}
 
@@ -1295,13 +1295,13 @@ namespace Metal {
 		[iOS (14, 0), TV (16, 0)]
 		InstanceAccelerationStructure = 118,
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		BFloat = 121,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		BFloat2 = 122,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		BFloat3 = 123,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		BFloat4 = 124,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		DepthStencilState = 139,
@@ -1552,9 +1552,9 @@ namespace Metal {
 		v2_3 = (2 << 16) + 3,
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		v2_4 = (2uL << 16) + 4,
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 		v3_0 = (3uL << 16) + 0,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		v3_1 = (3uL << 16) + 1,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		v3_2 = (3ul << 16) + 2,
@@ -1820,9 +1820,9 @@ namespace Metal {
 		/// <summary>Indicates a single half-precision floating point value.</summary>
 		[MacCatalyst (13, 1)]
 		Half = 53,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		FloatRG11B10 = 54,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		FloatRGB9E5 = 55,
 	}
 
@@ -1859,9 +1859,9 @@ namespace Metal {
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		Tile = (1uL << 2),
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		Object = (1uL << 3),
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		Mesh = (1uL << 4),
 	}
 
@@ -2042,7 +2042,7 @@ namespace Metal {
 		iOSMac1 = 4001,
 		iOSMac2 = 4002,
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
 		Metal3 = 5001,
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		Metal4 = 5002,
@@ -2240,7 +2240,7 @@ namespace Metal {
 		[TV (16, 0)]
 		[MacCatalyst (14, 0)]
 		CompileToBinary = 1uL << 0,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use 'StoreFunctionInMetalPipelinesScript' instead.")]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use 'StoreFunctionInMetalPipelinesScript' instead.")]
 		[Deprecated (PlatformName.TvOS, 18, 0, message: "Use 'StoreFunctionInMetalPipelinesScript' instead.")]
@@ -2268,9 +2268,9 @@ namespace Metal {
 		PrimitiveMotion = (1uL << 4),
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		ExtendedLimits = (1uL << 5),
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		MaxLevels = (1uL << 6),
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		CurveData = (1uL << 7),
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 		IntersectionFunctionBuffer = (1uL << 8),
@@ -2308,20 +2308,20 @@ namespace Metal {
 		Default = 0,
 		UserID = 1,
 		Motion = 2,
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		Indirect = 3,
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		IndirectMotion = 4,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (17, 0)]
+	[Mac (12, 5), iOS (15, 0), MacCatalyst (15, 0), TV (17, 0)]
 	[Native]
 	public enum MTLTextureCompressionType : long {
 		Lossless = 0,
 		Lossy = 1,
 	}
 
-	[Flags, iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Flags, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLAccelerationStructureRefitOptions : ulong {
 		VertexData = (1uL << 0),
@@ -2346,14 +2346,14 @@ namespace Metal {
 		Tensor = 37,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLIOCommandQueueType : long {
 		Concurrent = 0,
 		Serial = 1,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLIOCompressionMethod : long {
 		Zlib = 0,
@@ -2363,14 +2363,14 @@ namespace Metal {
 		LzBitmap = 4,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLIOCompressionStatus : long {
 		Complete = 0,
 		Error = 1,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	[ErrorDomain ("MTLIOErrorDomain")]
 	[UnsupportedSimulator ("ios")]
@@ -2380,7 +2380,7 @@ namespace Metal {
 		Internal = 2,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLIOPriority : long {
 		High = 0,
@@ -2388,7 +2388,7 @@ namespace Metal {
 		Low = 2,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLIOStatus : long {
 		Pending = 0,
@@ -2397,14 +2397,14 @@ namespace Metal {
 		Complete = 3,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLLibraryOptimizationLevel : long {
 		Default = 0,
 		Size = 1,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLSparsePageSize : long {
 		Size16 = 101,
@@ -2412,7 +2412,7 @@ namespace Metal {
 		Size256 = 103,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MTLBindingAccess : long {
 		ReadOnly = 0,
@@ -2420,14 +2420,14 @@ namespace Metal {
 		WriteOnly = 2,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 	[Native]
 	public enum MTLCurveType : long {
 		Round = 0,
 		Flat = 1,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 	[Native]
 	public enum MTLCurveBasis : long {
 		BSpline = 0,
@@ -2436,7 +2436,7 @@ namespace Metal {
 		Bezier = 3,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 	[Native]
 	public enum MTLCurveEndCaps : long {
 		None = 0,
@@ -2444,7 +2444,7 @@ namespace Metal {
 		Sphere = 2,
 	}
 
-	[iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
+	[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4), TV (16, 4)]
 	[Native]
 	public enum MTLCompileSymbolVisibility : long {
 		Default = 0,

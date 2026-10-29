@@ -257,7 +257,7 @@ namespace HomeKit {
 		string FirmwareVersion { get; }
 
 		[NullAllowed]
-		[iOS (16, 1), MacCatalyst (16, 2), TV (16, 1)]
+		[Mac (13, 0), iOS (16, 1), MacCatalyst (16, 2), TV (16, 1)]
 		[Export ("matterNodeID", ArgumentSemantic.Copy)]
 		NSNumber MatterNodeId { get; }
 

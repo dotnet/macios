@@ -577,7 +577,7 @@ namespace CoreImage {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'CIContextOptions.MemoryLimit' instead.")]
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 #endif // !XAMCORE_5_0
@@ -630,11 +630,11 @@ namespace CoreImage {
 		[Export ("contextWithMTLCommandQueue:options:")]
 		CIContext Create (IMTLCommandQueue commandQueue, [NullAllowed] NSDictionary<NSString, NSObject> options);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("writeOpenEXRRepresentationOfImage:toURL:options:error:")]
 		bool WriteOpenExrRepresentation (CIImage image, NSUrl url, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("OpenEXRRepresentationOfImage:options:error:")]
 		[return: NullAllowed]
 		NSData GetOpenEXRRepresentation (CIImage image, NSDictionary<NSString, NSObject> options, [NullAllowed] out NSError errorPtr);
@@ -708,7 +708,7 @@ namespace CoreImage {
 		[Field ("kCIContextName")]
 		NSString Name { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 
@@ -770,7 +770,7 @@ namespace CoreImage {
 		[iOS (14, 0), TV (14, 0), MacCatalyst (14, 0)]
 		string Name { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIContextMemoryLimit")]
 		NSString MemoryLimit { get; }
 
@@ -1339,22 +1339,22 @@ namespace CoreImage {
 		[Wrap ("CreateRawFilter (pixelBuffer, properties, options.GetDictionary ()!)")]
 		CIFilter CreateRawFilter (CVPixelBuffer pixelBuffer, NSDictionary properties, CIRawFilterOptions options);
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("blurredRectangleGeneratorFilter")]
 		CIBlurredRectangleGenerator BlurredRectangleGeneratorFilter { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("cannyEdgeDetectorFilter")]
 		CICannyEdgeDetector CannyEdgeDetectorFilter { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("roundedRectangleStrokeGeneratorFilter")]
 		CIRoundedRectangleStrokeGenerator RoundedRectangleStrokeGeneratorFilter { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Static]
 		[Export ("sobelGradientsFilter")]
 		CISobelGradients SobelGradientsFilter { get; }
@@ -2923,10 +2923,10 @@ namespace CoreImage {
 		[MacCatalyst (14, 1)]
 		bool ToneMapHdrToSdr { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		bool CacheImmediately { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		bool ExpandToHdr { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -3016,11 +3016,11 @@ namespace CoreImage {
 		[Field ("kCIImageToneMapHDRtoSDR")]
 		NSString ToneMapHdrToSdrKey { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIImageCacheImmediately")]
 		NSString CacheImmediatelyKey { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCIImageExpandToHDR")]
 		NSString ExpandToHdrKey { get; }
 
@@ -3876,22 +3876,22 @@ namespace CoreImage {
 		[Obsolete ("Use 'CIFormat.LAf.GetConstant ()' instead.")]
 		int FormatLAf { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGB10")]
 		[Obsolete ("Use 'CIFormat.Rgb10.GetConstant ()' instead.")]
 		int FormatRgb10 { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBX16")]
 		[Obsolete ("Use 'CIFormat.RgbX16.GetConstant ()' instead.")]
 		int FormatRgbX16 { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXf")]
 		[Obsolete ("Use 'CIFormat.RgbXf.GetConstant ()' instead.")]
 		int FormatRgbXf { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXh")]
 		[Obsolete ("Use 'CIFormat.RgbXh.GetConstant ()' instead.")]
 		int FormatRgbXh { get; }
@@ -4375,11 +4375,11 @@ namespace CoreImage {
 		[Export ("clearImage", ArgumentSemantic.Strong)]
 		CIImage ClearImage { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("imageByConvertingWorkingSpaceToLab")]
 		CIImage ConvertWorkingSpaceToLab ();
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("imageByConvertingLabToWorkingSpace")]
 		CIImage ConvertLabToWorkingSpace ();
 
@@ -4572,22 +4572,22 @@ namespace CoreImage {
 		LAf = 30,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGB10.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGB10")]
 		Rgb10 = 31,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBX16.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBX16")]
 		RgbX16 = 32,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBXf.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXf")]
 		RgbXf = 33,
 
 		/// <summary>Represents the value associated with the constant kCIFormatRGBXh.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Field ("kCIFormatRGBXh")]
 		RgbXh = 34,
 
@@ -4652,21 +4652,21 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("digest")]
 		ulong Digest { get; }
 
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("roiTileCount")]
 		nuint RoiTileCount { get; }
 
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("roiTileIndex")]
 		nuint RoiTileIndex { get; }
 	}
@@ -4734,7 +4734,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("digest")]
 		ulong Digest { get; }
 
@@ -5860,7 +5860,7 @@ namespace CoreImage {
 		[Export ("outputIsOpaque")]
 		bool OutputIsOpaque { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0), Mac (14, 0)]
 		[Static]
 		[Export ("roiTileArrayForInput:arguments:outputRect:")]
 		CIVector [] GetRoiTileArray (int input, [NullAllowed] NSDictionary<NSString, NSObject> arguments, CGRect outputRect);
@@ -9039,7 +9039,7 @@ namespace CoreImage {
 		[Export ("pixelsProcessed")]
 		nint PixelsProcessed { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("kernelCompileTime")]
 		double KernelCompileTime { get; }
 	}
@@ -9654,7 +9654,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("padding")]
 		float Padding { get; set; }
 	}
@@ -10053,7 +10053,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
@@ -10090,7 +10090,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
@@ -10122,7 +10122,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
@@ -11981,7 +11981,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("extrapolate")]
 		bool Extrapolate { get; set; }
 	}
@@ -12680,7 +12680,7 @@ namespace CoreImage {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 		[Export ("padding")]
 		float Padding { get; set; }
 	}
@@ -13175,7 +13175,7 @@ namespace CoreImage {
 		CIImage InputImage { get; set; }
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[Protocol (Name = "CIAreaLogarithmicHistogram")]
 	interface CIAreaLogarithmicHistogramProtocol : CIAreaReductionFilterProtocol {
 		[Abstract]
@@ -13196,12 +13196,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIAreaLogarithmicHistogram : CIAreaLogarithmicHistogramProtocol {
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0), Mac (13, 0), MacCatalyst (16, 0)]
 	[Protocol (Name = "CIConvertLab")]
 	interface CIConvertLabProtocol : CIFilterProtocol {
 		/// <summary>Gets or sets an image to filter.</summary>
@@ -13215,12 +13215,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIBlurredRectangleGenerator : CIBlurredRectangleGeneratorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CIBlurredRectangleGenerator")]
 	interface CIBlurredRectangleGeneratorProtocol : CIFilterProtocol {
 		[Abstract]
@@ -13237,12 +13237,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CICannyEdgeDetector : CICannyEdgeDetectorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CICannyEdgeDetector")]
 	interface CICannyEdgeDetectorProtocol : CIFilterProtocol {
 		/// <summary>Gets or sets an image to filter.</summary>
@@ -13272,12 +13272,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRoundedRectangleStrokeGenerator : CIRoundedRectangleStrokeGeneratorProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CIRoundedRectangleStrokeGenerator")]
 	interface CIRoundedRectangleStrokeGeneratorProtocol : CIFilterProtocol {
 		[Abstract]
@@ -13303,12 +13303,12 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CISobelGradients : CISobelGradientsProtocol {
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 	[Protocol (Name = "CISobelGradients")]
 	interface CISobelGradientsProtocol : CIFilterProtocol {
 
@@ -13323,7 +13323,7 @@ namespace CoreImage {
 	// https://github.com/dotnet/macios/issues/15662
 #if false
 	[CoreImageFilter]
-	[iOS (16,0), TV (16,0), MacCatalyst (16,0)]
+	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]
 	[BaseType (typeof (CIFilter), Name = "CIConvertLab")]
 	interface LabToRGBFilter : CIConvertLabProtocol
 	{
@@ -13331,7 +13331,7 @@ namespace CoreImage {
 	}
 
 	[CoreImageFilter]
-	[iOS (16,0), TV (16,0), MacCatalyst (16,0)]
+	[iOS (16,0), TV (16,0), Mac (13,0), MacCatalyst (16,0)]
 	[BaseType (typeof (CIFilter), Name = "CIConvertLab")]
 	interface RGBtoLabFilter : CIConvertLabProtocol
 	{

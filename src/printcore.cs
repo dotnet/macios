@@ -24,7 +24,7 @@ namespace PrintCore {
 	/// <summary>
 	/// Represents a single print dialog panel that manages its own UI, settings persistence, and PPD option handling.
 	/// </summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 0)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface PDEPanel {
@@ -169,7 +169,7 @@ namespace PrintCore {
 	/// needed (page setup or print dialog) along with the current printer, and uses this information to
 	/// determine which panels should be created.
 	/// </summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 0)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface PDEPlugIn {
@@ -199,7 +199,7 @@ namespace PrintCore {
 	/// information about the current printer and print job, including session, settings, page format,
 	/// printer, and PPD data.
 	/// </summary>
-	[NoiOS, NoTV, NoMacCatalyst, Mac (10, 0)]
+	[NoiOS, NoTV, NoMacCatalyst]
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 	interface PDEPlugInCallbackProtocol {

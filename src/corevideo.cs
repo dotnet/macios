@@ -916,7 +916,7 @@ namespace CoreVideo {
 		[Field ("kCVPixelFormatContainsGrayscale")]
 		NSString ContainsGrayscale { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Field ("kCVPixelFormatContainsSenselArray")]
 		NSString ContainsSenselArray { get; }
 
@@ -1059,7 +1059,7 @@ namespace CoreVideo {
 
 		bool ContainsGrayscale { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), TV (16, 0)]
 #if XAMCORE_5_0
 		bool ContainsSenselArray { get; set; }
 #else

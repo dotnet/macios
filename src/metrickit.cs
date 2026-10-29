@@ -163,15 +163,15 @@ namespace MetricKit {
 		[Export ("platformArchitecture", ArgumentSemantic.Strong)]
 		string PlatformArchitecture { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("isTestFlightApp")]
 		bool IsTestFlightApp { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("pid")]
 		int Pid { get; }
 
@@ -247,11 +247,11 @@ namespace MetricKit {
 		[Export ("histogrammedApplicationResumeTime", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedApplicationResumeTime { get; }
 
-		[NoTV, iOS (15, 2), MacCatalyst (15, 2)]
+		[NoTV, Mac (12, 2), iOS (15, 2), MacCatalyst (15, 2)]
 		[Export ("histogrammedOptimizedTimeToFirstDraw", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedOptimizedTimeToFirstDraw { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Export ("histogrammedExtendedLaunch", ArgumentSemantic.Strong)]
 		MXHistogram<NSUnitDuration> HistogrammedExtendedLaunch { get; }
 	}
@@ -463,12 +463,12 @@ namespace MetricKit {
 		[Export ("makeLogHandleWithCategory:")]
 		IntPtr /* os_log_t */ _MakeLogHandle (NSString category);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Static]
 		[Export ("extendLaunchMeasurementForTaskID:error:")]
 		bool ExtendLaunchMeasurement (string taskId, [NullAllowed] out NSError error);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 		[Static]
 		[Export ("finishExtendedLaunchMeasurementForTaskID:error:")]
 		bool FinishExtendedLaunchMeasurement (string taskId, [NullAllowed] out NSError error);
@@ -642,7 +642,7 @@ namespace MetricKit {
 		[NullAllowed, Export ("signal", ArgumentSemantic.Strong)]
 		NSNumber Signal { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("exceptionReason", ArgumentSemantic.Strong)]
 		MXCrashDiagnosticObjectiveCExceptionReason ExceptionReason { get; }
 	}
@@ -666,7 +666,7 @@ namespace MetricKit {
 		[Export ("dictionaryRepresentation")]
 		NSDictionary DictionaryRepresentation { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("signpostData", ArgumentSemantic.Strong)]
 		MXSignpostRecord [] SignpostData { get; }
 	}
@@ -748,7 +748,7 @@ namespace MetricKit {
 		NSMeasurement<NSUnitDuration> HangDuration { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MXSignpostRecord : NSSecureCoding {
 		[Export ("subsystem")]
@@ -779,7 +779,7 @@ namespace MetricKit {
 		NSDictionary DictionaryRepresentation { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MXCrashDiagnosticObjectiveCExceptionReason : NSSecureCoding {
 		[Export ("composedMessage")]

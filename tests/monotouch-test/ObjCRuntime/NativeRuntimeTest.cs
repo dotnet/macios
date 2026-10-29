@@ -6,6 +6,19 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class NativeRuntimeTest {
 		[DllImport ("__Internal")]
+		static extern int x_test_format_diagnostic (string text, StringBuilder buffer, nuint capacity);
+
+		[Test]
+		public void FormatDiagnostic ()
+		{
+			var buffer = new StringBuilder (256);
+			const string text = "value-%n-\u00e6";
+			var expected = text + ": 42\n";
+			Assert.That (x_test_format_diagnostic (text, buffer, (nuint) buffer.Capacity), Is.EqualTo (Encoding.UTF8.GetByteCount (expected)), "Byte count");
+			Assert.That (buffer.ToString (), Is.EqualTo (expected), "Literal data");
+		}
+
+		[DllImport ("__Internal")]
 		static extern byte xamarin_copy_path (IntPtr candidate, byte [] buffer, nuint capacity);
 
 		[TestCase ("bundle/file.dll")]

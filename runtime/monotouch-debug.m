@@ -962,24 +962,24 @@ monotouch_dump_objc_api (Class klass)
 	Method *methods;
 	objc_property_t *props;
 	
-	printf ("Dumping class %p = %s\n", klass, class_getName (klass));
+	xamarin_write_formatted (STDOUT_FILENO, "Dumping class %p = %s\n", klass, class_getName (klass));
 	
 	vars = class_copyIvarList (klass, &c);
-	printf ("\t%i instance variables:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance variables:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, ivar_getName (vars [i]));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, ivar_getName (vars [i]));
 	free (vars);
 	
 	methods = class_copyMethodList (klass, &c);
-	printf ("\t%i instance methods:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance methods:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, sel_getName (method_getName (methods [i])));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, sel_getName (method_getName (methods [i])));
 	free (methods);
 	
 	props = class_copyPropertyList (klass, &c);
-	printf ("\t%i instance properties:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance properties:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, property_getName (props [i]));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, property_getName (props [i]));
 	free (props);
 	
 	fflush (stdout);

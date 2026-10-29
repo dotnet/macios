@@ -12,6 +12,22 @@
 #include "../../runtime/native-support.h"
 
 int
+x_test_format_diagnostic (const char *text, char *buffer, size_t capacity)
+{
+	int descriptors [2];
+	if (pipe (descriptors) != 0)
+		return -1;
+	int result = xamarin_write_formatted (descriptors [1], "%s: %i\n", text, 42);
+	close (descriptors [1]);
+	ssize_t count = read (descriptors [0], buffer, capacity - 1);
+	close (descriptors [0]);
+	if (count < 0)
+		return -1;
+	buffer [count] = 0;
+	return result;
+}
+
+int
 x_test_error_description (int error, char *buffer, size_t size)
 {
 	errno = EBUSY;

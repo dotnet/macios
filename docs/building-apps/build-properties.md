@@ -342,21 +342,24 @@ Example:
 
 ## CompressBindingResourcePackage
 
-The native references in a binding projects are copied to the output directory during the build process, next to the binding assembly (into something we call a "binding resource package").
+The native references (`@(NativeReference)`) in a binding project are copied to the output directory during the build process, next to the binding assembly, into a "binding resource package" (see [NoBindingEmbedding](#nobindingembedding)).
 
-These native references can either be stored compressed inside a zip file (named `$(AssemblyName).resources.zip`, or as-is, inside a directory named `$(AssemblyName).resources`.
+These native references can either be stored compressed inside a zip file (named `$(AssemblyName).resources.zip`), or as-is inside a directory named `$(AssemblyName).resources`.
 
 The `CompressBindingResourcePackage` property specifies whether to create a zip file or a directory.
 
 The possible values are:
 
-* `auto`: automatically decide the best option (currently a zip file is always created, but once Visual Studio supports long paths on Windows, this may change to only zip binding resource packages with symlinks).
+* `auto`: automatically decide the best option (currently a zip file is created unless all native references are already `.zip` files; once Visual Studio supports long paths on Windows, this may change to only zip binding resource packages with symlinks).
 * `true`: create a zip file
 * `false`: create a directory
 
 The default is `auto`.
 
-This also applies to how native references are stored inside NuGets.
+When packing a binding project with `dotnet pack`, the SDK automatically includes the generated binding resource package (`$(AssemblyName).resources.zip` or `$(AssemblyName).resources`) inside the NuGet package under `lib/<TargetFramework>/` next to `$(AssemblyName).dll` (via the `_IncludeBindingResourcesInNuGetPackage` target).
+
+> [!IMPORTANT]
+> A binding assembly (`$(AssemblyName).dll`) that uses `NativeReference` items is not self-contained. If you copy or distribute the binding `.dll` manually without using `ProjectReference` or `dotnet pack`, you must also distribute the accompanying `$(AssemblyName).resources.zip` file (or `$(AssemblyName).resources` directory) in the same directory as the `.dll`. Without it, consuming application builds will fail to link or bundle the native library.
 
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
@@ -1300,15 +1303,18 @@ using CoreCLR).
 ## NoBindingEmbedding
 
 > [!WARNING]
-> Setting this property to `false` is currently deprecated and will produce a build error in .NET 12+.
+> Setting `NoBindingEmbedding` to `false` is deprecated and is **not supported starting with .NET 12**, where it produces a build error:
+> `Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.`
+> Existing projects that set `<NoBindingEmbedding>false</NoBindingEmbedding>` should remove the property from their project file.
 
-A boolean property that specifies whether native libraries in binding projects should be embedded
-in the managed assembly, or put into a `.resources` directory next to the managed assembly.
+A boolean property that controls whether native references (`@(NativeReference)`) in binding projects are placed in a binding resource package (`$(AssemblyName).resources` directory or `$(AssemblyName).resources.zip` archive) alongside the managed binding assembly, rather than embedded as resources inside the `.dll`.
 
-The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
+The default value is `true` (native libraries are placed in the sidecar binding resource package and are _not_ embedded in the managed assembly). You do not need to set `NoBindingEmbedding` explicitly in modern .NET binding projects.
 
 > [!NOTE]
-> Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).
+> XCFrameworks (`*.xcframework` and `*.xcframework.zip`) cannot work when embedded inside the managed assembly, even on earlier .NET versions.
+
+See also [CompressBindingResourcePackage](#compressbindingresourcepackage) and [NativeReference](build-items.md#nativereference).
 
 ## NoDSymUtil
 

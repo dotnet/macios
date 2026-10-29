@@ -206,19 +206,21 @@ static class C {
 		managed.AppendLine ("namespace Introspection {");
 		managed.AppendLine ("\tpublic partial class ApiStructSizeTest {");
 
-		void Add (string ns, string [] types, StructPlatforms platforms, string? ignoreReason = null, bool isInternal = false)
+		var emittedNativeChecks = new HashSet<(StructPlatforms Platforms, string NativeName)> ();
+		void Add (string ns, string [] types, StructPlatforms platforms, string? ignoreReason = null, bool isInternal = false, string? managedCondition = null)
 		{
 			if (platforms == 0 || (platforms & ~StructPlatforms.All) != 0)
 				throw new ArgumentOutOfRangeException (nameof (platforms));
 			var conditions = platformConditions.Where (condition => (platforms & condition.Platform) != 0).ToArray ();
-			var managedCondition = string.Join (" || ", conditions.Select (condition => condition.Managed));
+			var platformCondition = string.Join (" || ", conditions.Select (condition => condition.Managed));
+			var fullManagedCondition = managedCondition is null ? platformCondition : $"({platformCondition}) && ({managedCondition})";
 			var nativeCondition = string.Join (" || ", conditions.Select (condition => condition.Native));
-			managed.AppendLine ($"#if {managedCondition}");
+			managed.AppendLine ($"#if {fullManagedCondition}");
 			if (isInternal)
-				testedInternalStructs.AppendLine ($"#if {managedCondition}");
+				testedInternalStructs.AppendLine ($"#if {fullManagedCondition}");
 			else
-				testedStructs.AppendLine ($"#if {managedCondition}");
-			unavailableStructs.AppendLine ($"#if !({managedCondition})");
+				testedStructs.AppendLine ($"#if {fullManagedCondition}");
+			unavailableStructs.AppendLine ($"#if !({platformCondition}){(managedCondition is null ? "" : $" && ({managedCondition})")}");
 			native.AppendLine ($"#if {nativeCondition}");
 
 			foreach (var type in types) {
@@ -231,7 +233,8 @@ static class C {
 				else
 					testedStructs.AppendLine ($"\t\t\ttypeof ({ns}.{managedName}),");
 				unavailableStructs.AppendLine ($"\t\t\t\"{fullManagedName}\",");
-				native.AppendLine ($"CHECK_SIZE ({nativeName});");
+				if (emittedNativeChecks.Add ((platforms, nativeName)))
+					native.AppendLine ($"CHECK_SIZE ({nativeName});");
 				managed.AppendLine ("\t\t[Test]");
 				if (ignoreReason is not null)
 					managed.AppendLine ($"\t\t[Ignore (\"{ignoreReason}\")]");
@@ -254,10 +257,14 @@ static class C {
 			native.AppendLine ("#endif");
 		}
 
-		void Exclude (string ns, string [] types, string reason)
+		void Exclude (string ns, string [] types, string reason, string? managedCondition = null)
 		{
+			if (managedCondition is not null)
+				excludedStructs.AppendLine ($"#if {managedCondition}");
 			foreach (var type in types)
 				excludedStructs.AppendLine ($"\t\t\t{{ \"{ns}.{type}\", \"{reason}\" }},");
+			if (managedCondition is not null)
+				excludedStructs.AppendLine ("#endif");
 		}
 
 		Add ("Foundation", [
@@ -317,13 +324,21 @@ static class C {
 		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst);
 		Add ("CoreVideo", [
 			"CVTime",
-		], StructPlatforms.All, ignoreReason: "CVTime.TimeScale is a long, but native timeScale is int32_t. Fixing the layout requires an API-breaking change.");
+		], StructPlatforms.All, managedCondition: "XAMCORE_5_0");
+		Add ("CoreVideo", [
+			"CVTime2:CVTime",
+		], StructPlatforms.All, isInternal: true, managedCondition: "!XAMCORE_5_0");
 		// CVPlanarPixelBufferInfo wraps a variable-length array, not a fixed native layout.
 		Add ("CoreVideo", [
 			"CVTimeStamp", "CVSMPTETime", "CVPlanarComponentInfo",
 			"CVPlanarPixelBufferInfo_YCbCrPlanar", "CVPlanarPixelBufferInfo_YCbCrBiPlanar",
-			"CVFillExtendedPixelsCallBackDataStruct:CVFillExtendedPixelsCallBackData",
 		], StructPlatforms.All);
+		Add ("CoreVideo", [
+			"CVFillExtendedPixelsCallBackData",
+		], StructPlatforms.All, managedCondition: "XAMCORE_5_0");
+		Add ("CoreVideo", [
+			"CVFillExtendedPixelsCallBackDataStruct:CVFillExtendedPixelsCallBackData",
+		], StructPlatforms.All, managedCondition: "!XAMCORE_5_0");
 		Add ("CoreLocation", [
 			"CLLocationCoordinate2D",
 		], StructPlatforms.All);
@@ -431,28 +446,30 @@ static class C {
 		], "The SDK does not expose these sparse mapping operation structures.");
 		Exclude ("AVFoundation", [
 			"AVSampleCursorSyncInfo", "AVSampleCursorDependencyInfo", "AVSampleCursorChunkInfo",
-		], "Boolean fields use a separate blittable representation for native calls.");
+		], "Boolean fields use a separate blittable representation for native calls.", managedCondition: "!XAMCORE_5_0");
 		Add ("AVFoundation", [
 			"AVSampleCursorSyncInfo_Blittable:AVSampleCursorSyncInfo",
 			"AVSampleCursorDependencyInfo_Blittable:AVSampleCursorDependencyInfo",
 			"AVSampleCursorChunkInfo_Blittable:AVSampleCursorChunkInfo",
-		], StructPlatforms.All, isInternal: true);
+		], StructPlatforms.All, isInternal: true, managedCondition: "!XAMCORE_5_0");
 		Add ("AVFoundation", [
 			"AVSampleCursorAudioDependencyInfo_Blittable:AVSampleCursorAudioDependencyInfo",
-		], StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true);
+		], StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true, managedCondition: "!XAMCORE_5_0");
 		Add ("AVFoundation", ["AVSampleCursorAudioDependencyInfo"], StructPlatforms.All);
 		Add ("CoreMidi", [
 			"MidiCIDeviceIdentification_Blittable:MIDICIDeviceIdentification",
+		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true, managedCondition: "!XAMCORE_5_0");
+		Add ("CoreMidi", [
 			"MidiThruConnectionParamsStruct:MIDIThruConnectionParams",
 		], StructPlatforms.iOS | StructPlatforms.macOS | StructPlatforms.MacCatalyst, isInternal: true);
 		Add ("GameController", [
 			"GCDualSenseAdaptiveTriggerPositionalAmplitudes_Blittable:GCDualSenseAdaptiveTriggerPositionalAmplitudes",
 			"GCDualSenseAdaptiveTriggerPositionalResistiveStrengths_Blittable:GCDualSenseAdaptiveTriggerPositionalResistiveStrengths",
 			"GCExtendedGamepadSnapshotData_Blittable:GCExtendedGamepadSnapshotData",
-		], StructPlatforms.All, isInternal: true);
+		], StructPlatforms.All, isInternal: true, managedCondition: "!XAMCORE_5_0");
 		Add ("GLKit", [
 			"GLKVertexAttributeParametersInternal:GLKVertexAttributeParameters",
-		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.macOS, isInternal: true);
+		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.macOS, isInternal: true, managedCondition: "!XAMCORE_5_0");
 		Exclude ("AddressBook", ["ABMultiValueEntry`1"], "Generic managed entry wrapper, not a native structure.");
 		Exclude ("AudioToolbox", ["AudioBufferList", "AudioFileRegion"], "Managed view of a variable-length native structure.");
 		Exclude ("AudioToolbox", ["ExtendedNoteOnEvent"], "Represents the fixed header without the variable-length native controls array.");
@@ -468,9 +485,19 @@ static class C {
 		Exclude ("CoreMedia", ["CMTimeScale"], "Managed wrapper for a native scalar.");
 		Exclude ("CoreMedia", ["TextMarkupColor"], "Managed color components converted to a CFArray.");
 		Exclude ("CoreServices", ["FSEvent"], "Managed event assembled from native callback arguments.");
-		Exclude ("CoreVideo", ["CVFillExtendedPixelsCallBackData"], "Managed callback converted to CVFillExtendedPixelsCallBackDataStruct.");
-		Exclude ("GameController", ["GCExtendedGamepadSnapshotData"], "Uses a separate blittable representation for native calls.");
-		Exclude ("GLKit", ["GLKVertexAttributeParameters"], "Uses a separate blittable representation for native calls.");
+		Exclude ("CoreVideo", ["CVFillExtendedPixelsCallBackData"], "Managed callback converted to CVFillExtendedPixelsCallBackDataStruct.", managedCondition: "!XAMCORE_5_0");
+		Exclude ("CoreVideo", ["CVTime"], "Managed structure with a 64-bit TimeScale field converted to CVTime2 for native calls.", managedCondition: "!XAMCORE_5_0");
+		Exclude ("GameController", ["GCExtendedGamepadSnapshotData"], "Uses a separate blittable representation for native calls.", managedCondition: "!XAMCORE_5_0");
+		Exclude ("GLKit", ["GLKVertexAttributeParameters"], "Uses a separate blittable representation for native calls.", managedCondition: "!XAMCORE_5_0");
+		Add ("AVFoundation", [
+			"AVSampleCursorSyncInfo", "AVSampleCursorDependencyInfo", "AVSampleCursorChunkInfo",
+		], StructPlatforms.All, managedCondition: "XAMCORE_5_0");
+		Add ("GameController", [
+			"GCExtendedGamepadSnapshotData",
+		], StructPlatforms.All, managedCondition: "XAMCORE_5_0");
+		Add ("GLKit", [
+			"GLKVertexAttributeParameters",
+		], StructPlatforms.iOS | StructPlatforms.tvOS | StructPlatforms.macOS, managedCondition: "XAMCORE_5_0");
 		Exclude ("ObjCRuntime", ["NativeHandle"], "Managed wrapper for a native pointer.");
 		Exclude ("ObjCRuntime", [
 			"BlockDescriptor", "BlockLiteral", "Class+objc_attribute_prop", "IntPtrTypeValueTuple", "ObjCSuper",

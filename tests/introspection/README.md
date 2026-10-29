@@ -59,13 +59,11 @@ Coverage is not limited to P/Invoke and `UnmanagedCallersOnly` signatures:
 structures can also cross the native boundary through untyped pointers,
 manually marshaled buffers (including `NSData`), callbacks, and nested fields.
 
-The `CVTime` size test is explicitly ignored: its public `TimeScale` field is
-currently a `long`, while the native field is `int32_t`. Correcting that existing
-layout mismatch requires an API-breaking change. `AURenderEventHeader` and
-`AUParameterEvent` also have existing packing mismatches, and `AURenderEvent`
-additionally omits native MIDI union variants. Their tests are explicitly ignored
-without changing the public layouts. Known failures use an explicit
-`ignoreReason` in the generator rather than changing the expected native size.
+`AURenderEventHeader` and `AUParameterEvent` have existing packing mismatches,
+and `AURenderEvent` additionally omits native MIDI union variants. Their tests
+are explicitly ignored without changing the public layouts. Known failures use
+an explicit `ignoreReason` in the generator rather than changing the expected
+native size.
 
 Build `tests/test-libraries` before building introspection to generate the tests
 and the `libstructsizes.xcframework` native reference.

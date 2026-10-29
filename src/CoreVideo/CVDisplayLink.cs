@@ -296,7 +296,11 @@ namespace CoreVideo {
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreVideoLibrary)]
+#if XAMCORE_5_0
 		extern static CVTime CVDisplayLinkGetNominalOutputVideoRefreshPeriod (IntPtr displayLink);
+#else
+		extern static CVTime2 CVDisplayLinkGetNominalOutputVideoRefreshPeriod (IntPtr displayLink);
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -312,7 +316,11 @@ namespace CoreVideo {
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.CoreVideoLibrary)]
+#if XAMCORE_5_0
 		extern static CVTime CVDisplayLinkGetOutputVideoLatency (IntPtr displayLink);
+#else
+		extern static CVTime2 CVDisplayLinkGetOutputVideoLatency (IntPtr displayLink);
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

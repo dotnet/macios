@@ -6,6 +6,46 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class NativeRuntimeTest {
 		[DllImport ("__Internal")]
+		static extern IntPtr xamarin_copy_environment_variable (string name);
+
+		[DllImport ("__Internal")]
+		static extern void xamarin_free (IntPtr pointer);
+
+		[DllImport (Constants.libcLibrary)]
+		static extern int setenv (string name, string value, int overwrite);
+
+		[DllImport (Constants.libcLibrary)]
+		static extern int unsetenv (string name);
+
+		[Test]
+		public void CopyEnvironmentVariable ()
+		{
+			var name = "MACIOS_NATIVE_RUNTIME_TEST_" + Guid.NewGuid ().ToString ("N");
+			IntPtr first = IntPtr.Zero;
+			IntPtr second = IntPtr.Zero;
+			try {
+				Assert.That (xamarin_copy_environment_variable (name), Is.EqualTo (IntPtr.Zero), "Absent");
+				Assert.That (setenv (name, "", 1), Is.EqualTo (0), "Set empty");
+				first = xamarin_copy_environment_variable (name);
+				Assert.That (first, Is.Not.EqualTo (IntPtr.Zero), "Present empty");
+				Assert.That (Marshal.PtrToStringUTF8 (first), Is.EqualTo (""), "Empty value");
+
+				Assert.That (setenv (name, "updated-\u00e6", 1), Is.EqualTo (0), "Update");
+				second = xamarin_copy_environment_variable (name);
+				Assert.That (Marshal.PtrToStringUTF8 (second), Is.EqualTo ("updated-\u00e6"), "Updated UTF-8 value");
+				Assert.That (Marshal.PtrToStringUTF8 (first), Is.EqualTo (""), "Independent snapshot");
+
+				Assert.That (unsetenv (name), Is.EqualTo (0), "Unset");
+				Assert.That (xamarin_copy_environment_variable (name), Is.EqualTo (IntPtr.Zero), "Removed");
+				Assert.That (Marshal.PtrToStringUTF8 (second), Is.EqualTo ("updated-\u00e6"), "Snapshot survives removal");
+			} finally {
+				unsetenv (name);
+				xamarin_free (first);
+				xamarin_free (second);
+			}
+		}
+
+		[DllImport ("__Internal")]
 		static extern int x_test_error_description (int error, StringBuilder buffer, nuint size);
 
 		[TestCase (2)]

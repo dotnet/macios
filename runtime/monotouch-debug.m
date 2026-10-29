@@ -158,13 +158,15 @@ monotouch_start_debugging ()
 		}
 	
 #if !defined (CORECLR_RUNTIME)
-		char *trace = getenv ("MONO_TRACE");
+		char *trace_value = xamarin_copy_environment_variable ("MONO_TRACE");
+		char *trace = trace_value;
 		if (trace && *trace) {
 			if (!strncmp (trace, "--trace=", 8))
 				trace += 8;
 
 			mono_jit_set_trace_options (trace);
 		}
+		free (trace_value);
 #endif // !defined (CORECLR_RUNTIME)
 	}
 }
@@ -180,7 +182,10 @@ monotouch_start_debugging ()
 void
 monotouch_wait_for_port_forwarding ()
 {
-	if (getenv ("DOTNET_WATCH") == NULL)
+	char *watch = xamarin_copy_environment_variable ("DOTNET_WATCH");
+	bool is_watch = watch != NULL;
+	free (watch);
+	if (!is_watch)
 		return;
 
 	struct timeval now;
@@ -242,7 +247,7 @@ get_preference (NSArray *preferences, NSUserDefaults *defaults, NSString *lookup
 static uint64_t xamarin_launch_timestamp = 0;
 void monotouch_start_launch_timer ()
 {
-	const char *action = getenv ("XAMARIN_TRACK_LAUNCH_DURATION");
+	char *action = xamarin_copy_environment_variable ("XAMARIN_TRACK_LAUNCH_DURATION");
 	if (!action || !*action) {
 		// do nothing (null or empty string)
 	} else if (strcmp (action, "disable") == 0) {
@@ -253,6 +258,7 @@ void monotouch_start_launch_timer ()
 	} else {
 		PRINT (PRODUCT ": Unknown value for XAMARIN_TRACK_LAUNCH_DURATION: %s", action);
 	}
+	free (action);
 }
 
 static void
@@ -301,27 +307,27 @@ void xamarin_capture_debugging_settings ()
 	// environment on the main thread (such as managed code in the app's Main method).
 	char *evar;
 
-	evar = getenv ("__XAMARIN_DEBUG_MODE__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_MODE__");
 	if (evar != NULL) {
-		captured_debug_mode = strdup (evar);
+		captured_debug_mode = evar;
 		unsetenv ("__XAMARIN_DEBUG_MODE__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_PORT__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_PORT__");
 	if (evar != NULL) {
-		captured_debug_port = strdup (evar);
+		captured_debug_port = evar;
 		unsetenv ("__XAMARIN_DEBUG_PORT__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_HOSTS__");
 	if (evar != NULL) {
-		captured_debug_hosts = strdup (evar);
+		captured_debug_hosts = evar;
 		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 	if (evar != NULL) {
-		captured_debug_connect_timeout = strdup (evar);
+		captured_debug_connect_timeout = evar;
 		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 	}
 }
@@ -437,7 +443,7 @@ void monotouch_configure_debugging ()
 	free (captured_debug_connect_timeout);
 	captured_debug_connect_timeout = NULL;
 
-	const char *evar = getenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
+	char *evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	if (evar && *evar) {
 		int timeout = (int) strtol (evar, NULL, 10);
 		if (timeout > 0) {
@@ -446,6 +452,7 @@ void monotouch_configure_debugging ()
 		}
 		unsetenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	}
+	free (evar);
 
 #if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well

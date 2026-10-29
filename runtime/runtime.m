@@ -1257,6 +1257,24 @@ xamarin_free (void *ptr)
 }
 
 char *
+xamarin_copy_environment_variable (const char *name)
+{
+	@autoreleasepool {
+		// Read a fresh snapshot because startup and port forwarding change the environment.
+		NSString *value = [[[NSProcessInfo processInfo] environment] objectForKey: [NSString stringWithUTF8String: name]];
+		if (value == nil)
+			return NULL;
+		const char *utf8 = [value UTF8String];
+		if (utf8 == NULL)
+			xamarin_assertion_message ("Could not encode environment variable '%s' as UTF-8.", name);
+		char *copy = strdup (utf8);
+		if (copy == NULL)
+			xamarin_assertion_message ("Could not copy environment variable '%s'.", name);
+		return copy;
+	}
+}
+
+char *
 xamarin_strdup_printf (const char *msg, ...)
 {
 	va_list args;
@@ -2050,8 +2068,9 @@ bool
 xamarin_log_marshalled_exceptions ()
 {
 	if (xamarin_log_exceptions == XamarinTriStateNone) {
-		const char *var = getenv ("XAMARIN_LOG_MARSHALLED_EXCEPTIONS");
+		char *var = xamarin_copy_environment_variable ("XAMARIN_LOG_MARSHALLED_EXCEPTIONS");
 		xamarin_log_exceptions = (var && *var) ? XamarinTriStateEnabled : XamarinTriStateDisabled;
+		free (var);
 	}
 	return xamarin_log_exceptions == XamarinTriStateEnabled;
 }
@@ -2616,13 +2635,18 @@ xamarin_initialize_crash_report_directory ()
 
 	// Only do this if crash reports are enabled (DOTNET_EnableCrashReport=1),
 	// otherwise there's no point in setting the crash report directory.
-	const char *enableCrashReport = getenv ("DOTNET_EnableCrashReport");
-	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
+	char *enableCrashReport = xamarin_copy_environment_variable ("DOTNET_EnableCrashReport");
+	bool enabled = enableCrashReport != NULL && strcmp (enableCrashReport, "1") == 0;
+	free (enableCrashReport);
+	if (!enabled)
 		return;
 
 	// If DOTNET_CrashReportRootPath is already set, respect it and don't override it
 	// (nor create any directory), since the caller is then responsible for the location.
-	if (getenv ("DOTNET_CrashReportRootPath") != NULL)
+	char *crashReportRootPath = xamarin_copy_environment_variable ("DOTNET_CrashReportRootPath");
+	bool hasRootPath = crashReportRootPath != NULL;
+	free (crashReportRootPath);
+	if (hasRootPath)
 		return;
 
 	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
@@ -2678,7 +2702,7 @@ xamarin_vm_initialize ()
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
 	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
-	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
+	char *startupHooks = xamarin_copy_environment_variable ("DOTNET_STARTUP_HOOKS");
 
 	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
 	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
@@ -2724,6 +2748,7 @@ xamarin_vm_initialize ()
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
 	xamarin_free (system_corelib_directory);
+	free (startupHooks);
 
 	if (!rv)
 		xamarin_assertion_message ("Failed to initialize the VM");

@@ -158,8 +158,9 @@ static int xamarin_launch_time_enabled = -1;
 void xamarin_launch_time_print (const char *msg)
 {
 	if (xamarin_launch_time_enabled == -1) {
-		const char *env = getenv ("DEBUG_LAUNCH_TIME");
+		char *env = xamarin_copy_environment_variable ("DEBUG_LAUNCH_TIME");
 		xamarin_launch_time_enabled = (env != NULL && env[0] == '1') ? 1 : 0;
+		free (env);
 	}
 
 	if (!xamarin_launch_time_enabled)

@@ -32,6 +32,8 @@ void xamarin_launch_time_print (const char *msg);
 extern "C" {
 #endif
 
+char *xamarin_copy_environment_variable (const char *name);
+
 void *xamarin_marshal_return_value (SEL sel, MonoType *mtype, const char *type, MonoObject *retval, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle);
 
 void xamarin_dyn_objc_msgSend ();

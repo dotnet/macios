@@ -222,7 +222,7 @@ xamarin_bridge_initialize ()
 {
 #if defined (TRACK_MONOOBJECTS)
 	// Only capture the stack trace if requested explicitly, it has a very significant perf hit (monotouch-test is 3x slower).
-	const char *with_stacktraces = getenv ("MONOOBJECT_TRACKING_WITH_STACKTRACES");
+	char *with_stacktraces = xamarin_copy_environment_variable ("MONOOBJECT_TRACKING_WITH_STACKTRACES");
 	if (with_stacktraces && *with_stacktraces) {
 		// Create a dictionary to store the stack traces
 		CFDictionaryValueCallBacks value_callbacks = { 0 };
@@ -231,6 +231,7 @@ xamarin_bridge_initialize ()
 
 		fprintf (stderr, "Stack traces enabled for MonoObject tracking.\n");
 	}
+	free (with_stacktraces);
 #endif // defined (TRACK_MONOOBJECTS)
 }
 

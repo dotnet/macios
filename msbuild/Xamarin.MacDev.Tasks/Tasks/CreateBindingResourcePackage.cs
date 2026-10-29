@@ -56,13 +56,14 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
+			var nativeReferencePaths = GetNativeReferencePaths ().ToList ();
 			var compress = false;
 			if (string.Equals (Compress, "true", StringComparison.OrdinalIgnoreCase)) {
 				compress = true;
 			} else if (string.Equals (Compress, "false", StringComparison.OrdinalIgnoreCase)) {
 				compress = false;
 			} else if (string.Equals (Compress, "auto", StringComparison.OrdinalIgnoreCase)) {
-				if (ContainsSymlinks (GetNativeReferencePaths ().Select (v => new TaskItem (v)).ToArray ())) {
+				if (ContainsSymlinks (nativeReferencePaths.Select (v => new TaskItem (v)))) {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7085 /* "Creating a compressed binding resource package because there are symlinks in the input." */);
 					compress = true;
 				} else if (NativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
@@ -89,7 +90,7 @@ namespace Xamarin.MacDev.Tasks {
 					File.Delete (zipFile);
 				Directory.CreateDirectory (Path.GetDirectoryName (zipFile)!);
 
-				var filesToZip = GetNativeReferencePaths ()
+				var filesToZip = nativeReferencePaths
 									// Canonicalize directory separators to the current platform
 									.Select (v => v.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar))
 									.Distinct ()
@@ -107,7 +108,7 @@ namespace Xamarin.MacDev.Tasks {
 				var bindingResourcePath = BindingResourcePath;
 				Log.LogMessage (MSBStrings.M0121, bindingResourcePath);
 				Directory.CreateDirectory (bindingResourcePath);
-				foreach (var nativeRef in GetNativeReferencePaths ().Distinct ()) {
+				foreach (var nativeRef in nativeReferencePaths.Distinct ()) {
 					Xamarin.Bundler.FileCopier.UpdateDirectory (this, nativeRef, bindingResourcePath);
 
 					var bindingOutputPath = Path.Combine (bindingResourcePath, Path.GetFileName (nativeRef));
@@ -138,7 +139,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		bool ContainsSymlinks (ITaskItem [] items)
+		bool ContainsSymlinks (IEnumerable<ITaskItem> items)
 		{
 			foreach (var item in items) {
 				if (PathUtils.IsSymlinkOrContainsSymlinks (item.ItemSpec)) {

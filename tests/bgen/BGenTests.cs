@@ -1859,6 +1859,8 @@ namespace GeneratorTests {
 		public void AllowNullProperties (Profile profile)
 		{
 			var bgen = BuildFile (profile, bgen => bgen.AddExtraSourcesRelativeToGeneratorDirectory ("allow-null-usage.cs"), "allow-null.cs");
+			Assert.That (bgen.Output.ToString (), Does.Not.Contain ("warning CS8602"), "Non-nullable getters");
+			Assert.That (bgen.Output.ToString (), Does.Not.Contain ("warning CS8625"), "Nullable setters");
 			var type = bgen.ApiAssembly.MainModule.GetType ("AllowNullProperties.Properties");
 			foreach (var name in new [] { "Object", "Text", "Objects", "Strings", "Callback", "WrappedObject" }) {
 				var property = type.Properties.Single (v => v.Name == name);

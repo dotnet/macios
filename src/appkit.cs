@@ -438,6 +438,7 @@ namespace AppKit {
 		string InformativeText { get; set; }
 
 		[Export ("icon", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSImage Icon { get; set; }
 
 		[Export ("addButtonWithTitle:")]
@@ -546,6 +547,7 @@ namespace AppKit {
 
 		[Static, Export ("currentAppearance")]
 		[Deprecated (PlatformName.MacOSX, 10, 9, message: "Use 'CurrentDrawingAppearance' instead.")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSAppearance CurrentAppearance { get; [Bind ("setCurrentAppearance:")] set; }
 
 		[Static]
@@ -819,7 +821,7 @@ namespace AppKit {
 		NSMenu HelpMenu { get; set; }
 
 		[Export ("applicationIconImage", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSImage ApplicationIconImage { get; set; }
 
 		[Export ("activationPolicy"), Protected]
@@ -2502,6 +2504,7 @@ namespace AppKit {
 		void SetCellClass (Class factoryId);
 
 		[Export ("cellPrototype", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSObject CellPrototype { get; set; }
 
 		[Export ("delegate", ArgumentSemantic.Assign), NullAllowed]
@@ -2918,6 +2921,7 @@ namespace AppKit {
 		NativeHandle Constructor (NSImage image);
 
 		[Export ("title")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Title { get; set; }
 
 		[Export ("alternateTitle")]
@@ -3755,7 +3759,7 @@ namespace AppKit {
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Set a NSCollectionViewGridLayout on CollectionViewLayout and set its 'MaximumItemSize' instead.")]
 		CGSize MaxItemSize { get; set; }
 
-		[Export ("backgroundColors", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("backgroundColors", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor [] BackgroundColors { get; set; }
 
 		[Export ("frameForItemAtIndex:withNumberOfItems:")]
@@ -4588,6 +4592,7 @@ namespace AppKit {
 		CGSize MaximumItemSize { get; set; }
 
 		[Export ("backgroundColors", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor [] BackgroundColors { get; set; }
 	}
 
@@ -6857,7 +6862,7 @@ namespace AppKit {
 		void ShouldCloseWindowController (NSWindowController windowController, [NullAllowed] NSObject delegateObject, [NullAllowed] Selector shouldCloseSelector, [NullAllowed] IntPtr contextInfo);
 
 		[Export ("displayName")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string DisplayName { get; set; }
 
 		[Export ("windowForSheet")]
@@ -9833,6 +9838,7 @@ namespace AppKit {
 		nfloat MinimumWidth { get; set; }
 
 		[Export ("font", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSFont Font { get; set; }
 
 		[Export ("allowsContextMenuPlugIns")]
@@ -10026,12 +10032,14 @@ namespace AppKit {
 		NSCellStateValue State { get; set; }
 
 		[Export ("onStateImage", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSImage OnStateImage { get; set; }
 
 		[Export ("offStateImage", ArgumentSemantic.Retain)]
 		NSImage OffStateImage { get; set; }
 
 		[Export ("mixedStateImage", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSImage MixedStateImage { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -10220,6 +10228,7 @@ namespace AppKit {
 		void PrepareContent ();
 
 		[Export ("objectClass")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		Class ObjectClass { get; set; }
 
 		[Export ("newObject")]
@@ -12993,12 +13002,15 @@ namespace AppKit {
 		NSLevelIndicatorStyle LevelIndicatorStyle { get; set; }
 
 		[Export ("fillColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor FillColor { get; set; }
 
 		[Export ("warningFillColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor WarningFillColor { get; set; }
 
 		[Export ("criticalFillColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor CriticalFillColor { get; set; }
 
 		[Export ("drawsTieredCapacityLevels")]
@@ -16255,18 +16267,22 @@ namespace AppKit {
 		bool TreatsFilePackagesAsDirectories { get; set; }
 
 		[Export ("prompt")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Prompt { get; set; }
 
 		[Export ("title")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Title { get; set; }
 
 		[Export ("nameFieldLabel")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string NameFieldLabel { get; set; }
 
 		[Export ("nameFieldStringValue")]
 		string NameFieldStringValue { get; set; }
 
 		[Export ("message")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Message { get; set; }
 
 		[Export ("showsHiddenFiles")]
@@ -16901,6 +16917,7 @@ namespace AppKit {
 		nint MaximumRecents { get; set; }
 
 		[Export ("recentSearches")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] RecentSearches { get; set; }
 
 		[Export ("recentsAutosaveName")]
@@ -17345,7 +17362,7 @@ namespace AppKit {
 		[NullAllowed, Export ("action", ArgumentSemantic.Assign)]
 		Selector Action { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 
@@ -18544,6 +18561,7 @@ namespace AppKit {
 		bool Visible { [Bind ("isVisible")] get; set; }
 
 		[Export ("autosaveName")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string AutosaveName { get; set; }
 
 		[Mac (27, 0)]
@@ -21860,6 +21878,7 @@ namespace AppKit {
 		NSImage Image { get; set; }
 
 		[Export ("backgroundColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor BackgroundColor { get; set; }
 	}
 
@@ -23003,7 +23022,7 @@ namespace AppKit {
 		[Export ("defaultCompletionDelay")]
 		double DefaultCompletionDelay { get; }
 
-		[Export ("tokenizingCharacterSet", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("tokenizingCharacterSet", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCharacterSet CharacterSet { get; set; }
 
 		[Static]
@@ -23596,7 +23615,7 @@ namespace AppKit {
 		[Export ("selectedTextAttributes")]
 		NSDictionary SelectedTextAttributes { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("insertionPointColor")]
 		NSColor InsertionPointColor { get; set; }
 
@@ -24346,6 +24365,7 @@ namespace AppKit {
 		INSTokenFieldDelegate Delegate { get; set; }
 
 		[Export ("tokenizingCharacterSet", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCharacterSet CharacterSet { get; set; }
 	}
 
@@ -25702,6 +25722,7 @@ namespace AppKit {
 		NSObject ValidRequestorForSendType (string sendType, string returnType);
 
 		[Export ("backgroundColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColor BackgroundColor { get; set; }
 
 		[Export ("setContentBorderThickness:forEdge:")]
@@ -25759,6 +25780,7 @@ namespace AppKit {
 		NSImage MiniWindowImage { get; set; }
 
 		[Export ("miniwindowTitle")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string MiniWindowTitle { get; set; }
 
 		[Export ("dockTile")]
@@ -26411,7 +26433,7 @@ namespace AppKit {
 		[Export ("convertPointFromBacking:")]
 		CGPoint ConvertPointFromBacking (CGPoint point);
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("appearanceSource", ArgumentSemantic.Weak)]
 		INSAppearanceCustomization AppearanceSource { get; set; }
 
@@ -33030,7 +33052,7 @@ namespace AppKit {
 		[Export ("setCandidates:forSelectedRange:inString:")]
 		void SetCandidates (NSObject [] candidates, NSRange selectedRange, [NullAllowed] string originalString);
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 	}
@@ -33112,9 +33134,10 @@ namespace AppKit {
 
 		[NoMacCatalyst]
 		[Export ("colorList", ArgumentSemantic.Strong)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSColorList ColorList { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 
@@ -33149,7 +33172,7 @@ namespace AppKit {
 		[Export ("viewController", ArgumentSemantic.Strong)]
 		NSViewController ViewController { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 	}
@@ -33186,7 +33209,7 @@ namespace AppKit {
 		[Export ("groupTouchBar", ArgumentSemantic.Strong)]
 		NSTouchBar GroupTouchBar { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 
@@ -33232,7 +33255,7 @@ namespace AppKit {
 		[Export ("popoverTouchBar", ArgumentSemantic.Strong)]
 		NSTouchBar PopoverTouchBar { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 
@@ -33966,12 +33989,13 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	interface NSWindowTab {
 		[Export ("title")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Title { get; set; }
 
 		[NullAllowed, Export ("attributedTitle", ArgumentSemantic.Copy)]
 		NSAttributedString AttributedTitle { get; set; }
 
-		[Export ("toolTip"), NullAllowed]
+		[Export ("toolTip"), System.Diagnostics.CodeAnalysis.AllowNull]
 		string ToolTip { get; set; }
 
 		[NullAllowed, Export ("accessoryView", ArgumentSemantic.Strong)]
@@ -34051,7 +34075,7 @@ namespace AppKit {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 	}
@@ -34169,7 +34193,7 @@ namespace AppKit {
 		[Export ("isEnabledAtIndex:")]
 		bool GetEnabled (nint index);
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel", ArgumentSemantic.Copy)]
 		string CustomizationLabel { get; set; }
 	}
@@ -34283,7 +34307,7 @@ namespace AppKit {
 		[NullAllowed, Export ("action", ArgumentSemantic.Assign)]
 		Selector Action { get; set; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("customizationLabel")]
 		string CustomizationLabel { get; set; }
 	}
@@ -35082,7 +35106,7 @@ namespace AppKit {
 		[Export ("displayMode", ArgumentSemantic.Assign)]
 		NSTextInsertionIndicatorDisplayMode DisplayMode { get; set; }
 
-		[NullAllowed, Export ("color", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("color", ArgumentSemantic.Copy)]
 		NSColor Color { get; set; }
 
 		[Export ("automaticModeOptions", ArgumentSemantic.Assign)]

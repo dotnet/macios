@@ -13891,7 +13891,7 @@ namespace AVFoundation {
 	// 'init' returns NIL
 	[DisableDefaultCtor]
 	interface AVMutableCompositionTrack {
-		[Export ("segments", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("segments", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		[New]
 		AVCompositionTrackSegment [] Segments { get; set; }
 
@@ -16595,19 +16595,21 @@ namespace AVFoundation {
 		[NullAllowed, Export ("sampleBufferCallbackQueue")]
 		DispatchQueue SampleBufferCallbackQueue { get; }
 
-		[Export ("videoSettings", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("videoSettings", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		NSDictionary WeakVideoSettings { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakVideoSettings")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		AVVideoSettingsUncompressed UncompressedVideoSetting { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakVideoSettings")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		AVVideoSettingsCompressed CompressedVideoSetting { get; set; }
 
 		[Export ("minFrameDuration")]
@@ -16757,7 +16759,7 @@ namespace AVFoundation {
 
 		[NoiOS, MacCatalyst (15, 0)]
 		[Export ("audioSettings", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSDictionary WeakAudioSettings { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -16766,7 +16768,7 @@ namespace AVFoundation {
 		[NoiOS]
 		[NoMacCatalyst]
 		[Wrap ("WeakAudioSettings")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		AudioSettings AudioSettings { get; set; }
 
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -16983,7 +16985,7 @@ namespace AVFoundation {
 		[Export ("availableMetadataObjectTypes")]
 		NSString [] WeakAvailableMetadataObjectTypes { get; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("metadataObjectTypes", ArgumentSemantic.Copy)]
 		NSString [] WeakMetadataObjectTypes { get; set; }
 
@@ -17122,7 +17124,7 @@ namespace AVFoundation {
 		[NullAllowed, Export ("livePhotoMovieFileURL", ArgumentSemantic.Copy)]
 		NSUrl LivePhotoMovieFileUrl { get; set; }
 
-		[NullAllowed, Export ("livePhotoMovieMetadata", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("livePhotoMovieMetadata", ArgumentSemantic.Copy)]
 		AVMetadataItem [] LivePhotoMovieMetadata { get; set; }
 
 		[Export ("availablePreviewPhotoPixelFormatTypes")]
@@ -22521,7 +22523,7 @@ namespace AVFoundation {
 		[Export ("initWithPrimaryPlayer:")]
 		NativeHandle Constructor (AVPlayer primaryPlayer);
 
-		[NullAllowed, Export ("events", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("events", ArgumentSemantic.Copy)]
 		AVPlayerInterstitialEvent [] Events { get; set; }
 
 		[Export ("cancelCurrentEventWithResumptionOffset:")]

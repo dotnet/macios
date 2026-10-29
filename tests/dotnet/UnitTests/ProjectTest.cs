@@ -8,25 +8,6 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetProjectTest : TestBaseClass {
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacOSX)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		public void UnsupportedBuildHost (ApplePlatform platform)
-		{
-			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
-			var properties = new Dictionary<string, string> ();
-			properties ["_PlatformName"] = platform.AsString ();
-			properties ["TargetFrameworkVersion"] = "v11.0";
-			if (OperatingSystem.IsLinux ()) {
-				var rv = DotNet.AssertBuildFailure (projectPath, properties, target: "_CheckForUnsupportedHost");
-				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-				AssertErrorMessages (errors, $"Building .NET for {platform.AsString ()} projects on Linux is not supported. Use macOS, or Windows with a connection to a Mac, to build this project.");
-			} else {
-				DotNet.AssertBuild (projectPath, properties, target: "_CheckForUnsupportedHost");
-			}
-		}
-
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]

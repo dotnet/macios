@@ -623,21 +623,21 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	} else {
 		
 #ifdef TRACE
-		fprintf (stderr, " calling managed method with %i arguments: ", (int) num_arg);
-		for (int i = 0; i < num_arg; i++)
-			fprintf (stderr, "%p ", arg_ptrs [i]);
-		fprintf (stderr, " writeback: %i", needs_writeback);
-		fprintf (stderr, "\n");
+		xamarin_write_formatted (STDERR_FILENO, " calling managed method with %i arguments: ", (int) num_arg);
+		for (unsigned long i = 0; i < num_arg; i++)
+			xamarin_write_formatted (STDERR_FILENO, "%p ", arg_ptrs [i]);
+		xamarin_write_formatted (STDERR_FILENO, " writeback: %i", needs_writeback);
+		xamarin_write_formatted (STDERR_FILENO, "\n");
 #endif
 
 		retval = mono_runtime_invoke (method, mthis, (void **) arg_ptrs, exception_ptr);
 
 #ifdef TRACE
-		fprintf (stderr, " called managed method with %i arguments: ", (int) num_arg);
-		for (int i = 0; i < num_arg; i++)
-			fprintf (stderr, "%p ", arg_ptrs [i]);
-		fprintf (stderr, " writeback: %i", needs_writeback);
-		fprintf (stderr, "\n");
+		xamarin_write_formatted (STDERR_FILENO, " called managed method with %i arguments: ", (int) num_arg);
+		for (unsigned long i = 0; i < num_arg; i++)
+			xamarin_write_formatted (STDERR_FILENO, "%p ", arg_ptrs [i]);
+		xamarin_write_formatted (STDERR_FILENO, " writeback: %i", needs_writeback);
+		xamarin_write_formatted (STDERR_FILENO, "\n");
 #endif
 
 		if (exception != NULL)

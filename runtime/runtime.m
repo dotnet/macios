@@ -926,7 +926,7 @@ object_queued_for_finalization (MonoObject *object)
 	struct Managed_NSObject *obj = (struct Managed_NSObject *) object;
 #if defined(DEBUG_REF_COUNTING)
 	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
-	fprintf (stderr, "object_queued_for_finalization (%p): data=%p flags=%x handle=%p\n", object, obj->data, (unsigned int) (obj->data ? obj->data->flags : 0), obj->data ? obj->data->handle : NULL);
+	xamarin_write_formatted (STDERR_FILENO, "object_queued_for_finalization (%p): data=%p flags=%x handle=%p\n", object, obj->data, (unsigned int) (obj->data ? obj->data->flags : 0), obj->data ? obj->data->handle : NULL);
 #endif
 	if (obj->data)
 		obj->data->flags |= NSObjectFlagsInFinalizerQueue;
@@ -951,7 +951,7 @@ void
 xamarin_add_registration_map (struct MTRegistrationMap *map, bool partial)
 {
 	if (strcmp (map->product_hash, PRODUCT_HASH) != 0) {
-		fprintf (stderr, PRODUCT ": The static registrar map for %s (and %i other assemblies) is invalid. It was built using a runtime with hash %s, but the current runtime was built with hash %s.\n", map->assemblies [0].name, map->assembly_count - 1, map->product_hash, PRODUCT_HASH);
+		xamarin_write_formatted (STDERR_FILENO, PRODUCT ": The static registrar map for %s (and %i other assemblies) is invalid. It was built using a runtime with hash %s, but the current runtime was built with hash %s.\n", map->assemblies [0].name, map->assembly_count - 1, map->product_hash, PRODUCT_HASH);
 		return;
 	}
 

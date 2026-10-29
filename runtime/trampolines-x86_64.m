@@ -36,7 +36,7 @@
 static void
 dump_state (const char *prefix, struct XamarinCallState *state)
 {
-	fprintf (stderr, "DUMP %s type: %llu is_stret: %i self: %p SEL: %s\n" 
+	xamarin_write_formatted (STDERR_FILENO, "DUMP %s type: %llu is_stret: %i self: %p SEL: %s\n" 
 		"    rdi:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"
 		"    rsi:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"
 		"    rdx:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"

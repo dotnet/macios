@@ -119,31 +119,31 @@ xamarin_bridge_dump_monoobjects ()
 		// is there anything left in the dictionary? if so, show that
 		unsigned int items_to_show = length > 10 ? 10 : length;
 		if (items_to_show > 0) {
-			fprintf (stderr, "⚠️ There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
-			fprintf (stderr, "Showing the first %i (of %i) MonoObjects:\n", items_to_show, length);
+			xamarin_write_formatted (STDERR_FILENO, "⚠️ There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
+			xamarin_write_formatted (STDERR_FILENO, "Showing the first %i (of %i) MonoObjects:\n", items_to_show, length);
 			for (unsigned int i = 0; i < items_to_show; i++) {
 				MonoObject *obj = keys [i];
 				struct monoobject_tracked_entry *value = (struct monoobject_tracked_entry *) values [i];
 				char *fullname = xamarin_get_object_type_fullname (obj->gchandle);
-				fprintf (stderr, "Object %i/%i %p RC: %i Type: %s\n", i + 1, (int) length, obj, (int) obj->reference_count, fullname);
+				xamarin_write_formatted (STDERR_FILENO, "Object %i/%i %p RC: %i Type: %s\n", i + 1, (int) length, obj, (int) obj->reference_count, fullname);
 				xamarin_free (fullname);
 				if (value->managed && *value->managed)
-					fprintf (stderr, "\tManaged stack trace:\n%s\n", value->managed);
+					xamarin_write_formatted (STDERR_FILENO, "\tManaged stack trace:\n%s\n", value->managed);
 				if (value->native == NULL && value->frames > 0)
 					value->native = get_stacktrace (value->addresses, value->frames);
 				if (value->native && *value->native)
-					fprintf (stderr, "\tNative stack trace:\n%s\n", value->native);
+					xamarin_write_formatted (STDERR_FILENO, "\tNative stack trace:\n%s\n", value->native);
 			}
-			fprintf (stderr, "⚠️ There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
+			xamarin_write_formatted (STDERR_FILENO, "⚠️ There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
 		} else {
-			fprintf (stderr, "✅ There were %i MonoObjects created, %i MonoObjects freed, so no leaked MonoObjects.\n", (int) monoobject_created, (int) monoobject_destroyed);
+			xamarin_write_formatted (STDERR_FILENO, "✅ There were %i MonoObjects created, %i MonoObjects freed, so no leaked MonoObjects.\n", (int) monoobject_created, (int) monoobject_destroyed);
 		}
 		pthread_mutex_unlock (&monoobject_lock);
 
 		free (keys);
 		free (values);
 	} else {
-		fprintf (stderr, "There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
+		xamarin_write_formatted (STDERR_FILENO, "There were %i MonoObjects created, %i MonoObjects freed, so %i were not freed.\n", (int) monoobject_created, (int) monoobject_destroyed, (int) (monoobject_created - monoobject_destroyed));
 	}
 }
 
@@ -235,7 +235,7 @@ xamarin_bridge_initialize ()
 		value_callbacks.release = monoobject_dict_free_value;
 		monoobject_dict = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, &value_callbacks);
 
-		fprintf (stderr, "Stack traces enabled for MonoObject tracking.\n");
+		xamarin_write_formatted (STDERR_FILENO, "Stack traces enabled for MonoObject tracking.\n");
 	}
 	free (with_stacktraces);
 #endif // defined (TRACK_MONOOBJECTS)
@@ -472,7 +472,7 @@ xamarin_handle_bridge_exception (GCHandle gchandle, const char *method)
 	if (method == NULL)
 		method = "<unknown method>";
 
-	fprintf (stderr, "%s threw an exception: %p => %s\n", method, gchandle, [xamarin_print_all_exceptions (gchandle) UTF8String]);
+	xamarin_write_formatted (STDERR_FILENO, "%s threw an exception: %p => %s\n", method, gchandle, [xamarin_print_all_exceptions (gchandle) UTF8String]);
 	xamarin_assertion_message ("%s threw an exception: %p = %s", method, gchandle, [xamarin_print_all_exceptions (gchandle) UTF8String]);
 }
 

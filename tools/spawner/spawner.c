@@ -14,7 +14,7 @@ errno_t responsibility_spawnattrs_setdisclaim (posix_spawnattr_t *attrs, bool di
 int main (int argc, char** argv, char** envp)
 {
 	if (argc < 2) {
-		fprintf (stderr,
+		xamarin_write_formatted (STDERR_FILENO,
 			"spawner: launch a subprocess, disclaiming all responsibilities with regards to TCC:\n"
 			"usage: spawner <command> [arguments]\n");
 		return 1;
@@ -28,7 +28,7 @@ int main (int argc, char** argv, char** envp)
 
 	rv = posix_spawnattr_init (&spawnattr);
 	if (rv) {
-		fprintf (stderr, "Failed to execute 'posix_spawnattr_init': %i (%s)\n", rv, xamarin_error_description (rv).text);
+		xamarin_write_formatted (STDERR_FILENO, "Failed to execute 'posix_spawnattr_init': %i (%s)\n", rv, xamarin_error_description (rv).text);
 		return 1;
 	}
 
@@ -36,7 +36,7 @@ int main (int argc, char** argv, char** envp)
 	sigemptyset (&sigset);
 	rv = posix_spawnattr_setsigmask (&spawnattr, &sigset);
 	if (rv) {
-		fprintf (stderr, "Failed to execute 'posix_spawnattr_setsigmask': %i (%s)\n", rv, xamarin_error_description (rv).text);
+		xamarin_write_formatted (STDERR_FILENO, "Failed to execute 'posix_spawnattr_setsigmask': %i (%s)\n", rv, xamarin_error_description (rv).text);
 		return 1;
 	}
 	flags |= POSIX_SPAWN_SETSIGMASK;
@@ -45,20 +45,20 @@ int main (int argc, char** argv, char** envp)
 	sigfillset (&sigset);
 	rv = posix_spawnattr_setsigdefault (&spawnattr, &sigset);
 	if (rv) {
-		fprintf (stderr, "Failed to execute 'posix_spawnattr_setsigdefault': %i (%s)\n", rv, xamarin_error_description (rv).text);
+		xamarin_write_formatted (STDERR_FILENO, "Failed to execute 'posix_spawnattr_setsigdefault': %i (%s)\n", rv, xamarin_error_description (rv).text);
 		return 1;
 	}
 	flags |= POSIX_SPAWN_SETSIGDEF;
 
 	rv = posix_spawnattr_setflags (&spawnattr, flags);
 	if (rv) {
-		fprintf (stderr, "Failed to execute 'posix_spawnattr_setflags': %i (%s)\n", rv, xamarin_error_description (rv).text);
+		xamarin_write_formatted (STDERR_FILENO, "Failed to execute 'posix_spawnattr_setflags': %i (%s)\n", rv, xamarin_error_description (rv).text);
 		return 1;
 	}
 
 	rv = responsibility_spawnattrs_setdisclaim (&spawnattr, 1);
 	if (rv) {
-		fprintf (stderr, "Failed to execute 'responsibility_spawnattrs_setdisclaim': %i (%s)\n", rv, xamarin_error_description (rv).text);
+		xamarin_write_formatted (STDERR_FILENO, "Failed to execute 'responsibility_spawnattrs_setdisclaim': %i (%s)\n", rv, xamarin_error_description (rv).text);
 		return 1;
 	}
 
@@ -68,6 +68,6 @@ int main (int argc, char** argv, char** envp)
 
 	// posix_spawnp shouldn't return (because we set the POSIX_SPAWN_SETEXEC flag)
 	// so if it did, something went wrong
-	fprintf (stderr, "Failed to execute '%s': %i (%s)\n", argv [1], rv, xamarin_error_description (rv).text);
+	xamarin_write_formatted (STDERR_FILENO, "Failed to execute '%s': %i (%s)\n", argv [1], rv, xamarin_error_description (rv).text);
 	return 1;
 }

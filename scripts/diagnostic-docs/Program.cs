@@ -140,7 +140,7 @@ public sealed class Documentation {
 
 	void ValidateEmitters ()
 	{
-		var call = new Regex (@"(?:ErrorHelper\.(?:CreateError|CreateWarning|Warning|Error)|new BindingException|new ProductException|ReportError|(?<msbuild>\.Log(?:Error|Warning|Message)))\s*\(\s*(?:[A-Za-z_.]+\s*,\s*)?(?<number>\d{1,4})\s*[,)]", RegexOptions.CultureInvariant);
+		var call = new Regex (@"(?:ErrorHelper\.(?:CreateError|CreateWarning|Warning|Error)|new BindingException|new ProductException|ReportError|(?<msbuild>\.Log(?:Error|Warning|Message)))\s*\(\s*(?:[A-Za-z_.]+\s*,\s*)?(?<number>\d{1,4})(?:\s|/\*[\s\S]*?\*/)*[,)]", RegexOptions.CultureInvariant);
 		foreach (var directory in new [] { "src/bgen", "tools/common", "tools/mtouch", "tools/dotnet-linker", "tools/assembly-preparer", "msbuild/Xamarin.MacDev.Tasks" }) {
 			var source = Path.Combine (root, directory);
 			if (!Directory.Exists (source))

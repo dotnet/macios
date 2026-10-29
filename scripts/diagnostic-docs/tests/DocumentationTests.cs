@@ -125,12 +125,14 @@ public class DocumentationTests {
 		Assert.That (() => Validated (), Throws.TypeOf<InvalidDataException> ().With.Message.Contains ("Invalid public-code mapping"));
 	}
 
-	[Test]
-	public void RejectsAnUndocumentedNumericEmitter ()
+	[TestCase ("throw ErrorHelper.CreateError (1234, argument);")]
+	[TestCase ("throw ErrorHelper.CreateError (1234 /* message */, argument);")]
+	[TestCase ("throw ErrorHelper.CreateError (1234\n/* message */\n, argument);")]
+	public void RejectsAnUndocumentedNumericEmitter (string statement)
 	{
 		var directory = Path.Combine (root, "src", "bgen");
 		Directory.CreateDirectory (directory);
-		File.WriteAllText (Path.Combine (directory, "Emitter.cs"), "throw ErrorHelper.CreateError (1234, argument);");
+		File.WriteAllText (Path.Combine (directory, "Emitter.cs"), statement);
 		Assert.That (() => Validated (), Throws.TypeOf<InvalidDataException> ().With.Message.Contains ("undocumented emitted diagnostic BI1234"));
 	}
 
@@ -354,6 +356,21 @@ public class DocumentationTests {
 		var result = RunSync (root);
 		Assert.That (result.ExitCode, Is.Not.EqualTo (0), result.Output);
 		Assert.That (result.Output, Does.Contain ("Expected a docs-mobile checkout"));
+	}
+
+	[Test]
+	public void SyncWithoutSharedIncludes ()
+	{
+		PrepareSyncFixture ();
+		File.Delete (Path.Combine (docs, "includes", "diagnostics", "shared.md"));
+		var destination = Path.Combine (root, "mobile docs");
+		var ios = Path.Combine (destination, "docs", "ios");
+		Directory.CreateDirectory (ios);
+		var result = RunSync (destination);
+		Assert.That (result.ExitCode, Is.EqualTo (0), result.Output);
+		Directory.Delete (Path.Combine (ios, "includes"), true);
+		result = RunSync (destination, true);
+		Assert.That (result.ExitCode, Is.EqualTo (0), result.Output);
 	}
 
 	[Test]

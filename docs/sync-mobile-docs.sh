@@ -107,6 +107,9 @@ for file in "$SOURCE/messages/"*.md; do
 	fi
 done
 for file in "$SOURCE/includes/diagnostics/"*.md; do
+	if ! test -f "$file"; then
+		continue
+	fi
 	cp "$file" "$DESTINATION/includes/diagnostics/"
 done
 

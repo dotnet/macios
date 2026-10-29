@@ -3067,6 +3067,18 @@
             "headings": [
               "### MT7070: All Intents must have a Title"
             ]
+          },
+          {
+            "code": "MT7199",
+            "headings": [
+              "### MT7199: The app's Info.plist does not contain a UIApplicationSceneManifest dictionary."
+            ]
+          },
+          {
+            "code": "MT7200",
+            "headings": [
+              "### MT7200: The framework '*' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly."
+            ]
           }
         ]
       },

@@ -1172,7 +1172,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="mt2016-invalid-tlsprovider-legacy-option-the-only-valid-value-appletls-will-be-used"></a>
 
-- [MT2016](https://learn.microsoft.com/dotnet/ios/messages/mt2016): Invalid TlsProvider `legacy` option. The only valid value `appletls` will be used.
+- [MT2016](https://learn.microsoft.com/dotnet/ios/messages/mt2016): Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed.
 <a name="MT2017"></a>
 
 <a id="mt2017-could-not-process-xml-description"></a>
@@ -1824,7 +1824,7 @@ Errors and warnings are now documented on individual pages. See the [complete di
 
 <a id="mt4147-detected-a-protocol-inheriting-from-the-jsexport-protocol-while-using-the-dynamic-registrar-it-is-not-possible-to-export-protocols-to-javascriptcore-dynamically-the-static-registrar-must-be-used-add---registrarstatic-to-the-additional-mtouch-arguments-in-the-projects-ios-build-options-to-select-the-static-registrar"></a>
 
-- [MT4147](https://learn.microsoft.com/dotnet/ios/messages/mt4147): Detected a protocol inheriting from the JSExport protocol while using the dynamic registrar. It is not possible to export protocols to JavaScriptCore dynamically; the static registrar must be used (add '--registrar:static to the additional mtouch arguments in the project's iOS Build options to select the static registrar).
+- [MT4147](https://learn.microsoft.com/dotnet/ios/messages/mt4147): Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new
 <a name="MT4148"></a>
 
 <a id="mt4148-the-registrar-found-a-generic-protocol--exporting-generic-protocols-is-not-supported"></a>
@@ -2516,33 +2516,16 @@ Errors and warnings are now documented on individual pages. See the [complete di
 <a id="mt7070-all-intents-must-have-a-title"></a>
 
 - [MT7070](https://learn.microsoft.com/dotnet/ios/messages/mt7070): All Intents must have a Title
-
 <a name="MT7199"></a>
 
-### MT7199: The app's Info.plist does not contain a UIApplicationSceneManifest dictionary.
+<a id="mt7199-the-apps-infoplist-does-not-contain-a-uiapplicationscenemanifest-dictionary"></a>
 
-Apps built against the iOS or Mac Catalyst 27.0 SDK or later must adopt the UIKit
-scene lifecycle to launch on iOS or macOS 27.0 or later. Add the scene manifest
-and delegate, and migrate custom lifecycle handlers by following the instructions
-at https://aka.ms/uiscene.
-
-The check examines the merged app manifest, including partial manifests. It
-does not verify the scene delegate implementation. If the check incorrectly
-rejects an app that configures scenes in code, set the MSBuild property
-`ValidateSceneManifest` to `false`. This only disables build-time validation;
-it does not bypass the operating system's requirement.
-
-*MSBuild task: CompileAppManifest*
-
+- [MT7199](https://learn.microsoft.com/dotnet/ios/messages/mt7199): The app's Info.plist does not contain a UIApplicationSceneManifest dictionary.
 <a name="MT7200"></a>
 
-### MT7200: The framework '*' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.
+<a id="mt7200-the-framework--has-an-incorrectly-capitalized-extension-rename-it-to-use-the-lowercase-framework-extension-to-ensure-it-is-linked-and-bundled-correctly"></a>
 
-Native framework directory names must end in lowercase `.framework`. Other
-capitalization, such as `.Framework`, may prevent the framework from being linked
-or bundled correctly. Rename the directory and update the native reference.
-For frameworks inside an archive or binding resource package, correct the
-framework name in the package as well.
+- [MT7200](https://learn.microsoft.com/dotnet/ios/messages/mt7200): The framework '*' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.
 
 ## MT8xxx: Runtime error messages
 

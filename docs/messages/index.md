@@ -23,7 +23,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [BI0070](bi0070.md): Invalid target framework: \*. Valid target frameworks are: \*.
 - [BI0086](bi0086.md): A target framework (--target-framework) must be specified when building for \*.
 - [BI0087](bi0087.md): Xamarin.Mac Classic binding projects are not supported anymore. Please upgrade the binding project to a Xamarin.Mac Unified binding project. (historical)
-- [BI0088](bi0088.md): MonoTouch binding projects are not supported anymore. Please upgrade the binding project to a Xamarin.iOS (Unified) binding project.
+- [BI0088](bi0088.md): Internal error: don't know how to create ref/out (input) code for {0} in {1}. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
 - [BI0089](bi0089.md): Internal error: property {0} doesn't have neither a getter nor a setter.
 - [BI0099](bi0099.md): Internal error \*. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).
 
@@ -100,7 +100,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [BI1069](bi1069.md): The type '\*' is trying to inline the methods binding the selector '\*' from the protocols '\*' and '\*', using methods with different signatures ('\*' vs '\*').
 - [BI1070](bi1070.md): The type '\*' is trying to inline the property '\*' from the protocols '\*' and '\*', but the inlined properties are of different types ('\*' is int, while '\*' is int).
 - [BI1071](bi1071.md): The BindAs type for the member "\*.\*" must be an array when the member's type is an array. See example binding below.
-- [BI1072](bi1072.md): Missing [CoreImageFilterProperty] attribute on \* property \*
+- [BI1072](bi1072.md): The BindAs type for the parameter "{0}" in the method "{1}.{2}" must be an array when the parameter's type is an array.
 - [BI1073](bi1073.md): Internal error: failed to instantiate mock attribute '{0}' (unknown type for the named argument #{1} ({2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
 - [BI1074](bi1074.md):  Missing [CoreImageFilterProperty] attribute on {0} property {1}
 - [BI1075](bi1075.md): Unimplemented CoreImage property type {0} for the property {1}.{2}.
@@ -116,13 +116,13 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [BI1085](bi1085.md): Found {0} {1} attributes on the assembly {2}. At most one was expected. (historical)
 - [BI1086](bi1086.md): Found {0} {1} attributes on the module {2}. At most one was expected. (historical)
 - [BI1087](bi1087.md): Missing value for the 'LibraryName' property for the '[ErrorDomain]' attribute for {0} (e.g. '[ErrorDomain ("MyDomain", LibraryName = "__Internal")]')
-- [BI1088](bi1088.md): The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types. (historical)
+- [BI1088](bi1088.md): The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.
 - [BI1119](bi1119.md): Internal error: found the same type ({0}) in multiple assemblies ({1} and {2}). Please file a bug report (https://github.com/dotnet/macios/issues/new) with a test case.
-- [BI1120](bi1120.md): The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored. (historical)
-- [BI1121](bi1121.md): The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries. (historical)
-- [BI1122](bi1122.md): Unable to find the corresponding NSNumber property for the type {0} in {1}.{2} (historical)
-- [BI1123](bi1123.md): The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute. (historical)
-- [BI1124](bi1124.md): Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead. (historical)
+- [BI1120](bi1120.md): The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.
+- [BI1121](bi1121.md): The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.
+- [BI1122](bi1122.md): Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}
+- [BI1123](bi1123.md): The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.
+- [BI1124](bi1124.md): Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead.
 - [BI1900](bi1900.md): Frameworks were not loaded for platform {0}.
 - [BI1901](bi1901.md): Universe was not loaded for platform {0}.
 - [BI1902](bi1902.md): Could not parse the command line argument '{0}': {1}
@@ -405,7 +405,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MM2012](mm2012.md): Only first {0} of {1} "Referenced by" warnings shown. \*\* This message related to 2009 \*\* (historical)
 - [MM2013](mm2013.md): Failed to resolve the reference to "{0}", referenced in "{1}". The app will not include the referenced assembly, and may fail at runtime. (historical)
 - [MM2014](mm2014.md): Xamarin.Mac Extensions do not support linking. Request for linking will be ignored. \*\* This message is obsolete in XM 3.6+ \*\* (historical)
-- [MM2016](mm2016.md): Invalid TlsProvider `{0}` option. The only valid value `{1}` will be used.
+- [MM2016](mm2016.md): Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed.
 - [MM2017](mm2017.md): Could not process XML description: {0} (historical)
 - [MM2100](mm2100.md): Xamarin.Mac Classic API does not support Platform Linking. (historical)
 - [MM2103](mm2103.md): Error processing assembly '\*': * (historical)
@@ -724,7 +724,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT2010](mt2010.md): Unknown HttpMessageHandler `*`. Valid values are HttpClientHandler (default), CFNetworkHandler or NSUrlSessionHandler (historical)
 - [MT2011](mt2011.md): Unknown TlsProvider `*`.  Valid values are default or appletls. (historical)
 - [MT2015](mt2015.md): Invalid HttpMessageHandler `*` for watchOS. The only valid value is NSUrlSessionHandler. (historical)
-- [MT2016](mt2016.md): Invalid TlsProvider `legacy` option. The only valid value `appletls` will be used.
+- [MT2016](mt2016.md): Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed.
 - [MT2017](mt2017.md): Could not process XML description. (historical)
 - [MT2018](mt2018.md): The assembly '\*' is referenced from two different locations: '\*' and '*'.
 - [MT2019](mt2019.md): Can not load the root assembly '*' (historical)
@@ -914,7 +914,7 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT4144](mt4144.md): Cannot register the method '*' since it does not have an associated trampoline..
 - [MT4145](mt4145.md): Invalid enum '*': enums with the [Native] attribute must have a underlying enum type of either 'long' or 'ulong'.
 - [MT4146](mt4146.md): The Name parameter of the Registrar attribute on the class '\*' ('\*') contains an invalid character: '\*' (\*).
-- [MT4147](mt4147.md): Detected a protocol inheriting from the JSExport protocol while using the dynamic registrar. It is not possible to export protocols to JavaScriptCore dynamically; the static registrar must be used (add '--registrar:static to the additional mtouch arguments in the project's iOS Build options to select the static registrar).
+- [MT4147](mt4147.md): Invalid {0} found on '{1}'. Please file a bug report at https://github.com/dotnet/macios/issues/new
 - [MT4148](mt4148.md): The registrar found a generic protocol: '*'. Exporting generic protocols is not supported.
 - [MT4149](mt4149.md): Cannot register the method '\*.\*' because the type of the first parameter ('\*') does not match the category type ('\*').
 - [MT4150](mt4150.md): Cannot register the type '\*' because the Type property ('\*') in its Category attribute does not inherit from NSObject.
@@ -1108,6 +1108,8 @@ Each code links to its explanation and recovery guidance. Historical diagnostics
 - [MT7156](mt7156.md): The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')
 - [MT7157](mt7157.md): The {0} item '{1}' does not have a 'LogicalName' metadata.
 - [MT7158](mt7158.md): The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.
+- [MT7199](mt7199.md): The app's Info.plist does not contain a UIApplicationSceneManifest dictionary.
+- [MT7200](mt7200.md): The framework '*' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.
 
 ## MT8xxx: Runtime error messages
 

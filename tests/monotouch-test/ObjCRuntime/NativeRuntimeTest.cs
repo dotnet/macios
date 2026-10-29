@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[DllImport ("__Internal")]
-		static extern byte xamarin_copy_path (IntPtr candidate, byte [] buffer, nuint capacity);
+		static extern byte xamarin_copy_path (IntPtr candidate, [Out] byte [] buffer, nuint capacity);
 
 		[TestCase ("bundle/file.dll")]
 		[TestCase ("../../Frameworks/Test.framework/\u00e6.dll")]

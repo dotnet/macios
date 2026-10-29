@@ -161,13 +161,15 @@ findings or scan errors. Clean scans (including scans with only non-blocking
 findings) do not post a comment; branch builds never post PR comments.
 Upload and comment failures fail the publishing job rather than being ignored.
 
-**Initial findings require security-owner triage.** The integration does not add
-baselines, exclusions for individual APIs, or suppressions. In particular,
-DevSkim's banned-function rules flag APIs such as `printf`, `snprintf`, `getenv`,
-and `fopen` used by the native runtime.
-These are findings, not proof of exploitable vulnerabilities. Until the findings
-are remediated or a narrowly scoped exception is explicitly approved by the
-responsible security team, this stage will fail; running the tool alone does not
+**Findings require security-owner triage.** The integration does not add
+baselines, exclusions for individual APIs, or suppressions. Native-runtime
+remediation uses checked platform alternatives and owned storage rather than
+hiding banned calls behind wrappers. Compiler-only format annotations use the
+equivalent `__printf__` spelling to retain format checking without being mistaken
+for API calls. See `runtime/README.md` for low-level diagnostic constraints.
+Findings are not proof of exploitable vulnerabilities. Any remaining findings
+fail the stage until remediated or a narrowly scoped exception is explicitly
+approved by the responsible security team; running the tool alone does not
 establish compliance with Microsoft.Security.SystemsADM.10082.
 
 To reproduce locally, initialize submodules, install the pinned tool outside the

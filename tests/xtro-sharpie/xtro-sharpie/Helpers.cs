@@ -204,6 +204,9 @@ namespace Extrospection {
 
 		static bool? IsDeprecated (this Decl decl, Platforms platform_value)
 		{
+			if (decl.Attrs.Any (attr => attr.Kind == CX_AttrKind.CX_AttrKind_Deprecated))
+				return true;
+
 			var platform = platform_value.ToString ().ToLowerInvariant ();
 			// First check if there are any deprecations
 			var availabilityAttrs = decl.Attrs.GetAvailabilityAttributes ().ToList ();

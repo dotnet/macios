@@ -11,10 +11,10 @@ namespace Extrospection {
 		Dictionary<object, ManagedValue> managed_values = new Dictionary<object, ManagedValue> ();
 		Dictionary<object, (string Name, EnumConstantDecl Decl)> native_values = new Dictionary<object, (string Name, EnumConstantDecl Decl)> ();
 
-		// Cache, per DeclContext, the names of the typedefs that name an enum and are unavailable.
+		// Cache, per DeclContext, the typedefs that name an enum.
 		// This avoids rescanning the whole DeclContext for every enum we visit (which would be
 		// O(enums × siblings)); each context is scanned once and every enum check is then O(1).
-		Dictionary<IDeclContext, HashSet<string>> unavailable_enum_typedefs = new Dictionary<IDeclContext, HashSet<string>> ();
+		Dictionary<IDeclContext, Dictionary<string, TypedefDecl>> enum_typedefs = new Dictionary<IDeclContext, Dictionary<string, TypedefDecl>> ();
 
 		public EnumCheck (BindingResult bindingResult)
 			: base (bindingResult)
@@ -76,7 +76,8 @@ namespace Extrospection {
 			// The availability attribute (e.g. API_UNAVAILABLE(maccatalyst)) is sometimes attached to
 			// the typedef that names the enum instead of to the enum declaration itself, in which case
 			// decl.IsAvailable () above won't detect it. Look for the corresponding typedef and check it too.
-			if (IsUnavailableViaTypedef (decl))
+			var namingTypedef = GetNamingTypedef (decl);
+			if (namingTypedef is not null && !namingTypedef.IsAvailable ())
 				return;
 
 			var framework = Helpers.GetFramework (decl);
@@ -88,13 +89,13 @@ namespace Extrospection {
 				return;
 
 			if (!enums.TryGetValue (name, out var type)) {
-				if (!decl.IsDeprecated ()) // don't report deprecated enums as unbound
+				if (!decl.IsDeprecated () && namingTypedef?.IsDeprecated () != true) // don't report deprecated enums as unbound
 					Log.On (framework).Add ($"!missing-enum! {name} not bound");
 				return;
 			} else
 				enums.Remove (name);
 
-			if (decl.IsDeprecated ())
+			if (decl.IsDeprecated () || namingTypedef?.IsDeprecated () == true)
 				return;
 
 			var mname = type.Name;
@@ -198,7 +199,7 @@ namespace Extrospection {
 
 			native_values.Clear ();
 			managed_values.Clear ();
-			var native_values_by_name = new Dictionary<string, (object Value, EnumConstantDecl Decl)> (StringComparer.OrdinalIgnoreCase);
+			var native_values_by_name = new Dictionary<string, (object Value, EnumConstantDecl Decl)> (StringComparer.Ordinal);
 
 			// collect all the native enum values
 			var nativeConstant = signed ? (object) 0L : (object) 0UL;
@@ -230,6 +231,8 @@ namespace Extrospection {
 				}
 			}
 
+			var native_values_by_name_ignore_case = native_values_by_name.ToLookup (entry => entry.Key, entry => entry.Value, StringComparer.OrdinalIgnoreCase);
+
 			// collect all the managed enum values
 			var fields = type.Fields;
 			foreach (var f in fields) {
@@ -246,7 +249,16 @@ namespace Extrospection {
 					managedValue = Convert.ToUInt64 (f.Constant);
 				}
 				// Only infer names that follow the native enum name + managed member name convention.
-				if (f.IsAvailable () && native_values_by_name.TryGetValue (name + f.Name, out var nativeValue)) {
+				var nativeName = name + f.Name;
+				var hasNativeValue = native_values_by_name.TryGetValue (nativeName, out var nativeValue);
+				if (!hasNativeValue) {
+					var candidates = native_values_by_name_ignore_case [nativeName];
+					if (candidates.Count () == 1) {
+						nativeValue = candidates.Single ();
+						hasNativeValue = true;
+					}
+				}
+				if (f.IsAvailable () && hasNativeValue) {
 					var matches = managedValue.Equals (nativeValue.Value);
 					if (!signed && native && (ulong) nativeValue.Value == UInt32.MaxValue && (ulong) managedValue == UInt64.MaxValue)
 						matches = true;
@@ -316,27 +328,26 @@ namespace Extrospection {
 		// (e.g. `typedef NS_ENUM(NSInteger, Foo) { ... } API_UNAVAILABLE(maccatalyst);`) instead of to
 		// the enum declaration itself. In that case the attribute lands on the TypedefDecl, not the
 		// EnumDecl, so we look for the corresponding sibling typedef and check its availability. The
-		// per-context set of unavailable enum typedefs is computed once and cached (see the field).
-		bool IsUnavailableViaTypedef (EnumDecl decl)
+		// per-context map of enum typedefs is computed once and cached (see the field).
+		TypedefDecl? GetNamingTypedef (EnumDecl decl)
 		{
 			var context = decl.DeclContext;
 			if (context is null)
-				return false;
+				return null;
 
-			if (!unavailable_enum_typedefs.TryGetValue (context, out var names)) {
-				names = new HashSet<string> (StringComparer.Ordinal);
+			if (!enum_typedefs.TryGetValue (context, out var typedefs)) {
+				typedefs = new Dictionary<string, TypedefDecl> (StringComparer.Ordinal);
 				foreach (var sibling in context.Decls) {
 					if (sibling is not TypedefDecl typedef)
 						continue;
 					if (typedef.UnderlyingType.UnqualifiedDesugaredType is not EnumType)
 						continue;
-					if (!typedef.IsAvailable ())
-						names.Add (typedef.Name);
+					typedefs [typedef.Name] = typedef;
 				}
-				unavailable_enum_typedefs [context] = names;
+				enum_typedefs [context] = typedefs;
 			}
 
-			return decl.Name is string name && names.Contains (name);
+			return typedefs.TryGetValue (decl.Name, out var namingTypedef) ? namingTypedef : null;
 		}
 
 		static bool IsErrorEnum (string typeName)

@@ -109,6 +109,44 @@ public class EnumTests {
 	}
 
 	[Test]
+	public void CaseCollidingNativeMembers ()
+	{
+		var messages = Check ("""
+			enum TestEnum {
+				TestEnumFoo = 0,
+				TestEnumFOO = 1
+			};
+			""", [("Foo", 0), ("FOO", 1)]);
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
+	public void CaseCollidingNativeMembersWithWrongExactMatch ()
+	{
+		var messages = Check ("""
+			enum TestEnum {
+				TestEnumFoo = 0,
+				TestEnumFOO = 1
+			};
+			""", [("Foo", 1), ("FOO", 0)]);
+		Assert.That (messages, Is.EquivalentTo (new [] {
+			Wrong ("Foo", 1, 0),
+			Wrong ("FOO", 0, 1),
+		}));
+	}
+
+	[TestCase (false)]
+	[TestCase (true)]
+	public void AmbiguousCaseInsensitiveNativeMembers (bool reverse)
+	{
+		var declarations = reverse
+			? "enum TestEnum { TestEnumFOO = 1, TestEnumFoo = 0 };"
+			: "enum TestEnum { TestEnumFoo = 0, TestEnumFOO = 1 };";
+		var messages = Check (declarations, [("foo", 0), ("Other", 1)]);
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
 	public void ExplicitAndFollowingImplicitValues ()
 	{
 		var messages = Check ("""
@@ -198,6 +236,7 @@ public class EnumTests {
 
 	[TestCase ("availability(macos,unavailable)")]
 	[TestCase ("availability(macos,introduced=10.0,deprecated=10.1)")]
+	[TestCase ("deprecated")]
 	public void UnavailableOrDeprecatedNativeMember (string attribute)
 	{
 		var messages = Check ($$"""
@@ -229,15 +268,30 @@ public class EnumTests {
 		}));
 	}
 
-	[Test]
-	public void DeprecatedNativeEnum ()
+	[TestCase ("availability(macos,introduced=10.0,deprecated=10.1)")]
+	[TestCase ("deprecated")]
+	public void DeprecatedNativeEnum (string attribute)
 	{
-		var messages = Check ("""
-			enum __attribute__((availability(macos,introduced=10.0,deprecated=10.1))) TestEnum {
+		var messages = Check ($$"""
+			enum __attribute__(({{attribute}})) TestEnum {
 				TestEnumFirst = 0,
 				TestEnumSecond = 1
 			};
 			""", [("First", 1), ("Second", 0)]);
+		Assert.That (messages, Is.Empty);
+	}
+
+	[TestCase ("availability(macos,introduced=10.0,deprecated=10.1)")]
+	[TestCase ("deprecated")]
+	[TestCase ("availability(macos,unavailable)")]
+	public void UnavailableOrDeprecatedNativeTypedef (string attribute)
+	{
+		var messages = Check ($$"""
+			typedef enum TestEnum {
+				TestEnumFirst = 0,
+				TestEnumSecond = 1
+			} TestEnum __attribute__(({{attribute}}));
+			""", [("First", 1), ("Second", 0)], native: attribute != "availability(macos,unavailable)");
 		Assert.That (messages, Is.Empty);
 	}
 

@@ -4646,6 +4646,9 @@ public partial class Generator : IMemberGatherer {
 		if (AttributeManager.HasAttribute<ManualAttribute> (mi))
 			return;
 
+		if (minfo.is_export && mi.GetParameters ().Any (pi => pi.ParameterType == TypeCache.System_ReadOnlySpan_Char))
+			throw new BindingException (1130, true, mi.DeclaringType?.FullName, mi.Name);
+
 		foreach (var pi in mi.GetParameters ())
 			if (AttributeManager.HasAttribute<RetainAttribute> (pi)) {
 				print ("#pragma warning disable 168");

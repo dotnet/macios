@@ -253,7 +253,7 @@ namespace CoreFoundation {
 
 		/// <param name="handle">Handle to the Objective-C native <see cref="CFString" /> object.</param>
 		/// <summary>Releases a native Objective-C string.</summary>
-		/// <remarks>Use this method to release <see cref="CFString" /> handles that were previously allocated with <see cref="CreateNative(System.String)" />.</remarks>
+		/// <remarks>Use this method to release <see cref="CFString" /> handles that were previously allocated with <see cref="CreateNative(System.String)" /> or <see cref="CreateNative(ReadOnlySpan{char})" />.</remarks>
 		public static void ReleaseNative (NativeHandle handle)
 		{
 			if (handle != NativeHandle.Zero)

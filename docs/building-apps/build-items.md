@@ -399,7 +399,8 @@ See also:
 
 * [CompressBindingResourcePackage](build-properties.md#compressbindingresourcepackage)
 * [NoBindingEmbedding](build-properties.md#nobindingembedding)
-* [Native Library Interop](../native-library-interop.md)
+* [Use and distribute native libraries](/dotnet/ios/binding-libs/)
+* [Bind and distribute XCFrameworks](/dotnet/ios/binding-libs/xcframeworks)
 
 ## ObjcBindingApiDefinition
 

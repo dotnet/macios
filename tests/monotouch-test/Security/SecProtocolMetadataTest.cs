@@ -74,8 +74,16 @@ namespace MonoTouchFixtures.Security {
 							using (var d = s.CreateSecret ("Xamarin", 128)) {
 								Assert.That (d.Size, Is.EqualTo ((nuint) 128), "CreateSecret-1");
 							}
+							using (var d1 = s.CreateSecret ("é", 32))
+							using (var d2 = s.CreateSecret ("ê", 32)) {
+								Assert.That (d1!.ToArray (), Is.Not.EqualTo (d2!.ToArray ()), "CreateSecret-utf8-1");
+							}
 							using (var d = s.CreateSecret ("Microsoft", new byte [1], 256)) {
 								Assert.That (d.Size, Is.EqualTo ((nuint) 256), "CreateSecret-2");
+							}
+							using (var d1 = s.CreateSecret ("é", new byte [1], 32))
+							using (var d2 = s.CreateSecret ("ê", new byte [1], 32)) {
+								Assert.That (d1!.ToArray (), Is.Not.EqualTo (d2!.ToArray ()), "CreateSecret-utf8-2");
 							}
 
 							Assert.That (s.NegotiatedTlsProtocolVersion, Is.EqualTo (TlsProtocolVersion.Tls12).Or.EqualTo (TlsProtocolVersion.Tls13), "NegotiatedTlsProtocolVersion");

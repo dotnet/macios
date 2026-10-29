@@ -54,8 +54,12 @@ namespace Xamarin.MacDev.Tasks {
 				} else if (kind == NativeReferenceKind.Framework) {
 					var path = item.ItemSpec;
 					// in case the full path to the library is given (msbuild)
-					if (Path.GetExtension (path) != ".framework")
+					if (!path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
 						path = Path.GetDirectoryName (path)!;
+					if (string.IsNullOrEmpty (path) || !path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
+						Log.LogError (7201, null, MSBStrings.E7201, item.ItemSpec); // The native framework reference '{0}' must be a path to a .framework directory or its library. To link a system framework, use LinkerArgument items instead: '-framework' followed by the framework name.
+						continue;
+					}
 					Frameworks.Add (path);
 				} else if (kind == NativeReferenceKind.Dynamic) {
 					var path = item.ItemSpec;

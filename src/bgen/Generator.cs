@@ -1440,6 +1440,8 @@ public partial class Generator : IMemberGatherer {
 						continue;
 					} else if (attr is FactoryMethodAttribute) {
 						continue;
+					} else if (attr is AlwaysReturnNewInstanceAttribute) {
+						continue;
 					} else if (attr is AbstractAttribute) {
 						if (mi.DeclaringType == t)
 							need_abstract [t] = true;
@@ -3034,7 +3036,19 @@ public partial class Generator : IMemberGatherer {
 
 		var mai = new MarshalInfo (this, mi);
 		var owns = (minfo?.is_return_release == true) || (minfo?.is_forced_owns == true) ? "true" : "false";
-		if (GetNativeEnumToManagedExpression (mi.ReturnType, out cast_a, out cast_b, out var _, postproc)) {
+		var alwaysReturnNewInstance = AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (mi.ReturnParameter)
+			|| AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (GetProperty (mi, getter: true, setter: false));
+		if (alwaysReturnNewInstance) {
+			if (!TypeManager.IsWrappedType (mi.ReturnType) || IsProtocolInterface (mi.ReturnType))
+				throw new BindingException (1130, true, mi.DeclaringType, mi.Name);
+			var returnType = TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType);
+			// Evaluate the native call once, and balance ownership after the handle constructor retains it.
+			cast_a = $"((Func<NativeHandle, {returnType}?>) (handle => {{ if (handle == NativeHandle.Zero) return null; var result = new {returnType} (handle);";
+			if (owns == "true")
+				cast_a += " result.DangerousRelease ();";
+			cast_a += " return result; })) (";
+			cast_b = ")!";
+		} else if (GetNativeEnumToManagedExpression (mi.ReturnType, out cast_a, out cast_b, out var _, postproc)) {
 			// we're done here
 		} else if (mi.ReturnType.IsEnum) {
 			cast_a = "(" + TypeManager.FormatType (minfo?.type ?? mi.DeclaringType, mi.ReturnType) + ") ";

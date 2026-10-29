@@ -60,13 +60,19 @@ namespace MonoTouchFixtures.CoreText {
 				? new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3), CTFontOptions.Default)
 				: new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3));
 			using var refFont = withOptions
+#if XAMCORE_5_0
+				? new CTFont ("HoeflerText-Regular", 10, in matrix, CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, in matrix);
+#else
 				? new CTFont ("HoeflerText-Regular", 10, ref matrix, CTFontOptions.Default)
 				: new CTFont ("HoeflerText-Regular", 10, ref matrix);
+#endif
 			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
 			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
 			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
 			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+			Assert.That (matrix, Is.EqualTo (CGAffineTransform.MakeScale (2, 3)), "Unchanged input");
 		}
 
 		[TestCase (false)]
@@ -79,13 +85,19 @@ namespace MonoTouchFixtures.CoreText {
 				? new CTFont (descriptor, 10, CTFontOptions.Default, CGAffineTransform.MakeScale (2, 3))
 				: new CTFont (descriptor, 10, CGAffineTransform.MakeScale (2, 3));
 			using var refFont = withOptions
+#if XAMCORE_5_0
+				? new CTFont (descriptor, 10, CTFontOptions.Default, in matrix)
+				: new CTFont (descriptor, 10, in matrix);
+#else
 				? new CTFont (descriptor, 10, CTFontOptions.Default, ref matrix)
 				: new CTFont (descriptor, 10, ref matrix);
+#endif
 			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
 			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
 			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
 			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+			Assert.That (matrix, Is.EqualTo (CGAffineTransform.MakeScale (2, 3)), "Unchanged input");
 			Assert.Throws<ArgumentNullException> (() => {
 				using var invalidFont = withOptions
 					? new CTFont ((CTFontDescriptor) null, 10, CTFontOptions.Default, matrix)

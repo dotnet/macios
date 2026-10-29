@@ -14,6 +14,8 @@ using System.Collections.Generic;
 
 namespace Foundation {
 	internal class NSFastEnumerator {
+		internal static readonly IntPtr CountByEnumeratingWithStateHandle = Selector.GetHandle ("countByEnumeratingWithState:objects:count:");
+
 		[DllImport (Messaging.LIBOBJC_DYLIB, EntryPoint = "objc_msgSend")]
 		public unsafe extern static nuint objc_msgSend (IntPtr receiver, IntPtr selector, NSFastEnumerationState* arg1, IntPtr* arg2, nuint arg3);
 	}
@@ -65,7 +67,7 @@ namespace Foundation {
 		void Fetch ()
 		{
 			unsafe {
-				count = NSFastEnumerator.objc_msgSend (collection.Handle, Selector.GetHandle ("countByEnumeratingWithState:objects:count:"), state, &state->array1, (nuint) NSFastEnumerationState.ArrayLength);
+				count = NSFastEnumerator.objc_msgSend (collection.Handle, NSFastEnumerator.CountByEnumeratingWithStateHandle, state, &state->array1, (nuint) NSFastEnumerationState.ArrayLength);
 				GC.KeepAlive (collection);
 				if (!started) {
 					started = true;

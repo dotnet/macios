@@ -98,6 +98,12 @@ namespace Microsoft.Macios.Analyzers.Tests {
 			Assert.That (await Analyze ("class Test {}", referencePlatform: false), Is.Empty);
 		}
 
+		[Test]
+		public async Task NoUIButtonType ()
+		{
+			Assert.That (await Analyze ("namespace UIKit { class UIButton {} class Derived : UIButton {} }", referencePlatform: false), Is.Empty);
+		}
+
 		[TestCase ("class Derived : UIKit.UIButton { public Derived () : base (\"invalid\") {} }")]
 		[TestCase ("class Derived () : UIKit.UIButton (missing);")]
 		public async Task UnresolvedConstructor (string source)

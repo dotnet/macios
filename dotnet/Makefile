@@ -53,7 +53,6 @@ $(1)_WINDOWS_NUGET_TARGETS = \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/Sdk/Sdk.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets/Microsoft.$(1).Windows.Sdk.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets/Microsoft.$(1).Windows.Sdk.targets \
-	$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets/Microsoft.MaciOS.Analyzers.targets \
 
 endef
 $(foreach platform,$(DOTNET_WINDOWS_PLATFORMS),$(eval $(call DefineWindowsTargets,$(platform))))
@@ -103,9 +102,6 @@ endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call CopyTargets,$(platform))))
 
 define CopyTargetsWindows
-$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets/Microsoft.MaciOS.Analyzers.targets: targets/Microsoft.MaciOS.Analyzers.targets | $(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets
-	$$(Q) $$(CP) $$< $$@
-
 $(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/%: Microsoft.$(1).Windows.Sdk/% | \
 		$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/Sdk \
 		$(DOTNET_DESTDIR)/$($(1)_NUGET_WINDOWS_SDK_NAME)/targets

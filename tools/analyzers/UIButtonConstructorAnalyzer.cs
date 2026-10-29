@@ -31,8 +31,11 @@ namespace Microsoft.Macios.Analyzers {
 			context.EnableConcurrentExecution ();
 			context.RegisterCompilationStartAction (startContext => {
 				var button = startContext.Compilation.GetTypeByMetadataName ("UIKit.UIButton");
+				if (button is null)
+					return;
+
 				var buttonType = startContext.Compilation.GetTypeByMetadataName ("UIKit.UIButtonType");
-				if (button is null || buttonType is null)
+				if (buttonType is null)
 					return;
 
 				startContext.RegisterSyntaxNodeAction (nodeContext => {

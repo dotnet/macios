@@ -263,25 +263,19 @@ namespace Cecil.Tests {
 		[Test]
 		public void NoPublicStructFields ()
 		{
-			Configuration.IgnoreIfAnyIgnoredPlatforms ();
-
 			var failures = new Dictionary<string, (string Message, string Location)> ();
 			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
 				foreach (var type in info.Assembly.EnumerateTypes (t => t.IsValueType && !t.IsEnum && t.IsPubliclyVisible ())) {
 					if (!type.HasFields)
 						continue;
 
-					var publiclyVisibleFields = new List<FieldDefinition> ();
 					foreach (var field in type.Fields) {
 						if (field.IsStatic)
 							continue;
-						if (field.IsPubliclyVisible ())
-							publiclyVisibleFields.Add (field);
-					}
-
-					if (publiclyVisibleFields.Count > 0) {
-						var fullname = type.FullName;
-						failures [fullname] = (Message: $"The struct '{fullname}' has publicly accessible instance field(s): {string.Join (", ", publiclyVisibleFields.Select (v => v.Name))}", Location: type.RenderLocation ());
+						if (field.IsPubliclyVisible ()) {
+							var fullname = field.AsFullName ();
+							failures [fullname] = (Message: $"The struct '{type.FullName}' has publicly accessible instance field '{field.Name}' ({fullname})", Location: type.RenderLocation ());
+						}
 					}
 				}
 			}

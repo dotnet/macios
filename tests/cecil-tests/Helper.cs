@@ -66,6 +66,7 @@ namespace Cecil.Tests {
 				lines.Add ("\t\t};");
 
 				if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"))) {
+					Configuration.IgnoreIfAnyIgnoredPlatforms ();
 					var cecilDir = Path.Combine (Configuration.SourceRoot, "tests", "cecil-tests");
 					var writtenKnownFailures = false;
 					foreach (var file in Directory.GetFiles (cecilDir, "*.cs")) {

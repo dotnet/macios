@@ -106,6 +106,7 @@ namespace UnusedInterfaces {
 			if (warningLevel == "error") {
 				bgen.AssertExecuteError ("unused interfaces treated as errors");
 				bgen.AssertError (1130, string.Format (message, "Unused"));
+				// Warnings promoted to errors stop API parsing at the first ignored interface.
 				bgen.AssertErrorCount (1);
 			} else {
 				bgen.AssertExecute ("unused interfaces");

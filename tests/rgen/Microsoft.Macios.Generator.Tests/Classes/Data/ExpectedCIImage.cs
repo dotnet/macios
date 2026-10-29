@@ -109,25 +109,17 @@ public partial class CIImage
 	static global::Foundation.NSString? _DidProcessEditingNotification;
 
 	[SupportedOSPlatform ("macos")]
-	[ObsoletedOSPlatform ("macos10.15", "Use 'Replacement' instead.")]
 	[SupportedOSPlatform ("ios11.0")]
-	[ObsoletedOSPlatform ("ios13.0", "Use 'Replacement' instead.")]
 	[SupportedOSPlatform ("tvos11.0")]
-	[ObsoletedOSPlatform ("tvos13.0", "Use 'Replacement' instead.")]
 	[SupportedOSPlatform ("maccatalyst13.1")]
-	[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'Replacement' instead.")]
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 	[Advice ("Use 'CIImage.Notifications.DidProcessEditingNotification' helper method instead.")]
 	public static partial global::Foundation.NSString DidProcessEditingNotification
 	{
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.15", "Use 'Replacement' instead.")]
 		[SupportedOSPlatform ("ios11.0")]
-		[ObsoletedOSPlatform ("ios13.0", "Use 'Replacement' instead.")]
 		[SupportedOSPlatform ("tvos11.0")]
-		[ObsoletedOSPlatform ("tvos13.0", "Use 'Replacement' instead.")]
 		[SupportedOSPlatform ("maccatalyst13.1")]
-		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'Replacement' instead.")]
 		get
 		{
 			if (_DidProcessEditingNotification is null)
@@ -199,27 +191,11 @@ public partial class CIImage
 	public static partial class Notifications
 	{
 
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.15", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("ios11.0")]
-		[ObsoletedOSPlatform ("ios13.0", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("tvos11.0")]
-		[ObsoletedOSPlatform ("tvos13.0", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
-		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'Replacement' instead.")]
 		public static global::Foundation.NSObject ObserveDidProcessEditing (global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
 			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)));
 		}
 
-		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.15", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("ios11.0")]
-		[ObsoletedOSPlatform ("ios13.0", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("tvos11.0")]
-		[ObsoletedOSPlatform ("tvos13.0", "Use 'Replacement' instead.")]
-		[SupportedOSPlatform ("maccatalyst13.1")]
-		[ObsoletedOSPlatform ("maccatalyst13.1", "Use 'Replacement' instead.")]
 		public static NSObject ObserveDidProcessEditing (global::Foundation.NSObject objectToObserve, global::System.EventHandler<global::Foundation.NSNotificationEventArgs> handler)
 		{
 			return global::Foundation.NotificationCenter.DefaultCenter.AddObserver (DidProcessEditingNotification, notification => handler (null, new global::Foundation.NSNotificationEventArgs (notification)), objectToObserve);

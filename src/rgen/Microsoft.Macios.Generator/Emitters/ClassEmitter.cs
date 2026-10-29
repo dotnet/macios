@@ -170,7 +170,6 @@ $@"if (IsDirectBinding) {{
 				var eventType = notification.ExportFieldData.IsNullOrDefault || notification.ExportFieldData.FieldData.Type is null
 					? NSNotificationEventArgs.ToString ()
 					: notification.ExportFieldData.FieldData.Type;
-				notificationClass.AppendMemberAvailability (notification.SymbolAvailability);
 				// use the raw writer which makes it easier to read in this case
 				notificationClass.WriteRaw (
 @$"public static {NSObject} {name} ({BindingSyntaxFactory.EventHandler}<{eventType}> handler)
@@ -178,11 +177,7 @@ $@"if (IsDirectBinding) {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)));
 }}
 
-"
-);
-				notificationClass.AppendMemberAvailability (notification.SymbolAvailability);
-				notificationClass.WriteRaw (
-@$"public static NSObject {name} ({NSObject} objectToObserve, {BindingSyntaxFactory.EventHandler}<{eventType}> handler)
+public static NSObject {name} ({NSObject} objectToObserve, {BindingSyntaxFactory.EventHandler}<{eventType}> handler)
 {{
 	return {notificationCenter}.AddObserver ({notification.Name}, notification => handler (null, new {eventType} (notification)), objectToObserve);
 }}

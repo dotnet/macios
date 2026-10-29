@@ -40,7 +40,7 @@ stages:
         dotnet tool install Microsoft.CST.DevSkim.CLI \
           --version 1.0.100 \
           --tool-path "$(Agent.TempDirectory)/devskim-tool" \
-          --configfile "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/NuGet.config" \
+          --configfile "$(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)/NuGet.config" \
           2>&1 | tee "$REPORTS/install.log"
       displayName: Install pinned DevSkim
       workingDirectory: $(Agent.TempDirectory)
@@ -51,7 +51,7 @@ stages:
         set -euo pipefail
         python3 -m unittest discover -s tools/devops/automation/scripts -p test_devskim.py
       displayName: Test DevSkim report gate
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+      workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
 
     - bash: |
         set -euo pipefail
@@ -73,7 +73,7 @@ stages:
         done
         python3 tools/devops/automation/scripts/check_devskim.py "${reports[@]}"
       displayName: Run DevSkim and fail on banned APIs
-      workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+      workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
       env:
         REPORTS: $(Build.ArtifactStagingDirectory)/devskim
 

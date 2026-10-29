@@ -1072,26 +1072,30 @@ print_callback (const char *string, mono_bool is_stdout)
 }
 #endif // !defined (CORECLR_RUNTIME)
 
-static int
-xamarin_compare_ints (const void *a, const void *b)
-{
-	uint32_t x = *(uint32_t *) a;
-	uint32_t y = *(uint32_t *) b;
-	return x < y ? -1 : (x == y ? 0 : 1);
-}
-
 uint32_t
 xamarin_find_protocol_wrapper_type (uint32_t token_ref)
 {
-	if (options.RegistrationData == NULL || options.RegistrationData->protocol_wrappers == NULL)
+	if (options.RegistrationData == NULL)
 		return INVALID_TOKEN_REF;
 
-	void* ptr = bsearch (&token_ref, options.RegistrationData->protocol_wrappers, (size_t) options.RegistrationData->protocol_wrapper_count, sizeof (MTProtocolWrapperMap), xamarin_compare_ints);
-	if (ptr == NULL)
-		return INVALID_TOKEN_REF;
+	const MTProtocolWrapperMap *entries = options.RegistrationData->protocol_wrappers;
+	int count = options.RegistrationData->protocol_wrapper_count;
+	if (count < 0 || (size_t) count > SIZE_MAX / sizeof (*entries) || (count > 0 && entries == NULL))
+		xamarin_assertion_message ("Invalid protocol wrapper map.");
 
-	MTProtocolWrapperMap *entry = (MTProtocolWrapperMap *) ptr;
-	return entry->wrapper_token;
+	size_t low = 0;
+	size_t high = (size_t) count;
+	while (low < high) {
+		size_t middle = low + (high - low) / 2;
+		if (token_ref < entries [middle].protocol_token) {
+			high = middle;
+		} else if (token_ref > entries [middle].protocol_token) {
+			low = middle + 1;
+		} else {
+			return entries [middle].wrapper_token;
+		}
+	}
+	return INVALID_TOKEN_REF;
 }
 
 /* Installs g_print/g_error handlers that will redirect output to the system Console */
@@ -3051,23 +3055,29 @@ xamarin_set_assembly_directories (struct AssemblyLocations *directories)
 	options.AssemblyLocations = directories;
 }
 
-static int
-compare_assembly_location (const void *key, const void *value)
-{
-	return strcmp ((const char *) key, ((struct AssemblyLocation *) value)->assembly_name);
-}
-
 const char *
 xamarin_find_assembly_directory (const char *assembly_name)
 {
 	if (options.AssemblyLocations == NULL)
 		return NULL;
 
-	struct AssemblyLocation *entry;
-
-	entry = (struct AssemblyLocation *) bsearch (assembly_name, options.AssemblyLocations->locations, options.AssemblyLocations->length, sizeof (struct AssemblyLocation), compare_assembly_location);
-
-	return entry ? entry->location : NULL;
+	const struct AssemblyLocation *entries = options.AssemblyLocations->locations;
+	size_t low = 0;
+	size_t high = options.AssemblyLocations->length;
+	if (high > SIZE_MAX / sizeof (*entries) || (high > 0 && entries == NULL))
+		xamarin_assertion_message ("Invalid assembly location map.");
+	while (low < high) {
+		size_t middle = low + (high - low) / 2;
+		int comparison = strcmp (assembly_name, entries [middle].assembly_name);
+		if (comparison < 0) {
+			high = middle;
+		} else if (comparison > 0) {
+			low = middle + 1;
+		} else {
+			return entries [middle].location;
+		}
+	}
+	return NULL;
 }
 
 MonoMethod *

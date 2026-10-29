@@ -921,6 +921,17 @@ Additional information:
 		}
 
 		[Test]
+		public void GetINativeObject_MultipleWrappers_UserType_DisposePrimary ()
+		{
+			using var primary = new MultipleWrapperObject ();
+			var handle = primary.Handle;
+			using var secondary = Runtime.GetINativeObject<NSDate> (handle, true, false);
+			primary.Dispose ();
+			Assert.That (Runtime.TryGetNSObject (handle), Is.SameAs (secondary), "Disposed primary is not returned");
+			Assert.That (Runtime.GetINativeObject<NSDate> (handle, true, false), Is.SameAs (secondary), "Secondary remains registered");
+		}
+
+		[Test]
 		public void GetINativeObject_ProtocolWrapper ()
 		{
 			using var str = new NSString ("Protocol wrapper");

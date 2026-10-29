@@ -658,6 +658,8 @@ namespace Foundation {
 			if (!ownsNativeGCHandle) {
 				/* If we're a wrapper type, we need to unregister here, since we won't enter the release trampoline */
 				Runtime.NativeObjectHasDied (handle, this);
+			} else {
+				Runtime.UnregisterNSObject (handle, this);
 			}
 			xamarin_release_managed_ref (handle, ownsNativeGCHandle.AsByte ());
 		}

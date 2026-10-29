@@ -1275,6 +1275,9 @@ namespace ObjCRuntime {
 
 		internal static void RegisterObject (INativeObject obj, IntPtr ptr)
 		{
+			if (ptr == IntPtr.Zero)
+				return;
+
 			lock (lock_obj) {
 				if (!object_map.TryGetValue (ptr, out var references)) {
 					references = new List<GCHandle> ();
@@ -1854,8 +1857,8 @@ namespace ObjCRuntime {
 
 		static INativeObject? TryGetObject (IntPtr ptr, Type targetType, bool evenInFinalizerQueue = false)
 		{
-			if (targetType.IsByRef)
-				targetType = targetType.GetElementType ()!;
+			if (targetType.IsByRef && targetType.GetElementType () is Type elementType)
+				targetType = elementType;
 
 			lock (lock_obj) {
 				if (!object_map.TryGetValue (ptr, out var references))
@@ -1970,7 +1973,7 @@ namespace ObjCRuntime {
 		/// <returns>An instance of the class <typeparamref name="T" />.</returns>
 		/// <remarks>
 		///   <para>Returns an instance of the <typeparamref name="T" /> class even if the native object is not in the class hierarchy of <typeparamref name="T" /> (no type checks).</para>
-		///   <para>This method will fail if there already is a managed wrapper of a different and incompatible type for the native object.</para>
+		///   <para>Reuses an existing compatible wrapper when available. Other wrappers for the native object remain registered.</para>
 		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr) where T : NSObject
 		{
@@ -2062,7 +2065,7 @@ namespace ObjCRuntime {
 		/// <returns>An instance of the T class.</returns>
 		/// <remarks>
 		///   <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
-		///   <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+		///   <para>Reuses an existing compatible wrapper when available. Other wrappers for the native object remain registered.</para>
 		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr, bool owns) where T : NSObject
 		{
@@ -2099,7 +2102,7 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			var lookupType = target_type.IsByRef ? target_type.GetElementType ()! : target_type;
+			var lookupType = target_type.IsByRef && target_type.GetElementType () is Type elementType ? elementType : target_type;
 			var o = createNewInstanceIfWrongType ? (NSObject?) TryGetObject (ptr, lookupType, evenInFinalizerQueue) : null;
 			o ??= TryGetNSObject (ptr, evenInFinalizerQueue);
 

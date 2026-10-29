@@ -526,7 +526,7 @@ void monotouch_configure_debugging ()
 				}
 			} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
 #if defined(__aarch64__)
-				debugging_mode = !strcmp ("USB Debugging: 1", line) ? DebuggingModeUsb : DebuggingModeWifi;
+				debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
 #endif
 			} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
 				long port;

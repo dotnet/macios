@@ -482,37 +482,6 @@ namespace PdfKit {
 		NSString DashPatternKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
-	[TV (18, 2)]
-	[Internal]
-	[Static]
-	interface PdfDocumentAttributeKeys {
-
-		[Field ("PDFDocumentTitleAttribute", "+PDFKit")]
-		NSString TitleKey { get; }
-
-		[Field ("PDFDocumentAuthorAttribute", "+PDFKit")]
-		NSString AuthorKey { get; }
-
-		[Field ("PDFDocumentSubjectAttribute", "+PDFKit")]
-		NSString SubjectKey { get; }
-
-		[Field ("PDFDocumentCreatorAttribute", "+PDFKit")]
-		NSString CreatorKey { get; }
-
-		[Field ("PDFDocumentProducerAttribute", "+PDFKit")]
-		NSString ProducerKey { get; }
-
-		[Field ("PDFDocumentCreationDateAttribute", "+PDFKit")]
-		NSString CreationDateKey { get; }
-
-		[Field ("PDFDocumentModificationDateAttribute", "+PDFKit")]
-		NSString ModificationDateKey { get; }
-
-		[Field ("PDFDocumentKeywordsAttribute", "+PDFKit")]
-		NSString KeywordsKey { get; }
-	}
-
 	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 2)]
 	[StrongDictionary ("PdfPageImageInitializationOptionKeys")]
@@ -542,103 +511,85 @@ namespace PdfKit {
 
 	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
-	[StrongDictionary ("PdfDocumentAttributeKeys")]
+	[StrongDictionary]
 	interface PdfDocumentAttributes {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentTitleAttribute", "+PDFKit")]
 		string Title { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentAuthorAttribute", "+PDFKit")]
 		string Author { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentSubjectAttribute", "+PDFKit")]
 		string Subject { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentCreatorAttribute", "+PDFKit")]
 		string Creator { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentProducerAttribute", "+PDFKit")]
 		string Producer { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentCreationDateAttribute", "+PDFKit")]
 		NSDate CreationDate { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentModificationDateAttribute", "+PDFKit")]
 		NSDate ModificationDate { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentKeywordsAttribute", "+PDFKit")]
 		string [] Keywords { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
-	[Internal]
-	[Static]
-	interface PdfDocumentWriteOptionKeys {
-
-		[Field ("PDFDocumentOwnerPasswordOption", "+PDFKit")]
-		NSString OwnerPasswordKey { get; }
-
-		[Field ("PDFDocumentUserPasswordOption", "+PDFKit")]
-		NSString UserPasswordKey { get; }
-
-		[iOS (15, 0), MacCatalyst (15, 0)]
-		[Field ("PDFDocumentAccessPermissionsOption", "+PDFKit")]
-		NSString AccessPermissionsKey { get; }
-
-		[iOS (16, 0), MacCatalyst (16, 0)]
-		[Field ("PDFDocumentBurnInAnnotationsOption", "+PDFKit")]
-		NSString BurnInAnnotationsKey { get; }
-
-		[iOS (16, 0), MacCatalyst (16, 0)]
-		[Field ("PDFDocumentSaveTextFromOCROption", "+PDFKit")]
-		NSString SaveTextFromOcrKey { get; }
-
-		[iOS (16, 4), MacCatalyst (16, 4)]
-		[Field ("PDFDocumentSaveImagesAsJPEGOption", "+PDFKit")]
-		NSString SaveImagesAsJpegKey { get; }
-
-		[iOS (16, 4), MacCatalyst (16, 4)]
-		[Field ("PDFDocumentOptimizeImagesForScreenOption", "+PDFKit")]
-		NSString OptimizeImagesForScreenKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[TV (18, 2)]
-	[StrongDictionary ("PdfDocumentWriteOptionKeys")]
+	[StrongDictionary]
 	interface PdfDocumentWriteOptions {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentOwnerPasswordOption", "+PDFKit")]
 		string OwnerPassword { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PDFDocumentUserPasswordOption", "+PDFKit")]
 		string UserPassword { get; set; }
 
 		[iOS (15, 0), MacCatalyst (15, 0)]
+		[Field ("PDFDocumentAccessPermissionsOption", "+PDFKit")]
 		string AccessPermissions { get; set; }
 
 		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Field ("PDFDocumentBurnInAnnotationsOption", "+PDFKit")]
 		bool BurnInAnnotations { get; set; }
 
 		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Field ("PDFDocumentSaveTextFromOCROption", "+PDFKit")]
 		bool SaveTextFromOcr { get; set; }
 
 		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Field ("PDFDocumentSaveImagesAsJPEGOption", "+PDFKit")]
 		bool SaveImagesAsJpeg { get; set; }
 
 		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Field ("PDFDocumentOptimizeImagesForScreenOption", "+PDFKit")]
 		bool OptimizeImagesForScreen { get; set; }
 	}
 

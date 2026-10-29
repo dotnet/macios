@@ -4768,27 +4768,18 @@ namespace CoreImage {
 
 	/// <summary>Options used in various calls to <see cref="CoreImage.CIImage" /> involving <see cref="CoreImage.ICIImageProvider" /> objects.</summary>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CIImageProviderKeys")]
+	[StrongDictionary]
 	interface CIImageProviderOptions {
 		/// <summary>A <see cref="Foundation.NSNumber" /> that holds an int that is the length of a tile square.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCIImageProviderTileSize")]
 		NSObject TileSize { get; set; }
 		/// <summary>User-supplied data.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSObject UserInfo { get; set; }
-	}
-
-	[Internal]
-	[Static]
-	[MacCatalyst (13, 1)]
-	interface CIImageProviderKeys {
-		[Field ("kCIImageProviderTileSize")]
-		NSString TileSizeKey { get; }
-
 		[Field ("kCIImageProviderUserInfo")]
-		NSString UserInfoKey { get; }
+		NSObject UserInfo { get; set; }
 	}
 
 	interface ICIImageProvider { }
@@ -9153,122 +9144,72 @@ namespace CoreImage {
 	}
 
 	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	partial interface CIImageRepresentationKeys {
-
-		[Field ("kCGImageDestinationLossyCompressionQuality", "ImageIO")]
-		NSString LossyCompressionQualityKey { get; }
-
-		[Field ("kCIImageRepresentationAVDepthData")]
-		NSString AVDepthDataKey { get; }
-
-		[Field ("kCIImageRepresentationDepthImage")]
-		NSString DepthImageKey { get; }
-
-		[Field ("kCIImageRepresentationDisparityImage")]
-		NSString DisparityImageKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationAVPortraitEffectsMatte")]
-		NSString AVPortraitEffectsMatteKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationPortraitEffectsMatteImage")]
-		NSString PortraitEffectsMatteImageKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationAVSemanticSegmentationMattes")]
-		NSString SemanticSegmentationMattesKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationSemanticSegmentationSkinMatteImage")]
-		NSString SemanticSegmentationSkinMatteImageKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationSemanticSegmentationHairMatteImage")]
-		NSString SemanticSegmentationHairMatteImageKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("kCIImageRepresentationSemanticSegmentationTeethMatteImage")]
-		NSString SemanticSegmentationTeethMatteImageKey { get; }
-
-		[iOS (14, 1)]
-		[TV (14, 2)]
-		[MacCatalyst (14, 1)]
-		[Field ("kCIImageRepresentationSemanticSegmentationGlassesMatteImage")]
-		NSString SemanticSegmentationGlassesMatteImageKey { get; }
-
-		[iOS (14, 3), TV (14, 3)]
-		[MacCatalyst (14, 3)]
-		[Field ("kCIImageRepresentationSemanticSegmentationSkyMatteImage")]
-		NSString SemanticSegmentationSkyMatteImageKey { get; }
-
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		[Field ("kCIImageRepresentationHDRImage")]
-		NSString HdrImageKey { get; }
-
-		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		[Field ("kCIImageRepresentationHDRGainMapImage")]
-		NSString HdrGainMapImageKey { get; }
-
-		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
-		[Field ("kCIImageRepresentationHDRGainMapAsRGB")]
-		NSString RepresentationHdrGainMapAsRgbKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CIImageRepresentationKeys")]
+	[StrongDictionary]
 	interface CIImageRepresentationOptions {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCGImageDestinationLossyCompressionQuality", "ImageIO")]
 		float LossyCompressionQuality { get; set; }
 
+		[Field ("kCIImageRepresentationAVDepthData")]
 		AVDepthData AVDepthData { get; set; }
 
+		[Field ("kCIImageRepresentationDepthImage")]
 		CIImage DepthImage { get; set; }
 
+		[Field ("kCIImageRepresentationDisparityImage")]
 		CIImage DisparityImage { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationPortraitEffectsMatteImage")]
 		CIImage PortraitEffectsMatteImage { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationAVPortraitEffectsMatte")]
 		AVPortraitEffectsMatte AVPortraitEffectsMatte { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationAVSemanticSegmentationMattes")]
 		AVSemanticSegmentationMatte [] SemanticSegmentationMattes { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationSemanticSegmentationSkinMatteImage")]
 		CIImage SemanticSegmentationSkinMatteImage { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationSemanticSegmentationHairMatteImage")]
 		CIImage SemanticSegmentationHairMatteImage { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[Field ("kCIImageRepresentationSemanticSegmentationTeethMatteImage")]
 		CIImage SemanticSegmentationTeethMatteImage { get; set; }
 
 		[iOS (14, 1)]
 		[TV (14, 2)]
 		[MacCatalyst (14, 1)]
+		[Field ("kCIImageRepresentationSemanticSegmentationGlassesMatteImage")]
 		CIImage SemanticSegmentationGlassesMatteImage { get; }
 
 		[iOS (14, 3), TV (14, 3)]
 		[MacCatalyst (14, 3)]
+		[Field ("kCIImageRepresentationSemanticSegmentationSkyMatteImage")]
 		CIImage SemanticSegmentationSkyMatteImage { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[Field ("kCIImageRepresentationHDRImage")]
 		CIImage HdrImage { get; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+		[Field ("kCIImageRepresentationHDRGainMapImage")]
 		CIImage HdrGainMapImage { get; }
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("kCIImageRepresentationHDRGainMapAsRGB")]
 		bool RepresentationHdrGainMapAsRgb { get; }
 	}
 

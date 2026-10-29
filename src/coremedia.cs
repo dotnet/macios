@@ -1043,64 +1043,44 @@ namespace CoreMedia {
 		NSDictionary PostDecodeProcessingMetadata { get; set; } // it is a CFDictionary, but that is a toll-free bridged
 	}
 
-	[Internal]
 	[MacCatalyst (13, 1)]
-	[Static]
-	interface CMHevcTemporalLevelInfoKeys {
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_TemporalLevel")]
-		NSString TemporalLevelKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileSpace")]
-		NSString ProfileSpaceKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_TierFlag")]
-		NSString TierFlagKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileIndex")]
-		NSString ProfileIndexKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileCompatibilityFlags")]
-		NSString ProfileCompatibilityFlagsKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_ConstraintIndicatorFlags")]
-		NSString ConstraintIndicatorFlagsKey { get; }
-
-		[Field ("kCMHEVCTemporalLevelInfoKey_LevelIndex")]
-		NSString LevelIndexKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CMHevcTemporalLevelInfoKeys")]
+	[StrongDictionary]
 	interface CMHevcTemporalLevelInfoSettings {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_TemporalLevel")]
 		int TemporalLevel { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileSpace")]
 		int ProfileSpace { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_TierFlag")]
 		int TierFlag { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileIndex")]
 		int ProfileIndex { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_ProfileCompatibilityFlags")]
 		NSData ProfileCompatibilityFlags { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_ConstraintIndicatorFlags")]
 		NSData ConstraintIndicatorFlags { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kCMHEVCTemporalLevelInfoKey_LevelIndex")]
 		int LevelIndex { get; set; }
 	}
 

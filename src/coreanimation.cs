@@ -3733,30 +3733,20 @@ namespace CoreAnimation {
 		NSString RenderAdditive { get; }
 	}
 
-	[Internal]
-	[Static]
-	partial interface CARendererOptionKeys {
-		[Field ("kCARendererColorSpace")]
-		NSString ColorSpace { get; }
-
-		[Field ("kCARendererMetalCommandQueue")]
-		NSString MetalCommandQueue { get; }
-	}
-
-	[StrongDictionary ("CARendererOptionKeys")]
+	[StrongDictionary]
 	interface CARendererOptions {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("ColorSpace")]
+		[Field ("kCARendererColorSpace")]
 		CGColorSpace ColorSpace { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMacCatalyst]
-		[Export ("MetalCommandQueue")]
+		[Field ("kCARendererMetalCommandQueue")]
 		IMTLCommandQueue MetalCommandQueue { get; set; }
 	}
 

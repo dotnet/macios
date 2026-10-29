@@ -708,19 +708,14 @@ namespace GeneratorTests {
 				if (creates == 0)
 					continue;
 				arrayMethods++;
-				Assert.That (calls.Count (v => v.DeclaringType.FullName == "CoreFoundation.CFArray" && v.Name == "ReleaseNative"), Is.EqualTo (creates), method.FullName);
+				Assert.That (calls.Count (v => v.DeclaringType.FullName == "ObjCRuntime.TransientCFObject" && v.Name == ".ctor"), Is.EqualTo (creates), method.FullName);
 				var finallyHandlers = method.Body.ExceptionHandlers.Where (v => v.HandlerType == ExceptionHandlerType.Finally).ToArray ();
 				Assert.That (finallyHandlers, Is.Not.Empty, method.FullName);
-				foreach (var instruction in method.Body.Instructions.Where (v =>
-					v.Operand is MethodReference called && called.DeclaringType.FullName == "CoreFoundation.CFArray" && called.Name == "Create")) {
-					Assert.That (finallyHandlers.Any (handler => instruction.Offset >= handler.TryStart.Offset && instruction.Offset < handler.TryEnd.Offset),
-						Is.True, $"Array conversion must be protected by finally: {method.FullName}");
-				}
 				var releasesInFinally = finallyHandlers.Sum (handler => method.Body.Instructions.Count (instruction =>
 					instruction.Offset >= handler.HandlerStart.Offset &&
 					(handler.HandlerEnd is null || instruction.Offset < handler.HandlerEnd.Offset) &&
 					instruction.Operand is MethodReference called &&
-					called.DeclaringType.FullName == "CoreFoundation.CFArray" && called.Name == "ReleaseNative"));
+					called.DeclaringType.FullName == "ObjCRuntime.TransientCFObject" && called.Name == "Dispose"));
 				Assert.That (releasesInFinally, Is.EqualTo (creates), method.FullName);
 			}
 			Assert.That (arrayMethods, Is.GreaterThanOrEqualTo (10), "Methods, constructors, setters and block invokers");
@@ -728,11 +723,13 @@ namespace GeneratorTests {
 			ArgumentNullException.ThrowIfNull (bgen.TmpDirectory);
 			var generatedFile = Path.Combine (bgen.TmpDirectory, "NativeArrayMarshaling", "ArrayConsumer.g.cs");
 			var contents = File.ReadAllText (generatedFile);
-			Assert.That (contents, Does.Contain ("nsa_strings = CFArray.Create (strings);"), "Non-null array has no duplicate null check");
-			Assert.That (contents, Does.Contain ("nsa_strings = strings is null ? NativeHandle.Zero : CFArray.Create (strings);"), "Nullable array maps null to zero");
-			Assert.That (contents, Does.Contain ("if (objectsValue != objectsArrayValue)"), "Compare ref array against its original handle");
+			Assert.That (contents, Does.Contain ("using var nsa_strings = new TransientCFObject (CFArray.Create (strings));"), "Array lifetime uses a disposable holder");
+			Assert.That (contents, Does.Not.Contain ("strings is null ?"), "Nullable arrays are handled by CFArray.Create");
+			Assert.That (contents, Does.Contain ("NativeHandle objectsValue = objectsArrayValue;"), "Ref parameter is a mutable handle, not a copy of the holder");
+			Assert.That (contents, Does.Contain ("using var objectsArrayValue = new TransientCFObject (CFArray.Create (objects));"), "Ref array lifetime uses a disposable holder");
+			Assert.That (contents, Does.Contain ("if (objectsValue != (NativeHandle) objectsArrayValue)"), "Compare ref array against its original handle");
 			var trampolineContents = File.ReadAllText (Path.Combine (bgen.TmpDirectory, "ObjCRuntime", "Trampolines.g.cs"));
-			Assert.That (trampolineContents, Does.Contain ("nsa_strings = CFArray.Create (strings);"), "Block array has no duplicate null check");
+			Assert.That (trampolineContents, Does.Contain ("using var nsa_strings = new TransientCFObject (CFArray.Create (strings));"), "Block array lifetime uses a disposable holder");
 			Assert.That (trampolineContents, Does.Not.Contain ("nsa_strings = strings is null"), "Non-null block array");
 		}
 

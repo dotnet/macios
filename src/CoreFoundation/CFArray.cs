@@ -88,10 +88,10 @@ namespace CoreFoundation {
 			return CFArrayGetValueAtIndex (GetCheckedHandle (), index);
 		}
 
-		internal static unsafe NativeHandle Create (params NativeHandle [] values)
+		internal static unsafe NativeHandle Create (params NativeHandle []? values)
 		{
 			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+				return NativeHandle.Zero;
 			fixed (NativeHandle* pv = values) {
 				return CFArrayCreate (IntPtr.Zero,
 						(IntPtr) pv,
@@ -102,12 +102,11 @@ namespace CoreFoundation {
 
 		/// <summary>Creates a native array from managed native objects.</summary>
 		/// <param name="values">The objects to include. Null elements are represented by <see cref="NSNull" />.</param>
-		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="values" /> is null.</exception>
-		public static unsafe NativeHandle Create (params INativeObject? [] values)
+		/// <returns>An owned native array handle, or <see cref="NativeHandle.Zero" /> if <paramref name="values" /> is null. The caller must release a nonzero handle.</returns>
+		public static unsafe NativeHandle Create (params INativeObject? []? values)
 		{
 			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+				return NativeHandle.Zero;
 			int c = values.Length;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
@@ -121,12 +120,12 @@ namespace CoreFoundation {
 
 		/// <summary>Creates a native array containing one native array for each row of a jagged array.</summary>
 		/// <param name="items">The rows of native objects. Rows and their elements must not be null.</param>
-		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="items" />, a row, or an element is null.</exception>
-		public static NativeHandle Create (params INativeObject [] [] items)
+		/// <returns>An owned native array handle, or <see cref="NativeHandle.Zero" /> if <paramref name="items" /> is null. The caller must release a nonzero handle.</returns>
+		/// <exception cref="ArgumentNullException">A row or an element is null.</exception>
+		public static NativeHandle Create (params INativeObject [] []? items)
 		{
 			if (items is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (items));
+				return NativeHandle.Zero;
 			var rows = new NativeHandle [items.Length];
 			try {
 				for (var i = 0; i < items.Length; i++) {
@@ -142,18 +141,18 @@ namespace CoreFoundation {
 				return Create (rows);
 			} finally {
 				foreach (var row in rows)
-					ReleaseNative (row);
+					CFObject.SafeRelease (row);
 			}
 		}
 
 		/// <summary>Creates a nested native array from a two-dimensional array of native objects.</summary>
 		/// <param name="items">The native objects, indexed by column and then row. Elements must not be null.</param>
-		/// <returns>An owned native array handle that the caller must release with <see cref="ReleaseNative" />.</returns>
-		/// <exception cref="ArgumentNullException"><paramref name="items" /> or an element is null.</exception>
-		public static NativeHandle Create (INativeObject [,] items)
+		/// <returns>An owned native array handle, or <see cref="NativeHandle.Zero" /> if <paramref name="items" /> is null. The caller must release a nonzero handle.</returns>
+		/// <exception cref="ArgumentNullException">An element is null.</exception>
+		public static NativeHandle Create (INativeObject [,]? items)
 		{
 			if (items is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (items));
+				return NativeHandle.Zero;
 			var width = items.GetLength (0);
 			var height = items.GetLength (1);
 			var rows = new INativeObject [height] [];
@@ -166,36 +165,29 @@ namespace CoreFoundation {
 			return Create (rows);
 		}
 
-		/// <summary>Releases a native <see cref="CFArray" /> handle.</summary>
-		/// <param name="handle">The native array handle to release, or <see cref="NativeHandle.Zero" />.</param>
-		public static void ReleaseNative (NativeHandle handle)
-		{
-			CFObject.SafeRelease (handle);
-		}
-
 		/// <summary>Create a <see cref="CFArray" /> from an array of strings.</summary>
 		/// <param name="values">The array of strings.</param>
-		/// <returns>An unmanaged handle to the new <see cref="CFArray" />.</returns>
+		/// <returns>An unmanaged handle to the new <see cref="CFArray" />, or <see cref="NativeHandle.Zero" /> if <paramref name="values" /> is null.</returns>
 		/// <remarks>
 		///   <para>If any string in <paramref name="values" /> is null, a <see cref="NSNull" /> entry will be created for that element.</para>
 		///   <para>The caller must release the returned handle.</para>
 		/// </remarks>
-		public static unsafe NativeHandle Create (params string? [] values)
+		public static unsafe NativeHandle Create (params string? []? values)
 		{
-			return Create ((IReadOnlyList<string?>) values);
+			return Create ((IReadOnlyList<string?>?) values);
 		}
 
 		/// <summary>Create a <see cref="CFArray" /> from a list of strings.</summary>
 		/// <param name="values">The list of strings.</param>
-		/// <returns>An unmanaged handle to the new <see cref="CFArray" />.</returns>
+		/// <returns>An unmanaged handle to the new <see cref="CFArray" />, or <see cref="NativeHandle.Zero" /> if <paramref name="values" /> is null.</returns>
 		/// <remarks>
 		///   <para>If any string in <paramref name="values" /> is null, a <see cref="NSNull" /> entry will be created for that element.</para>
 		///   <para>The caller must release the returned handle.</para>
 		/// </remarks>
-		public static unsafe NativeHandle Create (IReadOnlyList<string?> values)
+		public static unsafe NativeHandle Create (IReadOnlyList<string?>? values)
 		{
 			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+				return NativeHandle.Zero;
 			var c = values.Count;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (var i = 0; i < c; ++i)

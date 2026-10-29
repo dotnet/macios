@@ -1,15 +1,3 @@
-## Array parameters
-
-Generated bindings marshal string and native-object array parameters with
-`CFArray.Create`, without allocating a managed `NSArray` wrapper. Nullable
-by-value arrays are passed as a zero handle, and null elements are represented by `NSNull`.
-The generated `finally` block releases the temporary handles with
-`CFArray.ReleaseNative`, including when argument conversion or the native call
-throws. For `ref` arrays, the original handle is kept separately so that replacing
-the native array does not change which handle is released.
-Jagged and two-dimensional native-object arrays are marshaled as nested native
-arrays, preserving row order and rejecting null rows or elements.
-
 ## Debugging
 
 

@@ -3344,7 +3344,6 @@ public partial class Generator : IMemberGatherer {
 		by_ref_processing = new StringBuilder ();
 		by_ref_init = new StringBuilder ();
 		post_return = new StringBuilder ();
-		var arrayHandles = new List<string> ();
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
@@ -3386,10 +3385,7 @@ public partial class Generator : IMemberGatherer {
 				} else if (etype == TypeCache.Selector) {
 					exceptions.Add (ErrorHelper.CreateError (1065, mai.Type.FullName, string.IsNullOrEmpty (pi.Name) ? $"#{pi.Position}" : pi.Name, mi.DeclaringType?.FullName, mi.Name));
 				} else {
-					var handle = "nsa_" + pi.Name;
-					arrayHandles.Add (handle);
-					var nullCheck = ParameterNeedsNullCheck (pi, mi, propInfo) ? "" : $"{safe_name} is null ? NativeHandle.Zero : ";
-					convs.AppendLine ($"{handle} = {nullCheck}CFArray.Create ({safe_name});");
+					convs.AppendLine ($"using var nsa_{pi.Name} = new TransientCFObject (CFArray.Create ({safe_name}));");
 				}
 			} else if (mai.Type.IsSubclassOf (TypeCache.System_Delegate)) {
 				string trampoline_name = MakeTrampoline (pi.ParameterType).StaticName;
@@ -3449,17 +3445,12 @@ public partial class Generator : IMemberGatherer {
 				if (pi.IsOut) {
 					by_ref_init.AppendFormat ("{1} {0}Value = IntPtr.Zero;\n", pi.Name.GetSafeParamName (), NativeHandleType);
 				} else {
-					by_ref_init.AppendFormat ("var {0}Value = ", pi.Name.GetSafeParamName ());
+					by_ref_init.AppendFormat ("{1} {0}Value = ", pi.Name.GetSafeParamName (), NativeHandleType);
 					if (isString) {
 						by_ref_init.AppendFormat ("NSString.CreateNative ({0}, true);\n", pi.Name.GetSafeParamName ());
 						by_ref_init.AppendFormat ("var {0}OriginalValue = {0}Value;\n", pi.Name.GetSafeParamName ());
-					} else if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
-						arrayHandles.Add ($"{safe_name}ArrayValue");
-						by_ref_init.Insert (0, $"{safe_name}ArrayValue = CFArray.Create ({safe_name} ?? []);\n");
-						by_ref_init.AppendFormat ("{0}ArrayValue;\n", safe_name);
-					} else if (isArrayOfString) {
-						arrayHandles.Add ($"{safe_name}ArrayValue");
-						by_ref_init.Insert (0, $"{safe_name}ArrayValue = {safe_name} is null ? NativeHandle.Zero : CFArray.Create ({safe_name});\n");
+					} else if (isArrayOfNSObject || isArrayOfINativeObjectSubclass || isArrayOfString) {
+						by_ref_init.Insert (0, $"using var {safe_name}ArrayValue = new TransientCFObject (CFArray.Create ({safe_name}));\n");
 						by_ref_init.AppendFormat ("{0}ArrayValue;\n", safe_name);
 					} else if (isNSObject || isINativeObjectSubclass) {
 						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
@@ -3474,7 +3465,7 @@ public partial class Generator : IMemberGatherer {
 					by_ref_processing.AppendFormat ("{0} = CFString.FromHandle ({0}Value)!;\n", pi.Name.GetSafeParamName ());
 				} else if (isArray) {
 					if (!pi.IsOut)
-						by_ref_processing.AppendFormat ("if ({0}Value != {0}ArrayValue)\n\t", pi.Name.GetSafeParamName ());
+						by_ref_processing.AppendFormat ("if ({0}Value != ({1}) {0}ArrayValue)\n\t", pi.Name.GetSafeParamName (), NativeHandleType);
 
 					if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
 						by_ref_processing.AppendFormat ("{0} = CFArray.ArrayFromHandle<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementElementType!));
@@ -3493,18 +3484,6 @@ public partial class Generator : IMemberGatherer {
 					throw ErrorHelper.CreateError (88, mai.Type, mi);
 				}
 			}
-		}
-
-		if (arrayHandles.Count > 0) {
-			var init = new StringBuilder ();
-			foreach (var handle in arrayHandles)
-				init.AppendLine ($"{NativeHandleType} {handle} = NativeHandle.Zero;");
-			init.AppendLine ("try {");
-			by_ref_init.Insert (0, init);
-			post_return.AppendLine ("} finally {");
-			foreach (var handle in arrayHandles.AsEnumerable ().Reverse ())
-				post_return.AppendLine ($"\tCFArray.ReleaseNative ({handle});");
-			post_return.AppendLine ("}");
 		}
 	}
 

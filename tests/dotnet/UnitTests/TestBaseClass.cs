@@ -228,8 +228,11 @@ namespace Xamarin.Tests {
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
 				// If we're targetting x64, then we can execute everywhere
-				if (runtimeIdentifiers.Contains ("-x64", StringComparison.Ordinal))
+				if (runtimeIdentifiers.Contains ("-x64", StringComparison.Ordinal)) {
+					if (OperatingSystem.IsMacOS () && Configuration.CanRunArm64 && (RuntimeInformation.ProcessArchitecture == Architecture.X64 || !runtimeIdentifiers.Contains ("-arm64", StringComparison.Ordinal)))
+						Assert.Ignore ("Executing x64 binaries under Rosetta is temporarily disabled: https://github.com/dotnet/macios/issues/27034");
 					return true;
+				}
 
 				// If we're not targeting x64, and we're executing on x64, then we're out of luck
 				if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
@@ -591,7 +594,7 @@ namespace Xamarin.Tests {
 
 			var appPath = GetAppPath (csproj, platform, runtimeIdentifiers);
 			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (appExecutable);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
 		protected bool IsRuntimeIdentifierSigned (string runtimeIdentifiers)

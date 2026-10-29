@@ -3943,6 +3943,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[框架“{0}”的扩展名大小写不正确。请将其重命名为使用小写 ".framework" 扩展名，以确保正确链接和打包。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";XcodeBuild_CreateNativeRef" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior.]]></Val>

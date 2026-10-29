@@ -33,6 +33,7 @@ extern "C" {
 #endif
 
 char *xamarin_copy_environment_variable (const char *name);
+bool xamarin_copy_path (NSString *candidate, char *path, size_t capacity);
 
 void *xamarin_marshal_return_value (SEL sel, MonoType *mtype, const char *type, MonoObject *retval, bool retain, MonoMethod *method, MethodDescription *desc, GCHandle *exception_gchandle);
 

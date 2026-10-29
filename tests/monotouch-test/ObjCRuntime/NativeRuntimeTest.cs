@@ -6,6 +6,28 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class NativeRuntimeTest {
 		[DllImport ("__Internal")]
+		static extern byte xamarin_copy_path (IntPtr candidate, byte [] buffer, nuint capacity);
+
+		[TestCase ("bundle/file.dll")]
+		[TestCase ("../../Frameworks/Test.framework/\u00e6.dll")]
+		public void CopyPath (string path)
+		{
+			using var candidate = new NSString (path);
+			var encoded = Encoding.UTF8.GetBytes (path);
+			var buffer = new byte [encoded.Length + 1];
+			Assert.That (xamarin_copy_path (candidate.Handle, buffer, (nuint) buffer.Length), Is.Not.EqualTo (0), "Exact fit");
+			Assert.That (Encoding.UTF8.GetString (buffer, 0, encoded.Length), Is.EqualTo (path), "Path");
+			Assert.That (buffer [encoded.Length], Is.EqualTo (0), "Terminator");
+
+			buffer [0] = 123;
+			Assert.That (xamarin_copy_path (candidate.Handle, buffer, (nuint) encoded.Length), Is.EqualTo (0), "Too small");
+			Assert.That (buffer [0], Is.EqualTo (0), "No truncated path");
+			buffer [0] = 123;
+			Assert.That (xamarin_copy_path (candidate.Handle, buffer, 0), Is.EqualTo (0), "Zero capacity");
+			Assert.That (buffer [0], Is.EqualTo (123), "Zero capacity must not write");
+		}
+
+		[DllImport ("__Internal")]
 		static extern IntPtr xamarin_copy_environment_variable (string name);
 
 		[DllImport ("__Internal")]

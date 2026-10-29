@@ -52,25 +52,31 @@ get_stacktrace (void **addresses, int frames)
 {
 	// get the symbols for the addresses
 	char** strs = backtrace_symbols (addresses, frames);
+	if (strs == NULL && frames > 0)
+		xamarin_assertion_message ("Could not resolve stack trace symbols.");
 
 	const int max_symbol_length = 512; // this is just to have a maximum value, so that we can use strnlen instead of strlen
 
 	// compute the total length of all the symbols, adding 1 for every line (for the newline)
-	size_t length = 0;
+	size_t length = 1;
 	int i;
-	for (i = 0; i < frames; i++)
-		length += strnlen (strs [i], max_symbol_length) + 1;
-	length++;
+	for (i = 0; i < frames; i++) {
+		size_t symbol_length = strnlen (strs [i], max_symbol_length);
+		if (length > SIZE_MAX - symbol_length - 1)
+			xamarin_assertion_message ("Stack trace size overflow.");
+		length += symbol_length + 1;
+	}
 
 	// format the symbols as one long string with newlines
 	char *rv = (char *) calloc (1, length);
+	if (rv == NULL)
+		xamarin_assertion_message ("Could not allocate the stack trace.");
 	char *buffer = rv;
-	size_t left = length;
 	for (i = 0; i < frames; i++) {
-		snprintf (buffer, left, "%s\n", strs [i]);
-		size_t slen = strnlen (strs [i], max_symbol_length) + 1;
-		left -= slen;
-		buffer += slen;
+		size_t slen = strnlen (strs [i], max_symbol_length);
+		memcpy (buffer, strs [i], slen);
+		buffer [slen] = '\n';
+		buffer += slen + 1;
 	}
 	free (strs);
 

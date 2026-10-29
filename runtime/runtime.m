@@ -2694,7 +2694,9 @@ xamarin_vm_initialize ()
 	};
 
 	char contract_str [19]; // 0x + 16 hex digits + '\0'
-	snprintf (contract_str, sizeof (contract_str), "0x%zx", (size_t) (&host_contract));
+	NSString *contract = [NSString stringWithFormat: @"0x%zx", (size_t) (&host_contract)];
+	if (![contract getCString: contract_str maxLength: sizeof (contract_str) encoding: NSUTF8StringEncoding])
+		xamarin_assertion_message ("Could not format the host runtime contract address.");
 #else
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
 #endif
@@ -2919,12 +2921,29 @@ xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen)
 	return xamarin_locate_assembly_resource_for_root (app_path, NULL, resource, path, pathlen);
 }
 
+bool
+xamarin_copy_path (NSString *candidate, char *path, size_t capacity)
+{
+	if (path == NULL || capacity == 0) {
+		LOG (PRODUCT ": Invalid output buffer for resource path.");
+		errno = EINVAL;
+		return false;
+	}
+	if (candidate == nil || ![candidate getFileSystemRepresentation: path maxLength: capacity]) {
+		path [0] = 0;
+		LOG (PRODUCT ": Could not encode resource path without truncation: %@", candidate);
+		errno = candidate == nil ? EILSEQ : ENAMETOOLONG;
+		return false;
+	}
+	return true;
+}
+
 static bool
 xamarin_locate_assembly_resource_for_root (const char *root, const char *culture, const char *resource, char *path, size_t pathlen)
 {
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
-		if (snprintf (path, pathlen, "%s/%s/%s", root, culture, resource) < 0) {
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s", root, culture, resource], path, pathlen)) {
 			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s'): %s", root, culture, resource, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
@@ -2933,7 +2952,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	}
 
 	// arch-specific extension
-	if (snprintf (path, pathlen, "%s/%s.%s", root, resource, xamarin_arch_name) < 0) {
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s.%s", root, resource, xamarin_arch_name], path, pathlen)) {
 		LOG (PRODUCT ": Failed to construct path for resource: %s (4): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
@@ -2942,7 +2961,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 #if !MONOMAC
 	// pointer-size subdirectory with arch-specific extension
-	if (snprintf (path, pathlen, "%s/%s/%s.%s", root, ARCH_SUBDIR, resource, xamarin_arch_name) < 0) {
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s.%s", root, ARCH_SUBDIR, resource, xamarin_arch_name], path, pathlen)) {
 		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
@@ -2950,7 +2969,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	}
 
 	// pointer-size subdirectory
-	if (snprintf (path, pathlen, "%s/%s/%s", root, ARCH_SUBDIR, resource) < 0) {
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s", root, ARCH_SUBDIR, resource], path, pathlen)) {
 		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
@@ -2959,7 +2978,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 #endif // !MONOMAC
 
 	// RID-specific subdirectory
-	if (snprintf (path, pathlen, "%s/.xamarin/%s/%s", root, RUNTIMEIDENTIFIER, resource) < 0) {
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/.xamarin/%s/%s", root, RUNTIMEIDENTIFIER, resource], path, pathlen)) {
 		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
@@ -2968,7 +2987,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
-		if (snprintf (path, pathlen, "%s/%s/.xamarin/%s/%s", root, culture, RUNTIMEIDENTIFIER, resource) < 0) {
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/.xamarin/%s/%s", root, culture, RUNTIMEIDENTIFIER, resource], path, pathlen)) {
 			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s', runtimeidentifier: %s): %s", root, culture, resource, RUNTIMEIDENTIFIER, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
@@ -2977,7 +2996,7 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	}
 
 	// just the file, no extensions, etc.
-	if (snprintf (path, pathlen, "%s/%s", root, resource) < 0) {
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s", root, resource], path, pathlen)) {
 		LOG (PRODUCT ": Failed to construct path for resource: %s (6): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
@@ -3018,7 +3037,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	// For extensions this might be a relative path that points to container app (../../Frameworks/...).
 	const char *explicit_location = xamarin_find_assembly_directory (aname);
 	if (explicit_location) {
-		snprintf (root, sizeof (root), "%s/%s", app_path, explicit_location);
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s", app_path, explicit_location], root, sizeof (root)))
+			return false;
 		if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 			LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from explicit path '%s': %s\n", resource, explicit_location, path);
 			return true;
@@ -3039,7 +3059,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	// so that we can create a framework that works for both simulator and
 	// device, without affecting device builds in any way (device-specific
 	// files just go in the MonoBundle directory)
-	snprintf (root, sizeof (root), "%s/Frameworks/%s.framework/MonoBundle/simulator", app_path, aname);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Frameworks/%s.framework/MonoBundle/simulator", app_path, aname], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from framework '%s': %s\n", resource, aname, path);
 		return true;
@@ -3047,7 +3068,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 #endif // !MONOMAC
 
 	// Then in a framework named as the assembly
-	snprintf (root, sizeof (root), "%s/Frameworks/%s.framework/MonoBundle", app_path, aname);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Frameworks/%s.framework/MonoBundle", app_path, aname], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from framework '%s': %s\n", resource, aname, path);
 		return true;
@@ -3055,7 +3077,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 
 	// Then in the container app's root directory (for extensions)
 	if (xamarin_launch_mode == XamarinLaunchModeExtension) {
-		snprintf (root, sizeof (root), "../..");
+		if (!xamarin_copy_path (@"../..", root, sizeof (root)))
+			return false;
 		if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 			LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from container app bundle '%s': %s\n", resource, aname, path);
 			return true;
@@ -3063,7 +3086,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	}
 
 #if TARGET_OS_MACCATALYST
-	snprintf (root, sizeof (root), "%s/Contents/%s", app_path, [xamarin_custom_bundle_name UTF8String]);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Contents/%s", app_path, [xamarin_custom_bundle_name UTF8String]], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from macOS content bundle '%s': %s\n", resource, aname, path);
 		return true;

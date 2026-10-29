@@ -1498,11 +1498,13 @@ namespace Registrar {
 		Exception CreateExceptionImpl (int code, bool error, ObjCMember? member, string message, params object? [] args)
 		{
 			var method = member as ObjCMethod;
-			if (method is not null)
+			if (method?.Method is not null)
 				return CreateExceptionImpl (code, error, method.Method, message, args);
 			var property = member as ObjCProperty;
-			if (property is not null)
+			if (property?.Property is not null)
 				return CreateExceptionImpl (code, error, property.Property, message, args);
+			if (member?.DeclaringType?.Type is not null)
+				return CreateExceptionImpl (code, error, member.DeclaringType.Type, message, args);
 			return CreateExceptionImpl (code, error, message, args);
 		}
 

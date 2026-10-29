@@ -214,14 +214,14 @@ namespace Xamarin.Bundler {
 				return Create (app, code, error, innerException, member, null, message, args);
 			}
 
-			if (provider is TypeReference type)
-				return Create (app, code, error, innerException, type, message, args);
-
 			return new ProductException (code, error, innerException, message, args);
 		}
 
 		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MemberReference? member, Instruction? instruction, string message, params object? [] args)
 		{
+			if (member is TypeReference type)
+				return Create (app, code, error, innerException, type, message, args);
+
 			var method = member as MethodReference;
 			if (method is null) {
 				var property = member as PropertyDefinition;
@@ -231,8 +231,9 @@ namespace Xamarin.Bundler {
 						method = property.SetMethod;
 				}
 			}
-			var e = Create (app, code, error, innerException, method is null ? null : method.Resolve (), instruction, message, args);
-			if (!error && member is not null)
+			var location = method?.Resolve ();
+			var e = Create (app, code, error, innerException, location, instruction, message, args);
+			if (!error && location is null && member is not null)
 				e.IsSuppressed |= IsWarningSuppressed (app, code, member);
 			return e;
 		}

@@ -167,6 +167,47 @@ public class RegistrarTests : BaseClass {
 		}
 	}
 
+	[TestCase (RegistrarMode.Static)]
+	[TestCase (RegistrarMode.ManagedStatic)]
+	[TestCase (RegistrarMode.TrimmableStatic)]
+	public void SuppressionAfterTrimming (RegistrarMode registrar)
+	{
+		var code = @"
+		using Foundation;
+		using ObjCRuntime;
+
+		[System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessage (""Registrar"", ""MX4179"")]
+		class MyClass : NSObject {
+			[Export (""method:"")]
+			public void Method (NativeObject value) { }
+		}
+
+		abstract class NativeObject : INativeObject {
+			public NativeHandle Handle => default;
+			protected NativeObject (NativeHandle handle, bool owns) { }
+		}
+		";
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out var testInfo, extraConfig: "WarnAsError=4179");
+		var directory = Path.GetDirectoryName (testInfo.InputPath) ?? throw new InvalidOperationException ("Missing test assembly directory.");
+		var strippedPath = Path.Combine (directory, "stripped", "Test.dll");
+		Directory.CreateDirectory (Path.GetDirectoryName (strippedPath) ?? throw new InvalidOperationException ("Missing stripped assembly directory."));
+		using (var assembly = AssemblyDefinition.ReadAssembly (testInfo.InputPath)) {
+			assembly.MainModule.Types.Single (v => v.Name == "MyClass").CustomAttributes.Clear ();
+			assembly.Write (strippedPath);
+		}
+
+		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (
+			v == testInfo ? strippedPath : v.InputPath,
+			Path.Combine (directory, "post", Path.GetFileName (v.InputPath)), v.IsTrimmable, v.TrimMode)).ToArray ();
+		var logger = new TestLogger { Platform = ApplePlatform.iOS };
+		var configPath = Path.Combine (Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, "..")), "config.txt");
+		using var postprocessor = new AssemblyPreparer (logger, infos, configPath) { Registrar = registrar };
+		postprocessor.PreTrimAssemblies.AddRange (preparer.Assemblies.Select (v => v.InputPath));
+		Assert.That (postprocessor.PostProcess (out var exceptions), Is.True, string.Join ("\n", exceptions));
+		Assert.That (logger.Errors, Is.Empty, "Postprocessing errors");
+		Assert.That (logger.Warnings.Where (v => v.Code == 4179), Is.Empty, "Post-trim suppression");
+	}
+
 	[TestCase (false)]
 	[TestCase (true)]
 	public void ModelClassAsGenericArgument (bool suppress)

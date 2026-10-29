@@ -73,6 +73,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void EventTestOSType ()
 		{
+			TestRuntime.CheckBluetoothPermission (true);
+
 			using var mgr = new CBCentralManager (new DispatchQueue ("com.xamarin.tests.ios-plain"));
 			// The bug happens when there's no event listener for 'UpdatedState', which is a required protocol method.
 			// mgr.UpdatedState += (sender, e) => { };

@@ -21,7 +21,6 @@ namespace MonoTouchFixtures.Contacts {
 		public void MinimumSdkCheck ()
 		{
 			TestRuntime.AssertXcodeVersion (7, 0);
-			TestRuntime.RequestContactsPermission ();
 		}
 
 		[Test]

@@ -59,7 +59,7 @@ namespace Speech {
 		Authorized,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[Native]
 	[ErrorDomain ("SFSpeechErrorDomain")]
 	public enum SFSpeechErrorCode : long {
@@ -106,11 +106,11 @@ namespace Speech {
 		[Export ("requiresOnDeviceRecognition")]
 		bool RequiresOnDeviceRecognition { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("addsPunctuation")]
 		bool AddsPunctuation { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("customizedLanguageModel", ArgumentSemantic.Copy)]
 		SFSpeechLanguageModelConfiguration CustomizedLanguageModel { get; set; }
 	}
@@ -452,7 +452,7 @@ namespace Speech {
 		SFAcousticFeature Voicing { get; }
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechLanguageModelConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithLanguageModel:")]
@@ -477,7 +477,7 @@ namespace Speech {
 		NativeHandle Constructor (NSUrl languageModel, [NullAllowed] NSUrl vocabulary, [NullAllowed][BindAs (typeof (float?))] NSNumber weight);
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSpeechLanguageModel {

@@ -715,7 +715,7 @@ Controls whether the build system replaces runtime calls to `Class.GetHandle` /
 `Class.GetHandleIntrinsic` with direct native references to Objective-C classes
 at build time.
 
-See [docs/code/class-handles.md](../code/class-handles.md) for an overview.
+See [Objective-C classes](https://github.com/dotnet/macios/blob/d556da5e28cfbb4e7488c3f57d989be56d01a92b/docs/code/class-handles.md) for an overview.
 
 The valid options are:
 
@@ -1785,6 +1785,35 @@ Valid values for this property:
 The validation process may not validate every entitlement, nor is it guaranteed to not be overeager.
 
 If the validation fails for entitlements that actually work, please file a new issue.
+
+## ValidateSceneManifest
+
+Choose whether to check for a `UIApplicationSceneManifest` dictionary in the
+merged app manifest when building iOS and Mac Catalyst apps against SDK 27.0 or
+later. The default is `true`. App extensions, frameworks, libraries, macOS, and
+tvOS are not checked.
+
+Apps using the legacy UIKit lifecycle crash at launch on iOS or macOS 27.0 or
+later when built against the 27.0 SDK or later, even if their minimum deployment
+target is an older OS version. See https://aka.ms/uiscene for migration instructions.
+
+This check only inspects the manifest; it does not verify scene delegates or
+custom lifecycle handlers. Scene manifests supplied by partial manifests are
+included in the check. An empty dictionary is accepted for apps that configure
+scenes dynamically in their app delegate.
+
+If the check incorrectly rejects an app (for example, one that configures scenes
+entirely in code), it can be disabled in the project file:
+
+```xml
+<PropertyGroup>
+  <ValidateSceneManifest>false</ValidateSceneManifest>
+</PropertyGroup>
+```
+
+Disabling this build-time check does not disable the operating system's scene
+lifecycle requirement. Verify that the app launches and behaves correctly on
+OS 27.0 or later before distributing it.
 
 ## ValidateXcodeVersion
 

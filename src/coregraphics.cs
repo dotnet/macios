@@ -202,12 +202,12 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceITUR_709")]
 		NSString ItuR_709 { get; }
 
-		[iOS (15, 2), TV (15, 2)]
+		[Mac (12, 1), iOS (15, 2), TV (15, 2)]
 		[MacCatalyst (15, 2)]
 		[Field ("kCGColorSpaceITUR_709_PQ")]
 		NSString ItuR_709_PQ { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("kCGColorSpaceITUR_709_HLG")]
 		NSString ItuR_709_Hlg { get; }
 
@@ -218,7 +218,7 @@ namespace CoreGraphics {
 		[Field ("kCGColorSpaceITUR_2020")]
 		NSString ItuR_2020 { get; }
 
-		[iOS (15, 2), TV (15, 2)]
+		[Mac (12, 1), iOS (15, 2), TV (15, 2)]
 		[MacCatalyst (15, 2)]
 		[Field ("kCGColorSpaceITUR_2020_sRGBGamma")]
 		NSString ItuR_2020_sRgbGamma { get; }

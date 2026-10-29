@@ -2159,7 +2159,7 @@ namespace Intents {
 		RequestedHandleInvalid,
 		/// <summary>To be added.</summary>
 		NoHandleForLabel,
-		[MacCatalyst (17, 0)]
+		[Mac (14, 0), MacCatalyst (17, 0)]
 		RequiringInAppAuthentication,
 	}
 
@@ -2899,7 +2899,7 @@ namespace Intents {
 		NoMatchingCall = 1,
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[Native]
 	public enum INAnswerCallIntentResponseCode : long {
 		Unspecified = 0,
@@ -2911,7 +2911,7 @@ namespace Intents {
 		FailureRequiringAppLaunch,
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[Native]
 	public enum INHangUpCallIntentResponseCode : long {
 		Unspecified = 0,
@@ -3064,11 +3064,11 @@ namespace Intents {
 		[Field ("INStartCallIntentIdentifier")]
 		StartCall,
 
-		[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+		[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 		[Field ("INAnswerCallIntentIdentifier")]
 		AnswerCall,
 
-		[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+		[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 		[Field ("INHangUpCallIntentIdentifier")]
 		HangUpCall,
 	}
@@ -4810,7 +4810,7 @@ namespace Intents {
 		[Export ("imageNamed:")]
 		INImage FromName (string name);
 
-		[NoTV, NoiOS]
+		[NoTV, NoiOS, Mac (13, 0)]
 		[NoMacCatalyst]
 		[Static]
 		[Export ("imageWithNSImage:")]
@@ -14271,7 +14271,7 @@ namespace Intents {
 		[NullAllowed, Export ("fileURL", ArgumentSemantic.Strong)]
 		NSUrl FileUrl { get; }
 
-		[iOS (15, 2)]
+		[Mac (12, 1), iOS (15, 2)]
 		[MacCatalyst (15, 2)]
 		[Export ("removedOnCompletion")]
 		bool RemovedOnCompletion { get; set; }
@@ -14384,7 +14384,7 @@ namespace Intents {
 		Authorized,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum INUnsendMessagesIntentResponseCode : long {
 		Unspecified = 0,
@@ -14401,7 +14401,7 @@ namespace Intents {
 		FailureRequiringInAppAuthentication,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum INEditMessageIntentResponseCode : long {
 		Unspecified = 0,
@@ -16778,7 +16778,7 @@ namespace Intents {
 		string GroupId { get; }
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[BaseType (typeof (INIntent))]
 	interface INAnswerCallIntent {
 
@@ -16786,16 +16786,16 @@ namespace Intents {
 		[DesignatedInitializer]
 		IntPtr Constructor (INCallAudioRoute audioRoute, [NullAllowed] string callIdentifier);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("audioRoute", ArgumentSemantic.Assign)]
 		INCallAudioRoute AudioRoute { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[NullAllowed, Export ("callIdentifier")]
 		string CallIdentifier { get; }
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[Protocol]
 	interface INAnswerCallIntentHandling {
 
@@ -16807,7 +16807,7 @@ namespace Intents {
 		void ConfirmAnswerCall (INAnswerCallIntent intent, Action<INAnswerCallIntentResponse> completion);
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[BaseType (typeof (INIntentResponse))]
 	[DisableDefaultCtor]
 	interface INAnswerCallIntentResponse {
@@ -16819,28 +16819,29 @@ namespace Intents {
 		[Export ("code")]
 		INAnswerCallIntentResponseCode Code { get; }
 
+		[Mac (13, 3)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("callRecords", ArgumentSemantic.Copy)]
 		INCallRecord [] CallRecords { get; set; }
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[BaseType (typeof (INIntent))]
 	interface INHangUpCallIntent {
 
-		[iOS (16, 2)]
+		[Mac (13, 1), iOS (16, 2)]
 		[MacCatalyst (16, 2)]
 		[Export ("initWithCallIdentifier:")]
 		[DesignatedInitializer]
 		IntPtr Constructor ([NullAllowed] string callIdentifier);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		[NullAllowed, Export ("callIdentifier")]
 		string CallIdentifier { get; }
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[Protocol]
 	interface INHangUpCallIntentHandling {
 
@@ -16852,7 +16853,7 @@ namespace Intents {
 		void ConfirmHangUpCall (INHangUpCallIntent intent, Action<INHangUpCallIntentResponse> completion);
 	}
 
-	[NoTV, iOS (16, 2), MacCatalyst (16, 2)]
+	[NoTV, Mac (13, 1), iOS (16, 2), MacCatalyst (16, 2)]
 	[BaseType (typeof (INIntentResponse))]
 	[DisableDefaultCtor]
 	interface INHangUpCallIntentResponse {
@@ -16865,7 +16866,7 @@ namespace Intents {
 		INHangUpCallIntentResponseCode Code { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (INIntentResponse))]
 	[DisableDefaultCtor]
 	interface INUnsendMessagesIntentResponse {
@@ -16877,7 +16878,7 @@ namespace Intents {
 		INUnsendMessagesIntentResponseCode Code { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (INIntent))]
 	interface INUnsendMessagesIntent {
 		[Export ("initWithMessageIdentifiers:")]
@@ -16888,7 +16889,7 @@ namespace Intents {
 		string [] MessageIdentifiers { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface INMessageLinkMetadata : NSCopying, NSSecureCoding {
 		[Export ("initWithSiteName:summary:title:openGraphType:linkURL:")]
@@ -16911,7 +16912,7 @@ namespace Intents {
 		NSUrl LinkUrl { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (INIntentResponse))]
 	[DisableDefaultCtor]
 	interface INEditMessageIntentResponse {
@@ -16923,7 +16924,7 @@ namespace Intents {
 		INEditMessageIntentResponseCode Code { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (INIntent))]
 	interface INEditMessageIntent {
 		[Export ("initWithMessageIdentifier:editedContent:")]
@@ -16937,7 +16938,7 @@ namespace Intents {
 		string EditedContent { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol]
 	interface INEditMessageIntentHandling {
 		[Abstract]
@@ -16951,7 +16952,7 @@ namespace Intents {
 		void ResolveEditedContent (INEditMessageIntent intent, Action<INStringResolutionResult> completion);
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol]
 	interface INUnsendMessagesIntentHandling {
 		[Abstract]

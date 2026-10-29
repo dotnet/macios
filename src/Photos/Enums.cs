@@ -396,7 +396,7 @@ namespace Photos {
 		[MacCatalyst (13, 1)]
 		AdjustmentBaseVideo = 12,
 		[iOS (17, 0), TV (17, 0)]
-		[MacCatalyst (17, 0)]
+		[MacCatalyst (17, 0), Mac (14, 0)]
 		PhotoProxy = 19,
 	}
 
@@ -582,7 +582,7 @@ namespace Photos {
 		ReadWrite = 2,
 	}
 
-	[TV (16, 0), iOS (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 	[MacCatalyst (16, 0)]
 	[Native]
 	public enum PHObjectType : long {

@@ -2476,7 +2476,7 @@ namespace Contacts {
 		[NullAllowed, Export ("transactionAuthor")]
 		string TransactionAuthor { get; set; }
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[Mac (12, 3), iOS (15, 4), MacCatalyst (15, 4)]
 		[Export ("shouldRefetchContacts")]
 		bool ShouldRefetchContacts { get; set; }
 	}

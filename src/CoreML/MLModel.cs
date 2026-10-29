@@ -5,16 +5,16 @@ namespace CoreML {
 
 	public partial class MLModel {
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.CoreMLLibrary)]
 		static extern /* MLComputeDeviceProtocol[] */ IntPtr MLAllComputeDevices ();
 
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public static IMLComputeDeviceProtocol [] AllComputeDevices {
 			get {
 				var ptr = MLAllComputeDevices ();

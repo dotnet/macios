@@ -333,7 +333,7 @@ namespace Network {
 		Unknown = 0,
 		Bidirectional = 1,
 		Unidirectional = 2,
-		[TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
+		[TV (16, 4), Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
 		Datagram = 3,
 	}
 

@@ -805,9 +805,9 @@ namespace CoreMedia {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.CoreMediaLibrary)]
 		unsafe static extern /* OSStatus */ CMFormatDescriptionError CMVideoFormatDescriptionCopyTagCollectionArray (
 			IntPtr /* CMVideoFormatDescriptionRef CM_NONNULL */ formatDescription,
@@ -817,9 +817,9 @@ namespace CoreMedia {
 		/// <param name="tagCollections">Upon output, and if successful, the format description's array of <see cref="CMTagCollection" /> values.</param>
 		/// <returns><see cref="CMFormatDescriptionError.None" /> if succcessful, or an error code otherwise.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public CMFormatDescriptionError GetTagCollections (out CMTagCollection []? tagCollections)
 		{
 			IntPtr array;
@@ -839,9 +839,9 @@ namespace CoreMedia {
 
 		/// <summary>Get any multi-image properties as an array of <see cref="CMTagCollection" /> values.</summary>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("maccatalyst17.0")]
 		public CMTagCollection []? TagCollections {
 			get {
 				GetTagCollections (out var tagCollections);

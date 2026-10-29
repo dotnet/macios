@@ -197,7 +197,8 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
-		/// <inheritdoc />
+		/// <summary>Cancels pending requests and releases the resources used by this handler.</summary>
+		/// <param name="disposing"><see langword="true" /> to release managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
 		protected override void Dispose (bool disposing)
 		{
 			var tasks = new List<NSUrlSessionTask> ();

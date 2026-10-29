@@ -99,7 +99,7 @@ namespace NaturalLanguage {
 		/// <summary>Indicates the Armenian language.</summary>
 		[Field ("NLLanguageArmenian")]
 		Armenian,
-		/// <summary>Indicates the Bengali language.</summary>
+		/// <summary>Indicates the Bangla language.</summary>
 		[Field ("NLLanguageBengali")]
 		Bengali,
 		/// <summary>Indicates the Bulgarian language.</summary>
@@ -195,7 +195,7 @@ namespace NaturalLanguage {
 		/// <summary>Indicates the Norwegian language.</summary>
 		[Field ("NLLanguageNorwegian")]
 		Norwegian,
-		/// <summary>Indicates the Oriya language.</summary>
+		/// <summary>Indicates the Odia language.</summary>
 		[Field ("NLLanguageOriya")]
 		Oriya,
 		/// <summary>Indicates the Persian language.</summary>
@@ -259,7 +259,7 @@ namespace NaturalLanguage {
 		[Field ("NLLanguageVietnamese")]
 		Vietnamese,
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), Mac (13, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Field ("NLLanguageKazakh")]
 		Kazakh,
 	}
@@ -293,7 +293,7 @@ namespace NaturalLanguage {
 		SentimentScore,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	public enum NLScript {
 		[Field ("NLScriptUndetermined")]
 		Undetermined,
@@ -359,7 +359,7 @@ namespace NaturalLanguage {
 		TraditionalChinese,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum NLContextualEmbeddingAssetsResult : long {
 		Available,

@@ -349,11 +349,11 @@ namespace MapKit {
 		[Export ("arrivalDate", ArgumentSemantic.Copy)]
 		NSDate ArrivalDate { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("tollPreference", ArgumentSemantic.Assign)]
 		MKDirectionsRoutePreference TollPreference { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("highwayPreference", ArgumentSemantic.Assign)]
 		MKDirectionsRoutePreference HighwayPreference { get; set; }
 	}
@@ -566,7 +566,7 @@ namespace MapKit {
 		[Export ("mapType")]
 		MKMapType MapType { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("preferredConfiguration", ArgumentSemantic.Copy)]
 		MKMapConfiguration PreferredConfiguration { get; set; }
 
@@ -873,11 +873,11 @@ namespace MapKit {
 		[Export ("showsPitchControl")]
 		bool ShowsPitchControl { get; set; }
 
-		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
+		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 		[Export ("pitchButtonVisibility", ArgumentSemantic.Assign)]
 		MKFeatureVisibility PitchButtonVisibility { get; set; }
 
-		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
+		[TV (17, 0), MacCatalyst (17, 0), Mac (14, 0), iOS (17, 0)]
 		[Export ("showsUserTrackingButton")]
 		bool ShowsUserTrackingButton { get; set; }
 	}
@@ -2036,11 +2036,11 @@ namespace MapKit {
 		[Export ("steps")]
 		MKRouteStep [] Steps { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("hasTolls")]
 		bool HasTolls { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Export ("hasHighways")]
 		bool HasHighways { get; }
 	}
@@ -2143,7 +2143,7 @@ namespace MapKit {
 		[Export ("centerCoordinateDistance")]
 		double CenterCoordinateDistance { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 		[Static]
 		[Export ("cameraLookingAtMapItem:forViewSize:allowPitch:")]
 		MKMapCamera CameraLookingAt (MKMapItem mapItem, CGSize viewSize, bool allowPitch);
@@ -2235,7 +2235,7 @@ namespace MapKit {
 		[Export ("traitCollection", ArgumentSemantic.Copy)]
 		UITraitCollection TraitCollection { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("preferredConfiguration", ArgumentSemantic.Copy)]
 		MKMapConfiguration PreferredConfiguration { get; set; }
 	}
@@ -3015,7 +3015,7 @@ namespace MapKit {
 		MKMapView MapView { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKHybridMapConfiguration {
@@ -3040,7 +3040,7 @@ namespace MapKit {
 		UIImage Image { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKImageryMapConfiguration {
@@ -3048,12 +3048,12 @@ namespace MapKit {
 		NativeHandle Constructor (MKMapElevationStyle elevationStyle);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundScene : NSCopying { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSceneRequest {
@@ -3085,7 +3085,7 @@ namespace MapKit {
 		void Cancel ();
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSnapshot {
@@ -3093,7 +3093,7 @@ namespace MapKit {
 		UIImage Image { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface MKLookAroundSnapshotOptions {
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
@@ -3107,7 +3107,7 @@ namespace MapKit {
 		UITraitCollection TraitCollection { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSnapshotter {
@@ -3128,7 +3128,7 @@ namespace MapKit {
 
 	interface IMKLookAroundViewControllerDelegate { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MKLookAroundViewControllerDelegate {
@@ -3151,7 +3151,7 @@ namespace MapKit {
 		void DidDismissFullScreen (MKLookAroundViewController viewController);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface MKLookAroundViewController : NSSecureCoding, NSCoding {
 		[Export ("initWithScene:")]
@@ -3185,7 +3185,7 @@ namespace MapKit {
 		MKLookAroundBadgePosition BadgePosition { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKMapConfiguration : NSSecureCoding, NSCopying {
@@ -3250,7 +3250,7 @@ namespace MapKit {
 		MKMapFeatureAnnotation MapFeatureAnnotation { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKStandardMapConfiguration {

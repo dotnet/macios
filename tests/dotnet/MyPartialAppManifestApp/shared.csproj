@@ -13,5 +13,6 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 		<PartialAppManifest Include="../Partial.plist" />
+		<PartialAppManifest Include="$(AdditionalPartialAppManifest)" Condition="'$(AdditionalPartialAppManifest)' != ''" />
 	</ItemGroup>
 </Project>

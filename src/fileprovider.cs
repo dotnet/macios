@@ -281,20 +281,20 @@ namespace FileProvider {
 		ContentEnumerating = Reading,
 	}
 
-	[Flags, NoTV, NoMacCatalyst, NoiOS]
+	[Flags, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Native]
 	public enum NSFileProviderMaterializationFlags : ulong {
 		KnownSparseRanges = 1uL << 0,
 	}
 
-	[Flags, NoTV, NoMacCatalyst, NoiOS]
+	[Flags, NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Native]
 	public enum NSFileProviderFetchContentsOptions : ulong {
 		StrictVersioning = 1uL << 0,
 	}
 
 	[Native]
-	[iOS (16, 0), NoTV, NoMacCatalyst]
+	[iOS (16, 0), Mac (13, 0), NoTV, NoMacCatalyst]
 	public enum NSFileProviderContentPolicy : long {
 		Inherited,
 		[NoiOS, NoMacCatalyst]
@@ -412,15 +412,15 @@ namespace FileProvider {
 		[NullAllowed, Export ("backingStoreIdentity")]
 		NSData BackingStoreIdentity { get; }
 
-		[NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("replicated")]
 		bool Replicated { [Bind ("isReplicated")] get; }
 
-		[NoTV, NoMacCatalyst, iOS (18, 0)]
+		[NoTV, NoMacCatalyst, iOS (18, 0), Mac (13, 0)]
 		[Export ("supportsSyncingTrash")]
 		bool SupportsSyncingTrash { get; set; }
 
-		[NoTV, NoMacCatalyst, iOS (16, 4)]
+		[NoTV, NoMacCatalyst, Mac (13, 3), iOS (16, 4)]
 		[NullAllowed, Export ("volumeUUID")]
 		NSUuid VolumeUuid { get; }
 
@@ -767,7 +767,7 @@ namespace FileProvider {
 		[Export ("typeAndCreator")]
 		NSFileProviderTypeAndCreator TypeAndCreator { get; }
 
-		[NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("contentPolicy")]
 		NSFileProviderContentPolicy ContentPolicy { get; }
 
@@ -1028,17 +1028,17 @@ namespace FileProvider {
 		void RemoveDomain (NSFileProviderDomain domain, NSFileProviderDomainRemovalMode mode, Action<NSUrl, NSError> completionHandler);
 
 		[Async]
-		[iOS (16, 0), NoTV, NoMacCatalyst]
+		[iOS (16, 0), Mac (13, 0), NoTV, NoMacCatalyst]
 		[Export ("getServiceWithName:itemIdentifier:completionHandler:")]
 		void GetService (string serviceName, string itemIdentifier, Action<NSFileProviderService, NSError> completionHandler);
 
 		[Async]
-		[NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("requestModificationOfFields:forItemWithIdentifier:options:completionHandler:")]
 		void RequestModification (NSFileProviderItemFields fields, string itemIdentifier, NSFileProviderModifyItemOptions options, Action<NSError> completionHandler);
 
 		[Async]
-		[NoTV, NoMacCatalyst, NoiOS]
+		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
 		[Export ("requestDownloadForItemWithIdentifier:requestedRange:completionHandler:")]
 		void RequestDownload (string itemIdentifier, NSRange rangeToMaterialize, Action<NSError> completionHandler);
 
@@ -1077,7 +1077,7 @@ namespace FileProvider {
 #if XAMCORE_5_0
 		[Abstract]
 #endif
-		[NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("maximumSizeReached")]
 		bool MaximumSizeReached { [Bind ("isMaximumSizeReached")] get; }
 	}
@@ -1108,7 +1108,7 @@ namespace FileProvider {
 		[return: NullAllowed]
 		NSXpcListenerEndpoint MakeListenerEndpoint (out NSError error);
 
-		[NoTV, NoMacCatalyst, iOS (16, 0)]
+		[NoTV, NoMacCatalyst, Mac (13, 0), iOS (16, 0)]
 		[Export ("restricted")]
 		bool Restricted { [Bind ("isRestricted")] get; }
 	}
@@ -1624,7 +1624,7 @@ namespace FileProvider {
 	interface INSFileProviderPartialContentFetching { }
 	delegate void NSFileProviderPartialContentFetchingCompletionHandler (NSUrl fileContents, INSFileProviderItem item, NSRange retrievedRange, NSFileProviderMaterializationFlags flags, NSError error);
 
-	[NoTV, NoMacCatalyst, NoiOS]
+	[NoTV, NoMacCatalyst, NoiOS, Mac (12, 3)]
 	[Protocol]
 	interface NSFileProviderPartialContentFetching {
 

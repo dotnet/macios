@@ -48,7 +48,7 @@ using AVRouting;
 #endif
 
 namespace AVKit {
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum AVVideoFrameAnalysisType : ulong {
 		AVVideoFrameAnalysisTypeNone = 0,
@@ -745,34 +745,35 @@ namespace AVKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("speeds", ArgumentSemantic.Copy)]
 		AVPlaybackSpeed [] Speeds { get; set; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[NullAllowed, Export ("selectedSpeed")]
 		AVPlaybackSpeed SelectedSpeed { get; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("selectSpeed:")]
 		void SelectSpeed (AVPlaybackSpeed speed);
 
-		[NoTV, NoMacCatalyst, NoiOS]
+		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
 		[Export ("allowsVideoFrameAnalysis")]
 		bool AllowsVideoFrameAnalysis { get; set; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("allowsMagnification")]
 		bool AllowsMagnification { get; set; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("magnification")]
 		nfloat Magnification { get; set; }
 
-		[NoiOS, NoMacCatalyst, NoTV]
+		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
 
+		[Mac (14, 0)]
 		[Export ("videoFrameAnalysisTypes")]
 		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
 
@@ -1217,7 +1218,7 @@ namespace AVKit {
 		CancelButton,
 	}
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVPlaybackSpeed {

@@ -247,7 +247,7 @@ namespace MapKit {
 		PhysicalFeature = 1 << 2,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKDirectionsRoutePreference : long {
 		Any = 0,
@@ -263,7 +263,7 @@ namespace MapKit {
 		PhysicalFeatures = 1 << (int) MKMapFeatureType.PhysicalFeature,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum MKLookAroundBadgePosition : long {
 		TopLeading = 0,
@@ -271,7 +271,7 @@ namespace MapKit {
 		BottomTrailing,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKMapElevationStyle : long {
 		Flat = 0,
@@ -286,7 +286,7 @@ namespace MapKit {
 		PhysicalFeature,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKStandardMapEmphasisStyle : long {
 		Default = 0,

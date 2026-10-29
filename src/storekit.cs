@@ -35,7 +35,7 @@ namespace StoreKit {
 	interface XamarinSwiftFunctions {
 		[Export ("requestReview:")]
 		[Static]
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
 #if MONOMAC
 		void RequestReview (NSViewController viewController);
 #else

@@ -118,7 +118,9 @@ namespace MonoTests.System.Net.Http {
 						return client.GetStringAsync ($"http://127.0.0.1:{port}/recovery", token).GetAwaiter ().GetResult ();
 					}, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 
-					serverStream.Dispose ();
+					// NetworkStream.Dispose shuts down the connection before closing it,
+					// allowing NSURLSession to observe EOF before the reset.
+					serverStream.Socket.Close ();
 					await Task.WhenAny (recovery, acceptTask).ConfigureAwait (false);
 					if (recovery.IsCompleted)
 						await recovery.ConfigureAwait (false);
@@ -150,7 +152,7 @@ namespace MonoTests.System.Net.Http {
 					await serverStream.WriteAsync (Encoding.ASCII.GetBytes ("0\r\n\r\n"), token).ConfigureAwait (false);
 					break;
 				case "disconnect":
-					serverStream.Dispose ();
+					serverStream.Socket.Close ();
 					break;
 				case "response-dispose":
 					response.Dispose ();

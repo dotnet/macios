@@ -26,6 +26,7 @@
 #include <zlib.h>
 
 #include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -325,6 +326,22 @@ void xamarin_capture_debugging_settings ()
 	}
 }
 
+static bool
+parse_debug_configuration_number (const char *text, long maximum, long *value)
+{
+	char *end = NULL;
+	errno = 0;
+	long parsed = strtol (text, &end, 10);
+	if (end == text || errno == ERANGE || parsed < 0 || parsed > maximum)
+		return false;
+	while (isspace ((unsigned char) *end))
+		end++;
+	if (*end != 0)
+		return false;
+	*value = parsed;
+	return true;
+}
+
 void monotouch_configure_debugging ()
 {
 	xamarin_track_finished_launching ();
@@ -486,45 +503,37 @@ void monotouch_configure_debugging ()
 
 	// Finally, fall back to loading values from MonoTouchDebugConfiguration.txt
 	NSString *conf_path = [bundle_path stringByAppendingPathComponent:@"MonoTouchDebugConfiguration.txt"];
-	FILE *debug_conf = fopen ([conf_path UTF8String], "r");
-	if (debug_conf != NULL) { 
+	NSError *read_error = nil;
+	NSString *debug_conf = [NSString stringWithContentsOfFile: conf_path encoding: NSUTF8StringEncoding error: &read_error];
+	if (debug_conf != nil) {
 		bool add_hosts = [hosts count] == 0;
-		char line [128];
-		int i;
-
-		while (!feof (debug_conf)) {
-			if (fgets (line, sizeof (line), debug_conf) != NULL) {
-				// Remove trailing newline
-				for (i = 0; line[i]; i++) {
-					if (line [i] == '\n' || line [i] == '\r') {
-						line [i] = 0;
-						break;
+		for (NSString *configuration_line in [debug_conf componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]]) {
+			const char *line = [configuration_line UTF8String];
+			if (!strncmp ("IP: ", line, 4)) {
+				if (add_hosts) {
+					NSString *ip = [NSString stringWithUTF8String: line + 4];
+					if (![hosts containsObject: ip]) {
+						[hosts addObject: ip];
+						LOG (PRODUCT ": Added IP to look for the IDE: %s\n", [ip UTF8String]);
 					}
 				}
-				
-				if (!strncmp ("IP: ", line, 4)) {
-					if (add_hosts) {
-						NSString *ip;
-
-						ip = [NSString stringWithUTF8String:line + 4];
-						if (![hosts containsObject:ip]) {
-							[hosts addObject:ip];
-							LOG (PRODUCT ": Added IP to look for the IDE: %s\n", [ip UTF8String]);
-						}
-					}
-				} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
+			} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
 #if defined(__aarch64__)
-					debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
+				debugging_mode = !strcmp ("USB Debugging: 1", line) ? DebuggingModeUsb : DebuggingModeWifi;
 #endif
-				} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
-					monodevelop_port = strtol (line + 6, NULL, 10);
-				} else  if (!strncmp ("Connect Timeout: ", line, 17) && sdb_timeout_time == -1) {
-					sdb_timeout_time = strtol (line + 17, NULL, 10);
-				}
+			} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
+				long port;
+				if (parse_debug_configuration_number (line + 6, UINT16_MAX, &port) && port > 0)
+					monodevelop_port = port;
+				else
+					PRINT (PRODUCT ": Invalid port in debugger configuration: %s", line + 6);
+			} else if (!strncmp ("Connect Timeout: ", line, 17) && sdb_timeout_time == -1) {
+				if (!parse_debug_configuration_number (line + 17, INT_MAX, &sdb_timeout_time))
+					PRINT (PRODUCT ": Invalid connect timeout in debugger configuration: %s", line + 17);
 			}
 		}
-		
-		fclose (debug_conf);
+	} else if (![[read_error domain] isEqualToString: NSCocoaErrorDomain] || [read_error code] != NSFileReadNoSuchFileError) {
+		PRINT (PRODUCT ": Could not read debugger configuration '%s': %s", [conf_path UTF8String], [[read_error description] UTF8String]);
 	}
 
 	if (debug_enabled) {

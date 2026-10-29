@@ -645,21 +645,21 @@ namespace GeneratorTests {
 			var bgen = BuildFile (profile, "bindastests.cs");
 			var type = bgen.ApiAssembly.MainModule.GetType ("BindAsTests", "MyFooClass");
 			var conversions = new Dictionary<string, string> {
-				{ "BoolMethod", "ToBool" },
-				{ "IntMethod", "ToInt32" },
-				{ "SbyteMethod", "ToSByte" },
-				{ "BoolMethodS", "ToBool" },
-				{ "IntMethodS", "ToInt32" },
+				{ "BoolMethod", "ToNullableBool" },
+				{ "IntMethod", "ToNullableInt32" },
+				{ "SbyteMethod", "ToNullableSByte" },
+				{ "BoolMethodS", "ToNullableBool" },
+				{ "IntMethodS", "ToNullableInt32" },
 				{ "SbyteMethodS", "ToSByte" },
-				{ "get_BoolProperty", "ToBool" },
-				{ "get_DoubleProperty", "ToDouble" },
+				{ "get_BoolProperty", "ToNullableBool" },
+				{ "get_DoubleProperty", "ToNullableDouble" },
 				{ "get_LongProperty", "ToInt64" },
 				{ "get_ScrollEnum2", "ToInt32" },
 				{ "GetScrollEnum2", "ToInt32" },
-				{ "GetScrollEnumNullable2", "ToInt32" },
+				{ "GetScrollEnumNullable2", "ToNullableInt32" },
 				{ "CreateInt", "ToInt32" },
-				{ "CreateNullableInt", "ToInt32" },
-				{ "CreateNullableScroll", "ToInt32" },
+				{ "CreateNullableInt", "ToNullableInt32" },
+				{ "CreateNullableScroll", "ToNullableInt32" },
 			};
 			foreach (var method in type.Methods.Where (v => conversions.ContainsKey (v.Name))) {
 				bgen.AssertApiCallsMethod (method, conversions [method.Name], method.Name);

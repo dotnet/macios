@@ -189,35 +189,35 @@ namespace ObjCRuntime {
 #endif
 #pragma warning restore RBI0014
 
-		static System.SByte xamarin_nsnumber_to_sbyte (IntPtr value) { if (value == IntPtr.Zero) return default (System.SByte); return NSNumber.ToSByte (value); }
-		static System.Byte xamarin_nsnumber_to_byte (IntPtr value) { if (value == IntPtr.Zero) return default (System.Byte); return NSNumber.ToByte (value); }
-		static System.Int16 xamarin_nsnumber_to_short (IntPtr value) { if (value == IntPtr.Zero) return default (System.Int16); return NSNumber.ToInt16 (value); }
-		static System.UInt16 xamarin_nsnumber_to_ushort (IntPtr value) { if (value == IntPtr.Zero) return default (System.UInt16); return NSNumber.ToUInt16 (value); }
-		static System.Int32 xamarin_nsnumber_to_int (IntPtr value) { if (value == IntPtr.Zero) return default (System.Int32); return NSNumber.ToInt32 (value); }
-		static System.UInt32 xamarin_nsnumber_to_uint (IntPtr value) { if (value == IntPtr.Zero) return default (System.UInt32); return NSNumber.ToUInt32 (value); }
-		static System.Int64 xamarin_nsnumber_to_long (IntPtr value) { if (value == IntPtr.Zero) return default (System.Int64); return NSNumber.ToInt64 (value); }
-		static System.UInt64 xamarin_nsnumber_to_ulong (IntPtr value) { if (value == IntPtr.Zero) return default (System.UInt64); return NSNumber.ToUInt64 (value); }
-		static nint xamarin_nsnumber_to_nint (IntPtr value) { if (value == IntPtr.Zero) return default (nint); return NSNumber.ToNInt (value); }
-		static nuint xamarin_nsnumber_to_nuint (IntPtr value) { if (value == IntPtr.Zero) return default (nuint); return NSNumber.ToNUInt (value); }
-		static System.Single xamarin_nsnumber_to_float (IntPtr value) { if (value == IntPtr.Zero) return default (System.Single); return NSNumber.ToFloat (value); }
-		static System.Double xamarin_nsnumber_to_double (IntPtr value) { if (value == IntPtr.Zero) return default (System.Double); return NSNumber.ToDouble (value); }
-		static System.Boolean xamarin_nsnumber_to_bool (IntPtr value) { if (value == IntPtr.Zero) return default (System.Boolean); return NSNumber.ToBool (value); }
-		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value) { if (value == IntPtr.Zero) return default (nfloat); return NSNumber.ToNFloat (value); }
+		static System.SByte xamarin_nsnumber_to_sbyte (IntPtr value) { return NSNumber.ToSByte (value); }
+		static System.Byte xamarin_nsnumber_to_byte (IntPtr value) { return NSNumber.ToByte (value); }
+		static System.Int16 xamarin_nsnumber_to_short (IntPtr value) { return NSNumber.ToInt16 (value); }
+		static System.UInt16 xamarin_nsnumber_to_ushort (IntPtr value) { return NSNumber.ToUInt16 (value); }
+		static System.Int32 xamarin_nsnumber_to_int (IntPtr value) { return NSNumber.ToInt32 (value); }
+		static System.UInt32 xamarin_nsnumber_to_uint (IntPtr value) { return NSNumber.ToUInt32 (value); }
+		static System.Int64 xamarin_nsnumber_to_long (IntPtr value) { return NSNumber.ToInt64 (value); }
+		static System.UInt64 xamarin_nsnumber_to_ulong (IntPtr value) { return NSNumber.ToUInt64 (value); }
+		static nint xamarin_nsnumber_to_nint (IntPtr value) { return NSNumber.ToNInt (value); }
+		static nuint xamarin_nsnumber_to_nuint (IntPtr value) { return NSNumber.ToNUInt (value); }
+		static System.Single xamarin_nsnumber_to_float (IntPtr value) { return NSNumber.ToFloat (value); }
+		static System.Double xamarin_nsnumber_to_double (IntPtr value) { return NSNumber.ToDouble (value); }
+		static System.Boolean xamarin_nsnumber_to_bool (IntPtr value) { return NSNumber.ToBool (value); }
+		static nfloat xamarin_nsnumber_to_nfloat (IntPtr value) { return NSNumber.ToNFloat (value); }
 
-		static System.SByte? xamarin_nsnumber_to_nullable_sbyte (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToSByte (value); }
-		static System.Byte? xamarin_nsnumber_to_nullable_byte (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToByte (value); }
-		static System.Int16? xamarin_nsnumber_to_nullable_short (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToInt16 (value); }
-		static System.UInt16? xamarin_nsnumber_to_nullable_ushort (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToUInt16 (value); }
-		static System.Int32? xamarin_nsnumber_to_nullable_int (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToInt32 (value); }
-		static System.UInt32? xamarin_nsnumber_to_nullable_uint (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToUInt32 (value); }
-		static System.Int64? xamarin_nsnumber_to_nullable_long (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToInt64 (value); }
-		static System.UInt64? xamarin_nsnumber_to_nullable_ulong (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToUInt64 (value); }
-		static nint? xamarin_nsnumber_to_nullable_nint (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToNInt (value); }
-		static nuint? xamarin_nsnumber_to_nullable_nuint (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToNUInt (value); }
-		static System.Single? xamarin_nsnumber_to_nullable_float (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToFloat (value); }
-		static System.Double? xamarin_nsnumber_to_nullable_double (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToDouble (value); }
-		static System.Boolean? xamarin_nsnumber_to_nullable_bool (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToBool (value); }
-		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value) { return value == IntPtr.Zero ? null : NSNumber.ToNFloat (value); }
+		static System.SByte? xamarin_nsnumber_to_nullable_sbyte (IntPtr value) { return NSNumber.ToNullableSByte (value); }
+		static System.Byte? xamarin_nsnumber_to_nullable_byte (IntPtr value) { return NSNumber.ToNullableByte (value); }
+		static System.Int16? xamarin_nsnumber_to_nullable_short (IntPtr value) { return NSNumber.ToNullableInt16 (value); }
+		static System.UInt16? xamarin_nsnumber_to_nullable_ushort (IntPtr value) { return NSNumber.ToNullableUInt16 (value); }
+		static System.Int32? xamarin_nsnumber_to_nullable_int (IntPtr value) { return NSNumber.ToNullableInt32 (value); }
+		static System.UInt32? xamarin_nsnumber_to_nullable_uint (IntPtr value) { return NSNumber.ToNullableUInt32 (value); }
+		static System.Int64? xamarin_nsnumber_to_nullable_long (IntPtr value) { return NSNumber.ToNullableInt64 (value); }
+		static System.UInt64? xamarin_nsnumber_to_nullable_ulong (IntPtr value) { return NSNumber.ToNullableUInt64 (value); }
+		static nint? xamarin_nsnumber_to_nullable_nint (IntPtr value) { return NSNumber.ToNullableNInt (value); }
+		static nuint? xamarin_nsnumber_to_nullable_nuint (IntPtr value) { return NSNumber.ToNullableNUInt (value); }
+		static System.Single? xamarin_nsnumber_to_nullable_float (IntPtr value) { return NSNumber.ToNullableFloat (value); }
+		static System.Double? xamarin_nsnumber_to_nullable_double (IntPtr value) { return NSNumber.ToNullableDouble (value); }
+		static System.Boolean? xamarin_nsnumber_to_nullable_bool (IntPtr value) { return NSNumber.ToNullableBool (value); }
+		static nfloat? xamarin_nsnumber_to_nullable_nfloat (IntPtr value) { return NSNumber.ToNullableNFloat (value); }
 
 		static IntPtr xamarin_sbyte_to_nsnumber (System.SByte value) { return NSNumber.FromSByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }
 		static IntPtr xamarin_byte_to_nsnumber (System.Byte value) { return NSNumber.FromByte (value).DangerousRetain ().DangerousAutorelease ().Handle; }

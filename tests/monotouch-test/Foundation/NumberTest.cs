@@ -46,6 +46,20 @@ namespace MonoTouchFixtures.Foundation {
 					Assert.That ((double) NSNumber.ToNFloat (handle), Is.EqualTo ((double) number.NFloatValue), "NFloat");
 					Assert.That (NSNumber.ToNInt (handle), Is.EqualTo (number.NIntValue), "NInt");
 					Assert.That (NSNumber.ToNUInt (handle), Is.EqualTo (number.NUIntValue), "NUInt");
+					Assert.That (NSNumber.ToNullableBool (handle), Is.EqualTo (number.BoolValue), "NullableBool");
+					Assert.That (NSNumber.ToNullableByte (handle), Is.EqualTo (number.ByteValue), "NullableByte");
+					Assert.That (NSNumber.ToNullableSByte (handle), Is.EqualTo (number.SByteValue), "NullableSByte");
+					Assert.That (NSNumber.ToNullableInt16 (handle), Is.EqualTo (number.Int16Value), "NullableInt16");
+					Assert.That (NSNumber.ToNullableUInt16 (handle), Is.EqualTo (number.UInt16Value), "NullableUInt16");
+					Assert.That (NSNumber.ToNullableInt32 (handle), Is.EqualTo (number.Int32Value), "NullableInt32");
+					Assert.That (NSNumber.ToNullableUInt32 (handle), Is.EqualTo (number.UInt32Value), "NullableUInt32");
+					Assert.That (NSNumber.ToNullableInt64 (handle), Is.EqualTo (number.Int64Value), "NullableInt64");
+					Assert.That (NSNumber.ToNullableUInt64 (handle), Is.EqualTo (number.UInt64Value), "NullableUInt64");
+					Assert.That (NSNumber.ToNullableFloat (handle), Is.EqualTo (number.FloatValue), "NullableFloat");
+					Assert.That (NSNumber.ToNullableDouble (handle), Is.EqualTo (number.DoubleValue), "NullableDouble");
+					Assert.That ((double?) NSNumber.ToNullableNFloat (handle), Is.EqualTo ((double) number.NFloatValue), "NullableNFloat");
+					Assert.That (NSNumber.ToNullableNInt (handle), Is.EqualTo (number.NIntValue), "NullableNInt");
+					Assert.That (NSNumber.ToNullableNUInt (handle), Is.EqualTo (number.NUIntValue), "NullableNUInt");
 					Assert.That (number.Handle, Is.EqualTo (handle), "The existing wrapper must not be disposed");
 				}
 			}
@@ -83,20 +97,34 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void ToValueNull ()
 		{
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToBool (NativeHandle.Zero), "Bool");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToByte (NativeHandle.Zero), "Byte");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToSByte (NativeHandle.Zero), "SByte");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToInt16 (NativeHandle.Zero), "Int16");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToUInt16 (NativeHandle.Zero), "UInt16");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToInt32 (NativeHandle.Zero), "Int32");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToUInt32 (NativeHandle.Zero), "UInt32");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToInt64 (NativeHandle.Zero), "Int64");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToUInt64 (NativeHandle.Zero), "UInt64");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToFloat (NativeHandle.Zero), "Float");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToDouble (NativeHandle.Zero), "Double");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToNFloat (NativeHandle.Zero), "NFloat");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToNInt (NativeHandle.Zero), "NInt");
-			Assert.Throws<NullReferenceException> (() => NSNumber.ToNUInt (NativeHandle.Zero), "NUInt");
+			Assert.That (NSNumber.ToBool (NativeHandle.Zero), Is.EqualTo (default (bool)), "Bool");
+			Assert.That (NSNumber.ToByte (NativeHandle.Zero), Is.EqualTo (default (byte)), "Byte");
+			Assert.That (NSNumber.ToSByte (NativeHandle.Zero), Is.EqualTo (default (sbyte)), "SByte");
+			Assert.That (NSNumber.ToInt16 (NativeHandle.Zero), Is.EqualTo (default (short)), "Int16");
+			Assert.That (NSNumber.ToUInt16 (NativeHandle.Zero), Is.EqualTo (default (ushort)), "UInt16");
+			Assert.That (NSNumber.ToInt32 (NativeHandle.Zero), Is.EqualTo (default (int)), "Int32");
+			Assert.That (NSNumber.ToUInt32 (NativeHandle.Zero), Is.EqualTo (default (uint)), "UInt32");
+			Assert.That (NSNumber.ToInt64 (NativeHandle.Zero), Is.EqualTo (default (long)), "Int64");
+			Assert.That (NSNumber.ToUInt64 (NativeHandle.Zero), Is.EqualTo (default (ulong)), "UInt64");
+			Assert.That (NSNumber.ToFloat (NativeHandle.Zero), Is.EqualTo (default (float)), "Float");
+			Assert.That (NSNumber.ToDouble (NativeHandle.Zero), Is.EqualTo (default (double)), "Double");
+			Assert.That ((double) NSNumber.ToNFloat (NativeHandle.Zero), Is.EqualTo (0d), "NFloat");
+			Assert.That (NSNumber.ToNInt (NativeHandle.Zero), Is.EqualTo (default (nint)), "NInt");
+			Assert.That (NSNumber.ToNUInt (NativeHandle.Zero), Is.EqualTo (default (nuint)), "NUInt");
+			Assert.That (NSNumber.ToNullableBool (NativeHandle.Zero), Is.Null, "NullableBool");
+			Assert.That (NSNumber.ToNullableByte (NativeHandle.Zero), Is.Null, "NullableByte");
+			Assert.That (NSNumber.ToNullableSByte (NativeHandle.Zero), Is.Null, "NullableSByte");
+			Assert.That (NSNumber.ToNullableInt16 (NativeHandle.Zero), Is.Null, "NullableInt16");
+			Assert.That (NSNumber.ToNullableUInt16 (NativeHandle.Zero), Is.Null, "NullableUInt16");
+			Assert.That (NSNumber.ToNullableInt32 (NativeHandle.Zero), Is.Null, "NullableInt32");
+			Assert.That (NSNumber.ToNullableUInt32 (NativeHandle.Zero), Is.Null, "NullableUInt32");
+			Assert.That (NSNumber.ToNullableInt64 (NativeHandle.Zero), Is.Null, "NullableInt64");
+			Assert.That (NSNumber.ToNullableUInt64 (NativeHandle.Zero), Is.Null, "NullableUInt64");
+			Assert.That (NSNumber.ToNullableFloat (NativeHandle.Zero), Is.Null, "NullableFloat");
+			Assert.That (NSNumber.ToNullableDouble (NativeHandle.Zero), Is.Null, "NullableDouble");
+			Assert.That (NSNumber.ToNullableNFloat (NativeHandle.Zero), Is.Null, "NullableNFloat");
+			Assert.That (NSNumber.ToNullableNInt (NativeHandle.Zero), Is.Null, "NullableNInt");
+			Assert.That (NSNumber.ToNullableNUInt (NativeHandle.Zero), Is.Null, "NullableNUInt");
 		}
 
 		[Test]

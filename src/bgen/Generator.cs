@@ -3062,15 +3062,12 @@ public partial class Generator : IMemberGatherer {
 					cast_b = $"{suffix}";
 				} else if (mi.ReturnType == TypeCache.NSNumber) {
 					var enumCast = bindAsType.IsEnum ? $"({formattedBindAsType}) " : string.Empty;
-					if (isNullable || owns == "true")
+					if (owns == "true")
 						print ("NativeHandle __number;");
-					if (isNullable) {
-						cast_a = "((__number = ";
-						cast_b = $") == NativeHandle.Zero ? null : ({formattedBindAsType}) NSNumber.{wrapper} (__number))";
-					} else {
-						cast_a = $"{enumCast}NSNumber.{wrapper} (" + (owns == "true" ? "__number = " : "");
-						cast_b = ")";
-					}
+					if (isNullable)
+						wrapper = wrapper.Replace ("To", "ToNullable");
+					cast_a = $"{enumCast}NSNumber.{wrapper} (" + (owns == "true" ? "__number = " : "");
+					cast_b = ")";
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";

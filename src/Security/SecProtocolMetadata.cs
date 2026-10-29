@@ -186,7 +186,9 @@ namespace Security {
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineDistinguishedNamesForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineDistinguishedNamesForPeer));
-				if (sec_protocol_metadata_access_distinguished_names (GetCheckedHandle (), &block) == 0)
+				var result = sec_protocol_metadata_access_distinguished_names (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
+				if (result == 0)
 					throw new InvalidOperationException ("Distinguished names are not accessible.");
 			}
 		}
@@ -216,7 +218,9 @@ namespace Security {
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineOcspReposeForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineOcspReposeForPeer));
-				if (sec_protocol_metadata_access_ocsp_response (GetCheckedHandle (), &block) == 0)
+				var result = sec_protocol_metadata_access_ocsp_response (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
+				if (result == 0)
 					throw new InvalidOperationException ("The OSCP response is not accessible.");
 			}
 		}
@@ -246,7 +250,9 @@ namespace Security {
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineCertificateChainForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineCertificateChainForPeer));
-				if (sec_protocol_metadata_access_peer_certificate_chain (GetCheckedHandle (), &block) == 0)
+				var result = sec_protocol_metadata_access_peer_certificate_chain (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
+				if (result == 0)
 					throw new InvalidOperationException ("The peer certificates are not accessible.");
 			}
 		}
@@ -275,7 +281,9 @@ namespace Security {
 			unsafe {
 				delegate* unmanaged<IntPtr, ushort, void> trampoline = &TrampolineSignatureAlgorithmsForPeer;
 				using var block = new BlockLiteral (trampoline, callback, typeof (SecProtocolMetadata), nameof (TrampolineSignatureAlgorithmsForPeer));
-				if (sec_protocol_metadata_access_supported_signature_algorithms (GetCheckedHandle (), &block) != 0)
+				var result = sec_protocol_metadata_access_supported_signature_algorithms (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
+				if (result != 0)
 					throw new InvalidOperationException ("The supported signature list is not accessible.");
 			}
 		}
@@ -375,7 +383,9 @@ namespace Security {
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineAccessPreSharedKeys;
 				using var block = new BlockLiteral (trampoline, handler, typeof (SecProtocolMetadata), nameof (TrampolineAccessPreSharedKeys));
-				return sec_protocol_metadata_access_pre_shared_keys (GetCheckedHandle (), &block) != 0;
+				var result = sec_protocol_metadata_access_pre_shared_keys (GetCheckedHandle (), &block) != 0;
+				GC.KeepAlive (this);
+				return result;
 			}
 		}
 #endif

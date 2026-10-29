@@ -21,6 +21,48 @@ class TrampolineEmitter (
 	public string SymbolNamespace => "ObjCRuntime";
 	public string SymbolName => "Trampolines";
 
+	bool emittedNativeObjectActionInvoker;
+
+	static bool CanShareNativeObjectActionInvoker (in TypeInfo typeInfo)
+	{
+		if (typeInfo.Delegate is not { ReturnType.IsVoid: true, Parameters.Length: 1 } info)
+			return false;
+
+		// Non-nullable parameters need checks that retain the original parameter name.
+		var parameter = info.Parameters [0];
+		return !parameter.IsByRef && parameter.BindAs is null &&
+			parameter.Type is { IsReferenceType: true, IsINativeObject: true, IsNullable: true };
+	}
+
+	void EmitNativeObjectActionInvoker (TabbedWriter<StringWriter> classBuilder)
+	{
+		// bgen and rgen can emit trampolines into the same assembly.
+		classBuilder.WriteRaw (
+@"[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]
+unsafe delegate void RgenNativeObjectAction (IntPtr block, NativeHandle obj);
+
+internal class RgenNativeObjectActionInvoker : TrampolineBlockBase
+{
+	readonly RgenNativeObjectAction invoker;
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	public unsafe RgenNativeObjectActionInvoker (BlockLiteral *block) : base (block)
+	{
+		invoker = block->GetDelegateForBlock<RgenNativeObjectAction> ();
+	}
+
+	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+	protected void Invoke (INativeObject? obj)
+	{
+		var handle = obj.GetHandle ();
+		invoker (BlockPointer, handle);
+		GC.KeepAlive (obj);
+	}
+}
+"
+		);
+	}
+
 	/// <summary>
 	/// Generate the static helper class for the trampoline uses to bridge the native block invocation.
 	/// </summary>
@@ -110,15 +152,24 @@ return CreateBlock (callback);
 		var delegateName = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 		var delegateIdentifier = Nomenclator.GetTrampolineClassName (trampolineName, Nomenclator.TrampolineClassType.DelegateType);
 
-		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : TrampolineBlockBase", true)) {
-			classBlock.WriteLine ($"{delegateName} {Nomenclator.GetNativeInvokerVariableName ()};");
+		var shareNativeObjectActionInvoker = CanShareNativeObjectActionInvoker (typeInfo);
+		if (shareNativeObjectActionInvoker && !emittedNativeObjectActionInvoker) {
+			EmitNativeObjectActionInvoker (classBuilder);
+			emittedNativeObjectActionInvoker = true;
+		}
+		if (shareNativeObjectActionInvoker)
+			delegateIdentifier = typeInfo.GetIdentifierSyntax ().ToString ();
+
+		using (var classBlock = classBuilder.CreateBlock ($"internal sealed class {className} : {(shareNativeObjectActionInvoker ? "RgenNativeObjectActionInvoker" : "TrampolineBlockBase")}", true)) {
+			if (!shareNativeObjectActionInvoker)
+				classBlock.WriteLine ($"{delegateName} {Nomenclator.GetNativeInvokerVariableName ()};");
 			classBlock.WriteLine (); // empty line for readability
 									 // constructor
 			classBlock.WriteRaw (
 $@"[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 public unsafe {className} ({BlockLiteral} *block) : base (block)
 {{
-	invoker = block->GetDelegateForBlock<{delegateName}> ();
+	{(shareNativeObjectActionInvoker ? "" : $"invoker = block->GetDelegateForBlock<{delegateName}> ();")}
 }}
 "
 			);
@@ -131,11 +182,13 @@ public unsafe static {delegateIdentifier}? Create (IntPtr block)
 {{
 	if (block == IntPtr.Zero)
 		return null;
-	var del = ({delegateIdentifier}) GetExistingManagedDelegate (block);
+	var del = ({delegateIdentifier}{(shareNativeObjectActionInvoker ? "?" : "")}) GetExistingManagedDelegate (block);
 	return del ?? new {className} (({BlockLiteral} *) block).Invoke;
 }}
 "
 );
+			if (shareNativeObjectActionInvoker)
+				return true;
 			classBlock.WriteLine (); // empty line for readability
 									 // invoke method
 			using (var invokeBlock = classBlock.CreateBlock (GetTrampolineNativeInvokeSignature (typeInfo).ToString (), true)) {

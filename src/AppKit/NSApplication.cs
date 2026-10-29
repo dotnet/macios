@@ -38,8 +38,17 @@ namespace AppKit {
 		///   <para>The initial value is controlled by the <c>CheckForIllegalCrossThreadCalls</c> build property, which defaults to <see langword="true" /> in debug builds and <see langword="false" /> in release builds.</para>
 		/// </remarks>
 		public static bool CheckForIllegalCrossThreadCalls;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Controls whether conflicts between events and custom Objective-C delegate objects throw an exception.</summary>
+		/// <remarks>
+		///   <para>
+		///     Application initialization enables these checks in debug builds and disables them in release builds by default.
+		///     Set the <c>CheckForEventAndDelegateMismatches</c> MSBuild property to override this default.
+		///   </para>
+		///   <para>
+		///     Set this field to <see langword="false" /> to disable the checks at runtime.
+		///     Setting it to <see langword="true" /> cannot restore checks removed by the trimmer when the MSBuild property is <c>false</c>.
+		///   </para>
+		/// </remarks>
 		public static bool CheckForEventAndDelegateMismatches;
 
 		[DllImport (Constants.AppKitLibrary)]

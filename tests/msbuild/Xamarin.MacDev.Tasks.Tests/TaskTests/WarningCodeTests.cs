@@ -22,8 +22,8 @@ namespace Xamarin.MacDev.Tasks {
 		public void LoggingHelper (int code, string expectedCode, string? file, int line)
 		{
 			var task = CreateTask<CompileAppManifest> ();
-			task.Log.LogWarning (code, file, MSBStrings.E0179, "TestTask");
-			task.Log.LogWarning (code, file, line, MSBStrings.E0179, "TestTask");
+			task.Log.LogWarning (code, file, MSBStrings.E0179, "TestTask"); // There is no available connection to the Mac. Task '{0}' will not be executed
+			task.Log.LogWarning (code, file, line, MSBStrings.E0179, "TestTask"); // There is no available connection to the Mac. Task '{0}' will not be executed
 
 			Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (2), "Warning count");
 			for (var i = 0; i < 2; i++) {
@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 		public class ManifestWarningTask : CompileAppManifest {
 			public override bool Execute ()
 			{
-				LogAppManifestWarning (106, MSBStrings.W0106, "CFBundleIdentifier");
+				LogAppManifestWarning (106, MSBStrings.W0106, "CFBundleIdentifier"); // Could not determine value for manifest key '{0}'
 				return !Log.HasLoggedErrors;
 			}
 		}
@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 		public class ProductDefinitionWarningTask : CompileProductDefinition {
 			public override bool Execute ()
 			{
-				LogProductDefinitionWarning (7072, MSBStrings.E7072, "x86_64", "arm64");
+				LogProductDefinitionWarning (7072, MSBStrings.E7072, "x86_64", "arm64"); // Package product requirement file contains architectures ({0}) which mismatches with target architectures ({1})
 				return !Log.HasLoggedErrors;
 			}
 		}

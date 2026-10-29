@@ -62,7 +62,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue<PArray> (ProductDefinitionKeys.Architectures, out var archArray)) {
 				var existingArchs = archArray.ToStringArray ();
 				if (!archStrings.SetEquals (existingArchs)) {
-					LogProductDefinitionWarning (7072, MSBStrings.E7072, string.Join (", ", existingArchs), string.Join (", ", archStrings));
+					LogProductDefinitionWarning (7072, MSBStrings.E7072, string.Join (", ", existingArchs), string.Join (", ", archStrings)); // Package product requirement file contains architectures ({0}) which mismatches with target architectures ({1})
 				}
 			}
 

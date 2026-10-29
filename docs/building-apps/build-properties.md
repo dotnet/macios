@@ -1195,30 +1195,6 @@ The downside is that type checks (`obj is SomeInterface`) will be slower.
 Only applicable when using the Mono runtime. A warning will be shown if it's
 set when not using the Mono runtime (for instance when using CoreCLR).
 
-## MSBuildWarningsAsMessages
-
-A semicolon-separated list of MSBuild warning codes to log as messages instead of warnings.
-Use the complete diagnostic code shown in the build output, including its prefix and leading zeros.
-For example, to suppress the SDK warning about an unavailable Mac connection:
-
-```xml
-<PropertyGroup>
-  <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MT0179</MSBuildWarningsAsMessages>
-</PropertyGroup>
-```
-
-## MSBuildWarningsNotAsErrors
-
-A semicolon-separated list of MSBuild warning codes that should remain warnings when
-all warnings are otherwise treated as errors (for example, with `dotnet build -warnaserror`).
-Use the complete diagnostic code, such as `MT0179`:
-
-```xml
-<PropertyGroup>
-  <MSBuildWarningsNotAsErrors>$(MSBuildWarningsNotAsErrors);MT0179</MSBuildWarningsNotAsErrors>
-</PropertyGroup>
-```
-
 ## MtouchDebug
 
 Enables debug mode for app bundle creation.

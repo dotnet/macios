@@ -395,7 +395,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 
 			if (string.IsNullOrEmpty (value))
-				LogAppManifestWarning (106, MSBStrings.W0106, key);
+				LogAppManifestWarning (106, MSBStrings.W0106, key); // Could not determine value for manifest key '{0}'
 			else
 				dict [key] = value;
 		}
@@ -481,18 +481,18 @@ namespace Xamarin.MacDev.Tasks {
 					if (supportsIPhone) {
 						orientation = plist.GetUISupportedInterfaceOrientations (false);
 						if (orientation == IPhoneOrientation.None) {
-							LogAppManifestWarning (19, MSBStrings.W0019);
+							LogAppManifestWarning (19, MSBStrings.W0019); // Supported iPhone orientations have not been set
 						} else if (!orientation.IsValidPair ()) {
-							LogAppManifestWarning (20, MSBStrings.W0020);
+							LogAppManifestWarning (20, MSBStrings.W0020); // Supported iPhone orientations are not matched pairs
 						}
 					}
 
 					if (supportsIPad) {
 						orientation = plist.GetUISupportedInterfaceOrientations (true);
 						if (orientation == IPhoneOrientation.None) {
-							LogAppManifestWarning (21, MSBStrings.W0021);
+							LogAppManifestWarning (21, MSBStrings.W0021); // Supported iPad orientations have not been set
 						} else if (!orientation.IsValidPair ()) {
-							LogAppManifestWarning (22, MSBStrings.W0022);
+							LogAppManifestWarning (22, MSBStrings.W0022); // Supported iPad orientations are not matched pairs
 						}
 					}
 				}

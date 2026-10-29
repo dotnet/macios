@@ -307,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 				})
 				.Where (asset => {
 					if (string.IsNullOrEmpty (asset.Catalog)) {
-						Log.LogWarning (90, asset.Item.ItemSpec, MSBStrings.W0090, asset.Item.ItemSpec);
+						Log.LogWarning (90, asset.Item.ItemSpec, MSBStrings.W0090, asset.Item.ItemSpec); // Asset not part of an asset catalog: {0}
 						return false;
 					}
 					return true;

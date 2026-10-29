@@ -99,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 			} catch (Exception ex) {
-				Log.LogWarning (95, null, MSBStrings.W0095, ex.Message, output);
+				Log.LogWarning (95, null, MSBStrings.W0095, ex.Message, output); // Failed to parse altool output: {0}. Output: {1}
 			}
 		}
 

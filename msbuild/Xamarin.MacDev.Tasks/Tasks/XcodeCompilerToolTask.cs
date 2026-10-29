@@ -231,7 +231,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
 
 				if (rv.ExitCode != 0) {
-					Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
+					Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 					return;
 				}
 
@@ -250,12 +250,12 @@ namespace Xamarin.MacDev.Tasks {
 				// User cancelled - don't emit diagnostics
 			} catch (OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 			} catch (Exception ex) {
-				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 				Log.LogMessage (MessageImportance.Low, "Exception while checking simulator runtime: {0}", ex.Message);
 			} finally {
 				File.Delete (jsonOutputFile);

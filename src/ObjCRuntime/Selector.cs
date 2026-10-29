@@ -206,7 +206,7 @@ namespace ObjCRuntime {
 					return sel_registerName ((IntPtr) ptr);
 			}
 
-			Span<byte> buffer = name.Length < 256 ? stackalloc byte [name.Length + 1] : new byte [checked (name.Length + 1)];
+			Span<byte> buffer = name.Length < 256 ? stackalloc byte [name.Length + 1] : new byte [checked(name.Length + 1)];
 			name.CopyTo (buffer);
 			buffer [name.Length] = 0;
 			fixed (byte* ptr = buffer)

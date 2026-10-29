@@ -940,13 +940,11 @@ object_queued_for_finalization (MonoObject *object)
 static int
 compare_mtclassmap (const void *a, const void *b)
 {
-	MTClassMap *mapa = (MTClassMap *) a;
-	MTClassMap *mapb = (MTClassMap *) b;
-
-	intptr_t diff = (intptr_t)mapa->handle - (intptr_t)mapb->handle;
-	const int shift = (sizeof(intptr_t) * 8) - 1;
-
-	return (diff >> shift) | !!diff;
+	const MTClassMap *mapa = (const MTClassMap *) a;
+	const MTClassMap *mapb = (const MTClassMap *) b;
+	intptr_t left = (intptr_t) mapa->handle;
+	intptr_t right = (intptr_t) mapb->handle;
+	return (left > right) - (left < right);
 }
 
 void
@@ -957,12 +955,16 @@ xamarin_add_registration_map (struct MTRegistrationMap *map, bool partial)
 		return;
 	}
 
+	if (map->map_count < 0 || (size_t) map->map_count > SIZE_MAX / sizeof (MTClassMap) || (map->map_count > 0 && map->map == NULL))
+		xamarin_assertion_message ("Invalid registration class map.");
+
+	// Sort the type map according to Class
+	if (map->map_count > 1 && heapsort (map->map, (size_t) map->map_count, sizeof (MTClassMap), compare_mtclassmap) != 0)
+		xamarin_assertion_message ("Failed to sort the registration class map (error %i).", errno);
+
 	options.RegistrationData = map;
 	if (partial)
 		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsPartialStaticRegistrar);
-
-	// Sort the type map according to Class
-	qsort (map->map, (size_t) map->map_count, sizeof (MTClassMap), compare_mtclassmap);
 }
 
 /*

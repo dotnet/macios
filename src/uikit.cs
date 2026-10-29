@@ -7282,6 +7282,32 @@ namespace UIKit {
 #endif
 		string [] WritableTypeIdentifiers { get; }
 
+#if !TVOS
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
+		new string [] WritableTypeIdentifiersForItemProvider { get; }
+
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Export ("itemProviderVisibilityForRepresentationWithTypeIdentifier:")]
+		new NSItemProviderRepresentationVisibility GetItemProviderVisibilityForTypeIdentifier (string typeIdentifier);
+
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads data for the identified type from an item provider.</summary>
+			<param name="typeIdentifier">A Uniform Type Identifier (UTI) indicating the type of data to load.</param>
+			<returns>A task that contains the loaded data.</returns>
+			""")]
+		[Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
+		[return: NullAllowed]
+		new NSProgress LoadData (string typeIdentifier, Action<NSData, NSError> completionHandler);
+#endif
+
 		// From UIColor (DynamicColors)
 
 		[MacCatalyst (13, 1)]
@@ -11101,6 +11127,32 @@ namespace UIKit {
 		new
 #endif
 		string [] WritableTypeIdentifiers { get; }
+
+#if !TVOS
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
+		new string [] WritableTypeIdentifiersForItemProvider { get; }
+
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Export ("itemProviderVisibilityForRepresentationWithTypeIdentifier:")]
+		new NSItemProviderRepresentationVisibility GetItemProviderVisibilityForTypeIdentifier (string typeIdentifier);
+
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously loads data for the identified type from an item provider.</summary>
+			<param name="typeIdentifier">A Uniform Type Identifier (UTI) indicating the type of data to load.</param>
+			<returns>A task that contains the loaded data.</returns>
+			""")]
+		[Export ("loadDataWithTypeIdentifier:forItemProviderCompletionHandler:")]
+		[return: NullAllowed]
+		new NSProgress LoadData (string typeIdentifier, Action<NSData, NSError> completionHandler);
+#endif
 
 		[MacCatalyst (13, 1)]
 		[Static]
@@ -16578,6 +16630,14 @@ namespace UIKit {
 		, NSCoding
 #endif
 	{
+#if !TVOS
+		/// <inheritdoc />
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Export ("encodeWithCoder:")]
+		new void EncodeTo (NSCoder encoder);
+#endif
+
 #if TVOS
 		[TV (26, 0)]
 		[Export ("init")]

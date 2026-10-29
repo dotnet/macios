@@ -19,11 +19,9 @@ namespace UIKit {
 		/// <summary>Developers should not use this deprecated method. Use <see cref="CreatePrimaryVibrancyEffectForNotificationCenter" /> instead.</summary>
 		/// <returns>A <see cref="UIVibrancyEffect" /> for the notification center.</returns>
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios10.0", "Use 'CreatePrimaryVibrancyEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("tvos", "Use 'CreatePrimaryVibrancyEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("maccatalyst", "Use 'CreatePrimaryVibrancyEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreateForNotificationCenter ()
 		{
 			return (null as UIVibrancyEffect)!.NotificationCenterVibrancyEffect ();
@@ -32,11 +30,9 @@ namespace UIKit {
 		/// <summary>Returns the primary vibrancy effect for use with the notification center.</summary>
 		/// <returns>A primary <see cref="UIVibrancyEffect" /> for the notification center.</returns>
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("tvos13.0", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreatePrimaryVibrancyEffectForNotificationCenter ()
 		{
 			return (null as UIVibrancyEffect)!.GetWidgetPrimaryVibrancyEffect ();
@@ -45,11 +41,9 @@ namespace UIKit {
 		/// <summary>Returns the secondary vibrancy effect for use with the notification center.</summary>
 		/// <returns>A secondary <see cref="UIVibrancyEffect" /> for the notification center.</returns>
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("ios13.0", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("tvos13.0", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
-		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreateSecondaryVibrancyEffectForNotificationCenter ()
 		{
 			return (null as UIVibrancyEffect)!.GetWidgetSecondaryVibrancyEffect ();
@@ -59,8 +53,8 @@ namespace UIKit {
 		/// <param name="vibrancyStyle">The vibrancy effect style to use.</param>
 		/// <returns>A <see cref="UIVibrancyEffect" /> with the specified style for the notification center.</returns>
 		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("tvos")]
 		static public UIVibrancyEffect CreateWidgetEffectForNotificationCenter (UIVibrancyEffectStyle vibrancyStyle)
 		{
 			return (null as UIVibrancyEffect)!.GetWidgetEffect (vibrancyStyle);

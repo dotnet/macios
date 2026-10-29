@@ -1885,6 +1885,86 @@ namespace GeneratorTests {
 			bgen.AssertNoWarnings ();
 		}
 
+		[TestCase (Profile.iOS, true)]
+		[TestCase (Profile.tvOS, true)]
+		[TestCase (Profile.MacCatalyst, true)]
+		[TestCase (Profile.macOSMobile, true)]
+		[TestCase (Profile.iOS, false)]
+		[TestCase (Profile.tvOS, false)]
+		[TestCase (Profile.MacCatalyst, false)]
+		[TestCase (Profile.macOSMobile, false)]
+		public void NamespaceAvailability (Profile profile, bool core)
+		{
+			var bgen = BuildFile (profile, bgen => {
+				bgen.Core = core;
+				bgen.CompileGeneratedCode = !core;
+				bgen.ProcessEnums = true;
+				if (core)
+					bgen.Defines = BGenTool.GetDefaultDefines (profile).Concat (new [] { "CORE_BINDING" }).ToArray ();
+			}, "namespace-availability.cs");
+			var directory = bgen.TmpDirectory ?? throw new InvalidOperationException ("Missing generator output directory.");
+			var ns = profile == Profile.macOSMobile ? "AppKit" : "UIKit";
+			var unsupportedPlatforms = ns == "AppKit" ? new [] { "ios", "tvos" } : new [] { "macos" };
+			foreach (var name in new [] { "NamespaceAvailability", "NamespaceAvailabilityEnum", "NamespaceAvailabilitySource" }) {
+				var path = Path.Combine (directory, ns, name + ".g.cs");
+				var contents = File.ReadAllText (path);
+				foreach (var platform in unsupportedPlatforms) {
+					if (core) {
+						Assert.That (contents, Does.Contain ($"[UnsupportedOSPlatform (\"{platform}\")]"), path);
+						Assert.That (contents, Does.Not.Contain ($"[SupportedOSPlatform (\"{platform}"), path);
+						Assert.That (contents, Does.Not.Contain ($"[UnsupportedOSPlatform (\"{platform}103.0"), path);
+						Assert.That (contents, Does.Not.Contain ($"[ObsoletedOSPlatform (\"{platform}"), path);
+					} else {
+						Assert.That (contents, Does.Contain ($"[SupportedOSPlatform (\"{platform}99.0\")]"), path);
+					}
+				}
+			}
+			if (core) {
+				var path = Path.Combine (directory, ns, "NamespaceAvailabilityImplicit.g.cs");
+				var contents = File.ReadAllText (path);
+				foreach (var platform in unsupportedPlatforms)
+					Assert.That (contents, Does.Not.Contain ($"[UnsupportedOSPlatform (\"{platform}\")]"), path);
+			}
+			if (profile != Profile.MacCatalyst) {
+				var path = Path.Combine (directory, ns, "NamespaceAvailabilityRestricted.g.cs");
+				var contents = File.ReadAllText (path);
+				if (core)
+					Assert.That (contents, Does.Not.Contain ("[SupportedOSPlatform (\"maccatalyst"), "Containing-type unavailability");
+				else
+					Assert.That (contents, Does.Contain ("[SupportedOSPlatform (\"maccatalyst102.0\")]"), "Third-party accessor availability");
+			}
+
+			var typeContents = File.ReadAllText (Path.Combine (directory, ns, "NamespaceAvailability.g.cs"));
+			var currentPlatform = profile.AsPlatform ().AsString ().ToLowerInvariant ();
+			Assert.That (typeContents, Does.Contain ($"[SupportedOSPlatform (\"{currentPlatform}102.0\")]"), "Accessor introduction");
+			Assert.That (typeContents, Does.Contain ($"[ObsoletedOSPlatform (\"{currentPlatform}101.0\", \"Use another property.\")]"), "Deprecation");
+			Assert.That (typeContents, Does.Contain ($"[UnsupportedOSPlatform (\"{currentPlatform}103.0\", \"Use another getter.\")]"), "Obsoletion");
+			if (profile != Profile.tvOS)
+				Assert.That (typeContents, Does.Contain ("[UnsupportedOSPlatform (\"tvos\")]"), "Setter unavailability");
+			else
+				Assert.That (typeContents, Does.Not.Contain ("set {"), "Unavailable setter");
+			Assert.That (typeContents, Does.Contain ("PerformAsync"), "Async helper");
+			Assert.That (typeContents, Does.Contain ("InlinedValue"), "Inlined property");
+
+			var destinationContents = File.ReadAllText (Path.Combine (directory, "Foundation", "NamespaceAvailabilityDestination.g.cs"));
+			Assert.That (destinationContents, Does.Contain ("InlinedMethod"), "Inlined method");
+			foreach (var platform in new [] { "ios", "tvos", "macos", "maccatalyst" }) {
+				if (core && unsupportedPlatforms.Contains (platform))
+					Assert.That (destinationContents, Does.Contain ($"[UnsupportedOSPlatform (\"{platform}\")]"), $"Inlined protocol unavailable on {platform}");
+				else
+					Assert.That (destinationContents, Does.Contain ($"[SupportedOSPlatform (\"{platform}100.0\")]"), $"Inlined method on {platform}");
+			}
+
+			if (profile == Profile.MacCatalyst || profile == Profile.macOSMobile) {
+				var catalystContents = File.ReadAllText (Path.Combine (directory, "AppKit", "NamespaceAvailabilityCatalyst.g.cs"));
+				Assert.That (catalystContents, Does.Contain ("[SupportedOSPlatform (\"maccatalyst99.0\")]"), "AppKit on Mac Catalyst");
+				if (core)
+					Assert.That (catalystContents, Does.Not.Contain ("[SupportedOSPlatform (\"tvos"), "Containing-type unavailability");
+				else
+					Assert.That (catalystContents, Does.Contain ("[SupportedOSPlatform (\"tvos100.0\")]"), "Third-party availability");
+			}
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void DelegatesWithNullableReturnType (Profile profile)

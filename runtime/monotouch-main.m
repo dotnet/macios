@@ -249,12 +249,14 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	// This is not an exact number (it will most likely be lower, since there
 	// are other arguments besides --app-arg), but it's a guaranteed and bound
 	// upper limit.
-	const char **managed_argv = (const char **) alloca (sizeof (char *) * (unsigned long) (argc + 2));
+	if (argc < 0 || (size_t) argc > SIZE_MAX / sizeof (char *) - 2)
+		xamarin_assertion_message ("Invalid command-line argument count: %i.", argc);
+	const char **managed_argv = (const char **) calloc ((size_t) argc + 2, sizeof (char *));
+	if (managed_argv == NULL)
+		xamarin_assertion_message ("Could not allocate managed command-line arguments.");
 	int managed_argc = 0;
 
 	xamarin_launch_mode = launch_mode;
-
-	memset (managed_argv, 0, sizeof (char*) * (unsigned long) (argc + 2));
 
 #if !(TARGET_OS_OSX || TARGET_OS_MACCATALYST)
 	managed_argv [managed_argc++] = "monotouch";
@@ -470,5 +472,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 
 	xamarin_bridge_shutdown ();
 
+	free (managed_argv);
 	return rv;
 }

@@ -319,6 +319,113 @@ namespace Xamarin.Tests {
 			Assert.That (File.Exists (currentAssembliesObject), Is.False, "Clean removes generated assembly object");
 		}
 
+		[TestCase ("managed-static", false)]
+		[TestCase ("managed-static", true)]
+		[TestCase ("trimmable-static", false)]
+		[TestCase ("trimmable-static", true)]
+		public void NativeOnlyConstructor (string registrar, bool publishAot)
+		{
+			var platform = ApplePlatform.MacOSX;
+			var runtimeIdentifier = Configuration.CanRunArm64 ? "osx-arm64" : "osx-x64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GenerateProject (platform, nameof (NativeOnlyConstructor), runtimeIdentifier, out _);
+			var appPath = GetAppPath (projectPath, platform, runtimeIdentifier);
+			File.WriteAllText (Path.ChangeExtension (projectPath, ".cs"), """
+				// Copyright (c) Microsoft Corporation.
+				// Licensed under the MIT License.
+
+				using System;
+				using System.Runtime.InteropServices;
+				using Foundation;
+				using ObjCRuntime;
+
+				[Register ("NativeOnlyConstructor")]
+				public class NativeOnly : NSObject {
+					public static NativeOnly? InitializedInstance;
+					public int Value;
+
+					[Export ("initWithValue:")]
+					public NativeOnly (int value)
+					{
+						InitializedInstance = this;
+						Value = value;
+					}
+
+					private NativeOnly (string unused)
+					{
+						UnusedConstructorDependency.Run ();
+					}
+
+					public NativeOnly (double unused)
+					{
+						UnusedConstructorDependency.Run ();
+					}
+				}
+
+				static class UnusedConstructorDependency {
+					public static void Run () => throw new Exception ("Unused constructor");
+				}
+
+				class Program {
+					[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+					static extern IntPtr Send (IntPtr receiver, IntPtr selector);
+
+					[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+					static extern IntPtr Send (IntPtr receiver, IntPtr selector, int value);
+
+					[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+					static extern void Release (IntPtr receiver, IntPtr selector);
+
+					static void Main ()
+					{
+						var handle = Send (Class.GetHandle (typeof (NativeOnly)), Selector.GetHandle ("alloc"));
+						handle = Send (handle, Selector.GetHandle ("initWithValue:"), 42);
+						using var obj = Runtime.GetNSObject<NativeOnly> (handle);
+						Release (handle, Selector.GetHandle ("release"));
+						try {
+							if (obj is null || obj.Value != 42 || !ReferenceEquals (obj, NativeOnly.InitializedInstance))
+								throw new Exception ("Native construction did not initialize the expected wrapper.");
+							if (obj.RetainCount != 1)
+								throw new Exception ($"Unexpected retain count: {obj.RetainCount}");
+							Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+						} finally {
+							NativeOnly.InitializedInstance = null;
+						}
+					}
+				}
+				""");
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["UseMonoRuntime"] = "false";
+			properties ["PublishAot"] = publishAot.ToString ();
+			properties ["_IsPublishing"] = "true";
+			properties ["Registrar"] = registrar;
+			properties ["HotReloadCompatibleBuild"] = "false";
+			properties ["LinkMode"] = "Full";
+			properties ["TrimMode"] = "full";
+			properties ["MonoBundlingExtraArgs"] = "--skip-marking-nsobjects-in-user-assemblies";
+			properties ["TrimmerSingleWarn"] = "false";
+			properties ["SuppressTrimAnalysisWarnings"] = "false";
+			var result = DotNet.AssertBuild (projectPath, properties);
+			result.AssertNoWarnings (v => !Extensions.IsFilteredWarning (v, platform));
+
+			if (!publishAot) {
+				var assemblyPath = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), nameof (NativeOnlyConstructor) + ".dll");
+				using var module = ModuleDefinition.ReadModule (assemblyPath);
+				var type = module.GetType ("NativeOnly");
+				Assert.That (type.Methods.Where (v => v.IsConstructor && !v.IsStatic).Select (v => v.FullName),
+					Is.EquivalentTo (new [] {
+						"System.Void NativeOnly::.ctor(System.Int32)",
+						"System.Void NativeOnly::.ctor(System.IntPtr,ObjCRuntime.IManagedRegistrar)",
+					}), "Preserved constructors");
+				Assert.That (module.GetType ("UnusedConstructorDependency"), Is.Null, "Unused constructor dependencies");
+			}
+
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, GetNativeExecutable (platform, appPath));
+		}
+
 		IEnumerable<TypeDefinition> AllTypes (ModuleDefinition module)
 		{
 			foreach (var type in module.Types) {

@@ -85,6 +85,7 @@ namespace Xamarin.Linker {
 		List<Exception> exceptions = new List<Exception> ();
 
 		Dictionary<string, string> unmanagedCallersOnlyMap = new ();
+		Dictionary<TypeDefinition, MethodDefinition> allocationConstructors = new ();
 		Dictionary<AssemblyDefinition, AssemblyDefinition?> relocatedCompanions = new ();
 		Dictionary<TypeDefinition, ILookup<string, MethodDefinition>> callbackMethodsByName = new ();
 
@@ -1045,8 +1046,20 @@ namespace Xamarin.Linker {
 					il.Emit (OpCodes.Ldarg_0);
 					var firstFactoryInstruction = il.Body.Instructions.Last ();
 					il.Emit (OpCodes.Ldc_I4_2); // Flags.NativeRef == 2
-					il.Emit (OpCodes.Call, abr.Foundation_NSObject_GetOrCreateNSObjectForConstructor.CreateGenericInstanceMethod (declType));
-					il.Emit (OpCodes.Stloc, relocatedCtorObjVar);
+					var storeObject = il.Create (OpCodes.Stloc, relocatedCtorObjVar);
+					if (relocate) {
+						// Adding an allocation constructor would modify the user's assembly.
+						il.Emit (OpCodes.Call, abr.Foundation_NSObject_GetOrCreateNSObjectForConstructor.CreateGenericInstanceMethod (declType));
+					} else {
+						il.Emit (OpCodes.Call, abr.Foundation_NSObject_TryGetNSObjectForConstructor.CreateGenericInstanceMethod (declType));
+						il.Emit (OpCodes.Dup);
+						il.Emit (OpCodes.Brtrue, storeObject);
+						il.Emit (OpCodes.Pop);
+						il.Emit (OpCodes.Ldarg_0);
+						il.Emit (OpCodes.Ldnull);
+						il.Emit (OpCodes.Newobj, GetOrCreateConstructorWithNativeHandle (method));
+					}
+					il.Append (storeObject);
 
 					// Push the object so it ends up underneath the constructor arguments emitted next.
 					il.Emit (OpCodes.Ldloc, relocatedCtorObjVar);
@@ -2004,6 +2017,38 @@ namespace Xamarin.Linker {
 				if (isManagedNullable)
 					il.Append (endTarget);
 			}
+		}
+
+		MethodDefinition GetOrCreateConstructorWithNativeHandle (MethodDefinition ctor)
+		{
+			if (allocationConstructors.TryGetValue (ctor.DeclaringType, out var existing))
+				return existing;
+
+			var allocationCtor = new MethodDefinition (ctor.Name, ctor.Attributes, ctor.ReturnType);
+			allocationCtor.IsPublic = false;
+			// The internal placeholder parameter keeps this signature distinct from user constructors.
+			var handleParameter = allocationCtor.AddParameter (abr.System_IntPtr);
+			allocationCtor.AddParameter (abr.ObjCRuntime_IManagedRegistrar);
+
+			var body = allocationCtor.CreateBody (out var il);
+			abr.Foundation_NSObject_HandleSetterMethod.Resolve ().IsFamily = true;
+			abr.Foundation_NSObject_FlagsSetterMethod.Resolve ().IsFamily = true;
+
+			il.Emit (OpCodes.Ldarg_0);
+			il.Emit (OpCodes.Ldarg, handleParameter);
+			il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle);
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_HandleSetterMethod));
+
+			il.Emit (OpCodes.Ldarg_0);
+			il.Emit (OpCodes.Ldc_I4_2); // Flags.NativeRef == 2
+			il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (abr.Foundation_NSObject_FlagsSetterMethod));
+
+			// The trampoline calls the real constructor after either allocation or wrapper reuse.
+			il.Emit (OpCodes.Ret);
+			body.FinalizeGeneratedBody ();
+			ctor.DeclaringType.Methods.Add (allocationCtor);
+			allocationConstructors.Add (ctor.DeclaringType, allocationCtor);
+			return allocationCtor;
 		}
 
 		void ImplementNSObjectRegisterToggleRefMethodStub ()

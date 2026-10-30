@@ -31,9 +31,9 @@ namespace MonoTouchFixtures.UIKit {
 				using var updatedConfiguration = UIListContentConfiguration.ValueCellConfiguration;
 				updatedConfiguration.Text = "Updated content";
 				contentView.Configuration = updatedConfiguration;
-				using var actualConfiguration = contentView.Configuration;
-				Assert.That (actualConfiguration, Is.InstanceOf<UIListContentConfiguration> (), "Configuration type");
-				Assert.That (((UIListContentConfiguration) actualConfiguration).Text, Is.EqualTo ("Updated content"), "Configuration text");
+				using var protocolConfiguration = contentView.Configuration;
+				using var actualConfiguration = Runtime.GetNSObject<UIListContentConfiguration> (protocolConfiguration.Handle, false);
+				Assert.That (actualConfiguration?.Text, Is.EqualTo ("Updated content"), "Configuration text");
 			}
 		}
 
@@ -61,7 +61,7 @@ namespace MonoTouchFixtures.UIKit {
 					Assert.Ignore ("The content view already has a shared managed wrapper.");
 				view.Dispose ();
 				using var actualConfiguration = contentView.Configuration;
-				Assert.That (actualConfiguration, Is.InstanceOf<UIListContentConfiguration> (), "Protocol remains usable");
+				Assert.That (actualConfiguration.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Protocol remains usable");
 			}
 		}
 

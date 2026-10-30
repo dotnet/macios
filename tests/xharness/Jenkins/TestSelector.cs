@@ -217,7 +217,8 @@ namespace Xharness.Jenkins {
 				selection.SetEnabled (entry.Key, entry.Value);
 			}
 
-			Harness.IncludeSystemPermissionTests = selection.IsEnabled (TestLabel.SystemPermission);
+			if (labelSelectedTests.TryGetValue ("system-permission", out var includeSystemPermissionTests))
+				Harness.IncludeSystemPermissionTests = includeSystemPermissionTests;
 
 			// old simulator tests is also a bit special:
 			// - enabled by default if using a beta Xcode, otherwise disabled by default

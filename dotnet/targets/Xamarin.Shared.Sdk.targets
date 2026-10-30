@@ -1209,6 +1209,8 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<_LinkerCache Include="$(_CustomLinkerOptions)" />
+			<_LinkerCache Include="@(ReferencePath)" />
+			<_LinkerCache Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' Or '%(ResolvedFileToPublish.Extension)' == '.exe'" />
 		</ItemGroup>
 
 		<Hash
@@ -1520,7 +1522,7 @@
 			<_TypeMapAssemblies Include="$(_TypeMapOutputDirectory)/*.dll" />
 			<ResolvedFileToPublish Include="@(_ManagedAssemblyToLinkFromLinker)">
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 				<RelativePath>$(_AssemblyPublishDir)%(Filename)%(Extension)</RelativePath>
 				<OriginalRelativePath>%(Filename)%(Extension)</OriginalRelativePath>
 			</ResolvedFileToPublish>
@@ -1553,7 +1555,7 @@
 	<Target
 		Name="_ExecutePostprocessAssembliesAfterIlc"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(_PostprocessAssembliesAfterIlc)' == 'true' And '$(RuntimeIdentifiers)' == ''"
-		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(NativeObject)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp);$(NativeObject)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
@@ -1970,7 +1972,7 @@
 		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
 			<ResolvedFileToPublish Include="$(_DedupAssembly)">
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
 				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
 			</ResolvedFileToPublish>
@@ -2096,7 +2098,7 @@
 			<!-- copy the aotdata files to the .app -->
 			<ResolvedFileToPublish Include="%(_AssembliesToAOT.AOTData)" >
 				<RelativePath>$(_AssemblyPublishDir)\%(_AssembliesToAOT.Filename).aotdata.%(_AssembliesToAOT.Arch)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
@@ -2146,6 +2148,11 @@
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<!-- Include $(_LinkerCacheHash) in IlcArg (via a runtime knob) so that when any input assembly changes (including NuGet downgrades with older timestamps), %(ManagedBinary.IlcRspFile) is rewritten and triggers IlcCompile -->
+			<IlcArg Include="--runtimeknob:ObjCRuntime.LinkerCacheHash=$(_LinkerCacheHash)" Condition="'$(_LinkerCacheHash)' != ''" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -2809,7 +2816,7 @@
 			<ResolvedFileToPublish Include="$(_ParsedRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'">
 				<RelativePath>$([System.IO.Path]::GetFileName('$(_ParsedRuntimeConfigFilePath)'))</RelativePath>
 				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<CopyToPublishDirectory>IfDifferent</CopyToPublishDirectory>
 			</ResolvedFileToPublish>
 
 			<!--
@@ -2999,6 +3006,11 @@
 
 			<!-- Rewrite the relative path so that everything ends up in the app bundle -->
 			<ResolvedFileToPublish RelativePath="$(_RelativeAppBundlePath)\%(RelativePath)" OriginalRelativePath="%(RelativePath)" />
+			<!-- Use IfDifferent instead of PreserveNewest for managed assemblies (and their symbols/configs/aotdata) so that package downgrades (whose files have older timestamps than the existing bundle) are still copied to the app bundle. Do not use IfDifferent for native binaries (the executable, .dylib, .so), because post-processing (strip, codesign) modifies them in-place inside the app bundle, changing their size and causing IfDifferent to recopy the unsigned/unstripped intermediate on subsequent incremental builds. -->
+			<ResolvedFileToPublish
+				Update="@(ResolvedFileToPublish)"
+				Condition="'%(ResolvedFileToPublish.CopyToPublishDirectory)' == 'PreserveNewest' And ('%(Extension)' == '.dll' Or '%(Extension)' == '.exe' Or '%(Extension)' == '.pdb' Or '%(Extension)' == '.config')"
+				CopyToPublishDirectory="IfDifferent" />
 		</ItemGroup>
 
 		<!-- resolve any .xcframeworks and binding resource packages -->

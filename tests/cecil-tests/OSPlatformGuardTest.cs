@@ -7,7 +7,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 
 using Xamarin;
-using Xamarin.Utils;
 
 namespace Cecil.Tests {
 	[TestFixture]

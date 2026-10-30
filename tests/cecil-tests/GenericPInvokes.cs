@@ -6,7 +6,6 @@ using System.Text;
 using NUnit.Framework;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using Xamarin.Utils;
 
 #nullable enable
 

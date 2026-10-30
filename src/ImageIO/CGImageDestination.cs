@@ -284,13 +284,27 @@ namespace ImageIO {
 		extern static byte CGImageDestinationFinalize (/* CGImageDestinationRef __nonnull */ IntPtr idst);
 
 		/// <summary>Writes the images to the destination and disposes the object.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <returns><see langword="true" /> if the images were successfully written; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		///   You must call this method or <see cref="Save" /> to save the images. Disposing the destination alone does not save them.
+		///   The destination is disposed even if saving fails and cannot be used after this call.
+		/// </remarks>
 		public bool Close ()
 		{
 			var success = CGImageDestinationFinalize (Handle);
 			Dispose ();
 			return success != 0;
+		}
+
+		/// <summary>Writes the images to the destination and disposes the object.</summary>
+		/// <returns><see langword="true" /> if the images were successfully written; otherwise, <see langword="false" />.</returns>
+		/// <remarks>
+		///   This method calls <see cref="Close" />. You must call either method to save the images; disposing the destination alone does not save them.
+		///   The destination is disposed even if saving fails and cannot be used after this call.
+		/// </remarks>
+		public bool Save ()
+		{
+			return Close ();
 		}
 
 		[SupportedOSPlatform ("ios")]

@@ -611,7 +611,6 @@ namespace Cecil.Tests {
 			"System.Net.Http.NSUrlSessionHandler/WrappedNSInputStream.SetProperty(Foundation.NSObject, Foundation.NSString)",
 			"System.Net.Http.NSUrlSessionHandler/WrappedNSInputStream.Unschedule(Foundation.NSRunLoop, Foundation.NSString)",
 			"UIKit.NIDUICellAccessoryPosition.Create(System.IntPtr)",
-			"UIKit.NIDUIConfigurationColorTransformerHandler.Create(System.IntPtr)",
 			"UIKit.UIAccessibilityCustomAction/FuncBoolDispatcher.Probe(UIKit.UIAccessibilityCustomAction)",
 			"UIKit.UIControlEventProxy.Activated()",
 			"UIKit.UIGestureRecognizer.OnDispose()",

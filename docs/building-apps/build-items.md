@@ -331,7 +331,7 @@ directory (or `.xcframework.zip` archive), not to a slice inside it. At build
 time, the SDK reads the XCFramework's `Info.plist` and automatically selects
 the slice matching the target platform (`ios`, `tvos`, `macos`), platform
 variant (`simulator` or `maccatalyst`, when applicable), and target
-architecture (`arm64`, `x64`).
+architecture (`arm64`, `x86_64`).
 
 Native framework directory names must use the lowercase `.framework` extension.
 Other capitalization, such as `.Framework` or `.FRAMEWORK`, produces warning
@@ -342,7 +342,7 @@ The following metadata can be set on `NativeReference` items:
 
 * `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required for all `NativeReference` items in binding projects (`IsBindingProject=true`), and for direct `*.a` and `*.dylib` `NativeReference` items in application projects (which are added directly to `@(_FileNativeReference)` by `_ExpandNativeReferences`). In application projects, `Kind` is inferred automatically by `ResolveNativeReferences` for `*.framework`, `*.xcframework`, and `*.xcframework.zip` items from the resolved native binary.
 * `SmartLink`: A boolean value indicating whether the native linker can strip unused symbols (`-dead_strip`). Defaults to `true`.
-* `ForceLoad`: A boolean value indicating whether `-force_load` should be passed to the native linker for a static library (ignored when `SmartLink` is `true` and the static registrar is used). Defaults to `false`.
+* `ForceLoad`: A boolean value indicating whether `-force_load` should be passed to the native linker for a static library. Defaults to `false`.
 * `Frameworks`: A space-separated list of Apple frameworks (without the `.framework` extension) that the native library depends on and must be linked with.
 * `WeakFrameworks`: A space-separated list of Apple frameworks that should be weakly linked (`-weak_framework`).
 * `LinkerFlags`: Additional command-line flags to pass to the native linker (for example, `-lc++` or `-lsqlite3`).

@@ -350,7 +350,7 @@ The `CompressBindingResourcePackage` property specifies whether to create a zip 
 
 The possible values are:
 
-* `auto`: automatically decide the best option (currently a zip file is created unless all native references are already `.zip` files; once Visual Studio supports long paths on Windows, this may change to only zip binding resource packages with symlinks).
+* `auto`: automatically decide the best option. When set to `auto`, a zip file is created if any native reference contains symlinks, or (unless all native references are already `.zip` files) to avoid `MAX_PATH` issues on Windows. Once Visual Studio supports long paths on Windows, `auto` may change to only zip binding resource packages that contain symlinks.
 * `true`: create a zip file
 * `false`: create a directory
 

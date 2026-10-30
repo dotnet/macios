@@ -101,12 +101,16 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (rv.ExitCode, Is.EqualTo (0), "ExitCode\n" + rv.Output.MergedOutput);
 		}
 
-		[Test]
-		public void CopiesDebugSymbols ([Values] bool xcframework)
+		[TestCase (true, false)]
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		public void CopiesDebugSymbols (bool xcframework, bool dynamicLibrary)
 		{
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 			var slice = Path.Combine (tmpdir, "Test.xcframework", "ios-arm64");
-			var framework = Path.Combine (xcframework ? slice : tmpdir, "Test.framework");
+			var nativeName = dynamicLibrary ? "libTest.dylib" : "Test.framework";
+			var symbolName = nativeName + ".dSYM";
+			var framework = Path.Combine (xcframework ? slice : tmpdir, nativeName);
 			var symbols = xcframework ? Path.Combine (slice, "dSYMs", "Test.framework.dSYM") : framework + ".dSYM";
 			var dwarfDirectory = Path.Combine (symbols, "Contents", "Resources", "DWARF");
 			Directory.CreateDirectory (dwarfDirectory);
@@ -114,7 +118,7 @@ namespace Xamarin.MacDev.Tasks {
 			var dwarf = Path.Combine (dwarfDirectory, "Test");
 			File.WriteAllText (dwarf, "vendor debug symbols");
 			var outputDirectory = Path.Combine (tmpdir, "output");
-			var outputSymbol = Path.Combine (outputDirectory, "Test.framework.dSYM", "Contents", "Resources", "DWARF", "Test");
+			var outputSymbol = Path.Combine (outputDirectory, symbolName, "Contents", "Resources", "DWARF", "Test");
 
 			var root = ProjectRootElement.Create (Engine.ProjectCollection);
 			root.AddProperty ("_TaskAssemblyName", typeof (Ditto).Assembly.Location);
@@ -124,12 +128,14 @@ namespace Xamarin.MacDev.Tasks {
 			root.AddImport (Path.Combine (Configuration.RootPath, "msbuild", "Xamarin.Shared", "Xamarin.Shared.targets"));
 			root.AddTarget ("_PreparePostProcessing");
 			root.AddItem ("NativeReference", framework);
-			var item = root.AddItem ("_PostProcessingItem", "App.app/Frameworks/Test.framework/Test");
-			item.AddMetadata ("ItemSourcePath", Path.Combine (framework, "Test"));
+			var nativePath = dynamicLibrary ? "App.app/libTest.dylib" : "App.app/Frameworks/Test.framework/Test";
+			var item = root.AddItem ("_PostProcessingItem", nativePath);
+			item.AddMetadata ("ItemSourcePath", dynamicLibrary ? framework : Path.Combine (framework, "Test"));
 			item.AddMetadata ("dSYMSourcePath", framework + ".dSYM");
 			item.AddMetadata ("NoDSymUtil", "true");
-			var generated = root.AddItem ("_GenerateDSymItems", "App.app/Frameworks/Test.framework/Test");
-			generated.AddMetadata ("DSymName", "Test.framework.dSYM");
+			var generated = root.AddItem ("_GenerateDSymItems", nativePath);
+			generated.AddMetadata ("DSymName", dynamicLibrary ? "libTest.dSYM" : symbolName);
+			generated.AddMetadata ("dSYMSourcePath", framework + ".dSYM");
 			var verify = root.AddTarget ("VerifySymbols");
 			verify.DependsOnTargets = "_CollectBindingResourceDebugSymbols;_CopyXCFrameworkDSyms";
 			var error = verify.AddTask ("Error");
@@ -146,7 +152,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.That (project.Build ("VerifySymbols", new [] { logger }), Is.True, "Copy vendor symbols");
 			Assert.That (File.ReadAllText (outputSymbol), Is.EqualTo ("vendor debug symbols"), "Copied vendor symbols with NoDSymUtil=true");
-			Assert.That (File.ReadAllText (Path.Combine (outputDirectory, "Test.framework.dSYM", "Contents", "Info.plist")), Is.EqualTo ("vendor plist"), "Copied vendor plist");
+			Assert.That (File.ReadAllText (Path.Combine (outputDirectory, symbolName, "Contents", "Info.plist")), Is.EqualTo ("vendor plist"), "Copied vendor plist");
 
 			File.WriteAllText (dwarf, "updated vendor debug symbols");
 			File.SetLastWriteTimeUtc (dwarf, File.GetLastWriteTimeUtc (outputSymbol).AddSeconds (2));
@@ -159,6 +165,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			var app = Path.Combine (outputDirectory, "App.app");
 			Directory.CreateDirectory (Path.Combine (app, "Frameworks", "Test.framework"));
+			if (dynamicLibrary)
+				File.WriteAllText (Path.Combine (app, nativeName), "native binary");
 			File.WriteAllText (Path.Combine (app, "Info.plist"), @"<plist version=""1.0""><dict>
 	<key>CFBundleIdentifier</key><string>com.example.test</string>
 	<key>CFBundleName</key><string>App</string>
@@ -172,7 +180,7 @@ namespace Xamarin.MacDev.Tasks {
 			archive.ProjectName = "App";
 			archive.ArchiveDir = Path.Combine (tmpdir, "App.xcarchive");
 			ExecuteTask (archive);
-			var archivedSymbol = Path.Combine (archive.ArchiveDir, "dSYMs", "Test.framework.dSYM", "Contents", "Resources", "DWARF", "Test");
+			var archivedSymbol = Path.Combine (archive.ArchiveDir, "dSYMs", symbolName, "Contents", "Resources", "DWARF", "Test");
 			Assert.That (File.ReadAllText (archivedSymbol), Is.EqualTo ("updated vendor debug symbols"), "Archived vendor symbols");
 		}
 
@@ -430,4 +438,3 @@ namespace Xamarin.MacDev.Tasks {
 
 	}
 }
-

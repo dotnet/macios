@@ -3427,8 +3427,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- The dSYM directory is named the same as the DSymName metadata used for the copy destination. -->
 			<_XCFrameworkDSymToCopy>
 				<DSymName>%(Filename)%(Extension)</DSymName>
+				<dSYMSourcePath>%(Identity)</dSYMSourcePath>
 			</_XCFrameworkDSymToCopy>
 			<_GenerateDSymItems Remove="@(_XCFrameworkDSymToCopy)" MatchOnMetadata="DSymName" />
+			<_GenerateDSymItems Remove="@(_XCFrameworkDSymToCopy)" MatchOnMetadata="dSYMSourcePath" MatchOnMetadataOptions="PathLike" />
 		</ItemGroup>
 
 		<GetFileSystemEntries

@@ -353,6 +353,16 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The [NSFastEnumeration] attribute on '\*' specifies an invalid element type '\*'.
+
+Use a native object type, a bound protocol interface, or the name of a generic
+type parameter declared by the binding.
+
+### <a name='BI1131'/>BI1131: The [NSFastEnumeration] attribute on '\*' can't be used on a static binding or a category.
+
+Fast enumeration requires an instance of a native collection. Apply the
+attribute to the collection's class or protocol binding instead.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

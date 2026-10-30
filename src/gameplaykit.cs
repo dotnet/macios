@@ -171,14 +171,12 @@ namespace GameplayKit {
 		void Update (double deltaTimeInSeconds);
 	}
 
-	// FIXME: @interface GKBehavior : NSObject <NSFastEnumeration>
-	// Fix when we have NSFastEnumerator to IEnumerable support
-	// https://bugzilla.xamarin.com/show_bug.cgi?id=4391
 	/// <summary>A collection of <see cref="GameplayKit.GKGoal" /> objects and weights, together defining a cohesive game behavior.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKBehavior_Class/index.html">Apple documentation for <c>GKBehavior</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[NSFastEnumeration (typeof (GKGoal))]
 	interface GKBehavior : NSCopying {
 
 		[Export ("goalCount")]

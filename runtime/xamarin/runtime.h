@@ -204,8 +204,6 @@ void			xamarin_framework_peer_waypoint ();
 void			xamarin_framework_peer_waypoint_safe ();
 bool			xamarin_file_exists (const char *path);
 MonoAssembly *	xamarin_open_and_register (const char *path, GCHandle *exception_gchandle);
-void			xamarin_unhandled_exception_handler (MonoObject *exc, gpointer user_data);
-void			xamarin_ftnptr_exception_handler (GCHandle gchandle);
 void			xamarin_create_classes ();
 const char *	xamarin_skip_encoding_flags (const char *encoding);
 void			xamarin_add_registration_map (struct MTRegistrationMap *map, bool partial);
@@ -214,9 +212,6 @@ void			xamarin_release_block_on_main_thread (void *obj);
 void			xamarin_bridge_setup (); // this is called very early, before parsing the command line arguments
 void			xamarin_bridge_initialize (); // this is called a bit later, after parsing the command line arguments.
 void			xamarin_bridge_shutdown (); // this is called just before returning from xamarin_main
-unsigned char *	xamarin_load_aot_data (MonoAssembly *assembly, int size, gpointer user_data, void **out_handle);
-void			xamarin_free_aot_data (MonoAssembly *assembly, int size, gpointer user_data, void *handle);
-MonoAssembly*	xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **assemblies_path, void* user_data);
 void			xamarin_handle_bridge_exception (GCHandle gchandle, const char *method);
 void			xamarin_vm_initialize ();
 bool			xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, const char **propertyValues);
@@ -292,7 +287,6 @@ bool			xamarin_is_object_valid (id ptr, char** error_message);
 const char *	xamarin_find_assembly_directory (const char *assembly_name);
 void			xamarin_set_assembly_directories (struct AssemblyLocations *directories);
 void			xamarin_get_assembly_name_without_extension (const char *aname, char *name, size_t namelen);
-bool			xamarin_locate_assembly_resource_for_name (MonoAssemblyName *assembly_name, const char *resource, char *path, size_t pathlen);
 bool			xamarin_locate_assembly_resource_for_root (const char *root, const char *culture, const char *resource, char *path, size_t pathlen);
 bool			xamarin_locate_assembly_resource (const char *assembly_name, const char *culture, const char *resource, char *path, size_t pathlen);
 bool			xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen);
@@ -300,7 +294,6 @@ bool			xamarin_locate_app_resource (const char *resource, char *path, size_t pat
 // these functions support NSLog/NSString-style format specifiers.
 void			xamarin_printf (const char *format, ...) __attribute__((format(__NSString__, 1, 2)));
 void			xamarin_vprintf (const char *format, va_list args) __attribute__((format(__NSString__, 1, 0)));
-void			xamarin_install_log_callbacks ();
 
 bool			xamarin_is_user_type (Class cls);
 /*
@@ -330,25 +323,14 @@ void				xamarin_gc_event (MonoGCEvent event);
 
 void			xamarin_bridge_log_monoobject (MonoObject *obj, const char *stacktrace);
 /*
- * In MonoVM MonoObjects are tracked in memory/the stack directly by the GC, but that doesn't
- * work for CoreCLR, so we make it ref-counted. All code must use the functions below to retain/release
- * MonoObjects, although these functions do nothing when using MonoVM.
- *
- * The release function take a pointer to the variable that contains the MonoObject, and clears out the value,
- * to avoid running into use-after-free problems.
+ * The CoreCLR bridge uses ref-counted wrappers for managed objects. Release
+ * clears the caller's pointer to avoid using an already-freed wrapper.
  */
-#if defined(CORECLR_RUNTIME)
 void			xamarin_mono_object_retain (MonoObject *mobj);
 // Use C++ linking to be able to use method overloading, so that callers don't have to cast their variables to 'MonoObject**' (which improves type safety a lot).
 extern "C++" void	xamarin_mono_object_release (MonoObject **mobj);
 extern "C++" void	xamarin_mono_object_release (MonoString **mobj);
 void			xamarin_mono_object_release_at_process_exit (MonoObject *mobj);
-#else
-// Nothing to do here.
-#define			xamarin_mono_object_retain(x)
-#define			xamarin_mono_object_release(x) do { *x = NULL; } while (0);
-#define			xamarin_mono_object_release_at_process_exit(x)
-#endif
 
 
 /*
@@ -403,18 +385,8 @@ public:
 @end
 #endif
 
-#if defined(CORECLR_RUNTIME)
-// this is not needed for CoreCLR
 #define MONO_THREAD_ATTACH
 #define MONO_THREAD_DETACH
-#else
-#define MONO_THREAD_ATTACH \
-	do { \
-		mono_jit_thread_attach (NULL) \
-
-#define MONO_THREAD_DETACH \
-	} while (0)
-#endif
 
 void objc_release (id value);
 id objc_retain (id value);

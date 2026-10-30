@@ -3,7 +3,6 @@ product.h
 delegates.inc
 Delegates.generated.cs
 delegates.h
-mono-runtime.m
 xamarin/mono-runtime.h
 xamarin/runtime-generated.h
 app-main.m

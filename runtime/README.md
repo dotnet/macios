@@ -1,7 +1,7 @@
 Native runtime
 ==============
 
-This directory contains the native runtime for Xamarin.iOS and Xamarin.Mac.
+This directory contains the native runtime for .NET for iOS, tvOS, Mac Catalyst and macOS.
 
 Generated code
 ==============
@@ -14,25 +14,21 @@ delegates.h|inc, Delegates.cs
 These files contain the code required to glue the native
 runtime and the managed runtime.
 
-mono-runtime.m, xamarin/mono-runtime.h
---------------------------------------
+xamarin/mono-runtime.h
+----------------------
 
-These files contain code that makes other code, consumers of
-the mono runtime, oblivious to whether the mono runtime is linked
-statically, dynamically, or using dlopen at runtime.
+This header provides Mono-named compatibility types and function declarations
+used by the CoreCLR and NativeAOT native bridges. It is generated from
+mono-runtime.h.t4 and exports.t4; it does not load or embed MonoVM.
 
-If you need to use a new function from the Mono headers, add it
-to exports.t4.
-
-If you need a new enum / constant / typedef / etc, add it to
-mono-runtime.h.t4.
+If a bridge needs another compatibility function, add it to exports.t4.
+If it needs another compatibility type or constant, add it to mono-runtime.h.t4.
 
 Shipped headers
 ===============
 
-These are the headers shipped with XI/XM (they're not for public consumption,
-but we need them to build generated code on customers machine, in particular
-main.m and registrar.m)
+These headers ship with the native runtime packages. They are not public APIs,
+but are needed to build generated application startup and registrar code.
 
 xamarin/runtime.h
 xamarin/trampolines.h

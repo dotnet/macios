@@ -22,10 +22,18 @@ namespace EnsureUIThreadApp {
 			// so that it never actually executes (which could otherwise throw when not on the UI thread) -
 			// the linker only needs to see the call instruction to keep the method reachable.
 			if (args.Length > 1_000_000) {
+				// Event registration and delegate assignment keep both generated mismatch-check paths reachable,
+				// so EnsureUIThreadChecksTest can verify they are retained or stubbed by the feature switch.
 #if __MACOS__
 				AppKit.NSApplication.EnsureUIThread ();
+				using var field = new AppKit.NSComboBox ();
+				field.SelectionChanged += (sender, e) => { };
+				field.Delegate = new AppKit.NSComboBoxDelegate ();
 #else
 				UIKit.UIApplication.EnsureUIThread ();
+				using var field = new UIKit.UITextField ();
+				field.Started += (sender, e) => { };
+				field.Delegate = new UIKit.UITextFieldDelegate ();
 #endif
 				Runtime.GetNSObjectChecked<GenericObject<NSString>> (IntPtr.Zero);
 				Runtime.GetINativeObject<GenericObject<NSString>> (IntPtr.Zero, false);

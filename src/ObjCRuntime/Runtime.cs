@@ -323,6 +323,9 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal static bool CheckForIllegalCrossThreadCalls => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls", out bool enabled) ? enabled : true;
 
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static bool CheckForEventAndDelegateMismatches => AppContext.TryGetSwitch ("ObjCRuntime.Runtime.CheckForEventAndDelegateMismatches", out bool enabled) ? enabled : true;
+
 		internal static bool Initialized {
 			get { return initialized; }
 		}

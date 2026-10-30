@@ -66,6 +66,17 @@ SCNMatrix4 x_SCNMatrix4Translate (SCNMatrix4 m, pfloat tx, pfloat ty, pfloat tz)
 
 typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 
+@interface ToBeProxied : NSObject
++ (ToBeProxied *) getProxiedObject;
+- (int) getNumber;
+@end
+
+// Deliberately unbound: the runtime must wrap this private NSProxy subclass.
+@interface IsProxied : NSProxy
+- (instancetype) init;
+- (int) getNumber;
+@end
+
 /*
  * ObjC test class used for registrar tests.
  */

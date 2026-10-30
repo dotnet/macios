@@ -703,6 +703,21 @@ for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
 [eventsource]: /dotnet/core/diagnostics/eventsource
 
+## ForceMainThreadFinalization
+
+When set to `true`, all `NSObject` finalizers queue their native release on the
+main thread, including `NSString` and `NSMutableString`. This opts out of releasing
+the built-in string wrappers directly on the finalizer thread. Subclasses and
+other `NSObject` types always use the main-thread release queue.
+
+The default is `false`. Explicit disposal is unaffected.
+
+This property sets the `Foundation.NSObject.ForceMainThreadFinalization` runtime
+feature switch. When trimming is enabled and the switch is `true`, the trimmer
+removes the direct-finalizer-release optimization, including its initialization
+code, so opting out does not add code to the app. Trimmed builds do not emit a
+runtime configuration entry for this switch.
+
 ## GenerateApplicationManifest
 
 If an application manifest (`Info.plist`) should be generated.

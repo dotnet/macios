@@ -642,11 +642,17 @@
 	</Target>
 
 	<Target Name="_SetRuntimeHostConfigurationOptions" BeforeTargets="GenerateBuildRuntimeConfigurationFiles" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
+		<PropertyGroup>
+			<ForceMainThreadFinalization Condition="'$(ForceMainThreadFinalization)' == ''">false</ForceMainThreadFinalization>
+		</PropertyGroup>
 		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static'">
 			<RuntimeHostConfigurationOption Include="System.Runtime.InteropServices.TypeMappingEntryAssembly" Value="$(_TypeMapAssemblyName)" />
 		</ItemGroup>
 		<ItemGroup>
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.HotReloadCompatible" Value="$(HotReloadCompatibleBuild)" Trim="true" />
+			<!-- Trimmed builds don't need a runtimeconfig entry for a constant-folded switch. -->
+			<_TrimmerFeatureSettings Include="Foundation.NSObject.ForceMainThreadFinalization" Value="$(ForceMainThreadFinalization)" />
+			<RuntimeHostConfigurationOption Include="Foundation.NSObject.ForceMainThreadFinalization" Value="$(ForceMainThreadFinalization)" Condition="'$(PublishTrimmed)' != 'true' Or '$(_LinkMode)' == 'None' Or '$(TrimMode)' == 'copy'" />
 		</ItemGroup>
 	</Target>
 

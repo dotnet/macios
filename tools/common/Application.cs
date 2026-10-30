@@ -359,6 +359,8 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
+		public bool? EnableInvokedSelectorTracking { get; set; }
+
 		public bool DynamicRegistrationSupported {
 			get {
 				return Optimizations.RemoveDynamicRegistrar != true;

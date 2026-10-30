@@ -258,6 +258,9 @@ void			xamarin_check_objc_type (id obj, Class expected_class, SEL sel, id self, 
 
 void			xamarin_set_is_managed_static_registrar (bool value);
 void			xamarin_set_is_trimmable_static_registrar (bool value);
+void			xamarin_enable_invoked_selector_tracking ();
+SEL				xamarin_get_invoked_selector ();
+SEL				xamarin_set_invoked_selector (SEL selector) __attribute__((nothrow));
 
 void			xamarin_process_nsexception (NSException *exc);
 void			xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception);

@@ -395,6 +395,16 @@ xamarin_arch_trampoline (struct XamarinCallState *state)
 	LOGZ ("\n");
 }
 
+extern "C" void
+xamarin_arch_trampoline_with_selector (struct XamarinCallState *state)
+{
+	state->_self = (id) state->x0;
+	state->_sel = (SEL) state->x1;
+	struct ParamIterator iter;
+	iter.state = state;
+	xamarin_invoke_trampoline_with_selector ((enum TrampolineType) state->type, state->self (), state->sel (), param_iter_next, marshal_return_value, &iter);
+}
+
 bool
 xamarin_arch_param_passed_by_reference (unsigned long size, const char *type, GCHandle *exception_gchandle)
 {

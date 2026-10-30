@@ -129,6 +129,14 @@ If an Xcode archive should be created at the end of the build.
 
 Created archives are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
+## AssemblyName
+
+The name of the output assembly, without its file extension.
+
+Single quotes (`'`) are not supported in this property. Remove any single quotes
+from `AssemblyName` in the project file. This does not restrict the app's display
+name, which can be set using [ApplicationTitle](#applicationtitle).
+
 ## BGenEmitDebugInformation
 
 Whether the `bgen` tool (the binding generator) should emit debug information or not.

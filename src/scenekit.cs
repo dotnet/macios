@@ -2073,7 +2073,7 @@ namespace SceneKit {
 
 		[Export ("worldTransform")]
 		SCNMatrix4 WorldTransform {
-			get; 
+			get;
 			set;
 		}
 
@@ -4281,7 +4281,7 @@ namespace SceneKit {
 	interface SCNLookAtConstraint {
 		[Export ("target", ArgumentSemantic.Retain), NullAllowed]
 		SCNNode Target {
-			get; 
+			get;
 			set;
 		}
 

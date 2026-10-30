@@ -94,7 +94,7 @@ namespace GameplayKit {
 
 		[Export ("speed")]
 		float Speed {
-			get; 
+			get;
 			set;
 		}
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="UIButtonConstructorTitle" xml:space="preserve">
+    <value>Do not use the factory-backed UIButton constructor when subclassing</value>
+  </data>
+  <data name="UIButtonConstructorMessage" xml:space="preserve">
+    <value>UIButton(UIButtonType) cannot initialize a UIButton subclass because it wraps an object returned by a native factory. Use a supported base constructor when subclassing.</value>
+  </data>
+  <data name="UIButtonConstructorDescription" xml:space="preserve">
+    <value>UIButton(UIButtonType) calls the native buttonWithType: factory on UIButton, rather than initializing a native instance of the managed subclass. Use the default constructor or another supported initializer when subclassing. Direct construction with new UIButton(type) is valid.</value>
+  </data>
+</root>

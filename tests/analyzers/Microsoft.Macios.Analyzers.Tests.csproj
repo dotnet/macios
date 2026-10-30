@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpPackageVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
+    <PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
+    <PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersPackageVersion)" PrivateAssets="all" />
+    <ProjectReference Include="../../tools/analyzers/Microsoft.Macios.Analyzers.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../dotnet/targets/Microsoft.MaciOS.Analyzers.targets" Link="Microsoft.MaciOS.Analyzers.targets" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

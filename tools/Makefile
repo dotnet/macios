@@ -19,3 +19,4 @@ SUBDIRS += spawner
 endif
 
 SUBDIRS += assembly-preparer
+SUBDIRS += analyzers

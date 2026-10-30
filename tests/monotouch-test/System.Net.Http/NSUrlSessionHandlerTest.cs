@@ -3,6 +3,7 @@
 //
 
 using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Net;
@@ -307,8 +308,9 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// https://github.com/dotnet/macios/issues/25667
-		[Test]
-		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException ()
+		[TestCase (false)]
+		[TestCase (true)]
+		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException (bool useMemory)
 		{
 			// Use a raw TCP server so we have full control over when bytes are sent on the wire.
 			var tcpListener = new TcpListener (IPAddress.Loopback, 0);
@@ -379,8 +381,15 @@ namespace MonoTests.System.Net.Http {
 
 					// First read succeeds (server sent 4KB of body data)
 					var buffer = new byte [8192];
-					var bytesRead = await stream.ReadAsync (buffer, 0, buffer.Length).ConfigureAwait (false);
-					Assert.That (bytesRead, Is.GreaterThan (0), "First read should return data");
+					using var memoryManager = new ResponseMemoryManager (buffer.Length);
+					var totalRead = 0;
+					while (totalRead < 4096) {
+						var bytesRead = useMemory
+							? await stream.ReadAsync (memoryManager.Memory).ConfigureAwait (false)
+							: await stream.ReadAsync (buffer, 0, buffer.Length).ConfigureAwait (false);
+						Assert.That (bytesRead, Is.GreaterThan (0), "First read should return data");
+						totalRead += bytesRead;
+					}
 
 					// Second read: cancel after 250ms via caller token.
 					// The server declared a much larger Content-Length but stopped
@@ -388,7 +397,10 @@ namespace MonoTests.System.Net.Http {
 					// the caller token fires.
 					using var cts = new CancellationTokenSource (TimeSpan.FromMilliseconds (250));
 					try {
-						await stream.ReadAsync (buffer, 0, buffer.Length, cts.Token).ConfigureAwait (false);
+						if (useMemory)
+							await stream.ReadAsync (memoryManager.Memory, cts.Token).ConfigureAwait (false);
+						else
+							await stream.ReadAsync (buffer, 0, buffer.Length, cts.Token).ConfigureAwait (false);
 						Assert.Fail ("Expected an exception from the cancelled ReadAsync");
 					} catch (Exception ex) {
 						caughtExceptionType = ex.GetType ();
@@ -404,6 +416,103 @@ namespace MonoTests.System.Net.Http {
 					$"Expected OperationCanceledException but got {caughtExceptionType}");
 			} finally {
 				tcpListener.Stop ();
+			}
+		}
+
+		[TestCase (0, 17, 1024)]
+		[TestCase (1, 17, 1024)]
+		[TestCase (2, 17, 1024)]
+		[TestCase (0, 4096, 8192)]
+		[TestCase (1, 4096, 8192)]
+		[TestCase (2, 4096, 8192)]
+		[TestCase (0, 65536, 4096)]
+		[TestCase (1, 65536, 4096)]
+		[TestCase (2, 65536, 4096)]
+		public void StreamReadAsyncBuffers (int bufferKind, int bufferSize, int chunkSize)
+		{
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				var listener = new TcpListener (IPAddress.Loopback, 0);
+				listener.Start ();
+				var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+				using var cts = new CancellationTokenSource (TimeSpan.FromSeconds (25));
+				var body = new byte [256 * 1024 + 13];
+				for (var i = 0; i < body.Length; i++)
+					body [i] = (byte) (i % 251);
+
+				var serverTask = Task.Run (async () => {
+					using var connection = await listener.AcceptTcpClientAsync (cts.Token).ConfigureAwait (false);
+					using var output = connection.GetStream ();
+					using var reader = new StreamReader (output, Encoding.ASCII, false, 1024, leaveOpen: true);
+					string? line;
+					do {
+						line = await reader.ReadLineAsync (cts.Token).ConfigureAwait (false);
+						if (line is null)
+							throw new EndOfStreamException ();
+					} while (line.Length > 0);
+					var headers = Encoding.ASCII.GetBytes ($"HTTP/1.1 200 OK\r\nContent-Length: {body.Length}\r\nConnection: close\r\n\r\n");
+					await output.WriteAsync (headers, cts.Token).ConfigureAwait (false);
+					for (var offset = 0; offset < body.Length; offset += chunkSize) {
+						await output.WriteAsync (body.AsMemory (offset, Math.Min (chunkSize, body.Length - offset)), cts.Token).ConfigureAwait (false);
+						await output.FlushAsync (cts.Token).ConfigureAwait (false);
+					}
+				});
+
+				try {
+					using var handler = new NSUrlSessionHandler { UseProxy = false };
+					using var client = new HttpClient (handler);
+					using var response = await client.GetAsync ($"http://127.0.0.1:{port}/", HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait (false);
+					response.EnsureSuccessStatusCode ();
+					using var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
+					var array = new byte [bufferSize + 2];
+					using var manager = new ResponseMemoryManager (array.Length);
+					var memory = bufferKind == 2 ? manager.Memory : array.AsMemory ();
+					memory.Span.Fill (255);
+					var destination = memory.Slice (1, bufferSize);
+					Assert.That (await stream.ReadAsync (destination.Slice (0, 0), cts.Token).ConfigureAwait (false), Is.Zero, "Empty read before EOF");
+					var totalRead = 0;
+					while (true) {
+						var count = bufferKind == 0
+							? await stream.ReadAsync (array, 1, bufferSize, cts.Token).ConfigureAwait (false)
+							: await stream.ReadAsync (destination, cts.Token).ConfigureAwait (false);
+						if (count == 0)
+							break;
+						Assert.That (count, Is.InRange (1, Math.Min (bufferSize, body.Length - totalRead)), "Read size");
+						Assert.That (destination.Span.Slice (0, count).SequenceEqual (body.AsSpan (totalRead, count)), Is.True, $"Response bytes at {totalRead}");
+						totalRead += count;
+					}
+					Assert.That (totalRead, Is.EqualTo (body.Length), "Response length");
+					Assert.That (memory.Span [0], Is.EqualTo (255), "Prefix guard");
+					Assert.That (memory.Span [memory.Length - 1], Is.EqualTo (255), "Suffix guard");
+					Assert.That (await stream.ReadAsync (destination, cts.Token).ConfigureAwait (false), Is.Zero, "Repeated EOF");
+					Assert.That (await stream.ReadAsync (Memory<byte>.Empty, cts.Token).ConfigureAwait (false), Is.Zero, "Empty read at EOF");
+				} finally {
+					listener.Stop ();
+					await serverTask.ConfigureAwait (false);
+				}
+			}, out var ex);
+
+			Assert.That (done, Is.True, "Test timed out");
+			Assert.That (ex, Is.Null, $"Unexpected exception: {ex}");
+		}
+
+		sealed class ResponseMemoryManager : MemoryManager<byte> {
+			readonly byte [] buffer;
+
+			public ResponseMemoryManager (int length)
+			{
+				buffer = new byte [length];
+			}
+
+			public override Span<byte> GetSpan () => buffer;
+
+			public override MemoryHandle Pin (int elementIndex = 0) => throw new NotSupportedException ();
+
+			public override void Unpin ()
+			{
+			}
+
+			protected override void Dispose (bool disposing)
+			{
 			}
 		}
 

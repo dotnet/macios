@@ -141,7 +141,11 @@ namespace CoreGraphics {
 		///         <summary>Multiplies the two affine transformations and returns the result.</summary>
 		///         <returns>The multiplied affine.</returns>
 		///         <remarks>Use affine multiplication to compose multiple affine tranformations into a single affine.</remarks>
+#if XAMCORE_5_0
+		public static CGAffineTransform Multiply (in CGAffineTransform a, in CGAffineTransform b)
+#else
 		public static CGAffineTransform Multiply (CGAffineTransform a, CGAffineTransform b)
+#endif
 		{
 			return new CGAffineTransform (a.A * b.A + a.B * b.C,
 							  a.A * b.B + a.B * b.D,
@@ -185,7 +189,11 @@ namespace CoreGraphics {
 			Scale (sx, sy, MatrixOrder.Append);
 		}
 
+#if XAMCORE_5_0
+		public static CGAffineTransform Scale (in CGAffineTransform transform, nfloat sx, nfloat sy)
+#else
 		public static CGAffineTransform Scale (CGAffineTransform transform, nfloat sx, nfloat sy)
+#endif
 		{
 			return new CGAffineTransform (
 				sx * transform.A,
@@ -216,7 +224,11 @@ namespace CoreGraphics {
 			Translate (tx, ty, MatrixOrder.Append);
 		}
 
+#if XAMCORE_5_0
+		public static CGAffineTransform Translate (in CGAffineTransform transform, nfloat tx, nfloat ty)
+#else
 		public static CGAffineTransform Translate (CGAffineTransform transform, nfloat tx, nfloat ty)
+#endif
 		{
 			return new CGAffineTransform (
 				transform.A,
@@ -247,7 +259,11 @@ namespace CoreGraphics {
 			Rotate (angle, MatrixOrder.Append);
 		}
 
+#if XAMCORE_5_0
+		public static CGAffineTransform Rotate (in CGAffineTransform transform, nfloat angle)
+#else
 		public static CGAffineTransform Rotate (CGAffineTransform transform, nfloat angle)
+#endif
 		{
 			var cos = (nfloat) Math.Cos (angle);
 			var sin = (nfloat) Math.Sin (angle);

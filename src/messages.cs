@@ -14,7 +14,6 @@ using UIKit;
 #if !MONOMAC
 namespace Messages {
 
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationStyle : ulong {
 		/// <summary>To be added.</summary>
@@ -26,7 +25,6 @@ namespace Messages {
 	}
 
 	/// <summary>Enumerates the sizes of stickers.</summary>
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSStickerSize : long {
 		/// <summary>100 x 100 points.</summary>
@@ -38,7 +36,6 @@ namespace Messages {
 	}
 
 	/// <summary>Enumerates errors associated with Messages.</summary>
-	[MacCatalyst (14, 0)]
 	[Native]
 	[ErrorDomain ("MSMessagesErrorDomain")]
 	public enum MSMessageErrorCode : long {
@@ -69,7 +66,6 @@ namespace Messages {
 	}
 
 	/// <summary>Enumerates iMessage presentation contexts.</summary>
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum MSMessagesAppPresentationContext : long {
 		/// <summary>Indicates that iMessage appears in Messages only.</summary>
@@ -78,7 +74,6 @@ namespace Messages {
 		Media,
 	}
 
-	[MacCatalyst (14, 0)]
 	[Protocol]
 	interface MSMessagesAppTranscriptPresentation {
 		/// <param name="size">To be added.</param>
@@ -108,7 +103,6 @@ namespace Messages {
 	/// <summary>A <see cref="UIViewController" /> that, when extended by the developer, is used to present a custom user-experience within the Messages app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessagesAppViewController">Apple documentation for <c>MSMessagesAppViewController</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface MSMessagesAppViewController : MSMessagesAppTranscriptPresentation {
 		// inlined ctor
@@ -170,7 +164,6 @@ namespace Messages {
 		[Export ("didTransitionToPresentationStyle:")]
 		void DidTransition (MSMessagesAppPresentationStyle presentationStyle);
 
-		[MacCatalyst (14, 0)]
 		[Export ("presentationContext")]
 		MSMessagesAppPresentationContext PresentationContext { get; }
 	}
@@ -178,7 +171,6 @@ namespace Messages {
 	/// <summary>A sequences of messages between the user and one or more others.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSConversation">Apple documentation for <c>MSConversation</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MSConversation {
 		[Export ("localParticipantIdentifier")]
@@ -227,7 +219,6 @@ namespace Messages {
 			""")]
 		void InsertAttachment (NSUrl url, [NullAllowed] string filename, [NullAllowed] Action<NSError> completionHandler);
 
-		[MacCatalyst (14, 0)]
 		[Export ("sendMessage:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="message">To be added.</param>
@@ -237,7 +228,6 @@ namespace Messages {
 			""")]
 		void SendMessage (MSMessage message, [NullAllowed] Action<NSError> completionHandler);
 
-		[MacCatalyst (14, 0)]
 		[Export ("sendSticker:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="sticker">To be added.</param>
@@ -247,7 +237,6 @@ namespace Messages {
 			""")]
 		void SendSticker (MSSticker sticker, [NullAllowed] Action<NSError> completionHandler);
 
-		[MacCatalyst (14, 0)]
 		[Export ("sendText:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="text">To be added.</param>
@@ -257,7 +246,6 @@ namespace Messages {
 			""")]
 		void SendText (string text, [NullAllowed] Action<NSError> completionHandler);
 
-		[MacCatalyst (14, 0)]
 		[Export ("sendAttachment:withAlternateFilename:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="url">To be added.</param>
@@ -275,7 +263,6 @@ namespace Messages {
 	/// <summary>An interactive message object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessage">Apple documentation for <c>MSMessage</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface MSMessage : NSCopying, NSSecureCoding {
@@ -293,7 +280,6 @@ namespace Messages {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("pending")]
 		bool Pending { [Bind ("isPending")] get; }
 
@@ -322,7 +308,6 @@ namespace Messages {
 	/// <summary>Abstract base class for defining the appearance of <see cref="Messages.MSMessage" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageLayout">Apple documentation for <c>MSMessageLayout</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Abstract] // as per docs
 	[DisableDefaultCtor]
@@ -336,7 +321,6 @@ namespace Messages {
 	///       </para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSMessageTemplateLayout">Apple documentation for <c>MSMessageTemplateLayout</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MSMessageLayout))]
 	interface MSMessageTemplateLayout {
 		[NullAllowed, Export ("caption")]
@@ -367,14 +351,12 @@ namespace Messages {
 	/// <summary>Represents a messaging session in which <see cref="Messages.MSMessage" /> objects can be created and updated.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSSession">Apple documentation for <c>MSSession</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MSSession : NSSecureCoding { }
 
 	/// <summary>A custom Messages sticker.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSSticker">Apple documentation for <c>MSSticker</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MSSticker {
@@ -382,7 +364,7 @@ namespace Messages {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl fileUrl, string localizedDescription, [NullAllowed] out NSError error);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("initWithFileURL:identifier:localizedDescription:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url, NSUuid identifier, string localizedDescription);
@@ -397,7 +379,6 @@ namespace Messages {
 	/// <summary>A <see cref="UIKit.UIView" /> that displays a developer-defined Messages sticker.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerView">Apple documentation for <c>MSStickerView</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIView))]
 	interface MSStickerView {
 		// inlined ctor
@@ -426,7 +407,6 @@ namespace Messages {
 	interface IMSStickerBrowserViewDataSource { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewDataSource">Apple documentation for <c>MSStickerBrowserViewDataSource</c></related>
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MSStickerBrowserViewDataSource {
@@ -453,7 +433,6 @@ namespace Messages {
 	///       <para>Developers who do not need to customize the sticker browsing experience should probably create a "sticker pack" that can be presented by the standard browser. Sticker packs do not require any coding.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserView">Apple documentation for <c>MSStickerBrowserView</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIView))]
 	interface MSStickerBrowserView {
 		[Export ("initWithFrame:")]
@@ -486,7 +465,6 @@ namespace Messages {
 	/// <summary>A standard <see cref="UIKit.UIViewController" /> that presents a virtual roll of user-provided stickers.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Messages/MSStickerBrowserViewController">Apple documentation for <c>MSStickerBrowserViewController</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface MSStickerBrowserViewController : MSStickerBrowserViewDataSource {
 		[Export ("initWithStickerSize:")]
@@ -500,7 +478,6 @@ namespace Messages {
 		MSStickerSize StickerSize { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MSMessageLayout))]
 	[DisableDefaultCtor]
 	interface MSMessageLiveLayout {

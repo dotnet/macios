@@ -1883,6 +1883,17 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = BuildFile (profile, "availability-attributes.cs");
 			bgen.AssertNoWarnings ();
+
+			if (profile == Profile.iOS) {
+				bgen.AssertNoType ("NS.NotOniOS");
+				bgen.AssertType ("NS.PartiallyOniOS");
+				bgen.AssertNoMethod ("NS.PartiallyOniOS", "NotOniOSMethod");
+			} else {
+				bgen.AssertType ("NS.NotOniOS");
+				bgen.AssertMethod ("NS.NotOniOS", "OnlyNotOniOS");
+				bgen.AssertType ("NS.PartiallyOniOS");
+				bgen.AssertMethod ("NS.PartiallyOniOS", "NotOniOSMethod");
+			}
 		}
 
 		[Test]

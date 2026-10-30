@@ -2,7 +2,6 @@
 namespace Photos {
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that control how images are displayed.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHImageContentMode : long {
 		/// <summary>Scales the image to fill the target area and crops any excess.</summary>
@@ -15,7 +14,6 @@ namespace Photos {
 
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that control whether to retrieve edited or unedited versions of images.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHImageRequestOptionsVersion : long {
 		/// <summary>Return the edited version of the image.</summary>
@@ -28,7 +26,6 @@ namespace Photos {
 
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that control the desired balance between speed and quality when retrieving image data.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHImageRequestOptionsDeliveryMode : long {
 		/// <summary>Progressively obtain the highest available quality by repeatedly calling the image loading handler.</summary>
@@ -41,7 +38,6 @@ namespace Photos {
 
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that control the speed and accuracy of image resizing operations.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHImageRequestOptionsResizeMode : long {
 		/// <summary>Do not resize the image.</summary>
@@ -54,7 +50,6 @@ namespace Photos {
 
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that control whether to return the edited or original version of a video asset.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHVideoRequestOptionsVersion : long {
 		/// <summary>Return the current version, with edits.</summary>
@@ -65,7 +60,6 @@ namespace Photos {
 
 	// NSInteger -> PHImageManager.h
 	/// <summary>Enumerates values that balance the load time and quality of video when requesting video data.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHVideoRequestOptionsDeliveryMode : long {
 		/// <summary>Photos returns the data that is most appropriate for the request and network conditions.</summary>
@@ -80,7 +74,6 @@ namespace Photos {
 
 	// NSInteger -> PhotosTypes.h
 	/// <summary>Enumerates values that indicate whether a collection is a moment list, folder, or smart folder.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHCollectionListType : long {
 		/// <summary>The collection is a moment list.</summary>
@@ -96,7 +89,6 @@ namespace Photos {
 	}
 
 	/// <summary>Enumerates values that indicate the subtype of the collection.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHCollectionListSubtype : long {
 		/// <summary>The collection is a moment list cluster.</summary>
@@ -130,7 +122,6 @@ namespace Photos {
 
 	// NSUInteger -> PhotosTypes.h
 	/// <summary>Enumerates values that describe the editing operations that can be performed on a collection.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHCollectionEditOperation : long {
 		/// <summary>No capabilities are specified.</summary>
@@ -153,7 +144,6 @@ namespace Photos {
 
 	// NSInteger -> PhotosTypes.h
 	/// <summary>Enumerates varieties of <see cref="Photos.PHAssetCollection" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetCollectionType : long {
 		/// <summary>A collection of related songs.</summary>
@@ -171,7 +161,6 @@ namespace Photos {
 
 	// NSInteger -> PhotosTypes.h
 	/// <summary>Enumerates values that describe the particular subtype (For example, time lapses, bursts, shared collections in the cloud, and etc.) of an asset collection.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetCollectionSubtype : long {
 		/// <summary>Album created in Photos app.</summary>
@@ -209,32 +198,25 @@ namespace Photos {
 		/// <summary>A smart album that holds all the assets created by the user (as opposed to, for instance, iCloud Shared Albums).</summary>
 		SmartAlbumUserLibrary = 209,
 		/// <summary>A smart album that holds self portraits.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumSelfPortraits = 210,
 		/// <summary>A smart album that holds screenshots.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumScreenshots = 211,
 		/// <summary>A smart album that groups Depth Effect images.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumDepthEffect = 212,
 		/// <summary>A smart album that groups Live Photo images.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumLivePhotos = 213,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumAnimated = 214,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SmartAlbumLongExposures = 215,
-		[MacCatalyst (13, 1)]
 		SmartAlbumUnableToUpload = 216,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		SmartAlbumRAW = 217,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		SmartAlbumCinematic = 218,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = 219,
-		[iOS (14, 0), MacCatalyst (14, 0), TV (14, 0)]
+		[iOS (14, 0), TV (14, 0)]
 		SmartAlbumScreenRecordings = 220,
 
 		/// <summary>A bitmask of all possible subtypes.</summary>
@@ -243,7 +225,6 @@ namespace Photos {
 
 	// NSUInteger -> PhotosTypes.h
 	/// <summary>Enumerates values that indicate whether an operation edits or deletes an asset, changes its properties, or performs no action on the asset.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetEditOperation : long {
 		/// <summary>The edit performs no operation on the asset.</summary>
@@ -258,7 +239,6 @@ namespace Photos {
 
 	// NSInteger -> PhotosTypes.h
 	/// <summary>Enumerates the forms of <see cref="Photos.PHAsset" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetMediaType : long {
 		/// <summary>To be added.</summary>
@@ -273,7 +253,6 @@ namespace Photos {
 
 	// NSUInteger -> PhotosTypes.h
 	/// <summary>Enumerates values that describe media subtypes. (HDR, panorama, streaming video, and etc.)</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum PHAssetMediaSubtype : ulong {
@@ -284,15 +263,12 @@ namespace Photos {
 		/// <summary>A high-dynamic-range photo.</summary>
 		PhotoHDR = (1 << 1),
 		/// <summary>A screenshot.</summary>
-		[MacCatalyst (13, 1)]
 		Screenshot = (1 << 2),
 		/// <summary>A Live Photo.</summary>
-		[MacCatalyst (13, 1)]
 		PhotoLive = (1 << 3),
 		/// <summary>A Depth Effect photo.</summary>
-		[MacCatalyst (13, 1)]
 		PhotoDepthEffect = (1 << 4),
-		[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+		[TV (11, 0), Mac (10, 15), iOS (11, 0)]
 		PhotoAnimation = (1 << 6),
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		SmartAlbumSpatial = (1 << 10),
@@ -302,14 +278,12 @@ namespace Photos {
 		VideoHighFrameRate = (1 << 17),
 		/// <summary>A timelapse video.</summary>
 		VideoTimelapse = (1 << 18),
-		[MacCatalyst (13, 1)]
 		VideoScreenRecording = (1 << 19),
 		VideoCinematic = (1 << 21),
 	}
 
 	// NSUInteger -> PhotosTypes.h
 	/// <summary>Indicates whether the Photos app or the user selected an asset as a favorite.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum PHAssetBurstSelectionType : ulong {
@@ -348,7 +322,6 @@ namespace Photos {
 	}
 
 	/// <summary>Enumerates the current authorization allowed by the application user.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAuthorizationStatus : long {
 		/// <summary>The user has not interacted with the permissions dialog.</summary>
@@ -362,12 +335,10 @@ namespace Photos {
 		[iOS (14, 0)]
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		Limited,
 	}
 
 	/// <summary>Enumerates types of <see cref="Photos.PHAssetResource" /> data.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetResourceType : long {
 		/// <summary>Photo data.</summary>
@@ -387,21 +358,15 @@ namespace Photos {
 		/// <summary>An unaltered copy of the original photo.</summary>
 		AdjustmentBasePhoto = 8,
 		/// <summary>Original video data for a Live Photo.</summary>
-		[MacCatalyst (13, 1)]
 		PairedVideo = 9,
-		[MacCatalyst (13, 1)]
 		FullSizePairedVideo = 10,
-		[MacCatalyst (13, 1)]
 		AdjustmentBasePairedVideo = 11,
-		[MacCatalyst (13, 1)]
 		AdjustmentBaseVideo = 12,
 		[iOS (17, 0), TV (17, 0)]
-		[MacCatalyst (17, 0)]
 		PhotoProxy = 19,
 	}
 
 	/// <summary>Enumerates the means by which an asset entered the Photos library.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetSourceType : ulong {
 		/// <summary>Unknown.</summary>
@@ -415,7 +380,6 @@ namespace Photos {
 	}
 
 	/// <summary>Enumerates Live Photo frame types.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoFrameType : long {
 		/// <summary>Indicates that the frame is a still photo.</summary>
@@ -424,7 +388,6 @@ namespace Photos {
 		Video,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHAssetPlaybackStyle : long {
 		/// <summary>To be added.</summary>
@@ -441,7 +404,7 @@ namespace Photos {
 		VideoLooping = 5,
 	}
 
-	[TV (11, 0), Mac (10, 15), iOS (11, 0), MacCatalyst (13, 1)]
+	[TV (11, 0), Mac (10, 15), iOS (11, 0)]
 	[Native]
 	public enum PHAssetPlaybackVariation : long {
 		None = 0,
@@ -548,7 +511,6 @@ namespace Photos {
 	}
 
 	[ErrorDomain ("PHPhotosErrorDomain")]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHPhotosError : long {
 		InternalError = -1,
@@ -575,7 +537,6 @@ namespace Photos {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum PHAccessLevel : long {
 		AddOnly = 1,
@@ -583,7 +544,6 @@ namespace Photos {
 	}
 
 	[TV (16, 0), iOS (16, 0)]
-	[MacCatalyst (16, 0)]
 	[Native]
 	public enum PHObjectType : long {
 		Asset = 1,

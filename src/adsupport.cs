@@ -16,7 +16,6 @@ namespace AdSupport {
 	///       <para>Application developers should use the static <see cref="AdSupport.ASIdentifierManager.SharedManager" /> in order to gain access to the <see cref="AdSupport.ASIdentifierManager.AdvertisingIdentifier" />. Application developers must respect the <see cref="AdSupport.ASIdentifierManager.IsAdvertisingTrackingEnabled" /> value.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AdSupport/Reference/ASIdentifierManager_Ref/index.html">Apple documentation for <c>ASIdentifierManager</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASIdentifierManager {

@@ -23,7 +23,6 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		Dtls_1_0 = 9,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Tls_1_3 = 10,
 		Dtls_1_2 = 11,
 
@@ -38,7 +37,6 @@ namespace Security {
 		All = 6,
 	}
 
-	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_protocol_version_t)
 	[NativeName ("tls_protocol_version_t")]
 	public enum TlsProtocolVersion : ushort {
@@ -50,7 +48,6 @@ namespace Security {
 		Dtls12 = 65277,
 	}
 
-	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_ciphersuite_t)
 	[NativeName ("tls_ciphersuite_t")]
 	public enum TlsCipherSuite : ushort {
@@ -94,7 +91,6 @@ namespace Security {
 		Chacha20Poly1305Sha256 = 4867,
 	}
 
-	[MacCatalyst (13, 1)]
 	// CF_ENUM(uint16_t, tls_ciphersuite_group_t)
 	[NativeName ("tls_ciphersuite_group_t")]
 	public enum TlsCipherSuiteGroup : ushort {
@@ -274,30 +270,24 @@ namespace Security {
 		BreakOnClientAuth,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FalseStart,
 
 		/// <summary>To be added.</summary>
 		SendOneByteRecord,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		AllowServerIdentityChange = 5,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Fallback = 6,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		BreakOnClientHello = 7,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		AllowRenegotiation = 8,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		EnableSessionTickets = 9,
 	}
 

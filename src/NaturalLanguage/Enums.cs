@@ -26,7 +26,6 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates preprocessing options for tags.</summary>
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NLTaggerOptions : ulong {
 		/// <summary>Indicates that <see cref="NaturalLanguage.NLTag.OtherWord" /> will be omitted from the tag stream.</summary>
 		OmitWords = 1uL << 0,
@@ -44,7 +43,6 @@ namespace NaturalLanguage {
 
 	/// <summary>Enumerates natural language model types.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NLModelType : long {
 		/// <summary>Indicates a model that tags text at a level of groups of tokens, such as sentences or paragraphs.</summary>
 		Classifier,
@@ -54,7 +52,6 @@ namespace NaturalLanguage {
 
 	/// <summary>Enumerates linguistic units to which tags can be applied.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NLTokenUnit : long {
 		/// <summary>Indicates a word.</summary>
 		Word,
@@ -70,7 +67,6 @@ namespace NaturalLanguage {
 	/// <summary>Enumerates content hints for tokenizers.</summary>
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NLTokenizerAttributes : ulong {
 		/// <summary>Indicates that the string contains numbers.</summary>
 		Numeric = 1uL << 0,
@@ -81,7 +77,6 @@ namespace NaturalLanguage {
 	}
 
 	/// <summary>Enumerates languages for which recognition is supported.</summary>
-	[MacCatalyst (13, 1)]
 	public enum NLLanguage {
 		/// <summary>Indicates that the language has not been evaluated yet.</summary>
 		[DefaultEnumValue]
@@ -259,13 +254,12 @@ namespace NaturalLanguage {
 		[Field ("NLLanguageVietnamese")]
 		Vietnamese,
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Field ("NLLanguageKazakh")]
 		Kazakh,
 	}
 
 	/// <summary>Enumerates classes of tags that are returned from a text classifier.</summary>
-	[MacCatalyst (13, 1)]
 	public enum NLTagScheme {
 		/// <summary>Indicates that tokens will be tagged with information about whether they are words, whitespace, or punctuation.</summary>
 		[Field ("NLTagSchemeTokenType")]
@@ -288,12 +282,11 @@ namespace NaturalLanguage {
 		/// <summary>Indicates that tokens will be tagged with the script in which they were written.</summary>
 		[Field ("NLTagSchemeScript")]
 		Script,
-		[MacCatalyst (13, 1)]
 		[Field ("NLTagSchemeSentimentScore")]
 		SentimentScore,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum NLScript {
 		[Field ("NLScriptUndetermined")]
 		Undetermined,
@@ -359,7 +352,7 @@ namespace NaturalLanguage {
 		TraditionalChinese,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NLContextualEmbeddingAssetsResult : long {
 		Available,
@@ -367,7 +360,7 @@ namespace NaturalLanguage {
 		Error,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 #if XAMCORE_5_0
 	public enum NLContextualEmbeddingKey {
 #else

@@ -54,7 +54,6 @@ namespace CoreAnimation {
 		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum CACornerMask : ulong {
@@ -73,7 +72,6 @@ namespace CoreAnimation {
 	[Flags]
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum CAAutoresizingMask : uint {
 		/// <summary>To be added.</summary>
 		NotSizable = 0,
@@ -94,7 +92,6 @@ namespace CoreAnimation {
 	// typedef int -> CAConstraintLayoutManager.h
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum CAConstraintAttribute {
 		/// <summary>To be added.</summary>
 		MinX,

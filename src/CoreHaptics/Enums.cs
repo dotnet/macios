@@ -12,7 +12,6 @@
 namespace CoreHaptics {
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	public enum CHHapticEventParameterId {
 		[Field ("CHHapticEventParameterIDHapticIntensity")]
 		HapticIntensity,
@@ -46,7 +45,6 @@ namespace CoreHaptics {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	public enum CHHapticDynamicParameterId {
 		[Field ("CHHapticDynamicParameterIDHapticIntensityControl")]
 		HapticIntensityControl,
@@ -86,7 +84,6 @@ namespace CoreHaptics {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	public enum CHHapticEventType {
 		[Field ("CHHapticEventTypeHapticTransient")]
 		HapticTransient,
@@ -102,7 +99,6 @@ namespace CoreHaptics {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CHHapticErrorCode : long {
 		EngineNotRunning = -4805,
@@ -132,7 +128,6 @@ namespace CoreHaptics {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CHHapticEngineFinishedAction : long {
 		StopEngine = 1,
@@ -140,7 +135,6 @@ namespace CoreHaptics {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CHHapticEngineStoppedReason : long {
 		AudioSessionInterrupt = 1,
@@ -149,11 +143,9 @@ namespace CoreHaptics {
 		NotifyWhenFinished = 4,
 		[iOS (14, 0)]
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		EngineDestroyed = 5,
 		[iOS (14, 0)]
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		GameControllerDisconnect = 6,
 		SystemError = -1,
 	}

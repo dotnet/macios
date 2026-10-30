@@ -3,7 +3,6 @@ using CoreFoundation;
 
 namespace Network {
 
-	[MacCatalyst (13, 1)]
 	[NativeName ("nw_error_domain_t")]
 	public enum NWErrorDomain {
 		/// <summary>An invalid error domain.</summary>
@@ -23,7 +22,6 @@ namespace Network {
 		WiFiAware,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
 	partial interface NWContentContextConstants {
@@ -37,7 +35,6 @@ namespace Network {
 		IntPtr _DefaultStream { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
 	partial interface NWConnectionConstants {
@@ -46,7 +43,6 @@ namespace Network {
 		IntPtr _SendIdempotentContent { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal]
 	partial interface NWParametersConstants {
@@ -59,7 +55,6 @@ namespace Network {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Static]
 	[Internal]
 	partial interface NWPrivacyContextConstants {
@@ -70,7 +65,6 @@ namespace Network {
 
 	[iOS (14, 2)]
 	[TV (14, 2)]
-	[MacCatalyst (14, 2)]
 	// untyped `nw_path_unsatisfied_reason_t` enum
 	[NativeName ("nw_path_unsatisfied_reason_t")]
 	enum NWPathUnsatisfiedReason {

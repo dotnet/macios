@@ -13,7 +13,6 @@ using System.Reflection;
 namespace ClassKit {
 
 	/// <summary>Enumerates activity outcome types.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	enum CLSBinaryValueType : long {
@@ -24,12 +23,10 @@ namespace ClassKit {
 		/// <summary>Indicates an activity that results in a yes or no value</summary>
 		YesNo,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (14, 0)]
 		CorrectIncorrect,
 	}
 
 	/// <summary>Enumerates curriculum units.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	enum CLSContextType : long {
@@ -66,15 +63,12 @@ namespace ClassKit {
 		/// <summary>Indicates a context for a video.</summary>
 		Video,
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		Course,
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		Custom,
 	}
 
 	/// <summary>Enumerates ClassKit error codes.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	[ErrorDomain ("CLSErrorCodeDomain")]
@@ -104,7 +98,6 @@ namespace ClassKit {
 
 
 	/// <summary>Enumerates topics for contexts.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	enum CLSContextTopic {
 		/// <summary>Indicates mathematics.</summary>
@@ -137,7 +130,6 @@ namespace ClassKit {
 	}
 
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, iOS (14, 0)]
 	[Native]
 	public enum CLSProgressReportingCapabilityKind : long {
@@ -149,7 +141,6 @@ namespace ClassKit {
 	}
 
 	/// <summary>Contains keys for accessing error data.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Static]
 	interface CLSErrorUserInfoKeys {
@@ -166,13 +157,12 @@ namespace ClassKit {
 		[Field ("CLSErrorUnderlyingErrorsKey")]
 		NSString UnderlyingErrorsKey { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("CLSErrorSuccessfulObjectsKey")]
 		NSString SuccessfulObjectsKey { get; }
 	}
 
 	/// <summary>Enumerates key paths for retrieving ClassKit contexts.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Static]
 	interface CLSPredicateKeyPath {
@@ -214,7 +204,6 @@ namespace ClassKit {
 	}
 
 	/// <summary>Base class for ClassKit objects.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -228,7 +217,6 @@ namespace ClassKit {
 	}
 
 	/// <summary>Encapsulates and interaction between the student and a task for a context.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
@@ -267,14 +255,12 @@ namespace ClassKit {
 		[Export ("stop")]
 		void Stop ();
 
-		[Introduced (PlatformName.MacCatalyst, 14, 5)]
 		[iOS (14, 5)]
 		[Export ("removeAllActivityItems")]
 		void RemoveAllActivityItems ();
 	}
 
 	/// <summary>Base class for activity items.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
@@ -287,7 +273,6 @@ namespace ClassKit {
 		string Identifier { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
@@ -305,14 +290,12 @@ namespace ClassKit {
 	}
 
 	/// <summary>A node in a ClassKit context hierarchy.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]
 	interface CLSContext {
 
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		[Export ("identifierPath", ArgumentSemantic.Copy)]
 		string [] IdentifierPath { get; }
 
@@ -326,7 +309,6 @@ namespace ClassKit {
 		CLSContextType Type { get; }
 
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("customTypeName")]
 		string CustomTypeName { get; set; }
 
@@ -337,12 +319,10 @@ namespace ClassKit {
 		nint DisplayOrder { get; set; }
 
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("summary")]
 		string Summary { get; set; }
 
 		[iOS (13, 4)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("thumbnail", ArgumentSemantic.Assign)]
 		CGImage Thumbnail { get; set; }
 
@@ -368,37 +348,30 @@ namespace ClassKit {
 		void ResignActive ();
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("assignable")]
 		bool Assignable { [Bind ("isAssignable")] get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("suggestedAge", ArgumentSemantic.Assign)]
 		NSRange SuggestedAge { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("suggestedCompletionTime", ArgumentSemantic.Assign)]
 		NSRange SuggestedCompletionTime { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("progressReportingCapabilities", ArgumentSemantic.Copy)]
 		NSSet<CLSProgressReportingCapability> ProgressReportingCapabilities { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("setType:")]
 		void SetType (CLSContextType type);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("addProgressReportingCapabilities:")]
 		void AddProgressReportingCapabilities (NSSet<CLSProgressReportingCapability> capabilities);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("resetProgressReportingCapabilities")]
 		void ResetProgressReportingCapabilities ();
 
@@ -422,17 +395,14 @@ namespace ClassKit {
 		[Export ("descendantMatchingIdentifierPath:completion:")]
 		void FindDescendantMatching (string [] identifierPath, Action<CLSContext, NSError> completion);
 
-		[Introduced (PlatformName.MacCatalyst, 14, 5)]
 		[iOS (14, 5)]
 		[Export ("navigationChildContexts", ArgumentSemantic.Copy)]
 		CLSContext [] NavigationChildContexts { get; }
 
-		[Introduced (PlatformName.MacCatalyst, 14, 5)]
 		[iOS (14, 5)]
 		[Export ("addNavigationChildContext:")]
 		void AddNavigationChild (CLSContext childContext);
 
-		[Introduced (PlatformName.MacCatalyst, 14, 5)]
 		[iOS (14, 5)]
 		[Export ("removeNavigationChildContext:")]
 		void RemoveNavigationChild (CLSContext childContext);
@@ -452,7 +422,6 @@ namespace ClassKit {
 	///     <remarks>
 	///       <para>ClassKit contexts are used to arrange nested content, such as chapters and sections of a lesson plan, in order to organize and track student progress and tests. ClassKit supports a maximum of 8 layers of content nesting.</para>
 	///     </remarks>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -473,7 +442,6 @@ namespace ClassKit {
 	}
 
 	/// <summary>Manages ClassKit data by operating on hierarchical contexts, such as acts, chapters, sections, and so on.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -514,7 +482,6 @@ namespace ClassKit {
 		[Export ("saveWithCompletion:")]
 		void Save ([NullAllowed] Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("completeAllAssignedActivitiesMatching:")]
 		void CompleteAllAssignedActivitiesMatching (string [] contextPath);
 
@@ -541,7 +508,6 @@ namespace ClassKit {
 		[Export ("removeContext:")]
 		void Remove (CLSContext context);
 
-		[Introduced (PlatformName.MacCatalyst, 14, 5)]
 		[iOS (14, 5)]
 		[Async]
 		[Export ("fetchActivityForURL:completion:")]
@@ -568,7 +534,6 @@ namespace ClassKit {
 	delegate void CLSDataStoreCheckAssignedDocumentCompletionHandler (bool isAssigned, [NullAllowed] NSError error);
 
 	/// <summary>Represents a quantitative data item.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
@@ -583,7 +548,6 @@ namespace ClassKit {
 	}
 
 	/// <summary>Represents a score for a test or quiz.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (CLSActivityItem))]
 	[DisableDefaultCtor]
@@ -600,7 +564,6 @@ namespace ClassKit {
 		NativeHandle Constructor (string identifier, string title, double score, double maxScore);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Protocol]
 	interface CLSContextProvider {
@@ -613,7 +576,6 @@ namespace ClassKit {
 		void UpdateDescendants (CLSContext context, Action<NSError> completion);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, iOS (14, 0)]
 	[BaseType (typeof (CLSObject))]
 	[DisableDefaultCtor]

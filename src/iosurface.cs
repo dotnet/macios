@@ -15,13 +15,11 @@ namespace IOSurface {
 	[Static]
 	[Internal]
 	// See bug #59201 
-	[MacCatalyst (13, 1)]
 	interface IOSurfacePropertyKey {
 		[Internal]
 		[Field ("IOSurfacePropertyAllocSizeKey")]
 		NSString _DeprecatedAllocSizeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal]
 		[Field ("IOSurfacePropertyKeyAllocSize")]
 		NSString _NewAllocSizeKey { get; }
@@ -86,7 +84,7 @@ namespace IOSurface {
 		[Field ("IOSurfacePropertyKeyPixelSizeCastingAllowed")]
 		NSString PixelSizeCastingAllowedKey { get; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Field ("IOSurfacePropertyKeyName")]
 		NSString NameKey { get; }
 	}
@@ -177,11 +175,10 @@ namespace IOSurface {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		bool PixelSizeCastingAllowed { get; set; }
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		string Name { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface IOSurface : NSSecureCoding {
 		[Internal, Export ("initWithProperties:")]
@@ -324,7 +321,6 @@ namespace IOSurface {
 		[Export ("allowsPixelSizeCasting")]
 		bool AllowsPixelSizeCasting { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("setPurgeable:oldState:")]
 		int _SetPurgeable (IOSurfacePurgeabilityState newState, IntPtr oldStatePtr);
 	}

@@ -16,7 +16,6 @@ namespace NearbyInteraction {
 #else
 	[NoTV, iOS (14, 0)]
 #endif
-	[MacCatalyst (14, 0)]
 #if !__MACOS__
 	[ErrorDomain ("NIErrorDomain")]
 #endif
@@ -39,14 +38,13 @@ namespace NearbyInteraction {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NINearbyObjectRemovalReason : long {
 		Timeout,
 		PeerEnded,
 	}
 
-	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV]
 	[Native]
 	public enum NIAlgorithmConvergenceStatus : long {
 		Unknown,
@@ -54,7 +52,7 @@ namespace NearbyInteraction {
 		Converged,
 	}
 
-	[iOS (16, 0), NoTV, MacCatalyst (16, 0)]
+	[iOS (16, 0), NoTV]
 	[Native]
 	public enum NINearbyObjectVerticalDirectionEstimate : long {
 		Unknown = 0,
@@ -64,7 +62,7 @@ namespace NearbyInteraction {
 		AboveOrBelow = 4,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum NIMotionActivityState : long {
 		Unknown = 0,

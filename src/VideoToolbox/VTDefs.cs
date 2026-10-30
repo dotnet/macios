@@ -80,15 +80,13 @@ namespace VideoToolbox {
 		/// <summary>To be added.</summary>
 		VideoDecoderRemoved = -17690,
 		SessionMalfunction = -17691,
-		[MacCatalyst (13, 1)]
 		DecoderNeedsRosetta = -17692,
-		[MacCatalyst (13, 1)]
 		EncoderNeedsRosetta = -17693,
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		VideoDecoderReferenceMissing = -17694,
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		VideoDecoderCallbackMessaging = -17695,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		VideoDecoderUnknownErr = -17696,
 		ExtensionDisabledErr = -17697,
 		VideoEncoderMVHEVCVideoLayerIDsMismatchErr = -17698,
@@ -249,10 +247,8 @@ namespace VideoToolbox {
 		/// <summary>The H.263 compression format, profile 3, level 4.5.</summary>
 		H263Profile3Level45,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		HevcMainAutoLevel,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		HevcMain10AutoLevel,
 	}
 
@@ -411,7 +407,6 @@ namespace VideoToolbox {
 	}
 
 	/// <summary>Image scaling options.</summary>
-	[MacCatalyst (13, 1)]
 	public enum VTScalingMode {
 		/// <summary>To be added.</summary>
 		Unset,
@@ -426,7 +421,6 @@ namespace VideoToolbox {
 	}
 
 	/// <summary>Chroma downsampling techniques.</summary>
-	[MacCatalyst (13, 1)]
 	public enum VTDownsamplingMode {
 		/// <summary>To be added.</summary>
 		Unset,
@@ -437,7 +431,6 @@ namespace VideoToolbox {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	public enum HdrMetadataInsertionMode {
 		[Field ("kVTHDRMetadataInsertionMode_None")]
 		None,
@@ -450,7 +443,7 @@ namespace VideoToolbox {
 
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	public enum VTRotation {
 		[DefaultEnumValue]
 		[Field ("kVTRotation_0")]

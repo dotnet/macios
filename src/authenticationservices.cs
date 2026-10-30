@@ -24,7 +24,6 @@ using LAContext = Foundation.NSObject;
 namespace AuthenticationServices {
 
 	/// <summary>Enumerates error codes associated with authentication service store requests.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	[ErrorDomain ("ASCredentialIdentityStoreErrorDomain")]
@@ -38,7 +37,6 @@ namespace AuthenticationServices {
 	}
 
 	/// <summary>Error codes associated with Authentication Services extensions.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	[ErrorDomain ("ASExtensionErrorDomain")]
@@ -62,13 +60,11 @@ namespace AuthenticationServices {
 		// on tvOS and watchOS (which is incorrect)
 		[NoTV]
 		[NoMac, iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("ASExtensionLocalizedFailureReasonErrorKey")]
 		NSString LocalizedFailureReasonErrorKey { get; }
 	}
 
 	/// <summary>Enumerates the types of service identified.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Native]
 	public enum ASCredentialServiceIdentifierType : long {
@@ -84,7 +80,6 @@ namespace AuthenticationServices {
 	/// <summary>Enumerates errors associated with a <see cref="AuthenticationServices.ASWebAuthenticationSession" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("ASWebAuthenticationSessionErrorDomain")]
 	public enum ASWebAuthenticationSessionErrorCode : long {
@@ -94,7 +89,7 @@ namespace AuthenticationServices {
 		PresentationContextInvalid = 3,
 	}
 
-	[Flags, NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[Flags, NoTV, iOS (16, 0)]
 	[Native]
 	public enum ASAuthorizationControllerRequestOptions : ulong {
 		ImmediatelyAvailableCredentials = 1uL << 0,
@@ -149,7 +144,7 @@ namespace AuthenticationServices {
 		SetupAssistant = 1 << 6,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (16, 4)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState : long {
 		Authorized,
@@ -157,7 +152,7 @@ namespace AuthenticationServices {
 		NotDetermined,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (14, 0)]
+	[NoTV, iOS (17, 0)]
 	[Native]
 	public enum ASCredentialRequestType : long {
 		Password = 0,
@@ -195,7 +190,6 @@ namespace AuthenticationServices {
 	delegate void ASCredentialIdentityStoreGetCredentialIdentitiesHandler (IASCredentialIdentity [] credentialIdentities);
 
 	/// <summary>A class whose shared instance (see <see cref="AuthenticationServices.ASCredentialIdentityStore.SharedStore" />) holds credentials across providers.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -283,23 +277,22 @@ namespace AuthenticationServices {
 		void ReplaceCredentialIdentities (ASPasswordCredentialIdentity [] newCredentialIdentities, [NullAllowed] ASCredentialIdentityStoreCompletionHandler completion);
 
 		[Async]
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("saveCredentialIdentityEntries:completion:")]
 		void SaveCredentialIdentityEntries (IASCredentialIdentity [] credentialIdentities, [NullAllowed] Action<bool, NSError> completion);
 
 		[Async]
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("replaceCredentialIdentityEntries:completion:")]
 		void ReplaceCredentialIdentityEntries (IASCredentialIdentity [] newCredentialIdentities, [NullAllowed] Action<bool, NSError> completion);
 
 		[Async]
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("removeCredentialIdentityEntries:completion:")]
 		void RemoveCredentialIdentityEntries (IASCredentialIdentity [] credentialIdentities, [NullAllowed] Action<bool, NSError> completion);
 	}
 
 	/// <summary>Data related to the availability and capability of the credential identity store.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -321,7 +314,6 @@ namespace AuthenticationServices {
 	delegate void ASCredentialProviderExtensionRequestCompletionHandler (bool expired);
 
 	/// <summary>An <see cref="NSExtensionContext" /> subclass that provides context for a credential provider.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSExtensionContext))]
 	[DisableDefaultCtor]
@@ -344,12 +336,12 @@ namespace AuthenticationServices {
 		void CancelRequest (NSError error);
 
 		[Async]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("completeRegistrationRequestWithSelectedPasskeyCredential:completionHandler:")]
 		void CompleteRegistrationRequest (ASPasskeyRegistrationCredential credential, [NullAllowed] Action<bool> completionHandler);
 
 		[Async]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("completeAssertionRequestWithSelectedPasskeyCredential:completionHandler:")]
 		void CompleteAssertionRequest (ASPasskeyAssertionCredential credential, [NullAllowed] Action<bool> completionHandler);
 
@@ -375,7 +367,6 @@ namespace AuthenticationServices {
 	}
 
 	/// <summary>Holds the identification for a credential service.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -419,7 +410,6 @@ namespace AuthenticationServices {
 	}
 
 	/// <summary>Associates a <see cref="AuthenticationServices.ASPasswordCredentialIdentity.User" /> string with a record in the developer's credential database.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -469,7 +459,6 @@ namespace AuthenticationServices {
 	}
 
 	/// <summary>System-provided standard <see cref="UIViewController" /> for presenting a credential provider extension.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface ASCredentialProviderViewController {
@@ -508,19 +497,19 @@ namespace AuthenticationServices {
 		[Export ("prepareInterfaceForExtensionConfiguration")]
 		void PrepareInterfaceForExtensionConfiguration ();
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("prepareCredentialListForServiceIdentifiers:requestParameters:")]
 		void PrepareCredentialList (ASCredentialServiceIdentifier [] serviceIdentifiers, ASPasskeyCredentialRequestParameters requestParameters);
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("provideCredentialWithoutUserInteractionForRequest:")]
 		void ProvideCredentialWithoutUserInteraction (IASCredentialRequest credentialRequest);
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("prepareInterfaceToProvideCredentialForRequest:")]
 		void PrepareInterfaceToProvideCredential (IASCredentialRequest credentialRequest);
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("prepareInterfaceForPasskeyRegistration:")]
 		void PrepareInterfaceForPasskeyRegistration (IASCredentialRequest registrationRequest);
 
@@ -571,7 +560,6 @@ namespace AuthenticationServices {
 
 	/// <summary>Associates a username and a password.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasswordCredential : NSCopying, NSSecureCoding, ASAuthorizationCredential {
@@ -613,7 +601,6 @@ namespace AuthenticationServices {
 	/// <summary>Manages a one-time Safari login experience for the developer's app.</summary>
 	/// <remarks>To be added.</remarks>
 	[TV (16, 0)]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASWebAuthenticationSession {
@@ -645,16 +632,13 @@ namespace AuthenticationServices {
 		///   <para>After the initial call to this method, subsequent calls have no effect.</para>
 		/// </remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("cancel")]
 		void Cancel ();
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("presentationContextProvider", ArgumentSemantic.Weak)]
 		IASWebAuthenticationPresentationContextProviding PresentationContextProvider { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("prefersEphemeralWebBrowserSession")]
 		bool PrefersEphemeralWebBrowserSession { get; set; }
 
@@ -663,12 +647,10 @@ namespace AuthenticationServices {
 		NSDictionary AdditionalHeaderFields { get; set; }
 
 		[iOS (13, 4)]
-		[MacCatalyst (13, 1)]
 		[Export ("canStart")]
 		bool CanStart { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorization {
@@ -688,7 +670,6 @@ namespace AuthenticationServices {
 		IntPtr _Credential { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	enum ASAuthorizationScope {
 		[Field ("ASAuthorizationScopeFullName")]
 		FullName,
@@ -696,7 +677,6 @@ namespace AuthenticationServices {
 		Email,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum ASUserDetectionStatus : long {
 		Unsupported,
@@ -704,21 +684,21 @@ namespace AuthenticationServices {
 		LikelyReal,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Native]
 	public enum ASAuthorizationPublicKeyCredentialLargeBlobSupportRequirement : long {
 		Required,
 		Preferred,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Native]
 	public enum ASAuthorizationPublicKeyCredentialLargeBlobAssertionOperation : long {
 		Read,
 		Write,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum ASPublicKeyCredentialClientDataCrossOriginValue : long {
 		NotSet,
@@ -726,7 +706,7 @@ namespace AuthenticationServices {
 		SameOriginWithAncestors,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum ASAuthorizationPublicKeyCredentialAttachment : long {
 		Platform,
@@ -753,7 +733,6 @@ namespace AuthenticationServices {
 		NotChild,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "ASAuthorizationAppleIDCredential")]
 	[DisableDefaultCtor]
 	interface ASAuthorizationAppleIdCredential : ASAuthorizationCredential {
@@ -788,7 +767,6 @@ namespace AuthenticationServices {
 		ASUserAgeRange UserAgeRange { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum ASAuthorizationAppleIdProviderCredentialState : long {
 		Revoked,
@@ -797,7 +775,6 @@ namespace AuthenticationServices {
 		Transferred,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "ASAuthorizationAppleIDProvider")]
 	interface ASAuthorizationAppleIdProvider : ASAuthorizationProvider {
 
@@ -813,7 +790,6 @@ namespace AuthenticationServices {
 		NSString CredentialRevokedNotification { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ASAuthorizationOpenIdRequest), Name = "ASAuthorizationAppleIDRequest")]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[ASAuthorizationAppleIDRequest init]: unrecognized selector sent to instance 0x600002ff8b40 
 	interface ASAuthorizationAppleIdRequest {
@@ -824,7 +800,6 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationControllerDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -843,7 +818,6 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationControllerPresentationContextProviding { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface ASAuthorizationControllerPresentationContextProviding {
 
@@ -852,7 +826,6 @@ namespace AuthenticationServices {
 		UIWindow GetPresentationAnchor (ASAuthorizationController controller);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationController {
@@ -871,7 +844,6 @@ namespace AuthenticationServices {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("presentationContextProvider", ArgumentSemantic.Weak)]
 		IASAuthorizationControllerPresentationContextProviding PresentationContextProvider { get; set; }
 
@@ -887,23 +859,19 @@ namespace AuthenticationServices {
 		void PerformAutoFillAssistedRequests ();
 
 		[NoTV, iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Export ("performRequestsWithOptions:")]
 		void PerformRequests (ASAuthorizationControllerRequestOptions options);
 
 		[TV (18, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Export ("cancel")]
 		void Cancel ();
 	}
 
 	interface IASAuthorizationCredential { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface ASAuthorizationCredential : NSCopying, NSSecureCoding { }
 
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("ASAuthorizationErrorDomain")]
 	[Native]
 	public enum ASAuthorizationError : long {
@@ -920,7 +888,6 @@ namespace AuthenticationServices {
 		DeviceNotConfiguredForPasskeyCreation = 1010,
 	}
 
-	[MacCatalyst (13, 1)]
 	enum ASAuthorizationOperation {
 		[Field ("ASAuthorizationOperationImplicit")]
 		Implicit,
@@ -935,7 +902,6 @@ namespace AuthenticationServices {
 		Logout,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ASAuthorizationRequest), Name = "ASAuthorizationOpenIDRequest")]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[ASAuthorizationOpenIDRequest init]: unrecognized selector sent to instance 0x600002ff0660 
 	interface ASAuthorizationOpenIdRequest {
@@ -955,7 +921,6 @@ namespace AuthenticationServices {
 		NSString RequestedOperation { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationPasswordProvider : ASAuthorizationProvider {
 
@@ -963,7 +928,6 @@ namespace AuthenticationServices {
 		ASAuthorizationPasswordRequest CreateRequest ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	// Name: NSInvalidArgumentException Reason: -[ASAuthorizationPasswordRequest init]: unrecognized selector sent to instance 0x6000005f2dc0
 	[DisableDefaultCtor]
@@ -971,11 +935,9 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationProvider { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface ASAuthorizationProvider { }
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[Protocol]
 	interface ASAuthorizationProviderExtensionAuthorizationRequestHandler {
@@ -988,7 +950,6 @@ namespace AuthenticationServices {
 		void CancelAuthorization (ASAuthorizationProviderExtensionAuthorizationRequest request);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	enum ASAuthorizationProviderAuthorizationOperation {
 		// no value yet - but we must handle `nil` as a default value
@@ -997,17 +958,14 @@ namespace AuthenticationServices {
 		None,
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("ASAuthorizationProviderAuthorizationOperationConfigurationRemoved")]
 		ConfigurationRemoved,
 
 		[NoTV, iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Field ("ASAuthorizationProviderAuthorizationOperationDirectRequest")]
 		DirectRequest,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationProviderExtensionAuthorizationRequest {
@@ -1030,7 +988,7 @@ namespace AuthenticationServices {
 		[Export ("completeWithError:")]
 		void Complete (NSError error);
 
-		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[Export ("completeWithAuthorizationResult:")]
 		void Complete (ASAuthorizationProviderExtensionAuthorizationResult authorizationResult);
 
@@ -1066,21 +1024,18 @@ namespace AuthenticationServices {
 		NSDictionary AuthorizationOptions { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("callerManaged")]
 		bool CallerManaged { [Bind ("isCallerManaged")] get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("callerTeamIdentifier")]
 		string CallerTeamIdentifier { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("localizedCallerDisplayName")]
 		string LocalizedCallerDisplayName { get; }
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("userInterfaceEnabled")]
 		bool UserInterfaceEnabled { [Bind ("isUserInterfaceEnabled")] get; }
 
@@ -1095,7 +1050,6 @@ namespace AuthenticationServices {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationRequest : NSCopying, NSSecureCoding {
@@ -1109,7 +1063,6 @@ namespace AuthenticationServices {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSingleSignOnCredential : ASAuthorizationCredential {
@@ -1130,13 +1083,12 @@ namespace AuthenticationServices {
 		[NullAllowed, Export ("authenticatedResponse", ArgumentSemantic.Copy)]
 		NSHttpUrlResponse AuthenticatedResponse { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("privateKeys")]
 		SecKey [] PrivateKeys { get; }
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSingleSignOnProvider : ASAuthorizationProvider {
@@ -1156,7 +1108,6 @@ namespace AuthenticationServices {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (ASAuthorizationOpenIdRequest))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[ASAuthorizationSingleSignOnRequest init]: unrecognized selector sent to instance 0x60000095aa60
 	interface ASAuthorizationSingleSignOnRequest {
@@ -1164,23 +1115,20 @@ namespace AuthenticationServices {
 		[Export ("authorizationOptions", ArgumentSemantic.Copy)]
 		NSUrlQueryItem [] AuthorizationOptions { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("userInterfaceEnabled")]
 		bool UserInterfaceEnabled { [Bind ("isUserInterfaceEnabled")] get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum ASAuthorizationAppleIdButtonType : long {
 		SignIn,
 		Continue,
 		[TV (13, 2), iOS (13, 2)]
-		[MacCatalyst (13, 1)]
 		SignUp,
 		Default = SignIn,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum ASAuthorizationAppleIdButtonStyle : long {
 		White = 0,
@@ -1188,7 +1136,6 @@ namespace AuthenticationServices {
 		Black = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIControl), Name = "ASAuthorizationAppleIDButton")]
 	[DisableDefaultCtor]
 #if MONOMAC
@@ -1206,7 +1153,6 @@ namespace AuthenticationServices {
 		NativeHandle Constructor (ASAuthorizationAppleIdButtonType type, ASAuthorizationAppleIdButtonStyle style);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
 	}
@@ -1214,7 +1160,6 @@ namespace AuthenticationServices {
 	interface IASWebAuthenticationPresentationContextProviding { }
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface ASWebAuthenticationPresentationContextProviding {
 
@@ -1225,7 +1170,6 @@ namespace AuthenticationServices {
 
 	interface IASWebAuthenticationSessionRequestDelegate { }
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[NoTV]
 	[NoiOS]
 	[Protocol]
@@ -1257,7 +1201,6 @@ namespace AuthenticationServices {
 		void CancelWebAuthenticationSessionRequest (ASWebAuthenticationSessionRequest request);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[NoTV]
 	[NoiOS]
 	[BaseType (typeof (NSObject))]
@@ -1333,7 +1276,6 @@ namespace AuthenticationServices {
 	}
 
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -1343,7 +1285,6 @@ namespace AuthenticationServices {
 
 	interface IASAccountAuthenticationModificationControllerDelegate { }
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[Protocol]
@@ -1360,7 +1301,6 @@ namespace AuthenticationServices {
 
 	interface IASAccountAuthenticationModificationControllerPresentationContextProviding { }
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[Protocol]
@@ -1371,7 +1311,6 @@ namespace AuthenticationServices {
 		UIWindow GetPresentationAnchor (ASAccountAuthenticationModificationController controller);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (NSObject))]
@@ -1391,7 +1330,6 @@ namespace AuthenticationServices {
 		void PerformRequest (ASAccountAuthenticationModificationRequest request);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (NSExtensionContext))]
@@ -1412,7 +1350,6 @@ namespace AuthenticationServices {
 		void CancelRequest (NSError error);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (ASAccountAuthenticationModificationRequest))]
@@ -1432,7 +1369,6 @@ namespace AuthenticationServices {
 		NSDictionary UserInfo { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (ASAccountAuthenticationModificationRequest))]
@@ -1452,7 +1388,6 @@ namespace AuthenticationServices {
 		NSDictionary UserInfo { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[iOS (14, 0)]
 	[NoTV, NoMac]
 	[BaseType (typeof (UIViewController))]
@@ -1477,7 +1412,7 @@ namespace AuthenticationServices {
 		void CancelRequest ();
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[Static]
 	interface ASAuthorizationPublicKeyCredentialAttestationKind {
 		[Field ("ASAuthorizationPublicKeyCredentialAttestationKindNone")]
@@ -1494,7 +1429,7 @@ namespace AuthenticationServices {
 	}
 
 #if !XAMCORE_5_0
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Static]
 	interface ASAuthorizationPublicKeyCredentialUserVerificationPreference {
 		[Field ("ASAuthorizationPublicKeyCredentialUserVerificationPreferencePreferred")]
@@ -1508,7 +1443,7 @@ namespace AuthenticationServices {
 	}
 #endif
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 #if XAMCORE_5_0
 	enum ASAuthorizationPublicKeyCredentialUserVerificationPreference {
 #else
@@ -1524,7 +1459,7 @@ namespace AuthenticationServices {
 		Discouraged,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	enum ASAuthorizationPublicKeyCredentialResidentKeyPreference {
 		[Field ("ASAuthorizationPublicKeyCredentialResidentKeyPreferenceDiscouraged")]
 		Discouraged,
@@ -1534,7 +1469,7 @@ namespace AuthenticationServices {
 		Required,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	enum ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport {
 		[Field ("ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransportUSB")]
 		Usb,
@@ -1544,14 +1479,14 @@ namespace AuthenticationServices {
 		Bluetooth,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[Native]
 	enum ASCoseAlgorithmIdentifier : long {
 		ES256 = -7,
 	}
 
 	// Introduced in Xcode13 Beta3 but not used anywhere
-	// [iOS (15,0), MacCatalyst (15,0), NoTV]
+	// [iOS (15,0), NoTV]
 	// [Native]
 	// enum AscoseEllipticCurveIdentifier : long {
 	// 	P256 = 1,
@@ -1580,7 +1515,7 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationPublicKeyCredentialAssertion { }
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASAuthorizationPublicKeyCredentialAssertion : ASPublicKeyCredential {
 		[Abstract]
@@ -1596,7 +1531,7 @@ namespace AuthenticationServices {
 		NSData Signature { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPlatformPublicKeyCredentialAssertionRequest : ASAuthorizationPublicKeyCredentialAssertionRequest {
@@ -1606,7 +1541,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPlatformPublicKeyCredentialDescriptor [] PlatformAllowedCredentials { get; set; }
 
 		[NullAllowed]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("largeBlob", ArgumentSemantic.Assign)]
 		ASAuthorizationPublicKeyCredentialLargeBlobAssertionInput LargeBlob { get; set; }
 
@@ -1615,7 +1550,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPublicKeyCredentialPrfAssertionInput Prf { get; set; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest : ASAuthorizationPublicKeyCredentialAssertionRequest {
@@ -1636,7 +1571,7 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationPublicKeyCredentialAssertionRequest { }
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASAuthorizationPublicKeyCredentialAssertionRequest : NSSecureCoding, NSCopying {
 		[Abstract]
@@ -1658,7 +1593,7 @@ namespace AuthenticationServices {
 
 	interface IASAuthorizationPublicKeyCredentialDescriptor { }
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASAuthorizationPublicKeyCredentialDescriptor : NSSecureCoding, NSCopying {
 		[Abstract]
@@ -1666,7 +1601,7 @@ namespace AuthenticationServices {
 		NSData CredentialId { get; set; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASAuthorizationPublicKeyCredentialRegistration : ASPublicKeyCredential {
 		[Abstract]
@@ -1674,7 +1609,7 @@ namespace AuthenticationServices {
 		NSData RawAttestationObject { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASAuthorizationPublicKeyCredentialRegistrationRequest : NSSecureCoding, NSCopying {
 		[Abstract]
@@ -1702,13 +1637,12 @@ namespace AuthenticationServices {
 		NSString UserVerificationPreference { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("attestationPreference")]
 		NSString AttestationPreference { get; set; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[Protocol]
 	interface ASPublicKeyCredential : ASAuthorizationCredential {
 		[Abstract]
@@ -1720,7 +1654,7 @@ namespace AuthenticationServices {
 		NSData CredentialId { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPlatformPublicKeyCredentialDescriptor : ASAuthorizationPublicKeyCredentialDescriptor {
@@ -1729,7 +1663,7 @@ namespace AuthenticationServices {
 		NativeHandle Constructor (NSData credentialId);
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
+	[iOS (15, 0), TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPlatformPublicKeyCredentialProvider : ASAuthorizationProvider {
@@ -1751,7 +1685,7 @@ namespace AuthenticationServices {
 		void CreateCredentialRegistrationRequest (NSData challenge, string name, NSData userId, ASAuthorizationPlatformPublicKeyCredentialRegistrationRequestStyle requestStyle);
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationProviderExtensionAuthorizationResult {
@@ -1774,7 +1708,7 @@ namespace AuthenticationServices {
 		SecKey [] PrivateKeys { get; set; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPublicKeyCredentialParameters : NSSecureCoding, NSCopying {
@@ -1785,7 +1719,7 @@ namespace AuthenticationServices {
 		ASCoseAlgorithmIdentifier Algorithm { get; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialDescriptor : ASAuthorizationPublicKeyCredentialDescriptor {
@@ -1798,7 +1732,7 @@ namespace AuthenticationServices {
 		NSString [] Transports { get; set; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialProvider : ASAuthorizationProvider {
@@ -1816,7 +1750,7 @@ namespace AuthenticationServices {
 		string RelyingPartyIdentifier { get; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest : ASAuthorizationPublicKeyCredentialRegistrationRequest {
@@ -1849,21 +1783,21 @@ namespace AuthenticationServices {
 		NSString Other { get; }
 	}
 
-	[TV (16, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (16, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationPlatformPublicKeyCredentialAssertion : ASAuthorizationPublicKeyCredentialAssertion {
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		[Export ("attachment")]
 		ASAuthorizationPublicKeyCredentialAttachment Attachment { get; }
 
 		[Obsolete ("Use 'LargeBlob2' instead, this property has an incorrect property type..")]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[NullAllowed]
 		[Export ("largeBlob", ArgumentSemantic.Assign)]
 		ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput LargeBlob { get; }
 
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[NullAllowed]
 		[Export ("largeBlob", ArgumentSemantic.Assign)]
 #if XAMCORE_5_0
@@ -1878,13 +1812,13 @@ namespace AuthenticationServices {
 		ASAuthorizationPublicKeyCredentialPrfAssertionOutput Prf { get; }
 	}
 
-	[TV (16, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (16, 0), iOS (15, 0)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest : ASAuthorizationPublicKeyCredentialRegistrationRequest {
 
 		[NullAllowed]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("largeBlob", ArgumentSemantic.Assign)]
 		ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput LargeBlob { get; set; }
 
@@ -1897,7 +1831,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPlatformPublicKeyCredentialRegistrationRequestStyle RequestStyle { get; set; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialAssertion : ASAuthorizationPublicKeyCredentialAssertion {
 
@@ -1911,7 +1845,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPublicKeyCredentialPrfAssertionOutput Prf { get; }
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationSecurityKeyPublicKeyCredentialRegistration : ASAuthorizationPublicKeyCredentialRegistration {
@@ -1927,16 +1861,16 @@ namespace AuthenticationServices {
 		ASAuthorizationPublicKeyCredentialPrfRegistrationOutput Prf { get; }
 	}
 
-	[TV (16, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (16, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationPlatformPublicKeyCredentialRegistration : ASAuthorizationPublicKeyCredentialRegistration {
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		[Export ("attachment")]
 		ASAuthorizationPublicKeyCredentialAttachment Attachment { get; }
 
 		[NullAllowed]
-		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+		[NoTV, iOS (17, 0)]
 		[Export ("largeBlob", ArgumentSemantic.Assign)]
 		ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput LargeBlob { get; }
 
@@ -2376,7 +2310,7 @@ namespace AuthenticationServices {
 		LAContext AuthenticatedContext { get; set; }
 	}
 
-	[NoTV, iOS (17, 4), MacCatalyst (16, 4)]
+	[NoTV, iOS (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationWebBrowserPlatformPublicKeyCredential {
@@ -2393,16 +2327,14 @@ namespace AuthenticationServices {
 		[Export ("userHandle")]
 		NSData UserHandle { get; }
 
-		[MacCatalyst (17, 0)]
 		[Export ("providerName")]
 		string ProviderName { get; }
 
-		[MacCatalyst (17, 0)]
 		[NullAllowed, Export ("customTitle")]
 		string CustomTitle { get; }
 	}
 
-	[NoTV, iOS (17, 4), MacCatalyst (16, 4)]
+	[NoTV, iOS (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface ASAuthorizationWebBrowserPublicKeyCredentialManager {
@@ -2426,7 +2358,7 @@ namespace AuthenticationServices {
 
 	delegate void ASSettingsHelperRequestToTurnOnCredentialProviderExtensionCallback (bool appWasEnabledForAutofill);
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASSettingsHelper {
@@ -2449,7 +2381,7 @@ namespace AuthenticationServices {
 
 	interface IASCredentialRequest { }
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Protocol]
 	interface ASCredentialRequest : NSSecureCoding, NSCopying {
 		[Abstract]
@@ -2461,7 +2393,7 @@ namespace AuthenticationServices {
 		IASCredentialIdentity CredentialIdentity { get; }
 	}
 
-	[NoTV, MacCatalyst (17, 0), iOS (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasswordCredentialRequest : ASCredentialRequest {
@@ -2474,7 +2406,7 @@ namespace AuthenticationServices {
 		ASPasswordCredentialRequest Request (ASPasswordCredentialIdentity credentialIdentity);
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ASPasskeyRegistrationCredential : ASAuthorizationCredential {
 		[Export ("initWithRelyingParty:clientDataHash:credentialID:attestationObject:")]
@@ -2505,7 +2437,7 @@ namespace AuthenticationServices {
 		ASPasskeyRegistrationCredentialExtensionOutput ExtensionOutput { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasskeyCredentialRequest : ASCredentialRequest {
@@ -2548,7 +2480,7 @@ namespace AuthenticationServices {
 
 	interface IASCredentialIdentity { }
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Protocol]
 	interface ASCredentialIdentity {
 
@@ -2569,7 +2501,7 @@ namespace AuthenticationServices {
 		nint Rank { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasskeyCredentialIdentity : NSCopying, NSSecureCoding, ASCredentialIdentity {
@@ -2599,7 +2531,7 @@ namespace AuthenticationServices {
 		new nint Rank { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface ASPasskeyAssertionCredential : ASAuthorizationCredential {
@@ -2637,7 +2569,7 @@ namespace AuthenticationServices {
 		ASPasskeyAssertionCredentialExtensionOutput ExtensionOutput { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPasskeyCredentialRequestParameters : NSSecureCoding, NSCopying {
@@ -2658,7 +2590,7 @@ namespace AuthenticationServices {
 		ASPasskeyAssertionCredentialExtensionInput ExtensionInput { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPublicKeyCredentialLargeBlobRegistrationInput {
@@ -2669,7 +2601,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPublicKeyCredentialLargeBlobSupportRequirement SupportRequirement { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPublicKeyCredentialLargeBlobAssertionInput {
@@ -2683,7 +2615,7 @@ namespace AuthenticationServices {
 		NSData DataToWrite { get; set; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPublicKeyCredentialLargeBlobAssertionOutput {
@@ -2694,14 +2626,14 @@ namespace AuthenticationServices {
 		bool DidWrite { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface ASAuthorizationPublicKeyCredentialLargeBlobRegistrationOutput : NSCopying, NSSecureCoding {
 		[Export ("isSupported")]
 		bool IsSupported { get; }
 	}
 
-	[NoTV, iOS (17, 4), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ASPublicKeyCredentialClientData {
@@ -2744,7 +2676,7 @@ namespace AuthenticationServices {
 		bool SetCustomLoginRequestBodyClaims (NSDictionary<NSString, NSObject> claims, [NullAllowed] out NSError error);
 	}
 
-	[NoTV, iOS (17, 4), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 4)]
 	[Protocol]
 	interface ASAuthorizationWebBrowserPlatformPublicKeyCredentialProvider {
 		[Abstract]
@@ -2761,7 +2693,7 @@ namespace AuthenticationServices {
 		ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest CreateCredentialRegistrationRequest (ASPublicKeyCredentialClientData clientData, string name, NSData userId, ASAuthorizationPlatformPublicKeyCredentialRegistrationRequestStyle requestStyle);
 	}
 
-	[NoTV, iOS (17, 4), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 4)]
 	[Protocol]
 	interface ASAuthorizationWebBrowserPlatformPublicKeyCredentialRegistrationRequest {
 		[Abstract]
@@ -2774,8 +2706,6 @@ namespace AuthenticationServices {
 
 #if XAMCORE_5_0
 		[NoMacCatalyst]
-#else
-		[MacCatalyst (17, 0)] // not true, it's not available on Mac Catalyst, but we've released it this way so we need to keep it.
 #endif
 		[NoiOS]
 		[Abstract]

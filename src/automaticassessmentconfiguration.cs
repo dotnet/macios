@@ -12,7 +12,6 @@ namespace AutomaticAssessmentConfiguration {
 
 	[ErrorDomain ("AEAssessmentErrorDomain")]
 	[iOS (13, 4)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum AEAssessmentErrorCode : long {
 		Unknown = 1,
@@ -113,7 +112,6 @@ namespace AutomaticAssessmentConfiguration {
 	}
 
 	[iOS (13, 4)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AEAssessmentConfiguration : NSCopying {
 
@@ -138,12 +136,10 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsKeyboardShortcuts { get; set; }
 
 		[NoMac, iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("allowsActivityContinuation")]
 		bool AllowsActivityContinuation { get; set; }
 
 		[Mac (27, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("allowsDictation")]
 		bool AllowsDictation { get; set; }
 
@@ -272,7 +268,6 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsAccessibilityReader { get; set; }
 
 		[NoMac, iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'AllowsAccessibilitySpokenContent' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'AllowsAccessibilitySpokenContent' instead.")]
 		[Export ("allowsAccessibilitySpeech")]
@@ -284,28 +279,26 @@ namespace AutomaticAssessmentConfiguration {
 		bool AllowsAccessibilityTypingFeedback { get; set; }
 
 		[NoMac, iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("allowsPasswordAutoFill")]
 		bool AllowsPasswordAutoFill { get; set; }
 
 		[NoMac, iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("allowsContinuousPathKeyboard")]
 		bool AllowsContinuousPathKeyboard { get; set; }
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("configurationsByApplication", ArgumentSemantic.Copy)]
 		NSDictionary<AEAssessmentApplication, AEAssessmentParticipantConfiguration> ConfigurationsByApplication { get; }
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("mainParticipantConfiguration", ArgumentSemantic.Strong)]
 		AEAssessmentParticipantConfiguration MainParticipantConfiguration { get; }
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("removeApplication:")]
 		void Remove (AEAssessmentApplication application);
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("setConfiguration:forApplication:")]
 		void SetConfiguration (AEAssessmentParticipantConfiguration configuration, AEAssessmentApplication application);
 
@@ -332,7 +325,6 @@ namespace AutomaticAssessmentConfiguration {
 	}
 
 	[iOS (13, 4)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AEAssessmentSession {
@@ -360,11 +352,11 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("initWithConfiguration:")]
 		NativeHandle Constructor (AEAssessmentConfiguration configuration);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		AEAssessmentConfiguration Configuration { get; }
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("updateToConfiguration:")]
 		void Update (AEAssessmentConfiguration configuration);
 
@@ -378,7 +370,6 @@ namespace AutomaticAssessmentConfiguration {
 	interface IAEAssessmentSessionDelegate { }
 
 	[iOS (13, 4)]
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface AEAssessmentSessionDelegate {
@@ -395,23 +386,22 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("assessmentSessionDidEnd:")]
 		void DidEnd (AEAssessmentSession session);
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("assessmentSessionDidUpdate:")]
 		void DidUpdate (AEAssessmentSession session);
 
-		[iOS (17, 5), MacCatalyst (15, 0)]
+		[iOS (17, 5)]
 		[Export ("assessmentSession:failedToUpdateToConfiguration:error:")]
 		void FailedToUpdate (AEAssessmentSession session, AEAssessmentConfiguration configuration, NSError error);
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 #if XAMCORE_5_0
 	[DisableDefaultCtor]
 #endif
 	interface AEAssessmentApplication : NSCopying {
 		[iOS (17, 5)]
-		[MacCatalyst (15, 0)]
 		[Export ("initWithBundleIdentifier:")]
 		NativeHandle Constructor (string bundleIdentifier);
 
@@ -465,7 +455,7 @@ namespace AutomaticAssessmentConfiguration {
 		}
 	}
 
-	[iOS (17, 5), MacCatalyst (15, 0)]
+	[iOS (17, 5)]
 	[BaseType (typeof (NSObject))]
 	interface AEAssessmentParticipantConfiguration : NSCopying {
 		[Export ("allowsNetworkAccess")]

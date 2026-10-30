@@ -9,7 +9,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCActivationType {
 		None = 0,
 		ReLU = 1,
@@ -32,18 +31,15 @@ namespace MLCompute {
 		Gelu = 18,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		HardSwish = 19,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Clamp = 20,
 		// Count, // must be last, not available in swift
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCArithmeticOperation {
 		Add = 0,
 		Subtract = 1,
@@ -73,26 +69,21 @@ namespace MLCompute {
 		Log2 = 25,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		MultiplyNoNaN = 26,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		DivideNoNaN = 27,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Min = 28,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Max = 29,
 		// Count, // must be last, not available in swift
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCConvolutionType {
 		Standard = 0,
 		Transposed = 1,
@@ -101,11 +92,10 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCDataType {
 		Invalid = 0,
 		Float32 = 1,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Float16 = 3,
 		Boolean = 4,
 		Int64 = 5,
@@ -115,28 +105,26 @@ namespace MLCompute {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		Inot32 = Int32,
 #endif
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Int8 = 8,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		UInt8 = 9,
 		// Count, // must be last, not available in swift
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCDeviceType /* int32_t */ {
 		Cpu = 0,
 		Gpu = 1,
 		Any = 2,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Ane = 3, // Apple neural engine
 				 // Count, // must be last, not available in swift
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Flags]
 	enum MLCExecutionOptions : ulong {
 		None = 0x0,
@@ -144,13 +132,12 @@ namespace MLCompute {
 		Synchronous = 0x2,
 		Profiling = 0x4,
 		ForwardForInference = 0x8,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		PerLayerProfiling = 0x10,
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Flags]
 	enum MLCGraphCompilationOptions : ulong {
 		None = 0x0,
@@ -162,7 +149,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCLossType {
 		MeanAbsoluteError = 0,
 		MeanSquaredError = 1,
@@ -178,7 +164,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCLstmResultMode : ulong /* uint64_t */ {
 		Output = 0,
 		OutputAndStates = 1,
@@ -186,7 +171,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCPaddingPolicy {
 		Same = 0,
 		Valid = 1,
@@ -195,7 +179,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCPaddingType {
 		Zero = 0,
 		Reflect = 1,
@@ -205,7 +188,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCPoolingType {
 		Max = 1,
 		Average = 2,
@@ -215,7 +197,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCRandomInitializerType {
 		Invalid = 0,
 		Uniform = 1,
@@ -226,7 +207,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCReductionType {
 		None = 0,
 		Sum = 1,
@@ -237,22 +217,18 @@ namespace MLCompute {
 		ArgMin = 6,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		L1Norm = 7,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Any = 8,
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		All = 9,
 		// Count, // must be last, not available in swift
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCRegularizationType {
 		None = 0,
 		L1 = 1,
@@ -261,7 +237,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCSampleMode {
 		Nearest = 0,
 		Linear = 1,
@@ -269,13 +244,12 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum MLCSoftmaxOperation {
 		Softmax = 0,
 		LogSoftmax = 1,
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0)]
 	public enum MLCGradientClippingType {
 		Value = 0,
 		Norm = 1,
@@ -285,7 +259,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -329,7 +302,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -351,14 +323,13 @@ namespace MLCompute {
 		[Export ("supportsDataType:onDevice:")]
 		bool SupportsDataType (MLCDataType dataType, MLCDeviceType device);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("deviceType")]
 		MLCDeviceType DeviceType { get; }
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -480,14 +451,12 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Static]
 		[Export ("hardSwishLayer")]
 		MLCActivationLayer CreateHardSwishLayer ();
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Static]
 		[Export ("clampLayerWithMinValue:maxValue:")]
 		MLCActivationLayer CreateClampLayer (float minValue, float maxValue);
@@ -495,7 +464,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -525,22 +493,21 @@ namespace MLCompute {
 		[Export ("regularizationType")]
 		MLCRegularizationType RegularizationType { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("gradientClippingType")]
 		MLCGradientClippingType GradientClippingType { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("maximumClippingNorm")]
 		float MaximumClippingNorm { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("customGlobalNorm")]
 		float CustomGlobalNorm { get; }
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -578,27 +545,26 @@ namespace MLCompute {
 		[Export ("descriptorWithLearningRate:gradientRescale:appliesGradientClipping:gradientClipMax:gradientClipMin:regularizationType:regularizationScale:")]
 		MLCOptimizerDescriptor Create (float learningRate, float gradientRescale, bool appliesGradientClipping, float gradientClipMax, float gradientClipMin, MLCRegularizationType regularizationType, float regularizationScale);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Static]
 		[Export ("descriptorWithLearningRate:gradientRescale:appliesGradientClipping:gradientClippingType:gradientClipMax:gradientClipMin:maximumClippingNorm:customGlobalNorm:regularizationType:regularizationScale:")]
 		MLCOptimizerDescriptor Create (float learningRate, float gradientRescale, bool appliesGradientClipping, MLCGradientClippingType gradientClippingType, float gradientClipMax, float gradientClipMin, float maximumClippingNorm, float customGlobalNorm, MLCRegularizationType regularizationType, float regularizationScale);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("gradientClippingType")]
 		MLCGradientClippingType GradientClippingType { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("maximumClippingNorm")]
 		float MaximumClippingNorm { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("customGlobalNorm")]
 		float CustomGlobalNorm { get; }
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCOptimizer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -619,7 +585,7 @@ namespace MLCompute {
 		[Export ("timeStep")]
 		nuint TimeStep { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("usesAMSGrad")]
 		bool UsesAmsGrad { get; }
 
@@ -631,7 +597,7 @@ namespace MLCompute {
 		[Export ("optimizerWithDescriptor:beta1:beta2:epsilon:timeStep:")]
 		MLCAdamOptimizer Create (MLCOptimizerDescriptor optimizerDescriptor, float beta1, float beta2, float epsilon, nuint timeStep);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Static]
 		[Export ("optimizerWithDescriptor:beta1:beta2:epsilon:usesAMSGrad:timeStep:")]
 		MLCAdamOptimizer Create (MLCOptimizerDescriptor optimizerDescriptor, float beta1, float beta2, float epsilon, bool usesAmsGrad, nuint timeStep);
@@ -639,7 +605,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -673,7 +638,7 @@ namespace MLCompute {
 		[return: NullAllowed]
 		MLCDevice GetDevice (IMTLDevice [] gpus);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Static]
 		[Export ("aneDevice")]
 		[return: NullAllowed]
@@ -681,20 +646,18 @@ namespace MLCompute {
 
 		[iOS (14, 2)]
 		[TV (14, 2)]
-		[MacCatalyst (14, 2)]
 		[Static]
 		[Export ("deviceWithType:selectsMultipleComputeDevices:")]
 		[return: NullAllowed]
 		MLCDevice GetDevice (MLCDeviceType type, bool selectsMultipleComputeDevices);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("actualDeviceType")]
 		MLCDeviceType ActualDeviceType { get; }
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -822,35 +785,34 @@ namespace MLCompute {
 		[Export ("bindOptimizerData:deviceData:")]
 		bool BindOptimizer (MLCTensorData [] data, [NullAllowed] MLCTensorOptimizerDeviceData [] deviceData);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("tensorByQuantizingToType:scale:bias:")]
 		[return: NullAllowed]
 		MLCTensor CreateByQuantizing (MLCDataType type, float scale, nint bias);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("tensorByDequantizingToType:scale:bias:")]
 		[return: NullAllowed]
 		MLCTensor CreateByDequantizing (MLCDataType type, MLCTensor scale, MLCTensor bias);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("tensorByQuantizingToType:scale:bias:axis:")]
 		[return: NullAllowed]
 		MLCTensor CreateByQuantizing (MLCDataType type, MLCTensor scale, MLCTensor bias, nint axis);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("tensorByDequantizingToType:scale:bias:axis:")]
 		[return: NullAllowed]
 		MLCTensor CreateByDequantizing (MLCDataType type, MLCTensor scale, MLCTensor bias, nint axis);
 
 		[Static]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("tensorWithShape:randomInitializerType:dataType:")]
 		MLCTensor Create ([BindAs (typeof (nint []))] NSNumber [] shape, MLCRandomInitializerType randomInitializerType, MLCDataType dataType);
 	}
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -875,7 +837,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Static]
 		[Export ("dataWithBytesNoCopy:length:deallocator:")]
 		MLCTensorData CreateFromBytesNoCopy (IntPtr bytes, nuint length, Action<IntPtr, nuint> deallocator);
@@ -883,7 +844,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -964,7 +924,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -990,7 +949,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1009,7 +967,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1058,7 +1015,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1081,7 +1037,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1178,7 +1133,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1210,7 +1164,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1232,7 +1185,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1280,7 +1232,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1305,7 +1256,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1337,7 +1287,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1356,7 +1305,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1394,7 +1342,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1426,13 +1373,11 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[NullAllowed, Export ("mean", ArgumentSemantic.Retain)]
 		MLCTensor Mean { get; }
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[NullAllowed, Export ("variance", ArgumentSemantic.Retain)]
 		MLCTensor Variance { get; }
 
@@ -1448,7 +1393,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Static]
 		[Export ("layerWithFeatureChannelCount:mean:variance:beta:gamma:varianceEpsilon:momentum:")]
 		[return: NullAllowed]
@@ -1457,7 +1401,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1493,7 +1436,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1542,7 +1484,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1640,7 +1581,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "MLCLSTMDescriptor")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1699,7 +1639,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer), Name = "MLCLSTMLayer")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1759,7 +1698,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1789,7 +1727,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1809,7 +1746,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1854,7 +1790,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1889,7 +1824,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -1935,7 +1869,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2008,7 +1941,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2027,7 +1959,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2044,7 +1975,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("dimensions")]
 		[BindAs (typeof (nuint []))]
 		NSNumber [] Dimensions { get; }
@@ -2056,7 +1986,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Static]
 		[Export ("layerWithReductionType:dimensions:")]
 		[return: NullAllowed]
@@ -2065,7 +1994,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2076,7 +2004,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("shape", ArgumentSemantic.Copy)]
 		[BindAs (typeof (nint []))]
 		NSNumber [] Shape { get; }
@@ -2090,7 +2017,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCOptimizer), Name = "MLCRMSPropOptimizer")]
 	interface MLCRmsPropOptimizer : NSCopying {
 
@@ -2117,7 +2043,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCOptimizer), Name = "MLCSGDOptimizer")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2143,7 +2068,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2173,7 +2097,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2199,7 +2122,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2230,7 +2152,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2251,7 +2172,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2283,7 +2203,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "MLCYOLOLossDescriptor")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2329,7 +2248,6 @@ namespace MLCompute {
 
 	[iOS (14, 0)]
 	[TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCLossLayer), Name = "MLCYOLOLossLayer")]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
 	[Deprecated (PlatformName.iOS, 17, 4, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2349,7 +2267,6 @@ namespace MLCompute {
 	delegate void MLCGraphCompletionHandler ([NullAllowed] MLCTensor resultTensor, [NullAllowed] NSError error, /* NSTimeInterval */ double executionTime);
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2360,7 +2277,6 @@ namespace MLCompute {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2434,28 +2350,24 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("gatherWithDimension:source:indices:")]
 		[return: NullAllowed]
 		MLCTensor Gather (nuint dimension, MLCTensor source, MLCTensor indices);
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("scatterWithDimension:source:indices:copyFrom:reductionType:")]
 		[return: NullAllowed]
 		MLCTensor Scatter (nuint dimension, MLCTensor source, MLCTensor indices, MLCTensor copyFrom, MLCReductionType reductionType);
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("selectWithSources:condition:")]
 		[return: NullAllowed]
 		MLCTensor Select (MLCTensor [] sources, MLCTensor condition);
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCGraph))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2491,7 +2403,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("compileWithOptions:device:inputTensors:inputTensorsData:")]
 		bool Compile (MLCGraphCompilationOptions options, MLCDevice device, [NullAllowed] NSDictionary<NSString, MLCTensor> inputTensors, [NullAllowed] NSDictionary<NSString, MLCTensorData> inputTensorsData);
 
@@ -2555,13 +2466,11 @@ namespace MLCompute {
 
 		[iOS (14, 2)]
 		[TV (14, 2)]
-		[MacCatalyst (14, 2)]
 		[Export ("bindOptimizerData:deviceData:withTensor:")]
 		bool BindOptimizer (MLCTensorData [] data, [NullAllowed] MLCTensorOptimizerDeviceData [] deviceData, MLCTensor tensor);
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MLCGraph))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2591,7 +2500,6 @@ namespace MLCompute {
 
 		[TV (14, 5)]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("compileWithOptions:device:inputTensors:inputTensorsData:")]
 		bool Compile (MLCGraphCompilationOptions options, MLCDevice device, [NullAllowed] NSDictionary<NSString, MLCTensor> inputTensors, [NullAllowed] NSDictionary<NSString, MLCTensorData> inputTensorsData);
 
@@ -2617,7 +2525,6 @@ namespace MLCompute {
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	enum MLCComparisonOperation {
 		Equal = 0,
 		NotEqual = 1,
@@ -2635,7 +2542,6 @@ namespace MLCompute {
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2654,7 +2560,6 @@ namespace MLCompute {
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2673,7 +2578,6 @@ namespace MLCompute {
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2696,7 +2600,6 @@ namespace MLCompute {
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (MLCLayer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2710,7 +2613,7 @@ namespace MLCompute {
 		MLCSelectionLayer Create ();
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]
@@ -2729,7 +2632,7 @@ namespace MLCompute {
 		NSNumber GetRngSeed ();
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (MLCOptimizer))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 3, message: "Use the Metal Performance Shaders Graph or the Accelerate framework (BNNS) instead.")]

@@ -2,7 +2,6 @@
 #nullable enable
 
 namespace AudioToolbox {
-	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum AudioSettingsFlags : uint {
 		ExpertParameter = (1u << 0),
@@ -13,7 +12,6 @@ namespace AudioToolbox {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	public enum AUSpatialMixerOutputType : uint {
 		Headphones = 1,
 		BuiltInSpeakers = 2,
@@ -22,7 +20,6 @@ namespace AudioToolbox {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	public enum AUSpatialMixerPointSourceInHeadMode : uint {
 		Mono = 0,
 		Bypass = 1,
@@ -30,7 +27,6 @@ namespace AudioToolbox {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	public enum AUSpatialMixerSourceMode : uint {
 		SpatializeIfMono = 0,
 		Bypass = 1,
@@ -40,7 +36,6 @@ namespace AudioToolbox {
 
 	[TV (16, 0)]
 	[iOS (16, 0)]
-	[MacCatalyst (16, 0)]
 	public enum AUSpatialMixerPersonalizedHrtfMode : uint {
 		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0)]
 		Off = 0,
@@ -50,7 +45,7 @@ namespace AudioToolbox {
 		Auto = 2,
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0)]
 	public enum AUVoiceIOOtherAudioDuckingLevel : uint {
 		Default = 0,
 		Min = 10,

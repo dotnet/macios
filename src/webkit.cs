@@ -4982,7 +4982,7 @@ namespace WebKit {
 		void DeleteRow (int /* int, not NSInteger */ index);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[Native]
 	public enum WKFullscreenState : long {
 		NotInFullscreen,
@@ -4991,7 +4991,7 @@ namespace WebKit {
 		ExitingFullscreen,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[Native]
 	public enum WKDialogResult : long {
 		ShowDefault = 1,
@@ -4999,14 +4999,14 @@ namespace WebKit {
 		Handled,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0)]
 	[Native]
 	public enum WKCookiePolicy : long {
 		Allow,
 		Disallow,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0)]
 	[Native]
 	public enum WKInactiveSchedulingPolicy : long {
 		Suspend,
@@ -5024,7 +5024,6 @@ namespace WebKit {
 	/// <summary>A page within a <see cref="WebKit.WKBackForwardList" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKBackForwardListItem_Ref/index.html">Apple documentation for <c>WKBackForwardListItem</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor ()] // Crashes during deallocation in Xcode 6 beta 2. radar 17377712.
 	interface WKBackForwardListItem {
@@ -5043,7 +5042,6 @@ namespace WebKit {
 	/// <summary>The list of pages that can be reached by navigating forward or backward.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKBackForwardList_Ref/index.html">Apple documentation for <c>WKBackForwardList</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor ()] // Crashes during deallocation in Xcode 6 beta 2. radar 17377712.
 	interface WKBackForwardList {
@@ -5076,7 +5074,6 @@ namespace WebKit {
 	}
 
 	/// <summary>A list of rules to apply to web content.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Apple: "You don’t create a WKContentRuleList directly."
 	interface WKContentRuleList {
@@ -5085,7 +5082,6 @@ namespace WebKit {
 	}
 
 	/// <summary>A store that contents rules for web content.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // instances created with the default ctor crashes on dealloc
 	interface WKContentRuleListStore {
@@ -5144,7 +5140,6 @@ namespace WebKit {
 	}
 
 	/// <summary>Manages cookies for a <see cref="WebKit.WKWebsiteDataStore" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "WKHTTPCookieStore")]
 	[DisableDefaultCtor]
 	interface WKHttpCookieStore {
@@ -5190,12 +5185,12 @@ namespace WebKit {
 		[Export ("removeObserver:")]
 		void RemoveObserver (IWKHttpCookieStoreObserver observer);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("setCookiePolicy:completionHandler:")]
 		[Async]
 		void SetCookiePolicy (WKCookiePolicy policy, [NullAllowed] Action completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("getCookiePolicy:")]
 		[Async]
 		void GetCookiePolicy (Action<WKCookiePolicy> completionHandler);
@@ -5216,7 +5211,6 @@ namespace WebKit {
 	interface IWKHttpCookieStoreObserver { }
 
 	/// <summary>Interface that represents the required members of the WKHttpCookieStoreObserver protocol.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKHTTPCookieStoreObserver")]
 	interface WKHttpCookieStoreObserver {
 		/// <param name="cookieStore">The store that changed.</param>
@@ -5229,7 +5223,6 @@ namespace WebKit {
 	/// <summary>A frame within a page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKFrameInfo_Ref/index.html">Apple documentation for <c>WKFrameInfo</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // No public init method and every property is get-only
 	interface WKFrameInfo : NSCopying {
@@ -5251,11 +5244,9 @@ namespace WebKit {
 		[Export ("request", ArgumentSemantic.Copy)]
 		NSUrlRequest Request { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("securityOrigin")]
 		WKSecurityOrigin SecurityOrigin { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("webView", ArgumentSemantic.Weak)]
 		WKWebView WebView { get; }
 	}
@@ -5284,11 +5275,9 @@ namespace WebKit {
 	/// <summary>Tracks the loading progress of a page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigation_Ref/index.html">Apple documentation for <c>WKNavigation</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKNavigation {
 
-		[MacCatalyst (13, 1)]
 		[Export ("effectiveContentMode")]
 		WKContentMode EffectiveContentMode { get; }
 	}
@@ -5296,7 +5285,6 @@ namespace WebKit {
 	/// <summary>Information about a navigation action. Can be used for policy decisions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationAction_Ref/index.html">Apple documentation for <c>WKNavigationAction</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKNavigationAction {
 
@@ -5330,7 +5318,6 @@ namespace WebKit {
 #endif
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("shouldPerformDownload")]
 		bool ShouldPerformDownload { get; }
 
@@ -5346,7 +5333,6 @@ namespace WebKit {
 	/// <summary>Delegate object for <see cref="WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationDelegate_Ref/index.html">Apple documentation for <c>WKNavigationDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface WKNavigationDelegate {
@@ -5367,7 +5353,6 @@ namespace WebKit {
 		[Export ("webView:decidePolicyForNavigationResponse:decisionHandler:")]
 		void DecidePolicy (WKWebView webView, WKNavigationResponse navigationResponse, Action<WKNavigationResponsePolicy> decisionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("webView:decidePolicyForNavigationAction:preferences:decisionHandler:")]
 		void DecidePolicy (WKWebView webView, WKNavigationAction navigationAction, WKWebpagePreferences preferences, Action<WKNavigationActionPolicy, WKWebpagePreferences> decisionHandler);
 
@@ -5426,22 +5411,18 @@ namespace WebKit {
 		/// <param name="webView">To be added.</param>
 		/// <summary>Method that is called when a web view's content is terminated.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("webViewWebContentProcessDidTerminate:")]
 		void ContentProcessDidTerminate (WKWebView webView);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("webView:authenticationChallenge:shouldAllowDeprecatedTLS:")]
 		void ShouldAllowDeprecatedTls (WKWebView webView, NSUrlAuthenticationChallenge challenge, Action<bool> decisionHandler);
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("webView:navigationAction:didBecomeDownload:")]
 		void NavigationActionDidBecomeDownload (WKWebView webView, WKNavigationAction navigationAction, WKDownload download);
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("webView:navigationResponse:didBecomeDownload:")]
 		void NavigationResponseDidBecomeDownload (WKWebView webView, WKNavigationResponse navigationResponse, WKDownload download);
 
@@ -5463,7 +5444,6 @@ namespace WebKit {
 	/// <summary>Information about a navigation response. Can be used for policy decisions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationResponse_Ref/index.html">Apple documentation for <c>WKNavigationResponse</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKNavigationResponse {
@@ -5488,7 +5468,6 @@ namespace WebKit {
 	/// <summary>Preference settings for a <see cref="WebKit.WKWebView" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKPreferences_Ref/index.html">Apple documentation for <c>WKPreferences</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKPreferences : NSSecureCoding {
 		[Export ("minimumFontSize")]
@@ -5521,35 +5500,32 @@ namespace WebKit {
 		[Export ("tabFocusesLinks")]
 		bool TabFocusesLinks { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fraudulentWebsiteWarningEnabled")]
 		bool FraudulentWebsiteWarningEnabled { [Bind ("isFraudulentWebsiteWarningEnabled")] get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("shouldPrintBackgrounds")]
 		bool ShouldPrintBackgrounds { get; set; }
 
 		[Internal]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("textInteractionEnabled")]
 		bool _OldTextInteractionEnabled { get; set; }
 
 		[Internal]
 		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
 		[Export ("isTextInteractionEnabled")]
 		bool _NewGetTextInteractionEnabled ();
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("siteSpecificQuirksModeEnabled")]
 		bool SiteSpecificQuirksModeEnabled { [Bind ("isSiteSpecificQuirksModeEnabled")] get; set; }
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("elementFullscreenEnabled")]
 		bool ElementFullscreenEnabled { [Bind ("isElementFullscreenEnabled")] get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("inactiveSchedulingPolicy", ArgumentSemantic.Assign)]
 		WKInactiveSchedulingPolicy InactiveSchedulingPolicy { get; set; }
 	}
@@ -5557,7 +5533,6 @@ namespace WebKit {
 	/// <summary>A message sent from a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKScriptMessage/index.html">Apple documentation for <c>WKScriptMessage</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKScriptMessage {
 
@@ -5577,7 +5552,6 @@ namespace WebKit {
 		WKFrameInfo FrameInfo { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("world")]
 		WKContentWorld World { get; }
 	}
@@ -5587,7 +5561,6 @@ namespace WebKit {
 	/// <summary>Allows messages from JavaScript to be handled by the app.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKScriptMessageHandler_Ref/index.html">Apple documentation for <c>WKScriptMessageHandler</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface WKScriptMessageHandler {
@@ -5604,7 +5577,6 @@ namespace WebKit {
 	/// <summary>Describes the hostname, protocol, and port number for a security origin.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKSecurityOrigin_Class_Ref/index.html">Apple documentation for <c>WKSecurityOrigin</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKSecurityOrigin {
@@ -5620,7 +5592,6 @@ namespace WebKit {
 
 
 	/// <summary>Holds the specification for a snapshot of a Webpage taken with <see cref="WebKit.WKWebView.TakeSnapshotAsync(WebKit.WKSnapshotConfiguration)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKSnapshotConfiguration : NSCopying {
 		[Export ("rect")]
@@ -5630,14 +5601,12 @@ namespace WebKit {
 		[NullAllowed]
 		NSNumber SnapshotWidth { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("afterScreenUpdates")]
 		bool AfterScreenUpdates { get; set; }
 	}
 
 	interface IWKUrlSchemeHandler { }
 	/// <summary>Interface for handling arbitrary URL schemes.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKURLSchemeHandler")]
 	interface WKUrlSchemeHandler {
 		/// <param name="webView">The web view that is making the request.</param>
@@ -5660,7 +5629,6 @@ namespace WebKit {
 	interface IWKUrlSchemeTask { }
 
 	/// <summary>Interface for a task that loads data from a URL with an arbitrary scheme.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol (Name = "WKURLSchemeTask")]
 	interface WKUrlSchemeTask {
 		/// <summary>Gets the request.</summary>
@@ -5701,7 +5669,6 @@ namespace WebKit {
 	/// <summary>Website data group that is identified by the website's domain and suffix.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebsiteDataRecord_Class_Ref/index.html">Apple documentation for <c>WKWebsiteDataRecord</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKWebsiteDataRecord {
 		[Export ("displayName")]
@@ -5712,7 +5679,6 @@ namespace WebKit {
 	}
 
 	/// <summary>Contains NSString constants that represent data types for data related to websites.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface WKWebsiteDataType {
 		/// <summary>Gets an NSString that signifies a disk cache.</summary>
@@ -5766,30 +5732,28 @@ namespace WebKit {
 		/// <summary>Gets an NSString that signifies a fetch cache.</summary>
 		///         <value>The NSString object for "WKWebsiteDataTypeFetchCache".</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("WKWebsiteDataTypeFetchCache")]
 		NSString FetchCache { get; }
 
 		/// <summary>Gets an NSString that signifies service worker registrations.</summary>
 		///         <value>The NSString object for "WKWebsiteDataTypeServiceWorkerRegistrations".</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("WKWebsiteDataTypeServiceWorkerRegistrations")]
 		NSString ServiceWorkerRegistrations { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Field ("WKWebsiteDataTypeFileSystem")]
 		NSString FileSystem { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("WKWebsiteDataTypeSearchFieldRecentSearches")]
 		NSString SearchFieldRecentSearches { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("WKWebsiteDataTypeMediaKeys")]
 		NSString MediaKeys { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("WKWebsiteDataTypeHashSalt")]
 		NSString HashSalt { get; }
 
@@ -5828,7 +5792,6 @@ namespace WebKit {
 	/// <summary>Data that is associated with a website, such as cookies and caches.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebsiteDataStore_Class_Ref/index.html">Apple documentation for <c>WKWebsiteDataStore</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Reason: Calling [WKWebsiteDataStore init] is not supported.
 	interface WKWebsiteDataStore : NSSecureCoding {
@@ -5885,32 +5848,31 @@ namespace WebKit {
 			""")]
 		void RemoveDataOfTypes (NSSet<NSString> websiteDataTypes, NSDate date, Action completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("httpCookieStore")]
 		WKHttpCookieStore HttpCookieStore { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[NullAllowed, Export ("identifier")]
 		NSUuid Identifier { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Static]
 		[Export ("dataStoreForIdentifier:")]
 		WKWebsiteDataStore Create (NSUuid identifier);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Static]
 		[Async]
 		[Export ("removeDataStoreForIdentifier:completionHandler:")]
 		void Remove (NSUuid identifier, Action<NSError> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Static]
 		[Async]
 		[Export ("fetchAllDataStoreIdentifiers:")]
 		void FetchAllDataStoreIdentifiers (Action<NSArray<NSUuid>> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy), NullAllowed]
 		NWProxyConfig [] ProxyConfigurations { get; set; }
 
@@ -5943,7 +5905,6 @@ namespace WebKit {
 	/// <summary>A delegate object that allows presenting native UI elements on behalf of a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKUIDelegate_Ref/index.html">Apple documentation for <c>WKUIDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface WKUIDelegate {
@@ -6014,7 +5975,6 @@ namespace WebKit {
 		/// <param name="webView">To be added.</param>
 		/// <summary>Method that is called when <paramref name="webView" /> closes.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("webViewDidClose:")]
 		void DidClose (WKWebView webView);
 
@@ -6025,7 +5985,6 @@ namespace WebKit {
 		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetContextMenuConfiguration' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SetContextMenuConfiguration' instead.")]
 		[Export ("webView:shouldPreviewElement:")]
 		bool ShouldPreviewElement (WKWebView webView, WKPreviewElementInfo elementInfo);
@@ -6039,7 +5998,6 @@ namespace WebKit {
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'SetContextMenuConfiguration' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SetContextMenuConfiguration' instead.")]
-		[MacCatalyst (13, 1)]
 		[Export ("webView:previewingViewControllerForElement:defaultActions:")]
 		[return: NullAllowed]
 		UIViewController GetPreviewingViewController (WKWebView webView, WKPreviewElementInfo elementInfo, IWKPreviewActionItem [] previewActions);
@@ -6050,51 +6008,46 @@ namespace WebKit {
 		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'WillCommitContextMenu' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'WillCommitContextMenu' instead.")]
 		[Export ("webView:commitPreviewingViewController:")]
 		void CommitPreviewingViewController (WKWebView webView, UIViewController previewingViewController);
 
-		[MacCatalyst (13, 1)]
 		[NoMac]
 		[Export ("webView:contextMenuConfigurationForElement:completionHandler:")]
 		void SetContextMenuConfiguration (WKWebView webView, WKContextMenuElementInfo elementInfo, Action<UIContextMenuConfiguration> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[NoMac]
 		[Export ("webView:contextMenuForElement:willCommitWithAnimator:")]
 		void WillCommitContextMenu (WKWebView webView, WKContextMenuElementInfo elementInfo, IUIContextMenuInteractionCommitAnimating animator);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("webView:contextMenuWillPresentForElement:")]
 		void ContextMenuWillPresent (WKWebView webView, WKContextMenuElementInfo elementInfo);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("webView:contextMenuDidEndForElement:")]
 		void ContextMenuDidEnd (WKWebView webView, WKContextMenuElementInfo elementInfo);
 
 		[Async]
-		[NoMac, NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoMac, NoTV, iOS (15, 0)]
 		[Export ("webView:requestDeviceOrientationAndMotionPermissionForOrigin:initiatedByFrame:decisionHandler:")]
 		void RequestDeviceOrientationAndMotionPermission (WKWebView webView, WKSecurityOrigin origin, WKFrameInfo frame, Action<WKPermissionDecision> decisionHandler);
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("webView:requestMediaCapturePermissionForOrigin:initiatedByFrame:type:decisionHandler:")]
 		void RequestMediaCapturePermission (WKWebView webView, WKSecurityOrigin origin, WKFrameInfo frame, WKMediaCaptureType type, Action<WKPermissionDecision> decisionHandler);
 
 		[Async]
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoMac, iOS (16, 0)]
 		[Export ("webView:showLockdownModeFirstUseMessage:completionHandler:")]
 		void ShowLockDownMode (WKWebView webView, string firstUseMessage, Action<WKDialogResult> completionHandler);
 
-		[NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+		[NoMac, iOS (16, 4)]
 		[Export ("webView:willPresentEditMenuWithAnimator:")]
 		void WillPresentEditMenu (WKWebView webView, IUIEditMenuInteractionAnimating animator);
 
-		[NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+		[NoMac, iOS (16, 4)]
 		[Export ("webView:willDismissEditMenuWithAnimator:")]
 		void WillDismissEditMenu (WKWebView webView, IUIEditMenuInteractionAnimating animator);
 
@@ -6115,7 +6068,6 @@ namespace WebKit {
 	/// <summary>Allows posting messages and injecting user scripts into a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKUserContentController_Ref/index.html">Apple documentation for <c>WKUserContentController</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKUserContentController : NSSecureCoding {
 
@@ -6132,12 +6084,10 @@ namespace WebKit {
 		void AddScriptMessageHandler (IWKScriptMessageHandler scriptMessageHandler, string name);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("addScriptMessageHandler:contentWorld:name:")]
 		void AddScriptMessageHandler (IWKScriptMessageHandler scriptMessageHandler, WKContentWorld world, string name);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("addScriptMessageHandlerWithReply:contentWorld:name:")]
 		void AddScriptMessageHandler (IWKScriptMessageHandlerWithReply scriptMessageHandlerWithReply, WKContentWorld contentWorld, string name);
 
@@ -6145,29 +6095,23 @@ namespace WebKit {
 		void RemoveScriptMessageHandler (string name);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("removeScriptMessageHandlerForName:contentWorld:")]
 		void RemoveScriptMessageHandler (string name, WKContentWorld contentWorld);
 
-		[MacCatalyst (13, 1)]
 		[Export ("addContentRuleList:")]
 		void AddContentRuleList (WKContentRuleList contentRuleList);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeContentRuleList:")]
 		void RemoveContentRuleList (WKContentRuleList contentRuleList);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAllContentRuleLists")]
 		void RemoveAllContentRuleLists ();
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("removeAllScriptMessageHandlersFromContentWorld:")]
 		void RemoveAllScriptMessageHandlers (WKContentWorld contentWorld);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("removeAllScriptMessageHandlers")]
 		void RemoveAllScriptMessageHandlers ();
 
@@ -6183,7 +6127,6 @@ namespace WebKit {
 	/// <summary>A script that can be injected into a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKUserScript_Ref/index.html">Apple documentation for <c>WKUserScript</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all properties are getters
 	interface WKUserScript : NSCopying {
@@ -6192,7 +6135,6 @@ namespace WebKit {
 		NativeHandle Constructor (NSString source, WKUserScriptInjectionTime injectionTime, bool isForMainFrameOnly);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithSource:injectionTime:forMainFrameOnly:inContentWorld:")]
 		NativeHandle Constructor (NSString source, WKUserScriptInjectionTime injectionTime, bool isForMainFrameOnly, WKContentWorld contentWorld);
 
@@ -6215,7 +6157,6 @@ namespace WebKit {
 	/// <summary>Displays a Web page.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebView_Ref/index.html">Apple documentation for <c>WKWebView</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (
 #if MONOMAC
 		typeof (NSView)
@@ -6440,41 +6381,33 @@ namespace WebKit {
 		void SetMagnification (nfloat magnification, CGPoint centerPoint);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("scrollView", ArgumentSemantic.Strong)]
 		UIScrollView ScrollView { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("loadData:MIMEType:characterEncodingName:baseURL:")]
 		[return: NullAllowed]
 		WKNavigation LoadData (NSData data, string mimeType, string characterEncodingName, NSUrl baseUrl);
 
-		[MacCatalyst (13, 1)]
 		[Export ("loadFileURL:allowingReadAccessToURL:")]
 		[return: NullAllowed]
 		WKNavigation LoadFileUrl (NSUrl url, NSUrl readAccessUrl);
 
-		[MacCatalyst (13, 1)]
 		[Export ("customUserAgent")]
 		[NullAllowed]
 		string CustomUserAgent { get; set; }
 
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'ServerTrust' property.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Use 'ServerTrust' property.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ServerTrust' property.")]
 		[Export ("certificateChain", ArgumentSemantic.Copy)]
 		SecCertificate [] CertificateChain { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsLinkPreview")]
 		bool AllowsLinkPreview { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("serverTrust")]
 		SecTrust ServerTrust { get; }
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="snapshotConfiguration">The snapshot configuration to use.This parameter can be .</param>
 			<summary>Asynchronously takes a snapshot of the current viewport.</summary>
@@ -6489,48 +6422,40 @@ namespace WebKit {
 		[Export ("takeSnapshotWithConfiguration:completionHandler:")]
 		void TakeSnapshot ([NullAllowed] WKSnapshotConfiguration snapshotConfiguration, Action<UIImage, NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("handlesURLScheme:")]
 		bool HandlesUrlScheme (string urlScheme);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Async]
 		[Export ("evaluateJavaScript:inFrame:inContentWorld:completionHandler:")]
 		void EvaluateJavaScript (string javaScriptString, [NullAllowed] WKFrameInfo frame, WKContentWorld contentWorld, [NullAllowed] Action<NSObject, NSError> completionHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Async]
 		[Export ("callAsyncJavaScript:arguments:inFrame:inContentWorld:completionHandler:")]
 		void CallAsyncJavaScript (string functionBody, [NullAllowed] NSDictionary<NSString, NSObject> arguments, [NullAllowed] WKFrameInfo frame, WKContentWorld contentWorld, [NullAllowed] Action<NSObject, NSError> completionHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Async]
 		[Export ("createPDFWithConfiguration:completionHandler:")]
 		void CreatePdf ([NullAllowed] WKPdfConfiguration pdfConfiguration, Action<NSData, NSError> completionHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Async]
 		[Export ("createWebArchiveDataWithCompletionHandler:")]
 		void CreateWebArchive (Action<NSData, NSError> completionHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Async]
 		[Export ("findString:withConfiguration:completionHandler:")]
 		void Find (string @string, [NullAllowed] WKFindConfiguration configuration, Action<WKFindResult> completionHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("mediaType")]
 		string MediaType { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("pageZoom")]
 		nfloat PageZoom { get; set; }
 
@@ -6542,133 +6467,127 @@ namespace WebKit {
 		// Apple renamed those API since Xcode 12.5
 		[Internal]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("closeAllMediaPresentations")]
 		void _OldCloseAllMediaPresentations ();
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("closeAllMediaPresentationsWithCompletionHandler:")]
 		void CloseAllMediaPresentations ([NullAllowed] Action completionHandler);
 
 		[Internal]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("pauseAllMediaPlayback:")]
 		void _OldPauseAllMediaPlayback ([NullAllowed] Action completionHandler);
 
 		[Internal]
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("pauseAllMediaPlaybackWithCompletionHandler:")]
 		void _NewPauseAllMediaPlayback ([NullAllowed] Action completionHandler);
 
 		[Internal]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("suspendAllMediaPlayback:")]
 		void _OldSuspendAllMediaPlayback ([NullAllowed] Action completionHandler);
 
 		[Internal]
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("resumeAllMediaPlayback:")]
 		void _OldResumeAllMediaPlayback ([NullAllowed] Action completionHandler);
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("setAllMediaPlaybackSuspended:completionHandler:")]
 		void SetAllMediaPlaybackSuspended (bool suspended, [NullAllowed] Action completionHandler);
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("requestMediaPlaybackStateWithCompletionHandler:")]
 		void RequestMediaPlaybackState (Action<WKMediaPlaybackState> completionHandler);
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("startDownloadUsingRequest:completionHandler:")]
 		void StartDownload (NSUrlRequest request, Action<WKDownload> completionHandler);
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Async]
 		[Export ("resumeDownloadFromResumeData:completionHandler:")]
 		void ResumeDownload (NSData resumeData, Action<WKDownload> completionHandler);
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("cameraCaptureState")]
 		WKMediaCaptureState CameraCaptureState { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[NullAllowed, Export ("interactionState", ArgumentSemantic.Copy)]
 		NSObject InteractionState { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("loadFileRequest:allowingReadAccessToURL:")]
 		WKNavigation LoadFileRequest (NSUrlRequest request, NSUrl readAccessURL);
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("loadSimulatedRequest:response:responseData:")]
 		WKNavigation LoadSimulatedRequest (NSUrlRequest request, NSUrlResponse response, NSData data);
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("loadSimulatedRequest:responseHTMLString:")]
 		WKNavigation LoadSimulatedRequest (NSUrlRequest request, string htmlString);
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("microphoneCaptureState")]
 		WKMediaCaptureState MicrophoneCaptureState { get; }
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("setCameraCaptureState:completionHandler:")]
 		void SetCameraCaptureState (WKMediaCaptureState state, [NullAllowed] Action completionHandler);
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("setMicrophoneCaptureState:completionHandler:")]
 		void SetMicrophoneCaptureState (WKMediaCaptureState state, [NullAllowed] Action completionHandler);
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("themeColor")]
 		[NullAllowed]
 		UIColor ThemeColor { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[NullAllowed, Export ("underPageBackgroundColor", ArgumentSemantic.Copy)]
 		UIColor UnderPageBackgroundColor { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("fullscreenState")]
 		WKFullscreenState FullscreenState { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("minimumViewportInset")]
 		UIEdgeInsets MinimumViewportInset { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("maximumViewportInset")]
 		UIEdgeInsets MaximumViewportInset { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("setMinimumViewportInset:maximumViewportInset:")]
 		void SetViewportInsets (UIEdgeInsets minimumViewportInset, UIEdgeInsets maximumViewportInset);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
+		[iOS (16, 0), NoMac, NoTV]
 		[Export ("findInteractionEnabled")]
 		bool FindInteractionEnabled { [Bind ("isFindInteractionEnabled")] get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
+		[iOS (16, 0), NoMac, NoTV]
 		[Export ("findInteraction")]
 		[NullAllowed]
 		UIFindInteraction FindInteraction { get; }
 
-		[MacCatalyst (16, 4), iOS (16, 4), NoTV]
+		[iOS (16, 4), NoTV]
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 
@@ -6730,7 +6649,6 @@ namespace WebKit {
 	/// <summary>Properties configuring a <see cref="WebKit.WKWebView" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebViewConfiguration_Ref/index.html">Apple documentation for <c>WKWebViewConfiguration</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKWebViewConfiguration : NSCopying, NSSecureCoding {
 
@@ -6749,40 +6667,33 @@ namespace WebKit {
 		[Export ("suppressesIncrementalRendering")]
 		bool SuppressesIncrementalRendering { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("websiteDataStore", ArgumentSemantic.Strong)]
 		WKWebsiteDataStore WebsiteDataStore { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("applicationNameForUserAgent")]
 		[NullAllowed]
 		string ApplicationNameForUserAgent { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsAirPlayForMediaPlayback")]
 		bool AllowsAirPlayForMediaPlayback { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("allowsInlineMediaPlayback")]
 		bool AllowsInlineMediaPlayback { get; set; }
 
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'RequiresUserActionForMediaPlayback' or 'MediaTypesRequiringUserActionForPlayback' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RequiresUserActionForMediaPlayback' or 'MediaTypesRequiringUserActionForPlayback' instead.")]
-		[MacCatalyst (13, 1)]
 		[Export ("mediaPlaybackRequiresUserAction")]
 		bool MediaPlaybackRequiresUserAction { get; set; }
 
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'AllowsAirPlayForMediaPlayback' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'AllowsAirPlayForMediaPlayback' instead.")]
-		[MacCatalyst (13, 1)]
 		[Export ("mediaPlaybackAllowsAirPlay")]
 		bool MediaPlaybackAllowsAirPlay { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 26, 0, message: "No longer supported.")]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "No longer supported.")]
 		[Export ("selectionGranularity")]
@@ -6791,53 +6702,44 @@ namespace WebKit {
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'MediaTypesRequiringUserActionForPlayback' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MediaTypesRequiringUserActionForPlayback' instead.")]
-		[MacCatalyst (13, 1)]
 		[Export ("requiresUserActionForMediaPlayback")]
 		bool RequiresUserActionForMediaPlayback { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("allowsPictureInPictureMediaPlayback")]
 		bool AllowsPictureInPictureMediaPlayback { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("dataDetectorTypes", ArgumentSemantic.Assign)]
 		WKDataDetectorTypes DataDetectorTypes { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("mediaTypesRequiringUserActionForPlayback", ArgumentSemantic.Assign)]
 		WKAudiovisualMediaTypes MediaTypesRequiringUserActionForPlayback { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("ignoresViewportScaleLimits")]
 		bool IgnoresViewportScaleLimits { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setURLSchemeHandler:forURLScheme:")]
 		void SetUrlSchemeHandler ([NullAllowed] IWKUrlSchemeHandler urlSchemeHandler, string urlScheme);
 
-		[MacCatalyst (13, 1)]
 		[Export ("urlSchemeHandlerForURLScheme:")]
 		[return: NullAllowed]
 		IWKUrlSchemeHandler GetUrlSchemeHandler (string urlScheme);
 
-		[MacCatalyst (13, 1)]
 		[Export ("defaultWebpagePreferences", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		WKWebpagePreferences DefaultWebpagePreferences { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("limitsNavigationsToAppBoundDomains")]
 		bool LimitsNavigationsToAppBoundDomains { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+		[iOS (15, 0), NoTV]
 		[Export ("upgradeKnownHostsToHTTPS")]
 		bool UpgradeKnownHostsToHttps { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("allowsInlinePredictions")]
 		bool AllowsInlinePredictions { get; set; }
 
@@ -6869,7 +6771,6 @@ namespace WebKit {
 	/// <summary>A pool of content processes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKProcessPool_Ref/index.html">Apple documentation for <c>WKProcessPool</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 	[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 	[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
@@ -6882,7 +6783,6 @@ namespace WebKit {
 	/// <summary>WKWindowFeatures specifies optional attributes for the containing window when a new WKWebView is requested.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWindowFeatures_Ref/index.html">Apple documentation for <c>WKWindowFeatures</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKWindowFeatures {
 		// Filled in from open source headers
@@ -6930,7 +6830,6 @@ namespace WebKit {
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'TBD' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TBD' instead.")]
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface WKPreviewActionItem : UIPreviewActionItem {
 		/// <summary>Gets the unique identifier of the preview action type.</summary>
@@ -6945,7 +6844,6 @@ namespace WebKit {
 	[NoMac]
 	[Static]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'TBD' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TBD' instead.")]
 	interface WKPreviewActionItemIdentifier {
 		/// <summary>Gets the string that identifies the action that opens the item.</summary>
@@ -6978,7 +6876,6 @@ namespace WebKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/WebKit/WKPreviewElementInfo">Apple documentation for <c>WKPreviewElementInfo</c></related>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'WKContextMenuElementInfo' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'WKContextMenuElementInfo' instead.")]
 	[BaseType (typeof (NSObject))]
 	interface WKPreviewElementInfo : NSCopying {
@@ -6986,7 +6883,6 @@ namespace WebKit {
 		NSUrl LinkUrl { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKContentMode : long {
 		Recommended,
@@ -6994,7 +6890,6 @@ namespace WebKit {
 		Desktop,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface WKWebpagePreferences {
 
@@ -7002,11 +6897,10 @@ namespace WebKit {
 		WKContentMode PreferredContentMode { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("allowsContentJavaScript")]
 		bool AllowsContentJavaScript { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("lockdownModeEnabled")]
 		bool LockdownModeEnabled { [Bind ("isLockdownModeEnabled")] get; set; }
 
@@ -7036,7 +6930,6 @@ namespace WebKit {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKContextMenuElementInfo {
@@ -7045,7 +6938,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKContentWorld {
@@ -7122,7 +7014,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface WKFindConfiguration : NSCopying {
 
@@ -7137,7 +7028,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKFindResult : NSCopying {
@@ -7147,14 +7037,13 @@ namespace WebKit {
 	}
 
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "WKPDFConfiguration")]
 	interface WKPdfConfiguration : NSCopying {
 
 		[Export ("rect", ArgumentSemantic.Assign)]
 		CGRect Rect { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("allowTransparentBackground")]
 		bool AllowTransparentBackground { get; set; }
 	}
@@ -7162,7 +7051,6 @@ namespace WebKit {
 	interface IWKScriptMessageHandlerWithReply { }
 
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Protocol]
 	interface WKScriptMessageHandlerWithReply {
 
@@ -7172,7 +7060,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[Native]
 	enum WKDownloadRedirectPolicy : long {
 		Cancel,
@@ -7180,7 +7067,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[Native]
 	enum WKMediaPlaybackState : ulong {
 		None,
@@ -7194,7 +7080,6 @@ namespace WebKit {
 	delegate void WKDownloadDelegateDecidePlaceholderPolicyCallback (WKDownloadPlaceholderPolicy policy, [NullAllowed] NSUrl url);
 
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface WKDownloadDelegate {
@@ -7229,7 +7114,6 @@ namespace WebKit {
 	}
 
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface WKDownload : NSProgressReporting {

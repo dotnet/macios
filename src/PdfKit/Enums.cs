@@ -226,7 +226,7 @@ namespace PdfKit {
 		/// <summary>Indicates that the touch position is over an image.</summary>
 		ImageArea = 1 << 8,
 		/// <summary>Indicates that all areas of interest are included.</summary>
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		AnyArea = Int64.MaxValue,
 	}
 

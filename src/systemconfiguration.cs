@@ -19,7 +19,6 @@ namespace SystemConfiguration {
 		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCNNetworkInfoKeyBSSID")]
 		NSString NetworkInfoKeyBSSID { get; }
 
@@ -29,7 +28,6 @@ namespace SystemConfiguration {
 		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCNNetworkInfoKeySSID")]
 		NSString NetworkInfoKeySSID { get; }
 
@@ -39,7 +37,6 @@ namespace SystemConfiguration {
 		///         <remarks>This API is only available on devices. An EntryPointNotFoundException will be thrown on the simulator</remarks>
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCNNetworkInfoKeySSIDData")]
 		NSString NetworkInfoKeySSIDData { get; }
 	}

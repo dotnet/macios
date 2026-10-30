@@ -293,13 +293,8 @@ namespace Cecil.Tests {
 				// APIs shouldn't become unsupported in the same version they become supported.
 				//     [SupportedOSPlatform ("ios12.0")]
 				//     [UnsupportedOSPlatform ("ios12.0")]
-				// Exceptions:
-				// * Apple introduced numerous already deprecated frameworks in Mac Catalyst 13.* and Mac Catalyst 14.0, so it's correct to declare those
-				//   both supported and unsupported in the same version - so we skip any APIs introduced in Mac Catalyst 14.0 or earlier.
 				if (apiSupportedVersion is not null && apiUnsupportedVersion is not null && supportedPlatformName == unsupportedPlatformName) {
-					var macCatalystEarlyBirds = platform == ApplePlatform.MacCatalyst && apiUnsupportedVersion == new Version (14, 0);
-					if (!macCatalystEarlyBirds)
-						failures.Add ($"[FAIL] {api.AsFullName ()} is marked both supported and unsupported in the same version ({supportedPlatformName})");
+					failures.Add ($"[FAIL] {api.AsFullName ()} is marked both supported and unsupported in the same version ({supportedPlatformName})");
 				}
 
 				// APIs shouldn't become obsolete in the same version they become supported, although Apple does that somewhat frequently, so we have an escape hatch here.
@@ -448,12 +443,6 @@ namespace Cecil.Tests {
 				case "AVFoundation.AVAudioSessionInterruptionReason AVFoundation.AVAudioSessionInterruptionReason::AppWasSuspended":
 					return true;
 				}
-				break;
-			case ApplePlatform.MacCatalyst:
-				// Apple added a lot of new frameworks to Mac Catalyst 13.1 and 14.0 that already had obsoleted
-				// API from other platforms, so just ignore anything that was obsoleted in Mac Catalyst 14.0 or earlier.
-				if (version <= new Version (14, 0))
-					return true;
 				break;
 			}
 

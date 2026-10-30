@@ -69,16 +69,14 @@ namespace CoreData {
 		/// <summary>Indicates NSData.</summary>
 		Binary = 1000,
 		/// <summary>Indicates a UUID.</summary>
-		[MacCatalyst (13, 1)]
 		Uuid = 1100,
 		/// <summary>Indicates a URI.</summary>
-		[MacCatalyst (13, 1)]
 		Uri = 1200,
 		/// <summary>Indicates a type with an available transformer.</summary>
 		Transformable = 1800,
 		/// <summary>Indicates an Object ID.</summary>
 		ObjectID = 2000,
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		CompositeAttributeType = 2100,
 	}
 
@@ -119,7 +117,6 @@ namespace CoreData {
 		Fetch = 1,
 		/// <summary>Indicates that the fetch request was to save managed objects.</summary>
 		Save,
-		[MacCatalyst (13, 1)]
 		BatchInsert = 5,
 		/// <summary>Indicates that the fetch request was for a batch update.</summary>
 		BatchUpdate = 6,
@@ -181,7 +178,6 @@ namespace CoreData {
 	}
 
 	/// <summary>Enumerates the form of the result of a <see cref="CoreData.NSBatchDeleteRequest" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchDeleteRequestResultType : ulong {
 		/// <summary>To be added.</summary>
@@ -224,7 +220,6 @@ namespace CoreData {
 		/// <summary>Indicates that a pattern failed to match a string.</summary>
 		StringPatternMatching = 1680,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		InvalidUri = 1690,
 	}
 
@@ -290,12 +285,10 @@ namespace CoreData {
 		/// <summary>An error occurred while importing an external record.</summary>
 		ExternalRecordImport = 134200,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		HistoryTokenExpired = 134301,
 	}
 
 	/// <summary>Enumerates index types.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSFetchIndexElementType : ulong {
 		/// <summary>Indicates indices into a binary tree.</summary>
@@ -304,7 +297,6 @@ namespace CoreData {
 		RTree,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersistentHistoryChangeType : long {
 		/// <summary>To be added.</summary>
@@ -315,7 +307,6 @@ namespace CoreData {
 		Delete,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersistentHistoryResultType : long {
 		/// <summary>To be added.</summary>
@@ -332,7 +323,6 @@ namespace CoreData {
 		TransactionsAndChanges = 5,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchInsertRequestResultType : ulong {
 		StatusOnly = 0,
@@ -340,7 +330,6 @@ namespace CoreData {
 		Count = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum NSPersistentCloudKitContainerSchemaInitializationOptions : ulong {
@@ -350,7 +339,6 @@ namespace CoreData {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSPersistentCloudKitContainerEventResultType : long {
 		Events = 0,
@@ -358,7 +346,6 @@ namespace CoreData {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSPersistentCloudKitContainerEventType : long {
 		Setup,

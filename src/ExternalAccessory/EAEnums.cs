@@ -8,7 +8,6 @@ namespace ExternalAccessory {
 
 	/// <summary>Enumerates unconfigured but supported features.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum EAWiFiUnconfiguredAccessoryProperties : ulong {
@@ -22,7 +21,6 @@ namespace ExternalAccessory {
 
 	/// <summary>Enumerates the possible states of unconfigured accessory browsers.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryBrowserState : long {
 		/// <summary>To be added.</summary>
@@ -38,7 +36,6 @@ namespace ExternalAccessory {
 	// NSInteger -> EAWiFiUnconfiguredAccessoryBrowser.h
 	/// <summary>Enumerates the possible states encountered while configuring accessory browsers.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryConfigurationStatus : long {
 		/// <summary>To be added.</summary>
@@ -50,7 +47,6 @@ namespace ExternalAccessory {
 	}
 
 	// NSInteger -> EAAccessoryManager.h
-	[MacCatalyst (13, 1)]
 	[Native ("EABluetoothAccessoryPickerErrorCode")]
 	[ErrorDomain ("EABluetoothAccessoryPickerErrorDomain")]
 	public enum EABluetoothAccessoryPickerError : long {

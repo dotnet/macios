@@ -26,7 +26,6 @@ using CoreML;
 namespace NaturalLanguage {
 
 	/// <summary>Determines the most likely language in which a text is written.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // designated
 	[BaseType (typeof (NSObject))]
 	interface NLLanguageRecognizer {
@@ -97,7 +96,6 @@ namespace NaturalLanguage {
 	}
 
 	/// <summary>Contains a configuration for a <see cref="NaturalLanguage.NLModel" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NLModelConfiguration : NSCopying, NSSecureCoding {
 		/// <summary>Gets the model type.</summary>
@@ -139,7 +137,6 @@ namespace NaturalLanguage {
 	}
 
 	/// <summary>Imports custom classification and tagging models into the application.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLModel {
@@ -186,14 +183,12 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("predictedLabelHypothesesForString:maximumCount:")]
 		// `Native` added (like existing API) because we provide a better API with manual bindings (to avoid NSNumber)
 		NSDictionary<NSString, NSNumber> GetNativePredictedLabelHypotheses (string @string, nuint maximumCount);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("predictedLabelHypothesesForTokens:maximumCount:")]
 		// `Native` added (like existing API) because we provide a better API with manual bindings (to avoid NSNumber)
 		NSDictionary<NSString, NSNumber> [] GetNativePredictedLabelHypotheses (string [] tokens, nuint maximumCount);
@@ -207,7 +202,6 @@ namespace NaturalLanguage {
 	delegate void NLTokenizerEnumerateContinuationHandler (NSRange tokenRange, NLTokenizerAttributes flags, out bool stop);
 
 	/// <summary>Breaks a text up into semantic units.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTokenizer {
@@ -262,7 +256,6 @@ namespace NaturalLanguage {
 		void EnumerateTokens (NSRange range, NLTokenizerEnumerateContinuationHandler handler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("tokenRangeForRange:")]
 		NSRange GetTokenRange (NSRange range);
 	}
@@ -275,7 +268,6 @@ namespace NaturalLanguage {
 	delegate void NLTaggerEnumerateTagsContinuationHandler (NSString tag, NSRange tokenRange, out bool stop);
 
 	/// <summary>Analyzes text and produces an enumerable list of tags drawn from a specified set of tag schemas.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NLTagger {
@@ -465,32 +457,26 @@ namespace NaturalLanguage {
 		[Wrap ("GetModels (tagScheme.GetConstant ()!)")]
 		NLModel [] GetModels (NLTagScheme tagScheme);
 
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("setGazetteers:forTagScheme:")]
 		void SetGazetteers (NLGazetteer [] gazetteers, NSString tagScheme);
 
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetGazetteers (gazetteers, tagScheme.GetConstant ()!)")]
 		void SetGazetteers (NLGazetteer [] gazetteers, NLTagScheme tagScheme);
 
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("gazetteersForTagScheme:")]
 		NLGazetteer [] GetGazetteers (NSString tagScheme);
 
-		[MacCatalyst (13, 1)]
 		[Wrap ("GetGazetteers (tagScheme.GetConstant ()!)")]
 		NLGazetteer [] GetGazetteers (NLTagScheme tagScheme);
 
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static]
 		[Async]
 		[Export ("requestAssetsForLanguage:tagScheme:completionHandler:")]
 		void RequestAssets (NSString language, NSString tagScheme, Action<NLTaggerAssetsResult, NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async]
 		[Wrap ("RequestAssets (language.GetConstant ()!, tagScheme.GetConstant ()!, completionHandler)")]
@@ -498,13 +484,11 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("tagHypothesesAtIndex:unit:scheme:maximumCount:tokenRange:")]
 		// `Native` added (like existing API) because we provide a better API with manual bindings (to avoid NSNumber)
 		NSDictionary<NSString, NSNumber> GetNativeTagHypotheses (nuint characterIndex, NLTokenUnit unit, NSString scheme, nuint maximumCount, out NSRange tokenRange);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Internal]
 		[Sealed]
 		[Export ("tagHypothesesAtIndex:unit:scheme:maximumCount:tokenRange:")]
@@ -512,19 +496,16 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Wrap ("GetTagHypotheses (characterIndex, unit, scheme, maximumCount, IntPtr.Zero)")]
 		// `Native` added (like existing API) because we provide a better API with manual bindings (to avoid NSNumber)
 		NSDictionary<NSString, NSNumber> GetNativeTagHypotheses (nuint characterIndex, NLTokenUnit unit, NSString scheme, nuint maximumCount);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("tokenRangeForRange:unit:")]
 		NSRange GetTokenRange (NSRange range, NLTokenUnit unit);
 	}
 
 	/// <summary>Enumerates token types.</summary>
-	[MacCatalyst (13, 1)]
 	[Static] // only used to compare with NSString not as input/output
 	interface NLTag {
 		/// <summary>To be added.</summary>
@@ -684,13 +665,11 @@ namespace NaturalLanguage {
 		NSString OrganizationName { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NLDistanceType : long {
 		Cosine,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NLTaggerAssetsResult : long {
 		Available,
@@ -698,10 +677,8 @@ namespace NaturalLanguage {
 		Error,
 	}
 
-	[MacCatalyst (13, 1)]
 	delegate void NLEnumerateNeighborsHandler (string neighbor, /* NLDistance */ double distance, ref bool stop);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NLEmbedding {
@@ -817,27 +794,23 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("currentSentenceEmbeddingRevisionForLanguage:")]
 		nuint GetCurrentSentenceEmbeddingRevision (NSString language);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Wrap ("GetCurrentSentenceEmbeddingRevision (language.GetConstant ()!)")]
 		nuint GetCurrentSentenceEmbeddingRevision (NLLanguage language);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("sentenceEmbeddingForLanguage:")]
 		[return: NullAllowed]
 		NLEmbedding GetSentenceEmbedding (NSString language);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Wrap ("GetSentenceEmbedding (language.GetConstant ()!)")]
 		[return: NullAllowed]
@@ -845,14 +818,12 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("sentenceEmbeddingForLanguage:revision:")]
 		[return: NullAllowed]
 		NLEmbedding GetSentenceEmbedding (NSString language, nuint revision);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Wrap ("GetSentenceEmbedding (language.GetConstant ()!, revision)")]
 		[return: NullAllowed]
@@ -860,19 +831,16 @@ namespace NaturalLanguage {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("supportedSentenceEmbeddingRevisionsForLanguage:")]
 		NSIndexSet GetSupportedSentenceEmbeddingRevisions (NSString language);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Wrap ("GetSupportedSentenceEmbeddingRevisions (language.GetConstant ()!)")]
 		NSIndexSet GetSupportedSentenceEmbeddingRevisions (NLLanguage language);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NLGazetteer {
@@ -921,7 +889,7 @@ namespace NaturalLanguage {
 		bool Write (NLStrongDictionary dictionary, NLLanguage? language, NSUrl url, [NullAllowed] out NSError error);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NLContextualEmbedding {
@@ -982,7 +950,7 @@ namespace NaturalLanguage {
 
 	delegate void TokenVectorEnumeratorHandler (NSArray<NSNumber> tokenVector, NSRange tokenRange, out bool stop);
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NLContextualEmbeddingResult {

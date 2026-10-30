@@ -2631,17 +2631,6 @@ public partial class Generator : IMemberGatherer {
 		return printed;
 	}
 
-	static bool IsUnavailable (IEnumerable<AvailabilityBaseAttribute> customAttributes, PlatformName platform)
-	{
-		if (customAttributes is null)
-			return false;
-		foreach (var ca in customAttributes) {
-			if ((platform == ca.Platform) && (ca.AvailabilityKind == AvailabilityKind.Unavailable))
-				return true;
-		}
-		return false;
-	}
-
 	static bool HasAvailability (IEnumerable<AvailabilityBaseAttribute> customAttributes, PlatformName platform)
 	{
 		if (customAttributes is null)
@@ -2667,7 +2656,7 @@ public partial class Generator : IMemberGatherer {
 				if (HasAvailability (inlined_ca, availability.Platform))
 					continue;
 				// not available, skip
-				if (IsUnavailable (inlined_ca, availability.Platform))
+				if (inlined_ca.IsUnavailable (availability.Platform))
 					continue;
 				// this type-level custom attribute has meaning and not covered by the method
 				inlined_ca.Add (availability);

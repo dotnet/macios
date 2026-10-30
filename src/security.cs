@@ -82,7 +82,6 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyMacAppStoreReceipt")]
 		NSString MacAppStoreReceipt { get; }
 
@@ -104,21 +103,18 @@ namespace Security {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyAppleRevocation")]
 		NSString AppleRevocation { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePassbookSigning")]
 		NSString ApplePassbookSigning { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyApplePayIssuerEncryption")]
 		NSString ApplePayIssuerEncryption { get; }
 
@@ -176,21 +172,18 @@ namespace Security {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyRevocationFlags")]
 		NSString RevocationFlags { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecPolicyTeamIdentifier")]
 		NSString TeamIdentifier { get; }
 	}
 
 	/// <summary>Represents shared user name and password for a Website.</summary>
 	[Static]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV] // removed in tvOS 10
 	interface SecSharedCredential {
 		/// <summary>To be added.</summary>
@@ -223,7 +216,6 @@ namespace Security {
 	/// <summary>Contains keys that index trust data.</summary>
 	/// <remarks>To be added.</remarks>
 	[Static]
-	[MacCatalyst (13, 1)]
 	interface SecTrustResultKey {
 		/// <summary>Represents the value associated with the constant kSecTrustEvaluationDate</summary>
 		///         <value>
@@ -270,7 +262,6 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecTrustCertificateTransparency")]
 		NSString CertificateTransparency { get; }
 
@@ -280,7 +271,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSecTrustCertificateTransparencyWhiteList")]
 		NSString CertificateTransparencyWhiteList { get; }
@@ -324,12 +314,10 @@ namespace Security {
 		RSA = 0,
 
 		/// <summary>Elliptic curve DSA algorithm.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeEC")]
 		EC = 1,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrKeyTypeECSECPrimeRandom")]
 		ECSecPrimeRandom = 2,
 	}
@@ -481,31 +469,24 @@ namespace Security {
 	[Static]
 	[Internal]
 	interface KeysAccessible {
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleWhenUnlocked")]
 		IntPtr WhenUnlocked { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleAfterFirstUnlock")]
 		IntPtr AfterFirstUnlock { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleAlways")]
 		IntPtr Always { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleWhenUnlockedThisDeviceOnly")]
 		IntPtr WhenUnlockedThisDeviceOnly { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly")]
 		IntPtr AfterFirstUnlockThisDeviceOnly { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleAlwaysThisDeviceOnly")]
 		IntPtr AlwaysThisDeviceOnly { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly")]
 		IntPtr WhenPasscodeSetThisDeviceOnly { get; }
 	}
@@ -595,7 +576,6 @@ namespace Security {
 		[Field ("kSecAttrEffectiveKeySize")]
 		NSString EffectiveKeySizeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessControl")]
 		NSString AccessControlKey { get; }
 
@@ -633,7 +613,6 @@ namespace Security {
 		[Field ("kSecPublicKeyAttrs")]
 		NSString PublicKeyAttrsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrTokenID")]
 		NSString TokenIDKey { get; }
 
@@ -774,23 +753,18 @@ namespace Security {
 	[Static]
 	[Internal]
 	interface SecAttributeKey {
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessible")]
 		IntPtr Accessible { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrSynchronizableAny")]
 		IntPtr SynchronizableAny { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrSynchronizable")]
 		IntPtr Synchronizable { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrSyncViewHint")]
 		IntPtr SyncViewHint { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessGroup")]
 		IntPtr AccessGroup { get; }
 
@@ -878,16 +852,13 @@ namespace Security {
 		[Field ("kSecAttrIsExtractable")]
 		IntPtr IsExtractable { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrTokenIDSecureEnclave")]
 		IntPtr SecureEnclave { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrAccessGroupToken")]
 		IntPtr AccessGroupToken { get; }
 
 		// note: 'kSecAttrPersistantReference' with the word "persistent" (correct) written with an 'a', so "persistant" (incorrect) was a typo in Xcode 9 beta 1
-		[MacCatalyst (13, 1)]
 		[Field ("kSecAttrPersistentReference")]
 		IntPtr PersistentReference { get; }
 	}
@@ -1046,14 +1017,12 @@ namespace Security {
 		[Field ("kSecUseItemList")]
 		IntPtr UseItemList { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecUseDataProtectionKeychain")]
 		IntPtr UseDataProtectionKeychain { get; }
 
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LAContext.InteractionNotAllowed' instead.")]
 		[Field ("kSecUseOperationPrompt")]
 		IntPtr UseOperationPrompt { get; }
@@ -1061,16 +1030,13 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 9, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 11)]
 		[Deprecated (PlatformName.TvOS, 9, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSecUseNoAuthenticationUI")]
 		IntPtr UseNoAuthenticationUI { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecUseAuthenticationUI")]
 		IntPtr UseAuthenticationUI { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kSecUseAuthenticationContext")]
 		IntPtr UseAuthenticationContext { get; }
 
@@ -1108,7 +1074,6 @@ namespace Security {
 		IntPtr Value { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	enum SecKeyAlgorithm {
 		/// <summary>To be added.</summary>
 		[Field ("kSecKeyAlgorithmRSASignatureRaw")]
@@ -1343,141 +1308,122 @@ namespace Security {
 		EcdhKeyExchangeCofactorX963Sha512,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA1")]
 		RsaSignatureDigestPssSha1,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA224")]
 		RsaSignatureDigestPssSha224,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA256")]
 		RsaSignatureDigestPssSha256,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA384")]
 		RsaSignatureDigestPssSha384,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureDigestPSSSHA512")]
 		RsaSignatureDigestPssSha512,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA1")]
 		RsaSignatureMessagePssSha1,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA224")]
 		RsaSignatureMessagePssSha224,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA256")]
 		RsaSignatureMessagePssSha256,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA384")]
 		RsaSignatureMessagePssSha384,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmRSASignatureMessagePSSSHA512")]
 		RsaSignatureMessagePssSha512,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA224AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha224AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA256AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha256AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA384AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha384AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA512AESGCM")]
 		EciesEncryptionStandardVariableIvx963Sha512AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA224AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha224AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA256AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha256AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA384AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha384AesGcm,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kSecKeyAlgorithmECIESEncryptionCofactorVariableIVX963SHA512AESGCM")]
 		EciesEncryptionCofactorVariableIvx963Sha512AesGcm,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754")]
 		EcdsaSignatureDigestRfc4754,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA1")]
 		EcdsaSignatureDigestRfc4754Sha1,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA224")]
 		EcdsaSignatureDigestRfc4754Sha224,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA256")]
 		EcdsaSignatureDigestRfc4754Sha256,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA384")]
 		EcdsaSignatureDigestRfc4754Sha384,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureDigestRFC4754SHA512")]
 		EcdsaSignatureDigestRfc4754Sha512,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA1")]
 		EcdsaSignatureMessageRfc4754Sha1,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA224")]
 		EcdsaSignatureMessageRfc4754Sha224,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA256")]
 		EcdsaSignatureMessageRfc4754Sha256,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA384")]
 		EcdsaSignatureMessageRfc4754Sha384,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kSecKeyAlgorithmECDSASignatureMessageRFC4754SHA512")]
 		EcdsaSignatureMessageRfc4754Sha512,
 	}
 
-	[MacCatalyst (13, 1)]
 	enum SslSessionConfig {
 		/// <summary>Developers should not use this deprecated field. </summary>
 		[Deprecated (PlatformName.iOS, 11, 0)]
@@ -1535,7 +1481,6 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_3DES_fallback")]
 		ThreeDesFallback,
@@ -1544,13 +1489,11 @@ namespace Security {
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 13)]
 		[Deprecated (PlatformName.TvOS, 11, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Field ("kSSLSessionConfig_TLSv1_3DES_fallback")]
 		Tls1ThreeDesFallback,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Internal]
 	[Static]
 	interface SecKeyKeyExchangeParameterKey {
@@ -1561,7 +1504,6 @@ namespace Security {
 		NSString SharedInfoKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SecKeyKeyExchangeParameterKey")]
 	interface SecKeyKeyExchangeParameter {
 
@@ -1577,7 +1519,6 @@ namespace Security {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Internal]
 	[Static]
 	interface SecSharedCredentialKeys {
@@ -1587,7 +1528,6 @@ namespace Security {
 		[Field ("kSecAttrAccount")]
 		NSString AccountKey { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("kSecSharedPassword")]
 		NSString PasswordKey { get; }
 
@@ -1596,7 +1536,6 @@ namespace Security {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SecSharedCredentialKeys")]
 	interface SecSharedCredentialInfo {
 

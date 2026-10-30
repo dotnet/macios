@@ -38,4 +38,18 @@ namespace NS {
 	[Unavailable (PlatformName.TvOS)]
 	interface NowhereLong {
 	}
+
+	[NoiOS]
+	[BaseType (typeof (NSObject))]
+	interface NotOniOS {
+		[Export ("onlyNotOniOS")]
+		void OnlyNotOniOS ();
+	}
+
+	[BaseType (typeof (NSObject))]
+	interface PartiallyOniOS {
+		[NoiOS]
+		[Export ("notOniOSMethod")]
+		void NotOniOSMethod ();
+	}
 }

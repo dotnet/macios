@@ -13,7 +13,6 @@
 namespace SceneKit {
 
 	/// <summary>Identifies errors reported by SceneKit.</summary>
-	[MacCatalyst (13, 1)]
 	[Native] // untyped enum (SceneKitTypes.h) but described as the value of `code` for `NSError` which is an NSInteger
 	[ErrorDomain ("SCNErrorDomain")]
 	public enum SCNErrorCode : long {
@@ -22,7 +21,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of 2D geometry primitives.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNGeometryPrimitiveType : long {
 		/// <summary>To be added.</summary>
@@ -34,12 +32,10 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		Point,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Polygon,
 	}
 
 	/// <summary>Enumerates techniques for calculating transparency.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNTransparencyMode : long {
 		/// <summary>Uses the alpha channel of colors. Alpha of 1.0 is opaque.</summary>
@@ -47,13 +43,10 @@ namespace SceneKit {
 		/// <summary>Uses the luminance of colors. A luminance of 0.0 is opaque.</summary>
 		RgbZero,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SingleLayer = 2,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		DualLayer = 3,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Default = AOne,
 	}
 
@@ -61,7 +54,6 @@ namespace SceneKit {
 	///     <remarks>
 	///       <para>See <see cref="SceneKit.SCNMaterial.CullMode" />.</para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNCullMode : long {
 		/// <summary>To be added.</summary>
@@ -71,7 +63,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of texture filtering modes.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNFilterMode : long {
 		/// <summary>To be added.</summary>
@@ -83,7 +74,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates texture-wrapping techniques.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNWrapMode : long {
 		/// <summary>Clamps texture coordinates to the range [0,1].</summary>
@@ -98,7 +88,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates the states of an SCNSceneSource.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNSceneSourceStatus : long {
 		/// <summary>An error occurred during loading.</summary>
@@ -114,7 +103,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates the ways a <see cref="SceneKit.SCNShape" /> can be chamfered; on its front, back, or both sides.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNChamferMode : long {
 		/// <summary>To be added.</summary>
@@ -126,7 +114,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of valid interpolation formulae for <see cref="SceneKit.SCNMorpher.CalculationMode" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNMorpherCalculationMode : long {
 		/// <summary>To be added.</summary>
@@ -136,7 +123,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates rate curves for use with <see cref="SceneKit.SCNAction" /> objects.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNActionTimingMode : long {
 		/// <summary>To be added.</summary>
@@ -150,7 +136,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration controlling when shadows are calculated.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNShadowMode : long {
 		/// <summary>Shadows are calculated during lighting computations.</summary>
@@ -162,7 +147,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>An enumeration specifying whether the <see cref="SceneKit.SCNPhysicsBody" /> is dynamic, kinematic, or static. Used with <see cref="SceneKit.SCNPhysicsBody.CreateBody(SceneKit.SCNPhysicsBodyType,SceneKit.SCNPhysicsShape)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsBodyType : long {
 		/// <summary>To be added.</summary>
@@ -174,7 +158,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates values specifying whether an <see cref="SceneKit.SCNPhysicsField" /> affects objects inside or outside its border.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsFieldScope : long {
 		/// <summary>To be added.</summary>
@@ -187,7 +170,6 @@ namespace SceneKit {
 	/// <remarks>
 	///   <para>Along with <see cref="SCNParticleSystem.BlendMode" />, <see cref="SCNParticleSystem.SortingMode" /> affects the appearance of overlapping particles.</para>
 	/// </remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleSortingMode : long {
 		/// <summary>To be added.</summary>
@@ -203,7 +185,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of the ways in which overlapping particles emitted by a <see cref="SceneKit.SCNParticleSystem" /> will be rendered.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBlendMode : long {
 		/// <summary>To be added.</summary>
@@ -221,7 +202,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates the alignment of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />. Used with <see cref="SceneKit.SCNParticleSystem.OrientationMode" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleOrientationMode : long {
 		/// <summary>To be added.</summary>
@@ -235,7 +215,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of the initial location of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBirthLocation : long {
 		/// <summary>To be added.</summary>
@@ -247,7 +226,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates the initial direction of particles emitted by a <see cref="SceneKit.SCNParticleSystem" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleBirthDirection : long {
 		/// <summary>To be added.</summary>
@@ -259,7 +237,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of playing modes for <see cref="SceneKit.SCNParticleSystem" />'s whose particles are rendered as a sequence of images.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleImageSequenceAnimationMode : long {
 		/// <summary>To be added.</summary>
@@ -271,7 +248,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates how a particle property is animated (over the lifetime of the particle, as the particle travels over a distance, or based on another property). Used with <see cref="SceneKit.SCNParticlePropertyController.InputMode" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleInputMode : long {
 		/// <summary>To be added.</summary>
@@ -283,7 +259,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates moments when the modifier specified in <see cref="SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" /> should be applied.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleModifierStage : long {
 		/// <summary>To be added.</summary>
@@ -297,7 +272,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of lifecycle events for particles emitted by a <see cref="SceneKit.SCNParticleSystem" />. Used with <see cref="SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNParticleEvent : long {
 		/// <summary>
@@ -364,7 +338,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates values that control antialiasing behavior.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNAntialiasingMode : ulong {
 		/// <summary>Do not antialias.</summary>
@@ -388,7 +361,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Defaults for the collision properties of a <see cref="SceneKit.SCNPhysicsBody" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNPhysicsCollisionCategory : ulong {
 		/// <summary>A category that does not collide.</summary>
@@ -402,7 +374,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of axes' locks available to nodes constrained by <see cref="SceneKit.SCNBillboardConstraint" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBillboardAxis : ulong {
 		/// <summary>Allow the billboard to rotate about the X axis.</summary>
@@ -416,7 +387,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates possible loading policies for <see cref="SceneKit.SCNReferenceNode" /> objects.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNReferenceLoadingPolicy : long {
 		/// <summary>The scene is loaded as soon as the <see cref="SceneKit.SCNReferenceNode.ReferenceUrl" /> is initialized.</summary>
@@ -426,7 +396,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of the ways SceneKit can blend colors from a material with colors that already exist in the render target.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBlendMode : long {
 		/// <summary>Indicates that colors will be blended by multiplying the source and destination values by their corresponding alpha values</summary>
@@ -442,12 +411,10 @@ namespace SceneKit {
 		/// <summary>Indicates that colors will be blended by replacing the destination with the source and ignoring the alpha channel.</summary>
 		Replace = 5,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Max = 6,
 	}
 
 	/// <summary>Enumerates debug overlay options.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum SCNDebugOptions : ulong {
@@ -466,24 +433,18 @@ namespace SceneKit {
 		/// <summary>Indicates that scene geometry will be rendered as wireframes.</summary>
 		ShowWireframe = 1 << 5,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		RenderAsWireframe = 1 << 6,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ShowSkeletons = 1 << 7,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ShowCreases = 1 << 8,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ShowConstraints = 1 << 9,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ShowCameras = 1 << 10,
 	}
 
 	/// <summary>Enumerates values that signify the Metal or OpenGLES2 APIs.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNRenderingApi : ulong {
 		/// <summary>Indicates that the Metal framework is used for rendering.</summary>
@@ -513,7 +474,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates values that control whether handlers are invoked per frame, per node per frame, or per node per frame per shaded renderable.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNBufferFrequency : long {
 		/// <summary>Indicates that handlers are invoked per frame.</summary>
@@ -525,7 +485,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates values that tell SceneKit whether nodes are expected to move over time.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNMovabilityHint : long {
 		/// <summary>Indicates that the node is not expected to move over time.</summary>
@@ -534,7 +493,6 @@ namespace SceneKit {
 		Movable,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum SCNColorMask : long {
@@ -552,7 +510,6 @@ namespace SceneKit {
 		All = 15,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNInteractionMode : long {
 		/// <summary>To be added.</summary>
@@ -571,7 +528,6 @@ namespace SceneKit {
 		Truck,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNFillMode : ulong {
 		/// <summary>To be added.</summary>
@@ -580,7 +536,6 @@ namespace SceneKit {
 		Lines = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNTessellationSmoothingMode : long {
 		/// <summary>To be added.</summary>
@@ -590,7 +545,6 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		Phong,
 	}
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNHitTestSearchMode : long {
 		/// <summary>To be added.</summary>
@@ -601,7 +555,6 @@ namespace SceneKit {
 		Any = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNCameraProjectionDirection : long {
 		/// <summary>To be added.</summary>
@@ -611,7 +564,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates the focusable states of a <see cref="SceneKit.SCNNode" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNNodeFocusBehavior : long {
 		/// <summary>To be added.</summary>
@@ -622,21 +574,18 @@ namespace SceneKit {
 		Focusable,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeType : long {
 		Irradiance = 0,
 		Radiance = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeUpdateType : long {
 		Never = 0,
 		Realtime = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightAreaType : long {
 		Rectangle = 1,
@@ -644,7 +593,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumeration of categories for <see cref="SceneKit.SCNPhysicsShape" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum SCNPhysicsShapeType {
 		/// <summary>To be added.</summary>
 		ConvexHull,

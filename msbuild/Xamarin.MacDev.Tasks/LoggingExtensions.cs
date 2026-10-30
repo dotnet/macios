@@ -84,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="lineNumber">Line number in the file where the error was found, or 0 if unknown.</param>
 		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
-			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+			log.LogError (null, $"{ErrorPrefix}{errorCode:0000}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
 		}
 
 		/// <summary>
@@ -96,22 +96,22 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="fileName">Path to the known guilty file or null.</param>
 		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
-			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+			log.LogError (null, $"{ErrorPrefix}{errorCode:0000}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
 		}
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
-			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+			log.LogWarning (null, $"{ErrorPrefix}{errorCode:0000}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
 		}
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
-			log.LogWarning (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+			log.LogWarning (null, $"{ErrorPrefix}{errorCode:0000}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
 		}
 
 		public static void LogMessage (this TaskLoggingHelper log, MessageImportance importance, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
-			log.LogMessage (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, importance, message, args);
+			log.LogMessage (null, $"{ErrorPrefix}{errorCode:0000}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, importance, message, args);
 		}
 
 		public static bool LogErrorsFromException (this TaskLoggingHelper log, Exception exception, bool showStackTrace = true, bool showDetail = true)

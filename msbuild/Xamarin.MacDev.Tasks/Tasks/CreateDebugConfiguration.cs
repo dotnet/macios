@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (!File.Exists (path) || File.ReadAllText (path) != text)
 					File.WriteAllText (path, text);
 			} catch (Exception ex) {
-				Log.LogErrorFromException (ex);
+				Log.LogError (7226, path, Xamarin.Localization.MSBuild.MSBStrings.E7226, path, ex.Message); // Could not write debug configuration '{0}': {1}
 			}
 
 			return !Log.HasLoggedErrors;

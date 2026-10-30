@@ -123,7 +123,7 @@ namespace Xamarin.MacDev.Tasks {
 					return false;
 				}
 			} catch (Exception ex) {
-				Log.LogErrorFromException (ex, showStackTrace: true, showDetail: true, file: null);
+				Log.LogError (7228, null, MSBStrings.E7228, ex.ToString ()); // Could not copy files: {0}
 			}
 
 			CopiedFiles = copied.ToArray ();

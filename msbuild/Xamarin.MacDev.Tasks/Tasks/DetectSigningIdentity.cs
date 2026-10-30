@@ -390,7 +390,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception ex) {
-				Log.LogErrorFromException (ex);
+				Log.LogError (7227, null, MSBStrings.E7227, ex.Message); // Could not retrieve signing certificates: {0}
 				certs = null;
 				return false;
 			}

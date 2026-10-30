@@ -60,7 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 					int arrayIndex;
 
 					if (!int.TryParse (path [i], out arrayIndex)) {
-						Log.LogError (145, null, MSBStrings.E0145, path [i]); // No {0} signing identities match the specified provisioning profile '{1}'.
+						Log.LogError (154, null, MSBStrings.E0154, path [i]); // Could not parse array index: {0}
 						return false;
 					}
 

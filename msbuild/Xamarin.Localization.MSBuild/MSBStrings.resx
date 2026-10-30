@@ -1821,10 +1821,6 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when listing the physical devices with 'devicectl' fails, times out, or devicectl can't be run.
 {0} - The reason for the failure, as reported by devicectl or by the device discovery. Do not translate 'devicectl'.</comment>
     </data>
-    <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
-        <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
-        <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
-    </data>
     <data name="W7201" xml:space="preserve">
         <value>The extracted file or directory '{0}' could not be found.</value>
         <comment>{0}: extracted resource path.</comment>
@@ -1918,5 +1914,21 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
     <data name="W7224" xml:space="preserve">
         <value>No output file to write to for item {0}</value>
         <comment>{0}: item name.</comment>
+    </data>
+    <data name="W7225" xml:space="preserve">
+        <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
+        <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
+    </data>
+    <data name="E7226" xml:space="preserve">
+        <value>Could not write debug configuration '{0}': {1}</value>
+        <comment>{0}: debug configuration path; {1}: exception message.</comment>
+    </data>
+    <data name="E7227" xml:space="preserve">
+        <value>Could not retrieve signing certificates: {0}</value>
+        <comment>{0}: exception message.</comment>
+    </data>
+    <data name="E7228" xml:space="preserve">
+        <value>Could not copy files: {0}</value>
+        <comment>{0}: exception details, including the stack trace.</comment>
     </data>
 </root>

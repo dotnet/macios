@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 
 using Microsoft.Build.Utilities;
@@ -58,6 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		[TestCase ("E0179", true, "MT0179", new [] { "TestTask" })]
 		[TestCase ("W0108b", false, "MT0108", new [] { "key", "value" })]
+		[TestCase ("W7225", false, "MT7225", new string [0])]
 		[TestCase ("E7152_InvalidMtouchHttpClientHandler", true, "MT7152", new [] { "invalid" })]
 		public void ResourceDiagnostic (string resource, bool error, string expectedCode, string [] arguments)
 		{
@@ -126,6 +128,27 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (error.Code, Is.EqualTo ("MT0010"), "Code");
 			Assert.That (error.File, Is.EqualTo (file), "File");
 			Assert.That (error.Message, Does.StartWith (string.Format (MSBStrings.E0010, file, "")), "Message");
+		}
+
+		[Test]
+		public void DebugConfigurationWriteError ()
+		{
+			var task = CreateTask<CreateDebugConfiguration> ();
+			task.AppBundleDir = Path.Combine (Cache.CreateTemporaryDirectory (), "missing");
+			ExecuteTask (task, 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT7226"), "Code");
+			Assert.That (Engine.Logger.ErrorEvents [0].File, Is.EqualTo (Path.Combine (task.AppBundleDir, "MonoTouchDebugConfiguration.txt")), "File");
+		}
+
+		[Test]
+		public void CopyError ()
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask<SmartCopy> ();
+			task.SourceFiles = [new TaskItem (Path.Combine (directory, "missing"))];
+			task.DestinationFiles = [new TaskItem (Path.Combine (directory, "output"))];
+			ExecuteTask (task, 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT7228"), "Code");
 		}
 
 		[Test]
@@ -217,6 +240,29 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (output, Does.Contain ("warning MT7194"), "Warning retained");
 			else
 				Assert.That (output, Does.Not.Contain ("warning MT7194"), "Warning demoted to message");
+		}
+
+		[Test]
+		public void NativeHttpHandlerWarning ()
+		{
+			var targets = XDocument.Load (Path.Combine (Configuration.RootPath, "dotnet", "targets", "Xamarin.Shared.Sdk.targets"));
+			var ns = targets.Root?.Name.Namespace ?? XNamespace.None;
+			var target = targets.Root?.Elements (ns + "Target").Single (v => (string?) v.Attribute ("Name") == "_VerifyValidProperties");
+			Assert.That (target, Is.Not.Null, "Validation target");
+			var project = Path.Combine (Cache.CreateTemporaryDirectory (), "Warnings.proj");
+			new XDocument (
+				new XElement (ns + "Project",
+					new XElement (ns + "UsingTask",
+						new XAttribute ("TaskName", typeof (MacDevMessage).FullName ?? nameof (MacDevMessage)),
+						new XAttribute ("AssemblyFile", typeof (MacDevMessage).Assembly.Location)),
+					target))
+				.Save (project);
+			var exitCode = ExecutionHelper.Execute (DotNet.Executable,
+				["msbuild", project, "-t:_VerifyValidProperties", "-p:_PlatformName=macOS", "-p:UseNativeHttpHandler=true", "-nologo", "-v:normal"],
+				out string? output, TimeSpan.FromMinutes (1));
+			Assert.That (exitCode, Is.EqualTo (0), output);
+			Assert.That (output, Does.Contain ("warning MT7225"), "Warning code");
+			Assert.That (output, Does.Contain (MSBStrings.W7225), "Warning message");
 		}
 	}
 }

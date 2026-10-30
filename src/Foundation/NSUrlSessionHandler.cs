@@ -1045,8 +1045,8 @@ namespace Foundation {
 							continue;
 						}
 
-						httpResponse.Headers.TryAddWithoutValidation (key, value);
-						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
+						if (!httpResponse.Headers.TryAddWithoutValidation (key, value))
+							httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
 					}
 
 					var contentWasDecompressed = contentEncodingValue is not null && HasCompressedEncoding (contentEncodingValue);

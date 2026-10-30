@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -25,6 +26,72 @@ namespace MonoTests.System.Net.Http {
 		// in CI. Set this to true to restore the usual "ignore transient network failures in CI"
 		// behavior if these tests ever turn out to be flaky on the bots.
 		bool ignoreLocalOnlyCIFailures = false;
+
+		[Test]
+		public void ResponseHeadersAreNotDuplicatedInContentHeaders ()
+		{
+			using var listener = new TcpListener (IPAddress.Loopback, 0);
+			listener.Start ();
+			var port = ((IPEndPoint) listener.LocalEndpoint).Port;
+			using var cts = new CancellationTokenSource (TimeSpan.FromSeconds (30));
+
+			var serverTask = Task.Run (async () => {
+				using var connection = await listener.AcceptTcpClientAsync (cts.Token).ConfigureAwait (false);
+				using var stream = connection.GetStream ();
+				using var reader = new StreamReader (stream, Encoding.ASCII, false, 1024, leaveOpen: true);
+				while (!string.IsNullOrEmpty (await reader.ReadLineAsync (cts.Token).ConfigureAwait (false))) {
+				}
+				var response = Encoding.ASCII.GetBytes (
+					"HTTP/1.1 200 OK\r\n" +
+					"OData-Version: 4.0\r\n" +
+					"X-AspNet-Version: 4.0.30319\r\n" +
+					"Server: header-test\r\n" +
+					"Content-Type: application/json\r\n" +
+					"Content-Length: 2\r\n" +
+					"Content-Encoding: identity\r\n" +
+					"Allow: GET\r\n" +
+					"Expires: Wed, 21 Oct 2015 07:28:00 GMT\r\n" +
+					"Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT\r\n" +
+					"Connection: close\r\n\r\n{}");
+				await stream.WriteAsync (response, cts.Token).ConfigureAwait (false);
+			});
+
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					using var client = new HttpClient (handler);
+					using var response = await client.GetAsync ($"http://127.0.0.1:{port}/", HttpCompletionOption.ResponseHeadersRead, cts.Token).ConfigureAwait (false);
+					response.EnsureSuccessStatusCode ();
+					await serverTask.ConfigureAwait (false);
+
+					var headers = response.Headers.Concat (response.Content.Headers).ToDictionary (h => h.Key, h => string.Join (",", h.Value), StringComparer.OrdinalIgnoreCase);
+					Assert.That (headers ["OData-Version"], Is.EqualTo ("4.0"), "OData-Version");
+					Assert.That (headers ["X-AspNet-Version"], Is.EqualTo ("4.0.30319"), "X-AspNet-Version");
+					var responseHeaderNames = response.Headers.Select (h => h.Key).ToArray ();
+					var contentHeaderNames = response.Content.Headers.Select (h => h.Key).ToArray ();
+					foreach (var name in new [] { "OData-Version", "X-AspNet-Version", "Server" }) {
+						Assert.That (responseHeaderNames, Has.Some.EqualTo (name).IgnoreCase, $"Response header: {name}");
+						Assert.That (contentHeaderNames, Has.None.EqualTo (name).IgnoreCase, $"Not a content header: {name}");
+					}
+					foreach (var name in new [] { "Content-Type", "Content-Length", "Content-Encoding", "Allow", "Expires", "Last-Modified" }) {
+						Assert.That (contentHeaderNames, Has.Some.EqualTo (name).IgnoreCase, $"Content header: {name}");
+						Assert.That (responseHeaderNames, Has.None.EqualTo (name).IgnoreCase, $"Not a response header: {name}");
+					}
+					Assert.That (await response.Content.ReadAsStringAsync ().ConfigureAwait (false), Is.EqualTo ("{}"), "Body");
+				}, out var ex);
+
+				Assert.That (done, Is.True, "Request completed");
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+			} finally {
+				cts.Cancel ();
+				listener.Stop ();
+				try {
+					serverTask.GetAwaiter ().GetResult ();
+				} catch (OperationCanceledException) when (cts.IsCancellationRequested) {
+				} catch (SocketException) when (cts.IsCancellationRequested) {
+				}
+			}
+		}
 
 		// https://github.com/dotnet/macios/issues/23958
 		[Test]

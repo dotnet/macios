@@ -43,18 +43,23 @@ namespace MonoTouchFixtures.Foundation {
 		[TestCase ("sssb", AEKeyword.SenderApplicationSandboxed)]
 		[TestCase ("acat", AEKeyword.ActualSenderAuditToken)]
 		[TestCase ("attr", AEKeyword.AppleEventAttributesAttribute)]
-		public void Constants (string code, AEKeyword keyword)
+		public void KnownKeywords (string code, AEKeyword keyword)
 		{
 			Assert.That (code.ToAEKeyword (), Is.EqualTo (keyword), code);
 		}
 
 		[TestCase ("abcd", 0x61626364u)]
-		[TestCase ("\u00FF\u0080\0 ", 0xFF800020u)]
 		[TestCase ("\0\0\0\0", 0u)]
 		[TestCase ("\u00FF\u00FF\u00FF\u00FF", uint.MaxValue)]
 		public void CustomKeyword (string code, uint expected)
 		{
 			Assert.That ((uint) code.ToAEKeyword (), Is.EqualTo (expected));
+		}
+
+		[Test]
+		public void SingleByteCharacters ()
+		{
+			Assert.That ((uint) "\u00FF\u0080\0 ".ToAEKeyword (), Is.EqualTo (0xFF800020u));
 		}
 
 		[Test]

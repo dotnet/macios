@@ -3376,6 +3376,22 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 		</ItemGroup>
 	</Target>
 
+	<!-- App Clips must be small (the App Store limits them to 10-15 MB), so we require NativeAOT for release builds -->
+	<Target Name="_ValidateAppClip" Condition="'$(IsAppClip)' == 'true'" BeforeTargets="_ComputeVariables;Build">
+		<Error
+			Condition="'$(_PlatformName)' != 'iOS'"
+			Text="App Clips are only supported on iOS."
+			/>
+		<Error
+			Condition="'$(_PlatformName)' == 'iOS' And '$(OutputType)' != 'Exe'"
+			Text="An App Clip project must have OutputType=Exe."
+			/>
+		<Error
+			Condition="'$(_PlatformName)' == 'iOS' And '$(Configuration)' == 'Release' And '$(PublishAot)' != 'true'"
+			Text="App Clips require NativeAOT in Release builds (to stay within the App Store's size limit). Set 'PublishAot=true' in the project file."
+			/>
+	</Target>
+
 	<!--
 		Validate that the build configuration will work for Hot Reload.
 		This target is executed when doing 'dotnet run'

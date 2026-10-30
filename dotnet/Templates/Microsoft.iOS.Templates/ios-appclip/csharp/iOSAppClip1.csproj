@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>TFM</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">iOSAppClip1</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <IsAppClip>true</IsAppClip>
+
+    <!-- The bundle identifier (aka ApplicationId) for an App Clip must be the main app's bundle identifier + ".<something>" -->
+    <ApplicationId>com.companyname.iOSApp1.Clip</ApplicationId>
+
+    <!-- App Clips must be small, so NativeAOT is required for Release builds -->
+    <PublishAot Condition="'$(Configuration)' == 'Release'">true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+</Project>

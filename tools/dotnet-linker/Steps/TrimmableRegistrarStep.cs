@@ -566,7 +566,7 @@ namespace Xamarin.Linker {
 						if (categoryMethodsByType.Remove (td, out var categoryMethods)) {
 							foreach (var m in categoryMethods.OrderBy (v => v.FullName)) {
 								if (!trampolinesByMethod.Remove (m.Method!, out var info)) {
-									AddException (ErrorHelper.CreateWarning (4191, Errors.MX4191 /* Could not find the trampoline for the category method {0}. */, m.Method?.FullName));
+									AddException (ErrorHelper.CreateWarning (App, 4191, m.Method, Errors.MX4191 /* Could not find the trampoline for the category method {0}. */, m.Method?.FullName));
 									continue;
 								}
 								trampolinesByType.Remove (m.CategoryType!.Type.Resolve ());

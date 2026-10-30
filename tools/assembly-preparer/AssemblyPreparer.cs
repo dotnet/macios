@@ -213,9 +213,6 @@ public class AssemblyPreparer : IDisposable {
 		if (PreTrimAssemblies.Count == 0)
 			return;
 
-		if (configuration.Application.Registrar != RegistrarMode.TrimmableStatic)
-			return;
-
 		var resolver = new PreTrimAssemblyResolver (configuration.Logger, PreTrimAssemblies);
 		configuration.Application.PreTrimAssemblyResolver = resolver;
 	}

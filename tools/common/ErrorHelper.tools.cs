@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
+using Xamarin.Linker;
 using Xamarin.Utils;
 
 #nullable enable
@@ -213,14 +214,14 @@ namespace Xamarin.Bundler {
 				return Create (app, code, error, innerException, member, null, message, args);
 			}
 
-			if (provider is TypeReference type)
-				return Create (app, code, error, innerException, type, message, args);
-
 			return new ProductException (code, error, innerException, message, args);
 		}
 
 		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MemberReference? member, Instruction? instruction, string message, params object? [] args)
 		{
+			if (member is TypeReference type)
+				return Create (app, code, error, innerException, type, message, args);
+
 			var method = member as MethodReference;
 			if (method is null) {
 				var property = member as PropertyDefinition;
@@ -230,14 +231,21 @@ namespace Xamarin.Bundler {
 						method = property.SetMethod;
 				}
 			}
-			return Create (app, code, error, innerException, method is null ? null : method.Resolve (), instruction, message, args);
+			var location = method?.Resolve ();
+			var e = Create (app, code, error, innerException, location, instruction, message, args);
+			if (!error && location is null && member is not null)
+				e.IsSuppressed |= IsWarningSuppressed (app, code, member);
+			return e;
 		}
 
 		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MethodDefinition? location, Instruction? instruction, string message, params object? [] args)
 		{
 			var e = new ProductException (code, error, innerException, message, args);
-			if (location is not null)
+			if (location is not null) {
+				if (!error)
+					e.IsSuppressed = IsWarningSuppressed (app, code, location);
 				SetLocation (app, e, location, instruction);
+			}
 			return e;
 		}
 
@@ -246,6 +254,8 @@ namespace Xamarin.Bundler {
 			var e = new ProductException (code, error, innerException, message, args);
 			if (location is not null) {
 				var td = location.Resolve ();
+				if (!error)
+					e.IsSuppressed = IsWarningSuppressed (app, code, td);
 
 				if (td.HasMethods) {
 					foreach (var method in td.Methods) {
@@ -258,6 +268,88 @@ namespace Xamarin.Bundler {
 				}
 			}
 			return e;
+		}
+
+		public static bool IsWarningSuppressed (IToolLog log, int code, MemberReference member)
+		{
+			if (member is ICustomAttributeProvider provider && HasSuppression (log, code, provider))
+				return true;
+
+			if (member is MethodDefinition method && (method.IsGetter || method.IsSetter)) {
+				var property = method.GetPropertyByAccessor ();
+				if (property is not null && (HasSuppression (log, code, property) || HasGlobalSuppression (log, code, property)))
+					return true;
+			}
+
+			var type = member as TypeReference ?? member.DeclaringType;
+			while (type is not null) {
+				if (HasSuppression (log, code, type.Resolve ()))
+					return true;
+				type = type.DeclaringType;
+			}
+
+			return HasGlobalSuppression (log, code, member);
+		}
+
+		static bool HasGlobalSuppression (IToolLog log, int code, MemberReference member)
+		{
+			var module = member.Module;
+			return HasSuppression (log, code, module, member) || HasSuppression (log, code, module.Assembly, member);
+		}
+
+		static bool HasSuppression (IToolLog log, int code, ICustomAttributeProvider provider, MemberReference? target = null)
+		{
+			var checkId = code.ToString ("0000");
+			IEnumerable<ICustomAttribute> attributes = log is Application app
+				? app.StaticRegistrar.GetCustomAttributes (provider, "System.Diagnostics.CodeAnalysis", "UnconditionalSuppressMessageAttribute")
+				: provider.CustomAttributes;
+			foreach (var attribute in attributes) {
+				if (attribute.AttributeType.Namespace != "System.Diagnostics.CodeAnalysis" || attribute.AttributeType.Name != "UnconditionalSuppressMessageAttribute")
+					continue;
+				if (attribute.ConstructorArguments.Count != 2 || attribute.ConstructorArguments [1].Value is not string id)
+					continue;
+				if (!id.StartsWith ("MX", StringComparison.Ordinal) && !id.StartsWith ("MT", StringComparison.Ordinal) && !id.StartsWith ("MM", StringComparison.Ordinal))
+					continue;
+				id = id.Substring (2);
+				if (id != checkId && !id.StartsWith (checkId + ":", StringComparison.Ordinal))
+					continue;
+				if (target is null || MatchesSuppressionTarget (attribute, target))
+					return true;
+			}
+
+			return false;
+		}
+
+		static bool MatchesSuppressionTarget (ICustomAttribute attribute, MemberReference member)
+		{
+			string? scope = null;
+			string? target = null;
+			foreach (var property in attribute.Properties) {
+				if (property.Name == "Scope")
+					scope = property.Argument.Value as string;
+				else if (property.Name == "Target")
+					target = property.Argument.Value as string;
+			}
+
+			if (string.IsNullOrEmpty (scope) || scope == "module")
+				return string.IsNullOrEmpty (target);
+			if (target is null || target.Length == 0)
+				return false;
+			if (target [0] == '~')
+				target = target.Substring (1);
+
+			if (scope == "member")
+				return member is IMemberDefinition definition && Mono.Cecil.Rocks.DocCommentId.GetDocCommentId (definition) == target;
+			if (scope == "type") {
+				var type = member as TypeReference ?? member.DeclaringType;
+				while (type is not null) {
+					if (Mono.Cecil.Rocks.DocCommentId.GetDocCommentId (type.Resolve ()) == target)
+						return true;
+					type = type.DeclaringType;
+				}
+			}
+
+			return false;
 		}
 
 		public static void Warning (IToolLog log, int code, string message, params object [] args)
@@ -318,7 +410,7 @@ namespace Xamarin.Bundler {
 			if (mte is not null) {
 				error = mte.IsError (log);
 
-				if (!error && GetWarningLevel (log, mte.Code) == WarningLevel.Disable)
+				if (!error && mte.GetWarningLevel (log) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
 				// Report warnings as warnings, otherwise they'd end up failing the build when

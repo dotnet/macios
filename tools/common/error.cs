@@ -49,6 +49,8 @@ namespace Xamarin.Bundler {
 
 		bool Warning { get; set; }
 
+		internal bool IsSuppressed { get; set; }
+
 		public bool IsError (IToolLog? log)
 		{
 			return GetWarningLevel (log) == ErrorHelper.WarningLevel.Error;
@@ -59,6 +61,9 @@ namespace Xamarin.Bundler {
 			// An error is an error, no matter what.
 			if (!Warning)
 				return ErrorHelper.WarningLevel.Error;
+
+			if (IsSuppressed)
+				return ErrorHelper.WarningLevel.Disable;
 
 			if (log is not null && ErrorHelper.TryGetWarningLevel (log, Code, out var warningLevel))
 				return warningLevel;

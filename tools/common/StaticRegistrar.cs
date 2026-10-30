@@ -656,7 +656,7 @@ namespace Registrar {
 		}
 
 		// Look for linked away attributes as well as attributes on the attribute provider.
-		IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
+		internal IEnumerable<ICustomAttribute> GetCustomAttributes (ICustomAttributeProvider provider, string @namespace, string name, bool inherits = false)
 		{
 #if ASSEMBLY_PREPARER
 			var found = false;
@@ -707,6 +707,9 @@ namespace Registrar {
 			if (!App.IsPostProcessingAssemblies || App.PreTrimAssemblyResolver is null)
 				return false;
 
+			if (@namespace == "System.Diagnostics.CodeAnalysis" && name == "UnconditionalSuppressMessageAttribute")
+				return true;
+
 			if (@namespace != Foundation)
 				return false;
 
@@ -737,6 +740,12 @@ namespace Registrar {
 			case PropertyDefinition property:
 				var preTrimPropertyType = (TypeDefinition?) GetPreTrimAttributeProvider (property.DeclaringType);
 				return preTrimPropertyType is null ? null : GetSinglePreTrimProvider (preTrimPropertyType.Properties, v => v.FullName == property.FullName, property);
+			case FieldDefinition field:
+				var preTrimFieldType = (TypeDefinition?) GetPreTrimAttributeProvider (field.DeclaringType);
+				return preTrimFieldType is null ? null : GetSinglePreTrimProvider (preTrimFieldType.Fields, v => v.FullName == field.FullName, field);
+			case EventDefinition @event:
+				var preTrimEventType = (TypeDefinition?) GetPreTrimAttributeProvider (@event.DeclaringType);
+				return preTrimEventType is null ? null : GetSinglePreTrimProvider (preTrimEventType.Events, v => v.FullName == @event.FullName, @event);
 			case ParameterDefinition parameter:
 				var preTrimMethod = (MethodDefinition?) GetPreTrimAttributeProvider ((MethodDefinition) parameter.Method);
 				if (preTrimMethod is null || parameter.Index < 0 || parameter.Index >= preTrimMethod.Parameters.Count)
@@ -841,9 +850,9 @@ namespace Registrar {
 			throw ErrorHelper.CreateError (code, message, args);
 		}
 
-		protected override void ReportWarning (int code, string message, params object? [] args)
+		protected override void ReportWarning (int code, ObjCMember? member, string message, params object? [] args)
 		{
-			ErrorHelper.Show (App, ErrorHelper.CreateWarning (code, message, args));
+			ErrorHelper.Show (App, CreateWarning (code, member, message, args));
 		}
 
 		public static int GetValueTypeSize (TypeDefinition type)
@@ -2911,18 +2920,18 @@ namespace Registrar {
 
 				if (App.XcodeVersion.Major >= 15) {
 					if (@class.Type.Is ("PassKit", "PKDisbursementAuthorizationControllerDelegate") || @class.Type.Is ("PassKit", "IPKDisbursementAuthorizationControllerDelegate")) {
-						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
+						exceptions.Add (ErrorHelper.CreateWarning (App, 4189, @class.Type, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
 					}
 
 					if (@class.Type.Is ("PassKit", "PKDisbursementAuthorizationController")) {
-						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
+						exceptions.Add (ErrorHelper.CreateWarning (App, 4189, @class.Type, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
 					}
 				}
 
 				if (Frameworks.TryGetFramework (App, @class.Type.Resolve (), out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
-					exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the {framework.Name} framework has been removed from the {App.Platform} SDK."));
+					exceptions.Add (ErrorHelper.CreateWarning (App, 4178, @class.Type, $"The class '{@class.Type.FullName}' will not be registered because the {framework.Name} framework has been removed from the {App.Platform} SDK."));
 					continue;
 				}
 
@@ -5278,7 +5287,7 @@ namespace Registrar {
 				func = GetNSStringToSmartEnumFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, managedClassExpression, out nativeTypeName);
 				if (!IsSmartEnum (underlyingManagedType, out var _, out var getValueMethod)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (App, ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, CreateWarning (99, method, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
 				} else if (TryCreateTokenReference (getValueMethod, TokenType.Method, out var get_value_method_token_ref, out _)) {
 					token = $"0x{get_value_method_token_ref:X} /* {getValueMethod.FullName} */";
@@ -5374,7 +5383,7 @@ namespace Registrar {
 				func = GetSmartEnumToNSStringFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, classVariableName);
 				if (!IsSmartEnum (underlyingManagedType, out var getConstantMethod, out var _)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (App, ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, CreateWarning (99, method, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
 				} else if (TryCreateTokenReference (getConstantMethod, TokenType.Method, out var get_constant_method_token_ref, out _)) {
 					token = $"0x{get_constant_method_token_ref:X} /* {getConstantMethod.FullName} */";

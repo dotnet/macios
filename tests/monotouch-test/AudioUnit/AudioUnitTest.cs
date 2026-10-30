@@ -18,7 +18,7 @@ namespace MonoTouchFixtures.AudioUnit {
 			AudioComponentDescription cd = new AudioComponentDescription () {
 				ComponentType = AudioComponentType.Output,
 #if MONOMAC
-				ComponentSubType = AudioUnitSubType.VoiceProcessingIO,
+				ComponentSubType = AudioUnitSubType.GenericOutput,
 #else
 				ComponentSubType = (AudioUnitSubType) AudioTypeOutput.Remote,
 #endif

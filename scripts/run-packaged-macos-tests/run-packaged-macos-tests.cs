@@ -121,6 +121,12 @@ if (!Directory.Exists (testsDirectory)) {
 	return 1;
 }
 
+var spawnerPath = Path.GetFullPath (Path.Combine (testsDirectory, "..", "tools", "spawner", "spawner"));
+if (!File.Exists (spawnerPath)) {
+	Console.Error.WriteLine ($"The spawner executable was not found at '{spawnerPath}'. Did you build it? (make -C tools/spawner)");
+	return 1;
+}
+
 if (!string.IsNullOrEmpty (testOutputDir))
 	Directory.CreateDirectory (testOutputDir);
 
@@ -433,7 +439,8 @@ return failedSuites > 0 ? 1 : 0;
 		using var launchTimedOut = new ManualResetEvent (false);
 
 		var p = new Process ();
-		p.StartInfo.FileName = executable;
+		p.StartInfo.FileName = spawnerPath;
+		p.StartInfo.ArgumentList.Add (executable);
 		foreach (var arg in arguments)
 			p.StartInfo.ArgumentList.Add (arg);
 		p.StartInfo.UseShellExecute = false;
@@ -468,7 +475,7 @@ return failedSuites > 0 ? 1 : 0;
 
 		try {
 			lock (outputSb)
-				outputSb.AppendLine ($"Launching (attempt #{attempt + 1}): {executable} {string.Join (" ", arguments)}");
+				outputSb.AppendLine ($"Launching (attempt #{attempt + 1}): {p.StartInfo.FileName} {string.Join (" ", p.StartInfo.ArgumentList)}");
 			p.Start ();
 			p.BeginOutputReadLine ();
 			p.BeginErrorReadLine ();

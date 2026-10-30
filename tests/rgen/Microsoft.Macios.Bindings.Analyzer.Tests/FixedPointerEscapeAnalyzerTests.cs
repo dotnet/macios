@@ -62,7 +62,7 @@ public class FixedPointerEscapeAnalyzerTests {
 	[InlineData ("IntPtr", "fixed (byte* p = bytes) { Native (p); return IntPtr.Zero; }")]
 	[InlineData ("int", "fixed (byte* p = bytes) return *p;")]
 	[InlineData ("int", "fixed (byte* p = bytes) return p[1];")]
-	[InlineData ("bool", "fixed (byte* p = bytes) return p != null;")]
+	[InlineData ("bool", "fixed (byte* p = bytes) return p is not null;")]
 	[InlineData ("long", "fixed (byte* p = bytes) return (p + 1) - p;")]
 	[InlineData ("IntPtr", "IntPtr alias; fixed (byte* p = bytes) alias = (IntPtr) p; alias = IntPtr.Zero; return alias;")]
 	[InlineData ("IntPtr", "fixed (byte* p = bytes) { var alias = (IntPtr) p; alias = IntPtr.Zero; return alias; }")]

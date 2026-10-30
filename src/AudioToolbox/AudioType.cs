@@ -2103,7 +2103,7 @@ namespace AudioToolbox {
 		/// </remarks>
 		public Span<AudioBuffer> AsSpan ()
 		{
-			var count = checked ((int) Count);
+			var count = checked((int) Count);
 			return count == 0 ? Span<AudioBuffer>.Empty : new Span<AudioBuffer> (GetBuffer (0), count);
 		}
 

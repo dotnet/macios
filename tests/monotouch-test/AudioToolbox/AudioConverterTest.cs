@@ -167,10 +167,11 @@ namespace MonoTouchFixtures.AudioToolbox {
 			TestRuntime.AssertXcodeVersion (26, 0);
 
 			var sourcePath = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
-			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
 
-			var output1 = Path.Combine (paths [0], "output1.caf");
-			Convert (sourcePath, output1, targetType, withPacketDependencies: true);
+			DoWithTemporaryDirectory ((temporaryDirectory) => {
+				var output1 = Path.Combine (temporaryDirectory, "output1.caf");
+				Convert (sourcePath, output1, targetType, withPacketDependencies: true);
+			});
 		}
 
 		void Convert (string sourceFilePath, string destinationFilePath, AudioFormatType outputFormatType, int? sampleRate = null, AudioConverterOptions? options = null, bool withPacketDependencies = false)

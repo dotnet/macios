@@ -1,0 +1,31 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+name: Diagnostic documentation feedback
+description: Report incorrect, missing, or unclear error/warning documentation.
+body:
+  - type: input
+    id: code
+    attributes:
+      label: Diagnostic code
+      placeholder: MT0000
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Documentation page URL
+      description: Link the affected page, or explain that no page exists.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Incorrect or missing guidance
+      description: Explain what is wrong or unclear, including platform/version context when relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested correction
+      description: Describe the guidance or example you would expect.

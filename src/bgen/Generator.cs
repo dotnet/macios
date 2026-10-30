@@ -1492,7 +1492,7 @@ public partial class Generator : IMemberGatherer {
 					}
 
 					if (selector is null)
-						throw new BindingException (1009, true, mi.DeclaringType, mi.Name);
+						throw new BindingException (1903, true, mi.DeclaringType, mi.Name);
 
 					tselectors.Add (selector);
 					if (selector_use.ContainsKey (selector)) {
@@ -2173,7 +2173,7 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				var attrs = AttributeManager.GetCustomAttributes<ExportAttribute> (prop);
 				if (attrs.Length == 0)
-					throw new BindingException (1010, true, eventType, prop.Name);
+					throw new BindingException (1904, true, eventType, prop.Name);
 
 				var is_internal = prop.IsInternal (this);
 				var export = attrs [0];
@@ -4081,7 +4081,7 @@ public partial class Generator : IMemberGatherer {
 			if (wrap is null &&
 				((pi.CanRead && (GetOneGetterExportAttribute (pi).Selector != GetOneGetterExportAttribute (parentBaseType).Selector)) ||
 					pi.CanWrite && (GetOneSetterExportAttribute (pi).Selector != GetOneSetterExportAttribute (parentBaseType).Selector))) {
-				throw new BindingException (1035, true, pi.Name, type, parentBaseType.DeclaringType);
+				throw new BindingException (1909, true, pi.Name, type, parentBaseType.DeclaringType);
 			}
 			// Then let's not write out our copy, since we'll reduce visibility
 			return;
@@ -6121,7 +6121,7 @@ public partial class Generator : IMemberGatherer {
 
 			if (is_model) {
 				if (is_category_class)
-					ErrorHelper.Show (BindingTouch, new BindingException (1022, true));
+					ErrorHelper.Show (BindingTouch, new BindingException (1908, true));
 				print ("[Model]");
 			}
 
@@ -6849,7 +6849,7 @@ public partial class Generator : IMemberGatherer {
 								else if (btype == TypeCache.System_nuint || btype == TypeCache.System_UInt64)
 									print ($"return {preExpression}Dlfcn.GetNUInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
 								else
-									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+									throw new BindingException (1906, true, fieldTypeName, FormatPropertyInfo (field_pi));
 							} else {
 								if (btype == TypeCache.System_Int32)
 									print ($"return ({fieldTypeName}) Dlfcn.GetInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
@@ -6860,16 +6860,16 @@ public partial class Generator : IMemberGatherer {
 								else if (btype == TypeCache.System_UInt64)
 									print ($"return ({fieldTypeName}) Dlfcn.GetUInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
 								else
-									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+									throw new BindingException (1906, true, fieldTypeName, FormatPropertyInfo (field_pi));
 							}
 						} else if (field_pi.PropertyType.IsValueType) {
 							var valueTypeName = TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name);
 							print ("return Dlfcn.GetStruct<{3}> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name, valueTypeName);
 						} else {
 							if (field_pi.PropertyType == TypeCache.System_String)
-								throw new BindingException (1013, true);
+								throw new BindingException (1905, true);
 							else
-								throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+								throw new BindingException (1906, true, fieldTypeName, FormatPropertyInfo (field_pi));
 						}
 
 					indent--;
@@ -6955,7 +6955,7 @@ public partial class Generator : IMemberGatherer {
 
 			if (bta is not null && bta.Events is not null) {
 				if (bta.Delegates is null)
-					throw new BindingException (1015, true, type.FullName);
+					throw new BindingException (1907, true, type.FullName);
 
 				print ("//");
 				print ("// Events and properties from the delegate");

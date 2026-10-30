@@ -66,7 +66,7 @@ This happens after the stable version of Xcode has been released and the `xcodeX
 * [ ] Publish release notes.
 * [ ] Update API diff (the `STABLE_NUGET_VERSION_*` variables in `Make.config`) for the `main` branch. Can only be done after the NuGets have been published to nuget.org.
   * [ ] Link to PR
-* [ ] Update docs by executing `docs/sync-mobile-docs.sh`. Beware if docs were modified in the [docs-mobile](https://github.com/dotnet/docs-mobile) repository by somebody else, any such changes will have to be copied back first.
+* [ ] Update docs by executing `bash docs/update-diagnostic-docs.sh check` and `docs/sync-mobile-docs.sh`. If editable docs were modified in [docs-mobile](https://github.com/dotnet/docs-mobile), reconcile them first using `docs/sync-mobile-docs.sh --reverse`. Generated-index edits must be moved to their source pages before reverse sync. See [diagnostic documentation](messages/README.md) for the publishing sequence and legacy-link verification.
   * [ ] Link to dotnet/docs-mobile PR
 * [ ] Update API / reference docs. See [update-api-docs.md](https://github.com/dotnet/macios/blob/main/docs/update-api-docs.md) for instructions.
   * [ ] Create new monikers (add link to dev.azure.com ticket)

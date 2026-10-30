@@ -323,7 +323,7 @@ The `Include` attribute can point to:
 
 * Static libraries (`*.a`).
 * Dynamic libraries (`*.dylib`).
-* Frameworks (`*.framework`), or compressed frameworks (`*.framework.zip`, in application projects).
+* Frameworks (`*.framework`).
 * XCFrameworks (`*.xcframework`) or compressed XCFrameworks (`*.xcframework.zip`).
 
 For an `.xcframework`, `Include` should point to the `.xcframework` root
@@ -340,7 +340,7 @@ correctly. Rename the directory and update the reference to use `.framework`.
 
 The following metadata can be set on `NativeReference` items:
 
-* `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required in binding projects (`IsBindingProject=true`). For `.xcframework` items in binding projects, set `Kind` to match what the slice contains (`Framework`, `Static`, or `Dynamic`).
+* `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required for all `NativeReference` items in binding projects (`IsBindingProject=true`), and for direct `*.a` and `*.dylib` `NativeReference` items in application projects. In application projects, `Kind` is inferred automatically for `*.framework`, `*.xcframework`, and `*.xcframework.zip` items from the resolved native binary.
 * `SmartLink`: A boolean value indicating whether the native linker can strip unused symbols (`-dead_strip`). Defaults to `true`.
 * `ForceLoad`: A boolean value indicating whether `-force_load` should be passed to the native linker for a static library (ignored when `SmartLink` is `true` and the static registrar is used). Defaults to `false`.
 * `Frameworks`: A space-separated list of Apple frameworks (without the `.framework` extension) that the native library depends on and must be linked with.

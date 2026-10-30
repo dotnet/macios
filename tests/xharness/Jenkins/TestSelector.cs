@@ -210,6 +210,8 @@ namespace Xharness.Jenkins {
 			// special case to consider, since might set or remove all tests, we need to process it first
 			if (labelSelectedTests.ContainsKey ("all")) {
 				selection.SetEnabled ("all", labelSelectedTests ["all"]);
+				if (labelSelectedTests ["all"])
+					Harness.IncludeSystemPermissionTests = true;
 				labelSelectedTests.Remove ("all");
 			}
 

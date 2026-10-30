@@ -645,6 +645,19 @@ public class TypeManager {
 		return (pt == TypeCache.System_Int32 || pt == TypeCache.System_Int64 || pt == TypeCache.System_Byte || pt == TypeCache.System_Int16);
 	}
 
+	public static bool HasNativeObjectFactory (Type type)
+	{
+		if (!type.IsClass || type.IsAbstract)
+			return false;
+		for (var current = type; current is not null; current = current.BaseType) {
+			if (current.FullName == "Foundation.NSObject")
+				return false;
+		}
+		return type.GetInterfaces ().Any (v => v.IsGenericType
+			&& v.GetGenericTypeDefinition ().FullName == "ObjCRuntime.ICreatableNativeObject`1"
+			&& v.GenericTypeArguments [0] == type);
+	}
+
 	// Is this a wrapped type of NSObject from the MonoTouch/MonoMac binding world?
 	public bool IsWrappedType (Type? t)
 	{

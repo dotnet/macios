@@ -45,6 +45,46 @@ static partial class BindingSyntaxFactory {
 			nsObjectType, argsList, suppressNullableWarning);
 	}
 
+	internal static ExpressionSyntax GetINativeObject (TypeInfo nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+	{
+		var typeSyntax = nsObjectType.WithNullable (isNullable: false).GetIdentifierSyntax ();
+		if (!nsObjectType.IsCreatableNativeObject)
+			return GetINativeObject (typeSyntax, args, suppressNullableWarning);
+
+		// A factory always constructs the requested concrete type; only the ownership argument is needed.
+		args = [args [0], args.Length > 1 ? args [args.Length - 1] : BoolArgument (false)];
+		return StaticInvocationGenericExpression (Runtime, "GetCreatableNativeObject", typeSyntax,
+			ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())), suppressNullableWarning);
+	}
+
+	internal static ExpressionSyntax GetCFArrayFromHandle (TypeInfo nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+		=> nsObjectType.IsCreatableNativeObject
+			? GetFactoryArrayFromHandle (nsObjectType, args, suppressNullableWarning)
+			: GetCFArrayFromHandle (nsObjectType.GetIdentifierSyntax (), args, suppressNullableWarning);
+
+	internal static ExpressionSyntax GetNSArrayFromHandle (TypeInfo nsObjectType, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning = false)
+		=> nsObjectType.IsCreatableNativeObject
+			? GetFactoryArrayFromHandle (nsObjectType, args, suppressNullableWarning)
+			: GetNSArrayFromHandle (nsObjectType.GetIdentifierSyntax (), args, suppressNullableWarning);
+
+	static ExpressionSyntax NativeObjectFactoryLambda (TypeInfo type)
+		=> SimpleLambdaExpression (Parameter (Identifier ("__xamarin_nativeHandle")),
+			GetINativeObject (type, [Argument (IdentifierName ("__xamarin_nativeHandle")), BoolArgument (false)],
+				suppressNullableWarning: true)).NormalizeWhitespace ();
+
+	static ExpressionSyntax GetFactoryArrayFromHandle (TypeInfo type, ImmutableArray<ArgumentSyntax> args,
+		bool suppressNullableWarning)
+	{
+		// NSArray's converter overload preserves CFNull-to-null conversion before invoking the factory.
+		args = args.Insert (1, Argument (NativeObjectFactoryLambda (type)));
+		return StaticInvocationGenericExpression (NSArray, "ArrayFromHandle",
+			type.WithNullable (isNullable: false).GetIdentifierSyntax (),
+			ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())), suppressNullableWarning);
+	}
+
 	/// <summary>
 	/// Generates a call to the method CFArray.ArrayFromHandle&lt;T&gt; to create a collection of NSObjects.
 	/// </summary>

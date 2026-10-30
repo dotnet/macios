@@ -1650,6 +1650,7 @@ SENSORKIT_CORE_SOURCES = \
 SENSORKIT_SOURCES = \
 	SensorKit/SRAbsoluteTime.cs \
 	SensorKit/SRSensor.cs \
+	SensorKit/SRSensorReader.cs \
 
 # ShareWithYouCore
 

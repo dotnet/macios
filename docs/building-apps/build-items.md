@@ -340,7 +340,7 @@ correctly. Rename the directory and update the reference to use `.framework`.
 
 The following metadata can be set on `NativeReference` items:
 
-* `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required for all `NativeReference` items in binding projects (`IsBindingProject=true`), and for direct `*.a` and `*.dylib` `NativeReference` items in application projects. In application projects, `Kind` is inferred automatically for `*.framework`, `*.xcframework`, and `*.xcframework.zip` items from the resolved native binary.
+* `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required for all `NativeReference` items in binding projects (`IsBindingProject=true`), and for direct `*.a` and `*.dylib` `NativeReference` items in application projects (which are added directly to `@(_FileNativeReference)` by `_ExpandNativeReferences`). In application projects, `Kind` is inferred automatically by `ResolveNativeReferences` for `*.framework`, `*.xcframework`, and `*.xcframework.zip` items from the resolved native binary.
 * `SmartLink`: A boolean value indicating whether the native linker can strip unused symbols (`-dead_strip`). Defaults to `true`.
 * `ForceLoad`: A boolean value indicating whether `-force_load` should be passed to the native linker for a static library (ignored when `SmartLink` is `true` and the static registrar is used). Defaults to `false`.
 * `Frameworks`: A space-separated list of Apple frameworks (without the `.framework` extension) that the native library depends on and must be linked with.
@@ -349,8 +349,8 @@ The following metadata can be set on `NativeReference` items:
 * `IsCxx`: A boolean value indicating whether the native library uses C++ and requires the C++ standard library when linking. Defaults to `false`.
 * `NeedsGccExceptionHandling`: A boolean value indicating whether the native library requires linking with `-lgcc_eh`. Defaults to `false`.
 * `LinkWithSwiftSystemLibraries`: A boolean value indicating whether the native library requires linking with the Swift system libraries. Defaults to `false`.
-* `NoDSymUtil`: A boolean value that overrides the project-level [NoDSymUtil](build-properties.md#nodsymutil) property for this specific framework or dynamic library during application post-processing (`_CollectItemsForPostProcessing`).
-* `NoSymbolStrip`: A boolean value that overrides the project-level [NoSymbolStrip](build-properties.md#nosymbolstrip) property for this specific framework or dynamic library during application post-processing (`_CollectItemsForPostProcessing`).
+* `NoDSymUtil`: A boolean value that overrides the project-level [NoDSymUtil](build-properties.md#nodsymutil) property for this specific framework or dynamic library.
+* `NoSymbolStrip`: A boolean value that overrides the project-level [NoSymbolStrip](build-properties.md#nosymbolstrip) property for this specific framework or dynamic library.
 
 Example (referencing a single `.xcframework` containing a `.framework` in a binding project):
 
@@ -359,7 +359,6 @@ Example (referencing a single `.xcframework` containing a `.framework` in a bind
     <NativeReference Include="NativeLibs/MyFramework.xcframework">
         <Kind>Framework</Kind>
         <SmartLink>True</SmartLink>
-        <ForceLoad>True</ForceLoad>
         <Frameworks>Foundation UIKit</Frameworks>
     </NativeReference>
 </ItemGroup>

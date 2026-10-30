@@ -398,6 +398,76 @@ namespace Xamarin.Tests {
 			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, false)]
+		public void NativeAotEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers, bool prepareAssemblies, bool postProcessAssemblies)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
+			Clean (bindingProjectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["PrepareAssemblies"] = prepareAssemblies.ToString ();
+			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
+			if (platform == ApplePlatform.iOS)
+				properties ["NativeLibName"] = "ios";
+			DotNet.AssertBuild (projectPath, properties);
+
+			// The SDK removes RuntimeIdentifier from project references before building the binding.
+			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
+			using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
+			var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
+			var embeddedFramework = resource.GetResourceData ();
+			Assert.That (embeddedFramework.Length, Is.GreaterThan (0), "The binding must contain the embedded framework");
+			var executable = File.ReadAllBytes (GetNativeExecutable (platform, appPath));
+			Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
+			Assert.That (Path.Combine (appPath, GetFrameworksRelativePath (platform), "XTest.framework", "XTest"), Does.Exist, "The extracted framework must be bundled");
+
+			var linkedBindingPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "linked", "BindingWithEmbeddedFramework.dll");
+			using var linkedBinding = AssemblyDefinition.ReadAssembly (linkedBindingPath);
+			Assert.That (linkedBinding.MainModule.Resources.Select (v => v.Name), Does.Not.Contain ("XTest.framework"), "Native framework archive must be removed before ILC");
+			var managedResource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "ManagedResource").GetResourceData ();
+			Assert.That (managedResource.Length, Is.GreaterThan (0), "The binding must contain the managed resource");
+			Assert.That (linkedBinding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "ManagedResource").GetResourceData (), Is.EqualTo (managedResource), "Ordinary managed resources must survive trimming");
+			Assert.That (executable.AsSpan ().IndexOf (managedResource), Is.GreaterThanOrEqualTo (0), "The executable must preserve ordinary managed resources");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void NativeAotPostprocessEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			var projectPath = GetProjectPath ("EmbeddedFrameworkInBindingProjectApp", platform: platform);
+			Clean (projectPath);
+			Clean (GetProjectPath ("BindingWithEmbeddedFramework", platform: platform));
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["PrepareAssemblies"] = "true";
+			properties ["PostProcessAssemblies"] = "true";
+			properties ["MtouchWarningsAsErrors"] = "99";
+			if (platform == ApplePlatform.iOS)
+				properties ["NativeLibName"] = "ios";
+
+			// Stop before native linking: this release has a separate framework extraction bug in the postprocessor.
+			var result = DotNet.AssertBuild (projectPath, properties, target: "Compile;_ComputeLinkerArguments;_PrepareAssemblies;ComputeFilesToPublish");
+			Assert.That (BinLog.GetBuildLogWarnings (result.BinLogPath).Select (v => v.Message),
+				Has.None.Contains ("modified during post-ILC postprocessing"), "Postprocessing runs before ILC on .NET 10");
+			var postprocessedBindingPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "postprocessed-assemblies", "BindingWithEmbeddedFramework.dll");
+			using var binding = AssemblyDefinition.ReadAssembly (postprocessedBindingPath);
+			Assert.That (binding.MainModule.Resources.Select (v => v.Name), Does.Not.Contain ("XTest.framework"), "Postprocessing must remove the native framework archive");
+			Assert.That (binding.MainModule.Resources.Select (v => v.Name), Does.Contain ("ManagedResource"), "Postprocessing must preserve ordinary managed resources");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64;tvossimulator-arm64")]
@@ -3027,6 +3097,8 @@ namespace Xamarin.Tests {
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (project_path);
+			// Device and simulator tests share the binding output, including its embedded native framework.
+			Clean (GetProjectPath ("BindingWithEmbeddedFramework", platform: platform));
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["NoSymbolStrip"] = "false";

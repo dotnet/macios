@@ -2205,6 +2205,7 @@ namespace NetworkExtension {
 		NETunnelProviderManager CreatePerAppVpn ();
 
 		[NoTV]
+		[return: Release]
 		[return: NullAllowed]
 		[Export ("copyAppRules")]
 		NEAppRule [] CopyAppRules ();

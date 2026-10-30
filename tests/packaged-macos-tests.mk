@@ -26,10 +26,12 @@ LAUNCH_ARGUMENTS=--autostart --autoexit
 
 include $(TOP)/scripts/run-with-timeout/fragment.mk
 
+SPAWNER?=$(TOP)/tools/spawner/spawner
+
 # Time test runs out after 5 minutes (300 seconds)
-LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300
+LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300 $(SPAWNER)
 # Some tests need a bit more time... (introspection, monotouch-test)
-LAUNCH_WITH_TIMEOUT_LONGER=$(RUN_WITH_TIMEOUT_EXEC) 600
+LAUNCH_WITH_TIMEOUT_LONGER=$(RUN_WITH_TIMEOUT_EXEC) 600 $(SPAWNER)
 
 ### .NET dependency projects
 

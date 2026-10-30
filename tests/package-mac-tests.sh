@@ -23,6 +23,7 @@ export DEVELOPER_DIR="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
 export RootTestsDirectory="$(pwd)"
 
 make
+make -C ../tools/spawner
 
 TEST_SUITE_DEPENDENCIES+=(bindings-test)
 TEST_SUITE_DEPENDENCIES+=(EmbeddedResources)
@@ -72,5 +73,7 @@ $CP -cp ../scripts/run-with-timeout/*.mk "$DIR/scripts/run-with-timeout/"
 mkdir -p "$DIR/scripts/run-packaged-macos-tests"
 $CP -cp ../scripts/run-packaged-macos-tests/*.cs* "$DIR/scripts/run-packaged-macos-tests/"
 $CP -cp ../scripts/run-packaged-macos-tests/*.mk "$DIR/scripts/run-packaged-macos-tests/"
+mkdir -p "$DIR/tools/spawner"
+$CP -p ../tools/spawner/spawner "$DIR/tools/spawner/"
 
 cd mac-test-package && 7z a ../mac-test-package.7z ./*

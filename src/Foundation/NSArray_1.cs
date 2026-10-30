@@ -123,10 +123,18 @@ namespace Foundation {
 		}
 
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)
-			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other), options));
+		{
+			ArgumentNullException.ThrowIfNull (other);
+			using var array = NSArray.FromNSObjects (other);
+			return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (array, options));
+		}
 
 		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other)
-			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other)));
+		{
+			ArgumentNullException.ThrowIfNull (other);
+			using var array = NSArray.FromNSObjects (other);
+			return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (array));
+		}
 
 		public new TKey? []? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
 			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));

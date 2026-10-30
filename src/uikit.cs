@@ -33670,7 +33670,7 @@ namespace UIKit {
 		NSDiffableDataSourceSectionSnapshot<ItemIdentifierType> FinalSnapshot { get; }
 
 		[Export ("difference")]
-		NSOrderedCollectionDifference Difference { get; }
+		NSOrderedCollectionDifference<ItemIdentifierType> Difference { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -33687,7 +33687,7 @@ namespace UIKit {
 		NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> FinalSnapshot { get; }
 
 		[Export ("difference")]
-		NSOrderedCollectionDifference Difference { get; }
+		NSOrderedCollectionDifference<ItemIdentifierType> Difference { get; }
 
 		[Export ("sectionTransactions")]
 		NSDiffableDataSourceSectionTransaction<SectionIdentifierType, ItemIdentifierType> [] SectionTransactions { get; }

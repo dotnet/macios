@@ -264,11 +264,11 @@ namespace Foundation {
 			return (int) GetNativeHash ();
 		}
 
-		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options)
-			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other, options));
+		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options)
+			=> Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (other, options));
 
-		public NSOrderedCollectionDifference<TKey> GetDifference (NSOrderedSet<TKey> other)
-			=> new NSOrderedCollectionDifference<TKey> (_GetDifference (other));
+		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other)
+			=> Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (other));
 
 		public new NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
 		{

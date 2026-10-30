@@ -276,18 +276,20 @@ namespace Foundation {
 		NSArray FromUrl (NSUrl url, out NSError error);
 
 		[Internal]
+		[Sealed]
 		[Export ("differenceFromArray:withOptions:")]
 		NativeHandle _GetDifference (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options);
 
-		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference (NSArray.FromNSObjects (other), options))")]
+		[Export ("differenceFromArray:withOptions:")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other, NSOrderedCollectionDifferenceCalculationOptions options);
 
 		[Internal]
+		[Sealed]
 		[Export ("differenceFromArray:")]
 		NativeHandle _GetDifference (NSArray other);
 
-		[Wrap ("Runtime.GetNSObject <NSOrderedCollectionDifference> (_GetDifference(NSArray.FromNSObjects (other)))")]
+		[Export ("differenceFromArray:")]
 		[return: NullAllowed]
 		NSOrderedCollectionDifference GetDifference (NSObject[] other);
 
@@ -23160,19 +23162,20 @@ namespace Foundation {
 		NativeHandle Constructor (NSOrderedCollectionChange[] changes);
 		
 		[Internal]
-		[DesignatedInitializer]
+		[Sealed]
 		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects, NSOrderedCollectionChange[] changes);
+		NativeHandle _Init (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects, NSOrderedCollectionChange[] changes);
 
-		[Wrap ("this (inserts, insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects), removes, removedObjects is null ? null : NSArray.FromNSObjects (removedObjects), changes)")]
+		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject[] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject[] removedObjects, NSOrderedCollectionChange[] changes);
 
 		[Internal]
+		[Sealed]
 		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:")]
-		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects);
+		NativeHandle _Init (NSIndexSet inserts, [NullAllowed] NSArray insertedObjects, NSIndexSet removes, [NullAllowed] NSArray removedObjects);
 		
-		[Wrap ("this (inserts, insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects), removes, removedObjects is null ? null : NSArray.FromNSObjects (removedObjects))")]
+		[Export ("initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:")]
 		NativeHandle Constructor (NSIndexSet inserts, [NullAllowed] NSObject[] insertedObjects, NSIndexSet removes, [NullAllowed] NSObject[] removedObjects);
 
 		[Internal]

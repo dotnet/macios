@@ -22,10 +22,20 @@ namespace Foundation {
 
 		[DesignatedInitializer]
 		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey[]? insertedObjects, NSIndexSet removes, TKey[]? removedObjects, NSOrderedCollectionChange<TKey>[] changes)
-			: base (inserts, insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects), removes, removedObjects is null ? null : NSArray.FromNSObjects (removedObjects), changes) {}
+			: base (NSObjectFlag.Empty)
+		{
+			using var insertedArray = insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects);
+			using var removedArray = removedObjects is null ? null : NSArray.FromNSObjects (removedObjects);
+			InitializeHandle (_Init (inserts, insertedArray, removes, removedArray, changes), "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:");
+		}
 
 		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey[]? insertedObjects, NSIndexSet removes, TKey[]? removedObjects)
-			: base (inserts, insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects), removes, removedObjects is null ? null : NSArray.FromNSObjects (removedObjects)) {}
+			: base (NSObjectFlag.Empty)
+		{
+			using var insertedArray = insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects);
+			using var removedArray = removedObjects is null ? null : NSArray.FromNSObjects (removedObjects);
+			InitializeHandle (_Init (inserts, insertedArray, removes, removedArray), "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:");
+		}
 
 		public new NSOrderedCollectionChange<TKey> [] Insertions => NSArray.NonNullArrayFromHandleDropNullElements<NSOrderedCollectionChange<TKey>> (_Insertions);
 

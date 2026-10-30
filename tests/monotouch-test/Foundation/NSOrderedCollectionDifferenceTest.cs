@@ -38,6 +38,30 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void ArrayArguments ()
+		{
+			using var value = new NSString ("Value");
+			using var array = NSArray.FromNSObjects (value);
+			Assert.Throws<ArgumentNullException> (() => array.GetDifference ((NSObject []) null), "Null array");
+			Assert.Throws<ArgumentNullException> (() => array.GetDifference ((NSObject []) null, 0), "Null array with options");
+			using var difference = array.GetDifference (new NSObject [] { value });
+			Assert.That (difference?.HasChanges, Is.False, "Equivalent array");
+		}
+
+		[Test]
+		public void OmittedObjects ()
+		{
+			using var insertIndexes = new NSIndexSet (0);
+			using var removeIndexes = new NSIndexSet ();
+			using var difference = new NSOrderedCollectionDifference (insertIndexes, null, removeIndexes, null);
+			Assert.That (difference.Insertions.Length, Is.EqualTo (1), "Insertion count");
+			Assert.That (difference.Insertions [0].Object, Is.Null, "Omitted insertion");
+			using var withChanges = new NSOrderedCollectionDifference (insertIndexes, null, removeIndexes, null, []);
+			Assert.That (withChanges.Insertions.Length, Is.EqualTo (1), "Additional changes insertion count");
+			Assert.That (withChanges.Insertions [0].Object, Is.Null, "Additional changes omitted insertion");
+		}
+
+		[Test]
 		public void OrderedSetEquivalence ()
 		{
 			using var first = new NSString ("First");

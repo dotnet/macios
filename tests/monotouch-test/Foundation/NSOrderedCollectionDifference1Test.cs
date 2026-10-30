@@ -99,6 +99,14 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void NullArrayArguments ()
+		{
+			using var array = new NSArray<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => array.GetDifference ((NSString []) null), "Null array");
+			Assert.Throws<ArgumentNullException> (() => array.GetDifference ((NSString []) null, 0), "Null array with options");
+		}
+
+		[Test]
 		public void OmittedObjects ()
 		{
 			using var insertIndexes = new NSIndexSet (0);

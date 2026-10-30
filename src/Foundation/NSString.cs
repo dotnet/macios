@@ -123,7 +123,7 @@ namespace Foundation {
 		/// <summary>Creates an <see cref="NSString" /> from a C# string.</summary>
 		/// <param name="str">A C# string to create an <see cref="NSString" /> from.</param>
 		public NSString (string str)
-			: base (CFString.CreateNative (ThrowHelper.ThrowIfNull (str)))
+			: base (CFString.CreateNative (ThrowHelper.ThrowIfNull (str)), alloced: true)
 		{
 		}
 
@@ -132,7 +132,7 @@ namespace Foundation {
 		/// <param name="start">The starting index of the <paramref name="value" /> string to create the <see cref="NSString" /> from.</param>
 		/// <param name="length">The length, starting at <paramref name="start" />, of the <paramref name="value" /> string to create the <see cref="NSString" /> from.</param>
 		public NSString (string value, int start, int length)
-			: base (CFString.CreateNative (ThrowHelper.ThrowIfNull (value), start, length, false))
+			: base (CFString.CreateNative (ThrowHelper.ThrowIfNull (value), start, length, false), alloced: true)
 		{
 		}
 

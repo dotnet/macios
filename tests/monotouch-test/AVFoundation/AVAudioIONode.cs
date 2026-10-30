@@ -13,6 +13,7 @@ namespace Xamarin.Mac.Tests {
 		public void AVAudioIONodeTests_AudioUnitTest ()
 		{
 			TestRuntime.AssertNotVirtualMachine ();
+			TestRuntime.RequestMicrophonePermission ();
 
 			using (AVAudioEngine eng = new AVAudioEngine ()) {
 				using (AVAudioIONode node = eng.OutputNode) {

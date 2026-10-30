@@ -24,6 +24,27 @@ namespace MonoTouchFixtures.MapKit {
 			Assert.Throws<ArgumentNullException> (() => MKPolyline.FromPoints (null));
 		}
 
+		[Test]
+		public void FromPoints ()
+		{
+			var points = new [] { new MKMapPoint (10, 20), new MKMapPoint (30, 40), new MKMapPoint (50, 20) };
+			using var polyline = MKPolyline.FromPoints (points);
+			Assert.That (polyline.Points, Is.EqualTo (points), "Points");
+		}
+
+		[Test]
+		public void FromCoordinates ()
+		{
+			var coordinates = new [] { new CLLocationCoordinate2D (10, 20), new CLLocationCoordinate2D (30, 40), new CLLocationCoordinate2D (50, 20) };
+			using var polyline = MKPolyline.FromCoordinates (coordinates);
+			var actual = polyline.GetCoordinates (0, coordinates.Length);
+			Assert.That (polyline.PointCount, Is.EqualTo ((nint) coordinates.Length), "PointCount");
+			for (var i = 0; i < coordinates.Length; i++) {
+				Assert.That (actual [i].Latitude, Is.EqualTo (coordinates [i].Latitude).Within (1e-10), $"Latitude {i}");
+				Assert.That (actual [i].Longitude, Is.EqualTo (coordinates [i].Longitude).Within (1e-10), $"Longitude {i}");
+			}
+		}
+
 		void CheckEmpty (MKPolyline pl)
 		{
 			// MKAnnotation

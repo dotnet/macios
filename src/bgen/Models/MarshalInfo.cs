@@ -11,6 +11,7 @@ public class MarshalInfo {
 	public bool PlainString { get; }
 	public Type Type { get; }
 	public bool IsOut { get; }
+	public bool IsPointerArray { get; }
 
 	public bool IsAligned;
 
@@ -21,6 +22,7 @@ public class MarshalInfo {
 		PlainString = Generator.AttributeManager.HasAttribute<PlainStringAttribute> (pi);
 		Type = Generator.AttributeManager.GetCustomAttribute<BindAsAttribute> (pi)?.OriginalType ?? pi.ParameterType;
 		IsOut = pi.IsOut;
+		IsPointerArray = Generator.AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi);
 	}
 
 	// Used to return values

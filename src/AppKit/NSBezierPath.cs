@@ -64,12 +64,12 @@ namespace AppKit {
 				_SetLineDash ((IntPtr) ptr, pattern.Length, phase);
 		}
 
-		/// <param name="index">To be added.</param>
-		/// <param name="points">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
-		public unsafe NSBezierPathElement ElementAt (nint index, out CGPoint [] points)
+		/// <summary>Gets a path element and its associated points.</summary>
+		/// <param name="index">The zero-based index of the element, which must be less than <see cref="ElementCount" />.</param>
+		/// <param name="points">Receives the element's associated points. Cubic curves return two control points followed by the endpoint; other elements return an array with one entry.</param>
+		/// <returns>The type of the element at <paramref name="index" />.</returns>
+		/// <remarks>The returned array is newly allocated. A close-path element has no associated point, so its array entry must not be used.</remarks>
+		public NSBezierPathElement ElementAt (nint index, out CGPoint [] points)
 		{
 			NSBezierPathElement bpe;
 
@@ -77,8 +77,7 @@ namespace AppKit {
 			// Create output with 3 elements at first
 			points = new CGPoint [3];
 
-			fixed (CGPoint* ptr = points)
-				bpe = _ElementAt (index, (IntPtr) ptr);
+			bpe = _ElementAt (index, points);
 
 			if (bpe != NSBezierPathElement.CurveTo) {
 				// we only got one element, downsize array
@@ -104,18 +103,19 @@ namespace AppKit {
 				_SetAssociatedPointsAtIndex ((IntPtr) ptr, index);
 		}
 
-		/// <param name="points">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public unsafe void Append (CGPoint [] points)
+		/// <summary>Appends connected line segments through the specified points.</summary>
+		/// <param name="points">The ordered vertices to append.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="points" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="points" /> is empty.</exception>
+		/// <remarks>If the path is empty, the first point starts a new subpath. Otherwise, a line connects the current point to the first point. The points are copied during this call.</remarks>
+		public void Append (CGPoint [] points)
 		{
 			if (points is null)
 				throw new ArgumentNullException ("points");
 			if (points.Length < 1)
 				throw new ArgumentException ("points array is empty");
 
-			fixed (CGPoint* ptr = points)
-				_AppendPathWithPoints ((IntPtr) ptr, points.Length);
+			_AppendPathWithPoints (points, points.Length);
 		}
 
 		/// <param name="glyphs">To be added.</param>

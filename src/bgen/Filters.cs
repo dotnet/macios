@@ -194,6 +194,11 @@ public partial class Generator {
 			if (AttributeManager.HasAttribute<StaticAttribute> (p))
 				continue;
 
+			if (IsWrapped (p)) {
+				GenerateProperty (originalType, p, null, false);
+				continue;
+			}
+
 			print ("");
 
 			WriteDocumentation (p);

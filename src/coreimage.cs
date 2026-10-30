@@ -13450,6 +13450,14 @@ namespace CoreImage {
 		[Abstract]
 		[NullAllowed, Export ("preferredDynamicRange", ArgumentSemantic.Retain)]
 		NSString WeakPreferredDynamicRange { get; set; }
+
+		/// <summary>Gets or sets the preferred dynamic range, or <see langword="null" /> to use the default.</summary>
+		CIDynamicRangeOption? PreferredDynamicRange {
+			[Wrap ("WeakPreferredDynamicRange is { } value ? CIDynamicRangeOptionExtensions.GetValue (value) : null")]
+			get;
+			[Wrap ("WeakPreferredDynamicRange = value.HasValue ? value.Value.GetConstant () : null")]
+			set;
+		}
 	}
 
 	[CoreImageFilter]

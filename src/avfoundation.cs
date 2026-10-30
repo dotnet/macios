@@ -23619,6 +23619,10 @@ namespace AVFoundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void WilllDownloadToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);
 
+		/// <summary>Notifies the delegate of the destination URL for an asset download.</summary>
+		/// <param name="session">The session managing the download.</param>
+		/// <param name="assetDownloadTask">The task downloading the asset.</param>
+		/// <param name="location">The URL where the downloaded asset will be stored.</param>
 		[MacCatalyst (18, 0), Mac (14, 0), iOS (18, 0)]
 		[Wrap ("WilllDownloadToUrl (session, assetDownloadTask, location)")]
 		void WillDownloadToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);

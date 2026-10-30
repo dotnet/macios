@@ -4,7 +4,7 @@ using AudioToolbox;
 
 namespace AVFoundation {
 #if XAMCORE_5_0
-	public delegate int AVAudioSinkNodeReceiverHandler (AudioTimeStamp timestamp, uint frameCount, AudioBuffers inputData);
+	public delegate int AVAudioSinkNodeReceiverHandler (in AudioTimeStamp timestamp, uint frameCount, AudioBuffers inputData);
 #else
 	public delegate int AVAudioSinkNodeReceiverHandler (AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers inputData);
 	public delegate int AVAudioSinkNodeReceiverHandler2 (AudioTimeStamp timestamp, uint frameCount, AudioBuffers inputData);
@@ -52,11 +52,11 @@ namespace AVFoundation {
 		{
 			AVAudioSinkNodeReceiverHandlerRaw rv = (timestamp, frameCount, inputData) => {
 				unsafe {
-					var ts = *(AudioTimeStamp*) timestamp;
 					var abuffers = new AudioBuffers (inputData);
 #if XAMCORE_5_0
-					return receiverHandler (ts, frameCount, abuffers);
+					return receiverHandler (in *(AudioTimeStamp*) timestamp, frameCount, abuffers);
 #else
+					var ts = *(AudioTimeStamp*) timestamp;
 					return receiverHandler (ts, frameCount, ref abuffers);
 #endif // XAMCORE_5_0
 				}

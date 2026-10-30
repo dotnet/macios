@@ -42,6 +42,16 @@ namespace MonoTouchFixtures.Metal {
 		}
 
 		[Test]
+		public void NullResources ()
+		{
+			Assert.DoesNotThrow (() => encoder.SetBuffer (null, 0, 0), "Buffer");
+			Assert.DoesNotThrow (() => encoder.SetTexture (null, 0), "Texture");
+			Assert.DoesNotThrow (() => encoder.SetSamplerState (null, 0), "Sampler");
+			Assert.DoesNotThrow (() => encoder.SetSamplerState (null, 0, float.MaxValue, 0), "Sampler with LOD clamps");
+			Assert.DoesNotThrow (() => encoder.SetBuffers (new IMTLBuffer [] { null }, new nuint [] { 0 }, new NSRange (0, 1)), "Buffer array with null element");
+		}
+
+		[Test]
 		public void SetBuffers ()
 		{
 			Assert.Throws<ArgumentNullException> (() => {

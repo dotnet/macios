@@ -167,7 +167,6 @@ namespace AppKit {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSAlignmentFeedbackToken {
@@ -6188,7 +6187,6 @@ namespace AppKit {
 		bool IsEditing { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSCursor : NSCoding, NSSecureCoding {
 		[Static]
@@ -11224,7 +11222,6 @@ namespace AppKit {
 		bool ContextHelpModeActive { [Bind ("isContextHelpModeActive")] get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }
 #if !__MACCATALYST__
 		, Events = new Type [] { typeof (NSImageDelegate) }
@@ -11282,7 +11279,6 @@ namespace AppKit {
 		[Export ("drawInRect:fromRect:operation:fraction:respectFlipped:hints:")]
 		void Draw (CGRect dstSpacePortionRect, CGRect srcSpacePortionRect, NSCompositingOperation op, nfloat requestedAlpha, bool respectContextIsFlipped, [NullAllowed] NSDictionary hints);
 
-		[MacCatalyst (13, 1)]
 		[Export ("drawInRect:")]
 		void Draw (CGRect rect);
 
@@ -11467,7 +11463,6 @@ namespace AppKit {
 		[Export ("flipped")]
 		bool Flipped { [Bind ("isFlipped")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("capInsets")]
 		NSEdgeInsets CapInsets { get; set; }
 
@@ -11532,7 +11527,6 @@ namespace AppKit {
 		NSImage GetImage (string symbolName, [NullAllowed] NSBundle bundle, double variableValue);
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum NSImageName {
 		/// <summary>To be added.</summary>
 		[Field ("NSImageNameQuickLookTemplate")]
@@ -11719,192 +11713,154 @@ namespace AppKit {
 		ShareTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAddDetailTemplate")]
 		TouchBarAddDetailTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAddTemplate")]
 		TouchBarAddTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAlarmTemplate")]
 		TouchBarAlarmTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioInputMuteTemplate")]
 		TouchBarAudioInputMuteTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioInputTemplate")]
 		TouchBarAudioInputTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputMuteTemplate")]
 		TouchBarAudioOutputMuteTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeHighTemplate")]
 		TouchBarAudioOutputVolumeHighTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeLowTemplate")]
 		TouchBarAudioOutputVolumeLowTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeMediumTemplate")]
 		TouchBarAudioOutputVolumeMediumTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarAudioOutputVolumeOffTemplate")]
 		TouchBarAudioOutputVolumeOffTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarBookmarksTemplate")]
 		TouchBarBookmarksTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerFill")]
 		TouchBarColorPickerFill,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerFont")]
 		TouchBarColorPickerFont,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarColorPickerStroke")]
 		TouchBarColorPickerStroke,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarCommunicationAudioTemplate")]
 		TouchBarCommunicationAudioTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarCommunicationVideoTemplate")]
 		TouchBarCommunicationVideoTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarComposeTemplate")]
 		TouchBarComposeTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarDeleteTemplate")]
 		TouchBarDeleteTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarDownloadTemplate")]
 		TouchBarDownloadTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarEnterFullScreenTemplate")]
 		TouchBarEnterFullScreenTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarExitFullScreenTemplate")]
 		TouchBarExitFullScreenTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFastForwardTemplate")]
 		TouchBarFastForwardTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderCopyToTemplate")]
 		TouchBarFolderCopyToTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderMoveToTemplate")]
 		TouchBarFolderMoveToTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarFolderTemplate")]
 		TouchBarFolderTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGetInfoTemplate")]
 		TouchBarGetInfoTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoBackTemplate")]
 		TouchBarGoBackTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoDownTemplate")]
 		TouchBarGoDownTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoForwardTemplate")]
 		TouchBarGoForwardTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarGoUpTemplate")]
 		TouchBarGoUpTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarHistoryTemplate")]
 		TouchBarHistoryTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarIconViewTemplate")]
 		TouchBarIconViewTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarListViewTemplate")]
 		TouchBarListViewTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarMailTemplate")]
 		TouchBarMailTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarNewFolderTemplate")]
 		TouchBarNewFolderTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarNewMessageTemplate")]
 		TouchBarNewMessageTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarOpenInBrowserTemplate")]
 		TouchBarOpenInBrowserTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPauseTemplate")]
 		TouchBarPauseTemplate,
 
@@ -11914,192 +11870,154 @@ namespace AppKit {
 		TouchBarPlayheadTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPlayPauseTemplate")]
 		TouchBarPlayPauseTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarPlayTemplate")]
 		TouchBarPlayTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarQuickLookTemplate")]
 		TouchBarQuickLookTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRecordStartTemplate")]
 		TouchBarRecordStartTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRecordStopTemplate")]
 		TouchBarRecordStopTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRefreshTemplate")]
 		TouchBarRefreshTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRewindTemplate")]
 		TouchBarRewindTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRotateLeftTemplate")]
 		TouchBarRotateLeftTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRotateRightTemplate")]
 		TouchBarRotateRightTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSearchTemplate")]
 		TouchBarSearchTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarShareTemplate")]
 		TouchBarShareTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSidebarTemplate")]
 		TouchBarSidebarTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAhead15SecondsTemplate")]
 		TouchBarSkipAhead15SecondsTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAhead30SecondsTemplate")]
 		TouchBarSkipAhead30SecondsTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipAheadTemplate")]
 		TouchBarSkipAheadTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBack15SecondsTemplate")]
 		TouchBarSkipBack15SecondsTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBack30SecondsTemplate")]
 		TouchBarSkipBack30SecondsTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipBackTemplate")]
 		TouchBarSkipBackTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipToEndTemplate")]
 		TouchBarSkipToEndTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSkipToStartTemplate")]
 		TouchBarSkipToStartTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarSlideshowTemplate")]
 		TouchBarSlideshowTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTagIconTemplate")]
 		TouchBarTagIconTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextBoldTemplate")]
 		TouchBarTextBoldTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextBoxTemplate")]
 		TouchBarTextBoxTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextCenterAlignTemplate")]
 		TouchBarTextCenterAlignTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextItalicTemplate")]
 		TouchBarTextItalicTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextJustifiedAlignTemplate")]
 		TouchBarTextJustifiedAlignTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextLeftAlignTemplate")]
 		TouchBarTextLeftAlignTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextListTemplate")]
 		TouchBarTextListTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextRightAlignTemplate")]
 		TouchBarTextRightAlignTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextStrikethroughTemplate")]
 		TouchBarTextStrikethroughTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarTextUnderlineTemplate")]
 		TouchBarTextUnderlineTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserAddTemplate")]
 		TouchBarUserAddTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserGroupTemplate")]
 		TouchBarUserGroupTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarUserTemplate")]
 		TouchBarUserTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarVolumeDownTemplate")]
 		TouchBarVolumeDownTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarVolumeUpTemplate")]
 		TouchBarVolumeUpTemplate,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSImageNameTouchBarRemoveTemplate")]
 		TouchBarRemoveTemplate,
 	}
@@ -17315,7 +17233,6 @@ namespace AppKit {
 		CGRect BarRectFlipped (bool flipped);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSSliderTouchBarItem {
@@ -17353,15 +17270,12 @@ namespace AppKit {
 		[Export ("view")]
 		INSUserInterfaceCompression View { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("doubleValue")]
 		double DoubleValue { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("minimumSliderWidth")]
 		nfloat MinimumSliderWidth { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("maximumSliderWidth")]
 		nfloat MaximumSliderWidth { get; set; }
 	}
@@ -24443,11 +24357,9 @@ namespace AppKit {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSToolbarDelegate) })]
 	[DisableDefaultCtor] // init was added in 10.13
 	partial interface NSToolbar {
-		[MacCatalyst (13, 1)]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
@@ -24581,27 +24493,23 @@ namespace AppKit {
 		[Field ("NSToolbarPrintItemIdentifier")]
 		NSString NSToolbarPrintItemIdentifier { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsExtensionItems")]
 		bool AllowsExtensionItems { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSToolbarToggleSidebarItemIdentifier")]
 		NSString NSToolbarToggleSidebarItemIdentifier { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSToolbarCloudSharingItemIdentifier")]
 		NSString NSToolbarCloudSharingItemIdentifier { get; }
 
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "'CenteredItemIdentifiers' should be used instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "'CenteredItemIdentifiers' should be used instead.")]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("centeredItemIdentifier")]
 		string CenteredItemIdentifier { get; set; }
 
@@ -24609,25 +24517,20 @@ namespace AppKit {
 		[Field ("NSToolbarSidebarTrackingSeparatorItemIdentifier")]
 		NSString NSToolbarSidebarTrackingSeparatorItemIdentifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[NoMac]
 		[Field ("NSToolbarPrimarySidebarTrackingSeparatorItemIdentifier", "UIKit")]
 		NSString PrimarySidebarTrackingSeparatorItemIdentifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[NoMac]
 		[Field ("NSToolbarSupplementarySidebarTrackingSeparatorItemIdentifier", "UIKit")]
 		NSString SupplementarySidebarTrackingSeparatorItemIdentifier { get; }
 
-		[MacCatalyst (16, 0)]
 		[Export ("centeredItemIdentifiers", ArgumentSemantic.Copy)]
 		NSSet<NSString> CenteredItemIdentifiers { get; set; }
 
-		[MacCatalyst (16, 0)]
 		[Field ("NSToolbarItemKey")]
 		NSString NSToolbarItemKey { get; }
 
-		[MacCatalyst (17, 0)]
 		[Field ("NSToolbarToggleInspectorItemIdentifier")]
 		NSString NSToolbarToggleInspectorItemIdentifier { get; }
 
@@ -24658,7 +24561,6 @@ namespace AppKit {
 
 	interface INSToolbarDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface NSToolbarDelegate {
@@ -24731,11 +24633,10 @@ namespace AppKit {
 			""")]
 		void DidRemoveItem (NSNotification notification);
 
-		[MacCatalyst (16, 0), DelegateName ("NSToolbarImmovableItemIdentifiers"), DefaultValue (null)]
+		[DelegateName ("NSToolbarImmovableItemIdentifiers"), DefaultValue (null)]
 		[Export ("toolbarImmovableItemIdentifiers:")]
 		NSSet<NSString> GetToolbarImmovableItemIdentifiers (NSToolbar toolbar);
 
-		[MacCatalyst (16, 0)]
 		[Export ("toolbar:itemIdentifier:canBeInsertedAtIndex:"), DelegateName ("NSToolbarCanInsert"), DefaultValue (true)]
 		bool GetItemCanBeInsertedAt (NSToolbar toolbar, string itemIdentifier, nint index);
 	}
@@ -24765,7 +24666,6 @@ namespace AppKit {
 	}
 
 	[NoTV, NoiOS]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSToolbarItem : NSCopying, NSMenuItemValidation, NSValidatedUserInterfaceItem
 #if __MACCATALYST__
@@ -24887,30 +24787,24 @@ namespace AppKit {
 		[Export ("autovalidates")]
 		bool Autovalidates { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("title")]
 		string Title { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bordered")]
 		bool Bordered { [Bind ("isBordered")] get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("navigational")]
 		bool Navigational { [Bind ("isNavigational")] get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("itemMenuFormRepresentation", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		UIMenuElement ItemMenuFormRepresentation { get; set; }
 
-		[MacCatalyst (16, 0)]
 		[Export ("possibleLabels", ArgumentSemantic.Copy)]
 		NSSet<NSString> PossibleLabels { get; set; }
 
-		[MacCatalyst (17, 0)]
 		[Export ("visible")]
 		bool Visible { [Bind ("isVisible")] get; }
 
@@ -24920,7 +24814,6 @@ namespace AppKit {
 
 		[Static]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("itemWithItemIdentifier:barButtonItem:")]
 		NSToolbarItem Create (string itemIdentifier, UIBarButtonItem barButtonItem);
 
@@ -24969,7 +24862,6 @@ namespace AppKit {
 		ValueSelection = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSToolbarItem))]
 	interface NSToolbarItemGroup {
 		[Export ("initWithItemIdentifier:")]
@@ -24979,33 +24871,26 @@ namespace AppKit {
 		[Export ("subitems", ArgumentSemantic.Copy)]
 		NSToolbarItem [] Subitems { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("groupWithItemIdentifier:titles:selectionMode:labels:target:action:")]
 		NSToolbarItemGroup Create (string itemIdentifier, string [] titles, NSToolbarItemGroupSelectionMode selectionMode, [NullAllowed] string [] labels, [NullAllowed] NSObject target, [NullAllowed] Selector action);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("groupWithItemIdentifier:images:selectionMode:labels:target:action:")]
 		NSToolbarItemGroup Create (string itemIdentifier, NSImage [] images, NSToolbarItemGroupSelectionMode selectionMode, [NullAllowed] string [] labels, [NullAllowed] NSObject target, [NullAllowed] Selector action);
 
-		[MacCatalyst (13, 1)]
 		[Export ("controlRepresentation", ArgumentSemantic.Assign)]
 		NSToolbarItemGroupControlRepresentation ControlRepresentation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("selectionMode", ArgumentSemantic.Assign)]
 		NSToolbarItemGroupSelectionMode SelectionMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("selectedIndex")]
 		nint SelectedIndex { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setSelected:atIndex:")]
 		void SetSelected (bool selected, nint index);
 
-		[MacCatalyst (13, 1)]
 		[Export ("isSelectedAtIndex:")]
 		bool GetSelected (nint index);
 
@@ -25066,7 +24951,6 @@ namespace AppKit {
 	}
 
 	[DesignatedDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTouchBarDelegate) })]
 	interface NSTouchBar : NSCoding {
 		[NullAllowed, Export ("customizationIdentifier")]
@@ -25103,7 +24987,6 @@ namespace AppKit {
 		[NullAllowed, Export ("escapeKeyReplacementItemIdentifier")]
 		string EscapeKeyReplacementItemIdentifier { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("automaticCustomizeTouchBarMenuItemEnabled")]
 		bool AutomaticCustomizeTouchBarMenuItemEnabled { [Bind ("isAutomaticCustomizeTouchBarMenuItemEnabled")] get; set; }
@@ -25111,7 +24994,6 @@ namespace AppKit {
 
 	interface INSTouchBarDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTouchBarDelegate {
@@ -25130,7 +25012,6 @@ namespace AppKit {
 		NSTouchBarItem MakeItem (NSTouchBar touchBar, string identifier);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTouchBarItem : NSCoding {
@@ -25168,25 +25049,20 @@ namespace AppKit {
 		bool Visible { [Bind ("isVisible")] get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum NSTouchBarItemIdentifier {
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFixedSpaceSmall")]
 		FixedSpaceSmall,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFixedSpaceLarge")]
 		FixedSpaceLarge,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierFlexibleSpace")]
 		FlexibleSpace,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTouchBarItemIdentifierOtherItemsProxy")]
 		OtherItemsProxy,
 
@@ -25226,7 +25102,6 @@ namespace AppKit {
 		CandidateList,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSTouchBarProvider {
 		/// <summary>To be added.</summary>
@@ -28780,74 +28655,57 @@ namespace AppKit {
 	}
 
 	partial interface NSWindow {
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("allowsAutomaticWindowTabbing")]
 		bool AllowsAutomaticWindowTabbing { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("userTabbingPreference")]
 		NSWindowUserTabbingPreference UserTabbingPreference { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("tabbingMode", ArgumentSemantic.Assign)]
 		NSWindowTabbingMode TabbingMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("tabbingIdentifier")]
 		string TabbingIdentifier { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("selectNextTab:")]
 		void SelectNextTab ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("selectPreviousTab:")]
 		void SelectPreviousTab ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("moveTabToNewWindow:")]
 		void MoveTabToNewWindow ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("mergeAllWindows:")]
 		void MergeAllWindows ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("toggleTabBar:")]
 		void ToggleTabBar ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("tabbedWindows", ArgumentSemantic.Copy)]
 		NSWindow [] TabbedWindows { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("addTabbedWindow:ordered:")]
 		void AddTabbedWindow (NSWindow window, NSWindowOrderingMode ordered);
 
-		[MacCatalyst (13, 1)]
 		[Export ("windowTitlebarLayoutDirection")]
 		NSUserInterfaceLayoutDirection WindowTitlebarLayoutDirection { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("toggleTabOverview:")]
 		void ToggleTabOverview ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("tab", ArgumentSemantic.Strong)]
 		NSWindowTab Tab { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("tabGroup", ArgumentSemantic.Weak)]
 		NSWindowTabGroup TabGroup { get; }
 
-		[MacCatalyst (16, 4)]
 		[Async]
 		[Export ("transferWindowSharingToWindow:completionHandler:")]
 		void TransferWindowSharing (NSWindow window, Action<NSError?> completionHandler);
 
-		[MacCatalyst (16, 4)]
 		[Export ("hasActiveWindowSharingSession")]
 		bool HasActiveWindowSharingSession { get; }
 
@@ -28885,7 +28743,6 @@ namespace AppKit {
 		[Export ("validateProposedFirstResponder:forEvent:")]
 		bool ValidateProposedFirstResponder (NSResponder responder, [NullAllowed] NSEvent forEvent);
 
-		[MacCatalyst (13, 1)]
 		[Export ("changeModeWithEvent:")]
 		void ChangeMode (NSEvent withEvent);
 	}
@@ -29031,21 +28888,17 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTextCheckingSelectedRangeKey")]
 		NSString TextCheckingSelectedRangeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticCapitalizationNotification")]
 		[Notification]
 		NSString DidChangeAutomaticCapitalizationNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticPeriodSubstitutionNotification")]
 		[Notification]
 		NSString DidChangeAutomaticPeriodSubstitutionNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSSpellCheckerDidChangeAutomaticTextCompletionNotification")]
 		[Notification]
 		NSString DidChangeAutomaticTextCompletionNotification { get; }
@@ -29109,15 +28962,12 @@ namespace AppKit {
 		[Notification, Field ("NSTextViewDidChangeTypingAttributesNotification")]
 		NSString DidChangeTypingAttributesNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Notification, Field ("NSTextViewWillSwitchToNSLayoutManagerNotification")]
 		NSString WillSwitchToNSLayoutManagerNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Notification, Field ("NSTextViewDidSwitchToNSLayoutManagerNotification")]
 		NSString DidSwitchToNSLayoutManagerNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("usesAdaptiveColorMappingForDarkAppearance")]
 		bool UsesAdaptiveColorMappingForDarkAppearance { get; set; }
 	}
@@ -29285,7 +29135,6 @@ namespace AppKit {
 		[Static, Export ("usesUbiquitousStorage")]
 		bool UsesUbiquitousStorage { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("encodeRestorableStateWithCoder:backgroundQueue:")]
 		void EncodeRestorableState (NSCoder coder, NSOperationQueue queue);
 	}
@@ -29307,11 +29156,9 @@ namespace AppKit {
 		[Export ("beginOpenPanel:forTypes:completionHandler:")]
 		void BeginOpenPanel (NSOpenPanel openPanel, NSArray inTypes, NSDocumentControllerOpenPanelResultHandler completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsAutomaticShareMenu")]
 		bool AllowsAutomaticShareMenu { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("standardShareMenuItem")]
 		NSMenuItem StandardShareMenuItem { get; }
 	}
@@ -29669,7 +29516,6 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSTextMovementUserInfoKey")]
 		NSString MovementUserInfoKey { get; }
 	}
@@ -33080,7 +32926,6 @@ namespace AppKit {
 		NSCandidateListTouchBarItem GetCandidateListTouchBarItem ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSColorPickerTouchBarItem {
@@ -33171,7 +33016,6 @@ namespace AppKit {
 		void SetAllowedTouchTypes (NSTouchTypeMask types);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSGroupTouchBarItem {
@@ -33195,7 +33039,6 @@ namespace AppKit {
 		[Export ("groupItemWithIdentifier:items:allowedCompressionOptions:")]
 		NSGroupTouchBarItem CreateGroupItem (string identifier, NSTouchBarItem [] items, NSUserInterfaceCompressionOptions allowedCompressionOptions);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("alertStyleGroupItemWithIdentifier:")]
 		NSGroupTouchBarItem CreateAlertStyleGroupItem (string identifier);
@@ -33204,11 +33047,9 @@ namespace AppKit {
 		[Export ("groupUserInterfaceLayoutDirection", ArgumentSemantic.Assign)]
 		NSUserInterfaceLayoutDirection GroupUserInterfaceLayoutDirection { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("prefersEqualWidths")]
 		bool PrefersEqualWidths { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("preferredItemWidth")]
 		nfloat PreferredItemWidth { get; set; }
 
@@ -33221,7 +33062,6 @@ namespace AppKit {
 		NSUserInterfaceCompressionOptions [] PrioritizedCompressionOptions { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSPopoverTouchBarItem {
@@ -33610,7 +33450,6 @@ namespace AppKit {
 		INSPasteboardWriting [] ItemsForSharingServicePickerTouchBarItem (NSSharingServicePickerTouchBarItem pickerTouchBarItem);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSSharingServicePickerTouchBarItem {
@@ -33640,7 +33479,6 @@ namespace AppKit {
 		IUIActivityItemsConfigurationReading ActivityItemsConfiguration { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSSliderAccessory : NSCoding, NSAccessibility, NSAccessibilityElementProtocol {
@@ -33660,19 +33498,16 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSSliderAccessoryWidthDefault")]
 		double DefaultWidth { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSSliderAccessoryWidthWide")]
 		double WidthWide { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSSliderAccessoryBehavior : NSCoding, NSCopying {
 		[Static]
@@ -34013,7 +33848,6 @@ namespace AppKit {
 		void Remove (NSWindow window);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSButtonTouchBarItem {
@@ -34067,7 +33901,6 @@ namespace AppKit {
 		GroupPagingCentered,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPickerTouchBarItemControlRepresentation : long {
 		Automatic = 0,
@@ -34075,7 +33908,6 @@ namespace AppKit {
 		Collapsed = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPickerTouchBarItemSelectionMode : long {
 		SelectOne = 0,
@@ -34091,7 +33923,6 @@ namespace AppKit {
 		Yes,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarItemGroupControlRepresentation : long {
 		Automatic,
@@ -34099,7 +33930,6 @@ namespace AppKit {
 		Collapsed,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarItemGroupSelectionMode : long {
 		SelectOne = 0,
@@ -34107,7 +33937,6 @@ namespace AppKit {
 		Momentary = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSPickerTouchBarItem {
@@ -34202,7 +34031,6 @@ namespace AppKit {
 		nint State { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSToolbarItem))]
 #if XAMCORE_5_0
 	[DisableDefaultCtor]
@@ -34219,7 +34047,6 @@ namespace AppKit {
 		[Export ("showsIndicator")]
 		bool ShowsIndicator { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NoMac]
 		[Export ("itemMenu", ArgumentSemantic.Copy)]
 		UIMenu ItemMenu { get; set; }
@@ -34253,7 +34080,6 @@ namespace AppKit {
 		NSCollectionViewCompositionalLayoutConfiguration Configuration { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSTouchBarItem))]
 	[DisableDefaultCtor]
 	interface NSStepperTouchBarItem {
@@ -34599,7 +34425,6 @@ namespace AppKit {
 		Caption2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSToolbarItem))]
 #if XAMCORE_5_0
 	[DisableDefaultCtor]

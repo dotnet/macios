@@ -12,7 +12,6 @@
 namespace BackgroundTasks {
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("BGTaskSchedulerErrorDomain")]
 	public enum BGTaskSchedulerErrorCode : long {

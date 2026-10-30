@@ -13,7 +13,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContact.h
 	/// <summary>Enumerates whether a contact represents an individual or an organization.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContactType : long {
 		/// <summary>The <see cref="Contacts.CNContact" /> is a person.</summary>
@@ -24,7 +23,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContact.h
 	/// <summary>Enumerates the manner in which contacts should be sorted.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContactSortOrder : long {
 		/// <summary>No sorting should be applied.</summary>
@@ -39,7 +37,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContactFormatter.h
 	/// <summary>Enumerates whether or not a contact name should be spelled out phonetically.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContactFormatterStyle : long {
 		/// <summary>Combines the name components into a full name.</summary>
@@ -50,7 +47,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContactFormatter.h
 	/// <summary>Enumerates how contacts should be sorted for display.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContactDisplayNameOrder : long {
 		/// <summary>Display name order by the user-specified default.</summary>
@@ -63,7 +59,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContactStore.h
 	/// <summary>An enumeration whose only value (<see cref="Contacts.CNEntityType.Contacts" />) is used by some methods in <see cref="Contacts.CNContactStore" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNEntityType : long {
 		/// <summary>Indicates that the user can grant access to the user's own contacts.</summary>
@@ -72,7 +67,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContactStore.h
 	/// <summary>Enumerates the application's current authorization to access the <see cref="Contacts.CNContactStore" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNAuthorizationStatus : long {
 		/// <summary>The user has not yet chosen whether the app may access the Contacts database.</summary>
@@ -89,7 +83,6 @@ namespace Contacts {
 
 	// NSInteger -> CNContainer.h
 	/// <summary>Enumerates known <see cref="Contacts.CNContainer" /> types.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNContainerType : long {
 		/// <summary>Indicates that the container type has not been assigned.</summary>
@@ -104,7 +97,6 @@ namespace Contacts {
 
 	// NSInteger -> CNError.h
 	/// <summary>Enumerates kinds of error encountered while working with contacts.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("CNErrorDomain")]
 	public enum CNErrorCode : long {
@@ -159,7 +151,6 @@ namespace Contacts {
 
 	// NSInteger -> CNPostalAddressFormatter.h
 	/// <summary>Enumerates postal address formatter styles.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CNPostalAddressFormatterStyle : long {
 		/// <summary>Indicates that the address should be formatted as a mailing address.</summary>
@@ -167,7 +158,6 @@ namespace Contacts {
 	}
 
 	/// <summary>Flagging enumeration that specifies keys that can be checked with <see cref="Contacts.CNContact.IsKeyAvailable(Foundation.NSString)" /> and <see cref="Contacts.CNContact.AreKeysAvailable{T}(T[])" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum CNContactOptions : long {
 		/// <summary>To be added.</summary>
@@ -195,7 +185,6 @@ namespace Contacts {
 #if !MONOMAC
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		ImageData = 1 << 10,
 #endif
 		/// <summary>To be added.</summary>
@@ -203,7 +192,6 @@ namespace Contacts {
 #if !MONOMAC
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		ImageDataAvailable = 1 << 12,
 #endif
 		/// <summary>To be added.</summary>

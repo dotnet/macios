@@ -28,7 +28,6 @@ namespace GameplayKit {
 	/// <summary>Holds options for how nodes should be generated in a <see cref="GameplayKit.GKMeshGraph{NodeType}" />.</summary>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum GKMeshGraphTriangulationMode : ulong {
 		/// <summary>To be added.</summary>
 		Vertices = 1 << 0,
@@ -39,7 +38,6 @@ namespace GameplayKit {
 	}
 
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum GKRTreeSplitStrategy : long {
 		/// <summary>To be added.</summary>
 		Halve = 0,
@@ -56,7 +54,6 @@ namespace GameplayKit {
 	/// <summary>Delegate object that provides methods relating to synchronizing the state of a <see cref="GameplayKit.GKAgent" /> with external constraints, goals, and representations.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKAgentDelegate_Protocol/index.html">Apple documentation for <c>GKAgentDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -78,7 +75,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKComponent" /> that can move and has goals.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKAgent_Class/index.html">Apple documentation for <c>GKAgent</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKComponent))]
 	interface GKAgent : NSSecureCoding {
 
@@ -98,7 +94,7 @@ namespace GameplayKit {
 
 		[Export ("speed")]
 		float Speed {
-			get; [MacCatalyst (13, 1)]
+			get; 
 			set;
 		}
 
@@ -112,7 +108,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKAgent" /> whose movement is restricted to two dimensions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKAgent2D_Class/index.html">Apple documentation for <c>GKAgent2D</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKAgent))]
 	interface GKAgent2D : NSSecureCoding {
 
@@ -138,7 +133,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A 3D agent that responds to goals.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKAgent))]
 	interface GKAgent3D {
 
@@ -177,7 +171,6 @@ namespace GameplayKit {
 	/// <summary>A collection of <see cref="GameplayKit.GKGoal" /> objects and weights, together defining a cohesive game behavior.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKBehavior_Class/index.html">Apple documentation for <c>GKBehavior</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKBehavior : NSCopying {
 
@@ -232,7 +225,6 @@ namespace GameplayKit {
 	///     </remarks>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKComponent_Class/index.html">Apple documentation for <c>GKComponent</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface GKComponent : NSCopying, NSSecureCoding {
@@ -244,11 +236,9 @@ namespace GameplayKit {
 		[Export ("updateWithDeltaTime:")]
 		void Update (double deltaTimeInSeconds);
 
-		[MacCatalyst (13, 1)]
 		[Export ("didAddToEntity")]
 		void DidAddToEntity ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("willRemoveFromEntity")]
 		void WillRemoveFromEntity ();
 	}
@@ -256,7 +246,6 @@ namespace GameplayKit {
 	/// <summary>Holds <see cref="GameplayKit.GKComponent" /> objects of a specific subtype and updates them periodically.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKComponentSystem_Class/index.html">Apple documentation for <c>GKComponentSystem</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // We have a manual default ctor.
 	/* using 'TComponent' for the generic argument, since we have an additional member 'ComponentType' which clashes with Objective-C's generic argument 'ComponentType' */
@@ -298,7 +287,6 @@ namespace GameplayKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
@@ -306,13 +294,11 @@ namespace GameplayKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKBehavior" /> that combines other <see cref="GameplayKit.GKBehavior" /> objects.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKBehavior))]
 	interface GKCompositeBehavior {
 
@@ -353,7 +339,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>An element in a <see cref="GameplayKit.GKDecisionTree" />.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKDecisionNode {
@@ -374,7 +359,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A tree of questions, answers, and actions. </summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKDecisionTree : NSSecureCoding {
@@ -395,11 +379,9 @@ namespace GameplayKit {
 		[return: NullAllowed]
 		NSObject FindAction (NSDictionary<NSObject, NSObject> answers);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:error:")]
 		NativeHandle Constructor (NSUrl url, [NullAllowed] NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("exportToURL:error:")]
 		bool Export (NSUrl url, [NullAllowed] NSError error);
 	}
@@ -407,7 +389,6 @@ namespace GameplayKit {
 	/// <summary>A type that is composed of a number of <see cref="GameplayKit.GKComponent" /> objects in an Entity-Component architecture.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKEntity_Class/index.html">Apple documentation for <c>GKEntity</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface GKEntity : NSCopying, NSSecureCoding {
@@ -445,7 +426,6 @@ namespace GameplayKit {
 	///     <remarks>
 	///       <para>Developers should strive to make their implementations of this interface efficient. A large number of <see cref="GameplayKit.IGKGameModelUpdate" /> objects are likely to be produced by <see cref="GameplayKit.IGKGameModel.GetGameModelUpdates(GameplayKit.IGKGameModelPlayer)" /> which, in return, is likely to be called many times by <see cref="GameplayKit.GKMinMaxStrategist.GetBestMove(GameplayKit.IGKGameModelPlayer)" />.</para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModelUpdate {
 
@@ -458,7 +438,6 @@ namespace GameplayKit {
 	interface IGKGameModelPlayer { }
 
 	/// <summary>A uniquely-identified player of a game.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModelPlayer {
 		[Abstract]
@@ -476,7 +455,6 @@ namespace GameplayKit {
 	///     (See the "AI Opponent" section in the remarks at <see cref="GameplayKit" />)
 	///   </para>
 	/// </remarks>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKGameModel : NSCopying {
 
@@ -554,7 +532,6 @@ namespace GameplayKit {
 		/// <param name="gameModelUpdate">To be added.</param>
 		/// <summary>Removes the specified changes from the game's state.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("unapplyGameModelUpdate:")]
 		void UnapplyGameModelUpdate (IGKGameModelUpdate gameModelUpdate);
 	}
@@ -562,7 +539,6 @@ namespace GameplayKit {
 	/// <summary>Influences the movement of one or more <see cref="GameplayKit.GKAgent" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGoal_Class/index.html">Apple documentation for <c>GKGoal</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKGoal : NSCopying {
 
@@ -616,7 +592,6 @@ namespace GameplayKit {
 	}
 
 	/// <include file="../docs/api/GameplayKit/GKGraph.xml" path="/Documentation/Docs[@DocId='T:GameplayKit.GKGraph']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKGraph : NSCopying, NSSecureCoding {
 
@@ -649,7 +624,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKGraph" /> that generates a space-filling network for representation, allowing smooth, but inefficient, paths.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKObstacleGraph_Class/index.html">Apple documentation for <c>GKObstacleGraph</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKGraph))]
 	interface GKObstacleGraph {
 
@@ -667,13 +641,11 @@ namespace GameplayKit {
 		NativeHandle Constructor (GKPolygonObstacle [] obstacles, float bufferRadius);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphWithObstacles:bufferRadius:nodeClass:")]
 		IntPtr GraphWithObstacles (GKPolygonObstacle [] obstacles, float bufferRadius, Class nodeClass);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithObstacles:bufferRadius:nodeClass:")]
 		NativeHandle Constructor (GKPolygonObstacle [] obstacles, float bufferRadius, Class nodeClass);
 
@@ -713,7 +685,6 @@ namespace GameplayKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
@@ -721,7 +692,6 @@ namespace GameplayKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
 	}
@@ -734,7 +704,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKGraph" /> in which movement is constrained to an integer grid</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGridGraph_Class/index.html">Apple documentation for <c>GKGridGraph</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKGraph))]
 	interface GKGridGraph {
 
@@ -762,23 +731,19 @@ namespace GameplayKit {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Vector2i position, int width, int height, bool diagonalsAllowed);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphFromGridStartingAt:width:height:diagonalsAllowed:nodeClass:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		GKGridGraph FromGridStartingAt (Vector2i position, int width, int height, bool diagonalsAllowed, Class aClass);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("FromGridStartingAt (position, width, height, diagonalsAllowed, new Class (type))")]
 		GKGridGraph FromGridStartingAt (Vector2i position, int width, int height, bool diagonalsAllowed, Type type);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initFromGridStartingAt:width:height:diagonalsAllowed:nodeClass:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Vector2i position, int width, int height, bool diagonalsAllowed, Class aClass);
 
-		[MacCatalyst (13, 1)]
 		[Wrap ("this (position, width, height, diagonalsAllowed, new Class (nodeType))")]
 		NativeHandle Constructor (Vector2i position, int width, int height, bool diagonalsAllowed, Type nodeType);
 
@@ -796,7 +761,6 @@ namespace GameplayKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[MacCatalyst (13, 1)]
 		[Export ("classForGenericArgumentAtIndex:")]
 		Class GetClassForGenericArgument (nuint index);
 
@@ -804,12 +768,10 @@ namespace GameplayKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Class.Lookup (GetClassForGenericArgument (index))!")]
 		Type GetTypeForGenericArgument (nuint index);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKGraph))]
 	interface GKMeshGraph<NodeType> where NodeType : GKGraphNode2D {
 
@@ -889,7 +851,6 @@ namespace GameplayKit {
 	/// <summary>The base class for nodes in a <see cref="GameplayKit.GKGraph" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGraphNode_Class/index.html">Apple documentation for <c>GKGraphNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKGraphNode : NSSecureCoding {
 
@@ -918,7 +879,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKGraphNode" /> that contains a 2D floating-point position.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGraphNode2D_Class/index.html">Apple documentation for <c>GKGraphNode2D</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKGraphNode))]
 	interface GKGraphNode2D {
@@ -942,7 +902,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKGraphNode" /> that exists in three-dimensional space.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKGraphNode))]
 	interface GKGraphNode3D {
@@ -969,7 +928,6 @@ namespace GameplayKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKGridGraphNode_Class/index.html">Apple documentation for <c>GKGridGraphNode</c></related>
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKGraphNode))]
 	interface GKGridGraphNode {
 
@@ -993,7 +951,6 @@ namespace GameplayKit {
 	}
 
 	/// <include file="../docs/api/GameplayKit/GKMinMaxStrategist.xml" path="/Documentation/Docs[@DocId='T:GameplayKit.GKMinMaxStrategist']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "GKMinmaxStrategist")]
 	interface GKMinMaxStrategist : GKStrategist {
 		[Export ("maxLookAheadDepth", ArgumentSemantic.Assign)]
@@ -1018,7 +975,6 @@ namespace GameplayKit {
 	/// <summary>Abstract class representing areas that <see cref="GameplayKit.GKAgent" /> objects cannot traverse.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKObstacle_Class/index.html">Apple documentation for <c>GKObstacle</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface GKObstacle {
@@ -1027,7 +983,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKObstacle" /> defined by a location and a radius.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKCircleObstacle_Class/index.html">Apple documentation for <c>GKCircleObstacle</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKObstacle))]
 	interface GKCircleObstacle {
@@ -1055,7 +1010,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKObstacle" /> with an arbitrarily complex shape.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKPolygonObstacle_Class/index.html">Apple documentation for <c>GKPolygonObstacle</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKObstacle))]
 	interface GKPolygonObstacle : NSSecureCoding {
@@ -1082,7 +1036,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKObstacle" /> that is an impassable spherical volume.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKObstacle))]
 	interface GKSphereObstacle {
@@ -1110,7 +1063,6 @@ namespace GameplayKit {
 	/// <summary>Holds a 2D polygonal path that can be followed by a <see cref="GameplayKit.GKAgent" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKPath_Class/index.html">Apple documentation for <c>GKPath</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKPath {
@@ -1135,12 +1087,10 @@ namespace GameplayKit {
 		[Export ("initWithPoints:count:radius:cyclical:")]
 		IntPtr _InitWithPoints (IntPtr points, nuint count, float radius, bool cyclical);
 
-		[MacCatalyst (13, 1)]
 		[Static, Internal]
 		[Export ("pathWithFloat3Points:count:radius:cyclical:")]
 		GKPath FromFloat3Points (IntPtr points, nuint count, float radius, bool cyclical);
 
-		[MacCatalyst (13, 1)]
 		[Internal]
 		[Export ("initWithFloat3Points:count:radius:cyclical:")]
 		IntPtr _InitWithFloat3Points (IntPtr points, nuint count, float radius, bool cyclical);
@@ -1184,7 +1134,6 @@ namespace GameplayKit {
 		/// <summary>Returns a 2-dimensional vector for the node at the specified <paramref name="index" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("float2AtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector2 GetVector2Point (nuint index);
@@ -1193,7 +1142,6 @@ namespace GameplayKit {
 		/// <summary>Returns a 3-dimensional vector for the node at the specified <paramref name="index" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("float3AtIndex:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		Vector3 GetVector3Point (nuint index);
@@ -1202,7 +1150,6 @@ namespace GameplayKit {
 	/// <summary>Defines a probability distribution. This class defines a uniform distribution (all values equally likely), while subclasses <see cref="GameplayKit.GKGaussianDistribution" /> and <see cref="GameplayKit.GKShuffledDistribution" /> provide different likelihoods.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKRandomDistribution_Class/index.html">Apple documentation for <c>GKRandomDistribution</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKRandomDistribution : GKRandom {
@@ -1265,7 +1212,6 @@ namespace GameplayKit {
 	}
 
 	/// <include file="../docs/api/GameplayKit/GKGaussianDistribution.xml" path="/Documentation/Docs[@DocId='T:GameplayKit.GKGaussianDistribution']/*" />
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKRandomDistribution))]
 	interface GKGaussianDistribution {
@@ -1293,7 +1239,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKRandomDistribution" /> that shuffles a collection in a manner that makes sequences of similar values unlikely (minimal hot/cold streaks).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKShuffledDistribution_Class/index.html">Apple documentation for <c>GKShuffledDistribution</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKRandomDistribution))]
 	interface GKShuffledDistribution {
@@ -1312,7 +1257,6 @@ namespace GameplayKit {
 	interface IGKRandom { }
 
 	/// <summary>Interface for GameplayKit pseudo-random number generators.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKRandom {
 
@@ -1347,7 +1291,6 @@ namespace GameplayKit {
 	}
 
 	/// <include file="../docs/api/GameplayKit/GKRandomSource.xml" path="/Documentation/Docs[@DocId='T:GameplayKit.GKRandomSource']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface GKRandomSource : GKRandom, NSSecureCoding, NSCopying {
@@ -1371,7 +1314,6 @@ namespace GameplayKit {
 	///         <see cref="GameplayKit.GKARC4RandomSource" /> objects are generally good random sources, but may be predicted by analyzing the first 768 values generated. To avoid such possibilities, call <see cref="GameplayKit.GKARC4RandomSource.DropValues(System.UIntPtr)" /> with a value of 768 or greater.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKARC4RandomSource_Class/index.html">Apple documentation for <c>GKARC4RandomSource</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKRandomSource))]
 	interface GKARC4RandomSource {
 
@@ -1398,7 +1340,6 @@ namespace GameplayKit {
 	///         <see cref="GameplayKit.GKLinearCongruentialRandomSource" /> generators are fast and generally sufficient. They are not as properly random as <see cref="GameplayKit.GKARC4RandomSource" /> generators, much less<see cref="GameplayKit.GKMersenneTwisterRandomSource" /> generators.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKLinearCongruentialRandomSource_Class/index.html">Apple documentation for <c>GKLinearCongruentialRandomSource</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKRandomSource))]
 	interface GKLinearCongruentialRandomSource {
 
@@ -1415,7 +1356,6 @@ namespace GameplayKit {
 	///       <para>The <see cref="GameplayKit.GKMersenneTwisterRandomSource" /> produces the highest-quality random sequences of the generators in GameplayKit, but is slower than the others.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKMersenneTwisterRandomSource_Class/index.html">Apple documentation for <c>GKMersenneTwisterRandomSource</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKRandomSource))]
 	interface GKMersenneTwisterRandomSource {
 
@@ -1428,7 +1368,6 @@ namespace GameplayKit {
 	}
 
 	/// <include file="../docs/api/GameplayKit/GKRuleSystem.xml" path="/Documentation/Docs[@DocId='T:GameplayKit.GKRuleSystem']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface GKRuleSystem {
@@ -1492,7 +1431,6 @@ namespace GameplayKit {
 	/// <summary>A single element, comprising a predicate and an action, that represents a discrete rule in a <see cref="GameplayKit.GKRuleSystem" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKRule_Class/index.html">Apple documentation for <c>GKRule</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKRule {
 
@@ -1521,7 +1459,6 @@ namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.GKRule" /> that uses a <see cref="Foundation.NSPredicate" /> to determine if it's action should be called.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKNSPredicateRule_Class/index.html">Apple documentation for <c>GKNSPredicateRule</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKRule))]
 	interface GKNSPredicateRule {
 
@@ -1538,7 +1475,6 @@ namespace GameplayKit {
 	/// <summary>An abstract class representing a discrete state in a <see cref="GameplayKit.GKStateMachine" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKState_Class/index.html">Apple documentation for <c>GKState</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	[DisableDefaultCtor] // designated
@@ -1575,7 +1511,6 @@ namespace GameplayKit {
 	/// <summary>Holds <see cref="GameplayKit.GKState" /> objects and manages transitions between them.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameplayKit/Reference/GKStateMachine_Class/index.html">Apple documentation for <c>GKStateMachine</c></related>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKStateMachine {
@@ -1610,7 +1545,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>Interface for a game strategist (AI).</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKStrategist {
 		/// <summary>Gets or sets the current game state.</summary>
@@ -1638,7 +1572,6 @@ namespace GameplayKit {
 	/// <summary>A strategist that reaches a solution that is probably close to optimal in a deterministic amount of time.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKMonteCarloStrategist">Apple documentation for <c>GKMonteCarloStrategist</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKMonteCarloStrategist : GKStrategist {
 		[Export ("budget")]
@@ -1649,7 +1582,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>Uses a <see cref="GameplayKit.GKNoiseSource" /> to procedurally generate an infinite three-dimensional noise field.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKNoise {
 
@@ -1736,7 +1668,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>Slices a finite, two-dimensional rectangle from a <see cref="GameplayKit.GKNoise" /> object's infinite, three-dimensional noise field.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKNoiseMap {
 
@@ -1795,7 +1726,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>Abstract base class for procedural noise generators.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[Abstract]
 	[BaseType (typeof (NSObject))]
@@ -1804,7 +1734,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output varies smoothly and continuously.</summary>
-	[MacCatalyst (13, 1)]
 	[Abstract]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKCoherentNoiseSource {
@@ -1823,7 +1752,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKCoherentNoiseSource" /> that generates improved Perlin noise.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKCoherentNoiseSource))]
 	interface GKPerlinNoiseSource {
@@ -1856,7 +1784,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKCoherentNoiseSource" /> whose output is similar to Perlin noise but with more rounded features.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKCoherentNoiseSource))]
 	interface GKBillowNoiseSource {
@@ -1889,7 +1816,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKCoherentNoiseSource" /> whose output is similar to Perlin noise but with sharp boundaries.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKCoherentNoiseSource))]
 	interface GKRidgedNoiseSource {
@@ -1917,7 +1843,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output divides space into cells surrounding seed points. Appropriate for crystalline textures.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKVoronoiNoiseSource {
@@ -1947,7 +1872,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output is a single value.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKConstantNoiseSource {
@@ -1965,7 +1889,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output consists of concentric cylindrical shells. Appropriate for wood-grain textures.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKCylindersNoiseSource {
@@ -1983,7 +1906,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output consists of concentric shells. Appropriate for wood-grain textures.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKSpheresNoiseSource {
@@ -2001,7 +1923,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKNoiseSource" /> whose output consists of alternating black and white squares.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (GKNoiseSource))]
 	interface GKCheckerboardNoiseSource {
@@ -2019,7 +1940,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A node in a <see cref="GameplayKit.GKOctree{ElementType}" />. Automatically managed by the <see cref="GameplayKit.GKOctree{ElementType}" /> as objects are added and removed.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface GKOctreeNode {
@@ -2032,7 +1952,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A data structure that efficiently organizes three-dimensional elements.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKOctree<ElementType> where ElementType : NSObject {
 
@@ -2069,7 +1988,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A data structure for efficiently searching objects arranged in two-dimensional space.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface GKRTree<ElementType> where ElementType : NSObject {
@@ -2106,7 +2024,6 @@ namespace GameplayKit {
 		ElementType [] GetElements (Vector2 rectMin, Vector2 rectMax);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKComponent))]
 	interface GKSKNodeComponent : GKAgentDelegate {
 
@@ -2123,13 +2040,11 @@ namespace GameplayKit {
 
 	interface IGKSceneRootNodeType { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface GKSceneRootNodeType {
 	}
 
 	/// <summary>Associates GameplayKit objects with a SpriteKit <see cref="SpriteKit.SKScene" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKScene : NSCopying, NSSecureCoding {
 
@@ -2138,7 +2053,6 @@ namespace GameplayKit {
 		[return: NullAllowed]
 		GKScene FromFile (string filename);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("sceneWithFileNamed:rootNode:")]
 		[return: NullAllowed]
@@ -2167,7 +2081,6 @@ namespace GameplayKit {
 	}
 
 	/// <summary>A <see cref="GameplayKit.GKComponent" /> that operates on a <see cref="SceneKit.SCNNode" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKComponent))]
 	interface GKSCNNodeComponent : GKAgentDelegate {
 		[Static]
@@ -2181,7 +2094,6 @@ namespace GameplayKit {
 		SCNNode Node { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (SKNode))]
 	interface SKNode_GameplayKit {
@@ -2213,7 +2125,6 @@ namespace GameplayKit {
 		void SetEntity ([NullAllowed] GKEntity entity);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (SCNNode))]
 	interface SCNNode_GameplayKit {
@@ -2234,7 +2145,6 @@ namespace GameplayKit {
 	/// <summary>A node in a quadtree.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKQuadTreeNode">Apple documentation for <c>GKQuadTreeNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "GKQuadtreeNode")] // Renamed to GKQuadtreeNode (lower case t) in Xcode8
 	[DisableDefaultCtor] // <quote>Used as a hint for faster removal via [GKQuadTree removeData:WithNode:]</quote>
 	interface GKQuadTreeNode {
@@ -2249,7 +2159,6 @@ namespace GameplayKit {
 	/// <summary>A data structure that efficiently organizes objects in two-dimensional space.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKQuadTree">Apple documentation for <c>GKQuadTree</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "GKQuadtree")] // Renamed to GKQuadtree (lower case t) in xcode8
 	[DisableDefaultCtor] // crash (endless recursion)
 	interface GKQuadTree {

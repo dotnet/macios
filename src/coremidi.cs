@@ -49,7 +49,6 @@ namespace CoreMidi {
 	/// <summary>An enumeration whose values specify which hosts are eligible to connect to a MIDI network session.</summary>
 	/// <remarks>To be added.</remarks>
 	[TV (15, 0)]
-	[MacCatalyst (13, 1)]
 	// NSUInteger -> MIDINetworkSession.h
 	[Native]
 	public enum MidiNetworkConnectionPolicy : ulong {
@@ -62,7 +61,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), TV (15, 0)]
-	[MacCatalyst (14, 0)]
 	[NativeName ("MIDIProtocolID")]
 	public enum MidiProtocolId {
 		Protocol_1_0 = 1,
@@ -70,7 +68,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), TV (15, 0)]
-	[MacCatalyst (14, 0)]
 	[NativeName ("MIDICVStatus")]
 	public enum MidiCVStatus : uint {
 		RegisteredPnc = 0,
@@ -92,7 +89,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), TV (15, 0)]
-	[MacCatalyst (14, 0)]
 	[NativeName ("MIDIMessageType")]
 	public enum MidiMessageType : uint {
 		Utility = 0,
@@ -114,7 +110,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), TV (15, 0)]
-	[MacCatalyst (14, 0)]
 	[NativeName ("MIDISysExStatus")]
 	public enum MidiSysExStatus : uint {
 		Complete = 0,
@@ -126,7 +121,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), TV (15, 0)]
-	[MacCatalyst (14, 0)]
 	[NativeName ("MIDISystemStatus")]
 	public enum MidiSystemStatus : uint {
 		StartOfExclusive = 240,
@@ -143,7 +137,7 @@ namespace CoreMidi {
 		SystemReset = 255,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), TV (15, 0)]
 	[NativeName ("MIDINoteAttribute")]
 	public enum MidiNoteAttribute : byte {
 		None = 0,
@@ -152,7 +146,7 @@ namespace CoreMidi {
 		Pitch = 3,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), TV (15, 0)]
 	[NativeName ("MIDIPerNoteManagementOptions")]
 	[Flags]
 	public enum MidiPerNoteManagementOptions : byte {
@@ -160,14 +154,14 @@ namespace CoreMidi {
 		Detach = 1 << 1,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), TV (15, 0)]
 	[NativeName ("MIDIProgramChangeOptions")]
 	[Flags]
 	public enum MidiProgramChangeOptions : byte {
 		BankValid = 1 << 0,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (15, 0)]
+	[iOS (16, 0), TV (15, 0)]
 	[NativeName ("MIDIUtilityStatus")]
 	public enum MidiUtilityStatus : uint {
 		Noop = 0,
@@ -331,7 +325,6 @@ namespace CoreMidi {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMidi/Reference/MIDINetworkHost_ClassReference/index.html">Apple documentation for <c>MIDINetworkHost</c></related>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MIDINetworkHost")]
 	[DisableDefaultCtor]
 	interface MidiNetworkHost {
@@ -406,7 +399,6 @@ namespace CoreMidi {
 
 	/// <summary>Global methods and constants for using CoreMidi.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface Midi {
 		[Field ("MIDINetworkNotificationContactsDidChange")]
@@ -430,7 +422,6 @@ namespace CoreMidi {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMidi/Reference/MIDINetworkConnection_ClassReference/index.html">Apple documentation for <c>MIDINetworkConnection</c></related>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "MIDINetworkConnection")]
 	interface MidiNetworkConnection {
@@ -452,7 +443,6 @@ namespace CoreMidi {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreMidi/Reference/MIDINetworkSession_ClassReference/index.html">Apple documentation for <c>MIDINetworkSession</c></related>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MIDINetworkSession")]
 	// default 'init' crash the application
 	[DisableDefaultCtor]
@@ -550,7 +540,6 @@ namespace CoreMidi {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MIDICIProfile")]
 	[DisableDefaultCtor]
 	interface MidiCIProfile : NSSecureCoding {
@@ -574,7 +563,6 @@ namespace CoreMidi {
 		NativeHandle Constructor (NSData data, string inName);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithData:")]
 		NativeHandle Constructor (NSData data);
 
@@ -591,7 +579,6 @@ namespace CoreMidi {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MIDICIProfileState")]
 	[DisableDefaultCtor]
 	interface MidiCIProfileState : NSSecureCoding {
@@ -615,7 +602,6 @@ namespace CoreMidi {
 		NativeHandle Constructor (MidiCIProfile [] enabled, MidiCIProfile [] disabled);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithChannel:enabledProfiles:disabledProfiles:")]
 		[Deprecated (PlatformName.iOS, 18, 0, message: "Use the other constructor instead (without the 'midiChannelNumber' parameter).")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 0, message: "Use the other constructor instead (without the 'midiChannelNumber' parameter).")]
@@ -623,7 +609,6 @@ namespace CoreMidi {
 		NativeHandle Constructor (byte midiChannelNumber, MidiCIProfile [] enabled, MidiCIProfile [] disabled);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("midiChannel")]
 		byte MidiChannel { get; }
 	}
@@ -633,7 +618,6 @@ namespace CoreMidi {
 	delegate void MidiCISessionDisconnectHandler ([NullAllowed] MidiCISession session, [NullAllowed] NSError error);
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MIDICISession")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
@@ -705,46 +689,38 @@ namespace CoreMidi {
 		MidiCIProfileChangedHandler ProfileChangedCallback { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithDiscoveredNode:dataReadyHandler:disconnectHandler:")]
 		NativeHandle Constructor (MidiCIDiscoveredNode discoveredNode, Action dataReadyHandler, MidiCISessionDisconnectHandler disconnectHandler);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("sendProfile:onChannel:profileData:")]
 		bool SendProfile (MidiCIProfile profile, byte channel, NSData profileSpecificData);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("deviceInfo")]
 		MidiCIDeviceInfo DeviceInfo { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[BindAs (typeof (ulong))]
 		[Export ("maxSysExSize")]
 		NSNumber MaxSysExSize { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[BindAs (typeof (int))]
 		[Export ("maxPropertyRequests")]
 		NSNumber MaxPropertyRequests { get; }
 
 		[Internal]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("midiDestination")]
 		MidiObjectRef _MidiDestination { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("profileSpecificDataHandler", ArgumentSemantic.Copy)]
 		MidiCIProfileSpecificDataHandler ProfileSpecificDataHandler { get; set; }
 	}
 
 	[iOS (14, 0), NoTV]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "MIDICIDeviceInfo")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
@@ -779,7 +755,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), NoTV]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "MIDICIDiscoveredNode")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
@@ -810,7 +785,6 @@ namespace CoreMidi {
 	delegate void MidiCIDiscoveryResponseDelegate (MidiCIDiscoveredNode [] discoveredNodes);
 
 	[iOS (14, 0), NoTV]
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "MIDICIDiscoveryManager")]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
@@ -828,7 +802,6 @@ namespace CoreMidi {
 	interface IMidiCIProfileResponderDelegate { }
 
 	[iOS (14, 0), NoTV]
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "MIDICIProfileResponderDelegate")]
 	interface MidiCIProfileResponderDelegate {
@@ -848,7 +821,6 @@ namespace CoreMidi {
 	}
 
 	[iOS (14, 0), NoTV]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Name = "MIDICIResponder")]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.iOS, 18, 0, message: "No longer supported.")]
@@ -1085,11 +1057,11 @@ namespace CoreMidi {
 		[Field ("kMIDIPropertyProtocolID")]
 		ProtocolId,
 
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), NoTV]
 		[Field ("kMIDIPropertyUMPActiveGroupBitmap")]
 		UmpActiveGroupBitmap,
 
-		[iOS (17, 0), MacCatalyst (17, 0), NoTV]
+		[iOS (17, 0), NoTV]
 		[Field ("kMIDIPropertyUMPCanTransmitGroupless")]
 		UmpCanTransmitGroupless,
 

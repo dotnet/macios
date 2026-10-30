@@ -78,7 +78,6 @@ using NSBezierPath = global::UIKit.UIBezierPath;
 
 namespace SceneKit {
 	/// <summary>Callback used to reflect progress during execution of <see cref="SceneKit.SCNSceneSource.SceneFromOptions(SceneKit.SCNSceneLoadingOptions,SceneKit.SCNSceneSourceStatusHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNSceneSourceStatusHandler (float /* float, not CGFloat */ totalProgress, SCNSceneSourceStatus status, [NullAllowed] NSError error, ref bool stopLoading);
 
 	delegate void SCNAnimationDidStartHandler (SCNAnimation animation, ISCNAnimatable receiver);
@@ -90,7 +89,6 @@ namespace SceneKit {
 	/// <summary>Allows animations to be applied.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAnimatable_Protocol/index.html">Apple documentation for <c>SCNAnimatable</c></related>
-	[MacCatalyst (13, 1)]
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimatable {
@@ -112,12 +110,10 @@ namespace SceneKit {
 		///   </example>
 		/// </remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("addAnimation:forKey:")]
 		void AddAnimation (ISCNAnimationProtocol scnAnimation, [NullAllowed] string key);
 
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("addAnimationPlayer:forKey:")]
 		void AddAnimation (SCNAnimationPlayer player, [NullAllowed] NSString key);
 
@@ -128,7 +124,7 @@ namespace SceneKit {
 		void RemoveAllAnimations ();
 
 		[Abstract]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("removeAllAnimationsWithBlendOutDuration:")]
 		void RemoveAllAnimationsWithBlendOutDuration (nfloat duration);
 
@@ -148,7 +144,6 @@ namespace SceneKit {
 
 		[Abstract]
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("animationPlayerForKey:")]
 		SCNAnimationPlayer GetAnimationPlayer (NSString key);
 
@@ -160,7 +155,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'GetAnimationPlayer' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'GetAnimationPlayer' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetAnimationPlayer' instead.")]
 		[Export ("animationForKey:")]
 		[return: NullAllowed]
@@ -173,7 +167,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Export ("pauseAnimationForKey:")]
 		void PauseAnimation (NSString key);
@@ -185,7 +178,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Export ("resumeAnimationForKey:")]
 		void ResumeAnimation (NSString key);
@@ -198,7 +190,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SCNAnimationPlayer.Paused' instead.")]
 		[Export ("isAnimationForKeyPaused:")]
 		bool IsAnimationPaused (NSString key);
@@ -211,7 +202,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RemoveAnimationUsingBlendOutDuration' instead.")]
 		[Export ("removeAnimationForKey:fadeOutDuration:")]
 		void RemoveAnimation (NSString key, nfloat duration);
@@ -221,7 +211,6 @@ namespace SceneKit {
 		/// <summary>Removes the specified animation, blending it out over the specified duration.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("removeAnimationForKey:blendOutDuration:")]
 		void RemoveAnimationUsingBlendOutDuration (NSString key, nfloat blendOutDuration);
 
@@ -233,7 +222,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'SCNAnimationPlayer.Speed' instead.")]
 		[Export ("setSpeed:forAnimationKey:")]
 		void SetSpeed (nfloat speed, NSString key);
@@ -242,7 +230,6 @@ namespace SceneKit {
 	/// <summary>Holds a <see cref="SceneKit.SCNAudioSource" /> or <see cref="AVFoundation.AVAudioNode" /> for use with positional audio.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAudioPlayer_Class/index.html">Apple documentation for <c>SCNAudioPlayer</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAudioPlayer {
@@ -280,7 +267,6 @@ namespace SceneKit {
 	/// <summary>A reusable audio source for positional audio in SceneKit scenes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAudioSource_Class/index.html">Apple documentation for <c>SCNAudioSource</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAudioSource : NSCopying, NSSecureCoding {
@@ -326,7 +312,6 @@ namespace SceneKit {
 	/// <summary>Functions that define a volume in 3D space.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNBoundingVolume_Protocol/index.html">Apple documentation for <c>SCNBoundingVolume</c></related>
-	[MacCatalyst (13, 1)]
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	interface SCNBoundingVolume {
@@ -343,7 +328,6 @@ namespace SceneKit {
 		/// <param name="max">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("setBoundingBoxMin:max:")]
 		void SetBoundingBox (ref SCNVector3 min, ref SCNVector3 max);
@@ -361,7 +345,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> whose faces are all rectangles.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNBox_Class/index.html">Apple documentation for <c>SCNBox</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNBox {
 		[Export ("width")]
@@ -402,7 +385,6 @@ namespace SceneKit {
 	/// <summary>Specifies a camera, with attributes such as field-of-view and depth-of-view.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCamera_Class/index.html">Apple documentation for <c>SCNCamera</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNCamera : SCNAnimatable, SCNTechniqueSupport, NSCopying, NSSecureCoding {
 		[NullAllowed] // by default this property is null
@@ -435,22 +417,18 @@ namespace SceneKit {
 		[Static, Export ("camera")]
 		SCNCamera Create ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("projectionTransform")]
 		SCNMatrix4 ProjectionTransform { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("automaticallyAdjustsZRange")]
 		bool AutomaticallyAdjustsZRange { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("orthographicScale")]
 		double OrthographicScale { get; set; }
 
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalDistance")]
 		nfloat FocalDistance { get; set; }
@@ -458,7 +436,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FocusDistance' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FocusDistance' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FocusDistance' instead.")]
 		[Export ("focalSize")]
 		nfloat FocalSize { get; set; }
@@ -466,7 +443,6 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead.")]
 		[Export ("focalBlurRadius")]
 		nfloat FocalBlurRadius { get; set; }
@@ -474,192 +450,146 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FStop' instead with FStop = SensorHeight / Aperture.")]
 		[Export ("aperture")]
 		nfloat Aperture { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("motionBlurIntensity")]
 		nfloat MotionBlurIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("wantsHDR")]
 		bool WantsHdr { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("exposureOffset")]
 		nfloat ExposureOffset { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("averageGray")]
 		nfloat AverageGray { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("whitePoint")]
 		nfloat WhitePoint { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("wantsExposureAdaptation")]
 		bool WantsExposureAdaptation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("exposureAdaptationBrighteningSpeedFactor")]
 		nfloat ExposureAdaptationBrighteningSpeedFactor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("exposureAdaptationDarkeningSpeedFactor")]
 		nfloat ExposureAdaptationDarkeningSpeedFactor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("minimumExposure")]
 		nfloat MinimumExposure { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("maximumExposure")]
 		nfloat MaximumExposure { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bloomThreshold")]
 		nfloat BloomThreshold { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bloomIntensity")]
 		nfloat BloomIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bloomBlurRadius")]
 		nfloat BloomBlurRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("vignettingPower")]
 		nfloat VignettingPower { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("vignettingIntensity")]
 		nfloat VignettingIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("colorFringeStrength")]
 		nfloat ColorFringeStrength { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("colorFringeIntensity")]
 		nfloat ColorFringeIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("saturation")]
 		nfloat Saturation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("contrast")]
 		nfloat Contrast { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("colorGrading")]
 		SCNMaterialProperty ColorGrading { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("categoryBitMask")]
 		nuint CategoryBitMask { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cameraWithMDLCamera:")]
 		SCNCamera FromModelCamera (MDLCamera modelCamera);
 
-		[MacCatalyst (13, 1)]
 		[Export ("fieldOfView")]
 		nfloat FieldOfView { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("projectionDirection", ArgumentSemantic.Assign)]
 		SCNCameraProjectionDirection ProjectionDirection { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("focalLength")]
 		nfloat FocalLength { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sensorHeight")]
 		nfloat SensorHeight { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("wantsDepthOfField")]
 		bool WantsDepthOfField { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("focusDistance")]
 		nfloat FocusDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("focalBlurSampleCount")]
 		nint FocalBlurSampleCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fStop")]
 		nfloat FStop { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("apertureBladeCount")]
 		nint ApertureBladeCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceAmbientOcclusionIntensity")]
 		nfloat ScreenSpaceAmbientOcclusionIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceAmbientOcclusionRadius")]
 		nfloat ScreenSpaceAmbientOcclusionRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceAmbientOcclusionBias")]
 		nfloat ScreenSpaceAmbientOcclusionBias { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceAmbientOcclusionDepthThreshold")]
 		nfloat ScreenSpaceAmbientOcclusionDepthThreshold { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceAmbientOcclusionNormalThreshold")]
 		nfloat ScreenSpaceAmbientOcclusionNormalThreshold { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("projectionTransformWithViewportSize:")]
 		SCNMatrix4 GetProjectionTransform (CGSize viewportSize);
 
-		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationCount")]
 		nint BloomIterationCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bloomIterationSpread")]
 		nfloat BloomIterationSpread { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("grainIntensity")]
 		nfloat GrainIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("grainScale")]
 		nfloat GrainScale { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("grainIsColored")]
 		bool GrainIsColored { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTemperature")]
 		nfloat WhiteBalanceTemperature { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("whiteBalanceTint")]
 		nfloat WhiteBalanceTint { get; set; }
 	}
 
 	interface ISCNCameraControlConfiguration { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SCNCameraControlConfiguration {
 		/// <summary>To be added.</summary>
@@ -707,7 +637,6 @@ namespace SceneKit {
 
 	interface ISCNCameraControllerDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model] // Figured I would keep the model for convenience, as all the methods here are optional
 	[BaseType (typeof (NSObject))]
@@ -725,7 +654,6 @@ namespace SceneKit {
 		void CameraInertiaDidEnd (SCNCameraController cameraController);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNCameraController {
 		[Export ("delegate", ArgumentSemantic.Assign)]
@@ -816,7 +744,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a cylinder with capped ends.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCapsule_Class/index.html">Apple documentation for <c>SCNCapsule</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNCapsule {
 		[Export ("capRadius")]
@@ -846,7 +773,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a circular frustum. Or, a party hat.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCone_Class/index.html">Apple documentation for <c>SCNCone</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNCone {
 		[Export ("topRadius")]
@@ -877,7 +803,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a right circular cylinder.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNCylinder_Class/index.html">Apple documentation for <c>SCNCylinder</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNCylinder {
 		[Export ("radius")]
@@ -904,7 +829,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is an infinite plane.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNFloor_Class/index.html">Apple documentation for <c>SCNFloor</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNFloor {
 		[Export ("reflectivity")]
@@ -916,19 +840,15 @@ namespace SceneKit {
 		[Export ("reflectionFalloffEnd")]
 		nfloat ReflectionFalloffEnd { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("reflectionCategoryBitMask")]
 		nuint ReflectionCategoryBitMask { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("width")]
 		nfloat Width { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("length")]
 		nfloat Length { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("reflectionResolutionScaleFactor")]
 		nfloat ReflectionResolutionScaleFactor { get; set; }
 
@@ -937,7 +857,6 @@ namespace SceneKit {
 	}
 
 	/// <include file="../docs/api/SceneKit/SCNGeometry.xml" path="/Documentation/Docs[@DocId='T:SceneKit.SCNGeometry']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNGeometry : SCNAnimatable, SCNBoundingVolume, SCNShadable, NSCopying, NSSecureCoding {
@@ -951,11 +870,9 @@ namespace SceneKit {
 		[NullAllowed]
 		SCNMaterial FirstMaterial { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("geometryElements")]
 		SCNGeometryElement [] GeometryElements { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("geometrySources")]
 		SCNGeometrySource [] GeometrySources { get; }
 
@@ -1006,39 +923,31 @@ namespace SceneKit {
 		[Export ("geometryElementAtIndex:")]
 		SCNGeometryElement GetGeometryElement (nint elementIndex);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("levelsOfDetail", ArgumentSemantic.Copy)]
 		SCNLevelOfDetail [] LevelsOfDetail { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("geometry")]
 		SCNGeometry Create ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("subdivisionLevel")]
 		nuint SubdivisionLevel { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("edgeCreasesElement", ArgumentSemantic.Retain)]
 		SCNGeometryElement EdgeCreasesElement { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("edgeCreasesSource", ArgumentSemantic.Retain)]
 		SCNGeometrySource EdgeCreasesSource { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("wantsAdaptiveSubdivision")]
 		bool WantsAdaptiveSubdivision { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryWithMDLMesh:")]
 		SCNGeometry FromMesh (MDLMesh mesh);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("tessellator", ArgumentSemantic.Retain)]
 		SCNGeometryTessellator Tessellator { get; set; }
 
@@ -1049,7 +958,6 @@ namespace SceneKit {
 	}
 
 	/// <include file="../docs/api/SceneKit/SCNGeometrySource.xml" path="/Documentation/Docs[@DocId='T:SceneKit.SCNGeometrySource']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNGeometrySource : NSSecureCoding {
 		[Export ("data")]
@@ -1112,14 +1020,12 @@ namespace SceneKit {
 		/// <summary>Factory method to create a new <see cref="SceneKit.SCNGeometrySource" /> from a data buffer.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:")]
 		SCNGeometrySource FromMetalBuffer (IMTLBuffer mtlBuffer, MTLVertexFormat vertexFormat, NSString geometrySourceSemantic, nint vertexCount, nint offset, nint stride);
 	}
 
 	/// <summary>Enumerates vertex mode attributes.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNGeometrySourceSemantic {
 		/// <summary>Represents the value associated with the constant SCNGeometrySourceSemanticVertex</summary>
@@ -1153,7 +1059,6 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticTangent")]
 		NSString Tangent { get; }
 
@@ -1161,7 +1066,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticVertexCrease")]
 		NSString VertexCrease { get; }
 
@@ -1169,7 +1073,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticEdgeCrease")]
 		NSString EdgeCrease { get; }
 
@@ -1177,7 +1080,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneWeights")]
 		NSString BoneWeights { get; }
 
@@ -1185,7 +1087,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNGeometrySourceSemanticBoneIndices")]
 		NSString BoneIndices { get; }
 	}
@@ -1193,7 +1094,6 @@ namespace SceneKit {
 	/// <summary>Combines information about vertices and a drawing primitive. Maps to a single drawing command sent to the GPU.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNGeometryElement_Class/index.html">Apple documentation for <c>SCNGeometryElement</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNGeometryElement : NSSecureCoding {
 		[Export ("data")]
@@ -1227,29 +1127,23 @@ namespace SceneKit {
 		[Export ("geometryElementWithData:primitiveType:primitiveCount:indicesChannelCount:interleavedIndicesChannels:bytesPerIndex:")]
 		SCNGeometryElement FromData ([NullAllowed] NSData data, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint indicesChannelCount, bool interleavedIndicesChannels, nint bytesPerIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("primitiveRange", ArgumentSemantic.Assign)]
 		NSRange PrimitiveRange { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("pointSize")]
 		nfloat PointSize { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("minimumPointScreenSpaceRadius")]
 		nfloat MinimumPointScreenSpaceRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("maximumPointScreenSpaceRadius")]
 		nfloat MaximumPointScreenSpaceRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("geometryElementWithMDLSubmesh:")]
 		SCNGeometryElement FromSubmesh (MDLSubmesh submesh);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("geometryElementWithBuffer:primitiveType:primitiveCount:bytesPerIndex:")]
 		SCNGeometryElement FromBuffer (IMTLBuffer buffer, SCNGeometryPrimitiveType primitiveType, nint primitiveCount, nint bytesPerIndex);
@@ -1268,7 +1162,6 @@ namespace SceneKit {
 		nint IndicesChannelCount { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNGeometryTessellator : NSCopying, NSSecureCoding {
@@ -1304,7 +1197,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Constants for use with the <c>options</c> argument in <see cref="SceneKit.SCNNode.HitTest(SceneKit.SCNVector3,SceneKit.SCNVector3,SceneKit.SCNHitTestOptions)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNHitTest {
 		/// <summary>Represents the value associated with the constant SCNHitTestFirstFoundOnlyKey</summary>
@@ -1360,25 +1252,21 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestIgnoreHiddenNodesKey")]
 		NSString IgnoreHiddenNodesKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionCategoryBitMask")]
 		NSString OptionCategoryBitMaskKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionSearchMode")]
 		NSString SearchModeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("SCNHitTestOptionIgnoreLightArea")]
 		NSString IgnoreLightAreaKey { get; }
 	}
@@ -1386,7 +1274,6 @@ namespace SceneKit {
 	/// <summary>Information about the SCNNode (if any) located at a specific point or along a ray.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNHitTestResult_Class/index.html">Apple documentation for <c>SCNHitTestResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	// quote: The SCNHitTestResult class is exposed as the return object from the hitTest:options: method, as an array of SCNHitTestResult objects.
 	[DisableDefaultCtor] // crash when calling description
@@ -1412,7 +1299,6 @@ namespace SceneKit {
 		[Export ("modelTransform")]
 		SCNMatrix4 ModelTransform { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("boneNode")]
 		[NullAllowed]
 		SCNNode BoneNode { get; }
@@ -1442,7 +1328,6 @@ namespace SceneKit {
 	/// <summary>A light source, used for all SCNLightTypes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNLight_Class/index.html">Apple documentation for <c>SCNLight</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNLight : SCNAnimatable, SCNTechniqueSupport, NSCopying, NSSecureCoding {
 		[Export ("type", ArgumentSemantic.Copy)]
@@ -1457,11 +1342,9 @@ namespace SceneKit {
 		[Wrap ("WeakColor")]
 		NSColor Color { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("temperature")]
 		nfloat Temperature { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("intensity")]
 		nfloat Intensity { get; set; }
 
@@ -1481,7 +1364,6 @@ namespace SceneKit {
 		[Wrap ("WeakShadowColor")]
 		NSColor ShadowColor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowBias")]
 		nfloat ShadowBias { get; set; }
 
@@ -1506,105 +1388,80 @@ namespace SceneKit {
 		[Export ("setAttribute:forKey:")]
 		void SetAttribute ([NullAllowed] NSObject value, NSString attribuetKey);
 
-		[MacCatalyst (13, 1)]
 		[Export ("gobo")]
 		[NullAllowed]
 		SCNMaterialProperty Gobo { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("IESProfileURL", ArgumentSemantic.Retain)]
 		NSUrl IesProfileUrl { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowMapSize")]
 		CGSize ShadowMapSize { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowSampleCount")]
 		nuint ShadowSampleCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowMode")]
 		SCNShadowMode ShadowMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("attenuationStartDistance")]
 		nfloat AttenuationStartDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("attenuationEndDistance")]
 		nfloat AttenuationEndDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("attenuationFalloffExponent")]
 		nfloat AttenuationFalloffExponent { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("spotInnerAngle")]
 		nfloat SpotInnerAngle { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("spotOuterAngle")]
 		nfloat SpotOuterAngle { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("orthographicScale")]
 		nfloat OrthographicScale { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("zNear")]
 		nfloat ZNear { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("zFar")]
 		nfloat ZFar { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("categoryBitMask")]
 		nuint CategoryBitMask { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("automaticallyAdjustsShadowProjection")]
 		bool AutomaticallyAdjustsShadowProjection { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("maximumShadowDistance")]
 		nfloat MaximumShadowDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("forcesBackFaceCasters")]
 		bool ForcesBackFaceCasters { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sampleDistributedShadowMaps")]
 		bool SampleDistributedShadowMaps { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowCascadeCount")]
 		nuint ShadowCascadeCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("shadowCascadeSplittingFactor")]
 		nfloat ShadowCascadeSplittingFactor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sphericalHarmonicsCoefficients", ArgumentSemantic.Copy)]
 		NSData SphericalHarmonicsCoefficients { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("lightWithMDLLight:")]
 		SCNLight FromModelLight (MDLLight mdllight);
 
-		[MacCatalyst (13, 1)]
 		[Export ("probeType", ArgumentSemantic.Assign)]
 		SCNLightProbeType ProbeType { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("probeUpdateType", ArgumentSemantic.Assign)]
 		SCNLightProbeUpdateType ProbeUpdateType { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("probeExtents", ArgumentSemantic.Assign)]
 		Vector3 ProbeExtents {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1613,7 +1470,6 @@ namespace SceneKit {
 			set;
 		}
 
-		[MacCatalyst (13, 1)]
 		[Export ("probeOffset", ArgumentSemantic.Assign)]
 		Vector3 ProbeOffset {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1622,11 +1478,9 @@ namespace SceneKit {
 			set;
 		}
 
-		[MacCatalyst (13, 1)]
 		[Export ("parallaxCorrectionEnabled")]
 		bool ParallaxCorrectionEnabled { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("parallaxExtentsFactor", ArgumentSemantic.Assign)]
 		Vector3 ParallaxExtentsFactor {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1635,7 +1489,6 @@ namespace SceneKit {
 			set;
 		}
 
-		[MacCatalyst (13, 1)]
 		[Export ("parallaxCenterOffset", ArgumentSemantic.Assign)]
 		Vector3 ParallaxCenterOffset {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1644,15 +1497,12 @@ namespace SceneKit {
 			set;
 		}
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("probeEnvironment")]
 		SCNMaterialProperty ProbeEnvironment { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("areaType", ArgumentSemantic.Assign)]
 		SCNLightAreaType AreaType { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("areaExtents", ArgumentSemantic.Assign)]
 		Vector3 AreaExtents {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -1661,21 +1511,17 @@ namespace SceneKit {
 			set;
 		}
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("areaPolygonVertices", ArgumentSemantic.Copy)]
 		NSValue [] AreaPolygonVertices { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("drawsArea")]
 		bool DrawsArea { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("doubleSided")]
 		bool DoubleSided { get; set; }
 	}
 
 	/// <summary>Enumerates the types of <see cref="SceneKit.SCNLight" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightType {
 		/// <summary>Represents the value associated with the constant SCNLightTypeAmbient</summary>
@@ -1709,18 +1555,15 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeIES")]
 		NSString Ies { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeProbe")]
 		NSString Probe { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("SCNLightTypeArea")]
 		NSString Area { get; }
 	}
@@ -1775,7 +1618,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Constants for use with the <see cref="SCNMaterial.LightingModelName" /> property, which defines the way lights and materials combine to produce a particular rendered color.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNLightingModel {
 		/// <summary>Represents the value associated with the constant SCNLightingModelPhong</summary>
@@ -1809,11 +1651,9 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelPhysicallyBased")]
 		NSString PhysicallyBased { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("SCNLightingModelShadowOnly")]
 		NSString ShadowOnly { get; }
 	}
@@ -1821,7 +1661,6 @@ namespace SceneKit {
 	/// <summary>Specifies the lighting and shading characteristics of the surface of an SCNGeometry.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNMaterial_Class/index.html">Apple documentation for <c>SCNMaterial</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNMaterial : SCNAnimatable, SCNShadable, NSCopying, NSSecureCoding {
 		[NullAllowed] // by default this property is null
@@ -1888,60 +1727,46 @@ namespace SceneKit {
 		[Static, Export ("material")]
 		SCNMaterial Create ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("readsFromDepthBuffer")]
 		bool ReadsFromDepthBuffer { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fresnelExponent")]
 		nfloat FresnelExponent { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("blendMode", ArgumentSemantic.Assign)]
 		SCNBlendMode BlendMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("ambientOcclusion")]
 		SCNMaterialProperty AmbientOcclusion { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("selfIllumination")]
 		SCNMaterialProperty SelfIllumination { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("metalness")]
 		SCNMaterialProperty Metalness { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("roughness")]
 		SCNMaterialProperty Roughness { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("materialWithMDLMaterial:")]
 		SCNMaterial FromMaterial (MDLMaterial material);
 
-		[MacCatalyst (13, 1)]
 		[Export ("displacement")]
 		SCNMaterialProperty Displacement { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fillMode", ArgumentSemantic.Assign)]
 		SCNFillMode FillMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("colorBufferWriteMask", ArgumentSemantic.Assign)]
 		SCNColorMask ColorBufferWriteMask { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("clearCoat")]
 		SCNMaterialProperty ClearCoat { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("clearCoatRoughness")]
 		SCNMaterialProperty ClearCoatRoughness { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("clearCoatNormal")]
 		SCNMaterialProperty ClearCoatNormal { get; }
 	}
@@ -1949,7 +1774,6 @@ namespace SceneKit {
 	/// <summary>Configures the various properties (such as color and texture) of a <see cref="SceneKit.SCNMaterial" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNMaterialProperty_Class/index.html">Apple documentation for <c>SCNMaterialProperty</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // runtime -> [SCNKit ERROR] Do not instantiate SCNMaterialProperty objects directly
 	interface SCNMaterialProperty : SCNAnimatable, NSSecureCoding {
@@ -2002,7 +1826,6 @@ namespace SceneKit {
 		/// <summary>Gets or sets the material property's animation layer.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
 		[NullAllowed]
 		CALayer ContentLayer { get; set; }
@@ -2042,43 +1865,38 @@ namespace SceneKit {
 		[NullAllowed]
 		NSImage [] ContentImageCube { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("intensity")]
 		nfloat Intensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("maxAnisotropy")]
 		nfloat MaxAnisotropy { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("textureComponents", ArgumentSemantic.Assign)]
 		SCNColorMask TextureComponents { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("materialPropertyWithContents:")]
 		SCNMaterialProperty Create (NSObject contents);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithURL:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSUrl url, out NSError error);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentContentsWithData:error:")]
 		NSObject GetPrecomputedLightingEnvironmentContents (NSData url, out NSError error);
 
 		[Static]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[return: NullAllowed]
 		[Export ("precomputedLightingEnvironmentDataForContents:device:error:")]
 		NSData GetPrecomputedLightingEnvironmentData (NSObject contents, [NullAllowed] IMTLDevice device, out NSError error);
 	}
 
 	/// <summary>Defines the <see cref="SceneKit.SCNProgramSemanticOptions.MappingChannel" /> for use with <see cref="SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNProgram")]
 	interface SCNProgramSemanticOptions {
 		/// <summary>To be added.</summary>
@@ -2096,7 +1914,6 @@ namespace SceneKit {
 	/// 	Hit testing uses two 3D vectors in the case of <see cref="SceneKit.SCNNode" /> and a 2D point in the case of the <see cref="SceneKit.SCNSceneRenderer" />.
 	///       </para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNHitTest")]
 	interface SCNHitTestOptions {
 		/// <summary>Controls whether only the first hit match is returned.   Caveat: the first match returned might not be the nearest object.</summary>
@@ -2163,12 +1980,10 @@ namespace SceneKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		SCNHitTestSearchMode SearchMode { get; set; }
-		[MacCatalyst (13, 1)]
 		bool IgnoreLightArea { get; set; }
 	}
 
 	/// <summary>Options for scene loading.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNSceneSourceLoading")]
 	interface SCNSceneLoadingOptions {
 		/// <summary>To be added.</summary>
@@ -2203,7 +2018,6 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("SCNSceneSourceLoading.OptionPreserveOriginalTopology")]
 		bool PreserveOriginalTopology { get; set; }
 
@@ -2212,13 +2026,11 @@ namespace SceneKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		float ConvertUnitsToMeters { get; set; } /* 'floating value encapsulated in a NSNumber' probably a float since it's a graphics framework */
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		bool ConvertToYUp { get; set; }
 
 		[Internal, Export ("SCNSceneSourceLoading.AnimationImportPolicyKey")]
@@ -2228,16 +2040,13 @@ namespace SceneKit {
 	/// <param name="node">The current <see cref="SceneKit.SCNNode" />.</param>
 	///     <param name="stop">An <c>out</c> parameter that, when set to true, stops the enumeration.</param>
 	///     <summary>Delegate for use with <see cref="SCNNode.FindNodes(SceneKit.SCNNodePredicate)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate bool SCNNodePredicate (SCNNode node, out bool stop);
 
-	[MacCatalyst (13, 1)]
 	delegate void SCNNodeHandler (SCNNode node, out bool stop);
 
 	/// <summary>A node in the scene graph.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNNode_Class/index.html">Apple documentation for <c>SCNNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNNode : SCNAnimatable, SCNBoundingVolume, SCNActionable, NSCopying, NSSecureCoding
 #if (IOS || TVOS) && !XAMCORE_5_0 // Conformance Removed in Xcode 16.1
@@ -2250,7 +2059,6 @@ namespace SceneKit {
 		[Export ("position")]
 		SCNVector3 Position { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldPosition", ArgumentSemantic.Assign)]
 		SCNVector3 WorldPosition { get; set; }
 
@@ -2265,7 +2073,7 @@ namespace SceneKit {
 
 		[Export ("worldTransform")]
 		SCNMatrix4 WorldTransform {
-			get; [MacCatalyst (13, 1)]
+			get; 
 			set;
 		}
 
@@ -2304,7 +2112,6 @@ namespace SceneKit {
 		[Export ("name", ArgumentSemantic.Copy)]
 		string Name { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rendererDelegate", ArgumentSemantic.Assign), NullAllowed]
 		NSObject WeakRendererDelegate { get; set; }
 
@@ -2314,7 +2121,6 @@ namespace SceneKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("WeakRendererDelegate")]
 		ISCNNodeRendererDelegate RendererDelegate { get; set; }
 
@@ -2354,63 +2160,49 @@ namespace SceneKit {
 		[Export ("clone")]
 		SCNNode Clone ();
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("skinner", ArgumentSemantic.Retain)]
 		SCNSkinner Skinner { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("morpher", ArgumentSemantic.Retain)]
 		SCNMorpher Morpher { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldOrientation", ArgumentSemantic.Assign)]
 		SCNQuaternion WorldOrientation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("orientation")]
 		SCNQuaternion Orientation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("constraints", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		SCNConstraint [] Constraints { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("filters", ArgumentSemantic.Copy)]
 		CIFilter [] Filters { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("flattenedClone")]
 		SCNNode FlattenedClone ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertPosition:toNode:")]
 		SCNVector3 ConvertPositionToNode (SCNVector3 position, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertPosition:fromNode:")]
 		SCNVector3 ConvertPositionFromNode (SCNVector3 position, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertVector:toNode:")]
 		SCNVector3 ConvertVectorToNode (SCNVector3 vector, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertVector:fromNode:")]
 		SCNVector3 ConvertVectorFromNode (SCNVector3 vector, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertTransform:fromNode:")]
 		SCNMatrix4 ConvertTransformFromNode (SCNMatrix4 transform, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("convertTransform:toNode:")]
 		SCNMatrix4 ConvertTransformToNode (SCNMatrix4 transform, [NullAllowed] SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("hitTestWithSegmentFromPoint:toPoint:options:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] NSDictionary options);
@@ -2427,23 +2219,18 @@ namespace SceneKit {
 		[Wrap ("HitTest (pointA, pointB, options.GetDictionary ())")]
 		SCNHitTestResult [] HitTest (SCNVector3 pointA, SCNVector3 pointB, [NullAllowed] SCNHitTestOptions options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("eulerAngles")]
 		SCNVector3 EulerAngles { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("castsShadow")]
 		bool CastsShadow { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("movabilityHint", ArgumentSemantic.Assign)]
 		SCNMovabilityHint MovabilityHint { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("physicsBody", ArgumentSemantic.Retain), NullAllowed]
 		SCNPhysicsBody PhysicsBody { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("physicsField", ArgumentSemantic.Retain)]
 		SCNPhysicsField PhysicsField { get; set; }
@@ -2451,42 +2238,33 @@ namespace SceneKit {
 		/// <summary>Gets or sets a Boolean value that controls whether animations on the node's contents are paused.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("categoryBitMask")]
 		nuint CategoryBitMask { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateChildNodesUsingBlock:")]
 		void EnumerateChildNodes (SCNNodeHandler handler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateHierarchyUsingBlock:")]
 		void EnumerateHierarchy (SCNNodeHandler handler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("focusBehavior", ArgumentSemantic.Assign)]
 		SCNNodeFocusBehavior FocusBehavior { get; set; }
 
 		#region SCNParticleSystemSupport (SCNNode) category
 
-		[MacCatalyst (13, 1)]
 		[Export ("particleSystems")]
 		[NullAllowed]
 		SCNParticleSystem [] ParticleSystems { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("addParticleSystem:")]
 		void AddParticleSystem (SCNParticleSystem system);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAllParticleSystems")]
 		void RemoveAllParticleSystems ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeParticleSystem:")]
 		void RemoveParticleSystem (SCNParticleSystem system);
 
@@ -2494,75 +2272,59 @@ namespace SceneKit {
 
 		#region SCNAudioSupport (SCNNode) category
 
-		[MacCatalyst (13, 1)]
 		[Export ("audioPlayers")]
 		SCNAudioPlayer [] AudioPlayers { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("addAudioPlayer:")]
 		void AddAudioPlayer (SCNAudioPlayer player);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAllAudioPlayers")]
 		void RemoveAllAudioPlayers ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAudioPlayer:")]
 		void RemoveAudioPlayer (SCNAudioPlayer player);
 
 		#endregion
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithMDLObject:")]
 		SCNNode FromModelObject (MDLObject mdlObject);
 
 		// From SCNNode (Transforms) Category
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localUp")]
 		SCNVector3 LocalUp { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localRight")]
 		SCNVector3 LocalRight { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localFront")]
 		SCNVector3 LocalFront { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldUp")]
 		SCNVector3 WorldUp { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldRight")]
 		SCNVector3 WorldRight { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldFront")]
 		SCNVector3 WorldFront { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("lookAt:")]
 		void Look (SCNVector3 worldTarget);
 
-		[MacCatalyst (13, 1)]
 		[Export ("lookAt:up:localFront:")]
 		void Look (SCNVector3 worldTarget, SCNVector3 worldUp, SCNVector3 localFront);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localTranslateBy:")]
 		void LocalTranslate (SCNVector3 translation);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localRotateBy:")]
 		void LocalRotate (SCNQuaternion rotation);
 
-		[MacCatalyst (13, 1)]
 		[Export ("rotateBy:aroundTarget:")]
 		void Rotate (SCNQuaternion worldRotation, SCNVector3 worldTarget);
 
@@ -2830,7 +2592,6 @@ namespace SceneKit {
 	/// <summary>Interface defining delegate object functions for adding custom OpenGL drawing code.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNNodeRendererDelegate_Protocol/index.html">Apple documentation for <c>SCNNodeRendererDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNNodeRendererDelegate {
@@ -2849,7 +2610,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a rectangular single-sided finite plane.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPlane_Class/index.html">Apple documentation for <c>SCNPlane</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNPlane {
 		[Export ("width")]
@@ -2872,11 +2632,9 @@ namespace SceneKit {
 		[Static, Export ("planeWithWidth:height:")]
 		SCNPlane Create (nfloat width, nfloat height);
 
-		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("cornerSegmentCount")]
 		nint CornerSegmentCount { get; set; }
 	}
@@ -2886,7 +2644,6 @@ namespace SceneKit {
 	/// <summary>Performs custom rendering using shaders written in OpenGL Shading Language.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgram_Class/index.html">Apple documentation for <c>SCNProgram</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNProgram : NSCopying, NSSecureCoding {
 		[NullAllowed]
@@ -2897,17 +2654,14 @@ namespace SceneKit {
 		[Export ("fragmentShader", ArgumentSemantic.Copy)]
 		string FragmentShader { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("vertexFunctionName")]
 		string VertexFunctionName { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("fragmentFunctionName")]
 		string FragmentFunctionName { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfBufferNamed:frequency:usingBlock:")]
 		void HandleBinding (string name, SCNBufferFrequency frequency, SCNBufferBindingHandler handler);
 
@@ -2936,7 +2690,6 @@ namespace SceneKit {
 		///         <param name="options">To be added.</param>
 		///         <summary>Sets the specified semantic.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetSemantic (geometrySourceSemantic, symbol, options.GetDictionary ())")]
 		void SetSemantic (NSString geometrySourceSemantic, string symbol, SCNProgramSemanticOptions options);
 
@@ -2948,7 +2701,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNProgramMappingChannelKey")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NSString MappingChannelKey { get; }
@@ -2956,11 +2708,9 @@ namespace SceneKit {
 		/// <summary>Gets or sets a Boolean value that controls whether the program produces opaque renderings.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("opaque")]
 		bool Opaque { [Bind ("isOpaque")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("library", ArgumentSemantic.Retain)]
 		IMTLLibrary Library { get; set; }
@@ -2971,7 +2721,6 @@ namespace SceneKit {
 	/// <summary>Delegate object for SCNProgram objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNProgramDelegate_Protocol/index.html">Apple documentation for <c>SCNProgramDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model, Protocol]
 	interface SCNProgramDelegate {
@@ -3027,7 +2776,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a right rectangular pyramid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPyramid_Class/index.html">Apple documentation for <c>SCNPyramid</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNPyramid {
 		[Export ("width")]
@@ -3061,7 +2809,6 @@ namespace SceneKit {
 	/// <summary>Renders an SCNScene into an OpenGL context.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNRenderer_Class/index.html">Apple documentation for <c>SCNRenderer</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: -[SCNRenderer init]: unrecognized selector sent to instance 0x7ce85a30
 	interface SCNRenderer : SCNSceneRenderer, SCNTechniqueSupport {
@@ -3082,43 +2829,34 @@ namespace SceneKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		void Render ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:")]
 		void Render (double timeInSeconds);
 
-		[MacCatalyst (13, 1)]
 		[Export ("snapshotAtTime:withSize:antialiasingMode:")]
 		NSImage GetSnapshot (double time, CGSize size, SCNAntialiasingMode antialiasingMode);
 
-		[MacCatalyst (13, 1)]
 		[Export ("nextFrameTime")]
 		double NextFrameTimeInSeconds { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("rendererWithDevice:options:")]
 		SCNRenderer FromDevice ([NullAllowed] IMTLDevice device, [NullAllowed] NSDictionary options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("renderAtTime:viewport:commandBuffer:passDescriptor:")]
 		void Render (double timeInSeconds, CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
 
-		[MacCatalyst (13, 1)]
 		[Export ("renderWithViewport:commandBuffer:passDescriptor:")]
 		void Render (CGRect viewport, IMTLCommandBuffer commandBuffer, MTLRenderPassDescriptor renderPassDescriptor);
 
-		[MacCatalyst (13, 1)]
 		[Export ("updateProbes:atTime:")]
 		void Update (SCNNode [] lightProbes, double time);
 
-		[MacCatalyst (13, 1)]
 		[Export ("updateAtTime:")]
 		void Update (double time);
 
 	}
 
 	/// <summary>Defines keys for use with <see cref="SceneKit.SCNNodeRendererDelegate.Render(SceneKit.SCNNode,SceneKit.SCNRenderer,Foundation.NSDictionary)" /> and <see cref="SceneKit.SCNProgram.SetSemantic(Foundation.NSString,System.String,SceneKit.SCNProgramSemanticOptions)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNRenderingArguments {
 		/// <summary>Represents the value associated with the constant SCNModelTransform</summary>
@@ -3168,13 +2906,11 @@ namespace SceneKit {
 	///     <param name="error">An error that occurred.</param>
 	///     <param name="stop">Developers set this to true to cancel processing.</param>
 	///     <summary>Continuation handler that SceneKit repeatedly calls when exporting a scene.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNSceneExportProgressHandler (float /* float, not CGFloat */ totalProgress, [NullAllowed] NSError error, out bool stop);
 
 	/// <summary>The highest-level description of a 3D scene.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNScene_Class/index.html">Apple documentation for <c>SCNScene</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNScene :
 		GKSceneRootNodeType,
@@ -3220,38 +2956,30 @@ namespace SceneKit {
 		[Field ("SCNSceneExportDestinationURL")]
 		NSString ExportDestinationUrl { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("physicsWorld")]
 		SCNPhysicsWorld PhysicsWorld { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("background")]
 		SCNMaterialProperty Background { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("lightingEnvironment")]
 		SCNMaterialProperty LightingEnvironment { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fogStartDistance")]
 		nfloat FogStartDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fogEndDistance")]
 		nfloat FogEndDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fogDensityExponent")]
 		nfloat FogDensityExponent { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("fogColor", ArgumentSemantic.Retain)]
 		NSObject FogColor { get; set; }
 
 		/// <summary>Gets or sets a Boolean value that controls whether the scene is paused.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
 
@@ -3259,7 +2987,6 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNScene FromFile (string name);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("sceneNamed:inDirectory:options:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[return: NullAllowed]
@@ -3271,14 +2998,12 @@ namespace SceneKit {
 		///         <summary>Creates and returns a new SceneKit scene with the contents of the specified file in the main bundle for the application.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Wrap ("FromFile (name, directory, options.GetDictionary ())")]
 		[return: NullAllowed]
 		SCNScene FromFile (string name, string directory, SCNSceneLoadingOptions options);
 
 		// Keeping here the same name WriteToUrl for iOS and friends because it is how it was bound
 		// initialy for macOS and having it named diferently would hurt shared code
-		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:options:delegate:progressHandler:")]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		bool WriteToUrl (NSUrl url,
@@ -3293,26 +3018,21 @@ namespace SceneKit {
 		///         <summary>Writes the scene to a URL.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("WriteToUrl (url, options.GetDictionary (), handler, exportProgressHandler)")]
 		bool WriteToUrl (NSUrl url, SCNSceneLoadingOptions options, ISCNSceneExportDelegate handler, SCNSceneExportProgressHandler exportProgressHandler);
 
 		#region SCNParticleSystemSupport (SCNNode) category
 
-		[MacCatalyst (13, 1)]
 		[Export ("particleSystems")]
 		[NullAllowed]
 		SCNParticleSystem [] ParticleSystems { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("addParticleSystem:withTransform:")]
 		void AddParticleSystem (SCNParticleSystem system, SCNMatrix4 transform);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAllParticleSystems")]
 		void RemoveAllParticleSystems ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeParticleSystem:")]
 		void RemoveParticleSystem (SCNParticleSystem system);
 
@@ -3343,28 +3063,22 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneUpAxisAttributeKey")]
 		NSString UpAxisAttributeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("sceneWithMDLAsset:")]
 		SCNScene FromAsset (MDLAsset asset);
 
-		[MacCatalyst (13, 1)]
 		[Export ("wantsScreenSpaceReflection")]
 		bool WantsScreenSpaceReflection { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionSampleCount")]
 		nint ScreenSpaceReflectionSampleCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionMaximumDistance")]
 		nfloat ScreenSpaceReflectionMaximumDistance { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("screenSpaceReflectionStride")]
 		nfloat ScreenSpaceReflectionStride { get; set; }
 	}
@@ -3374,7 +3088,6 @@ namespace SceneKit {
 	/// <summary>Protocol that defines methods to handle exporting a scene to a file.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SceneKit/SCNSceneExportDelegate">Apple documentation for <c>SCNSceneExportDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneExportDelegate {
@@ -3396,7 +3109,6 @@ namespace SceneKit {
 	/// <summary>Reads scene-defining data from a file or NSData object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSceneSource_Class/index.html">Apple documentation for <c>SCNSceneSource</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNSceneSource {
@@ -3499,7 +3211,6 @@ namespace SceneKit {
 		[Export ("identifiersOfEntriesWithClass:")]
 		string [] GetIdentifiersOfEntries (Class entryClass);
 
-		[MacCatalyst (13, 1)]
 		[Export ("entriesPassingTest:")]
 		NSObject [] EntriesPassingTest (SCNSceneSourceFilter predicate);
 	}
@@ -3507,7 +3218,6 @@ namespace SceneKit {
 	delegate bool SCNSceneSourceFilter (NSObject entry, NSString identifier, ref bool stop);
 
 	/// <summary>Options for creating and loading SCNScene objects.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoading {
 		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetDirectoryURLsKey</summary>
@@ -3568,7 +3278,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertUnitsToMetersKey")]
 		NSString ConvertUnitsToMetersKey { get; }
 
@@ -3577,7 +3286,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceConvertToYUpKey")]
 		NSString ConvertToYUpKey { get; }
 
@@ -3585,7 +3293,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyKey")]
 		NSString AnimationImportPolicyKey { get; }
 
@@ -3593,7 +3300,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlay")]
 		NSString AnimationImportPolicyPlay { get; }
 
@@ -3601,7 +3307,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayRepeatedly")]
 		NSString AnimationImportPolicyPlayRepeatedly { get; }
 
@@ -3609,7 +3314,6 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyDoNotPlay")]
 		NSString AnimationImportPolicyDoNotPlay { get; }
 
@@ -3617,20 +3321,17 @@ namespace SceneKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase")]
 		NSString AnimationImportPolicyPlayUsingSceneTimeBase { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNSceneSourceLoadingOptionPreserveOriginalTopology")]
 		NSString OptionPreserveOriginalTopology { get; }
 	}
 
 	/// <summary>Enumerates error types that can occur while loading <see cref="SceneKit.SCNSceneSource" />s.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceLoadErrors {
 		/// <summary>Represents the value associated with the constant SCNConsistencyElementIDErrorKey</summary>
@@ -3663,7 +3364,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Metadata keys associated with a scene file. Used with <see cref="SceneKit.SCNSceneSource.GetProperty(Foundation.NSString)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNSceneSourceProperties {
 		/// <summary>Represents the value associated with the constant SCNSceneSourceAssetContributorsKey</summary>
@@ -3731,7 +3431,6 @@ namespace SceneKit {
 	/// <summary>Implementation class of the <see cref="SceneKit.ISCNSceneRenderer" /> interface.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSceneRenderer_Protocol/index.html">Apple documentation for <c>SCNSceneRenderer</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRenderer {
@@ -3825,7 +3524,6 @@ namespace SceneKit {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("showsStatistics")]
 		bool ShowsStatistics { get; set; }
 
@@ -3833,7 +3531,6 @@ namespace SceneKit {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("sceneTime")]
 		double SceneTimeInSeconds { get; set; }
 
@@ -3841,7 +3538,6 @@ namespace SceneKit {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("scene", ArgumentSemantic.Retain)]
 		SCNScene Scene { get; set; }
@@ -3854,7 +3550,6 @@ namespace SceneKit {
 		// [0]: https://developer.apple.com/documentation/scenekit/scnscenerenderer/1524051-overlayskscene
 		// [1]: https://github.com/dotnet/macios/issues/3392
 		[NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("overlaySKScene", ArgumentSemantic.Retain)]
 		SKScene OverlayScene { get; set; }
 
@@ -3864,7 +3559,6 @@ namespace SceneKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("isNodeInsideFrustum:withPointOfView:")]
 		bool IsNodeInsideFrustum (SCNNode node, SCNNode pointOfView);
 
@@ -3873,7 +3567,6 @@ namespace SceneKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("projectPoint:")]
 		SCNVector3 ProjectPoint (SCNVector3 point);
 
@@ -3882,7 +3575,6 @@ namespace SceneKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("unprojectPoint:")]
 		SCNVector3 UnprojectPoint (SCNVector3 point);
 
@@ -3895,7 +3587,6 @@ namespace SceneKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("prepareObject:shouldAbortBlock:")]
 		bool Prepare (NSObject obj, [NullAllowed] Func<bool> abortHandler);
 
@@ -3904,7 +3595,6 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="objects">The objects to prepare.</param>
 			<summary>Prepares the provided objects for rendering on a background thread.</summary>
@@ -3922,7 +3612,6 @@ namespace SceneKit {
 		/// <param name="pointOfView">The point of view to which to present the scene.</param>
 		/// <param name="completionHandler">A handler to run after the scene is presented.</param>
 		[Abstract] // this protocol existed before iOS 9 (or OSX 10.11) and we cannot add abstract members to it (breaking changes)
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="scene">The scene to present.</param>
 			<param name="transition">The transistion to use to present the scene.</param>
@@ -3939,101 +3628,85 @@ namespace SceneKit {
 
 		/// <summary>Returns the nodes that are contained in the frustrum that is defined by the provided node.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("nodesInsideFrustumWithPointOfView:")]
 		SCNNode [] GetNodesInsideFrustum (SCNNode pointOfView);
 
 		/// <summary>A value that controls which, if any, debug overlays to show in the rendered output.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("debugOptions", ArgumentSemantic.Assign)]
 		SCNDebugOptions DebugOptions { get; set; }
 
 		/// <summary>Returns the rendering API that is used to render the scene.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("renderingAPI")]
 		SCNRenderingApi RenderingApi { get; }
 
 		/// <summary>Returns the current command encoder that is used for rendering.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("currentRenderCommandEncoder")]
 		IMTLRenderCommandEncoder CurrentRenderCommandEncoder { get; }
 
 		/// <summary>Returns the metal device that is used for rendering.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("device")]
 		IMTLDevice Device { get; }
 
 		/// <summary>Returns the format for color pixels.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("colorPixelFormat")]
 		MTLPixelFormat ColorPixelFormat { get; }
 
 		/// <summary>Returns the format for depth pixels.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("depthPixelFormat")]
 		MTLPixelFormat DepthPixelFormat { get; }
 
 		/// <summary>Returns the format for stencil pixels.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("stencilPixelFormat")]
 		MTLPixelFormat StencilPixelFormat { get; }
 
 		/// <summary>Returns the command queue.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("commandQueue")]
 		IMTLCommandQueue CommandQueue { get; }
 
 		/// <summary>Returns the audio engine that is used to render sounds in the scene</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("audioEngine")]
 		AVAudioEngine AudioEngine { get; }
 
 		/// <summary>Returns the audio environment node for the scene.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("audioEnvironmentNode")]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		AVAudioEnvironmentNode AudioEnvironmentNode { get; }
 
 		/// <summary>The node that represents the position of the listener in the scene.</summary>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioListener", ArgumentSemantic.Retain)]
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		SCNNode AudioListener { get; set; }
 
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("temporalAntialiasingEnabled")]
 		bool TemporalAntialiasingEnabled { [Bind ("isTemporalAntialiasingEnabled")] get; set; }
 
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("currentViewport")]
 		CGRect CurrentViewport { get; }
 
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("usesReverseZ")]
 		bool UsesReverseZ { get; set; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Abstract]
 		[Export ("currentRenderPassDescriptor")]
 		MTLRenderPassDescriptor CurrentRenderPassDescriptor { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 #if XAMCORE_5_0
 		[Abstract]
 #endif
@@ -4046,7 +3719,6 @@ namespace SceneKit {
 	/// <summary>Delegate object for the SCNRenderer class, defines methods reflects rendering events.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSceneRendererDelegate_Protocol/index.html">Apple documentation for <c>SCNSceneRendererDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNSceneRendererDelegate {
@@ -4071,7 +3743,6 @@ namespace SceneKit {
 		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>Developers may override this method to perform processing prior to any actions, animations, or physics simulations.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("renderer:updateAtTime:")]
 		void Update (ISCNSceneRenderer renderer, double timeInSeconds);
 
@@ -4079,7 +3750,6 @@ namespace SceneKit {
 		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>Developers may override this method to react to the completion of animations.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyAnimationsAtTime:")]
 		void DidApplyAnimations (ISCNSceneRenderer renderer, double timeInSeconds);
 
@@ -4087,7 +3757,6 @@ namespace SceneKit {
 		/// <param name="timeInSeconds">To be added.</param>
 		/// <summary>This method is called shortly after physics have been simulated.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("renderer:didSimulatePhysicsAtTime:")]
 		void DidSimulatePhysics (ISCNSceneRenderer renderer, double timeInSeconds);
 
@@ -4095,7 +3764,6 @@ namespace SceneKit {
 		/// <param name="atTime">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("renderer:didApplyConstraintsAtTime:")]
 		void DidApplyConstraints (ISCNSceneRenderer renderer, double atTime);
 
@@ -4104,7 +3772,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a sphere.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSphere_Class/index.html">Apple documentation for <c>SCNSphere</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	[DisableDefaultCtor]
 	interface SCNSphere {
@@ -4132,7 +3799,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> based on a string, optionally extruded into three dimensions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNText_Class/index.html">Apple documentation for <c>SCNText</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	[DisableDefaultCtor]
 	interface SCNText {
@@ -4180,12 +3846,10 @@ namespace SceneKit {
 		[Export ("wrapped")]
 		bool Wrapped { [Bind ("isWrapped")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("chamferProfile", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSBezierPath ChamferProfile { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("flatness")]
 		nfloat Flatness { get; set; }
 	}
@@ -4193,7 +3857,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a ring-shaped solid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTorus_Class/index.html">Apple documentation for <c>SCNTorus</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	[DisableDefaultCtor]
 	interface SCNTorus {
@@ -4221,7 +3884,6 @@ namespace SceneKit {
 	/// <summary>Allows a set of modifications to be applied atomically.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTransaction_Class/index.html">Apple documentation for <c>SCNTransaction</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNTransaction {
 		[Static]
@@ -4267,7 +3929,6 @@ namespace SceneKit {
 		double AnimationDuration { get; set; }
 
 		[Static]
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("animationTimingFunction")]
 		CAMediaTimingFunction AnimationTimingFunction { get; set; }
@@ -4280,7 +3941,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> that is a cylinder with a circular hole along its central axis.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTube_Class/index.html">Apple documentation for <c>SCNTube</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	interface SCNTube {
 		[Export ("innerRadius")]
@@ -4308,7 +3968,6 @@ namespace SceneKit {
 		SCNTube Create (nfloat innerRadius, nfloat outerRadius, nfloat height);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static]
 	[Internal] // we'll make it public if there's a need for them (beside the strong dictionary we provide)
 	interface SCNRenderingOptionsKeys {
@@ -4325,7 +3984,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that defines <c>options</c> when instantiating a <see cref="SceneKit.SCNView" />.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNRenderingOptionsKeys")]
 	interface SCNRenderingOptions {
 		/// <summary>To be added.</summary>
@@ -4341,7 +3999,6 @@ namespace SceneKit {
 
 	/// <summary>A <see cref="NSView" /> that renders <see cref="SCNScene" />s.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNView_Class/index.html">Apple documentation for <c>SCNView</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSView))]
 	[DisableDefaultCtor]
 	interface SCNView : SCNSceneRenderer, SCNTechniqueSupport {
@@ -4387,7 +4044,6 @@ namespace SceneKit {
 		/// <param name="options">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("this (frame, options.GetDictionary ())")]
 		NativeHandle Constructor (CGRect frame, [NullAllowed] SCNRenderingOptions options);
 
@@ -4412,27 +4068,21 @@ namespace SceneKit {
 		[Export ("stop:")]
 		void Stop ([NullAllowed] NSObject sender);
 
-		[MacCatalyst (13, 1)]
 		[Export ("snapshot")]
 		NSImage Snapshot ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("preferredFramesPerSecond")]
 		nint PreferredFramesPerSecond { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("antialiasingMode")]
 		SCNAntialiasingMode AntialiasingMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("cameraControlConfiguration")]
 		ISCNCameraControlConfiguration CameraControlConfiguration { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("defaultCameraController")]
 		SCNCameraController DefaultCameraController { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rendersContinuously")]
 		bool RendersContinuously { get; set; }
 
@@ -4443,13 +4093,11 @@ namespace SceneKit {
 	}
 
 	/// <summary>Completion handler for use with <see cref="SceneKit.SCNAnimationEvent.Create(nfloat,SceneKit.SCNAnimationEventHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNAnimationEventHandler (AnimationType animation, NSObject animatedObject, bool playingBackward);
 
 	/// <summary>Performs a function at a specific time during an animation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAnimationEvent_Class/index.html">Apple documentation for <c>SCNAnimationEvent</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNAnimationEvent {
@@ -4465,7 +4113,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNGeometry" /> created from a 2D path, optionally extruded into three dimensions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNShape_Class/index.html">Apple documentation for <c>SCNShape</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNGeometry))]
 	partial interface SCNShape {
 		[NullAllowed] // by default this property is null
@@ -4497,7 +4144,6 @@ namespace SceneKit {
 	/// <summary>An animated transformation of an SCNGeometry into one or more target SCNGeometry objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNMorpher_Class/index.html">Apple documentation for <c>SCNMorpher</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNMorpher : SCNAnimatable, NSSecureCoding {
 
@@ -4507,11 +4153,9 @@ namespace SceneKit {
 		[Export ("calculationMode")]
 		SCNMorpherCalculationMode CalculationMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("weights", ArgumentSemantic.Retain)]
 		NSNumber [] Weights { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("unifiesNormals")]
 		bool UnifiesNormals { get; set; }
 
@@ -4526,7 +4170,6 @@ namespace SceneKit {
 		/// <param name="targetName">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setWeight:forTargetNamed:")]
 		void SetWeight (nfloat weight, string targetName);
 
@@ -4537,7 +4180,6 @@ namespace SceneKit {
 		[Export ("weightForTargetAtIndex:")]
 		nfloat GetWeight (nuint targetIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("weightForTargetNamed:")]
 		nfloat GetWeight (string targetName);
 	}
@@ -4545,7 +4187,6 @@ namespace SceneKit {
 	/// <summary>Accesses the scene graph in support of skeletal animation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNSkinner_Class/index.html">Apple documentation for <c>SCNSkinner</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNSkinner : NSSecureCoding {
@@ -4557,28 +4198,22 @@ namespace SceneKit {
 		[NullAllowed]
 		SCNGeometry BaseGeometry { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("baseGeometryBindTransform")]
 		SCNMatrix4 BaseGeometryBindTransform { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("boneInverseBindTransforms")]
 		[NullAllowed]
 		NSArray _BoneInverseBindTransforms { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("bones")]
 		SCNNode [] Bones { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("boneWeights")]
 		SCNGeometrySource BoneWeights { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("boneIndices")]
 		SCNGeometrySource BoneIndices { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Internal, Export ("skinnerWithBaseGeometry:bones:boneInverseBindTransforms:boneWeights:boneIndices:")]
 		SCNSkinner _Create ([NullAllowed] SCNGeometry baseGeometry, SCNNode [] bones, [NullAllowed] NSArray boneInverseBindTransforms,
 			SCNGeometrySource boneWeights, SCNGeometrySource boneIndices);
@@ -4587,26 +4222,22 @@ namespace SceneKit {
 	/// <summary>Automatically adjusts the transformation of a node.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNConstraint_Class/index.html">Apple documentation for <c>SCNConstraint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	[DisableDefaultCtor]
 	interface SCNConstraint : SCNAnimatable, NSCopying, NSSecureCoding {
-		[MacCatalyst (13, 1)]
 		[Export ("influenceFactor")]
 		nfloat InfluenceFactor { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("incremental")]
 		bool Incremental { [Bind ("isIncremental")] get; set; }
 	}
@@ -4614,7 +4245,6 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that applies inverse kinematics.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNIKConstraint_Class/index.html">Apple documentation for <c>SCNIKConstraint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	[DisableDefaultCtor]
 	interface SCNIKConstraint {
@@ -4638,7 +4268,6 @@ namespace SceneKit {
 		[Export ("maxAllowedRotationAngleForJoint:")]
 		nfloat GetMaxAllowedRotationAngle (SCNNode node);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithChainRootNode:")]
 		NativeHandle Constructor (SCNNode chainRootNode);
 
@@ -4647,13 +4276,12 @@ namespace SceneKit {
 	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that orients a node to point towards another node.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNLookAtConstraint_Class/index.html">Apple documentation for <c>SCNLookAtConstraint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	[DisableDefaultCtor]
 	interface SCNLookAtConstraint {
 		[Export ("target", ArgumentSemantic.Retain), NullAllowed]
 		SCNNode Target {
-			get; [MacCatalyst (13, 1)]
+			get; 
 			set;
 		}
 
@@ -4663,39 +4291,32 @@ namespace SceneKit {
 		[Static, Export ("lookAtConstraintWithTarget:")]
 		SCNLookAtConstraint Create ([NullAllowed] SCNNode target);
 
-		[MacCatalyst (13, 1)]
 		[Export ("targetOffset", ArgumentSemantic.Assign)]
 		SCNVector3 TargetOffset { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("localFront", ArgumentSemantic.Assign)]
 		SCNVector3 LocalFront { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("worldUp", ArgumentSemantic.Assign)]
 		SCNVector3 WorldUp { get; set; }
 	}
 
 	/// <summary>Delegate used in calls to <see cref="SceneKit.SCNTransformConstraint.Create(System.Boolean,SceneKit.SCNTransformConstraintHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate SCNMatrix4 SCNTransformConstraintHandler (SCNNode node, SCNMatrix4 transform);
 
 	/// <summary>An <see cref="SceneKit.SCNConstraint" /> that executes a function specifying a change in transformation (position, rotation, and scale) to a node or nodes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTransformConstraint_Class/index.html">Apple documentation for <c>SCNTransformConstraint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	[DisableDefaultCtor]
 	interface SCNTransformConstraint {
 		[Static, Export ("transformConstraintInWorldSpace:withBlock:")]
 		SCNTransformConstraint Create (bool inWorldSpace, SCNTransformConstraintHandler transformHandler);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("positionConstraintInWorldSpace:withBlock:")]
 		SCNTransformConstraint CreatePositionConstraint (bool inWorldSpace, Func<SCNNode, SCNVector3, SCNVector3> transformHandler);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("orientationConstraintInWorldSpace:withBlock:")]
 		SCNTransformConstraint CreateOrientationConstraint (bool inWorldSpace, Func<SCNNode, SCNQuaternion, SCNQuaternion> transformHandler);
@@ -4705,7 +4326,6 @@ namespace SceneKit {
 	/// <summary>Controls alternate geometries rendered at thresholds in either world-space or screen-space.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNLevelOfDetail_Class/index.html">Apple documentation for <c>SCNLevelOfDetail</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNLevelOfDetail : NSCopying, NSSecureCoding {
@@ -4743,7 +4363,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>A dictionary of shader snippets.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface _SCNShaderModifiers {
 		[Internal, Field ("SCNShaderModifierEntryPointGeometry")]
@@ -4763,7 +4382,6 @@ namespace SceneKit {
 	/// <summary>Allows actions to be applied.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNActionable_Protocol/index.html">Apple documentation for <c>SCNActionable</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNActionable {
@@ -4841,19 +4459,16 @@ namespace SceneKit {
 		void RemoveAllActions ();
 
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("actionKeys")]
 		string [] ActionKeys { get; }
 	}
 
 	/// <summary>Completion handler used with <see cref="SceneKit.SCNAction.CustomAction(System.Double,SceneKit.SCNActionNodeWithElapsedTimeHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNActionNodeWithElapsedTimeHandler (SCNNode node, nfloat elapsedTime);
 
 	/// <summary>Performs actions on a <see cref="SceneKit.SCNNode" />, including changes to appearance, geometry, animations, or arbitrary functions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNAction_Class/index.html">Apple documentation for <c>SCNAction</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNAction : NSCopying, NSSecureCoding {
 
@@ -5008,25 +4623,20 @@ namespace SceneKit {
 		[Static, Export ("customActionWithDuration:actionBlock:")]
 		SCNAction CustomAction (double seconds, SCNActionNodeWithElapsedTimeHandler handler);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("hide")]
 		SCNAction Hide ();
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("unhide")]
 		SCNAction Unhide ();
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("playAudioSource:waitForCompletion:")]
 		SCNAction PlayAudioSource (SCNAudioSource source, bool wait);
 	}
 
 	/// <summary>Completion handler used with <see cref="SceneKit.SCNShadable.HandleBinding(System.String,SceneKit.SCNBindingHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNBindingHandler (uint /* unsigned int */ programId, uint /* unsigned int */ location, [NullAllowed] SCNNode renderedNode, SCNRenderer renderer);
 
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> containing options for shaders.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("_SCNShaderModifiers")]
 	interface SCNShaderModifiers {
 		/// <summary>Represents the value associated with the constant SCNShaderModifierEntryPointGeometry</summary>
@@ -5056,12 +4666,10 @@ namespace SceneKit {
 	/// <summary>Implementation of <see cref="SceneKit.ISCNShadable" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNShadable_Protocol/index.html">Apple documentation for <c>SCNShadable</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNShadable {
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("shaderModifiers", ArgumentSemantic.Copy)]
 		NSDictionary WeakShaderModifiers { get; set; }
@@ -5072,18 +4680,15 @@ namespace SceneKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Wrap ("WeakShaderModifiers")]
 		SCNShaderModifiers ShaderModifiers { get; set; }
 
 		[iOS (15, 0), TV (15, 0)]
-		[MacCatalyst (15, 0)]
 		[NullAllowed] // by default this property is null
 		[Export ("minimumLanguageVersion", ArgumentSemantic.Retain)]
 		NSNumber MinimumLanguageVersion { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("program", ArgumentSemantic.Retain)]
 		SCNProgram Program { get; set; }
@@ -5092,7 +4697,6 @@ namespace SceneKit {
 		/// <param name="handler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
@@ -5100,7 +4704,6 @@ namespace SceneKit {
 		/// <param name="handler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("handleUnbindingOfSymbol:usingBlock:")]
 		void HandleUnbinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 	}
@@ -5108,7 +4711,6 @@ namespace SceneKit {
 	/// <summary>Provides additional drawing passes, each of which applies a shader.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTechnique_Class/index.html">Apple documentation for <c>SCNTechnique</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNTechnique : SCNAnimatable, NSCopying, NSSecureCoding {
@@ -5124,20 +4726,16 @@ namespace SceneKit {
 		[return: NullAllowed]
 		SCNTechnique Create (SCNTechnique [] techniques);
 
-		[MacCatalyst (13, 1)]
 		[Export ("handleBindingOfSymbol:usingBlock:")]
 		void HandleBinding (string symbol, [NullAllowed] SCNBindingHandler handler);
 
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("objectForKeyedSubscript:")]
 		[return: NullAllowed]
 		NSObject _GetObject (NSObject key);
 
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("setObject:forKeyedSubscript:")]
 		void _SetObject ([NullAllowed] NSObject obj, INSCopying key);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("library", ArgumentSemantic.Strong)]
 		IMTLLibrary Library { get; set; }
 	}
@@ -5145,7 +4743,6 @@ namespace SceneKit {
 	/// <summary>Implementation of <see cref="SceneKit.ISCNTechniqueSupport" /> that simply holds a reference to the <see cref="SceneKit.SCNTechnique" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNTechniqueSupport_Protocol/index.html">Apple documentation for <c>SCNTechniqueSupport</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNTechniqueSupport {
@@ -5153,14 +4750,12 @@ namespace SceneKit {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("technique", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		SCNTechnique Technique { get; set; }
 	}
 
 	/// <summary>Contains values that control searching, backface culling, and collision testing.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNPhysicsTestKeys {
 
@@ -5187,7 +4782,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Enumerates values that control which collision search results are returned.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNPhysicsTestSearchModeKeys {
 
@@ -5216,7 +4810,6 @@ namespace SceneKit {
 	/// <summary>Adds physics simulation to an SCNNode.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsBody_Class/index.html">Apple documentation for <c>SCNPhysicsBody</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsBody : NSCopying, NSSecureCoding {
@@ -5300,54 +4893,43 @@ namespace SceneKit {
 		[Export ("resetTransform")]
 		void ResetTransform ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("momentOfInertia", ArgumentSemantic.Assign)]
 		SCNVector3 MomentOfInertia { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("usesDefaultMomentOfInertia")]
 		bool UsesDefaultMomentOfInertia { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("contactTestBitMask", ArgumentSemantic.Assign)]
 		nuint ContactTestBitMask { get; set; }
 
 		/// <summary>Gets or sets a Boolean value that controls whether the physics body responds to gravitational fields.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("affectedByGravity")]
 		bool AffectedByGravity { [Bind ("isAffectedByGravity")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setResting:")]
 		void SetResting (bool resting);
 
-		[MacCatalyst (13, 1)]
 		[Export ("continuousCollisionDetectionThreshold")]
 		nfloat ContinuousCollisionDetectionThreshold { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("centerOfMassOffset", ArgumentSemantic.Assign)]
 		SCNVector3 CenterOfMassOffset { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("linearRestingThreshold")]
 		nfloat LinearRestingThreshold { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("angularRestingThreshold")]
 		nfloat AngularRestingThreshold { get; set; }
 	}
 
 	/// <summary>Delegate for the <see cref="SceneKit.SCNPhysicsField.CustomField(SceneKit.SCNFieldForceEvaluator)" /> method.</summary>
-	[MacCatalyst (13, 1)]
 	delegate SCNVector3 SCNFieldForceEvaluator (SCNVector3 position, SCNVector3 velocity, float /* float, not CGFloat */ mass, float /* float, not CGFloat */ charge, double timeInSeconds);
 
 	/// <summary>Applies forces to all SCNPhysicsBody objects in a given volume.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsField_Class/index.html">Apple documentation for <c>SCNPhysicsField</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsField : NSCopying, NSSecureCoding {
@@ -5433,7 +5015,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Valid options for use with <see cref="SceneKit.SCNPhysicsWorld.ContactTest" />.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("SCNPhysicsTestKeys")]
 	interface SCNPhysicsTest {
 		/// <summary>To be added.</summary>
@@ -5453,7 +5034,6 @@ namespace SceneKit {
 	/// <summary>A physics simulation that models collisions and other physics-related properties in an SCNScene.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsWorld_Class/index.html">Apple documentation for <c>SCNPhysicsWorld</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject),
 		Delegates = new [] { "WeakContactDelegate" },
 		Events = new [] { typeof (SCNPhysicsContactDelegate) }
@@ -5554,7 +5134,6 @@ namespace SceneKit {
 	/// <summary>A solid volume for a SCNPhysicsBody. Used in collision detection.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsShape_Class/index.html">Apple documentation for <c>SCNPhysicsShape</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsShape : NSCopying, NSSecureCoding {
@@ -5570,21 +5149,17 @@ namespace SceneKit {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		SCNPhysicsShape Create (SCNNode node, [NullAllowed] NSDictionary options);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("options"), Internal]
 		NSDictionary _Options { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sourceObject")]
 		NSObject SourceObject { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("transforms")]
 		NSValue [] Transforms { get; }
 	}
 
 	/// <summary>Defines valid keys for use with the <c>options</c> dictionary passed to <see cref="SCNPhysicsShape.Create(SCNGeometry,SCNPhysicsShapeOptions)" /> and <see cref="SCNPhysicsShape.Create(SCNNode,SCNPhysicsShapeOptions)" /> .</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsKeys {
@@ -5599,7 +5174,6 @@ namespace SceneKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNPhysicsShapeOptionCollisionMargin")]
 		NSString CollisionMargin { get; }
 
@@ -5619,7 +5193,6 @@ namespace SceneKit {
 	}
 
 	/// <summary>Geometrical type associated with <see cref="SceneKit.SCNPhysicsShape" />s.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
 	interface SCNPhysicsShapeOptionsTypes {
@@ -5649,7 +5222,6 @@ namespace SceneKit {
 	/// <summary>How two SCNPhysicsBody objects are in contact with each other.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsContact_Class/index.html">Apple documentation for <c>SCNPhysicsContact</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsContact {
@@ -5672,7 +5244,6 @@ namespace SceneKit {
 		[Export ("penetrationDistance")]
 		nfloat PenetrationDistance { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sweepTestFraction")]
 		nfloat SweepTestFraction { get; }
 	}
@@ -5682,7 +5253,6 @@ namespace SceneKit {
 	/// <summary>Delegate object functions responding to touches between <see cref="SceneKit.SCNPhysicsBody" /> objects..</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsContactDelegate_Protocol/index.html">Apple documentation for <c>SCNPhysicsContactDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNPhysicsContactDelegate {
@@ -5721,7 +5291,6 @@ namespace SceneKit {
 	/// <summary>Controls the behavior of one or more SCNPhysicsBody objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsBehavior/index.html">Apple documentation for <c>SCNPhysicsBehavior</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -5732,7 +5301,6 @@ namespace SceneKit {
 	/// <summary>An SCNPhysicsBehavior that attaches two SCNPhysicsBody objects along a single axis.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsHingeJoint_Class/index.html">Apple documentation for <c>SCNPhysicsHingeJoint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNPhysicsBehavior))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsHingeJoint {
@@ -5767,7 +5335,6 @@ namespace SceneKit {
 	/// <summary>An SCNPhysicsBehavior that allows two SCNPhysicsBody objects to pivot around each other.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsBallSocketJoint_Class/index.html">Apple documentation for <c>SCNPhysicsBallSocketJoint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNPhysicsBehavior))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsBallSocketJoint {
@@ -5795,7 +5362,6 @@ namespace SceneKit {
 	/// <summary>An SCNPhysicsBehavior that connects two SCNPhysicsBody objects, allowing them to slide and rotate around their connecting points.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsSliderJoint_Class/index.html">Apple documentation for <c>SCNPhysicsSliderJoint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNPhysicsBehavior))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsSliderJoint {
@@ -5854,7 +5420,6 @@ namespace SceneKit {
 	/// <summary>An SCNPhysicsBehavior that simulates the physics of a wheeled vehicle.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsVehicle_Class/index.html">Apple documentation for <c>SCNPhysicsVehicle</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNPhysicsBehavior))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsVehicle {
@@ -5896,7 +5461,6 @@ namespace SceneKit {
 	/// <summary>The appearance and physical characteristics of a wheel on a SCNPhysicsVehicle.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNPhysicsVehicleWheel_Class/index.html">Apple documentation for <c>SCNPhysicsVehicleWheel</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNPhysicsVehicleWheel : NSCopying, NSSecureCoding {
@@ -5944,7 +5508,6 @@ namespace SceneKit {
 	/// <summary>Emits small sprites whose behaviors are developer-specified.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNParticleSystem_Class/index.html">Apple documentation for <c>SCNParticleSystem</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNParticleSystem : NSCopying, NSSecureCoding, SCNAnimatable {
@@ -6148,7 +5711,6 @@ namespace SceneKit {
 		[Export ("fresnelExponent")]
 		nfloat FresnelExponent { get; set; }
 
-		[Introduced (PlatformName.MacCatalyst, 15, 0)]
 		[TV (15, 0), iOS (15, 0)]
 		[Export ("writesToDepthBuffer")]
 		bool WritesToDepthBuffer { get; set; }
@@ -6171,156 +5733,131 @@ namespace SceneKit {
 		[Export ("removeAllModifiers")]
 		void RemoveAllModifiers ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("orientationDirection", ArgumentSemantic.Assign)]
 		SCNVector3 OrientationDirection { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("particleIntensity")]
 		nfloat ParticleIntensity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("particleIntensityVariation")]
 		nfloat ParticleIntensityVariation { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface SCNParticleProperty {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyPosition")]
 		NSString Position { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngle")]
 		NSString Angle { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyRotationAxis")]
 		NSString RotationAxis { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyVelocity")]
 		NSString Velocity { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyAngularVelocity")]
 		NSString AngularVelocity { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyLife")]
 		NSString Life { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyColor")]
 		NSString Color { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyOpacity")]
 		NSString Opacity { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertySize")]
 		NSString Size { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrame")]
 		NSString Frame { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFrameRate")]
 		NSString FrameRate { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyBounce")]
 		NSString Bounce { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyCharge")]
 		NSString Charge { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyFriction")]
 		NSString Friction { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactPoint")]
 		NSString ContactPoint { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("SCNParticlePropertyContactNormal")]
 		NSString ContactNormal { get; }
 	}
 
 	/// <summary>Completion handler for use with <see cref="SceneKit.SCNParticleSystem.HandleEvent(SceneKit.SCNParticleEvent,Foundation.NSString[],SceneKit.SCNParticleEventHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNParticleEventHandler (IntPtr data, IntPtr dataStride, IntPtr indices, nint count);
 
 	/// <summary>Delegate used as the <c>handler</c> in <see cref="SceneKit.SCNParticleSystem.AddModifier(Foundation.NSString[],SceneKit.SCNParticleModifierStage,SceneKit.SCNParticleModifierHandler)" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void SCNParticleModifierHandler (IntPtr data, IntPtr dataStride, nint start, nint end, float /* float, not CGFloat */ deltaTime);
 
 	/// <summary>Animates a property of the particles emitted by a SCNParticleSystem.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNParticlePropertyController_Class/index.html">Apple documentation for <c>SCNParticlePropertyController</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCNParticlePropertyController : NSSecureCoding, NSCopying {
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("controllerWithAnimation:")]
 		SCNParticlePropertyController Create (CAAnimation animation);
 
-		[MacCatalyst (13, 1)]
 		[Export ("animation", ArgumentSemantic.Retain)]
 		CAAnimation Animation { get; set; }
 
@@ -6345,7 +5882,6 @@ namespace SceneKit {
 	/// <summary>Automatically constrains a <see cref="SceneKit.SCNNode" /> so that it always points to the current rendering node.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNBillboardConstraint_Class/index.html">Apple documentation for <c>SCNBillboardConstraint</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNBillboardConstraint {
 		[Static]
@@ -6359,7 +5895,6 @@ namespace SceneKit {
 	/// <summary>A <see cref="SceneKit.SCNNode" /> that loads its content from a scene file.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/SceneKit/Reference/SCNReferenceNode_Class/index.html">Apple documentation for <c>SCNReferenceNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNNode))]
 	[DisableDefaultCtor]
 	interface SCNReferenceNode : NSCoding {
@@ -6394,7 +5929,6 @@ namespace SceneKit {
 	interface ISCNBufferStream { }
 
 	/// <summary>Interface for managing a custom shader's Metal buffer.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SCNBufferStream {
 		[Abstract]
@@ -6402,7 +5936,6 @@ namespace SceneKit {
 		unsafe void Length (IntPtr bytes, nuint length);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNTimingFunction : NSSecureCoding {
 		[Static]
@@ -6410,7 +5943,6 @@ namespace SceneKit {
 		SCNTimingFunction Create (SCNActionTimingMode timingMode);
 
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("functionWithCAMediaTimingFunction:")]
 		SCNTimingFunction Create (CAMediaTimingFunction caTimingFunction);
 	}
@@ -6422,7 +5954,6 @@ namespace SceneKit {
 
 	interface ISCNAnimationProtocol { }
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimation : SCNAnimationProtocol, NSCopying, NSSecureCoding {
 		[Static]
@@ -6434,7 +5965,6 @@ namespace SceneKit {
 		SCNAnimation FromName (string animationName);
 
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("animationWithCAAnimation:")]
 		SCNAnimation FromCAAnimation (CAAnimation caAnimation);
 
@@ -6508,7 +6038,6 @@ namespace SceneKit {
 		bool Cumulative { [Bind ("isCumulative")] get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SCNAnimationPlayer : SCNAnimatable, NSCopying, NSSecureCoding {
 		[Static]
@@ -6537,7 +6066,6 @@ namespace SceneKit {
 		void StopWithBlendOutDuration (double seconds);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNDistanceConstraint {
 
@@ -6555,7 +6083,6 @@ namespace SceneKit {
 		nfloat MaximumDistance { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNReplicatorConstraint {
 
@@ -6585,7 +6112,6 @@ namespace SceneKit {
 		SCNVector3 ScaleOffset { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNAccelerationConstraint {
 
@@ -6606,7 +6132,6 @@ namespace SceneKit {
 		nfloat Damping { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNSliderConstraint {
 
@@ -6626,7 +6151,6 @@ namespace SceneKit {
 
 	interface ISCNAvoidOccluderConstraintDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SCNAvoidOccluderConstraintDelegate {
@@ -6649,7 +6173,6 @@ namespace SceneKit {
 		void DidAvoidOccluder (SCNAvoidOccluderConstraint constraint, SCNNode occluder, SCNNode node);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNConstraint))]
 	interface SCNAvoidOccluderConstraint {
 
@@ -6670,7 +6193,6 @@ namespace SceneKit {
 		nfloat Bias { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SCNPhysicsBehavior))]
 	interface SCNPhysicsConeTwistJoint {
 

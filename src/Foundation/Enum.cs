@@ -439,21 +439,16 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		WithoutOverwriting = 2,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FileProtectionNone = 0x10000000,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FileProtectionComplete = 0x20000000,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FileProtectionMask = 0xf0000000,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FileProtectionCompleteUnlessOpen = 0x30000000,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FileProtectionCompleteUntilFirstUserAuthentication = 0x40000000,
-		[iOS (17, 0), NoMac, MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), NoMac, TV (17, 0)]
 		FileProtectionCompleteWhenUserInactive = 0x50000000,
 	}
 
@@ -1026,9 +1021,7 @@ namespace Foundation {
 		SkipsPackageDescendants = 1 << 1,
 		/// <summary>To be added.</summary>
 		SkipsHiddenFiles = 1 << 2,
-		[MacCatalyst (13, 1)]
 		IncludesDirectoriesPostOrder = 1 << 3,
-		[MacCatalyst (13, 1)]
 		ProducesRelativePathUrls = 1 << 4,
 	}
 
@@ -1106,7 +1099,6 @@ namespace Foundation {
 		AllLibrariesDirectory = 101,
 		/// <summary>Trash directory</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		TrashDirectory = 102,
 	}
 
@@ -1206,13 +1198,9 @@ namespace Foundation {
 		Scientific = 4,
 		/// <summary>To be added.</summary>
 		SpellOut = 5,
-		[MacCatalyst (13, 1)]
 		OrdinalStyle = 6,
-		[MacCatalyst (13, 1)]
 		CurrencyIsoCodeStyle = 8,
-		[MacCatalyst (13, 1)]
 		CurrencyPluralStyle = 9,
-		[MacCatalyst (13, 1)]
 		CurrencyAccountingStyle = 10,
 	}
 
@@ -1291,10 +1279,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		ResolvesSymbolicLink = 1 << 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ImmediatelyAvailableMetadataOnly = 1 << 2,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ForUploading = 1 << 3,
 	}
 
@@ -1311,7 +1297,6 @@ namespace Foundation {
 		ForMerging = 4,
 		/// <summary>To be added.</summary>
 		ForReplacing = 8,
-		[MacCatalyst (13, 1)]
 		ContentIndependentMetadataOnly = 16,
 	}
 
@@ -1356,9 +1341,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		MutableLeaves = 2,
 		FragmentsAllowed = 4,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Json5Allowed = 8,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		TopLevelDictionaryAssumed = 16,
 	}
 
@@ -1370,11 +1355,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		PrettyPrinted = 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SortedKeys = (1 << 1),
-		[MacCatalyst (13, 1)]
 		FragmentsAllowed = (1 << 2),
-		[MacCatalyst (13, 1)]
 		WithoutEscapingSlashes = (1 << 3),
 	}
 
@@ -1589,7 +1571,7 @@ namespace Foundation {
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		SecurityScopeAllowOnlyReadAccess = 1 << 12,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		CreationWithoutImplicitSecurityScope = 1 << 29,
 	}
 
@@ -1606,7 +1588,7 @@ namespace Foundation {
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
 		WithSecurityScope = 1 << 10,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		WithoutImplicitStartAccessing = 1 << 15,
 	}
 
@@ -1633,27 +1615,20 @@ namespace Foundation {
 		WrapCalendarComponents = 1 << 0,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchStrictly = 1 << 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SearchBackwards = 1 << 2,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchPreviousTimePreservingSmallerUnits = 1 << 8,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchNextTimePreservingSmallerUnits = 1 << 9,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchNextTime = 1 << 10,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchFirst = 1 << 12,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MatchLast = 1 << 13,
 	}
 
@@ -1677,14 +1652,10 @@ namespace Foundation {
 		/// <summary>Voice traffic.</summary>
 		Voice,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ResponsiveData = 6,
-		[MacCatalyst (13, 1)]
 		AVStreaming = 8,
-		[MacCatalyst (13, 1)]
 		ResponsiveAV = 9,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		CallSignaling = 11,
 	}
 
@@ -1826,7 +1797,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates errors relating to <see cref="Foundation.NSItemProvider" /> methods.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderErrorCode : long {
 		/// <summary>To be added.</summary>
@@ -1844,7 +1814,6 @@ namespace Foundation {
 	/// <summary>Enumerates <see cref="Foundation.NSDateComponentsFormatter" /> output styles.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NSDateComponentsFormatterUnitsStyle : long {
 		/// <summary>To be added.</summary>
 		Positional = 0,
@@ -1857,7 +1826,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		SpellOut,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Brief,
 	}
 
@@ -1865,7 +1833,6 @@ namespace Foundation {
 	/// <remarks>To be added.</remarks>
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NSDateComponentsFormatterZeroFormattingBehavior : ulong {
 		/// <summary>To be added.</summary>
 		None = (0),
@@ -1886,7 +1853,6 @@ namespace Foundation {
 	/// <summary>Enumerates the position of the data being formatted. Used with <see cref="Foundation.NSByteCountFormatter" /> and <see cref="Foundation.NSDateComponentsFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum NSFormattingContext : long {
 		/// <summary>To be added.</summary>
 		Unknown = 0,
@@ -1904,7 +1870,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates the output styles of a <see cref="Foundation.NSDateIntervalFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSDateIntervalFormatterStyle : ulong {
 		/// <summary>To be added.</summary>
@@ -1921,7 +1886,6 @@ namespace Foundation {
 
 	/// <summary>The unit to be used by a <see cref="Foundation.NSEnergyFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSEnergyFormatterUnit : long {
 		/// <summary>To be added.</summary>
@@ -1936,7 +1900,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates the style (desired length) of an <see cref="Foundation.NSLengthFormatter" />, <see cref="Foundation.NSEnergyFormatter" />, or <see cref="Foundation.NSMassFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSFormattingUnitStyle : long {
 		/// <summary>To be added.</summary>
@@ -1949,7 +1912,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates mass units (lb, kg, stone).</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSMassFormatterUnit : long {
 		/// <summary>To be added.</summary>
@@ -1966,7 +1928,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates units of length (foot, meter, etc.) for use with <see cref="Foundation.NSLengthFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSLengthFormatterUnit : long {
 		/// <summary>To be added.</summary>
@@ -1989,7 +1950,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates QoS values for use with <see cref="Foundation.NSOperation" /> objects and <see cref="Foundation.NSOperationQueue" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSQualityOfService : long {
 		/// <summary>To be added.</summary>
@@ -2004,7 +1964,6 @@ namespace Foundation {
 		Default = -1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSProcessInfoThermalState : long {
 		/// <summary>To be added.</summary>
@@ -2130,7 +2089,6 @@ namespace Foundation {
 
 	/// <summary>Contains a constant that, if specified, indicates that the phonetic representation of a name should be formatted, rather than the name object's own components.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum NSPersonNameComponentsFormatterOptions : ulong {
@@ -2140,7 +2098,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates values that control the way that names are displayed.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSPersonNameComponentsFormatterStyle : long {
 		/// <summary>Display a medium-length representation of the name. Equivalent to <c>Medium</c>.</summary>
@@ -2157,7 +2114,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates the manner in which a <see cref="Foundation.NSCoder" /> fails. (See <see cref="Foundation.NSCoder.DecodingFailurePolicy" />)</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSDecodingFailurePolicy : long {
 		/// <summary>To be added.</summary>
@@ -2176,7 +2132,6 @@ namespace Foundation {
 	///           ]]></code>
 	///       </example>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum NSIso8601DateFormatOptions : ulong {
@@ -2201,7 +2156,6 @@ namespace Foundation {
 		/// <summary>Puts a colon in the time.</summary>
 		ColonSeparatorInTimeZone = 1 << 10,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		FractionalSeconds = 1 << 11,
 		/// <summary>Includes the date in the string.</summary>
 		FullDate = Year | Month | Day | DashSeparatorInDate,
@@ -2213,7 +2167,6 @@ namespace Foundation {
 
 	/// <summary>Enumerates the way a network resource might be loaded.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionTaskMetricsResourceFetchType : long {
 		/// <summary>The manner of the resource loading is not known.</summary>
@@ -2230,7 +2183,6 @@ namespace Foundation {
 		LocalCache,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum NSMeasurementFormatterUnitOptions : ulong {
@@ -2243,14 +2195,12 @@ namespace Foundation {
 	}
 
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderRepresentationVisibility : long {
 		/// <summary>To be added.</summary>
 		All = 0,
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		Team = 1,
 		/// <summary>To be added.</summary>
 		[NoiOS, NoTV]
@@ -2261,7 +2211,6 @@ namespace Foundation {
 	}
 
 	/// <summary>Specifies how an item provider supplies a file.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSItemProviderFileOptions : long {
 		/// <summary>Opens the file in place instead of copying it.</summary>
@@ -2270,7 +2219,6 @@ namespace Foundation {
 
 	/// <summary>Enumerate the linguistic units recognized by the <see cref="Foundation.NSLinguisticTagger" /> class.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSLinguisticTaggerUnit : long {
 		/// <summary>To be added.</summary>
@@ -2283,7 +2231,6 @@ namespace Foundation {
 		Document,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionDelayedRequestDisposition : long {
 		/// <summary>To be added.</summary>
@@ -2299,7 +2246,6 @@ namespace Foundation {
 		Privileged = (1 << 12),
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum NSFileProtectionType {
 		[Field ("NSFileProtectionComplete")]
 		Complete,
@@ -2309,7 +2255,7 @@ namespace Foundation {
 		CompleteUntilFirstUserAuthentication,
 		[Field ("NSFileProtectionNone")]
 		None,
-		[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), NoMac, iOS (17, 0)]
 		[Field ("NSFileProtectionCompleteWhenUserInactive")]
 		CompleteWhenUserInactive,
 	}

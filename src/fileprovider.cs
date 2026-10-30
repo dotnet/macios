@@ -251,7 +251,6 @@ namespace FileProvider {
 	}
 
 	/// <summary>Defines the actions the user can perform within the document browser.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	enum NSFileProviderItemCapabilities : ulong {

@@ -18,7 +18,6 @@ namespace MetalKit {
 #endif
 
 	/// <summary>Static class that contains MetalKit constants related to MetalKit Model errors.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface MTKModel {
 
@@ -38,7 +37,6 @@ namespace MetalKit {
 	/// <summary>A <see cref="XView" /> that is Metal-aware.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKView_ClassReference/index.html">Apple documentation for <c>MTKView</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (XView))]
 	interface MTKView : NSCoding, CALayerDelegate {
 		[Export ("initWithFrame:device:")]
@@ -128,23 +126,19 @@ namespace MetalKit {
 		[NullAllowed, Export ("colorspace", ArgumentSemantic.Assign)]
 		CGColorSpace ColorSpace { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("preferredDevice")]
 		IMTLDevice PreferredDevice { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("preferredDrawableSize")]
 		CGSize PreferredDrawableSize { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("depthStencilAttachmentTextureUsage", ArgumentSemantic.Assign)]
 		MTLTextureUsage DepthStencilAttachmentTextureUsage { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("multisampleColorAttachmentTextureUsage", ArgumentSemantic.Assign)]
 		MTLTextureUsage MultisampleColorAttachmentTextureUsage { get; set; }
 
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("depthStencilStorageMode", ArgumentSemantic.Assign)]
 		MTLStorageMode DepthStencilStorageMode { get; set; }
 
@@ -163,7 +157,6 @@ namespace MetalKit {
 	/// <summary>Delegate object for <see cref="MetalKit.MTKView" /> objects. Provides methods called when the view is drawn and laid out.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKViewDelegate_ProtocolReference/index.html">Apple documentation for <c>MTKViewDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MTKViewDelegate {
@@ -184,7 +177,6 @@ namespace MetalKit {
 	}
 
 	/// <summary>Key and domain strings for working with texture loading errors.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface MTKTextureLoaderError {
 
@@ -201,14 +193,12 @@ namespace MetalKit {
 		NSString Key { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Static, Internal]
 	interface MTKTextureLoaderKeys {
 
 		[Field ("MTKTextureLoaderOptionAllocateMipmaps")]
 		NSString AllocateMipmapsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("MTKTextureLoaderOptionGenerateMipmaps")]
 		NSString GenerateMipmapsKey { get; }
 
@@ -221,32 +211,27 @@ namespace MetalKit {
 		[Field ("MTKTextureLoaderOptionTextureCPUCacheMode")]
 		NSString TextureCpuCacheModeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("MTKTextureLoaderOptionTextureStorageMode")]
 		NSString TextureStorageModeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("MTKTextureLoaderOptionCubeLayout")]
 		NSString CubeLayoutKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("MTKTextureLoaderOptionOrigin")]
 		NSString OriginKey { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("MTKTextureLoaderOptionLoadAsArray")]
 		NSString LoadAsArrayKey { get; }
 
 	}
 
-	[MacCatalyst (13, 1)]
 	enum MTKTextureLoaderCubeLayout {
 		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderCubeLayoutVertical")]
 		Vertical,
 	}
 
-	[MacCatalyst (13, 1)]
 	enum MTKTextureLoaderOrigin {
 		/// <summary>To be added.</summary>
 		[Field ("MTKTextureLoaderOriginTopLeft")]
@@ -270,7 +255,6 @@ namespace MetalKit {
 		/// <summary>Gets a value that tells whether mipmaps will be created for the new texture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		bool GenerateMipmaps { get; set; }
 
 		/// <summary>Gets a Boolean value that tells whether the texture should be loaded from the sRGB color space.</summary>
@@ -278,21 +262,18 @@ namespace MetalKit {
 		///         <remarks>To be added.</remarks>
 		bool Srgb { get; set; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		bool LoadAsArray { get; set; }
 	}
 
 	/// <summary>Completion handler for textures loaded with <see cref="MetalKit.MTKTextureLoader" />.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void MTKTextureLoaderCallback ([NullAllowed] IMTLTexture texture, [NullAllowed] NSError error);
 
-	[MacCatalyst (13, 1)]
 	delegate void MTKTextureLoaderArrayCallback (IMTLTexture [] textures, [NullAllowed] NSError error);
 
 	/// <summary>Creates <see cref="Metal.IMTLTexture" /> objects from common image formats.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKTextureLoader_ClassReference/index.html">Apple documentation for <c>MTKTextureLoader</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MTKTextureLoader {
@@ -370,7 +351,6 @@ namespace MetalKit {
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="urls">The locations of the image data to load.</param>
@@ -389,7 +369,6 @@ namespace MetalKit {
 		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
 		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), completionHandler)")]
 		[Async (XmlDocs = """
 			<param name="urls">The locations of the image data to load.</param>
@@ -400,7 +379,6 @@ namespace MetalKit {
 			""")]
 		void FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:error:")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -410,7 +388,6 @@ namespace MetalKit {
 		///         <summary>Creates an array of new Metal textures from the resources at the specified <paramref name="urls" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromUrls (urls, options.GetDictionary (), out error)")]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
@@ -455,7 +432,6 @@ namespace MetalKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithName:scaleFactor:bundle:options:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
@@ -477,7 +453,6 @@ namespace MetalKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromName (name, scaleFactor, bundle, options.GetDictionary (), completionHandler)")]
 		[Async (XmlDocs = """
 			<param name="name">The asset catalog name of the image.</param>
@@ -535,7 +510,6 @@ namespace MetalKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithNames:scaleFactor:bundle:options:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="names">To be added.</param>
@@ -557,7 +531,6 @@ namespace MetalKit {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromNames (names, scaleFactor, bundle, options.GetDictionary (), completionHandler)")]
 		[Async (XmlDocs = """
 			<param name="names">An array of asset catalog names for images to load.</param>
@@ -602,7 +575,6 @@ namespace MetalKit {
 			""")]
 		void FromNames (string [] names, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderArrayCallback completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithMDLTexture:options:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="texture">The texture to load.</param>
@@ -624,7 +596,6 @@ namespace MetalKit {
 		///         <param name="completionHandler">A handler to run after the texture is loaded.</param>
 		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), completionHandler)")]
 		[Async (XmlDocs = """
 			<param name="texture">The texture to load.</param>
@@ -635,7 +606,6 @@ namespace MetalKit {
 			""")]
 		void FromTexture (MDLTexture texture, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithMDLTexture:options:error:")]
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, out NSError error);
@@ -646,7 +616,6 @@ namespace MetalKit {
 		///         <summary>Creates a new Metal texture from the specified <paramref name="texture" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromTexture (texture, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -665,7 +634,6 @@ namespace MetalKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithName:scaleFactor:bundle:options:error:")]
 		[return: NullAllowed]
 		IMTLTexture FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, out NSError error);
@@ -678,7 +646,6 @@ namespace MetalKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("FromName (name, scaleFactor, bundle, options.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		IMTLTexture FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
@@ -701,7 +668,6 @@ namespace MetalKit {
 	/// <summary>An <see cref="ModelIO.IMDLMeshBufferAllocator" /> that allocates a <see cref="MetalKit.MTKMeshBuffer" /> suitable for use with <see cref="ModelIO.MDLAsset" /> objects.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKMeshBufferAllocator_ClassReference/index.html">Apple documentation for <c>MTKMeshBufferAllocator</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init is NS_UNAVAILABLE
 	interface MTKMeshBufferAllocator : MDLMeshBufferAllocator {
@@ -715,7 +681,6 @@ namespace MetalKit {
 	/// <summary>A Metal buffer for holding vertex and index data for ModelIO meshes and submeshes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKMeshBuffer_ClassReference/index.html">Apple documentation for <c>MTKMeshBuffer</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MTKMeshBuffer : MDLMeshBuffer, MDLNamed {
@@ -729,7 +694,6 @@ namespace MetalKit {
 	/// <summary>A segment of mesh data that can be rendered in a single draw call. Submesh vertex data is held in the parent <see cref="MetalKit.MTKMesh" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKSubmesh_ClassReference/index.html">Apple documentation for <c>MTKSubmesh</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MTKSubmesh {
@@ -755,7 +719,6 @@ namespace MetalKit {
 	/// <summary>Holds vertex data for rendering with Metal.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKMesh_ClassReference/index.html">Apple documentation for <c>MTKMesh</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init NS_UNAVAILABLE
 	interface MTKMesh {

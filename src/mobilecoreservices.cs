@@ -94,7 +94,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeExecutable", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Executable { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeMountPoint</summary>
@@ -123,7 +122,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeURLBookmarkData", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString URLBookmarkData { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeURL</summary>
@@ -180,7 +178,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeDelimitedText", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString DelimitedText { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeCommaSeparatedText</summary>
@@ -188,7 +185,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeCommaSeparatedText", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString CommaSeparatedText { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeTabSeparatedText</summary>
@@ -196,7 +192,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeTabSeparatedText", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString TabSeparatedText { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeUTF8TabSeparatedText</summary>
@@ -204,7 +199,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeUTF8TabSeparatedText", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString UTF8TabSeparatedText { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeRTF</summary>
@@ -240,7 +234,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeAssemblyLanguageSource", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString AssemblyLanguageSource { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeCSource</summary>
@@ -297,7 +290,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Script { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeAppleScript</summary>
@@ -305,7 +297,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeAppleScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString AppleScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeOSAScript</summary>
@@ -313,7 +304,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeOSAScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString OSAScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeOSAScriptBundle</summary>
@@ -321,7 +311,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeOSAScriptBundle", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString OSAScriptBundle { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeJavaScript</summary>
@@ -329,7 +318,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeJavaScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString JavaScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeShellScript</summary>
@@ -337,7 +325,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeShellScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ShellScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePerlScript</summary>
@@ -345,7 +332,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePerlScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PerlScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePythonScript</summary>
@@ -353,7 +339,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePythonScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PythonScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeRubyScript</summary>
@@ -361,7 +346,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeRubyScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString RubyScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePHPScript</summary>
@@ -369,7 +353,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePHPScript", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PHPScript { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeJSON</summary>
@@ -377,7 +360,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeJSON", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString JSON { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePropertyList</summary>
@@ -385,7 +367,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePropertyList", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PropertyList { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeXMLPropertyList</summary>
@@ -393,7 +374,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeXMLPropertyList", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString XMLPropertyList { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeBinaryPropertyList</summary>
@@ -401,7 +381,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeBinaryPropertyList", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString BinaryPropertyList { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePDF</summary>
@@ -521,7 +500,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeRawImage", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString RawImage { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeScalableVectorGraphics</summary>
@@ -529,7 +507,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeScalableVectorGraphics", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ScalableVectorGraphics { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeAudiovisualContent</summary>
@@ -579,7 +556,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeMPEG2Video", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString MPEG2Video { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeMPEG2TransportStream</summary>
@@ -587,7 +563,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeMPEG2TransportStream", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString MPEG2TransportStream { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeMP3</summary>
@@ -623,7 +598,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeAppleProtectedMPEG4Video", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString AppleProtectedMPEG4Video { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeAVIMovie</summary>
@@ -631,7 +605,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeAVIMovie", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString AVIMovie { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeAudioInterchangeFileFormat</summary>
@@ -639,7 +612,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeAudioInterchangeFileFormat", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString AudioInterchangeFileFormat { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeWaveformAudio</summary>
@@ -647,7 +619,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeWaveformAudio", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString WaveformAudio { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeMIDIAudio</summary>
@@ -655,7 +626,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeMIDIAudio", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString MIDIAudio { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePlaylist</summary>
@@ -663,7 +633,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePlaylist", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Playlist { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeM3UPlaylist</summary>
@@ -671,7 +640,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeM3UPlaylist", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString M3UPlaylist { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeFolder</summary>
@@ -707,7 +675,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePluginBundle", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PluginBundle { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeSpotlightImporter</summary>
@@ -715,7 +682,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeSpotlightImporter", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString SpotlightImporter { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeQuickLookGenerator</summary>
@@ -723,7 +689,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeQuickLookGenerator", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString QuickLookGenerator { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeXPCService</summary>
@@ -731,7 +696,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeXPCService", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString XPCService { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeFramework</summary>
@@ -767,7 +731,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeUnixExecutable", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString UnixExecutable { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeWindowsExecutable</summary>
@@ -775,7 +738,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeWindowsExecutable", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString WindowsExecutable { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeJavaClass</summary>
@@ -783,7 +745,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeJavaClass", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString JavaClass { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeJavaArchive</summary>
@@ -791,7 +752,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeJavaArchive", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString JavaArchive { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeSystemPreferencesPane</summary>
@@ -799,7 +759,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeSystemPreferencesPane", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString SystemPreferencesPane { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeGNUZipArchive</summary>
@@ -807,7 +766,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeGNUZipArchive", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString GNUZipArchive { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeBzip2Archive</summary>
@@ -815,7 +773,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeBzip2Archive", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Bzip2Archive { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeZipArchive</summary>
@@ -823,7 +780,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeZipArchive", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ZipArchive { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeSpreadsheet</summary>
@@ -831,7 +787,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeSpreadsheet", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Spreadsheet { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePresentation</summary>
@@ -839,7 +794,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePresentation", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Presentation { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeDatabase</summary>
@@ -847,7 +801,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeDatabase", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Database { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeVCard</summary>
@@ -862,7 +815,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeToDoItem", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ToDoItem { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeCalendarEvent</summary>
@@ -870,7 +822,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeCalendarEvent", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString CalendarEvent { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeEmailMessage</summary>
@@ -878,7 +829,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeEmailMessage", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString EmailMessage { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeInternetLocation</summary>
@@ -886,7 +836,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeInternetLocation", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString InternetLocation { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeInkText</summary>
@@ -901,7 +850,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeFont", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Font { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeBookmark</summary>
@@ -909,7 +857,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeBookmark", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Bookmark { get; }
 
 		/// <summary>Represents the value associated with the constant kUTType3DContent</summary>
@@ -917,7 +864,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTType3DContent", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ThreeDContent { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypePKCS12</summary>
@@ -925,7 +871,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypePKCS12", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString PKCS12 { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeX509Certificate</summary>
@@ -933,7 +878,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeX509Certificate", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString X509Certificate { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeElectronicPublication</summary>
@@ -941,7 +885,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeElectronicPublication", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString ElectronicPublication { get; }
 
 		/// <summary>Represents the value associated with the constant kUTTypeLog</summary>
@@ -949,7 +892,6 @@ namespace MobileCoreServices {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Field ("kUTTypeLog", "+CoreServices")]
-		[MacCatalyst (13, 1)]
 		NSString Log { get; }
 
 		/// <summary>Represents the value associated with the constant kUTExportedTypeDeclarationsKey</summary>
@@ -1050,46 +992,40 @@ namespace MobileCoreServices {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeSwiftSource", "+CoreServices")]
 		NSString SwiftSource { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeAlembic", "ModelIO")]
 		NSString Alembic { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTType3dObject", "ModelIO")]
 		NSString k3dObject { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypePolygon", "ModelIO")]
 		NSString Polygon { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeStereolithography", "ModelIO")]
 		NSString Stereolithography { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeUniversalSceneDescription", "ModelIO")]
 		NSString UniversalSceneDescription { get; }
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Field ("kUTTypeUniversalSceneDescriptionMobile", "ModelIO")]
 		NSString UniversalSceneDescriptionMobile { get; }
 
@@ -1097,7 +1033,6 @@ namespace MobileCoreServices {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeLivePhoto", "+CoreServices")]
 		NSString LivePhoto { get; }
 	}

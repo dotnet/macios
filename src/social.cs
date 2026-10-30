@@ -68,7 +68,6 @@ namespace Social {
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
 		[Field ("SLServiceTypeTencentWeibo")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
 		NSString TencentWeibo { get; }
 
@@ -110,7 +109,6 @@ namespace Social {
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
 		[Field ("SLServiceTypeTencentWeibo")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
 		TencentWeibo,
 
@@ -189,7 +187,6 @@ namespace Social {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/SLComposeViewController_Class/index.html">Apple documentation for <c>SLComposeViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SocialViewController))]
 	[DisableDefaultCtor] // see note on 'composeViewControllerForServiceType:'
 	interface SLComposeViewController {
@@ -241,7 +238,6 @@ namespace Social {
 	/// <summary>A standard UIViewController for composing data for social sharing.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Social/Reference/SLComposeServiceViewController_Class/index.html">Apple documentation for <c>SLComposeServiceViewController</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (SocialViewController))]
 	interface SLComposeServiceViewController : SocialTextViewDelegate {
 		/// <param name="nibName">
@@ -291,32 +287,26 @@ namespace Social {
 		NSNumber CharactersRemaining { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("configurationItems")]
 		SLComposeSheetConfigurationItem [] GetConfigurationItems ();
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("reloadConfigurationItems")]
 		void ReloadConfigurationItems ();
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("pushConfigurationViewController:")]
 		void PushConfigurationViewController (SocialViewController viewController);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("popConfigurationViewController")]
 		void PopConfigurationViewController ();
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("loadPreviewView")]
 		SocialView LoadPreviewView ();
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("autoCompletionViewController", ArgumentSemantic.Strong)]
 		SocialViewController AutoCompletionViewController { get; set; }
@@ -345,7 +335,6 @@ namespace Social {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Social/Reference/SLComposeSheetConfigurationItem_Class/index.html">Apple documentation for <c>SLComposeSheetConfigurationItem</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface SLComposeSheetConfigurationItem {

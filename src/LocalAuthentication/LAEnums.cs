@@ -2,11 +2,9 @@ namespace LocalAuthentication {
 
 	/// <summary>Authentication policies.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LAPolicy : long {
 		/// <summary>Use the TouchID sensor to authenticate the user.</summary>
-		[MacCatalyst (13, 1)]
 		DeviceOwnerAuthenticationWithBiometrics = 1,
 		/// <summary>Use the Touch ID sensor or the device password to authenticate the user.</summary>
 		DeviceOwnerAuthentication = 2,
@@ -52,7 +50,6 @@ namespace LocalAuthentication {
 
 	/// <summary>Status and error codes returned by methods in LocalAuthentication.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native ("LAError")]
 	[ErrorDomain ("LAErrorDomain")]
 	public enum LAStatus : long {
@@ -82,13 +79,10 @@ namespace LocalAuthentication {
 		[NoiOS, NoMacCatalyst]
 		InvalidDimension = -14,
 		/// <summary>Indicates that biometric authentication is not supported on the device.</summary>
-		[MacCatalyst (13, 1)]
 		BiometryNotAvailable = -6,
 		/// <summary>Indicates that the user has not enrolled for biometric authentication.</summary>
-		[MacCatalyst (13, 1)]
 		BiometryNotEnrolled = -7,
 		/// <summary>Indicates that biometric authentication has failed too many times, and the user is now locked out.</summary>
-		[MacCatalyst (13, 1)]
 		BiometryLockout = -8,
 		/// <summary>Authentication failed because the user interface was not allowed to be presented.</summary>
 		NotInteractive = -1004,
@@ -97,19 +91,16 @@ namespace LocalAuthentication {
 
 	/// <summary>Enumerates local authentication credential types.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LACredentialType : long {
 		/// <summary>Indicates that an application provided a password.</summary>
 		ApplicationPassword = 0,
 		[iOS (13, 4), NoTV]
-		[MacCatalyst (13, 1)]
 		SmartCardPin = -3,
 	}
 
 	/// <summary>Enumerates access control operations for the <see cref="LocalAuthentication.LAContext.EvaluateAccessControl(Security.SecAccessControl,LocalAuthentication.LAAccessControlOperation,System.String,System.Action{System.Boolean,Foundation.NSError})" /> method.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LAAccessControlOperation : long {
 		/// <summary>Indicates an item creation operation.</summary>
@@ -121,14 +112,12 @@ namespace LocalAuthentication {
 		/// <summary>Indicates an key signing operation.</summary>
 		UseKeySign,
 		/// <summary>Indicates a decryption operation with a key.</summary>
-		[MacCatalyst (13, 1)]
 		UseKeyDecrypt,
 		/// <summary>Indicates an key exchange operation.</summary>
-		[MacCatalyst (13, 1)]
 		UseKeyKeyExchange,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[Native]
 	public enum LARightState : long {
 		Unknown = 0,

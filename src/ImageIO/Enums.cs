@@ -71,7 +71,6 @@ namespace ImageIO {
 	// untyped enum / #defines
 	// used with kCGImagePropertyPNGCompressionFilter
 	/// <summary>Enumerates the style of a PNG compression filter.</summary>
-	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum CGImagePropertyPngFilters {
 		/// <summary>To be added.</summary>
@@ -88,7 +87,6 @@ namespace ImageIO {
 		Paeth = 0x80,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum CGImageAnimationStatus {
 		Ok = 0,
 		ParameterError = -22140,
@@ -100,7 +98,6 @@ namespace ImageIO {
 
 	// Yes, no [Native] here
 	[iOS (14, 1), TV (14, 2)]
-	[MacCatalyst (14, 1)]
 	public enum CGImagePropertyTgaCompression : uint {
 		None = 0,
 		Rle,

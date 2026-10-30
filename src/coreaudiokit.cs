@@ -41,7 +41,6 @@ namespace CoreAudioKit {
 
 	/// <summary>A <see cref="UIViewController" /> class that handles extension requests to support audio unit extensions that have a UI.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAudioKit/AUViewController">Apple documentation for <c>AUViewController</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUViewControllerBase))]
 	interface AUViewController {
 		/// <param name="nibName">
@@ -59,7 +58,6 @@ namespace CoreAudioKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitViewConfiguration : NSSecureCoding {
 		/// <param name="width">To be added.</param>
@@ -81,7 +79,6 @@ namespace CoreAudioKit {
 	}
 
 	[Category]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnitViewControllerExtensions {
 		/// <param name="availableViewConfigurations">To be added.</param>
@@ -191,7 +188,6 @@ namespace CoreAudioKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreAudioKit/Reference/CABTMIDICentralViewController_Ref/index.html">Apple documentation for <c>CABTMIDICentralViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	// in iOS 8.3 (Xcode 6.3 SDK) the base type was changed from UIViewController to UITableViewController
 	[BaseType (typeof (UITableViewController), Name = "CABTMIDICentralViewController")]
 	interface CABTMidiCentralViewController {
@@ -212,7 +208,6 @@ namespace CoreAudioKit {
 		/// <param name="withStyle">To be added.</param>
 		/// <summary>Creates a new <see cref="CoreAudioKit.CABTMidiCentralViewController" /> with the specified style.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithStyle:")]
 		NativeHandle Constructor (UITableViewStyle withStyle);
 	}
@@ -221,7 +216,6 @@ namespace CoreAudioKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreAudioKit/Reference/CABTMIDILocalPeripheralViewController/index.html">Apple documentation for <c>CABTMIDILocalPeripheralViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Name = "CABTMIDILocalPeripheralViewController")]
 	interface CABTMidiLocalPeripheralViewController {
 		/// <param name="nibName">
@@ -338,7 +332,6 @@ namespace CoreAudioKit {
 #endif
 
 	[iOS (16, 0)]
-	[MacCatalyst (16, 0)]
 	[BaseType (typeof (UIViewController))]
 	interface AUGenericViewController {
 

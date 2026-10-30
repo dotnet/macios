@@ -49,7 +49,6 @@ namespace MapKit {
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
-	[MacCatalyst (13, 1)]
 	interface MKAnnotation {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
@@ -70,7 +69,6 @@ namespace MapKit {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("setCoordinate:")]
-		[MacCatalyst (13, 1)]
 		void SetCoordinate (CLLocationCoordinate2D value);
 
 		[Notification, Field ("MKAnnotationCalloutInfoDidChangeNotification")]
@@ -83,7 +81,6 @@ namespace MapKit {
 	[BaseType (typeof (MKAnnotation))]
 	[Model]
 	[Protocol]
-	[MacCatalyst (13, 1)]
 	interface MKOverlay {
 		// There's a 'coordinate' readonly property defined in the header for MKOverlay,
 		// but the MKAnnotation protocol (which this protocol subclasses), also defines
@@ -114,7 +111,6 @@ namespace MapKit {
 	interface IMKOverlay { }
 
 	[BaseType (typeof (UIView))]
-	[MacCatalyst (13, 1)]
 	interface MKAnnotationView {
 		[DesignatedInitializer]
 		[Export ("initWithAnnotation:reuseIdentifier:")]
@@ -185,37 +181,31 @@ namespace MapKit {
 		UIView RightCalloutAccessoryView { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("setDragState:animated:")]
 		void SetDragState (MKAnnotationViewDragState newDragState, bool animated);
 
 		[Export ("dragState")]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		MKAnnotationViewDragState DragState { get; set; }
 
 		/// <summary>Gets or sets a Boolean value that controls whether the user can drag the annotation view.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("draggable")]
 		bool Draggable { [Bind ("isDraggable")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("detailCalloutAccessoryView")]
 		[NullAllowed]
 		UIView DetailCalloutAccessoryView { get; set; }
 
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("leftCalloutOffset")]
 		CGPoint LeftCalloutOffset { get; set; }
 
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("rightCalloutOffset")]
 #if XAMCORE_5_0
 		CGPoint RightCalloutOffset { get; set; }
@@ -226,40 +216,32 @@ namespace MapKit {
 
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Wrap ("RightCallpoutOffset")]
 		CGPoint RightCalloutOffset { get; set; }
 #endif
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("clusteringIdentifier")]
 		string ClusteringIdentifier { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("clusterAnnotationView", ArgumentSemantic.Weak)]
 		MKAnnotationView ClusterAnnotationView { get; }
 
-		[MacCatalyst (13, 1)]
 		[Advice ("Pre-defined constants are available from 'MKFeatureDisplayPriority'.")]
 		[Export ("displayPriority")]
 		float DisplayPriority { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("collisionMode", ArgumentSemantic.Assign)]
 		MKAnnotationViewCollisionMode CollisionMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("prepareForDisplay")]
 		[RequiresSuper]
 		void PrepareForDisplay ();
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("zPriority")]
 		float ZPriority { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("selectedZPriority")]
 		float SelectedZPriority { get; set; }
 
@@ -269,7 +251,6 @@ namespace MapKit {
 	}
 
 	[ThreadSafe]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKShape))]
 	interface MKCircle : MKOverlay {
 		[Export ("radius")]
@@ -297,7 +278,6 @@ namespace MapKit {
 	[NoTV]
 	[BaseType (typeof (MKOverlayPathView))]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKCircleRenderer' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKCircleRenderer' instead.")]
 	interface MKCircleView {
 		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
@@ -317,7 +297,6 @@ namespace MapKit {
 		NativeHandle Constructor (MKCircle circle);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MKDirectionsRequest {
 		[NullAllowed] // by default this property is null
@@ -349,17 +328,16 @@ namespace MapKit {
 		[Export ("arrivalDate", ArgumentSemantic.Copy)]
 		NSDate ArrivalDate { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("tollPreference", ArgumentSemantic.Assign)]
 		MKDirectionsRoutePreference TollPreference { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("highwayPreference", ArgumentSemantic.Assign)]
 		MKDirectionsRoutePreference HighwayPreference { get; set; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	interface MKMapItem : NSSecureCoding
 #if IOS // #if TARGET_OS_IOS
 		, NSItemProviderReading, NSItemProviderWriting
@@ -403,24 +381,20 @@ namespace MapKit {
 		NativeHandle Constructor (CLLocation location, [NullAllowed] MKAddress address);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("openInMapsWithLaunchOptions:"), Internal]
 		bool _OpenInMaps ([NullAllowed] NSDictionary launchOptions);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("openMapsWithItems:launchOptions:"), Internal]
 		bool _OpenMaps (MKMapItem [] mapItems, [NullAllowed] NSDictionary launchOptions);
 
 		[iOS (13, 2), NoMac, NoTV]
-		[Introduced (PlatformName.MacCatalyst, 13, 2)]
 		[Async]
 		[Export ("openInMapsWithLaunchOptions:fromScene:completionHandler:")]
 		void OpenInMaps ([NullAllowed] NSDictionary launchOptions, [NullAllowed] UIScene fromScene, [NullAllowed] Action<NSError> completionHandler);
 
 		[iOS (13, 2), NoMac, NoTV]
-		[Introduced (PlatformName.MacCatalyst, 13, 2)]
 		[Static]
 		[Async]
 		[Export ("openMapsWithItems:launchOptions:fromScene:completionHandler:")]
@@ -438,48 +412,39 @@ namespace MapKit {
 		void OpenMaps (MKMapItem [] mapItems, [NullAllowed] NSDictionary launchOptions, [NullAllowed] Action<bool> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsDirectionsModeKey"), Internal]
 		NSString MKLaunchOptionsDirectionsModeKey { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsMapTypeKey"), Internal]
 		NSString MKLaunchOptionsMapTypeKey { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsMapCenterKey"), Internal]
 		NSString MKLaunchOptionsMapCenterKey { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsMapSpanKey"), Internal]
 		NSString MKLaunchOptionsMapSpanKey { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsShowsTrafficKey"), Internal]
 		NSString MKLaunchOptionsShowsTrafficKey { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsCameraKey"), Internal]
 		NSString MKLaunchOptionsCameraKey { get; }
 
 		[Export ("timeZone")]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		NSTimeZone TimeZone { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("MKMapItemTypeIdentifier")]
 		NSString TypeIdentifier { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pointOfInterestCategory")]
 		string PointOfInterestCategory { get; set; }
 
@@ -508,25 +473,21 @@ namespace MapKit {
 	public enum MKDirectionsMode {
 		/// <summary>Driving directions.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsDirectionsModeDriving")]
 		Driving,
 
 		/// <summary>Walking directions.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsDirectionsModeWalking")]
 		Walking,
 
 		/// <summary>Transit directions.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsDirectionsModeTransit")]
 		Transit,
 
 		/// <summary>Cycling directions.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("MKLaunchOptionsDirectionsModeDefault")]
 		Default,
 
@@ -538,7 +499,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (UIView), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (MKMapViewDelegate) })]
-	[MacCatalyst (13, 1)]
 	interface MKMapView {
 		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
 		/// <summary>Initializes the MKMapView with the specified frame.</summary>
@@ -566,11 +526,11 @@ namespace MapKit {
 		[Export ("mapType")]
 		MKMapType MapType { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("preferredConfiguration", ArgumentSemantic.Copy)]
 		MKMapConfiguration PreferredConfiguration { get; set; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NoMac, iOS (16, 0), NoTV]
 		[Export ("selectableMapFeatures", ArgumentSemantic.Assign)]
 		MKMapFeatureOptions SelectableMapFeatures { get; set; }
 
@@ -654,11 +614,9 @@ namespace MapKit {
 		[return: NullAllowed]
 		MKAnnotationView DequeueReusableAnnotation (string withViewIdentifier);
 
-		[MacCatalyst (13, 1)]
 		[Export ("dequeueReusableAnnotationViewWithIdentifier:forAnnotation:")]
 		MKAnnotationView DequeueReusableAnnotation (string identifier, IMKAnnotation annotation);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerClass:forAnnotationViewWithReuseIdentifier:")]
 		void Register ([NullAllowed] Class viewClass, string identifier);
 
@@ -666,7 +624,6 @@ namespace MapKit {
 		///         <param name="identifier">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Register (viewType is null ? null : new Class (viewType), identifier)")]
 		void Register ([NullAllowed] Type viewType, string identifier);
 
@@ -742,7 +699,6 @@ namespace MapKit {
 		[NoTV]
 		[Export ("viewForOverlay:")]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
 		MKOverlayView ViewForOverlay (IMKOverlay overlay);
 
@@ -752,11 +708,9 @@ namespace MapKit {
 		[Export ("annotationsInMapRect:")]
 		NSSet GetAnnotations (MKMapRect mapRect);
 
-		[MacCatalyst (13, 1)]
 		[Export ("userTrackingMode")]
 		MKUserTrackingMode UserTrackingMode { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setUserTrackingMode:animated:")]
 		void SetUserTrackingMode (MKUserTrackingMode trackingMode, bool animated);
 
@@ -770,7 +724,6 @@ namespace MapKit {
 		///         <value>The default value is <see langword="true" />.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("rotateEnabled")]
 		bool RotateEnabled { [Bind ("isRotateEnabled")] get; set; }
 
@@ -778,7 +731,6 @@ namespace MapKit {
 		///         <value>The default value is <see langword="true" />.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("pitchEnabled")]
 		bool PitchEnabled { [Bind ("isPitchEnabled")] get; set; }
 
@@ -829,61 +781,50 @@ namespace MapKit {
 		//		void _HandleSelectionAtPoint (CGPoint locationInView);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("showsCompass")]
 		bool ShowsCompass { get; set; }
 
 		[Export ("showsScale")]
-		[MacCatalyst (13, 1)]
 		bool ShowsScale { get; set; }
 
 		[Export ("showsTraffic")]
-		[MacCatalyst (13, 1)]
 		bool ShowsTraffic { get; set; }
 
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("showsZoomControls")]
 		bool ShowsZoomControls { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setCameraZoomRange:animated:")]
 		void SetCameraZoomRange ([NullAllowed] MKMapCameraZoomRange cameraZoomRange, bool animated);
 
-		[MacCatalyst (13, 1)]
 		[Export ("cameraZoomRange", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		MKMapCameraZoomRange CameraZoomRange { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("cameraBoundary", ArgumentSemantic.Copy)]
 		MKMapCameraBoundary CameraBoundary { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setCameraBoundary:animated:")]
 		void SetCameraBoundary ([NullAllowed] MKMapCameraBoundary cameraBoundary, bool animated);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
 		MKPointOfInterestFilter PointOfInterestFilter { get; set; }
 
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoTV, NoiOS]
 		[Export ("showsPitchControl")]
 		bool ShowsPitchControl { get; set; }
 
-		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("pitchButtonVisibility", ArgumentSemantic.Assign)]
 		MKFeatureVisibility PitchButtonVisibility { get; set; }
 
-		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("showsUserTrackingButton")]
 		bool ShowsUserTrackingButton { get; set; }
 	}
 
 	[Static]
-	[MacCatalyst (13, 1)]
 	interface MKMapViewDefault {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -903,7 +844,6 @@ namespace MapKit {
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
-	[MacCatalyst (13, 1)]
 	interface MKMapViewDelegate {
 		/// <param name="mapView">To be added.</param>
 		/// <param name="animated">To be added.</param>
@@ -986,7 +926,6 @@ namespace MapKit {
 		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("mapView:annotationView:calloutAccessoryControlTapped:"), EventArgs ("MKMapViewAccessoryTapped", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -1000,7 +939,6 @@ namespace MapKit {
 		/// <summary>Called when the drag state has changed from <paramref name="oldState" /> to <paramref name="newState" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("mapView:annotationView:didChangeDragState:fromOldState:"), EventArgs ("MKMapViewDragState", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -1021,7 +959,6 @@ namespace MapKit {
 		[NoTV]
 		[Export ("mapView:viewForOverlay:"), DelegateName ("MKMapViewOverlay"), DefaultValue (null)]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayRenderer.RendererForOverlay' instead.")]
 		MKOverlayView GetViewForOverlay (MKMapView mapView, IMKOverlay overlay);
 
@@ -1036,7 +973,6 @@ namespace MapKit {
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
 		[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'DidAddOverlayRenderers' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidAddOverlayRenderers' instead.")]
 		void DidAddOverlayViews (MKMapView mapView, MKOverlayView overlayViews);
 
@@ -1070,11 +1006,11 @@ namespace MapKit {
 			""")]
 		void DidDeselectAnnotationView (MKMapView mapView, MKAnnotationView view);
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NoMac, iOS (16, 0), NoTV]
 		[Export ("mapView:didSelectAnnotation:"), EventArgs ("MKAnnotation")]
 		void DidSelectAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NoMac, iOS (16, 0), NoTV]
 		[Export ("mapView:didDeselectAnnotation:"), EventArgs ("MKAnnotation")]
 		void DidDeselectAnnotation (MKMapView mapView, IMKAnnotation annotation);
 
@@ -1113,7 +1049,6 @@ namespace MapKit {
 		/// <param name="animated">To be added.</param>
 		/// <summary>Indicates a change in the active <see cref="MapKit.MKUserTrackingMode" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("mapView:didChangeUserTrackingMode:animated:"), EventArgs ("MMapViewUserTracking", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -1173,7 +1108,6 @@ namespace MapKit {
 			<value>To be added.</value>
 			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
-		[MacCatalyst (13, 1)]
 		[Export ("mapView:clusterAnnotationForMemberAnnotations:"), DelegateName ("MKCreateClusterAnnotation"), DefaultValue (null)]
 		MKClusterAnnotation CreateClusterAnnotation (MKMapView mapView, IMKAnnotation [] memberAnnotations);
 
@@ -1184,7 +1118,6 @@ namespace MapKit {
 			<summary>To be added.</summary>
 			<remarks>To be added.</remarks>
 			""")]
-		[MacCatalyst (13, 1)]
 		[Export ("mapViewDidChangeVisibleRegion:")]
 		void DidChangeVisibleRegion (MKMapView mapView);
 
@@ -1201,7 +1134,6 @@ namespace MapKit {
 	[Deprecated (PlatformName.iOS, 16, 0, message: "Use MKMarkerAnnotationView instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use MKMarkerAnnotationView instead.")]
 	[Deprecated (PlatformName.TvOS, 16, 0, message: "Use MKMarkerAnnotationView instead.")]
-	[MacCatalyst (13, 1)]
 	interface MKPinAnnotationView {
 		/// <param name="frame">Frame used by the view, expressed in iOS points.</param>
 		/// <summary>Initializes the MKPinAnnotationView with the specified frame.</summary>
@@ -1219,7 +1151,6 @@ namespace MapKit {
 		[Export ("pinColor")]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'PinTintColor' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'PinTintColor' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PinTintColor' instead.")]
 		MKPinAnnotationColor PinColor { get; set; }
 
@@ -1229,21 +1160,17 @@ namespace MapKit {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Appearance]
 		[Export ("pinTintColor")]
 		[NullAllowed]
 		UIColor PinTintColor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("redPinColor")]
 		UIColor RedPinColor { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("greenPinColor")]
 		UIColor GreenPinColor { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("purplePinColor")]
 		UIColor PurplePinColor { get; }
 	}
@@ -1252,7 +1179,6 @@ namespace MapKit {
 	/// <summary>Class that contains address data for a place mark.</summary>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("global::AddressBook.ABPersonAddressKey")]
 	interface MKPlacemarkAddress {
 		/// <summary>To be added.</summary>
@@ -1294,7 +1220,6 @@ namespace MapKit {
 	[BaseType (typeof (CLPlacemark))]
 	// crash (at least) when calling 'description' when instance is created by 'init'
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	interface MKPlacemark : MKAnnotation, NSCopying {
 		[Export ("initWithCoordinate:addressDictionary:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, [NullAllowed] NSDictionary addressDictionary);
@@ -1306,16 +1231,13 @@ namespace MapKit {
 		/// <remarks>To be added.</remarks>
 		[NoMac]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Wrap ("this (coordinate, addressDictionary.GetDictionary ())")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, MKPlacemarkAddress addressDictionary);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoordinate:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoordinate:postalAddress:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, CNPostalAddress postalAddress);
 
@@ -1331,7 +1253,6 @@ namespace MapKit {
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[Deprecated (PlatformName.iOS, 5, 0, message: "Use 'CoreLocation.CLGeocoder' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CoreLocation.CLGeocoder' instead.")]
 	// crash (at least) at Dispose time when instance is created by 'init'
 	[DisableDefaultCtor]
@@ -1389,7 +1310,6 @@ namespace MapKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKReverseGeocoderDelegate_Protocol/index.html">Apple documentation for <c>MKReverseGeocoderDelegate</c></related>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 5, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -1423,7 +1343,6 @@ namespace MapKit {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKOverlayRenderer' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayRenderer' instead.")]
 	[BaseType (typeof (UIView))]
 	interface MKOverlayView {
@@ -1492,7 +1411,6 @@ namespace MapKit {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKOverlayPathRenderer' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKOverlayPathRenderer' instead.")]
 	[BaseType (typeof (MKOverlayView))]
 	interface MKOverlayPathView {
@@ -1566,7 +1484,6 @@ namespace MapKit {
 		void FillPath (CGPath path, CGContext context);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface MKShape : MKAnnotation {
@@ -1579,15 +1496,12 @@ namespace MapKit {
 		new string Subtitle { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (MKShape))]
 	interface MKPointAnnotation : MKGeoJsonObject {
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoordinate:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoordinate:title:subtitle:")]
 		NativeHandle Constructor (CLLocationCoordinate2D coordinate, [NullAllowed] string title, [NullAllowed] string subtitle);
 
@@ -1601,7 +1515,6 @@ namespace MapKit {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKPolygonRenderer' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPolygonRenderer' instead.")]
 	[BaseType (typeof (MKOverlayPathView))]
 	interface MKPolygonView {
@@ -1623,7 +1536,6 @@ namespace MapKit {
 	}
 
 	[ThreadSafe]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKMultiPoint))]
 	interface MKPolygon : MKOverlay, MKGeoJsonObject {
 		[Export ("interiorPolygons")]
@@ -1657,7 +1569,6 @@ namespace MapKit {
 	}
 
 	[ThreadSafe]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKMultiPoint))]
 	interface MKPolyline : MKOverlay, MKGeoJsonObject {
 		[Static]
@@ -1685,7 +1596,6 @@ namespace MapKit {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "Use 'MKPolylineRenderer' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPolylineRenderer' instead.")]
 	[BaseType (typeof (MKOverlayPathView))]
 	interface MKPolylineView {
@@ -1707,7 +1617,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (MKShape))]
-	[MacCatalyst (13, 1)]
 	interface MKMultiPoint : MKGeoJsonObject {
 		[Export ("points"), Internal]
 		IntPtr _Points { get; }
@@ -1719,19 +1628,16 @@ namespace MapKit {
 		void GetCoords (IntPtr dest, NSRange range);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("locationAtPointIndex:")]
 		nfloat GetLocation (nuint pointIndex);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[return: BindAs (typeof (nfloat []))]
 		[Export ("locationsAtPointIndexes:")]
 		NSNumber [] GetLocations (NSIndexSet indexes);
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 #if XAMCORE_5_0
 	interface MKUserLocation : MKAnnotation {
 #else
@@ -1759,7 +1665,6 @@ namespace MapKit {
 		string Subtitle { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("heading", ArgumentSemantic.Retain)]
 		[NullAllowed]
 		CLHeading Heading { get; }
@@ -1770,7 +1675,6 @@ namespace MapKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MKUserTrackingBarButtonItemClassRef/index.html">Apple documentation for <c>MKUserTrackingBarButtonItem</c></related>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIBarButtonItem))]
 	[DisableDefaultCtor]
 	interface MKUserTrackingBarButtonItem {
@@ -1791,7 +1695,6 @@ namespace MapKit {
 	/// <altmember cref="MapKit.MKLocalSearch" />
 	delegate void MKLocalSearchCompletionHandler ([NullAllowed] MKLocalSearchResponse response, [NullAllowed] NSError error);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe]
 	[DisableDefaultCtor] // crash on iOS8 beta
@@ -1802,7 +1705,6 @@ namespace MapKit {
 		NativeHandle Constructor (MKLocalSearchRequest request);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithPointsOfInterestRequest:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (MKLocalPointsOfInterestRequest request);
@@ -1835,22 +1737,18 @@ namespace MapKit {
 		bool IsSearching { [Bind ("isSearching")] get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe]
 	[DesignatedDefaultCtor]
 	interface MKLocalSearchRequest : NSCopying {
 
 		[DesignatedInitializer]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCompletion:")]
 		NativeHandle Constructor (MKLocalSearchCompletion completion);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithNaturalLanguageQuery:")]
 		NativeHandle Constructor (string naturalLanguageQuery);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithNaturalLanguageQuery:region:")]
 		NativeHandle Constructor (string naturalLanguageQuery, MKCoordinateRegion region);
 
@@ -1861,11 +1759,9 @@ namespace MapKit {
 		[Export ("region", ArgumentSemantic.Assign)]
 		MKCoordinateRegion Region { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("resultTypes", ArgumentSemantic.Assign)]
 		MKLocalSearchResultType ResultTypes { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
 		MKPointOfInterestFilter PointOfInterestFilter { get; set; }
 
@@ -1878,7 +1774,6 @@ namespace MapKit {
 		MKAddressFilter AddressFilter { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[ThreadSafe]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** setObjectForKey: object cannot be nil (key: mapItems)
@@ -1893,7 +1788,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (MKOverlayPathRenderer))]
-	[MacCatalyst (13, 1)]
 	partial interface MKCircleRenderer {
 
 		[Export ("initWithCircle:")]
@@ -1903,18 +1797,15 @@ namespace MapKit {
 		MKCircle Circle { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeStart")]
 		nfloat StrokeStart { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeEnd")]
 		nfloat StrokeEnd { get; set; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // NSInvalidArgumentException Reason: Cannot initialize MKDirections with nil request
 	partial interface MKDirections {
 
@@ -1969,7 +1860,6 @@ namespace MapKit {
 	delegate void MKETAHandler ([NullAllowed] MKETAResponse response, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKETAResponse {
 		[Export ("source")]
 		MKMapItem Source { get; }
@@ -1980,25 +1870,20 @@ namespace MapKit {
 		[Export ("expectedTravelTime")]
 		double ExpectedTravelTime { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("distance")]
 		double /* CLLocationDistance */ Distance { get; }
 
 		[Export ("transportType")]
-		[MacCatalyst (13, 1)]
 		MKDirectionsTransportType TransportType { get; }
 
 		[Export ("expectedArrivalDate")]
-		[MacCatalyst (13, 1)]
 		NSDate ExpectedArrivalDate { get; }
 
 		[Export ("expectedDepartureDate")]
-		[MacCatalyst (13, 1)]
 		NSDate ExpectedDepartureDate { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKDirectionsResponse {
 
 		[Export ("source")]
@@ -2012,7 +1897,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKRoute {
 
 		[Export ("name")]
@@ -2036,17 +1920,16 @@ namespace MapKit {
 		[Export ("steps")]
 		MKRouteStep [] Steps { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("hasTolls")]
 		bool HasTolls { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Export ("hasHighways")]
 		bool HasHighways { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKRouteStep {
 
 		[Export ("instructions")]
@@ -2067,7 +1950,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (NSFormatter))]
-	[MacCatalyst (13, 1)]
 	[ThreadSafe]
 	partial interface MKDistanceFormatter {
 
@@ -2089,7 +1971,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (MKPolyline))]
-	[MacCatalyst (13, 1)]
 	partial interface MKGeodesicPolyline {
 
 		[Static, Export ("polylineWithPoints:count:")]
@@ -2102,7 +1983,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKMapCamera : NSCopying, NSSecureCoding {
 
 		[Export ("centerCoordinate")]
@@ -2135,22 +2015,19 @@ namespace MapKit {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("cameraLookingAtCenterCoordinate:fromDistance:pitch:heading:")]
 		MKMapCamera CameraLookingAtCenterCoordinate (CLLocationCoordinate2D centerCoordinate, double locationDistance, nfloat pitch, double locationDirectionHeading);
 
-		[MacCatalyst (13, 1)]
 		[Export ("centerCoordinateDistance")]
 		double CenterCoordinateDistance { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		[Static]
 		[Export ("cameraLookingAtMapItem:forViewSize:allowPitch:")]
 		MKMapCamera CameraLookingAt (MKMapItem mapItem, CGSize viewSize, bool allowPitch);
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKMapSnapshot {
 
 		[Export ("image")]
@@ -2166,13 +2043,11 @@ namespace MapKit {
 		NSAppearance Appearance { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("traitCollection")]
 		UITraitCollection TraitCollection { get; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKMapSnapshotOptions : NSCopying {
 
 		[Export ("camera", ArgumentSemantic.Copy)]
@@ -2197,7 +2072,6 @@ namespace MapKit {
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'TraitCollection.DisplayScale' instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'TraitCollection.DisplayScale' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'TraitCollection.DisplayScale' instead.")]
 		[Export ("scale", ArgumentSemantic.Assign)]
 		nfloat Scale { get; set; }
@@ -2226,22 +2100,19 @@ namespace MapKit {
 		[Deprecated (PlatformName.iOS, 17, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0)]
 		[Deprecated (PlatformName.TvOS, 17, 0)]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
 		MKPointOfInterestFilter PointOfInterestFilter { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("traitCollection", ArgumentSemantic.Copy)]
 		UITraitCollection TraitCollection { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("preferredConfiguration", ArgumentSemantic.Copy)]
 		MKMapConfiguration PreferredConfiguration { get; set; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKMapSnapshotter {
 
 		[DesignatedInitializer]
@@ -2287,7 +2158,6 @@ namespace MapKit {
 	delegate void MKMapSnapshotCompletionHandler ([NullAllowed] MKMapSnapshot snapshot, [NullAllowed] NSError error);
 
 	[BaseType (typeof (MKOverlayRenderer))]
-	[MacCatalyst (13, 1)]
 	[ThreadSafe]
 	partial interface MKOverlayPathRenderer {
 
@@ -2357,13 +2227,11 @@ namespace MapKit {
 		[Export ("fillPath:inContext:")]
 		void FillPath (CGPath path, CGContext context);
 
-		[MacCatalyst (13, 1)]
 		[Export ("shouldRasterize")]
 		bool ShouldRasterize { get; set; }
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	partial interface MKOverlayRenderer {
 
 		[DesignatedInitializer]
@@ -2434,7 +2302,6 @@ namespace MapKit {
 	}
 
 	[BaseType (typeof (MKOverlayPathRenderer))]
-	[MacCatalyst (13, 1)]
 	partial interface MKPolygonRenderer {
 
 		[Export ("initWithPolygon:")]
@@ -2444,18 +2311,15 @@ namespace MapKit {
 		MKPolygon Polygon { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeStart")]
 		nfloat StrokeStart { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeEnd")]
 		nfloat StrokeEnd { get; set; }
 	}
 
 	[BaseType (typeof (MKOverlayPathRenderer))]
-	[MacCatalyst (13, 1)]
 	partial interface MKPolylineRenderer {
 
 		[Export ("initWithPolyline:")]
@@ -2465,18 +2329,15 @@ namespace MapKit {
 		MKPolyline Polyline { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeStart")]
 		nfloat StrokeStart { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokeEnd")]
 		nfloat StrokeEnd { get; set; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MKPolylineRenderer))]
 	partial interface MKGradientPolylineRenderer {
 		[Export ("locations", ArgumentSemantic.Copy)]
@@ -2491,7 +2352,6 @@ namespace MapKit {
 	}
 
 	[ThreadSafe]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface MKTileOverlay : MKOverlay {
 		[DesignatedInitializer]
@@ -2544,7 +2404,6 @@ namespace MapKit {
 	[BaseType (typeof (MKOverlayRenderer))]
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: Expected a MKTileOverlay but got (null)
 	[DisableDefaultCtor] // throw in iOS8 beta 1 ^
-	[MacCatalyst (13, 1)]
 	partial interface MKTileOverlayRenderer {
 		// This ctor is not allowed: NSInvalidArgumentEception Expected a MKTileOverlay
 		//		[Export ("initWithOverlay:")]
@@ -2557,7 +2416,6 @@ namespace MapKit {
 		void ReloadData ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MKLocalSearchCompleter {
 		[Export ("queryFragment")]
@@ -2599,11 +2457,9 @@ namespace MapKit {
 		[Export ("cancel")]
 		void Cancel ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("resultTypes", ArgumentSemantic.Assign)]
 		MKLocalSearchCompleterResultType ResultTypes { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
 		MKPointOfInterestFilter PointOfInterestFilter { get; set; }
 
@@ -2618,7 +2474,6 @@ namespace MapKit {
 
 	interface IMKLocalSearchCompleterDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -2639,7 +2494,6 @@ namespace MapKit {
 		void DidFail (MKLocalSearchCompleter completer, NSError error);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLocalSearchCompletion {
@@ -2666,19 +2520,16 @@ namespace MapKit {
 		/// <summary>Gets the mapkit item.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("mapItem")]
 		MKMapItem GetMapItem ();
 
 		/// <param name="item">The new mapkit item.</param>
 		/// <summary>Sets the mapkit item to <paramref name="item" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setMapItem:")]
 		void SetMapItem (MKMapItem item);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKClusterAnnotation : MKAnnotation {
@@ -2697,7 +2548,6 @@ namespace MapKit {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]
 	interface MKCompassButton {
@@ -2712,7 +2562,6 @@ namespace MapKit {
 		MKFeatureVisibility CompassVisibility { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKAnnotationView))]
 	interface MKMarkerAnnotationView {
 
@@ -2767,7 +2616,6 @@ namespace MapKit {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]
 	interface MKScaleView {
@@ -2789,7 +2637,6 @@ namespace MapKit {
 	/// <summary>A button for toggling the tracking mode.</summary>
 	[NoTV]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	[DisableDefaultCtor]
 	interface MKUserTrackingButton {
@@ -2801,7 +2648,6 @@ namespace MapKit {
 		MKMapView MapView { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MKPointOfInterestFilter : NSSecureCoding, NSCopying {
 		[Static]
@@ -2827,13 +2673,11 @@ namespace MapKit {
 		bool ExcludesCategory ([BindAs (typeof (MKPointOfInterestCategory))] NSString category);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Protocol (Name = "MKGeoJSONObject")]
 	interface MKGeoJsonObject { }
 
 	interface IMKGeoJsonObject { }
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MKGeoJSONDecoder")]
 	interface MKGeoJsonDecoder {
 		[Export ("geoJSONObjectsWithData:error:")]
@@ -2841,7 +2685,6 @@ namespace MapKit {
 		IMKGeoJsonObject [] GeoJsonObjects (NSData data, [NullAllowed] out NSError error);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MKGeoJSONFeature")]
 	interface MKGeoJsonFeature : MKGeoJsonObject {
 		[NullAllowed, Export ("identifier")]
@@ -2854,7 +2697,6 @@ namespace MapKit {
 		IMKGeoJsonObject [] Geometry { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MKMapCameraZoomRange : NSSecureCoding, NSCopying {
 		[Export ("initWithMinCenterCoordinateDistance:maxCenterCoordinateDistance:")]
@@ -2879,7 +2721,6 @@ namespace MapKit {
 		double ZoomDefault { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MKMapCameraBoundary : NSSecureCoding, NSCopying {
 		[Export ("initWithMapRect:")]
@@ -2897,7 +2738,6 @@ namespace MapKit {
 		MKCoordinateRegion Region { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKShape))]
 	interface MKMultiPolygon : MKOverlay, MKGeoJsonObject {
 		[Export ("initWithPolygons:")]
@@ -2908,7 +2748,6 @@ namespace MapKit {
 		MKPolygon [] Polygons { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKOverlayPathRenderer))]
 	interface MKMultiPolygonRenderer {
 		[Export ("initWithMultiPolygon:")]
@@ -2918,7 +2757,6 @@ namespace MapKit {
 		MKMultiPolygon MultiPolygon { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKShape))]
 	interface MKMultiPolyline : MKOverlay, MKGeoJsonObject {
 		[Export ("initWithPolylines:")]
@@ -2929,7 +2767,6 @@ namespace MapKit {
 		MKPolyline [] Polylines { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKOverlayPathRenderer))]
 	interface MKMultiPolylineRenderer {
 		[Export ("initWithMultiPolyline:")]
@@ -2940,7 +2777,6 @@ namespace MapKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MKAnnotationView))]
 	interface MKUserLocationView {
 		[DesignatedInitializer]
@@ -2952,7 +2788,6 @@ namespace MapKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLocalPointsOfInterestRequest : NSCopying {
@@ -2980,7 +2815,6 @@ namespace MapKit {
 		MKPointOfInterestFilter PointOfInterestFilter { get; set; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, NoiOS]
 	[DisableDefaultCtor]
 	[BaseType (typeof (UIView))]
@@ -2997,7 +2831,6 @@ namespace MapKit {
 		MKMapView MapView { get; set; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, NoiOS]
 	[DisableDefaultCtor]
 	[BaseType (typeof (UIView))]
@@ -3015,7 +2848,7 @@ namespace MapKit {
 		MKMapView MapView { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKHybridMapConfiguration {
@@ -3029,7 +2862,7 @@ namespace MapKit {
 		bool ShowsTraffic { get; set; }
 	}
 
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[NoMac, iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKIconStyle {
@@ -3040,7 +2873,7 @@ namespace MapKit {
 		UIImage Image { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKImageryMapConfiguration {
@@ -3048,12 +2881,12 @@ namespace MapKit {
 		NativeHandle Constructor (MKMapElevationStyle elevationStyle);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundScene : NSCopying { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSceneRequest {
@@ -3085,7 +2918,7 @@ namespace MapKit {
 		void Cancel ();
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSnapshot {
@@ -3093,7 +2926,7 @@ namespace MapKit {
 		UIImage Image { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface MKLookAroundSnapshotOptions {
 		[NullAllowed, Export ("pointOfInterestFilter", ArgumentSemantic.Copy)]
@@ -3102,12 +2935,12 @@ namespace MapKit {
 		[Export ("size", ArgumentSemantic.Assign)]
 		CGSize Size { get; set; }
 
-		[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[NoMac, iOS (16, 0), NoTV]
 		[Export ("traitCollection", ArgumentSemantic.Copy)]
 		UITraitCollection TraitCollection { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKLookAroundSnapshotter {
@@ -3128,7 +2961,7 @@ namespace MapKit {
 
 	interface IMKLookAroundViewControllerDelegate { }
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MKLookAroundViewControllerDelegate {
@@ -3151,7 +2984,7 @@ namespace MapKit {
 		void DidDismissFullScreen (MKLookAroundViewController viewController);
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface MKLookAroundViewController : NSSecureCoding, NSCoding {
 		[Export ("initWithScene:")]
@@ -3185,7 +3018,7 @@ namespace MapKit {
 		MKLookAroundBadgePosition BadgePosition { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKMapConfiguration : NSSecureCoding, NSCopying {
@@ -3193,7 +3026,7 @@ namespace MapKit {
 		MKMapElevationStyle ElevationStyle { get; set; }
 	}
 
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[NoMac, iOS (16, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKMapFeatureAnnotation : MKAnnotation {
@@ -3208,7 +3041,7 @@ namespace MapKit {
 		NSString PointOfInterestCategory { get; }
 	}
 
-	[Mac (15, 0), iOS (16, 0), MacCatalyst (16, 0), TV (18, 0)]
+	[Mac (15, 0), iOS (16, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MKMapItemRequest {
@@ -3250,7 +3083,7 @@ namespace MapKit {
 		MKMapFeatureAnnotation MapFeatureAnnotation { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[BaseType (typeof (MKMapConfiguration))]
 	[DesignatedDefaultCtor]
 	interface MKStandardMapConfiguration {

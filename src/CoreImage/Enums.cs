@@ -51,7 +51,6 @@ namespace CoreImage {
 	}
 
 	/// <summary>Enumerates the error correction levels for QR codes.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIQRCodeErrorCorrectionLevel : long {
 		/// <summary>To be added.</summary>
@@ -65,7 +64,6 @@ namespace CoreImage {
 	}
 
 	/// <summary>Enumerates the ECC versions for the Data Matrix barcode scheme.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIDataMatrixCodeEccVersion : long {
 		/// <summary>To be added.</summary>
@@ -82,7 +80,6 @@ namespace CoreImage {
 		V200 = 200,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
 		/// <summary>To be added.</summary>

@@ -13,7 +13,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values used to specify video quality.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIImagePickerControllerQualityType : long {
 		/// <summary>High quality.</summary>
 		High,
@@ -35,7 +34,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UIActivityIndicatorView" />
 	/// <altmember cref="UIKit.UIActivityIndicatorView.UIActivityIndicatorViewAppearance" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIActivityIndicatorViewStyle : long {
 		/// <summary>The indicator is large and white.</summary>
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'Large' instead.")]
@@ -53,9 +51,7 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Medium' instead.")]
 		Gray,
 
-		[MacCatalyst (13, 1)]
 		Medium = 100,
-		[MacCatalyst (13, 1)]
 		Large = 101,
 	}
 
@@ -68,7 +64,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIAlertViewStyle : long {
 		/// <summary>A standard alert.</summary>
 		Default,
@@ -84,7 +79,6 @@ namespace UIKit {
 	/// <summary>The visual style of a <see cref="UIKit.UIBarButtonItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBarButtonItemStyle : long {
 		/// <summary>Plain style, will glow when tapped.</summary>
 		Plain,
@@ -103,7 +97,6 @@ namespace UIKit {
 	/// <summary>An enumeration of the predefined <see cref="UIKit.UIBarButtonItem" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBarButtonSystemItem : long {
 		/// <summary>Done text, localized.</summary>
 		Done,
@@ -157,7 +150,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		PageCurl,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Close,
 		[iOS (18, 2), NoTV, MacCatalyst (18, 2)]
 		WritingTools,
@@ -168,7 +160,6 @@ namespace UIKit {
 	/// <remarks>The list of events for UIControl objects.</remarks>
 	[Native ("UIControlEvents")]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIControlEvent : ulong {
 		/// <summary>Touch down event.</summary>
 		TouchDown = 1 << 0,
@@ -194,7 +185,6 @@ namespace UIKit {
 		/// <summary>To be added.</summary>
 		PrimaryActionTriggered = 1 << 13,
 		[iOS (14, 0), TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		MenuActionTriggered = 1 << 14,
 
 		/// <summary>UITextField event: editing started.</summary>
@@ -222,7 +212,6 @@ namespace UIKit {
 	/// <summary>An enumeration of event types.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIEventType : long {
 		/// <summary>The event relates to touches to the screen.</summary>
 		Touches,
@@ -231,16 +220,12 @@ namespace UIKit {
 		/// <summary>A remote-control event originating from a headset or external accessory, for the purpose of controlling multimedia.</summary>
 		RemoteControl,
 		/// <summary>Indicates that a physical button was pressed.</summary>
-		[MacCatalyst (13, 1)]
 		Presses,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		Scroll = 10,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		Hover = 11,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		Transform = 14,
 	}
 
@@ -248,7 +233,6 @@ namespace UIKit {
 	/// <summary>An enumeration of event subtypes.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIEventSubtype : long {
 		/// <summary>The event has no subtype.</summary>
 		None,
@@ -281,7 +265,6 @@ namespace UIKit {
 	/// <summary>An enumeration of vertical alignments available to text and images.</summary>
 	/// <remarks>An enumeration of valid vertical alignment values.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIControlContentVerticalAlignment : long {
 		/// <summary>Aligns the content vertically in the middle of the control.</summary>
 		Center = 0,
@@ -297,7 +280,6 @@ namespace UIKit {
 	/// <summary>An enumeration of horizontal alignments available to text and images.</summary>
 	/// <remarks>An enumeration of valid horizontal alignment values.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIControlContentHorizontalAlignment : long {
 		/// <summary>Indicates that the content will be horizontally centered.</summary>
 		Center = 0,
@@ -318,7 +300,6 @@ namespace UIKit {
 	/// <remarks>Flags representing the state of a control.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIControlState : ulong {
 		/// <summary>The normal state of the control (not disabled and not higlighted)</summary>
 		Normal = 0,
@@ -329,7 +310,6 @@ namespace UIKit {
 		/// <summary>Selected state of the control.  You can change this value by accessing the Selected property of the UIControl.</summary>
 		Selected = 1 << 2,
 		/// <summary>Indicates that the control has the focus.</summary>
-		[MacCatalyst (13, 1)]
 		Focused = 1 << 3,
 		/// <summary>Mask for application defined states for a control.   Possible application-reservedd values are 0x00010000 to 0x00ff0000.</summary>
 		Application = 0x00FF0000,
@@ -365,7 +345,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIViewAutoresizing : ulong {
 		/// <summary>Indicates that the view does not resize.</summary>
 		None = 0,
@@ -393,7 +372,6 @@ namespace UIKit {
 	/// <summary>An enumeration of animation curve styles.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIViewAnimationCurve : long {
 		/// <summary>The animatione begins and ends slowly. This is the default for most animations.</summary>
 		EaseInOut,
@@ -408,7 +386,6 @@ namespace UIKit {
 	// NSInteger -> UIView.h
 	/// <include file="../../docs/api/UIKit/UIViewContentMode.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIViewContentMode']/*" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIViewContentMode : long {
 		/// <summary>Scales the contents to fit the new bounds, this might distort the contents.</summary>
 		ScaleToFill,
@@ -442,7 +419,6 @@ namespace UIKit {
 	/// <summary>An enumeration of predefined animated transitions.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIViewAnimationTransition : long {
 		/// <summary>The option for indicating that no transition is specified.</summary>
 		None,
@@ -461,7 +437,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <!-- TODO:  How does this behave with an iPad app? -->
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBarMetrics : long {
 		/// <summary>The default metrics for the device.</summary>
 		Default,
@@ -489,7 +464,6 @@ namespace UIKit {
 	/// <summary>An enumeration of predefined button types.</summary>
 	/// <remarks>The type of a <see cref="UIKit.UIButton" />.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIButtonType : long {
 		/// <summary>No button style.</summary>
 		Custom,
@@ -508,7 +482,6 @@ namespace UIKit {
 		[NoMacCatalyst]
 		Plain,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Close,
 		/// <summary>Added in iOS 7, this is the preferred default style. It lacks visible edges, background, etc.</summary>
 		System = RoundedRect,
@@ -539,7 +512,6 @@ namespace UIKit {
 	/// <summary>An enumeration that specifies text baseline alignment.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBaselineAdjustment : long {
 		/// <summary>Aligns using the font baselines.</summary>
 		AlignBaselines = 0,
@@ -554,7 +526,6 @@ namespace UIKit {
 	///     <remarks>Valid modes for the <see cref="UIKit.UIDatePicker" />.</remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDatePickerMode : long {
 		/// <summary>Time selector.</summary>
 		Time,
@@ -573,7 +544,6 @@ namespace UIKit {
 	///     <remarks>The current device orientation.</remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDeviceOrientation : long {
 		/// <summary>The orientation of the device cannot be determined.</summary>
 		Unknown,
@@ -598,7 +568,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDeviceBatteryState : long {
 		/// <summary>Can not determine the state of the battery.</summary>
 		Unknown,
@@ -614,7 +583,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating what kind of change has occurred to a <see cref="UIKit.UIDocument" />.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDocumentChangeKind : long {
 		/// <summary>A change has been made.</summary>
 		Done,
@@ -633,7 +601,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDocumentSaveOperation : long {
 		/// <summary>The <see cref="UIKit.UIDocument" /> is being saved for the first time.</summary>
 		ForCreating,
@@ -646,7 +613,6 @@ namespace UIKit {
 	[Native]
 	[Flags]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDocumentState : ulong {
 		/// <summary>The <see cref="UIKit.UIDocument" /> is open, editing is allowed, and there are no detected conflicts.</summary>
 		Normal = 0,
@@ -666,7 +632,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values used to specify the source used by the <see cref="UIKit.UIImagePickerController" />.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIImagePickerControllerSourceType : long {
 		/// <summary>The device's photo library.</summary>
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'PHPicker' instead.")]
@@ -687,7 +652,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIImagePickerControllerCameraCaptureMode : long {
 		/// <summary>The camera will capture still images.</summary>
 		Photo,
@@ -700,7 +664,6 @@ namespace UIKit {
 	///     <remarks>Used to differentiate between front (screen-side) and rear cameras.</remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIImagePickerControllerCameraDevice : long {
 		/// <summary>The side of the device away from the screen.</summary>
 		Rear,
@@ -713,7 +676,6 @@ namespace UIKit {
 	///     <remarks>Determines whether the flash will be on, off, or as-needed.</remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIImagePickerControllerCameraFlashMode : long {
 		/// <summary>The flash is always off, no matter the ambient conditions.</summary>
 		Off = -1,
@@ -730,7 +692,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIBarStyle : long {
 		/// <summary>The system default</summary>
 		Default,
@@ -754,20 +715,17 @@ namespace UIKit {
 	/// <summary>The visual style for a <see cref="UIKit.UIProgressView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIProgressViewStyle : long {
 		/// <summary>The standard progress-view style. Default value.</summary>
 		Default,
 		/// <summary>The style of progress view that is used in a toolbar.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Bar,
 	}
 
 	// NSInteger -> UIScrollView.h
 	/// <include file="../../docs/api/UIKit/UIScrollViewIndicatorStyle.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIScrollViewIndicatorStyle']/*" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIScrollViewIndicatorStyle : long {
 		/// <summary>A black scroll indicator with a narrow white border. Slightly wider than either <see cref="UIKit.UIScrollViewIndicatorStyle.Black" /> or <see cref="UIKit.UIScrollViewIndicatorStyle.White" /></summary>
 		Default,
@@ -781,7 +739,6 @@ namespace UIKit {
 	/// <summary>An enumeration of auto-capitalization styles.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextAutocapitalizationType : long {
 		/// <summary>No text is capitalized automatically.</summary>
 		None,
@@ -798,7 +755,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <!-- Bummed <del>typos</del> didn't render -->
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextAutocorrectionType : long {
 		/// <summary>The default behavior, based on the current script system.</summary>
 		Default,
@@ -830,7 +786,6 @@ namespace UIKit {
 	///       </example>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIKeyboardType : long {
 		/// <summary>The default keyboard for the current input type.</summary>
 		Default,
@@ -857,7 +812,6 @@ namespace UIKit {
 		/// <summary>Optimized for Web search terms and URL entry. </summary>
 		WebSearch,
 		/// <summary>Displays numbers and decimal point by using standard ASCII characters.</summary>
-		[MacCatalyst (13, 1)]
 		AsciiCapableNumberPad,
 	}
 
@@ -866,7 +820,6 @@ namespace UIKit {
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0, message: "This no longer has any effect.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This no longer has any effect.")]
 	public enum UISegmentedControlStyle : long {
 		/// <summary>The large plain style for segmented controls. This is the default.</summary>
@@ -883,7 +836,6 @@ namespace UIKit {
 	/// <summary>An enumeration of predefined <see cref="UIKit.UITabBarSystemItem" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITabBarSystemItem : long {
 		/// <summary>The "more" system item.</summary>
 		More,
@@ -915,14 +867,12 @@ namespace UIKit {
 	/// <summary>The visual style for a <see cref="UIKit.UITableView" />. A table view's style can only be set when it is instantiated.</summary>
 	/// <remarks>Some table view features are only available for a specific style, for example Plain tables can provide an index to help scroll through long lists but Grouped tables should not.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewStyle : long {
 		/// <summary>Cells in the plain style take the entire width of the table view - there is no rounded-rectangle grouping. Section headers and footers 'float' (stick to the top/bottom of the table view) as the user scrolls through the section. An index may be implemented to make scrolling through long lists faster.</summary>
 		Plain,
 		/// <summary>Table style where each section is grouped into a rounded-rectangle. The table view's background can be see behind the rounded-rectangle groupings. Section headers and footers do not 'float' while scrolling.</summary>
 		Grouped,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		InsetGrouped,
 	}
 
@@ -930,7 +880,6 @@ namespace UIKit {
 	/// <summary>An enumeration of predefined scroll positions.</summary>
 	/// <remarks>This is used by the <see cref="UIKit.UITableView.ScrollToRow(Foundation.NSIndexPath,UIKit.UITableViewScrollPosition,System.Boolean)" /> method</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewScrollPosition : long {
 		/// <summary>Minimal scrolling to make the requested cell visible.</summary>
 		None,
@@ -947,7 +896,6 @@ namespace UIKit {
 	/// <remarks>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewRowAnimation : long {
 		/// <summary>Affected rows fade in/out of view.</summary>
 		Fade,
@@ -971,7 +919,6 @@ namespace UIKit {
 	/// <summary>An enumeration of the valid positions for a <see cref="UIKit.UIToolbar" />.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIToolbarPosition : long {
 		/// <summary>The UIToolbar may be in any position.</summary>
 		Any,
@@ -985,7 +932,6 @@ namespace UIKit {
 	/// <summary>An enumeration of phases associated with a <see cref="UIKit.UITouch" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITouchPhase : long {
 		/// <summary>The touch has begun.</summary>
 		Began,
@@ -998,19 +944,15 @@ namespace UIKit {
 		/// <summary>The touch has been cancelled.</summary>
 		Cancelled,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		RegionEntered,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		RegionMoved,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		RegionExited,
 	}
 
 	/// <summary>Enumerates different kinds of <see cref="UIKit.UITouch" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITouchType : long {
 		/// <summary>A direct touch caused by a finger on the screen.</summary>
@@ -1020,7 +962,6 @@ namespace UIKit {
 		/// <summary>A touch that was caused by a stylus (e.g., the Apple Pencil).</summary>
 		Stylus,
 		[iOS (13, 4), TV (13, 4)]
-		[MacCatalyst (13, 1)]
 		IndirectPointer,
 	}
 
@@ -1028,7 +969,6 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>Different hardware devices have different capabilities that can vary over the duration of a touch. For instance, all current hardware allows the <see cref="UIKit.UITouchProperties.Location" /> property to vary, but only the Apple Pencil currently supports the <see cref="UIKit.UITouchProperties.Altitude" /> and <see cref="UIKit.UITouchProperties.Azimuth" /> values to change over the course of a touch.</para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum UITouchProperties : long {
@@ -1079,7 +1019,6 @@ namespace UIKit {
 	/// <remarks>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellStyle : long {
 		/// <summary>Plain style with a black, left-aligned <see cref="UIKit.UITableViewCell.TextLabel" /> and an optional <see cref="UIKit.UITableViewCell.ImageView" /> (that will appear to the left of the text).</summary>
 		Default,
@@ -1096,7 +1035,6 @@ namespace UIKit {
 	///     <remarks>The cell separator style is set via a table view's <see cref="UIKit.UITableView.SeparatorStyle" /> property.</remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellSeparatorStyle : long {
 		/// <summary>No separator is displayed between cells.</summary>
 		None,
@@ -1114,7 +1052,6 @@ namespace UIKit {
 	/// <summary>The visual appearance of a <see cref="UIKit.UITableViewCell" /> when it is selected.</summary>
 	/// <remarks>Used to set the <see cref="UIKit.UITableViewCell.SelectionStyle" /> of a cell.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellSelectionStyle : long {
 		/// <summary>There is no change to the cell's appearance when it is selected.</summary>
 		None,
@@ -1130,7 +1067,6 @@ namespace UIKit {
 	/// <summary>An enumeration of editing styles for a <see cref="UIKit.UITableView" /> cell.</summary>
 	/// <remarks>The editing style of a cell is set on the <see cref="UIKit.UITableViewCell.EditingStyle" /> property.  The editing control is displayed on the left hand side of the cell when it is in editing mode.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellEditingStyle : long {
 		/// <summary>No editing control is displayed in the cell (this is the default).</summary>
 		None,
@@ -1144,7 +1080,6 @@ namespace UIKit {
 	/// <summary>An enumeration of standard accessory controls that can be used by a <see cref="UIKit.UITableViewCell" />.</summary>
 	/// <remarks>Set the type of accessory to display in a <see cref="UIKit.UITableViewCell" /> using the <see cref="UIKit.UITableViewCell.Accessory" /> property.</remarks>
 	[Native ("UITableViewCellAccessoryType")]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellAccessory : long {
 		/// <summary>No accessory is displayed. This is the default. Use this value to remove a previously-assigned accessory.</summary>
 		None,
@@ -1152,13 +1087,11 @@ namespace UIKit {
 		DisclosureIndicator,
 		/// <summary>A blue circular button containing a chevron (right-pointing arrow) is displayed on the right side of the cell. This accessory tracks touches separately from the rest of the cell.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		DetailDisclosureButton,
 		/// <summary>A tick is displayed on the right side of the cell. This accessory does not track touches. The table view's <see cref="UIKit.UITableViewSource" /> can manage check marks (possibly limiting the check mark to a single row) in the <see cref="UIKit.UITableViewSource.RowSelected(UIKit.UITableView,Foundation.NSIndexPath)" /> method.</summary>
 		Checkmark,
 		/// <summary>A standard button indicating additional detail.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		DetailButton,
 	}
 
@@ -1167,7 +1100,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native ("UITableViewCellStateMask")]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UITableViewCellState : ulong {
 		/// <summary>The normal state of a UITableViewCell.</summary>
 		DefaultMask = 0,
@@ -1181,7 +1113,6 @@ namespace UIKit {
 	/// <summary>An enumeration of visual styles for text borders.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextBorderStyle : long {
 		/// <summary>The text field does not have a visible border.</summary>
 		None,
@@ -1197,7 +1128,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the behavior of the clear button on a <see cref="UIKit.UITextField" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextFieldViewMode : long {
 		/// <summary>The overlay view never appears.</summary>
 		Never,
@@ -1213,19 +1143,16 @@ namespace UIKit {
 	/// <summary> An enumeration of values used to specify the transition style of presented <see cref="UIKit.UIViewController" />s.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIModalTransitionStyle : long {
 		/// <summary>Slides up from the bottom of the screen.</summary>
 		CoverVertical = 0,
 		/// <summary>A horizontal right-to-left flip. On dismissal, the transition flips left-to-right.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		FlipHorizontal,
 		/// <summary>The old view fades out while the new view simultaneously fades in.</summary>
 		CrossDissolve,
 		/// <summary>A corner of the presented <see cref="UIKit.UIViewController" /> is "curled up" like a book page. On transition, the curl peels up the screen. Application developers must only use this style when the <see cref="UIKit.UIViewController" /> is being presented with <see cref="UIKit.UIModalPresentationStyle.FullScreen" />.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		PartialCurl,
 	}
 
@@ -1237,7 +1164,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIInterfaceOrientation : long {
 		/// <summary>The orientation is unknown.</summary>
 		Unknown = UIDeviceOrientation.Unknown,
@@ -1259,7 +1185,6 @@ namespace UIKit {
 	[Native]
 	[Flags]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIInterfaceOrientationMask : ulong {
 		/// <summary>The long side is vertical.</summary>
 		Portrait = 1 << (int) UIInterfaceOrientation.Portrait,
@@ -1282,7 +1207,6 @@ namespace UIKit {
 	/// <summary>An enumeration of navigation types for use in a <see cref="UIKit.UIWebView" />.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIWebViewNavigationType : long {
 		/// <summary>The user tapped a link.</summary>
 		LinkClicked,
@@ -1304,7 +1228,6 @@ namespace UIKit {
 	[Native ("UIDataDetectorTypes")]
 	[Flags]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIDataDetectorType : ulong {
 		/// <summary>Detects phone numbers.</summary>
 		PhoneNumber = 1 << 0,
@@ -1316,17 +1239,14 @@ namespace UIKit {
 		CalendarEvent = 1 << 3,
 
 		/// <summary>A tracking number for a parcel.</summary>
-		[MacCatalyst (13, 1)]
 		ShipmentTrackingNumber = 1 << 4,
 		/// <summary>An airplane flight identifier.</summary>
-		[MacCatalyst (13, 1)]
 		FlightNumber = 1 << 5,
 		/// <summary>A word or phrase that may be the intended final value.</summary>
-		[MacCatalyst (13, 1)]
 		LookupSuggestion = 1 << 6,
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0)]
 		Money = 1 << 7,
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0)]
 		PhysicalValue = 1uL << 8,
 
 		/// <summary>Do not perform any content detection.</summary>
@@ -1347,7 +1267,6 @@ namespace UIKit {
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	public enum UIActionSheetStyle : long {
 		/// <summary>Same as <see cref="UIKit.UIActionSheetStyle.Default" /> default.</summary>
@@ -1367,7 +1286,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIStatusBarStyle : long {
 		/// <summary>The default, dark, value for content in the status bar. Preferable for use with lighter-colored content views.</summary>
 		Default,
@@ -1385,7 +1303,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
 		BlackOpaque = 2,
 
-		[MacCatalyst (13, 1)]
 		DarkContent = 3,
 	}
 
@@ -1393,7 +1310,6 @@ namespace UIKit {
 	/// <summary>An enumeration of animations available when the status bar is hidden or made visible.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIStatusBarAnimation : long {
 		/// <summary>No animation.</summary>
 		None,
@@ -1420,7 +1336,6 @@ namespace UIKit {
 	///       </para>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIGestureRecognizerState : long {
 		/// <summary>The default state: no gesture is recognized, but the recognizer may be evaluating touch events.</summary>
 		Possible,
@@ -1444,7 +1359,6 @@ namespace UIKit {
 	[Native]
 	[Flags]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIRemoteNotificationType : ulong {
 		/// <summary>The app accepts no notifications.</summary>
 		None = 0,
@@ -1462,7 +1376,6 @@ namespace UIKit {
 	/// <summary>The keyboard appearance.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIKeyboardAppearance : long {
 		/// <summary>The normal keyboard appearance.</summary>
 		Default,
@@ -1478,7 +1391,6 @@ namespace UIKit {
 	/// <summary>An enumeration of styles used for rendering the return key.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIReturnKeyType : long {
 		/// <summary>The return key is labeled "Return"</summary>
 		Default,
@@ -1510,21 +1422,17 @@ namespace UIKit {
 	/// <summary>An enumeration of values used by <see cref="UIKit.UIViewController.ModalPresentationStyle" /></summary>
 	/// <remarks>iPhones and iTouches should always use <see cref="UIKit.UIModalPresentationStyle.FullScreen" />. iPads may use any value.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIModalPresentationStyle : long {
 		/// <summary>A non-modal presentation or dismissal.</summary>
 		None = -1,
-		[MacCatalyst (13, 1)]
 		Automatic = -2,
 		/// <summary>A UIModalPresentationStyle that encompasses the whole screen.</summary>
 		FullScreen = 0,
 		/// <summary>Set to the height and width of the screen in portrait orientation.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		PageSheet,
 		/// <summary>Centered on and smaller than the screen.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		FormSheet,
 		/// <summary>The same UIModalPresentationStyle used by the view's parent UIViewController.</summary>
 		CurrentContext,
@@ -1536,7 +1444,6 @@ namespace UIKit {
 		OverCurrentContext,
 		/// <summary>Display the modal content in a popover view for horizontally regular environments, and in full screen mode for horizontally compact environments.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Popover,
 		/// <summary>Blur the previous content and then overlay the new content.</summary>
 		[Deprecated (PlatformName.iOS, 16, 0)]
@@ -1550,7 +1457,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UISwipeGestureRecognizerDirection : ulong {
 		/// <summary>The touch or touches swipe to the right. This is the default.</summary>
 		Right = 1 << 0,
@@ -1567,7 +1473,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIPopoverArrowDirection : ulong {
 		/// <summary>The arrow will be on top.</summary>
 		Up = 1 << 0,
@@ -1587,7 +1492,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating in which direction the arrow of the <see cref="UIKit.UIMenuController" /> points.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIMenuControllerArrowDirection : long {
 		/// <summary>The system decides the arrow location based on the menu size.</summary>
 		Default,
@@ -1623,7 +1527,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values specifying the layout direction of the UI.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceLayoutDirection : long {
 		/// <summary>Indicates a left-to-right layout.</summary>
 		LeftToRight,
@@ -1636,7 +1539,6 @@ namespace UIKit {
 	/// <remarks>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceIdiom : long {
 		/// <summary>Not specified.</summary>
 		Unspecified = -1,
@@ -1649,16 +1551,14 @@ namespace UIKit {
 		/// <summary>The UI should be designed for CarPlay.</summary>
 		CarPlay,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		Mac = 5,
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		Vision = 6,
 	}
 
 	// NSInteger -> UIApplication.h
 	/// <include file="../../docs/api/UIKit/UIApplicationState.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIApplicationState']/*" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIApplicationState : long {
 		/// <summary>The application is currently active and on the foreground</summary>
 		Active,
@@ -1674,7 +1574,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIViewAnimationOptions : ulong {
 		/// <summary>Lays out subviews at commit time so they are animated along with their parent.</summary>
 		LayoutSubviews = 1 << 0,
@@ -1724,13 +1623,10 @@ namespace UIKit {
 		TransitionFlipFromBottom = 7 << 20,
 
 		/// <summary>Constant that indicates that the default frame rate is preferred for animations.</summary>
-		[MacCatalyst (13, 1)]
 		PreferredFramesPerSecondDefault = 0 << 24,
 		/// <summary>Constant that indicates that 60 frames per second are preferred for animations.</summary>
-		[MacCatalyst (13, 1)]
 		PreferredFramesPerSecond60 = 3 << 24,
 		/// <summary>Constant that indicates that 30 frames per second are preferred for animations.</summary>
-		[MacCatalyst (13, 1)]
 		PreferredFramesPerSecond30 = 7 << 24,
 
 		/// <summary>Forces layout updates to flush immediately after animation changes.</summary>
@@ -1742,7 +1638,6 @@ namespace UIKit {
 	// note: it looks unused by any API
 	/// <summary>An enumeration of error codes from the printing system.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("UIPrintErrorDomain")]
 	public enum UIPrintError {
 		/// <summary>The printer was not available.</summary>
@@ -1759,7 +1654,6 @@ namespace UIKit {
 	/// <summary>An enumeration of duplex modes supported by the printer.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIPrintInfoDuplex : long {
 		/// <summary>Single-sided printing only.</summary>
 		None,
@@ -1773,7 +1667,6 @@ namespace UIKit {
 	/// <summary>An enumeration of printing orientations.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIPrintInfoOrientation : long {
 		/// <summary>Portrait mode, in which the longer side of the page is vertical.</summary>
 		Portrait,
@@ -1785,7 +1678,6 @@ namespace UIKit {
 	/// <summary>An enumeration of print content types (e.g., general, photo, grayscale).</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIPrintInfoOutputType : long {
 		/// <summary>A mixture of text, graphics, and images.</summary>
 		General,
@@ -1801,7 +1693,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the scrolling direction desired.</summary>
 	/// <remarks>Used as the argument to <see cref="UIResponder.AccessibilityScroll" /> to generate a scrolling action.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityScrollDirection : long {
 		/// <summary>Indicates a scroll to the right.</summary>
 		Right = 1,
@@ -1822,7 +1713,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UIScreen.OverscanCompensation" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIScreenOverscanCompensation : long {
 		/// <summary>The final screenbuffer is scaled so that all pixels are visible.</summary>
 		Scale,
@@ -1839,7 +1729,6 @@ namespace UIKit {
 	/// <summary>An enumeration of locations in a <see cref="UIKit.UISegmentedControl" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UISegmentedControlSegment : long {
 		/// <summary>Any segment.</summary>
 		Any,
@@ -1857,21 +1746,17 @@ namespace UIKit {
 	/// <summary>An enumeration indicating icons available for the search bar.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UISearchBarIcon : long {
 		/// <summary>The search icon.</summary>
 		Search,
 		/// <summary>The icon used for the clear action.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Clear,
 		/// <summary>The icon used for a bookmark.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		Bookmark,
 		/// <summary>The icon used for the results list.</summary>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		ResultsList,
 	}
 
@@ -1879,7 +1764,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the orientation of <see cref="UIKit.UIPageViewController" /> page turns.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerNavigationOrientation : long {
 		/// <summary>Horizontal orientation.</summary>
 		Horizontal,
@@ -1891,7 +1775,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the location of the spine around which the <see cref="UIKit.UIPageViewController" /> transitions occur.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerSpineLocation : long {
 		/// <summary>No spine.</summary>
 		None,
@@ -1907,7 +1790,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the direction of <see cref="UIKit.UIPageViewController" /> page turns.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerNavigationDirection : long {
 		/// <summary>Navigation forward.</summary>
 		Forward,
@@ -1919,7 +1801,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the transition style of a <see cref="UIKit.UIPageViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPageViewControllerTransitionStyle : long {
 		/// <summary>A transition in which the page curls up.</summary>
 		PageCurl,
@@ -1931,7 +1812,6 @@ namespace UIKit {
 	/// <summary>An enumeration specifying whether spell-checking is on or off.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextSpellCheckingType : long {
 		/// <summary>The default behavior: spell-checking is enabled when auto-correction is enabled.</summary>
 		Default,
@@ -1947,7 +1827,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UITextField" />
 	/// <altmember cref="UIKit.UITextView" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextStorageDirection : long {
 		/// <summary>The text is stored in a forward direction.</summary>
 		Forward,
@@ -1959,7 +1838,6 @@ namespace UIKit {
 	/// <summary>An enumeration indicating the direction of text layout.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextLayoutDirection : long {
 		/// <summary>The text is laid out from left-to-right.</summary>
 		Right = 2,
@@ -1978,7 +1856,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UITextStorageDirection" />
 	/// <altmember cref="UIKit.UITextLayoutDirection" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextDirection : long {
 		/// <summary>The text direction is forward.</summary>
 		Forward,
@@ -2000,7 +1877,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UITextInputStringTokenizer" />
 	/// <altmember cref="UIKit.UITextInputTokenizer" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITextGranularity : long {
 		/// <summary>The unit of text is a character.</summary>
 		Character,
@@ -2023,7 +1899,6 @@ namespace UIKit {
 	/// <remarks>
 	///       <para>Higher values are considered more important by the flow layout constraint engine. Application developers should not specify a layout priority greater than the value of <see cref="UIKit.UILayoutPriority.Required" /></para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	public enum UILayoutPriority {
 		/// <summary>Indicates a required constraint. The underlying value of this is 1000.</summary>
 		Required = 1000,
@@ -2033,11 +1908,8 @@ namespace UIKit {
 		DefaultLow = 250,
 		/// <summary>Generally not used; the priority at which a view wants to conform to the value of UIView.SystemLayoutSizeFitting.</summary>
 		FittingSizeLevel = 50,
-		[MacCatalyst (13, 1)]
 		DragThatCanResizeScene = 510,
-		[MacCatalyst (13, 1)]
 		SceneSizeStayPut = 500,
-		[MacCatalyst (13, 1)]
 		DragThatCannotResizeScene = 490,
 	}
 
@@ -2046,7 +1918,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UICollectionViewUpdateItem.UpdateAction" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UICollectionUpdateAction : long {
 		/// <summary>Inserts the item into the collection view.</summary>
 		Insert,
@@ -2067,7 +1938,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UICollectionView" />
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UICollectionViewScrollPosition : ulong {
 		/// <summary>Do not scroll the item into the view.</summary>
 		None,
@@ -2090,7 +1960,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UICollectionViewScrollDirection : long {
 		/// <summary>Elements are placed top-to-bottom and then wrap horizontally to the right.</summary>
 		Vertical,
@@ -2102,7 +1971,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values used in flow layouts to specify which axis is being constrained.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UILayoutConstraintAxis : long {
 		/// <summary>The constraint applies to the horizontal axis.</summary>
 		Horizontal,
@@ -2130,7 +1998,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values used by <see cref="UIKit.UICollectionViewLayoutAttributes.RepresentedElementCategory" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UICollectionElementCategory : ulong {
 		/// <summary>The related <see cref="UIKit.UIView" /> is a cell in a <see cref="UIKit.UICollectionView" />.</summary>
 		Cell,
@@ -2144,7 +2011,6 @@ namespace UIKit {
 	/// <summary>An enumeration of view types that are supported in flow layouts.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UICollectionViewFlowLayout" />
-	[MacCatalyst (13, 1)]
 	public enum UICollectionElementKindSection {
 		/// <summary>The <see cref="UIKit.UIView" /> should be treated as a header.</summary>
 		Header,
@@ -2218,7 +2084,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify the axis being monitored by a <see cref="UIKit.UIInterpolatingMotionEffect" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIInterpolatingMotionEffectType : long {
 		/// <summary>Interpolates values along the horizontal axis, involving the device facing left or right relative to the user's viewpoint.</summary>
 		TiltAlongHorizontalAxis,
@@ -2230,7 +2095,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify operations on <see cref="UIKit.UINavigationController" />.</summary>
 	/// <remarks>This enumeration is used in calls to <see cref="UINavigationControllerDelegate.GetAnimationControllerForOperation" />.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UINavigationControllerOperation : long {
 		/// <summary>No navigation operation is happening.</summary>
 		None,
@@ -2247,7 +2111,6 @@ namespace UIKit {
 	///     </remarks>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIActivityCategory : long {
 		/// <summary>Activities whose primary purpose is to take an action (other than sharing) on the selected item.</summary>
 		Action,
@@ -2259,7 +2122,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UIAttachmentBehavior" /> is anchored to a fixed point or to an <see cref="UIKit.IUIDynamicItem" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIAttachmentBehaviorType : long {
 		/// <summary>Two dynamic items are attached.</summary>
 		Items,
@@ -2271,7 +2133,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify locations for <see cref="UIKit.UISearchBar" />, <see cref="UIKit.UINavigationBar" />, or <see cref="UIKit.UIToolbar" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBarPosition : long {
 		/// <summary>Specifies that the position is unspecified.</summary>
 		Any,
@@ -2288,7 +2149,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UICollisionBehaviorMode : ulong {
 		/// <summary>The dynamic items collide only with each and not with collision boundaries.</summary>
 		Items = 1,
@@ -2355,7 +2215,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	[Native]
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum UIKeyModifierFlags : long {
 		/// <summary>The caps lock is pressed.</summary>
 		AlphaShift = 1 << 16,  // This bit indicates CapsLock
@@ -2376,7 +2235,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UIScrollView.KeyboardDismissMode" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIScrollViewKeyboardDismissMode : long {
 		/// <summary>The keyboard does not get dismissed with a drag.</summary>
 		None,
@@ -2393,7 +2251,6 @@ namespace UIKit {
 	// NSInteger -> UIWebView.h
 	/// <summary>An enumeration whose values specify whether a <see cref="UIKit.UIWebView" />'s <see cref="UIKit.UIWebView.PaginationMode" /> should break by columns or page.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIWebPaginationBreakingMode : long {
 		/// <summary>Content respects CSS properties controlling page-breaking.</summary>
@@ -2405,7 +2262,6 @@ namespace UIKit {
 	// NSInteger -> UIWebView.h
 	/// <summary>An enumeration whose values specify valid page-break modes for the <see cref="UIKit.UIWebView" />'s <see cref="UIKit.UIWebView.PaginationMode" /> property.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIWebPaginationMode : long {
 		/// <summary>Content appears as one long scrolling view with no pages.</summary>
@@ -2425,7 +2281,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UIPushBehavior" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPushBehaviorMode : long {
 		/// <summary>The force is continuous.</summary>
 		Continuous,
@@ -2439,7 +2294,6 @@ namespace UIKit {
 	/// <altmember cref="UIKit.UITabBar.ItemPositioning" />
 	/// <altmember cref="UIKit.UITabBarAppearance.StackedItemPositioning" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UITabBarItemPositioning : long {
 		/// <summary>The item positioning is controlled by the user interface idiom.</summary>
 		Automatic,
@@ -2453,7 +2307,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify valid options for the <see cref="UIKit.UIView.AnimateKeyframes(System.Double,System.Double,UIKit.UIViewKeyframeAnimationOptions,System.Action,UIKit.UICompletionHandler)" /> method.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIViewKeyframeAnimationOptions : ulong {
 		/// <summary>The option to layout subviews at commit time so they animate with their parent.</summary>
 		LayoutSubviews = UIViewAnimationOptions.LayoutSubviews,
@@ -2486,7 +2339,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify adjustment modes for <see cref="UIKit.UIView.TintAdjustmentMode" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIViewTintAdjustmentMode : long {
 		/// <summary>Automatic tint adjustment.</summary>
 		Automatic,
@@ -2500,7 +2352,6 @@ namespace UIKit {
 	/// <summary>An enumeration specifying system animations, i.e., Delete.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UISystemAnimation : ulong {
 		/// <summary>Option to remove views from the view hierarchy when the animation completes.</summary>
 		Delete,
@@ -2548,7 +2399,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UISearchBar.SearchBarStyle" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UISearchBarStyle : ulong {
 		/// <summary>The default search bar style.</summary>
 		Default,
@@ -2562,7 +2412,6 @@ namespace UIKit {
 	/// <summary>An enumeration whose value specify the blurring and tinting effects applied to a <see cref="UIKit.UIInputView" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIInputViewStyle : long {
 		/// <summary>Applies blurring, but not tinting. This style is appropriate for <see cref="UIKit.UIInputView" />s that should be themed like, but do not look like, the keyboard.</summary>
 		Default,
@@ -2573,7 +2422,6 @@ namespace UIKit {
 	/// <summary>Enumerates the various interface sizes.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIUserInterfaceSizeClass : long {
 		/// <summary>Unspecified interface.</summary>
 		Unspecified = 0,
@@ -2586,7 +2434,6 @@ namespace UIKit {
 	/// <summary>Enumeration of the styles showing the effect of a <see cref="UIKit.UIAlertAction" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIAlertActionStyle : long {
 		/// <summary>A style indicating default behavior.</summary>
 		Default,
@@ -2610,7 +2457,6 @@ namespace UIKit {
 	///       </para>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIAlertControllerStyle : long {
 		/// <summary>Displays the alert controller as an action sheet.</summary>
 		ActionSheet,
@@ -2622,7 +2468,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <related type="article" href="https://blog.xamarin.com/adding-view-effects-in-ios-8/">Adding View Effects in iOS 8</related>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIBlurEffectStyle : long {
 		/// <summary>The blur effect is much lighter than the view.</summary>
 		ExtraLight,
@@ -2635,62 +2480,44 @@ namespace UIKit {
 		[NoMacCatalyst]
 		ExtraDark,
 		/// <summary>The normal blur effect for the UI style.</summary>
-		[MacCatalyst (13, 1)]
 		Regular = 4,
 		/// <summary>The blur effect adapts to the style of UI so that it is noticeable.</summary>
-		[MacCatalyst (13, 1)]
 		Prominent = 5,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterial,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThinMaterial,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemMaterial,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThickMaterial,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemChromeMaterial,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterialLight,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThinMaterialLight,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemMaterialLight,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThickMaterialLight,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemChromeMaterialLight,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterialDark,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThinMaterialDark,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemMaterialDark,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemThickMaterialDark,
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		SystemChromeMaterialDark,
 	}
 
 	/// <summary>Enumerates various types of printing tasks. Used with <see cref="UIKit.UIPrinter.SupportedJobTypes" />.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIPrinterJobTypes : long {
 		/// <summary>Printer support is unknown.</summary>
 		Unknown = 0,
@@ -2715,7 +2542,6 @@ namespace UIKit {
 	/// <summary>Enumerates the various types of user notification. Can be "OR"ed together as flags.</summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNAuthorizationOptions' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNAuthorizationOptions' instead.")]
 	[Native]
 	[Flags]
@@ -2733,7 +2559,6 @@ namespace UIKit {
 	/// <summary>Whether a <see cref="UIKit.UIUserNotificationAction" /> should run the app in foreground or background mode.</summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationActionOptions' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNNotificationActionOptions' instead.")]
 	[Native]
 	public enum UIUserNotificationActivationMode : ulong {
@@ -2746,7 +2571,6 @@ namespace UIKit {
 	/// <summary>Enumerates the amount of space available for a <see cref="UIKit.UIUserNotificationAction" />. Used with <see cref="UIKit.UIMutableUserNotificationCategory.SetActions(UIKit.UIUserNotificationAction[],UIKit.UIUserNotificationActionContext)" /></summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationCategory.Actions' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNNotificationCategory.Actions' instead.")]
 	[Native]
 	public enum UIUserNotificationActionContext : ulong {
@@ -2759,7 +2583,6 @@ namespace UIKit {
 	/// <summary>Enumerates the insertion points for custom menu items.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0)]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum UIDocumentMenuOrder : ulong {
@@ -2772,7 +2595,6 @@ namespace UIKit {
 	/// <summary>Enumerates the types of file transfer operations used by the document picker.</summary>
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use the designated constructors instead.")]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the designated constructors instead.")]
 	[Native]
 	public enum UIDocumentPickerMode : ulong {
@@ -2788,7 +2610,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates how elements should be navigated by the assistive technology.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityNavigationStyle : long {
 
@@ -2803,27 +2624,20 @@ namespace UIKit {
 	/// <summary>Enumerates valid display modes for an expanded <see cref="UIKit.UISplitViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UISplitViewControllerDisplayMode : long {
 		/// <summary>The system decides the most appropriate display mode.</summary>
 		Automatic,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		SecondaryOnly,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		OneBesideSecondary,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		OneOverSecondary,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		TwoBesideSecondary,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		TwoOverSecondary,
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		TwoDisplaceSecondary,
 
 		/// <summary>The primary <see cref="UIKit.UISplitViewController" /> is hidden.</summary>
@@ -2849,7 +2663,6 @@ namespace UIKit {
 	[Native]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UIContextualActionStyle' and corresponding APIs instead.")]
 	public enum UITableViewRowActionStyle : long {
 		/// <summary>The default button appearance.</summary>
@@ -2863,7 +2676,6 @@ namespace UIKit {
 	// Utility enum for UITransitionContext[To|From]ViewKey
 	/// <summary>Enumerates whether a <see cref="UIKit.UIViewController" /> for a transition is associated with the "from" <see cref="UIKit.UIView" /> or the "to" <see cref="UIKit.UIView" />. Used with <see cref="UIKit.UIViewControllerTransitionCoordinatorContext_Extensions.GetTransitionViewController(UIKit.IUIViewControllerTransitionCoordinatorContext,UIKit.UITransitionViewControllerKind)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	public enum UITransitionViewControllerKind {
 		/// <summary>Specifies a transition to a specified view.</summary>
 		ToView,
@@ -2874,7 +2686,6 @@ namespace UIKit {
 	// note [Native] since it maps to UIFontWeightConstants fields (CGFloat)
 	/// <summary>Enumerates font weights.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	public enum UIFontWeight {
 		/// <summary>A very light weight.</summary>
 		UltraLight,
@@ -2896,7 +2707,7 @@ namespace UIKit {
 		Black,
 	}
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	public enum UIFontWidth {
 		Condensed,
 		Standard,
@@ -2906,7 +2717,6 @@ namespace UIKit {
 
 	/// <summary>How the views in a <see cref="UIKit.UIStackView" /> are distributed along the view's alignment axis.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewDistribution : long {
 		/// <summary>Attempts to fill along the <see cref="UIKit.UIStackView.Axis" /> according to the <see cref="UIKit.UIStackView.ArrangedSubviews" />' <see cref="UIKit.UIView.ContentCompressionResistancePriority(UIKit.UILayoutConstraintAxis)" /> and <see cref="UIKit.UIView.ContentHuggingPriority(UIKit.UILayoutConstraintAxis)" /> properties.</summary>
@@ -2922,7 +2732,6 @@ namespace UIKit {
 	}
 
 	/// <include file="../../docs/api/UIKit/UIStackViewAlignment.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIStackViewAlignment']/*" />
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIStackViewAlignment : long {
 		/// <summary>Views are arranged to fill available space perpendicular to the <see cref="UIKit.UIStackView.Axis" />.</summary>
@@ -2946,7 +2755,6 @@ namespace UIKit {
 
 	/// <summary>Flagging enumeration that can specify overriding of writing direction.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum NSWritingDirectionFormatType : long {
@@ -2958,7 +2766,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates desired page cutting behavior for roll-feed printers.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPrinterCutterBehavior : long {
 		/// <summary>Indicates that the printer should not cut pages.</summary>
@@ -2976,7 +2783,6 @@ namespace UIKit {
 	/// <summary>Enumerates whether the user may respond to a user notification with text input.</summary>
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'UNNotificationAction' or 'UNTextInputNotificationAction' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UNNotificationAction' or 'UNTextInputNotificationAction' instead.")]
 	[Native]
 	public enum UIUserNotificationActionBehavior : ulong {
@@ -2988,7 +2794,6 @@ namespace UIKit {
 
 	/// <summary>Describes a view's contents so that the app dev can control if it should be flipped between left-to-right and right-to-left layouts.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISemanticContentAttribute : long {
 		/// <summary>Indicates a default left-right view that is flipped when necessary.</summary>
@@ -3005,7 +2810,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates descriptions of collision boundary geometries for dynamic items.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDynamicItemCollisionBoundsType : ulong {
 		/// <summary>Indicates that the collision boundary is a rectangle.</summary>
@@ -3019,7 +2823,6 @@ namespace UIKit {
 	/// <summary>Enumerates the 3D Touch capabilities on a device.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIForceTouchCapability : long {
 		/// <summary>It is not known whether 3D Touch capabilities are available. For example, a view that has not been added to a view hierarchy has an unknown 3D Touch capability.</summary>
 		Unknown = 0,
@@ -3032,7 +2835,6 @@ namespace UIKit {
 	/// <summary>Enumeration that defines the various styles of <see cref="UIKit.UIPreviewAction" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIPreviewActionStyle : long {
 		/// <summary>Indicates the default style.</summary>
 		Default,
@@ -3050,7 +2852,6 @@ namespace UIKit {
 	///         <img href="~/xml/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occurring during a press" />
 	///       </para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPressPhase : long {
 		/// <summary>The initial state of a button. Indicates that a press has begun.</summary>
@@ -3067,7 +2868,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates button types for <see cref="UIKit.UIPress" /> objects (see <see cref="UIKit.UIPress.Type" />).</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPressType : long {
 		/// <summary>Arrow pointing up.</summary>
@@ -3100,7 +2900,6 @@ namespace UIKit {
 
 	/// <summary>Enumeration whose values define how a <see cref="UIKit.UITableViewCell" /> displays when it is focused.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewCellFocusStyle : long {
 		/// <summary>Indicates that the cell will have the default visual response when it receives the focus.</summary>
@@ -3111,7 +2910,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates display gamuts.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDisplayGamut : long {
 		/// <summary>An indeterminate display gamut.</summary>
@@ -3124,7 +2922,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates layout directions.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITraitEnvironmentLayoutDirection : long {
 		/// <summary>The layout direction is unknown.</summary>
@@ -3137,7 +2934,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates CarPlay and tvOS UI themes.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIUserInterfaceStyle : long {
 		/// <summary>Indicates that the theme is not known.</summary>
@@ -3150,7 +2946,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates activities that a user might use with a URL or text attachment.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextItemInteraction : long {
 		/// <summary>The user wants to execute the default action.</summary>
@@ -3163,7 +2958,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates animation states.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIViewAnimatingState : long {
 		/// <summary>Animations have not yet started.</summary>
@@ -3176,7 +2970,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the endpoints and current position of an animation.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIViewAnimatingPosition : long {
 		/// <summary>The ending position.</summary>
@@ -3189,7 +2982,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the various types of timing curves.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITimingCurveType : long {
 		/// <summary>The built-in UIKit timing curves.</summary>
@@ -3204,7 +2996,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the ear (or ears) for which the accessibility device is paired.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityHearingDeviceEar : ulong {
 		/// <summary>The accessibility device is not currently associated with either or both bears.</summary>
@@ -3219,7 +3010,6 @@ namespace UIKit {
 
 	/// <summary>Enmumerates search directions.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityCustomRotorDirection : long {
 		/// <summary>The previous search result.</summary>
@@ -3230,7 +3020,6 @@ namespace UIKit {
 
 	/// <summary>Flagging enumeration for the permission options for Cloud sharing.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum UICloudSharingPermissionOptions : ulong {
@@ -3248,7 +3037,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates reasons that an editing session ends.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextFieldDidEndEditingReason : long {
 		/// <summary>Indicates that the reason for ending the edit are unknown.</summary>
@@ -3263,7 +3051,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates index display behavior during scrolling.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollViewIndexDisplayMode : long {
 		/// <summary>Indicates that the index is automatically hidden or displayed.</summary>
@@ -3274,7 +3061,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates safe area inset adjustment behaviors.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollViewContentInsetAdjustmentBehavior : long {
 		/// <summary>Indicates that safe area insets are automatically adjusted when content is adjusted.</summary>
@@ -3289,7 +3075,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the types that implement the <see cref="UIKit.IUIAccessibilityContainer" /> interface.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityContainerType : long {
 		/// <summary>To be added.</summary>
@@ -3300,13 +3085,11 @@ namespace UIKit {
 		List,
 		/// <summary>To be added.</summary>
 		Landmark,
-		[MacCatalyst (13, 1)]
 		SemanticGroup,
 	}
 
 	/// <summary>Enumerates smart quote conversion behavior.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartQuotesType : long {
 		/// <summary>Indicates the default behavior.</summary>
@@ -3319,7 +3102,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates behaviors for converting hyphens to en or em dashes.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartDashesType : long {
 		/// <summary>Indicates the default behavior.</summary>
@@ -3332,7 +3114,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates behaviors for padding insertions and unpadding deletions.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextSmartInsertDeleteType : long {
 		/// <summary>Indicates the default behavior.</summary>
@@ -3345,7 +3126,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the types of content that may be represented by a <see cref="UIKit.UIAccessibilityCustomRotor" /> object.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityCustomSystemRotorType : long {
 		/// <summary>An unknown or non-specific type.</summary>
@@ -3390,7 +3170,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates drag activity drop resolutions.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDropOperation : ulong {
 		/// <summary>Indicates that dropping items will not result in data transfer.</summary>
@@ -3405,7 +3184,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates behaviors when dragging text.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum UITextDragOptions : long {
@@ -3417,7 +3195,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates behaviors in response to dropped text.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextDropAction : ulong {
 		/// <summary>Indicates that dropped text is inserted at the insertion point, regardless of whether there is a text selection.</summary>
@@ -3430,7 +3207,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates text drop progress notification styles.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextDropProgressMode : ulong {
 		/// <summary>Indicates that the system's blocking alert will be used.</summary>
@@ -3441,7 +3217,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates behaviors for noneditable views when receiving dropped text.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextDropEditability : ulong {
 		/// <summary>Indicates that dropped text is not accepted.</summary>
@@ -3454,7 +3229,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates collection view reorganization speeds for drop animations.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionViewReorderingCadence : long {
 		/// <summary>Indicates immediate reorganization.</summary>
@@ -3467,7 +3241,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates drop actions.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionViewDropIntent : long {
 		/// <summary>Indicates that no action was specified.</summary>
@@ -3480,7 +3253,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates drag operation states.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionViewCellDragState : long {
 		/// <summary>Indicates that the cell is not in a drag operation.</summary>
@@ -3494,7 +3266,6 @@ namespace UIKit {
 	/// <summary>Enumerates presets for exporting images.</summary>
 	[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'PHPicker' instead.")]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'PHPicker' instead.")]
 	[Native]
 	public enum UIImagePickerControllerImageUrlExportPreset : long {
@@ -3506,7 +3277,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates action button styles.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIContextualActionStyle : long {
 		/// <summary>Indicates the style for a button that causes a nondestructive action.</summary>
@@ -3517,7 +3287,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates cell states while the cell is involved in a drag operation.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewCellDragState : long {
 		/// <summary>Indicates that the cell is not lifting or dragging.</summary>
@@ -3530,7 +3299,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates inset behaviors in a table view.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewSeparatorInsetReference : long {
 		/// <summary>Indicates that insets are calculated from the edge of the cell.</summary>
@@ -3541,7 +3309,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates drop handling options.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITableViewDropIntent : long {
 		/// <summary>Indicates the lack of a drop proposal.</summary>
@@ -3556,7 +3323,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates primary view controller locations.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISplitViewControllerPrimaryEdge : long {
 		/// <summary>Indicates that the primary view controller is on the leading edge.</summary>
@@ -3567,7 +3333,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates drop progress indicator styles.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDropSessionProgressIndicatorStyle : ulong {
 		/// <summary>Indicates no progress indicator.</summary>
@@ -3578,7 +3343,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates states for spring-loaded interactions.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISpringLoadedInteractionEffectState : long {
 		/// <summary>Indicates a view state for a view that is not currently available for spring loading. (The view's default visual style.)</summary>
@@ -3593,7 +3357,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the import modes of the document browser.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDocumentBrowserImportMode : ulong {
 		/// <summary>The document cannot be imported.</summary>
@@ -3606,7 +3369,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates document browser styles.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDocumentBrowserUserInterfaceStyle : ulong {
 		/// <summary>Indicates a white background.</summary>
@@ -3619,7 +3381,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates allowable action locations.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum UIDocumentBrowserActionAvailability : long {
@@ -3631,7 +3392,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the type responsible for the drop operation.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextDropPerformer : ulong {
 		/// <summary>Indicates that the drop operation should be performed by the text view.</summary>
@@ -3642,7 +3402,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates whether and when large titles are displayed.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UINavigationItemLargeTitleDisplayMode : long {
 		/// <summary>Indicates that large title text is displayed if it was displayed in the previous navigation item.</summary>
@@ -3651,11 +3410,10 @@ namespace UIKit {
 		Always,
 		/// <summary>Indicates that large title text is always displayed.</summary>
 		Never,
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		Inline,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionViewFlowLayoutSectionInsetReference : long {
 		/// <summary>To be added.</summary>
@@ -3668,7 +3426,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates how the data from a <see cref="Foundation.NSItemProvider" /> should be presented.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPreferredPresentationStyle : long {
 		/// <summary>There is no preferred presentation style.</summary>
@@ -3681,7 +3438,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates the document browser error code.</summary>
 	[NoTV, NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("UIDocumentBrowserErrorDomain")]
 	public enum UIDocumentBrowserErrorCode : long {
@@ -3690,7 +3446,6 @@ namespace UIKit {
 		NoLocationAvailable = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIGraphicsImageRendererFormatRange : long {
 		/// <summary>To be added.</summary>
@@ -3705,7 +3460,6 @@ namespace UIKit {
 
 	/// <summary>Enumerates print failure reasons.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPrintErrorCode : long {
 		/// <summary>Indicates that the selected device cannot print.</summary>
@@ -3718,7 +3472,6 @@ namespace UIKit {
 		JobFailedError,
 	}
 
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("UISceneErrorDomain")]
 	[Native]
 	public enum UISceneErrorCode : long {
@@ -3728,7 +3481,6 @@ namespace UIKit {
 		GeometryRequestDenied,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIImageSymbolScale : long {
 		Default = -1,
@@ -3738,7 +3490,6 @@ namespace UIKit {
 		Large,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIImageSymbolWeight : long {
 		Unspecified = 0,
@@ -3753,7 +3504,6 @@ namespace UIKit {
 		Black,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISceneActivationState : long {
 		Unattached = -1,
@@ -3762,7 +3512,6 @@ namespace UIKit {
 		Background,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuElementState : long {
 		Off,
@@ -3770,37 +3519,33 @@ namespace UIKit {
 		Mixed,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuElementAttributes : ulong {
 		Disabled = 1uL << 0,
 		Destructive = 1uL << 1,
 		Hidden = 1uL << 2,
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		KeepsMenuPresented = 1uL << 3,
 	}
 
 	[Flags]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuOptions : ulong {
 		DisplayInline = 1uL << 0,
 		Destructive = 1uL << 1,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		SingleSelection = 1uL << 5,
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		DisplayAsPalette = 1uL << 7,
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIContextMenuInteractionCommitStyle : long {
 		Dismiss = 0,
 		Pop,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum UIWindowSceneSessionRole {
 		[Field ("UIWindowSceneSessionRoleApplication")]
 		Application,
@@ -3809,13 +3554,12 @@ namespace UIKit {
 		ExternalDisplay,
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 #if HAS_CARPLAY
 		[Field ("CPTemplateApplicationSceneSessionRoleApplication", "CarPlay")]
 #endif
 		CarTemplateApplication,
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Field ("UIWindowSceneSessionRoleExternalDisplayNonInteractive")]
 		ExternalDisplayNonInteractive,
 
@@ -3828,7 +3572,6 @@ namespace UIKit {
 		CameraCaptureAccessory,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum UIMenuIdentifier {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -3914,7 +3657,7 @@ namespace UIKit {
 		Alignment,
 		[Field ("UIMenuToolbar")]
 		Toolbar,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Field ("UIMenuSidebar")]
 		Sidebar,
 		[Field ("UIMenuFullscreen")]
@@ -3927,15 +3670,14 @@ namespace UIKit {
 		Root,
 
 		[iOS (14, 0), TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("UIMenuOpenRecent")]
 		OpenRecent,
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Field ("UIMenuDocument")]
 		Document,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("UIMenuAutoFill")]
 		AutoFill,
 		[TV (18, 1), iOS (18, 1), MacCatalyst (18, 1)]
@@ -3951,7 +3693,6 @@ namespace UIKit {
 		NewItem,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityTextualContext {
 		[Field ("UIAccessibilityTextualContextWordProcessing")]
 		WordProcessing,
@@ -3969,7 +3710,6 @@ namespace UIKit {
 		Console,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionLayoutSectionOrthogonalScrollingBehavior : long {
 		None,
@@ -3980,7 +3720,6 @@ namespace UIKit {
 		GroupPagingCentered,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityContrast : long {
 		Unspecified = -1,
@@ -3988,7 +3727,6 @@ namespace UIKit {
 		High,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UILegibilityWeight : long {
 		Unspecified = -1,
@@ -3997,7 +3735,6 @@ namespace UIKit {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIUserInterfaceLevel : long {
 		Unspecified = -1,
@@ -4005,7 +3742,6 @@ namespace UIKit {
 		Elevated,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIEditingInteractionConfiguration : long {
 		None = 0,
@@ -4013,14 +3749,12 @@ namespace UIKit {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISplitViewControllerBackgroundStyle : long {
 		None,
 		Sidebar,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITabBarItemAppearanceStyle : long {
 		Stacked,
@@ -4028,14 +3762,12 @@ namespace UIKit {
 		CompactInline,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextAlternativeStyle : long {
 		None,
 		LowConfidence,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextInteractionMode : long {
 		Editable,
@@ -4043,7 +3775,6 @@ namespace UIKit {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIVibrancyEffectStyle : long {
 		Label,
@@ -4056,7 +3787,6 @@ namespace UIKit {
 		Separator,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIWindowSceneDismissalAnimation : long {
 		Standard = 1,
@@ -4065,17 +3795,15 @@ namespace UIKit {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIActivityItemsConfigurationInteraction {
 		[Field ("UIActivityItemsConfigurationInteractionShare")]
 		Share,
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Field ("UIActivityItemsConfigurationInteractionCopy")]
 		Copy,
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum UIActivityItemsConfigurationPreviewIntent {
 		[Field ("UIActivityItemsConfigurationPreviewIntentFullSize")]
 		FullSize,
@@ -4084,18 +3812,15 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIDatePickerStyle : long {
 		Automatic,
 		Wheels,
 		Compact,
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		Inline,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[iOS (13, 4), TV (13, 4)]
 	[Native ("UIKeyboardHIDUsage")]
 	public enum UIKeyboardHidUsage : long {
@@ -4282,7 +4007,6 @@ namespace UIKit {
 	}
 
 	[Flags, NoTV, iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIEventButtonMask : ulong {
 		Primary = 1L << 0,
@@ -4290,7 +4014,6 @@ namespace UIKit {
 	}
 
 	[Flags, TV (13, 4), iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAxis : ulong {
 		Neither = 0uL,
@@ -4300,7 +4023,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollType : long {
 		Discrete,
@@ -4308,7 +4030,6 @@ namespace UIKit {
 	}
 
 	[Flags, NoTV, iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIScrollTypeMask : ulong {
 		Discrete = 1L << 0,
@@ -4317,7 +4038,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (13, 4)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIPointerEffectTintMode : long {
 		None = 0,
@@ -4326,7 +4046,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIButtonRole : long {
 		Normal,
@@ -4336,7 +4055,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICellAccessoryDisplayedState : long {
 		Always,
@@ -4345,7 +4063,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICellAccessoryOutlineDisclosureStyle : long {
 		Automatic,
@@ -4354,7 +4071,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICellAccessoryPlacement : long {
 		Leading,
@@ -4362,7 +4078,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICellConfigurationDragState : long {
 		None,
@@ -4371,7 +4086,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICellConfigurationDropState : long {
 		None,
@@ -4380,26 +4094,21 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICollectionLayoutListAppearance : long {
 		Plain,
 		Grouped,
 #if !TVOS
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		InsetGrouped,
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		Sidebar,
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		SidebarPlain,
 #endif
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICollectionLayoutListHeaderMode : long {
 		None,
@@ -4408,7 +4117,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIContentInsetsReference : long {
 		Automatic,
@@ -4419,7 +4127,6 @@ namespace UIKit {
 	}
 
 	[TV (17, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIContextMenuInteractionAppearance : long {
 		Unknown = 0,
@@ -4428,7 +4135,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIUserInterfaceActiveAppearance : long {
 		Unspecified = -1,
@@ -4437,7 +4143,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIListContentTextAlignment : long {
 		Natural,
@@ -4446,7 +4151,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIPageControlInteractionState : long {
 		None = 0,
@@ -4455,7 +4159,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UIPageControlBackgroundStyle : long {
 		Automatic = 0,
@@ -4467,7 +4170,6 @@ namespace UIKit {
 	[iOS (14, 0), TV (14, 0), NoMacCatalyst]
 #else
 	[iOS (14, 0), TV (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 	public enum UIPasteboardDetectionPattern {
@@ -4480,7 +4182,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternLink")]
@@ -4488,7 +4190,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternPhoneNumber")]
@@ -4496,7 +4198,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternEmailAddress")]
@@ -4504,7 +4206,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternPostalAddress")]
@@ -4512,7 +4214,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternCalendarEvent")]
@@ -4520,7 +4222,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternShipmentTrackingNumber")]
@@ -4528,7 +4230,7 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternFlightNumber")]
@@ -4536,14 +4238,13 @@ namespace UIKit {
 #if XAMCORE_5_0
 		[iOS (15, 0), TV (15, 0), NoMacCatalyst]
 #else
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Obsoleted (PlatformName.MacCatalyst, 17, 4, message: Constants.ApiRemovedGeneral)]
 #endif
 		[Field ("UIPasteboardDetectionPatternMoneyAmount")]
 		MoneyAmount,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, NoiOS]
 	[Native]
 	public enum UISceneCollectionJoinBehavior : long {
@@ -4554,7 +4255,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UISplitViewControllerStyle : long {
 		Unspecified,
@@ -4563,7 +4263,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UISplitViewControllerColumn : long {
 		Primary,
@@ -4575,7 +4274,6 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UISplitViewControllerSplitBehavior : long {
 		Automatic,
@@ -4585,7 +4283,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UISwitchStyle : long {
 		Automatic = 0,
@@ -4594,14 +4291,12 @@ namespace UIKit {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UICollectionLayoutListFooterMode : long {
 		None,
 		Supplementary,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[NoTV, NoiOS]
 	[Native]
 	public enum UITitlebarSeparatorStyle : long {
@@ -4612,7 +4307,6 @@ namespace UIKit {
 	}
 
 	[NoTV, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum UINavigationItemBackButtonDisplayMode : long {
 		Default = 0,
@@ -4626,7 +4320,6 @@ namespace UIKit {
 	///     </remarks>
 	/// <altmember cref="UIKit.UIGuidedAccessRestriction.GetState" />
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum UIGuidedAccessRestrictionState : long {
 		/// <summary>The application should allow the behavior in question.</summary>
 		Allow,
@@ -4634,7 +4327,7 @@ namespace UIKit {
 		Deny,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	public enum UIActionIdentifier {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -4657,7 +4350,7 @@ namespace UIKit {
 		NewFromPasteboard,
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[Native]
 	public enum UIBandSelectionInteractionState : long {
 		Possible = 0,
@@ -4666,7 +4359,7 @@ namespace UIKit {
 		Ended,
 	}
 
-	[TV (17, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (17, 0), iOS (15, 0)]
 	[Native]
 	public enum UIBehavioralStyle : ulong {
 		Automatic = 0,
@@ -4674,7 +4367,7 @@ namespace UIKit {
 		Mac,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum UIButtonConfigurationSize : long {
 		Medium,
@@ -4683,7 +4376,7 @@ namespace UIKit {
 		Large,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum UIButtonConfigurationTitleAlignment : long {
 		Automatic,
@@ -4692,7 +4385,7 @@ namespace UIKit {
 		Trailing,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum UIButtonConfigurationCornerStyle : long {
 		Fixed = -1,
@@ -4703,7 +4396,7 @@ namespace UIKit {
 		Capsule,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum UIButtonConfigurationMacIdiomStyle : long {
 		Automatic,
@@ -4712,7 +4405,7 @@ namespace UIKit {
 		BorderlessTinted,
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[Native]
 	public enum UIFocusGroupPriority : long {
 		Ignored = 0,
@@ -4721,7 +4414,7 @@ namespace UIKit {
 		CurrentlyFocused = Int64.MaxValue,
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[Native]
 	public enum UIFocusHaloEffectPosition : long {
 		Automatic = 0,
@@ -4729,7 +4422,7 @@ namespace UIKit {
 		Inside,
 	}
 
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	public enum UISheetPresentationControllerDetentIdentifier {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -4762,7 +4455,7 @@ namespace UIKit {
 		Trailing,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum UIWindowScenePresentationStyle : ulong {
 		Automatic,
@@ -5001,7 +4694,6 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockValueType : long {
 		Absolute = 0,
@@ -5009,7 +4701,6 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockDimension : long {
 		Width = 0,
@@ -5021,7 +4712,6 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockLayer : long {
 		Padding = -1,
@@ -5030,7 +4720,6 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextBlockVerticalAlignment : long {
 		Top = 0,
@@ -5040,7 +4729,6 @@ namespace UIKit {
 	}
 
 	// NSInteger -> NSTextTable.h
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextTableLayoutAlgorithm : long {
 		Automatic = 0,

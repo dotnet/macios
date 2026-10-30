@@ -2,7 +2,6 @@
 namespace PhotosUI {
 
 	/// <summary>Enumerates how live photo playback will occur in a <see cref="PhotosUI.PHLivePhotoView" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum PHLivePhotoViewPlaybackStyle : long {
 		/// <summary>This is an invalid value. Do not use.</summary>
@@ -27,7 +26,6 @@ namespace PhotosUI {
 #else
 	/// <summary>Flagging enumeration that controls appearance of the playback badge on <see cref="PhotosUI.PHLivePhotoView" /> objects.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags] // NS_OPTIONS
 	public enum PHLivePhotoBadgeOptions : ulong {
@@ -71,7 +69,6 @@ namespace PhotosUI {
 
 	[NoTV]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum PHPickerConfigurationAssetRepresentationMode : long {
 		Automatic = 0,
@@ -79,14 +76,14 @@ namespace PhotosUI {
 		Compatible = 2,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Native]
 	public enum PHPickerMode : long {
 		Default = 0,
 		Compact = 1,
 	}
 
-	[Flags, NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, iOS (17, 0)]
 	[Native]
 	public enum PHPickerCapabilities : ulong {
 		None = 0,

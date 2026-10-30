@@ -2,7 +2,7 @@ using CoreFoundation;
 
 namespace OSLog {
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	enum OSLogEntryLogLevel : long {
 		Undefined,
@@ -13,7 +13,7 @@ namespace OSLog {
 		Fault,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	enum OSLogEntrySignpostType : long {
 		Undefined,
@@ -22,7 +22,7 @@ namespace OSLog {
 		Event,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	enum OSLogEntryStoreCategory : long {
 		Undefined,
@@ -36,14 +36,14 @@ namespace OSLog {
 		LongTerm30,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Flags]
 	[Native]
 	enum OSLogEnumeratorOptions : ulong {
 		Reverse = 0x1,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	enum OSLogMessageComponentArgumentCategory : long {
 		Undefined,
@@ -54,7 +54,7 @@ namespace OSLog {
 		UInt64,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	enum OSLogStoreScope : long {
 #if XAMCORE_5_0
@@ -68,7 +68,7 @@ namespace OSLog {
 	}
 
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Protocol]
 	interface OSLogEntryFromProcess {
 
@@ -93,7 +93,7 @@ namespace OSLog {
 		ulong ThreadIdentifier { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Protocol]
 	interface OSLogEntryWithPayload {
 
@@ -114,7 +114,7 @@ namespace OSLog {
 		string Subsystem { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface OSLogEntry {
@@ -129,7 +129,7 @@ namespace OSLog {
 		OSLogEntryStoreCategory StoreCategory { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (OSLogEntry))]
 	[DisableDefaultCtor]
 	interface OSLogEntryActivity : OSLogEntryFromProcess {
@@ -138,13 +138,13 @@ namespace OSLog {
 		ulong ParentActivityIdentifier { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (OSLogEntry))]
 	[DisableDefaultCtor]
 	interface OSLogEntryBoundary {
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (OSLogEntry))]
 	[DisableDefaultCtor]
 	interface OSLogEntryLog : OSLogEntryFromProcess, OSLogEntryWithPayload {
@@ -153,7 +153,7 @@ namespace OSLog {
 		OSLogEntryLogLevel Level { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (OSLogEntry))]
 	[DisableDefaultCtor]
 	interface OSLogEntrySignpost : OSLogEntryFromProcess, OSLogEntryWithPayload {
@@ -168,13 +168,13 @@ namespace OSLog {
 		OSLogEntrySignpostType SignpostType { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSEnumerator))]
 	[DisableDefaultCtor]
 	interface OSLogEnumerator {
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface OSLogMessageComponent : NSSecureCoding {
@@ -207,24 +207,24 @@ namespace OSLog {
 		ulong ArgumentUInt64Value { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface OSLogPosition {
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init was added only on macos 12
 	interface OSLogStore {
 
 		[Deprecated (PlatformName.MacOSX, 12, 0, "Use one of the factory methods instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 12, 0, "Use one of the factory methods instead.")]
-		[NoTV, NoiOS, MacCatalyst (15, 0)]
+		[NoTV, NoiOS]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-		[NoTV, NoiOS, MacCatalyst (15, 0)]
+		[NoTV, NoiOS]
 		[Static]
 		[Export ("localStoreAndReturnError:")]
 		[return: NullAllowed]
@@ -235,7 +235,6 @@ namespace OSLog {
 		[return: NullAllowed]
 		OSLogStore CreateStore (NSUrl url, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("storeWithScope:error:")]
 		[return: NullAllowed]

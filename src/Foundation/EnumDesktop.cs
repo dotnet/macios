@@ -45,7 +45,6 @@ namespace Foundation {
 
 	// The following constants where taken from MonoDevelop Carbon.cs MacInterop file
 	[NoiOS, NoTV]
-	[MacCatalyst (13, 1)]
 	public enum AEEventID : uint {
 		/// <summary>To be added.</summary>
 		OpenApplication = 1868656752, // 'oapp'
@@ -68,7 +67,6 @@ namespace Foundation {
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (13, 1)]
 	public enum AEEventClass : uint {
 		/// <summary>To be added.</summary>
 		Mouse = 1836021107, // 'mous'

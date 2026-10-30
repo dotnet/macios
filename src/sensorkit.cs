@@ -113,7 +113,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRAmbientLightSensorPlacement : long {
 		Unknown,
@@ -129,7 +128,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum SRAuthorizationStatus : long {
 		NotDetermined = 0,
@@ -139,7 +137,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRCrownOrientation : long {
 		Left,
@@ -148,7 +145,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRDeletionReason : long {
 		UserInitiated,
@@ -160,7 +156,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	[ErrorDomain ("SRErrorDomain")]
 	enum SRErrorCode : long {
@@ -173,7 +168,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRLocationCategory : long {
 		Unknown,
@@ -185,7 +179,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRNotificationEvent : long {
 		Unknown,
@@ -209,14 +202,13 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	enum SRWristLocation : long {
 		Left,
 		Right,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum SRKeyboardMetricsSentimentCategory : long {
 		Absolutist,
@@ -231,7 +223,7 @@ namespace SensorKit {
 		Confused,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum SRTextInputSessionType : long {
 		Keyboard = 1,
@@ -240,7 +232,7 @@ namespace SensorKit {
 		Dictation,
 	}
 
-	[NoTV, NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+	[NoTV, NoMac, iOS (16, 4)]
 	[Native]
 	public enum SRMediaEventType : long {
 		OnScreen = 1,
@@ -277,21 +269,21 @@ namespace SensorKit {
 		Unguided,
 	}
 
-	[Flags, NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, NoMac, iOS (17, 0)]
 	[Native]
 	public enum SRFaceMetricsContext : ulong {
 		DeviceUnlock = 1uL << 0,
 		MessagingAppUsage = 1uL << 1,
 	}
 
-	[Flags, NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, NoMac, iOS (17, 0)]
 	[Native]
 	public enum SRSpeechMetricsSessionFlags : ulong {
 		Default = 0x0,
 		BypassVoiceProcessing = (1uL << 0),
 	}
 
-	[Flags, NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[Flags, NoTV, NoMac, iOS (17, 0)]
 	[Native]
 	public enum SRWristTemperatureCondition : ulong {
 		None = 0x0,
@@ -302,7 +294,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum SRDeviceUsageCategory {
 		[Field ("SRDeviceUsageCategoryGames")]
 		Games,
@@ -394,7 +385,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRAmbientLightSample {
@@ -411,7 +401,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRApplicationUsage {
@@ -422,26 +411,25 @@ namespace SensorKit {
 		[Export ("usageTime")]
 		double /* NSTimeInterval */ UsageTime { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("reportApplicationIdentifier")]
 		string ReportApplicationIdentifier { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("textInputSessions", ArgumentSemantic.Copy)]
 		SRTextInputSession [] TextInputSessions { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("supplementalCategories", ArgumentSemantic.Copy)]
 		SRSupplementalCategory [] SupplementalCategories { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("relativeStartTime")]
 		double RelativeStartTime { get; }
 	}
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRDeletionRecord : NSSecureCoding {
@@ -458,7 +446,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRDevice : NSSecureCoding, NSCopying {
@@ -478,14 +465,13 @@ namespace SensorKit {
 		[Export ("systemVersion")]
 		string SystemVersion { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("productType")]
 		string ProductType { get; }
 	}
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRDeviceUsageReport {
@@ -511,14 +497,13 @@ namespace SensorKit {
 		[Export ("totalUnlockDuration")]
 		double /* NSTimeInterval */ TotalUnlockDuration { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("version")]
 		string Version { get; }
 	}
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SRFetchRequest {
 
@@ -534,7 +519,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRFetchResult<SampleType> : NSCopying where SampleType : NSObject {
@@ -553,7 +537,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRKeyboardProbabilityMetric<UnitType> where UnitType : NSUnit {
@@ -563,7 +546,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRKeyboardMetrics {
@@ -583,11 +565,11 @@ namespace SensorKit {
 		[Export ("height")]
 		NSMeasurement<NSUnitLength> Height { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("inputModes", ArgumentSemantic.Copy)]
 		string [] InputModes { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("sessionIdentifiers", ArgumentSemantic.Copy)]
 		string [] SessionIdentifiers { get; }
 
@@ -691,7 +673,7 @@ namespace SensorKit {
 		[Export ("touchDownDown", ArgumentSemantic.Strong)]
 		SRKeyboardProbabilityMetric<NSUnitDuration> TouchDownDown { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("touchUpDown", ArgumentSemantic.Strong)]
 		SRKeyboardProbabilityMetric<NSUnitDuration> TouchUpDown { get; }
 
@@ -790,47 +772,46 @@ namespace SensorKit {
 		[Export ("longWordTouchDownDown", ArgumentSemantic.Strong)]
 		SRKeyboardProbabilityMetric<NSUnitDuration> [] LongWordTouchDownDown { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("longWordTouchUpDown", ArgumentSemantic.Strong)]
 		SRKeyboardProbabilityMetric<NSUnitDuration> [] LongWordTouchUpDown { get; }
 
 		[Export ("deleteToDeletes", ArgumentSemantic.Strong)]
 		SRKeyboardProbabilityMetric<NSUnitDuration> [] DeleteToDeletes { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("pathTypingSpeed")]
 		double PathTypingSpeed { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("totalPathPauses")]
 		nint TotalPathPauses { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("totalPauses")]
 		nint TotalPauses { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("totalTypingEpisodes")]
 		nint TotalTypingEpisodes { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("typingSpeed")]
 		double TypingSpeed { get; }
 
 		// SRKeyboardMetrics_SentimentCounts
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("wordCountForSentimentCategory:")]
 		nint WordCount (SRKeyboardMetricsSentimentCategory category);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("emojiCountForSentimentCategory:")]
 		nint EmojiCount (SRKeyboardMetricsSentimentCategory category);
 	}
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRMessagesUsageReport {
@@ -850,7 +831,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRNotificationUsage {
@@ -864,7 +844,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRPhoneUsageReport {
@@ -889,7 +868,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SRSensorReaderDelegate {
@@ -927,7 +905,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	enum SRSensor {
 		[Field (null)]
 		Invalid = -1,
@@ -962,35 +939,35 @@ namespace SensorKit {
 		[Field ("SRSensorKeyboardMetrics")]
 		KeyboardMetrics,
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("SRSensorSiriSpeechMetrics")]
 		SiriSpeechMetrics,
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("SRSensorTelephonySpeechMetrics")]
 		TelephonySpeechMetrics,
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Field ("SRSensorAmbientPressure")]
 		AmbientPressure,
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Field ("SRSensorMediaEvents")]
 		MediaEvents,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("SRSensorFaceMetrics")]
 		FaceMetrics,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("SRSensorHeartRate")]
 		HeartRate,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("SRSensorOdometer")]
 		Odometer,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("SRSensorWristTemperature")]
 		WristTemperature,
 
@@ -1021,7 +998,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRSensorReader {
@@ -1070,7 +1046,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRVisit {
@@ -1093,7 +1068,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRWebUsage {
@@ -1104,7 +1078,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRWristDetection {
@@ -1118,12 +1091,12 @@ namespace SensorKit {
 		[Export ("crownOrientation")]
 		SRCrownOrientation CrownOrientation { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[NullAllowed]
 		[Export ("onWristDate", ArgumentSemantic.Strong)]
 		NSDate OnWristDate { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[NullAllowed]
 		[Export ("offWristDate", ArgumentSemantic.Strong)]
 		NSDate OffWristDate { get; }
@@ -1131,7 +1104,6 @@ namespace SensorKit {
 
 	[NoTV, NoMac]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Category]
 	[BaseType (typeof (NSString))]
 	[Internal] // exposed thru SRSensor
@@ -1141,7 +1113,7 @@ namespace SensorKit {
 		NSString _GetSensorForDeletionRecordsFromSensor ();
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SRTextInputSession /* privately conforms to NSCoding and NSSecureCoding */
 	{
@@ -1151,12 +1123,12 @@ namespace SensorKit {
 		[Export ("sessionType")]
 		SRTextInputSessionType SessionType { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("sessionIdentifier")]
 		string SessionIdentifier { get; }
 	}
 
-	[NoTV, NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+	[NoTV, NoMac, iOS (16, 4)]
 	[BaseType (typeof (NSObject))]
 	interface SRMediaEvent : NSCopying, NSSecureCoding {
 
@@ -1167,7 +1139,7 @@ namespace SensorKit {
 		SRMediaEventType EventType { get; }
 	}
 
-	[NoTV, NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+	[NoTV, NoMac, iOS (16, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRSupplementalCategory : NSCopying, NSSecureCoding {
@@ -1177,7 +1149,7 @@ namespace SensorKit {
 		NSString Identifier { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRAudioLevel : NSCopying, NSSecureCoding {
@@ -1189,7 +1161,7 @@ namespace SensorKit {
 		double Loudness { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRFaceMetricsExpression : NSCopying, NSSecureCoding {
@@ -1201,7 +1173,7 @@ namespace SensorKit {
 		double Value { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRSpeechExpression : NSCopying, NSSecureCoding {
@@ -1228,7 +1200,7 @@ namespace SensorKit {
 		double Dominance { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRSpeechMetrics : NSCopying, NSSecureCoding {
@@ -1259,7 +1231,7 @@ namespace SensorKit {
 		SRSpeechExpression SpeechExpression { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRWristTemperature : NSCopying, NSSecureCoding {
@@ -1277,7 +1249,7 @@ namespace SensorKit {
 		NSMeasurement<NSUnitTemperature> ErrorEstimate { get; }
 	}
 
-	[NoTV, NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, NoMac, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SRWristTemperatureSession : NSCopying, NSSecureCoding {

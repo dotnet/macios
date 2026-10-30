@@ -25,7 +25,7 @@ Native libraries and frameworks (`.xcframework`, `.framework`, `.a`, and `.dylib
 3. **Building Xcode framework projects during the .NET build (`@(XcodeProject)`)**:
    Native Library Interop (formerly referred to as the "Slim Binding" approach) is a pattern for wrapping native SDKs in thin Xcode wrapper projects and consuming them from .NET for iOS, Mac Catalyst, macOS, and tvOS projects.
 
-   Starting in .NET 9, the .NET for iOS, Mac Catalyst, macOS, and tvOS SDKs support building Xcode framework projects by using the [`@(XcodeProject)`](building-apps/build-items.md#xcodeproj) build action. This is declared in an MSBuild `ItemGroup` in a project file:
+   Starting in .NET 9, the .NET for iOS, Mac Catalyst, macOS, and tvOS SDKs support building Xcode framework projects by using the [`@(XcodeProject)`](building-apps/build-items.md#xcodeproject) build action. This is declared in an MSBuild `ItemGroup` in a project file:
 
    ```xml
    <ItemGroup>

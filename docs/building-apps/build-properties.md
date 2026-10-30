@@ -1878,6 +1878,12 @@ This property was introduced in .NET 10.
 
 A boolean property that specifies if a hardened runtime is enabled.
 
+When library validation is enabled and the app bundles native dynamic libraries
+or frameworks, set [`CodesignKey`](#codesignkey) to a valid Apple signing identity.
+The app and bundled native code must have the same certificate-derived Team ID.
+Ad-hoc signing (`CodesignKey=-`, also used when no signing identity is specified)
+does not provide a Team ID and causes the build to fail in this case.
+
 Applicable to macOS and Mac Catalyst projects.
 
 ## UseInterpreter

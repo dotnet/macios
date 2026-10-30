@@ -6666,10 +6666,6 @@ F:UIKit.UIFontDescriptorSystemDesign.Rounded
 F:UIKit.UIFontDescriptorSystemDesign.Serif
 F:UIKit.UIFontTextStyle.ExtraLargeTitle
 F:UIKit.UIFontTextStyle.ExtraLargeTitle2
-F:UIKit.UIFontWidth.Compressed
-F:UIKit.UIFontWidth.Condensed
-F:UIKit.UIFontWidth.Expanded
-F:UIKit.UIFontWidth.Standard
 F:UIKit.UIGlassEffectStyle.Clear
 F:UIKit.UIGlassEffectStyle.Regular
 F:UIKit.UIHdrHeadroomUsageLimit.Active
@@ -59223,7 +59219,6 @@ T:UIKit.UIFontMetrics
 T:UIKit.UIFontPickerViewController
 T:UIKit.UIFontPickerViewControllerConfiguration
 T:UIKit.UIFontWeightConstants
-T:UIKit.UIFontWidth
 T:UIKit.UIGestureProbe
 T:UIKit.UIGestureRecognizer
 T:UIKit.UIGesturesEvent

@@ -34,8 +34,14 @@ namespace MonoTouchFixtures.XKit {
 		{
 			yield return Factory ("CreateFromName", () => XFont.CreateFromName ("Helvetica", 12));
 			yield return Factory ("FromName", () => XFont.FromName ("Helvetica", 12));
+			yield return Factory ("FromFontName", () => XFont.FromFontName ("Helvetica", 12));
 			yield return Factory ("CreateFromDescriptor", () => FromDescriptor (false));
 			yield return Factory ("FromDescriptor", () => FromDescriptor (true));
+			yield return Factory ("FromDescription_Size", () => {
+				using var font = XFont.CreateSystemFont (12);
+				using var descriptor = font.FontDescriptor;
+				return XFont.FromDescription (descriptor, 12);
+			});
 			yield return Factory ("CreateSystemFont", () => XFont.CreateSystemFont (12));
 			yield return Factory ("SystemFontOfSize", () => XFont.SystemFontOfSize (12));
 			yield return Factory ("CreateSystemFont_Weight", () => XFont.CreateSystemFont (12, (nfloat) 0));
@@ -46,6 +52,11 @@ namespace MonoTouchFixtures.XKit {
 			yield return Factory ("MonospacedDigitSystemFontOfSize", () => XFont.MonospacedDigitSystemFontOfSize (12, (nfloat) 0));
 			yield return Factory ("CreateMonospacedSystemFont", () => XFont.CreateMonospacedSystemFont (12, (nfloat) 0));
 			yield return Factory ("GetMonospacedSystemFont", () => XFont.GetMonospacedSystemFont (12, (nfloat) 0));
+			yield return Factory ("MonospacedSystemFont", () => XFont.MonospacedSystemFont (12, 0));
+			yield return Factory ("GetFont", () => {
+				using var font = XFont.CreateSystemFont (10);
+				return font.GetFont (12);
+			});
 			yield return Factory ("WithSize", () => {
 				using var font = XFont.CreateSystemFont (10);
 				return font.WithSize (12);
@@ -76,11 +87,9 @@ namespace MonoTouchFixtures.XKit {
 				using var font = XFont.CreateSystemFont (12);
 				return font.ScreenFontWithRenderingMode (NSFontRenderingMode.Default);
 			});
-			yield return Factory ("FromFontName", () => XFont.FromFontName ("Helvetica", 12));
-			yield return Factory ("FromDescription_Size", () => {
+			yield return Factory ("CreateScreenFont", () => {
 				using var font = XFont.CreateSystemFont (12);
-				using var descriptor = font.FontDescriptor;
-				return XFont.FromDescription (descriptor, 12);
+				return font.CreateScreenFont (NSFontRenderingMode.Default);
 			});
 			yield return Factory ("CreateFromDescriptor_Transform", () => {
 				using var font = XFont.CreateSystemFont (12);
@@ -121,7 +130,6 @@ namespace MonoTouchFixtures.XKit {
 			yield return Factory ("ToolTipsFontOfSize", () => XFont.ToolTipsFontOfSize (12));
 			yield return Factory ("CreateControlContentFont", () => XFont.CreateControlContentFont (12));
 			yield return Factory ("ControlContentFontOfSize", () => XFont.ControlContentFontOfSize (12));
-			yield return Factory ("MonospacedSystemFont", () => XFont.MonospacedSystemFont (12, 0));
 			yield return Factory ("CreatePreferredFont", () => {
 				using var options = new NSDictionary ();
 				return XFont.CreatePreferredFont ("NSFontTextStyleBody", options);
@@ -129,10 +137,6 @@ namespace MonoTouchFixtures.XKit {
 			yield return Factory ("GetPreferredFont", () => {
 				using var options = new NSDictionary ();
 				return XFont.GetPreferredFont ("NSFontTextStyleBody", options);
-			});
-			yield return Factory ("GetFont", () => {
-				using var font = XFont.CreateSystemFont (10);
-				return font.GetFont (12);
 			});
 			yield return Factory ("CreateVerticalFont", () => {
 				using var font = XFont.CreateSystemFont (12);
@@ -252,13 +256,13 @@ namespace MonoTouchFixtures.XKit {
 		{
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, 12), "Name");
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromDescriptor (null, 12), "Descriptor");
-#if __MACOS__
-			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, XFont.IdentityMatrix), "Matrix name");
-			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName ("Helvetica", (nfloat []?) null), "Matrix");
 			var nameException = Assert.Throws<ArgumentNullException> (() => XFont.FromFontName (null, 12));
 			Assert.That (nameException?.ParamName, Is.EqualTo ("fontName"), "Legacy name parameter");
 			var descriptorException = Assert.Throws<ArgumentNullException> (() => XFont.FromDescription (null, 12));
 			Assert.That (descriptorException?.ParamName, Is.EqualTo ("fontDescriptor"), "Legacy descriptor parameter");
+#if __MACOS__
+			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, XFont.IdentityMatrix), "Matrix name");
+			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName ("Helvetica", (nfloat []?) null), "Matrix");
 #else
 			Assert.Throws<ArgumentNullException> (() => XFont.CreatePreferredFont (null), "Text style");
 			Assert.Throws<ArgumentOutOfRangeException> (() => XFont.CreatePreferredFont ((UIFontTextStyle) int.MaxValue), "Invalid text style");
@@ -274,6 +278,7 @@ namespace MonoTouchFixtures.XKit {
 			using var different = XFont.CreateBoldSystemFont (24);
 			XFont? missing = null;
 			Assert.That (first == second, Is.True, "Equal fonts");
+			Assert.That (first == second, Is.EqualTo (first.Handle == second.Handle), "Native identity");
 			Assert.That (first != second, Is.False, "Equal fonts inequality");
 			Assert.That (first.Equals ((object) second), Is.True, "Object equality");
 			Assert.That (first.Equals (second), Is.True, "NSObject equality");
@@ -295,6 +300,33 @@ namespace MonoTouchFixtures.XKit {
 			using var font = XFont.CreateSystemFont (12);
 			Assert.That (font.ToString (), Is.EqualTo ($"{font.FontName} {font.PointSize}"), "Font name and size");
 		}
+
+#if !__MACOS__
+		[TestCase (UIFontWidth.Condensed)]
+		[TestCase (UIFontWidth.Standard)]
+		[TestCase (UIFontWidth.Expanded)]
+		[TestCase (UIFontWidth.Compressed)]
+		public void FontWidth (UIFontWidth width)
+		{
+			TestRuntime.AssertXcodeVersion (14, 0);
+			var constant = width.GetConstant ();
+			Assert.That (constant, Is.Not.Null, "Native width constant");
+			Assert.That (UIFontWidthExtensions.GetValue (constant.GetValueOrDefault ()), Is.EqualTo (width), "Width round trip");
+			using var font = XFont.CreateSystemFont (12, UIFontWeight.Regular, width);
+			using var native = XFont.CreateSystemFont (12, UIFontWeight.Regular.GetWeight (), constant.GetValueOrDefault ());
+			Assert.That (font, Is.EqualTo (native), "Width factory");
+		}
+
+		[Test]
+		public void InvalidFontWidth ()
+		{
+			TestRuntime.AssertXcodeVersion (14, 0);
+			var width = (UIFontWidth) int.MaxValue;
+			Assert.That (width.GetConstant (), Is.Null, "Unknown width");
+			Assert.Throws<ArgumentException> (() => XFont.CreateSystemFont (12, UIFontWeight.Regular, width), "Canonical factory");
+			Assert.Throws<ArgumentException> (() => XFont.SystemFontOfSize (12, UIFontWeight.Regular, width), "Legacy factory");
+		}
+#endif
 
 #if __MACOS__
 		[Test]
@@ -318,6 +350,9 @@ namespace MonoTouchFixtures.XKit {
 			using var font = XFont.CreateFromName ("Helvetica", 12) ?? throw new AssertionException ("Font is null.");
 			var glyph = font.GlyphWithName ("A");
 			Assert.That (glyph, Is.Not.Zero, "Glyph");
+			Assert.That (font.GetGlyphWithName ("A"), Is.EqualTo (glyph), "Canonical glyph lookup");
+			Assert.That (font.GetBoundingRect (glyph), Is.EqualTo (font.BoundingRectForGlyph (glyph)), "Canonical glyph bounds");
+			Assert.That (font.GetAdvancement (glyph), Is.EqualTo (font.AdvancementForGlyph (glyph)), "Canonical glyph advancement");
 			Assert.That (font.GetBoundingRects (new uint [] { glyph }), Is.EqualTo (new [] { font.BoundingRectForGlyph (glyph) }), "Bounds");
 			Assert.That (font.GetAdvancements (new uint [] { glyph }), Is.EqualTo (new [] { font.AdvancementForGlyph (glyph) }), "Advancements");
 			uint [] empty = [];

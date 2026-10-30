@@ -35577,21 +35577,25 @@ namespace UIKit {
 		NativeHandle Constructor (CGRect frame);
 	}
 
-	[Static]
-	[Internal]
+	/// <summary>System font widths used when creating a font.</summary>
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	interface UIFontWidthConstants {
+	[BackingFieldType (typeof (nfloat))]
+	public enum UIFontWidth {
+		/// <summary>A condensed font width.</summary>
 		[Field ("UIFontWidthCondensed")]
-		nfloat Condensed { get; }
+		Condensed,
 
+		/// <summary>The standard font width.</summary>
 		[Field ("UIFontWidthStandard")]
-		nfloat Standard { get; }
+		Standard,
 
+		/// <summary>An expanded font width.</summary>
 		[Field ("UIFontWidthExpanded")]
-		nfloat Expanded { get; }
+		Expanded,
 
+		/// <summary>A compressed font width.</summary>
 		[Field ("UIFontWidthCompressed")]
-		nfloat Compressed { get; }
+		Compressed,
 	}
 
 	[NoTV, iOS (16, 4), MacCatalyst (16, 4)]

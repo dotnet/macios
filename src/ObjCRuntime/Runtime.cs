@@ -43,7 +43,8 @@ namespace ObjCRuntime {
 
 		static List<object> delegates;
 		static List<Assembly> assemblies;
-		static Dictionary<IntPtr, GCHandle> object_map;
+		// Registration order preserves the primary NSObject wrapper while allowing typed alternatives.
+		static Dictionary<IntPtr, List<GCHandle>> object_map;
 		static Dictionary<IntPtr, bool> usertype_cache;
 		static object lock_obj;
 		static IntPtr NSObjectClass;
@@ -386,7 +387,7 @@ namespace ObjCRuntime {
 
 			Runtime.options = options;
 			delegates = new List<object> ();
-			object_map = new Dictionary<IntPtr, GCHandle> (IntPtrEqualityComparer);
+			object_map = new Dictionary<IntPtr, List<GCHandle>> (IntPtrEqualityComparer);
 			usertype_cache = new Dictionary<IntPtr, bool> (IntPtrEqualityComparer);
 			intptr_ctor_cache = new Dictionary<Type, ConstructorInfo> (TypeEqualityComparer);
 			intptr_bool_ctor_cache = new Dictionary<Type, ConstructorInfo> (TypeEqualityComparer);
@@ -833,7 +834,9 @@ namespace ObjCRuntime {
 
 		static void UnregisterNSObject (IntPtr native_obj, IntPtr managed_obj)
 		{
-			NativeObjectHasDied (native_obj, GetGCHandleTarget (managed_obj) as NSObject);
+			var obj = GetGCHandleTarget (managed_obj) as NSObject;
+			NativeObjectHasDied (native_obj, null);
+			obj?.ClearHandle ();
 		}
 
 		static unsafe IntPtr GetMethodFromToken (uint token_ref)
@@ -1209,42 +1212,51 @@ namespace ObjCRuntime {
 			throw ErrorHelper.CreateError (8002, "Could not find the method '{methodName}' in the type '{type.FullName}'.");
 		}
 
-		internal static void UnregisterNSObject (IntPtr ptr)
-		{
-			lock (lock_obj) {
-				if (object_map.Remove (ptr, out var value))
-					value.Free ();
-			}
-		}
-
 		// Ownership-aware variant of UnregisterNSObject: only removes the entry if it
 		// still refers to `managed` (or is dead). This avoids clobbering an entry that
 		// another object created after reusing a freed native pointer (issue #25861).
 		internal static void UnregisterNSObject (IntPtr ptr, NSObject managed)
 		{
+			RemoveFromObjectMap (ptr, managed);
+		}
+
+		internal static bool RemoveFromObjectMap (IntPtr ptr, INativeObject obj)
+		{
+			var removed = false;
 			lock (lock_obj) {
-				if (object_map.TryGetValue (ptr, out var value)) {
-					if (value.Target is null || object.ReferenceEquals (value.Target, managed)) {
-						object_map.Remove (ptr);
-						value.Free ();
-					}
+				if (!object_map.TryGetValue (ptr, out var references))
+					return false;
+
+				for (var i = references.Count - 1; i >= 0; i--) {
+					var reference = references [i];
+					var target = reference.Target;
+					if (target is not null && !object.ReferenceEquals (target, obj))
+						continue;
+					removed |= object.ReferenceEquals (target, obj);
+					references.RemoveAt (i);
+					reference.Free ();
 				}
+				if (references.Count == 0)
+					object_map.Remove (ptr);
 			}
+			return removed;
 		}
 
 		internal static void NativeObjectHasDied (IntPtr ptr, NSObject? managed_obj)
 		{
 			lock (lock_obj) {
-				if (object_map.TryGetValue (ptr, out var wr)) {
-					if (managed_obj is null || wr.Target == (object) managed_obj) {
-						object_map.Remove (ptr);
-						wr.Free ();
-					} else if (wr.Target is null) {
-						// We can remove null entries, and free the corresponding GCHandle
-						object_map.Remove (ptr);
-						wr.Free ();
+				if (managed_obj is null) {
+					if (object_map.Remove (ptr, out var references)) {
+						foreach (var reference in references) {
+							if (reference.Target is NSObject nsobj)
+								nsobj.ClearHandle ();
+							else if (reference.Target is BaseWrapper wrapper)
+								wrapper.ClearNativeHandle ();
+							reference.Free ();
+						}
 					}
-
+				} else {
+					RemoveFromObjectMap (ptr, managed_obj);
 				}
 
 				if (managed_obj is not null)
@@ -1252,42 +1264,39 @@ namespace ObjCRuntime {
 			}
 		}
 
-		// Completes deferred object_map registration (issue #25861): when 'onlyIfNeeded' is
-		// true, registers the object only if the pointer isn't already present, and leaves
-		// any live existing entry untouched. Dead entries are removed so they don't prevent
-		// registration of a new object for a reused native pointer.
-		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
+		// Registration is idempotent, including when completing deferred registration after 'init'.
+		internal static void RegisterNSObject (NSObject obj, IntPtr ptr)
 		{
-			GCHandle handle;
-			if (Runtime.IsCoreCLR) {
-				handle = CreateTrackingGCHandle (obj, ptr);
-			} else {
-				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
-			}
+			RegisterObject (obj, ptr);
+#pragma warning disable RBI0014
+			obj.Handle = ptr;
+#pragma warning restore RBI0014
+		}
+
+		internal static void RegisterObject (INativeObject obj, IntPtr ptr)
+		{
+			if (ptr == IntPtr.Zero)
+				return;
 
 			lock (lock_obj) {
-				if (onlyIfNeeded) {
-					if (object_map.TryGetValue (ptr, out var existing)) {
-						if (existing.Target is not null) {
-							// Already registered; don't touch the existing entry, just free
-							// the handle we speculatively allocated.
-							handle.Free ();
-							return;
-						}
-
-						// The weak target was collected without the native object dying.
-						// Remove the stale entry before registering the replacement.
-						object_map.Remove (ptr);
-						existing.Free ();
-					}
-				} else {
-					if (object_map.Remove (ptr, out var existing))
-						existing.Free ();
+				if (!object_map.TryGetValue (ptr, out var references)) {
+					references = new List<GCHandle> ();
+					object_map.Add (ptr, references);
 				}
-				object_map [ptr] = handle;
-#pragma warning disable RBI0014
-				obj.Handle = ptr;
-#pragma warning restore RBI0014
+				for (var i = references.Count - 1; i >= 0; i--) {
+					var reference = references [i];
+					var target = reference.Target;
+					if (object.ReferenceEquals (target, obj))
+						return;
+					if (target is null) {
+						references.RemoveAt (i);
+						reference.Free ();
+					}
+				}
+				var handle = Runtime.IsCoreCLR && obj is NSObject nsobj
+					? CreateTrackingGCHandle (nsobj, ptr)
+					: GCHandle.Alloc (obj, obj is NSObject ? GCHandleType.WeakTrackResurrection : GCHandleType.Weak);
+				references.Add (handle);
 			}
 		}
 
@@ -1830,9 +1839,12 @@ namespace ObjCRuntime {
 			return null;
 		}
 
-		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
 		/// <summary>Looks up an existing wrapper object for an unmanaged <see cref="IntPtr" />.</summary>
+		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
 		/// <returns>If a managed wrapper exists for the specified <see cref="IntPtr" />, that wrapper is returned, otherwise null.</returns>
+		/// <remarks>
+		///   <para>If several wrappers exist, returns the first live <see cref="NSObject" /> wrapper registered for the pointer. Protocol wrappers do not replace this primary wrapper.</para>
+		/// </remarks>
 		public static NSObject? TryGetNSObject (IntPtr ptr)
 		{
 			return TryGetNSObject (ptr, evenInFinalizerQueue: false);
@@ -1840,19 +1852,29 @@ namespace ObjCRuntime {
 
 		internal static NSObject? TryGetNSObject (IntPtr ptr, bool evenInFinalizerQueue)
 		{
-			lock (lock_obj) {
-				if (object_map.TryGetValue (ptr, out var reference)) {
-					var target = (NSObject?) reference.Target;
-					if (target is null)
-						return null;
+			return (NSObject?) TryGetObject (ptr, typeof (NSObject), evenInFinalizerQueue);
+		}
 
-					if (target.InFinalizerQueue) {
+		static INativeObject? TryGetObject (IntPtr ptr, Type targetType, bool evenInFinalizerQueue = false)
+		{
+			if (targetType.IsByRef && targetType.GetElementType () is Type elementType)
+				targetType = elementType;
+
+			lock (lock_obj) {
+				if (!object_map.TryGetValue (ptr, out var references))
+					return null;
+
+				foreach (var reference in references) {
+					if (reference.Target is not INativeObject target || !targetType.IsAssignableFrom (target.GetType ()))
+						continue;
+
+					if (target is NSObject nsobj && nsobj.InFinalizerQueue) {
 						if (!evenInFinalizerQueue) {
 							// Don't return objects that's been queued for finalization unless requested to.
-							return null;
+							continue;
 						}
 
-						if (target.IsDirectBinding && !target.IsRegisteredToggleRef) {
+						if (nsobj.IsDirectBinding && !nsobj.IsRegisteredToggleRef) {
 							// This is a non-toggled direct binding, which is safe to re-create.
 							// We get here if the native object is still around, while the GC
 							// has collected the managed object, and then we end up needing
@@ -1860,7 +1882,7 @@ namespace ObjCRuntime {
 							// the existing managed wrapper (which is the one we just found).
 							// Returning null here will cause us to re-create the managed wrapper.
 							// See bug #37670 for a real-world scenario.
-							return null;
+							continue;
 						}
 					}
 
@@ -1884,18 +1906,7 @@ namespace ObjCRuntime {
 			if (handle == NativeHandle.Zero)
 				return false;
 
-			lock (lock_obj) {
-				if (!object_map.TryGetValue (handle, out var reference))
-					return false;
-
-				if (!object.ReferenceEquals (reference.Target, obj))
-					return false;
-
-				object_map.Remove (handle);
-				reference.Free ();
-			}
-
-			return true;
+			return RemoveFromObjectMap (handle, obj);
 		}
 
 		public static NSObject? GetNSObject (NativeHandle ptr)
@@ -1962,7 +1973,7 @@ namespace ObjCRuntime {
 		/// <returns>An instance of the class <typeparamref name="T" />.</returns>
 		/// <remarks>
 		///   <para>Returns an instance of the <typeparamref name="T" /> class even if the native object is not in the class hierarchy of <typeparamref name="T" /> (no type checks).</para>
-		///   <para>This method will fail if there already is a managed wrapper of a different and incompatible type for the native object.</para>
+		///   <para>Reuses an existing compatible wrapper when available. Other wrappers for the native object remain registered.</para>
 		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr) where T : NSObject
 		{
@@ -1998,7 +2009,8 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			var obj = TryGetNSObject (ptr, evenInFinalizerQueue: evenInFinalizerQueue);
+			var obj = (NSObject?) TryGetObject (ptr, typeof (T), evenInFinalizerQueue);
+			obj ??= TryGetNSObject (ptr, evenInFinalizerQueue);
 
 			// Fallback for issue #25861: resolve a user type still executing its own 'init'
 			// (not yet in the object_map) via its native gchandle ivar. See the non-generic
@@ -2053,7 +2065,7 @@ namespace ObjCRuntime {
 		/// <returns>An instance of the T class.</returns>
 		/// <remarks>
 		///   <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
-		///   <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+		///   <para>Reuses an existing compatible wrapper when available. Other wrappers for the native object remain registered.</para>
 		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr, bool owns) where T : NSObject
 		{
@@ -2090,7 +2102,9 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			var o = TryGetNSObject (ptr, evenInFinalizerQueue);
+			var lookupType = target_type.IsByRef && target_type.GetElementType () is Type elementType ? elementType : target_type;
+			var o = createNewInstanceIfWrongType ? (NSObject?) TryGetObject (ptr, lookupType, evenInFinalizerQueue) : null;
+			o ??= TryGetNSObject (ptr, evenInFinalizerQueue);
 
 			if (o is not null) {
 				if (!createNewInstanceIfWrongType) {
@@ -2179,7 +2193,9 @@ namespace ObjCRuntime {
 		/// <param name="owns">Pass <see langword="true"/> if the caller transfers ownership of a native reference to the managed wrapper; otherwise pass <see langword="false"/>.</param>
 		/// <param name="target_type">The managed type the native object should be wrapped as.</param>
 		/// <returns>A managed object implementing <paramref name="target_type"/>, or <see langword="null"/> if <paramref name="ptr"/> is <see cref="IntPtr.Zero"/>.</returns>
-		/// <remarks>This method may return an existing wrapper if one has already been created for the native object.</remarks>
+		/// <remarks>
+		///   <para>This method reuses an existing compatible wrapper, including a protocol wrapper, without replacing other wrappers for the native object.</para>
+		/// </remarks>
 		public static INativeObject? GetINativeObject (IntPtr ptr, bool owns, Type target_type)
 		{
 			return GetINativeObject (ptr, owns, target_type, null);
@@ -2197,12 +2213,15 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			var o = TryGetNSObject (ptr, evenInFinalizerQueue: false);
-			if (o is not null && target_type.IsAssignableFrom (o.GetType ())) {
+			var existing = TryGetObject (ptr, target_type);
+			if (existing is not null) {
 				// found an existing object with the right type.
-				return o;
+				if (owns)
+					TryReleaseINativeObject (existing);
+				return existing;
 			}
 
+			var o = TryGetNSObject (ptr, evenInFinalizerQueue: false);
 			if (o is not null) {
 				var interface_check_type = target_type;
 				// https://github.com/dotnet/runtime/issues/39068
@@ -2219,13 +2238,10 @@ namespace ObjCRuntime {
 			implementation = LookupINativeObjectImplementation (ptr, target_type, implementation);
 
 			if (implementation.IsSubclassOf (typeof (NSObject))) {
-				if (o is not null) {
-					// We already have an instance of an NSObject-subclass for this ptr.
-					// Creating another will break the one-to-one assumption we have between
-					// native objects and NSObject instances.
-					throw ErrorHelper.CreateError (8004, $"Cannot create an instance of {implementation.FullName} for the native object 0x{ptr:x} (of type '{Class.class_getName (Class.GetClassForObject (ptr))}'), because another instance already exists for this native object (of type {o.GetType ().FullName}).");
-				}
-				return ConstructNSObject<NSObject> (ptr, implementation!, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
+				var rv = ConstructNSObject<NSObject> (ptr, implementation!, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
+				if (owns)
+					TryReleaseINativeObject (rv);
+				return rv;
 			}
 
 			return ConstructINativeObject<INativeObject> (ptr, owns, implementation, target_type, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
@@ -2239,6 +2255,7 @@ namespace ObjCRuntime {
 		/// <returns>An instance of a class implementing the specified type.</returns>
 		/// <remarks>
 		///   <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
+		///   <para>Reuses an existing compatible wrapper, including a protocol wrapper, without replacing other wrappers for the native object.</para>
 		/// </remarks>
 		public static T? GetINativeObject<T> (IntPtr ptr, bool owns) where T : INativeObject
 		{
@@ -2260,17 +2277,15 @@ namespace ObjCRuntime {
 			if (ptr == IntPtr.Zero)
 				return default (T);
 
-			var o = TryGetNSObject (ptr, evenInFinalizerQueue: false);
-			if (o is T t) {
+			if (TryGetObject (ptr, typeof (T)) is T t) {
 				// found an existing object with the right type.
 				if (owns)
 					TryReleaseINativeObject (t);
 				return t;
 			}
 
-			// If forced type is true, we ignore any existing instances if the managed type of the existing instance isn't compatible with T.
-			// This may end up creating multiple managed wrapper instances for the same native handle,
-			// which is not optimal, but sometimes the alternative can be worse :/
+			var o = TryGetNSObject (ptr, evenInFinalizerQueue: false);
+			// Only create an incompatible NSObject wrapper when explicitly forcing its type.
 			if (o is not null && !forced_type) {
 				// found an existing object, but with an incompatible type.
 				if (!typeof (T).IsInterface && typeof (NSObject).IsAssignableFrom (typeof (T))) {
@@ -2283,12 +2298,6 @@ namespace ObjCRuntime {
 			implementation = LookupINativeObjectImplementation (ptr, typeof (T), implementation, forced_type: forced_type);
 
 			if (implementation.IsSubclassOf (typeof (NSObject))) {
-				if (o is not null && !forced_type) {
-					// We already have an instance of an NSObject-subclass for this ptr.
-					// Creating another will break the one-to-one assumption we have between
-					// native objects and NSObject instances.
-					throw ErrorHelper.CreateError (8004, $"Cannot create an instance of {implementation.FullName} for the native object 0x{ptr:x} (of type '{Class.class_getName (Class.GetClassForObject (ptr))}'), because another instance already exists for this native object (of type {o.GetType ().FullName}).");
-				}
 				if (!Runtime.IsManagedStaticRegistrar && !Runtime.IsTrimmableStaticRegistrar) {
 					// For other registrars other than managed-static the generic parameter of ConstructNSObject is used
 					// only to cast the return value so we can safely pass NSObject here to satisfy the constraints of the

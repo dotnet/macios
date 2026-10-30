@@ -4086,15 +4086,6 @@ namespace AVFoundation {
 		[Field ("AVAudioSessionOrientationRight")]
 		NSString OrientationRight { get; }
 
-		[Internal, Field ("AVAudioSessionPolarPatternOmnidirectional")]
-		NSString PolarPatternOmnidirectional_ { get; }
-
-		[Internal, Field ("AVAudioSessionPolarPatternCardioid")]
-		NSString PolarPatternCardioid_ { get; }
-
-		[Internal, Field ("AVAudioSessionPolarPatternSubcardioid")]
-		NSString PolarPatternSubcardioid_ { get; }
-
 		[NoTV, NoMac, iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Field ("AVAudioSessionPolarPatternStereo")]
@@ -4472,6 +4463,33 @@ namespace AVFoundation {
 		[MacCatalyst (26, 2), NoTV, NoMac, iOS (26, 2)]
 		[Field ("AVAudioSessionModeDualRoute")]
 		DualRoute,
+	}
+
+	/// <summary>Enumerates microphone directivity values.</summary>
+	[NoMac]
+	[MacCatalyst (13, 1)]
+	enum AVAudioDataSourcePolarPattern {
+		/// <summary>The polar pattern is unknown or no preference is set.</summary>
+		[DefaultEnumValue]
+		[Field (null)]
+		Unknown = 0,
+
+		/// <summary>Captures sound equally from all directions.</summary>
+		[Field ("AVAudioSessionPolarPatternOmnidirectional")]
+		Omnidirectional = 1,
+
+		/// <summary>Captures sound primarily from the front, with reduced sensitivity at the rear.</summary>
+		[Field ("AVAudioSessionPolarPatternCardioid")]
+		Cardioid = 2,
+
+		/// <summary>Captures sound with a wider pickup pattern than a cardioid microphone.</summary>
+		[Field ("AVAudioSessionPolarPatternSubcardioid")]
+		Subcardioid = 3,
+
+		/// <summary>Captures stereo audio using the audio session's preferred input orientation.</summary>
+		[NoTV, iOS (14, 0), MacCatalyst (14, 0)]
+		[Field ("AVAudioSessionPolarPatternStereo")]
+		Stereo = 4,
 	}
 
 	[NoMac]

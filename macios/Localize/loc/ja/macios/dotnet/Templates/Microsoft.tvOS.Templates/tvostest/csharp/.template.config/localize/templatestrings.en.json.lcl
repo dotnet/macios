@@ -37,20 +37,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";symbols/Framework/choices/net10.0-tvos/description" ItemType="0" PsrId="306" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Target net10.0-tvos]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[net10.0-tvos をターゲットにします]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";symbols/Framework/choices/net11.0-tvos/description" ItemType="0" PsrId="306" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Target net11.0-tvos]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[net11.0-tvos をターゲットにします]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";symbols/Framework/choices/net12.0-tvos/description" ItemType="0" PsrId="306" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Target net12.0-tvos]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[net12.0-tvos をターゲットにします]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

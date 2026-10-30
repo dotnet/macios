@@ -644,4 +644,8 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>The member '{0}.{1}' has a ReadOnlySpan&lt;char&gt; parameter and cannot be exported to Objective-C. Use [Bind] instead of [Export] for managed-only span overloads.</value>
+	</data>
 </root>

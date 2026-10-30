@@ -103,8 +103,7 @@ namespace Network {
 		{
 			if (txt is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (txt));
-			var n = System.Text.Encoding.UTF8.GetByteCount (txt);
-			using var txtPtr = new TransientString (txt);
+			using var txtPtr = new TransientString (txt, out var n);
 			nw_advertise_descriptor_set_txt_record (GetCheckedHandle (), txtPtr, (nuint) n);
 		}
 

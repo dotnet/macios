@@ -1087,8 +1087,8 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("ios7.0", "Use the 'CoreText' API instead.")]
 		public void ShowText (string? str)
 		{
-			using var strPtr = new TransientString (str);
-			CGContextShowText (Handle, strPtr, str is null ? 0 : str.Length);
+			using var strPtr = new TransientString (str, out var byteCount);
+			CGContextShowText (Handle, strPtr, byteCount);
 		}
 
 		[SupportedOSPlatform ("ios")]
@@ -1169,8 +1169,8 @@ namespace CoreGraphics {
 		[ObsoletedOSPlatform ("maccatalyst13.1", "Use the 'CoreText' API instead.")]
 		public void ShowTextAtPoint (nfloat x, nfloat y, string? str)
 		{
-			using var strPtr = new TransientString (str);
-			CGContextShowTextAtPoint (Handle, x, y, strPtr, str is null ? 0 : str.Length);
+			using var strPtr = new TransientString (str, out var byteCount);
+			CGContextShowTextAtPoint (Handle, x, y, strPtr, byteCount);
 		}
 
 		[SupportedOSPlatform ("ios")]

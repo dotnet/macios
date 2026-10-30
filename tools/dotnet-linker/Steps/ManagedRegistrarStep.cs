@@ -1647,7 +1647,7 @@ namespace Xamarin.Linker {
 						// Runtime.ReleaseBlockWhenDelegateIsCollected (blockCopy, <create method> (blockCopy))
 						il.Emit (OpCodes.Call, abr.BlockLiteral_Copy);
 						il.Emit (OpCodes.Dup);
-						il.Emit (OpCodes.Call, method.Module.ImportReference (createMethod));
+						il.Emit (OpCodes.Call, method.Module.ImportReference (CloseBlockFactory (createMethod, type, true)));
 						il.Emit (OpCodes.Call, abr.Runtime_ReleaseBlockWhenDelegateIsCollected);
 					}
 					il.Emit (OpCodes.Castclass, method.Module.ImportReference (type));
@@ -1675,7 +1675,7 @@ namespace Xamarin.Linker {
 					// the delegate is already on the stack
 					if (createBlockMethod is not null) {
 						EnsureVisible (method, createBlockMethod);
-						il.Emit (OpCodes.Call, method.Module.ImportReference (createBlockMethod));
+						il.Emit (OpCodes.Call, method.Module.ImportReference (CloseBlockFactory (createBlockMethod, type, false)));
 						il.Emit (OpCodes.Call, abr.RegistrarHelper_GetBlockPointer);
 					} else if (delegateProxyField is not null) {
 						EnsureVisible (method, delegateProxyField);
@@ -1695,6 +1695,41 @@ namespace Xamarin.Linker {
 
 			AddException (ErrorHelper.CreateError (99, "Don't know how (1) to convert {0} between managed and native code: {1}. Method: {2}", type.FullName, type.GetType ().FullName, GetMethodSignatureWithSourceCode (method)));
 			return false;
+		}
+
+		static MethodReference CloseBlockFactory (MethodDefinition factory, TypeReference delegateType, bool delegateIsReturnType)
+		{
+			if (!factory.DeclaringType.HasGenericParameters)
+				return factory;
+
+			var template = delegateIsReturnType ? factory.ReturnType : factory.Parameters [0].ParameterType;
+			var arguments = new TypeReference [factory.DeclaringType.GenericParameters.Count];
+			void Match (TypeReference pattern, TypeReference actual)
+			{
+				if (pattern is GenericParameter parameter) {
+					arguments [parameter.Position] = actual;
+				} else if (pattern is GenericInstanceType patternType && actual is GenericInstanceType actualType) {
+					for (var i = 0; i < patternType.GenericArguments.Count; i++)
+						Match (patternType.GenericArguments [i], actualType.GenericArguments [i]);
+				} else if (pattern is TypeSpecification patternElement && actual is TypeSpecification actualElement) {
+					Match (patternElement.ElementType, actualElement.ElementType);
+				}
+			}
+			Match (template, delegateType);
+			var declaringType = new GenericInstanceType (factory.DeclaringType);
+			foreach (var argument in arguments) {
+				if (argument is null)
+					throw ErrorHelper.CreateError (99, "Unable to close block factory '{0}' for delegate '{1}'.", factory.FullName, delegateType.FullName);
+				declaringType.GenericArguments.Add (argument);
+			}
+			var result = new MethodReference (factory.Name, factory.ReturnType, declaringType) {
+				HasThis = factory.HasThis,
+				ExplicitThis = factory.ExplicitThis,
+				CallingConvention = factory.CallingConvention,
+			};
+			foreach (var parameter in factory.Parameters)
+				result.Parameters.Add (new ParameterDefinition (parameter.ParameterType));
+			return result;
 		}
 
 		internal static bool IsOpenType (TypeReference tr)

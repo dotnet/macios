@@ -975,12 +975,52 @@ namespace ObjCRuntime {
 			if (attrs.Length == 1) {
 				try {
 					var attr = attrs [0] as BlockProxyAttribute;
-					return attr?.Type?.GetMethod ("Create");
+					var proxyType = attr?.Type;
+					if (proxyType?.IsGenericTypeDefinition == true)
+						proxyType = CloseGenericBlockProxy (proxyType, method.GetParameters () [parameter].ParameterType, "Create", true);
+					return proxyType?.GetMethod ("Create");
 				} catch {
 					return null;
 				}
 			}
 			return null;
+		}
+
+		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Generated block proxy factories are preserved by the registrar and DynamicDependency attributes.")]
+		internal static Type CloseGenericBlockProxy (Type proxyType, Type delegateType, string factoryName, bool delegateIsReturnType)
+		{
+			var factory = proxyType.GetMethod (factoryName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+			if (factory is null)
+				throw new InvalidOperationException ($"The block proxy '{proxyType}' has no '{factoryName}' method.");
+			var template = delegateIsReturnType ? factory.ReturnType : factory.GetParameters () [0].ParameterType;
+			var parameters = proxyType.GetGenericArguments ();
+			var arguments = new Type [parameters.Length];
+			void Match (Type pattern, Type actual)
+			{
+				if (pattern.IsGenericParameter) {
+					var index = Array.IndexOf (parameters, pattern);
+					if (index >= 0) {
+						if (arguments [index] is not null && arguments [index] != actual)
+							throw new InvalidOperationException ($"Conflicting generic arguments for block proxy '{proxyType}' and delegate '{delegateType}'.");
+						arguments [index] = actual;
+					}
+				} else if (pattern.GetElementType () is Type patternElement && actual.GetElementType () is Type actualElement) {
+					Match (patternElement, actualElement);
+				} else if (pattern.IsGenericType && actual.IsGenericType && pattern.GetGenericTypeDefinition () == actual.GetGenericTypeDefinition ()) {
+					var patternArguments = pattern.GetGenericArguments ();
+					var actualArguments = actual.GetGenericArguments ();
+					for (var i = 0; i < patternArguments.Length; i++)
+						Match (patternArguments [i], actualArguments [i]);
+				} else if (pattern != actual) {
+					throw new InvalidOperationException ($"Cannot match block proxy '{proxyType}' to delegate '{delegateType}'.");
+				}
+			}
+			Match (template, delegateType);
+			foreach (var argument in arguments) {
+				if (argument is null)
+					throw new InvalidOperationException ($"Cannot infer generic arguments for block proxy '{proxyType}' and delegate '{delegateType}'.");
+			}
+			return proxyType.MakeGenericType (arguments);
 		}
 
 		internal static ProtocolMemberAttribute? GetProtocolMemberAttribute (Type type, string selector, MethodInfo method)
@@ -1085,8 +1125,11 @@ namespace ObjCRuntime {
 					selector = GetExportAttribute (method)?.Selector ?? string.Empty;
 				if (!string.IsNullOrEmpty (selector)) {
 					var attrib = GetProtocolMemberAttribute (iface, selector, method);
-					if (attrib is not null && attrib.ParameterBlockProxy!.Length > parameter && attrib.ParameterBlockProxy [parameter] is not null)
-						return attrib.ParameterBlockProxy [parameter]!.GetMethod ("Create");
+					if (attrib is not null && attrib.ParameterBlockProxy!.Length > parameter && attrib.ParameterBlockProxy [parameter] is Type proxyType) {
+						if (proxyType.IsGenericTypeDefinition)
+							proxyType = CloseGenericBlockProxy (proxyType, method.GetParameters () [parameter].ParameterType, "Create", true);
+						return proxyType.GetMethod ("Create");
+					}
 				}
 
 				// Might be an implementation of an optional protocol member.

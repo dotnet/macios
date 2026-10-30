@@ -263,6 +263,11 @@ namespace MonoTouchFixtures.XKit {
 #if __MACOS__
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName (null, XFont.IdentityMatrix), "Matrix name");
 			Assert.Throws<ArgumentNullException> (() => XFont.CreateFromName ("Helvetica", (nfloat []?) null), "Matrix");
+			using var font = XFont.CreateSystemFont (12);
+			var boundsException = Assert.Throws<ArgumentNullException> (() => font.GetBoundingRects ((ushort []?) null));
+			Assert.That (boundsException?.ParamName, Is.EqualTo ("glyphs"), "Bounding rectangles parameter");
+			var advancementsException = Assert.Throws<ArgumentNullException> (() => font.GetAdvancements ((ushort []?) null));
+			Assert.That (advancementsException?.ParamName, Is.EqualTo ("glyphs"), "Advancements parameter");
 #else
 			Assert.Throws<ArgumentNullException> (() => XFont.CreatePreferredFont (null), "Text style");
 			Assert.Throws<ArgumentOutOfRangeException> (() => XFont.CreatePreferredFont ((UIFontTextStyle) int.MaxValue), "Invalid text style");
@@ -278,10 +283,11 @@ namespace MonoTouchFixtures.XKit {
 			using var different = XFont.CreateBoldSystemFont (24);
 			XFont? missing = null;
 			Assert.That (first == second, Is.True, "Equal fonts");
-			Assert.That (first == second, Is.EqualTo (first.Handle == second.Handle), "Native identity");
+			Assert.That (first == second, Is.EqualTo (first.IsEqual (second)), "Native equality");
 			Assert.That (first != second, Is.False, "Equal fonts inequality");
 			Assert.That (first.Equals ((object) second), Is.True, "Object equality");
 			Assert.That (first.Equals (second), Is.True, "NSObject equality");
+			Assert.That (first.Equals ((object) different), Is.EqualTo (first.IsEqual (different)), "Different fonts native equality");
 			Assert.That (first.GetHashCode (), Is.EqualTo (second.GetHashCode ()), "Equal hashes");
 			Assert.That (first == different, Is.False, "Different fonts");
 			Assert.That (first != different, Is.True, "Different fonts inequality");
@@ -329,6 +335,23 @@ namespace MonoTouchFixtures.XKit {
 #endif
 
 #if __MACOS__
+		[Test]
+		public void NativeFontEquality ()
+		{
+			using var first = XFont.CreateFromName ("Helvetica", 12) ?? throw new AssertionException ("Font is null.");
+			using var coreText = new CTFont ("Helvetica", 12);
+			using var second = XFont.CreateFromCTFont (coreText) ?? throw new AssertionException ("Core Text font is null.");
+			Assert.That (first.IsEqual (second), Is.True, "Native equality");
+			Assert.That (first.Equals ((object) second), Is.True, "Object equality");
+			Assert.That (first.Equals (second), Is.True, "NSObject equality");
+			Assert.That (first == second, Is.True, "Equality operator");
+			Assert.That (second == first, Is.True, "Symmetric equality operator");
+			Assert.That (first != second, Is.False, "Inequality operator");
+			Assert.That (first.GetHashCode (), Is.EqualTo (second.GetHashCode ()), "Equal hashes");
+			var fonts = new HashSet<XFont> { first };
+			Assert.That (fonts.Contains (second), Is.True, "Hash set lookup");
+		}
+
 		[Test]
 		public void FontMatrix ()
 		{

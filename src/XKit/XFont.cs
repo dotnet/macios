@@ -195,8 +195,7 @@ namespace UIKit {
 		/// </remarks>
 		public override bool Equals (object? obj)
 		{
-			var font = obj as XFont;
-			return this == font;
+			return base.Equals (obj);
 		}
 
 		/// <summary>Generates a hash code for the current instance.</summary>
@@ -207,7 +206,7 @@ namespace UIKit {
 			return GetNativeHash ().GetHashCode ();
 		}
 
-		/// <summary>Compares two <see cref="XFont" /> objects for native identity.</summary>
+		/// <summary>Compares two <see cref="XFont" /> objects for equality.</summary>
 		/// <param name="f1">The first font to compare.</param>
 		/// <param name="f2">The second font to compare.</param>
 		/// <returns><see langword="true" /> if the two fonts are equal; otherwise, <see langword="false" />.</returns>
@@ -220,10 +219,10 @@ namespace UIKit {
 				return f2 is null;
 			else if (f2 is null)
 				return false;
-			return f1.Handle == f2.Handle;
+			return f1.Equals (f2);
 		}
 
-		/// <summary>Compares two <see cref="XFont" /> objects for different native identities.</summary>
+		/// <summary>Compares two <see cref="XFont" /> objects for inequality.</summary>
 		/// <param name="f1">The first font to compare.</param>
 		/// <param name="f2">The second font to compare.</param>
 		/// <returns><see langword="true" /> if the two fonts are not equal; otherwise, <see langword="false" />.</returns>
@@ -289,8 +288,7 @@ namespace UIKit {
 		/// <returns>The glyph bounding rectangles, in the same order as <paramref name="glyphs" />.</returns>
 		public unsafe CGRect [] GetBoundingRects (CGGlyph [] glyphs)
 		{
-			if (glyphs is null)
-				throw new ArgumentNullException ("glyphs");
+			ArgumentNullException.ThrowIfNull (glyphs);
 			if (glyphs.Length < 1)
 				throw new ArgumentException ("glyphs array is empty");
 
@@ -308,8 +306,7 @@ namespace UIKit {
 		/// <returns>The glyph advancements, in the same order as <paramref name="glyphs" />.</returns>
 		public unsafe CGSize [] GetAdvancements (CGGlyph [] glyphs)
 		{
-			if (glyphs is null)
-				throw new ArgumentNullException ("glyphs");
+			ArgumentNullException.ThrowIfNull (glyphs);
 			if (glyphs.Length < 1)
 				throw new ArgumentException ("glyphs array is empty");
 

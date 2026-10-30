@@ -1,0 +1,4 @@
+# Legacy values are preserved until XAMCORE_5_0; WKMediaPlaybackStateExtensions converts them in both directions.
+!wrong-enum-value! WKMediaPlaybackState.Paused managed value 1 does not match native value WKMediaPlaybackStatePaused = 2
+!wrong-enum-value! WKMediaPlaybackState.Playing managed value 3 does not match native value WKMediaPlaybackStatePlaying = 1
+!wrong-enum-value! WKMediaPlaybackState.Suspended managed value 2 does not match native value WKMediaPlaybackStateSuspended = 3

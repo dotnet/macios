@@ -273,8 +273,14 @@ namespace AVFoundation {
 		InvalidCompositionTrackSegmentSourceDuration = -11827,
 		/// <summary>Indicates that the media was in an urecognizable format and could therefore not be opened.</summary>
 		FormatNotRecognized = -11828,
-		/// <summary>Indicates that the data could not be parsed.</summary>
+		/// <summary>Indicates that the file could not be parsed.</summary>
+		FileFailedToParse = -11829,
+#if !XAMCORE_5_0
+		/// <summary>This value corresponds to <see cref="FileFailedToParse" />. Use <see cref="FileFailedToParse" /> for file parsing errors or <see cref="FailedToParse2" /> for data parsing errors.</summary>
+		[Obsolete ("This value corresponds to 'FileFailedToParse'. Use 'FileFailedToParse' for file parsing errors or 'FailedToParse2' for data parsing errors.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		FailedToParse = -11829, // Should have been FileFailedToParse
+#endif
 		/// <summary>Indicates that the maximum number of still images was reached for the output file.</summary>
 		MaximumStillImageCaptureRequestsExceeded = -11830,
 		/// <summary>Indicates that the app is not authorized to play the content.</summary>
@@ -321,7 +327,11 @@ namespace AVFoundation {
 		ApplicationIsNotAuthorizedToUseDevice = -11852,
 
 		/// <summary>Indicates that the data could not be parsed.</summary>
+#if XAMCORE_5_0
+		FailedToParse = -11853,
+#else
 		FailedToParse2 = -11853,
+#endif
 		/// <summary>Indicates that the file type does not support sample references.</summary>
 		FileTypeDoesNotSupportSampleReferences = -11854,
 		/// <summary>Indicates that the media data was corrupted.</summary>

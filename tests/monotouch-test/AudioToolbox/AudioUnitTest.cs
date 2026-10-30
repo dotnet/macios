@@ -25,6 +25,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void Callbacks ()
 		{
 			TestRuntime.IgnoreIfLockedScreen ();
+			TestRuntime.RequestMicrophonePermission (true);
 
 			var audioComponent = AudioComponent.FindComponent (AudioTypeOutput.VoiceProcessingIO);
 			using var audioUnit = new global::AudioUnit.AudioUnit (audioComponent);

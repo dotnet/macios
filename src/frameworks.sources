@@ -114,7 +114,7 @@ APPKIT_SOURCES = \
 	AppKit/NSDocument.cs \
 	AppKit/NSEnumsExtensions.cs \
 	AppKit/NSEvent.cs \
-	AppKit/NSFont.cs \
+	XKit/XFont.cs \
 	AppKit/NSGestureRecognizer.cs \
 	AppKit/NSGradient.cs \
 	AppKit/NSGraphics.cs \
@@ -1768,7 +1768,7 @@ UIKIT_SOURCES = \
 	UIKit/UIEnumsExtensions.cs \
 	UIKit/UIEvent.cs \
 	UIKit/UIEventButtonMaskExtensions.cs \
-	UIKit/UIFont.cs \
+	XKit/XFont.cs \
 	UIKit/UIFontFeature.cs \
 	UIKit/UIGestureRecognizer.cs \
 	UIKit/UIGraphics.cs \

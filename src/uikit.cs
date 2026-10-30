@@ -8230,153 +8230,6 @@ namespace UIKit {
 		nfloat Black { get; }
 	}
 
-	[BaseType (typeof (NSObject))]
-	[ThreadSafe]
-	[DisableDefaultCtor] // iOS7 -> Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: -[UIFont ctFontRef]: unrecognized selector sent to instance 0x15b283c0
-						 // note: because of bug 25511 (managed Dispose / native semi-factory) we need to return a copy of the UIFont for every static method that returns an UIFont
-	interface UIFont : NSCopying, NSSecureCoding {
-		[Static]
-		[Export ("systemFontOfSize:")]
-		[Internal] // bug 25511
-		IntPtr _SystemFontOfSize (nfloat size);
-
-		[MacCatalyst (13, 1)]
-		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
-		[Internal] // bug 25511
-		[Static]
-		[Export ("systemFontOfSize:weight:")]
-		IntPtr _SystemFontOfSize (nfloat size, nfloat weight);
-
-		[MacCatalyst (13, 1)]
-		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
-		[Internal] // bug 25511
-		[Static]
-		[Export ("monospacedDigitSystemFontOfSize:weight:")]
-		IntPtr _MonospacedDigitSystemFontOfSize (nfloat fontSize, nfloat weight);
-
-		[Static]
-		[Export ("boldSystemFontOfSize:")]
-		[Internal] // bug 25511
-		IntPtr _BoldSystemFontOfSize (nfloat size);
-
-		[Static]
-		[Export ("italicSystemFontOfSize:")]
-		[Internal] // bug 25511
-		IntPtr _ItalicSystemFontOfSize (nfloat size);
-
-		[Static]
-		[Export ("fontWithName:size:")]
-		[Internal] // bug 25511
-		IntPtr _FromName (string name, nfloat size);
-
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Internal] // bug https://xamarin.github.io/bugzilla-archives/25/25511/bug.html
-		[Export ("monospacedSystemFontOfSize:weight:")]
-		IntPtr _MonospacedSystemFontOfSize (nfloat fontSize, nfloat weight);
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Export ("labelFontSize")]
-		nfloat LabelFontSize { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Export ("buttonFontSize")]
-		nfloat ButtonFontSize { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Export ("smallSystemFontSize")]
-		nfloat SmallSystemFontSize { get; }
-
-		[NoTV]
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Export ("systemFontSize")]
-		nfloat SystemFontSize { get; }
-
-		[Export ("fontWithSize:")]
-		[Internal] // bug 25511
-		IntPtr _WithSize (nfloat size);
-
-		[Export ("familyName", ArgumentSemantic.Retain)]
-		string FamilyName { get; }
-
-		[Export ("fontName", ArgumentSemantic.Retain)]
-		string Name { get; }
-
-		[Export ("pointSize")]
-		nfloat PointSize { get; }
-
-		[Export ("ascender")]
-		nfloat Ascender { get; }
-
-		[Export ("descender")]
-		nfloat Descender { get; }
-
-		[Export ("leading")]
-		nfloat Leading { get; }
-
-		[Export ("capHeight")]
-		nfloat CapHeight { get; }
-
-		[Export ("xHeight")]
-		nfloat XHeight { get; }
-
-#if !XAMCORE_5_0
-		/// <summary>The size of the a lower cased "x", as measured in points.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///           <para>
-		///           </para>
-		///           <para tool="threads">This can be used from a background thread.</para>
-		///         </remarks>
-		[Obsolete ("Use the 'XHeight' property instead.")]
-		[Wrap ("XHeight", IsVirtual = true)]
-		nfloat xHeight { get; }
-#endif
-
-		[Export ("lineHeight")]
-		nfloat LineHeight { get; }
-
-		[Static]
-		[Export ("familyNames")]
-		string [] FamilyNames { get; }
-
-		[Static]
-		[Export ("fontNamesForFamilyName:")]
-		string [] FontNamesForFamilyName (string familyName);
-
-		[Export ("fontDescriptor")]
-		UIFontDescriptor FontDescriptor { get; }
-
-		[Static, Export ("fontWithDescriptor:size:")]
-		[Internal] // bug 25511
-		IntPtr _FromDescriptor (UIFontDescriptor descriptor, nfloat pointSize);
-
-		[Static, Export ("preferredFontForTextStyle:")]
-		[Internal] // bug 25511
-		IntPtr _GetPreferredFontForTextStyle (NSString uiFontTextStyle);
-
-		// FIXME the API is present but UITraitCollection is not exposed / rdar 27785753
-		[MacCatalyst (13, 1)]
-		[Static]
-		[Export ("preferredFontForTextStyle:compatibleWithTraitCollection:")]
-		[Internal]
-		IntPtr _GetPreferredFontForTextStyle (NSString uiFontTextStyle, [NullAllowed] UITraitCollection traitCollection);
-
-		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
-		[Static]
-		[Internal]
-		[Export ("systemFontOfSize:weight:width:")]
-		IntPtr _SystemFontOfSize (nfloat fontSize, nfloat weight, nfloat width);
-
-	}
 
 	/// <summary>Enumerates font styles for parts of a document.</summary>
 	/// <remarks>To be added.</remarks>
@@ -35724,21 +35577,25 @@ namespace UIKit {
 		NativeHandle Constructor (CGRect frame);
 	}
 
-	[Static]
-	[Internal]
+	/// <summary>System font widths used when creating a font.</summary>
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	interface UIFontWidthConstants {
+	[BackingFieldType (typeof (nfloat))]
+	public enum UIFontWidth {
+		/// <summary>A condensed font width.</summary>
 		[Field ("UIFontWidthCondensed")]
-		nfloat Condensed { get; }
+		Condensed,
 
+		/// <summary>The standard font width.</summary>
 		[Field ("UIFontWidthStandard")]
-		nfloat Standard { get; }
+		Standard,
 
+		/// <summary>An expanded font width.</summary>
 		[Field ("UIFontWidthExpanded")]
-		nfloat Expanded { get; }
+		Expanded,
 
+		/// <summary>A compressed font width.</summary>
 		[Field ("UIFontWidthCompressed")]
-		nfloat Compressed { get; }
+		Compressed,
 	}
 
 	[NoTV, iOS (16, 4), MacCatalyst (16, 4)]

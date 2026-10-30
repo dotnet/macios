@@ -7,6 +7,8 @@
 // Copyright 2018 Microsoft Corp. All rights reserved.
 //
 
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -117,6 +119,314 @@ namespace MonoTouchFixtures.CoreFoundation {
 			return reference;
 		}
 
+		[TestCase (false, false)]
+		[TestCase (true, false)]
+#if !XAMCORE_5_0
+		[TestCase (false, true)]
+		[TestCase (true, true)]
+#endif // !XAMCORE_5_0
+		public void SubmitExceptions (bool concurrent, bool compatibility)
+		{
+			using var queue = new DispatchQueue ("SubmitExceptions", concurrent);
+			var visits = new int [8];
+			var failures = new Exception [visits.Length];
+			for (var i = 0; i < failures.Length; i++)
+				failures [i] = new InvalidOperationException ($"Iteration {i}");
+			Action<nint> callback = index => {
+				Interlocked.Increment (ref visits [(int) index]);
+				ThrowFromCallback (failures [(int) index]);
+			};
+			var exception = Assert.Throws<AggregateException> (() => {
+#if !XAMCORE_5_0
+				if (compatibility)
+					queue.Submit ((int index) => callback (index), visits.Length);
+				else
+#endif // !XAMCORE_5_0
+					queue.Submit (callback, (nint) visits.Length);
+			});
+			Assert.That (exception.InnerExceptions, Is.EquivalentTo (failures), "Every callback failure is preserved");
+			foreach (var failure in exception.InnerExceptions)
+				Assert.That (failure.StackTrace, Does.Contain (nameof (ThrowFromCallback)), "Original throw site");
+			for (var i = 0; i < visits.Length; i++)
+				Assert.That (visits [i], Is.EqualTo (1), $"Iteration {i} completed exactly once");
+			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Queue remains usable");
+		}
+
+		[Test]
+		public void SubmitNegativeCount ()
+		{
+			using var queue = new DispatchQueue ("SubmitNegativeCount");
+			var exception = Assert.Throws<ArgumentOutOfRangeException> (() => queue.Submit ((nint index) => { }, (nint) (-1)));
+			Assert.That (exception.ParamName, Is.EqualTo ("times"), "Native parameter");
+#if !XAMCORE_5_0
+			exception = Assert.Throws<ArgumentOutOfRangeException> (() => queue.Submit ((int index) => { }, -1L));
+			Assert.That (exception.ParamName, Is.EqualTo ("times"), "Compatibility parameter");
+#endif // !XAMCORE_5_0
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void ExceptionReleasesCallbackState (bool submit)
+		{
+			var reference = DispatchThrowingCapturedState (submit);
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			GC.Collect ();
+			Assert.That (reference.IsAlive, Is.False, "Throwing callbacks must release captured state");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference DispatchThrowingCapturedState (bool submit)
+		{
+			using var queue = new DispatchQueue ("DispatchThrowingCapturedState");
+			var state = new int [1];
+			var reference = new WeakReference (state);
+			Action callback = () => {
+				state [0]++;
+				throw new InvalidOperationException ();
+			};
+			if (submit)
+				Assert.Throws<AggregateException> (() => queue.Submit ((nint index) => callback (), (nint) 1));
+			else
+				Assert.Throws<InvalidOperationException> (() => queue.DispatchSync (callback));
+			return reference;
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RejectedSubmissionReleasesCallbackState (bool groupSubmission)
+		{
+			var reference = RejectCapturedState (groupSubmission);
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			GC.Collect ();
+			Assert.That (reference.IsAlive, Is.False, "Rejected submissions must not retain their callbacks");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference RejectCapturedState (bool groupSubmission)
+		{
+			var queue = new DispatchQueue ("RejectCapturedState");
+			queue.Dispose ();
+			var state = new int [1];
+			var reference = new WeakReference (state);
+			Action callback = () => {
+				state [0]++;
+			};
+			if (groupSubmission) {
+				using var group = new DispatchGroup ();
+				Assert.Throws<ObjectDisposedException> (() => group.DispatchAsync (queue, callback));
+				Assert.Throws<ObjectDisposedException> (() => group.Notify (queue, callback));
+			} else {
+				Assert.Throws<ObjectDisposedException> (() => queue.DispatchAsync (callback));
+				Assert.Throws<ObjectDisposedException> (() => queue.DispatchAfter (DispatchTime.Now, callback));
+				Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierAsync (callback));
+			}
+			return reference;
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void DispatchSyncExceptions (bool concurrent)
+		{
+			using var queue = new DispatchQueue ("DispatchSyncExceptions", concurrent);
+			var expected = new InvalidOperationException ("Callback failure");
+			var originalContext = SynchronizationContext.Current;
+			var exception = Assert.Throws<InvalidOperationException> (() => queue.DispatchSync (() => {
+				ThrowFromCallback (expected);
+			}));
+			Assert.That (exception, Is.SameAs (expected), "Action exception");
+			Assert.That (exception.StackTrace, Does.Contain (nameof (ThrowFromCallback)), "Action throw site");
+			Assert.That (SynchronizationContext.Current, Is.SameAs (originalContext), "Action caller context");
+
+			exception = Assert.Throws<InvalidOperationException> (() => queue.DispatchSync<int> (() => {
+				ThrowFromCallback (expected);
+				return 0;
+			}));
+			Assert.That (exception, Is.SameAs (expected), "Func exception");
+			Assert.That (exception.StackTrace, Does.Contain (nameof (ThrowFromCallback)), "Func throw site");
+
+			exception = Assert.Throws<InvalidOperationException> (() => queue.DispatchBarrierSync (() => {
+				ThrowFromCallback (expected);
+			}));
+			Assert.That (exception, Is.SameAs (expected), "Barrier exception");
+			Assert.That (exception.StackTrace, Does.Contain (nameof (ThrowFromCallback)), "Barrier throw site");
+			Assert.That (SynchronizationContext.Current, Is.SameAs (originalContext), "Barrier caller context");
+			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Queue remains usable");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static void ThrowFromCallback (Exception exception)
+		{
+			throw exception;
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void SynchronizationContextRestored (bool customContext)
+		{
+			using var queue = new DispatchQueue ("SynchronizationContextRestored");
+			var originalContext = SynchronizationContext.Current;
+			var context = customContext ? new SynchronizationContext () : null;
+			var callerThread = Environment.CurrentManagedThreadId;
+			SynchronizationContext.SetSynchronizationContext (context);
+			try {
+				SynchronizationContext callbackContext = null;
+				var callbackThread = 0;
+				queue.DispatchSync (() => {
+					callbackContext = SynchronizationContext.Current;
+					callbackThread = Environment.CurrentManagedThreadId;
+				});
+				if (customContext && callerThread == callbackThread)
+					Assert.That (callbackContext, Is.SameAs (context), "User context is preserved");
+				else
+					Assert.That (callbackContext, Is.Not.Null, "Queue context is installed");
+				Assert.That (SynchronizationContext.Current, Is.SameAs (context), "Context after success");
+				Assert.Throws<InvalidOperationException> (() => queue.DispatchSync (() => {
+					throw new InvalidOperationException ();
+				}));
+				Assert.That (SynchronizationContext.Current, Is.SameAs (context), "Context after failure");
+			} finally {
+				SynchronizationContext.SetSynchronizationContext (originalContext);
+			}
+		}
+
+		[Test]
+		public void NullCallbacks ()
+		{
+			using var queue = new DispatchQueue ("NullCallbacks");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchAsync ((Action) null), "Async action");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchAsync ((DispatchBlock) null), "Async block");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchSync ((Action) null), "Sync action");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchSync ((DispatchBlock) null), "Sync block");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchBarrierAsync ((Action) null), "Async barrier action");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchBarrierAsync ((DispatchBlock) null), "Async barrier block");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchBarrierSync ((Action) null), "Sync barrier action");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchBarrierSync ((DispatchBlock) null), "Sync barrier block");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchAfter (DispatchTime.Now, (Action) null), "After action");
+			Assert.Throws<ArgumentNullException> (() => queue.DispatchAfter (DispatchTime.Now, (DispatchBlock) null), "After block");
+		}
+
+		[Test]
+		public void DisposedQueue ()
+		{
+			var queue = new DispatchQueue ("DisposedQueue");
+			queue.Dispose ();
+			using var block = new DispatchBlock (() => { });
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAsync (() => { }), "Async action");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAsync (block), "Async block");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchSync (() => { }), "Sync action");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchSync (block), "Sync block");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchSync (() => 42), "Sync function");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierAsync (() => { }), "Async barrier action");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierAsync (block), "Async barrier block");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierSync (() => { }), "Sync barrier action");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierSync (block), "Sync barrier block");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAfter (DispatchTime.Now, () => { }), "After action");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAfter (DispatchTime.Now, block), "After block");
+			Assert.Throws<ObjectDisposedException> (() => queue.Submit ((nint index) => { }, (nint) 0), "Submit");
+#if !XAMCORE_5_0
+			Assert.Throws<ObjectDisposedException> (() => queue.Submit ((int index) => { }, 0L), "Compatibility submit");
+#endif // !XAMCORE_5_0
+			Assert.Throws<ObjectDisposedException> (() => queue.Activate (), "Activate");
+			Assert.Throws<ObjectDisposedException> (() => queue.Suspend (), "Suspend");
+			Assert.Throws<ObjectDisposedException> (() => queue.Resume (), "Resume");
+			Assert.Throws<ObjectDisposedException> (() => queue.SetTargetQueue (null), "Target");
+			Assert.Throws<ObjectDisposedException> (() => queue.SetSpecific ((IntPtr) 1, new object ()), "SetSpecific");
+			Assert.Throws<ObjectDisposedException> (() => queue.GetSpecific ((IntPtr) 1), "GetSpecific");
+			Assert.Throws<ObjectDisposedException> (() => queue.GetQualityOfService (out var priority), "GetQualityOfService");
+			Assert.Throws<ObjectDisposedException> (() => { var value = queue.QualityOfService; }, "QualityOfService");
+			Assert.Throws<ObjectDisposedException> (() => { var value = queue.Label; }, "Label");
+			Assert.Throws<ObjectDisposedException> (() => { var value = queue.Context; }, "Get context");
+			Assert.Throws<ObjectDisposedException> (() => queue.Context = IntPtr.Zero, "Set context");
+			Assert.Throws<ObjectDisposedException> (() => new DispatchQueue ("DisposedTarget", new DispatchQueue.Attributes (), queue), "Constructor target");
+		}
+
+		[Test]
+		public void DisposedBlock ()
+		{
+			using var queue = new DispatchQueue ("DisposedBlock");
+			var block = new DispatchBlock (() => { });
+			block.Dispose ();
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAsync (block), "Async");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchSync (block), "Sync");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierAsync (block), "Async barrier");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchBarrierSync (block), "Sync barrier");
+			Assert.Throws<ObjectDisposedException> (() => queue.DispatchAfter (DispatchTime.Now, block), "After");
+		}
+
+		[Test]
+		public void Context ()
+		{
+			using var queue = new DispatchQueue ("Context");
+			Assert.That (queue.Context, Is.EqualTo (IntPtr.Zero), "Initial context");
+			queue.Context = (IntPtr) 42;
+			Assert.That (queue.Context, Is.EqualTo ((IntPtr) 42), "Assigned context");
+			queue.Context = IntPtr.Zero;
+			Assert.That (queue.Context, Is.EqualTo (IntPtr.Zero), "Cleared context");
+		}
+
+		[Test]
+		public void SuspendResume ()
+		{
+			using var queue = new DispatchQueue ("SuspendResume");
+			var completed = new TaskCompletionSource<bool> ();
+			queue.Suspend ();
+			queue.Suspend ();
+			try {
+				queue.DispatchAsync (() => completed.SetResult (true));
+				Assert.That (completed.Task.IsCompleted, Is.False, "Suspended twice");
+			} finally {
+				queue.Resume ();
+				try {
+					Assert.That (completed.Task.IsCompleted, Is.False, "Still suspended once");
+				} finally {
+					queue.Resume ();
+				}
+			}
+			Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Resumed");
+		}
+
+		[TestCase (false, DispatchQueue.AutoreleaseFrequency.Inherit)]
+		[TestCase (true, DispatchQueue.AutoreleaseFrequency.WorkItem)]
+		[TestCase (true, DispatchQueue.AutoreleaseFrequency.Never)]
+		public void Attributes (bool concurrent, DispatchQueue.AutoreleaseFrequency frequency)
+		{
+			var attributes = new DispatchQueue.Attributes ();
+			Assert.That (attributes.Concurrent, Is.False, "Default concurrency");
+			Assert.That (attributes.IsInitiallyInactive, Is.False, "Default activation");
+			Assert.That (attributes.AutoreleaseFrequency, Is.Null, "Default autorelease frequency");
+			Assert.That (attributes.QualityOfService, Is.Null, "Default quality of service");
+			Assert.That (attributes.RelativePriority, Is.EqualTo (0), "Default priority");
+			attributes.Concurrent = concurrent;
+			attributes.IsInitiallyInactive = true;
+			attributes.AutoreleaseFrequency = frequency;
+			attributes.QualityOfService = DispatchQualityOfService.Utility;
+			attributes.RelativePriority = -2;
+			Assert.That (attributes.Concurrent, Is.EqualTo (concurrent), "Concurrency");
+			Assert.That (attributes.IsInitiallyInactive, Is.True, "Activation");
+			Assert.That (attributes.AutoreleaseFrequency, Is.EqualTo (frequency), "Autorelease frequency");
+			Assert.That (attributes.QualityOfService, Is.EqualTo (DispatchQualityOfService.Utility), "Quality of service");
+			Assert.That (attributes.RelativePriority, Is.EqualTo (-2), "Priority");
+			using var queue = new DispatchQueue ("Attributes", attributes);
+			queue.Activate ();
+			queue.Activate ();
+			attributes.QualityOfService = DispatchQualityOfService.Background;
+			attributes.RelativePriority = -3;
+			Assert.That (queue.GetQualityOfService (out var priority), Is.EqualTo (DispatchQualityOfService.Utility), "Queue quality of service");
+			Assert.That (priority, Is.EqualTo (-2), "Queue priority");
+			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Activated queue executes work");
+		}
+
+		[Test]
+		public void UnspecifiedQualityOfService ()
+		{
+			using var queue = new DispatchQueue ("UnspecifiedQualityOfService");
+			Assert.That (queue.QualityOfService, Is.EqualTo (DispatchQualityOfService.Unspecified), "No explicit quality of service");
+			Assert.That (queue.GetQualityOfService (out var priority), Is.EqualTo (DispatchQualityOfService.Unspecified), "No explicit class");
+			Assert.That (priority, Is.EqualTo (0), "No relative priority");
+		}
+
 		[Test]
 		public void CtorWithAttributes ()
 		{
@@ -160,10 +470,189 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using (var queue = new DispatchQueue ("Specific")) {
 				var key = (IntPtr) 0x31415926;
+				Assert.That (queue.GetSpecific (key), Is.Null, "Unset key");
+				Assert.That (queue.GetSpecific (IntPtr.Zero), Is.Null, "Zero key");
 				queue.SetSpecific (key, "hello world");
 				Assert.That (queue.GetSpecific (key), Is.EqualTo ("hello world"), "Key");
+				var replacement = new object ();
+				queue.SetSpecific (key, replacement);
+				Assert.That (queue.GetSpecific (key), Is.SameAs (replacement), "Replaced key");
+				Assert.Throws<ArgumentException> (() => queue.SetSpecific (IntPtr.Zero, replacement), "Zero key is rejected");
 			}
 		}
+
+		[Test]
+		public void SpecificDoesNotSearchTarget ()
+		{
+			var key = (IntPtr) 0x31415926;
+			using var target = new DispatchQueue ("SpecificTarget");
+			target.SetSpecific (key, "target");
+			using var queue = new DispatchQueue ("SpecificChild", new DispatchQueue.Attributes (), target);
+			Assert.That (queue.GetSpecific (key), Is.Null, "Only searches the specified queue");
+		}
+
+		class SpecificValue {
+			public IntPtr Key { get; }
+
+			public SpecificValue (IntPtr key)
+			{
+				Key = key;
+			}
+
+			public override string ToString () => Key.ToString ();
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void SpecificConcurrentReplacement (bool separateWrapper)
+		{
+			using var queue = new DispatchQueue ("SpecificConcurrentReplacement");
+			using var alias = queue.DispatchSync (() => DispatchQueue.CurrentQueue);
+			Assert.That (alias, Is.Not.SameAs (queue), "Distinct managed wrappers");
+			Assert.That (alias.Handle, Is.EqualTo (queue.Handle), "Both wrappers refer to the same native queue");
+			var reader = separateWrapper ? alias : queue;
+			var keys = new IntPtr [] { (IntPtr) 1, (IntPtr) 2 };
+			foreach (var key in keys)
+				queue.SetSpecific (key, new SpecificValue (key));
+
+			var unexpected = new List<(IntPtr Key, object Value)> ();
+			var finished = 0;
+			using var start = new Barrier (2);
+			var writer = Task.Run (() => {
+				start.SignalAndWait ();
+				var iteration = 0;
+				do {
+					var key = keys [iteration++ % keys.Length];
+					queue.SetSpecific (key, new SpecificValue (key));
+					if (iteration % 1024 == 0)
+						GC.Collect (0);
+				} while (Volatile.Read (ref finished) == 0);
+			});
+			var reads = Task.Run (() => {
+				start.SignalAndWait ();
+				try {
+					for (var i = 0; i < 100000; i++) {
+						var key = keys [i % keys.Length];
+						var value = reader.GetSpecific (key);
+						if (value is not SpecificValue state || state.Key != key)
+							unexpected.Add ((key, value));
+					}
+				} finally {
+					Volatile.Write (ref finished, 1);
+				}
+			});
+			Task.WaitAll (writer, reads);
+			Assert.That (unexpected, Is.Empty, "Every read must return an object registered for that key");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void DispatchAfter (bool nativeBlock)
+		{
+			using var queue = new DispatchQueue ("DispatchAfter");
+			var completed = new TaskCompletionSource<bool> ();
+			var clock = Stopwatch.StartNew ();
+			var deadline = new DispatchTime (DispatchTime.Now, TimeSpan.FromMilliseconds (50));
+			var elapsed = TimeSpan.Zero;
+			var label = "";
+			Action callback = () => {
+				elapsed = clock.Elapsed;
+				label = DispatchQueue.CurrentQueueLabel;
+				completed.SetResult (true);
+			};
+			if (nativeBlock) {
+				using var block = new DispatchBlock (callback);
+				queue.DispatchAfter (deadline, block);
+			} else {
+				queue.DispatchAfter (deadline, callback);
+			}
+			Assert.That (completed.Task.Wait (TimeSpan.FromSeconds (5)), Is.True, "Callback completed");
+			Assert.That (elapsed, Is.GreaterThanOrEqualTo (TimeSpan.FromMilliseconds (50)), "Not executed before the deadline");
+			Assert.That (label, Is.EqualTo (queue.Label), "Executes on the requested queue");
+		}
+
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		public void BarrierOrdering (bool asynchronous, bool nativeBlock)
+		{
+			using var queue = new DispatchQueue ("BarrierOrdering", true);
+			var before = 0;
+			var atBarrier = -1;
+			var after = -1;
+			for (var i = 0; i < 8; i++)
+				queue.DispatchAsync (() => {
+					Interlocked.Increment (ref before);
+				});
+			Action barrier = () => {
+				atBarrier = before;
+			};
+			if (nativeBlock) {
+				using var block = new DispatchBlock (barrier);
+				if (asynchronous)
+					queue.DispatchBarrierAsync (block);
+				else
+					queue.DispatchBarrierSync (block);
+			} else if (asynchronous) {
+				queue.DispatchBarrierAsync (barrier);
+			} else {
+				queue.DispatchBarrierSync (barrier);
+			}
+			queue.DispatchAsync (() => {
+				after = atBarrier;
+			});
+			queue.DispatchBarrierSync (() => { });
+			Assert.That (atBarrier, Is.EqualTo (8), "Earlier work finished before the barrier");
+			Assert.That (after, Is.EqualTo (8), "Later work starts after the barrier");
+		}
+
+		[TestCase (DispatchQueuePriority.High)]
+		[TestCase (DispatchQueuePriority.Default)]
+		[TestCase (DispatchQueuePriority.Low)]
+		[TestCase (DispatchQueuePriority.Background)]
+		public void GlobalPriority (DispatchQueuePriority priority)
+		{
+			using var queue = DispatchQueue.GetGlobalQueue (priority);
+			Assert.That (queue.Label, Does.StartWith ("com.apple.root."), "Global label");
+			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Queue executes work");
+		}
+
+		[TestCase (DispatchQualityOfService.UserInteractive)]
+		[TestCase (DispatchQualityOfService.UserInitiated)]
+		[TestCase (DispatchQualityOfService.Default)]
+		[TestCase (DispatchQualityOfService.Utility)]
+		[TestCase (DispatchQualityOfService.Background)]
+		public void GlobalQualityOfService (DispatchQualityOfService service)
+		{
+			using var queue = DispatchQueue.GetGlobalQueue (service);
+			var expected = service == DispatchQualityOfService.Default ? DispatchQualityOfService.Unspecified : service;
+			Assert.That (queue.QualityOfService, Is.EqualTo (expected), "Assigned quality of service");
+			Assert.That (queue.GetQualityOfService (out var priority), Is.EqualTo (expected), "Quality of service method");
+			Assert.That (priority, Is.EqualTo (0), "Relative priority");
+			Assert.That (queue.DispatchSync (() => 42), Is.EqualTo (42), "Queue executes work");
+		}
+
+#if MONOMAC
+		[Test]
+		public void MainIteration ()
+		{
+			using var process = new Process ();
+			process.StartInfo = new ProcessStartInfo {
+				FileName = NSBundle.MainBundle.ExecutablePath,
+				Arguments = "--test-dispatch-main",
+				UseShellExecute = false,
+			};
+			Assert.That (process.Start (), Is.True, "Start child");
+			var exited = process.WaitForExit (30000);
+			if (!exited) {
+				process.Kill ();
+				process.WaitForExit ();
+			}
+			Assert.That (exited, Is.True, "Main dispatch callback exited the child before the timeout");
+			Assert.That (process.ExitCode, Is.EqualTo (0), "MainIteration serviced the main queue");
+		}
+#endif
 
 		[Test]
 		public void DispatchSync ()
@@ -182,6 +671,46 @@ namespace MonoTouchFixtures.CoreFoundation {
 					queue.DispatchSync (dg);
 				Assert.That (called, Is.True, "Called DispatchBlock");
 			}
+		}
+
+		[Test]
+		public void DispatchSyncNullFunc ()
+		{
+			using var queue = new DispatchQueue ("DispatchSyncNullFunc");
+			var exception = Assert.Throws<ArgumentNullException> (() => queue.DispatchSync ((Func<int>) null));
+			Assert.That (exception.ParamName, Is.EqualTo ("func"), "Parameter name");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void DispatchSyncResult (bool concurrent)
+		{
+			using var queue = new DispatchQueue ("DispatchSyncResult", concurrent);
+			var called = 0;
+			var result = queue.DispatchSync (() => {
+				called++;
+				return 42;
+			});
+			Assert.That (called, Is.EqualTo (1), "Function must run exactly once before DispatchSync returns");
+			Assert.That (result, Is.EqualTo (42), "Value type");
+			Assert.That (queue.DispatchSync (() => 0), Is.EqualTo (0), "Default value");
+
+			var expected = new object ();
+			Assert.That (queue.DispatchSync (() => expected), Is.SameAs (expected), "Reference type");
+			Assert.That (queue.DispatchSync<string> (() => null), Is.Null, "Null reference");
+			Assert.That (queue.DispatchSync<int?> (() => 42), Is.EqualTo (42), "Nullable value");
+			Assert.That (queue.DispatchSync<int?> (() => null), Is.Null, "Null nullable value");
+		}
+
+		[Test]
+		public void DispatchSyncResultQueueOrder ()
+		{
+			using var queue = new DispatchQueue ("DispatchSyncResultQueueOrder");
+			var value = 0;
+			queue.DispatchAsync (() => {
+				value = 42;
+			});
+			Assert.That (queue.DispatchSync (() => value), Is.EqualTo (42), "Previously submitted work must finish first");
 		}
 
 		[Test]

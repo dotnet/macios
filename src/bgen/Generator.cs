@@ -3004,7 +3004,7 @@ public partial class Generator : IMemberGatherer {
 				if (!parType.IsValueType) {
 					if (AttributeManager.IsNullable (pi)) {
 						sb.Append ('?');
-					} else if (pi.Position == 0 && mi is MethodInfo minfo) {
+					} else if (mi is MethodInfo minfo && pi.Position == minfo.GetParameters ().Length - 1) {
 						// only need to check for setter, since we wouldn't get here for a getter.
 						var propertyInfo = GetProperty (minfo, getter: false, setter: true);
 						if (AttributeManager.IsNullable (propertyInfo)) {

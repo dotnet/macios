@@ -70,6 +70,17 @@ namespace IndexerTests {
 			[NotImplemented]
 			set;
 		}
+
+		[NullAllowed]
+		NSObject this [string key, int index] {
+			[Wrap ("SetObject (value, key)")]
+			set;
+		}
+
+		NSObject this [[NullAllowed] string key, long index] {
+			[Wrap ("SetObject (value, key)")]
+			set;
+		}
 	}
 
 	[BaseType (typeof (WrappedIndexers))]

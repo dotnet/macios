@@ -21,7 +21,7 @@ namespace GeneratorTests {
 			var bgen = BuildFile (profile, "indexers.cs");
 			var type = bgen.ApiAssembly.MainModule.GetType ("IndexerTests.WrappedIndexers");
 			var indexers = type.Properties.Where (p => p.Name == "Item").ToArray ();
-			Assert.That (indexers.Length, Is.EqualTo (7), "Indexer overloads");
+			Assert.That (indexers.Length, Is.EqualTo (9), "Indexer overloads");
 			Assert.That (type.CustomAttributes.Single (a => a.AttributeType.Name == "DefaultMemberAttribute").ConstructorArguments [0].Value, Is.EqualTo ("Item"), "Default member");
 			Assert.That (type.Fields.Any (f => f.Name.Contains ("Item")), Is.False, "No indexer backing fields");
 
@@ -56,6 +56,8 @@ namespace GeneratorTests {
 			var source = File.ReadAllText (Path.Combine (bgen.TmpDirectory ?? throw new InvalidOperationException (), "IndexerTests", "WrappedIndexers.g.cs"));
 			Assert.That (source, Does.Contain ("this [string? @event]"), "Nullable escaped key");
 			Assert.That (source, Does.Contain ("NSObject? this"), "Nullable value");
+			Assert.That (source, Does.Contain ("NSObject? this [string key, int index]"), "Write-only nullable value with non-nullable key");
+			Assert.That (source, Does.Contain ("NSObject this [string? key, long index]"), "Write-only non-nullable value with nullable key");
 			Assert.That (source, Does.Contain ("throw new NotImplementedException (\"Read-only indexer\")"), "NotImplemented setter");
 			Assert.That (source, Does.Contain ("Gets or sets the value at the specified index."), "Indexer documentation");
 		}

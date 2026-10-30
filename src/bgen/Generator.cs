@@ -4075,7 +4075,8 @@ public partial class Generator : IMemberGatherer {
 		var parentBaseType = TypeManager.GetParentTypeWithSameNamedProperty (ReflectionExtensions.GetBaseTypeAttribute (type, this), pi.Name);
 
 		// If so, we're not static, and we can't both read and write, but they can
-		if (!minfo.is_static && !(pi.CanRead && pi.CanWrite) && (parentBaseType is not null && parentBaseType.CanRead && parentBaseType.CanWrite)) {
+		if (!minfo.is_static && !(pi.CanRead && pi.CanWrite) && (parentBaseType is not null && parentBaseType.CanRead && parentBaseType.CanWrite) &&
+			GetGetterExportAttribute (parentBaseType) is not null && GetSetterExportAttribute (parentBaseType) is not null) {
 			// Make sure the selector matches, sanity check that we aren't hiding something of a different type
 			// We skip this for wrap'ed properties, as those get complicated to resolve the correct export
 			if (wrap is null &&
@@ -6143,6 +6144,9 @@ public partial class Generator : IMemberGatherer {
 			var implements_list = new List<string> ();
 
 			foreach (var protocolType in type.GetInterfaces ()) {
+				if (is_category_class)
+					continue;
+
 				if (!AttributeManager.HasAttribute<ProtocolAttribute> (protocolType)) {
 					if (protocolType.Name [0] != 'I')
 						continue;
@@ -6151,8 +6155,6 @@ public partial class Generator : IMemberGatherer {
 					if (!api.Types.Any (x => x.Name.Contains (nonInterfaceName)))
 						continue;
 
-					if (is_category_class)
-						continue;
 					// 1. MKUserLocation implements the MKAnnotation protocol
 					// 2. The MKAnnotation protocol has a required 'coordinate' getter, and an optional 'coordinate' setter.
 					//    We've bound the former using an [Abstract] readonly Coordinate property, and the latter using a SetCoordinate method.

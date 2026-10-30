@@ -7,7 +7,6 @@
 // Copyright 2011 Xamarin Inc. All rights reserved.
 //
 
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 #if MONOMAC
@@ -85,27 +84,39 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void GetSkipBackupAttribute ()
 		{
-			Assert.That (NSFileManager.GetSkipBackupAttribute (NSBundle.MainBundle.ExecutableUrl.ToString ()), Is.False, "MainBundle");
+			var executablePath = NSBundle.MainBundle.ExecutableUrl.Path;
+			Assert.That (File.Exists (executablePath), Is.True, "MainBundle executable");
+			Assert.That (NSFileManager.GetSkipBackupAttribute (executablePath, out var executableError), Is.False, "MainBundle");
+			Assert.That (executableError, Is.Null, "MainBundle error");
 
+			// Avoid backup-metadata queries in the user's shared Documents directory on macOS.
+#if MONOMAC || __MACCATALYST__
+			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User);
+#else
 			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
-			var filename = Path.Combine (paths [0], $"DoNotBackupMe-NSFileManager-{Process.GetCurrentProcess ().Id}");
+#endif
+			var directory = Path.Combine (paths [0], $"NSFileManagerTest-{Guid.NewGuid ()}");
+			var filename = Path.Combine (directory, "DoNotBackupMe");
+			Directory.CreateDirectory (directory);
 			try {
 				File.WriteAllText (filename, "not worth a bit");
 
-				Assert.That (NSFileManager.GetSkipBackupAttribute (filename), Is.False, "DoNotBackupMe-0");
+				Assert.That (NSFileManager.GetSkipBackupAttribute (filename, out var error), Is.False, "DoNotBackupMe-0");
+				Assert.That (error, Is.Null, "error-0");
 
-				NSFileManager.SetSkipBackupAttribute (filename, true);
+				error = NSFileManager.SetSkipBackupAttribute (filename, true);
+				Assert.That (error, Is.Null, "set-error-1");
 
-				NSError error;
 				Assert.That (NSFileManager.GetSkipBackupAttribute (filename, out error), Is.True, "DoNotBackupMe-1");
 				Assert.That (error, Is.Null, "error-1");
 
 				error = NSFileManager.SetSkipBackupAttribute (filename, false);
-				Assert.That (NSFileManager.GetSkipBackupAttribute (filename), Is.False, "DoNotBackupMe-2");
+				Assert.That (error, Is.Null, "set-error-2");
+				Assert.That (NSFileManager.GetSkipBackupAttribute (filename, out error), Is.False, "DoNotBackupMe-2");
 				Assert.That (error, Is.Null, "error-2");
 			} finally {
 				// otherwise the attribute won't reset even if the file is overwritten
-				File.Delete (filename);
+				Directory.Delete (directory, true);
 			}
 		}
 

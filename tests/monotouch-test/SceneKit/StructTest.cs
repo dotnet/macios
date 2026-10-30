@@ -40,14 +40,14 @@ namespace MonoTouchFixtures.SceneKit {
 		[Test]
 		public void QuaternionFromMatrix ()
 		{
-			var matrix = CoreGraphics.RMatrix3.Identity;
+			var matrix = global::CoreGraphics.RMatrix3.Identity;
 #if XAMCORE_5_0
 			var quaternion = new SCNQuaternion (in matrix);
 #else
 			var quaternion = new SCNQuaternion (ref matrix);
 #endif
 			Assert.That (quaternion, Is.EqualTo (SCNQuaternion.Identity), "Quaternion");
-			Assert.That (matrix, Is.EqualTo (CoreGraphics.RMatrix3.Identity), "Unchanged matrix");
+			Assert.That (matrix, Is.EqualTo (global::CoreGraphics.RMatrix3.Identity), "Unchanged matrix");
 		}
 
 		[Test]

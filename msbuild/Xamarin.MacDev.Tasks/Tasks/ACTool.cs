@@ -73,7 +73,7 @@ namespace Xamarin.MacDev.Tasks {
 			var assetDirs = new HashSet<string> (items.Select (x => BundleResource.GetVirtualProjectPath (this, x)));
 
 			if (!string.IsNullOrEmpty (XSAppIconAssets) && !string.IsNullOrEmpty (AppIcon)) {
-				Log.LogError (MSBStrings.E7129 /* Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other. */);
+				Log.LogError (7129, null, MSBStrings.E7129 /* Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other. */);
 				return;
 			}
 
@@ -171,12 +171,12 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (AppIcon)) {
 				if (Platform == ApplePlatform.TVOS) {
 					if (!brandAssetsInAssets.Contains (AppIcon)) {
-						Log.LogError (MSBStrings.E7130 /* Can't find the AppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2} */, AppIcon, brandAssetsInAssets.Count, string.Join (", ", brandAssetsInAssets.OrderBy (v => v)));
+						Log.LogError (7130, null, MSBStrings.E7130 /* Can't find the AppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2} */, AppIcon, brandAssetsInAssets.Count, string.Join (", ", brandAssetsInAssets.OrderBy (v => v)));
 						return;
 					}
 				} else {
 					if (!appIconsInAssets.Contains (AppIcon)) {
-						Log.LogError (MSBStrings.E7130 /* Can't find the AppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2} */, AppIcon, appIconsInAssets.Count, string.Join (", ", appIconsInAssets.OrderBy (v => v)));
+						Log.LogError (7130, null, MSBStrings.E7130 /* Can't find the AppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2} */, AppIcon, appIconsInAssets.Count, string.Join (", ", appIconsInAssets.OrderBy (v => v)));
 						return;
 					}
 				}
@@ -188,17 +188,17 @@ namespace Xamarin.MacDev.Tasks {
 				var alternateAppIcon = alternate.ItemSpec!;
 				if (Platform == ApplePlatform.TVOS) {
 					if (!imageStacksInAssets.Contains (alternateAppIcon)) {
-						Log.LogError (MSBStrings.E7127 /* Can't find the AlternateAppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}. */, alternateAppIcon, imageStacksInAssets.Count, string.Join (", ", imageStacksInAssets.OrderBy (v => v)));
+						Log.LogError (7127, null, MSBStrings.E7127 /* Can't find the AlternateAppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}. */, alternateAppIcon, imageStacksInAssets.Count, string.Join (", ", imageStacksInAssets.OrderBy (v => v)));
 						return;
 					}
 				} else {
 					if (!appIconsInAssets.Contains (alternateAppIcon)) {
-						Log.LogError (MSBStrings.E7127 /* Can't find the AlternateAppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}. */, alternateAppIcon, appIconsInAssets.Count, string.Join (", ", appIconsInAssets.OrderBy (v => v)));
+						Log.LogError (7127, null, MSBStrings.E7127 /* Can't find the AlternateAppIcon '{0}' among the image resources. There are {1} app icons in the image resources: {2}. */, alternateAppIcon, appIconsInAssets.Count, string.Join (", ", appIconsInAssets.OrderBy (v => v)));
 						return;
 					}
 				}
 				if (string.Equals (alternateAppIcon, AppIcon, StringComparison.OrdinalIgnoreCase)) {
-					Log.LogError (MSBStrings.E7128 /* The image resource '{0}' is specified as both 'AppIcon' and 'AlternateAppIcon'. */, AppIcon);
+					Log.LogError (7128, null, MSBStrings.E7128 /* The image resource '{0}' is specified as both 'AppIcon' and 'AlternateAppIcon'. */, AppIcon);
 					return;
 				}
 				// This doesn't seem to be necessary/applicable for tvOS (it also triggers a warning from actool)
@@ -307,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 				})
 				.Where (asset => {
 					if (string.IsNullOrEmpty (asset.Catalog)) {
-						Log.LogWarning (null, null, null, asset.Item.ItemSpec, 0, 0, 0, 0, MSBStrings.W0090, asset.Item.ItemSpec);
+						Log.LogWarning (90, asset.Item.ItemSpec, MSBStrings.W0090, asset.Item.ItemSpec); // Asset not part of an asset catalog: {0}
 						return false;
 					}
 					return true;
@@ -359,7 +359,7 @@ namespace Xamarin.MacDev.Tasks {
 						var src = assetItem.GetMetadata ("FullPath");
 
 						if (!File.Exists (src)) {
-							Log.LogError (null, null, null, src, 0, 0, 0, 0, MSBStrings.E0091, src);
+							Log.LogError (91, src, MSBStrings.E0091, src); // File not found: {0}
 							return false;
 						}
 
@@ -439,10 +439,10 @@ namespace Xamarin.MacDev.Tasks {
 					} catch (JsonException je) {
 						var line = (int) (je.LineNumber + 1 ?? 0);
 						var col = (int) (je.BytePositionInLine + 1 ?? 0);
-						Log.LogError (null, null, null, assetItem.ItemSpec, line, col, line, col, "{0}", je.Message);
+						Log.LogError (92, assetItem.ItemSpec, line, col, line, col, MSBStrings.E0092, je.Message); // Invalid json: {0}
 						return false;
 					} catch (Exception e) {
-						Log.LogError (null, null, null, assetItem.ItemSpec, 0, 0, 0, 0, MSBStrings.E0092, e.Message);
+						Log.LogError (92, assetItem.ItemSpec, MSBStrings.E0092, e.Message); // Invalid json: {0}
 						return false;
 
 					}
@@ -508,7 +508,7 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 
 			if (!File.Exists (Path.GetFullPath (partialAppManifestPath)))
-				Log.LogError (MSBStrings.E0093, Path.GetFullPath (partialAppManifestPath));
+				Log.LogError (93, null, MSBStrings.E0093, Path.GetFullPath (partialAppManifestPath)); // Partial Info.plist file was not generated: {0}
 
 			try {
 				var manifestOutput = PDictionary.OpenFile (manifest.ItemSpec);
@@ -518,7 +518,7 @@ namespace Xamarin.MacDev.Tasks {
 				bundleResources.AddRange (GetCompiledBundleResources (manifestOutput, intermediateBundleDir));
 				outputManifests.Add (manifest);
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message);
+				Log.LogError (94, null, MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message); // Failed to load {0} log file `{1}`: {2}
 			}
 
 			foreach (var assetpack in specs.OfType<PDictionary> ()) {

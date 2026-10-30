@@ -37,7 +37,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					plist = PDictionary.OpenFile (path);
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0024, Path.GetFileName (AppBundleDir), ex.Message);
+					Log.LogError (24, null, MSBStrings.E0024, Path.GetFileName (AppBundleDir), ex.Message); // Error loading Settings plist file '{0}/Settings.bundle/Root.plist': {1}.
 					return false;
 				}
 			} else {

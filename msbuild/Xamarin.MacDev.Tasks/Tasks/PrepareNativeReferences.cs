@@ -41,7 +41,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 
 			if (!Enum.TryParse (value, out target)) {
-				Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, "Unknown link target: {0}", value);
+				Log.LogError (7214, item.ItemSpec, MSBStrings.E7214, value); // Unknown link target: {0}
 				return;
 			}
 
@@ -120,7 +120,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				value = NativeReferences [i].GetMetadata ("Kind") ?? string.Empty;
 				if (!Enum.TryParse (value, out kind)) {
-					Log.LogError (null, null, null, NativeReferences [i].ItemSpec, 0, 0, 0, 0, MSBStrings.W0051, value);
+					Log.LogError (51, NativeReferences [i].ItemSpec, MSBStrings.W0051, value); // Unknown native reference type for '{0}'.
 					continue;
 				}
 

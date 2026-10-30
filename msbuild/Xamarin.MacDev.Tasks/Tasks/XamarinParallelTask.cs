@@ -19,7 +19,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (MaxDegreeOfParallelism)) {
 				if (int.TryParse (MaxDegreeOfParallelism, out var max))
 					return max;
-				Log.LogWarning (MSBStrings.W7121 /* Unable to parse the value '{0}' for the property 'MaxDegreeOfParallelism'. Falling back to the default value (number of processors / 2). */, MaxDegreeOfParallelism);
+				Log.LogWarning (7121, null, MSBStrings.W7121 /* Unable to parse the value '{0}' for the property 'MaxDegreeOfParallelism'. Falling back to the default value (number of processors / 2). */, MaxDegreeOfParallelism);
 			}
 			return Math.Max (Environment.ProcessorCount / 2, 1);
 		}

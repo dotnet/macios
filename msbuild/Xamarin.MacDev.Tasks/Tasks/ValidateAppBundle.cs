@@ -61,14 +61,14 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7008, info, MSBStrings.E7008, name);
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0071, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (71, null, MSBStrings.W0071, name, shortVersionString, mainShortVersionString); // The App Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0072, name);
+				Log.LogWarning (72, null, MSBStrings.W0072, name); // The App Extension '{0}' does not specify a CFBundleVersion
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0073, name, version, mainVersion);
+				Log.LogWarning (73, null, MSBStrings.W0073, name, version, mainVersion); // The App Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
 			if (extension is null) {
@@ -114,7 +114,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (7069, info, MSBStrings.E7069 /* Xamarin.iOS 14+ does not support watchOS 1 apps. Please migrate your project to watchOS 2+. */);
 				break;
 			default:
-				Log.LogWarning (MSBStrings.W0074, name, extensionPointIdentifier);
+				Log.LogWarning (74, null, MSBStrings.W0074, name, extensionPointIdentifier); // The App Extension '{0}' has an unrecognized NSExtensionPointIdentifier value ('{1}').
 				break;
 			}
 		}
@@ -141,17 +141,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			var shortVersionString = plist.GetCFBundleShortVersionString ();
 			if (string.IsNullOrEmpty (shortVersionString))
-				Log.LogWarning (MSBStrings.W0075, name);
+				Log.LogWarning (75, null, MSBStrings.W0075, name); // The Watch App '{0}' does not specify a CFBundleShortVersionString
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0076, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (76, null, MSBStrings.W0076, name, shortVersionString, mainShortVersionString); // The Watch App '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0077, name);
+				Log.LogWarning (77, null, MSBStrings.W0077, name); // The Watch App '{0}' does not specify a CFBundleVersion
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0078, name, version, mainVersion);
+				Log.LogWarning (78, null, MSBStrings.W0078, name, version, mainVersion); // The Watch App '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})
 
 			var watchDeviceFamily = plist.GetUIDeviceFamily ();
 			if (watchDeviceFamily != IPhoneDeviceType.Watch)
@@ -226,17 +226,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			var shortVersionString = plist.GetCFBundleShortVersionString ();
 			if (string.IsNullOrEmpty (shortVersionString))
-				Log.LogWarning (MSBStrings.W0079, name);
+				Log.LogWarning (79, null, MSBStrings.W0079, name); // The Watch Extension '{0}' does not specify a CFBundleShortVersionString)
 
 			if (shortVersionString != mainShortVersionString)
-				Log.LogWarning (MSBStrings.W0080, name, shortVersionString, mainShortVersionString);
+				Log.LogWarning (80, null, MSBStrings.W0080, name, shortVersionString, mainShortVersionString); // The Watch Extension '{0}' has a CFBundleShortVersionString ({1}) that does not match the main app bundle's CFBundleShortVersionString ({2})
 
 			var version = plist.GetCFBundleVersion ();
 			if (string.IsNullOrEmpty (version))
-				Log.LogWarning (MSBStrings.W0081, name);
+				Log.LogWarning (81, null, MSBStrings.W0081, name); // The Watch Extension '{0}' does not specify a CFBundleVersion
 
 			if (version != mainVersion)
-				Log.LogWarning (MSBStrings.W0082, name, version, mainVersion);
+				Log.LogWarning (82, null, MSBStrings.W0082, name, version, mainVersion); // The Watch Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
 			if (extension is null) {
@@ -332,7 +332,7 @@ namespace Xamarin.MacDev.Tasks {
 				validFamilies = new AppleDeviceFamily [] { AppleDeviceFamily.TV };
 				break;
 			default:
-				Log.LogError ("Invalid platform: {0}", Platform);
+				Log.LogError (7222, null, MSBStrings.E7222, Platform); // Invalid platform: {0}
 				break;
 			}
 

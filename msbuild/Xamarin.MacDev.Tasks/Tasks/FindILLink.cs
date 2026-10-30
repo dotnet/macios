@@ -27,7 +27,7 @@ namespace Xamarin.MacDev.Tasks {
 				ILLinkPath = Path.Combine (Path.GetDirectoryName (illinkTaskPath)!, "illink.dll");
 
 			if (!File.Exists (ILLinkPath))
-				Log.LogError (MSBStrings.E7115 /*"The illink assembly doesn't exist: '{0}'" */, ILLinkPath);
+				Log.LogError (7115, null, MSBStrings.E7115 /*"The illink assembly doesn't exist: '{0}'" */, ILLinkPath);
 
 			return !Log.HasLoggedErrors;
 		}

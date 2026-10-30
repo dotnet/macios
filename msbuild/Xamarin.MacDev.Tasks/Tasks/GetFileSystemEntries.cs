@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				foreach (var entry in entriesFullPath) {
 					if (cancelled) {
-						Log.LogError (MSBStrings.E7119 /* Task execution was cancelled. */);
+						Log.LogError (7119, null, MSBStrings.E7119 /* Task execution was cancelled. */);
 						return false;
 					}
 					var recursiveDir = entry.Substring (path.Length + 1);

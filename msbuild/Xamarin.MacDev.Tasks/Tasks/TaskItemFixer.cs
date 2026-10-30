@@ -25,7 +25,7 @@ namespace Xamarin.MacDev.Tasks {
 					try {
 						File.Copy (item.ItemSpec, targetPath, true);
 					} catch (Exception ex) {
-						log.LogWarning (ex.Message);
+						log.LogWarning (7217, null, Xamarin.Localization.MSBuild.MSBStrings.W7217, item.ItemSpec, targetPath, ex.Message); // Could not copy '{0}' to '{1}': {2}
 					}
 				}
 

@@ -78,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (!Directory.Exists (ProjectPath)) {
-				Log.LogError (MSBStrings.XcodeBuild_InvalidItem, ProjectPath);
+				Log.LogError (7216, null, MSBStrings.E7216, ProjectPath); // The Xcode project item: '{0}' could not be found. Please update the 'Include' value to a path containing a valid '.xcodeproj' file.
 				return false;
 			}
 

@@ -331,9 +331,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (certs.Count == 0 && !allowZeroCerts) {
-				var message = String.Format (MSBStrings.E0128, PlatformName);
-
-				Log.LogError (message);
+				Log.LogError (128, null, MSBStrings.E0128, PlatformName); // No valid {0} code signing keys found in keychain. You need to request a codesigning certificate from https://developer.apple.com.
 				return false;
 			}
 
@@ -362,7 +360,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (certs.Count == 0) {
-				Log.LogError (MSBStrings.E0130, PlatformName, SigningKey);
+				Log.LogError (130, null, MSBStrings.E0130, PlatformName, SigningKey); // {0} code signing key '{1}' not found in keychain.
 				return false;
 			}
 
@@ -392,7 +390,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception ex) {
-				Log.LogError ("{0}", ex.Message);
+				Log.LogError (7227, null, MSBStrings.E7227, ex.Message); // Could not retrieve signing certificates: {0}
 				certs = null;
 				return false;
 			}
@@ -428,7 +426,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (profiles.Count == 0) {
-				Log.LogError (MSBStrings.E0131, AppBundleName, PlatformName);
+				Log.LogError (131, null, MSBStrings.E0131, AppBundleName, PlatformName); // Could not find any available provisioning profiles for {0} on {1}.
 				return null;
 			}
 
@@ -455,7 +453,7 @@ namespace Xamarin.MacDev.Tasks {
 						 select new CodeSignIdentity { SigningKey = c, Profile = p }).ToList ();
 
 				if (pairs.Count == 0) {
-					Log.LogError (MSBStrings.E0133, PlatformName, AppBundleName);
+					Log.LogError (133, null, MSBStrings.E0133, PlatformName, AppBundleName); // No installed provisioning profiles match the installed {0} {1} signing identities.
 					return null;
 				}
 			} else {
@@ -500,7 +498,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (matches.Count == 0) {
-				Log.LogWarning (MSBStrings.W0137);
+				Log.LogWarning (137, null, MSBStrings.W0137); // No installed provisioning profiles match the bundle identifier.
 				return identity;
 			}
 
@@ -566,7 +564,7 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.MacOS;
 				break;
 			default:
-				Log.LogError (MSBStrings.E0048, SdkPlatform);
+				Log.LogError (48, null, MSBStrings.E0048, SdkPlatform); // Unknown SDK platform: {0}
 				return false;
 			}
 
@@ -637,7 +635,7 @@ namespace Xamarin.MacDev.Tasks {
 				identity.Profile = MobileProvisionIndex.GetMobileProvision (platform, ProvisioningProfile);
 
 				if (identity.Profile is null) {
-					Log.LogError (MSBStrings.E0144, PlatformName, ProvisioningProfile);
+					Log.LogError (144, null, MSBStrings.E0144, PlatformName, ProvisioningProfile); // The specified {0} provisioning profile '{1}' could not be found
 					return false;
 				}
 
@@ -646,14 +644,14 @@ namespace Xamarin.MacDev.Tasks {
 				if (certs.Count > 0) {
 					identity.SigningKey = certs.FirstOrDefault (c => profile.DeveloperCertificates.Any (p => p.Thumbprint == c.Thumbprint));
 					if (identity.SigningKey is null) {
-						Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+						Log.LogError (145, null, MSBStrings.E0145, PlatformName, ProvisioningProfile); // No {0} signing identities match the specified provisioning profile '{1}'.
 						return false;
 					}
 				}
 
 				identity.AppId = ConstructValidAppId (identity.Profile, identity.BundleId);
 				if (identity.AppId is null) {
-					Log.LogError (MSBStrings.E0141, identity.BundleId, ProvisioningProfile);
+					Log.LogError (141, null, MSBStrings.E0141, identity.BundleId, ProvisioningProfile); // Project bundle identifier '{0}' does not match specified provisioning profile '{1}'
 					return false;
 				}
 
@@ -696,9 +694,9 @@ namespace Xamarin.MacDev.Tasks {
 				DetectedAppId = identity.AppId;
 			} else {
 				if (identity.SigningKey is not null) {
-					Log.LogError (MSBStrings.E0146, identity.BundleId, identity.SigningKey);
+					Log.LogError (146, null, MSBStrings.E0146, identity.BundleId, identity.SigningKey); // Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.
 				} else {
-					Log.LogError (MSBStrings.E0148, identity.BundleId);
+					Log.LogError (148, null, MSBStrings.E0148, identity.BundleId); // Bundle identifier '{0}' does not match any installed provisioning profile.
 				}
 			}
 

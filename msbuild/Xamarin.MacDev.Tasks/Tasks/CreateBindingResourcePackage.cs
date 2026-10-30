@@ -52,7 +52,7 @@ namespace Xamarin.MacDev.Tasks {
 			var nonexistent = NativeReferences.Where (v => !(Directory.Exists (v.ItemSpec) || File.Exists (v.ItemSpec)));
 			if (nonexistent.Any ()) {
 				foreach (var nonex in nonexistent)
-					Log.LogError (MSBStrings.E0190 /* The NativeResource item '{0}' does not exist. */, nonex.ItemSpec);
+					Log.LogError (190, null, MSBStrings.E0190 /* The NativeResource item '{0}' does not exist. */, nonex.ItemSpec);
 				return false;
 			}
 
@@ -73,7 +73,7 @@ namespace Xamarin.MacDev.Tasks {
 					compress = true;
 				}
 			} else {
-				Log.LogError (MSBStrings.E7086 /* "The value '{0}' is invalid for the Compress property. Valid values: 'true', 'false' or 'auto'." */, Compress);
+				Log.LogError (7086, null, MSBStrings.E7086 /* "The value '{0}' is invalid for the Compress property. Valid values: 'true', 'false' or 'auto'." */, Compress);
 			}
 
 			Directory.CreateDirectory (compress ? IntermediateOutputPath : BindingResourcePath);
@@ -115,7 +115,7 @@ namespace Xamarin.MacDev.Tasks {
 					} else if (File.Exists (bindingOutputPath)) {
 						packagedFiles.Add (bindingOutputPath);
 					} else {
-						Log.LogWarning (MSBStrings.W7100, bindingOutputPath);
+						Log.LogWarning (7100, null, MSBStrings.W7100, bindingOutputPath); // Could not find the binding resource package: {0}
 					}
 				}
 				packagedFiles.Add (manifestPath);
@@ -131,7 +131,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var item in items) {
 				if (PathUtils.IsSymlinkOrContainsSymlinks (item.ItemSpec)) {
 					if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-						Log.LogError (MSBStrings.E7145 /* Can't process the native reference '{0}' on this platform because it is or contains a symlink. */, item?.ItemSpec);
+						Log.LogError (7145, null, MSBStrings.E7145 /* Can't process the native reference '{0}' on this platform because it is or contains a symlink. */, item?.ItemSpec);
 					return true;
 				}
 			}

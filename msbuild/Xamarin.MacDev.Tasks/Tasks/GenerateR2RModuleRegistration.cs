@@ -34,7 +34,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var module in R2RModules) {
 				var symbolName = module.GetMetadata ("SymbolName");
 				if (string.IsNullOrEmpty (symbolName)) {
-					Log.LogError ("Missing '{0}' metadata on item '{1}'.", "SymbolName", module.ItemSpec);
+					Log.LogError (7210, null, MSBStrings.E7210, "SymbolName", module.ItemSpec); // Missing '{0}' metadata on item '{1}'.
 					continue;
 				}
 				sb.AppendLine ($"extern void* {symbolName};");
@@ -47,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 				var moduleName = module.GetMetadata ("ModuleName");
 				var symbolName = module.GetMetadata ("SymbolName");
 				if (string.IsNullOrEmpty (moduleName)) {
-					Log.LogError ("Missing '{0}' metadata on item '{1}'.", "ModuleName", module.ItemSpec);
+					Log.LogError (7210, null, MSBStrings.E7210, "ModuleName", module.ItemSpec); // Missing '{0}' metadata on item '{1}'.
 					continue;
 				}
 				if (string.IsNullOrEmpty (symbolName))

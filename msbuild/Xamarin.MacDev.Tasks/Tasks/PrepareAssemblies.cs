@@ -166,7 +166,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				OutputAssemblies = outputAssemblies.ToArray ();
 				if (!rv && !Log.HasLoggedErrors)
-					Log.LogError (MSBStrings.E0192);
+					Log.LogError (192, null, MSBStrings.E0192); // The PrepareAssemblies task failed without reporting a specific error. Please rebuild with increased verbosity for more details.
 				success = rv && !Log.HasLoggedErrors;
 				return success;
 			} catch (Exception e) {

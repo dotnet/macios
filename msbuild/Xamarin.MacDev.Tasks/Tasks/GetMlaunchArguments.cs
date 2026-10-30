@@ -240,9 +240,9 @@ namespace Xamarin.MacDev.Tasks {
 			var simulator = GetTaskItemsOfType (Devices, "Simulator").FirstOrDefault ();
 			if (simulator is null) {
 				var sb = new StringBuilder ();
-				sb.AppendLine ("The 'Devices' item group does not contain any simulators.");
+				sb.AppendLine ();
 				AppendDiscardedDevices (sb, "", "Simulator");
-				Log.LogError (sb.ToString ().TrimEnd ());
+				Log.LogError (7219, null, MSBStrings.E7219, sb.ToString ().TrimEnd ()); // The 'Devices' item group does not contain any simulators.{0}
 				return "";
 			}
 
@@ -384,9 +384,9 @@ namespace Xamarin.MacDev.Tasks {
 		void LogNoAvailableDevicesError ()
 		{
 			var sb = new StringBuilder ();
-			sb.AppendLine ("No applicable and available devices found.");
+			sb.AppendLine ();
 			AppendDiscardedDevices (sb, "", GetApplicableDeviceType ());
-			Log.LogError (sb.ToString ().TrimEnd ());
+			Log.LogError (7220, null, MSBStrings.E7220, sb.ToString ().TrimEnd ()); // No applicable and available devices found.{0}
 		}
 
 		protected string GenerateCommandLineCommands ()
@@ -532,7 +532,7 @@ namespace Xamarin.MacDev.Tasks {
 			sb.AppendLine ();
 
 			// Sadly the only way to have the help show up in the terminal reliably is to make it a warning
-			Log.LogWarning (sb.ToString ());
+			Log.LogWarning (7221, null, MSBStrings.W7221, sb.ToString ()); // {0}
 		}
 
 		public override bool Execute ()

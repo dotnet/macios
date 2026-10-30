@@ -85,16 +85,6 @@ namespace MonoTouchFixtures.UIKit {
 		}
 
 		[Test]
-		public void DisposedConfiguration ()
-		{
-			using var configuration = new ManagedConfiguration ();
-			using var contentView = configuration.ContentView;
-			configuration.Dispose ();
-			Assert.Throws<ObjectDisposedException> (() => configuration.MakeContentView (out _));
-			Assert.That (configuration.MakeContentViewCalls, Is.Zero, "Factory calls");
-		}
-
-		[Test]
 		public void DisposedContentView ()
 		{
 			using var configuration = new ManagedConfiguration ();

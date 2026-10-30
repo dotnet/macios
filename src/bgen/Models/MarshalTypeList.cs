@@ -26,6 +26,7 @@ public class MarshalTypeList : List<MarshalType> {
 		Add (typeCache.CGImageSource);
 		Add (typeCache.DispatchData);
 		Add (typeCache.DispatchQueue);
+		Add (typeCache.OSWorkgroup);
 		Add (typeCache.Protocol);
 		if (frameworks.HaveCoreMidi)
 			Add (typeCache.MidiEndpoint);

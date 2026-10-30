@@ -83,11 +83,19 @@ namespace Xharness.Jenkins.TestTasks {
 						arguments.Add ("--autoexit");
 						proc.StartInfo.EnvironmentVariables ["NUNIT_AUTOEXIT"] = "true";
 					}
-					if (!Harness.GetIncludeSystemPermissionTests (Platform, false))
+					if (Harness.GetIncludeSystemPermissionTests (Platform, false)) {
+						proc.StartInfo.EnvironmentVariables ["ENABLE_SYSTEM_PERMISSION_TESTS"] = "1";
+						proc.StartInfo.EnvironmentVariables.Remove ("DISABLE_SYSTEM_PERMISSION_TESTS");
+					} else {
+						proc.StartInfo.EnvironmentVariables.Remove ("ENABLE_SYSTEM_PERMISSION_TESTS");
 						proc.StartInfo.EnvironmentVariables ["DISABLE_SYSTEM_PERMISSION_TESTS"] = "1";
+					}
 					proc.StartInfo.EnvironmentVariables ["MONO_DEBUG"] = "no-gdb-backtrace";
 					proc.StartInfo.EnvironmentVariables.Remove ("DYLD_FALLBACK_LIBRARY_PATH"); // VSMac might set this, and the test may end up crashing
-					proc.StartInfo.Arguments = StringUtils.FormatArguments (arguments);
+
+					// Use the spawner to launch the app, to avoid issues with macOS getting confused who's the responsible process
+					Harness.UseSpawner (proc.StartInfo, arguments);
+
 					Jenkins.MainLog.WriteLine ("Executing {0} ({1})", TestName, Mode);
 					var log = Logs.Create ($"execute-{Platform}-{Timestamp}.txt", LogType.ExecutionLog.ToString ());
 					ICrashSnapshotReporter? snapshot = null;

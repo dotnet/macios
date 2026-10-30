@@ -1321,7 +1321,14 @@ partial class TestRuntime {
 
 	public static bool IgnoreTestThatRequiresSystemPermissions ()
 	{
+#if __MACOS__ || __MACCATALYST__
+		// On macOS and Mac Catalyst we can't pre-populate the TCC database like we do for iOS/tvOS simulators,
+		// and launching via 'spawner' means the test app does not inherit TCC permissions from the parent process,
+		// so any test that requires system permissions will pop up a TCC dialog unless explicitly enabled.
+		return string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ENABLE_SYSTEM_PERMISSION_TESTS"));
+#else
 		return !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("DISABLE_SYSTEM_PERMISSION_TESTS"));
+#endif
 	}
 
 	public static void CheckBluetoothPermission (bool assert_granted = false)
@@ -1433,16 +1440,14 @@ partial class TestRuntime {
 
 	public static void RequestMicrophonePermission (bool assert_granted = false)
 	{
-#if MONOMAC
-		// It looks like macOS does not restrict access to the microphone.
-#elif __TVOS__
+#if __TVOS__
 		// tvOS doesn't have a (developer-accessible) microphone, but it seems to have API that requires developers 
 		// to request microphone access on other platforms (which means that it makes sense to both run those tests
 		// on tvOS (because the API's there) and to request microphone access (because that's required on other platforms).
-#elif __MACCATALYST__
-		// Microphone requires a hardened runtime entitlement for Mac Catalyst: com.apple.security.device.microphonee,
-		// so just ignore these tests for now.
-		NUnit.Framework.Assert.Ignore ("Requires a hardened runtime entitlement: com.apple.security.device.microphone");
+#elif __MACCATALYST__ || MONOMAC
+		// Microphone requires a hardened runtime entitlement for Mac Catalyst (com.apple.security.device.microphone)
+		// and macOS (com.apple.security.device.audio-input), so just ignore these tests for now.
+		NUnit.Framework.Assert.Ignore ("Requires a hardened runtime entitlement for microphone access.");
 #else
 		if (!CheckXcodeVersion (6, 0))
 			return; // The API to check/request permission isn't available in earlier versions, the dialog will just pop up.

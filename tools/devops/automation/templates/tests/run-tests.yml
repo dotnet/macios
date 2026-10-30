@@ -74,6 +74,9 @@ steps:
     make -C src build/generator-frameworks.g.cs
     make -C src build/ios/Constants.cs
     make -C msbuild Versions.g.cs
+    if test -f tools/spawner/Makefile; then
+      make -C tools/spawner
+    fi
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
   displayName: Generate constants files 
   timeoutInMinutes: 15

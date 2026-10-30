@@ -8,6 +8,77 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetProjectTest : TestBaseClass {
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void ExecutableProjectReferenceWarning (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var directory = Cache.CreateTemporaryDirectory ();
+			var framework = platform.ToFramework ();
+			var references = new [] {
+				(Name: "App", OutputType: "Exe", IsAppExtension: false, ReferenceOutputAssembly: true, MultiTarget: false),
+				(Name: "Library", OutputType: "Library", IsAppExtension: false, ReferenceOutputAssembly: true, MultiTarget: false),
+				(Name: "Extension", OutputType: "Library", IsAppExtension: true, ReferenceOutputAssembly: true, MultiTarget: false),
+				(Name: "ExecutableExtension", OutputType: "Exe", IsAppExtension: true, ReferenceOutputAssembly: true, MultiTarget: false),
+				(Name: "BuildDependency", OutputType: "Exe", IsAppExtension: false, ReferenceOutputAssembly: false, MultiTarget: false),
+				(Name: "MultiTargetedApp", OutputType: "Exe", IsAppExtension: false, ReferenceOutputAssembly: true, MultiTarget: true),
+				(Name: "MultiTargetedLibrary", OutputType: "Library", IsAppExtension: false, ReferenceOutputAssembly: true, MultiTarget: true),
+			};
+			var projectReferences = new StringBuilder ();
+			foreach (var reference in references) {
+				var referenceDirectory = Path.Combine (directory, reference.Name);
+				Directory.CreateDirectory (referenceDirectory);
+				var frameworkProperty = reference.MultiTarget
+					? $"<TargetFrameworks>{Configuration.DotNetTfm};{framework}</TargetFrameworks>"
+					: $"<TargetFramework>{framework}</TargetFramework>";
+				File.WriteAllText (Path.Combine (referenceDirectory, reference.Name + ".csproj"), $"""
+					<Project Sdk="Microsoft.NET.Sdk">
+						<PropertyGroup>
+							{frameworkProperty}
+							<OutputType>{reference.OutputType}</OutputType>
+							<IsAppExtension>{reference.IsAppExtension}</IsAppExtension>
+						</PropertyGroup>
+						<PropertyGroup Condition="'$(TargetFramework)' == '{Configuration.DotNetTfm}'">
+							<OutputType>{(reference.OutputType == "Exe" ? "Library" : "Exe")}</OutputType>
+						</PropertyGroup>
+					</Project>
+					""" + Environment.NewLine);
+				projectReferences.AppendLine ($"""<ProjectReference Include="{reference.Name}/{reference.Name}.csproj" ReferenceOutputAssembly="{reference.ReferenceOutputAssembly}" />""");
+			}
+			var projectPath = Path.Combine (directory, "Consumer.csproj");
+			File.WriteAllText (projectPath, $"""
+				<Project Sdk="Microsoft.NET.Sdk">
+					<PropertyGroup>
+						<TargetFramework>{framework}</TargetFramework>
+					</PropertyGroup>
+					<ItemGroup>
+						{projectReferences}
+					</ItemGroup>
+				</Project>
+				""" + Environment.NewLine);
+
+			var properties = GetDefaultProperties ();
+			var expectedWarnings = new [] { "App", "MultiTargetedApp" }.Select (name =>
+				$"The referenced project '{Path.Combine (directory, name, name + ".csproj")}' is an executable. Resources from executable projects will not be included in the app bundle. Reference a class library instead, or set 'WarnOnExecutableProjectReferences' to 'false' to disable this warning.").ToArray ();
+			foreach (var useAttribute in new [] { "false", "true" }) {
+				properties ["_UseAttributeForTargetFrameworkInfoPropertyNames"] = useAttribute;
+				var result = DotNet.AssertBuild (projectPath, properties, target: "PrepareProjectReferences");
+				var warnings = BinLog.GetBuildLogWarnings (result.BinLogPath).FilterWarnings (platform).ToArray ();
+				AssertWarningMessages (warnings, expectedWarnings);
+			}
+
+			properties ["WarnOnExecutableProjectReferences"] = "false";
+			var disabledResult = DotNet.AssertBuild (projectPath, properties, target: "PrepareProjectReferences");
+			disabledResult.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
+
+			properties.Remove ("WarnOnExecutableProjectReferences");
+			properties ["DesignTimeBuild"] = "true";
+			var designTimeResult = DotNet.AssertBuild (projectPath, properties, target: "PrepareProjectReferences");
+			designTimeResult.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
+		}
+
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]

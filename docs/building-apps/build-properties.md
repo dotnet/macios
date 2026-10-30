@@ -1969,6 +1969,16 @@ The default value is to validate; set to `false` to disable.
 > [!NOTE]
 > Using a different than the recommended version is likely to produce problems later on in the build process.
 
+## WarnOnExecutableProjectReferences
+
+By default, builds warn when a project references an executable project.
+Resources such as XIB files from executable projects are not included in the
+referencing app's bundle. Move shared code and resources to a class library
+instead. References to app extensions do not produce this warning.
+
+Set `WarnOnExecutableProjectReferences` to `false` to disable the warning.
+This does not change how resources are packaged.
+
 ## XamMacResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).

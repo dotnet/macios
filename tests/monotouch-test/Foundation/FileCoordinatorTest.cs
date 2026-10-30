@@ -7,6 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
+using System.Diagnostics;
 using System.IO;
 
 namespace MonoTouchFixtures.Foundation {
@@ -17,7 +18,10 @@ namespace MonoTouchFixtures.Foundation {
 
 		NSUrl GetUrl ()
 		{
-			return new NSUrl (Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "FileCoordinatorTest.txt"));
+			// Use the temporary directory instead of the Documents directory: accessing the Documents
+			// directory can trigger a TCC ("Files and Folders") permission prompt on macOS, which hangs
+			// forever in CI (there's no user around to answer the prompt).
+			return new NSUrl (Path.Combine (NSFileManager.TemporaryDirectory, $"FileCoordinatorTest-{Process.GetCurrentProcess ().Id}.txt"));
 		}
 
 		bool fileop;

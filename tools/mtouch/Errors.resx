@@ -1143,6 +1143,10 @@
 
 	<!-- 2300 -> 2399 is used by/reserved for ConfigurationAwareStep subclasses in the linker -->
 
+	<data name="MX2388" xml:space="preserve">
+		<value>The assembly '{0}' references Runtime.InvokedSelector, but EnableInvokedSelectorTracking is false. Remove the reference or enable selector tracking.</value>
+	</data>
+
 	<data name="MX_ConfigurationAwareStep" xml:space="preserve">
 		<value>The linker step '{0}' failed during processing: {1}</value>
 		<comment>This is a message when processing fails in the linker.

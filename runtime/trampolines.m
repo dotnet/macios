@@ -650,6 +650,19 @@ xamarin_get_frame_length (id self, SEL sel)
 	return (int) length;
 }
 
+void
+xamarin_invoke_trampoline_with_selector (enum TrampolineType trampoline_type, id self, SEL sel, iterator_func iterator, marshal_return_value_func marshal_return_value, void *context)
+{
+	SEL previous = xamarin_set_invoked_selector (sel);
+	@try {
+		xamarin_invoke_trampoline_tracking (trampoline_type, self, sel, iterator, marshal_return_value, context);
+	} @catch (id exception) {
+		xamarin_set_invoked_selector (previous);
+		@throw;
+	}
+	xamarin_set_invoked_selector (previous);
+}
+
 static inline void
 find_objc_method_implementation (struct objc_super *sup, id self, SEL sel, IMP xamarin_impl)
 {
@@ -747,6 +760,21 @@ xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone)
 	if (gchandle != INVALID_GCHANDLE)
 		xamarin_set_gchandle_with_flags (self, gchandle, flags);
 
+	return rv;
+}
+
+id
+xamarin_copyWithZone_trampoline2_with_selector (id self, SEL sel, NSZone *zone)
+{
+	SEL previous = xamarin_set_invoked_selector (sel);
+	id rv;
+	@try {
+		rv = xamarin_copyWithZone_trampoline2 (self, sel, zone);
+	} @catch (id exception) {
+		xamarin_set_invoked_selector (previous);
+		@throw;
+	}
+	xamarin_set_invoked_selector (previous);
 	return rv;
 }
 #endif

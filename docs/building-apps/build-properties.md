@@ -569,6 +569,32 @@ Set this property to `false` to preserve the attributes. Set it to `true` to
 require their removal; the build will fail if it detects that the attributes
 are needed at runtime.
 
+## EnableInvokedSelectorTracking
+
+Controls whether Objective-C-to-managed invocations track their selector for
+`ObjCRuntime.Runtime.InvokedSelector`.
+
+When unset, the build enables tracking if an input assembly references the
+property's getter, including references in dependencies or code later removed by
+trimming. Otherwise, generated registrar methods and dynamic trampolines perform
+no selector-tracking work.
+
+Set this property to `true` for reflection-only access or code introduced after
+the application was built. Set it to `false` to disable tracking explicitly; the
+build fails if it detects a reference to the getter. Accessing the property
+without tracking enabled throws `NotSupportedException`.
+
+The property returns the selector of the innermost active invocation on the
+current thread, or `null` outside an invocation. Nested invocations restore the
+previous selector on return, including exception exits. Direct managed calls do
+not change the selector, and it does not flow with the execution context; capture
+it before asynchronous work.
+
+Tracking does not enable dynamic registration. Using `Runtime.ConnectMethod` to
+connect runtime-created selectors still requires dynamic registrar support.
+With `Registrar=partial-static`, tracking uses dynamic registration for all types
+instead of the prebuilt, uninstrumented platform registrar.
+
 ## EmbedOnDemandResources
 
 Controls where on-demand resource asset packs are placed, so that the on-demand

@@ -22,14 +22,14 @@ SHIPPED_HEADERS +=         \
 	xamarin/monovm-bridge.h \
 	xamarin/coreclr-bridge.h \
 
-SHARED_SOURCES += mono-runtime.m bindings.m bindings-generated.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m monovm-bridge.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
-SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-x86_64-objc_msgSend.s trampolines-x86_64-objc_msgSendSuper.s trampolines-x86_64-objc_msgSend_stret.s trampolines-x86_64-objc_msgSendSuper_stret.s
-SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
+SHARED_SOURCES += mono-runtime.m bindings.m bindings-generated.m shared.m runtime.m trampolines.m trampolines-invoke.m trampolines-invoke-with-selector.m xamarin-support.m nsstring-localization.m trampolines-varargs.m monovm-bridge.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
+SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-x86_64-with-selector-asm.s trampolines-x86_64-objc_msgSend.s trampolines-x86_64-objc_msgSendSuper.s trampolines-x86_64-objc_msgSend_stret.s trampolines-x86_64-objc_msgSendSuper_stret.s
+SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-with-selector-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
 SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
 
 SHARED_FILES = $(SHARED_SOURCES) $(SHARED_HEADERS) $(SHARED_X64_SOURCES) $(SHARED_ARM64_SOURCES)
 
-EXTRA_DEPENDENCIES = $(SHARED_HEADERS) $(TOP)/Make.config
+EXTRA_DEPENDENCIES = $(SHARED_HEADERS) $(TOP)/Make.config trampolines-arm64-asm.s trampolines-x86_64-asm.s trampolines-invoke.m
 
 IOS_SIMULATOR_ARCHITECTURES+=x86_64
 IOS_DEVICE_ARCHITECTURES+=arm64

@@ -25,6 +25,10 @@ namespace Xamarin.Linker {
 				// Nothing to do here
 				break;
 			case RegistrarMode.PartialStatic:
+				// The prebuilt platform registrar has no selector instrumentation.
+				// Keep using dynamic registration for all types when tracking is enabled.
+				if (app.EnableInvokedSelectorTracking == true)
+					break;
 				// The method name is created in StaticRegistrar.Specialize.
 				var method = Configuration.Application.StaticRegistrar.GetInitializationMethodName (Configuration.PlatformAssembly);
 				Configuration.RegistrationMethods.Add (method);

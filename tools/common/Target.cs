@@ -381,6 +381,8 @@ namespace Xamarin.Bundler {
 				var overwrite = kvp.Value.Overwrite;
 				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
 			}
+			if (app.EnableInvokedSelectorTracking == true)
+				sw.WriteLine ("\txamarin_enable_invoked_selector_tracking ();");
 			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
 				if (app.DynamicRegistrationSupported)
 					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");

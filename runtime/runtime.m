@@ -154,6 +154,7 @@ enum InitializationFlags : int {
 	InitializationFlagsIsSimulator				= 0x10,
 	InitializationFlagsIsCoreCLR                = 0x20,
 	InitializationFlagsIsNativeAOT              = 0x40,
+	InitializationFlagsInvokedSelectorTracking  = 0x80,
 };
 
 struct InitializationOptions {
@@ -204,6 +205,42 @@ static struct Trampolines trampolines = {
 };
 
 static struct InitializationOptions options = { };
+
+static thread_local SEL invoked_selector;
+
+SEL
+xamarin_get_invoked_selector ()
+{
+	return invoked_selector;
+}
+
+SEL
+xamarin_set_invoked_selector (SEL selector)
+{
+	SEL previous = invoked_selector;
+	invoked_selector = selector;
+	return previous;
+}
+
+void
+xamarin_enable_invoked_selector_tracking ()
+{
+	options.flags = (InitializationFlags) (options.flags | InitializationFlagsInvokedSelectorTracking);
+	trampolines.tramp = (void *) &xamarin_trampoline_with_selector;
+	trampolines.stret_tramp = (void *) &xamarin_stret_trampoline_with_selector;
+	trampolines.fpret_single_tramp = (void *) &xamarin_fpret_single_trampoline_with_selector;
+	trampolines.fpret_double_tramp = (void *) &xamarin_fpret_double_trampoline_with_selector;
+	trampolines.static_tramp = (void *) &xamarin_static_trampoline_with_selector;
+	trampolines.ctor_tramp = (void *) &xamarin_ctor_trampoline_with_selector;
+	trampolines.static_fpret_single_tramp = (void *) &xamarin_static_fpret_single_trampoline_with_selector;
+	trampolines.static_fpret_double_tramp = (void *) &xamarin_static_fpret_double_trampoline_with_selector;
+	trampolines.static_stret_tramp = (void *) &xamarin_static_stret_trampoline_with_selector;
+	trampolines.long_tramp = (void *) &xamarin_longret_trampoline_with_selector;
+	trampolines.static_long_tramp = (void *) &xamarin_static_longret_trampoline_with_selector;
+#if MONOMAC
+	trampolines.copy_with_zone2 = (void *) &xamarin_copyWithZone_trampoline2_with_selector;
+#endif
+}
 
 #if !defined (CORECLR_RUNTIME)
 void

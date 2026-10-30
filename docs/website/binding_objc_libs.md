@@ -1449,6 +1449,12 @@ Objective-C object wrappers, protocols, and unconstrained generic APIs continue 
 use `Runtime.GetNSObject` or `Runtime.GetINativeObject`, preserving their existing
 dynamic-type and object-identity behavior.
 
+Wrappers without a `(NativeHandle handle, bool owns)` constructor must use the
+constrained helper when running with the legacy or dynamic registrar.
+`Runtime.GetINativeObject` still requires that constructor in those modes; the
+managed static and trimmable static registrars can invoke source factories
+without it.
+
 <a name="Arrays"></a>
 
 ### Arrays

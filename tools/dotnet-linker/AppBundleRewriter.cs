@@ -1953,14 +1953,14 @@ namespace Xamarin.Linker {
 						continue;
 				}
 
-				return type.Methods.SingleOrDefault (method =>
+				var candidates = type.Methods.Where (method =>
 					method.IsStatic && !method.HasGenericParameters
 					&& method.Parameters.Count == 2
 					&& method.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle")
 					&& method.Parameters [1].ParameterType.Is ("System", "Boolean")
-					&& method.ReturnType.FullName == self.FullName
-					&& ((method.IsPublic && method.Name == "Create")
-						|| method.Overrides.Any (v => v.Name == "Create" && v.DeclaringType.FullName == iface.FullName)));
+					&& method.ReturnType.FullName == self.FullName).ToArray ();
+				return candidates.SingleOrDefault (method => method.Overrides.Any (v => v.Name == "Create" && v.DeclaringType.FullName == iface.FullName))
+					?? candidates.SingleOrDefault (method => method.IsPublic && method.Name == "Create");
 			}
 			return null;
 		}

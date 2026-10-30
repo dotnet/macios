@@ -117,6 +117,18 @@ public class NativeObjectFactoryTests {
 	}
 
 	[Test]
+	public void ExplicitFactoryTakesPrecedenceOverPublicCreate ()
+	{
+		using var module = CreateModule ();
+		var type = AddType (module, "Test", "Wrapper");
+		var iface = AddInterface (type, type);
+		AddFactory (type, type, iface, false);
+		var factory = AddFactory (type, type, iface, true);
+
+		Assert.That (AppBundleRewriter.FindINativeObjectFactory (type), Is.SameAs (factory), "Use the actual interface implementation");
+	}
+
+	[Test]
 	public void SourceFactoryOnlyAssemblyGetsTypeMap ()
 	{
 		using var module = CreateModule ();

@@ -122,14 +122,14 @@ namespace Foundation {
 			return base.ToArray<TKey> ();
 		}
 
-		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)
+		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey [] other, NSOrderedCollectionDifferenceCalculationOptions options)
 		{
 			ArgumentNullException.ThrowIfNull (other);
 			using var array = NSArray.FromNSObjects (other);
 			return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (array, options));
 		}
 
-		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other)
+		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey [] other)
 		{
 			ArgumentNullException.ThrowIfNull (other);
 			using var array = NSArray.FromNSObjects (other);
@@ -139,7 +139,7 @@ namespace Foundation {
 		public new TKey? []? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
 			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));
 
-		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
+		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest)
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));

@@ -465,11 +465,11 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void GetDifferenceFromArrayTest ()
 		{
-			TestRuntime.AssertXcodeVersion (13,0);
+			TestRuntime.AssertXcodeVersion (13, 0);
 			using var str1 = (NSString) "1";
 			using var str2 = (NSString) "1";
 			using var str3 = (NSString) "1";
-			
+
 			using var array1 = NSArray.FromObjects (str1, str2);
 			using var array2 = NSArray.FromObjects (str1, str3);
 			var calls = 0;

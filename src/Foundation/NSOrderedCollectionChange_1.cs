@@ -25,7 +25,7 @@ namespace Foundation {
 
 		internal NSOrderedCollectionChange (NativeHandle handle) : base (handle) { }
 
-		public NSOrderedCollectionChange (TKey? anObject, NSCollectionChangeType type, nuint index) 
+		public NSOrderedCollectionChange (TKey? anObject, NSCollectionChangeType type, nuint index)
 			: base (anObject.GetHandle (), type, index)
 		{
 			GC.KeepAlive (anObject);

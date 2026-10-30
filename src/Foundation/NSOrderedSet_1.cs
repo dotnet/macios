@@ -272,11 +272,11 @@ namespace Foundation {
 
 		public new NSOrderedSet<TKey>? GetOrderedSet (NSOrderedCollectionDifference difference)
 		{
-			var ptr = _GetOrderedSet (difference); 
+			var ptr = _GetOrderedSet (difference);
 			return Runtime.GetNSObject<NSOrderedSet<TKey>> (ptr);
 		}
 
-		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
+		public NSOrderedCollectionDifference<TKey>? GetDifference (NSOrderedSet<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest)
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));

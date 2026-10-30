@@ -17,11 +17,11 @@ namespace Foundation {
 		internal NSOrderedCollectionDifference (NativeHandle handle)
 			: base (handle) { }
 
-		public NSOrderedCollectionDifference (NSOrderedCollectionChange<TKey>[] changes)
-			: base (changes) {}
+		public NSOrderedCollectionDifference (NSOrderedCollectionChange<TKey> [] changes)
+			: base (changes) { }
 
 		[DesignatedInitializer]
-		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey[]? insertedObjects, NSIndexSet removes, TKey[]? removedObjects, NSOrderedCollectionChange<TKey>[] changes)
+		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey []? insertedObjects, NSIndexSet removes, TKey []? removedObjects, NSOrderedCollectionChange<TKey> [] changes)
 			: base (NSObjectFlag.Empty)
 		{
 			using var insertedArray = insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects);
@@ -29,7 +29,7 @@ namespace Foundation {
 			InitializeHandle (_Init (inserts, insertedArray, removes, removedArray, changes), "initWithInsertIndexes:insertedObjects:removeIndexes:removedObjects:additionalChanges:");
 		}
 
-		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey[]? insertedObjects, NSIndexSet removes, TKey[]? removedObjects)
+		public NSOrderedCollectionDifference (NSIndexSet inserts, TKey []? insertedObjects, NSIndexSet removes, TKey []? removedObjects)
 			: base (NSObjectFlag.Empty)
 		{
 			using var insertedArray = insertedObjects is null ? null : NSArray.FromNSObjects (insertedObjects);

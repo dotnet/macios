@@ -5,8 +5,7 @@ using System.Collections;
 namespace Foundation {
 	public delegate NSOrderedCollectionChange? NSOrderedCollectionDifferenceGetDifferenceHandler (NSOrderedCollectionChange collectionChange);
 
-	public partial class NSOrderedCollectionDifference
-	{
+	public partial class NSOrderedCollectionDifference {
 
 		public NSOrderedCollectionChange [] Insertions => NSArray.NonNullArrayFromHandleDropNullElements<NSOrderedCollectionChange> (_Insertions);
 
@@ -55,6 +54,6 @@ namespace Foundation {
 
 		public NSOrderedCollectionDifference? GetInverseDifference ()
 			=> Runtime.GetNSObject<NSOrderedCollectionDifference> (_InverseDifference ());
-	
+
 	}
 }

@@ -4,7 +4,7 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSOrderedCollectionDifferenceTest {
-		
+
 		[Test]
 		public void InsertionsAndRemovalsTest ()
 		{

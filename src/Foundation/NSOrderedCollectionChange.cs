@@ -4,8 +4,7 @@ using System.Collections;
 #nullable enable
 
 namespace Foundation {
-	public partial class NSOrderedCollectionChange
-	{
+	public partial class NSOrderedCollectionChange {
 
 		public NSOrderedCollectionChange (NSObject? anObject, NSCollectionChangeType type, nuint index)
 			: this (anObject.GetHandle (), type, index)

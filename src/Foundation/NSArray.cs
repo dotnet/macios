@@ -1058,7 +1058,7 @@ namespace Foundation {
 		public NSObject? []? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
 			=> NSArray.ArrayFromHandle<NSObject> (_GetArrayByApplyingDifference (difference));
 
-		public NSOrderedCollectionDifference? GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest) 
+		public NSOrderedCollectionDifference? GetDifferenceFromArray (NSArray other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest equivalenceTest)
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));

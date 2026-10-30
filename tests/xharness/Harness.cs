@@ -195,6 +195,31 @@ namespace Xharness {
 			return result;
 		}
 
+		string? spawnerPath;
+		public string SpawnerPath {
+			get {
+				if (spawnerPath is null)
+					spawnerPath = Path.GetFullPath (Path.Combine (RootDirectory, "..", "tools", "spawner", "spawner"));
+				return spawnerPath;
+			}
+		}
+
+		public void UseSpawner (ProcessStartInfo processStartInfo, IList<string> arguments)
+		{
+			if (!string.IsNullOrEmpty (processStartInfo.Arguments))
+				throw new InvalidOperationException ($"ProcessStartInfo.Arguments must be empty when using UseSpawner.");
+			if (processStartInfo.ArgumentList.Count > 0)
+				throw new InvalidOperationException ($"ProcessStartInfo.ArgumentList must be empty when using UseSpawner.");
+			if (!File.Exists (SpawnerPath))
+				throw new FileNotFoundException ($"The spawner executable was not found. Did you build it? (make -C tools/spawner)", SpawnerPath);
+
+			var originalFileName = processStartInfo.FileName;
+			processStartInfo.FileName = SpawnerPath;
+			processStartInfo.ArgumentList.Add (originalFileName);
+			foreach (var args in arguments)
+				processStartInfo.ArgumentList.Add (args);
+		}
+
 		public List<TestProject> TestProjects { get; } = new ();
 
 		public bool INCLUDE_IOS { get; }

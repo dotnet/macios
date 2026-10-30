@@ -85,7 +85,11 @@ namespace MonoTests.System.Net.Http {
 			} finally {
 				cts.Cancel ();
 				listener.Stop ();
-				serverTask.GetAwaiter ().GetResult ();
+				try {
+					serverTask.GetAwaiter ().GetResult ();
+				} catch (OperationCanceledException) when (cts.IsCancellationRequested) {
+				} catch (SocketException) when (cts.IsCancellationRequested) {
+				}
 			}
 		}
 

@@ -1076,6 +1076,24 @@ INTENTS_SOURCES = \
 	Intents/INSetSeatSettingsInCarIntent.cs \
 	Intents/INStartWorkoutIntent.cs \
 
+# IOBluetooth
+
+IOBLUETOOTH_API_SOURCES = \
+	IOBluetooth/Enums.cs \
+
+IOBLUETOOTH_CORE_SOURCES = \
+	IOBluetooth/Structs.cs \
+
+IOBLUETOOTH_SOURCES = \
+	IOBluetooth/IOBluetoothChannels.cs \
+	IOBluetooth/IOBluetoothDevice.cs \
+	IOBluetooth/IOBluetoothUtilities.cs \
+
+# IOBluetoothUI
+
+IOBLUETOOTHUI_API_SOURCES = \
+	IOBluetoothUI/Enums.cs \
+
 # IOSurface
 IOSURFACE_CORE_SOURCES = \
 	IOSurface/IODefs.cs
@@ -2094,6 +2112,8 @@ MACOS_FRAMEWORKS =          \
 	ImageKit                \
 	Intents                 \
 	IntentsUI               \
+	IOBluetooth		\
+	IOBluetoothUI		\
 	IOSurface 		\
 	iTunesLibrary           \
 	JavaScriptCore          \

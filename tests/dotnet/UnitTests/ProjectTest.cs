@@ -4025,6 +4025,8 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO",
 			"/System/Library/Frameworks/Intents.framework/Versions/A/Intents",
 			"/System/Library/Frameworks/IntentsUI.framework/Versions/A/IntentsUI",
+			"/System/Library/Frameworks/IOBluetooth.framework/Versions/A/IOBluetooth",
+			"/System/Library/Frameworks/IOBluetoothUI.framework/Versions/A/IOBluetoothUI",
 			"/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface",
 			"/System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary",
 			"/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/JavaScriptCore",

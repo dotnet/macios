@@ -18,6 +18,25 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public partial class ApiTest {
+		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		public void UIGestureRecognizer_Callback (AssemblyInfo info)
+		{
+			if (info.Platform == ApplePlatform.MacOSX)
+				Assert.Ignore ("UIGestureRecognizer is unavailable on macOS.");
+
+			var recognizer = info.Assembly.MainModule.GetType ("UIKit.UIGestureRecognizer");
+			var callback = recognizer.NestedTypes.Single (t => t.Name == "Callback`1");
+			Assert.That (callback.Methods.Any (m => m.CustomAttributes.Any (a => a.AttributeType.Is ("Foundation", "ExportAttribute"))), Is.False, "Generic callback must not export methods");
+
+			var callbackBase = callback.BaseType.Resolve ();
+			Assert.That (callbackBase.HasGenericParameters, Is.False, "Non-generic callback base");
+			var activated = callbackBase.Methods.Single (m => m.Name == "Activated");
+			var export = activated.CustomAttributes.Single (a => a.AttributeType.Is ("Foundation", "ExportAttribute"));
+			Assert.That (export.ConstructorArguments [0].Value, Is.EqualTo ("target:"), "Selector");
+			Assert.That (activated.IsVirtual, Is.False, "Exported entry point must not be overridden by the generic callback");
+			Assert.That (activated.Parameters.Single ().ParameterType.FullName, Is.EqualTo ("UIKit.UIGestureRecognizer"), "Sender type");
+		}
+
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{

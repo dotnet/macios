@@ -89,8 +89,17 @@ namespace UIKit {
 			}
 		}
 
+		[Register ("__UIGestureRecognizerCB")]
+		internal abstract class Callback : Token {
+			[Export ("target:")]
+			[Preserve (Conditional = true)]
+			public void Activated (UIGestureRecognizer sender) => Invoke (sender);
+
+			protected abstract void Invoke (UIGestureRecognizer sender);
+		}
+
 		[Register ("__UIGestureRecognizerGenericCB")]
-		internal class Callback<T> : Token where T : UIGestureRecognizer {
+		internal class Callback<T> : Callback where T : UIGestureRecognizer {
 			Action<T> action;
 
 			internal Callback (Action<T> action)
@@ -98,9 +107,7 @@ namespace UIKit {
 				this.action = action;
 			}
 
-			[Export ("target:")]
-			[Preserve (Conditional = true)]
-			public void Activated (T sender) => action (sender);
+			protected override void Invoke (UIGestureRecognizer sender) => action ((T) sender);
 
 		}
 

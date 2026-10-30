@@ -112,6 +112,45 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (didRun, Is.True, "didRun");
 		}
 
+		[TestCase (nameof (UITapGestureRecognizer))]
+		[TestCase (nameof (UILongPressGestureRecognizer))]
+		[TestCase (nameof (UIPanGestureRecognizer))]
+		[TestCase (nameof (UISwipeGestureRecognizer))]
+#if !TVOS
+		[TestCase (nameof (UIRotationGestureRecognizer))]
+		[TestCase (nameof (UIPinchGestureRecognizer))]
+		[TestCase (nameof (UIScreenEdgePanGestureRecognizer))]
+		[TestCase (nameof (UIHoverGestureRecognizer))]
+#endif
+		public void TypedCallback (string type)
+		{
+			var senders = new List<UIGestureRecognizer> ();
+			Action<UIGestureRecognizer> callback = senders.Add;
+			using UIGestureRecognizer recognizer = type switch {
+				nameof (UITapGestureRecognizer) => new UITapGestureRecognizer (callback),
+				nameof (UILongPressGestureRecognizer) => new UILongPressGestureRecognizer (callback),
+				nameof (UIPanGestureRecognizer) => new UIPanGestureRecognizer (callback),
+				nameof (UISwipeGestureRecognizer) => new UISwipeGestureRecognizer (callback),
+#if !TVOS
+				nameof (UIRotationGestureRecognizer) => new UIRotationGestureRecognizer (callback),
+				nameof (UIPinchGestureRecognizer) => new UIPinchGestureRecognizer (callback),
+				nameof (UIScreenEdgePanGestureRecognizer) => new UIScreenEdgePanGestureRecognizer (callback),
+				nameof (UIHoverGestureRecognizer) => new UIHoverGestureRecognizer (callback),
+#endif
+				_ => throw new ArgumentException (type),
+			};
+
+			var targets = new List<UIGestureRecognizer.Token> (recognizer.GetTargets ());
+			Assert.That (targets, Has.Count.EqualTo (1), "Target count");
+			var target = targets [0];
+			Messaging.void_objc_msgSend_IntPtr (target.Handle, Selector.GetHandle ("target:"), recognizer.Handle);
+			Assert.That (senders, Has.Count.EqualTo (1), "Callback count");
+			Assert.That (senders [0], Is.SameAs (recognizer), "Sender");
+
+			recognizer.RemoveTarget (target);
+			Assert.That (recognizer.GetTargets (), Is.Empty, "Removed target");
+		}
+
 		class FinalizerNotifier {
 			public Action Action;
 			public FinalizerNotifier (Action action)

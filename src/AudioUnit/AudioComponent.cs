@@ -295,7 +295,11 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static AudioComponent? FindNextComponent (AudioComponent? cmp, in AudioComponentDescription cd)
+#else
 		public static AudioComponent? FindNextComponent (AudioComponent? cmp, ref AudioComponentDescription cd)
+#endif
 		{
 			var handle = cmp.GetHandle ();
 			unsafe {
@@ -312,9 +316,17 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static AudioComponent? FindComponent (in AudioComponentDescription cd)
+#else
 		public static AudioComponent? FindComponent (ref AudioComponentDescription cd)
+#endif
 		{
+#if XAMCORE_5_0
+			return FindNextComponent (null, in cd);
+#else
 			return FindNextComponent (null, ref cd);
+#endif
 		}
 
 		/// <param name="output">To be added.</param>
@@ -324,7 +336,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeOutput output)
 		{
 			var cd = AudioComponentDescription.CreateOutput (output);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="musicDevice">To be added.</param>
@@ -334,7 +350,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeMusicDevice musicDevice)
 		{
 			var cd = AudioComponentDescription.CreateMusicDevice (musicDevice);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="conveter">To be added.</param>
@@ -344,7 +364,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeConverter conveter)
 		{
 			var cd = AudioComponentDescription.CreateConverter (conveter);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="effect">To be added.</param>
@@ -354,7 +378,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeEffect effect)
 		{
 			var cd = AudioComponentDescription.CreateEffect (effect);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="mixer">To be added.</param>
@@ -364,7 +392,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeMixer mixer)
 		{
 			var cd = AudioComponentDescription.CreateMixer (mixer);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="panner">To be added.</param>
@@ -374,7 +406,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypePanner panner)
 		{
 			var cd = AudioComponentDescription.CreatePanner (panner);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		/// <param name="generator">To be added.</param>
@@ -384,7 +420,11 @@ namespace AudioUnit {
 		public static AudioComponent? FindComponent (AudioTypeGenerator generator)
 		{
 			var cd = AudioComponentDescription.CreateGenerator (generator);
+#if XAMCORE_5_0
+			return FindComponent (in cd);
+#else
 			return FindComponent (ref cd);
+#endif
 		}
 
 		[DllImport (Constants.AudioUnitLibrary)]

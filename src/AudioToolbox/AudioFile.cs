@@ -789,8 +789,13 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioFileError AudioFileCreateWithURL (IntPtr cfurlref_infile, AudioFileType inFileType, AudioStreamBasicDescription* inFormat, AudioFileFlags inFlags, AudioFileID* file_id);
 
+#if XAMCORE_5_0
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,in AudioStreamBasicDescription,AudioFileFlags)" />
+		public static AudioFile? Create (string url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#else
 		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags)" />
 		public static AudioFile? Create (string url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#endif
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
@@ -805,7 +810,11 @@ namespace AudioToolbox {
 		/// <param name="format">Description of the data that is going to be passed to the <see cref="AudioFile" /> object.</param>
 		/// <param name="inFlags">Creation flags.</param>
 		/// <returns>The initialized audio file, or <see langword="null" /> if there is an error creating the file.</returns>
+#if XAMCORE_5_0
+		public static AudioFile? Create (CFUrl url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#else
 		public static AudioFile? Create (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#endif
 		{
 			return Create (url, fileType, format, inFlags, out var _);
 		}
@@ -817,33 +826,48 @@ namespace AudioToolbox {
 		/// <param name="inFlags">Creation flags.</param>
 		/// <param name="status"><see cref="AudioFileError.Success" /> if successful, or an error code otherwise.</param>
 		/// <returns>The initialized audio file, or <see langword="null" /> if there is an error creating the file.</returns>
+#if XAMCORE_5_0
+		public static AudioFile? Create (CFUrl url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+#else
 		public static AudioFile? Create (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+#endif
 		{
 			var rv = Create (url.GetNonNullHandle (nameof (url)), fileType, format, inFlags, out status);
 			GC.KeepAlive (url);
 			return rv;
 		}
 
+#if XAMCORE_5_0
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,in AudioStreamBasicDescription,AudioFileFlags)" />
+		public static AudioFile? Create (NSUrl url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#else
 		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags)" />
 		public static AudioFile? Create (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
+#endif
 		{
 			return Create (url, fileType, format, inFlags, out var _);
 		}
 
+#if XAMCORE_5_0
+		/// <inheritdoc cref="Create(CFUrl,AudioFileType,in AudioStreamBasicDescription,AudioFileFlags, out AudioFileError)" />
+		public static AudioFile? Create (NSUrl url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+#else
 		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags, out AudioFileError)" />
 		public static AudioFile? Create (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+#endif
 		{
 			var rv = Create (url.GetNonNullHandle (nameof (url)), fileType, format, inFlags, out status);
 			GC.KeepAlive (url);
 			return rv;
 		}
 
-		static AudioFile? Create (IntPtr url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
+		static AudioFile? Create (IntPtr url, AudioFileType fileType, in AudioStreamBasicDescription format, AudioFileFlags inFlags, out AudioFileError status)
 		{
 			var h = default (IntPtr);
 
 			unsafe {
-				status = AudioFileCreateWithURL (url, fileType, &format, inFlags, &h);
+				fixed (AudioStreamBasicDescription* formatPtr = &format)
+					status = AudioFileCreateWithURL (url, fileType, formatPtr, inFlags, &h);
 			}
 
 			if (status == AudioFileError.Success && h != IntPtr.Zero)
@@ -2743,7 +2767,11 @@ namespace AudioToolbox {
 		/// <summary>Create a new <see cref="AudioSource" /> instance, with the specified file type and format.</summary>
 		/// <param name="inFileType">The file type for the new audio source.</param>
 		/// <param name="format">The audio format for the new audio source.</param>
+#if XAMCORE_5_0
+		public AudioSource (AudioFileType inFileType, in AudioStreamBasicDescription format)
+#else
 		public AudioSource (AudioFileType inFileType, AudioStreamBasicDescription format)
+#endif
 		{
 			Initialize (inFileType, format);
 		}
@@ -2751,7 +2779,11 @@ namespace AudioToolbox {
 		/// <summary>Constructor used when creating subclasses</summary>
 		/// <remarks>
 		///   This constructor is provided as a convenience for developers that need to decouple the creation of the <see cref="AudioSource" /> from starting the read and write process.
+#if XAMCORE_5_0
+		///   Once you have created this object, you need to invoke the <see cref="Initialize(AudioToolbox.AudioFileType,in AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
+#else
 		///   Once you have created this object, you need to invoke the <see cref="Initialize(AudioToolbox.AudioFileType,AudioToolbox.AudioStreamBasicDescription)" /> method to complete the setup.
+#endif
 		/// </remarks>
 		public AudioSource ()
 		{
@@ -2760,13 +2792,24 @@ namespace AudioToolbox {
 		/// <summary>Initialize the audio source with the specified file type and format.</summary>
 		/// <param name="inFileType">The file type for the new audio source.</param>
 		/// <param name="format">The audio format for the new audio source.</param>
+#if XAMCORE_5_0
+		protected void Initialize (AudioFileType inFileType, in AudioStreamBasicDescription format)
+#else
 		protected void Initialize (AudioFileType inFileType, AudioStreamBasicDescription format)
+#endif
 		{
 			gch = GCHandle.Alloc (this);
 			AudioFileError code;
 			IntPtr handle = IntPtr.Zero;
 			unsafe {
-				code = AudioFileInitializeWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, inFileType, &format, 0, &handle);
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* formatPtr = &format)
+#else
+				AudioStreamBasicDescription* formatPtr = &format;
+#endif
+				{
+					code = AudioFileInitializeWithCallbacks (GCHandle.ToIntPtr (gch), &SourceRead, &SourceWrite, &SourceGetSize, &SourceSetSize, inFileType, formatPtr, 0, &handle);
+				}
 			}
 			if (code == 0) {
 				InitializeHandle (handle);

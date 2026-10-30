@@ -17,6 +17,66 @@ namespace MonoTouchFixtures.AudioToolbox {
 	[Preserve (AllMembers = true)]
 	public class AudioConverterTest {
 
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
+		[TestCase (3)]
+		[TestCase (4)]
+		public void CreateFormats (int overload)
+		{
+			if (overload >= 3)
+				TestRuntime.AssertXcodeVersion (16, 0);
+
+			var sourceFormats = new [] { AudioStreamBasicDescription.CreateLinearPCM () };
+			var destinationFormats = new [] { new AudioStreamBasicDescription (AudioFormatType.MPEG4AAC) { SampleRate = 44100, ChannelsPerFrame = 2 } };
+			ref var source = ref sourceFormats [0];
+			ref var destination = ref destinationFormats [0];
+			Assert.That (AudioStreamBasicDescription.GetFormatInfo (ref destination), Is.EqualTo (AudioFormatError.None), "GetFormatInfo");
+			var expectedSource = source;
+			var expectedDestination = destination;
+			var descriptions = AudioFormatAvailability.GetEncoders (destination.Format);
+			Assert.That (descriptions, Is.Not.Null.And.Not.Empty, "Encoders");
+			var error = AudioConverterError.None;
+			using (var converter = overload switch {
+				0 => AudioConverter.Create (source, destination),
+				1 => AudioConverter.Create (source, destination, out error),
+				2 => AudioConverter.Create (source, destination, descriptions),
+				3 => AudioConverter.Create (source, destination, AudioConverterOptions.None),
+				4 => AudioConverter.Create (source, destination, AudioConverterOptions.None, out error),
+				_ => throw new ArgumentOutOfRangeException (nameof (overload)),
+			}) {
+				Assert.That (error, Is.EqualTo (AudioConverterError.None), "Create status");
+				AssertConverterFormats (converter, expectedSource, expectedDestination);
+				Assert.That (source, Is.EqualTo (expectedSource), "Source unchanged");
+				Assert.That (destination, Is.EqualTo (expectedDestination), "Destination unchanged");
+			}
+#if XAMCORE_5_0
+			using (var converter = overload switch {
+				0 => AudioConverter.Create (in source, in destination),
+				1 => AudioConverter.Create (in source, in destination, out error),
+				2 => AudioConverter.Create (in source, in destination, descriptions),
+				3 => AudioConverter.Create (in source, in destination, AudioConverterOptions.None),
+				4 => AudioConverter.Create (in source, in destination, AudioConverterOptions.None, out error),
+				_ => throw new ArgumentOutOfRangeException (nameof (overload)),
+			}) {
+				Assert.That (error, Is.EqualTo (AudioConverterError.None), "Create in status");
+				AssertConverterFormats (converter, expectedSource, expectedDestination);
+				Assert.That (source, Is.EqualTo (expectedSource), "Source in unchanged");
+				Assert.That (destination, Is.EqualTo (expectedDestination), "Destination in unchanged");
+			}
+#endif
+		}
+
+		static void AssertConverterFormats (AudioConverter? converter, AudioStreamBasicDescription source, AudioStreamBasicDescription destination)
+		{
+			Assert.That (converter, Is.Not.Null, "Converter");
+			Assert.That (converter.CurrentInputStreamDescription, Is.EqualTo (source), "Input format");
+			var output = converter.CurrentOutputStreamDescription;
+			Assert.That (output.Format, Is.EqualTo (destination.Format), "Output format");
+			Assert.That (output.SampleRate, Is.EqualTo (destination.SampleRate), "Output sample rate");
+			Assert.That (output.ChannelsPerFrame, Is.EqualTo (destination.ChannelsPerFrame), "Output channels");
+		}
+
 		[Test]
 		public void Properties ()
 		{

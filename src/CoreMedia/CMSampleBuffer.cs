@@ -264,7 +264,11 @@ namespace CoreMedia {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static CMSampleBuffer? CreateForImageBuffer (CVImageBuffer imageBuffer, bool dataReady, CMVideoFormatDescription formatDescription, in CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
+#else
 		public static CMSampleBuffer? CreateForImageBuffer (CVImageBuffer imageBuffer, bool dataReady, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
+#endif
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
@@ -273,12 +277,17 @@ namespace CoreMedia {
 
 			IntPtr buffer;
 			unsafe {
+#if XAMCORE_5_0
+				fixed (CMSampleTimingInfo* sampleTimingPtr = &sampleTiming)
+#else
+				CMSampleTimingInfo* sampleTimingPtr = &sampleTiming;
+#endif
 				error = CMSampleBufferCreateForImageBuffer (
 							IntPtr.Zero,
 							imageBuffer.Handle, dataReady.AsByte (),
 							IntPtr.Zero, IntPtr.Zero,
 							formatDescription.Handle,
-							&sampleTiming,
+							sampleTimingPtr,
 							&buffer);
 				GC.KeepAlive (imageBuffer);
 				GC.KeepAlive (formatDescription);
@@ -921,7 +930,11 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		public static CMSampleBuffer? CreateReadyWithImageBuffer (CVImageBuffer imageBuffer,
+#if XAMCORE_5_0
+			CMFormatDescription formatDescription, in CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
+#else
 			CMFormatDescription formatDescription, ref CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
+#endif
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));

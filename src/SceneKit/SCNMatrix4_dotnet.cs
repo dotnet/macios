@@ -182,7 +182,7 @@ namespace SceneKit {
 		/// The top row of this matrix
 		/// </summary>
 		public SCNVector4 Row0 {
-			get { return new SCNVector4 (Column0.X, Column1.X, Column2.X, Column3.X); }
+			readonly get { return new SCNVector4 (Column0.X, Column1.X, Column2.X, Column3.X); }
 			set {
 				Column0.X = value.X;
 				Column1.X = value.Y;
@@ -195,7 +195,7 @@ namespace SceneKit {
 		/// The second row of this matrix
 		/// </summary>
 		public SCNVector4 Row1 {
-			get { return new SCNVector4 (Column0.Y, Column1.Y, Column2.Y, Column3.Y); }
+			readonly get { return new SCNVector4 (Column0.Y, Column1.Y, Column2.Y, Column3.Y); }
 			set {
 				Column0.Y = value.X;
 				Column1.Y = value.Y;
@@ -208,7 +208,7 @@ namespace SceneKit {
 		/// The third row of this matrix
 		/// </summary>
 		public SCNVector4 Row2 {
-			get { return new SCNVector4 (Column0.Z, Column1.Z, Column2.Z, Column3.Z); }
+			readonly get { return new SCNVector4 (Column0.Z, Column1.Z, Column2.Z, Column3.Z); }
 			set {
 				Column0.Z = value.X;
 				Column1.Z = value.Y;
@@ -221,7 +221,7 @@ namespace SceneKit {
 		/// The last row of this matrix
 		/// </summary>
 		public SCNVector4 Row3 {
-			get { return new SCNVector4 (Column0.W, Column1.W, Column2.W, Column3.W); }
+			readonly get { return new SCNVector4 (Column0.W, Column1.W, Column2.W, Column3.W); }
 			set {
 				Column0.W = value.X;
 				Column1.W = value.Y;
@@ -233,82 +233,82 @@ namespace SceneKit {
 		/// <summary>
 		/// Gets or sets the value at column 1, row 1 of this instance.
 		/// </summary>
-		public pfloat M11 { get { return Column0.X; } set { Column0.X = value; } }
+		public pfloat M11 { readonly get { return Column0.X; } set { Column0.X = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 1, row 2 of this instance.
 		/// </summary>
-		public pfloat M12 { get { return Column0.Y; } set { Column0.Y = value; } }
+		public pfloat M12 { readonly get { return Column0.Y; } set { Column0.Y = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 1, row 3 of this instance.
 		/// </summary>
-		public pfloat M13 { get { return Column0.Z; } set { Column0.Z = value; } }
+		public pfloat M13 { readonly get { return Column0.Z; } set { Column0.Z = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 1, row 4 of this instance.
 		/// </summary>
-		public pfloat M14 { get { return Column0.W; } set { Column0.W = value; } }
+		public pfloat M14 { readonly get { return Column0.W; } set { Column0.W = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 2, row 1 of this instance.
 		/// </summary>
-		public pfloat M21 { get { return Column1.X; } set { Column1.X = value; } }
+		public pfloat M21 { readonly get { return Column1.X; } set { Column1.X = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 2, row 2 of this instance.
 		/// </summary>
-		public pfloat M22 { get { return Column1.Y; } set { Column1.Y = value; } }
+		public pfloat M22 { readonly get { return Column1.Y; } set { Column1.Y = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 2, row 3 of this instance.
 		/// </summary>
-		public pfloat M23 { get { return Column1.Z; } set { Column1.Z = value; } }
+		public pfloat M23 { readonly get { return Column1.Z; } set { Column1.Z = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 2, row 4 of this instance.
 		/// </summary>
-		public pfloat M24 { get { return Column1.W; } set { Column1.W = value; } }
+		public pfloat M24 { readonly get { return Column1.W; } set { Column1.W = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 3, row 1 of this instance.
 		/// </summary>
-		public pfloat M31 { get { return Column2.X; } set { Column2.X = value; } }
+		public pfloat M31 { readonly get { return Column2.X; } set { Column2.X = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 3, row 2 of this instance.
 		/// </summary>
-		public pfloat M32 { get { return Column2.Y; } set { Column2.Y = value; } }
+		public pfloat M32 { readonly get { return Column2.Y; } set { Column2.Y = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 3, row 3 of this instance.
 		/// </summary>
-		public pfloat M33 { get { return Column2.Z; } set { Column2.Z = value; } }
+		public pfloat M33 { readonly get { return Column2.Z; } set { Column2.Z = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 3, row 4 of this instance.
 		/// </summary>
-		public pfloat M34 { get { return Column2.W; } set { Column2.W = value; } }
+		public pfloat M34 { readonly get { return Column2.W; } set { Column2.W = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 4, row 1 of this instance.
 		/// </summary>
-		public pfloat M41 { get { return Column3.X; } set { Column3.X = value; } }
+		public pfloat M41 { readonly get { return Column3.X; } set { Column3.X = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 4, row 2 of this instance.
 		/// </summary>
-		public pfloat M42 { get { return Column3.Y; } set { Column3.Y = value; } }
+		public pfloat M42 { readonly get { return Column3.Y; } set { Column3.Y = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 4, row 3 of this instance.
 		/// </summary>
-		public pfloat M43 { get { return Column3.Z; } set { Column3.Z = value; } }
+		public pfloat M43 { readonly get { return Column3.Z; } set { Column3.Z = value; } }
 
 		/// <summary>
 		/// Gets or sets the value at column 4, row 4 of this instance.
 		/// </summary>
-		public pfloat M44 { get { return Column3.W; } set { Column3.W = value; } }
+		public pfloat M44 { readonly get { return Column3.W; } set { Column3.W = value; } }
 
 		#endregion
 
@@ -980,7 +980,7 @@ namespace SceneKit {
 		/// <returns>A new instance that is the result of the combination</returns>
 #endif
 #if XAMCORE_5_0
-		public static SCNMatrix4 Mult (SCNMatrix4 firstTransformation, SCNMatrix4 secondTransformation)
+		public static SCNMatrix4 Mult (in SCNMatrix4 firstTransformation, in SCNMatrix4 secondTransformation)
 #else
 		public static SCNMatrix4 Mult (SCNMatrix4 left, SCNMatrix4 right)
 #endif
@@ -988,9 +988,9 @@ namespace SceneKit {
 			SCNMatrix4 result;
 			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
-			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
+			MatrixMultiply (in secondTransformation, in firstTransformation, out result);
 #else
-			MatrixMultiply (ref right, ref left, out result);
+			MatrixMultiply (in right, in left, out result);
 #endif
 			return result;
 		}
@@ -1017,21 +1017,21 @@ namespace SceneKit {
 		/// <param name="result">A new instance that is the result of the combination</param>
 #endif
 #if XAMCORE_5_0
-		public static void Mult (ref SCNMatrix4 firstTransformation, ref SCNMatrix4 secondTransformation, out SCNMatrix4 result)
+		public static void Mult (in SCNMatrix4 firstTransformation, in SCNMatrix4 secondTransformation, out SCNMatrix4 result)
 #else
 		public static void Mult (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
 #endif
 		{
 			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
-			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
+			MatrixMultiply (in secondTransformation, in firstTransformation, out result);
 #else
-			MatrixMultiply (ref right, ref left, out result);
+			MatrixMultiply (in right, in left, out result);
 #endif
 		}
 
 		// Multiply two matrices in the order you'd expect (left * right).
-		static void MatrixMultiply (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
+		static void MatrixMultiply (in SCNMatrix4 left, in SCNMatrix4 right, out SCNMatrix4 result)
 		{
 			result = new SCNMatrix4 (
 				left.Column0.X * right.Column0.X + left.Column1.X * right.Column0.Y + left.Column2.X * right.Column0.Z + left.Column3.X * right.Column0.W,
@@ -1059,7 +1059,7 @@ namespace SceneKit {
 
 		#region Invert Functions
 
-		static bool InvertSoftware (SCNMatrix4 matrix, out SCNMatrix4 result)
+		static bool InvertSoftware (in SCNMatrix4 matrix, out SCNMatrix4 result)
 		{
 			// https://github.com/dotnet/runtime/blob/79ae74f5ca5c8a6fe3a48935e85bd7374959c570/src/libraries/System.Private.CoreLib/src/System/Numerics/Matrix4x4.cs#L1556
 
@@ -1142,7 +1142,11 @@ namespace SceneKit {
 		/// <param name="matrix">The matrix to invert</param>
 		/// <returns>The inverse of the given matrix if it has one.</returns>
 		/// <exception cref="InvalidOperationException">Thrown if the SCNMatrix4 is singular.</exception>
+#if XAMCORE_5_0
+		public static SCNMatrix4 Invert (in SCNMatrix4 matrix)
+#else
 		public static SCNMatrix4 Invert (SCNMatrix4 matrix)
+#endif
 		{
 			if (!InvertSoftware (matrix, out var inverse))
 				throw new InvalidOperationException ("Matrix is singular and cannot be inverted.");
@@ -1158,7 +1162,11 @@ namespace SceneKit {
 		/// </summary>
 		/// <param name="mat">The matrix to transpose</param>
 		/// <returns>The transpose of the given matrix</returns>
+#if XAMCORE_5_0
+		public static SCNMatrix4 Transpose (in SCNMatrix4 mat)
+#else
 		public static SCNMatrix4 Transpose (SCNMatrix4 mat)
+#endif
 		{
 			return new SCNMatrix4 (mat.Column0, mat.Column1, mat.Column2, mat.Column3);
 		}
@@ -1169,7 +1177,11 @@ namespace SceneKit {
 		/// </summary>
 		/// <param name="mat">The matrix to transpose</param>
 		/// <param name="result">The result of the calculation</param>
+#if XAMCORE_5_0
+		public static void Transpose (in SCNMatrix4 mat, out SCNMatrix4 result)
+#else
 		public static void Transpose (ref SCNMatrix4 mat, out SCNMatrix4 result)
+#endif
 		{
 			result = new SCNMatrix4 (mat.Column0, mat.Column1, mat.Column2, mat.Column3);
 		}

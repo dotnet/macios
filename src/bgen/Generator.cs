@@ -665,7 +665,7 @@ public partial class Generator : IMemberGatherer {
 						clear.AppendFormat ("*{0} = {1};", safe_name, nt.IsValueType ? "default (" + TypeManager.FormatType (null, nt) + ")" : "null");
 					}
 				}
-				var outOrRef = pi.IsOut ? "out" : "ref";
+				var outOrRef = pi.IsOut ? "out" : pi.IsIn ? "in" : "ref";
 				if (nt.IsValueType) {
 					string fnt;
 					string invoke_name;
@@ -676,13 +676,16 @@ public partial class Generator : IMemberGatherer {
 						convert.AppendLine ($"{nullable.Name}? {invoke_name} = null;");
 						convert.AppendLine ("if (value is not null)");
 						convert.AppendLine ($"\t{invoke_name} =  *value;");
-						postConvert.AppendLine ($"if (value is not null && {invoke_name}.HasValue)");
-						postConvert.AppendLine ($"\t*value = {invoke_name}.Value;");
+						if (!pi.IsIn) {
+							postConvert.AppendLine ($"if (value is not null && {invoke_name}.HasValue)");
+							postConvert.AppendLine ($"\t*value = {invoke_name}.Value;");
+						}
 					} else if (nt == TypeCache.System_Boolean) {
 						fnt = "byte";
 						invoke_name = $"__xamarin_bool__{pi.Position}";
 						convert.AppendLine ($"bool {invoke_name} = *{safe_name} != 0;");
-						postConvert.AppendLine ($"*{safe_name} = {invoke_name} ? (byte) 1 : (byte) 0;");
+						if (!pi.IsIn)
+							postConvert.AppendLine ($"*{safe_name} = {invoke_name} ? (byte) 1 : (byte) 0;");
 					} else {
 						fnt = TypeManager.FormatType (null, nt);
 						invoke_name = $"global::System.Runtime.CompilerServices.Unsafe.AsRef<{fnt}> ({safe_name})";
@@ -2959,7 +2962,7 @@ public partial class Generator : IMemberGatherer {
 				sb.Append ("[Transient] ");
 
 			if (parType.IsByRef) {
-				string reftype = pi.IsOut ? "out " : "ref ";
+				string reftype = pi.IsOut ? "out " : pi.IsIn ? "in " : "ref ";
 				sb.Append (reftype);
 				parType = parType.GetElementType ()!;
 			}
@@ -6540,7 +6543,7 @@ public partial class Generator : IMemberGatherer {
 						foreach (var param in methodParams) {
 							foreach (var duplicateMethod in protocolsThatHaveThisMethod) {
 								var duplicateParam = duplicateMethod.GetParameters () [i];
-								if (param.IsOut != duplicateParam.IsOut)
+								if (param.IsOut != duplicateParam.IsOut || param.IsIn != duplicateParam.IsIn)
 									throw new BindingException (1040, true, minfo.selector, type.Name, i);
 								if (param.ParameterType != duplicateParam.ParameterType)
 									throw new BindingException (1041, true, minfo.selector, type.Name, i, param.ParameterType, duplicateParam.ParameterType);
@@ -7160,7 +7163,7 @@ public partial class Generator : IMemberGatherer {
 							print ("handler ({0}, {1});", sender, eventArgs);
 							if (pars.Length != minPars && MustPullValuesBack (pars.Skip (minPars))) {
 								foreach (var par in pars.Skip (minPars)) {
-									if (!par.ParameterType.IsByRef)
+									if (!par.ParameterType.IsByRef || par.IsIn)
 										continue;
 
 									print ("{0} = args.{1};", par.Name, GetPublicParameterName (par));
@@ -7986,7 +7989,7 @@ public partial class Generator : IMemberGatherer {
 
 		if (pt.TryIsByRef (out var ptElementType)) {
 			pt = ptElementType;
-			name += (removeRefTypes ? "" : (p.IsOut ? "out " : "ref ")) + TypeManager.RenderType (pt, p);
+			name += (removeRefTypes ? "" : (p.IsOut ? "out " : p.IsIn ? "in " : "ref ")) + TypeManager.RenderType (pt, p);
 		} else
 			name += TypeManager.RenderType (pt, p);
 		return name;
@@ -8009,12 +8012,12 @@ public partial class Generator : IMemberGatherer {
 
 	string RenderArgs (IEnumerable<ParameterInfo> pi, bool removeRefTypes)
 	{
-		return String.Join (", ", pi.Select (p => (p.ParameterType.IsByRef ? (removeRefTypes ? "" : (p.IsOut ? "out " : "ref ")) : "") + p.Name.GetSafeParamName ()).ToArray ());
+		return String.Join (", ", pi.Select (p => (p.ParameterType.IsByRef ? (removeRefTypes ? "" : (p.IsOut ? "out " : p.IsIn ? "in " : "ref ")) : "") + p.Name.GetSafeParamName ()).ToArray ());
 	}
 
 	bool MustPullValuesBack (IEnumerable<ParameterInfo> parameters)
 	{
-		return parameters.Any (pi => pi.ParameterType.IsByRef);
+		return parameters.Any (pi => pi.ParameterType.IsByRef && !pi.IsIn);
 	}
 
 	object GetDefaultValue (MethodInfo mi)

@@ -64,13 +64,21 @@ namespace Xamarin.Mac.Tests {
 			WaitOnGraphAndMixerCallbacks ();
 		}
 
+#if XAMCORE_5_0
+		AudioUnitStatus GraphRenderCallback (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#else
 		AudioUnitStatus GraphRenderCallback (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#endif
 		{
 			graphRenderCallbackCount++;
 			return AudioUnitStatus.NoError;
 		}
 
+#if XAMCORE_5_0
+		AudioUnitStatus MixerRenderCallback (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#else
 		AudioUnitStatus MixerRenderCallback (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#endif
 		{
 			mixerRenderCallbackCount++;
 			return AudioUnitStatus.NoError;

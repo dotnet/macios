@@ -123,14 +123,26 @@ namespace CoreGraphics {
 			this = Transpose (this);
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix3 Transpose (in NMatrix3 matrix)
+#else
 		public static NMatrix3 Transpose (NMatrix3 matrix)
+#endif
 		{
 			NMatrix3 result = new NMatrix3 ();
+#if XAMCORE_5_0
+			Transpose (in matrix, out result);
+#else
 			Transpose (ref matrix, out result);
+#endif
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static void Transpose (in NMatrix3 mat, out NMatrix3 result)
+#else
 		public static void Transpose (ref NMatrix3 mat, out NMatrix3 result)
+#endif
 		{
 			result.M11 = mat.M11;
 			result.M21 = mat.M12;
@@ -146,14 +158,26 @@ namespace CoreGraphics {
 			result.dummy2 = 0;
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix3 Multiply (in NMatrix3 left, in NMatrix3 right)
+#else
 		public static NMatrix3 Multiply (NMatrix3 left, NMatrix3 right)
+#endif
 		{
 			NMatrix3 result;
+#if XAMCORE_5_0
+			Multiply (in left, in right, out result);
+#else
 			Multiply (ref left, ref right, out result);
+#endif
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static void Multiply (in NMatrix3 left, in NMatrix3 right, out NMatrix3 result)
+#else
 		public static void Multiply (ref NMatrix3 left, ref NMatrix3 right, out NMatrix3 result)
+#endif
 		{
 			result.M11 = left.M11 * right.M11 + left.M12 * right.M21 + left.M13 * right.M31;
 			result.M12 = left.M11 * right.M12 + left.M12 * right.M22 + left.M13 * right.M32;

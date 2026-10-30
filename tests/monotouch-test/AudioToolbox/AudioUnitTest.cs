@@ -42,7 +42,11 @@ namespace MonoTouchFixtures.AudioToolbox {
 			}
 		}
 
+#if XAMCORE_5_0
+		AudioUnitStatus InputCallback (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, global::AudioUnit.AudioUnit audioUnit)
+#else
 		AudioUnitStatus InputCallback (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, global::AudioUnit.AudioUnit audioUnit)
+#endif
 		{
 			inputCallbackEvent.Set ();
 			return AudioUnitStatus.NoError;

@@ -302,7 +302,11 @@ namespace MediaToolbox {
 			lock (handles)
 				apt = handles [tap];
 			if (apt.callbacks.Prepare is not null)
+#if XAMCORE_5_0
+				apt.callbacks.Prepare (apt, (nint) maxFrames, in System.Runtime.CompilerServices.Unsafe.AsRef<AudioStreamBasicDescription> (processingFormat));
+#else
 				apt.callbacks.Prepare (apt, (nint) maxFrames, ref System.Runtime.CompilerServices.Unsafe.AsRef<AudioStreamBasicDescription> (processingFormat));
+#endif
 		}
 
 		[UnmanagedCallersOnly]
@@ -396,7 +400,11 @@ namespace MediaToolbox {
 	///     <param name="processingFormat">To be added.</param>
 	///     <summary>The delegate to be used as <see cref="MediaToolbox.MTAudioProcessingTapCallbacks" />'s <see cref="MediaToolbox.MTAudioProcessingTapCallbacks.Prepare" /> property.</summary>
 	///     <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	public delegate void MTAudioProcessingTapPrepareCallback (MTAudioProcessingTap tap, nint maxFrames, in AudioStreamBasicDescription processingFormat);
+#else
 	public delegate void MTAudioProcessingTapPrepareCallback (MTAudioProcessingTap tap, nint maxFrames, ref AudioStreamBasicDescription processingFormat);
+#endif
 
 	/// <param name="tap">To be added.</param>
 	///     <param name="numberFrames">To be added.</param>

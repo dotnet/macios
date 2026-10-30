@@ -17,9 +17,9 @@ namespace MonoTouchFixtures.AVFoundation {
 			var callbackEvent = new TaskCompletionSource<bool> ();
 			SourceNodeCallbackTest (callbackEvent, () => {
 #if XAMCORE_5_0
-				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, in AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, in timestamp, frameCount, buffers, callbackEvent));
 #else
-				var handler = new AVAudioSourceNodeRenderHandler3 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+				var handler = new AVAudioSourceNodeRenderHandler3 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, in timestamp, frameCount, buffers, callbackEvent));
 #endif
 				return new AVAudioSourceNode (handler);
 			});
@@ -43,9 +43,9 @@ namespace MonoTouchFixtures.AVFoundation {
 			var callbackEvent = new TaskCompletionSource<bool> ();
 			SourceNodeCallbackTest (callbackEvent, () => {
 #if XAMCORE_5_0
-				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, in AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, in timestamp, frameCount, buffers, callbackEvent));
 #else
-				var handler = new AVAudioSourceNodeRenderHandler3 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+				var handler = new AVAudioSourceNodeRenderHandler3 ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers buffers) => SourceHandler (ref isSilence, in timestamp, frameCount, buffers, callbackEvent));
 #endif
 				return AVAudioSourceNode.CreateRealtimeSafe (handler);
 			});
@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			var callbackEvent = new TaskCompletionSource<bool> ();
 			SourceNodeCallbackTest (callbackEvent, () => {
-				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers buffers) => SourceHandler (ref isSilence, ref timestamp, frameCount, buffers, callbackEvent));
+				var handler = new AVAudioSourceNodeRenderHandler ((ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, ref AudioBuffers buffers) => SourceHandler (ref isSilence, in timestamp, frameCount, buffers, callbackEvent));
 				return new AVAudioSourceNode (handler);
 			});
 		}
@@ -107,7 +107,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			}
 		}
 
-		int SourceHandler (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData, TaskCompletionSource<bool> evt)
+		int SourceHandler (ref bool isSilence, in AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData, TaskCompletionSource<bool> evt)
 		{
 			try {
 				Assert.That (outputData.Count, Is.EqualTo (1), "Count");
@@ -138,7 +138,7 @@ namespace MonoTouchFixtures.AVFoundation {
 				byte* isSilencePtr = (byte*) isSilence;
 				bool isSilenceBool = (*isSilencePtr) != 0;
 				var buffers = new AudioBuffers (outputData);
-				rv = SourceHandler (ref isSilenceBool, ref Unsafe.AsRef<AudioTimeStamp> ((void*) timestamp), frameCount, buffers, evt);
+				rv = SourceHandler (ref isSilenceBool, in Unsafe.AsRef<AudioTimeStamp> ((void*) timestamp), frameCount, buffers, evt);
 				*isSilencePtr = isSilenceBool ? (byte) 1 : (byte) 0;
 			} catch (Exception e) {
 				evt.SetException (e);

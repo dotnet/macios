@@ -31,7 +31,7 @@ namespace AVFoundation {
 	/// <param name="frameCount">The number of frames of audio to supply.</param>
 	/// <param name="outputData">The <see cref="AudioToolbox.AudioBuffers" /> that contains the supplied audio data when the callback returns.</param>
 #if XAMCORE_5_0
-	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData);
+	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler (ref bool isSilence, in AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData);
 #else
 	public delegate /* OSStatus */ int AVAudioSourceNodeRenderHandler3 (ref bool isSilence, ref AudioTimeStamp timestamp, uint frameCount, AudioBuffers outputData);
 #endif
@@ -145,14 +145,18 @@ namespace AVFoundation {
 		static AVAudioSourceNodeRenderHandlerRaw GetHandler (AVAudioSourceNodeRenderHandler renderHandler)
 #else
 		static AVAudioSourceNodeRenderHandlerRaw GetHandler (AVAudioSourceNodeRenderHandler3 renderHandler)
-		{
 #endif // !XAMCORE_5_0
+		{
 			AVAudioSourceNodeRenderHandlerRaw rv = (IntPtr isSilence, IntPtr timestamp, uint frameCount, IntPtr outputData) => {
 				unsafe {
 					byte* isSilencePtr = (byte*) isSilence;
 					bool isSilenceBool = (*isSilencePtr) != 0;
 					var buffers = new AudioBuffers (outputData);
+#if XAMCORE_5_0
+					var rv = renderHandler (ref isSilenceBool, in Unsafe.AsRef<AudioTimeStamp> ((void*) timestamp), frameCount, buffers);
+#else
 					var rv = renderHandler (ref isSilenceBool, ref Unsafe.AsRef<AudioTimeStamp> ((void*) timestamp), frameCount, buffers);
+#endif
 					*isSilencePtr = isSilenceBool.AsByte ();
 					return rv;
 				}

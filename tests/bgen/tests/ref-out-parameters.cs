@@ -1,4 +1,5 @@
 using System;
+using CoreGraphics;
 using CoreFoundation;
 using Foundation;
 using ObjCRuntime;
@@ -44,5 +45,16 @@ namespace BI1064 {
 
 		[Export ("testClassArray:a:b:")]
 		void TestClassArray (int action, ref Class [] refStrings, out Class [] outStrings);
+
+		[Export ("testMatrix:")]
+		void TestMatrix (in CGAffineTransform matrix);
+
+		[Export ("initWithMatrix:")]
+		NativeHandle Constructor (in CGAffineTransform matrix);
+
+		[Export ("enumerateMatrices:")]
+		void EnumerateMatrices (MatrixCallback callback);
 	}
+
+	delegate void MatrixCallback (in CGAffineTransform matrix, in bool enabled, ref bool stop);
 }

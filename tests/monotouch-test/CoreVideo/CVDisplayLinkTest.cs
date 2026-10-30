@@ -1,4 +1,6 @@
 #if __MACOS__
+using System.Threading;
+
 using CoreGraphics;
 using CoreVideo;
 using Xamarin.Utils;
@@ -8,6 +10,79 @@ namespace MonoTouchFixtures.CoreVideo {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class CVDisplayLinkTest {
+		[Test]
+		public void OutputCallbackInputs ()
+		{
+			TestRuntime.AssertNotVSTS ();
+			TestRuntime.IgnoreIfLockedScreen ();
+			using var displayLink = new CVDisplayLink ();
+			var now = new CVTimeStamp { VideoTimeScale = 600, VideoTime = 1234, HostTime = 5678 };
+			var output = new CVTimeStamp { VideoTimeScale = 600, VideoTime = 1244, HostTime = 5688 };
+			var expectedNow = now;
+			var expectedOutput = output;
+			var flagsOut = CVOptionFlags.None;
+#if XAMCORE_5_0
+			CVDisplayLink.DisplayLinkOutputCallback callback = (CVDisplayLink link, in CVTimeStamp current, in CVTimeStamp next, CVOptionFlags flags, ref CVOptionFlags resultFlags) => {
+#else
+			CVDisplayLink.DisplayLinkOutputCallback callback = (CVDisplayLink link, ref CVTimeStamp current, ref CVTimeStamp next, CVOptionFlags flags, ref CVOptionFlags resultFlags) => {
+#endif
+				Assert.That (link, Is.SameAs (displayLink), "Display link");
+				Assert.That (current, Is.EqualTo (expectedNow), "Current time");
+				Assert.That (next, Is.EqualTo (expectedOutput), "Output time");
+				Assert.That (flags, Is.EqualTo ((CVOptionFlags) 1), "Input flags");
+				resultFlags = (CVOptionFlags) 2;
+				return CVReturn.Success;
+			};
+#if XAMCORE_5_0
+			var status = callback (displayLink, in now, in output, (CVOptionFlags) 1, ref flagsOut);
+#else
+			var status = callback (displayLink, ref now, ref output, (CVOptionFlags) 1, ref flagsOut);
+#endif
+			Assert.That (status, Is.EqualTo (CVReturn.Success), "Result");
+			Assert.That (flagsOut, Is.EqualTo ((CVOptionFlags) 2), "Output flags");
+			Assert.That (now, Is.EqualTo (expectedNow), "Current input");
+			Assert.That (output, Is.EqualTo (expectedOutput), "Output input");
+		}
+
+		[Test]
+		public void NativeOutputCallback ()
+		{
+			TestRuntime.AssertNotVSTS ();
+			TestRuntime.IgnoreIfLockedScreen ();
+			using var displayLink = new CVDisplayLink ();
+			using var called = new ManualResetEventSlim ();
+			CVTimeStamp receivedNow = default;
+			CVTimeStamp receivedOutput = default;
+			IntPtr receivedLink = IntPtr.Zero;
+			int callbackCount = 0;
+#if XAMCORE_5_0
+			CVDisplayLink.DisplayLinkOutputCallback callback = (CVDisplayLink link, in CVTimeStamp current, in CVTimeStamp next, CVOptionFlags flags, ref CVOptionFlags resultFlags) => {
+#else
+			CVDisplayLink.DisplayLinkOutputCallback callback = (CVDisplayLink link, ref CVTimeStamp current, ref CVTimeStamp next, CVOptionFlags flags, ref CVOptionFlags resultFlags) => {
+#endif
+				resultFlags = CVOptionFlags.None;
+				if (Interlocked.Increment (ref callbackCount) == 1) {
+					receivedNow = current;
+					receivedOutput = next;
+					receivedLink = link.Handle;
+					called.Set ();
+				}
+				return CVReturn.Success;
+			};
+			Assert.That (displayLink.SetOutputCallback (callback), Is.EqualTo (CVReturn.Success), "Set callback");
+			Assert.That (displayLink.Start (), Is.EqualTo (CVReturn.Success), "Start");
+			try {
+				Assert.That (called.Wait (TimeSpan.FromSeconds (5)), Is.True, "Called");
+				Assert.That (receivedLink, Is.EqualTo ((IntPtr) displayLink.Handle), "Native display link");
+				Assert.That (receivedNow.VideoTimeScale, Is.GreaterThan (0), "Current time scale");
+				Assert.That (receivedNow.HostTime, Is.GreaterThan (0), "Current host time");
+				Assert.That (receivedOutput.VideoTimeScale, Is.GreaterThan (0), "Output time scale");
+				Assert.That (receivedOutput.HostTime, Is.GreaterThan (0), "Output host time");
+			} finally {
+				displayLink.Stop ();
+			}
+		}
+
 		[Test]
 		public void CreateFromDisplayIdValidIdTest ()
 		{

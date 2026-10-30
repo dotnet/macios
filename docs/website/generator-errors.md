@@ -148,7 +148,7 @@ This error is no longer shown.
 
 ### <a name='BI1039'/>BI1039: The selector \* on type \* is found multiple times with different argument length \* : \*.
 
-### <a name='BI1040'/>BI1040: The selector \* on type \* is found multiple times with different argument out states on argument \*.
+### <a name='BI1040'/>BI1040: The selector \* on type \* is found multiple times with different reference modifiers on argument \*.
 
 ### <a name='BI1041'/>BI1041: The selector \* on type \* is found multiple times with different argument types on argument \* - \* : \*.
 

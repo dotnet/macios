@@ -10,6 +10,146 @@ namespace MonoTouchFixtures.AudioToolbox {
 	[Preserve (AllMembers = true)]
 	public class AudioFileTest {
 
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
+		[TestCase (3)]
+		[TestCase (4)]
+		public void CreateFormats (int overload)
+		{
+			var path = Path.Combine (NSSearchPath.GetDirectories (NSSearchPathDirectory.CachesDirectory, NSSearchPathDomain.User, true) [0], $"audio-file-{Guid.NewGuid ()}.caf");
+			using var url = NSUrl.FromFilename (path);
+			using var cfurl = CFUrl.FromFile (path);
+			var formats = new [] { AudioStreamBasicDescription.CreateLinearPCM () };
+			ref var format = ref formats [0];
+			var expected = format;
+			var error = AudioFileError.Success;
+			try {
+				using (var file = overload switch {
+					0 => AudioFile.Create (url.AbsoluteString, AudioFileType.CAF, format, AudioFileFlags.EraseFile),
+					1 => AudioFile.Create (cfurl, AudioFileType.CAF, format, AudioFileFlags.EraseFile),
+					2 => AudioFile.Create (cfurl, AudioFileType.CAF, format, AudioFileFlags.EraseFile, out error),
+					3 => AudioFile.Create (url, AudioFileType.CAF, format, AudioFileFlags.EraseFile),
+					4 => AudioFile.Create (url, AudioFileType.CAF, format, AudioFileFlags.EraseFile, out error),
+					_ => throw new ArgumentOutOfRangeException (nameof (overload)),
+				}) {
+					Assert.That (error, Is.EqualTo (AudioFileError.Success), "Create status");
+					Assert.That (file, Is.Not.Null, "File");
+					Assert.That (file.DataFormat, Is.EqualTo (expected), "DataFormat");
+					Assert.That (format, Is.EqualTo (expected), "Format unchanged");
+				}
+#if XAMCORE_5_0
+				using (var file = overload switch {
+					0 => AudioFile.Create (url.AbsoluteString, AudioFileType.CAF, in format, AudioFileFlags.EraseFile),
+					1 => AudioFile.Create (cfurl, AudioFileType.CAF, in format, AudioFileFlags.EraseFile),
+					2 => AudioFile.Create (cfurl, AudioFileType.CAF, in format, AudioFileFlags.EraseFile, out error),
+					3 => AudioFile.Create (url, AudioFileType.CAF, in format, AudioFileFlags.EraseFile),
+					4 => AudioFile.Create (url, AudioFileType.CAF, in format, AudioFileFlags.EraseFile, out error),
+					_ => throw new ArgumentOutOfRangeException (nameof (overload)),
+				}) {
+					Assert.That (error, Is.EqualTo (AudioFileError.Success), "Create in status");
+					Assert.That (file, Is.Not.Null, "File in");
+					Assert.That (file.DataFormat, Is.EqualTo (expected), "DataFormat in");
+					Assert.That (format, Is.EqualTo (expected), "Format in unchanged");
+				}
+#endif
+				using var reopened = AudioFile.Open (url, AudioFilePermission.Read);
+				Assert.That (reopened, Is.Not.Null, "Reopened");
+				Assert.That (reopened.DataFormat, Is.EqualTo (expected), "Reopened format");
+			} finally {
+				File.Delete (path);
+			}
+		}
+
+		[Test]
+		public void AudioSourceFormats ()
+		{
+			var formats = new [] { AudioStreamBasicDescription.CreateLinearPCM () };
+			ref var format = ref formats [0];
+			var expected = format;
+			using (var source = new MemoryAudioSource (format)) {
+				Assert.That (source.DataFormat, Is.EqualTo (expected), "Constructor format");
+				Assert.That (source.Size, Is.GreaterThan (0), "Constructor writes header");
+			}
+			Assert.That (format, Is.EqualTo (expected), "Constructor unchanged");
+			using (var source = new MemoryAudioSource ()) {
+				source.InitializeFormat (format);
+				Assert.That (source.DataFormat, Is.EqualTo (expected), "Initialize format");
+				Assert.That (source.Size, Is.GreaterThan (0), "Initialize writes header");
+			}
+			Assert.That (format, Is.EqualTo (expected), "Initialize unchanged");
+#if XAMCORE_5_0
+			using (var source = new MemoryAudioSource (in format)) {
+				Assert.That (source.DataFormat, Is.EqualTo (expected), "Constructor in format");
+				Assert.That (source.Size, Is.GreaterThan (0), "Constructor in writes header");
+			}
+			Assert.That (format, Is.EqualTo (expected), "Constructor in unchanged");
+			using (var source = new MemoryAudioSource ()) {
+				source.InitializeFormat (in format);
+				Assert.That (source.DataFormat, Is.EqualTo (expected), "Initialize in format");
+				Assert.That (source.Size, Is.GreaterThan (0), "Initialize in writes header");
+			}
+			Assert.That (format, Is.EqualTo (expected), "Initialize in unchanged");
+#endif
+		}
+
+		[Preserve (AllMembers = true)]
+		class MemoryAudioSource : AudioSource {
+			readonly MemoryStream data = new MemoryStream ();
+
+			public MemoryAudioSource ()
+			{
+			}
+
+#if XAMCORE_5_0
+			public MemoryAudioSource (in AudioStreamBasicDescription format) : base (AudioFileType.CAF, in format)
+#else
+			public MemoryAudioSource (AudioStreamBasicDescription format) : base (AudioFileType.CAF, format)
+#endif
+			{
+			}
+
+#if XAMCORE_5_0
+			public void InitializeFormat (in AudioStreamBasicDescription format)
+#else
+			public void InitializeFormat (AudioStreamBasicDescription format)
+#endif
+			{
+				Initialize (AudioFileType.CAF, format);
+			}
+
+			public override bool Read (long position, int requestCount, IntPtr buffer, out int actualCount)
+			{
+				var bytes = new byte [requestCount];
+				data.Position = position;
+				actualCount = data.Read (bytes, 0, requestCount);
+				Marshal.Copy (bytes, 0, buffer, actualCount);
+				return true;
+			}
+
+			public override bool Write (long position, int requestCount, IntPtr buffer, out int actualCount)
+			{
+				var bytes = new byte [requestCount];
+				Marshal.Copy (buffer, bytes, 0, requestCount);
+				data.Position = position;
+				data.Write (bytes, 0, requestCount);
+				actualCount = requestCount;
+				return true;
+			}
+
+			public override long Size {
+				get => data.Length;
+				set => data.SetLength (value);
+			}
+
+			protected override void Dispose (bool disposing)
+			{
+				base.Dispose (disposing);
+				if (disposing)
+					data.Dispose ();
+			}
+		}
+
 		[Test]
 		public void ReadTest ()
 		{

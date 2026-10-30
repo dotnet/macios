@@ -220,7 +220,11 @@ namespace AudioUnit {
 			if (renderers.Count != 0) {
 				using (var buffers = new AudioBuffers (_ioData)) {
 					foreach (RenderDelegate renderer in renderers) {
+#if XAMCORE_5_0
+						renderer (*_ioActionFlags, in *_inTimeStamp, _inBusNumber, _inNumberFrames, buffers);
+#else
 						renderer (*_ioActionFlags, *_inTimeStamp, _inBusNumber, _inNumberFrames, buffers);
+#endif
 					}
 					return AudioUnitStatus.OK;
 				}
@@ -495,7 +499,11 @@ namespace AudioUnit {
 				return AudioUnitStatus.InvalidParameter;
 
 			using (var buffers = new AudioBuffers (data)) {
+#if XAMCORE_5_0
+				return callback (*actionFlags, in *timeStamp, busNumber, numberFrames, buffers);
+#else
 				return callback (*actionFlags, *timeStamp, busNumber, numberFrames, buffers);
+#endif
 			}
 		}
 

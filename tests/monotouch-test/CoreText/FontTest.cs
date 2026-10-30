@@ -51,6 +51,90 @@ namespace MonoTouchFixtures.CoreText {
 			}
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void CTFontCreateWithNameAndMatrix (bool withOptions)
+		{
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			using var font = withOptions
+				? new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3), CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, CGAffineTransform.MakeScale (2, 3));
+			using var refFont = withOptions
+#if XAMCORE_5_0
+				? new CTFont ("HoeflerText-Regular", 10, in matrix, CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, in matrix);
+#else
+				? new CTFont ("HoeflerText-Regular", 10, ref matrix, CTFontOptions.Default)
+				: new CTFont ("HoeflerText-Regular", 10, ref matrix);
+#endif
+			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
+			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
+			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
+			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+			Assert.That (matrix, Is.EqualTo (CGAffineTransform.MakeScale (2, 3)), "Unchanged input");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void CTFontCreateWithFontDescriptorAndMatrix (bool withOptions)
+		{
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			using var descriptor = new CTFontDescriptor ("HoeflerText-Regular", 16);
+			using var font = withOptions
+				? new CTFont (descriptor, 10, CTFontOptions.Default, CGAffineTransform.MakeScale (2, 3))
+				: new CTFont (descriptor, 10, CGAffineTransform.MakeScale (2, 3));
+			using var refFont = withOptions
+#if XAMCORE_5_0
+				? new CTFont (descriptor, 10, CTFontOptions.Default, in matrix)
+				: new CTFont (descriptor, 10, in matrix);
+#else
+				? new CTFont (descriptor, 10, CTFontOptions.Default, ref matrix)
+				: new CTFont (descriptor, 10, ref matrix);
+#endif
+			Assert.That (font.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
+			Assert.That (font.Matrix, Is.EqualTo (matrix), "Matrix");
+			Assert.That (font.Matrix, Is.EqualTo (refFont.Matrix), "Ref Matrix");
+			Assert.That (font.Size, Is.EqualTo (refFont.Size), "Size");
+			Assert.That (font.PostScriptName, Is.EqualTo (refFont.PostScriptName), "PostScriptName");
+			Assert.That (matrix, Is.EqualTo (CGAffineTransform.MakeScale (2, 3)), "Unchanged input");
+			Assert.Throws<ArgumentNullException> (() => {
+				using var invalidFont = withOptions
+					? new CTFont ((CTFontDescriptor) null, 10, CTFontOptions.Default, matrix)
+					: new CTFont ((CTFontDescriptor) null, 10, matrix);
+			}, "Null descriptor");
+		}
+
+		[Test]
+		public void MatrixInputs ()
+		{
+			using var font = new CTFont ("HoeflerText-Regular", 10);
+			using var descriptor = new CTFontDescriptor ("HoeflerText-Regular", 10);
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			var expected = matrix;
+			ushort [] glyphs = new ushort [1];
+			Assert.That (font.GetGlyphsForCharacters (['A'], glyphs), Is.True, "Glyph");
+#if XAMCORE_5_0
+			using var withAttributes = font.WithAttributes (10, descriptor, in matrix);
+			using var withTraits = font.WithSymbolicTraits (10, 0, 0, in matrix);
+			using var withFamily = font.WithFamily (10, font.FamilyName, in matrix);
+			using var path = font.GetPathForGlyph (glyphs [0], in matrix);
+#else
+			using var withAttributes = font.WithAttributes (10, descriptor, ref matrix);
+			using var withTraits = font.WithSymbolicTraits (10, 0, 0, ref matrix);
+			using var withFamily = font.WithFamily (10, font.FamilyName, ref matrix);
+			using var path = font.GetPathForGlyph (glyphs [0], ref matrix);
+#endif
+			Assert.That (withAttributes, Is.Not.Null, "Attributes");
+			Assert.That (withTraits, Is.Not.Null, "Traits");
+			Assert.That (withFamily, Is.Not.Null, "Family");
+			Assert.That (path, Is.Not.Null, "Path");
+			Assert.That (withAttributes.Matrix, Is.EqualTo (expected), "Attributes matrix");
+			Assert.That (withTraits.Matrix, Is.EqualTo (expected), "Traits matrix");
+			Assert.That (withFamily.Matrix, Is.EqualTo (expected), "Family matrix");
+			Assert.That (matrix, Is.EqualTo (expected), "Unchanged matrix");
+		}
+
 		[Test]
 		public void GetCascadeList ()
 		{

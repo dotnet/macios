@@ -341,20 +341,31 @@ namespace AudioToolbox {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe static AudioChannelLayoutTag []? GetAvailableEncodeChannelLayoutTags (in AudioStreamBasicDescription format)
+#else
 		public unsafe static AudioChannelLayoutTag []? GetAvailableEncodeChannelLayoutTags (AudioStreamBasicDescription format)
+#endif
 		{
-			var type_size = sizeof (AudioStreamBasicDescription);
-			uint size;
-			if (AudioFormatPropertyNative.AudioFormatGetPropertyInfo (AudioFormatProperty.AvailableEncodeChannelLayoutTags, type_size, &format, &size) != 0)
-				return null;
-
-			var data = new AudioChannelLayoutTag [size / sizeof (AudioChannelLayoutTag)];
-			fixed (AudioChannelLayoutTag* ptr = data) {
-				var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.AvailableEncodeChannelLayoutTags, type_size, &format, &size, (int*) ptr);
-				if (res != 0)
+#if XAMCORE_5_0
+			fixed (AudioStreamBasicDescription* formatPtr = &format)
+#else
+			AudioStreamBasicDescription* formatPtr = &format;
+#endif
+			{
+				var type_size = sizeof (AudioStreamBasicDescription);
+				uint size;
+				if (AudioFormatPropertyNative.AudioFormatGetPropertyInfo (AudioFormatProperty.AvailableEncodeChannelLayoutTags, type_size, formatPtr, &size) != 0)
 					return null;
 
-				return data;
+				var data = new AudioChannelLayoutTag [size / sizeof (AudioChannelLayoutTag)];
+				fixed (AudioChannelLayoutTag* ptr = data) {
+					var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.AvailableEncodeChannelLayoutTags, type_size, formatPtr, &size, (int*) ptr);
+					if (res != 0)
+						return null;
+
+					return data;
+				}
 			}
 		}
 
@@ -362,19 +373,30 @@ namespace AudioToolbox {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe static int []? GetAvailableEncodeNumberChannels (in AudioStreamBasicDescription format)
+#else
 		public unsafe static int []? GetAvailableEncodeNumberChannels (AudioStreamBasicDescription format)
+#endif
 		{
-			uint size;
-			if (AudioFormatPropertyNative.AudioFormatGetPropertyInfo (AudioFormatProperty.AvailableEncodeNumberChannels, sizeof (AudioStreamBasicDescription), &format, &size) != 0)
-				return null;
-
-			var data = new int [size / sizeof (int)];
-			fixed (int* ptr = data) {
-				var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.AvailableEncodeNumberChannels, sizeof (AudioStreamBasicDescription), &format, &size, ptr);
-				if (res != 0)
+#if XAMCORE_5_0
+			fixed (AudioStreamBasicDescription* formatPtr = &format)
+#else
+			AudioStreamBasicDescription* formatPtr = &format;
+#endif
+			{
+				uint size;
+				if (AudioFormatPropertyNative.AudioFormatGetPropertyInfo (AudioFormatProperty.AvailableEncodeNumberChannels, sizeof (AudioStreamBasicDescription), formatPtr, &size) != 0)
 					return null;
 
-				return data;
+				var data = new int [size / sizeof (int)];
+				fixed (int* ptr = data) {
+					var res = AudioFormatPropertyNative.AudioFormatGetProperty (AudioFormatProperty.AvailableEncodeNumberChannels, sizeof (AudioStreamBasicDescription), formatPtr, &size, ptr);
+					if (res != 0)
+						return null;
+
+					return data;
+				}
 			}
 		}
 

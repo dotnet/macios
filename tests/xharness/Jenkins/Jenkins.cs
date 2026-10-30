@@ -103,7 +103,7 @@ namespace Xharness.Jenkins {
 				return false;
 			}
 
-			if (!TestSelection.IsEnabled (TestLabel.SystemPermission) && project.Label == TestLabel.Introspection) {
+			if (Harness.IncludeSystemPermissionTests == false && project.Label == TestLabel.Introspection) {
 				MainLog.WriteLine ($"Ignoring {project.Name} with label {project.Label} because we cannot include the system permission tests");
 				return false;
 			}

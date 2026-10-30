@@ -46,8 +46,14 @@ namespace MonoTouchFixtures.Network {
 		// that if we call the property with the wrong pointer we will get an exception
 		// from the runtime because the C lib does check the pointer that is used for the call
 
-		[Test]
-		public void SetIPVersionTest () => Assert.DoesNotThrow (() => options.SetVersion (NWIPVersion.Version6));
+		[TestCase (NWIPVersion.Any)]
+		[TestCase (NWIPVersion.IPv4)]
+		[TestCase (NWIPVersion.IPv6)]
+#if !XAMCORE_5_0
+		[TestCase ((NWIPVersion) 1)]
+		[TestCase ((NWIPVersion) 2)]
+#endif
+		public void SetIPVersionTest (NWIPVersion version) => Assert.DoesNotThrow (() => options.SetVersion (version));
 
 		[Test]
 		public void SetHopLimitTest () => Assert.DoesNotThrow (() => options.SetHopLimit (1));

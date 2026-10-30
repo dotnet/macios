@@ -63,6 +63,16 @@ Con
 
 # Test Suites
 
+## Linux build-host tests
+
+`make -C tests run-linux-tests` runs basic MSBuild smoke tests using the repository's
+.NET SDK, without Xcode or installed Apple workloads. The Linux build-verification
+CI job runs these tests after building the repository.
+
+The tests cover all four Apple platforms with executable, class-library, and binding
+project settings. On Linux they require the unsupported-host diagnostic before the
+build target executes; on supported hosts they require the target to succeed.
+
 ## *-tests : where * is the assembly name, e.g. monotouch
 
 Use the project defaults for linking, i.e. 

@@ -1821,6 +1821,9 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when listing the physical devices with 'devicectl' fails, times out, or devicectl can't be run.
 {0} - The reason for the failure, as reported by devicectl or by the device discovery. Do not translate 'devicectl'.</comment>
     </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

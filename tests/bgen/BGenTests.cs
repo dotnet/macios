@@ -636,10 +636,44 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "generic-type-nsobject.cs");
 		}
 
-		[Test]
-		public void BindAsTests ()
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void BindAsTests (Profile profile)
 		{
-			BuildFile (Profile.iOS, "bindastests.cs");
+			var bgen = BuildFile (profile, "bindastests.cs");
+			var type = bgen.ApiAssembly.MainModule.GetType ("BindAsTests", "MyFooClass");
+			var conversions = new Dictionary<string, string> {
+				{ "BoolMethod", "ToNullableBool" },
+				{ "IntMethod", "ToNullableInt32" },
+				{ "SbyteMethod", "ToNullableSByte" },
+				{ "BoolMethodS", "ToNullableBool" },
+				{ "IntMethodS", "ToNullableInt32" },
+				{ "SbyteMethodS", "ToSByte" },
+				{ "get_BoolProperty", "ToNullableBool" },
+				{ "get_DoubleProperty", "ToNullableDouble" },
+				{ "get_LongProperty", "ToInt64" },
+				{ "get_ScrollEnum2", "ToInt32" },
+				{ "GetScrollEnum2", "ToInt32" },
+				{ "GetScrollEnumNullable2", "ToNullableInt32" },
+				{ "CreateInt", "ToInt32" },
+				{ "CreateNullableInt", "ToNullableInt32" },
+				{ "CreateNullableScroll", "ToNullableInt32" },
+			};
+			foreach (var method in type.Methods.Where (v => conversions.ContainsKey (v.Name))) {
+				bgen.AssertApiCallsMethod (method, conversions [method.Name], method.Name);
+				Assert.That (method.Body.Instructions.Any (v => v.Operand is MethodReference called && called.Name == "GetNSObject"), Is.False, method.Name + " must not create an NSNumber wrapper");
+			}
+			foreach (var name in conversions.Keys)
+				Assert.That (type.Methods.Any (v => v.Name == name), Is.True, name);
+			var floats = type.Methods.Single (v => v.Name == "GetFloats");
+			Assert.That (floats.Body.Instructions.Any (v => v.Operand is MethodReference called && called.DeclaringType.FullName == "Foundation.NSNumber" && called.Name == "ToFloat"), Is.True, "Array conversion must use NSNumber.ToFloat");
+			foreach (var name in new [] { "CreateInt", "CreateNullableInt", "CreateNullableScroll" }) {
+				var method = type.Methods.Single (v => v.Name == name);
+				Assert.That (method.Body.ExceptionHandlers.Any (v => v.HandlerType == ExceptionHandlerType.Finally), Is.True, name + " must release its owned result in a finally block");
+				bgen.AssertApiCallsMethod (method, "void_objc_msgSend", name + " releases its owned result");
+			}
 		}
 
 		[Test]

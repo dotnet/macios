@@ -478,16 +478,14 @@ public partial class Generator : IMemberGatherer {
 		var originalReturnType = attrib.OriginalType ?? method?.ReturnType ?? property?.PropertyType;
 
 		if (originalReturnType == TypeCache.NSNumber) {
-			if (!TypeManager.NSNumberReturnMap.TryGetValue (retType, out append)) {
+			if (!TypeManager.NSNumberToValueMap.TryGetValue (retType, out append)) {
 				if (retType.IsEnum) {
 					var enumType = retType.GetEnumUnderlyingType ();
-					if (!TypeManager.NSNumberReturnMap.TryGetValue (enumType, out append))
+					if (!TypeManager.NSNumberToValueMap.TryGetValue (enumType, out append))
 						throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
 				} else
 					throw GetBindAsException ("unbox", retType.Name, originalReturnType.Name, "container", minfo.mi);
 			}
-			if (isNullable)
-				append = $"?{append}";
 		} else if (originalReturnType == TypeCache.NSValue) {
 			if (TypeManager.NSValueReturnMap.TryGetValue (retType, out append)) {
 				if (isNullable)
@@ -1570,7 +1568,7 @@ public partial class Generator : IMemberGatherer {
 
 	static string GenerateNSNumber (string cast, string propertyToCall)
 	{
-		return "using (var nsn = Runtime.GetNSObject<NSNumber> (value)!)\n\treturn " + cast + "nsn." + propertyToCall + ";";
+		return "return " + cast + "NSNumber.To" + propertyToCall.Substring (0, propertyToCall.Length - "Value".Length) + " (value);";
 	}
 
 	void GenerateIndirectDelegateFile ()
@@ -3062,6 +3060,14 @@ public partial class Generator : IMemberGatherer {
 				if (mi.ReturnType == TypeCache.NSString) {
 					cast_a = $"{wrapper}";
 					cast_b = $"{suffix}";
+				} else if (mi.ReturnType == TypeCache.NSNumber) {
+					var enumCast = bindAsType.IsEnum ? $"({formattedBindAsType}) " : string.Empty;
+					if (owns == "true")
+						print ("NativeHandle __number;");
+					if (isNullable)
+						wrapper = wrapper.Replace ("To", "ToNullable");
+					cast_a = $"{enumCast}NSNumber.{wrapper} (" + (owns == "true" ? "__number = " : "");
+					cast_b = ")";
 				} else {
 					var enumCast = (bindAsType.IsEnum && !minfo.type.IsArray) ? $"({formattedBindAsType}) " : string.Empty;
 					cast_a = $"{enumCast}Runtime.GetNSObject<{formattedReturnType}> (";
@@ -3194,6 +3200,13 @@ public partial class Generator : IMemberGatherer {
 				cast_b = ", \"" + selector + "\"" + (minfo.is_factory_method && minfo.is_factory_method_nullable ? ", false" : "") + ")";
 			}
 
+			var releaseNumber = returns && minfo.is_bindAs && !minfo.is_forced && mi.ReturnType == TypeCache.NSNumber && minfo.is_return_release;
+			if (releaseNumber) {
+				print ("__number = NativeHandle.Zero;");
+				print ("try {");
+				indent++;
+			}
+
 			if (minfo.is_static)
 				print ("{0}{1}{2} (class_ptr, {5}{6}){7};",
 					   returns ? "ret = " : "",
@@ -3206,6 +3219,20 @@ public partial class Generator : IMemberGatherer {
 					   returns ? "ret = " : "",
 					   cast_a, sig, rcv,
 					   selector_field, args, cast_b);
+			}
+
+			if (releaseNumber) {
+				indent--;
+				print ("} finally {");
+				indent++;
+				print ($"global::{NamespaceCache.Messaging}.void_objc_msgSend (__number, Selector.GetHandle (\"release\"));");
+				indent--;
+				print ("}");
+				if (!send_methods.ContainsKey ("void_objc_msgSend")) {
+					print (m, "[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSend\")]");
+					print (m, "public extern static void void_objc_msgSend (IntPtr receiver, IntPtr selector);");
+					RegisterMethodName ("void_objc_msgSend");
+				}
 			}
 
 			if (postproc.Length > 0)

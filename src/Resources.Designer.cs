@@ -1208,5 +1208,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The indexer &apos;{0}.{1}&apos; must be an instance member with [Wrap] on each accessor (or [NotImplemented] on the setter), and must not have [Export], [Field], or property-level [Wrap] attributes..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
     }
 }

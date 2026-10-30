@@ -644,4 +644,8 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>The indexer '{0}.{1}' must be an instance member with [Wrap] on each accessor (or [NotImplemented] on the setter), and must not have [Export], [Field], or property-level [Wrap] attributes.</value>
+	</data>
 </root>

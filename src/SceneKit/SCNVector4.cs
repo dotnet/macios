@@ -821,7 +821,11 @@ namespace SceneKit {
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
+#if XAMCORE_5_0
+		public static SCNVector4 Transform (SCNVector4 vec, in SCNMatrix4 mat)
+#else
 		public static SCNVector4 Transform (SCNVector4 vec, SCNMatrix4 mat)
+#endif
 		{
 #if XAMCORE_5_0
 			Transform (ref vec, in mat, out var result);

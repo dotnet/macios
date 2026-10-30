@@ -800,7 +800,14 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
+			var originalA = a;
+			var originalB = b;
 			var matrix = SCNMatrix4.Mult (a, b);
+#if XAMCORE_5_0
+			Asserts.AreEqual (matrix, SCNMatrix4.Mult (in a, in b), "Readonly product");
+#endif
+			Asserts.AreEqual (originalA, a, "Unchanged first matrix");
+			Asserts.AreEqual (originalB, b, "Unchanged second matrix");
 
 			Asserts.AreEqual (SCNMatrix4Mult (a, b), matrix, "Native");
 			var expected = new SCNMatrix4 (
@@ -828,11 +835,15 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
+			var originalA = a;
+			var originalB = b;
 #if XAMCORE_5_0
 			SCNMatrix4.Mult (in a, in b, out var matrix);
 #else
 			SCNMatrix4.Mult (ref a, ref b, out var matrix);
 #endif
+			Asserts.AreEqual (originalA, a, "Unchanged first matrix");
+			Asserts.AreEqual (originalB, b, "Unchanged second matrix");
 
 			Asserts.AreEqual (SCNMatrix4Mult (a, b), matrix, "Native");
 			var expected = new SCNMatrix4 (
@@ -857,6 +868,10 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (41, 42, 43, 44));
 			var ex = Assert.Throws<InvalidOperationException> (() => SCNMatrix4.Invert (a), "Singular matrix");
 			Assert.That (ex.Message, Does.Contain ("Matrix is singular and cannot be inverted"), "Singular matrix message");
+#if XAMCORE_5_0
+			Assert.Throws<InvalidOperationException> (() => SCNMatrix4.Invert (in a), "Readonly singular matrix");
+#endif
+			Asserts.AreEqual (new SCNMatrix4 (11, 12, 13, 14, 21, 22, 23, 24, 31, 32, 33, 34, 41, 42, 43, 44), a, "Unchanged singular matrix");
 
 			a = new SCNMatrix4 (
 				3, 5, 8, 9,
@@ -864,7 +879,12 @@ namespace MonoTouchFixtures.SceneKit {
 				9, 6, 4, 2,
 				4, 6, 9, 8);
 
+			var original = a;
 			var matrix = SCNMatrix4.Invert (a);
+#if XAMCORE_5_0
+			Asserts.AreEqual (matrix, SCNMatrix4.Invert (in a), "Readonly inverse");
+#endif
+			Asserts.AreEqual (original, a, "Unchanged matrix");
 
 			var expected = new SCNMatrix4 (
 				(pfloat) (-0.6181818181818182), (pfloat) (0.3151515151515151), (pfloat) (-0.030303030303030304), (pfloat) (0.3878787878787879),
@@ -886,7 +906,12 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (21, 22, 23, 24),
 				new SCNVector4 (31, 32, 33, 34),
 				new SCNVector4 (41, 42, 43, 44));
+			var original = a;
 			var matrix = SCNMatrix4.Transpose (a);
+#if XAMCORE_5_0
+			Asserts.AreEqual (matrix, SCNMatrix4.Transpose (in a), "Readonly transpose");
+#endif
+			Asserts.AreEqual (original, a, "Unchanged matrix");
 			var expected = new SCNMatrix4 (
 				11, 21, 31, 41,
 				12, 22, 32, 42,
@@ -907,11 +932,13 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (21, 22, 23, 24),
 				new SCNVector4 (31, 32, 33, 34),
 				new SCNVector4 (41, 42, 43, 44));
+			var original = a;
 #if XAMCORE_5_0
 			SCNMatrix4.Transpose (in a, out var matrix);
 #else
 			SCNMatrix4.Transpose (ref a, out var matrix);
 #endif
+			Asserts.AreEqual (original, a, "Unchanged matrix");
 			var expected = new SCNMatrix4 (
 				11, 21, 31, 41,
 				12, 22, 32, 42,

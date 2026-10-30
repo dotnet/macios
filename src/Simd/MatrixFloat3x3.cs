@@ -123,7 +123,11 @@ namespace CoreGraphics {
 			this = Transpose (this);
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix3 Transpose (in NMatrix3 matrix)
+#else
 		public static NMatrix3 Transpose (NMatrix3 matrix)
+#endif
 		{
 			NMatrix3 result = new NMatrix3 ();
 #if XAMCORE_5_0
@@ -154,7 +158,11 @@ namespace CoreGraphics {
 			result.dummy2 = 0;
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix3 Multiply (in NMatrix3 left, in NMatrix3 right)
+#else
 		public static NMatrix3 Multiply (NMatrix3 left, NMatrix3 right)
+#endif
 		{
 			NMatrix3 result;
 #if XAMCORE_5_0

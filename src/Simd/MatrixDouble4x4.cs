@@ -211,7 +211,11 @@ namespace CoreGraphics {
 			this = Transpose (this);
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix4d Transpose (in NMatrix4d mat)
+#else
 		public static NMatrix4d Transpose (NMatrix4d mat)
+#endif
 		{
 			NMatrix4d result;
 #if XAMCORE_5_0
@@ -249,7 +253,11 @@ namespace CoreGraphics {
 			result.M44 = mat.M44;
 		}
 
+#if XAMCORE_5_0
+		public static NMatrix4d Multiply (in NMatrix4d left, in NMatrix4d right)
+#else
 		public static NMatrix4d Multiply (NMatrix4d left, NMatrix4d right)
+#endif
 		{
 			NMatrix4d result;
 #if XAMCORE_5_0

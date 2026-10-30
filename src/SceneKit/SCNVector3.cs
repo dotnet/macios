@@ -723,7 +723,11 @@ namespace SceneKit {
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
+#if XAMCORE_5_0
+		public static SCNVector3 TransformVector (SCNVector3 vec, in SCNMatrix4 mat)
+#else
 		public static SCNVector3 TransformVector (SCNVector3 vec, SCNMatrix4 mat)
+#endif
 		{
 #if XAMCORE_5_0
 			TransformVector (ref vec, in mat, out var v);
@@ -766,10 +770,14 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed normal</returns>
+#if XAMCORE_5_0
+		public static SCNVector3 TransformNormal (SCNVector3 norm, in SCNMatrix4 mat)
+#else
 		public static SCNVector3 TransformNormal (SCNVector3 norm, SCNMatrix4 mat)
+#endif
 		{
-			mat.Invert ();
-			return TransformNormalInverse (norm, mat);
+			var inverse = SCNMatrix4.Invert (mat);
+			return TransformNormalInverse (norm, inverse);
 		}
 
 		/// <summary>Transform a Normal by the given Matrix</summary>
@@ -802,7 +810,11 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="invMat">The inverse of the desired transformation</param>
 		/// <returns>The transformed normal</returns>
+#if XAMCORE_5_0
+		public static SCNVector3 TransformNormalInverse (SCNVector3 norm, in SCNMatrix4 invMat)
+#else
 		public static SCNVector3 TransformNormalInverse (SCNVector3 norm, SCNMatrix4 invMat)
+#endif
 		{
 #if XAMCORE_5_0
 			TransformNormalInverse (ref norm, in invMat, out var n);
@@ -843,7 +855,11 @@ namespace SceneKit {
 		/// <param name="pos">The column-based position to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed position</returns>
+#if XAMCORE_5_0
+		public static SCNVector3 TransformPosition (SCNVector3 pos, in SCNMatrix4 mat)
+#else
 		public static SCNVector3 TransformPosition (SCNVector3 pos, SCNMatrix4 mat)
+#endif
 		{
 #if XAMCORE_5_0
 			TransformPosition (ref pos, in mat, out var p);
@@ -883,7 +899,11 @@ namespace SceneKit {
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
+#if XAMCORE_5_0
+		public static SCNVector4 Transform (SCNVector3 vec, in SCNMatrix4 mat)
+#else
 		public static SCNVector4 Transform (SCNVector3 vec, SCNMatrix4 mat)
+#endif
 		{
 			SCNVector4 v4 = new SCNVector4 (vec.X, vec.Y, vec.Z, 1.0f);
 			return SCNVector4.Transform (v4, mat);
@@ -911,7 +931,11 @@ namespace SceneKit {
 		/// <param name="vec">The vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <returns>The transformed vector</returns>
+#if XAMCORE_5_0
+		public static SCNVector3 TransformPerspective (SCNVector3 vec, in SCNMatrix4 mat)
+#else
 		public static SCNVector3 TransformPerspective (SCNVector3 vec, SCNMatrix4 mat)
+#endif
 		{
 			SCNVector4 h = Transform (vec, mat);
 			return new SCNVector3 (h.X / h.W, h.Y / h.W, h.Z / h.W);

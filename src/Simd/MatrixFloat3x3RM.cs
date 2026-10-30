@@ -185,7 +185,11 @@ namespace CoreGraphics {
 				M13 * (M21 * M32 - M22 * M31);
 		}
 
+#if XAMCORE_5_0
+		public static RMatrix3 Transpose (in RMatrix3 matrix)
+#else
 		public static RMatrix3 Transpose (RMatrix3 matrix)
+#endif
 		{
 			RMatrix3 result = new RMatrix3 ();
 			result.M11 = matrix.M11;
@@ -200,7 +204,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static RMatrix3 Multiply (in RMatrix3 value1, in RMatrix3 value2)
+#else
 		public static RMatrix3 Multiply (RMatrix3 value1, RMatrix3 value2)
+#endif
 		{
 			RMatrix3 result;
 			result.M11 = value1.M11 * value2.M11 + value1.M12 * value2.M21 + value1.M13 * value2.M31;
@@ -217,7 +225,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static RMatrix3 Multiply (in RMatrix3 value1, float value2)
+#else
 		public static RMatrix3 Multiply (RMatrix3 value1, float value2)
+#endif
 		{
 			var result = new RMatrix3 ();
 			result.M11 = value2 * value1.M11;
@@ -232,7 +244,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static RMatrix3 Add (in RMatrix3 value1, in RMatrix3 value2)
+#else
 		public static RMatrix3 Add (RMatrix3 value1, RMatrix3 value2)
+#endif
 		{
 			var result = new RMatrix3 ();
 			result.M11 = value1.M11 + value2.M11;
@@ -247,7 +263,11 @@ namespace CoreGraphics {
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static RMatrix3 Subtract (in RMatrix3 value1, in RMatrix3 value2)
+#else
 		public static RMatrix3 Subtract (RMatrix3 value1, RMatrix3 value2)
+#endif
 		{
 			var result = new RMatrix3 ();
 			result.M11 = value1.M11 - value2.M11;

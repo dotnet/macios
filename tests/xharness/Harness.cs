@@ -286,7 +286,6 @@ namespace Xharness {
 
 			// If we haven't been told, try to be smart.
 			switch (platform) {
-			case TestPlatform.iOS:
 			case TestPlatform.Mac:
 			case TestPlatform.MacCatalyst:
 				// On macOS we can't edit the TCC database easily

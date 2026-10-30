@@ -2876,7 +2876,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithAttributes (IntPtr font, nfloat size, CGAffineTransform* matrix, IntPtr attributes);
+#if XAMCORE_5_0
+		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, in CGAffineTransform matrix)
+#else
 		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, ref CGAffineTransform matrix)
+#endif
 		{
 			unsafe {
 				fixed (CGAffineTransform* matrixPtr = &matrix) {
@@ -2896,7 +2900,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithSymbolicTraits (IntPtr font, nfloat size, CGAffineTransform* matrix, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask);
+#if XAMCORE_5_0
+		public CTFont? WithSymbolicTraits (nfloat size, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask, in CGAffineTransform matrix)
+#else
 		public CTFont? WithSymbolicTraits (nfloat size, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask, ref CGAffineTransform matrix)
+#endif
 		{
 			unsafe {
 				fixed (CGAffineTransform* matrixPtr = &matrix) {
@@ -2921,7 +2929,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithFamily (IntPtr font, nfloat size, CGAffineTransform* matrix, IntPtr family);
+#if XAMCORE_5_0
+		public CTFont? WithFamily (nfloat size, string family, in CGAffineTransform matrix)
+#else
 		public CTFont? WithFamily (nfloat size, string family, ref CGAffineTransform matrix)
+#endif
 		{
 			if (family is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (family));
@@ -3496,7 +3508,11 @@ namespace CoreText {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public CGPath? GetPathForGlyph (CGGlyph glyph, in CGAffineTransform transform)
+#else
 		public CGPath? GetPathForGlyph (CGGlyph glyph, ref CGAffineTransform transform)
+#endif
 		{
 			IntPtr h;
 			unsafe {

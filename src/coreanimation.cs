@@ -3205,7 +3205,11 @@ namespace CoreAnimation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("canDrawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
+#if XAMCORE_5_0
+		bool CanDrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, in CVTimeStamp timeStamp);
+#else
 		bool CanDrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
+#endif
 
 		/// <param name="glContext">To be added.</param>
 		///         <param name="pixelFormat">To be added.</param>
@@ -3214,7 +3218,11 @@ namespace CoreAnimation {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("drawInCGLContext:pixelFormat:forLayerTime:displayTime:")]
+#if XAMCORE_5_0
+		void DrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, in CVTimeStamp timeStamp);
+#else
 		void DrawInCGLContext (CGLContext glContext, CGLPixelFormat pixelFormat, double timeInterval, ref CVTimeStamp timeStamp);
+#endif
 
 		/// <param name="mask">To be added.</param>
 		///         <summary>To be added.</summary>

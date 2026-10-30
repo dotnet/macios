@@ -146,7 +146,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnResolve = true;
 						return true;
 					},
+#if XAMCORE_5_0
+					(ref CGContentInfo info, in CGBitmapParameters parameters) => {
+#else
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#2 info={info} parameters={parameters}");
 						calledOnAllocate = true;
 						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
@@ -170,11 +174,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
+#if XAMCORE_5_0
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnFree#2 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnFree = true;
 					},
+#if XAMCORE_5_0
+					(NSError error, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnError#2 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnError = true;
 					});
@@ -226,7 +238,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnResolve = true;
 						return true;
 					},
+#if XAMCORE_5_0
+					(ref CGContentInfo info, in CGBitmapParameters parameters) => {
+#else
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#3 info={info} parameters={parameters}");
 						calledOnAllocate = true;
 						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
@@ -250,11 +266,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 						bufferProviderRef = renderingBufferProvider;
 						return renderingBufferProvider;
 					},
+#if XAMCORE_5_0
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnFree#3 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnFree = true;
 					},
+#if XAMCORE_5_0
+					(NSError error, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnError#3 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnError = true;
 					});
@@ -306,7 +330,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnResolve = true;
 						return true;
 					},
+#if XAMCORE_5_0
+					(ref CGContentInfo info, in CGBitmapParameters parameters) => {
+#else
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
 						calledOnAllocate = true;
 						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
@@ -329,11 +357,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 						);
 						return externalBufferProvider;
 					},
+#if XAMCORE_5_0
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnFree = true;
 					},
+#if XAMCORE_5_0
+					(NSError error, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters) => {
+#else
 					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+#endif
 						// TestRuntime.NSLog ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
 						calledOnError = true;
 					})) {

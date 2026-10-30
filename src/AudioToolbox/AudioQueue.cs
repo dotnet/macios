@@ -945,9 +945,15 @@ namespace AudioToolbox {
 			AudioTimeStamp* actualStartTime);
 
 		/// <include file="../../docs/api/AudioToolbox/AudioQueue.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioQueue.EnqueueBuffer(System.IntPtr,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)']/*" />
+#if XAMCORE_5_0
+		public AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
+								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
+								   in AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#else
 		public AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
 								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 								   ref AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#endif
 		{
 			if (audioQueueBuffer == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
@@ -1010,16 +1016,21 @@ namespace AudioToolbox {
 		}
 
 		/// <include file="../../docs/api/AudioToolbox/AudioQueue.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)']/*" />
+#if XAMCORE_5_0
+		public unsafe AudioQueueStatus EnqueueBuffer (AudioQueueBuffer* audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
+								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
+								   in AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#else
 		public unsafe AudioQueueStatus EnqueueBuffer (AudioQueueBuffer* audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
 								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 								   ref AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#endif
 		{
 			if (audioQueueBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
 
 			fixed (AudioStreamPacketDescription* descPtr = desc)
 			fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
-				startTime = default;
 				actualStartTime = default;
 				fixed (AudioTimeStamp* startTimePtr = &startTime, actualStartTimePtr = &actualStartTime) {
 					return AudioQueueEnqueueBufferWithParameters (

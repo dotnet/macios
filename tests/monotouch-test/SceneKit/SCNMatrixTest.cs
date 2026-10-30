@@ -828,7 +828,11 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
+#if XAMCORE_5_0
+			SCNMatrix4.Mult (in a, in b, out var matrix);
+#else
 			SCNMatrix4.Mult (ref a, ref b, out var matrix);
+#endif
 
 			Asserts.AreEqual (SCNMatrix4Mult (a, b), matrix, "Native");
 			var expected = new SCNMatrix4 (
@@ -903,7 +907,11 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (21, 22, 23, 24),
 				new SCNVector4 (31, 32, 33, 34),
 				new SCNVector4 (41, 42, 43, 44));
+#if XAMCORE_5_0
+			SCNMatrix4.Transpose (in a, out var matrix);
+#else
 			SCNMatrix4.Transpose (ref a, out var matrix);
+#endif
 			var expected = new SCNMatrix4 (
 				11, 21, 31, 41,
 				12, 22, 32, 42,
@@ -1070,7 +1078,11 @@ namespace MonoTouchFixtures.SceneKit {
 				SCNMatrix4.CreateTranslation (-1, 0, 0) *
 				SCNMatrix4.Scale (10, 1, 1);
 			// Transform the point
+#if XAMCORE_5_0
+			SCNVector3.TransformPosition (ref point, in matrix, out var newPoint);
+#else
 			SCNVector3.TransformPosition (ref point, ref matrix, out var newPoint);
+#endif
 			Asserts.AreEqual (new SCNVector3 (0, 2, 3), newPoint, "A");
 		}
 

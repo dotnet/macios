@@ -16,6 +16,43 @@ namespace MonoTouchFixtures.Foundation {
 	public class DecimalTest {
 
 		[Test]
+		public void ArithmeticInputs ()
+		{
+			NSDecimal left = 12;
+			NSDecimal right = 3;
+			var expectedLeft = left;
+			var expectedRight = right;
+#if XAMCORE_5_0
+			Assert.That (NSDecimal.Compare (in left, in right), Is.EqualTo (NSComparisonResult.Descending), "Compare");
+			Assert.That (NSDecimal.Add (out var sum, in left, in right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Add");
+			Assert.That (NSDecimal.Subtract (out var difference, in left, in right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Subtract");
+			Assert.That (NSDecimal.Multiply (out var product, in left, in right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Multiply");
+			Assert.That (NSDecimal.Divide (out var quotient, in left, in right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Divide");
+			Assert.That (NSDecimal.Power (out var power, in right, 2, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Power");
+			Assert.That (NSDecimal.MultiplyByPowerOf10 (out var scaled, in right, 2, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "MultiplyByPowerOf10");
+			NSDecimal.Round (out var rounded, in left, 0, NSRoundingMode.Plain);
+#else
+			Assert.That (NSDecimal.Compare (ref left, ref right), Is.EqualTo (NSComparisonResult.Descending), "Compare");
+			Assert.That (NSDecimal.Add (out var sum, ref left, ref right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Add");
+			Assert.That (NSDecimal.Subtract (out var difference, ref left, ref right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Subtract");
+			Assert.That (NSDecimal.Multiply (out var product, ref left, ref right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Multiply");
+			Assert.That (NSDecimal.Divide (out var quotient, ref left, ref right, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Divide");
+			Assert.That (NSDecimal.Power (out var power, ref right, 2, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "Power");
+			Assert.That (NSDecimal.MultiplyByPowerOf10 (out var scaled, ref right, 2, NSRoundingMode.Plain), Is.EqualTo (NSCalculationError.None), "MultiplyByPowerOf10");
+			NSDecimal.Round (out var rounded, ref left, 0, NSRoundingMode.Plain);
+#endif
+			Assert.That ((int) sum, Is.EqualTo (15), "Sum");
+			Assert.That ((int) difference, Is.EqualTo (9), "Difference");
+			Assert.That ((int) product, Is.EqualTo (36), "Product");
+			Assert.That ((int) quotient, Is.EqualTo (4), "Quotient");
+			Assert.That ((int) power, Is.EqualTo (9), "Power result");
+			Assert.That ((int) scaled, Is.EqualTo (300), "Scaled");
+			Assert.That ((int) rounded, Is.EqualTo (12), "Rounded");
+			Assert.That (left, Is.EqualTo (expectedLeft), "Unchanged left");
+			Assert.That (right, Is.EqualTo (expectedRight), "Unchanged right");
+		}
+
+		[Test]
 		public void CastFloat ()
 		{
 			float f = 0.7f;

@@ -106,6 +106,36 @@ namespace MonoTouchFixtures.CoreText {
 		}
 
 		[Test]
+		public void MatrixInputs ()
+		{
+			using var font = new CTFont ("HoeflerText-Regular", 10);
+			using var descriptor = new CTFontDescriptor ("HoeflerText-Regular", 10);
+			var matrix = CGAffineTransform.MakeScale (2, 3);
+			var expected = matrix;
+			ushort [] glyphs = new ushort [1];
+			Assert.That (font.GetGlyphsForCharacters (['A'], glyphs), Is.True, "Glyph");
+#if XAMCORE_5_0
+			using var withAttributes = font.WithAttributes (10, descriptor, in matrix);
+			using var withTraits = font.WithSymbolicTraits (10, 0, 0, in matrix);
+			using var withFamily = font.WithFamily (10, font.FamilyName, in matrix);
+			using var path = font.GetPathForGlyph (glyphs [0], in matrix);
+#else
+			using var withAttributes = font.WithAttributes (10, descriptor, ref matrix);
+			using var withTraits = font.WithSymbolicTraits (10, 0, 0, ref matrix);
+			using var withFamily = font.WithFamily (10, font.FamilyName, ref matrix);
+			using var path = font.GetPathForGlyph (glyphs [0], ref matrix);
+#endif
+			Assert.That (withAttributes, Is.Not.Null, "Attributes");
+			Assert.That (withTraits, Is.Not.Null, "Traits");
+			Assert.That (withFamily, Is.Not.Null, "Family");
+			Assert.That (path, Is.Not.Null, "Path");
+			Assert.That (withAttributes.Matrix, Is.EqualTo (expected), "Attributes matrix");
+			Assert.That (withTraits.Matrix, Is.EqualTo (expected), "Traits matrix");
+			Assert.That (withFamily.Matrix, Is.EqualTo (expected), "Family matrix");
+			Assert.That (matrix, Is.EqualTo (expected), "Unchanged matrix");
+		}
+
+		[Test]
 		public void GetCascadeList ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);

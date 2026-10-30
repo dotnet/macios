@@ -725,7 +725,11 @@ namespace SceneKit {
 		/// <returns>The transformed vector</returns>
 		public static SCNVector3 TransformVector (SCNVector3 vec, SCNMatrix4 mat)
 		{
+#if XAMCORE_5_0
+			TransformVector (ref vec, in mat, out var v);
+#else
 			TransformVector (ref vec, ref mat, out var v);
+#endif
 			return v;
 		}
 
@@ -735,7 +739,11 @@ namespace SceneKit {
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed vector</param>
+#if XAMCORE_5_0
+		public static void TransformVector (ref SCNVector3 vec, in SCNMatrix4 mat, out SCNVector3 result)
+#else
 		public static void TransformVector (ref SCNVector3 vec, ref SCNMatrix4 mat, out SCNVector3 result)
+#endif
 		{
 			result.X = vec.X * mat.Row0.X +
 					   vec.Y * mat.Row0.Y +
@@ -772,10 +780,18 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed normal</param>
+#if XAMCORE_5_0
+		public static void TransformNormal (ref SCNVector3 norm, in SCNMatrix4 mat, out SCNVector3 result)
+#else
 		public static void TransformNormal (ref SCNVector3 norm, ref SCNMatrix4 mat, out SCNVector3 result)
+#endif
 		{
 			SCNMatrix4 Inverse = SCNMatrix4.Invert (mat);
+#if XAMCORE_5_0
+			SCNVector3.TransformNormalInverse (ref norm, in Inverse, out result);
+#else
 			SCNVector3.TransformNormalInverse (ref norm, ref Inverse, out result);
+#endif
 		}
 
 		/// <summary>Transform a Normal by the (transpose of the) given Matrix</summary>
@@ -788,7 +804,11 @@ namespace SceneKit {
 		/// <returns>The transformed normal</returns>
 		public static SCNVector3 TransformNormalInverse (SCNVector3 norm, SCNMatrix4 invMat)
 		{
+#if XAMCORE_5_0
+			TransformNormalInverse (ref norm, in invMat, out var n);
+#else
 			TransformNormalInverse (ref norm, ref invMat, out var n);
+#endif
 			return n;
 		}
 
@@ -800,7 +820,11 @@ namespace SceneKit {
 		/// <param name="norm">The column-based normal to transform</param>
 		/// <param name="invMat">The inverse of the desired transformation</param>
 		/// <param name="result">The transformed normal</param>
+#if XAMCORE_5_0
+		public static void TransformNormalInverse (ref SCNVector3 norm, in SCNMatrix4 invMat, out SCNVector3 result)
+#else
 		public static void TransformNormalInverse (ref SCNVector3 norm, ref SCNMatrix4 invMat, out SCNVector3 result)
+#endif
 		{
 			result.X = norm.X * invMat.Column0.X +
 					   norm.Y * invMat.Column0.Y +
@@ -821,7 +845,11 @@ namespace SceneKit {
 		/// <returns>The transformed position</returns>
 		public static SCNVector3 TransformPosition (SCNVector3 pos, SCNMatrix4 mat)
 		{
+#if XAMCORE_5_0
+			TransformPosition (ref pos, in mat, out var p);
+#else
 			TransformPosition (ref pos, ref mat, out var p);
+#endif
 			return p;
 		}
 
@@ -829,7 +857,11 @@ namespace SceneKit {
 		/// <param name="pos">The column-based position to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed position</param>
+#if XAMCORE_5_0
+		public static void TransformPosition (ref SCNVector3 pos, in SCNMatrix4 mat, out SCNVector3 result)
+#else
 		public static void TransformPosition (ref SCNVector3 pos, ref SCNMatrix4 mat, out SCNVector3 result)
+#endif
 		{
 			result.X = mat.Row0.X * pos.X +
 					   mat.Row0.Y * pos.Y +
@@ -861,10 +893,18 @@ namespace SceneKit {
 		/// <param name="vec">The column vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed vector</param>
+#if XAMCORE_5_0
+		public static void Transform (ref SCNVector3 vec, in SCNMatrix4 mat, out SCNVector4 result)
+#else
 		public static void Transform (ref SCNVector3 vec, ref SCNMatrix4 mat, out SCNVector4 result)
+#endif
 		{
 			SCNVector4 v4 = new SCNVector4 (vec.X, vec.Y, vec.Z, 1.0f);
+#if XAMCORE_5_0
+			SCNVector4.Transform (ref v4, in mat, out result);
+#else
 			SCNVector4.Transform (ref v4, ref mat, out result);
+#endif
 		}
 
 		/// <summary>Transform a SCNVector3 by the given Matrix, and project the resulting Vector4 back to a SCNVector3</summary>
@@ -881,10 +921,18 @@ namespace SceneKit {
 		/// <param name="vec">The vector to transform</param>
 		/// <param name="mat">The desired transformation</param>
 		/// <param name="result">The transformed vector</param>
+#if XAMCORE_5_0
+		public static void TransformPerspective (ref SCNVector3 vec, in SCNMatrix4 mat, out SCNVector3 result)
+#else
 		public static void TransformPerspective (ref SCNVector3 vec, ref SCNMatrix4 mat, out SCNVector3 result)
+#endif
 		{
 			SCNVector4 h;
+#if XAMCORE_5_0
+			SCNVector3.Transform (ref vec, in mat, out h);
+#else
 			SCNVector3.Transform (ref vec, ref mat, out h);
+#endif
 			result.X = h.X / h.W;
 			result.Y = h.Y / h.W;
 			result.Z = h.Z / h.W;

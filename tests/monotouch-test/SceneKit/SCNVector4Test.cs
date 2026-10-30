@@ -48,7 +48,11 @@ namespace MonoTouchFixtures.SceneKit {
 				41, 42, 43, 44);
 
 			var pos = new SCNVector4 (10, 20, 30, 40);
+#if XAMCORE_5_0
+			SCNVector4.Transform (ref pos, in matrix, out var transformed);
+#else
 			SCNVector4.Transform (ref pos, ref matrix, out var transformed);
+#endif
 			Asserts.AreEqual (new SCNVector4 (1300, 2300, 3300, 4300), transformed, "Transformed");
 		}
 

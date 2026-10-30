@@ -24,7 +24,11 @@ namespace MonoTouchFixtures.AudioUnit {
 #endif
 				ComponentManufacturer = AudioComponentManufacturerType.Apple
 			};
+#if XAMCORE_5_0
+			AudioComponent component = AudioComponent.FindComponent (in cd);
+#else
 			AudioComponent component = AudioComponent.FindComponent (ref cd);
+#endif
 			var audioUnit = component.CreateAudioUnit ();
 
 			audioUnit.Dispose ();
@@ -53,7 +57,11 @@ namespace MonoTouchFixtures.AudioUnit {
 #endif
 				ComponentManufacturer = AudioComponentManufacturerType.Apple
 			};
+#if XAMCORE_5_0
+			AudioComponent component = AudioComponent.FindComponent (in cd);
+#else
 			AudioComponent component = AudioComponent.FindComponent (ref cd);
+#endif
 			Assert.DoesNotThrow (() => {
 				var icon = component.CopyIcon (); // ensuring that the manual binding does not throw, we do not care about the result
 			});

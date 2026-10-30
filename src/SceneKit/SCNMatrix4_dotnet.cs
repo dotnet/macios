@@ -182,7 +182,7 @@ namespace SceneKit {
 		/// The top row of this matrix
 		/// </summary>
 		public SCNVector4 Row0 {
-			get { return new SCNVector4 (Column0.X, Column1.X, Column2.X, Column3.X); }
+			readonly get { return new SCNVector4 (Column0.X, Column1.X, Column2.X, Column3.X); }
 			set {
 				Column0.X = value.X;
 				Column1.X = value.Y;
@@ -195,7 +195,7 @@ namespace SceneKit {
 		/// The second row of this matrix
 		/// </summary>
 		public SCNVector4 Row1 {
-			get { return new SCNVector4 (Column0.Y, Column1.Y, Column2.Y, Column3.Y); }
+			readonly get { return new SCNVector4 (Column0.Y, Column1.Y, Column2.Y, Column3.Y); }
 			set {
 				Column0.Y = value.X;
 				Column1.Y = value.Y;
@@ -208,7 +208,7 @@ namespace SceneKit {
 		/// The third row of this matrix
 		/// </summary>
 		public SCNVector4 Row2 {
-			get { return new SCNVector4 (Column0.Z, Column1.Z, Column2.Z, Column3.Z); }
+			readonly get { return new SCNVector4 (Column0.Z, Column1.Z, Column2.Z, Column3.Z); }
 			set {
 				Column0.Z = value.X;
 				Column1.Z = value.Y;
@@ -221,7 +221,7 @@ namespace SceneKit {
 		/// The last row of this matrix
 		/// </summary>
 		public SCNVector4 Row3 {
-			get { return new SCNVector4 (Column0.W, Column1.W, Column2.W, Column3.W); }
+			readonly get { return new SCNVector4 (Column0.W, Column1.W, Column2.W, Column3.W); }
 			set {
 				Column0.W = value.X;
 				Column1.W = value.Y;
@@ -988,9 +988,9 @@ namespace SceneKit {
 			SCNMatrix4 result;
 			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
-			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
+			MatrixMultiply (in secondTransformation, in firstTransformation, out result);
 #else
-			MatrixMultiply (ref right, ref left, out result);
+			MatrixMultiply (in right, in left, out result);
 #endif
 			return result;
 		}
@@ -1017,21 +1017,21 @@ namespace SceneKit {
 		/// <param name="result">A new instance that is the result of the combination</param>
 #endif
 #if XAMCORE_5_0
-		public static void Mult (ref SCNMatrix4 firstTransformation, ref SCNMatrix4 secondTransformation, out SCNMatrix4 result)
+		public static void Mult (in SCNMatrix4 firstTransformation, in SCNMatrix4 secondTransformation, out SCNMatrix4 result)
 #else
 		public static void Mult (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
 #endif
 		{
 			// the matrices are reversed: https://github.com/dotnet/macios/issues/15094#issuecomment-1139699662
 #if XAMCORE_5_0
-			MatrixMultiply (ref secondTransformation, ref firstTransformation, out result);
+			MatrixMultiply (in secondTransformation, in firstTransformation, out result);
 #else
-			MatrixMultiply (ref right, ref left, out result);
+			MatrixMultiply (in right, in left, out result);
 #endif
 		}
 
 		// Multiply two matrices in the order you'd expect (left * right).
-		static void MatrixMultiply (ref SCNMatrix4 left, ref SCNMatrix4 right, out SCNMatrix4 result)
+		static void MatrixMultiply (in SCNMatrix4 left, in SCNMatrix4 right, out SCNMatrix4 result)
 		{
 			result = new SCNMatrix4 (
 				left.Column0.X * right.Column0.X + left.Column1.X * right.Column0.Y + left.Column2.X * right.Column0.Z + left.Column3.X * right.Column0.W,
@@ -1169,7 +1169,11 @@ namespace SceneKit {
 		/// </summary>
 		/// <param name="mat">The matrix to transpose</param>
 		/// <param name="result">The result of the calculation</param>
+#if XAMCORE_5_0
+		public static void Transpose (in SCNMatrix4 mat, out SCNMatrix4 result)
+#else
 		public static void Transpose (ref SCNMatrix4 mat, out SCNMatrix4 result)
+#endif
 		{
 			result = new SCNMatrix4 (mat.Column0, mat.Column1, mat.Column2, mat.Column3);
 		}

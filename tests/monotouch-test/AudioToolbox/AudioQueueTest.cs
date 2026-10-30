@@ -107,6 +107,38 @@ namespace MonoTouchFixtures.AudioToolbox {
 		}
 
 		[Test]
+		[TestCase (false)]
+		[TestCase (true)]
+		public unsafe void EnqueueBufferPreservesStartTime (bool usePointer)
+		{
+			using var queue = new OutputAudioQueue (AudioStreamBasicDescription.CreateLinearPCM ());
+			Assert.That (queue.AllocateBuffer (4096, out AudioQueueBuffer* buffer), Is.EqualTo (AudioQueueStatus.Ok), "AllocateBuffer");
+			buffer->AsSpan ().Clear ();
+			buffer->AudioDataByteSize = 4096;
+			var startTime = new AudioTimeStamp {
+				SampleTime = 1234,
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid,
+			};
+			var expected = startTime;
+			AudioQueueStatus status;
+			if (usePointer) {
+#if XAMCORE_5_0
+				status = queue.EnqueueBuffer (buffer, 4096, [], 0, 0, [], in startTime, out var actualStartTime);
+#else
+				status = queue.EnqueueBuffer (buffer, 4096, [], 0, 0, [], ref startTime, out var actualStartTime);
+#endif
+			} else {
+#if XAMCORE_5_0
+				status = queue.EnqueueBuffer ((IntPtr) buffer, 4096, [], 0, 0, [], in startTime, out var actualStartTime);
+#else
+				status = queue.EnqueueBuffer ((IntPtr) buffer, 4096, [], 0, 0, [], ref startTime, out var actualStartTime);
+#endif
+			}
+			Assert.That (status, Is.EqualTo (AudioQueueStatus.Ok), "EnqueueBuffer");
+			Assert.That (startTime, Is.EqualTo (expected), "StartTime");
+		}
+
+		[Test]
 		public unsafe void AllocateBuffer_2 ()
 		{
 			var asbd = new AudioStreamBasicDescription () {

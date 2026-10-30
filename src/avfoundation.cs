@@ -1695,10 +1695,18 @@ namespace AVFoundation {
 	[BaseType (typeof (NSObject))]
 	interface AVAudioFormat : NSSecureCoding {
 		[Export ("initWithStreamDescription:")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (in AudioStreamBasicDescription description);
+#else
 		NativeHandle Constructor (ref AudioStreamBasicDescription description);
+#endif
 
 		[Export ("initWithStreamDescription:channelLayout:")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (in AudioStreamBasicDescription description, [NullAllowed] AVAudioChannelLayout layout);
+#else
 		NativeHandle Constructor (ref AudioStreamBasicDescription description, [NullAllowed] AVAudioChannelLayout layout);
+#endif
 
 		[Export ("initStandardFormatWithSampleRate:channels:")]
 		NativeHandle Constructor (double sampleRate, uint /* AVAudioChannelCount = uint32_t */ channels);
@@ -5214,7 +5222,11 @@ namespace AVFoundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("initWithAudioTimeStamp:sampleRate:")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (in AudioTimeStamp timestamp, double sampleRate);
+#else
 		NativeHandle Constructor (ref AudioTimeStamp timestamp, double sampleRate);
+#endif
 
 		/// <param name="hostTime">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -5279,7 +5291,11 @@ namespace AVFoundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static, Export ("timeWithAudioTimeStamp:sampleRate:")]
+#if XAMCORE_5_0
+		AVAudioTime FromAudioTimeStamp (in AudioTimeStamp timestamp, double sampleRate);
+#else
 		AVAudioTime FromAudioTimeStamp (ref AudioTimeStamp timestamp, double sampleRate);
+#endif
 
 		/// <param name="hostTime">To be added.</param>
 		///         <summary>To be added.</summary>

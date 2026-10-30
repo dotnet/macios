@@ -366,7 +366,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (IMTLDevice device, in MPSImageHistogramInfo histogramInfo);
+#else
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <param name="commandBuffer">To be added.</param>
 		/// <param name="source">To be added.</param>
@@ -411,7 +415,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (IMTLDevice device, in MPSImageHistogramInfo histogramInfo);
+#else
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <summary>Gets the configuration of the current histogram.</summary>
 		///         <value>To be added.</value>
@@ -459,7 +467,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (IMTLDevice device, in MPSImageHistogramInfo histogramInfo);
+#else
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <summary>Gets the configuration of the current and desired histograms.</summary>
 		///         <value>The configuration of the current and desired histograms.</value>
@@ -12085,7 +12097,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+#if XAMCORE_5_0
+		NativeHandle Constructor (IMTLDevice device, in MPSImageHistogramInfo histogramInfo);
+#else
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <param name="aDecoder">To be added.</param>
 		/// <param name="device">To be added.</param>

@@ -2,6 +2,27 @@
 #nullable enable
 
 namespace AudioToolbox {
+	/// <summary>Identifies music device audio unit selectors.</summary>
+	[MacCatalyst (13, 1)]
+	public enum MusicDeviceSelector : uint {
+		/// <summary>The start of the selector range reserved for music devices.</summary>
+		Range = 0x0100,
+		/// <summary>Sends a MIDI channel message to a music device.</summary>
+		MidiEvent = 0x0101,
+		/// <summary>Sends a MIDI system-exclusive message to a music device.</summary>
+		SysEx = 0x0102,
+		/// <summary>Prepares an instrument for playback.</summary>
+		PrepareInstrument = 0x0103,
+		/// <summary>Releases an instrument's resources.</summary>
+		ReleaseInstrument = 0x0104,
+		/// <summary>Starts a note and returns its instance identifier.</summary>
+		StartNote = 0x0105,
+		/// <summary>Stops a note using its instance identifier.</summary>
+		StopNote = 0x0106,
+		/// <summary>Sends a MIDI event list to a music device.</summary>
+		MidiEventList = 0x0107,
+	}
+
 	[MacCatalyst (13, 1)]
 	[Flags]
 	public enum AudioSettingsFlags : uint {

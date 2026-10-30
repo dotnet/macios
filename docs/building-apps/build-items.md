@@ -332,9 +332,8 @@ An item group that lists all the core source code for binding projects.
 
 ## ObjCBindingNativeFramework
 
-An item group that lists all the native frameworks that should be included in a binding project.
-
-This item group is deprecated, use [NativeReference](#nativereference) instead.
+This item group is no longer supported in .NET 12+ and is ignored.
+Use [NativeReference](#nativereference) to include native frameworks in binding projects instead.
 
 ## ObjcBindingNativeLibrary
 

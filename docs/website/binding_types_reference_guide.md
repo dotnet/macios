@@ -1766,6 +1766,12 @@ nullable analysis permits assigning `null` without requiring null checks when
 reading the property. The generated setter also allows `null` to pass to
 Objective-C.
 
+Xtro checks getter and setter nullability independently. For a native
+`null_resettable` property, use `[AllowNull]`: omitting it leaves the setter
+non-nullable, while using `[NullAllowed]` incorrectly makes the getter nullable.
+These mismatches are reported by the `!missing-null-allowed!` and
+`!extra-null-allowed!` checks, respectively.
+
 <a name="OverrideAttribute"></a>
 
 ### OverrideAttribute

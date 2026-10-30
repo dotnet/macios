@@ -3,6 +3,7 @@
 
 using ClangSharp;
 using ClangSharp.Interop;
+using System.Diagnostics.CodeAnalysis;
 using Extrospection;
 using Mono.Cecil;
 using Sharpie.Bind;
@@ -183,8 +184,66 @@ public class NullabilityTests {
 			""");
 		Assert.That (messages, Is.EquivalentTo (new [] {
 			Missing ("System.Void Xamarin.Tests.CallbackFixtures::set_ReadWrite(Xamarin.Tests.CallbackFixtures/NamedCallback)", "parameter 'value' block return type"),
+			Missing ("Xamarin.Tests.CallbackFixtures/NamedCallback Xamarin.Tests.CallbackFixtures::get_ReadWrite()", "return type block return type"),
 			Missing ("Xamarin.Tests.CallbackFixtures/NamedCallback Xamarin.Tests.CallbackFixtures::get_ReadOnly()", "return type block return type"),
 			Missing ("Xamarin.Tests.CallbackFixtures/NamedCallback Xamarin.Tests.CallbackFixtures::Returned()", "return type block return type"),
+		}));
+	}
+
+	[TestCase ("Resettable", 0)]
+	[TestCase ("Required", 1)]
+	[TestCase ("Nullable", 1)]
+	public void ResettableProperties (string property, int expectedCount)
+	{
+		var messages = Check ($$"""
+			@interface Callbacks
+			@property (copy, null_resettable) id {{property}};
+			@end
+			""");
+		var expected = property switch {
+			"Required" => "!missing-null-allowed! 'System.Void Xamarin.Tests.CallbackFixtures::set_Required(System.Object)' is missing an [NullAllowed] on parameter #0",
+			"Nullable" => "!extra-null-allowed! 'System.Object Xamarin.Tests.CallbackFixtures::get_Nullable()' has a extraneous [NullAllowed] on return type",
+			_ => null,
+		};
+		Assert.That (messages, Has.Length.EqualTo (expectedCount));
+		if (expected is not null)
+			Assert.That (messages, Is.EqualTo (new [] { expected }));
+	}
+
+	[Test]
+	public void ExplicitAsymmetricAccessors ()
+	{
+		var messages = Check ("""
+			@interface Callbacks
+			- (id _Nonnull)Resettable;
+			- (void)setResettable:(id _Nullable)value;
+			@end
+			""");
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
+	public void SymmetricProperties ()
+	{
+		var messages = Check ("""
+			@interface Callbacks
+			@property (copy, nonnull) id Required;
+			@property (copy, nullable) id Nullable;
+			@end
+			""");
+		Assert.That (messages, Is.Empty);
+	}
+
+	[Test]
+	public void ExtraneousAllowNull ()
+	{
+		var messages = Check ("""
+			@interface Callbacks
+			@property (copy, nonnull) id Resettable;
+			@end
+			""");
+		Assert.That (messages, Is.EqualTo (new [] {
+			"!extra-null-allowed! 'System.Void Xamarin.Tests.CallbackFixtures::set_Resettable(System.Object)' has a extraneous [NullAllowed] on parameter #0",
 		}));
 	}
 
@@ -285,6 +344,11 @@ public class NullabilityTests {
 }
 
 public class CallbackFixtures {
+	[AllowNull]
+	public object Resettable { get => new object (); set { } }
+	public object Required { get; set; } = new object ();
+	public object? Nullable { get; set; }
+
 	public delegate object NamedCallback (object required, object? optional);
 	public delegate object? NullableReturnCallback (object first, object second);
 	public delegate void UniformCallback (object? first, object? second);
@@ -329,6 +393,43 @@ public class ManagedCallbackNullabilityTests {
 		using var assembly = AssemblyDefinition.ReadAssembly (Path.Combine (TestContext.CurrentContext.TestDirectory, "UnitTests.dll"),
 			new ReaderParameters { AssemblyResolver = resolver });
 		test (assembly.MainModule, assembly.MainModule.GetType ("Xamarin.Tests.CallbackFixtures"));
+	}
+
+	[TestCase ("Resettable", (byte) 2)]
+	[TestCase ("Required", (byte) 1)]
+	[TestCase ("Nullable", (byte) 2)]
+	public void PropertySetterNullability (string name, byte expectedNullability)
+	{
+		WithFixtures ((module, fixture) => {
+			var property = fixture.Properties.Single (v => v.Name == name);
+			var setter = property.SetMethod;
+			var check = new NullabilityCheck (new BindingResult ());
+			Assert.That (check.GetParameterNullability (setter.Parameters [0], setter),
+				Is.EqualTo ((NullabilityCheck.Null) expectedNullability), "Setter input nullability");
+			if (name == "Resettable") {
+				Assert.That (setter.Parameters [0].CustomAttributes.Any (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.AllowNullAttribute"),
+					Is.True, "AllowNull is emitted on the setter value parameter");
+				var nullable = NullabilityCheck.GetNullable (property);
+				var getterNullability = nullable.Length == 0 ? check.GetNullableContext (property.GetMethod) : nullable [0];
+				Assert.That (getterNullability, Is.EqualTo (NullabilityCheck.Null.NotAnnotated), "AllowNull does not make the getter nullable");
+			}
+		});
+	}
+
+	[TestCase ((byte) 0)]
+	[TestCase ((byte) 1)]
+	[TestCase ((byte) 2)]
+	public void AllowNullOverridesContext (byte context)
+	{
+		WithFixtures ((module, fixture) => {
+			var setter = fixture.Properties.Single (v => v.Name == "Resettable").SetMethod;
+			var parameter = setter.Parameters [0];
+			foreach (var attribute in parameter.CustomAttributes.Where (v => v.AttributeType.Name == "NullableAttribute").ToArray ())
+				parameter.CustomAttributes.Remove (attribute);
+			NullabilityTests.SetContext (module, setter, context);
+			Assert.That (new NullabilityCheck (new BindingResult ()).GetParameterNullability (parameter, setter),
+				Is.EqualTo (NullabilityCheck.Null.Annotated), "AllowNull overrides the setter's nullable context");
+		});
 	}
 
 	[TestCase ("Named", 0, "System.Object", (byte) 1)]

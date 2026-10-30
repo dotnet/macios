@@ -51,16 +51,47 @@ public class ForcedTypeAttribute : Attribute {
 	public bool Owns;
 }
 
+/// <summary>Identifies a parameter that passes a pointer to a single blittable struct.</summary>
+/// <remarks>
+///   <para>Apply this attribute to a raw struct pointer or a <c>ref</c> or <c>out</c> struct parameter. It does not change the existing pointer or by-reference marshalling.</para>
+///   <para>The struct must have sequential or explicit layout and contain only blittable fields. Parameters declared with <c>in</c> are not supported.</para>
+/// </remarks>
 [AttributeUsage (AttributeTargets.Parameter)]
 public sealed class PointerAsStructAttribute : Attribute {
+	/// <summary>Initializes an attribute that identifies a pointer to a single struct.</summary>
+	public PointerAsStructAttribute ()
+	{
+	}
 }
 
+/// <summary>Marshals a one-dimensional array of blittable structs as a native buffer instead of an Objective-C array.</summary>
+/// <remarks>
+///   <para>Specify exactly one of <see cref="LengthFromParameter" />, <see cref="LengthFromMember" />, or <see cref="Length" /> to determine the number of elements the native method may access.</para>
+///   <para>The generated wrapper pins the array for the synchronous call and checks that the specified length is nonnegative and does not exceed the array length. A prefix of the array is permitted. Native writes are visible in the managed array, and native code must not retain the pointer after returning.</para>
+///   <para>Empty arrays are passed as null pointers. An array marked with <see cref="NullAllowedAttribute" /> may be null only when the specified length is zero.</para>
+///   <para>This attribute supports outgoing methods and constructors, not protocols, models, callbacks, property accessors, asynchronous methods, or overridable methods. The element type must be a non-generic struct with sequential or explicit layout and blittable fields.</para>
+/// </remarks>
 [AttributeUsage (AttributeTargets.Parameter)]
 public sealed class PointerAsArrayAttribute : Attribute {
 	int length = -1;
 
+	/// <summary>Initializes an attribute that marshals a struct array as a native buffer.</summary>
+	public PointerAsArrayAttribute ()
+	{
+	}
+
+	/// <summary>Gets or sets the name of the parameter that supplies the native buffer length.</summary>
+	/// <value>The name of an integral parameter passed by value, or <see langword="null" /> when another length source is used.</value>
 	public string? LengthFromParameter { get; set; }
+	/// <summary>Gets or sets the name of the member that supplies the native buffer length.</summary>
+	/// <value>The name of a readable integral property or field, or <see langword="null" /> when another length source is used.</value>
+	/// <remarks>
+	///   <para>The member is evaluated once per call. Static methods and constructors require a static member. Member-derived lengths are not supported on categories.</para>
+	/// </remarks>
 	public string? LengthFromMember { get; set; }
+	/// <summary>Gets or sets a constant native buffer length.</summary>
+	/// <value>A nonnegative number of elements to pass, or the default value of <c>-1</c> when no constant length has been set.</value>
+	/// <remarks>Explicitly setting a negative value is invalid. Use a named length source instead of setting this property when the length is not constant.</remarks>
 	public int Length {
 		get => length;
 		set {

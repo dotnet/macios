@@ -1859,6 +1859,10 @@ namespace AppKit {
 		[Export ("elementCount")]
 		nint ElementCount { get; }
 
+		/// <summary>Gets a path element and writes its associated points to a buffer.</summary>
+		/// <param name="index">The zero-based index of the path element.</param>
+		/// <param name="points">A buffer with at least three entries to receive the element's points.</param>
+		/// <returns>The type of the path element.</returns>
 		[Export ("elementAtIndex:associatedPoints:"), Internal]
 		NSBezierPathElement _ElementAt (nint index, [PointerAsArray (Length = 3)] CGPoint [] points);
 
@@ -1874,6 +1878,9 @@ namespace AppKit {
 		[Export ("appendBezierPathWithRect:")]
 		void AppendPathWithRect (CGRect rect);
 
+		/// <summary>Appends connected line segments from a prefix of a point buffer.</summary>
+		/// <param name="points">The ordered vertices to append.</param>
+		/// <param name="count">The nonnegative number of points to copy, at most the array length.</param>
 		[Export ("appendBezierPathWithPoints:count:"), Internal]
 		void _AppendPathWithPoints ([PointerAsArray (LengthFromParameter = nameof (count))] CGPoint [] points, nint count);
 
@@ -7993,10 +8000,18 @@ namespace AppKit {
 		[Export ("advancementForCGGlyph:")]
 		CGSize GetAdvancement (CGGlyph glyph);
 
+		/// <summary>Writes glyph bounding rectangles to a managed buffer.</summary>
+		/// <param name="bounds">The output buffer, with at least <paramref name="glyphCount" /> entries.</param>
+		/// <param name="glyphs">A pointer to at least <paramref name="glyphCount" /> glyph identifiers.</param>
+		/// <param name="glyphCount">The number of glyphs to measure.</param>
 		[Internal]
 		[Export ("getBoundingRects:forCGGlyphs:count:")]
 		void _GetBoundingRects ([PointerAsArray (LengthFromParameter = nameof (glyphCount))] CGRect [] bounds, IntPtr glyphs, nuint glyphCount);
 
+		/// <summary>Writes glyph advancement sizes to a managed buffer.</summary>
+		/// <param name="advancements">The output buffer, with at least <paramref name="glyphCount" /> entries.</param>
+		/// <param name="glyphs">A pointer to at least <paramref name="glyphCount" /> glyph identifiers.</param>
+		/// <param name="glyphCount">The number of glyphs to measure.</param>
 		[Internal]
 		[Export ("getAdvancements:forCGGlyphs:count:")]
 		void _GetAdvancements ([PointerAsArray (LengthFromParameter = nameof (glyphCount))] CGSize [] advancements, IntPtr glyphs, nuint glyphCount);

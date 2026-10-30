@@ -1630,20 +1630,38 @@ namespace MapKit {
 		[NullAllowed]
 		MKPolygon [] InteriorPolygons { get; }
 
+		/// <summary>Creates a polygon from a prefix of a map-point buffer.</summary>
+		/// <param name="points">The ordered polygon vertices.</param>
+		/// <param name="count">The nonnegative number of points to copy, at most the array length.</param>
+		/// <returns>A new polygon.</returns>
 		[Static]
 		[Internal]
 		[Export ("polygonWithPoints:count:")]
 		MKPolygon _FromPoints ([PointerAsArray (LengthFromParameter = nameof (count))] MKMapPoint [] points, nint count);
 
+		/// <summary>Creates a polygon from a prefix of a map-point buffer and interior polygons.</summary>
+		/// <param name="points">The ordered polygon vertices.</param>
+		/// <param name="count">The nonnegative number of points to copy, at most the array length.</param>
+		/// <param name="interiorPolygons">The polygons to exclude, or <see langword="null" /> for none.</param>
+		/// <returns>A new polygon.</returns>
 		[Static]
 		[Internal]
 		[Export ("polygonWithPoints:count:interiorPolygons:")]
 		MKPolygon _FromPoints ([PointerAsArray (LengthFromParameter = nameof (count))] MKMapPoint [] points, nint count, [NullAllowed] MKPolygon [] interiorPolygons);
 
+		/// <summary>Creates a polygon from a prefix of a coordinate buffer.</summary>
+		/// <param name="coords">The ordered geographic coordinates of the vertices.</param>
+		/// <param name="count">The nonnegative number of coordinates to copy, at most the array length.</param>
+		/// <returns>A new polygon.</returns>
 		[Static]
 		[Export ("polygonWithCoordinates:count:"), Internal]
 		MKPolygon _FromCoordinates ([PointerAsArray (LengthFromParameter = nameof (count))] CLLocationCoordinate2D [] coords, nint count);
 
+		/// <summary>Creates a polygon from a prefix of a coordinate buffer and interior polygons.</summary>
+		/// <param name="coords">The ordered geographic coordinates of the vertices.</param>
+		/// <param name="count">The nonnegative number of coordinates to copy, at most the array length.</param>
+		/// <param name="interiorPolygons">The polygons to exclude, or <see langword="null" /> for none.</param>
+		/// <returns>A new polygon.</returns>
 		[Static]
 		[Internal]
 		[Export ("polygonWithCoordinates:count:interiorPolygons:")]
@@ -1660,11 +1678,19 @@ namespace MapKit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MKMultiPoint))]
 	interface MKPolyline : MKOverlay, MKGeoJsonObject {
+		/// <summary>Creates a polyline from a prefix of a coordinate buffer.</summary>
+		/// <param name="coords">The ordered geographic coordinates of the vertices.</param>
+		/// <param name="count">The nonnegative number of coordinates to copy, at most the array length.</param>
+		/// <returns>A new polyline.</returns>
 		[Static]
 		[Export ("polylineWithCoordinates:count:")]
 		[Internal]
 		MKPolyline _FromCoordinates ([PointerAsArray (LengthFromParameter = nameof (count))] CLLocationCoordinate2D [] coords, nint count);
 
+		/// <summary>Creates a polyline from a prefix of a map-point buffer.</summary>
+		/// <param name="points">The ordered polyline vertices.</param>
+		/// <param name="count">The nonnegative number of points to copy, at most the array length.</param>
+		/// <returns>A new polyline.</returns>
 		[Static]
 		[Internal]
 		[Export ("polylineWithPoints:count:")]

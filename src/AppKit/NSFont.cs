@@ -23,10 +23,11 @@ namespace AppKit {
 			return result;
 		}
 
-		/// <param name="glyphs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the bounding rectangle of each glyph in this font.</summary>
+		/// <param name="glyphs">The glyph identifiers to measure.</param>
+		/// <returns>The glyph bounding rectangles, in the same order as <paramref name="glyphs" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="glyphs" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="glyphs" /> is empty.</exception>
 		public unsafe CGRect [] GetBoundingRects (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)
@@ -41,10 +42,11 @@ namespace AppKit {
 			return bounds;
 		}
 
-		/// <param name="glyphs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the advancement of each glyph in this font.</summary>
+		/// <param name="glyphs">The glyph identifiers to measure.</param>
+		/// <returns>The glyph advancement sizes, in the same order as <paramref name="glyphs" />.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="glyphs" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="glyphs" /> is empty.</exception>
 		public unsafe CGSize [] GetAdvancements (CGGlyph [] glyphs)
 		{
 			if (glyphs is null)

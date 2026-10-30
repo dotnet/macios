@@ -237,27 +237,40 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern double CTLineGetTypographicBounds (IntPtr line, out nfloat ascent, out nfloat descent, out nfloat leading);
+		unsafe static extern double CTLineGetTypographicBounds (IntPtr line, nfloat* ascent, nfloat* descent, nfloat* leading);
+
+		/// <summary>Calculates the typographic bounds of the line.</summary>
+		/// <param name="ascent">When this method returns, contains the ascent of the line.</param>
+		/// <param name="descent">When this method returns, contains the descent of the line.</param>
+		/// <param name="leading">When this method returns, contains the leading of the line.</param>
+		/// <returns>The typographic width of the line, or 0 if the line is invalid.</returns>
 		public double GetTypographicBounds (out nfloat ascent, out nfloat descent, out nfloat leading)
 		{
-			return CTLineGetTypographicBounds (Handle, out ascent, out descent, out leading);
+			ascent = 0;
+			descent = 0;
+			leading = 0;
+			unsafe {
+				fixed (nfloat* ascentPtr = &ascent, descentPtr = &descent, leadingPtr = &leading) {
+					return CTLineGetTypographicBounds (Handle, ascentPtr, descentPtr, leadingPtr);
+				}
+			}
 		}
 
-		[DllImport (Constants.CoreTextLibrary)]
-		static extern double CTLineGetTypographicBounds (IntPtr line, IntPtr ascent, IntPtr descent, IntPtr leading);
-		/// <summary>Returns the typorgraphic width of the line.</summary>
-		///         <returns>The width of the line, or zero if there are any errors.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    Use the <see cref="CoreText.CTLine.GetTypographicBounds(out nfloat, out nfloat, out nfloat)" /> method to retrieve more information about the typographical features of the line.
-		/// 	  </para>
-		///           <para>
-		/// 	    Starting with iOS 6.0, the <see cref="CoreText.CTLine.GetBounds(CoreText.CTLineBoundsOptions)" /> provides finer typorgraphical information than this method.
-		/// 	  </para>
-		///         </remarks>
+		/// <summary>Returns the typographic width of the line.</summary>
+		/// <returns>The width of the line, or zero if there are any errors.</returns>
+		/// <remarks>
+		///   <para>
+		///     Use the <see cref="GetTypographicBounds(out nfloat, out nfloat, out nfloat)" /> method to retrieve more information about the typographical features of the line.
+		///   </para>
+		///   <para>
+		///     Starting with iOS 6.0, the <see cref="GetBounds(CTLineBoundsOptions)" /> method provides finer typographical information than this method.
+		///   </para>
+		/// </remarks>
 		public double GetTypographicBounds ()
 		{
-			return CTLineGetTypographicBounds (Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+			unsafe {
+				return CTLineGetTypographicBounds (Handle, null, null, null);
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -283,17 +296,30 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, out nfloat secondaryOffset);
+		unsafe static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, nfloat* secondaryOffset);
+
+		/// <summary>Determines the graphical offset or offsets for a string index.</summary>
+		/// <param name="charIndex">The string index corresponding to the character position.</param>
+		/// <param name="secondaryOffset">When this method returns, contains the secondary offset along the baseline for the character.</param>
+		/// <returns>The primary offset along the baseline for <paramref name="charIndex" />, or 0.0 if the line is invalid.</returns>
 		public nfloat GetOffsetForStringIndex (nint charIndex, out nfloat secondaryOffset)
 		{
-			return CTLineGetOffsetForStringIndex (Handle, charIndex, out secondaryOffset);
+			secondaryOffset = 0;
+			unsafe {
+				fixed (nfloat* secondaryOffsetPtr = &secondaryOffset) {
+					return CTLineGetOffsetForStringIndex (Handle, charIndex, secondaryOffsetPtr);
+				}
+			}
 		}
 
-		[DllImport (Constants.CoreTextLibrary)]
-		static extern nfloat CTLineGetOffsetForStringIndex (IntPtr line, nint charIndex, IntPtr secondaryOffset);
+		/// <summary>Determines the primary graphical offset for a string index.</summary>
+		/// <param name="charIndex">The string index corresponding to the character position.</param>
+		/// <returns>The primary offset along the baseline for <paramref name="charIndex" />, or 0.0 if the line is invalid.</returns>
 		public nfloat GetOffsetForStringIndex (nint charIndex)
 		{
-			return CTLineGetOffsetForStringIndex (Handle, charIndex, IntPtr.Zero);
+			unsafe {
+				return CTLineGetOffsetForStringIndex (Handle, charIndex, null);
+			}
 		}
 
 		/// <param name="offset">To be added.</param>

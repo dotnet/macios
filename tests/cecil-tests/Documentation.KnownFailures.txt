@@ -7803,8 +7803,6 @@ M:Accelerate.vImage.BoxConvolveARGB8888(Accelerate.vImageBuffer@,Accelerate.vIma
 M:Accelerate.vImage.BoxConvolvePlanar8(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.UInt32,System.UInt32,System.Byte,Accelerate.vImageFlags)
 M:Accelerate.vImage.ConvolveARGB8888(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Int16*,System.UInt32,System.UInt32,System.Int32,Accelerate.Pixel8888*,Accelerate.vImageFlags)
 M:Accelerate.vImage.ConvolveARGBFFFF(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Single*,System.UInt32,System.UInt32,Accelerate.PixelFFFF,Accelerate.vImageFlags)
-M:Accelerate.vImage.ConvolveMultiKernelARGB8888(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Int16[][],System.UInt32,System.UInt32,System.Int32[],System.Int32[],Accelerate.Pixel8888,Accelerate.vImageFlags)
-M:Accelerate.vImage.ConvolveMultiKernelARGBFFFF(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Single[][],System.UInt32,System.UInt32,System.Single[],Accelerate.PixelFFFF,Accelerate.vImageFlags)
 M:Accelerate.vImage.ConvolvePlanar8(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Int16*,System.UInt32,System.UInt32,System.Int32,System.Byte,Accelerate.vImageFlags)
 M:Accelerate.vImage.ConvolvePlanarF(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Single*,System.UInt32,System.UInt32,System.Single,Accelerate.vImageFlags)
 M:Accelerate.vImage.ConvolveWithBiasARGB8888(Accelerate.vImageBuffer@,Accelerate.vImageBuffer@,System.IntPtr,System.IntPtr,System.IntPtr,System.Int16*,System.UInt32,System.UInt32,System.Int32,System.Int32,Accelerate.Pixel8888,Accelerate.vImageFlags)
@@ -14862,8 +14860,6 @@ M:CoreGraphics.CGAffineTransform.Scale(System.Runtime.InteropServices.NFloat,Sys
 M:CoreGraphics.CGAffineTransform.Translate(CoreGraphics.CGAffineTransform,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:CoreGraphics.CGAffineTransform.Translate(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,CoreGraphics.MatrixOrder)
 M:CoreGraphics.CGAffineTransform.Translate(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:CoreGraphics.CGBitmapContext.#ctor(System.Byte[],System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,CoreGraphics.CGColorSpace,CoreGraphics.CGBitmapFlags)
-M:CoreGraphics.CGBitmapContext.#ctor(System.Byte[],System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,CoreGraphics.CGColorSpace,CoreGraphics.CGImageAlphaInfo)
 M:CoreGraphics.CGBitmapContext.#ctor(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,CoreGraphics.CGColorSpace,CoreGraphics.CGBitmapFlags)
 M:CoreGraphics.CGBitmapContext.#ctor(System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr,CoreGraphics.CGColorSpace,CoreGraphics.CGImageAlphaInfo)
 M:CoreGraphics.CGColor.#ctor(CoreGraphics.CGColor,System.Runtime.InteropServices.NFloat)
@@ -14929,10 +14925,6 @@ M:CoreGraphics.CGContext.SetStrokeColor(System.Runtime.InteropServices.NFloat,Sy
 M:CoreGraphics.CGContext.SetStrokeColor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:CoreGraphics.CGContext.SetStrokeColor(System.Runtime.InteropServices.NFloat[])
 M:CoreGraphics.CGContext.SetStrokePattern(CoreGraphics.CGPattern,System.Runtime.InteropServices.NFloat[])
-M:CoreGraphics.CGContext.ShowGlyphsAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.UInt16[],System.Int32)
-M:CoreGraphics.CGContext.ShowGlyphsAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.UInt16[])
-M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Byte[],System.Int32)
-M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Byte[])
 M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String,System.Int32)
 M:CoreGraphics.CGContext.ShowTextAtPoint(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.String)
 M:CoreGraphics.CGContext.StrokeRectWithWidth(CoreGraphics.CGRect,System.Runtime.InteropServices.NFloat)
@@ -15739,13 +15731,8 @@ M:CoreText.CTFont.#ctor(System.String,System.Runtime.InteropServices.NFloat,Core
 M:CoreText.CTFont.#ctor(System.String,System.Runtime.InteropServices.NFloat,CoreText.CTFontOptions)
 M:CoreText.CTFont.#ctor(System.String,System.Runtime.InteropServices.NFloat)
 M:CoreText.CTFont.ForString(System.String,Foundation.NSRange,System.String)
-M:CoreText.CTFont.GetAdvancesForGlyphs(CoreText.CTFontOrientation,System.UInt16[],CoreGraphics.CGSize[],System.IntPtr)
-M:CoreText.CTFont.GetBoundingRects(CoreText.CTFontOrientation,System.UInt16[],CoreGraphics.CGRect[],System.IntPtr)
 M:CoreText.CTFont.GetGlyphName(System.UInt16)
-M:CoreText.CTFont.GetGlyphsForCharacters(System.Char[],System.UInt16[],System.IntPtr)
 M:CoreText.CTFont.GetLigatureCaretPositions(System.UInt16,System.Runtime.InteropServices.NFloat[])
-M:CoreText.CTFont.GetOpticalBounds(System.UInt16[],CoreGraphics.CGRect[],System.IntPtr,CoreText.CTFontOptions)
-M:CoreText.CTFont.GetVerticalTranslationsForGlyphs(System.UInt16[],CoreGraphics.CGSize[],System.IntPtr)
 M:CoreText.CTFont.WithAttributes(System.Runtime.InteropServices.NFloat,CoreText.CTFontDescriptor,CoreGraphics.CGAffineTransform@)
 M:CoreText.CTFont.WithAttributes(System.Runtime.InteropServices.NFloat,CoreText.CTFontDescriptor)
 M:CoreText.CTFont.WithFamily(System.Runtime.InteropServices.NFloat,System.String,CoreGraphics.CGAffineTransform@)
@@ -15767,13 +15754,7 @@ M:CoreText.CTFontManager.UnregisterFontDescriptors(CoreText.CTFontDescriptor[],C
 M:CoreText.CTFontManager.UnregisterFonts(Foundation.NSUrl[],CoreText.CTFontManagerScope,CoreText.CTFontManager.CTFontRegistrationHandler)
 M:CoreText.CTGlyphInfo.GetGlyph
 M:CoreText.CTLine.GetJustifiedLine(System.Runtime.InteropServices.NFloat,System.Double)
-M:CoreText.CTLine.GetOffsetForStringIndex(System.IntPtr,System.Runtime.InteropServices.NFloat@)
-M:CoreText.CTLine.GetOffsetForStringIndex(System.IntPtr)
 M:CoreText.CTLine.GetPenOffsetForFlush(System.Runtime.InteropServices.NFloat,System.Double)
-M:CoreText.CTLine.GetTypographicBounds(System.Runtime.InteropServices.NFloat@,System.Runtime.InteropServices.NFloat@,System.Runtime.InteropServices.NFloat@)
-M:CoreText.CTRun.GetBaseAdvancesAndOrigins(Foundation.NSRange,CoreGraphics.CGSize[]@,CoreGraphics.CGPoint[]@)
-M:CoreText.CTRun.GetStringIndices(Foundation.NSRange,System.IntPtr[])
-M:CoreText.CTRun.GetTypographicBounds(Foundation.NSRange,System.Runtime.InteropServices.NFloat@,System.Runtime.InteropServices.NFloat@,System.Runtime.InteropServices.NFloat@)
 M:CoreText.CTRunDelegateOperations.Finalize
 M:CoreText.CTStringAttributeKey.#ctor
 M:CoreText.ICTAdaptiveImageProviding.GetImage(CoreGraphics.CGSize,System.Runtime.InteropServices.NFloat,CoreGraphics.CGPoint@,CoreGraphics.CGSize@)
@@ -22525,7 +22506,6 @@ M:Network.NWDataTransferReport.GetTransportRoundTripTimeVariance(System.UInt32)
 M:Network.NWDataTransferReport.GetTransportSentByteCount(System.UInt32)
 M:Network.NWDataTransferReport.GetTransportSentIPPackageCount(System.UInt32)
 M:Network.NWDataTransferReport.GetTransportSmoothedRoundTripTime(System.UInt32)
-M:Network.NWEndpoint.Create(System.String)
 M:Network.NWEstablishmentReport.EnumerateProtocols(System.Action{Network.NWProtocolDefinition,System.TimeSpan,System.TimeSpan})
 M:Network.NWEstablishmentReport.EnumerateResolutionReports(System.Action{Network.NWResolutionReport})
 M:Network.NWEthernetChannel.#ctor(System.UInt16,Network.NWInterface,Network.NWParameters)
@@ -22645,12 +22625,8 @@ M:Network.NWUdpMetadata.#ctor
 M:Network.NWWebSocketMetadata.#ctor(Network.NWWebSocketOpCode)
 M:Network.NWWebSocketMetadata.SetPongHandler(CoreFoundation.DispatchQueue,System.Action{Network.NWError})
 M:Network.NWWebSocketOptions.#ctor(Network.NWWebSocketVersion)
-M:Network.NWWebSocketOptions.AddSubprotocol(System.String)
-M:Network.NWWebSocketOptions.SetHeader(System.String,System.String)
 M:Network.NWWebSocketRequest.EnumerateAdditionalHeaders(System.Action{System.String,System.String})
 M:Network.NWWebSocketRequest.EnumerateSubprotocols(System.Action{System.String})
-M:Network.NWWebSocketResponse.#ctor(Network.NWWebSocketResponseStatus,System.String)
-M:Network.NWWebSocketResponse.SetHeader(System.String,System.String)
 M:NetworkExtension.INEAppPushDelegate.DidReceiveIncomingCall(NetworkExtension.NEAppPushManager,Foundation.NSDictionary)
 M:NetworkExtension.NEAppProxyFlow.OpenWithLocalFlowEndpoint(Network.NWEndpoint,NetworkExtension.NEAppProxyFlowOpenCallback)
 M:NetworkExtension.NEAppProxyFlow.OpenWithLocalFlowEndpointAsync(Network.NWEndpoint)
@@ -45539,8 +45515,6 @@ P:Network.NWBrowser.IndividualChangesDelegate
 P:Network.NWBrowser.IsActive
 P:Network.NWBrowser.Parameters
 P:Network.NWBrowserDescriptor.ApplicationServiceName
-P:Network.NWBrowserDescriptor.BonjourDomain
-P:Network.NWBrowserDescriptor.BonjourType
 P:Network.NWBrowserDescriptor.IncludeTxtRecord
 P:Network.NWBrowseResult.EndPoint
 P:Network.NWBrowseResult.InterfacesCount
@@ -45552,7 +45526,6 @@ P:Network.NWDataTransferReport.PathCount
 P:Network.NWDataTransferReport.State
 P:Network.NWEndpoint.Signature
 P:Network.NWEndpoint.TxtRecord
-P:Network.NWEndpoint.Url
 P:Network.NWEstablishmentReport.ConnectionSetupTime
 P:Network.NWEstablishmentReport.Duration
 P:Network.NWEstablishmentReport.PreviousAttemptCount
@@ -45634,7 +45607,6 @@ P:Network.NWWebSocketMetadata.ServerResponse
 P:Network.NWWebSocketOptions.AutoReplyPing
 P:Network.NWWebSocketOptions.MaximumMessageSize
 P:Network.NWWebSocketOptions.SkipHandShake
-P:Network.NWWebSocketResponse.SelectedSubprotocol
 P:Network.NWWebSocketResponse.Status
 P:NetworkExtension.NEAppProxyFlow.IsBound
 P:NetworkExtension.NEAppProxyFlow.NetworkInterface

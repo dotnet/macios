@@ -187,11 +187,13 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
-		extern static void CTFrameGetLineOrigins (IntPtr handle, NSRange range, [Out] CGPoint [] origins);
-		/// <param name="range">To be added.</param>
-		///         <param name="origins">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		unsafe extern static void CTFrameGetLineOrigins (IntPtr handle, NSRange range, CGPoint* origins);
+
+		/// <summary>Copies a range of line origins into the provided buffer.</summary>
+		/// <param name="range">The range of line origins to copy. If the range length is 0, copies from the start index through the remaining lines in the frame.</param>
+		/// <param name="origins">The destination buffer into which the line origin points are copied.</param>
+		/// <exception cref="ArgumentNullException"><paramref name="origins" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException"><paramref name="origins" /> is not large enough to hold the requested line origins.</exception>
 		public void GetLineOrigins (NSRange range, CGPoint [] origins)
 		{
 			if (origins is null)
@@ -200,7 +202,11 @@ namespace CoreText {
 				throw new ArgumentException ("origins must contain at least range.Length elements.", nameof (origins));
 			else if (origins.Length < CFArray.GetCount (CTFrameGetLines (Handle)))
 				throw new ArgumentException ("origins must contain at least GetLines().Length elements.", nameof (origins));
-			CTFrameGetLineOrigins (Handle, range, origins);
+			unsafe {
+				fixed (CGPoint* originsPtr = origins) {
+					CTFrameGetLineOrigins (Handle, range, originsPtr);
+				}
+			}
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

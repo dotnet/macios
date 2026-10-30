@@ -1009,7 +1009,7 @@ namespace ObjCRuntime {
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		internal extern static IntPtr class_getInstanceMethod (IntPtr cls, IntPtr sel);
 
-		[DllImport (Messaging.LIBOBJC_DYLIB, CharSet = CharSet.Ansi)]
+		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		extern unsafe static byte class_addProperty (IntPtr cls, IntPtr name, IntPtr* attributes, int count);
 
 		internal static bool class_addProperty (IntPtr cls, string name, objc_attribute_prop [] attributes, int count)

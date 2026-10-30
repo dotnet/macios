@@ -67,20 +67,24 @@ namespace CoreGraphics {
 			GC.KeepAlive (colorSpace);
 		}
 
-		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static IntPtr CGBitmapContextCreate (/* void* */ byte []? data, /* size_t */ nint width, /* size_t */ nint height, /* size_t */ nint bitsPerComponent,
-			/* size_t */ nint bytesPerRow, /* CGColorSpaceRef */ IntPtr colorSpace, /* CGBitmapInfo = uint32_t */ uint bitmapInfo);
-
 		static IntPtr Create (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo, out GCHandle buffer)
 		{
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (buffer.IsAllocated ? buffer.AddrOfPinnedObject () : IntPtr.Zero, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
 			GC.KeepAlive (colorSpace);
 			return result;
 		}
 
+		/// <summary>Initializes a new <see cref="CGBitmapContext" /> backed by the specified byte array and alpha channel configuration.</summary>
+		/// <param name="data">The destination buffer in memory where drawing is rendered, or <see langword="null" /> to let Core Graphics manage the memory.</param>
+		/// <param name="width">The width, in pixels, of the bitmap.</param>
+		/// <param name="height">The height, in pixels, of the bitmap.</param>
+		/// <param name="bitsPerComponent">The number of bits for each color component of a pixel.</param>
+		/// <param name="bytesPerRow">The number of bytes per row of the bitmap, or 0 to compute it automatically when <paramref name="data" /> is <see langword="null" />.</param>
+		/// <param name="colorSpace">The color space for the bitmap context.</param>
+		/// <param name="bitmapInfo">Constants specifying whether the bitmap contains an alpha channel and how it is generated.</param>
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGImageAlphaInfo bitmapInfo)
 			: base (Create (data, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo, out var buffer), true)
 		{
@@ -92,11 +96,19 @@ namespace CoreGraphics {
 			buffer = default (GCHandle);
 			if (data is not null)
 				buffer = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, because unsafe code is scoped to the current block, and the address of the byte array will be used after this function returns.
-			IntPtr result = CGBitmapContextCreate (data, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
+			IntPtr result = CGBitmapContextCreate (buffer.IsAllocated ? buffer.AddrOfPinnedObject () : IntPtr.Zero, width, height, bitsPerComponent, bytesPerRow, colorSpace.GetHandle (), (uint) bitmapInfo);
 			GC.KeepAlive (colorSpace);
 			return result;
 		}
 
+		/// <summary>Initializes a new <see cref="CGBitmapContext" /> backed by the specified byte array and bitmap layout flags.</summary>
+		/// <param name="data">The destination buffer in memory where drawing is rendered, or <see langword="null" /> to let Core Graphics manage the memory.</param>
+		/// <param name="width">The width, in pixels, of the bitmap.</param>
+		/// <param name="height">The height, in pixels, of the bitmap.</param>
+		/// <param name="bitsPerComponent">The number of bits for each color component of a pixel.</param>
+		/// <param name="bytesPerRow">The number of bytes per row of the bitmap, or 0 to compute it automatically when <paramref name="data" /> is <see langword="null" />.</param>
+		/// <param name="colorSpace">The color space for the bitmap context.</param>
+		/// <param name="bitmapInfo">Flags specifying the component format, byte order, and alpha channel information.</param>
 		public CGBitmapContext (byte []? data, nint width, nint height, nint bitsPerComponent, nint bytesPerRow, CGColorSpace? colorSpace, CGBitmapFlags bitmapInfo)
 			: base (Create (data, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo, out var buffer), true)
 		{

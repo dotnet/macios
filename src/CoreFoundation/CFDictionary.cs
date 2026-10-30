@@ -50,7 +50,12 @@ namespace CoreFoundation {
 
 		public static CFDictionary FromObjectAndKey (INativeObject obj, INativeObject key)
 		{
-			CFDictionary result = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, new IntPtr [] { key.Handle }, new IntPtr [] { obj.Handle }, 1, KeyCallbacks, ValueCallbacks), true);
+			IntPtr k = key.Handle;
+			IntPtr v = obj.Handle;
+			CFDictionary result;
+			unsafe {
+				result = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, &k, &v, 1, KeyCallbacks, ValueCallbacks), true);
+			}
 			GC.KeepAlive (key);
 			GC.KeepAlive (obj);
 			return result;
@@ -75,14 +80,19 @@ namespace CoreFoundation {
 				v [i] = objects [i].Handle;
 			}
 
-			var rv = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, k, v, k.Length, KeyCallbacks, ValueCallbacks), true);
+			var rv = default (CFDictionary);
+			unsafe {
+				fixed (IntPtr* kPtr = k, vPtr = v) {
+					rv = new CFDictionary (CFDictionaryCreate (IntPtr.Zero, kPtr, vPtr, k.Length, KeyCallbacks, ValueCallbacks), true);
+				}
+			}
 			GC.KeepAlive (keys);
 			GC.KeepAlive (objects);
 			return rv;
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static IntPtr CFDictionaryCreate (IntPtr allocator, IntPtr [] keys, IntPtr [] vals, nint len, IntPtr keyCallbacks, IntPtr valCallbacks);
+		unsafe extern static IntPtr CFDictionaryCreate (IntPtr allocator, IntPtr* keys, IntPtr* vals, nint len, IntPtr keyCallbacks, IntPtr valCallbacks);
 
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFDictionaryGetValue (IntPtr theDict, IntPtr key);
@@ -141,14 +151,18 @@ namespace CoreFoundation {
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
-		extern static void CFDictionaryGetKeysAndValues (IntPtr theDict, IntPtr [] keys, IntPtr [] values);
+		unsafe extern static void CFDictionaryGetKeysAndValues (IntPtr theDict, IntPtr* keys, IntPtr* values);
 		public void GetKeysAndValues (out IntPtr [] keys, out IntPtr [] values)
 		{
 			nint count = this.Count;
 
 			keys = new IntPtr [count];
 			values = new IntPtr [count];
-			CFDictionaryGetKeysAndValues (Handle, keys, values);
+			unsafe {
+				fixed (IntPtr* keysPtr = keys, valuesPtr = values) {
+					CFDictionaryGetKeysAndValues (Handle, keysPtr, valuesPtr);
+				}
+			}
 		}
 
 		public static bool GetBooleanValue (IntPtr theDict, IntPtr key)

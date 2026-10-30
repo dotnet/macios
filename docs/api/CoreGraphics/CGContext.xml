@@ -43,36 +43,6 @@ public override void Draw (CGRect rect)
     <altmember cref="CoreGraphics.CGContext.ScaleCTM" />
     <altmember cref="CoreGraphics.CGContext.TranslateCTM" />
   </Docs>
-  <Docs DocId="M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])">
-    <param name="points">An array of two or more <see cref="CGPoint" />s. Straight segments are added between sequential points.</param>
-    <summary>Adds the given lines to the current path.</summary>
-    <remarks>
-      <para>Lines are added to the current path, with the first line segment beginning at <paramref name="points" />[0]. A line is not added from the <see cref="CoreGraphics.CGContext.GetPathCurrentPoint" />. In the following example, the current location of the <see cref="CoreGraphics.CGContext" /> is {20,20} after the call to <see cref="CoreGraphics.CGContext.MoveTo(nfloat,nfloat)" />, but as shown in the image, only two line segments are added.</para>
-      <example>
-        <code lang="csharp lang-csharp"><![CDATA[
-using (var ctxt = UIGraphics.GetCurrentContext ()) {
-	var startingPoint = new CGPoint (20, 20);
-	ctxt.MoveTo (startingPoint.X, startingPoint.Y);
-	ctxt.SetStrokeColor (UIColor.Red.CGColor);
-	var sz = new CGSize (2, 2);
-	Func<CGPoint,CGPoint> offset = (CGPoint pt) => new CGPoint (pt.X - 1, pt.Y - 1);
-	ctxt.AddEllipseInRect (new CGRect (offset (startingPoint), sz));
-
-	ctxt.AddLines (new CGPoint[] {
-		new CGPoint (30, 30),
-		new CGPoint (60, 30),
-		new CGPoint (40, 40)
-	});
-
-	ctxt.StrokePath ();
-}              
-              ]]></code>
-      </example>
-      <para>
-        <img href="~/xml/CoreGraphics/_images/CGContext.AddLines.png" alt="Graphic illustrating the curve created by calling this method" />
-      </para>
-    </remarks>
-  </Docs>
   <Docs DocId="M:CoreGraphics.CGContext.DrawPDFPage(CoreGraphics.CGPDFPage)">
     <param name="page">The PDF page to be rendered.</param>
     <summary>Renders the specified PDF <paramref name="page" />.</summary>

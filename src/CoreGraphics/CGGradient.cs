@@ -68,9 +68,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGGradient : NativeObject {
+	public class CGGradient : NativeObject, ICreatableNativeObject<CGGradient> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGGradient ICreatableNativeObject<CGGradient>.Create (NativeHandle handle, bool owns) => new CGGradient (handle, owns);
+
 		internal CGGradient (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

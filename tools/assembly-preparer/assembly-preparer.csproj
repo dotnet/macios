@@ -14,6 +14,7 @@
 	<Import Project="..\..\eng\Versions.props" />
 
 	<ItemGroup>
+		<InternalsVisibleTo Include="assembly-preparer-tests" />
 		<PackageReference Include="Microsoft.DotNet.Cecil" Version="$(MicrosoftDotNetCecilPackageVersion)" />
 		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
 

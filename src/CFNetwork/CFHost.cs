@@ -21,8 +21,9 @@ namespace CFNetwork {
 	[ObsoletedOSPlatform ("maccatalyst15.0", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("macos12.0", Constants.UseNetworkInstead)]
 	[ObsoletedOSPlatform ("ios15.0", Constants.UseNetworkInstead)]
-	class CFHost : NativeObject {
-		[Preserve (Conditional = true)]
+	class CFHost : NativeObject, ICreatableNativeObject<CFHost> {
+		static CFHost ICreatableNativeObject<CFHost>.Create (NativeHandle handle, bool owns) => new CFHost (handle, owns);
+
 		internal CFHost (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

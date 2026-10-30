@@ -33,11 +33,12 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMSampleBuffer : NativeObject, ICMAttachmentBearer {
+	public class CMSampleBuffer : NativeObject, ICMAttachmentBearer, ICreatableNativeObject<CMSampleBuffer> {
 #if !COREBUILD
 		GCHandle invalidate;
 
-		[Preserve (Conditional = true)]
+		static CMSampleBuffer ICreatableNativeObject<CMSampleBuffer>.Create (NativeHandle handle, bool owns) => new CMSampleBuffer (handle, owns);
+
 		internal CMSampleBuffer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

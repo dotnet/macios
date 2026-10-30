@@ -127,7 +127,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGPath : NativeObject {
+	public class CGPath : NativeObject, ICreatableNativeObject<CGPath> {
 #if !COREBUILD
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGMutablePathRef */ IntPtr CGPathCreateMutable ();
@@ -164,7 +164,8 @@ namespace CoreGraphics {
 			GC.KeepAlive (basePath);
 		}
 
-		[Preserve (Conditional = true)]
+		static CGPath ICreatableNativeObject<CGPath>.Create (NativeHandle handle, bool owns) => new CGPath (handle, owns);
+
 		internal CGPath (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -717,7 +718,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateByNormalizing (bool evenOddFillRule)
 		{
-			return Runtime.GetINativeObject<CGPath> (CGPathCreateCopyByNormalizing (Handle, evenOddFillRule.AsByte ()), owns: true);
+			return Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyByNormalizing (Handle, evenOddFillRule.AsByte ()), owns: true);
 		}
 
 		[SupportedOSPlatform ("ios16.0")]
@@ -733,7 +734,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateByUnioningPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyByUnioningPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyByUnioningPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -751,7 +752,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateByIntersectingPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyByIntersectingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyByIntersectingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -769,7 +770,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateBySubtractingPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyBySubtractingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyBySubtractingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -787,7 +788,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateBySymmetricDifferenceOfPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyBySymmetricDifferenceOfPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyBySymmetricDifferenceOfPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -805,7 +806,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateLineBySubtractingPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyOfLineBySubtractingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyOfLineBySubtractingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -823,7 +824,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateLineByIntersectingPath (CGPath? maskPath, bool evenOddFillRule)
 		{
-			CGPath? result = Runtime.GetINativeObject<CGPath> (CGPathCreateCopyOfLineByIntersectingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
+			CGPath? result = Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyOfLineByIntersectingPath (Handle, maskPath.GetHandle (), evenOddFillRule.AsByte ()), owns: true);
 			GC.KeepAlive (maskPath);
 			return result;
 		}
@@ -858,7 +859,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		public CGPath? CreateByFlattening (nfloat flatteningThreshold)
 		{
-			return Runtime.GetINativeObject<CGPath> (CGPathCreateCopyByFlattening (Handle, flatteningThreshold), owns: true);
+			return Runtime.GetCreatableNativeObject<CGPath> (CGPathCreateCopyByFlattening (Handle, flatteningThreshold), owns: true);
 		}
 
 		[SupportedOSPlatform ("ios16.0")]

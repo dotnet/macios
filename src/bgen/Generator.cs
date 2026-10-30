@@ -232,6 +232,9 @@ public partial class Generator : IMemberGatherer {
 		if (marshalTypes.TryGetMarshalType (mai.Type, out var mt))
 			return mt.Encoding;
 
+		if (mai.Type.IsClass && TypeCache.INativeObject.IsAssignableFrom (mai.Type))
+			return NativeHandleType;
+
 		if (mai.Type.IsValueType)
 			return PrimitiveType (mai.Type, formatted);
 
@@ -615,14 +618,16 @@ public partial class Generator : IMemberGatherer {
 
 			if (TypeManager.IsWrappedType (pi.ParameterType)) {
 				pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
-				if (IsProtocolInterface (pi.ParameterType)) {
+				if (HasNativeObjectFactory (pi.ParameterType)) {
+					invoke.AppendFormat (" Runtime.GetCreatableNativeObject<{1}> ({0}, {2})!", safe_name, TypeManager.RenderType (pi.ParameterType), isForced && isForcedOwns ? "true" : "false");
+				} else if (IsProtocolInterface (pi.ParameterType)) {
 					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, false)!", safe_name, pi.ParameterType);
 				} else if (isForced) {
 					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, true, {2})!", safe_name, TypeManager.RenderType (pi.ParameterType), isForcedOwns ? "true" : "false");
 				} else if (IsNSObject (pi.ParameterType)) {
 					invoke.AppendFormat (" Runtime.GetNSObject<{1}> ({0})!", safe_name, TypeManager.RenderType (pi.ParameterType));
 				} else {
-					invoke.AppendFormat (" Runtime.GetINativeObject<{1}> ({0}, false)!", safe_name, TypeManager.RenderType (pi.ParameterType));
+					invoke.AppendFormat (" Runtime.{2}<{1}> ({0}, false)!", safe_name, TypeManager.RenderType (pi.ParameterType), NativeObjectFactoryMethod (pi.ParameterType));
 				}
 				continue;
 			}
@@ -632,7 +637,7 @@ public partial class Generator : IMemberGatherer {
 				if (pi.ParameterType == TypeCache.CMSampleBuffer) {
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
 					if (BindThirdPartyLibrary)
-						invoke.AppendFormat ("{0} == IntPtr.Zero ? null! : Runtime.GetINativeObject<CMSampleBuffer> ({0}, false)!", safe_name);
+						invoke.AppendFormat ("{0} == IntPtr.Zero ? null! : Runtime.{1}<CMSampleBuffer> ({0}, false)!", safe_name, NativeObjectFactoryMethod (pi.ParameterType));
 					else
 						invoke.AppendFormat ("{0} == IntPtr.Zero ? null! : new CMSampleBuffer ({0}, false)", safe_name);
 					continue;
@@ -649,8 +654,8 @@ public partial class Generator : IMemberGatherer {
 
 			if (TypeCache.INativeObject.IsAssignableFrom (pi.ParameterType)) {
 				pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
-				if (BindThirdPartyLibrary)
-					invoke.AppendFormat ("Runtime.GetINativeObject<{0}> ({1}, false)!", pi.ParameterType, safe_name);
+				if (BindThirdPartyLibrary || HasNativeObjectFactory (pi.ParameterType))
+					invoke.AppendFormat ("Runtime.{2}<{0}> ({1}, false)!", pi.ParameterType, safe_name, NativeObjectFactoryMethod (pi.ParameterType));
 				else
 					invoke.AppendFormat ("{1} == IntPtr.Zero ? null! : new {0} ({1}, false)", pi.ParameterType, safe_name);
 				continue;
@@ -692,7 +697,7 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				} else {
 					var refname = $"__xamarin_pref{pi.Position}";
-					convert.Append ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
+					convert.Append ($"var {refname} = Runtime.{NativeObjectFactoryMethod (nt)}<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
 					pars.Add (new TrampolineParameterInfo ($"{NativeHandleType}*", safe_name));
 					postConvert.AppendLine ($"if ({safe_name} is not null)");
 					postConvert.Append ($"\t*{safe_name} = Runtime.RetainAndAutoreleaseNativeObject ({refname});");
@@ -728,6 +733,11 @@ public partial class Generator : IMemberGatherer {
 
 			if (pi.ParameterType.IsArray) {
 				var et = pi.ParameterType.GetElementType ()!;
+				if (HasNativeObjectFactory (et)) {
+					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
+					invoke.Append (NativeObjectArrayFromHandle (et, safe_name));
+					continue;
+				}
 				if (TypeManager.IsWrappedType (et)) {
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
 					invoke.AppendFormat ("CFArray.ArrayFromHandle<{0}> ({1})!", TypeManager.FormatType (null, et), safe_name);
@@ -2032,9 +2042,9 @@ public partial class Generator : IMemberGatherer {
 								var dictElementType = TypeManager.FormatType (dictType, elementType);
 								getter = $"GetArrayOfDictionariesValue<{dictElementType}> ({{0}})";
 								setter = "SetArrayOfDictionariesValue ({0}, value)";
-							} else if (TypeCache.INativeObject.IsAssignableFrom (elementType)) {
+							} else if (HasNativeObjectFactory (elementType) || TypeCache.INativeObject.IsAssignableFrom (elementType)) {
 								var dictElementType = TypeManager.FormatType (dictType, elementType);
-								getter = "GetArray<" + dictElementType + "> ({0}, (ptr) => Runtime.GetINativeObject<" + dictElementType + "> (ptr, false)!)";
+								getter = "GetArray<" + dictElementType + "> ({0}, (ptr) => Runtime." + NativeObjectFactoryMethod (elementType) + "<" + dictElementType + "> (ptr, false)!)";
 								setter = "SetArrayValue ({0}, value)";
 							} else if (TypeManager.IsWrappedType (elementType)) {
 								getter = "GetArray<" + TypeManager.FormatType (dictType, elementType) + "> ({0})";
@@ -2092,8 +2102,10 @@ public partial class Generator : IMemberGatherer {
 							var strType = pi.PropertyType.Name;
 							getter = $"GetStrongDictionary<{strType}>({{0}}, (dict) => new {strType} (dict))";
 							setter = "SetNativeValue ({0}, value?.Dictionary)";
-						} else if (TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
-							getter = $"GetNativeValue<{pi.PropertyType}> ({{0}})";
+						} else if (HasNativeObjectFactory (pi.PropertyType) || TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
+							getter = HasNativeObjectFactory (pi.PropertyType)
+								? $"TryGetNativeValue ({{0}}, out var handle) ? Runtime.GetCreatableNativeObject<{TypeManager.FormatType (dictType, pi.PropertyType)}> (handle, false) : null"
+								: $"GetNativeValue<{pi.PropertyType}> ({{0}})";
 							setter = "SetNativeValue ({0}, value)";
 						} else if (TypeManager.IsWrappedType (pi.PropertyType)) {
 							getter = "Dictionary [{0}] as " + pi.PropertyType;
@@ -2265,7 +2277,11 @@ public partial class Generator : IMemberGatherer {
 
 					var fullname = propertyType.FullName;
 
-					if (is_property_array_wrapped_type) {
+					if (HasNativeObjectFactory (propertyType)) {
+						print ("return Runtime.GetCreatableNativeObject<{0}> (value, false)!;", TypeManager.RenderType (propertyType));
+					} else if (et is not null && propertyType.IsArray && HasNativeObjectFactory (et)) {
+						print ($"return {NativeObjectArrayFromHandle (et, "value")};");
+					} else if (is_property_array_wrapped_type) {
 						print ("return CFArray.ArrayFromHandle<{0}> (value)!;", TypeManager.RenderType (et!));
 					} else if (is_property_wrapped_type) {
 						print ("return Runtime.GetNSObject<{0}> (value)!;", TypeManager.RenderType (propertyType));
@@ -3017,6 +3033,24 @@ public partial class Generator : IMemberGatherer {
 		print (w, "");
 	}
 
+	bool HasNativeObjectFactory (Type type)
+	{
+		if (global::TypeManager.HasNativeObjectFactory (type))
+			return true;
+		// Partial binding definitions can be interfaces even when their compiled wrappers are classes.
+		var wrapper = type.IsInterface && type.FullName is string fullName ? TypeCache.INativeObject.Assembly.GetType (fullName) : null;
+		return wrapper is not null && global::TypeManager.HasNativeObjectFactory (wrapper);
+	}
+
+	string NativeObjectFactoryMethod (Type type)
+		=> HasNativeObjectFactory (type) ? "GetCreatableNativeObject" : "GetINativeObject";
+
+	string NativeObjectArrayFromHandle (Type elementType, string? handle, string owns = "false")
+	{
+		var type = TypeManager.FormatType (null, elementType);
+		return $"NSArray.ArrayFromHandle<{type}> ({handle}, __xamarin_nativeHandle => Runtime.GetCreatableNativeObject<{type}> (__xamarin_nativeHandle, false)!, {owns})!";
+	}
+
 	//
 	// Given a method info that has a return value, produce the text necessary on
 	// both sides of a call to wrap the result into user-facing MonoTouch types.
@@ -3042,6 +3076,9 @@ public partial class Generator : IMemberGatherer {
 		} else if (marshalTypes.TryGetMarshalType (mai.Type, out var mt)) {
 			cast_a = mt.CreateFromRet;
 			cast_b = mt.ClosingCreate?.Replace ("%OWNS%", owns) ?? string.Empty;
+		} else if (HasNativeObjectFactory (mi.ReturnType)) {
+			cast_a = $" Runtime.GetCreatableNativeObject<{TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType)}> (";
+			cast_b = $", {owns})!";
 		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
 			// protocol support means we can return interfaces and, as far as .NET knows, they might not be NSObject
 			if (IsProtocolInterface (mi.ReturnType)) {
@@ -3074,6 +3111,9 @@ public partial class Generator : IMemberGatherer {
 				cast_a = " Runtime.GetNSObject<" + TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType) + "> (";
 				cast_b = $", {owns})!";
 			}
+		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
+			cast_a = $" Runtime.GetINativeObject<{TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType)}> (";
+			cast_b = $", {owns})!";
 		} else if (mi.ReturnType.IsGenericParameter) {
 			cast_a = " Runtime.GetINativeObject<" + mi.ReturnType.Name + "> (";
 			cast_b = $", {owns})!";
@@ -3099,7 +3139,12 @@ public partial class Generator : IMemberGatherer {
 			} else if (etype == TypeCache.Selector) {
 				exceptions.Add (ErrorHelper.CreateError (1066, mai.Type.FullName, mi.DeclaringType?.FullName, mi.Name));
 			} else {
-				if (NamespaceCache.NamespacesThatConflictWithTypes.Contains (etype.Namespace!))
+				if (HasNativeObjectFactory (etype)) {
+					var type = TypeManager.FormatType (mi.DeclaringType, etype);
+					cast_a = $"NSArray.ArrayFromHandle<{type}> (";
+					cast_b = $", __xamarin_nativeHandle => Runtime.GetCreatableNativeObject<{type}> (__xamarin_nativeHandle, false)!, {owns})!";
+					return;
+				} else if (NamespaceCache.NamespacesThatConflictWithTypes.Contains (etype.Namespace!))
 					cast_a = "CFArray.ArrayFromHandle<global::" + etype + ">(";
 				else
 					cast_a = "CFArray.ArrayFromHandle<" + TypeManager.FormatType (mi.DeclaringType, etype) + ">(";
@@ -3439,14 +3484,14 @@ public partial class Generator : IMemberGatherer {
 				// If the array is modified, then a new array instance must be created and assigned to the ref/out parameter for us to marshal back any modifications.
 				var isString = elementType == TypeCache.System_String;
 				var isINativeObject = elementType == TypeCache.INativeObject;
-				var isINativeObjectSubclass = !isINativeObject && TypeCache.INativeObject.IsAssignableFrom (elementType);
+				var isINativeObjectSubclass = !isINativeObject && (HasNativeObjectFactory (elementType) || TypeCache.INativeObject.IsAssignableFrom (elementType));
 				var isNSObject = IsNSObject (elementType);
 				var isForcedType = HasForcedAttribute (pi, out var isForcedOwns);
 				var isArray = elementType.TryIsArray (out var elementElementType);
 				var isArrayOfString = isArray && elementElementType == TypeCache.System_String;
 				var isArrayOfNSObject = isArray && IsNSObject (elementElementType!);
 				var isArrayOfINativeObject = isArray && elementElementType == TypeCache.INativeObject;
-				var isArrayOfINativeObjectSubclass = isArray && TypeCache.INativeObject.IsAssignableFrom (elementElementType);
+				var isArrayOfINativeObjectSubclass = isArray && (HasNativeObjectFactory (elementElementType!) || TypeCache.INativeObject.IsAssignableFrom (elementElementType));
 				var isArrayOfSelector = isArray && elementElementType == TypeCache.Selector;
 
 				if (!isString && !isArrayOfNSObject && !isNSObject && !isArrayOfString && !isINativeObjectSubclass && !isArrayOfINativeObjectSubclass || isINativeObject || isArrayOfSelector || isArrayOfINativeObject) {
@@ -3483,7 +3528,10 @@ public partial class Generator : IMemberGatherer {
 						by_ref_processing.AppendFormat ("if ({0}Value != ({0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle))\n\t", pi.Name.GetSafeParamName ());
 
 					if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
-						by_ref_processing.AppendFormat ("{0} = CFArray.ArrayFromHandle<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementElementType!));
+						if (HasNativeObjectFactory (elementElementType!))
+							by_ref_processing.AppendLine ($"{pi.Name.GetSafeParamName ()} = {NativeObjectArrayFromHandle (elementElementType!, pi.Name.GetSafeParamName () + "Value")};");
+						else
+							by_ref_processing.AppendFormat ("{0} = CFArray.ArrayFromHandle<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementElementType!));
 					} else if (isArrayOfString) {
 						by_ref_processing.AppendFormat ("{0} = CFArray.StringArrayFromHandle ({0}Value)!;\n", pi.Name.GetSafeParamName ());
 					} else {
@@ -3497,7 +3545,10 @@ public partial class Generator : IMemberGatherer {
 				} else if (isINativeObjectSubclass) {
 					if (!pi.IsOut)
 						by_ref_processing.AppendFormat ("if ({0}Value != ({0} is null ? NativeHandle.Zero : {0}.Handle))\n\t", pi.Name.GetSafeParamName ());
-					by_ref_processing.AppendFormat ("{0} = Runtime.GetINativeObject<{1}> ({0}Value, {2}, {3})!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType), isForcedType ? "true" : "false", (isForcedType && isForcedOwns) ? "true" : "false");
+					if (HasNativeObjectFactory (elementType))
+						by_ref_processing.AppendLine ($"{pi.Name.GetSafeParamName ()} = Runtime.GetCreatableNativeObject<{TypeManager.RenderType (elementType)}> ({pi.Name.GetSafeParamName ()}Value, {(isForcedType && isForcedOwns ? "true" : "false")})!;");
+					else
+						by_ref_processing.AppendFormat ("{0} = Runtime.GetINativeObject<{1}> ({0}Value, {2}, {3})!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType), isForcedType ? "true" : "false", (isForcedType && isForcedOwns) ? "true" : "false");
 				} else {
 					throw ErrorHelper.CreateError (88, mai.Type, mi);
 				}
@@ -6786,6 +6837,12 @@ public partial class Generator : IMemberGatherer {
 						print ("if (_{0} is null)", field_pi.Name);
 						indent++;
 						print ("_{0} = Runtime.GetNSObject<UTType> (Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\"))!;", field_pi.Name, fieldAttr.SymbolName, library_name);
+						indent--;
+						print ("return _{0};", field_pi.Name);
+					} else if (HasNativeObjectFactory (field_pi.PropertyType)) {
+						print ("if (_{0} is null)", field_pi.Name);
+						indent++;
+						print ("_{0} = Runtime.GetCreatableNativeObject<{3}> (Dlfcn.GetIntPtr (Libraries.{2}.Handle, \"{1}\"), false)!;", field_pi.Name, fieldAttr.SymbolName, library_name, fieldTypeName);
 						indent--;
 						print ("return _{0};", field_pi.Name);
 					} else if (field_pi.PropertyType == TypeCache.System_Byte) {

@@ -24,8 +24,9 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class SecCertificate2 : NativeObject {
-		[Preserve (Conditional = true)]
+	public class SecCertificate2 : NativeObject, ICreatableNativeObject<SecCertificate2> {
+		static SecCertificate2 ICreatableNativeObject<SecCertificate2>.Create (NativeHandle handle, bool owns) => new SecCertificate2 (handle, owns);
+
 		internal SecCertificate2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.SecurityLibrary)]

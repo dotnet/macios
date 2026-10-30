@@ -24,9 +24,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWEstablishmentReport : NativeObject {
+	public class NWEstablishmentReport : NativeObject, ICreatableNativeObject<NWEstablishmentReport> {
 
-		[Preserve (Conditional = true)]
+		static NWEstablishmentReport ICreatableNativeObject<NWEstablishmentReport>.Create (NativeHandle handle, bool owns) => new NWEstablishmentReport (handle, owns);
+
 		internal NWEstablishmentReport (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

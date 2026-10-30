@@ -63,9 +63,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGPattern.h
-	public class CGPattern : NativeObject {
+	public class CGPattern : NativeObject, ICreatableNativeObject<CGPattern> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGPattern ICreatableNativeObject<CGPattern>.Create (NativeHandle handle, bool owns) => new CGPattern (handle, owns);
+
 		internal CGPattern (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

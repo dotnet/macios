@@ -40,9 +40,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGContext : NativeObject {
+	public class CGContext : NativeObject, ICreatableNativeObject<CGContext> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGContext ICreatableNativeObject<CGContext>.Create (NativeHandle handle, bool owns) => new CGContext (handle, owns);
+
 		internal CGContext (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

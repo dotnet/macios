@@ -23,8 +23,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPrintCoreBase : NativeObject {
-		[Preserve (Conditional = true)]
+	public class PMPrintCoreBase : NativeObject, ICreatableNativeObject<PMPrintCoreBase> {
+		static PMPrintCoreBase ICreatableNativeObject<PMPrintCoreBase>.Create (NativeHandle handle, bool owns) => new PMPrintCoreBase (handle, owns);
+
 		internal PMPrintCoreBase (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -60,8 +61,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPrintSession : PMPrintCoreBase {
-		[Preserve (Conditional = true)]
+	public class PMPrintSession : PMPrintCoreBase, ICreatableNativeObject<PMPrintSession> {
+		static PMPrintSession ICreatableNativeObject<PMPrintSession>.Create (NativeHandle handle, bool owns) => new PMPrintSession (handle, owns);
+
 		internal PMPrintSession (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD
@@ -218,8 +220,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPrintSettings : PMPrintCoreBase {
-		[Preserve (Conditional = true)]
+	public class PMPrintSettings : PMPrintCoreBase, ICreatableNativeObject<PMPrintSettings> {
+		static PMPrintSettings ICreatableNativeObject<PMPrintSettings>.Create (NativeHandle handle, bool owns) => new PMPrintSettings (handle, owns);
+
 		internal PMPrintSettings (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -459,8 +462,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPageFormat : PMPrintCoreBase {
-		[Preserve (Conditional = true)]
+	public class PMPageFormat : PMPrintCoreBase, ICreatableNativeObject<PMPageFormat> {
+		static PMPageFormat ICreatableNativeObject<PMPageFormat>.Create (NativeHandle handle, bool owns) => new PMPageFormat (handle, owns);
+
 		internal PMPageFormat (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD
@@ -589,8 +593,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPaper : PMPrintCoreBase {
-		[Preserve (Conditional = true)]
+	public class PMPaper : PMPrintCoreBase, ICreatableNativeObject<PMPaper> {
+		static PMPaper ICreatableNativeObject<PMPaper>.Create (NativeHandle handle, bool owns) => new PMPaper (handle, owns);
+
 		internal PMPaper (NativeHandle handle, bool owns) : base (handle, owns) { }
 #if !COREBUILD
 		[DllImport (Constants.PrintCoreLibrary)]
@@ -693,8 +698,9 @@ namespace PrintCore {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class PMPrinter : PMPrintCoreBase {
-		[Preserve (Conditional = true)]
+	public class PMPrinter : PMPrintCoreBase, ICreatableNativeObject<PMPrinter> {
+		static PMPrinter ICreatableNativeObject<PMPrinter>.Create (NativeHandle handle, bool owns) => new PMPrinter (handle, owns);
+
 		internal PMPrinter (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

@@ -49,8 +49,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class DispatchIO : DispatchObject {
-		[Preserve (Conditional = true)]
+	public class DispatchIO : DispatchObject, ICreatableNativeObject<DispatchIO> {
+		static DispatchIO ICreatableNativeObject<DispatchIO>.Create (NativeHandle handle, bool owns) => new DispatchIO (handle, owns);
+
 		internal DispatchIO (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

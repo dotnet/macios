@@ -27,6 +27,22 @@ namespace ObjCRuntime {
 		internal static virtual INativeObject? _Xamarin_ConstructINativeObject (NativeHandle handle, bool owns) => null;
 	}
 
+	/// <summary>Provides a factory for wrapping a native handle without constructor reflection.</summary>
+	/// <typeparam name="T">The managed wrapper type created by the factory.</typeparam>
+	/// <remarks>Implement this interface with the wrapper's own type as <typeparamref name="T"/>. Derived wrappers must implement their own closed interface to use self-typed factory APIs.</remarks>
+	public interface ICreatableNativeObject<T> : INativeObject where T : INativeObject, ICreatableNativeObject<T> {
+		/// <summary>Creates a managed wrapper for a native handle.</summary>
+		/// <param name="handle">The nonzero native handle to wrap.</param>
+		/// <param name="owns">Whether ownership of a native reference is transferred to the wrapper.</param>
+		/// <returns>A new wrapper of type <typeparamref name="T"/>.</returns>
+#if COREBUILD
+		// Corebuild wrappers can omit their native constructors and factory bodies.
+		static virtual T Create (NativeHandle handle, bool owns) => throw new NotImplementedException ();
+#else
+		static abstract T Create (NativeHandle handle, bool owns);
+#endif
+	}
+
 #if !COREBUILD
 	public static class NativeObjectExtensions {
 

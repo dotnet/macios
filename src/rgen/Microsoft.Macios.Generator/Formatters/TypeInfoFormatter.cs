@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Extensions;
@@ -27,7 +28,12 @@ static class TypeInfoFormatter {
 		}
 		if (typeInfo.IsArray) {
 			// could be a params array or simply an array
-			classSyntax = ArrayType (IdentifierName (typeInfo.Name))
+			TypeSyntax elementSyntax = typeInfo.ArrayElementIsCreatableNativeObject && typeInfo.IsGenericType
+				? GenericName (Identifier (typeInfo.Name))
+					.WithTypeArgumentList (TypeArgumentList (SeparatedList<TypeSyntax> (
+						typeInfo.TypeArguments.Select (t => ParseTypeName (t))))).NormalizeWhitespace ()
+				: IdentifierName (typeInfo.Name);
+			classSyntax = ArrayType (elementSyntax)
 				.WithRankSpecifiers (SingletonList (
 					ArrayRankSpecifier (
 						SingletonSeparatedList<ExpressionSyntax> (OmittedArraySizeExpression ()))));

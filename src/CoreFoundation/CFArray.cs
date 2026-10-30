@@ -40,12 +40,13 @@ using CFAllocatorRef = System.IntPtr;
 namespace CoreFoundation {
 
 	// interesting bits: https://github.com/opensource-apple/CF/blob/master/CFArray.c
-	public partial class CFArray : NativeObject {
+	public partial class CFArray : NativeObject, ICreatableNativeObject<CFArray> {
 
 		// this cache the handle instead of issuing a native call
 		internal static NativeHandle CFNullHandle = _CFNullHandle;
 
-		[Preserve (Conditional = true)]
+		static CFArray ICreatableNativeObject<CFArray>.Create (NativeHandle handle, bool owns) => new CFArray (handle, owns);
+
 		internal CFArray (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

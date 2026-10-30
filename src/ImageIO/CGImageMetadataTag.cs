@@ -20,7 +20,7 @@ namespace ImageIO {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGImageMetadataTag : NativeObject {
+	public class CGImageMetadataTag : NativeObject, ICreatableNativeObject<CGImageMetadataTag> {
 
 		// note: CGImageMetadataType is always an int (4 bytes) so it's ok to use in the pinvoke declaration
 		[DllImport (Constants.ImageIOLibrary)]
@@ -28,7 +28,8 @@ namespace ImageIO {
 			/* CFStringRef __nonnull */ IntPtr xmlns, /* CFStringRef __nullable */ IntPtr prefix,
 			/* CFStringRef __nonnull */ IntPtr name, CGImageMetadataType type, /* CFTypeRef __nonnull */ IntPtr value);
 
-		[Preserve (Conditional = true)]
+		static CGImageMetadataTag ICreatableNativeObject<CGImageMetadataTag>.Create (NativeHandle handle, bool owns) => new CGImageMetadataTag (handle, owns);
+
 		internal CGImageMetadataTag (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -172,7 +173,7 @@ namespace ImageIO {
 		public CGImageMetadataTag? []? GetQualifiers ()
 		{
 			IntPtr result = CGImageMetadataTagCopyQualifiers (Handle);
-			return CFArray.ArrayFromHandle<CGImageMetadataTag> (result, true);
+			return NSArray.ArrayFromHandle<CGImageMetadataTag> (result, handle => Runtime.GetCreatableNativeObject<CGImageMetadataTag> (handle, false)!, true);
 		}
 	}
 }

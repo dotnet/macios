@@ -20,8 +20,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-	public sealed class DispatchBlock : NativeObject {
-		[Preserve (Conditional = true)]
+	public sealed class DispatchBlock : NativeObject, ICreatableNativeObject<DispatchBlock> {
+		static DispatchBlock ICreatableNativeObject<DispatchBlock>.Create (NativeHandle handle, bool owns) => new DispatchBlock (handle, owns);
+
 		internal DispatchBlock (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -75,8 +75,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFRunLoopSource : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CFRunLoopSource : NativeObject, ICreatableNativeObject<CFRunLoopSource> {
+		static CFRunLoopSource ICreatableNativeObject<CFRunLoopSource>.Create (NativeHandle handle, bool owns) => new CFRunLoopSource (handle, owns);
+
 		internal CFRunLoopSource (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -225,7 +226,7 @@ namespace CoreFoundation {
 	}
 #endif
 
-	public partial class CFRunLoop : NativeObject {
+	public partial class CFRunLoop : NativeObject, ICreatableNativeObject<CFRunLoop> {
 #if !COREBUILD
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFRunLoopRef */ IntPtr CFRunLoopGetCurrent ();
@@ -442,7 +443,8 @@ namespace CoreFoundation {
 			GC.KeepAlive (mode);
 		}
 
-		[Preserve (Conditional = true)]
+		static CFRunLoop ICreatableNativeObject<CFRunLoop>.Create (NativeHandle handle, bool owns) => new CFRunLoop (handle, owns);
+
 		internal CFRunLoop (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

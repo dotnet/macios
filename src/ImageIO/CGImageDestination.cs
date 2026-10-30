@@ -61,7 +61,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public CGImageMetadata? Metadata {
 			get {
-				return GetNativeValue<CGImageMetadata> (CGImageAuxiliaryDataInfoKeys.MetadataKey);
+				return TryGetNativeValue (CGImageAuxiliaryDataInfoKeys.MetadataKey, out var handle) ? Runtime.GetCreatableNativeObject<CGImageMetadata> (handle, false) : null;
 			}
 			set {
 				SetNativeValue (CGImageAuxiliaryDataInfoKeys.MetadataKey, value);
@@ -74,8 +74,9 @@ namespace ImageIO {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGImageDestination : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CGImageDestination : NativeObject, ICreatableNativeObject<CGImageDestination> {
+		static CGImageDestination ICreatableNativeObject<CGImageDestination>.Create (NativeHandle handle, bool owns) => new CGImageDestination (handle, owns);
+
 		internal CGImageDestination (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

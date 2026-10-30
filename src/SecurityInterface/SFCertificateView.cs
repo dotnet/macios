@@ -11,7 +11,7 @@ namespace SecurityInterface {
 
 		/// <summary>Gets or sets the certificate displayed by the view.</summary>
 		public SecCertificate? Certificate {
-			get => Runtime.GetINativeObject<SecCertificate> (_Certificate, owns: false);
+			get => Runtime.GetCreatableNativeObject<SecCertificate> (_Certificate, owns: false);
 			set {
 				_Certificate = value.GetHandle ();
 				GC.KeepAlive (value);

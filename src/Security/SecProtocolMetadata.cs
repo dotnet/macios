@@ -22,10 +22,11 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class SecProtocolMetadata : NativeObject {
+	public class SecProtocolMetadata : NativeObject, ICreatableNativeObject<SecProtocolMetadata> {
 		// This type is only ever surfaced in response to callbacks in TLS/Network and documented as read-only
 		// if this ever changes, make this public[tv
-		[Preserve (Conditional = true)]
+		static SecProtocolMetadata ICreatableNativeObject<SecProtocolMetadata>.Create (NativeHandle handle, bool owns) => new SecProtocolMetadata (handle, owns);
+
 		internal SecProtocolMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

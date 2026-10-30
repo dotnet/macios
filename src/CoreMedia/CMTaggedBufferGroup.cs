@@ -9,9 +9,10 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
-	public class CMTaggedBufferGroup : NativeObject {
+	public class CMTaggedBufferGroup : NativeObject, ICreatableNativeObject<CMTaggedBufferGroup> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CMTaggedBufferGroup ICreatableNativeObject<CMTaggedBufferGroup>.Create (NativeHandle handle, bool owns) => new CMTaggedBufferGroup (handle, owns);
+
 		internal CMTaggedBufferGroup (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

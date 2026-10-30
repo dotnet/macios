@@ -20,9 +20,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWBrowseResult : NativeObject {
+	public class NWBrowseResult : NativeObject, ICreatableNativeObject<NWBrowseResult> {
 
-		[Preserve (Conditional = true)]
+		static NWBrowseResult ICreatableNativeObject<NWBrowseResult>.Create (NativeHandle handle, bool owns) => new NWBrowseResult (handle, owns);
+
 		internal NWBrowseResult (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

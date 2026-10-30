@@ -24,8 +24,9 @@ namespace Security {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class SecIdentity2 : NativeObject {
-		[Preserve (Conditional = true)]
+	public class SecIdentity2 : NativeObject, ICreatableNativeObject<SecIdentity2> {
+		static SecIdentity2 ICreatableNativeObject<SecIdentity2>.Create (NativeHandle handle, bool owns) => new SecIdentity2 (handle, owns);
+
 		internal SecIdentity2 (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

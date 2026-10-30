@@ -121,6 +121,10 @@ namespace Xamarin.Linker.Steps {
 				}
 				marker.PreserveType (type, allMembers: true);
 			} else if (type.HasMethods) {
+				// Reflection-based construction still needs the constructor called by the source factory.
+				var factory = AppBundleRewriter.FindINativeObjectFactory (type);
+				if (factory is not null)
+					modified |= marker.PreserveMethod (type, factory);
 				modified |= PreserveIntPtrConstructor (marker, type);
 				if (nsobject) {
 					modified |= PreserveExportedMethods (marker, type);

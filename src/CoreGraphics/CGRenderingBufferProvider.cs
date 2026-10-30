@@ -10,8 +10,9 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("tvos26.0")]
 	[SupportedOSPlatform ("maccatalyst26.0")]
 	[SupportedOSPlatform ("macos26.0")]
-	public class CGRenderingBufferProvider : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CGRenderingBufferProvider : NativeObject, ICreatableNativeObject<CGRenderingBufferProvider> {
+		static CGRenderingBufferProvider ICreatableNativeObject<CGRenderingBufferProvider>.Create (NativeHandle handle, bool owns) => new CGRenderingBufferProvider (handle, owns);
+
 		internal CGRenderingBufferProvider (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

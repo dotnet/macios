@@ -30,8 +30,9 @@
 
 namespace CoreFoundation {
 
-	class CFData : NativeObject {
-		[Preserve (Conditional = true)]
+	class CFData : NativeObject, ICreatableNativeObject<CFData> {
+		static CFData ICreatableNativeObject<CFData>.Create (NativeHandle handle, bool owns) => new CFData (handle, owns);
+
 		internal CFData (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

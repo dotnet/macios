@@ -21,10 +21,11 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public class VTDecompressionSession : VTSession {
+	public class VTDecompressionSession : VTSession, ICreatableNativeObject<VTDecompressionSession> {
 		GCHandle? callbackHandle;
 
-		[Preserve (Conditional = true)]
+		static VTDecompressionSession ICreatableNativeObject<VTDecompressionSession>.Create (NativeHandle handle, bool owns) => new VTDecompressionSession (handle, owns);
+
 		internal VTDecompressionSession (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}
@@ -262,7 +263,7 @@ namespace VideoToolbox {
 			unsafe {
 				result = VTDecompressionSessionCopyBlackPixelBuffer (GetCheckedHandle (), &ret);
 			}
-			pixelBuffer = Runtime.GetINativeObject<CVPixelBuffer> (ret, true);
+			pixelBuffer = Runtime.GetCreatableNativeObject<CVPixelBuffer> (ret, true);
 			return result;
 		}
 

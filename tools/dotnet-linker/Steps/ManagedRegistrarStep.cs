@@ -265,12 +265,8 @@ namespace Xamarin.Linker {
 					}
 				} else if (type.IsNativeObject ()) {
 					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
-					if (ctorRef is not null) {
-						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
-
-						// Implement INativeObject._Xamarin_ConstructINativeObject
-						modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
-					}
+					// Implement INativeObject._Xamarin_ConstructINativeObject
+					modified |= abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctorRef);
 				}
 			}
 

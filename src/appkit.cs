@@ -9196,7 +9196,7 @@ namespace AppKit {
 		/// <summary>The CGEvent object corresponding to this event.</summary>
 		/// <appledoc>https://developer.apple.com/documentation/appkit/nsevent/1530429-cgevent?language=objc</appledoc>
 		[return: NullAllowed]
-		[Wrap ("Runtime.GetINativeObject<CGEvent> (CGEvent, false)")]
+		[Wrap ("Runtime.GetCreatableNativeObject<CGEvent> (CGEvent, false)")]
 		CGEvent GetCGEventObject ();
 
 		[Static]

@@ -12,7 +12,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFType : NativeObject, ICFType {
+	public class CFType : NativeObject, ICFType, ICreatableNativeObject<CFType> {
 		/// <summary>Returns the CoreFoundation type identifier for the specified object.</summary>
 		/// <param name="typeRef">Handle to a CoreFoundation object.</param>
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFGetTypeID")]
@@ -26,7 +26,8 @@ namespace CoreFoundation {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static CFType ICreatableNativeObject<CFType>.Create (NativeHandle handle, bool owns) => new CFType (handle, owns);
+
 		internal CFType (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

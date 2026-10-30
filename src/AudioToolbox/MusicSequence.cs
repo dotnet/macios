@@ -44,9 +44,10 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// MusicPlayer.h
-	public class MusicSequence : DisposableObject {
+	public class MusicSequence : DisposableObject, ICreatableNativeObject<MusicSequence> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static MusicSequence ICreatableNativeObject<MusicSequence>.Create (NativeHandle handle, bool owns) => new MusicSequence (handle, owns);
+
 		internal MusicSequence (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

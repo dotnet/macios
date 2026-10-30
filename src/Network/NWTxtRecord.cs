@@ -22,8 +22,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWTxtRecord : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWTxtRecord : NativeObject, ICreatableNativeObject<NWTxtRecord> {
+		static NWTxtRecord ICreatableNativeObject<NWTxtRecord>.Create (NativeHandle handle, bool owns) => new NWTxtRecord (handle, owns);
+
 		internal NWTxtRecord (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

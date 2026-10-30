@@ -1101,6 +1101,10 @@ static partial class BindingSyntaxFactory {
 			
 			// CoreMedia.CMSampleBuffer
 			// new global::CoreMedia.CMSampleBuffer ({0})
+			{ Type.IsCreatableNativeObject: true } =>
+				GetINativeObject (info.Type, [Argument (expression), BoolArgument (info.ReleaseHandle ?? false)],
+					suppressNullableWarning: !info.Type.IsNullable),
+
 			{ Type.FullyQualifiedName: "CoreMedia.CMSampleBuffer" } => 
 				New (CMSampleBuffer, [Argument (expression), BoolArgument (false)]), 
 			
@@ -1146,12 +1150,12 @@ static partial class BindingSyntaxFactory {
 			
 			// NSObject[] => CFArray.ArrayFromHandle<Foundation.NSMetadataItem> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend (this.Handle, Selector.GetHandle ("results")))!;
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true }
-				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax (), [
+				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().WithNullable (isNullable: false), [
 					Argument (expression)
 				], suppressNullableWarning: !info.Type.IsNullable), 
 			
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true }
-				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax (), [
+				=> GetCFArrayFromHandle (info.Type.ToArrayElementType ().WithNullable (isNullable: false), [
 					Argument (expression)
 				], suppressNullableWarning: !info.Type.IsNullable), 
 			
@@ -1161,7 +1165,7 @@ static partial class BindingSyntaxFactory {
 			// Runtime.GetINativeObject<NSString> (auxVariable, false)!;
 			{ Type.IsINativeObject: true, Type.IsNSObject: false, ReleaseHandle: not null}
 				=> GetINativeObject (
-					nsObjectType: info.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
+					nsObjectType: info.Type.WithNullable (isNullable: false), 
 					args: [
 						Argument (expression),
 						BoolArgument (info.ReleaseHandle.Value)
@@ -1170,7 +1174,7 @@ static partial class BindingSyntaxFactory {
 			
 			{ Type.IsINativeObject: true, Type.IsNSObject: false, ReleaseHandle: null}
 				=> GetINativeObject (
-					nsObjectType: info.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
+					nsObjectType: info.Type.WithNullable (isNullable: false), 
 					args: [
 						Argument (expression),
 					], 

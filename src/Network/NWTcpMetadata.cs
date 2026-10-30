@@ -16,9 +16,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWTcpMetadata : NWProtocolMetadata {
+	public class NWTcpMetadata : NWProtocolMetadata, ICreatableNativeObject<NWTcpMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWTcpMetadata ICreatableNativeObject<NWTcpMetadata>.Create (NativeHandle handle, bool owns) => new NWTcpMetadata (handle, owns);
+
 		internal NWTcpMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public uint AvailableReceiveBuffer => nw_tcp_get_available_receive_buffer (GetCheckedHandle ());

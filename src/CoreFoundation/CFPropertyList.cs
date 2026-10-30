@@ -15,7 +15,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFPropertyList : NativeObject {
+	public class CFPropertyList : NativeObject, ICreatableNativeObject<CFPropertyList> {
 		static nint CFDataTypeID = CFData.GetTypeID ();
 		static nint CFStringTypeID = CFString.GetTypeID ();
 		static nint CFArrayTypeID = CFArray.GetTypeID ();
@@ -32,7 +32,8 @@ namespace CoreFoundation {
 
 		static nint CFNumberTypeID = CFNumberGetTypeID ();
 
-		[Preserve (Conditional = true)]
+		static CFPropertyList ICreatableNativeObject<CFPropertyList>.Create (NativeHandle handle, bool owns) => new CFPropertyList (handle, owns);
+
 		internal CFPropertyList (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -208,7 +208,7 @@ namespace Xharness.Jenkins {
 			}
 
 			// special case to consider, since might set or remove all tests, we need to process it first
-			bool? includeAllTests = null;
+			var includeAllTests = false;
 			if (labelSelectedTests.TryGetValue ("all", out var allTests)) {
 				selection.SetEnabled ("all", allTests);
 				includeAllTests = allTests;
@@ -221,8 +221,8 @@ namespace Xharness.Jenkins {
 
 			if (labelSelectedTests.TryGetValue ("system-permission", out var includeSystemPermissionTests))
 				Harness.IncludeSystemPermissionTests = includeSystemPermissionTests;
-			else if (includeAllTests.HasValue)
-				Harness.IncludeSystemPermissionTests = includeAllTests.Value;
+			else if (includeAllTests)
+				Harness.IncludeSystemPermissionTests = true;
 
 			// old simulator tests is also a bit special:
 			// - enabled by default if using a beta Xcode, otherwise disabled by default

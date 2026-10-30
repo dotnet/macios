@@ -228,6 +228,10 @@ public class StaticAttribute : Attribute {
 	public StaticAttribute () { }
 }
 
+[AttributeUsage (AttributeTargets.Method | AttributeTargets.Property)]
+public class PropagateToSubclassesAttribute : Attribute {
+}
+
 // When applied to a type generate a partial class even if the type does not subclass NSObject
 // useful for Core* types that declare Fields
 public class PartialAttribute : Attribute {

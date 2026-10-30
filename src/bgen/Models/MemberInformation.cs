@@ -125,6 +125,8 @@ public class MemberInformation {
 		// also inlined in any of the base classes.
 		if (mi.DeclaringType != type) {
 			for (var baseType = ReflectionExtensions.GetBaseType (type, generator); baseType != Generator.TypeCache.System_Object; baseType = ReflectionExtensions.GetBaseType (baseType, generator)) {
+				if (baseType == mi.DeclaringType && AttributeManager.HasAttribute<PropagateToSubclassesAttribute> (mi))
+					is_new = true;
 				foreach (var baseMethod in gather.GetTypeContractMethods (baseType)) {
 					if (baseMethod.DeclaringType != baseType && baseMethod == mi) {
 						// We found a case, we need to flag it as new.

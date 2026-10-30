@@ -644,4 +644,7 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+	<data name="BI1130" xml:space="preserve">
+		<value>The [PropagateToSubclasses] attribute on '{0}.{1}' can only be used on static methods and properties. Add [Static] or remove [PropagateToSubclasses].</value>
+	</data>
 </root>

@@ -21,8 +21,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolDefinition : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWProtocolDefinition : NativeObject, ICreatableNativeObject<NWProtocolDefinition> {
+		static NWProtocolDefinition ICreatableNativeObject<NWProtocolDefinition>.Create (NativeHandle handle, bool owns) => new NWProtocolDefinition (handle, owns);
+
 		internal NWProtocolDefinition (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

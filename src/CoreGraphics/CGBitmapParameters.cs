@@ -76,7 +76,7 @@ namespace CoreGraphics {
 		/// <summary>The <see cref="CGColorSpace" /> for the new <see cref="CGBitmapContext" />.</summary>
 		/// <remarks>When setting this value, the calling code must keep a reference to the <see cref="CGColorSpace" /> instance, because this struct does not increment the retainCount of it to prevent the GC from collecting the instance.</remarks>
 		public CGColorSpace? ColorSpace {
-			get => Runtime.GetINativeObject<CGColorSpace> (colorSpace, false);
+			get => Runtime.GetCreatableNativeObject<CGColorSpace> (colorSpace, false);
 			set {
 				ArgumentNullException.ThrowIfNull (value);
 				// this is unsafe: the calling code must keep the managed CGColorSpace instance around somehow.

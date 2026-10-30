@@ -21,9 +21,10 @@ namespace CFNetwork {
 	[ObsoletedOSPlatform ("macos10.11", "Use 'NSUrlSession'.")]
 	[ObsoletedOSPlatform ("ios9.0", "Use 'NSUrlSession'.")]
 	// Dotnet attributes are included in partial class inside cfnetwork.cs
-	public partial class CFHTTPStream : CFReadStream {
+	public partial class CFHTTPStream : CFReadStream, ICreatableNativeObject<CFHTTPStream> {
 
-		[Preserve (Conditional = true)]
+		static CFHTTPStream ICreatableNativeObject<CFHTTPStream>.Create (NativeHandle handle, bool owns) => new CFHTTPStream (handle, owns);
+
 		internal CFHTTPStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

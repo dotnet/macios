@@ -88,7 +88,7 @@ namespace Security {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public unsafe class Authorization : DisposableObject {
+	public unsafe class Authorization : DisposableObject, ICreatableNativeObject<Authorization> {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static int /* OSStatus = int */ AuthorizationCreate (AuthorizationItemSet* rights, AuthorizationItemSet* environment, AuthorizationFlags flags, IntPtr* auth);
 
@@ -102,7 +102,8 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static int /* OSStatus = int */ AuthorizationFree (IntPtr handle, AuthorizationFlags flags);
 
-		[Preserve (Conditional = true)]
+		static Authorization ICreatableNativeObject<Authorization>.Create (NativeHandle handle, bool owns) => new Authorization (handle, owns);
+
 		internal Authorization (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

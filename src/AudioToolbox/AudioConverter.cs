@@ -137,7 +137,7 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class AudioConverter : DisposableObject {
+	public class AudioConverter : DisposableObject, ICreatableNativeObject<AudioConverter> {
 		IntPtr packetDescriptions;
 		int packetDescriptionSize;
 
@@ -145,7 +145,8 @@ namespace AudioToolbox {
 		/// <remarks>The handler must supply the requested input packets to the converter. Return <see cref="AudioToolbox.AudioConverterError.None" /> to provide data, or an error code to stop the conversion.</remarks>
 		public event AudioConverterComplexInputData? InputData;
 
-		[Preserve (Conditional = true)]
+		static AudioConverter ICreatableNativeObject<AudioConverter>.Create (NativeHandle handle, bool owns) => new AudioConverter (handle, owns);
+
 		internal AudioConverter (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

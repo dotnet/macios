@@ -19,7 +19,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGPDFOperatorTable.h
-	public class CGPDFOperatorTable : NativeObject {
+	public class CGPDFOperatorTable : NativeObject, ICreatableNativeObject<CGPDFOperatorTable> {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFOperatorTableRef */ IntPtr CGPDFOperatorTableCreate ();
@@ -40,7 +40,8 @@ namespace CoreGraphics {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static CGPDFOperatorTable ICreatableNativeObject<CGPDFOperatorTable>.Create (NativeHandle handle, bool owns) => new CGPDFOperatorTable (handle, owns);
+
 		internal CGPDFOperatorTable (NativeHandle handle, bool owns)
 			 : base (handle, owns)
 		{

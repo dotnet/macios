@@ -40,8 +40,9 @@ namespace Security {
 	/// <summary>Represents digital certificates on iOS/OSX.</summary>
 	///     <remarks>
 	///     </remarks>
-	public partial class SecCertificate : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class SecCertificate : NativeObject, ICreatableNativeObject<SecCertificate> {
+		static SecCertificate ICreatableNativeObject<SecCertificate>.Create (NativeHandle handle, bool owns) => new SecCertificate (handle, owns);
+
 		internal SecCertificate (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{
@@ -480,8 +481,9 @@ namespace Security {
 
 	/// <summary>Encapsulate a security identity. A security identity comprises a certificate and its private key.</summary>
 	///     <remarks>To be added.</remarks>
-	public partial class SecIdentity : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class SecIdentity : NativeObject, ICreatableNativeObject<SecIdentity> {
+		static SecIdentity ICreatableNativeObject<SecIdentity>.Create (NativeHandle handle, bool owns) => new SecIdentity (handle, owns);
+
 		internal SecIdentity (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -641,8 +643,9 @@ namespace Security {
 
 	/// <summary>Encapsulates a security key, one half of a public-private key-pair.</summary>
 	///     <remarks>To be added.</remarks>
-	public partial class SecKey : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class SecKey : NativeObject, ICreatableNativeObject<SecKey> {
+		static SecKey ICreatableNativeObject<SecKey>.Create (NativeHandle handle, bool owns) => new SecKey (handle, owns);
+
 		internal SecKey (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

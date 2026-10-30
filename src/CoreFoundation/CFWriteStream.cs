@@ -41,8 +41,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFWriteStream : CFStream {
-		[Preserve (Conditional = true)]
+	public class CFWriteStream : CFStream, ICreatableNativeObject<CFWriteStream> {
+		static CFWriteStream ICreatableNativeObject<CFWriteStream>.Create (NativeHandle handle, bool owns) => new CFWriteStream (handle, owns);
+
 		internal CFWriteStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

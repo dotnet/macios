@@ -60,7 +60,7 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABRecord : NativeObject {
+	public class ABRecord : NativeObject, ICreatableNativeObject<ABRecord> {
 
 		/// <summary>
 		///           An invalid value for a record id.
@@ -79,7 +79,8 @@ namespace AddressBook {
 		///         </remarks>
 		public const int InvalidPropertyId = -1;
 
-		[Preserve (Conditional = true)]
+		static ABRecord ICreatableNativeObject<ABRecord>.Create (NativeHandle handle, bool owns) => new ABRecord (handle, owns);
+
 		internal ABRecord (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

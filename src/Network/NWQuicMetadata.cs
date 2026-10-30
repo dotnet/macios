@@ -11,9 +11,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWQuicMetadata : NWProtocolMetadata {
+	public class NWQuicMetadata : NWProtocolMetadata, ICreatableNativeObject<NWQuicMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWQuicMetadata ICreatableNativeObject<NWQuicMetadata>.Create (NativeHandle handle, bool owns) => new NWQuicMetadata (handle, owns);
+
 		internal NWQuicMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

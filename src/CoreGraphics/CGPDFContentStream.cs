@@ -18,7 +18,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGPDFContentStream.h
-	public class CGPDFContentStream : NativeObject {
+	public class CGPDFContentStream : NativeObject, ICreatableNativeObject<CGPDFContentStream> {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFContentStreamRef */ IntPtr CGPDFContentStreamCreateWithPage (/* CGPDFPageRef */ IntPtr page);
@@ -33,7 +33,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFContentStreamRelease (/* CGPDFContentStreamRef */ IntPtr cs);
 
-		[Preserve (Conditional = true)]
+		static CGPDFContentStream ICreatableNativeObject<CGPDFContentStream>.Create (NativeHandle handle, bool owns) => new CGPDFContentStream (handle, owns);
+
 		internal CGPDFContentStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

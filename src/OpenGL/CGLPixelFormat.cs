@@ -37,7 +37,7 @@ namespace OpenGL {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-	public class CGLPixelFormat : NativeObject {
+	public class CGLPixelFormat : NativeObject, ICreatableNativeObject<CGLPixelFormat> {
 		protected internal override void Retain ()
 		{
 			CGLRetainPixelFormat (GetCheckedHandle ());
@@ -48,7 +48,8 @@ namespace OpenGL {
 			CGLReleasePixelFormat (GetCheckedHandle ());
 		}
 
-		[Preserve (Conditional = true)]
+		static CGLPixelFormat ICreatableNativeObject<CGLPixelFormat>.Create (NativeHandle handle, bool owns) => new CGLPixelFormat (handle, owns);
+
 		internal CGLPixelFormat (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

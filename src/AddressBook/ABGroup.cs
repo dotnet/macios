@@ -70,7 +70,7 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABGroup : ABRecord, IEnumerable<ABRecord> {
+	public class ABGroup : ABRecord, IEnumerable<ABRecord>, ICreatableNativeObject<ABGroup> {
 
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABGroupCreate ();
@@ -101,7 +101,8 @@ namespace AddressBook {
 			GC.KeepAlive (source);
 		}
 
-		[Preserve (Conditional = true)]
+		static ABGroup ICreatableNativeObject<ABGroup>.Create (NativeHandle handle, bool owns) => new ABGroup (handle, owns);
+
 		internal ABGroup (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

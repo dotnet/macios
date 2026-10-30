@@ -40,7 +40,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGPDFDocument : NativeObject {
+	public class CGPDFDocument : NativeObject, ICreatableNativeObject<CGPDFDocument> {
 #if !COREBUILD
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGPDFDocumentRelease (/* CGPDFDocumentRef */ IntPtr document);
@@ -48,7 +48,8 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFDocumentRef */ IntPtr CGPDFDocumentRetain (/* CGPDFDocumentRef */ IntPtr document);
 
-		[Preserve (Conditional = true)]
+		static CGPDFDocument ICreatableNativeObject<CGPDFDocument>.Create (NativeHandle handle, bool owns) => new CGPDFDocument (handle, owns);
+
 		internal CGPDFDocument (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

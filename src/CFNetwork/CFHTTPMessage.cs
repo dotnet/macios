@@ -16,8 +16,9 @@ using CoreFoundation;
 
 namespace CFNetwork {
 	/// <summary>An HTTP message.</summary>
-	public partial class CFHTTPMessage : CFType {
-		[Preserve (Conditional = true)]
+	public partial class CFHTTPMessage : CFType, ICreatableNativeObject<CFHTTPMessage> {
+		static CFHTTPMessage ICreatableNativeObject<CFHTTPMessage>.Create (NativeHandle handle, bool owns) => new CFHTTPMessage (handle, owns);
+
 		internal CFHTTPMessage (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

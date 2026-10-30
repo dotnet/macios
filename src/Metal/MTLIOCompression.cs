@@ -9,9 +9,10 @@ namespace Metal {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.0")]
-	public class MTLIOCompressionContext : DisposableObject {
+	public class MTLIOCompressionContext : DisposableObject, ICreatableNativeObject<MTLIOCompressionContext> {
 
-		[Preserve (Conditional = true)]
+		static MTLIOCompressionContext ICreatableNativeObject<MTLIOCompressionContext>.Create (NativeHandle handle, bool owns) => new MTLIOCompressionContext (handle, owns);
+
 		MTLIOCompressionContext (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.MetalLibrary)]

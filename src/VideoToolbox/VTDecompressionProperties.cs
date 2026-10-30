@@ -21,7 +21,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public CVPixelBufferPool? PixelBufferPool {
 			get {
-				return GetNativeValue<CVPixelBufferPool> (VTDecompressionPropertyKey.PixelBufferPool);
+				return TryGetNativeValue (VTDecompressionPropertyKey.PixelBufferPool, out var handle) ? Runtime.GetCreatableNativeObject<CVPixelBufferPool> (handle, false) : null;
 			}
 		}
 

@@ -16,9 +16,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWIPMetadata : NWProtocolMetadata {
+	public class NWIPMetadata : NWProtocolMetadata, ICreatableNativeObject<NWIPMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWIPMetadata ICreatableNativeObject<NWIPMetadata>.Create (NativeHandle handle, bool owns) => new NWIPMetadata (handle, owns);
+
 		internal NWIPMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWIPMetadata () : this (nw_ip_create_metadata (), owns: true) { }

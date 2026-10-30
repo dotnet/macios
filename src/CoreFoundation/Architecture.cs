@@ -5,7 +5,7 @@ using CoreFoundation;
 namespace CoreFoundation {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public partial class CFBundle {
+	public partial class CFBundle : ICreatableNativeObject<CFBundle> {
 
 		// from machine.h
 		// #define CPU_ARCH_ABI64       0x01000000

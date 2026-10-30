@@ -23,8 +23,9 @@ namespace Network {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 
-	public class NWEndpoint : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWEndpoint : NativeObject, ICreatableNativeObject<NWEndpoint> {
+		static NWEndpoint ICreatableNativeObject<NWEndpoint>.Create (NativeHandle handle, bool owns) => new NWEndpoint (handle, owns);
+
 		internal NWEndpoint (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

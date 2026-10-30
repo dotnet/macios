@@ -17,8 +17,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolUdpOptions : NWProtocolOptions {
-		[Preserve (Conditional = true)]
+	public class NWProtocolUdpOptions : NWProtocolOptions, ICreatableNativeObject<NWProtocolUdpOptions> {
+		static NWProtocolUdpOptions ICreatableNativeObject<NWProtocolUdpOptions>.Create (NativeHandle handle, bool owns) => new NWProtocolUdpOptions (handle, owns);
+
 		internal NWProtocolUdpOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWProtocolUdpOptions () : this (nw_udp_create_options (), owns: true) { }

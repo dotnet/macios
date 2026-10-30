@@ -12,9 +12,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWResolutionReport : NativeObject {
+	public class NWResolutionReport : NativeObject, ICreatableNativeObject<NWResolutionReport> {
 
-		[Preserve (Conditional = true)]
+		static NWResolutionReport ICreatableNativeObject<NWResolutionReport>.Create (NativeHandle handle, bool owns) => new NWResolutionReport (handle, owns);
+
 		internal NWResolutionReport (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

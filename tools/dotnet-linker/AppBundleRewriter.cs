@@ -1936,6 +1936,51 @@ namespace Xamarin.Linker {
 						&& method.Parameters [1].ParameterType.Is (ns2, cls2));
 		}
 
+		internal static MethodDefinition? FindINativeObjectFactory (TypeDefinition type)
+		{
+			foreach (var implementation in type.Interfaces) {
+				if (implementation.InterfaceType is not GenericInstanceType iface
+					|| !iface.ElementType.Is ("ObjCRuntime", "ICreatableNativeObject`1")
+					|| iface.GenericArguments.Count != 1)
+					continue;
+
+				var self = iface.GenericArguments [0];
+				if (self.Resolve () != type)
+					continue;
+				if (type.HasGenericParameters) {
+					if (self is not GenericInstanceType genericSelf
+						|| !genericSelf.GenericArguments.SequenceEqual (type.GenericParameters))
+						continue;
+				}
+
+				return type.Methods.SingleOrDefault (method =>
+					method.IsStatic && !method.HasGenericParameters
+					&& method.Parameters.Count == 2
+					&& method.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle")
+					&& method.Parameters [1].ParameterType.Is ("System", "Boolean")
+					&& method.ReturnType.FullName == self.FullName
+					&& ((method.IsPublic && method.Name == "Create")
+						|| method.Overrides.Any (v => v.Name == "Create" && v.DeclaringType.FullName == iface.FullName)));
+			}
+			return null;
+		}
+
+		internal void EmitINativeObjectProxyConstruction (ILProcessor il, TypeDefinition type)
+		{
+			var sourceFactory = FindINativeObjectFactory (type);
+			var target = sourceFactory ?? FindINativeObjectConstructor (type);
+			if (target is null) {
+				il.Emit (OpCodes.Ldnull);
+			} else {
+				il.Emit (OpCodes.Ldarg_1);
+				if (target.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+					il.Emit (OpCodes.Call, NativeObject_op_Implicit_NativeHandle);
+				il.Emit (OpCodes.Ldarg_2);
+				il.Emit (sourceFactory is null ? OpCodes.Newobj : OpCodes.Call, CurrentAssembly.MainModule.ImportReference (target));
+			}
+			il.Emit (OpCodes.Ret);
+		}
+
 		internal bool ImplementConstructNSObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference ctor)
 		{
 			var abr = this;
@@ -1986,9 +2031,14 @@ namespace Xamarin.Linker {
 			if (type.Is ("Foundation", "NSObject"))
 				return false;
 
+			if (type.Methods.Any (method => method.IsStatic && method.Overrides.Any (v =>
+				v.Name == "_Xamarin_ConstructINativeObject" && v.DeclaringType.Is ("ObjCRuntime", "INativeObject"))))
+				return false;
+
 			// If the type is a subclass of NSObject, we prefer the NSObject "IntPtr" constructor
 			MethodReference? nsobjectConstructor = type.IsNSObject (context) ? AppBundleRewriter.FindNSObjectConstructor (type) : null;
-			if (nsobjectConstructor is null && ctor is null)
+			MethodReference? sourceFactory = nsobjectConstructor is null ? FindINativeObjectFactory (type) : null;
+			if (nsobjectConstructor is null && sourceFactory is null && ctor is null)
 				return false;
 
 			// Make sure the type implements INativeObject, otherwise we can't override the _Xamarin_ConstructINativeObject method from it.
@@ -2030,6 +2080,13 @@ namespace Xamarin.Linker {
 
 				il.Append (falseTarget);
 
+				il.Emit (OpCodes.Ret);
+			} else if (sourceFactory is not null) {
+				if (type.HasGenericParameters)
+					sourceFactory = type.CreateMethodReferenceOnGenericType (sourceFactory, type.GenericParameters.ToArray ());
+				il.Emit (OpCodes.Ldarg, nativeHandleParameter);
+				il.Emit (OpCodes.Ldarg, ownsParameter);
+				il.Emit (OpCodes.Call, abr.CurrentAssembly.MainModule.ImportReference (sourceFactory));
 				il.Emit (OpCodes.Ret);
 			} else if (ctor is not null) {
 				// return new TypeA (nativeHandle, owns); // for NativeHandle ctor

@@ -99,8 +99,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTLine : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTLine : NativeObject, ICreatableNativeObject<CTLine> {
+		static CTLine ICreatableNativeObject<CTLine>.Create (NativeHandle handle, bool owns) => new CTLine (handle, owns);
+
 		internal CTLine (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

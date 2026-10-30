@@ -21,9 +21,10 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CVPixelBufferPool : NativeObject {
+	public partial class CVPixelBufferPool : NativeObject, ICreatableNativeObject<CVPixelBufferPool> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CVPixelBufferPool ICreatableNativeObject<CVPixelBufferPool>.Create (NativeHandle handle, bool owns) => new CVPixelBufferPool (handle, owns);
+
 		internal CVPixelBufferPool (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

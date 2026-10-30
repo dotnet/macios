@@ -12,7 +12,7 @@ namespace Foundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class NSZone : INativeObject {
+	public class NSZone : INativeObject, ICreatableNativeObject<NSZone> {
 		[DllImport (Constants.FoundationLibrary)]
 		static extern /* NSZone* */ IntPtr NSDefaultMallocZone ();
 
@@ -22,7 +22,8 @@ namespace Foundation {
 		[DllImport (Constants.FoundationLibrary)]
 		static extern void NSSetZoneName (/* NSZone* */ IntPtr zone, /* NSString* */ IntPtr name);
 
-		[Preserve (Conditional = true)]
+		static NSZone ICreatableNativeObject<NSZone>.Create (NativeHandle handle, bool owns) => new NSZone (handle, owns);
+
 		internal NSZone (NativeHandle handle, bool owns)
 		{
 			// NSZone is just an opaque pointer without reference counting, so we ignore the 'owns' parameter.

@@ -2231,6 +2231,23 @@ namespace ObjCRuntime {
 			return ConstructINativeObject<INativeObject> (ptr, owns, implementation, target_type, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
 		}
 
+		/// <summary>Wraps a native handle using the specified type's factory without constructor reflection.</summary>
+		/// <typeparam name="T">A native wrapper implementing its own self-typed factory interface.</typeparam>
+		/// <param name="ptr">The native handle to wrap.</param>
+		/// <param name="owns">Whether ownership of a native reference is transferred to the wrapper.</param>
+		/// <returns>A wrapper of type <typeparamref name="T"/>, or <see langword="null"/> for a zero handle.</returns>
+		/// <remarks>This method creates the requested managed type without looking up an Objective-C class. Use <see cref="GetINativeObject{T}(IntPtr, bool)"/> for Objective-C objects and protocol interfaces.</remarks>
+		public static T? GetCreatableNativeObject<T> (IntPtr ptr, bool owns) where T : INativeObject, ICreatableNativeObject<T>
+		{
+			if (ptr == IntPtr.Zero)
+				return default (T);
+
+			return Create (ptr, owns);
+
+			// Keep static interface dispatch separate from the caller, as in ConstructINativeObject.
+			static T Create (NativeHandle handle, bool owns) => T.Create (handle, owns);
+		}
+
 		// this method is identical in behavior to the non-generic one.
 		/// <typeparam name="T">The type of the object to return. This can also be an interface corresponding to an Objective-C protocol.</typeparam>
 		/// <param name="ptr">A pointer to a native object.</param>

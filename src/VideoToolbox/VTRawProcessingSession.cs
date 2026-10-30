@@ -23,8 +23,9 @@ namespace VideoToolbox {
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos15.0")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class VTRawProcessingSession : NativeObject {
-		[Preserve (Conditional = true)]
+	public class VTRawProcessingSession : NativeObject, ICreatableNativeObject<VTRawProcessingSession> {
+		static VTRawProcessingSession ICreatableNativeObject<VTRawProcessingSession>.Create (NativeHandle handle, bool owns) => new VTRawProcessingSession (handle, owns);
+
 		protected VTRawProcessingSession (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -166,7 +167,7 @@ namespace VideoToolbox {
 		{
 			var del = BlockLiteral.GetTarget<VTRawProcessingOutputHandler> (block);
 			if (del is not null) {
-				var pb = Runtime.GetINativeObject<CVPixelBuffer> (processedPixelBuffer, owns: false);
+				var pb = Runtime.GetCreatableNativeObject<CVPixelBuffer> (processedPixelBuffer, owns: false);
 				del (status, pb);
 			}
 		}

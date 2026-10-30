@@ -29,6 +29,8 @@ public class MemberInformation {
 	public readonly ThreadCheck threadCheck;
 	public bool is_unsafe;
 	public bool is_virtual_method;
+	/// <summary>Disables managed array overrides and callback exports without changing native super dispatch.</summary>
+	public readonly bool has_pointer_array_parameter;
 	public bool is_export;
 	public bool is_category_extension;
 	public bool is_variadic;
@@ -205,10 +207,7 @@ public class MemberInformation {
 		if (is_static || is_category_extension || isInterfaceImpl || isExtensionMethod || is_type_sealed)
 			is_virtual_method = false;
 
-		if (mi.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi))) {
-			// The registrar cannot marshal native buffers into managed array overrides.
-			is_virtual_method = false;
-		}
+		has_pointer_array_parameter = mi.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi));
 	}
 
 	public MemberInformation (Generator generator, IMemberGatherer gather, PropertyInfo pi, Type type, bool is_interface_impl = false)
@@ -282,7 +281,7 @@ public class MemberInformation {
 			mods += "virtual ";
 		} else if (is_abstract) {
 			mods += "virtual ";
-		} else if (is_virtual_method && !is_type_sealed) {
+		} else if (is_virtual_method && !is_type_sealed && !has_pointer_array_parameter) {
 			mods += is_override ? "override " : "virtual ";
 		}
 

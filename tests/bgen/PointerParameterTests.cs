@@ -30,6 +30,10 @@ namespace GeneratorTests {
 					instruction.Operand is MethodReference ctor && ctor.DeclaringType.FullName == "System.ArgumentOutOfRangeException"), Is.True, name + ": length check");
 				Assert.That (method.Body.Instructions.Where (instruction => instruction.Operand is MethodReference)
 					.Select (instruction => ((MethodReference) instruction.Operand).DeclaringType.FullName), Does.Not.Contain ("Foundation.NSArray"), name + ": not NSArray");
+				var calls = method.Body.Instructions.Where (instruction => instruction.Operand is MethodReference)
+					.Select (instruction => ((MethodReference) instruction.Operand).Name).ToArray ();
+				Assert.That (calls.Any (call => call.Contains ("_objc_msgSend_")), Is.True, name + ": direct dispatch");
+				Assert.That (calls.Any (call => call.Contains ("_objc_msgSendSuper_")), Is.EqualTo (!method.IsStatic), name + ": super dispatch for managed subclasses");
 			}
 
 			Assert.That (type.Methods.Single (method => method.Name == "Ranges").IsStatic, Is.True, "static array method");

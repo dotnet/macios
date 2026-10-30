@@ -4627,7 +4627,7 @@ public partial class Generator : IMemberGatherer {
 
 	void PrintExport (MemberInformation minfo)
 	{
-		if (minfo.Method?.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi)) == true)
+		if (minfo.has_pointer_array_parameter)
 			return;
 
 		if (minfo.is_ctor && minfo.is_protocol_member)

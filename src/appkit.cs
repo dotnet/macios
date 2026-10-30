@@ -1860,7 +1860,7 @@ namespace AppKit {
 		nint ElementCount { get; }
 
 		[Export ("elementAtIndex:associatedPoints:"), Internal]
-		NSBezierPathElement _ElementAt (nint index, IntPtr points);
+		NSBezierPathElement _ElementAt (nint index, [PointerAsArray (Length = 3)] CGPoint [] points);
 
 		[Export ("elementAtIndex:")]
 		NSBezierPathElement ElementAt (nint index);
@@ -1875,7 +1875,7 @@ namespace AppKit {
 		void AppendPathWithRect (CGRect rect);
 
 		[Export ("appendBezierPathWithPoints:count:"), Internal]
-		void _AppendPathWithPoints (IntPtr points, nint count);
+		void _AppendPathWithPoints ([PointerAsArray (LengthFromParameter = nameof (count))] CGPoint [] points, nint count);
 
 		[Export ("appendBezierPathWithOvalInRect:")]
 		void AppendPathWithOvalInRect (CGRect rect);
@@ -7995,11 +7995,11 @@ namespace AppKit {
 
 		[Internal]
 		[Export ("getBoundingRects:forCGGlyphs:count:")]
-		void _GetBoundingRects (IntPtr bounds, IntPtr glyphs, nuint glyphCount);
+		void _GetBoundingRects ([PointerAsArray (LengthFromParameter = nameof (glyphCount))] CGRect [] bounds, IntPtr glyphs, nuint glyphCount);
 
 		[Internal]
 		[Export ("getAdvancements:forCGGlyphs:count:")]
-		void _GetAdvancements (IntPtr advancements, IntPtr glyphs, nuint glyphCount);
+		void _GetAdvancements ([PointerAsArray (LengthFromParameter = nameof (glyphCount))] CGSize [] advancements, IntPtr glyphs, nuint glyphCount);
 
 		[Static]
 		[Export ("monospacedSystemFontOfSize:weight:")]

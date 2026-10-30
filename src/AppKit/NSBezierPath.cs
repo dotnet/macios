@@ -69,7 +69,7 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		public unsafe NSBezierPathElement ElementAt (nint index, out CGPoint [] points)
+		public NSBezierPathElement ElementAt (nint index, out CGPoint [] points)
 		{
 			NSBezierPathElement bpe;
 
@@ -77,8 +77,7 @@ namespace AppKit {
 			// Create output with 3 elements at first
 			points = new CGPoint [3];
 
-			fixed (CGPoint* ptr = points)
-				bpe = _ElementAt (index, (IntPtr) ptr);
+			bpe = _ElementAt (index, points);
 
 			if (bpe != NSBezierPathElement.CurveTo) {
 				// we only got one element, downsize array
@@ -107,15 +106,14 @@ namespace AppKit {
 		/// <param name="points">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public unsafe void Append (CGPoint [] points)
+		public void Append (CGPoint [] points)
 		{
 			if (points is null)
 				throw new ArgumentNullException ("points");
 			if (points.Length < 1)
 				throw new ArgumentException ("points array is empty");
 
-			fixed (CGPoint* ptr = points)
-				_AppendPathWithPoints ((IntPtr) ptr, points.Length);
+			_AppendPathWithPoints (points, points.Length);
 		}
 
 		/// <param name="glyphs">To be added.</param>

@@ -3461,17 +3461,17 @@ namespace CarPlay {
 
 		[Internal]
 		[Export ("initWithCenterPoint:locationThreshold:name:address:entryPoints:entryPointsCount:timeZone:")]
-		NativeHandle _InitWithCenterPoint (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed] string name, [NullAllowed] string address, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
+		NativeHandle _InitWithCenterPoint (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed] string name, [NullAllowed] string address, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
 
 		[NoMacCatalyst, iOS (27, 0)]
 		[Internal]
 		[Export ("initWithCenterPoint:locationThreshold:nameVariants:addressVariants:entryPoints:entryPointsCount:timeZone:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, string [] nameVariants, string [] addressVariants, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
+		NativeHandle Constructor (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, string [] nameVariants, string [] addressVariants, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
 
 		[Internal]
 		[Export ("initWithMapItem:locationThreshold:entryPoints:entryPointsCount:")]
-		NativeHandle _InitWithMapItem (MKMapItem mapItem, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, IntPtr entryPoints, nuint entryPointsCount);
+		NativeHandle _InitWithMapItem (MKMapItem mapItem, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount);
 	}
 
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
@@ -3481,7 +3481,7 @@ namespace CarPlay {
 		[Internal]
 		[Export ("initWithOrigin:destination:maneuvers:laneGuidances:currentManeuvers:currentLaneGuidance:tripTravelEstimates:maneuverTravelEstimates:coordinates:coordinatesCount:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (CPNavigationWaypoint origin, CPNavigationWaypoint destination, CPManeuver [] maneuvers, CPLaneGuidance [] laneGuidances, CPManeuver [] currentManeuvers, CPLaneGuidance currentLaneGuidance, CPTravelEstimates tripTravelEstimates, CPTravelEstimates maneuverTravelEstimates, IntPtr coordinates, nint coordinatesCount);
+		NativeHandle Constructor (CPNavigationWaypoint origin, CPNavigationWaypoint destination, CPManeuver [] maneuvers, CPLaneGuidance [] laneGuidances, CPManeuver [] currentManeuvers, CPLaneGuidance currentLaneGuidance, CPTravelEstimates tripTravelEstimates, CPTravelEstimates maneuverTravelEstimates, [PointerAsArray (LengthFromParameter = nameof (coordinatesCount))] CPLocationCoordinate3D [] coordinates, nint coordinatesCount);
 
 		[Export ("identifier", ArgumentSemantic.Strong)]
 		NSUuid Identifier { get; }

@@ -12,16 +12,11 @@ namespace MapKit {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
-		public static unsafe MKPolygon FromPoints (MKMapPoint [] points)
+		public static MKPolygon FromPoints (MKMapPoint [] points)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-			if (points.Length == 0)
-				return _FromPoints (IntPtr.Zero, 0);
-
-			fixed (MKMapPoint* first = points) {
-				return _FromPoints ((IntPtr) first, points.Length);
-			}
+			return _FromPoints (points, points.Length);
 		}
 
 		/// <param name="points">An array of <see cref="MapKit.MKMapPoint" />s that define the polygon.</param>
@@ -31,16 +26,14 @@ namespace MapKit {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
-		public static unsafe MKPolygon FromPoints (MKMapPoint [] points, MKPolygon [] interiorPolygons)
+		public static MKPolygon FromPoints (MKMapPoint [] points, MKPolygon [] interiorPolygons)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
 			if (points.Length == 0)
-				return _FromPoints (IntPtr.Zero, 0);
+				return _FromPoints (points, 0);
 
-			fixed (MKMapPoint* first = points) {
-				return _FromPoints ((IntPtr) first, points.Length, interiorPolygons);
-			}
+			return _FromPoints (points, points.Length, interiorPolygons);
 		}
 
 		/// <param name="coords">An array of <see cref="CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
@@ -49,16 +42,11 @@ namespace MapKit {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
-		public static unsafe MKPolygon FromCoordinates (CLLocationCoordinate2D [] coords)
+		public static MKPolygon FromCoordinates (CLLocationCoordinate2D [] coords)
 		{
 			if (coords is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
-			if (coords.Length == 0)
-				return _FromCoordinates (IntPtr.Zero, 0);
-
-			fixed (CLLocationCoordinate2D* first = coords) {
-				return _FromCoordinates ((IntPtr) first, coords.Length);
-			}
+			return _FromCoordinates (coords, coords.Length);
 		}
 
 		/// <param name="coords">An array of <see cref="CoreLocation.CLLocationCoordinate2D" />s that define the desired polygon.</param>
@@ -68,16 +56,14 @@ namespace MapKit {
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
-		public static unsafe MKPolygon FromCoordinates (CLLocationCoordinate2D [] coords, MKPolygon [] interiorPolygons)
+		public static MKPolygon FromCoordinates (CLLocationCoordinate2D [] coords, MKPolygon [] interiorPolygons)
 		{
 			if (coords is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
 			if (coords.Length == 0)
-				return _FromCoordinates (IntPtr.Zero, 0);
+				return _FromCoordinates (coords, 0);
 
-			fixed (CLLocationCoordinate2D* first = coords) {
-				return _FromCoordinates ((IntPtr) first, coords.Length, interiorPolygons);
-			}
+			return _FromCoordinates (coords, coords.Length, interiorPolygons);
 		}
 
 	}

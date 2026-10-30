@@ -1633,21 +1633,21 @@ namespace MapKit {
 		[Static]
 		[Internal]
 		[Export ("polygonWithPoints:count:")]
-		MKPolygon _FromPoints (IntPtr points, nint count);
+		MKPolygon _FromPoints ([PointerAsArray (LengthFromParameter = nameof (count))] MKMapPoint [] points, nint count);
 
 		[Static]
 		[Internal]
 		[Export ("polygonWithPoints:count:interiorPolygons:")]
-		MKPolygon _FromPoints (IntPtr points, nint count, [NullAllowed] MKPolygon [] interiorPolygons);
+		MKPolygon _FromPoints ([PointerAsArray (LengthFromParameter = nameof (count))] MKMapPoint [] points, nint count, [NullAllowed] MKPolygon [] interiorPolygons);
 
 		[Static]
 		[Export ("polygonWithCoordinates:count:"), Internal]
-		MKPolygon _FromCoordinates (IntPtr coords, nint count);
+		MKPolygon _FromCoordinates ([PointerAsArray (LengthFromParameter = nameof (count))] CLLocationCoordinate2D [] coords, nint count);
 
 		[Static]
 		[Internal]
 		[Export ("polygonWithCoordinates:count:interiorPolygons:")]
-		MKPolygon _FromCoordinates (IntPtr coords, nint count, [NullAllowed] MKPolygon [] interiorPolygons);
+		MKPolygon _FromCoordinates ([PointerAsArray (LengthFromParameter = nameof (count))] CLLocationCoordinate2D [] coords, nint count, [NullAllowed] MKPolygon [] interiorPolygons);
 
 		#region MKAnnotation
 		[Export ("coordinate")]
@@ -1663,12 +1663,12 @@ namespace MapKit {
 		[Static]
 		[Export ("polylineWithCoordinates:count:")]
 		[Internal]
-		MKPolyline _FromCoordinates (IntPtr coords, nint count);
+		MKPolyline _FromCoordinates ([PointerAsArray (LengthFromParameter = nameof (count))] CLLocationCoordinate2D [] coords, nint count);
 
 		[Static]
 		[Internal]
 		[Export ("polylineWithPoints:count:")]
-		MKPolyline _FromPoints (IntPtr points, nint count);
+		MKPolyline _FromPoints ([PointerAsArray (LengthFromParameter = nameof (count))] MKMapPoint [] points, nint count);
 
 		#region MKAnnotation
 		[Export ("coordinate")]

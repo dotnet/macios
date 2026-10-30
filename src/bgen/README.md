@@ -32,6 +32,12 @@ as null pointers.
 
 The array is pinned for the duration of the call, so native writes are visible
 in the managed array. Native code must not retain the pointer after returning.
+For example, MapKit's polygon/polyline factories use internal attributed array
+parameters while their public convenience methods supply the array length.
+AppKit's `NSFont` methods use the same attribute for output struct buffers,
+retaining manual pinning only for the primitive glyph arrays. A fixed-size output
+buffer, such as `NSBezierPath`'s associated points, can instead use `Length = 3`.
+
 This attribute is for synchronous outgoing Objective-C methods and constructors:
 array methods are generated as non-virtual methods without callback exports.
 Protocols, models, delegates, property accessors, abstract/override methods and

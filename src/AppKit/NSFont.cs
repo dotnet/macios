@@ -35,10 +35,8 @@ namespace AppKit {
 				throw new ArgumentException ("glyphs array is empty");
 
 			CGRect [] bounds = new CGRect [glyphs.Length];
-			fixed (CGRect* boundsPtr = bounds) {
-				fixed (CGGlyph* glyphsPtr = glyphs) {
-					_GetBoundingRects ((IntPtr) boundsPtr, (IntPtr) glyphsPtr, (nuint) glyphs.Length);
-				}
+			fixed (CGGlyph* glyphsPtr = glyphs) {
+				_GetBoundingRects (bounds, (IntPtr) glyphsPtr, (nuint) glyphs.Length);
 			}
 			return bounds;
 		}
@@ -55,10 +53,8 @@ namespace AppKit {
 				throw new ArgumentException ("glyphs array is empty");
 
 			CGSize [] advancements = new CGSize [glyphs.Length];
-			fixed (CGSize* advancementsPtr = advancements) {
-				fixed (CGGlyph* glyphsPtr = glyphs) {
-					_GetAdvancements ((IntPtr) advancementsPtr, (IntPtr) glyphsPtr, (nuint) glyphs.Length);
-				}
+			fixed (CGGlyph* glyphsPtr = glyphs) {
+				_GetAdvancements (advancements, (IntPtr) glyphsPtr, (nuint) glyphs.Length);
 			}
 			return advancements;
 		}

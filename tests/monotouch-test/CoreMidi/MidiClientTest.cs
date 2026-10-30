@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.CoreMidi {
 			Assert.That (packet.BytePointer, Is.EqualTo (IntPtr.Zero), "Unmanaged pointer");
 			packet.Dispose ();
 			packet.Dispose ();
-			Assert.Throws<ObjectDisposedException> (() => { _ = packet.Bytes; }, "Disposed");
+			Assert.That (packet.Bytes, Is.EqualTo (IntPtr.Zero), "Disposed");
 		}
 
 		[Test]

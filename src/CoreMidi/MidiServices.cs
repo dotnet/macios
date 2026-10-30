@@ -929,10 +929,10 @@ namespace CoreMidi {
 
 #if !XAMCORE_5_0
 		/// <summary>Gets a pointer to the packet's MIDI data.</summary>
-		/// <exception cref="ObjectDisposedException">The packet has been disposed.</exception>
 		/// <remarks>
 		///   If the packet was constructed from a managed array, accessing this property pins the array until the packet is disposed.
 		///   Keep the packet alive and do not dispose it while using the returned pointer.
+		///   Returns <see cref="IntPtr.Zero" /> after the packet has been disposed.
 		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use ByteArray or BytePointer instead. Accessing this property pins the managed array until the packet is disposed.")]
@@ -940,7 +940,7 @@ namespace CoreMidi {
 			get {
 				lock (bytesLock) {
 					if (disposed)
-						ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
+						return IntPtr.Zero;
 					if (bytes is null || bytes.Length < 1)
 						return byteptr;
 					if (!pinnedBytes.IsAllocated)

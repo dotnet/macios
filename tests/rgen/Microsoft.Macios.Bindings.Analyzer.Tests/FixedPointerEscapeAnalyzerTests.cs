@@ -46,6 +46,7 @@ public class FixedPointerEscapeAnalyzerTests {
 	[InlineData ("void*", "fixed (byte* p = bytes) return ((IntPtr) p).ToPointer ();")]
 	[InlineData ("long", "fixed (byte* p = bytes) return ((IntPtr) p).ToInt64 ();")]
 	[InlineData ("IntPtr", "fixed (byte* p = bytes) return IntPtr.Add ((IntPtr) p, 1);")]
+	[InlineData ("IntPtr", "fixed (byte* p = bytes) return IntPtr.Subtract ((IntPtr) p, 1);")]
 	public async Task ReturningFixedPointer (string returnType, string body)
 	{
 		var compilation = CreateCompilation ($"using System; unsafe class Test {{ byte[] bytes = new byte[4]; {returnType} Method () {{ {body} }} }}");

@@ -1208,5 +1208,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The nullable binding &apos;{0}&apos; uses the non-nullable [BindAs] type &apos;{1}&apos;. Use a nullable type in [BindAs] to preserve null values..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
     }
 }

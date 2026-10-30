@@ -4,33 +4,40 @@ using System.Collections;
 #nullable enable
 
 namespace Foundation {
-#if false // https://github.com/dotnet/macios/issues/15577
-	[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
+	[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos"), SupportedOSPlatform ("maccatalyst")]
 	[Register (SkipRegistration = true)]
 	public sealed partial class NSOrderedCollectionChange<TKey> : NSOrderedCollectionChange
 		where TKey : class, INativeObject {
 
-		public NSOrderedCollectionChange (NSObject? anObject, NSCollectionChangeType type, nuint index)
-			: base (anObject, type, index) {}
-
-		public NSOrderedCollectionChange (NSObject? anObject, NSCollectionChangeType type, nuint index, nuint associatedIndex)
-			: base (anObject, type, index, associatedIndex) {}
-
 		public static NSOrderedCollectionChange<TKey> ChangeWithObject (TKey? anObject, NSCollectionChangeType type, nuint index)
-			=> new NSOrderedCollectionChange<TKey> (NSOrderedCollectionChange._ChangeWithObject (anObject.GetHandle (), type, index));
+		{
+			var change = new NSOrderedCollectionChange<TKey> (NSOrderedCollectionChange._ChangeWithObject (anObject.GetHandle (), type, index));
+			GC.KeepAlive (anObject);
+			return change;
+		}
 
 		public static NSOrderedCollectionChange<TKey> ChangeWithObject (TKey? anObject, NSCollectionChangeType type, nuint index, nuint associatedIndex)
-			=> new NSOrderedCollectionChange<TKey> (NSOrderedCollectionChange._ChangeWithObject (anObject.GetHandle (), type, index, associatedIndex));
+		{
+			var change = new NSOrderedCollectionChange<TKey> (NSOrderedCollectionChange._ChangeWithObject (anObject.GetHandle (), type, index, associatedIndex));
+			GC.KeepAlive (anObject);
+			return change;
+		}
 
-		internal NSOrderedCollectionChange (IntPtr handle) : base (handle) { }
+		internal NSOrderedCollectionChange (NativeHandle handle) : base (handle) { }
 
-		public NSOrderedCollectionChange (TKey? anObject, NSCollectionChangeType type, nuint index) 
-			: base (anObject!.Handle, type, index) {}
+		public NSOrderedCollectionChange (TKey? anObject, NSCollectionChangeType type, nuint index)
+			: base (anObject.GetHandle (), type, index)
+		{
+			GC.KeepAlive (anObject);
+		}
 
+		[DesignatedInitializer]
 		public NSOrderedCollectionChange (TKey? anObject, NSCollectionChangeType type, nuint index, nuint associatedIndex)
-			: base (anObject!.Handle, type, index, associatedIndex) {}
+			: base (anObject.GetHandle (), type, index, associatedIndex)
+		{
+			GC.KeepAlive (anObject);
+		}
 
-		public TKey? Object => Runtime.GetINativeObject<TKey> (_Object, true);
+		public new TKey? Object => Runtime.GetINativeObject<TKey> (_Object, false);
 	}
-#endif
 }

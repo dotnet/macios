@@ -462,32 +462,27 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentException> (() => NSArray.EnumsFromHandle<int> (NativeHandle.Zero), "non-enum should throw");
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Test]
 		public void GetDifferenceFromArrayTest ()
 		{
-			TestRuntime.AssertXcodeVersion (13,0);
+			TestRuntime.AssertXcodeVersion (13, 0);
 			using var str1 = (NSString) "1";
 			using var str2 = (NSString) "1";
 			using var str3 = (NSString) "1";
-			
+
 			using var array1 = NSArray.FromObjects (str1, str2);
 			using var array2 = NSArray.FromObjects (str1, str3);
-			NSOrderedCollectionDifference? diff = null;
-			Assert.DoesNotThrow (() => {
-				diff = array1.GetDifferenceFromArray (array2,
-					NSOrderedCollectionDifferenceCalculationOptions.OmitInsertedObjects,
-					(first, second) => {
-						var firstStr = (NSString) first;
-						var secondStr = (NSString) second;
-						return first.ToString ().Equals (second.ToString ());
-					});
-			}, "Not throws");
-			// https://github.com/dotnet/macios/issues/15577 - Did not rewrite tests that were disabled
-			// Maybe assert that we get a specific diff result as well?
+			var calls = 0;
+			using var diff = array1.GetDifferenceFromArray (array2,
+				NSOrderedCollectionDifferenceCalculationOptions.OmitInsertedObjects,
+				(first, second) => {
+					calls++;
+					return first?.ToString () == second?.ToString ();
+				});
+			Assert.That (calls, Is.GreaterThan (0), "Callback count");
 			Assert.That (diff, Is.Not.Null, "Not null");
+			Assert.That (diff?.HasChanges, Is.False, "Equivalent arrays");
 		}
-#endif
 
 		[Test]
 		public void FromArrayOfArray ()

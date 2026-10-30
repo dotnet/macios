@@ -248,10 +248,7 @@ namespace Foundation {
 		}
 		#endregion
 
-#if false // https://github.com/dotnet/macios/issues/15577
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public void ApplyDifference (NSOrderedCollectionDifference<TValue> difference)
 			=> ApplyDifference ((NSOrderedCollectionDifference) difference);
-#endif
 	}
 }

@@ -91,11 +91,16 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-		public void AlwaysReturnNewInstanceInvalidReturn ()
+		[TestCase ("INVALID_RETURN_TYPE")]
+		[TestCase ("VOID_RETURN_TYPE")]
+		[TestCase ("ABSTRACT_RETURN_TYPE")]
+		[TestCase ("DICTIONARY_RETURN_TYPE")]
+		[TestCase ("BINDAS_RETURN_TYPE")]
+		public void AlwaysReturnNewInstanceInvalidReturn (string define)
 		{
 			var bgen = new BGenTool {
 				Profile = Profile.iOS,
-				Defines = new [] { "INVALID_RETURN_TYPE" },
+				Defines = new [] { define },
 			};
 			bgen.AddTestApiDefinition ("always-return-new-instance.cs");
 			bgen.AssertExecuteError ("invalid fresh-wrapper return type");

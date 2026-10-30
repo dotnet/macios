@@ -3019,6 +3019,17 @@ public partial class Generator : IMemberGatherer {
 		print (w, "");
 	}
 
+	bool AlwaysReturnsNewInstance (MethodInfo mi, MemberInformation? minfo)
+	{
+		var alwaysReturnNewInstance = AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (mi.ReturnParameter)
+			|| AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (GetProperty (mi, getter: true, setter: false));
+		if (alwaysReturnNewInstance && (!TypeManager.IsWrappedType (mi.ReturnType) || IsProtocolInterface (mi.ReturnType)
+			|| AttributeManager.HasAttribute<AbstractAttribute> (mi.ReturnType)
+			|| TypeManager.IsDictionaryContainerType (mi.ReturnType) || minfo?.is_bindAs == true))
+			throw new BindingException (1130, true, mi.DeclaringType, mi.Name);
+		return alwaysReturnNewInstance;
+	}
+
 	//
 	// Given a method info that has a return value, produce the text necessary on
 	// both sides of a call to wrap the result into user-facing MonoTouch types.
@@ -3036,11 +3047,7 @@ public partial class Generator : IMemberGatherer {
 
 		var mai = new MarshalInfo (this, mi);
 		var owns = (minfo?.is_return_release == true) || (minfo?.is_forced_owns == true) ? "true" : "false";
-		var alwaysReturnNewInstance = AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (mi.ReturnParameter)
-			|| AttributeManager.HasAttribute<AlwaysReturnNewInstanceAttribute> (GetProperty (mi, getter: true, setter: false));
-		if (alwaysReturnNewInstance) {
-			if (!TypeManager.IsWrappedType (mi.ReturnType) || IsProtocolInterface (mi.ReturnType))
-				throw new BindingException (1130, true, mi.DeclaringType, mi.Name);
+		if (AlwaysReturnsNewInstance (mi, minfo)) {
 			var returnType = TypeManager.FormatType (minfo?.type ?? declaringType, mi.ReturnType);
 			// Evaluate the native call once, and balance ownership after the handle constructor retains it.
 			cast_a = $"((Func<NativeHandle, {returnType}?>) (handle => {{ if (handle == NativeHandle.Zero) return null; var result = new {returnType} (handle);";
@@ -3611,6 +3618,8 @@ public partial class Generator : IMemberGatherer {
 	//
 	public void GenerateMethodBody (MemberInformation minfo, MethodInfo mi, string? sel, bool null_allowed_override, string? var_name, BodyOption body_options, PropertyInfo? propInfo = null)
 	{
+		if (mi.ReturnType == TypeCache.System_Void || mi.Name == "Constructor")
+			AlwaysReturnsNewInstance (mi, minfo);
 		var type = minfo.type;
 		var category_type = minfo.category_extension_type;
 		var is_appearance = minfo.is_appearance;

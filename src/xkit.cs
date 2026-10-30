@@ -175,7 +175,6 @@ namespace UIKit {
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
 		[MacCatalyst (13, 1)]
-		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
 		[Static]
 		[Export ("systemFontOfSize:weight:")]
 		[return: AlwaysReturnNewInstance]
@@ -216,7 +215,6 @@ namespace UIKit {
 		///   <para tool="threads">This can be used from a background thread.</para>
 		/// </remarks>
 		[MacCatalyst (13, 1)]
-		[EditorBrowsable (EditorBrowsableState.Advanced)] // we prefer to show the one using the enum
 		[Static]
 		[Export ("monospacedDigitSystemFontOfSize:weight:")]
 		[return: AlwaysReturnNewInstance]

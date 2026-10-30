@@ -54,12 +54,24 @@ namespace MonoTouchFixtures.UIKit {
 			}
 		}
 
+		string temporaryDirectory;
+
+		[SetUp]
+		public void SetUp ()
+		{
+			temporaryDirectory = Path.Combine (Path.GetTempPath (), $"{nameof (DocumentTest)}-{Guid.NewGuid ()}");
+			Directory.CreateDirectory (temporaryDirectory);
+		}
+
+		[TearDown]
+		public void TearDown ()
+		{
+			Directory.Delete (temporaryDirectory, true);
+		}
+
 		string GetFileName ()
 		{
-			string file = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "mydocument.txt");
-			if (File.Exists (file))
-				File.Delete (file);
-			return file;
+			return Path.Combine (temporaryDirectory, "mydocument.txt");
 		}
 
 		[Test]
@@ -71,13 +83,17 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (NSUrl url = NSUrl.FromFilename (GetFileName ())) {
 				using var doc = new MyDocument (url);
-				doc.Save (url, UIDocumentSaveOperation.ForCreating, OperationHandler);
+				try {
+					var saveTask = doc.SaveAsync (url, UIDocumentSaveOperation.ForCreating);
+					Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), saveTask), Is.True, "Save completed");
+					Assert.That (saveTask.Result, Is.True, "Save succeeded");
+					Assert.That (File.ReadAllText (GetFileName ()), Is.EqualTo ("content"), "Saved contents");
+				} finally {
+					var closeTask = doc.CloseAsync ();
+					Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), closeTask), Is.True, "Close completed");
+					Assert.That (closeTask.Result, Is.True, "Close succeeded");
+				}
 			}
-		}
-
-		void OperationHandler (bool success)
-		{
-			Assert.That (success, Is.True);
 		}
 
 		[Test]

@@ -286,9 +286,9 @@ namespace Xamarin.MacDev.Tasks {
 				dict,
 				CustomEntitlements,
 				(value, entitlement) => MergeEntitlementString (value, profile, entitlement == ApplicationIdentifierKey, entitlement),
-				MSBStrings.E7102, /* Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected no value at all. */
-				MSBStrings.E7103, /* "Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected 'true' or 'false'." */
-				MSBStrings.E7104 /* "Unknown type '{0}' for the entitlement '{1}' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'." */);
+				7102, MSBStrings.E7102, /* Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected no value at all. */
+				7103, MSBStrings.E7103, /* "Invalid value '{0}' for the entitlement '{1}' of type '{2}' specified in the CustomEntitlements item group. Expected 'true' or 'false'." */
+				7104, MSBStrings.E7104 /* "Unknown type '{0}' for the entitlement '{1}' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'." */);
 		}
 
 		static bool AreEqual (byte [] x, byte [] y)
@@ -461,13 +461,13 @@ namespace Xamarin.MacDev.Tasks {
 				platform = MobileProvisionPlatform.MacOS;
 				break;
 			default:
-				Log.LogError (MSBStrings.E0048, SdkPlatform);
+				Log.LogError (48, null, MSBStrings.E0048, SdkPlatform); // Unknown SDK platform: {0}
 				return false;
 			}
 
 			if (!string.IsNullOrEmpty (ProvisioningProfile)) {
 				if ((profile = GetMobileProvision (platform, ProvisioningProfile)) is null) {
-					Log.LogError (MSBStrings.E0049, ProvisioningProfile);
+					Log.LogError (49, null, MSBStrings.E0049, ProvisioningProfile); // Could not locate the provisioning profile with a Name or UUID of {0}.
 					return false;
 				}
 			} else {
@@ -488,7 +488,7 @@ namespace Xamarin.MacDev.Tasks {
 					templates.Add (defaultEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading default entitlements from: {DefaultEntitlementsPath}");
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0113, DefaultEntitlementsPath, ex.Message);
+					Log.LogError (113, null, MSBStrings.E0113, DefaultEntitlementsPath, ex.Message); // Error loading Entitlements.plist template '{0}': {1}
 					return false;
 				}
 			}
@@ -496,14 +496,14 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (Entitlements)) {
 				try {
 					if (!File.Exists (Entitlements)) {
-						Log.LogError (MSBStrings.E0112, Entitlements);
+						Log.LogError (112, null, MSBStrings.E0112, Entitlements); // Entitlements.plist template '{0}' not found.
 						return false;
 					}
 					var projectEntitlements = PDictionary.OpenFile (Entitlements);
 					templates.Add (projectEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading user requested entitlements from: {Entitlements}");
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0113, Entitlements, ex.Message);
+					Log.LogError (113, null, MSBStrings.E0113, Entitlements, ex.Message); // Error loading Entitlements.plist template '{0}': {1}
 					return false;
 				}
 			}
@@ -528,7 +528,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					WriteXcent (simulatedEntitlements, simulatedXcent);
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0114, simulatedXcent, ex.Message);
+					Log.LogError (114, null, MSBStrings.E0114, simulatedXcent, ex.Message); // Error writing xcent file '{0}': {1}
 					return false;
 				}
 
@@ -548,7 +548,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				WriteXcent (compiled, compiledEntitlementsFullPath);
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0114, compiledEntitlementsFullPathItem, ex.Message);
+				Log.LogError (114, null, MSBStrings.E0114, compiledEntitlementsFullPathItem, ex.Message); // Error writing xcent file '{0}': {1}
 				return false;
 			}
 
@@ -581,7 +581,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				archived.Save (path, true);
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0115, ex.Message);
+				Log.LogError (115, null, MSBStrings.E0115, ex.Message); // Error writing archived-expanded-entitlements.xcent file: {0}
 				return false;
 			}
 

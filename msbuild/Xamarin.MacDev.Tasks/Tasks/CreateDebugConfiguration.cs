@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (!File.Exists (path) || File.ReadAllText (path) != text)
 					File.WriteAllText (path, text);
 			} catch (Exception ex) {
-				Log.LogError (ex.Message);
+				Log.LogErrorFromException (ex);
 			}
 
 			return !Log.HasLoggedErrors;

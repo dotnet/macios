@@ -138,7 +138,7 @@ namespace Xamarin.MacDev {
 			} else if (Directory.Exists (decompressedResource)) {
 				createdFiles.AddRange (Directory.GetFiles (decompressedResource, "*", SearchOption.AllDirectories));
 			} else {
-				log.LogWarning ("The extracted file or directory '{0}' could not be found." /* The extracted file or directory '{0}' could not be found. */, decompressedResource);
+				log.LogWarning (7201, null, MSBStrings.W7201 /* The extracted file or directory '{0}' could not be found. */, decompressedResource);
 			}
 
 			return rv;
@@ -164,7 +164,7 @@ namespace Xamarin.MacDev {
 				if (entry is null) {
 					entry = GetCanonicalizedEntry (archive, resource + zipDirectorySeparator);
 					if (entry is null) {
-						log.LogError (MSBStrings.E7112 /* Could not find the file or directory '{0}' in the zip file '{1}'. */, resource, zip);
+						log.LogError (7112, null, MSBStrings.E7112 /* Could not find the file or directory '{0}' in the zip file '{1}'. */, resource, zip);
 						return false;
 					}
 				}
@@ -219,7 +219,7 @@ namespace Xamarin.MacDev {
 				const uint S_IFLNK = 0xa000; // #define S_IFLNK  0120000  /* symbolic link */
 				var isSymlink = (entryAttributes & S_IFLNK) == S_IFLNK;
 				if (isSymlink) {
-					log.LogError (MSBStrings.E7113 /* Can't process the zip file '{0}' on this platform: the file '{1}' is a symlink. */, zip, entryPath);
+					log.LogError (7113, null, MSBStrings.E7113 /* Can't process the zip file '{0}' on this platform: the file '{1}' is a symlink. */, zip, entryPath);
 					rv = false;
 					continue;
 				}

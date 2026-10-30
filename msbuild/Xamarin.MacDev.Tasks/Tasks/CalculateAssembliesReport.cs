@@ -23,7 +23,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!Directory.Exists (WorkingDirectory)) {
-				Log.LogError (MSBStrings.E7149 /* Unable to calculate the assemblies report from '{0}'. Directory not found. */, WorkingDirectory);
+				Log.LogError (7149, null, MSBStrings.E7149 /* Unable to calculate the assemblies report from '{0}'. Directory not found. */, WorkingDirectory);
 
 				return false;
 			}
@@ -53,7 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E7150 /* Unable to calculate assemblies report from '{0}'. An unexpected error occurred. */, WorkingDirectory);
+				Log.LogError (7150, null, MSBStrings.E7150 /* Unable to calculate assemblies report from '{0}'. An unexpected error occurred. */, WorkingDirectory);
 				Log.LogErrorFromException (ex);
 
 				return false;

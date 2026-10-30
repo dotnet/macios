@@ -84,7 +84,14 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="lineNumber">Line number in the file where the error was found, or 0 if unknown.</param>
 		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
-			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+			log.LogError (errorCode, fileName, lineNumber, 0, 0, 0, message, args);
+		}
+
+		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, int columnNumber, int endLineNumber, int endColumnNumber, string message, params object? [] args)
+		{
+#pragma warning disable RS0030 // This helper supplies the SDK diagnostic code to MSBuild.
+			log.LogError (null, $"{ErrorPrefix}{errorCode:D4}", null, fileName ?? "MSBuild", lineNumber, columnNumber, endLineNumber, endColumnNumber, message, args);
+#pragma warning restore RS0030
 		}
 
 		/// <summary>
@@ -96,17 +103,19 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="fileName">Path to the known guilty file or null.</param>
 		public static void LogError (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
-			log.LogError (null, $"{ErrorPrefix}{errorCode}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+			log.LogError (errorCode, fileName, 0, message, args);
 		}
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, string message, params object? [] args)
 		{
-			log.LogWarning (null, $"{ErrorPrefix}{errorCode:D4}", null, fileName ?? "MSBuild", 0, 0, 0, 0, message, args);
+			log.LogWarning (errorCode, fileName, 0, message, args);
 		}
 
 		public static void LogWarning (this TaskLoggingHelper log, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)
 		{
+#pragma warning disable RS0030 // This helper supplies the SDK diagnostic code to MSBuild.
 			log.LogWarning (null, $"{ErrorPrefix}{errorCode:D4}", null, fileName ?? "MSBuild", lineNumber, 0, 0, 0, message, args);
+#pragma warning restore RS0030
 		}
 
 		public static void LogMessage (this TaskLoggingHelper log, MessageImportance importance, int errorCode, string? fileName, int lineNumber, string message, params object? [] args)

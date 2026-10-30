@@ -119,7 +119,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 		if (Verbose) {
 			foreach (var dd in DiscardedDevices)
-				Log.LogWarning ("Discarded '{0}' because: {1}", dd.ItemSpec, dd.GetMetadata ("DiscardedReason"));
+				Log.LogWarning (7218, null, MSBStrings.W7218, dd.ItemSpec, dd.GetMetadata ("DiscardedReason")); // Discarded '{0}' because: {1}
 		}
 
 		return true;

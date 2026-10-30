@@ -215,7 +215,7 @@ namespace Xamarin.MacDev.Tasks {
 					case "link_flags": // mmp uses link_flags
 						value = hasValue ? value : nextValue; // requires a value, which might be the next option
 						if (!StringUtils.TryParseArguments (value, out var lf, out var ex)) {
-							Log.LogError (MSBStrings.E0189 /* Could not parse the custom linker argument(s) '-{0}': {1} */, $"-{name}={value}", ex.Message);
+							Log.LogError (189, null, MSBStrings.E0189 /* Could not parse the custom linker argument(s) '-{0}': {1} */, $"-{name}={value}", ex.Message);
 							continue;
 						}
 						if (customLinkFlags is null)

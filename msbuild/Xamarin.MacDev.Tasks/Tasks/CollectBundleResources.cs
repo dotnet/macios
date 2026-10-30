@@ -59,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 				// But execute locally
 				return ExecuteImpl ();
 			} catch (PathTooLongException ptle) when (Environment.OSVersion.Platform == PlatformID.Win32NT && !PathUtils.OSSupportsLongPaths) {
-				Log.LogError (MSBStrings.E7122 /* A path exceeding max path was detected. Enabling long paths in Windows may help. For more information see https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation. */);
+				Log.LogError (7122, null, MSBStrings.E7122 /* A path exceeding max path was detected. Enabling long paths in Windows may help. For more information see https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation. */);
 				Log.LogErrorFromException (ptle); // report the original exception too.
 				return false;
 			} catch (Exception ex) {
@@ -226,7 +226,7 @@ namespace Xamarin.MacDev.Tasks {
 			var path = item.GetMetadata ("FullPath");
 
 			if (!File.Exists (path)) {
-				task.Log.LogError (MSBStrings.E0099, logicalName, path);
+				task.Log.LogError (99, null, MSBStrings.E0099, logicalName, path); // Bundle Resource '{0}' not found on disk (should be at '{1}')
 				return false;
 			}
 
@@ -242,7 +242,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (BundleResource.IsIllegalName (logicalName, out var illegal)) {
-				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0102, illegal);
+				task.Log.LogError (102, item.ItemSpec, MSBStrings.E0102, illegal); // The name '{0}' is reserved and cannot be used.
 				return false;
 			}
 

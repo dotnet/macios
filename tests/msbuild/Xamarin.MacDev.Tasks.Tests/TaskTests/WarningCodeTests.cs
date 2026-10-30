@@ -36,6 +36,99 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void ErrorLoggingHelper ()
+		{
+			var task = CreateTask<CompileAppManifest> ();
+			task.Log.LogError (10, "Info.plist", MSBStrings.E0010, "Info.plist", "Invalid plist"); // Error loading '{0}': {1}
+			task.Log.LogError (10, "Info.plist", 12, MSBStrings.E0010, "Info.plist", "Invalid plist"); // Error loading '{0}': {1}
+			task.Log.LogError (10, "Info.plist", 12, 2, 15, 8, MSBStrings.E0010, "Info.plist", "Invalid plist"); // Error loading '{0}': {1}
+
+			Assert.That (Engine.Logger.ErrorEvents.Count, Is.EqualTo (3), "Error count");
+			for (var i = 0; i < 3; i++) {
+				var error = Engine.Logger.ErrorEvents [i];
+				Assert.That (error.Code, Is.EqualTo ("MT0010"), "Code");
+				Assert.That (error.File, Is.EqualTo ("Info.plist"), "File");
+				Assert.That (error.LineNumber, Is.EqualTo (i == 0 ? 0 : 12), "Line");
+				Assert.That (error.ColumnNumber, Is.EqualTo (i == 2 ? 2 : 0), "Column");
+				Assert.That (error.EndLineNumber, Is.EqualTo (i == 2 ? 15 : 0), "End line");
+				Assert.That (error.EndColumnNumber, Is.EqualTo (i == 2 ? 8 : 0), "End column");
+				Assert.That (error.Message, Is.EqualTo (string.Format (MSBStrings.E0010, "Info.plist", "Invalid plist")), "Message");
+			}
+		}
+
+		[TestCase ("E0179", true, "MT0179", new [] { "TestTask" })]
+		[TestCase ("W0108b", false, "MT0108", new [] { "key", "value" })]
+		[TestCase ("E7152_InvalidMtouchHttpClientHandler", true, "MT7152", new [] { "invalid" })]
+		public void ResourceDiagnostic (string resource, bool error, string expectedCode, string [] arguments)
+		{
+			var task = CreateTask<MacDevMessage> ();
+			task.ResourceName = resource;
+			task.Error = error;
+			task.Warning = !error;
+			task.FormatArguments = Array.ConvertAll (arguments, value => new TaskItem (value));
+			ExecuteTask (task, error ? 1 : 0);
+
+			if (error) {
+				Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo (expectedCode), "Error code");
+				Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (string.Format (MSBStrings.ResourceManager.GetString (resource) ?? "", arguments)), "Error message");
+			} else {
+				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Warning count");
+				Assert.That (Engine.Logger.WarningsEvents [0].Code, Is.EqualTo (expectedCode), "Warning code");
+				Assert.That (Engine.Logger.WarningsEvents [0].Message, Is.EqualTo (string.Format (MSBStrings.ResourceManager.GetString (resource) ?? "", arguments)), "Warning message");
+			}
+		}
+
+		[TestCase ("InvalidPlatform", true)]
+		[TestCase ("InvalidPlatform", false)]
+		[TestCase ("E", true)]
+		[TestCase ("Eabcd", true)]
+		public void UnnumberedResourceDiagnostic (string resource, bool error)
+		{
+			var task = CreateTask<MacDevMessage> ();
+			task.ResourceName = resource;
+			task.Error = error;
+			task.Warning = !error;
+			task.FormatArguments = [new TaskItem ("invalid")];
+			ExecuteTask (task, 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT7223"), "Code");
+		}
+
+		[Test]
+		public void AppManifestError ()
+		{
+			var task = CreateTask<ManifestErrorTask> ();
+			task.AppManifest = new TaskItem ("Info.plist");
+			ExecuteTask (task, 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT0010"), "Code");
+			Assert.That (Engine.Logger.ErrorEvents [0].File, Is.EqualTo ("Info.plist"), "File");
+		}
+
+		public class ManifestErrorTask : CompileAppManifest {
+			public override bool Execute ()
+			{
+				LogAppManifestError (10, MSBStrings.E0010, "Info.plist", "Invalid plist"); // Error loading '{0}': {1}
+				return !Log.HasLoggedErrors;
+			}
+		}
+
+		[Test]
+		public void MissingAppManifest ()
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			var file = Path.Combine (directory, "missing.plist");
+			var task = CreateTask<WriteAppManifest> ();
+			task.AppManifests = [new TaskItem (file)];
+			task.AppBundleManifest = new TaskItem (Path.Combine (directory, "Info.plist"));
+			ExecuteTask (task, 1);
+
+			var error = Engine.Logger.ErrorEvents [0];
+			Assert.That (error.Code, Is.EqualTo ("MT0010"), "Code");
+			Assert.That (error.File, Is.EqualTo (file), "File");
+			Assert.That (error.Message, Does.StartWith (string.Format (MSBStrings.E0010, file, "")), "Message");
+		}
+
+		[Test]
 		public void NativeReferenceWarning ()
 		{
 			var task = CreateTask<CompileAppManifest> ();

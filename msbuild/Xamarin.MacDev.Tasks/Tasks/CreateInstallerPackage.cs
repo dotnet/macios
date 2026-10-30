@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				plist = PDictionary.OpenFile (AppManifest);
 			} catch (Exception ex) {
-				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0010, AppManifest, ex.Message);
+				Log.LogError (10, AppManifest, MSBStrings.E0010, AppManifest, ex.Message); // Error loading '{0}': {1}
 				return null;
 			}
 
@@ -104,7 +104,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					AppendExtraArgs (args, PackagingExtraArgs);
 				} catch (FormatException) {
-					Log.LogError (MSBStrings.E0123);
+					Log.LogError (123, null, MSBStrings.E0123); // Package creation failed. Could not parse extra arguments.
 					return args;
 				}
 			}
@@ -170,8 +170,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (best is null) {
-				string msg = string.Format (MSBStrings.E0124, key);
-				Log.LogError (msg);
+				Log.LogError (124, null, MSBStrings.E0124, key); // The identity '{0}' doesn't match any valid certificate/private key pair in the default keychain.
 				return string.Empty;
 			}
 

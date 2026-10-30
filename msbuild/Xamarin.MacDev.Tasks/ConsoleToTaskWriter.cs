@@ -6,6 +6,7 @@ using System.Text;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Xamarin.MacDev.Tasks;
 
 #nullable enable
 
@@ -57,7 +58,7 @@ class ConsoleToTaskWriter : TextWriter {
 			return;
 		errorShown = true;
 
-		helper.LogError (null, "MT7178" /* Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0} */, null, null, 0, 0, 0, 0, Xamarin.Localization.MSBuild.MSBStrings.E7178, Environment.StackTrace);
+		helper.LogError (7178, null, Xamarin.Localization.MSBuild.MSBStrings.E7178, Environment.StackTrace); // Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}
 	}
 
 	public static IDisposable EnsureNoConsoleUsage (TaskLoggingHelper log)

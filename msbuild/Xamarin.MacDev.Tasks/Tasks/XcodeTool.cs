@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (!string.IsNullOrEmpty (relative)) {
 					if (BundleResource.IsIllegalName (relative, out var illegal)) {
-						Log.LogError (null, null, null, input.ItemSpec, 0, 0, 0, 0, MSBStrings.E0102, illegal);
+						Log.LogError (102, input.ItemSpec, MSBStrings.E0102, illegal); // The name '{0}' is reserved and cannot be used.
 						continue;
 					}
 

@@ -110,7 +110,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					plist = PDictionary.OpenFile (appManifest);
 				} catch (Exception ex) {
-					LogAppManifestError (MSBStrings.E0010, appManifest, ex.Message);
+					LogAppManifestError (10, MSBStrings.E0010, appManifest, ex.Message); // Error loading '{0}': {1}
 					return false;
 				}
 			} else {
@@ -119,7 +119,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!string.IsNullOrEmpty (TargetArchitectures) && !Enum.TryParse (TargetArchitectures, out architectures)) {
-				LogAppManifestError (MSBStrings.E0012, TargetArchitectures);
+				LogAppManifestError (12, MSBStrings.E0012, TargetArchitectures); // Could not parse TargetArchitectures '{0}'
 				return false;
 			}
 
@@ -197,9 +197,9 @@ namespace Xamarin.MacDev.Tasks {
 				plist,
 				AppManifestEntries,
 				static (value, _) => value,
-				MSBStrings.E7190, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
-				MSBStrings.E7191, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
-				MSBStrings.E7189 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
+				7190, MSBStrings.E7190, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected no value at all. */
+				7191, MSBStrings.E7191, /* Invalid value '{0}' for the app manifest entry '{1}' of type '{2}' specified in the AppManifestEntry item group. Expected 'true' or 'false'. */
+				7189, MSBStrings.E7189 /* Unknown type '{0}' for the app manifest entry '{1}' specified in the AppManifestEntry item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'. */);
 		}
 
 		void RegisterFonts (PDictionary plist)
@@ -236,9 +236,9 @@ namespace Xamarin.MacDev.Tasks {
 				var allSubdirectories = FontFilesToRegister.Select (v => Path.GetDirectoryName (v.GetMetadata (logicalNameKey)));
 				var distinctSubdirectories = allSubdirectories.Distinct ().ToArray ();
 				if (distinctSubdirectories.Length > 1) {
-					Log.LogError (MSBStrings.E7083 /* "All font files must be located in the same directory in the app bundle. The following font files have different target directories in the app bundle:" */, CompiledAppManifest!.ItemSpec);
+					Log.LogError (7083, null, MSBStrings.E7083 /* "All font files must be located in the same directory in the app bundle. The following font files have different target directories in the app bundle:" */, CompiledAppManifest!.ItemSpec);
 					foreach (var fonts in FontFilesToRegister)
-						Log.LogError (null, null, null, fonts.ItemSpec, 0, 0, 0, 0, MSBStrings.E7084 /* "The target directory is {0}" */, fonts.GetMetadata (logicalNameKey));
+						Log.LogError (7084, fonts.ItemSpec, MSBStrings.E7084 /* "The target directory is {0}" */, fonts.GetMetadata (logicalNameKey));
 				} else {
 					plist.SetIfNotPresent ("ATSApplicationFontsPath", string.IsNullOrEmpty (distinctSubdirectories [0]) ? "." : distinctSubdirectories [0]);
 				}
@@ -264,7 +264,7 @@ namespace Xamarin.MacDev.Tasks {
 				// SupportedOSPlatformVersion is the iOS version for Mac Catalyst.
 				// But we need to store the macOS version in the app manifest, so convert it to the macOS version here.
 				if (!MacCatalystSupport.TryGetMacOSVersion (CurrentSdk.GetSdkPath (SdkVersion), SupportedOSPlatformVersion, out var convertedVersion, out var knowniOSVersions)) {
-					Log.LogError (MSBStrings.E0188, SupportedOSPlatformVersion, string.Join (", ", knowniOSVersions.OrderBy (v => v)));
+					Log.LogError (188, null, MSBStrings.E0188, SupportedOSPlatformVersion, string.Join (", ", knowniOSVersions.OrderBy (v => v))); // Could not map the Mac Catalyst version {0} to a corresponding macOS version. Valid Mac Catalyst versions are: {1}
 					return false;
 				}
 				convertedSupportedOSPlatformVersion = convertedVersion;
@@ -278,7 +278,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (!string.IsNullOrEmpty (minimumiOSVersionInManifest)) {
 					// Convert to the macOS version
 					if (!MacCatalystSupport.TryGetMacOSVersion (CurrentSdk.GetSdkPath (SdkVersion), minimumiOSVersionInManifest!, out var convertedVersion, out var knowniOSVersions)) {
-						Log.LogError (MSBStrings.E0188, minimumiOSVersionInManifest, string.Join (", ", knowniOSVersions.OrderBy (v => v)));
+						Log.LogError (188, null, MSBStrings.E0188, minimumiOSVersionInManifest, string.Join (", ", knowniOSVersions.OrderBy (v => v))); // Could not map the Mac Catalyst version {0} to a corresponding macOS version. Valid Mac Catalyst versions are: {1}
 						return false;
 					}
 					minimumOSVersionInManifest = convertedVersion;
@@ -293,11 +293,11 @@ namespace Xamarin.MacDev.Tasks {
 					minimumOSVersion = SdkVersion;
 				}
 			} else if (!IAppleSdkVersion_Extensions.TryParse (minimumOSVersionInManifest, out var _)) {
-				LogAppManifestError (MSBStrings.E0011, minimumOSVersionInManifest!);
+				LogAppManifestError (11, MSBStrings.E0011, minimumOSVersionInManifest!); // Could not parse MinimumOSVersion value '{0}'
 				return false;
 			} else if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion) && convertedSupportedOSPlatformVersion != minimumOSVersionInManifest) {
 				// SupportedOSPlatformVersion and the value in the Info.plist are not the same. This is an error.
-				LogAppManifestError (MSBStrings.E7082, minimumVersionKey, minimumOSVersionInManifest!, SupportedOSPlatformVersion);
+				LogAppManifestError (7082, MSBStrings.E7082, minimumVersionKey, minimumOSVersionInManifest!, SupportedOSPlatformVersion); // The {0} value in the Info.plist ({1}) does not match the SupportedOSPlatformVersion value ({2}) in the project file (if there is no SupportedOSPlatformVersion value in the project file, then a default value has been assumed). Either change the value in the Info.plist to match the SupportedOSPlatformVersion value, or remove the value in the Info.plist (and add a SupportedOSPlatformVersion value to the project file if it doesn't already exist).
 				return false;
 			} else {
 				minimumOSVersion = minimumOSVersionInManifest!;
@@ -305,13 +305,13 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Verify that the value is not lower than the minimum
 			if (!Version.TryParse (MinSupportedOSPlatformVersion, out var minSupportedVersion)) {
-				Log.LogError (MSBStrings.E7125 /* Unable to parse the value '{0}' for the property '{1}. */, MinSupportedOSPlatformVersion, "MinSupportedOSPlatformVersion");
+				Log.LogError (7125, null, MSBStrings.E7125 /* Unable to parse the value '{0}' for the property '{1}. */, MinSupportedOSPlatformVersion, "MinSupportedOSPlatformVersion");
 				return false;
 			} else if (!Version.TryParse (SupportedOSPlatformVersion, out var supportedVersion)) {
-				Log.LogError (MSBStrings.E7125 /* Unable to parse the value '{0}' for the property '{1}. */, SupportedOSPlatformVersion, "SupportedOSPlatformVersion");
+				Log.LogError (7125, null, MSBStrings.E7125 /* Unable to parse the value '{0}' for the property '{1}. */, SupportedOSPlatformVersion, "SupportedOSPlatformVersion");
 				return false;
 			} else if (minSupportedVersion > supportedVersion) {
-				Log.LogError (MSBStrings.E7126 /* The SupportedOSPlatformVersion value '{0}' in the project file is lower than the minimum value '{1}'." */, SupportedOSPlatformVersion, MinSupportedOSPlatformVersion);
+				Log.LogError (7126, null, MSBStrings.E7126 /* The SupportedOSPlatformVersion value '{0}' in the project file is lower than the minimum value '{1}'." */, SupportedOSPlatformVersion, MinSupportedOSPlatformVersion);
 				return false;
 			}
 
@@ -330,7 +330,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (value.Any (char.IsWhiteSpace)) {
 				var printableValue = value.Replace ("\r", "\\r").Replace ("\n", "\\n").Replace ("\t", "\\t");
-				Log.LogError (MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
+				Log.LogError (7187, null, MSBStrings.E7187 /* The value '{0}' for the property '{1}' is not a valid version number, because it contains whitespace. */, printableValue, propertyName);
 				return false;
 			}
 
@@ -348,13 +348,13 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (!OnWindows) {
 				if (string.IsNullOrEmpty (DefaultSdkVersion)) {
-					Log.LogError (MSBStrings.E7114 /* The "{0}" task was not given a value for the parameter "{1}", which is required when building on this platform. */, GetType ().Name, "DefaultSdkVersion");
+					Log.LogError (7114, null, MSBStrings.E7114 /* The "{0}" task was not given a value for the parameter "{1}", which is required when building on this platform. */, GetType ().Name, "DefaultSdkVersion");
 					return false;
 				}
 
 				sdkVersion = AppleSdkVersion.Parse (DefaultSdkVersion);
 				if (!CurrentSdk.SdkIsInstalled (sdkVersion, SdkIsSimulator)) {
-					Log.LogError (null, null, null, null, 0, 0, 0, 0, MSBStrings.E0013, Platform, sdkVersion);
+					Log.LogError (13, null, MSBStrings.E0013, Platform, sdkVersion); // The {0} SDK for '{1}' is not installed.
 					return false;
 				}
 				SetXcodeValues (plist, CurrentSdk);
@@ -372,15 +372,10 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		protected void LogAppManifestError (string format, params object [] args)
+		protected void LogAppManifestError (int code, string format, params object [] args)
 		{
 			// Log an error linking to the Info.plist file
-			if (AppManifest is not null) {
-				Log.LogError (null, null, null, AppManifest.ItemSpec, 0, 0, 0, 0, format, args);
-			} else {
-				Log.LogError (format, args);
-			}
-
+			Log.LogError (code, AppManifest?.ItemSpec, format, args);
 		}
 
 		protected void LogAppManifestWarning (int code, string format, params object [] args)
@@ -432,7 +427,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					partial = PDictionary.OpenFile (template.ItemSpec);
 				} catch (Exception ex) {
-					task.Log.LogError (MSBStrings.E0107, template.ItemSpec, ex.Message);
+					task.Log.LogError (107, null, MSBStrings.E0107, template.ItemSpec, ex.Message); // Error loading partial Info.plist template file '{0}': {1}
 					continue;
 				}
 
@@ -456,7 +451,7 @@ namespace Xamarin.MacDev.Tasks {
 			var macCatalystOptimizedForMac = (supportedDevices & IPhoneDeviceType.MacCatalystOptimizedForMac) == IPhoneDeviceType.MacCatalystOptimizedForMac;
 			if (macCatalystOptimizedForMac && !OnWindows) {
 				if (Platform != ApplePlatform.MacCatalyst) {
-					LogAppManifestError (MSBStrings.E7098 /* The UIDeviceFamily value '6' is not valid for this platform. It's only valid for Mac Catalyst. */);
+					LogAppManifestError (7098, MSBStrings.E7098 /* The UIDeviceFamily value '6' is not valid for this platform. It's only valid for Mac Catalyst. */);
 					return; // no need to look for more errors, they will probably not make much sense.
 				}
 
@@ -465,7 +460,7 @@ namespace Xamarin.MacDev.Tasks {
 					string miniOSVersion = "?";
 					if (MacCatalystSupport.TryGetiOSVersion (CurrentSdk.GetSdkPath (SdkVersion), minimumOSVersion, out var iOSVersion, out var _))
 						miniOSVersion = iOSVersion?.ToString () ?? "?";
-					LogAppManifestError (MSBStrings.E7099 /* The UIDeviceFamily value '6' requires macOS 11.0. Please set the 'SupportedOSPlatformVersion' in the project file to at least 14.0 (the Mac Catalyst version equivalent of macOS 11.0). The current value is {0} (equivalent to macOS {1}). */, miniOSVersion, minimumOSVersion);
+					LogAppManifestError (7099, MSBStrings.E7099 /* The UIDeviceFamily value '6' requires macOS 11.0. Please set the 'SupportedOSPlatformVersion' in the project file to at least 14.0 (the Mac Catalyst version equivalent of macOS 11.0). The current value is {0} (equivalent to macOS {1}). */, miniOSVersion, minimumOSVersion);
 				}
 			}
 
@@ -538,7 +533,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Platform == ApplePlatform.iOS) {
 				var executable = plist.GetCFBundleExecutable ();
 				if (executable.EndsWith (".app", StringComparison.Ordinal))
-					LogAppManifestError (MSBStrings.E0014, executable);
+					LogAppManifestError (14, MSBStrings.E0014, executable); // The executable (CFBundleExecutable) name ({0}) cannot end with '.app', because iOS may fail to launch the app.
 			}
 
 			if (!string.IsNullOrEmpty (ResourceRules))

@@ -168,6 +168,12 @@ the diagnostic code. Ordinary informational `LogMessage` calls do not require a
 diagnostic code. When forwarding diagnostics from external tools, preserve their
 existing codes and source locations instead of inventing an SDK code.
 
+`BannedSymbols.txt` in the task project bans both message-only and full
+`TaskLoggingHelper.LogWarning` / `LogError` overloads. The BannedApiAnalyzers
+diagnostic `RS0030` is a build error. Do not disable the rule globally: use a
+narrow `#pragma warning disable RS0030` / `restore` pair with an explanation
+only in the logging helpers themselves or when forwarding external diagnostics.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building

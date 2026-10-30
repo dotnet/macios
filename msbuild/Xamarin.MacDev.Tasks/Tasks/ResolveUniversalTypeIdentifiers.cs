@@ -50,7 +50,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 
 					if (dataset is null) {
-						Log.LogError (MSBStrings.E0180, Path.GetDirectoryName (filePath));
+						Log.LogError (180, null, MSBStrings.E0180, Path.GetDirectoryName (filePath)); // Could not deserialize DataSet {0}
 						continue;
 					}
 
@@ -79,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 							.Result;
 
 						if (string.IsNullOrEmpty (response.UniversalTypeIdentifier))
-							Log.LogError (string.Format (MSBStrings.E0182, data.Filename, Path.GetDirectoryName (filePath)));
+							Log.LogError (182, null, MSBStrings.E0182, data.Filename, Path.GetDirectoryName (filePath)); // Could not resolve UTI for {0} in catalog {1}
 
 						data.UniversalTypeIdentifier = response.UniversalTypeIdentifier;
 					}

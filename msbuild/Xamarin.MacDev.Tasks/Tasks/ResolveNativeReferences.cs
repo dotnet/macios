@@ -301,7 +301,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			plist = (PDictionary?) PDictionary.FromStream (stream);
 			if (plist is null) {
-				log.LogError (MSBStrings.E7110 /* Could not load Info.plist '{0}' from the xcframework '{1}'.. */, manifestPath, resourcePath);
+				log.LogError (7110, null, MSBStrings.E7110 /* Could not load Info.plist '{0}' from the xcframework '{1}'.. */, manifestPath, resourcePath);
 				return false;
 			}
 
@@ -381,7 +381,7 @@ namespace Xamarin.MacDev.Tasks {
 				// potentially extract) the native reference, so make sure it can't be used to escape the
 				// binding resource package using an absolute path or '..' traversal segments.
 				if (IsUnsafeRelativePath (name)) {
-					Log.LogError (MSBStrings.E7180 /* The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments. */, name, r.ItemSpec);
+					Log.LogError (7180, null, MSBStrings.E7180 /* The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments. */, name, r.ItemSpec);
 					continue;
 				}
 				WarnIfIncorrectFrameworkExtension (Log, Path.Combine (resources, name));
@@ -532,7 +532,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception e) {
-				log.LogError (MSBStrings.E0174 /* Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2} */, xcframework, resourcePath, e.Message);
+				log.LogError (174, null, MSBStrings.E0174 /* Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2} */, xcframework, resourcePath, e.Message);
 				log.LogErrorsFromException (e); // report the original exception too.
 			}
 
@@ -580,15 +580,15 @@ namespace Xamarin.MacDev.Tasks {
 			// plist structure https://github.com/spouliot/xcframework#infoplist
 			var bundle_package_type = (PString?) plist ["CFBundlePackageType"];
 			if (bundle_package_type?.Value != "XFWK") {
-				log.LogError (MSBStrings.E0174a /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'. */, xcframeworkPath, bundle_package_type?.Value);
+				log.LogError (174, null, MSBStrings.E0174a /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'. */, xcframeworkPath, bundle_package_type?.Value);
 				return false;
 			}
 			var available_libraries = plist.GetArray ("AvailableLibraries");
 			if (available_libraries is null) {
-				log.LogError (MSBStrings.E0174b /* The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist. */, xcframeworkPath);
+				log.LogError (174, null, MSBStrings.E0174b /* The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist. */, xcframeworkPath);
 				return false;
 			} else if (available_libraries.Count == 0) {
-				log.LogError (MSBStrings.E0174c /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries. */, xcframeworkPath);
+				log.LogError (174, null, MSBStrings.E0174c /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries. */, xcframeworkPath);
 				return false;
 			}
 
@@ -612,7 +612,7 @@ namespace Xamarin.MacDev.Tasks {
 							break;
 					}
 					if (!found) {
-						log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
+						log.LogError (175, null, MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 						return false;
 					}
 				}
@@ -624,7 +624,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
+			log.LogError (175, null, MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 			return false;
 		}
 

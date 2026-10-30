@@ -332,7 +332,7 @@ namespace Xamarin.MacDev.Tasks {
 				validFamilies = new AppleDeviceFamily [] { AppleDeviceFamily.TV };
 				break;
 			default:
-				Log.LogError ("Invalid platform: {0}", Platform);
+				Log.LogError (7222, null, MSBStrings.E7222, Platform); // Invalid platform: {0}
 				break;
 			}
 

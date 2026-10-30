@@ -85,7 +85,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (SdkVersion)) {
 				requestedSdkVersion = GetDefaultSdkVersion ();
 			} else if (!currentSdk.TryParseSdkVersion (SdkVersion, out requestedSdkVersion)) {
-				Log.LogError (MSBStrings.E0025 /* Could not parse the SDK version '{0}' */, SdkVersion);
+				Log.LogError (25, null, MSBStrings.E0025 /* Could not parse the SDK version '{0}' */, SdkVersion);
 				return;
 			}
 
@@ -95,9 +95,9 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (sdkVersion.IsUseDefault || !currentSdk.SdkIsInstalled (sdkVersion, SdkIsSimulator)) {
 					if (requestedSdkVersion.IsUseDefault) {
-						Log.LogError (MSBStrings.E0171 /* The {0} SDK is not installed. */, PlatformName);
+						Log.LogError (171, null, MSBStrings.E0171 /* The {0} SDK is not installed. */, PlatformName);
 					} else {
-						Log.LogError (MSBStrings.E0172 /* The {0} SDK version '{0}' is not installed, and no newer version was found. */, PlatformName, requestedSdkVersion.ToString ());
+						Log.LogError (172, null, MSBStrings.E0172 /* The {0} SDK version '{0}' is not installed, and no newer version was found. */, PlatformName, requestedSdkVersion.ToString ());
 					}
 					return;
 				}
@@ -107,15 +107,15 @@ namespace Xamarin.MacDev.Tasks {
 
 			SdkRoot = currentSdk.GetSdkPath (SdkVersion, SdkIsSimulator);
 			if (string.IsNullOrEmpty (SdkRoot))
-				Log.LogError (MSBStrings.E0084 /* Could not locate the {0} '{1}' SDK at path '{2}' */, PlatformName, SdkVersion, SdkRoot);
+				Log.LogError (84, null, MSBStrings.E0084 /* Could not locate the {0} '{1}' SDK at path '{2}' */, PlatformName, SdkVersion, SdkRoot);
 		}
 
 		void EnsureXamarinSdkRoot ()
 		{
 			if (string.IsNullOrEmpty (XamarinSdkRoot))
-				Log.LogError (MSBStrings.E0046 /* Could not find '{0}' */, Product);
+				Log.LogError (46, null, MSBStrings.E0046 /* Could not find '{0}' */, Product);
 			else if (!Directory.Exists (XamarinSdkRoot))
-				Log.LogError (MSBStrings.E0170 /* Could not find {0} in {1}. */, Product, XamarinSdkRoot);
+				Log.LogError (170, null, MSBStrings.E0170 /* Could not find {0} in {1}. */, Product, XamarinSdkRoot);
 		}
 
 		public override bool Execute ()

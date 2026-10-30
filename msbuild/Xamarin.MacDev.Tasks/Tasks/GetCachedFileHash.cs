@@ -55,7 +55,7 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var file in Files) {
 				var info = new FileInfo (file.ItemSpec);
 				if (!info.Exists) {
-					Log.LogError (MSBStrings.E7195, file.ItemSpec);
+					Log.LogError (7195, null, MSBStrings.E7195, file.ItemSpec); // R2R input file '{0}' does not exist.
 					return false;
 				}
 

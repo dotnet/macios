@@ -112,7 +112,7 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogMessage (MessageImportance.Low, $"Ignoring unresolved assembly {ar.Name} (referenced from {assemblyPath}).");
 					continue;
 				} else if (referencedItems.Length > 1) {
-					Log.LogError (MSBStrings.E7117 /* The assembly {0} was passed multiple times as an input assembly (referenced from {1}). */, ar.Name, assemblyPath);
+					Log.LogError (7117, null, MSBStrings.E7117 /* The assembly {0} was passed multiple times as an input assembly (referenced from {1}). */, ar.Name, assemblyPath);
 					success = false;
 					continue;
 				}
@@ -176,14 +176,14 @@ namespace Xamarin.MacDev.Tasks {
 			var assemblyPath = assembly.ItemSpec;
 			var finfo = new FileInfo (assemblyPath);
 			if (!finfo.Exists) {
-				Log.LogError (MSBStrings.E0158 /* The file {0} does not exist. */, assemblyPath);
+				Log.LogError (158, null, MSBStrings.E0158 /* The file {0} does not exist. */, assemblyPath);
 				return false;
 			}
 
 			// ObjectFile is required
 			var objectFile = assembly.GetMetadata ("ObjectFile");
 			if (string.IsNullOrEmpty (objectFile)) {
-				Log.LogError (MSBStrings.E7116 /* The assembly {0} does not provide an 'ObjectFile' metadata. */, assembly.ItemSpec);
+				Log.LogError (7116, null, MSBStrings.E7116 /* The assembly {0} does not provide an 'ObjectFile' metadata. */, assembly.ItemSpec);
 				return false;
 			}
 			var objectFileInfo = new FileInfo (objectFile);
@@ -316,11 +316,11 @@ namespace Xamarin.MacDev.Tasks {
 
 				var arguments = new List<string> ();
 				if (!StringUtils.TryParseArguments (aotArguments, out var parsedArguments, out var ex)) {
-					Log.LogError (MSBStrings.E7071, /* Unable to parse the AOT compiler arguments: {0} ({1}) */ aotArguments, ex!.Message);
+					Log.LogError (7071, null, MSBStrings.E7071, /* Unable to parse the AOT compiler arguments: {0} ({1}) */ aotArguments, ex!.Message);
 					return false;
 				}
 				if (!StringUtils.TryParseArguments (processArguments, out var parsedProcessArguments, out var ex2)) {
-					Log.LogError (MSBStrings.E7071, /* Unable to parse the AOT compiler arguments: {0} ({1}) */ processArguments, ex2!.Message);
+					Log.LogError (7071, null, MSBStrings.E7071, /* Unable to parse the AOT compiler arguments: {0} ({1}) */ processArguments, ex2!.Message);
 					return false;
 				}
 				arguments.Add ($"--path={Path.GetFullPath (InputDirectory)}");
@@ -344,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 				ExecuteAsync (AOTCompilerPath, arg.Arguments, environment: environment, showErrorIfFailure: false /* we show our own error below */)
 					.ContinueWith ((v) => {
 						if (v.Result.ExitCode != 0)
-							Log.LogError (MSBStrings.E7118 /* Failed to AOT compile {0}, the AOT compiler exited with code {1} */, Path.GetFileName (arg.Input), v.Result.ExitCode);
+							Log.LogError (7118, null, MSBStrings.E7118 /* Failed to AOT compile {0}, the AOT compiler exited with code {1} */, Path.GetFileName (arg.Input), v.Result.ExitCode);
 
 						return System.Threading.Tasks.Task.FromResult<Execution> (v.Result);
 					})

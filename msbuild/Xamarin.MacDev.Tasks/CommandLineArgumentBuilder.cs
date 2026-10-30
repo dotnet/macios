@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Generic;
 
 using Microsoft.Build.Utilities;
+using Xamarin.MacDev.Tasks;
 using Xamarin.Utils;
 
 #nullable enable
@@ -25,7 +26,7 @@ namespace Xamarin.MacDev {
 			try {
 				File.WriteAllLines (responseFile, StringUtils.Quote (responseArguments.ToArray ()));
 			} catch (Exception ex) {
-				task.Log.LogWarning ("Failed to create response file '{0}': {1}", responseFile, ex);
+				task.Log.LogWarning (54, null, Xamarin.Localization.MSBuild.MSBStrings.W0054, responseFile, ex); // Failed to create response file '{0}': {1}
 			}
 
 			// Some arguments can not safely go in the response file and are 

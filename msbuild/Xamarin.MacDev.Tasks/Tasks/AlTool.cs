@@ -94,7 +94,9 @@ namespace Xamarin.MacDev.Tasks {
 					foreach (var error in errors) {
 						var dict = error as PDictionary;
 						if (dict?.TryGetValue ("message", out message) == true) {
+#pragma warning disable RS0030 // Preserve altool's diagnostic text and subcategory.
 							Log.LogError ("altool", null, null, null, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 						}
 					}
 				}

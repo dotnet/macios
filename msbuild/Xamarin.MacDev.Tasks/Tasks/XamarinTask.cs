@@ -38,7 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string GetSdkDevPath ()
 		{
 			if (string.IsNullOrEmpty (SdkDevPath)) {
-				Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+				Log.LogError (7169, null, MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
 				return "";
 			}
 
@@ -50,13 +50,13 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (xcodeLocator is null) {
 				if (!initialDiscovery && string.IsNullOrEmpty (SdkDevPath)) {
-					Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+					Log.LogError (7169, null, MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
 				}
 
 				var xcodeLocator = new XcodeLocator (this);
 				preprocess?.Invoke (xcodeLocator);
 				if (!xcodeLocator.TryLocatingXcode (SdkDevPath))
-					Log.LogError (MSBStrings.E0086 /* Could not find a valid Xcode developer path */);
+					Log.LogError (86, null, MSBStrings.E0086 /* Could not find a valid Xcode developer path */);
 				this.xcodeLocator = xcodeLocator;
 			}
 			return xcodeLocator;
@@ -95,7 +95,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (!string.IsNullOrEmpty (TargetFrameworkMoniker))
 				return;
-			Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "TargetFrameworkMoniker");
+			Log.LogError (7169, null, MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "TargetFrameworkMoniker");
 		}
 
 		public string Product {
@@ -214,9 +214,9 @@ namespace Xamarin.MacDev.Tasks {
 				if (stderr.Length > 1024)
 					stderr = stderr.Substring (0, 1024);
 				if (string.IsNullOrEmpty (stderr)) {
-					log.LogError (MSBStrings.E0117, /* {0} exited with code {1} */ fileName == "xcrun" ? arguments [0] : fileName, rv.ExitCode);
+					log.LogError (117, null, MSBStrings.E0117, /* {0} exited with code {1} */ fileName == "xcrun" ? arguments [0] : fileName, rv.ExitCode);
 				} else {
-					log.LogError (MSBStrings.E0118, /* {0} exited with code {1}:\n{2} */ fileName == "xcrun" ? arguments [0] : fileName, rv.ExitCode, stderr);
+					log.LogError (118, null, MSBStrings.E0118, /* {0} exited with code {1}:\n{2} */ fileName == "xcrun" ? arguments [0] : fileName, rv.ExitCode, stderr);
 				}
 			}
 
@@ -265,7 +265,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = taskRunner.RunAsync (task).Result;
 				if (!rv && !task.Log.HasLoggedErrors) {
 					// if we failed to execute remotely, but no error has been reported, then report an error
-					task.Log.LogError (MSBStrings.E7162 /* Unable to execute this task remotely for unknown reasons. The build log may have more information. */);
+					task.Log.LogError (7162, null, MSBStrings.E7162 /* Unable to execute this task remotely for unknown reasons. The build log may have more information. */);
 				}
 				return rv;
 			} catch (Exception ex) {
@@ -280,7 +280,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				var rv = new TaskRunner (task.SessionId, task.BuildEngine4).CopyInputsAsync2 (task).Result;
 				if (!rv)
-					task.Log.LogError (MSBStrings.E7163 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
+					task.Log.LogError (7163, null, MSBStrings.E7163 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
 				return rv;
 			} catch (Exception ex) {
 				task.Log.LogErrorFromException (ex);
@@ -301,7 +301,7 @@ namespace Xamarin.MacDev.Tasks {
 				return metadataValue;
 			}
 			if (required && string.IsNullOrEmpty (fallbackValue))
-				Log.LogError (MSBStrings.E7085 /* The "{0}" task was not given a value for the required parameter "{1}", nor was there a "{2}" metadata on the resource {3}. */, GetType ().Name, fallbackName ?? metadataName, metadataName, item.ItemSpec);
+				Log.LogError (7085, null, MSBStrings.E7085 /* The "{0}" task was not given a value for the required parameter "{1}", nor was there a "{2}" metadata on the resource {3}. */, GetType ().Name, fallbackName ?? metadataName, metadataName, item.ItemSpec);
 			foundInMetadata = false;
 			return fallbackValue;
 		}
@@ -368,8 +368,10 @@ namespace Xamarin.MacDev.Tasks {
 		#region Xamarin.MacDev.ICustomLogger
 		void ICustomLogger.LogError (string message, Exception? ex)
 		{
+#pragma warning disable RS0030 // ICustomLogger forwards dependency diagnostics without a diagnostic code.
 			if (!string.IsNullOrEmpty (message))
 				Log.LogError (message);
+#pragma warning restore RS0030
 			if (ex is ProductException pe) {
 				LogDiagnostic (pe);
 			} else if (ex is not null) {
@@ -379,7 +381,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		void ICustomLogger.LogWarning (string messageFormat, params object? [] args)
 		{
+#pragma warning disable RS0030 // ICustomLogger forwards dependency diagnostics without a diagnostic code.
 			Log.LogWarning (messageFormat, args);
+#pragma warning restore RS0030
 		}
 
 		void ICustomLogger.LogInfo (string messageFormat, params object? [] args)

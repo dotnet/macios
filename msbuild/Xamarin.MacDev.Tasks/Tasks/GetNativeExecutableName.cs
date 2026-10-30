@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				plist = PDictionary.OpenFile (AppManifest);
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0055, ex.Message);
+				Log.LogError (55, null, MSBStrings.E0055, ex.Message); // Could not load Info.plist: {0}
 				return false;
 			}
 

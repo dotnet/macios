@@ -66,13 +66,17 @@ namespace Xamarin.MacDev.Tasks {
 				// again.
 				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
+#pragma warning disable RS0030 // Forward coremlc's diagnostic with its input file location.
 					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, "{0}", errors);
+#pragma warning restore RS0030
 
-				Log.LogError (MSBStrings.E0117, ToolName, exitCode);
+				Log.LogError (117, null, MSBStrings.E0117, ToolName, exitCode); // {0} exited with code {1}
 
 				// Note: If the log file exists, log those warnings/errors as well...
 				if (File.Exists (log)) {
+#pragma warning disable RS0030 // Forward coremlc's log with its input file location.
 					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, "{0}", File.ReadAllText (log));
+#pragma warning restore RS0030
 					File.Delete (log);
 				}
 			}

@@ -315,12 +315,92 @@ See also the [GetApplicationArtifacts](build-targets.md#getapplicationartifacts)
 ## NativeReference
 
 An item group that contains any native references that should be linked into
-or linked with when building the native executable.
+or linked with when building the native executable. `NativeReference` can be
+used in both binding projects (`IsBindingProject=true`) and application
+projects.
+
+The `Include` attribute can point to:
+
+* Static libraries (`*.a`).
+* Dynamic libraries (`*.dylib`).
+* Frameworks (`*.framework`).
+* XCFrameworks (`*.xcframework`) or compressed XCFrameworks (`*.xcframework.zip`).
+
+For an `.xcframework`, `Include` should point to the `.xcframework` root
+directory (or `.xcframework.zip` archive), not to a slice inside it. At build
+time, the SDK reads the XCFramework's `Info.plist` and automatically selects
+the slice matching the target platform (`ios`, `tvos`, `macos`), platform
+variant (`simulator` or `maccatalyst`, when applicable), and target
+architecture (`arm64`, `x86_64`).
 
 Native framework directory names must use the lowercase `.framework` extension.
 Other capitalization, such as `.Framework` or `.FRAMEWORK`, produces warning
 `MT7200` because the framework may not be linked or bundled
 correctly. Rename the directory and update the reference to use `.framework`.
+
+The following metadata can be set on `NativeReference` items:
+
+* `Kind`: The type of native binary: `Static` (`*.a`), `Dynamic` (`*.dylib`), or `Framework` (`*.framework`). Required for all `NativeReference` items in binding projects (`IsBindingProject=true`), and for direct `*.a` and `*.dylib` `NativeReference` items in application projects (which are added directly to `@(_FileNativeReference)` by `_ExpandNativeReferences`). In application projects, `Kind` is inferred automatically by `ResolveNativeReferences` for `*.framework`, `*.xcframework`, and `*.xcframework.zip` items from the resolved native binary.
+* `SmartLink`: A boolean value indicating whether the native linker can strip unused symbols (`-dead_strip`). Defaults to `true`.
+* `ForceLoad`: A boolean value indicating whether `-force_load` should be passed to the native linker for a static library. Defaults to `false`.
+* `Frameworks`: A space-separated list of Apple frameworks (without the `.framework` extension) that the native library depends on and must be linked with.
+* `WeakFrameworks`: A space-separated list of Apple frameworks that should be weakly linked (`-weak_framework`).
+* `LinkerFlags`: Additional command-line flags to pass to the native linker (for example, `-lc++` or `-lsqlite3`).
+* `IsCxx`: A boolean value indicating whether the native library uses C++ and requires the C++ standard library when linking. Defaults to `false`.
+* `NeedsGccExceptionHandling`: A boolean value indicating whether the native library requires linking with `-lgcc_eh`. Defaults to `false`.
+* `LinkWithSwiftSystemLibraries`: A boolean value indicating whether the native library requires linking with the Swift system libraries. Defaults to `false`.
+* `NoDSymUtil`: A boolean value that overrides the project-level [NoDSymUtil](build-properties.md#nodsymutil) property for this specific framework or dynamic library.
+* `NoSymbolStrip`: A boolean value that overrides the project-level [NoSymbolStrip](build-properties.md#nosymbolstrip) property for this specific framework or dynamic library.
+
+Example (referencing a single `.xcframework` containing a `.framework` in a binding project):
+
+```xml
+<ItemGroup>
+    <NativeReference Include="NativeLibs/MyFramework.xcframework">
+        <Kind>Framework</Kind>
+        <SmartLink>True</SmartLink>
+        <Frameworks>Foundation UIKit</Frameworks>
+    </NativeReference>
+</ItemGroup>
+```
+
+> [!NOTE]
+> An `.xcframework` bundle can contain `.framework` bundles, static `.a` libraries, or `.dylib` dynamic libraries. Set `Kind` to match what the slice contains (`Framework`, `Static`, or `Dynamic`).
+
+Example (referencing multiple `.xcframework` items in a single binding project, such as a primary SDK and its native dependency XCFrameworks):
+
+```xml
+<ItemGroup>
+    <NativeReference Include="NativeLibs/MyPrimarySdk.xcframework">
+        <Kind>Framework</Kind>
+        <SmartLink>True</SmartLink>
+    </NativeReference>
+    <NativeReference Include="NativeLibs/MyDependencyA.xcframework">
+        <Kind>Framework</Kind>
+        <SmartLink>True</SmartLink>
+    </NativeReference>
+    <NativeReference Include="NativeLibs/MyDependencyB.xcframework">
+        <Kind>Static</Kind>
+        <ForceLoad>True</ForceLoad>
+    </NativeReference>
+</ItemGroup>
+```
+
+Supporting dependency XCFrameworks included as `NativeReference` items in a
+binding project are automatically packaged into the binding resource package
+and linked/bundled into the consuming app. You do not need to write C# API
+definitions (`ApiDefinition.cs`) for native dependency XCFrameworks unless you
+want to expose their APIs directly to C# callers.
+
+> [!IMPORTANT]
+> When an application project references a binding project via `ProjectReference` or a binding NuGet package via `PackageReference`, the binding's native references are carried transitively through its binding resource package (`$(AssemblyName).resources` or `$(AssemblyName).resources.zip`). Do **not** duplicate the binding's `NativeReference` items in the consuming application project.
+
+See also:
+
+* [CompressBindingResourcePackage](build-properties.md#compressbindingresourcepackage)
+* [NoBindingEmbedding](build-properties.md#nobindingembedding)
+* [Use and distribute native libraries](/dotnet/ios/binding-libs/)
+* [Bind and distribute XCFrameworks](/dotnet/ios/binding-libs/xcframeworks)
 
 ## ObjcBindingApiDefinition
 

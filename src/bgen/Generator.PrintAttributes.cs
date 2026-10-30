@@ -40,10 +40,10 @@ public partial class Generator {
 			memberAvailability = memberAvailability.Where (x => x.Platform != PlatformName.WatchOS).ToList ();
 			availabilityToConsider = availabilityToConsider.Where (x => x.Platform != PlatformName.WatchOS).ToList ();
 
-			// Add any implied non-catalyst introduced (Catalyst will come later)
+			// Add any implied introduced attributes
 			AddUnlistedAvailability (context, availabilityToConsider);
 
-			// Copy down any unavailable from the parent before expanding, since a [NoMacCatalyst] on the type trumps [iOS] on a member
+			// Copy down any unavailable from the parent before expanding
 			AttributeFactory.CopyValidAttributes (memberAvailability, availabilityToConsider.Where (attr => attr.AvailabilityKind != AvailabilityKind.Introduced));
 
 			if (inlinedType is not null && inlinedType != mi.DeclaringType && memberAvailability.Count > 1) {

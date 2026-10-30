@@ -205,8 +205,7 @@ namespace Cecil.Tests {
 		}
 
 		// UnavailableAttribute and it's subclasses
-		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4)
-		// MacCatalyst (5) does not have an attribute right now (but [Unavailable] is possible on the PlatformName)
+		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4), NoMacCatalystAttribute (5)
 		bool IsUnavailable (ICustomAttributeProvider cap, PlatformName platform)
 		{
 			if (!cap.HasCustomAttributes)
@@ -226,6 +225,9 @@ namespace Cecil.Tests {
 					break;
 				case "ObjCRuntime.NoTVAttribute":
 					unavailable = platform == PlatformName.TvOS;
+					break;
+				case "ObjCRuntime.NoMacCatalystAttribute":
+					unavailable = platform == PlatformName.MacCatalyst;
 					break;
 				case "System.ObsoleteAttribute":
 					// we have to live with past mistakes, don't report errors on [Obsolete] members

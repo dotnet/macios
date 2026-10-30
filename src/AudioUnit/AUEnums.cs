@@ -305,7 +305,6 @@ namespace AudioUnit {
 		TranslateUidToClockDevice = 1969841251, // 'uidc',
 #if !XAMCORE_5_0
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)] // This is required for .NET, because otherwise the generator thinks it's not available because it's not available on iOS.
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]

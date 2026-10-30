@@ -31,6 +31,14 @@ public class ManagedRegistrarStepTests : BaseClass {
 
 		using var assembly = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Test", new Version (1, 0)), "Test.dll", ModuleKind.Dll);
 		using var companion = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("_Test.TypeMap", new Version (1, 0)), "_Test.TypeMap.dll", ModuleKind.Dll);
+		using var userLibrary = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("UserLibrary", new Version (1, 0)), "UserLibrary.dll", ModuleKind.Dll);
+		using var framework = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("System.Runtime", new Version (1, 0)), "System.Runtime.dll", ModuleKind.Dll);
+		using var coreLibrary = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("System.Private.CoreLib", new Version (1, 0)), "System.Private.CoreLib.dll", ModuleKind.Dll);
+		using var deletedLibrary = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("DeletedLibrary", new Version (1, 0)), "DeletedLibrary.dll", ModuleKind.Dll);
+		preparer.Configuration.Assemblies.AddRange ([assembly, userLibrary, framework, coreLibrary, deletedLibrary]);
+		preparer.Configuration.FrameworkAssemblies.UnionWith (["System.Runtime", "System.Private.CoreLib"]);
+		foreach (var input in preparer.Configuration.Assemblies)
+			preparer.Configuration.DerivedLinkContext.Annotations.SetAction (input, input == deletedLibrary ? Mono.Linker.AssemblyAction.Delete : Mono.Linker.AssemblyAction.Copy);
 		var callbacks = new AssemblyTrampolineInfo ();
 		preparer.Configuration.AssemblyTrampolineInfos.Add (assembly, callbacks);
 		if (hasCallbacks) {
@@ -55,8 +63,8 @@ public class ManagedRegistrarStepTests : BaseClass {
 			.Where (v => v.Name.LocalName == "_RegistrarUnmanagedEntryPointsAssembly")
 			.Select (v => (string?) v.Attribute ("Include"))
 			.ToArray ();
-		var expected = hasCallbacks ? new [] { relocate ? "_Test.TypeMap.dll" : "Test.dll" } : [];
-		Assert.That (assemblies, Is.EquivalentTo (expected), "Only assemblies containing generated callbacks, without duplicates");
+		var expected = relocate && hasCallbacks ? new [] { "Test.dll", "UserLibrary.dll", "_Test.TypeMap.dll" } : new [] { "Test.dll", "UserLibrary.dll" };
+		Assert.That (assemblies, Is.EquivalentTo (expected), "User assemblies and registrar callback assemblies, without duplicates or unrelated framework assemblies");
 	}
 
 	[Test]

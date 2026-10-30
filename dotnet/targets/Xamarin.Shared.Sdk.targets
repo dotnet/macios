@@ -2156,7 +2156,7 @@
 		</ReadItemsFromFile>
 
 		<ItemGroup>
-			<!-- Only export registrar callbacks from assemblies that survived trimming. -->
+			<!-- Export user entry points and registrar callbacks only from assemblies that survived trimming. -->
 			<_AssembliesWithoutRegistrarEntryPoints Include="@(_UpdatedManagedAssemblyToLink)" />
 			<_AssembliesWithoutRegistrarEntryPoints Remove="@(_RegistrarUnmanagedEntryPointsAssembly)" MatchOnMetadata="Filename" />
 			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink)" Exclude="@(_AssembliesWithoutRegistrarEntryPoints)" />

@@ -21,6 +21,9 @@ namespace Xamarin.Tests {
 			File.WriteAllText (entryPointsFile, $@"
 <Project xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
 	<ItemGroup>
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""MyApp.dll"" />
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""OrdinaryLibrary.dll"" />
+		<_RegistrarUnmanagedEntryPointsAssembly Include=""TrimmedUserLibrary.dll"" />
 {(hasCallbacks ? @"
 		<_RegistrarUnmanagedEntryPointsAssembly Include=""Microsoft.iOS.dll"" />
 		<_RegistrarUnmanagedEntryPointsAssembly Include=""CallbackLibrary.dll"" />
@@ -45,7 +48,7 @@ namespace Xamarin.Tests {
 	<UsingTask TaskName=""Xamarin.MacDev.Tasks.ReadItemsFromFile"" AssemblyFile=""$(_TaskAssemblyName)"" />
 	<Target Name=""Restore"" />
 	<ItemGroup>
-		<ManagedAssemblyToLink Include=""{string.Join (";", assemblies.Select (v => Path.Combine (directory, "original", v + ".dll")))};original/TrimmedCallbacks.dll"" />
+		<ManagedAssemblyToLink Include=""{string.Join (";", assemblies.Select (v => Path.Combine (directory, "original", v + ".dll")))};original/TrimmedCallbacks.dll;original/TrimmedUserLibrary.dll"" />
 		<UnmanagedEntryPointsAssembly Include=""MyApp;ExplicitLibrary;Microsoft.iOS"" />
 	</ItemGroup>
 </Project>");
@@ -55,8 +58,8 @@ namespace Xamarin.Tests {
 				var actual = document.RootElement.GetProperty ("Items").GetProperty ("UnmanagedEntryPointsAssembly")
 					.EnumerateArray ().Select (v => v.GetProperty ("Identity").GetString ()).ToArray ();
 				var expected = hasCallbacks
-					? new [] { "MyApp", "ExplicitLibrary", "CallbackLibrary", "Microsoft.iOS", "_CallbackLibrary.TypeMap" }
-					: new [] { "MyApp", "ExplicitLibrary", "Microsoft.iOS" };
+					? new [] { "MyApp", "ExplicitLibrary", "CallbackLibrary", "Microsoft.iOS", "_CallbackLibrary.TypeMap", "OrdinaryLibrary" }
+					: new [] { "MyApp", "ExplicitLibrary", "Microsoft.iOS", "OrdinaryLibrary" };
 				Assert.That (actual, Is.EquivalentTo (expected), $"Entry-point assemblies, build {i + 1}");
 			}
 		}

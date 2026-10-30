@@ -445,10 +445,10 @@ code. Use assembly names without a file extension:
 </ItemGroup>
 ```
 
-The main application assembly, the platform assembly, and assemblies containing
-generated registrar callbacks are included automatically. Other referenced
-assemblies must be added explicitly if their named entry points are needed.
-Methods without an `EntryPoint` name do not require this item.
+User assemblies, the platform assembly, and assemblies containing generated
+registrar callbacks are included automatically. Unrelated SDK/framework assemblies
+are not scanned automatically; add them explicitly if their named entry points
+are needed. Methods without an `EntryPoint` name do not require this item.
 
 ## XcodeProject
 

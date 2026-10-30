@@ -19,10 +19,10 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (consumingProjectDir, GetDefaultProperties (runtimeIdentifier));
 
 			var clipPath = Path.Combine (appPath, "AppClips", "AppClipProject.app");
-			Assert.That (Directory.Exists (clipPath), $"App Clip directory does not exist: {clipPath}");
-			Assert.That (File.Exists (Path.Combine (clipPath, "Info.plist")), "App Clip Info.plist does not exist");
-			Assert.That (File.Exists (Path.Combine (clipPath, "AppClipProject")), "App Clip executable does not exist");
-			Assert.That (Directory.Exists (Path.Combine (appPath, "PlugIns", "AppClipProject.app")), Is.False, "App Clip must not be in PlugIns");
+			Assert.That (clipPath, Does.Exist, "App Clip directory");
+			Assert.That (Path.Combine (clipPath, "Info.plist"), Does.Exist, "App Clip Info.plist");
+			Assert.That (Path.Combine (clipPath, "AppClipProject"), Does.Exist, "App Clip executable");
+			Assert.That (Path.Combine (appPath, "PlugIns", "AppClipProject.app"), Does.Not.Exist, "App Clip must not be in PlugIns");
 		}
 
 		[Test]

@@ -2,20 +2,24 @@ namespace iOSAppClip1;
 
 [Register ("AppDelegate")]
 public class AppDelegate : UIApplicationDelegate {
-	public override UIWindow? Window { get; set; }
-
 	public override bool FinishedLaunching (UIApplication application, NSDictionary? launchOptions)
 	{
-		Window = new UIWindow (UIScreen.MainScreen.Bounds);
-		Window.RootViewController = new UIViewController ();
-		Window.RootViewController.View!.BackgroundColor = UIColor.SystemBackground;
-		Window.MakeKeyAndVisible ();
+		// Override point for customization after application launch.
 		return true;
 	}
 
-	public override bool ContinueUserActivity (UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+	public override UISceneConfiguration GetConfiguration (UIApplication application, UISceneSession connectingSceneSession, UISceneConnectionOptions options)
 	{
-		// An App Clip is launched with a URL, which is delivered here.
-		return userActivity.ActivityType == NSUserActivityType.BrowsingWeb;
+		// Called when a new scene session is being created.
+		// Use this method to select a configuration to create the new scene with.
+		// "Default Configuration" is defined in the Info.plist's 'UISceneConfigurationName' key.
+		return new UISceneConfiguration ("Default Configuration", connectingSceneSession.Role);
+	}
+
+	public override void DidDiscardSceneSessions (UIApplication application, NSSet<UISceneSession> sceneSessions)
+	{
+		// Called when the user discards a scene session.
+		// If any sessions were discarded while the application was not running, this will be called shortly after 'FinishedLaunching'.
+		// Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 	}
 }

@@ -3244,7 +3244,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
 				<IsXPCService>$(IsXpcService)</IsXPCService>
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
-				<IsAppClip>$(IsAppClip)</IsAppClip>
 			</_PostProcessingItem>
 
 			<!-- Compute a few default values that are applicable to all _PostProcessingItem -->
@@ -3254,6 +3253,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- Set the default values for NoSymbolStrip and NoDSymUtil from the global values -->
 				<NoSymbolStrip Condition="'%(_PostProcessingItem.NoSymbolStrip)' == ''">$(NoSymbolStrip)</NoSymbolStrip>
 				<NoDSymUtil Condition="'%(_PostProcessingItem.NoDSymUtil)' == ''">$(NoDSymUtil)</NoDSymUtil>
+				<!-- App Clips contain their own frameworks, so mark all items so the containing app post-processes them too -->
+				<IsAppClip>$(IsAppClip)</IsAppClip>
 				<!-- Did the item in question come with a .dSYM directory? -->
 				<dSYMSourcePathExists Condition="'$(dSYMSourcePathExists)' == '' And Exists('%(_PostProcessingItem.dSYMSourcePath)')">true</dSYMSourcePathExists>
 				<dSYMSourcePathExists Condition="'$(dSYMSourcePathExists)' == ''">false</dSYMSourcePathExists>

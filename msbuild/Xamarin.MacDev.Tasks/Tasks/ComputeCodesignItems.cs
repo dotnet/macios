@@ -308,6 +308,9 @@ namespace Xamarin.MacDev.Tasks {
 				// Don't recurse into the Watch directory, for the same reason
 				if (relativePath.StartsWith ("Watch" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
 					continue;
+				// Don't recurse into the AppClips directory, for the same reason
+				if (relativePath.StartsWith ("AppClips" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+					continue;
 
 				if (entry.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase) && entry.StartsWith (dylibDirectory, StringComparison.OrdinalIgnoreCase)) {
 					// We find *.dylibs in any subdirectory

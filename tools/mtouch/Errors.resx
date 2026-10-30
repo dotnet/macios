@@ -1668,6 +1668,14 @@
 		<value>Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.</value>
 	</data>
 
+	<data name="MT4199" xml:space="preserve">
+		<value>The NSCell subclass '{0}' does not have a constructor that takes a single ObjCRuntime.NativeHandle argument. Add this constructor so that copied native cells can be wrapped in managed instances.</value>
+	</data>
+
+	<data name="MT4200" xml:space="preserve">
+		<value>The NSCell subclass '{0}' does not implement Copy (NSZone). Override this method to copy the managed state when the native cell is copied.</value>
+	</data>
+
 	<data name="MT5101" xml:space="preserve">
 		<value>Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component</value>
 	</data>

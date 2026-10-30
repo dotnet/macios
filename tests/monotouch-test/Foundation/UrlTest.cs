@@ -7,7 +7,6 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using System.Diagnostics;
 using System.IO;
 #if MONOMAC
 using AppKit;
@@ -45,15 +44,23 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (value, Is.TypeOf (typeof (NSNumber)), "NSNumber");
 			Assert.That ((int) (value as NSNumber), Is.EqualTo (0), "0");
 
+			// Avoid backup-metadata queries in the user's shared Documents directory on macOS.
+#if MONOMAC || __MACCATALYST__
+			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.ApplicationSupportDirectory, NSSearchPathDomain.User);
+#else
 			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
-			var filename = Path.Combine (paths [0], $"DoNotBackupMe-NSUrl-{Process.GetCurrentProcess ().Id}");
+#endif
+			var directory = Path.Combine (paths [0], $"NSUrlTest-{Guid.NewGuid ()}");
+			var filename = Path.Combine (directory, "DoNotBackupMe");
+			Directory.CreateDirectory (directory);
 			try {
 				File.WriteAllText (filename, "not worth a bit");
 				using (NSUrl url = NSUrl.FromFilename (filename)) {
 					Assert.That (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), Is.True);
 					Assert.That ((int) (value as NSNumber), Is.EqualTo (0), "DoNotBackupMe-0");
 
-					url.SetResource (NSUrl.IsExcludedFromBackupKey, (NSNumber) 1);
+					Assert.That (url.SetResource (NSUrl.IsExcludedFromBackupKey, (NSNumber) 1, out var setError), Is.True, "SetResource");
+					Assert.That (setError, Is.Null, "SetResource error");
 
 					Assert.That (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), Is.True);
 					Assert.That ((int) (value as NSNumber), Is.EqualTo (1), "DoNotBackupMe-1");
@@ -66,7 +73,7 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			} finally {
 				// otherwise the attribute won't reset even if the file is overwritten
-				File.Delete (filename);
+				Directory.Delete (directory, true);
 			}
 		}
 

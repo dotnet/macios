@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace AppKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This type is does not exist on this platform.")]
+	[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 	public partial class NSTouch {
 	}
 }

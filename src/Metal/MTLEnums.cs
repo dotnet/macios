@@ -1393,7 +1393,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily1_v1 = 0,
@@ -1401,7 +1401,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily1_v2 = 2,
@@ -1409,7 +1409,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily2_v1 = 1,
@@ -1417,7 +1417,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily2_v2 = 3,
@@ -1425,7 +1425,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoTV, NoMac]
 		iOS_GPUFamily3_v1 = 4,
@@ -1498,7 +1498,7 @@ namespace Metal {
 #if XAMCORE_5_0
 		[NoMacCatalyst]
 #elif __MACCATALYST__
-		[Obsolete ("Not available on the current platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 		[NoiOS, NoMac]
 		tvOS_GPUFamily1_v1 = 30000,

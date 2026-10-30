@@ -56,13 +56,14 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
+			var nativeReferencePaths = GetNativeReferencePaths ().ToList ();
 			var compress = false;
 			if (string.Equals (Compress, "true", StringComparison.OrdinalIgnoreCase)) {
 				compress = true;
 			} else if (string.Equals (Compress, "false", StringComparison.OrdinalIgnoreCase)) {
 				compress = false;
 			} else if (string.Equals (Compress, "auto", StringComparison.OrdinalIgnoreCase)) {
-				if (ContainsSymlinks (NativeReferences)) {
+				if (ContainsSymlinks (nativeReferencePaths.Select (v => new TaskItem (v)))) {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7085 /* "Creating a compressed binding resource package because there are symlinks in the input." */);
 					compress = true;
 				} else if (NativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
@@ -89,9 +90,10 @@ namespace Xamarin.MacDev.Tasks {
 					File.Delete (zipFile);
 				Directory.CreateDirectory (Path.GetDirectoryName (zipFile)!);
 
-				var filesToZip = NativeReferences
+				var filesToZip = nativeReferencePaths
 									// Canonicalize directory separators to the current platform
-									.Select (v => v.ItemSpec.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar))
+									.Select (v => v.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar))
+									.Distinct ()
 									.ToList ();
 				filesToZip.Add (manifestPath);
 
@@ -106,10 +108,10 @@ namespace Xamarin.MacDev.Tasks {
 				var bindingResourcePath = BindingResourcePath;
 				Log.LogMessage (MSBStrings.M0121, bindingResourcePath);
 				Directory.CreateDirectory (bindingResourcePath);
-				foreach (var nativeRef in NativeReferences) {
-					Xamarin.Bundler.FileCopier.UpdateDirectory (this, nativeRef.ItemSpec, bindingResourcePath);
+				foreach (var nativeRef in nativeReferencePaths.Distinct ()) {
+					Xamarin.Bundler.FileCopier.UpdateDirectory (this, nativeRef, bindingResourcePath);
 
-					var bindingOutputPath = Path.Combine (bindingResourcePath, Path.GetFileName (nativeRef.ItemSpec));
+					var bindingOutputPath = Path.Combine (bindingResourcePath, Path.GetFileName (nativeRef));
 					if (Directory.Exists (bindingOutputPath)) {
 						packagedFiles.AddRange (Directory.GetFiles (bindingOutputPath, "*", SearchOption.AllDirectories));
 					} else if (File.Exists (bindingOutputPath)) {
@@ -126,7 +128,18 @@ namespace Xamarin.MacDev.Tasks {
 			return !Log.HasLoggedErrors;
 		}
 
-		bool ContainsSymlinks (ITaskItem [] items)
+		IEnumerable<string> GetNativeReferencePaths ()
+		{
+			foreach (var nativeReference in NativeReferences) {
+				var path = nativeReference.ItemSpec.Replace ('\\', Path.DirectorySeparatorChar).Replace ('/', Path.DirectorySeparatorChar).TrimEnd (Path.DirectorySeparatorChar);
+				yield return path;
+				var debugSymbols = path + ".dSYM";
+				if (Directory.Exists (debugSymbols))
+					yield return debugSymbols;
+			}
+		}
+
+		bool ContainsSymlinks (IEnumerable<ITaskItem> items)
 		{
 			foreach (var item in items) {
 				if (PathUtils.IsSymlinkOrContainsSymlinks (item.ItemSpec)) {
@@ -178,7 +191,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			return CreateItemsForAllFilesRecursively (NativeReferences);
+			return CreateItemsForAllFilesRecursively (GetNativeReferencePaths ().Select (v => new TaskItem (v)).ToArray ());
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;

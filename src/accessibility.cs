@@ -128,7 +128,7 @@ namespace Accessibility {
 	[Protocol]
 	interface AXCustomContentProvider {
 		[Abstract]
-		[NullAllowed, Export ("accessibilityCustomContent", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("accessibilityCustomContent", ArgumentSemantic.Copy)]
 		AXCustomContent [] AccessibilityCustomContent { get; set; }
 
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]

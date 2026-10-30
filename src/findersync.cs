@@ -15,7 +15,7 @@ namespace FinderSync {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed] // null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		[Export ("directoryURLs", ArgumentSemantic.Copy)]
 		NSSet DirectoryUrls { get; set; }
 

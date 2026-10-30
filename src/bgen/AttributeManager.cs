@@ -195,6 +195,8 @@ public class AttributeManager {
 			return typeof (System.ComponentModel.EditorBrowsableAttribute);
 		case "System.ComponentModel.EditorBrowsableState":
 			return typeof (System.ComponentModel.EditorBrowsableState);
+		case "System.Diagnostics.CodeAnalysis.AllowNullAttribute":
+			return typeof (AllowNullAttribute);
 		case "System.Diagnostics.DebuggerBrowsableAttribute":
 			return typeof (System.Diagnostics.DebuggerBrowsableAttribute);
 		case "System.Diagnostics.DebuggerBrowsableState":
@@ -702,6 +704,23 @@ public class AttributeManager {
 			if (property is not null && HasAttribute<StaticAttribute> (property))
 				return true;
 		}
+		return false;
+	}
+
+	public bool AllowsNull (ICustomAttributeProvider? provider)
+	{
+		return IsNullable (provider) || HasAllowNullAttribute (provider);
+	}
+
+	public bool HasAllowNullAttribute (ICustomAttributeProvider? provider)
+	{
+		if (HasAttribute<AllowNullAttribute> (provider))
+			return true;
+
+		// C# emits a property's [AllowNull] on the setter's value parameter.
+		if (provider is PropertyInfo property && property.GetSetMethod () is MethodInfo setter)
+			return HasAttribute<AllowNullAttribute> (setter.GetParameters ().Last ());
+
 		return false;
 	}
 

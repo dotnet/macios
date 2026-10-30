@@ -1852,6 +1852,38 @@ namespace GeneratorTests {
 			Assert.That (contents, Does.Contain ("public static NSString NonNullableString"), "Non-nullable field");
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void AllowNullProperties (Profile profile)
+		{
+			var bgen = BuildFile (profile, bgen => bgen.AddExtraSourcesRelativeToGeneratorDirectory ("allow-null-usage.cs"), "allow-null.cs");
+			Assert.That (bgen.Output.ToString (), Does.Not.Contain ("warning CS8602"), "Non-nullable getters");
+			Assert.That (bgen.Output.ToString (), Does.Not.Contain ("warning CS8625"), "Nullable setters");
+			var type = bgen.ApiAssembly.MainModule.GetType ("AllowNullProperties.Properties");
+			foreach (var name in new [] { "Object", "Text", "Objects", "Strings", "Callback", "WrappedObject" }) {
+				var property = type.Properties.Single (v => v.Name == name);
+				Assert.That (property.SetMethod.Parameters [0].CustomAttributes.Any (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.AllowNullAttribute"), Is.True, $"{name}: AllowNull");
+				Asserts.DoesNotThrowExceptions (property.SetMethod, $"{name}: setter accepts null");
+			}
+
+			var contents = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "AllowNullProperties", "Properties.g.cs"));
+			Assert.That (contents, Does.Contain ("public virtual NSObject Object"), "Non-nullable getter");
+			Assert.That (contents, Does.Contain ("public virtual NSObject? NullableObject"), "Nullable property unchanged");
+			Assert.That (contents, Does.Contain ("CreateNullableBlock (value)"), "Nullable delegate marshaling");
+			Assert.That (contents, Does.Contain ("value is null ? null : NSArray.FromNSObjects (value)"), "Nullable object array marshaling");
+			Assert.That (contents, Does.Contain ("NSArray.FromNullableStrings (value)"), "Nullable string array marshaling");
+			bgen.AssertApiCallsMethod (type.Methods.Single (v => v.Name == "set_Object"), "GetHandle", "AllowNull setter accepts a null object");
+			bgen.AssertApiCallsMethod (type.Methods.Single (v => v.Name == "set_RequiredObject"), "GetNonNullHandle", "Non-nullable setter unchanged");
+
+			foreach (var typeName in new [] { "IPropertiesProtocol", "PropertiesProtocol", "PropertiesProtocolWrapper", "ProtocolImplementation" }) {
+				var protocolType = bgen.ApiAssembly.MainModule.GetType ($"AllowNullProperties.{typeName}");
+				var property = protocolType.Properties.Single (v => v.Name == "Object");
+				Assert.That (property.SetMethod.Parameters [0].CustomAttributes.Any (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.AllowNullAttribute"), Is.True, $"{typeName}: AllowNull");
+			}
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void NativeFieldGeneration (Profile profile)

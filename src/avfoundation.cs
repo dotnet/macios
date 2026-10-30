@@ -16505,31 +16505,20 @@ namespace AVFoundation {
 		AVCaptureAncillaryDataEncoder AncillaryDataEncoder { get; }
 	}
 
-	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-	[Internal]
-	[Static]
-	interface AVCaptureAncillaryDataUserKeys {
-		[Field ("AVCaptureAncillaryDataUserKeyRDD18InstanceUID")]
-		NSString Rdd18InstanceUidKey { get; }
-
-		[Field ("AVCaptureAncillaryDataUserKeyRDD18UDAMSetVersion")]
-		NSString Rdd18UdamSetVersionKey { get; }
-
-		[Field ("AVCaptureAncillaryDataUserKeyRDD18UserItems")]
-		NSString Rdd18UserItemsKey { get; }
-	}
-
 	/// <summary>Provides a read-only view of user-defined SMPTE RDD 18 ancillary metadata.</summary>
 	[iOS (27, 0), TV (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
-	[StrongDictionary ("AVCaptureAncillaryDataUserKeys")]
+	[StrongDictionary]
 	interface AVCaptureAncillaryDataUserData {
 		/// <summary>Gets the ancillary data instance identifier, or <see langword="null" /> if it is absent.</summary>
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18InstanceUID")]
 		NSUuid Rdd18InstanceUid { get; }
 
 		/// <summary>Gets the User Defined Acquisition Metadata set version, or <see langword="null" /> if it is absent.</summary>
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18UDAMSetVersion")]
 		ushort Rdd18UdamSetVersion { get; }
 
 		/// <summary>Gets the dictionary of user tags and their values, or <see langword="null" /> if it is absent.</summary>
+		[Field ("AVCaptureAncillaryDataUserKeyRDD18UserItems")]
 		NSDictionary Rdd18UserItems { get; }
 	}
 
@@ -17018,38 +17007,26 @@ namespace AVFoundation {
 		void DidOutputMetadataObjects (AVCaptureMetadataOutput captureOutput, AVMetadataObject [] metadataObjects, AVCaptureConnection connection);
 	}
 
-	[TV (17, 0)]
-	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface AVCapturePhotoSettingsThumbnailFormatKeys {
-		[Field ("AVVideoCodecKey")]
-		NSString CodecKey { get; }
-
-		[Field ("AVVideoWidthKey")]
-		NSString WidthKey { get; }
-
-		[Field ("AVVideoHeightKey")]
-		NSString HeightKey { get; }
-	}
-
 
 	/// <summary>A raw format for an embedded thumbnail image.</summary>
 	[TV (17, 0)]
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AVCapturePhotoSettingsThumbnailFormatKeys")]
+	[StrongDictionary]
 	interface AVCapturePhotoSettingsThumbnailFormat {
 		/// <summary>Gets or sets the thumbnail codec.</summary>
 		///         <value>The thumbnail codec.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCodecKey")]
 		NSString Codec { get; set; }
 		/// <summary>Gets or sets the thumbnail width.</summary>
 		///         <value>The thumbnail width.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoWidthKey")]
 		NSNumber Width { get; set; }
 		/// <summary>Gets or sets the thumbnail height.</summary>
 		///         <value>The thumbnail height.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoHeightKey")]
 		NSNumber Height { get; set; }
 	}
 
@@ -21493,127 +21470,82 @@ namespace AVFoundation {
 	/// <summary>Contains color properties.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AVColorPropertiesKeys")]
+	[StrongDictionary]
 	interface AVColorProperties {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoColorPrimariesKey")]
 		NSString AVVideoColorPrimaries { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoTransferFunctionKey")]
 		NSString AVVideoTransferFunction { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSString AVVideoYCbCrMatrix { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface AVColorPropertiesKeys {
-		[MacCatalyst (13, 1)]
-		[Field ("AVVideoColorPrimariesKey")]
-		NSString AVVideoColorPrimariesKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("AVVideoTransferFunctionKey")]
-		NSString AVVideoTransferFunctionKey { get; }
-
-		[MacCatalyst (13, 1)]
 		[Field ("AVVideoYCbCrMatrixKey")]
-		NSString AVVideoYCbCrMatrixKey { get; }
+		NSString AVVideoYCbCrMatrix { get; }
 	}
 
 	/// <summary>Contains clear aperture properties.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AVCleanAperturePropertiesKeys")]
+	[StrongDictionary]
 	interface AVCleanApertureProperties {
 		/// <summary>Gets or sets the width of the clean aperture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCleanApertureWidthKey")]
 		NSNumber Width { get; set; }
 		/// <summary>Gets or sets the height of the clean aperture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCleanApertureHeightKey")]
 		NSNumber Height { get; set; }
 		/// <summary>Gets or sets the horizontal offset of the clean aperture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCleanApertureHorizontalOffsetKey")]
 		NSNumber HorizontalOffset { get; set; }
 		/// <summary>Gets or sets the vertical offset of the clean aperture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCleanApertureVerticalOffsetKey")]
 		NSNumber VerticalOffset { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface AVCleanAperturePropertiesKeys {
-		[Field ("AVVideoCleanApertureWidthKey")]
-		NSString WidthKey { get; }
-
-		[Field ("AVVideoCleanApertureHeightKey")]
-		NSString HeightKey { get; }
-
-		[Field ("AVVideoCleanApertureHorizontalOffsetKey")]
-		NSString HorizontalOffsetKey { get; }
-
-		[Field ("AVVideoCleanApertureVerticalOffsetKey")]
-		NSString VerticalOffsetKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AVPixelAspectRatioPropertiesKeys")]
+	[StrongDictionary]
 	interface AVPixelAspectRatioProperties {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoPixelAspectRatioHorizontalSpacingKey")]
 		NSNumber PixelAspectRatioHorizontalSpacing { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		NSNumber PixelAspectRatioVerticalSpacing { get; set; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface AVPixelAspectRatioPropertiesKeys {
-		[Field ("AVVideoPixelAspectRatioHorizontalSpacingKey")]
-		NSString PixelAspectRatioHorizontalSpacingKey { get; }
-
 		[Field ("AVVideoPixelAspectRatioVerticalSpacingKey")]
-		NSString PixelAspectRatioVerticalSpacingKey { get; }
+		NSNumber PixelAspectRatioVerticalSpacing { get; set; }
 	}
 
 	/// <summary>Contains compression properties.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AVCompressionPropertiesKeys")]
+	[StrongDictionary]
 	interface AVCompressionProperties {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("AVVideoCleanApertureKey")]
 		AVCleanApertureProperties CleanAperture { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		AVPixelAspectRatioProperties PixelAspectRatio { get; set; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface AVCompressionPropertiesKeys {
-		[Field ("AVVideoCleanApertureKey")]
-		NSString CleanApertureKey { get; }
-
 		[Field ("AVVideoPixelAspectRatioKey")]
-		NSString PixelAspectRatioKey { get; }
+		AVPixelAspectRatioProperties PixelAspectRatio { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -26112,28 +26044,15 @@ namespace AVFoundation {
 	}
 
 	[iOS (18, 0), NoTV, MacCatalyst (15, 0)]
-	[Static]
-	[Internal]
-	interface AVCaptionSettingsKeys {
-		[Field ("AVCaptionMediaSubTypeKey")]
-		NSString MediaSubTypeKey { get; }
-
-		[Field ("AVCaptionMediaTypeKey")]
-		NSString MediaTypeKey { get; }
-
-		[Field ("AVCaptionTimeCodeFrameDurationKey")]
-		NSString UseTimeCodeFrameDurationKey { get; }
-
-		[Field ("AVCaptionUseDropFrameTimeCodeKey")]
-		NSString UseDropFrameTimeCodeKey { get; }
-	}
-
-	[iOS (18, 0), NoTV, MacCatalyst (15, 0)]
-	[StrongDictionary ("AVCaptionSettingsKeys")]
+	[StrongDictionary]
 	interface AVCaptionSettings {
+		[Field ("AVCaptionMediaSubTypeKey")]
 		AVMediaTypes MediaSubType { get; set; }
+		[Field ("AVCaptionMediaTypeKey")]
 		AVMediaTypes MediaType { get; set; }
+		[Field ("AVCaptionTimeCodeFrameDurationKey")]
 		bool UseTimeCodeFrameDuration { get; set; }
+		[Field ("AVCaptionUseDropFrameTimeCodeKey")]
 		bool UseDropFrameTimeCode { get; set; }
 	}
 
@@ -27005,102 +26924,52 @@ namespace AVFoundation {
 
 	// the property types here are pure guesswork, Apple's documentation or headers don't say anything at all
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	[StrongDictionary ("AVAudioSequencerInfoDictionaryKeys")]
+	[StrongDictionary]
 	interface AVAudioSequencerInfoDictionary {
-		string Album { get; set; }
-		double ApproximateDurationInSeconds { get; set; }
-		string Artist { get; set; }
-		NSObject ChannelLayout { get; set; }
-		string Comments { get; set; }
-		string Composer { get; set; }
-		string Copyright { get; set; }
-		string EncodingApplication { get; set; }
-		string Genre { get; set; }
-		NSObject Isrc { get; set; }
-		string KeySignature { get; set; }
-		string Lyricist { get; set; }
-		double NominalBitRate { get; set; }
-		NSObject RecordedDate { get; set; }
-		double SourceBitDepth { get; set; }
-		string SourceEncoder { get; set; }
-		string SubTitle { get; set; }
-		double Tempo { get; set; }
-		string TimeSignature { get; set; }
-		string Title { get; set; }
-		int TrackNumber { get; set; }
-		string Year { get; set; }
-	}
-
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	[Static]
-	[Internal]
-	interface AVAudioSequencerInfoDictionaryKeys {
-
 		[Field ("AVAudioSequencerInfoDictionaryKeyAlbum")]
-		NSString AlbumKey { get; }
-
+		string Album { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyApproximateDurationInSeconds")]
-		NSString ApproximateDurationInSecondsKey { get; }
-
+		double ApproximateDurationInSeconds { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyArtist")]
-		NSString ArtistKey { get; }
-
+		string Artist { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyChannelLayout")]
-		NSString ChannelLayoutKey { get; }
-
+		NSObject ChannelLayout { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyComments")]
-		NSString CommentsKey { get; }
-
+		string Comments { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyComposer")]
-		NSString ComposerKey { get; }
-
+		string Composer { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyCopyright")]
-		NSString CopyrightKey { get; }
-
+		string Copyright { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyEncodingApplication")]
-		NSString EncodingApplicationKey { get; }
-
+		string EncodingApplication { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyGenre")]
-		NSString GenreKey { get; }
-
+		string Genre { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyISRC")]
-		NSString IsrcKey { get; }
-
+		NSObject Isrc { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyKeySignature")]
-		NSString KeySignatureKey { get; }
-
+		string KeySignature { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyLyricist")]
-		NSString LyricistKey { get; }
-
+		string Lyricist { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyNominalBitRate")]
-		NSString NominalBitRateKey { get; }
-
+		double NominalBitRate { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyRecordedDate")]
-		NSString RecordedDateKey { get; }
-
+		NSObject RecordedDate { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeySourceBitDepth")]
-		NSString SourceBitDepthKey { get; }
-
+		double SourceBitDepth { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeySourceEncoder")]
-		NSString SourceEncoderKey { get; }
-
+		string SourceEncoder { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeySubTitle")]
-		NSString SubTitleKey { get; }
-
+		string SubTitle { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyTempo")]
-		NSString TempoKey { get; }
-
+		double Tempo { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyTimeSignature")]
-		NSString TimeSignatureKey { get; }
-
+		string TimeSignature { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyTitle")]
-		NSString TitleKey { get; }
-
+		string Title { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyTrackNumber")]
-		NSString TrackNumberKey { get; }
-
+		int TrackNumber { get; set; }
 		[Field ("AVAudioSequencerInfoDictionaryKeyYear")]
-		NSString YearKey { get; }
+		string Year { get; set; }
 	}
 
 	[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]

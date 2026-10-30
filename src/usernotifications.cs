@@ -394,47 +394,28 @@ namespace UserNotifications {
 		UNNotificationAttachment FromIdentifier (string identifier, NSUrl url, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 	}
 
-	[Unavailable (PlatformName.TvOS)]
-	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface UNNotificationAttachmentOptionsKeys {
-
-		[Field ("UNNotificationAttachmentOptionsTypeHintKey")]
-		NSString TypeHint { get; }
-
-		[Field ("UNNotificationAttachmentOptionsThumbnailHiddenKey")]
-		NSString ThumbnailHidden { get; }
-
-		[Field ("UNNotificationAttachmentOptionsThumbnailClippingRectKey")]
-		NSString ThumbnailClippingRect { get; }
-
-		[Field ("UNNotificationAttachmentOptionsThumbnailTimeKey")]
-		NSString ThumbnailTime { get; }
-	}
-
 	/// <summary>A dictionary of values that control aspects of notification behavior.</summary>
 	[Unavailable (PlatformName.TvOS)]
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("UNNotificationAttachmentOptionsKeys")]
+	[StrongDictionary]
 	interface UNNotificationAttachmentOptions {
 
 		/// <summary>Gets or sets a type hint for the attachment.</summary>
 		///         <value>The type hint for the attachment.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("TypeHint")]
+		[Field ("UNNotificationAttachmentOptionsTypeHintKey")]
 		string TypeHint { get; set; }
 
 		/// <summary>Gets or sets a value that controls whether the thumbnail image is hidden.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("ThumbnailHidden")]
+		[Field ("UNNotificationAttachmentOptionsThumbnailHiddenKey")]
 		bool ThumbnailHidden { get; set; }
 
 		/// <summary>Gets or sets the clipping rectangle for displaying a thumbail image from a larger source image.</summary>
 		///         <value>The clipping rectangle for displaying a thumbail image from a larger source image.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("ThumbnailClippingRect")]
+		[Field ("UNNotificationAttachmentOptionsThumbnailClippingRectKey")]
 		CGRect ThumbnailClippingRect { get; set; }
 		// According to apple docs UNNotificationAttachmentOptionsThumbnailTimeKey
 		// can be either a CMTime or a NSNumber (in seconds). Exposing both options
@@ -443,13 +424,13 @@ namespace UserNotifications {
 		/// <summary>Gets or sets the number of a starting frame for an animated attachment image.</summary>
 		///         <value>The number of a starting frame for an animated image.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("ThumbnailTime")]
+		[Field ("UNNotificationAttachmentOptionsThumbnailTimeKey")]
 		CMTime ThumbnailTime { get; set; }
 
 		/// <summary>Gets or sets the time offset at which to begin playing an animated attachment image.</summary>
 		///         <value>The time offset at which to begin playing an animated attachment image.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("ThumbnailTime")]
+		[Field ("UNNotificationAttachmentOptionsThumbnailTimeKey")]
 		double ThumbnailTimeInSeconds { get; set; }
 	}
 

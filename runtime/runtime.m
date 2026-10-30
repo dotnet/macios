@@ -1034,6 +1034,21 @@ exception_handler (NSException *exc)
 {
 	LOG (PRODUCT ": Received unhandled ObjectiveC exception: %@ %@", [exc name], [exc reason]);
 
+	if (xamarin_handling_unhandled_exceptions == 1) {
+		PRINT ("Detected recursion when handling uncaught Objective-C exception: %@", exc);
+		abort ();
+	}
+
+	xamarin_handling_unhandled_exceptions = 1;
+
+	GCHandle callback_exception_gchandle = INVALID_GCHANDLE;
+	xamarin_on_uncaught_objectivec_exception (exc, &callback_exception_gchandle);
+	if (callback_exception_gchandle != INVALID_GCHANDLE) {
+		PRINT (PRODUCT ": Got an exception while executing the UncaughtObjectiveCException event (this exception will be ignored):");
+		PRINT ("%@", xamarin_print_all_exceptions (callback_exception_gchandle));
+		xamarin_gchandle_free (callback_exception_gchandle);
+	}
+
 	XamarinGCHandle* exc_handle = [[exc userInfo] objectForKey: @"XamarinManagedExceptionHandle"];
 	if (exc_handle != NULL) {
 		GCHandle exception_gchandle = [exc_handle getHandle];
@@ -1044,12 +1059,6 @@ exception_handler (NSException *exc)
 		}
 	}
 
-	if (xamarin_handling_unhandled_exceptions == 1) {
-		PRINT ("Detected recursion when handling uncaught Objective-C exception: %@", exc);
-		abort ();
-	}
-
-	xamarin_handling_unhandled_exceptions = 1;
 	xamarin_throw_ns_exception (exc);
 	xamarin_handling_unhandled_exceptions = 0;
 }

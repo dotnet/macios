@@ -186,6 +186,8 @@ typedef unsigned int (^RegistrarTestBlock) (unsigned int magic);
 @interface ObjCProtocolTestImpl : NSObject <ProtocolAssignerProtocol>
 @end
 
+void throw_uncaught_objc_exception (NSException *exception);
+
 /*
  * ObjC test class used for exception tests.
  */

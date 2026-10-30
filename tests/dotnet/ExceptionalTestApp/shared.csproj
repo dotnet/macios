@@ -11,5 +11,6 @@
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\libtest.a" Kind="Static" Frameworks="MapKit ModelIO SceneKit CoreLocation" LinkerFlags="-lz" />
 	</ItemGroup>
 </Project>

@@ -481,6 +481,23 @@ namespace ObjCRuntime {
 		static MarshalObjectiveCExceptionMode objc_exception_mode;
 		static MarshalManagedExceptionMode managed_exception_mode;
 
+		/// <summary>Raised before the runtime handles an uncaught Objective-C exception.</summary>
+		/// <remarks>
+		///   <para>This event allows applications to log uncaught Objective-C exceptions, including exceptions marshalled from managed code. It does not allow applications to suppress the exception or change how it is handled.</para>
+		///   <para>Exceptions thrown by event handlers are logged, and the runtime continues handling the original exception.</para>
+		/// </remarks>
+		public static event UncaughtObjectiveCExceptionHandler? UncaughtObjectiveCException;
+
+		static void OnUncaughtObjectiveCException (IntPtr exception_handle)
+		{
+			var handler = UncaughtObjectiveCException;
+			if (handler is null)
+				return;
+
+			var exception = GetNSObject<NSException> (exception_handle);
+			handler (null, new UncaughtObjectiveCExceptionEventArgs (exception));
+		}
+
 		/// <summary>Raised when an Objective-C exception is about to be marshalled into managed code, allowing the application to choose how the exception is handled.</summary>
 		/// <remarks>Handlers can inspect the native exception and set the marshalling mode on the event arguments to control whether a managed exception is thrown.</remarks>
 		public static event MarshalObjectiveCExceptionHandler? MarshalObjectiveCException;

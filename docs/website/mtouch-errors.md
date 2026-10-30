@@ -2042,6 +2042,16 @@ in the project's watchOS Build options.
 
 <!-- MT2210 - MT2219 used by the above error -->
 
+<a name="MT2388"></a>
+
+### MT2388: The assembly '*' references Runtime.InvokedSelector, but EnableInvokedSelectorTracking is false.
+
+The named assembly references `ObjCRuntime.Runtime.InvokedSelector`, but selector
+tracking was explicitly disabled. Remove the reference, set
+`EnableInvokedSelectorTracking` to `true`, or leave the property unset to enable
+tracking automatically when the getter is referenced. Detection includes
+references in dependencies and code that may later be removed by trimming.
+
 ## MT3xxx: AOT error messages
 
 <!--

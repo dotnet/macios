@@ -6,10 +6,13 @@
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class InvokedSelectorTrackingTest : TestBaseClass {
-		[TestCase (true, true)]
-		[TestCase (true, false)]
-		[TestCase (false, false)]
-		public void IncrementalBuild (bool prepare, bool postprocess)
+		[TestCase (true, true, false)]
+		[TestCase (true, false, false)]
+		[TestCase (false, false, false)]
+		[TestCase (true, true, true)]
+		[TestCase (true, false, true)]
+		[TestCase (false, false, true)]
+		public void IncrementalBuild (bool prepare, bool postprocess, bool referenced)
 		{
 			var platform = ApplePlatform.MacCatalyst;
 			var runtimeIdentifier = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "maccatalyst-arm64" : "maccatalyst-x64";
@@ -22,21 +25,42 @@ namespace Xamarin.Tests {
 			properties ["PostProcessAssemblies"] = postprocess.ToString ();
 			properties ["MtouchLink"] = "SdkOnly";
 			properties ["Registrar"] = "static";
+			if (referenced)
+				properties ["AdditionalDefineConstants"] = "INVOKED_SELECTOR_TRACKING";
 
 			var objDir = GetObjDir (projectPath, platform, runtimeIdentifier, "Debug");
 			foreach (var enabled in new string? [] { null, "true", "false" }) {
 				if (enabled is not null)
 					properties ["EnableInvokedSelectorTracking"] = enabled;
+				if (referenced && enabled == "false") {
+					var failure = DotNet.AssertBuildFailure (projectPath, properties);
+					Assert.That (BinLog.GetBuildLogErrors (failure.BinLogPath).Any (error => error.Code == "MT2388"), Is.True, "Disabled reference error");
+					continue;
+				}
 				DotNet.AssertBuild (projectPath, properties);
-				AssertGeneratedTracking (objDir, enabled == "true");
+				AssertGeneratedTracking (objDir, referenced || enabled == "true");
 
 				var result = DotNet.AssertBuild (projectPath, properties);
-				AssertGeneratedTracking (objDir, enabled == "true");
+				AssertGeneratedTracking (objDir, referenced || enabled == "true");
 				if (prepare)
 					AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
 				if (postprocess)
 					AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePostprocessAssemblies", "Incremental post-processing");
 			}
+		}
+
+		[TestCase ("")]
+		[TestCase ("true")]
+		[TestCase ("false")]
+		public void MissingPreparationOutput (string enabled)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacCatalyst);
+			var projectPath = GetProjectPath ("MySimpleApp", platform: ApplePlatform.MacCatalyst);
+			var properties = GetDefaultProperties ();
+			properties ["PrepareAssemblies"] = "true";
+			properties ["EnableInvokedSelectorTracking"] = enabled;
+			properties ["_AssemblyPreparerMSBuildOutputFile"] = Path.Combine (Cache.CreateTemporaryDirectory (), "missing.txt");
+			DotNet.AssertBuild (projectPath, properties, target: "_SetInvokedSelectorTracking");
 		}
 
 		static void AssertGeneratedTracking (string objDir, bool expected)

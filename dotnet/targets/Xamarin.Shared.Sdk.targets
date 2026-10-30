@@ -698,7 +698,7 @@
 	</Target>
 
 	<Target Name="_SetInvokedSelectorTracking" Condition="'$(PrepareAssemblies)' == 'true'">
-		<ReadLinesFromFile File="$(_AssemblyPreparerMSBuildOutputFile)">
+		<ReadLinesFromFile File="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')">
 			<Output TaskParameter="Lines" ItemName="_InvokedSelectorTrackingOutput" />
 		</ReadLinesFromFile>
 		<ItemGroup>
@@ -706,7 +706,8 @@
 		</ItemGroup>
 		<PropertyGroup>
 			<_InvokedSelectorTrackingLineText>@(_InvokedSelectorTrackingLine)</_InvokedSelectorTrackingLineText>
-			<_EnableInvokedSelectorTracking>$(_InvokedSelectorTrackingLineText.Replace('EnableInvokedSelectorTracking=', ''))</_EnableInvokedSelectorTracking>
+			<_EnableInvokedSelectorTracking>$(EnableInvokedSelectorTracking)</_EnableInvokedSelectorTracking>
+			<_EnableInvokedSelectorTracking Condition="'$(_EnableInvokedSelectorTracking)' == '' And '$(_InvokedSelectorTrackingLineText)' != ''">$(_InvokedSelectorTrackingLineText.Replace('EnableInvokedSelectorTracking=', ''))</_EnableInvokedSelectorTracking>
 		</PropertyGroup>
 	</Target>
 

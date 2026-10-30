@@ -190,10 +190,10 @@ namespace Foundation {
 		}
 		#endregion
 
-		/// <summary>Computes the union of two ordered sets.</summary>
-		/// <param name="first">The first ordered set.</param>
-		/// <param name="second">The second ordered set.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing all objects from both ordered sets, or <see langword="null"/> if both are <see langword="null"/>.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSMutableOrderedSet<TKey>? operator + (NSMutableOrderedSet<TKey>? first, NSMutableOrderedSet<TKey>? second)
@@ -207,10 +207,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Computes the union of an ordered set and a set.</summary>
-		/// <param name="first">The ordered set.</param>
-		/// <param name="second">The set to add to the ordered set.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing all objects from both collections, or <see langword="null"/> if both are <see langword="null"/>.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSMutableOrderedSet<TKey>? operator + (NSMutableOrderedSet<TKey>? first, NSSet<TKey>? second)
@@ -224,10 +224,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Computes the union of two ordered sets.</summary>
-		/// <param name="first">The first ordered set.</param>
-		/// <param name="second">The second ordered set to add.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing all objects from both ordered sets, or <see langword="null"/> if both are <see langword="null"/>.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSMutableOrderedSet<TKey>? operator + (NSMutableOrderedSet<TKey>? first, NSOrderedSet<TKey>? second)
@@ -241,10 +241,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Computes the difference between two ordered sets.</summary>
-		/// <param name="first">The ordered set to subtract from.</param>
-		/// <param name="second">The ordered set to subtract.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing objects in <paramref name="first"/> but not in <paramref name="second"/>, or <see langword="null"/> if <paramref name="first"/> is <see langword="null"/>.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		public static NSMutableOrderedSet<TKey>? operator - (NSMutableOrderedSet<TKey>? first, NSMutableOrderedSet<TKey>? second)
 		{
@@ -257,10 +257,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Computes the difference between an ordered set and a set.</summary>
-		/// <param name="first">The ordered set to subtract from.</param>
-		/// <param name="second">The set to subtract.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing objects in <paramref name="first"/> but not in <paramref name="second"/>, or <see langword="null"/> if <paramref name="first"/> is <see langword="null"/>.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		public static NSMutableOrderedSet<TKey>? operator - (NSMutableOrderedSet<TKey>? first, NSSet<TKey>? second)
 		{
@@ -273,10 +273,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Computes the difference between two ordered sets.</summary>
-		/// <param name="first">The ordered set to subtract from.</param>
-		/// <param name="second">The ordered set to subtract.</param>
-		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}"/> containing objects in <paramref name="first"/> but not in <paramref name="second"/>, or <see langword="null"/> if <paramref name="first"/> is <see langword="null"/>.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSMutableOrderedSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		public static NSMutableOrderedSet<TKey>? operator - (NSMutableOrderedSet<TKey>? first, NSOrderedSet<TKey>? second)
 		{

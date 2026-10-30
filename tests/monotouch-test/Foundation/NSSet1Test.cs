@@ -231,11 +231,12 @@ namespace MonoTouchFixtures.Foundation {
 			var v1 = (NSString) "1";
 			var v2 = (NSString) "2";
 
-			// empty - non-empty -> null
+			// empty - non-empty -> empty
 			using (var first = new NSSet<NSString> ()) {
 				using (var second = new NSSet<NSString> (v2)) {
-					var result = first - second;
-					Assert.That (result, Is.Null, "empty - non-empty");
+					using var result = first - second;
+					Assert.That (result, Is.Not.Null, "empty - non-empty");
+					Assert.That (result.Count, Is.EqualTo ((nuint) 0), "empty - non-empty Count");
 				}
 			}
 
@@ -251,7 +252,7 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			}
 
-			// Result is empty after subtraction -> null
+			// Result is empty after subtraction -> empty
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> (v1)) {
 					var result = first - second;

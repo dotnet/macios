@@ -14802,7 +14802,6 @@ M:CoreFoundation.CFArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Bool
 M:CoreFoundation.CFArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0})
-M:CoreFoundation.CFArray.Create(ObjCRuntime.INativeObject[])
 M:CoreFoundation.CFArray.GetValue(System.IntPtr)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle,System.Boolean)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)

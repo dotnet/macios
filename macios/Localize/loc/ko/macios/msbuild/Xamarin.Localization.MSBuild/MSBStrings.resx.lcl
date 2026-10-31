@@ -2923,6 +2923,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7198" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Codesign failed because '{0}' contains files with extended attributes such as 'com.apple.FinderInfo' or 'com.apple.ResourceFork' that are not allowed when signing. Run 'xattr -lr "{0}"' to locate the affected files. Remove the unwanted attributes from the original source files (for example, with 'xattr -cr "path/to/source/files"'), then clean and rebuild. See https://developer.apple.com/library/archive/qa/qa1940/_index.html for more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}'에 서명할 때 허용되지 않는 'com.apple.FinderInfo' 또는 'com.apple.ResourceFork'와 같은 확장 특성이 있는 파일이 포함되어 있어 코드 서명에 실패했습니다. 영향을 받는 파일을 찾으려면 'xattr -lr "{0}"'을(를) 실행하세요. 원본 소스 파일에서 불필요한 특성을 제거하세요. 예를 들어 'xattr -cr "path/to/source/files"'를 실행하면 됩니다. 그런 다음 정리하고 다시 빌드하세요. 자세한 내용은 https://developer.apple.com/library/archive/qa/qa1940/_index.html을 참조하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The app's Info.plist does not contain a UIApplicationSceneManifest dictionary. Apps built with the iOS or Mac Catalyst 27.0 SDK or later must use the UIKit scene lifecycle or they will crash at launch on iOS or macOS 27.0 or later. Add a scene manifest and scene delegate, and migrate custom lifecycle handlers as described at https://aka.ms/uiscene. To skip this build-time validation, set the MSBuild property ValidateSceneManifest to false; this does not disable the operating system's requirement.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[앱의 Info.plist에 UIApplicationSceneManifest 사전이 포함되어 있지 않습니다. iOS 또는 Mac Catalyst 27.0 SDK 이상으로 빌드한 앱은 UIKit 장면 수명 주기를 사용해야 합니다. 그렇지 않으면 iOS 또는 macOS 27.0 이상에서 앱을 시작할 때 충돌합니다. https://aka.ms/uiscene에 설명된 대로 장면 매니페스트와 장면 대리자를 추가하고 사용자 지정 수명 주기 처리기를 마이그레이션하세요. 이 빌드 시 유효성 검사를 건너뛰려면 MSBuild 속성 ValidateSceneManifest를 false로 설정하세요. 이렇게 설정해도 운영 체제의 요구 사항이 비활성화되지는 않습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3288,6 +3306,15 @@
           <Val><![CDATA[Hashed {0} of {1} R2R input files.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[R2R 입력 파일 {1}개 중 {0}개를 해시했습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";UseNativeHttpHandlerHasNoEffectOnMacOS" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[macOS에서는 'UseNativeHttpHandler' 속성이 적용되지 않습니다. 네이티브 HTTP 처리기를 사용하려면 NSUrlSessionHandler 인스턴스를 HttpClient 생성자에 직접 전달하세요.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3921,6 +3948,15 @@
           <Val><![CDATA[Ignoring invalid R2R input hash for '{0}' in cache '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[캐시 '{1}'에서 '{0}'에 대한 유효하지 않은 R2R 입력 해시를 무시합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7200" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[프레임워크 '{0}'의 확장명에 대문자가 포함되어 있습니다. 올바르게 연결되고 번들로 포함되도록 소문자 '.framework' 확장명을 사용하도록 이름을 변경하세요.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

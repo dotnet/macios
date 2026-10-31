@@ -3301,6 +3301,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";UseNativeHttpHandlerHasNoEffectOnMacOS" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Właściwość „UseNativeHttpHandle”" nie ma wpływu na system macOS. Przekaż wystąpienie NSUrlSessionHandler bezpośrednio do konstruktora HttpClient, aby użyć natywnego programu obsługi HTTP.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";W0016" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Can only fake the watchOS 4.3 SDK when building for watchOS.]]></Val>
@@ -3930,6 +3939,15 @@
           <Val><![CDATA[Ignoring invalid R2R input hash for '{0}' in cache '{1}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Ignorowanie nieprawidłowego skrótu wejściowego R2R dla elementu „{0}” w pamięci podręcznej „{1}”.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7199" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Platforma „{0}” ma rozszerzenie zapisane z nieprawidłową wielkością liter. Zmień jej nazwę, aby używała rozszerzenia „.framework” zapisanego małymi literami, dzięki czemu będzie prawidłowo łączona i dołączana do pakietu.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

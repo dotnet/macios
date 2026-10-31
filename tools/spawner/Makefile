@@ -19,10 +19,10 @@ define SpawnerTemplate
 	$$(Q) mkdir -p $$@
 
 .libs/$(1)/spawner.o: spawner.c | .libs/$(1)
-	$$(Q_CC) $$(CLANG) -arch $(1) -isysroot $$(SPAWNER_SDK) -c $$< -o $$@
+	$$(Q_CC) $$(CLANG) -arch $(1) -isysroot $$(SPAWNER_SDK) -mmacosx-version-min=$$(DOTNET_MIN_MACOS_SDK_VERSION) -c $$< -o $$@
 
 .libs/$(1)/spawner: .libs/$(1)/spawner.o
-	$$(Q_CCLD) $$(CLANG) -arch $(1) -isysroot $$(SPAWNER_SDK) $$< -o $$@
+	$$(Q_CCLD) $$(CLANG) -arch $(1) -isysroot $$(SPAWNER_SDK) -mmacosx-version-min=$$(DOTNET_MIN_MACOS_SDK_VERSION) $$< -o $$@
 endef
 $(foreach arch,$(SPAWNER_ARCHS),$(eval $(call SpawnerTemplate,$(arch))))
 

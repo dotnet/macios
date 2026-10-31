@@ -351,11 +351,6 @@ namespace Introspection {
 					return true;
 				}
 				break;
-#if __MACOS__
-			case "/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics":
-				// Years ago, CoreGraphics was somewhere else on macOS
-				return dllImportLibrary == "/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/CoreGraphics";
-#endif
 			case "/System/Library/Frameworks/OpenGL.framework/Libraries/libGL.dylib":
 				return dllImportLibrary == "/System/Library/Frameworks/OpenGL.framework/OpenGL";
 			case "/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/CarbonCore":

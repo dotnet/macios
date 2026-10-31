@@ -117,7 +117,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && !path.EndsWith (".framework", StringComparison.Ordinal))
-				log.LogWarning (7199, path, MSBStrings.W7199 /* The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly. */, path);
+				log.LogWarning (7200, path, MSBStrings.W7200 /* The framework '{0}' has an incorrectly capitalized extension. Rename it to use the lowercase '.framework' extension to ensure it is linked and bundled correctly. */, path);
 		}
 
 		public override bool Execute ()

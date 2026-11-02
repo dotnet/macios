@@ -1350,6 +1350,8 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
+				var unbounded = AppContext.TryGetSwitch ("Foundation.NSObject.UseUnboundedFinalizerDrain", out var enabled) && enabled;
+				int drainCount;
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
 					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
@@ -1359,11 +1361,12 @@ namespace Foundation {
 						return;
 					drainScheduled = false;
 					draining = true;
+					drainCount = unbounded ? handles.Count : MaxDrainCount;
 				}
 
-				var start = Stopwatch.GetTimestamp ();
+				var start = unbounded ? 0 : Stopwatch.GetTimestamp ();
 				try {
-					for (var i = 0; i < MaxDrainCount; i++) {
+					for (var i = 0; i < drainCount; i++) {
 						NSObject handle;
 						lock (lock_obj) {
 							if (handles.Count == 0)
@@ -1374,7 +1377,7 @@ namespace Foundation {
 						GC.KeepAlive (handle);
 
 						// A native release cannot be interrupted, so check the budget after each object.
-						if (Stopwatch.GetElapsedTime (start).TotalMilliseconds >= DrainTimeBudgetMilliseconds)
+						if (!unbounded && Stopwatch.GetElapsedTime (start).TotalMilliseconds >= DrainTimeBudgetMilliseconds)
 							break;
 					}
 				} finally {
@@ -1386,8 +1389,12 @@ namespace Foundation {
 							drainScheduled = true;
 					}
 					if (call_drain) {
-						// Immediately requeuing selectors can keep the same run-loop iteration busy.
-						mainQueue.DispatchAfter (new CoreFoundation.DispatchTime (CoreFoundation.DispatchTime.Now, 1_000_000), ScheduleDrain);
+						if (unbounded) {
+							ScheduleDrain ();
+						} else {
+							// Immediately requeuing selectors can keep the same run-loop iteration busy.
+							mainQueue.DispatchAfter (new CoreFoundation.DispatchTime (CoreFoundation.DispatchTime.Now, 1_000_000), ScheduleDrain);
+						}
 					}
 				}
 			}

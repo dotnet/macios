@@ -38,9 +38,23 @@ namespace Xamarin.Mac.Tests {
 			}
 		}
 
-		[TestCase (0, 600, 256)]
-		[TestCase (20, 10, 1)]
-		public void DrainYields (int releaseDelayMilliseconds, int objectCount, int maxBatchCount)
+		[TestCase (0, 600, 256, false)]
+		[TestCase (20, 10, 1, false)]
+		[TestCase (0, 600, 600, true)]
+		[TestCase (20, 10, 10, true)]
+		public void DrainYields (int releaseDelayMilliseconds, int objectCount, int maxBatchCount, bool unbounded)
+		{
+			const string switchName = "Foundation.NSObject.UseUnboundedFinalizerDrain";
+			AppContext.TryGetSwitch (switchName, out var previousValue);
+			AppContext.SetSwitch (switchName, unbounded);
+			try {
+				CheckDrain (releaseDelayMilliseconds, objectCount, maxBatchCount, unbounded);
+			} finally {
+				AppContext.SetSwitch (switchName, previousValue);
+			}
+		}
+
+		void CheckDrain (int releaseDelayMilliseconds, int objectCount, int maxBatchCount, bool unbounded)
 		{
 			var released = 0;
 			var releasedAtHeartbeat = 0;
@@ -67,6 +81,8 @@ namespace Xamarin.Mac.Tests {
 
 			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => { }, () => heartbeat && released == objectCount), Is.True, "Drain timed out");
 			Assert.That (releasedAtHeartbeat, Is.InRange (1, maxBatchCount), "Objects released before the run loop could process other work");
+			if (unbounded)
+				Assert.That (releasedAtHeartbeat, Is.EqualTo (objectCount), "Legacy draining must release the entire batch before yielding");
 			Assert.That (released, Is.EqualTo (objectCount), "All objects released");
 			Assert.That (releasedOnMainThread, Is.True, "Native releases must stay on the main thread");
 			foreach (var obj in objects)

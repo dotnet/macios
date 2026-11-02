@@ -1,5 +1,28 @@
 # CoreCLR
 
+## Native object finalizer draining
+
+Finalized `NSObject` instances release their native references on the main thread.
+By default, each drain callback processes at most 256 objects or 5 ms of work,
+then defers remaining work by 1 ms so the run loop can process other work.
+A single native release cannot be interrupted and may exceed the time budget.
+
+To restore the previous behavior, which processes the entire batch present at
+the start of each callback without a time budget or continuation delay, set the
+`Foundation.NSObject.UseUnboundedFinalizerDrain` AppContext switch to `true`:
+
+```xml
+<ItemGroup>
+  <RuntimeHostConfigurationOption Include="Foundation.NSObject.UseUnboundedFinalizerDrain" Value="true" />
+</ItemGroup>
+```
+
+Alternatively, call
+`AppContext.SetSwitch ("Foundation.NSObject.UseUnboundedFinalizerDrain", true)`
+at application startup. The default is `false`. Enabling this switch can cause
+long main-thread stalls when many objects are awaiting release; it does not
+change when garbage collections occur.
+
 ## How to build and use dotnet/runtime from source
 
 1. Clone dotnet/runtime somewhere:

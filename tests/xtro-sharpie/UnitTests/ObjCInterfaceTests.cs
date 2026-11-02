@@ -12,12 +12,16 @@ namespace Xamarin.Tests;
 public class ObjCInterfaceTests {
 	const string Framework = "InterfaceTests";
 
-	static TypeDefinition AddType (ModuleDefinition module, string parentName, int constructorArguments, bool constructorWrapper, bool? propertyWrapper, bool skip, bool protocol)
+	static TypeDefinition AddType (ModuleDefinition module, string parentName, int constructorArguments, bool constructorWrapper, bool? propertyWrapper, bool skip, bool protocol, bool nested = true)
 	{
-		var parent = new TypeDefinition (Framework, parentName, TypeAttributes.Public, module.TypeSystem.Object);
-		module.Types.Add (parent);
-		var type = new TypeDefinition ("", "_SharedDelegate", TypeAttributes.NestedAssembly, module.TypeSystem.Object);
-		parent.NestedTypes.Add (type);
+		var type = new TypeDefinition (nested ? "" : Framework, nested ? "_SharedDelegate" : parentName, nested ? TypeAttributes.NestedAssembly : TypeAttributes.NotPublic, module.TypeSystem.Object);
+		if (nested) {
+			var parent = new TypeDefinition (Framework, parentName, TypeAttributes.Public, module.TypeSystem.Object);
+			module.Types.Add (parent);
+			parent.NestedTypes.Add (type);
+		} else {
+			module.Types.Add (type);
+		}
 
 		var attributeType = new TypeReference ("Foundation", "RegisterAttribute", module, module);
 		var constructor = new MethodReference (".ctor", module.TypeSystem.Void, attributeType) { HasThis = true };
@@ -41,6 +45,25 @@ public class ObjCInterfaceTests {
 			type.CustomAttributes.Add (new CustomAttribute (new MethodReference (".ctor", module.TypeSystem.Void, protocolType) { HasThis = true }));
 		}
 		return type;
+	}
+
+	[TestCase ("UIControlEventProxy", false)]
+	[TestCase ("InternalNSNotificationHandler", false)]
+	[TestCase ("NativeWrapper", true)]
+	public void UnknownType (string name, bool wrapper)
+	{
+		using var module = ModuleDefinition.CreateModule ("InterfaceTests", ModuleKind.Dll);
+		var type = AddType (module, name, 0, false, wrapper ? true : null, false, false, nested: false);
+		var check = new ObjCInterfaceCheck (new BindingResult ());
+		Log.On (Framework).Clear ();
+		try {
+			check.VisitManagedType (type);
+			check.EndVisit ();
+			var expected = wrapper ? new [] { $"!unknown-type! {name} bound" } : [];
+			Assert.That (Log.On (Framework), Is.EqualTo (expected));
+		} finally {
+			Log.On (Framework).Clear ();
+		}
 	}
 
 	[TestCase (0, false, null, false, false, false)]

@@ -19,7 +19,6 @@ using UserNotifications;
 namespace UserNotificationsUI {
 
 	/// <summary>Enumerates the kinds of media control button sets that the system will provide for playable notification content.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionMediaPlayPauseButtonType : ulong {
@@ -32,7 +31,6 @@ namespace UserNotificationsUI {
 	}
 
 	/// <summary>Enumerates preferred notification responses.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Unavailable (PlatformName.TvOS)]
 	[Native]
 	public enum UNNotificationContentExtensionResponseOption : ulong {
@@ -47,7 +45,6 @@ namespace UserNotificationsUI {
 	interface IUNNotificationContentExtension { }
 
 	/// <summary>Interface that contains the mandatory methods, if any, for the <see cref="UserNotifications.UNNotificationContent" /> protocol, which is required for displaying notification content from a view controller's view with custom UI.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Unavailable (PlatformName.TvOS)]
 	[Protocol]
 	interface UNNotificationContentExtension {
@@ -91,7 +88,6 @@ namespace UserNotificationsUI {
 	}
 
 	/// <summary>Content extension for presenting notification UI, including UI for playable content.</summary>
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Unavailable (PlatformName.TvOS)]
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
@@ -109,13 +105,11 @@ namespace UserNotificationsUI {
 
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("performNotificationDefaultAction")]
 		void PerformNotificationDefaultAction ();
 
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("dismissNotificationContentExtension")]
 		void DismissNotificationContentExtension ();
 
@@ -123,14 +117,12 @@ namespace UserNotificationsUI {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("notificationActions")]
 		UNNotificationAction [] GetNotificationActions ();
 
 		/// <param name="actions">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("setNotificationActions:")]
 		void SetNotificationActions (UNNotificationAction [] actions);
 	}

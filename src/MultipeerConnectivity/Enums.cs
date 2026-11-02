@@ -11,7 +11,6 @@ namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h
 	/// <summary>An enumeration whose values specify whether a message's delivery is guaranteed. Used with <see cref="MultipeerConnectivity.MCSession.SendData(Foundation.NSData,MultipeerConnectivity.MCPeerID[],MultipeerConnectivity.MCSessionSendDataMode,out Foundation.NSError)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionSendDataMode : long {
 		/// <summary>Indicates guaranteed delivery.</summary>
@@ -22,7 +21,6 @@ namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h
 	/// <summary>An enumeration whose values indicate the state of a <see cref="MultipeerConnectivity.MCSession" />. Used with <see cref="MultipeerConnectivity.MCSessionDelegate.DidChangeState(MultipeerConnectivity.MCSession,MultipeerConnectivity.MCPeerID,MultipeerConnectivity.MCSessionState)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCSessionState : long {
 		/// <summary>Indicates that the <see cref="MultipeerConnectivity.MCSession" /> is not connected.</summary>
@@ -35,7 +33,6 @@ namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h
 	/// <summary>An enumeration whose values specify whether an <see cref="MultipeerConnectivity.MCSession" /> should encrypt its connection. Used with <see cref="MultipeerConnectivity.MCSession(MultipeerConnectivity.MCPeerID,Security.SecIdentity, MultipeerConnectivity.MCEncryptionPreference)" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MCEncryptionPreference : long {
 		/// <summary>No preference.</summary>
@@ -48,7 +45,6 @@ namespace MultipeerConnectivity {
 
 	// NSInteger -> MCError.h
 	/// <summary>An enumeration whose values specify various errors relating to multipeer connectivity.</summary>
-	[MacCatalyst (13, 1)]
 	[Native ("MCErrorCode")]
 	[ErrorDomain ("MCErrorDomain")]
 	public enum MCError : long {

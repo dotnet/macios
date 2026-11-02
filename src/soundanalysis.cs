@@ -14,7 +14,6 @@ using CoreMedia;
 namespace SoundAnalysis {
 
 	[ErrorDomain ("SNErrorDomain")]
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum SNErrorCode : long {
 		UnknownError = 1,
@@ -24,14 +23,13 @@ namespace SoundAnalysis {
 		InvalidFile,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum SNTimeDurationConstraintType : long {
 		Enumerated = 1,
 		Range = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNAudioStreamAnalyzer {
@@ -58,7 +56,6 @@ namespace SoundAnalysis {
 
 	delegate void SNAudioFileAnalyzerAnalyzeHandler (bool didReachEndOfFile);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNAudioFileAnalyzer {
@@ -87,7 +84,6 @@ namespace SoundAnalysis {
 		void CancelAnalysis ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNClassification {
@@ -99,7 +95,6 @@ namespace SoundAnalysis {
 		double Confidence { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNClassificationResult : SNResult {
@@ -110,13 +105,12 @@ namespace SoundAnalysis {
 		[Export ("timeRange")]
 		CMTimeRange TimeRange { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("classificationForIdentifier:")]
 		[return: NullAllowed]
 		SNClassification GetClassification (string identifier);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNClassifySoundRequest : SNRequest {
@@ -127,38 +121,35 @@ namespace SoundAnalysis {
 		[Export ("initWithMLModel:error:")]
 		NativeHandle Constructor (MLModel mlModel, [NullAllowed] out NSError error);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithClassifierIdentifier:error:")]
 		NativeHandle Constructor (string classifierIdentifier, [NullAllowed] out NSError error);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("knownClassifications", ArgumentSemantic.Copy)]
 		string [] KnownClassifications { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("windowDuration", ArgumentSemantic.Assign)]
 		CMTime WindowDuration { get; set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("windowDurationConstraint", ArgumentSemantic.Strong)]
 		SNTimeDurationConstraint WindowDurationConstraint { get; }
 	}
 
 	interface ISNRequest { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SNRequest { }
 
 	interface ISNResult { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SNResult { }
 
 	interface ISNResultsObserving { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface SNResultsObserving {
 
@@ -173,13 +164,13 @@ namespace SoundAnalysis {
 		void DidComplete (ISNRequest request);
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0)]
 	enum SNClassifierIdentifier {
 		[Field ("SNClassifierIdentifierVersion1")]
 		Version1,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SNTimeDurationConstraint /* privately conforms to NSCoding, NSCopying, and NSSecureCoding */

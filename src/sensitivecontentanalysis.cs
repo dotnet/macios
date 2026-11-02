@@ -15,7 +15,7 @@ namespace SensitiveContentAnalysis {
 		GoreOrViolence,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SCSensitivityAnalysis {
@@ -46,7 +46,7 @@ namespace SensitiveContentAnalysis {
 		bool ShouldMuteAudio { get; }
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
 		Disabled = 0,
@@ -54,7 +54,7 @@ namespace SensitiveContentAnalysis {
 		DescriptiveInterventions = 2,
 	}
 
-	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SCSensitivityAnalyzer {
 		[Export ("analysisPolicy", ArgumentSemantic.Assign)]

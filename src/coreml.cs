@@ -19,7 +19,6 @@ using CoreImage;
 namespace CoreML {
 
 	/// <summary>Enumerates the kinds of features supported by CoreML.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLFeatureType : long {
 		/// <summary>An invalid value for a feature.</summary>
@@ -37,14 +36,12 @@ namespace CoreML {
 		/// <summary>A dictionary / map feature. The dictionary is of type <see cref="System.Object" /> -&gt; <see cref="Foundation.NSNumber" />.</summary>
 		Dictionary = 6,
 		/// <summary>Sequence data, such as a time series or words ordered as text.</summary>
-		[MacCatalyst (13, 1)]
 		Sequence = 7,
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		State = 8,
 	}
 
 	/// <summary>Enumerates errors that may occur in the use of Core ML.</summary>
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("MLModelErrorDomain")]
 	[Native]
 	public enum MLModelError : long {
@@ -67,7 +64,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Enumerates the types of values stored in a <see cref="CoreML.MLMultiArray" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayDataType : long {
 		/// <summary>The array stores double-precision (64-bit) floating-point values.</summary>
@@ -76,7 +72,7 @@ namespace CoreML {
 		Float64 = 0x10000 | 64,
 		/// <summary>The array stores single-precision (32-bit) floating point values.</summary>
 		Float32 = 0x10000 | 32,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		Float16 = 0x10000 | 16,
 		// added in xcode12 but it's the same a `Float32` and can be used in earlier versions
 		Float = 0x10000 | 32,
@@ -88,7 +84,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Enumerates the form of a <see cref="CoreML.MLImageSizeConstraint" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLImageSizeConstraintType : long {
 		/// <summary>The form of the constraint is unknown.</summary>
@@ -100,7 +95,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Enumerates the form of a <see cref="CoreML.MLMultiArrayShapeConstraint" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLMultiArrayShapeConstraintType : long {
 		/// <summary>The shape of the allowed inputs are not known.</summary>
@@ -111,7 +105,6 @@ namespace CoreML {
 		Range = 3,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLComputeUnits : long {
 		/// <summary>To be added.</summary>
@@ -123,7 +116,6 @@ namespace CoreML {
 		CPUAndNeuralEngine = 3,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MLTaskState : long {
 		Suspended = 1,
@@ -133,7 +125,6 @@ namespace CoreML {
 		Failed = 5,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum MLUpdateProgressEvent : ulong {
@@ -150,7 +141,6 @@ namespace CoreML {
 	}
 
 	/// <summary>An implementation of <see cref="CoreML.IMLFeatureProvider" /> that is backed by a <see cref="Foundation.NSDictionary" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLDictionaryFeatureProvider : MLFeatureProvider, NSSecureCoding {
 
@@ -169,7 +159,6 @@ namespace CoreML {
 	}
 
 	/// <summary>A developer-meaningful description of a <see cref="CoreML.MLModel" /> feature.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureDescription : NSCopying, NSSecureCoding {
 
@@ -230,7 +219,6 @@ namespace CoreML {
 		/// <summary>Gets the <see cref="CoreML.MLSequenceConstraint" />, if any, that describes allowable variations in the feature.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sequenceConstraint")]
 		MLSequenceConstraint SequenceConstraint { get; }
 
@@ -242,7 +230,6 @@ namespace CoreML {
 	interface IMLFeatureProvider { }
 
 	/// <include file="../docs/api/CoreML/IMLFeatureProvider.xml" path="/Documentation/Docs[@DocId='T:CoreML.IMLFeatureProvider']/*" />
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MLFeatureProvider {
 
@@ -264,7 +251,6 @@ namespace CoreML {
 	}
 
 	/// <summary>An immutable value and <see cref="CoreML.MLFeatureType" /> for a feature.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLFeatureValue : NSCopying, NSSecureCoding {
 
@@ -326,7 +312,6 @@ namespace CoreML {
 		/// <summary>Gets the underlying <see cref="CoreML.MLSequence" /> value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sequenceValue")]
 		MLSequence SequenceValue { get; }
 
@@ -342,7 +327,6 @@ namespace CoreML {
 		///         <summary>Returns a <see cref="CoreML.MLFeatureValue" /> representing the <paramref name="sequence" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithSequence:")]
 		MLFeatureValue Create (MLSequence sequence);
@@ -406,104 +390,87 @@ namespace CoreML {
 
 		// From MLFeatureValue (MLImageConversion)
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithImageAtURL:pixelsWide:pixelsHigh:pixelFormatType:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (url, pixelsWide, pixelsHigh, pixelFormatType, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithImageAtURL:constraint:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, MLImageConstraint constraint, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (url, constraint, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, MLImageConstraint constraint, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithCGImage:pixelsWide:pixelsHigh:pixelFormatType:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (image, pixelsWide, pixelsHigh, pixelFormatType, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithCGImage:constraint:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, MLImageConstraint constraint, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (image, constraint, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, MLImageConstraint constraint, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithImageAtURL:orientation:pixelsWide:pixelsHigh:pixelFormatType:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, CGImagePropertyOrientation orientation, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (url, orientation, pixelsWide, pixelsHigh, pixelFormatType, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, CGImagePropertyOrientation orientation, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithImageAtURL:orientation:constraint:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, CGImagePropertyOrientation orientation, MLImageConstraint constraint, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (url, orientation, constraint, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (NSUrl url, CGImagePropertyOrientation orientation, MLImageConstraint constraint, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithCGImage:orientation:pixelsWide:pixelsHigh:pixelFormatType:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, CGImagePropertyOrientation orientation, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (image, orientation, pixelsWide, pixelsHigh, pixelFormatType, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, CGImagePropertyOrientation orientation, nint pixelsWide, nint pixelsHigh, CVPixelFormatType pixelFormatType, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("featureValueWithCGImage:orientation:constraint:options:error:")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, CGImagePropertyOrientation orientation, MLImageConstraint constraint, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("Create (image, orientation, constraint, imageOptions.GetDictionary (), out error)")]
 		[return: NullAllowed]
 		MLFeatureValue Create (CGImage image, CGImagePropertyOrientation orientation, MLImageConstraint constraint, [NullAllowed] MLFeatureValueImageOption imageOptions, [NullAllowed] out NSError error);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Internal]
 	[Static]
 	interface MLFeatureValueImageOptionKeys {
@@ -515,7 +482,6 @@ namespace CoreML {
 		NSString CropAndScaleKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("MLFeatureValueImageOptionKeys")]
 	interface MLFeatureValueImageOption {
 		CGRect CropRect { get; set; }
@@ -526,7 +492,6 @@ namespace CoreML {
 	///     <remarks>
 	///       <para>The <see cref="CoreML.MLModel" /> class encapsulates a machine-learning model that maps a predefined set of input features to a predefined set of output features. Models are generally stored as .mlmodel files but these must be "compiled" into a .mlmodelc directory prior to inferencing. This compilation step generally occurs prior to deploymenty, but may be performed on the device with the time-consuming <see cref="CoreML.MLModel.CompileModel(Foundation.NSUrl,out Foundation.NSError)" /> method.</para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLModel {
 
@@ -539,7 +504,6 @@ namespace CoreML {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("configuration")]
 		MLModelConfiguration Configuration { get; }
 
@@ -559,7 +523,6 @@ namespace CoreML {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("modelWithContentsOfURL:configuration:error:")]
 		[return: NullAllowed]
@@ -584,7 +547,6 @@ namespace CoreML {
 		[return: NullAllowed]
 		IMLFeatureProvider GetPrediction (IMLFeatureProvider input, MLPredictionOptions options, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("predictionsFromBatch:error:")]
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, [NullAllowed] out NSError error);
@@ -595,25 +557,22 @@ namespace CoreML {
 		///         <summary>Gets the <see cref="CoreML.IMLBatchProvider" /> describing the outputs for the <paramref name="inputBatch" /> and <paramref name="options" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("predictionsFromBatch:options:error:")]
 		[return: NullAllowed]
 		IMLBatchProvider GetPredictions (IMLBatchProvider inputBatch, MLPredictionOptions options, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("parameterValueForKey:error:")]
 		[return: NullAllowed]
 		NSObject GetParameterValue (MLParameterKey key, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Async]
 		[Export ("loadContentsOfURL:configuration:completionHandler:")]
 		void LoadContents (NSUrl url, MLModelConfiguration configuration, Action<MLModel, NSError> handler);
 
 		[Async (ResultTypeName = "MLModelCompilationLoadResult")]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Static]
 		[Export ("loadModelAsset:configuration:completionHandler:")]
 		void Load (MLModelAsset asset, MLModelConfiguration configuration, Action<MLModel, NSError> handler);
@@ -631,23 +590,23 @@ namespace CoreML {
 		NSUrl CompileModel (NSUrl modelUrl, out NSError error);
 
 		[Async (ResultTypeName = "MLModelCompilationResult")]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Static]
 		[Export ("compileModelAtURL:completionHandler:")]
 		void CompileModel (NSUrl modelUrl, Action<NSUrl, NSError> handler);
 
 		[Async]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("predictionFromFeatures:completionHandler:")]
 		void GetPrediction (IMLFeatureProvider input, Action<IMLFeatureProvider, NSError> completionHandler);
 
 		[Async]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("predictionFromFeatures:options:completionHandler:")]
 		void GetPrediction (IMLFeatureProvider input, MLPredictionOptions options, Action<IMLFeatureProvider, NSError> completionHandler);
 
 		// from the category MLComputeDevice (MLModel)
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Static]
 		[Export ("availableComputeDevices", ArgumentSemantic.Copy)]
 		IMLComputeDeviceProtocol [] AvailableComputeDevices { get; }
@@ -657,7 +616,6 @@ namespace CoreML {
 	///     <remarks>
 	///       <para>The primary intention of this class is to provide the developer consuming the model information on the input, output, and metadata expectations of the <see cref="CoreML.MLModel" />.</para>
 	///     </remarks>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLModelDescription : NSSecureCoding {
 
@@ -696,23 +654,19 @@ namespace CoreML {
 		MLModelMetadata Metadata { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("classLabels", ArgumentSemantic.Copy)]
 		NSObject [] ClassLabels { get; }
 
 		// From MLModelDescription (MLUpdateAdditions)
 
-		[MacCatalyst (13, 1)]
 		[Export ("isUpdatable")]
 		bool IsUpdatable { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("trainingInputDescriptionsByName")]
 		NSDictionary<NSString, MLFeatureDescription> TrainingInputDescriptionsByName { get; }
 
 		// From MLModelDescription (MLParameters)
 
-		[MacCatalyst (13, 1)]
 		[Export ("parameterDescriptionsByKey")]
 		NSDictionary<MLParameterKey, MLParameterDescription> ParameterDescriptionsByKey { get; }
 
@@ -721,7 +675,6 @@ namespace CoreML {
 		NSDictionary<NSString, MLFeatureDescription> StateDescriptionsByName { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Internal]
 	[Static]
 	interface MLModelMetadataKeys {
@@ -743,7 +696,6 @@ namespace CoreML {
 	}
 
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds metadata related to a <see cref="CoreML.MLModel" />.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("MLModelMetadataKeys")]
 	interface MLModelMetadata {
 		/// <summary>A developer-meaningful description of the <see cref="CoreML.MLModel" />.</summary>
@@ -771,7 +723,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Represents an efficient multi-dimensional array.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface MLMultiArray : NSSecureCoding {
@@ -807,7 +758,7 @@ namespace CoreML {
 		nint Count { get; }
 
 		[NullAllowed]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("pixelBuffer")]
 		CVPixelBuffer PixelBuffer { get; }
 
@@ -836,7 +787,7 @@ namespace CoreML {
 		[Export ("initWithDataPointer:shape:dataType:strides:deallocator:error:")]
 		NativeHandle Constructor (IntPtr dataPointer, NSNumber [] shape, MLMultiArrayDataType dataType, NSNumber [] strides, [NullAllowed] Action<IntPtr> deallocator, out NSError error);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("initWithPixelBuffer:shape:")]
 		IntPtr Constructor (CVPixelBuffer pixelBuffer, NSNumber [] shape);
 
@@ -885,18 +836,17 @@ namespace CoreML {
 		// @interface Concatenating (MLMultiArray)
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("multiArrayByConcatenatingMultiArrays:alongAxis:dataType:")]
 		MLMultiArray Concat (MLMultiArray [] multiArrays, nint axis, MLMultiArrayDataType dataType);
 
 		[Async (ResultTypeName = "MLMultiArrayDataPointer")]
-		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), iOS (15, 4)]
 		[Export ("getBytesWithHandler:")]
 		void GetBytes (Action<IntPtr, nint> handler);
 
 		[Async (ResultTypeName = "MLMultiArrayMutableDataPointer")]
-		[TV (15, 4), iOS (15, 4), MacCatalyst (15, 4)]
+		[TV (15, 4), iOS (15, 4)]
 		[Export ("getMutableBytesWithHandler:")]
 		void GetMutableBytes (Action<IntPtr, nint, NSArray<NSNumber>> handler);
 
@@ -907,7 +857,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Contains a value that constrains the type of dictionary keys.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface MLDictionaryConstraint : NSSecureCoding {
@@ -920,7 +869,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Contains constraints for an image feature.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface MLImageConstraint : NSSecureCoding {
@@ -946,13 +894,11 @@ namespace CoreML {
 		/// <summary>Gets the <see cref="CoreML.MLImageSizeConstraint" />, if it exists.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("sizeConstraint")]
 		MLImageSizeConstraint SizeConstraint { get; }
 	}
 
 	/// <summary>Contains constraints for a multidimensional array feature.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface MLMultiArrayConstraint : NSSecureCoding {
@@ -970,13 +916,11 @@ namespace CoreML {
 		/// <summary>Gets the <see cref="CoreML.MLMultiArrayShapeConstraint" />, if any, describing constraints on the shape of the tensor.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shapeConstraint")]
 		MLMultiArrayShapeConstraint ShapeConstraint { get; }
 	}
 
 	/// <summary>Contains a value that indicates whether to restrict prediction computations to the CPU.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLPredictionOptions {
 
@@ -991,13 +935,12 @@ namespace CoreML {
 		bool UsesCpuOnly { get; set; }
 
 		// Leaving it intentionally as NSDictionary to make it easier to use the lowlevel apis.
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("outputBackings", ArgumentSemantic.Copy)]
 		NSDictionary OutputBackings { get; set; }
 	}
 
 	/// <summary>Interface defining methods necessary for a custom model layer.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MLCustomLayer {
 
@@ -1047,7 +990,6 @@ namespace CoreML {
 	}
 
 	/// <summary>An <see cref="CoreML.IMLBatchProvider" /> backed by an array.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLArrayBatchProvider : MLBatchProvider {
@@ -1075,7 +1017,6 @@ namespace CoreML {
 	interface IMLBatchProvider { }
 
 	/// <summary>Interface defining the protocol for providing data in batches to the model.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MLBatchProvider {
 
@@ -1096,7 +1037,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Interface defining a custom CoreML model.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol, Model]
 	interface MLCustomModel {
@@ -1133,7 +1073,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Describes one acceptable image size for the CoreML model inputs.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLImageSize : NSSecureCoding {
@@ -1152,7 +1091,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Description of the constraint on image sizes for a CoreML model.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLImageSizeConstraint : NSSecureCoding {
@@ -1183,7 +1121,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Describes the constraints on the shape of the multidimensional array allowed by the model.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLMultiArrayShapeConstraint : NSSecureCoding {
@@ -1208,7 +1145,6 @@ namespace CoreML {
 	}
 
 	/// <summary>Encodes a sequence as a single input.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLSequence : NSSecureCoding {
@@ -1257,7 +1193,6 @@ namespace CoreML {
 	}
 
 	/// <summary>A constraint on sequences of features.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLSequenceConstraint : NSCopying, NSSecureCoding {
@@ -1275,7 +1210,6 @@ namespace CoreML {
 		NSRange CountRange { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MLModelConfiguration : NSCopying, NSSecureCoding {
 
@@ -1289,23 +1223,20 @@ namespace CoreML {
 		[Export ("optimizationHints", ArgumentSemantic.Copy)]
 		MLOptimizationHints OptimizationHints { get; set; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[NullAllowed, Export ("modelDisplayName")]
 		string ModelDisplayName { get; set; }
 
 		// From MLModelConfiguration (MLGPUConfigurationOptions)
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowLowPrecisionAccumulationOnGPU")]
 		bool AllowLowPrecisionAccumulationOnGpu { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("preferredMetalDevice", ArgumentSemantic.Assign)]
 		IMTLDevice PreferredMetalDevice { get; set; }
 
 		// From MLModelConfiguration (MLModelParameterAdditions)
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("parameters", ArgumentSemantic.Assign)]
 		NSDictionary<MLParameterKey, NSObject> Parameters { get; set; }
 
@@ -1315,7 +1246,6 @@ namespace CoreML {
 		string FunctionName { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLKey : NSCopying, NSSecureCoding {
@@ -1327,7 +1257,6 @@ namespace CoreML {
 		string Scope { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MLKey))]
 	[DisableDefaultCtor]
 	interface MLMetricKey {
@@ -1345,7 +1274,6 @@ namespace CoreML {
 		MLMetricKey MiniBatchIndex { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLNumericConstraint : NSSecureCoding {
@@ -1360,7 +1288,6 @@ namespace CoreML {
 		NSSet<NSNumber> EnumeratedNumbers { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLParameterDescription : NSSecureCoding {
@@ -1375,7 +1302,6 @@ namespace CoreML {
 		MLNumericConstraint NumericConstraint { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MLKey))]
 	[DisableDefaultCtor]
 	interface MLParameterKey {
@@ -1447,7 +1373,6 @@ namespace CoreML {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLTask {
@@ -1468,7 +1393,6 @@ namespace CoreML {
 		void Cancel ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLUpdateContext {
@@ -1489,7 +1413,6 @@ namespace CoreML {
 		NSDictionary<MLParameterKey, NSObject> Parameters { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLUpdateProgressHandlers {
@@ -1498,7 +1421,6 @@ namespace CoreML {
 		NativeHandle Constructor (MLUpdateProgressEvent interestedEvents, [NullAllowed] Action<MLUpdateContext> progressHandler, Action<MLUpdateContext> completionHandler);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MLTask))]
 	[DisableDefaultCtor]
 	interface MLUpdateTask {
@@ -1514,14 +1436,12 @@ namespace CoreML {
 		MLUpdateTask Create (NSUrl modelUrl, IMLBatchProvider trainingData, [NullAllowed] MLModelConfiguration configuration, MLUpdateProgressHandlers progressHandlers, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("updateTaskForModelAtURL:trainingData:completionHandler:error:")]
 		[return: NullAllowed]
 		MLUpdateTask Create (NSUrl modelUrl, IMLBatchProvider trainingData, Action<MLUpdateContext> completionHandler, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("updateTaskForModelAtURL:trainingData:progressHandlers:error:")]
 		[return: NullAllowed]
@@ -1533,7 +1453,6 @@ namespace CoreML {
 
 	interface IMLWritable { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MLWritable {
 
@@ -1547,7 +1466,6 @@ namespace CoreML {
 	[Obsoleted (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[Obsoleted (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1579,7 +1497,6 @@ namespace CoreML {
 	[Obsoleted (PlatformName.MacCatalyst, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[Obsoleted (PlatformName.iOS, 16, 4, message: "Use Background Assets or 'NSUrlSession' instead.")]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1599,12 +1516,11 @@ namespace CoreML {
 	delegate void MLModelAssetGetModelDescriptionCompletionHandler ([NullAllowed] MLModelDescription modelDescription, [NullAllowed] NSError error);
 	delegate void MLModelAssetGetFunctionNamesCompletionHandler ([NullAllowed] string [] functionNames, [NullAllowed] NSError error);
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLModelAsset {
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Static]
 		[Export ("modelAssetWithSpecificationData:error:")]
 		[return: NullAllowed]
@@ -1638,12 +1554,12 @@ namespace CoreML {
 
 	interface IMLComputeDeviceProtocol { }
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Protocol]
 	interface MLComputeDeviceProtocol {
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MLNeuralEngineComputeDevice : MLComputeDeviceProtocol {
@@ -1651,13 +1567,13 @@ namespace CoreML {
 		nint TotalCoreCount { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject), Name = "MLCPUComputeDevice")]
 	[DisableDefaultCtor]
 	interface MLCpuComputeDevice : MLComputeDeviceProtocol {
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject), Name = "MLGPUComputeDevice")]
 	[DisableDefaultCtor]
 	interface MLGpuComputeDevice : MLComputeDeviceProtocol {

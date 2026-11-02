@@ -83,7 +83,6 @@ namespace Foundation {
 	}
 
 	/// <summary>Enumerates download status values.</summary>
-	[MacCatalyst (13, 1)]
 	public enum NSItemDownloadingStatus {
 		/// <summary>To be added.</summary>
 		[Field (null)]
@@ -102,7 +101,6 @@ namespace Foundation {
 		NotDownloaded,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum NSStringTransform {
 		/// <summary>To be added.</summary>
 		[Field ("NSStringTransformLatinToKatakana")]
@@ -170,7 +168,6 @@ namespace Foundation {
 	}
 
 	[NoTV, NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSUrlSessionMultipathServiceType : long {
 		/// <summary>To be added.</summary>
@@ -326,7 +323,7 @@ namespace Foundation {
 		Localized = 1uL << 10,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSAttributedStringFormattingOptions : ulong {
@@ -334,7 +331,7 @@ namespace Foundation {
 		ApplyReplacementIndexAttribute = 1uL << 1,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSAttributedStringMarkdownInterpretedSyntax : long {
 		Full = 0,
@@ -342,14 +339,14 @@ namespace Foundation {
 		InlineOnlyPreservingWhitespace = 2,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSAttributedStringMarkdownParsingFailurePolicy : long {
 		Error = 0,
 		PartiallyParsedIfPossible = 1,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSGrammaticalGender : long {
 		NotSet = 0,
@@ -358,7 +355,7 @@ namespace Foundation {
 		Neuter,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSGrammaticalNumber : long {
 		NotSet = 0,
@@ -370,7 +367,7 @@ namespace Foundation {
 		PluralMany,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSGrammaticalPartOfSpeech : long {
 		NotSet = 0,
@@ -390,7 +387,7 @@ namespace Foundation {
 		Abbreviation,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSInlinePresentationIntent : ulong {
 		Emphasized = 1uL << 0,
@@ -403,7 +400,7 @@ namespace Foundation {
 		BlockHTML = 1uL << 9,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSPresentationIntentKind : long {
 		Paragraph,
@@ -420,7 +417,7 @@ namespace Foundation {
 		TableCell,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSPresentationIntentTableColumnAlignment : long {
 		Left,
@@ -428,7 +425,7 @@ namespace Foundation {
 		Right,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[Native]
 	public enum NSURLRequestAttribution : ulong {
 		Developer = 0,

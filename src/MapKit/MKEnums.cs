@@ -21,7 +21,6 @@ namespace MapKit {
 	///       <para>The <see cref="MapKit.MKDirectionsTransportType" /> used as the <see cref="MapKit.MKDirectionsRequest.TransportType" /> property of a <see cref="MapKit.MKDirectionsRequest" /> must match the values specified in the application's <c>info.plist</c> (see <see cref="MapKit.MKDirections" />).</para>
 	///     </remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MKDirectionsTransportType : ulong {
 		/// <summary>Routing for automobiles.</summary>
 		Automobile = 1 << 0,
@@ -37,7 +36,6 @@ namespace MapKit {
 
 	// NSUInteger -> MKTypes.h
 	/// <summary>The type of map.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKMapType : ulong {
 		/// <summary>Standard cartographic imagery.</summary>
@@ -51,7 +49,6 @@ namespace MapKit {
 		/// <summary>A flyover that combines satellite and cartographic imagery.</summary>
 		HybridFlyover,
 		/// <summary>A muted map that emphasizes developer data.</summary>
-		[MacCatalyst (13, 1)]
 		MutedStandard,
 	}
 
@@ -59,7 +56,6 @@ namespace MapKit {
 	/// <summary>An enumeration whose values specify the units used with <see cref="MapKit.MKDistanceFormatter" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnits : ulong {
 		/// <summary>To be added.</summary>
 		Default,
@@ -75,7 +71,6 @@ namespace MapKit {
 	/// <summary>An enumeration whose values specify the length of a <see cref="MapKit.MKDistanceFormatter" /> string.</summary>
 	/// <remarks>To be added.</remarks>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MKDistanceFormatterUnitStyle : ulong {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -88,7 +83,6 @@ namespace MapKit {
 	// NSInteger -> MKMapView.h
 	/// <summary>An enumeration whose value specify whether the overlay should render above roads, but beneath labels, etc..</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKOverlayLevel : long {
 		/// <summary>The overlay should render above roads, but below labels, points of interest, and annotation views.</summary>
@@ -100,7 +94,6 @@ namespace MapKit {
 	// NSUInteger -> MKTypes.h
 	/// <summary>An enumeration whose values represent various errors that can occur with <see cref="MapKit.MKDirections.CalculateDirections" /> and <see cref="MapKit.MKDirections.CalculateETA(MapKit.MKETAHandler)" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MKErrorDomain")]
 	public enum MKErrorCode : ulong {
@@ -120,7 +113,6 @@ namespace MapKit {
 	// NSUInteger -> MKTypes.h
 	/// <summary>An enumeration of valid states for a dragged <see cref="MapKit.MKAnnotationView" />.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewDragState : ulong {
 		/// <summary>To be added.</summary>
@@ -140,7 +132,6 @@ namespace MapKit {
 	[NoTV]
 	[Native]
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'MKPinAnnotationView.PinTintColor' instead.")]
 	public enum MKPinAnnotationColor : ulong {
@@ -155,7 +146,6 @@ namespace MapKit {
 	// NSUInteger -> MKTypes.h
 	/// <summary>An enumeration of valid tracking modes.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKUserTrackingMode : ulong {
 		/// <summary>To be added.</summary>
@@ -177,7 +167,6 @@ namespace MapKit {
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	[Deprecated (PlatformName.TvOS, 13, 0, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'MKLocalSearchCompleterResultType' instead.")]
 	public enum MKSearchCompletionFilterType : long {
 		/// <summary>Include related search queries in the completion results, in addition to place names.</summary>
@@ -188,7 +177,6 @@ namespace MapKit {
 
 	/// <summary>Enumerates collision detection modes.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKAnnotationViewCollisionMode : long {
 		/// <summary>Indicates that the entire frame rectangle should be used for collision detection.</summary>
@@ -197,12 +185,10 @@ namespace MapKit {
 		Circle,
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		None,
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKScaleViewAlignment : long {
 		/// <summary>To be added.</summary>
@@ -215,7 +201,6 @@ namespace MapKit {
 
 	/// <summary>Enumerates visibility behavior for marker titles.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKFeatureVisibility : long {
 		/// <summary>Indicates that the title text is shown or hidden in response to the map state.</summary>
@@ -227,7 +212,6 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchCompleterResultType : ulong {
 		Address = 1 << 0,
@@ -238,7 +222,6 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MKLocalSearchResultType : ulong {
 		Address = 1 << 0,
@@ -247,7 +230,7 @@ namespace MapKit {
 		PhysicalFeature = 1 << 2,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKDirectionsRoutePreference : long {
 		Any = 0,
@@ -255,7 +238,7 @@ namespace MapKit {
 	}
 
 	[Flags]
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[NoMac, iOS (16, 0), NoTV]
 	[Native]
 	public enum MKMapFeatureOptions : long {
 		PointsOfInterest = 1 << (int) MKMapFeatureType.PointOfInterest,
@@ -263,7 +246,7 @@ namespace MapKit {
 		PhysicalFeatures = 1 << (int) MKMapFeatureType.PhysicalFeature,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[Native]
 	public enum MKLookAroundBadgePosition : long {
 		TopLeading = 0,
@@ -271,14 +254,14 @@ namespace MapKit {
 		BottomTrailing,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKMapElevationStyle : long {
 		Flat = 0,
 		Realistic,
 	}
 
-	[NoMac, iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[NoMac, iOS (16, 0), NoTV]
 	[Native]
 	public enum MKMapFeatureType : long {
 		PointOfInterest = 0,
@@ -286,14 +269,13 @@ namespace MapKit {
 		PhysicalFeature,
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[Native]
 	public enum MKStandardMapEmphasisStyle : long {
 		Default = 0,
 		Muted,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum MKPointOfInterestCategory {
 
 		[Field ("MKPointOfInterestCategoryAirport")]

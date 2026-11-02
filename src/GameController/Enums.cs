@@ -27,7 +27,6 @@ namespace GameController {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GCTouchState : long {
 		Up,
@@ -36,7 +35,6 @@ namespace GameController {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GCDeviceBatteryState : long {
 		Unknown = -1,
@@ -46,7 +44,6 @@ namespace GameController {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GCSystemGestureState : long {
 		Enabled = 0,
@@ -55,7 +52,6 @@ namespace GameController {
 	}
 
 	/// <summary>Enumerates player controller indices.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GCControllerPlayerIndex : long {
 		/// <summary>The index that represents the condition where the player index is not set. (<c>-1</c>)</summary>
@@ -70,7 +66,7 @@ namespace GameController {
 		Index4,
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	[Native]
 	public enum GCDevicePhysicalInputElementChange : long {
 		UnknownChange = -1,

@@ -59,7 +59,6 @@ namespace CoreTelephony {
 	/// <summary>Encapsulates a unique identifier for a call and it's state.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCall/index.html">Apple documentation for <c>CTCall</c></related>
-	[MacCatalyst (14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: Constants.UseCallKitInstead)]
 	[Deprecated (PlatformName.iOS, 10, 0, message: Constants.UseCallKitInstead)]
 	[BaseType (typeof (NSObject))]
@@ -79,7 +78,6 @@ namespace CoreTelephony {
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreTelephony/CTCellularData">Apple documentation for <c>CTCellularData</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularData {
 		/// <summary>To be added.</summary>
@@ -99,7 +97,6 @@ namespace CoreTelephony {
 	}
 
 	/// <summary>Defines constants describing various telephone radio technogies.</summary>
-	[MacCatalyst (14, 0)]
 	[Static]
 	interface CTRadioAccessTechnology {
 		/// <summary>Represents the value associated with the constant CTRadioAccessTechnologyGPRS</summary>
@@ -180,19 +177,16 @@ namespace CoreTelephony {
 		NSString LTE { get; }
 
 		[iOS (14, 1)]
-		[MacCatalyst (14, 1)]
 		[Field ("CTRadioAccessTechnologyNRNSA")]
 		NSString NRNsa { get; }
 
 		[iOS (14, 1)]
-		[MacCatalyst (14, 1)]
 		[Field ("CTRadioAccessTechnologyNR")]
 		NSString NR { get; }
 	}
 
 	interface ICTTelephonyNetworkInfoDelegate { }
 
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CTTelephonyNetworkInfoDelegate {
@@ -204,7 +198,6 @@ namespace CoreTelephony {
 	/// <summary>A class that holds information on the application user's cellular service provider.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTTelephonyNetworkInfo/index.html">Apple documentation for <c>CTTelephonyNetworkInfo</c></related>
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CTTelephonyNetworkInfo {
 		/// <summary>To be added.</summary>
@@ -240,7 +233,6 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[NullAllowed]
@@ -250,7 +242,6 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[NullAllowed]
 		[Export ("serviceCurrentRadioAccessTechnology", ArgumentSemantic.Retain)]
 		NSDictionary<NSString, NSString> ServiceCurrentRadioAccessTechnology { get; }
@@ -258,28 +249,23 @@ namespace CoreTelephony {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.iOS, 16, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 16, 0)]
 		[NullAllowed]
 		[Export ("serviceSubscriberCellularProvidersDidUpdateNotifier", ArgumentSemantic.Copy)]
 		Action<NSString> ServiceSubscriberCellularProvidersDidUpdateNotifier { get; set; }
 
-		[MacCatalyst (14, 0)]
 		[Notification]
 		[Field ("CTServiceRadioAccessTechnologyDidChangeNotification")]
 		NSString ServiceRadioAccessTechnologyDidChangeNotification { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("dataServiceIdentifier")]
 		string DataServiceIdentifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICTTelephonyNetworkInfoDelegate Delegate { get; set; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 	}
@@ -287,7 +273,6 @@ namespace CoreTelephony {
 	/// <summary>Holds a list of current calls and triggers events when their states change.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCallCenter/index.html">Apple documentation for <c>CTCallCenter</c></related>
-	[MacCatalyst (14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: Constants.UseCallKitInstead)]
 	[Deprecated (PlatformName.iOS, 10, 0, message: Constants.UseCallKitInstead)]
 	[BaseType (typeof (NSObject))]
@@ -316,7 +301,6 @@ namespace CoreTelephony {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/CTCarrier/index.html">Apple documentation for <c>CTCarrier</c></related>
 	[Deprecated (PlatformName.MacCatalyst, 16, 0, message: Constants.UseCallKitInstead)]
 	[Deprecated (PlatformName.iOS, 16, 0, message: Constants.UseCallKitInstead)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CTCarrier {
 		/// <summary>To be added.</summary>
@@ -431,7 +415,6 @@ namespace CoreTelephony {
 		CTSubscriber [] Subscribers { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioningRequest : NSSecureCoding {
 		/// <summary>To be added.</summary>
@@ -471,7 +454,6 @@ namespace CoreTelephony {
 		string Eid { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProvisioning {
 		/// <summary>To be added.</summary>
@@ -493,7 +475,7 @@ namespace CoreTelephony {
 		[Export ("addPlanWith:completionHandler:")]
 		void AddPlan (CTCellularPlanProvisioningRequest request, Action<CTCellularPlanProvisioningAddPlanResult> completionHandler);
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Export ("supportsEmbeddedSIM")]
 		bool SupportsEmbeddedSim { get; }
 

@@ -168,7 +168,6 @@ namespace SpriteKit {
 	}
 
 	/// <summary>Enumeration of valid types for <see cref="SpriteKit.SKAttribute" /> values.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKAttributeType : long {
 		/// <summary>To be added.</summary>
@@ -192,7 +191,6 @@ namespace SpriteKit {
 	}
 
 	/// <summary>Enumerates how a <see cref="SpriteKit.SKTileDefinition" /> kind may be rotated.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileDefinitionRotation : ulong {
 		/// <summary>To be added.</summary>
@@ -206,7 +204,6 @@ namespace SpriteKit {
 	}
 
 	/// <summary>Enumerates supported tiling schemes.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileSetType : ulong {
 		/// <summary>To be added.</summary>
@@ -220,7 +217,6 @@ namespace SpriteKit {
 	}
 
 	/// <summary>Enumerates how neighboring tiles may be automatically placed.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKTileAdjacencyMask : ulong {
 		/// <summary>To be added.</summary>
@@ -297,7 +293,6 @@ namespace SpriteKit {
 
 	/// <summary>Enumerates the various ways a <see cref="SpriteKit.SKNode" /> may be focusable.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKNodeFocusBehavior : long {
 		/// <summary>The <see cref="SpriteKit.SKNode" /> is not focusable.</summary>

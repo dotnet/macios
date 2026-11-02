@@ -8,7 +8,6 @@ namespace ReplayKit {
 
 	/// <summary>Enumerates errors that can be encountered while recording.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native ("RPRecordingErrorCode")]
 	[ErrorDomain ("RPRecordingErrorDomain")]
 	public enum RPRecordingError : long {
@@ -82,7 +81,6 @@ namespace ReplayKit {
 	}
 
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum RPSampleBufferType : long {
 		/// <summary>To be added.</summary>
 		Video = 1,
@@ -95,7 +93,6 @@ namespace ReplayKit {
 	/// <summary>Enumerates camera locations on the device.</summary>
 	[Native]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	public enum RPCameraPosition : long {
 		/// <summary>Indicates that the camera in use is on the front of the device.</summary>
 		Front = 1,

@@ -33,16 +33,14 @@ using CoreGraphics;
 
 namespace PencilKit {
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	enum PKEraserType : long {
 		Vector,
 		Bitmap,
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		FixedWidthBitmap,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	enum PKInkType {
 		[Field ("PKInkTypePen")]
 		Pen,
@@ -53,19 +51,19 @@ namespace PencilKit {
 		[Field ("PKInkTypeMarker")]
 		Marker,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("PKInkTypeMonoline")]
 		Monoline,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("PKInkTypeFountainPen")]
 		FountainPen,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("PKInkTypeWatercolor")]
 		Watercolor,
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Field ("PKInkTypeCrayon")]
 		Crayon,
 
@@ -75,7 +73,6 @@ namespace PencilKit {
 	}
 
 	[iOS (14, 0), NoMac]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	enum PKCanvasViewDrawingPolicy : ulong {
 		Default,
@@ -84,7 +81,6 @@ namespace PencilKit {
 	}
 
 	[iOS (17, 0)]
-	[Introduced (PlatformName.MacCatalyst, 17, 0)]
 	[Native]
 	public enum PKContentVersion : long {
 		Version1 = 1,
@@ -98,7 +94,6 @@ namespace PencilKit {
 	}
 
 	[NoMac]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (NSObject))]
 	[Protocol, Model]
 	interface PKCanvasViewDelegate : UIScrollViewDelegate {
@@ -129,7 +124,6 @@ namespace PencilKit {
 	interface IPKCanvasViewDelegate { }
 
 	[NoMac]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (UIScrollView))]
 	interface PKCanvasView : PKToolPickerObserver {
 
@@ -158,11 +152,10 @@ namespace PencilKit {
 		bool AllowsFingerDrawing { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("drawingPolicy", ArgumentSemantic.Assign)]
 		PKCanvasViewDrawingPolicy DrawingPolicy { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("maximumSupportedContentVersion", ArgumentSemantic.Assign)]
 		PKContentVersion MaximumSupportedContentVersion { get; set; }
 
@@ -179,7 +172,6 @@ namespace PencilKit {
 		NSSet<NSUuid> SelectedStrokeIds { get; set; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface PKDrawing : NSCopying, NSSecureCoding {
@@ -192,7 +184,6 @@ namespace PencilKit {
 		NativeHandle Constructor (NSData data, [NullAllowed] out NSError error);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithStrokes:")]
 		NativeHandle Constructor (PKStroke [] strokes);
 
@@ -203,7 +194,6 @@ namespace PencilKit {
 		CGRect Bounds { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("strokes")]
 		PKStroke [] Strokes { get; }
 
@@ -217,7 +207,6 @@ namespace PencilKit {
 		PKDrawing GetDrawing (PKDrawing drawing);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("drawingByAppendingStrokes:")]
 		PKDrawing GetDrawing (PKStroke [] strokes);
 
@@ -225,12 +214,11 @@ namespace PencilKit {
 		[Export ("drawingByErasingStrokePath:mask:transform:")]
 		PKDrawing GetDrawing (PKStrokePath eraserPath, [NullAllowed] BezierPath mask, CGAffineTransform transform);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (PKTool))]
 	[DisableDefaultCtor]
 	interface PKEraserTool {
@@ -242,32 +230,31 @@ namespace PencilKit {
 		[Export ("initWithEraserType:")]
 		NativeHandle Constructor (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("initWithEraserType:width:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (PKEraserType eraserType, nfloat width);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Export ("width")]
 		nfloat Width { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Static]
 		[Export ("defaultWidthForEraserType:")]
 		nfloat GetDefaultWidth (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Static]
 		[Export ("minimumWidthForEraserType:")]
 		nfloat GetMinimumWidth (PKEraserType eraserType);
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Static]
 		[Export ("maximumWidthForEraserType:")]
 		nfloat GetMaximumWidth (PKEraserType eraserType);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (PKTool))]
 	[DisableDefaultCtor]
 	interface PKInkingTool {
@@ -285,7 +272,6 @@ namespace PencilKit {
 		NativeHandle Constructor ([BindAs (typeof (PKInkType))] NSString type, UIColor color, nfloat width, nfloat azimuth);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithInk:width:")]
 		NativeHandle Constructor (PKInk ink, nfloat width);
 
@@ -306,7 +292,6 @@ namespace PencilKit {
 		NSString InkType { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("convertColor:fromUserInterfaceStyle:to:")]
 		UIColor ConvertColor (UIColor color, UIUserInterfaceStyle fromUserInterfaceStyle, UIUserInterfaceStyle toUserInterfaceStyle);
@@ -322,11 +307,10 @@ namespace PencilKit {
 		nfloat Azimuth { get; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("ink")]
 		PKInk Ink { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 
@@ -336,12 +320,10 @@ namespace PencilKit {
 		CGColor InvertColor (CGColor color);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (PKTool))]
 	[DesignatedDefaultCtor]
 	interface PKLassoTool { }
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKTool : NSCopying { }
@@ -349,7 +331,6 @@ namespace PencilKit {
 	interface IPKToolPickerObserver { }
 
 	[NoMac]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Protocol]
 	interface PKToolPickerObserver {
 
@@ -373,13 +354,11 @@ namespace PencilKit {
 	}
 
 	[NoMac]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface PKToolPicker {
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("init")]
 		NativeHandle Constructor ();
 
@@ -424,17 +403,15 @@ namespace PencilKit {
 		PKToolPicker GetSharedToolPicker (UIWindow window);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("showsDrawingPolicyControls")]
 		bool ShowsDrawingPolicyControls { get; set; }
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed]
 		[Export ("stateAutosaveName")]
 		string StateAutosaveName { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("maximumSupportedContentVersion", ArgumentSemantic.Assign)]
 		PKContentVersion MaximumSupportedContentVersion { get; set; }
 
@@ -473,7 +450,6 @@ namespace PencilKit {
 	}
 
 	[iOS (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface PKInk : NSCopying {
@@ -495,13 +471,12 @@ namespace PencilKit {
 		[Export ("color")]
 		UIColor Color { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
 
 	[iOS (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface PKFloatRange : NSCopying {
@@ -523,14 +498,13 @@ namespace PencilKit {
 	}
 
 	[iOS (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface PKStroke : NSCopying {
 		[Export ("initWithInk:strokePath:transform:mask:")]
 		NativeHandle Constructor (PKInk ink, PKStrokePath path, CGAffineTransform transform, [NullAllowed] BezierPath mask);
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Export ("initWithInk:strokePath:transform:mask:randomSeed:")]
 		NativeHandle Constructor (PKInk ink, PKStrokePath strokePath, CGAffineTransform transform, [NullAllowed] BezierPath mask, uint randomSeed);
 
@@ -560,7 +534,7 @@ namespace PencilKit {
 		[Export ("maskedPathRanges")]
 		PKFloatRange [] MaskedPathRanges { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Export ("randomSeed")]
 		uint RandomSeed { get; }
 
@@ -576,7 +550,7 @@ namespace PencilKit {
 		[Export ("substrokeWithRange:")]
 		PKStroke GetSubStroke (PKFloatRange range);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requiredContentVersion")]
 		PKContentVersion RequiredContentVersion { get; }
 	}
@@ -604,7 +578,6 @@ namespace PencilKit {
 	delegate void PKInterpolatedPointsEnumeratorHandler (PKStrokePoint strokePoint, out bool stop);
 
 	[iOS (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface PKStrokePath : NSCopying {
@@ -667,7 +640,6 @@ namespace PencilKit {
 	}
 
 	[iOS (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKStrokePoint : NSCopying {
@@ -675,7 +647,7 @@ namespace PencilKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("initWithLocation:timeOffset:size:opacity:force:azimuth:altitude:secondaryScale:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGPoint location, double timeOffset, CGSize size, nfloat opacity, nfloat force, nfloat azimuth, nfloat altitude, nfloat secondaryScale);
@@ -711,7 +683,7 @@ namespace PencilKit {
 		[Export ("altitude")]
 		nfloat Altitude { get; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("secondaryScale")]
 		nfloat SecondaryScale { get; }
 

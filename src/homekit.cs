@@ -7,7 +7,6 @@ namespace HomeKit {
 
 	/// <summary>Holds the constant <see cref="HomeKit.HMErrors.HMErrorDomain" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (14, 0)]
 	[Static]
 	partial interface HMErrors {
 		/// <summary>Represents the value associated with the constant HMErrorDomain</summary>
@@ -18,7 +17,6 @@ namespace HomeKit {
 		NSString HMErrorDomain { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (HMHomeManagerDelegate) })]
 	partial interface HMHomeManager {
 
@@ -50,7 +48,6 @@ namespace HomeKit {
 		[Deprecated (PlatformName.MacOSX, 13, 0, message: "No longer supported.")]
 		[Deprecated (PlatformName.iOS, 16, 1, message: "No longer supported.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 1, message: "No longer supported.")]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="home">To be added.</param>
 			<summary>Asynchronously updates the primary home to be <paramref name="home" />.</summary>
@@ -61,7 +58,6 @@ namespace HomeKit {
 		void UpdatePrimaryHome (HMHome home, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="homeName">To be added.</param>
 			<summary>Asynchronously adds a home that is named <paramref name="homeName" /> to the manager.</summary>
@@ -74,7 +70,6 @@ namespace HomeKit {
 		void AddHome (string homeName, Action<HMHome, NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="home">To be added.</param>
 			<summary>Asynchronously removes <paramref name="home" /> from the manager.</summary>
@@ -88,7 +83,6 @@ namespace HomeKit {
 		void RemoveHome (HMHome home, Action<NSError> completion);
 
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		[Export ("authorizationStatus")]
 		HMHomeManagerAuthorizationStatus AuthorizationStatus { get; }
 
@@ -107,7 +101,6 @@ namespace HomeKit {
 	/// <summary>Delegate object for <see cref="HomeKit.HMHomeManager" /> objects, provides methods that can be overridden to react to <see cref="HomeKit.HMHome" />s being added, removed, or set as the primary home.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/HomeKit/Reference/HMHomeManagerDelegate_Protocol/index.html">Apple documentation for <c>HMHomeManagerDelegate</c></related>
-	[MacCatalyst (14, 0)]
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	partial interface HMHomeManagerDelegate {
@@ -160,12 +153,10 @@ namespace HomeKit {
 		void DidReceiveAddAccessoryRequest (HMHomeManager manager, HMAddAccessoryRequest request);
 
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		[Export ("homeManager:didUpdateAuthorizationStatus:"), EventArgs ("HMHomeManagerAuthorizationStatus")]
 		void DidUpdateAuthorizationStatus (HMHomeManager manager, HMHomeManagerAuthorizationStatus status);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (HMAccessoryDelegate) })]
 	[DisableDefaultCtor]
 	partial interface HMAccessory {
@@ -182,12 +173,10 @@ namespace HomeKit {
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("identifier", ArgumentSemantic.Copy)]
 		NSUuid Identifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
@@ -219,12 +208,10 @@ namespace HomeKit {
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("identifiersForBridgedAccessories", ArgumentSemantic.Copy)]
 		NSUuid [] IdentifiersForBridgedAccessories { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("uniqueIdentifiersForBridgedAccessories", ArgumentSemantic.Copy)]
 		NSUuid [] UniqueIdentifiersForBridgedAccessories { get; }
 
@@ -234,7 +221,6 @@ namespace HomeKit {
 		[Export ("services", ArgumentSemantic.Copy)]
 		HMService [] Services { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("profiles", ArgumentSemantic.Copy)]
 		HMAccessoryProfile [] Profiles { get; }
 
@@ -244,25 +230,21 @@ namespace HomeKit {
 		[Export ("blocked")]
 		bool Blocked { [Bind ("isBlocked")] get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("model")]
 		string Model { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("manufacturer")]
 		string Manufacturer { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("firmwareVersion")]
 		string FirmwareVersion { get; }
 
 		[NullAllowed]
-		[iOS (16, 1), MacCatalyst (16, 2), TV (16, 1)]
+		[iOS (16, 1), TV (16, 1)]
 		[Export ("matterNodeID", ArgumentSemantic.Copy)]
 		NSNumber MatterNodeId { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the accessory.</summary>
@@ -283,17 +265,14 @@ namespace HomeKit {
 		[Export ("identifyWithCompletionHandler:")]
 		void Identify (Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("category", ArgumentSemantic.Strong)]
 		HMAccessoryCategory Category { get; }
 
 		// HMAccessory(Camera)
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("cameraProfiles", ArgumentSemantic.Copy)]
 		HMCameraProfile [] CameraProfiles { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("supportsIdentify")]
 		bool SupportsIdentify { get; }
 
@@ -324,7 +303,6 @@ namespace HomeKit {
 
 	interface IHMAccessoryDelegate { }
 
-	[MacCatalyst (14, 0)]
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	partial interface HMAccessoryDelegate {
@@ -373,7 +351,6 @@ namespace HomeKit {
 		/// <param name="profile">The profile that was added.</param>
 		/// <summary>Method that is called when <paramref name="profile" /> was added to <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("accessory:didAddProfile:"), EventArgs ("HMAccessoryProfile", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -384,7 +361,6 @@ namespace HomeKit {
 		/// <param name="profile">The profile that was removed.</param>
 		/// <summary>Method that is called when <paramref name="profile" /> was removed from <paramref name="accessory" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("accessory:didRemoveProfile:"), EventArgs ("HMAccessoryProfile", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -416,7 +392,6 @@ namespace HomeKit {
 		/// <param name="firmwareVersion">The new firmware version.</param>
 		/// <summary>Method that is called when the firmware version of <paramref name="accessory" /> is updated to <paramref name="firmwareVersion" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("accessory:didUpdateFirmwareVersion:"), EventArgs ("HMAccessoryFirmwareVersion", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -488,7 +463,6 @@ namespace HomeKit {
 		void DidRemoveNewAccessory (HMAccessoryBrowser browser, HMAccessory accessory);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessoryProfile {
@@ -502,12 +476,10 @@ namespace HomeKit {
 		HMAccessory Accessory { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface HMAction {
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
@@ -518,7 +490,6 @@ namespace HomeKit {
 		NativeHandle Constructor ();
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface HMActionSet {
@@ -536,7 +507,6 @@ namespace HomeKit {
 		bool Executing { [Bind ("isExecuting")] get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the action set by using <paramref name="name" />.</summary>
@@ -547,7 +517,6 @@ namespace HomeKit {
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="action">To be added.</param>
 			<summary>Asynchronously adds <paramref name="action" /> to the action set.</summary>
@@ -558,7 +527,6 @@ namespace HomeKit {
 		void AddAction (HMAction action, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="action">To be added.</param>
 			<summary>Asynchronously removes <paramref name="action" /> from the action set.</summary>
@@ -572,21 +540,17 @@ namespace HomeKit {
 		void RemoveAction (HMAction action, Action<NSError> completion);
 
 		[Internal]
-		[MacCatalyst (14, 0)]
 		[Export ("actionSetType")]
 		NSString _ActionSetType { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed]
 		[Export ("lastExecutionDate", ArgumentSemantic.Copy)]
 		NSDate LastExecutionDate { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[Static]
 	[Internal]
 	interface HMActionSetTypesInternal {
@@ -605,12 +569,10 @@ namespace HomeKit {
 		[Field ("HMActionSetTypeUserDefined")]
 		NSString UserDefined { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMActionSetTypeTriggerOwned")]
 		NSString TriggerOwned { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface HMCharacteristic {
@@ -677,7 +639,6 @@ namespace HomeKit {
 		void EnableNotification (bool enable, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="data">To be added.</param>
 			<summary>Asynchronously updates the authorization data by using <paramref name="data" />.</summary>
@@ -690,30 +651,25 @@ namespace HomeKit {
 		[Export ("updateAuthorizationData:completionHandler:")]
 		void UpdateAuthorizationData ([NullAllowed] NSData data, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("localizedDescription")]
 		string LocalizedDescription { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
 		/// <summary>Gets the key path for the characteristic.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicKeyPath")]
 		NSString KeyPath { get; }
 
 		/// <summary>Gets the keyp ath of the characteristic value.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicValueKeyPath")]
 		NSString ValueKeyPath { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[Static]
 	[Internal]
 	interface HMCharacteristicPropertyInternal {
@@ -724,7 +680,6 @@ namespace HomeKit {
 		[Field ("HMCharacteristicPropertyWritable")]
 		NSString Writable { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicPropertyHidden")]
 		NSString Hidden { get; }
 
@@ -737,7 +692,6 @@ namespace HomeKit {
 		NSString RequiresAuthorizationData { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[Static]
 	[Internal]
 	interface HMCharacteristicMetadataUnitsInternal {
@@ -753,24 +707,19 @@ namespace HomeKit {
 		[Field ("HMCharacteristicMetadataUnitsArcDegree")]
 		NSString ArcDegree { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicMetadataUnitsSeconds")]
 		NSString Seconds { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicMetadataUnitsLux")]
 		NSString Lux { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicMetadataUnitsPartsPerMillion")]
 		NSString PartsPerMillion { get; }
 
-		[MacCatalyst (14, 0)]
 		[Field ("HMCharacteristicMetadataUnitsMicrogramsPerCubicMeter")]
 		NSString MicrogramsPerCubicMeter { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	partial interface HMCharacteristicMetadata {
 
@@ -797,18 +746,15 @@ namespace HomeKit {
 		[NullAllowed, Export ("manufacturerDescription")]
 		string ManufacturerDescription { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("validValues", ArgumentSemantic.Copy)]
 		NSNumber [] ValidValues { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (HMAction))]
 	partial interface HMCharacteristicWriteAction {
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCharacteristic:targetValue:")]
 		NativeHandle Constructor (HMCharacteristic characteristic, INSCopying targetValue);
 
@@ -819,7 +765,6 @@ namespace HomeKit {
 		INSCopying TargetValue { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="targetValue">To be added.</param>
 			<summary>Asynchronously updates <paramref name="targetValue" />.</summary>
@@ -833,7 +778,6 @@ namespace HomeKit {
 		void UpdateTargetValue (INSCopying targetValue, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (HMHomeDelegate) })]
 	partial interface HMHome {
@@ -861,12 +805,10 @@ namespace HomeKit {
 		[Export ("primary")]
 		bool Primary { [Bind ("isPrimary")] get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("homeHubState")]
 		HMHomeHubState HomeHubState { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously changes the home name to <paramref name="name" />.</summary>
@@ -876,7 +818,6 @@ namespace HomeKit {
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
@@ -886,7 +827,6 @@ namespace HomeKit {
 		HMAccessory [] Accessories { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="accessory">To be added.</param>
 			<summary>Asynchronously adds <paramref name="accessory" /> to the home.</summary>
@@ -897,7 +837,6 @@ namespace HomeKit {
 		void AddAccessory (HMAccessory accessory, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="accessory">To be added.</param>
 			<summary>Asynchronously removes <paramref name="accessory" /> from the home.</summary>
@@ -908,7 +847,6 @@ namespace HomeKit {
 		void RemoveAccessory (HMAccessory accessory, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="accessory">To be added.</param>
 			<param name="room">To be added.</param>
@@ -925,7 +863,6 @@ namespace HomeKit {
 		HMService [] GetServices (NSString [] serviceTypes);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="accessory">To be added.</param>
 			<summary>Asynchronously unblocks <paramref name="accessory" /> from the home.</summary>
@@ -965,7 +902,6 @@ namespace HomeKit {
 		HMRoom [] Rooms { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="roomName">To be added.</param>
 			<summary>Asynchronously adds a room named <paramref name="roomName" /> to the home.</summary>
@@ -978,7 +914,6 @@ namespace HomeKit {
 		void AddRoom (string roomName, Action<HMRoom, NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="room">To be added.</param>
 			<summary>Asynchronously removes <paramref name="room" /> from the home.</summary>
@@ -997,7 +932,6 @@ namespace HomeKit {
 		HMZone [] Zones { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="zoneName">The zone to add.</param>
 			<summary>Adds a zone that is named <paramref name="zoneName" /> to the home.</summary>
@@ -1010,7 +944,6 @@ namespace HomeKit {
 		void AddZone (string zoneName, Action<HMZone, NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="zone">To be added.</param>
 			<summary>Asynchronously removes <paramref name="zone" /> from the home.</summary>
@@ -1026,7 +959,6 @@ namespace HomeKit {
 		HMServiceGroup [] ServiceGroups { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="serviceGroupName">To be added.</param>
 			<summary>Asynchronously adds a service group named <paramref name="serviceGroupName" /> to the home.</summary>
@@ -1039,7 +971,6 @@ namespace HomeKit {
 		void AddServiceGroup (string serviceGroupName, Action<HMServiceGroup, NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="group">To be added.</param>
 			<summary>Asynchronously removes <paramref name="group" /> from the home.</summary>
@@ -1055,7 +986,6 @@ namespace HomeKit {
 		HMActionSet [] ActionSets { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="actionSetName">To be added.</param>
 			<summary>Asynchronously adds an action set named <paramref name="actionSetName" /> to the home.</summary>
@@ -1068,7 +998,6 @@ namespace HomeKit {
 		void AddActionSet (string actionSetName, Action<HMActionSet, NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="actionSet">To be added.</param>
 			<summary>Asynchronously removes <paramref name="actionSet" /> from the home.</summary>
@@ -1087,7 +1016,6 @@ namespace HomeKit {
 		[Export ("executeActionSet:completionHandler:")]
 		void ExecuteActionSet (HMActionSet actionSet, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("builtinActionSetOfType:")]
 		[return: NullAllowed]
 		HMActionSet GetBuiltinActionSet (string actionSetType);
@@ -1098,7 +1026,6 @@ namespace HomeKit {
 		HMTrigger [] Triggers { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="trigger">To be added.</param>
 			<summary>Asynchronously adds <paramref name="trigger" /> to the home.</summary>
@@ -1109,7 +1036,6 @@ namespace HomeKit {
 		void AddTrigger (HMTrigger trigger, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="trigger">To be added.</param>
 			<summary>Asynchronously removes <paramref name="trigger" /> from the home.</summary>
@@ -1123,14 +1049,12 @@ namespace HomeKit {
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("users")]
 		HMUser [] Users { get; }
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ManageUsers' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ManageUsers' instead.")]
 		[Async (XmlDocs = """
 			<summary>Developers should not use this deprecated method. </summary>
@@ -1142,12 +1066,10 @@ namespace HomeKit {
 		[Export ("addUserWithCompletionHandler:")]
 		void AddUser (Action<HMUser, NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("currentUser", ArgumentSemantic.Strong)]
 		HMUser CurrentUser { get; }
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Async (XmlDocs = """
 			<summary>Displays a device selection user interface that allows the user manage users and their privileges, and then runs a handler when the user exits the UI.</summary>
 			<returns>A task that represents the asynchronous ManageUsers operation</returns>
@@ -1159,16 +1081,15 @@ namespace HomeKit {
 		[Export ("manageUsersWithCompletionHandler:")]
 		void ManageUsers (Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("homeAccessControlForUser:")]
 		HMHomeAccessControl GetHomeAccessControl (HMUser user);
 
 		// @interface Matter (HMHome)
-		[TV (16, 1), iOS (16, 1), MacCatalyst (16, 1)]
+		[TV (16, 1), iOS (16, 1)]
 		[Export ("matterControllerID")]
 		string MatterControllerId { get; }
 
-		[TV (16, 1), iOS (16, 1), MacCatalyst (16, 1)]
+		[TV (16, 1), iOS (16, 1)]
 		[Export ("matterControllerXPCConnectBlock", ArgumentSemantic.Strong)]
 		Func<NSXpcConnection> MatterControllerXPCConnectBlock { get; }
 
@@ -1182,19 +1103,16 @@ namespace HomeKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Field ("HMUserFailedAccessoriesKey")]
 		NSString UserFailedAccessoriesKey { get; }
 
 		[TV (13, 2), iOS (13, 2)]
-		[MacCatalyst (14, 0)]
 		[Export ("supportsAddingNetworkRouter")]
 		bool SupportsAddingNetworkRouter { get; }
 	}
 
 	interface IHMHomeDelegate { }
 
-	[MacCatalyst (14, 0)]
 	[Model, Protocol]
 	[BaseType (typeof (NSObject))]
 	partial interface HMHomeDelegate {
@@ -1216,7 +1134,6 @@ namespace HomeKit {
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
-		[MacCatalyst (14, 0)]
 		[Export ("homeDidUpdateAccessControlForCurrentUser:")]
 		void DidUpdateAccessControlForCurrentUser (HMHome home);
 
@@ -1510,7 +1427,6 @@ namespace HomeKit {
 		/// <param name="homeHubState">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("home:didUpdateHomeHubState:"), EventArgs ("HMHomeHubState", XmlDocs = """
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
@@ -1518,12 +1434,10 @@ namespace HomeKit {
 		void DidUpdateHomeHubState (HMHome home, HMHomeHubState homeHubState);
 
 		[TV (13, 2), iOS (13, 2)]
-		[MacCatalyst (14, 0)]
 		[Export ("homeDidUpdateSupportedFeatures:")]
 		void DidUpdateSupportedFeatures (HMHome home);
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface HMRoom {
@@ -1535,7 +1449,6 @@ namespace HomeKit {
 		HMAccessory [] Accessories { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the room by using <paramref name="name" />.</summary>
@@ -1548,12 +1461,10 @@ namespace HomeKit {
 		[Export ("updateName:completionHandler:")]
 		void UpdateName (string name, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface HMService {
@@ -1588,7 +1499,6 @@ namespace HomeKit {
 		HMCharacteristic [] Characteristics { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the service to <paramref name="name" />.</summary>
@@ -1599,7 +1509,6 @@ namespace HomeKit {
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Async (XmlDocs = """
 			<param name="serviceType">To be added.</param>
@@ -1616,26 +1525,21 @@ namespace HomeKit {
 		/// <summary>If <see langword="true" />, the <see cref="HomeKit.HMService" /> may interact with the end-user.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("userInteractive")]
 		bool UserInteractive { [Bind ("isUserInteractive")] get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("localizedDescription")]
 		string LocalizedDescription { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
 		/// <summary>Whether this <see cref="HomeKit.HMService" /> is the primary service among a set of linked services.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("primaryService")]
 		bool PrimaryService { [Bind ("isPrimaryService")] get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("linkedServices", ArgumentSemantic.Copy)]
 		HMService [] LinkedServices { get; }
 
@@ -1645,7 +1549,6 @@ namespace HomeKit {
 		NSNumber MatterEndpointId { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface HMServiceGroup {
@@ -1657,7 +1560,6 @@ namespace HomeKit {
 		HMService [] Services { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the service group name to <paramref name="name" />.</summary>
@@ -1668,7 +1570,6 @@ namespace HomeKit {
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="service">To be added.</param>
 			<summary>Asynchronously adds <paramref name="service" /> to the service group.</summary>
@@ -1679,7 +1580,6 @@ namespace HomeKit {
 		void AddService (HMService service, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="service">To be added.</param>
 			<summary>Asynchronously removes <paramref name="service" /> from the service group.</summary>
@@ -1692,24 +1592,21 @@ namespace HomeKit {
 		[Export ("removeService:completionHandler:")]
 		void RemoveService (HMService service, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (HMTrigger))]
 	partial interface HMTimerTrigger {
 
-		[TV (16, 4), MacCatalyst (16, 4), iOS (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[Export ("initWithName:fireDate:recurrence:")]
 		NativeHandle Constructor (string name, NSDate fireDate, [NullAllowed] NSDateComponents recurrence);
 
 		[Deprecated (PlatformName.iOS, 16, 4, message: "Use '.ctor (string, NSDate, NSDateComponents' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "Use '.ctor (string, NSDate, NSDateComponents' instead.")]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:fireDate:timeZone:recurrence:recurrenceCalendar:")]
 		NativeHandle Constructor (string name, NSDate fireDate, [NullAllowed] NSTimeZone timeZone, [NullAllowed] NSDateComponents recurrence, [NullAllowed] NSCalendar recurrenceCalendar);
 
@@ -1732,7 +1629,6 @@ namespace HomeKit {
 		NSCalendar RecurrenceCalendar { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="fireDate">To be added.</param>
 			<summary>Asynchronously updates the fire date by using <paramref name="fireDate" />.</summary>
@@ -1745,7 +1641,6 @@ namespace HomeKit {
 		[Deprecated (PlatformName.iOS, 16, 4, message: "Use 'HMEventTrigger' with 'HMCalendarEvent' for triggers based on a time-zone-relative time of day.")]
 		[Deprecated (PlatformName.MacCatalyst, 16, 4, message: "Use 'HMEventTrigger' with 'HMCalendarEvent' for triggers based on a time-zone-relative time of day.")]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="timeZone">To be added.</param>
 			<summary>Asynchronously updates the time zone by using <paramref name="timeZone" />.</summary>
@@ -1756,7 +1651,6 @@ namespace HomeKit {
 		void UpdateTimeZone ([NullAllowed] NSTimeZone timeZone, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="recurrence">To be added.</param>
 			<summary>Asynchronously updates the recurrence by using <paramref name="recurrence" />.</summary>
@@ -1770,7 +1664,6 @@ namespace HomeKit {
 		void UpdateRecurrence ([NullAllowed] NSDateComponents recurrence, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface HMTrigger {
@@ -1795,7 +1688,6 @@ namespace HomeKit {
 		NSDate LastFireDate { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the trigger.</summary>
@@ -1806,7 +1698,6 @@ namespace HomeKit {
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="actionSet">To be added.</param>
 			<summary>Asynchronously adds <paramref name="actionSet" /> to the list of action sets that are run by this trigger.</summary>
@@ -1817,7 +1708,6 @@ namespace HomeKit {
 		void AddActionSet (HMActionSet actionSet, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="actionSet">To be added.</param>
 			<summary>Asynchronously removes <paramref name="actionSet" /> from the trigger.</summary>
@@ -1828,7 +1718,6 @@ namespace HomeKit {
 		void RemoveActionSet (HMActionSet actionSet, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="enable">To be added.</param>
 			<summary>Asynchronously enables or disables the trigger.</summary>
@@ -1841,12 +1730,10 @@ namespace HomeKit {
 		[Export ("enable:completionHandler:")]
 		void Enable (bool enable, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface HMZone {
@@ -1858,7 +1745,6 @@ namespace HomeKit {
 		HMRoom [] Rooms { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="name">To be added.</param>
 			<summary>Asynchronously updates the name of the zone to <paramref name="name" />.</summary>
@@ -1869,7 +1755,6 @@ namespace HomeKit {
 		void UpdateName (string name, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="room">To be added.</param>
 			<summary>Asynchronously adds <paramref name="room" /> to the zone.</summary>
@@ -1880,7 +1765,6 @@ namespace HomeKit {
 		void AddRoom (HMRoom room, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="room">To be added.</param>
 			<summary>Asynchronously removes <paramref name="room" /> from the zone.</summary>
@@ -1893,13 +1777,11 @@ namespace HomeKit {
 		[Export ("removeRoom:completionHandler:")]
 		void RemoveRoom (HMRoom room, Action<NSError> completion);
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 	}
 
 	[Static, Internal]
-	[MacCatalyst (14, 0)]
 	interface HMCharacteristicMetadataFormatKeys {
 		[Field ("HMCharacteristicMetadataFormatBool")]
 		NSString _Bool { get; }
@@ -1938,19 +1820,16 @@ namespace HomeKit {
 		NSString _Tlv8 { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMUser {
 		[Export ("name")]
 		string Name { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInternalInconsistencyException Reason: init is unavailable
 	interface HMAccessoryCategory {
@@ -1968,12 +1847,10 @@ namespace HomeKit {
 		string LocalizedDescription { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMEvent))]
 	[DisableDefaultCtor]
 	interface HMCharacteristicEvent : NSMutableCopying {
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCharacteristic:triggerValue:")]
 		NativeHandle Constructor (HMCharacteristic characteristic, [NullAllowed] INSCopying triggerValue);
 
@@ -1986,7 +1863,6 @@ namespace HomeKit {
 
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Async (XmlDocs = """
 			<param name="triggerValue">The new trigger value. May be .</param>
@@ -2001,14 +1877,12 @@ namespace HomeKit {
 		void UpdateTriggerValue ([NullAllowed] INSCopying triggerValue, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMEvent {
 		[Export ("uniqueIdentifier", ArgumentSemantic.Copy)]
 		NSUuid UniqueIdentifier { get; }
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("isSupportedForHome:")]
 		bool IsSupported (HMHome home);
@@ -2020,43 +1894,35 @@ namespace HomeKit {
 		NativeHandle Constructor ();
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMEvent))]
 	interface HMTimeEvent { }
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMTrigger))]
 	[DisableDefaultCtor]
 	interface HMEventTrigger {
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:events:predicate:")]
 		NativeHandle Constructor (string name, HMEvent [] events, [NullAllowed] NSPredicate predicate);
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithName:events:endEvents:recurrences:predicate:")]
 		NativeHandle Constructor (string name, HMEvent [] events, [NullAllowed] HMEvent [] endEvents, [NullAllowed] NSDateComponents [] recurrences, [NullAllowed] NSPredicate predicate);
 
 		[Export ("events", ArgumentSemantic.Copy)]
 		HMEvent [] Events { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("endEvents", ArgumentSemantic.Copy)]
 		HMEvent [] EndEvents { get; }
 
 		[NullAllowed, Export ("predicate", ArgumentSemantic.Copy)]
 		NSPredicate Predicate { get; }
 
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("recurrences", ArgumentSemantic.Copy)]
 		NSDateComponents [] Recurrences { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("executeOnce")]
 		bool ExecuteOnce { get; }
 
-		[MacCatalyst (14, 0)]
 		[Export ("triggerActivationState", ArgumentSemantic.Assign)]
 		HMEventTriggerActivationState TriggerActivationState { get; }
 
@@ -2065,7 +1931,6 @@ namespace HomeKit {
 		[Export ("predicateForEvaluatingTriggerOccurringBeforeSignificantEvent:applyingOffset:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent (NSString significantEvent, [NullAllowed] NSDateComponents offset);
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("predicateForEvaluatingTriggerOccurringBeforeSignificantEvent:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent (HMSignificantTimeEvent significantEvent);
@@ -2075,12 +1940,10 @@ namespace HomeKit {
 		[Export ("predicateForEvaluatingTriggerOccurringAfterSignificantEvent:applyingOffset:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent (NSString significantEvent, [NullAllowed] NSDateComponents offset);
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("predicateForEvaluatingTriggerOccurringAfterSignificantEvent:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent (HMSignificantTimeEvent significantEvent);
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("predicateForEvaluatingTriggerOccurringBetweenSignificantEvent:secondSignificantEvent:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringBetweenSignificantEvent (HMSignificantTimeEvent firstSignificantEvent, HMSignificantTimeEvent secondSignificantEvent);
@@ -2097,7 +1960,6 @@ namespace HomeKit {
 		[Export ("predicateForEvaluatingTriggerOccurringAfterDateWithComponents:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringAfterDate (NSDateComponents dateComponents);
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("predicateForEvaluatingTriggerOccurringBetweenDateWithComponents:secondDateWithComponents:")]
 		NSPredicate CreatePredicateForEvaluatingTriggerOccurringBetweenDates (NSDateComponents firstDateComponents, NSDateComponents secondDateComponents);
@@ -2106,14 +1968,12 @@ namespace HomeKit {
 		[Export ("predicateForEvaluatingTriggerWithCharacteristic:relatedBy:toValue:")]
 		NSPredicate CreatePredicateForEvaluatingTrigger (HMCharacteristic characteristic, NSPredicateOperatorType operatorType, NSObject value);
 
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("predicateForEvaluatingTriggerWithPresence:")]
 		NSPredicate CreatePredicateForEvaluatingTrigger (HMPresenceEvent presenceEvent);
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'UpdateEvents' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UpdateEvents' instead.")]
 		[Async (XmlDocs = """
 			<param name="event">The event to add.</param>
@@ -2126,7 +1986,6 @@ namespace HomeKit {
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'UpdateEvents' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'UpdateEvents' instead.")]
 		[Async (XmlDocs = """
 			<param name="event">The event to remove.</param>
@@ -2138,7 +1997,6 @@ namespace HomeKit {
 		void RemoveEvent (HMEvent @event, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Async (XmlDocs = """
 			<param name="events">To be added.</param>
 			<summary>To be added.</summary>
@@ -2149,7 +2007,6 @@ namespace HomeKit {
 		void UpdateEvents (HMEvent [] events, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Async (XmlDocs = """
 			<param name="endEvents">To be added.</param>
 			<summary>To be added.</summary>
@@ -2160,7 +2017,6 @@ namespace HomeKit {
 		void UpdateEndEvents (HMEvent [] endEvents, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="predicate">The predicate to update. May be .</param>
 			<summary>Asynchronously attempts to modify the <see cref="HomeKit.HMEventTrigger.Predicate" />.</summary>
@@ -2171,7 +2027,6 @@ namespace HomeKit {
 		void UpdatePredicate ([NullAllowed] NSPredicate predicate, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Async (XmlDocs = """
 			<param name="recurrences">To be added.</param>
 			<summary>To be added.</summary>
@@ -2182,7 +2037,6 @@ namespace HomeKit {
 		void UpdateRecurrences ([NullAllowed] NSDateComponents [] recurrences, Action<NSError> completion);
 
 		[NoTV]
-		[MacCatalyst (14, 0)]
 		[Async (XmlDocs = """
 			<param name="executeOnce">To be added.</param>
 			<summary>To be added.</summary>
@@ -2196,7 +2050,6 @@ namespace HomeKit {
 		void UpdateExecuteOnce (bool executeOnce, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMAccessControl))]
 	[DisableDefaultCtor]
 	interface HMHomeAccessControl {
@@ -2208,12 +2061,10 @@ namespace HomeKit {
 		bool Administrator { [Bind ("isAdministrator")] get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMEvent))]
 	[DisableDefaultCtor]
 	interface HMLocationEvent : NSMutableCopying {
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithRegion:")]
 		NativeHandle Constructor (CLRegion region);
 
@@ -2222,7 +2073,6 @@ namespace HomeKit {
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 11, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Async (XmlDocs = """
 			<param name="region">To be added.</param>
@@ -2237,7 +2087,6 @@ namespace HomeKit {
 		void UpdateRegion (CLRegion region, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMLocationEvent))]
 	[DisableDefaultCtor]
 	interface HMMutableLocationEvent {
@@ -2250,7 +2099,6 @@ namespace HomeKit {
 		CLRegion Region { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (UIView))]
 	interface HMCameraView {
 		// inlined ctor
@@ -2267,7 +2115,6 @@ namespace HomeKit {
 		HMCameraSource CameraSource { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[Abstract] // documented as such in header file
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2283,12 +2130,10 @@ namespace HomeKit {
 #endif
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("aspectRatio")]
 		double AspectRatio { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMAccessoryProfile))]
 	[DisableDefaultCtor]
 	interface HMCameraProfile {
@@ -2308,7 +2153,6 @@ namespace HomeKit {
 		HMCameraAudioControl MicrophoneControl { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMCameraControl {
@@ -2321,7 +2165,6 @@ namespace HomeKit {
 #endif
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraControl))]
 	[DisableDefaultCtor]
 	interface HMCameraStreamControl {
@@ -2350,7 +2193,6 @@ namespace HomeKit {
 
 	interface IHMCameraStreamControlDelegate { }
 
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMCameraStreamControlDelegate {
@@ -2372,7 +2214,6 @@ namespace HomeKit {
 	}
 
 	// TODO: Type still available for tvOS even if everything in it is __TVOS_PROHIBITED.
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraSource))]
 	[DisableDefaultCtor]
 	interface HMCameraStream {
@@ -2386,12 +2227,10 @@ namespace HomeKit {
 #endif
 
 		[TV (14, 5)]
-		[MacCatalyst (13, 1)]
 		[Export ("audioStreamSetting", ArgumentSemantic.Assign)]
 		HMCameraAudioStreamSetting AudioStreamSetting { get; }
 
 		[TV (14, 5)]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="audioStreamSetting">To be added.</param>
 			<summary>Asynchronously modifies the <see cref="HomeKit.HMCameraStream.AudioStreamSetting" />.</summary>
@@ -2405,7 +2244,6 @@ namespace HomeKit {
 		void UpdateAudioStreamSetting (HMCameraAudioStreamSetting audioStreamSetting, Action<NSError> completion);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraControl))]
 	[DisableDefaultCtor]
 	interface HMCameraSnapshotControl {
@@ -2428,7 +2266,6 @@ namespace HomeKit {
 
 	interface IHMCameraSnapshotControlDelegate { }
 
-	[MacCatalyst (14, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMCameraSnapshotControlDelegate {
@@ -2449,12 +2286,10 @@ namespace HomeKit {
 		/// <param name="cameraSnapshotControl">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Export ("cameraSnapshotControlDidUpdateMostRecentSnapshot:")]
 		void DidUpdateMostRecentSnapshot (HMCameraSnapshotControl cameraSnapshotControl);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraSource))]
 	[DisableDefaultCtor]
 	interface HMCameraSnapshot {
@@ -2471,7 +2306,6 @@ namespace HomeKit {
 		NSDate CaptureDate { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraControl))]
 	[DisableDefaultCtor]
 	interface HMCameraSettingsControl {
@@ -2503,7 +2337,6 @@ namespace HomeKit {
 		HMCharacteristic ImageMirroring { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCameraControl))]
 	[DisableDefaultCtor]
 	interface HMCameraAudioControl {
@@ -2514,7 +2347,6 @@ namespace HomeKit {
 		HMCharacteristic Volume { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMTimeEvent))]
 	[DisableDefaultCtor]
 	interface HMCalendarEvent : NSMutableCopying {
@@ -2526,7 +2358,6 @@ namespace HomeKit {
 		NSDateComponents FireDateComponents { get; [NotImplemented] set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCalendarEvent))]
 	[DisableDefaultCtor]
 	interface HMMutableCalendarEvent {
@@ -2539,7 +2370,6 @@ namespace HomeKit {
 		NSDateComponents FireDateComponents { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCharacteristicEvent))]
 	[DisableDefaultCtor]
 	interface HMMutableCharacteristicEvent : NSMutableCopying {
@@ -2556,7 +2386,6 @@ namespace HomeKit {
 		INSCopying TriggerValue { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMEvent))]
 	[DisableDefaultCtor]
 	interface HMCharacteristicThresholdRangeEvent : NSMutableCopying {
@@ -2571,7 +2400,6 @@ namespace HomeKit {
 		HMNumberRange ThresholdRange { get; [NotImplemented] set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMCharacteristicThresholdRangeEvent))]
 	[DisableDefaultCtor]
 	interface HMMutableCharacteristicThresholdRangeEvent {
@@ -2588,7 +2416,6 @@ namespace HomeKit {
 		HMNumberRange ThresholdRange { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMTimeEvent))]
 	[DisableDefaultCtor]
 	interface HMDurationEvent : NSMutableCopying {
@@ -2600,7 +2427,6 @@ namespace HomeKit {
 		double Duration { get; [NotImplemented] set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMDurationEvent))]
 	[DisableDefaultCtor]
 	interface HMMutableDurationEvent {
@@ -2613,7 +2439,6 @@ namespace HomeKit {
 		double Duration { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMNumberRange {
@@ -2680,7 +2505,7 @@ namespace HomeKit {
 		HMAccessorySetupPayload GetPayload (NSUrl setupPayloadUrl, HMAccessoryOwnershipToken ownershipToken);
 	}
 
-	[NoMac, MacCatalyst (14, 0)]
+	[NoMac]
 	[BaseType (typeof (HMAccessoryProfile))]
 	[DisableDefaultCtor]
 	interface HMNetworkConfigurationProfile {
@@ -2697,7 +2522,7 @@ namespace HomeKit {
 
 	interface IHMNetworkConfigurationProfileDelegate { }
 
-	[NoMac, MacCatalyst (14, 0)]
+	[NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface HMNetworkConfigurationProfileDelegate {
@@ -2716,7 +2541,6 @@ namespace HomeKit {
 		NativeHandle Constructor (NSUrl setupPayloadUrl, [NullAllowed] HMAccessoryOwnershipToken ownershipToken);
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMEvent))]
 	[DisableDefaultCtor]
 	interface HMPresenceEvent : NSMutableCopying {
@@ -2733,12 +2557,10 @@ namespace HomeKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (14, 0)]
 		[Field ("HMPresenceKeyPath")]
 		NSString KeyPath { get; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMPresenceEvent))]
 	[DisableDefaultCtor]
 	interface HMMutablePresenceEvent {
@@ -2750,7 +2572,6 @@ namespace HomeKit {
 		HMPresenceEventUserType PresenceUserType { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMTimeEvent))]
 	[DisableDefaultCtor]
 	interface HMSignificantTimeEvent : NSMutableCopying {
@@ -2785,7 +2606,6 @@ namespace HomeKit {
 		NSDateComponents Offset { get; [NotImplemented] set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (HMSignificantTimeEvent))]
 	interface HMMutableSignificantTimeEvent {
 
@@ -2821,7 +2641,6 @@ namespace HomeKit {
 		NSDateComponents Offset { get; set; }
 	}
 
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface HMAccessControl {

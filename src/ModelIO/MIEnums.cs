@@ -168,7 +168,7 @@ namespace ModelIO {
 		Vertex = 1,
 		/// <summary>Indicates an index buffer for vertex attributes.</summary>
 		Index = 2,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Custom = 3,
 	}
 
@@ -282,7 +282,7 @@ namespace ModelIO {
 		Float4,
 		/// <summary>Indicates a property that contains a 4x4 matrix of floating-point values.</summary>
 		Matrix44,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Buffer,
 	}
 
@@ -390,7 +390,6 @@ namespace ModelIO {
 		IrradianceDistribution,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum MDLNoiseTextureType {
 		/// <summary>To be added.</summary>
 		Vector,

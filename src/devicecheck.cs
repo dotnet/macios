@@ -10,7 +10,6 @@
 
 namespace DeviceCheck {
 
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
 	public enum DCError : long {
@@ -26,11 +25,9 @@ namespace DeviceCheck {
 	/// <param name="token">The generated token.</param>
 	///     <param name="error">The error that was encountered, or <see langword="null" /> if no error occurred.</param>
 	///     <summary>A completion handler for DeviceCheck token generation.</summary>
-	[MacCatalyst (13, 1)]
 	delegate void DCDeviceGenerateTokenCompletionHandler ([NullAllowed] NSData token, [NullAllowed] NSError error);
 
 	/// <summary>A device representation for associating users and devices with tracking data.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // From the documentation it seems the only way to create a usable instance is to use the static CurrentDevice property.
 	[BaseType (typeof (NSObject))]
 	interface DCDevice {
@@ -59,7 +56,6 @@ namespace DeviceCheck {
 
 	[iOS (14, 0)]
 	[TV (15, 0)]
-	[MacCatalyst (14, 5)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface DCAppAttestService {

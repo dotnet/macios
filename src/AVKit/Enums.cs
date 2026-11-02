@@ -25,7 +25,6 @@ namespace AVKit {
 	// (copyright 2016 vs 2019), so this is reflecting the tvOS SDK.
 	/// <summary>Enumeration of error states that can occur while using AVKit.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("AVKitErrorDomain")]
 	public enum AVKitError : long {
@@ -43,7 +42,6 @@ namespace AVKit {
 
 	[NoTV]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum AVAudioSessionRouteSelection : long {
 		None = 0,

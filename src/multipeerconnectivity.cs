@@ -22,7 +22,6 @@ namespace MultipeerConnectivity {
 	///         <see cref="MultipeerConnectivity.MCPeerID.DisplayName" /> must be unique among peers.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCPeerID_class/index.html">Apple documentation for <c>MCPeerID</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -49,7 +48,6 @@ namespace MultipeerConnectivity {
 	delegate void MCSessionNearbyConnectionDataForPeerCompletionHandler ([NullAllowed] NSData connectionData, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCSession.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCSession']/*" />
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -246,7 +244,6 @@ namespace MultipeerConnectivity {
 	///       <para>Callbacks to the <see cref="MultipeerConnectivity.MCSessionDelegate" /> object are likely to be made on background threads. Application developers who wish to update the display must use, for instance, <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCSessionDelegateRef/index.html">Apple documentation for <c>MCSessionDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -330,7 +327,6 @@ namespace MultipeerConnectivity {
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceAdvertiserClassRef/index.html">Apple documentation for <c>MCNearbyServiceAdvertiser</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -412,7 +408,6 @@ namespace MultipeerConnectivity {
 	///       <para>For a discussion of the discovery process, see the remarks for <see cref="MultipeerConnectivity.MCSession" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceAdvertiserDelegateProtocolRef/index.html">Apple documentation for <c>MCNearbyServiceAdvertiserDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -438,7 +433,6 @@ namespace MultipeerConnectivity {
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceBrowserClassRef/index.html">Apple documentation for <c>MCNearbyServiceBrowser</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -518,7 +512,6 @@ namespace MultipeerConnectivity {
 	///       <para>Methods of <see cref="MultipeerConnectivity.MCNearbyServiceBrowserDelegate" /> are typically called by the system on a background thread. Application developers who wish to modify the user interface must use, for instance, <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCNearbyServiceBrowserDelegateRef/index.html">Apple documentation for <c>MCNearbyServiceBrowserDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -555,7 +548,6 @@ namespace MultipeerConnectivity {
 	interface IMCNearbyServiceBrowserDelegate { }
 
 	/// <include file="../docs/api/MultipeerConnectivity/MCBrowserViewController.xml" path="/Documentation/Docs[@DocId='T:MultipeerConnectivity.MCBrowserViewController']/*" />
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -647,7 +639,6 @@ namespace MultipeerConnectivity {
 	/// <summary>A delegate object that provides events relating to the presentation of discovered peers and the application user's selection or cancellation of them.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCBrowserViewControllerDelegate/index.html">Apple documentation for <c>MCBrowserViewControllerDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -691,7 +682,6 @@ namespace MultipeerConnectivity {
 	///     
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCAdvertiserAssistant_class/index.html">Apple documentation for <c>MCAdvertiserAssistant</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Network Framework instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use Network Framework instead.")]
@@ -765,7 +755,6 @@ namespace MultipeerConnectivity {
 	/// <summary>A delegate object that provides events for the presentation or dismissal of an invitation by a <see cref="MultipeerConnectivity.MCAdvertiserAssistant" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MultipeerConnectivity/Reference/MCAdvertiserAssistantDelegate_class/index.html">Apple documentation for <c>MCAdvertiserAssistantDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]

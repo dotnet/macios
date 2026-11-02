@@ -13,7 +13,6 @@ namespace SafariServices {
 	// NSInteger -> SSReadingList.h
 	/// <summary>Enumerates errors that can occur when adding a URL to the Safari Reading List.</summary>
 	[NoMac]
-	[MacCatalyst (14, 0)]
 	[Native ("SSReadingListErrorCode")]
 	[ErrorDomain ("SSReadingListErrorDomain")]
 	public enum SSReadingListError : long {
@@ -23,7 +22,6 @@ namespace SafariServices {
 
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'SFErrorCode' enum.")]
-	[MacCatalyst (13, 4)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 4, message: "Use 'SFErrorCode' enum.")]
 	[Native]
 	[ErrorDomain ("SFContentBlockerErrorDomain")]
@@ -39,7 +37,6 @@ namespace SafariServices {
 	}
 
 	/// <summary>Enumerates errors that that Safari can encounter when working with content blockers or app extensions.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[Native]
 	[ErrorDomain ("SFErrorDomain")]
 	public enum SFErrorCode : long {
@@ -68,7 +65,6 @@ namespace SafariServices {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SFSafariViewControllerDismissButtonStyle : long {
 		/// <summary>To be added.</summary>
@@ -83,7 +79,6 @@ namespace SafariServices {
 	[Native]
 	[ErrorDomain ("SFAuthenticationErrorDomain")]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ASWebAuthenticationSessionErrorCode' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ASWebAuthenticationSessionErrorCode' instead.")]
 	public enum SFAuthenticationError : long {
 		/// <summary>To be added.</summary>

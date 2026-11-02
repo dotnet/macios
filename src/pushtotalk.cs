@@ -13,14 +13,14 @@ using UIKit;
 
 namespace PushToTalk {
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	public enum PTChannelJoinReason : long {
 		DeveloperRequest = 0,
 		ChannelRestoration = 1,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	public enum PTChannelLeaveReason : long {
 		Unknown = 0,
@@ -29,7 +29,7 @@ namespace PushToTalk {
 		SystemPolicy = 3,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	public enum PTChannelTransmitRequestSource : long {
 		Unknown = 0,
@@ -38,7 +38,7 @@ namespace PushToTalk {
 		HandsfreeButton = 3,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	public enum PTServiceStatus : long {
 		Ready,
@@ -46,7 +46,7 @@ namespace PushToTalk {
 		Unavailable,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	public enum PTTransmissionMode : long {
 		FullDuplex,
@@ -54,7 +54,7 @@ namespace PushToTalk {
 		ListenOnly,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	[ErrorDomain ("PTInstantiationErrorDomain")]
 	public enum PTInstantiationError : long {
@@ -66,7 +66,7 @@ namespace PushToTalk {
 		InstantiationAlreadyInProgress = 5,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Native]
 	[ErrorDomain ("PTChannelErrorDomain")]
 	public enum PTChannelError : long {
@@ -82,7 +82,7 @@ namespace PushToTalk {
 		TransmissionNotAllowed = 9,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PTParticipant {
@@ -97,7 +97,7 @@ namespace PushToTalk {
 		NativeHandle Constructor (string name, [NullAllowed] UIImage image);
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PTPushResult {
@@ -110,7 +110,7 @@ namespace PushToTalk {
 		PTPushResult Create (PTParticipant participant);
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PTChannelDescriptor {
@@ -127,7 +127,7 @@ namespace PushToTalk {
 
 	interface IPTChannelManagerDelegate { }
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Protocol]
 	[Model]
 #if !XAMCORE_5_0
@@ -188,7 +188,7 @@ namespace PushToTalk {
 
 	interface IPTChannelRestorationDelegate { }
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Protocol]
 	[Model]
 #if !XAMCORE_5_0
@@ -201,7 +201,7 @@ namespace PushToTalk {
 		PTChannelDescriptor Create (NSUuid channelUuid);
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PTChannelManager {

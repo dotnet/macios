@@ -108,11 +108,11 @@ namespace CoreData {
 		[Field ("NSAffectedStoresErrorKey")]
 		NSString AffectedStoresForErrorKey { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSPersistentStoreStagedMigrationManagerOptionKey")]
 		NSString StagedMigrationManagerOptionKey { get; }
 
-		[TV (14, 0), iOS (14, 0), MacCatalyst (17, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Field ("NSPersistentStoreDeferredLightweightMigrationOptionKey")]
 		NSString DeferredLightweightMigrationOptionKey { get; }
 
@@ -126,7 +126,6 @@ namespace CoreData {
 	[Native] // NUInteger -> NSPersistentStoreCoordinator.h
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
 	[Deprecated (PlatformName.MacOSX, 10, 12, message: "Please see the release notes and Core Data documentation.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 	public enum NSPersistentStoreUbiquitousTransitionType : ulong {
 		/// <summary>To be added.</summary>
@@ -269,7 +268,6 @@ namespace CoreData {
 		NSAtomicStore ReferenceObjectForObjectID (NSManagedObjectID objectID);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexElementDescription : NSCoding, NSCopying {
 		/// <param name="property">To be added.</param>
@@ -319,7 +317,6 @@ namespace CoreData {
 		NSFetchIndexDescription IndexDescription { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSFetchIndexDescription : NSCoding, NSCopying {
 		/// <param name="name">To be added.</param>
@@ -468,11 +465,10 @@ namespace CoreData {
 		[Export ("allowsExternalBinaryDataStorage")]
 		bool AllowsExternalBinaryDataStorage { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("preservesValueInHistoryOnDeletion")]
 		bool PreservesValueInHistoryOnDeletion { get; set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("allowsCloudEncryption")]
 		bool AllowsCloudEncryption { get; set; }
 	}
@@ -652,19 +648,16 @@ namespace CoreData {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("indexes", ArgumentSemantic.Copy)]
 		NSFetchIndexDescription [] Indexes { get; set; }
 
 		// @property (strong) NSArray<NSArray<id __nonnull> * __nonnull> * __nonnull uniquenessConstraints __attribute__((availability(ios, introduced=9.0)));
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("uniquenessConstraints", ArgumentSemantic.Strong)]
 		NSArray _UniquenessConstraints { get; set; }
 
 		/// <summary>Gets or sets the expression that will be used to calculate the core spotlight display name for the entity.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("coreSpotlightDisplayNameExpression", ArgumentSemantic.Retain)]
 		NSExpression CoreSpotlightDisplayNameExpression { get; set; }
 	}
@@ -927,7 +920,6 @@ namespace CoreData {
 
 	interface INSFetchRequestResult { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSFetchRequestResult { }
 
@@ -1113,7 +1105,6 @@ namespace CoreData {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("execute:")]
 		[return: NullAllowed]
 		INSFetchRequestResult [] Execute (out NSError error);
@@ -1123,7 +1114,6 @@ namespace CoreData {
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CoreData/Reference/NSFetchedResultsController_Class/index.html">Apple documentation for <c>NSFetchedResultsController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" })]
 	interface NSFetchedResultsController {
 
@@ -1271,7 +1261,6 @@ namespace CoreData {
 	interface INSFetchedResultsControllerDelegate { }
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1324,7 +1313,6 @@ namespace CoreData {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -1546,14 +1534,12 @@ namespace CoreData {
 		/// <param name="moc">To be added.</param>
 		/// <summary>Creates a new <see cref="CoreData.NSManagedObject" /> in the specified managed object context.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithContext:")]
 		NativeHandle Constructor (NSManagedObjectContext moc);
 
 		/// <summary>Gets the entity description for the receiver.</summary>
 		///         <returns>The entity description for the receiver.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entity")]
 		NSEntityDescription GetEntityDescription ();
@@ -1561,7 +1547,6 @@ namespace CoreData {
 		/// <summary>Creates and returns a fetch request.</summary>
 		///         <returns>A fetch request.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("fetchRequest")]
 		NSFetchRequest CreateFetchRequest ();
@@ -1680,7 +1665,6 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("observationInfo")]
 		IntPtr ObservationInfo { get; set; }
 
@@ -1828,7 +1812,6 @@ namespace CoreData {
 		/// <summary>Gets a Boolean value that tells whether the receiver has unsaved changes to persistent values.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("hasPersistentChangedValues")]
 		bool HasPersistentChangedValues { get; }
 
@@ -1836,7 +1819,6 @@ namespace CoreData {
 		///         <summary>Gets the identifiers for all of the objects that are involved in the specified relationship.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("objectIDsForRelationshipNamed:")]
 		NSManagedObjectID [] GetObjectIDs (string relationshipName);
 	}
@@ -1844,7 +1826,6 @@ namespace CoreData {
 	/// <summary>Controls whether and how a managed object context pins itself to database transactions.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSQueryGenerationToken">Apple documentation for <c>NSQueryGenerationToken</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSQueryGenerationToken : NSSecureCoding, NSCopying {
 		/// <summary>Gets the current query generation token.</summary>
@@ -2061,7 +2042,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'PerformAndWait' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Export ("lock")]
 		new void Lock ();
@@ -2073,7 +2053,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'PerformAndWait' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use a queue style context and 'PerformAndWait' instead.")]
 		[Export ("unlock")]
 		new void Unlock ();
@@ -2085,7 +2064,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use a queue style context and 'Perform' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use a queue style context and 'Perform' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use a queue style context and 'Perform' instead.")]
 		[Export ("tryLock")]
 		bool TryLock { get; }
@@ -2188,7 +2166,6 @@ namespace CoreData {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("name")]
 		string Name { get; set; }
@@ -2198,7 +2175,6 @@ namespace CoreData {
 		///         <summary>Runs the specified <paramref name="request" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("executeRequest:error:")]
 		[return: NullAllowed]
 		NSPersistentStoreResult ExecuteRequest (NSPersistentStoreRequest request, out NSError error);
@@ -2216,7 +2192,6 @@ namespace CoreData {
 		/// <summary>Gets or sets a Boolean value that controls whether inaccessible faults will be deleted.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shouldDeleteInaccessibleFaults")]
 		bool ShouldDeleteInaccessibleFaults { get; set; }
 
@@ -2229,7 +2204,6 @@ namespace CoreData {
 		///         <summary>Returns a Boolean value that controls whether inaccessible faults will be handled.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shouldHandleInaccessibleFault:forObjectID:triggeredByProperty:")]
 		bool ShouldHandleInaccessibleFault (NSManagedObject fault, NSManagedObjectID oid, [NullAllowed] NSPropertyDescription property);
 
@@ -2237,7 +2211,6 @@ namespace CoreData {
 		///         <param name="contexts">To be added.</param>
 		///         <summary>Merges remote changes.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("mergeChangesFromRemoteContextSave:intoContexts:")]
 		void MergeChangesFromRemoteContextSave (NSDictionary changeNotificationData, NSManagedObjectContext [] contexts);
@@ -2248,7 +2221,6 @@ namespace CoreData {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("queryGenerationToken", ArgumentSemantic.Strong)]
 		NSQueryGenerationToken QueryGenerationToken { get; }
 
@@ -2260,20 +2232,17 @@ namespace CoreData {
 		///         <summary>Sets the query generation from the specified query generation token.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setQueryGenerationFromToken:error:")]
 		bool SetQueryGenerationFromToken ([NullAllowed] NSQueryGenerationToken generation, out NSError error);
 
 		/// <summary>Gets or sets a Boolean that tells whether changes in the parent are automatically merged.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("automaticallyMergesChangesFromParent")]
 		bool AutomaticallyMergesChangesFromParent { get; set; }
 
 		/// <summary>Refreshes all objects in the store.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("refreshAllObjects")]
 		void RefreshAllObjects ();
 
@@ -2283,25 +2252,21 @@ namespace CoreData {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("transactionAuthor")]
 		string TransactionAuthor { get; set; }
 
 		[Notification (typeof (NSManagedObjectsIdsChangedEventArgs))]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSManagedObjectContextDidMergeChangesObjectIDsNotification")]
 		NSString DidMergeChangesObjectIdsNotification { get; }
 
 		[Notification (typeof (NSManagedObjectsIdsChangedEventArgs))]
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSManagedObjectContextDidSaveObjectIDsNotification")]
 		NSString DidSaveObjectIdsNotification { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	interface NSManagedObjectsIdsChangedEventArgs {
 		[Export ("NSDeletedObjectIDsKey")]
 		NSSet DeletedObjectIds { get; }
@@ -2578,13 +2543,13 @@ namespace CoreData {
 		NSDictionary EntityVersionHashesByName { get; }
 #endif
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Static]
 		[Export ("checksumsForVersionedModelAtURL:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSString> ChecksumsForVersionedModel (NSUrl modelUrl, [NullAllowed] out NSError error);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("versionChecksum")]
 		string VersionChecksum { get; }
 	}
@@ -2748,7 +2713,6 @@ namespace CoreData {
 		///         <summary>Attempts to resolve the specified locking constraint conflicts, and reports any errors.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resolveOptimisticLockingVersionConflicts:error:")]
 		bool ResolveOptimisticLockingVersionConflicts (NSMergeConflict [] list, out NSError error);
 
@@ -2760,42 +2724,36 @@ namespace CoreData {
 		///         <summary>Attempts to resolve the specified constraint conflicts, and reports any errors.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resolveConstraintConflicts:error:")]
 		bool ResolveConstraintConflicts (NSConstraintConflict [] list, out NSError error);
 
 		/// <summary>Gets a value that indicates that saving will fail if an error is encountered.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("errorMergePolicy", ArgumentSemantic.Strong)]
 		NSMergePolicy ErrorPolicy { get; }
 
 		/// <summary>Gets a value that indicates tha in-memory state changes are discarded for conflicting objects.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("rollbackMergePolicy", ArgumentSemantic.Strong)]
 		NSMergePolicy RollbackPolicy { get; }
 
 		/// <summary>Gets a value that controls policy for handling overwrites.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("overwriteMergePolicy", ArgumentSemantic.Strong)]
 		NSMergePolicy OverwritePolicy { get; }
 
 		/// <summary>Gets a value that indicates that the property object is favored during merges.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("mergeByPropertyObjectTrumpMergePolicy", ArgumentSemantic.Strong)]
 		NSMergePolicy MergeByPropertyObjectTrumpPolicy { get; }
 
 		/// <summary>Gets a value that indicates that the property store is favored during merges.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("mergeByPropertyStoreTrumpMergePolicy", ArgumentSemantic.Strong)]
 		NSMergePolicy MergeByPropertyStoreTrumpPolicy { get; }
 	}
@@ -2954,7 +2912,6 @@ namespace CoreData {
 	}
 
 	[Abstract]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentHistoryChange : NSCopying {
 		/// <summary>To be added.</summary>
@@ -3002,30 +2959,25 @@ namespace CoreData {
 		[NullAllowed, Export ("updatedProperties", ArgumentSemantic.Copy)]
 		NSSet<NSPropertyDescription> UpdatedProperties { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("entityDescription")]
 		NSEntityDescription EntityDescription { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entityDescriptionWithContext:")]
 		[return: NullAllowed]
 		NSEntityDescription GetEntityDescription (NSManagedObjectContext context);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentHistoryToken : NSCopying //, NSSecureCoding TODO: The class does state that it supports the NSSecureCoding YET SupportsSecureCoding returns false, radar 32761925
 	{
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSPersistentHistoryChangeRequest {
@@ -3104,17 +3056,14 @@ namespace CoreData {
 		[NullAllowed, Export ("token", ArgumentSemantic.Strong)]
 		NSPersistentHistoryToken Token { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("fetchHistoryWithFetchRequest:")]
 		NSPersistentHistoryChangeRequest FetchHistory (NSFetchRequest fetchRequest);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fetchRequest", ArgumentSemantic.Strong)]
 		NSFetchRequest FetchRequest { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentHistoryResult {
 		/// <summary>To be added.</summary>
@@ -3135,7 +3084,6 @@ namespace CoreData {
 	}
 
 	[Abstract]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentHistoryTransaction : NSCopying {
 		/// <summary>To be added.</summary>
@@ -3207,35 +3155,31 @@ namespace CoreData {
 		[Export ("objectIDNotification")]
 		NSNotification ObjectIdNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("entityDescriptionWithContext:")]
 		[return: NullAllowed]
 		NSEntityDescription GetEntityDescription (NSManagedObjectContext context);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("entityDescription")]
 		NSEntityDescription EntityDescription { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[NullAllowed, Export ("fetchRequest")]
 		NSFetchRequest FetchRequest { get; }
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSInternalInconsistencyException Reason: NSCoreDataCoreSpotlightDelegate requires the use of the initializer initForStoreWithDescription:model: 
 	interface NSCoreDataCoreSpotlightDelegate {
 
 		[Notification]
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("NSCoreDataCoreSpotlightDelegateIndexDidUpdateNotification")]
 		NSString IndexDidUpdateNotification { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("initForStoreWithDescription:coordinator:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSPersistentStoreDescription description, NSPersistentStoreCoordinator psc);
@@ -3289,19 +3233,19 @@ namespace CoreData {
 		void ReindexSearchableItems (CSSearchableIndex searchableIndex, string [] identifiers, Action acknowledgementHandler);
 
 		[Async]
-		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[Export ("deleteSpotlightIndexWithCompletionHandler:")]
 		void DeleteSpotlightIndex (Action<NSError> completionHandler);
 
-		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[Export ("indexingEnabled")]
 		bool IndexingEnabled { [Bind ("isIndexingEnabled")] get; }
 
-		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[Export ("startSpotlightIndexing")]
 		void StartSpotlightIndexing ();
 
-		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+		[NoTV, iOS (15, 0)]
 		[Export ("stopSpotlightIndexing")]
 		void StopSpotlightIndexing ();
 	}
@@ -3471,16 +3415,13 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("coreSpotlightExporter")]
 		NSCoreDataCoreSpotlightDelegate CoreSpotlightExporter { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRemoteChangeNotificationPostOptionKey")]
 		NSString RemoteChangeNotificationPostOptionKey { get; }
 
 		[Notification (typeof (NSPersistentStoreRemoteChangeEventArgs))]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRemoteChangeNotification")]
 		NSString StoreRemoteChangeNotification { get; }
 
@@ -3500,7 +3441,6 @@ namespace CoreData {
 	/// <summary>Descriptor for a persistent store inside a persistent container.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreDescription">Apple documentation for <c>NSPersistentStoreDescription</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentStoreDescription : NSCopying {
@@ -3619,7 +3559,6 @@ namespace CoreData {
 		NativeHandle Constructor (NSUrl url);
 
 		// NSPersistentStoreDescription_NSPersistentCloudKitContainerAdditions category
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("cloudKitContainerOptions", ArgumentSemantic.Strong)]
 		NSPersistentCloudKitContainerOptions CloudKitContainerOptions { get; set; }
 	}
@@ -3627,7 +3566,6 @@ namespace CoreData {
 	/// <summary>Creates and manages a Core Data stack.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentContainer">Apple documentation for <c>NSPersistentContainer</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentContainer {
@@ -3777,7 +3715,6 @@ namespace CoreData {
 		///         <summary>Gets the metadata for the store at a URL.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("metadataForPersistentStoreOfType:URL:options:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetMetadata (string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
@@ -3810,7 +3747,6 @@ namespace CoreData {
 		///         <summary>Sets the metadata for a persistent store at a URL..</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:options:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -3899,7 +3835,6 @@ namespace CoreData {
 		///         <param name="block">To be added.</param>
 		///         <summary>Adds the described persistent store and runs a handler when it is complete.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addPersistentStoreWithDescription:completionHandler:")]
 		[Async]
 		void AddPersistentStore (NSPersistentStoreDescription storeDescription, Action<NSPersistentStoreDescription, NSError> block);
@@ -3941,7 +3876,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PerformAndWait' instead.")]
 		[Export ("lock")]
 		new void Lock ();
@@ -3953,7 +3887,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'PerformAndWait' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'PerformAndWait' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'PerformAndWait' instead.")]
 		[Export ("unlock")]
 		new void Unlock ();
@@ -3965,7 +3898,6 @@ namespace CoreData {
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 8, 0, message: "Use 'Perform' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 10, message: "Use 'Perform' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Perform' instead.")]
 		[Export ("tryLock")]
 		bool TryLock { get; }
@@ -4009,14 +3941,12 @@ namespace CoreData {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSBinaryStoreSecureDecodingClasses")]
 		NSString BinaryStoreSecureDecodingClasses { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSBinaryStoreInsecureDecodingCompatibilityOption")]
 		NSString BinaryStoreInsecureDecodingCompatibilityOption { get; }
 
@@ -4164,7 +4094,6 @@ namespace CoreData {
 		[NoTV]
 		[Notification]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		[Field ("NSPersistentStoreDidImportUbiquitousContentChangesNotification")]
 		NSString DidImportUbiquitousContentChangesNotification { get; }
@@ -4175,14 +4104,12 @@ namespace CoreData {
 		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		[Field ("NSPersistentStoreUbiquitousContentNameKey")]
 		NSString PersistentStoreUbiquitousContentNameKey { get; }
 
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		[Field ("NSPersistentStoreUbiquitousContentURLKey")]
 		NSString PersistentStoreUbiquitousContentUrlKey { get; }
@@ -4192,7 +4119,6 @@ namespace CoreData {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreFileProtectionKey")]
 		NSString PersistentStoreFileProtectionKey { get; }
 
@@ -4203,7 +4129,6 @@ namespace CoreData {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreUbiquitousPeerTokenOption")]
 		NSString PersistentStoreUbiquitousPeerTokenOption { get; }
 
@@ -4217,12 +4142,10 @@ namespace CoreData {
 		[Static]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
 		[Deprecated (PlatformName.MacOSX, 10, 12, message: "Please see the release notes and Core Data documentation.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		[Export ("removeUbiquitousContentAndPersistentStoreAtURL:options:error:")]
 		bool RemoveUbiquitousContentAndPersistentStore (NSUrl storeUrl, [NullAllowed] NSDictionary options, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Notification (typeof (NSPersistentStoreCoordinatorStoreChangeEventArgs))]
 		[Field ("NSPersistentStoreCoordinatorStoresWillChangeNotification")]
 		NSString StoresWillChangeNotification { get; }
@@ -4232,7 +4155,6 @@ namespace CoreData {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRebuildFromUbiquitousContentOption")]
 		NSString RebuildFromUbiquitousContentOption { get; }
 
@@ -4241,7 +4163,6 @@ namespace CoreData {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreRemoveUbiquitousMetadataOption")]
 		NSString RemoveUbiquitousMetadataOption { get; }
 
@@ -4250,7 +4171,6 @@ namespace CoreData {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreUbiquitousContainerIdentifierKey")]
 		[Obsolete ("Use 'UbiquitousContainerIdentifierKey' instead.")]
 		NSString eUbiquitousContainerIdentifierKey { get; }
@@ -4259,7 +4179,6 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentStoreUbiquitousContainerIdentifierKey")]
 		NSString UbiquitousContainerIdentifierKey { get; }
 
@@ -4269,14 +4188,12 @@ namespace CoreData {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSCoreDataCoreSpotlightExporter")]
 		NSString CoreSpotlightExporter { get; }
 
 		/// <summary>Represents the value that is associated with the NSPersistentHistoryTrackingKey constant.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSPersistentHistoryTrackingKey")]
 		NSString HistoryTrackingKey { get; }
 
@@ -4286,21 +4203,18 @@ namespace CoreData {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("name")]
 		string Name { get; set; }
 
 		/// <param name="code">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("performBlock:")]
 		void Perform (Action code);
 
 		/// <param name="code">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("performBlockAndWait:")]
 		void PerformAndWait (Action code);
 
@@ -4317,7 +4231,6 @@ namespace CoreData {
 		///         <summary>Destroys the persistent store that is located at the specified <paramref name="url" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("destroyPersistentStoreAtURL:withType:options:error:")]
 		bool DestroyPersistentStore (NSUrl url, string storeType, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -4339,21 +4252,19 @@ namespace CoreData {
 		///         <summary>Replaces the persistent store at <paramref name="destinationUrl" /> with the one at <paramref name="sourceUrl" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("replacePersistentStoreAtURL:destinationOptions:withPersistentStoreFromURL:sourceOptions:storeType:error:")]
 		bool ReplacePersistentStore (NSUrl destinationUrl, [NullAllowed] NSDictionary destinationOptions, NSUrl sourceUrl, [NullAllowed] NSDictionary sourceOptions, string storeType, out NSError error);
 
 
-		[MacCatalyst (13, 1)]
 		[Export ("currentPersistentHistoryTokenFromStores:")]
 		[return: NullAllowed]
 		NSPersistentHistoryToken GetCurrentPersistentHistoryToken ([NullAllowed] NSObject [] stores);
 
-		[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("finishDeferredLightweightMigration:")]
 		bool FinishDeferredLightweightMigration ([NullAllowed] out NSError error);
 
-		[TV (14, 0), iOS (14, 0), MacCatalyst (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("finishDeferredLightweightMigrationTask:")]
 		bool FinishDeferredLightweightMigrationTask ([NullAllowed] out NSError error);
 
@@ -4369,7 +4280,6 @@ namespace CoreData {
 		[NoTV]
 		[Export ("NSPersistentStoreUbiquitousTransitionTypeKey")]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Please see the release notes and Core Data documentation.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please see the release notes and Core Data documentation.")]
 		NSPersistentStoreUbiquitousTransitionType EventType { get; }
 	}
@@ -4400,7 +4310,6 @@ namespace CoreData {
 	/// <summary>Class that represents the result of an asynchronous fetch request.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchResult">Apple documentation for <c>NSAsynchronousFetchResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreAsynchronousResult))]
 	interface NSAsynchronousFetchResult {
 		/// <summary>To be added.</summary>
@@ -4420,7 +4329,6 @@ namespace CoreData {
 	/// <summary>Class that represents the result of request that was made of a persistent data store.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreResult">Apple documentation for <c>NSPersistentStoreResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersistentStoreResult {
 
@@ -4429,7 +4337,6 @@ namespace CoreData {
 	/// <summary>Class that represents the result of an batch update request.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateResult">Apple documentation for <c>NSBatchUpdateResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchUpdateResult {
 		/// <summary>To be added.</summary>
@@ -4449,7 +4356,6 @@ namespace CoreData {
 	/// <summary>Class that represents the results of an asynchronous request that was made of a persistent data store.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreAsynchronousResult">Apple documentation for <c>NSPersistentStoreAsynchronousResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSPersistentStoreAsynchronousResult {
 		/// <summary>To be added.</summary>
@@ -4481,7 +4387,6 @@ namespace CoreData {
 	/// <summary>Class that represents an asynchronous fetch request.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSAsynchronousFetchRequest">Apple documentation for <c>NSAsynchronousFetchRequest</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSAsynchronousFetchRequest {
 		/// <param name="request">To be added.</param>
@@ -4814,7 +4719,6 @@ namespace CoreData {
 	/// <summary>Class that represents a request for a batch update.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchUpdateRequest">Apple documentation for <c>NSBatchUpdateRequest</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSBatchUpdateRequest {
 		/// <param name="entityName">To be added.</param>
@@ -4886,7 +4790,6 @@ namespace CoreData {
 	/// <summary>A <see cref="CoreData.NSPersistentStoreRequest" /> that performs a batch delete.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteRequest">Apple documentation for <c>NSBatchDeleteRequest</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor]
 	interface NSBatchDeleteRequest {
@@ -4919,7 +4822,6 @@ namespace CoreData {
 	/// <summary>The results of a <see cref="CoreData.NSBatchDeleteRequest" />.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSBatchDeleteResult">Apple documentation for <c>NSBatchDeleteResult</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchDeleteResult {
 		/// <summary>To be added.</summary>
@@ -4941,7 +4843,6 @@ namespace CoreData {
 	/// <summary>To be added.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSConstraintConflict">Apple documentation for <c>NSConstraintConflict</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSConstraintConflict {
 		/// <param name="contraint">To be added.</param>
@@ -5027,7 +4928,6 @@ namespace CoreData {
 #endif
 	delegate bool NSBatchInsertRequestManagedObjectHandler (NSManagedObject managedObject);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	[DisableDefaultCtor] // NSInternalInconsistencyException Reason: -init results in undefined behavior for NSBatchInsertRequest
 	interface NSBatchInsertRequest {
@@ -5041,22 +4941,18 @@ namespace CoreData {
 		NativeHandle Constructor ();
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithEntity:dictionaryHandler:")]
 		NativeHandle Constructor (NSEntityDescription entity, NSBatchInsertRequestDictionaryHandler handler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithEntity:managedObjectHandler:")]
 		NativeHandle Constructor (NSEntityDescription entity, NSBatchInsertRequestManagedObjectHandler handler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithEntityName:dictionaryHandler:")]
 		NativeHandle Constructor (string entityName, NSBatchInsertRequestDictionaryHandler handler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithEntityName:managedObjectHandler:")]
 		NativeHandle Constructor (string entityName, NSBatchInsertRequestManagedObjectHandler handler);
 
@@ -5085,29 +4981,24 @@ namespace CoreData {
 		NativeHandle Constructor (NSEntityDescription entity, NSDictionary<NSString, NSObject> [] dictionaries);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("dictionaryHandler", ArgumentSemantic.Copy)]
 		NSBatchInsertRequestDictionaryHandler DictionaryHandler { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("managedObjectHandler", ArgumentSemantic.Copy)]
 		NSBatchInsertRequestManagedObjectHandler ManagedObjectHandler { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("batchInsertRequestWithEntityName:dictionaryHandler:")]
 		NSBatchInsertRequest CreateBatchInsertRequest (string entityName, NSBatchInsertRequestDictionaryHandler handler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("batchInsertRequestWithEntityName:managedObjectHandler:")]
 		NSBatchInsertRequest CreateBatchInsertRequest (string entityName, NSBatchInsertRequestManagedObjectHandler handler);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	interface NSBatchInsertResult {
 		[NullAllowed, Export ("result", ArgumentSemantic.Strong)]
@@ -5117,29 +5008,27 @@ namespace CoreData {
 		NSBatchInsertRequestResultType ResultType { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSAttributeDescription))]
 	interface NSDerivedAttributeDescription : NSSecureCoding {
 		[NullAllowed, Export ("derivationExpression", ArgumentSemantic.Strong)]
 		NSExpression DerivationExpression { get; set; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	delegate void NSPersistentCloudKitContainerShareManagedObjectsHandler ([NullAllowed] NSSet<NSManagedObjectID> sharedObjectIds, [NullAllowed] CKShare share, [NullAllowed] CKContainer container, [NullAllowed] NSError error);
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	delegate void NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosHandler ([NullAllowed] NSArray<CKShareParticipant> fetchedParticipants, [NullAllowed] NSError error);
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	delegate void NSPersistentCloudKitContainerPersistUpdatedShareHandler ([NullAllowed] CKShare persistedShare, [NullAllowed] NSError error);
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	delegate void NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZoneHandler ([NullAllowed] CKRecordZoneID purgedZoneId, [NullAllowed] NSError error);
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	delegate void NSPersistentCloudKitContainerAcceptShareInvitationsHandler ([NullAllowed] NSArray<CKShareMetadata> acceptedShareMetadatas, [NullAllowed] NSError error);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSPersistentContainer))]
 	[DisableDefaultCtor]
 	interface NSPersistentCloudKitContainer {
@@ -5166,59 +5055,55 @@ namespace CoreData {
 		NSDictionary<NSManagedObjectID, CKRecordID> GetRecordIds (NSManagedObjectID [] managedObjectIds);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("canUpdateRecordForManagedObjectWithID:")]
 		bool CanUpdateRecord (NSManagedObjectID objectID);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("canDeleteRecordForManagedObjectWithID:")]
 		bool CanDeleteRecord (NSManagedObjectID objectID);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("canModifyManagedObjectsInStore:")]
 		bool CanModifyManagedObjects (NSPersistentStore store);
 
 		// NSPersistentCloudKitContainer_Sharing
 		[Async (ResultTypeName = "NSPersistentCloudKitContainerAcceptShareInvitationsResult")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("acceptShareInvitationsFromMetadata:intoPersistentStore:completion:")]
 		void AcceptShareInvitations (CKShareMetadata [] metadata, NSPersistentStore persistentStore, [NullAllowed] NSPersistentCloudKitContainerAcceptShareInvitationsHandler handler);
 
 		[Async (ResultTypeName = "NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZone")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("purgeObjectsAndRecordsInZoneWithID:inPersistentStore:completion:")]
 		void PurgeObjectsAndRecordsInZone (CKRecordZoneID zoneId, [NullAllowed] NSPersistentStore persistentStore, [NullAllowed] NSPersistentCloudKitContainerPurgeObjectsAndRecordsInZoneHandler handler);
 
 		[Async (ResultTypeName = "NSPersistentCloudKitContainerPersistUpdatedShareResult")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("persistUpdatedShare:inPersistentStore:completion:")]
 		void PersistUpdatedShare (CKShare share, NSPersistentStore persistentStore, [NullAllowed] NSPersistentCloudKitContainerPersistUpdatedShareHandler handler);
 
 		[Async (ResultTypeName = "NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosResult")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("fetchParticipantsMatchingLookupInfos:intoPersistentStore:completion:")]
 		void FetchParticipantsMatchingLookupInfos (CKUserIdentityLookupInfo [] lookupInfos, NSPersistentStore persistentStore, NSPersistentCloudKitContainerFetchParticipantsMatchingLookupInfosHandler handler);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("fetchSharesMatchingObjectIDs:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSManagedObjectID, CKShare> FetchSharesMatchingObjectIds (NSManagedObjectID [] objectIDs, [NullAllowed] out NSError error);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("fetchSharesInPersistentStore:error:")]
 		[return: NullAllowed]
 		CKShare [] FetchSharesInPersistentStore ([NullAllowed] NSPersistentStore persistentStore, [NullAllowed] out NSError error);
 
 		[Async (ResultTypeName = "NSPersistentCloudKitContainerShareManagedObjectsResult")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("shareManagedObjects:toShare:completion:")]
 		void ShareManagedObjects (NSManagedObject [] managedObjects, [NullAllowed] CKShare share, NSPersistentCloudKitContainerShareManagedObjectsHandler handler);
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentCloudKitContainerOptions {
@@ -5230,13 +5115,11 @@ namespace CoreData {
 		NativeHandle Constructor (string containerIdentifier);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("databaseScope", ArgumentSemantic.Assign)]
 		CKDatabaseScope DatabaseScope { get; set; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPersistentCloudKitContainerEvent : NSCopying {
@@ -5270,7 +5153,6 @@ namespace CoreData {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSPersistentStoreRequest))]
 	interface NSPersistentCloudKitContainerEventRequest {
 		[Export ("resultType", ArgumentSemantic.Assign)]
@@ -5294,7 +5176,6 @@ namespace CoreData {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSPersistentStoreResult))]
 	[DisableDefaultCtor]
 	interface NSPersistentCloudKitContainerEventResult {
@@ -5305,7 +5186,7 @@ namespace CoreData {
 		NSPersistentCloudKitContainerEventResultType ResultType { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSStagedMigrationManager {
@@ -5320,14 +5201,14 @@ namespace CoreData {
 		NativeHandle Constructor (NSMigrationStage [] stages);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMigrationStage {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSManagedObjectModelReference {
@@ -5350,7 +5231,7 @@ namespace CoreData {
 		NativeHandle Constructor (string modelName, [NullAllowed] NSBundle bundle, string versionChecksum);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSLightweightMigrationStage {
@@ -5362,14 +5243,14 @@ namespace CoreData {
 		NativeHandle Constructor (string [] versionChecksums);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSAttributeDescription))]
 	interface NSCompositeAttributeDescription {
 		[Export ("elements", ArgumentSemantic.Copy)]
 		NSAttributeDescription [] Elements { get; set; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSMigrationStage))]
 	[DisableDefaultCtor]
 	interface NSCustomMigrationStage {

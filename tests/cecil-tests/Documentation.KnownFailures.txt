@@ -29185,7 +29185,6 @@ M:WebKit.WKWebsiteDataStore.RemoveDataOfTypes(Foundation.NSSet{Foundation.NSStri
 M:WebKit.WKWebsiteDataStore.RemoveDataOfTypes(Foundation.NSSet{Foundation.NSString},WebKit.WKWebsiteDataRecord[],System.Action)
 M:WebKit.WKWebsiteDataStore.RestoreData(Foundation.NSData,WebKit.WKWebsiteDataStoreRestoreDataHandler)
 M:WebKit.WKWebsiteDataStore.RestoreDataAsync(Foundation.NSData)
-M:WebKit.WKWebView.#ctor(CoreGraphics.CGRect,WebKit.WKWebViewConfiguration)
 M:WebKit.WKWebView.CallAsyncJavaScript(System.String,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},WebKit.WKFrameInfo,WebKit.WKContentWorld,System.Action{Foundation.NSObject,Foundation.NSError})
 M:WebKit.WKWebView.CallAsyncJavaScriptAsync(System.String,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},WebKit.WKFrameInfo,WebKit.WKContentWorld)
 M:WebKit.WKWebView.CloseAllMediaPresentations(System.Action)

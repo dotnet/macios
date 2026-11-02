@@ -1309,13 +1309,15 @@ namespace Foundation {
 
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			static readonly List<NSObject> drainList1 = new List<NSObject> ();
-			static readonly List<NSObject> drainList2 = new List<NSObject> ();
-			static List<NSObject> handles = drainList1;
+			const int MaxDrainCount = 256;
+			const int DrainTimeBudgetMilliseconds = 5;
+			static readonly Queue<NSObject> handles = new Queue<NSObject> ();
+			static readonly CoreFoundation.DispatchQueue mainQueue = CoreFoundation.DispatchQueue.MainQueue;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
 			static readonly object lock_obj = new object ();
+			static bool drainScheduled;
 
 			NSObject_Disposer ()
 			{
@@ -1327,8 +1329,10 @@ namespace Foundation {
 			{
 				bool call_drain;
 				lock (lock_obj) {
-					handles.Add (handle);
-					call_drain = handles.Count == 1;
+					handles.Enqueue (handle);
+					call_drain = !draining && !drainScheduled;
+					if (call_drain)
+						drainScheduled = true;
 				}
 				if (!call_drain)
 					return;
@@ -1346,32 +1350,45 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<NSObject> drainList;
-
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
 					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
 					// the native dealloc method for a type ended up executing the run loop, and that runloop
 					// processed a drain request, ending up in this method (again).
-					if (draining) {
-						ScheduleDrain ();
+					if (draining)
 						return;
-					}
+					drainScheduled = false;
 					draining = true;
-
-					drainList = handles;
-					if (handles == drainList1)
-						handles = drainList2;
-					else
-						handles = drainList1;
 				}
 
-				foreach (NSObject x in drainList)
-					x.ReleaseManagedRef ();
-				drainList.Clear ();
+				var start = Stopwatch.GetTimestamp ();
+				try {
+					for (var i = 0; i < MaxDrainCount; i++) {
+						NSObject handle;
+						lock (lock_obj) {
+							if (handles.Count == 0)
+								break;
+							handle = handles.Dequeue ();
+						}
+						handle.ReleaseManagedRef ();
+						GC.KeepAlive (handle);
 
-				lock (lock_obj) {
-					draining = false;
+						// A native release cannot be interrupted, so check the budget after each object.
+						if (Stopwatch.GetElapsedTime (start).TotalMilliseconds >= DrainTimeBudgetMilliseconds)
+							break;
+					}
+				} finally {
+					bool call_drain;
+					lock (lock_obj) {
+						draining = false;
+						call_drain = handles.Count > 0 && !drainScheduled;
+						if (call_drain)
+							drainScheduled = true;
+					}
+					if (call_drain) {
+						// Immediately requeuing selectors can keep the same run-loop iteration busy.
+						mainQueue.DispatchAfter (new CoreFoundation.DispatchTime (CoreFoundation.DispatchTime.Now, 1_000_000), ScheduleDrain);
+					}
 				}
 			}
 		}

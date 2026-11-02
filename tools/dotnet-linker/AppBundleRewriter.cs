@@ -423,6 +423,24 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference Foundation_NSObject_TryGetNSObjectForConstructor {
+			get {
+				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "TryGetNSObjectForConstructor", "Foundation.NSObject::TryGetNSObjectForConstructor", true, 1, System_IntPtr, System_UInt32);
+			}
+		}
+
+		public MethodReference Foundation_NSObject_HandleSetterMethod {
+			get {
+				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_handle", "Foundation.NSObject::set_handle", predicate: null, out var _);
+			}
+		}
+
+		public MethodReference Foundation_NSObject_FlagsSetterMethod {
+			get {
+				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_flags", "Foundation.NSObject::set_flags", predicate: null, out var _);
+			}
+		}
+
 		public TypeReference Foundation_ProtocolAttribute {
 			get {
 				return GetTypeReference (PlatformAssembly, "Foundation.ProtocolAttribute", out var _);

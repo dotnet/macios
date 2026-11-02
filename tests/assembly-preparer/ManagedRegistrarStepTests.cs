@@ -11,6 +11,78 @@ using Xamarin.Linker;
 namespace AssemblyPreparerTests;
 
 public class ManagedRegistrarStepTests : BaseClass {
+	[TestCase (RegistrarMode.ManagedStatic, false, "link")]
+	[TestCase (RegistrarMode.ManagedStatic, false, "copy")]
+	[TestCase (RegistrarMode.TrimmableStatic, false, "link")]
+	[TestCase (RegistrarMode.TrimmableStatic, false, "copy")]
+	[TestCase (RegistrarMode.TrimmableStatic, true, "copy")]
+	public void ConstructorAllocation (RegistrarMode registrar, bool hotReloadCompatibleBuild, string trimMode)
+	{
+		var code = @"
+		using Foundation;
+
+		public class MyClass : NSObject {
+			[Export (""initWithValue:"")]
+			public MyClass (int value) { }
+
+			[Export (""initWithOtherValue:"")]
+			public MyClass (long value) { }
+
+			private MyClass (string unused) { }
+			public MyClass (double unused) { }
+		}
+		";
+		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
+		var config = $@"
+		AssemblyName=Microsoft.macOS.dll
+		TypeMapAssemblyName=_TypeMap
+		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
+		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
+		";
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = registrar, code, out _,
+			extraConfig: config, hotReloadCompatibleBuild: hotReloadCompatibleBuild, testAssemblyTrimMode: trimMode);
+		AssertPrepare (preparer);
+
+		var assembly = preparer.Configuration.DerivedLinkContext.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var type = assembly.MainModule.Types.Single (v => v.Name == "MyClass");
+		var allocationCtors = type.Methods.Where (v => v.IsConstructor && v.Parameters.Count == 2 &&
+			v.Parameters [1].ParameterType.FullName == "ObjCRuntime.IManagedRegistrar").ToArray ();
+		var constructors = preparer.Configuration.AssemblyTrampolineInfos [assembly]
+			.Where (v => v.Target.DeclaringType == type && v.Target.IsConstructor).ToArray ();
+		Assert.That (constructors, Has.Length.EqualTo (2), "Exported constructors");
+		Assert.That (allocationCtors, Has.Length.EqualTo (hotReloadCompatibleBuild ? 0 : 1), "Shared allocation constructor");
+
+		foreach (var info in constructors) {
+			var trampoline = info.Trampoline;
+			var calls = trampoline.Body.Instructions.Where (v => v.OpCode == OpCodes.Call).Select (v => (MethodReference) v.Operand).ToArray ();
+			Assert.That (calls.Select (v => v.FullName), Does.Contain (info.Target.FullName), "Direct constructor call");
+			Assert.That (trampoline.CustomAttributes.Where (v => v.AttributeType.Name == "DynamicDependencyAttribute"), Is.Empty, "No reflection preservation");
+			var allocations = trampoline.Body.Instructions.Where (v => v.OpCode == OpCodes.Newobj).Select (v => (MethodReference) v.Operand).ToArray ();
+			if (hotReloadCompatibleBuild) {
+				Assert.That (allocations, Is.Empty, "No allocation constructor in companion");
+				Assert.That (calls.Select (v => v.Name), Does.Contain ("GetOrCreateNSObjectForConstructor"), "Unmodified-assembly fallback");
+			} else {
+				Assert.That (allocations.Select (v => v.FullName), Is.EqualTo (allocationCtors.Select (v => v.FullName)), "newobj allocation");
+				Assert.That (calls.Select (v => v.Name), Does.Contain ("TryGetNSObjectForConstructor"), "Wrapper reuse");
+				Assert.That (calls.Select (v => v.Name), Does.Not.Contain ("GetOrCreateNSObjectForConstructor"), "No reflective allocation");
+				var allocation = trampoline.Body.Instructions.Single (v => v.OpCode == OpCodes.Newobj);
+				Assert.That (trampoline.Body.Instructions.Where (v => v.OpCode == OpCodes.Brtrue || v.OpCode == OpCodes.Brtrue_S).Select (v => v.Operand),
+					Does.Contain (allocation.Next), "Reuse bypasses allocation");
+			}
+		}
+
+		if (hotReloadCompatibleBuild) {
+			Assert.That (preparer.Configuration.ModifiedAssemblies, Does.Not.Contain (assembly), "Unmodified user assembly");
+			Assert.That (constructors.Select (v => v.Trampoline.Module.Assembly), Has.None.SameAs (assembly), "Companion trampolines");
+		} else {
+			var allocationCtor = allocationCtors.Single ();
+			Assert.That (allocationCtor.Parameters [0].ParameterType.FullName, Is.EqualTo ("System.IntPtr"), "Native handle");
+			Assert.That (allocationCtor.Body.Instructions.Where (v => v.OpCode == OpCodes.Call).Select (v => ((MethodReference) v.Operand).Name),
+				Is.EqualTo (new [] { "op_Implicit", "set_handle", "set_flags" }), "Only initialize native handle and flags");
+			Assert.That (allocationCtor.CustomAttributes, Is.Empty, "No allocator reflection dependencies");
+		}
+	}
+
 	[Test]
 	public void FactoryMethodsNotAddedToReloadableAssemblies ()
 	{

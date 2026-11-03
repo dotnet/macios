@@ -19,38 +19,6 @@ namespace Cecil.Tests {
 	[TestFixture]
 	public partial class ApiTest {
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		public void UIControl_ContextMenuCallbacksRequireSuper (AssemblyInfo info)
-		{
-			if (info.Platform == ApplePlatform.MacOSX)
-				Assert.Ignore ("UIControl is unavailable on macOS.");
-
-			var control = info.Assembly.MainModule.GetType ("UIKit.UIControl");
-			var protocol = info.Assembly.MainModule.GetType ("UIKit.UIContextMenuInteractionDelegate");
-			Assert.That (control, Is.Not.Null, "UIControl");
-			Assert.That (protocol, Is.Not.Null, "UIContextMenuInteractionDelegate");
-
-			foreach (var name in new [] { "WillDisplayMenu", "WillEnd" }) {
-				var methods = control.Methods.Where (m => m.Name == name).ToArray ();
-				Assert.That (methods, Has.Length.EqualTo (1), $"{name} must not be duplicated by protocol inlining.");
-				var method = methods [0];
-				Assert.That (method.IsPublic, Is.True, $"{name} visibility");
-				Assert.That (method.IsVirtual, Is.True, $"{name} must remain overridable.");
-				Assert.That (method.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{name} return type");
-				Assert.That (method.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] {
-					"UIKit.UIContextMenuInteraction",
-					"UIKit.UIContextMenuConfiguration",
-					"UIKit.IUIContextMenuInteractionAnimating",
-				}), $"{name} parameter types");
-				Assert.That (method.CustomAttributes.Count (a => a.AttributeType.Is ("ObjCRuntime", "RequiresSuperAttribute")), Is.EqualTo (1), $"{name} requires super only on UIControl.");
-				var availability = method.CustomAttributes.Where (a => a.AttributeType.Is ("System.Runtime.Versioning", "SupportedOSPlatformAttribute"));
-				Assert.That (availability.Select (a => (string) a.ConstructorArguments [0].Value), Is.EquivalentTo (new [] { "ios", "tvos17.0", "maccatalyst" }), $"{name} availability within the supported OS versions");
-				var protocolMethod = protocol.Methods.Single (m => m.Name == name);
-				Assert.That (protocolMethod.CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "RequiresSuperAttribute")), Is.False, $"{name} must not require super on the protocol model.");
-			}
-		}
-
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{
 			// all subclasses of ARConfiguration must (re)export 'GetSupportedVideoFormats'

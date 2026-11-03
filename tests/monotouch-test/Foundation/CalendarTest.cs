@@ -309,14 +309,24 @@ namespace MonoTouchFixtures.Foundation {
 			using var tomorrow = AddDays (calendar, now, 1);
 			using var yesterday = AddDays (calendar, now, -1);
 
-			Assert.That (calendar.IsDateInToday (now), Is.True, "IsDateInToday positive");
-			Assert.That (calendar.IsDateInToday (tomorrow), Is.False, "IsDateInToday negative");
+			var nowIsToday = calendar.IsDateInToday (now);
+			var tomorrowIsToday = calendar.IsDateInToday (tomorrow);
+			var nowIsTomorrow = calendar.IsDateInTomorrow (now);
+			var tomorrowIsTomorrow = calendar.IsDateInTomorrow (tomorrow);
+			var nowIsYesterday = calendar.IsDateInYesterday (now);
+			var yesterdayIsYesterday = calendar.IsDateInYesterday (yesterday);
+			using var after = NSDate.Now;
+			if (!calendar.IsInSameDay (now, after))
+				Assert.Inconclusive ("The calendar day changed while collecting relative-date results.");
 
-			Assert.That (calendar.IsDateInTomorrow (now), Is.False, "IsDateInTomorrow negative");
-			Assert.That (calendar.IsDateInTomorrow (tomorrow), Is.True, "IsDateInTomorrow positive");
+			Assert.That (nowIsToday, Is.True, "IsDateInToday positive");
+			Assert.That (tomorrowIsToday, Is.False, "IsDateInToday negative");
 
-			Assert.That (calendar.IsDateInYesterday (now), Is.False, "IsDateInYesterday negative");
-			Assert.That (calendar.IsDateInYesterday (yesterday), Is.True, "IsDateInYesterday positive");
+			Assert.That (nowIsTomorrow, Is.False, "IsDateInTomorrow negative");
+			Assert.That (tomorrowIsTomorrow, Is.True, "IsDateInTomorrow positive");
+
+			Assert.That (nowIsYesterday, Is.False, "IsDateInYesterday negative");
+			Assert.That (yesterdayIsYesterday, Is.True, "IsDateInYesterday positive");
 
 			Assert.That (calendar.IsInSameDay (now, tomorrow), Is.False, "IsInSameDay negative");
 

@@ -951,6 +951,10 @@ namespace CoreMedia {
 		[Field ("kCMSampleAttachmentKey_HDR10PlusPerFrameData")]
 		NSString Hdr10PlusPerFrameDataKey { get; }
 
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Field ("kCMSampleAttachmentKey_SMPTE_ST_2094_50Data")]
+		NSString SmpteSt209450DataKey { get; }
+
 		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 		[Field ("kCMSampleAttachmentKey_PostDecodeProcessingMetadata")]
 		NSString PostDecodeProcessingMetadataKey { get; }
@@ -1038,6 +1042,10 @@ namespace CoreMedia {
 		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		NSData Hdr10PlusPerFrameData { get; set; } // it is a CFData, but that is a toll-free bridged
+
+		/// <summary>Gets or sets the SMPTE ST 2094-50 per-frame metadata.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		NSData SmpteSt209450Data { get; set; }
 
 		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
 		NSDictionary PostDecodeProcessingMetadata { get; set; } // it is a CFDictionary, but that is a toll-free bridged

@@ -123,5 +123,10 @@ namespace CoreMedia {
 		[SupportedSimulator ("tvos16.1")]
 		[Field ("kCMSampleAttachmentKey_HDR10PlusPerFrameData")]
 		Hdr10PlusPerFrameData,
+
+		/// <summary>Identifies the SMPTE ST 2094-50 per-frame metadata attachment.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Field ("kCMSampleAttachmentKey_SMPTE_ST_2094_50Data")]
+		SmpteSt209450Data,
 	}
 }

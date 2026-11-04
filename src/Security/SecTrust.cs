@@ -314,6 +314,43 @@ namespace Security {
 			return result;
 		}
 
+		[SupportedOSPlatform ("ios27.3")]
+		[SupportedOSPlatform ("tvos27.3")]
+		[SupportedOSPlatform ("macos27.3")]
+		[SupportedOSPlatform ("maccatalyst27.3")]
+		[DllImport (Constants.SecurityLibrary)]
+		unsafe static extern IntPtr SecTrustCreateAndVerifyQWACTLSBinding (IntPtr bindingData, IntPtr tlsTrust, IntPtr* error);
+
+		/// <summary>Validates a qualified web authentication certificate (2-QWAC) binding to an established TLS connection.</summary>
+		/// <param name="bindingData">The binding resource in JWS Compact Serialization format.</param>
+		/// <param name="tlsTrust">An already successfully evaluated trust object for the TLS connection.</param>
+		/// <param name="error">The validation error on failure, or <see langword="null" /> on success. Binding errors use <see cref="SecQwacTlsBindingError" /> codes.</param>
+		/// <returns>The evaluated trust for the 2-QWAC certificate chain, or <see langword="null" /> if validation fails.</returns>
+		/// <remarks>This validation is additional to standard TLS trust evaluation and does not access the network. Invalid native arguments are reported in the OSStatus error domain.</remarks>
+		/// <exception cref="ArgumentNullException"><paramref name="bindingData" /> or <paramref name="tlsTrust" /> is <see langword="null" />.</exception>
+		/// <exception cref="ObjectDisposedException"><paramref name="bindingData" /> or <paramref name="tlsTrust" /> has been disposed.</exception>
+		[SupportedOSPlatform ("ios27.3")]
+		[SupportedOSPlatform ("tvos27.3")]
+		[SupportedOSPlatform ("macos27.3")]
+		[SupportedOSPlatform ("maccatalyst27.3")]
+		public static SecTrust? CreateAndVerifyQwacTlsBinding (NSData bindingData, SecTrust tlsTrust, out NSError? error)
+		{
+			if (bindingData is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bindingData));
+			if (tlsTrust is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tlsTrust));
+
+			IntPtr errorHandle = IntPtr.Zero;
+			IntPtr handle;
+			unsafe {
+				handle = SecTrustCreateAndVerifyQWACTLSBinding (bindingData.GetNonNullHandle (nameof (bindingData)), tlsTrust.GetCheckedHandle (), &errorHandle);
+				GC.KeepAlive (bindingData);
+				GC.KeepAlive (tlsTrust);
+			}
+			error = Runtime.GetNSObject<NSError> (errorHandle, owns: true);
+			return handle == IntPtr.Zero ? null : new SecTrust (handle, true);
+		}
+
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]

@@ -10,3 +10,11 @@ CreateManifest.ps1 -ManifestPath "/output/path.psd1"
 ```
 
 The manifest only needs to be recreated when you add a new module that you want to be able to import in yaml.
+
+## PR checkout
+
+`undo_github_merge.ps1` checks out the second parent of `Build.SourceVersion`,
+the PR head captured by GitHub's merge commit when the build was queued. It must
+not fetch the live PR head: a PR can advance while jobs are waiting to start,
+and every job must use the same source revision as the packages it consumes.
+Non-PR builds keep their current checkout.

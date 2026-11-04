@@ -47,7 +47,7 @@ steps:
   timeoutInMinutes: 5
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), ${{ parameters.runPowerShellBootstrapTests }})
 
-- pwsh: ./undo_github_merge.ps1 -SourceBranch "$(Build.SourceBranch)" -IsPr "$Env:IS_PR"
+- pwsh: ./undo_github_merge.ps1 -SourceVersion "$(Build.SourceVersion)" -IsPr "$Env:IS_PR"
   name: fix_commit
   displayName: "Undo Github merge"
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts

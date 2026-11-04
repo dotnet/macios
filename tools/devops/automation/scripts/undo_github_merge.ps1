@@ -2,27 +2,23 @@ param
 (
     [Parameter(Mandatory)]
     [String]
-    $SourceBranch,
+    $SourceVersion,
 
     [String]
     $IsPr
 )
 
+$ErrorActionPreference = "Stop"
+$PSNativeCommandUseErrorActionPreference = $true
+
 if($IsPr.ToLower() -eq "true") {
     Write-Host "Working on a PR, Undoing the github merge with main."
 
-    $refspec="+refs/pull/$Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/*:refs/remotes/origin/pull/$Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/*"
+    # GitHub's merge commit has the target branch first and the queued PR head second.
+    $commit = git rev-parse --verify "$SourceVersion^2"
 
-    Write-Host "Refspec: $refspec"
-
-    git fetch origin --no-tags "$refspec"
-
-    $branch="$SourceBranch".Replace("merge", "head")
-    $branch=$branch.Replace("refs", "origin")
-
-    Write-Host "Checking out branch $branch"
-
-    git checkout $branch
+    Write-Host "Checking out queued PR commit $commit"
+    git checkout --detach $commit
     git submodule update --recursive --init
     git clean -xffd
     git submodule foreach --recursive git clean -xffd

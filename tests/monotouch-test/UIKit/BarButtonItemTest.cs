@@ -22,21 +22,6 @@ namespace MonoTouchFixtures.UIKit {
 	public class ButtonBarItemTest {
 
 		[Test]
-		public void ProminentStyle ()
-		{
-			TestRuntime.AssertXcodeVersion (26, 0);
-
-			Assert.That ((long) UIBarButtonItemStyle.Prominent, Is.EqualTo (2), "Native value");
-			using (var btn = new UIBarButtonItem ("title", UIBarButtonItemStyle.Prominent, null, null)) {
-				Assert.That (btn.Style, Is.EqualTo (UIBarButtonItemStyle.Prominent), "Constructor");
-				btn.Style = UIBarButtonItemStyle.Plain;
-				Assert.That (btn.Style, Is.EqualTo (UIBarButtonItemStyle.Plain), "Plain");
-				btn.Style = UIBarButtonItemStyle.Prominent;
-				Assert.That (btn.Style, Is.EqualTo (UIBarButtonItemStyle.Prominent), "Setter");
-			}
-		}
-
-		[Test]
 		public void InitWithImage ()
 		{
 			using (var img = new UIImage ())

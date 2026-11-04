@@ -1,4 +1,0 @@
-!missing-enum! HKReferenceSex not bound
-!missing-field! HKCharacteristicTypeIdentifierReferenceSex not bound
-!missing-field! HKQuantityTypeIdentifierHipCircumference not bound
-!missing-selector! HKHealthStore::getReferenceSex:error: not bound

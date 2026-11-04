@@ -90,5 +90,63 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.BundleResourcesWithLogicalNames, Has.Length.EqualTo (1), "Bundle resource count");
 			Assert.That (task.BundleResourcesWithLogicalNames? [0].GetMetadata ("IsOriginalResource"), Is.EqualTo ("true"), "IsOriginalResource");
 		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void BundleResources_AreCached (bool original)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var resourceName = original ? "__monotouch_item_BundleResource_sub_sfile.txt" : "__monotouch_content_sub_sfile.txt";
+			var assemblyPath = CreateAssemblyWithResource (tmpdir, "TestCache", resourceName, new byte [] { 0x41 });
+			var itemsFile = Path.Combine (tmpdir, "resourcestamps", "TestCache.items");
+			var assembly = new TaskItem (assemblyPath);
+			assembly.SetMetadata ("ItemsFile", itemsFile);
+
+			var task = CreateTask<UnpackLibraryResources> ();
+			task.Prefix = "monotouch";
+			task.IntermediateOutputPath = Path.Combine (tmpdir, "intermediate");
+			task.ReferencedLibraries = [assembly];
+			task.TargetFrameworkDirectory = [];
+			ExecuteTask (task, expectedErrorCount: 0);
+
+			Assert.That (task.ItemsFiles, Has.Length.EqualTo (1), "Cache file count");
+			Assert.That (task.ItemsFiles [0].ItemSpec, Is.EqualTo (itemsFile), "Cache file");
+
+			var read = CreateTask<ReadItemsFromFile> ();
+			read.File = [new TaskItem (itemsFile)];
+			ExecuteTask (read, expectedErrorCount: 0);
+
+			Assert.That (read.Items, Has.Length.EqualTo (1), "Cached resource count");
+			Assert.That (read.Items [0].ItemSpec, Is.EqualTo (task.BundleResourcesWithLogicalNames? [0].ItemSpec), "Resource path");
+			Assert.That (read.Items [0].GetMetadata ("LogicalName"), Is.EqualTo ("sub/file.txt"), "LogicalName");
+			Assert.That (read.Items [0].GetMetadata ("BundledInAssembly"), Is.EqualTo (assemblyPath), "BundledInAssembly");
+			Assert.That (read.Items [0].GetMetadata ("IsOriginalResource"), Is.EqualTo (original ? "true" : ""), "IsOriginalResource");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void EmptyBundleResourceCache_IsWritten (bool frameworkAssembly)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var assemblyPath = CreateAssemblyWithResource (tmpdir, "TestEmptyCache", "__monotouch_item_ImageAsset_Images.xcassets_sContents.json", new byte [] { 0x41 });
+			var itemsFile = Path.Combine (tmpdir, "resourcestamps", "TestEmptyCache.items");
+			var assembly = new TaskItem (assemblyPath);
+			assembly.SetMetadata ("ItemsFile", itemsFile);
+
+			var task = CreateTask<UnpackLibraryResources> ();
+			task.Prefix = "monotouch";
+			task.IntermediateOutputPath = Path.Combine (tmpdir, "intermediate");
+			task.ReferencedLibraries = [assembly];
+			task.TargetFrameworkDirectory = frameworkAssembly ? [new TaskItem (tmpdir)] : [];
+			ExecuteTask (task, expectedErrorCount: 0);
+
+			Assert.That (task.ItemsFiles, Has.Length.EqualTo (1), "Cache file count");
+			Assert.That (task.ImageAssets, Has.Length.EqualTo (frameworkAssembly ? 0 : 1), "Image asset count");
+
+			var read = CreateTask<ReadItemsFromFile> ();
+			read.File = [new TaskItem (itemsFile)];
+			ExecuteTask (read, expectedErrorCount: 0);
+			Assert.That (read.Items, Is.Empty, "No bundle resources should be cached");
+		}
 	}
 }

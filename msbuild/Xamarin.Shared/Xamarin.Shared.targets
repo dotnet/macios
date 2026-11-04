@@ -2320,15 +2320,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
-			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(StampFile)')" />
 
 			<_BundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
+			<_UnpackedBundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_UnpackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_IsMultiRidBuild)' != 'true'" DependsOnTargets="$(_UnpackLibraryResourcesDependsOn)"
 		Inputs="@(_UnpackLibraryResourceItems)"
-		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)')">
+		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')">
 
 		<MakeDir Directories="$(_StampDirectory)" />
 

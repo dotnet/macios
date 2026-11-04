@@ -1,0 +1,5 @@
+!missing-enum! SecQWACTLSBindingError not bound
+!missing-field! kSecPolicyAppleQWACTLSBinding not bound
+!missing-field! kSecQWACTLSBindingErrorDomain not bound
+!missing-pinvoke! SecPolicyCreateQWACTLSBinding is not bound
+!missing-pinvoke! SecTrustCreateAndVerifyQWACTLSBinding is not bound

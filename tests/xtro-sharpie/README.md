@@ -43,11 +43,6 @@ make
 open report-dotnet/index.html
 ```
 
-When using prebuilt workloads, set `<PLATFORM>_WORKLOAD_VERSION` (for example,
-`IOS_WORKLOAD_VERSION`) to the installed package version. CI sets these variables
-from `WorkloadRollback.json`. Otherwise, the assembly paths use the package
-versions computed from the current checkout.
-
 ### How to read the report
 
 Links under **FIXME (unclassified)** points to the issue that **must** be fixed (to commit).

@@ -5,6 +5,9 @@ param
     $SourceVersion,
 
     [String]
+    $SourceBranch,
+
+    [String]
     $IsPr
 )
 
@@ -17,8 +20,14 @@ if($IsPr.ToLower() -eq "true") {
     # GitHub's merge commit has the target branch first and the queued PR head second.
     $commit = git rev-parse --verify "$SourceVersion^2"
 
-    Write-Host "Checking out queued PR commit $commit"
-    git checkout --detach $commit
+    if ([string]::IsNullOrWhiteSpace($SourceBranch)) {
+        throw "The PR source branch is required."
+    }
+    $branch = $SourceBranch -replace '^refs/heads/', ''
+    git check-ref-format --branch $branch | Out-Null
+
+    Write-Host "Checking out queued PR commit $commit on branch $branch"
+    git checkout -B $branch $commit
     git submodule update --recursive --init
     git clean -xffd
     git submodule foreach --recursive git clean -xffd

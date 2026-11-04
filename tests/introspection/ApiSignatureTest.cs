@@ -968,6 +968,9 @@ namespace Introspection {
 			case "StartCapture":
 			case "StopCapture": // it does not make sense for these APIs
 				return m.DeclaringType?.Name == "SCStream";
+			case "DismissPopover":
+				// Match SWCollaborationView's callback-only popover-dismissal API.
+				return m.DeclaringType?.Name is "SWCollaborationBarButtonItem" or "SWCollaborationToolbarItem";
 			}
 			return false;
 		}

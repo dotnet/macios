@@ -1,2 +1,0 @@
-!missing-selector! NSWindow::disablesDirectTouchSystemGestures not bound
-!missing-selector! NSWindow::setDisablesDirectTouchSystemGestures: not bound

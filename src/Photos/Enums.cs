@@ -254,6 +254,9 @@ namespace Photos {
 		Content = 2,
 		/// <summary>The edit changes the asset's properties.</summary>
 		Properties = 3,
+		/// <summary>Indicates whether video playback can be enabled or disabled for a Live Photo.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		SetLivePhotoVideoPlaybackEnabled = 4,
 	}
 
 	// NSInteger -> PhotosTypes.h

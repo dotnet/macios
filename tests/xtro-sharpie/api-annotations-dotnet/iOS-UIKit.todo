@@ -1,6 +1,0 @@
-!missing-enum! UIBarContainerBehavior not bound
-!missing-field! UIPasteboardOptionConcealed not bound
-!missing-selector! UINavigationController::barContainerBehavior not bound
-!missing-selector! UINavigationController::setBarContainerBehavior: not bound
-!missing-selector! UIPasteboard::setItemProviders:localOnly:expirationDate:concealed: not bound
-!missing-selector! UIPasteboard::setObjects:localOnly:expirationDate:concealed: not bound

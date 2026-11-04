@@ -104,5 +104,12 @@ Describe 'Queued PR checkout' {
 
         $yaml | Should -Match 'undo_github_merge\.ps1 -SourceVersion "\$\(Build\.SourceVersion\)"'
         $yaml | Should -Match '-SourceBranch "\$Env:SYSTEM_PULLREQUEST_SOURCEBRANCH"'
+        $yaml | Should -Match "fetchDepth: '0'"
+    }
+
+    It 'requires PowerShell with stable native command error handling' {
+        $script = Get-Content -Raw $scriptPath
+
+        $script | Should -Match '^#Requires -Version 7\.4'
     }
 }

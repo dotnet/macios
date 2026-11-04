@@ -20,3 +20,7 @@ so the checkout retains the PR's source branch name rather than a detached HEAD.
 It must not fetch the live PR head: a PR can advance while jobs are waiting to start,
 and every job must use the same source revision as the packages it consumes.
 Non-PR builds keep their current checkout.
+
+The checkout template fetches full history so the queued merge's parents are
+available. The script requires PowerShell 7.4 or newer for native Git command
+failures to terminate the step.

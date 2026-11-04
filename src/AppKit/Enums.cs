@@ -2811,9 +2811,12 @@ namespace AppKit {
 	[NativeName ("NSTableColumnResizingOptions")]
 	[Native]
 	public enum NSTableColumnResizing : long {
+#if !XAMCORE_5_0
 		/// <summary>Represents -1, which sets all table column resizing option bits.</summary>
 		[Obsolete ("Use 'NoResizing' instead to disallow resizing.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		None = -1,
+#endif
 		/// <summary>Disallows any kind of table column resizing.</summary>
 		NoResizing = 0,
 		/// <summary>Allows the table view to resize the column automatically.</summary>

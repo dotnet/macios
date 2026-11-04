@@ -1,0 +1,17 @@
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Alarm_Spatial = 46 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Alarm_Traditional = 45 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_FeedbackSound_Spatial = 52 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_FeedbackSound_Traditional = 51 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_OtherSystemSound_Spatial = 54 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_OtherSystemSound_Traditional = 53 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Podcast_Audiobook_Spatial = 44 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Podcast_Audiobook_Traditional = 43 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Ringtone_Spatial = 48 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_Ringtone_Traditional = 47 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_SpokenResponse_Spatial = 50 not bound
+!missing-enum-value! AVAudioContentSource native value AVAudioContentSource_SpokenResponse_Traditional = 49 not bound
+!missing-field! AVMetadataIdentifierISOUserDataAudioStreamLoudness not bound
+!missing-field! AVMetadataIdentifierISOUserDataContentTypeForLoudnessControl not bound
+!missing-field! AVMetadataIdentifierQuickTimeUserDataAudioStreamLoudness not bound
+!missing-field! AVMetadataIdentifierQuickTimeUserDataContentTypeForLoudnessControl not bound
+!missing-selector! +AVURLAsset::setUpConnectionForURL:options:completionHandler: not bound

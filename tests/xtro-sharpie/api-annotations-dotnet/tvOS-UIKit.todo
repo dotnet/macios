@@ -1,0 +1,5 @@
+!missing-enum! UIBarContainerBehavior not bound
+!missing-selector! +UIViewLayoutRegion::layoutRegionForBarOnDirectionalEdge: not bound
+!missing-selector! +UIViewLayoutRegion::layoutRegionForBarOnEdge: not bound
+!missing-selector! UINavigationController::barContainerBehavior not bound
+!missing-selector! UINavigationController::setBarContainerBehavior: not bound

@@ -1,0 +1,4 @@
+!deprecated-attribute-missing! THClient::retrieveActiveCredentialsForNearbyNetworksWithCompletion: missing a [Deprecated] attribute
+!missing-selector! THClient::retrieveNearbyNetworkCredentialsWithCompletion: not bound
+!missing-selector! THNearbyNetworkCredentials::isPreferredNetworkCredentials not bound
+!missing-type! THNearbyNetworkCredentials not bound

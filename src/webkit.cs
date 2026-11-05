@@ -6471,6 +6471,13 @@ namespace WebKit {
 		[NullAllowed, Export ("serverTrust")]
 		SecTrust ServerTrust { get; }
 
+		/// <summary>Gets the trust containing a qualified website authentication certificate (2-QWAC) for the committed navigation.</summary>
+		/// <value>The qualified server trust, or <see langword="null" /> when unavailable.</value>
+		/// <remarks>The certificate requires a separate fetch, so this value becomes available after <see cref="ServerTrust" /> and only when a valid 2-QWAC is found.</remarks>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		[NullAllowed, Export ("qualifiedServerTrust")]
+		SecTrust QualifiedServerTrust { get; }
+
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="snapshotConfiguration">The snapshot configuration to use.This parameter can be .</param>

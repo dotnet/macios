@@ -48,6 +48,18 @@ namespace HealthKit {
 		Other,
 	}
 
+	/// <summary>Specifies which sex-specific reference ranges to use for clinical measurements.</summary>
+	[NoTV, iOS (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+	[Native]
+	public enum HKReferenceSex : long {
+		/// <summary>No reference sex has been provided.</summary>
+		NotSet = 0,
+		/// <summary>Use reference ranges for female subjects.</summary>
+		Female = 1,
+		/// <summary>Use reference ranges for male subjects.</summary>
+		Male = 2,
+	}
+
 	// NSInteger -> HKDefines.h
 	/// <summary>Enumerates known blood types.</summary>
 	[Mac (13, 0)]

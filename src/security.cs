@@ -11,6 +11,27 @@ using CoreFoundation;
 
 namespace Security {
 
+	/// <summary>Errors reported when validating a qualified web authentication certificate (2-QWAC) TLS binding.</summary>
+	[iOS (27, 3), TV (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+	[Native ("SecQWACTLSBindingError")]
+	[ErrorDomain ("kSecQWACTLSBindingErrorDomain")]
+	enum SecQwacTlsBindingError : long {
+		/// <summary>Qualified web authentication certificate validation is not enabled on this device.</summary>
+		Unavailable = 1,
+		/// <summary>The binding could not be parsed.</summary>
+		Malformed = 2,
+		/// <summary>The binding does not conform to the required signature profile.</summary>
+		Profile = 3,
+		/// <summary>The binding's signature could not be verified.</summary>
+		Signature = 4,
+		/// <summary>The qualified web authentication certificate chain could not be validated.</summary>
+		Certificate = 5,
+		/// <summary>The binding does not identify the TLS certificate of the supplied connection.</summary>
+		NotBound = 6,
+		/// <summary>The binding is outside its validity window or exceeds its permitted age.</summary>
+		Expired = 7,
+	}
+
 	/// <summary>Contains values that represent security policies.</summary>
 	/// <remarks>To be added.</remarks>
 	[Static]

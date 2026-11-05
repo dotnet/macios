@@ -7913,7 +7913,42 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 		[Field ("AVURLAssetShouldParseExternalSphericalTagsKey")]
 		NSString ShouldParseExternalSphericalTagsKey { get; }
+
+		/// <summary>Prewarms a network connection without creating an asset.</summary>
+		/// <param name="url">The asset URL whose scheme, hostname, and port identify the connection.</param>
+		/// <param name="options">The options to use when creating the eventual asset, or <see langword="null" />.</param>
+		/// <param name="completionHandler">An optional handler invoked asynchronously when the attempt completes.</param>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		[Static]
+		[Async (XmlDocs = """
+			<summary>Asynchronously prewarms a network connection without creating an asset.</summary>
+			<param name="url">The asset URL whose scheme, hostname, and port identify the connection.</param>
+			<param name="options">The options to use when creating the eventual asset, or <see langword="null" />.</param>
+			<returns>A task that completes when the connection prewarming attempt finishes.</returns>
+			""")]
+		[Export ("setUpConnectionForURL:options:completionHandler:")]
+		void SetUpConnection (NSUrl url, [NullAllowed] NSDictionary options, [NullAllowed] AVUrlAssetConnectionCompletionHandler completionHandler);
+
+		/// <summary>Prewarms a network connection using strongly typed asset options.</summary>
+		/// <param name="url">The asset URL whose scheme, hostname, and port identify the connection.</param>
+		/// <param name="options">The options to use when creating the eventual asset, or <see langword="null" />.</param>
+		/// <param name="completionHandler">An optional handler invoked asynchronously when the attempt completes.</param>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		[Static]
+		[Async (XmlDocs = """
+			<summary>Asynchronously prewarms a network connection using strongly typed asset options.</summary>
+			<param name="url">The asset URL whose scheme, hostname, and port identify the connection.</param>
+			<param name="options">The options to use when creating the eventual asset, or <see langword="null" />.</param>
+			<returns>A task that completes when the connection prewarming attempt finishes.</returns>
+			""")]
+		[Wrap ("SetUpConnection (url, options.GetDictionary (), completionHandler)")]
+		void SetUpConnection (NSUrl url, [NullAllowed] AVUrlAssetOptions options, [NullAllowed] AVUrlAssetConnectionCompletionHandler completionHandler);
 	}
+
+	/// <summary>Handles completion of an asset connection prewarming attempt.</summary>
+	/// <param name="error">The prewarming error, or <see langword="null" /> if the attempt succeeded.</param>
+	[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+	delegate void AVUrlAssetConnectionCompletionHandler ([NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -10959,6 +10994,14 @@ namespace AVFoundation {
 			[MacCatalyst (14, 0)]
 			[Field ("AVMetadataIdentifierQuickTimeUserDataAccessibilityDescription")]
 			NSString UserDataAccessibilityDescription { get; }
+
+			[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+			[Field ("AVMetadataIdentifierQuickTimeUserDataAudioStreamLoudness")]
+			NSString UserDataAudioStreamLoudness { get; }
+
+			[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+			[Field ("AVMetadataIdentifierQuickTimeUserDataContentTypeForLoudnessControl")]
+			NSString UserDataContentTypeForLoudnessControl { get; }
 		}
 
 		/// <summary>Constants identify ISO copyright and tagged characteristic metadata.</summary>
@@ -10987,6 +11030,14 @@ namespace AVFoundation {
 			///         <remarks>To be added.</remarks>
 			[Field ("AVMetadataIdentifierISOUserDataTaggedCharacteristic")]
 			NSString UserDataTaggedCharacteristic { get; }
+
+			[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+			[Field ("AVMetadataIdentifierISOUserDataAudioStreamLoudness")]
+			NSString UserDataAudioStreamLoudness { get; }
+
+			[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+			[Field ("AVMetadataIdentifierISOUserDataContentTypeForLoudnessControl")]
+			NSString UserDataContentTypeForLoudnessControl { get; }
 		}
 
 		/// <summary>Constants identifying 3GP metadata properties.</summary>

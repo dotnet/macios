@@ -1851,6 +1851,11 @@ namespace VideoToolbox {
 		[Field ("kVTDecompressionPropertyKey_AllowBitstreamToChangeFrameDimensions")]
 		NSString AllowBitstreamToChangeFrameDimensions { get; }
 
+		/// <summary>Gets the option key for requesting stricter bitstream conformance validation.</summary>
+		[iOS (27, 3), TV (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		[Field ("kVTDecompressionPropertyKey_EnableStrictBitstreamValidation")]
+		NSString EnableStrictBitstreamValidation { get; }
+
 		[NoiOS, NoTV, NoMacCatalyst, Mac (15, 0)]
 		[Field ("kVTDecompressionPropertyKey_DecoderProducesRAWOutput")]
 		NSString DecoderProducesRawOutput { get; }
@@ -2022,6 +2027,11 @@ namespace VideoToolbox {
 		[Export ("AllowBitstreamToChangeFrameDimensions")]
 		[iOS (18, 0), TV (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 		bool AllowBitstreamToChangeFrameDimensions { get; }
+
+		/// <summary>Gets or sets whether to request stricter bitstream conformance validation.</summary>
+		[Export ("EnableStrictBitstreamValidation")]
+		[iOS (27, 3), TV (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		bool EnableStrictBitstreamValidation { get; set; }
 
 		[Export ("DecoderProducesRawOutput")]
 		[NoiOS, NoTV, NoMacCatalyst, Mac (15, 0)]

@@ -2390,6 +2390,42 @@ namespace AVFoundation {
 		AVTraditionalLive = 40,
 		AVSpatialLive = 41,
 		Passthrough = 42,
+		/// <summary>Podcast or audiobook audio in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		PodcastAudiobookTraditional = 43,
+		/// <summary>Spatial podcast or audiobook audio.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		PodcastAudiobookSpatial = 44,
+		/// <summary>An alarm sound in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		AlarmTraditional = 45,
+		/// <summary>A spatial alarm sound.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		AlarmSpatial = 46,
+		/// <summary>A ringtone in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		RingtoneTraditional = 47,
+		/// <summary>A spatial ringtone.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		RingtoneSpatial = 48,
+		/// <summary>A spoken system response in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		SpokenResponseTraditional = 49,
+		/// <summary>A spatial spoken system response.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		SpokenResponseSpatial = 50,
+		/// <summary>A user-interface feedback sound in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		FeedbackSoundTraditional = 51,
+		/// <summary>A spatial user-interface feedback sound.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		FeedbackSoundSpatial = 52,
+		/// <summary>Another system sound in a traditional channel-based format.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		OtherSystemSoundTraditional = 53,
+		/// <summary>Another spatial system sound.</summary>
+		[MacCatalyst (27, 3), TV (27, 3), Mac (27, 3), iOS (27, 3)]
+		OtherSystemSoundSpatial = 54,
 	}
 
 	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]

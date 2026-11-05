@@ -998,6 +998,87 @@ IFS='
 IFS=$IFS_tmp
 }
 
+function load_old_simulator_index ()
+{
+	if test -f "$SD_TMP_DIR/simulator-index.json"; then
+		return 0
+	fi
+
+	local index_url=https://devimages-cdn.apple.com/downloads/xcode/simulators/index2.dvtdownloadableindex
+	log "Downloading the simulator runtime index from $index_url..."
+	if ! curl --fail --location --silent --show-error --max-time 120 "$index_url" --output "$SD_TMP_DIR/simulator-index.plist"; then
+		warn "Failed to download the simulator runtime index."
+		return 1
+	fi
+	plutil -convert json -o "$SD_TMP_DIR/simulator-index.json" "$SD_TMP_DIR/simulator-index.plist"
+}
+
+function get_old_simulator_builds ()
+{
+	local platform
+	case "$1" in
+		iOS)             platform=com.apple.platform.iphoneos ;;
+		tvOS)            platform=com.apple.platform.appletvos ;;
+		watchOS)         platform=com.apple.platform.watchos ;;
+		xrOS | visionOS) platform=com.apple.platform.xros ;;
+		*) return 1 ;;
+	esac
+
+	jq -c --arg platform "$platform" --arg version "$2" --argjson release "$3" \
+		'[.downloadables[] | select(.platform == $platform and .simulatorVersion.version == $version and ((.version | endswith(".0")) == $release)) | .simulatorVersion.buildUpdate] | unique' "$SD_TMP_DIR/simulator-index.json"
+}
+
+function is_old_simulator_runtime_installed ()
+{
+	xcrun simctl list runtimes --json | jq -e --arg os "$1" --arg version "$2" --argjson builds "$3" \
+		'[.runtimes[] | select(.platform == $os and .version == $version and .isAvailable == true and .isInternal == false) | select(.buildversion as $build | $builds | index($build) != null)] | length > 0' > /dev/null
+}
+
+function remove_old_simulator_prereleases ()
+{
+	local prereleases
+	local identifiers
+	local identifier
+	local attempt
+	# shellcheck disable=SC2016 # These are jq variables bound with --arg.
+	local query='[.runtimes[] | select(.platform == $os and .version == $version and .isInternal == false) | select(.buildversion as $build | $builds | index($build) != null) | { identifier, buildversion }]'
+
+	prereleases=$(xcrun simctl list runtimes --json | jq -c --arg os "$1" --arg version "$2" --argjson builds "$3" \
+		"$query") || return 1
+	if test "$prereleases" == "[]"; then
+		return 0
+	fi
+
+	identifiers=$(xcrun simctl runtime list --json | jq -r --argjson prereleases "$prereleases" \
+		'.[] as $image | select(any($prereleases[]; .identifier == $image.runtimeIdentifier and .buildversion == $image.build)) | $image.identifier') || return 1
+	if test -z "$identifiers"; then
+		warn "Could not resolve the prerelease $1 $2 simulator images for replacement."
+		return 1
+	fi
+
+	while IFS= read -r identifier; do
+		if ! [[ "$identifier" =~ ^[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}$ ]]; then
+			warn "Invalid prerelease simulator image identifier: $identifier"
+			return 1
+		fi
+		log "Removing the superseded prerelease $1 $2 simulator image $identifier..."
+		if ! xcrun simctl runtime delete "$identifier"; then
+			warn "Failed to remove prerelease simulator image $identifier."
+			return 1
+		fi
+	done <<< "$identifiers"
+
+	for attempt in $(seq 1 60); do
+		prereleases=$(xcrun simctl list runtimes --json | jq -c --arg os "$1" --arg version "$2" --argjson builds "$3" "$query") || return 1
+		if test "$prereleases" == "[]"; then
+			return 0
+		fi
+		sleep 1
+	done
+	warn "Prerelease $1 $2 simulators are still registered after waiting 60 seconds."
+	return 1
+}
+
 # Download and install a simulator runtime from Apple's downloadable simulator index.
 #
 # This is the same index Xcode's UI uses to download simulators, and we need it because
@@ -1014,7 +1095,6 @@ function install_old_simulator_from_index ()
 
 	local platform
 	local dldir
-	local index_url
 	local query
 	local source
 	local expectedSize
@@ -1038,22 +1118,19 @@ function install_old_simulator_from_index ()
 	mkdir -p "$dldir"
 
 	# This is the index Xcode uses to find downloadable simulator runtimes.
-	index_url=https://devimages-cdn.apple.com/downloads/xcode/simulators/index2.dvtdownloadableindex
-	log "Downloading the simulator runtime index from $index_url..."
-	if ! curl --fail --location --silent --show-error --max-time 120 "$index_url" --output "$dldir/index.plist"; then
-		warn "Failed to download the simulator runtime index."
+	if ! load_old_simulator_index; then
 		return 1
 	fi
-	plutil -convert json -o "$dldir/index.json" "$dldir/index.plist"
 
 	# Find the download url (and expected file size) for the requested simulator in the index.
-	query=".downloadables[] | select(.platform == \"$platform\" and .simulatorVersion.version == \"$version\")"
-	source=$(jq -r "first($query) | .source // empty" "$dldir/index.json")
+	# Release downloads end in .0; beta downloads use a nonzero seed number.
+	query=".downloadables[] | select(.platform == \"$platform\" and .simulatorVersion.version == \"$version\" and (.version | endswith(\".0\")))"
+	source=$(jq -r "first($query) | .source // empty" "$SD_TMP_DIR/simulator-index.json")
 	if test -z "$source"; then
 		warn "Could not find the $os $version simulator in the downloadable simulator index."
 		return 1
 	fi
-	expectedSize=$(jq -r "first($query) | .fileSize // empty" "$dldir/index.json")
+	expectedSize=$(jq -r "first($query) | .fileSize // empty" "$SD_TMP_DIR/simulator-index.json")
 
 	# The runtime dmgs require a download authorization cookie. No account is needed, but Apple's
 	# cdn rejects requests without the cookie, and requesting the download path from developerservices2
@@ -1112,9 +1189,6 @@ function check_old_simulators ()
 
 	SD_TMP_DIR=$(mktemp -d /tmp/system-dependencies.XXXXXX)
 	trap 'rm -rf -- "$SD_TMP_DIR"' EXIT
-	TMP_FILE=$SD_TMP_DIR/simulator-runtimes.json
-	xcrun simctl list runtimes --json --json-output "$TMP_FILE"
-
 	local action=warn
 	if test -z $OPTIONAL_OLD_SIMULATORS; then
 		action=fail
@@ -1123,37 +1197,63 @@ function check_old_simulators ()
 	local os
 	local versionName
 	local version
+	local releasedBuilds
+	local prereleaseBuilds
+
+	if ! load_old_simulator_index; then
+		$action "Could not verify released simulator builds using Apple's downloadable index."
+		return
+	fi
 
 	for spec in "${EXTRA_SIMULATORS[@]}"; do
 		os=${spec/:*/}
 		versionName=${spec/*:/}
 		version=$(grep "^${versionName}=" Make.config | sed 's/.*=//')
 
-		OS_TMP_FILE=$SD_TMP_DIR/$os-$version.json
-		jq ".runtimes[] | select(.platform == \"$os\" and .version == \"$version\" and .isAvailable == true and .isInternal == false) | [ { \"version\":.version, \"name\":.name, \"identifier\":.identifier } ]" < "$TMP_FILE" > "$OS_TMP_FILE"
-		#echo $OS_TMP_FILE
-		LENGTH=$(jq length < "$OS_TMP_FILE")
-		if [[ "$LENGTH" != "" && "$LENGTH" -gt 0 ]]; then
-			ok "Found the $os $version simulator."
-		elif test -z "$PROVISION_OLD_SIMULATORS"; then
-			$action "The $os $version simulator is not installed. Execute ${COLOR_MAGENTA}xcodebuild -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install."
-		else
+		releasedBuilds=$(get_old_simulator_builds "$os" "$version" true)
+		prereleaseBuilds=$(get_old_simulator_builds "$os" "$version" false)
+		if test "$releasedBuilds" == "[]"; then
+			$action "No released $os $version simulator was found in Apple's downloadable index."
+			continue
+		fi
+
+		if ! is_old_simulator_runtime_installed "$os" "$version" "$releasedBuilds"; then
+			if test -z "$PROVISION_OLD_SIMULATORS"; then
+				$action "The released $os $version simulator is not installed. Execute ${COLOR_MAGENTA}./system-dependencies.sh --provision-old-simulators${COLOR_RESET} to install."
+				continue
+			fi
 			warn "The $os $version simulator is not installed. Now executing ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET} to install..."
 			if "$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$os" -buildVersion "$version" 2>&1 | sed 's/^/        /'; then
 				warn "Successfully executed ${COLOR_BLUE}"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform $os -buildVersion $version${COLOR_RESET}."
-			else
+			fi
+			if ! is_old_simulator_runtime_installed "$os" "$version" "$releasedBuilds"; then
 				# Starting with Xcode 27 'xcodebuild -downloadPlatform' can't download the old simulators
 				# anymore (Apple removed them from the platform catalog xcodebuild uses), so fall back to
 				# downloading the runtime directly from Apple's downloadable simulator index (the same index
 				# Xcode's UI uses, which still has the old simulators).
-				warn "Failed to install the $os $version simulator using xcodebuild; falling back to Apple's downloadable simulator index..."
-				if install_old_simulator_from_index "$os" "$version"; then
-					ok "Successfully installed the $os $version simulator from the downloadable simulator index."
-				else
+				warn "The released $os $version simulator is still missing; falling back to Apple's downloadable simulator index..."
+				if ! install_old_simulator_from_index "$os" "$version"; then
 					$action "The $os $version simulator is not installed, and it couldn't be downloaded."
+					continue
 				fi
 			fi
 		fi
+
+		if ! is_old_simulator_runtime_installed "$os" "$version" "$releasedBuilds"; then
+			$action "Provisioning did not install an available released $os $version simulator."
+			continue
+		fi
+		if test -n "$PROVISION_OLD_SIMULATORS"; then
+			if ! remove_old_simulator_prereleases "$os" "$version" "$prereleaseBuilds"; then
+				$action "Could not replace the prerelease $os $version simulators."
+				continue
+			fi
+			if ! is_old_simulator_runtime_installed "$os" "$version" "$releasedBuilds"; then
+				$action "The released $os $version simulator is not available after replacement."
+				continue
+			fi
+		fi
+		ok "Found the released $os $version simulator."
 	done
 }
 

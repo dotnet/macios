@@ -6,7 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
+#if MSTEST
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+using NUnit.Framework;
+#endif
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -25,7 +29,11 @@ namespace Cecil.Tests {
 		// make sure we load assemblies only once into memory
 		public static AssemblyDefinition GetAssembly (string assembly, ReaderParameters? parameters = null, bool readSymbols = false)
 		{
+#if MSTEST
 			Assert.IsTrue (File.Exists (assembly), $"Assembly existence: {assembly}");
+#else
+			Assert.That (assembly, Does.Exist, "Assembly existence");
+#endif
 			if (!cache.TryGetValue (assembly, out var ad)) {
 				if (parameters is null) {
 					var resolver = new DefaultAssemblyResolver ();
@@ -109,7 +117,11 @@ namespace Cecil.Tests {
 			if (!Configuration.AnyIgnoredPlatforms () && fixedFailures.Any ())
 				failures.Add ($"Known failures that aren't failing anymore - remove these from the list of known failures: {message}\n{string.Join ("\n", fixedFailures)}");
 
+#if MSTEST
 			Assert.IsEmpty (failures, string.Join ("\n", failures));
+#else
+			Assert.That (failures, Is.Empty, string.Join ("\n", failures));
+#endif
 
 		}
 

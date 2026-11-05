@@ -414,7 +414,7 @@ public class B : A {}
 					mtouch.AssemblyBuildTargets.AddRange (assembly_build_targets);
 					mtouch.DSym = false; // faster test
 					mtouch.MSym = false; // faster test
-										   //mtouch.Verbosity = 20; // Set the mtouch verbosity to something to print the mtouch output to the terminal. This will also enable additional debug output.
+										 //mtouch.Verbosity = 20; // Set the mtouch verbosity to something to print the mtouch output to the terminal. This will also enable additional debug output.
 
 					System.Action assertSupportsDynamicRegistrar = () => {
 						// Assert that the xamarin_supports_dynamic_registration is identical between the app and the extension.

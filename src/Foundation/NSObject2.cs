@@ -351,19 +351,11 @@ namespace Foundation {
 		{
 		}
 
-		/// <summary>Creates a managed peer for a native object with the specified allocation state.</summary>
-		/// <param name="handle">The native object's handle.</param>
-		/// <param name="alloced">Whether <paramref name="handle" /> is an owned reference to a newly allocated native object.</param>
-		/// <remarks>
-		///   <para>When <paramref name="alloced" /> is <see langword="false" />, the native object is treated as initialized and any unmanaged memory pressure associated with the peer is registered.</para>
-		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected NSObject (NativeHandle handle, bool alloced)
 		{
 			this.handle = handle;
 			InitializeObject (alloced);
-			if (!alloced && handle != NativeHandle.Zero)
-				InitializeNativeMemoryPressure ();
 		}
 
 		~NSObject ()
@@ -591,15 +583,6 @@ namespace Foundation {
 			CreateManagedRef (isUserType, !alloced || native_ref);
 		}
 
-		// Called for both native-created peers and successful managed initializers.
-		internal virtual void InitializeNativeMemoryPressure ()
-		{
-		}
-
-		internal virtual void ReleaseNativeMemoryPressure ()
-		{
-		}
-
 		[DllImport ("__Internal")]
 		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
@@ -677,7 +660,6 @@ namespace Foundation {
 				Runtime.NativeObjectHasDied (handle, this);
 			}
 			xamarin_release_managed_ref (handle, user_type.AsByte ());
-			ReleaseNativeMemoryPressure ();
 		}
 
 		static bool IsProtocol (Type type, IntPtr protocol)
@@ -959,7 +941,6 @@ namespace Foundation {
 		/// <param name="throwOnInitFailure">If <see langword="true" />, an exception is thrown when the native initializer failed (returned nil); if <see langword="false" />, the <see cref="Handle" /> property is set to the (possibly null) handle without throwing.</param>
 		/// <remarks>
 		///   <para>Pass <see langword="false" /> for <paramref name="throwOnInitFailure" /> to implement a factory method for a failable initializer: this makes it possible to detect a nil result (by checking the <see cref="Handle" /> property) and return <see langword="null" /> instead of throwing. This is what the generator does for constructors annotated with <c>[FactoryMethod]</c>.</para>
-		///   <para>A successful initialization also registers any unmanaged memory pressure associated with the managed peer. Repeated initialization of the same peer does not register additional pressure.</para>
 		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected internal void InitializeHandle (NativeHandle handle, string initSelector, bool throwOnInitFailure)
@@ -993,8 +974,6 @@ namespace Foundation {
 					EnsureManagedReference (handle);
 				}
 			}
-			if (handle != NativeHandle.Zero)
-				InitializeNativeMemoryPressure ();
 		}
 
 		private bool AllocIfNeeded ()

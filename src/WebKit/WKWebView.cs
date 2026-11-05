@@ -7,23 +7,18 @@ namespace WebKit {
 	public partial class WKWebView {
 #if !COREBUILD
 		const int nativeMemoryPressure = 32 * 1024 * 1024;
-		bool memoryPressureInitialized;
-		int memoryPressure;
+		int memoryPressure = AddMemoryPressure ();
 
-		internal override void InitializeNativeMemoryPressure ()
+		static int AddMemoryPressure ()
 		{
-			if (memoryPressureInitialized)
-				return;
-
-			memoryPressureInitialized = true;
 			if (AppContext.TryGetSwitch ("WebKit.WKWebView.EnableMemoryPressure", out var enabled) && !enabled)
-				return;
+				return 0;
 
 			GC.AddMemoryPressure (nativeMemoryPressure);
-			memoryPressure = nativeMemoryPressure;
+			return nativeMemoryPressure;
 		}
 
-		internal override void ReleaseNativeMemoryPressure ()
+		void RemoveMemoryPressure ()
 		{
 			var pressure = Interlocked.Exchange (ref memoryPressure, 0);
 			if (pressure != 0)

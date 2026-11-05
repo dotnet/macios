@@ -6215,10 +6215,11 @@ namespace WebKit {
 	/// <summary>Displays a Web page.</summary>
 	/// <remarks>
 	///   <para>
-	///     Each initialized managed peer reports an estimated 32 MiB of unmanaged memory pressure to the garbage collector
+	///     Each managed peer reports an estimated 32 MiB of unmanaged memory pressure to the garbage collector during construction
 	///     to account for WebKit resources that are not represented by the managed object's size. This estimate is not a
 	///     measurement of the view's memory usage; WebKit can share resources and use separate helper processes.
-	///     The pressure is removed when the peer releases its native reference, either through disposal or finalization.
+	///     The pressure is removed when disposal starts, either through explicit disposal or finalization, even if releasing
+	///     the native reference is deferred to the main run loop.
 	///   </para>
 	///   <para>
 	///     Reporting memory pressure can cause more frequent application-wide garbage collections. It does not make
@@ -6228,7 +6229,7 @@ namespace WebKit {
 	///   <para>
 	///     To restore the behavior without memory pressure reporting, call
 	///     <c>AppContext.SetSwitch ("WebKit.WKWebView.EnableMemoryPressure", false)</c> before creating any web views.
-	///     The switch is enabled by default and affects subsequently initialized managed peers, including peers for
+	///     The switch is enabled by default and affects subsequently constructed managed peers, including peers for
 	///     views created by native code or loaded from storyboards. Changing the switch does not remove pressure
 	///     already registered by existing peers.
 	///   </para>
@@ -6243,6 +6244,7 @@ namespace WebKit {
 #endif
 	)]
 	[DisableDefaultCtor ()] // Crashes during deallocation in Xcode 6 beta 2. radar 17377712.
+	[Dispose ("RemoveMemoryPressure ();", Optimizable = true)]
 	interface WKWebView
 #if MONOMAC
 		: NSUserInterfaceValidations
@@ -6256,7 +6258,7 @@ namespace WebKit {
 		/// <param name="frame">The initial frame of the web view.</param>
 		/// <param name="configuration">The configuration to use for the web view.</param>
 		/// <remarks>
-		///   <para>Successful initialization reports unmanaged memory pressure as described in <see cref="WKWebView" /> unless the <c>WebKit.WKWebView.EnableMemoryPressure</c> AppContext switch is disabled.</para>
+		///   <para>Construction reports unmanaged memory pressure as described in <see cref="WKWebView" /> unless the <c>WebKit.WKWebView.EnableMemoryPressure</c> AppContext switch is disabled.</para>
 		/// </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithFrame:configuration:")]

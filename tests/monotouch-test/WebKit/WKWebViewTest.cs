@@ -96,7 +96,7 @@ namespace MonoTouchFixtures.WebKit {
 			using var view = new TestWebView (configuration);
 			Assert.That (GetMemoryPressure (view), Is.EqualTo (expectedPressure), "Before finalizer path");
 			view.QueueRelease ();
-			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => GetMemoryPressure (view) == 0), Is.True, "Pressure removed by main-thread native release");
+			Assert.That (GetMemoryPressure (view), Is.Zero, "Pressure removed before deferred native release");
 			view.Dispose ();
 			Assert.That (GetMemoryPressure (view), Is.Zero, "No duplicate removal");
 		}

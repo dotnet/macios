@@ -290,9 +290,6 @@
 		<PublishAotUsingRuntimePack>true</PublishAotUsingRuntimePack>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">
-		<!-- Disable our own assembly IL stripping logic, because ILC does that already -->
-		<EnableAssemblyILStripping>false</EnableAssemblyILStripping>
-
 		<!--
 			We're using our own native main function when using NativeAOT.
 			This is true for both: managed executables and app extensions (which are libraries).

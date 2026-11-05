@@ -13,7 +13,6 @@
 !unknown-pinvoke! dlerror bound
 !unknown-pinvoke! dlopen bound
 !unknown-pinvoke! dlsym bound
-!unknown-pinvoke! NXGetLocalArchInfo bound
 !unknown-pinvoke! objc_allocateClassPair bound
 !unknown-pinvoke! objc_allocateProtocol bound
 !unknown-pinvoke! objc_getClass bound
@@ -40,8 +39,3 @@
 !unknown-pinvoke! os_log_create bound
 !unknown-pinvoke! os_release bound
 !unknown-pinvoke! os_retain bound
-
-# Private runtime implementation detail, not a public API: the ARM64 calling-convention
-# probe still uses NXGetLocalArchInfo, including for older supported OS versions.
-# Do not propagate its native deprecation to Runtime or IsARM64CallingConvention.
-!deprecated-attribute-missing! NXGetLocalArchInfo missing a [Deprecated] attribute

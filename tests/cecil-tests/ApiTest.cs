@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -16,20 +16,22 @@ using Xamarin.Utils;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public partial class ApiTest {
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void ARConfiguration_GetSupportedVideoFormats (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			// all subclasses of ARConfiguration must (re)export 'GetSupportedVideoFormats'
 			var assembly = info.Assembly;
 			List<string>? failures = null;
 
 			if (!assembly.EnumerateTypes ((type) => type.Is ("ARKit", "ARConfiguration")).Any ())
-				Assert.Ignore (); // This assembly doesn't contain ARKit.ARConfiguration
+				Assert.Inconclusive ("This assembly does not contain ARKit.ARConfiguration."); // This assembly doesn't contain ARKit.ARConfiguration
 
 			var subclasses = assembly.EnumerateTypes ((type) => !type.Is ("ARKit", "ARConfiguration") && type.IsSubclassOf ("ARKit", "ARConfiguration"));
-			Assert.That (subclasses, Is.Not.Empty, "At least some subclasses");
+			Assert.IsNotEmpty (subclasses, "At least some subclasses");
 
 			foreach (var type in subclasses) {
 				var method = type.Methods.SingleOrDefault (m => m.Name == "GetSupportedVideoFormats" && m.IsPublic && m.IsStatic && !m.HasParameters);
@@ -37,29 +39,33 @@ namespace Cecil.Tests {
 					AddFailure (ref failures, $"The type {type.FullName} does not implement the method GetSupportedVideoFormats.");
 			}
 
-			Assert.That (failures, Is.Null.Or.Empty, "All subclasses from ARConfiguration must explicitly implement GetSupportedVideoFormats.");
+			Assert.IsEmpty (failures ?? [], $"All subclasses from ARConfiguration must explicitly implement GetSupportedVideoFormats.\n{string.Join ("\n", failures ?? [])}");
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void CNAssetPreprocessConfiguration_Constructors (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void CNAssetPreprocessConfiguration_Constructors (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var type = info.Assembly.MainModule.GetType ("Cinematic.CNAssetPreprocessConfiguration");
 			if (info.Platform == ApplePlatform.TVOS) {
-				Assert.That (type, Is.Null, "CNAssetPreprocessConfiguration is unavailable on tvOS.");
+				Assert.IsNull (type, "CNAssetPreprocessConfiguration is unavailable on tvOS.");
 				return;
 			}
 
-			Assert.That (type, Is.Not.Null, "CNAssetPreprocessConfiguration must be available.");
+			Assert.IsNotNull (type, "CNAssetPreprocessConfiguration must be available.");
 			var constructors = type.Methods.Where (m => m.IsConstructor && m.IsPublic).ToArray ();
-			Assert.That (constructors, Has.Length.EqualTo (1), "Only the destination URL constructor should be public.");
-			Assert.That (constructors [0].Parameters, Has.Count.EqualTo (1), "Constructor parameter count");
-			Assert.That (constructors [0].Parameters [0].ParameterType.FullName, Is.EqualTo ("Foundation.NSUrl"), "Destination URL parameter");
+			Assert.AreEqual (1, constructors.Length, "Only the destination URL constructor should be public.");
+			Assert.AreEqual (1, constructors [0].Parameters.Count, "Constructor parameter count");
+			Assert.AreEqual ("Foundation.NSUrl", constructors [0].Parameters [0].ParameterType.FullName, "Destination URL parameter");
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		public void CSSearchableIndexDelegate_GetSearchableItems (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
+		public void CSSearchableIndexDelegate_GetSearchableItems (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			string [] typeNames = [
 				"CoreSpotlight.ICSSearchableIndexDelegate",
 				"CoreSpotlight.CSSearchableIndexDelegate",
@@ -73,40 +79,40 @@ namespace Cecil.Tests {
 			foreach (var typeName in typeNames) {
 				var type = info.Assembly.MainModule.GetType (typeName);
 				if (info.Platform == ApplePlatform.TVOS) {
-					Assert.That (type, Is.Null, $"{typeName} is unavailable on tvOS.");
+					Assert.IsNull (type, $"{typeName} is unavailable on tvOS.");
 					continue;
 				}
 
-				Assert.That (type, Is.Not.Null, typeName);
+				Assert.IsNotNull (type, typeName);
 				var offset = typeName.EndsWith ("_Extensions", StringComparison.Ordinal) ? 1 : 0;
 				var method = type.Methods.Single (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 3 + offset);
-				Assert.That (method.IsPublic, Is.True, $"{typeName} visibility");
-				Assert.That (method.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} return type");
-				Assert.That (method.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (parameterTypes), $"{typeName} parameter types");
+				Assert.IsTrue (method.IsPublic, $"{typeName} visibility");
+				Assert.AreEqual ("System.Void", method.ReturnType.FullName, $"{typeName} return type");
+				CollectionAssert.AreEqual (parameterTypes, method.Parameters.Skip (offset).Select (p => p.ParameterType.FullName).ToArray (), $"{typeName} parameter types");
 				var olderOverload = type.Methods.Single (m => m.Name == "GetSearchableItems" && m.Parameters.Count == 2 + offset);
-				Assert.That (olderOverload.IsPublic, Is.True, $"{typeName} older overload visibility");
-				Assert.That (olderOverload.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{typeName} older overload return type");
-				Assert.That (olderOverload.Parameters.Skip (offset).Select (p => p.ParameterType.FullName), Is.EqualTo (new [] { parameterTypes [0], parameterTypes [2] }), $"{typeName} older overload parameter types");
-				Assert.That (olderOverload.Parameters [1 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} older overload block proxy");
+				Assert.IsTrue (olderOverload.IsPublic, $"{typeName} older overload visibility");
+				Assert.AreEqual ("System.Void", olderOverload.ReturnType.FullName, $"{typeName} older overload return type");
+				CollectionAssert.AreEqual (new [] { parameterTypes [0], parameterTypes [2] }, olderOverload.Parameters.Skip (offset).Select (p => p.ParameterType.FullName).ToArray (), $"{typeName} older overload parameter types");
+				Assert.IsTrue (olderOverload.Parameters [1 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), $"{typeName} older overload block proxy");
 
 				var bindAs = method.Parameters [1 + offset].CustomAttributes.Single (a => a.AttributeType.Is ("ObjCRuntime", "BindAsAttribute"));
-				Assert.That (((TypeReference) bindAs.ConstructorArguments [0].Value).FullName, Is.EqualTo ("Foundation.NSFileProtectionType"), $"{typeName} BindAs type");
-				Assert.That (((TypeReference) bindAs.Fields.Single (f => f.Name == "OriginalType").Argument.Value).FullName, Is.EqualTo ("Foundation.NSString"), $"{typeName} native type");
-				Assert.That (method.Parameters [2 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), Is.True, $"{typeName} block proxy");
+				Assert.AreEqual ("Foundation.NSFileProtectionType", ((TypeReference) bindAs.ConstructorArguments [0].Value).FullName, $"{typeName} BindAs type");
+				Assert.AreEqual ("Foundation.NSString", ((TypeReference) bindAs.Fields.Single (f => f.Name == "OriginalType").Argument.Value).FullName, $"{typeName} native type");
+				Assert.IsTrue (method.Parameters [2 + offset].CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "BlockProxyAttribute")), $"{typeName} block proxy");
 			}
 
 			if (info.Platform != ApplePlatform.TVOS) {
 				var protocol = info.Assembly.MainModule.GetType ("CoreSpotlight.ICSSearchableIndexDelegate");
 				var member = protocol.CustomAttributes.Single (a => a.AttributeType.Is ("Foundation", "ProtocolMemberAttribute") &&
 					a.Properties.Any (p => p.Name == "Selector" && (string) p.Argument.Value == "searchableItemsForIdentifiers:protectionClass:searchableItemsHandler:"));
-				Assert.That (member.Properties.Single (p => p.Name == "IsRequired").Argument.Value, Is.False, "Optional protocol method");
+				Assert.AreEqual (false, member.Properties.Single (p => p.Name == "IsRequired").Argument.Value, "Optional protocol method");
 				var nativeTypes = (CustomAttributeArgument []) member.Properties.Single (p => p.Name == "ParameterType").Argument.Value;
-				Assert.That (nativeTypes.Select (p => ((TypeReference) p.Value).FullName), Is.EqualTo (new [] { "System.String[]", "Foundation.NSString", "CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler" }), "Native protocol parameter types");
+				CollectionAssert.AreEqual (new [] { "System.String[]", "Foundation.NSString", "CoreSpotlight.CSSearchableIndexDelegateGetSearchableItemsHandler" }, nativeTypes.Select (p => ((TypeReference) p.Value).FullName).ToArray (), "Native protocol parameter types");
 				var blockProxies = (CustomAttributeArgument []) member.Properties.Single (p => p.Name == "ParameterBlockProxy").Argument.Value;
-				Assert.That (blockProxies, Has.Length.EqualTo (3), "Block proxy count");
-				Assert.That (blockProxies [0].Value, Is.Null, "Identifiers block proxy");
-				Assert.That (blockProxies [1].Value, Is.Null, "Protection class block proxy");
-				Assert.That (blockProxies [2].Value, Is.Not.Null, "Handler block proxy");
+				Assert.AreEqual (3, blockProxies.Length, "Block proxy count");
+				Assert.IsNull (blockProxies [0].Value, "Identifiers block proxy");
+				Assert.IsNull (blockProxies [1].Value, "Protection class block proxy");
+				Assert.IsNotNull (blockProxies [2].Value, "Handler block proxy");
 			}
 		}
 
@@ -122,7 +128,7 @@ namespace Cecil.Tests {
 		// Capitalization rules:
 		// * All types, methods, properties, fields, events must start with an upper-cased letter.
 		// * All parameters must start with a lower-cased letter
-		[Test]
+		[TestMethod]
 		public void MustStartWithCapitalLetter ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -203,7 +209,7 @@ namespace Cecil.Tests {
 			return false;
 		}
 
-		[Test]
+		[TestMethod]
 		public void InvalidStrings ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -229,7 +235,7 @@ namespace Cecil.Tests {
 			Helper.AssertFailures (failures, knownFailuresInvalidStrings, nameof (knownFailuresInvalidStrings), "In the file tests/cecil-tests/ApiTest.cs, read the guide carefully.", (v) => $"{v.Location}: {v.Message}");
 		}
 
-		[Test]
+		[TestMethod]
 		public void BannedAttributes ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();

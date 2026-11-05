@@ -4,7 +4,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -14,22 +14,22 @@ using Xamarin.Tests;
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public partial class ApiAvailabilityTest {
-		[Test]
+		[TestMethod]
 		public void Warnings ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
 			// Make this test opt-in, it's quite slow.
 			if (string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("RUN_AVAILABILITY_WARNING_TEST")))
-				Assert.Ignore ("The 'RUN_AVAILABILITY_WARNING_TEST' environment variable isn't set.");
+				Assert.Inconclusive ("The 'RUN_AVAILABILITY_WARNING_TEST' environment variable isn't set.");
 
 			var args = new string [] {
 				"-C", Path.Combine (Configuration.RootPath, "src"),
 				"analyze"
 			};
 			var rv = ExecutionHelper.Execute ("make", args, TimeSpan.FromMinutes (10));
-			Assert.That (rv, Is.EqualTo (0), "'make analyze' exit code");
+			Assert.AreEqual (0, rv, "'make analyze' exit code");
 
 			var platforms = Configuration.GetAllPlatforms ().Select (v => v.AsString ());
 			var binlogs = new List<string> ();
@@ -40,7 +40,7 @@ namespace Cecil.Tests {
 			}
 
 			foreach (var binlog in binlogs)
-				Assert.That (binlog, Does.Exist, "binlog existence");
+				Assert.IsTrue (File.Exists (binlog), $"binlog existence: {binlog}");
 
 			var groupedWarnings = new Dictionary<string, (int Count, string File, string Message)> ();
 			int totalWarnings = 0;
@@ -99,7 +99,7 @@ namespace Cecil.Tests {
 		}
 
 		// This test will flag any API that's only obsoleted on some platforms.
-		[Test]
+		[TestMethod]
 		public void FindMissingObsoleteAttributes ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -257,10 +257,12 @@ namespace Cecil.Tests {
 
 		HashSet<string> knownConsistencyIssues = new HashSet<string> { };
 
+		[TestMethod]
 		// This test verifies that the SupportedOSPlatform and UnavailableOSPlatform/ObsoletedOSplatform attributes are consistent.
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void AttributeConsistency (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void AttributeConsistency (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			var platform = info.Platform;
 			var failures = new HashSet<string> ();

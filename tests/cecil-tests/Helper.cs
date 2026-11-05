@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -25,7 +25,7 @@ namespace Cecil.Tests {
 		// make sure we load assemblies only once into memory
 		public static AssemblyDefinition GetAssembly (string assembly, ReaderParameters? parameters = null, bool readSymbols = false)
 		{
-			Assert.That (assembly, Does.Exist, "Assembly existence");
+			Assert.IsTrue (File.Exists (assembly), $"Assembly existence: {assembly}");
 			if (!cache.TryGetValue (assembly, out var ad)) {
 				if (parameters is null) {
 					var resolver = new DefaultAssemblyResolver ();
@@ -102,19 +102,14 @@ namespace Cecil.Tests {
 					Console.WriteLine ($"    {failureToString (failure)}");
 			}
 
-			// Rather than doing an Assert.IsEmpty, which produces a horrendous error message, we'll do an Assert.Multiple which generates a 
-			// nice enumerated output of all the failures.
-			Assert.Multiple (() => {
-				// fail for each of the new failures
-				foreach (var failure in newFailures) {
-					Assert.Fail (failure.ToString () ?? "");
-				}
+			var failures = newFailures.Select (v => v.ToString () ?? "").ToList ();
 
-				// The list of known failures often doesn't separate based on platform, which means that we might not see all the known failures
-				// unless we're currently building for all platforms. As such, only verify the list of known failures if we're building for all platforms.
-				if (!Configuration.AnyIgnoredPlatforms ())
-					Assert.That (fixedFailures, Is.Empty, $"Known failures that aren't failing anymore - remove these from the list of known failures: {message}");
-			});
+			// The list of known failures often doesn't separate based on platform, which means that we might not see all the known failures
+			// unless we're currently building for all platforms. As such, only verify the list of known failures if we're building for all platforms.
+			if (!Configuration.AnyIgnoredPlatforms () && fixedFailures.Any ())
+				failures.Add ($"Known failures that aren't failing anymore - remove these from the list of known failures: {message}\n{string.Join ("\n", fixedFailures)}");
+
+			Assert.IsEmpty (failures, string.Join ("\n", failures));
 
 		}
 
@@ -409,6 +404,15 @@ namespace Cecil.Tests {
 		}
 
 		static IEnumerable<string> NetPlatformAssemblies => Configuration.GetRefLibraries ();
+
+		public static IEnumerable<object []> NetPlatformAssemblyTestData => NetPlatformAssemblies.Select (v => new object [] { v });
+
+		public static IEnumerable<object []> NetPlatformImplementationAssemblyTestData => NetPlatformImplementationAssemblies.Select (v => new object [] { v });
+
+		public static AssemblyInfo GetAssemblyInfo (string path)
+		{
+			return new AssemblyInfo (path, GetAssembly (path, readSymbols: !NetPlatformAssemblies.Contains (path)));
+		}
 
 		static IList<AssemblyInfo>? net_platform_assembly_definitions;
 		public static IEnumerable<AssemblyInfo> NetPlatformAssemblyDefinitions {

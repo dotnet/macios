@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
+script_directory="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 mkdir -p "$DIAGNOSTIC_DIRECTORY/logs"
 (
     set -x
@@ -20,8 +21,20 @@ mkdir -p "$DIAGNOSTIC_DIRECTORY/logs"
     "$DOTNET_ROOT/dotnet" --info
     "$DOTNET_ROOT/dotnet" workload --info
 
+    python3 "$script_directory/remove-apple-runtime-workload-inheritance.py"
+
     # Keep the RC 2 SDK's bundled manifests instead of updating to newer workload versions.
-    "$DOTNET_ROOT/dotnet" workload install ios --skip-manifest-update \
-        --source https://api.nuget.org/v3/index.json --verbosity diagnostic
+    status=0
+    for workload in ios tvos maccatalyst macos; do
+        if "$DOTNET_ROOT/dotnet" workload install "$workload" --skip-manifest-update \
+            --source https://api.nuget.org/v3/index.json --verbosity diagnostic; then
+            echo "$workload: installation succeeded"
+        else
+            result=$?
+            echo "$workload: installation failed (exit code $result)"
+            status=1
+        fi
+    done
     "$DOTNET_ROOT/dotnet" workload list
+    exit "$status"
 ) 2>&1 | tee "$DIAGNOSTIC_DIRECTORY/logs/install.log"

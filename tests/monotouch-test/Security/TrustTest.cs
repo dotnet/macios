@@ -313,8 +313,8 @@ namespace MonoTouchFixtures.Security {
 				using var trustDetails = trust.GetResult ();
 				TestContext.Out.WriteLine ($"Initial full-chain evaluation: {result}");
 				TestContext.Out.WriteLine ($"OS: {NSProcessInfo.ProcessInfo.OperatingSystemVersionString}");
-				TestContext.Out.WriteLine ($"Architecture: {System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture}");
-				TestContext.Out.WriteLine ($"Runtime: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}");
+				TestContext.Out.WriteLine ($"Architecture: {RuntimeInformation.ProcessArchitecture}");
+				TestContext.Out.WriteLine ($"Runtime: {RuntimeInformation.FrameworkDescription}");
 				TestContext.Out.WriteLine ($"Verify time (CFAbsoluteTime): {trust.GetVerifyTime ():R}; network fetch allowed: {trust.NetworkFetchAllowed}");
 				TestContext.Out.WriteLine ($"Error domain: {trustError?.Domain}; code: {trustError?.Code}; user info: {trustError?.UserInfo}");
 				TestContext.Out.WriteLine ($"Trust details: {trustDetails}");

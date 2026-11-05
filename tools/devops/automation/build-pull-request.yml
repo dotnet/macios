@@ -1,47 +1,4 @@
-# YAML pipeline build definition
-# https://devdiv.visualstudio.com/DevDiv/_apps/hub/ms.vss-ciworkflow.build-ci-hub?_a=edit-build-definition&id=13947&view=Tab_Tasks
-#
-# YAML build pipeline based on the Jenkins multi-stage (main branch) build workflow
-# https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/job/main/
-# https://jenkins.internalx.com/view/Xamarin.MaciOS/job/macios/configure
-
-parameters:
-
-- name: macOSName # comes from the build agent demand named macOS.Name
-  displayName: Name of the version of macOS to use
-  type: string
-  default: 'Tahoe'
-
-- name: runGovernanceTests
-  displayName: Run Governance Checks
-  type: boolean
-  default: true
-
-- name: forceInsertion
-  displayName: Force Insertion 
-  type: boolean
-  default: false 
-
-resources:
-  repositories:
-  - repository: self
-    checkoutOptions:
-      submodules: true
-      
-  - repository: yaml-templates
-    type: git
-    name: xamarin.yaml-templates
-    ref: refs/heads/main
-
-  - repository: CustomPipelineTemplates
-    type: git
-    name: 1ESPipelineTemplates/MicroBuildTemplate
-
-variables:
-- template: templates/variables/common.yml
-- template: templates/variables/api-scan.yml
-- name: Packaging.EnableSBOMSigning
-  value: false
+# Diagnostic-only PR: replace the normal builds with one official workload installation on Linux.
 
 trigger: none
 
@@ -49,64 +6,33 @@ pr:
   autoCancel: true
   branches:
     include:
-    - '*'  # yes, you do need the quote, * has meaning in yamls
-  paths:
-    exclude:
-    - .github
-    - docs
-    - CODEOWNERS
-    - ISSUE_TEMPLATE.md
-    - LICENSE
-    - NOTICE.txt
-    - SECURITY.MD
-    - README.md
-    - src/README.md
-    - tools/mtouch/README.md
-    - msbuild/Xamarin.Localization.MSBuild/README.md
-    - '**/TranslatedAssemblies/*.*.resx'
+    - '*'
 
-extends:
-  template: azure-pipelines/MicroBuild.1ES.Official.yml@CustomPipelineTemplates
-  parameters:
-    pool:  # default pool to be used forvalidation jobs
-      name: AzurePipelines-EO
-      image: 1ESPT-Windows2022
-      os: windows
-    sdl:
-      baseline:
-        baselineFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/baselines.gdnbaselines'
-      suppression:
-        suppressionFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/suppress.gdnsuppress'
-      sourceAnalysisPool:
-        name: AzurePipelines-EO
-        image: 1ESPT-Windows2022
-        os: windows
-      tsa:
-        configFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/tsa_config.gdntsa'
-      sbom:
-        enabled: false  # we run our on sbom generation
-      credscan:
-        suppressionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/CredScanSuppressions.json'
-        debugMode: true
-        verboseOutput: true
-      policheck:
-        enabled: true
-        exclusionsFile: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance/PoliCheckExclusions.xml'
-      sourceRepositoriesToScan:
-        runInSingleJob: true # run both maccore and macios in the same job
-        include:
-        - repository: self
-        exclude:
-        - repository: yaml-templates
-    stages:
-    - template: templates/main-stage.yml
-      parameters:
-        xcodeChannel: $(xcodeChannel)
-        macOSName: ${{ parameters.macOSName }}
-        isPR: true
-        pool: $(PRBuildPool)
-        runGovernanceTests: ${{ parameters.runGovernanceTests }}
-        forceInsertion: ${{ parameters.forceInsertion }}
-        pushNugets: false
-        pushNugetsToMaestro: false
-        useACES: true  # flip to false to opt PR out of ACES; see templates/variables/common.yml
+pool:
+  vmImage: ubuntu-latest
+
+jobs:
+- job: linux_ios_workload
+  displayName: 'Diagnose .NET 11 RC 2 iOS workload installation on Linux'
+  timeoutInMinutes: 20
+  steps:
+  - checkout: self
+    fetchDepth: 1
+    fetchTags: false
+    submodules: false
+    persistCredentials: false
+
+  - task: Bash@3
+    displayName: 'Install official .NET 11 RC 2 SDK and iOS workload'
+    inputs:
+      targetType: filePath
+      filePath: tools/devops/automation/scripts/diagnose-linux-ios-workload.sh
+    env:
+      DIAGNOSTIC_DIRECTORY: $(Agent.TempDirectory)/linux-ios-workload
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish workload installation diagnostics'
+    condition: always()
+    inputs:
+      targetPath: $(Agent.TempDirectory)/linux-ios-workload/logs
+      artifact: linux-ios-workload-diagnostics

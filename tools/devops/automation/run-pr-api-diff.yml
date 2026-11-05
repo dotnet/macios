@@ -2,25 +2,8 @@
 
 trigger: none
 
-pr:
-  autoCancel: true
-  branches:
-    include:
-      - '*'  # yes, you do need the quote, * has meaning in yamls
-  paths:
-    exclude:
-      - .github
-      - docs
-      - CODEOWNERS
-      - ISSUE_TEMPLATE.md
-      - LICENSE
-      - NOTICE.txt
-      - SECURITY.MD
-      - README.md
-      - src/README.md
-      - tools/mtouch/README.md
-      - msbuild/Xamarin.Localization.MSBuild/README.md
-      - '**/TranslatedAssemblies/*.*.resx'
+# Disabled for the Linux workload diagnostic PR.
+pr: none
 
 extends:
   template: templates/pipelines/api-diff-pipeline.yml

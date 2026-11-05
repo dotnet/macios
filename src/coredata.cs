@@ -198,6 +198,7 @@ namespace CoreData {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newCacheNodeForManagedObject:")]
+		[return: Release]
 		NSAtomicStoreCacheNode NewCacheNodeForManagedObject (NSManagedObject managedObject);
 
 		/// <param name="node">To be added.</param>
@@ -259,6 +260,7 @@ namespace CoreData {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newReferenceObjectForManagedObject:")]
+		[return: Release]
 		NSAtomicStore NewReferenceObjectForManagedObject (NSManagedObject managedObject);
 
 		/// <param name="objectID">To be added.</param>
@@ -1412,6 +1414,7 @@ namespace CoreData {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newValuesForObjectWithID:withContext:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		NSIncrementalStoreNode NewValues (NSManagedObjectID forObjectId, NSManagedObjectContext context, out NSError error);
 
@@ -1426,6 +1429,7 @@ namespace CoreData {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newValueForRelationship:forObjectWithID:withContext:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		NSObject NewValue (NSRelationshipDescription forRelationship, NSManagedObjectID forObjectI, [NullAllowed] NSManagedObjectContext context, out NSError error);
 
@@ -1464,6 +1468,7 @@ namespace CoreData {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newObjectIDForEntity:referenceObject:")]
+		[return: Release]
 		NSManagedObjectID NewObjectIdFor (NSEntityDescription forEntity, NSObject referenceObject);
 
 		/// <param name="objectId">To be added.</param>
@@ -3719,7 +3724,7 @@ namespace CoreData {
 		///         <value>A private managed object context.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("newBackgroundContext")]
-		NSManagedObjectContext NewBackgroundContext { get; }
+		NSManagedObjectContext NewBackgroundContext { [return: Release] get; }
 
 		/// <param name="block">The code to perform.</param>
 		///         <summary>Performs background task that is represented by <paramref name="block" /> on the managed object context that was passed to it.</summary>

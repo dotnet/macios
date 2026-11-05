@@ -357,6 +357,7 @@ namespace MetalKit {
 		void FromCGImage (CGImage cgImage, [NullAllowed] MTKTextureLoaderOptions options, MTKTextureLoaderCallback completionHandler);
 
 		[Export ("newTextureWithContentsOfURL:options:error:"), Internal]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromUrl (NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -402,6 +403,7 @@ namespace MetalKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTexturesWithContentsOfURLs:options:error:")]
+		[return: Release]
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] NSDictionary options, out NSError error);
 
 		/// <param name="urls">The locations of the image data to load.</param>
@@ -415,6 +417,7 @@ namespace MetalKit {
 		IMTLTexture [] FromUrls (NSUrl [] urls, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
 		[Export ("newTextureWithData:options:error:"), Internal]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromData (NSData data, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -429,6 +432,7 @@ namespace MetalKit {
 		IMTLTexture FromData (NSData data, [NullAllowed] MTKTextureLoaderOptions options, out NSError error);
 
 		[Export ("newTextureWithCGImage:options:error:"), Internal]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromCGImage (CGImage cgImage, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -637,6 +641,7 @@ namespace MetalKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithMDLTexture:options:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromTexture (MDLTexture texture, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -667,6 +672,7 @@ namespace MetalKit {
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("newTextureWithName:scaleFactor:bundle:options:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromName (string name, nfloat scaleFactor, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, out NSError error);
 
@@ -687,6 +693,7 @@ namespace MetalKit {
 		[NoTV]
 		[NoMacCatalyst]
 		[Export ("newTextureWithName:scaleFactor:displayGamut:bundle:options:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		IMTLTexture FromName (string name, nfloat scaleFactor, NSDisplayGamut displayGamut, [NullAllowed] NSBundle bundle, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
 
@@ -766,6 +773,7 @@ namespace MetalKit {
 		[Internal] // there's another, manual, public API exposed
 		[Static]
 		[Export ("newMeshesFromAsset:device:sourceMeshes:error:")]
+		[return: Release]
 		[return: NullAllowed]
 		MTKMesh [] FromAsset (MDLAsset asset, IMTLDevice device, out NSArray sourceMeshes, out NSError error);
 

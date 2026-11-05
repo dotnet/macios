@@ -761,6 +761,7 @@ namespace ImageKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newCellForRepresentedItem:")]
+		[return: Release]
 		IKImageBrowserCell NewCell (IIKImageBrowserItem representedItem);
 
 		/// <param name="itemIndex">To be added.</param>

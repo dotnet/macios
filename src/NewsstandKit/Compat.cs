@@ -8,7 +8,7 @@ namespace NewsstandKit {
 	/// <summary>An asset is a downloadable component (text, media, an entire compressed issue, etc.) of a Newsstand application.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
+	[Obsolete (Constants.NewsstandKitRemoved)]
 	public unsafe partial class NKAssetDownload : NSObject {
 		/// <summary>The handle for this class.</summary>
 		///         <value>The pointer to the Objective-C class.</value>
@@ -86,7 +86,7 @@ namespace NewsstandKit {
 	/// <summary>A named and dated Newsstand product (e.g., an issue of a particular magazine).</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
+	[Obsolete (Constants.NewsstandKitRemoved)]
 	public unsafe partial class NKIssue : NSObject {
 		/// <summary>The handle for this class.</summary>
 		///         <value>The pointer to the Objective-C class.</value>
@@ -192,7 +192,7 @@ namespace NewsstandKit {
 	/// <summary>An enumeration whose values specify the <see cref="NewsstandKit.NKIssue.Status" /> property of a <see cref="NewsstandKit.NKIssue" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
+	[Obsolete (Constants.NewsstandKitRemoved)]
 	public enum NKIssueContentStatus : long {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -205,7 +205,7 @@ namespace NewsstandKit {
 	/// <summary>A collection of <see cref="NewsstandKit.NKIssue" />s.</summary>
 	///     <remarks>To be added.</remarks>
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
+	[Obsolete (Constants.NewsstandKitRemoved)]
 	public unsafe partial class NKLibrary : NSObject {
 		/// <summary>The handle for this class.</summary>
 		///         <value>The pointer to the Objective-C class.</value>

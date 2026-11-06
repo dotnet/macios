@@ -22,7 +22,7 @@ namespace NearbyInteraction {
 #endif
 	[Native]
 #if __MACOS__ && !XAMCORE_5_0
-	[Obsolete ("Not available on this platform.")]
+	[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 	[EditorBrowsable (EditorBrowsableState.Never)]
 #endif
 	public enum NIErrorCode : long {

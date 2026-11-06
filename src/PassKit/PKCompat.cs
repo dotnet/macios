@@ -14,7 +14,7 @@ namespace PassKit {
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromPassKit)]
 	public unsafe partial class PKDisbursementVoucher : NSObject {
 
 		/// <summary>To be added.</summary>
@@ -55,7 +55,7 @@ namespace PassKit {
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromPassKit)]
 	public unsafe partial class PKDisbursementAuthorizationController : NSObject {
 
 		/// <summary>To be added.</summary>
@@ -146,7 +146,7 @@ namespace PassKit {
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromPassKit)]
 	public partial interface IPKDisbursementAuthorizationControllerDelegate : INativeObject, IDisposable {
 		/// <param name="controller">To be added.</param>
 		///         <param name="disbursementVoucher">To be added.</param>
@@ -167,7 +167,7 @@ namespace PassKit {
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromPassKit)]
 	public unsafe abstract partial class PKDisbursementAuthorizationControllerDelegate : NSObject, IPKDisbursementAuthorizationControllerDelegate {
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -223,7 +223,7 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("This property is removed.")]
+		[Obsolete (Constants.RemovedFromPassKit)]
 		public virtual NSDecimalNumber Amount {
 			get => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 			set => throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -237,7 +237,7 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("This property is removed.")]
+		[Obsolete (Constants.RemovedFromPassKit)]
 		public virtual string CountryCode {
 			get => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 			set => throw new InvalidOperationException (Constants.RemovedFromPassKit);
@@ -251,7 +251,7 @@ namespace PassKit {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("This property is removed.")]
+		[Obsolete (Constants.RemovedFromPassKit)]
 		public virtual PKDisbursementRequestSchedule RequestSchedule {
 			get => throw new InvalidOperationException (Constants.RemovedFromPassKit);
 			set => throw new InvalidOperationException (Constants.RemovedFromPassKit);

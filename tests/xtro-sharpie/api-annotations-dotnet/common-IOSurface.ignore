@@ -38,7 +38,6 @@
 !missing-pinvoke! IOSurfaceCopyAllValues is not bound
 !missing-pinvoke! IOSurfaceCopyValue is not bound
 !missing-pinvoke! IOSurfaceCreate is not bound
-!missing-pinvoke! IOSurfaceCreateMachPort is not bound
 !missing-pinvoke! IOSurfaceDecrementUseCount is not bound
 !missing-pinvoke! IOSurfaceGetAllocSize is not bound
 !missing-pinvoke! IOSurfaceGetBaseAddress is not bound
@@ -73,8 +72,6 @@
 !missing-pinvoke! IOSurfaceIncrementUseCount is not bound
 !missing-pinvoke! IOSurfaceIsInUse is not bound
 !missing-pinvoke! IOSurfaceLock is not bound
-!missing-pinvoke! IOSurfaceLookup is not bound
-!missing-pinvoke! IOSurfaceLookupFromMachPort is not bound
 !missing-pinvoke! IOSurfaceRemoveAllValues is not bound
 !missing-pinvoke! IOSurfaceRemoveValue is not bound
 !missing-pinvoke! IOSurfaceSetPurgeable is not bound

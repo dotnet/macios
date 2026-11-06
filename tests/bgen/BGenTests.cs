@@ -686,6 +686,15 @@ namespace GeneratorTests {
 			BuildFile (profile, "inativeobject-arrays-in-blocks.cs");
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void BlocksReturningObjectArrays (Profile profile)
+		{
+			BuildFile (profile, "blocks-returning-object-arrays.cs");
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void ClassNameCollision (Profile profile)

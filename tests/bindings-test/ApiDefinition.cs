@@ -37,6 +37,17 @@ namespace Bindings.Test {
 
 	delegate uint RegistrarTestBlock (uint magic);
 
+	[BaseType (typeof (NSObject))]
+	interface ToBeProxied {
+		[Static]
+		[return: ForcedType]
+		[Export ("getProxiedObject")]
+		ToBeProxied GetProxiedObject ();
+
+		[Export ("getNumber")]
+		int GetNumber ();
+	}
+
 	/*
 	 * ObjC test class used for registrar
 	 */

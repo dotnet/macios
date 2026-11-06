@@ -78,6 +78,15 @@ namespace LinkAll {
 
 		Type not_preserved_type = typeof (NotPreserved);
 
+		[Test]
+		public void ForcedTypeForProxiedObject ()
+		{
+			using var proxiedObject = Bindings.Test.ToBeProxied.GetProxiedObject ();
+			Assert.That (proxiedObject.GetNumber (), Is.EqualTo (314), "Proxy implementation");
+			Assert.That (proxiedObject.Class.Name, Is.EqualTo ("IsProxied"), "Native class");
+			Assert.That (proxiedObject, Is.TypeOf<Bindings.Test.ToBeProxied> (), "Managed wrapper");
+		}
+
 
 		class TypeAttribute : Attribute {
 			public TypeAttribute (Type? type) { }

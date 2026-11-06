@@ -1150,6 +1150,7 @@ namespace Vision {
 		VNCoreMLRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1158,16 +1159,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNCoreMLRequestRevision> (WeakSupportedRevisions)")]
 		VNCoreMLRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNCoreMLRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNCoreMLRequestRevision CurrentRevision { get; }
@@ -1226,6 +1230,7 @@ namespace Vision {
 		VNDetectBarcodesRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1234,16 +1239,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectBarcodesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectBarcodesRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectBarcodesRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectBarcodesRequestRevision CurrentRevision { get; }
@@ -1285,6 +1293,7 @@ namespace Vision {
 		VNDetectFaceLandmarksRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1293,16 +1302,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectFaceLandmarksRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectFaceLandmarksRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectFaceLandmarksRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectFaceLandmarksRequestRevision CurrentRevision { get; }
@@ -1331,6 +1343,7 @@ namespace Vision {
 		VNDetectFaceRectanglesRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1339,16 +1352,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectFaceRectanglesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectFaceRectanglesRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectFaceRectanglesRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectFaceRectanglesRequestRevision CurrentRevision { get; }
@@ -1377,6 +1393,7 @@ namespace Vision {
 		VNDetectHorizonRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1385,16 +1402,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHorizonRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectHorizonRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectHorizonRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectHorizonRequestRevision CurrentRevision { get; }
@@ -1441,6 +1461,7 @@ namespace Vision {
 		VNDetectRectanglesRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1449,16 +1470,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectRectanglesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectRectanglesRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectRectanglesRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectRectanglesRequestRevision CurrentRevision { get; }
@@ -1490,6 +1514,7 @@ namespace Vision {
 		VNDetectTextRectanglesRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -1498,16 +1523,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectTextRectanglesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectTextRectanglesRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectTextRectanglesRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectTextRectanglesRequestRevision CurrentRevision { get; }
@@ -2082,6 +2110,7 @@ namespace Vision {
 
 		// into subclasses so the correct class_ptr is used.
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -2090,16 +2119,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTranslationalImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
 		VNTranslationalImageRegistrationRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNTranslationalImageRegistrationRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNTranslationalImageRegistrationRequestRevision CurrentRevision { get; }
@@ -2345,6 +2377,7 @@ namespace Vision {
 		VNHomographicImageRegistrationRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -2353,16 +2386,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNHomographicImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
 		VNHomographicImageRegistrationRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNHomographicImageRegistrationRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNHomographicImageRegistrationRequestRevision CurrentRevision { get; }
@@ -3349,6 +3385,7 @@ namespace Vision {
 		VNTrackObjectRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -3357,16 +3394,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackObjectRequestRevision> (WeakSupportedRevisions)")]
 		VNTrackObjectRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNTrackObjectRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNTrackObjectRequestRevision CurrentRevision { get; }
@@ -3398,6 +3438,7 @@ namespace Vision {
 		VNTrackRectangleRequestRevision Revision { get; set; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
@@ -3406,16 +3447,19 @@ namespace Vision {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackRectangleRequestRevision> (WeakSupportedRevisions)")]
 		VNTrackRectangleRequestRevision [] SupportedRevisions { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNTrackRectangleRequestRevision DefaultRevision { get; }
 
 		[MacCatalyst (13, 1)]
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNTrackRectangleRequestRevision CurrentRevision { get; }
@@ -3495,18 +3539,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNClassifyImageRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNClassifyImageRequestRevision> (WeakSupportedRevisions)")]
 		VNClassifyImageRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNClassifyImageRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNClassifyImageRequestRevision CurrentRevision { get; }
@@ -3532,18 +3580,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectFaceCaptureQualityRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectFaceCaptureQualityRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectFaceCaptureQualityRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectFaceCaptureQualityRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectFaceCaptureQualityRequestRevision CurrentRevision { get; }
@@ -3573,18 +3625,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectHumanRectanglesRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHumanRectanglesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectHumanRectanglesRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectHumanRectanglesRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectHumanRectanglesRequestRevision CurrentRevision { get; }
@@ -3610,18 +3666,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNGenerateAttentionBasedSaliencyImageRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNGenerateAttentionBasedSaliencyImageRequestRevision> (WeakSupportedRevisions)")]
 		VNGenerateAttentionBasedSaliencyImageRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNGenerateAttentionBasedSaliencyImageRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNGenerateAttentionBasedSaliencyImageRequestRevision CurrentRevision { get; }
@@ -3650,18 +3710,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNGenerateImageFeaturePrintRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNGenerateImageFeaturePrintRequestRevision> (WeakSupportedRevisions)")]
 		VNGenerateImageFeaturePrintRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNGenerateImageFeaturePrintRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNGenerateImageFeaturePrintRequestRevision CurrentRevision { get; }
@@ -3687,18 +3751,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNGenerateObjectnessBasedSaliencyImageRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNGenerateObjectnessBasedSaliencyImageRequestRevision> (WeakSupportedRevisions)")]
 		VNGenerateObjectnessBasedSaliencyImageRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNGenerateObjectnessBasedSaliencyImageRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNGenerateObjectnessBasedSaliencyImageRequestRevision CurrentRevision { get; }
@@ -3811,18 +3879,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNRecognizeAnimalsRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNRecognizeAnimalsRequestRevision> (WeakSupportedRevisions)")]
 		VNRecognizeAnimalsRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNRecognizeAnimalsRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNRecognizeAnimalsRequestRevision CurrentRevision { get; }
@@ -3877,18 +3949,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNRecognizeTextRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNRecognizeTextRequestRevision> (WeakSupportedRevisions)")]
 		VNRecognizeTextRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNRecognizeTextRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNRecognizeTextRequestRevision CurrentRevision { get; }
@@ -3949,18 +4025,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectContourRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectContourRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectContourRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectContourRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectContourRequestRevision CurrentRevision { get; }
@@ -4029,18 +4109,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectHumanBodyPoseRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHumanBodyPoseRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectHumanBodyPoseRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectHumanBodyPoseRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectHumanBodyPoseRequestRevision CurrentRevision { get; }
@@ -4128,18 +4212,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectHumanHandPoseRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHumanHandPoseRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectHumanHandPoseRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectHumanHandPoseRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectHumanHandPoseRequestRevision CurrentRevision { get; }
@@ -4189,18 +4277,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectTrajectoriesRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectTrajectoriesRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectTrajectoriesRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectTrajectoriesRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectTrajectoriesRequestRevision CurrentRevision { get; }
@@ -4569,18 +4661,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNGenerateOpticalFlowRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNGenerateOpticalFlowRequestRevision> (WeakSupportedRevisions)")]
 		VNGenerateOpticalFlowRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNGenerateOpticalFlowRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNGenerateOpticalFlowRequestRevision CurrentRevision { get; }
@@ -4738,18 +4834,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNStatefulRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNStatefulRequestRevision> (WeakSupportedRevisions)")]
 		VNStatefulRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNStatefulRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNStatefulRequestRevision CurrentRevision { get; }
@@ -4867,18 +4967,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNTrackTranslationalImageRegistrationRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackTranslationalImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
 		VNTrackTranslationalImageRegistrationRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNTrackTranslationalImageRegistrationRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNTrackTranslationalImageRegistrationRequestRevision CurrentRevision { get; }
@@ -4896,18 +5000,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNTrackHomographicImageRegistrationRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNTrackHomographicImageRegistrationRequestRevision> (WeakSupportedRevisions)")]
 		VNTrackHomographicImageRegistrationRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNTrackHomographicImageRegistrationRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNTrackHomographicImageRegistrationRequestRevision CurrentRevision { get; }
@@ -4976,18 +5084,22 @@ namespace Vision {
 		[Export ("revision")]
 		VNDetectHumanBodyPose3DRequestRevision Revision { get; set; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("supportedRevisions", ArgumentSemantic.Copy)]
 		NSIndexSet WeakSupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Wrap ("GetSupportedVersions<VNDetectHumanBodyPose3DRequestRevision> (WeakSupportedRevisions)")]
 		VNDetectHumanBodyPose3DRequestRevision [] SupportedRevisions { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("defaultRevision")]
 		VNDetectHumanBodyPose3DRequestRevision DefaultRevision { get; }
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("currentRevision")]
 		VNDetectHumanBodyPose3DRequestRevision CurrentRevision { get; }

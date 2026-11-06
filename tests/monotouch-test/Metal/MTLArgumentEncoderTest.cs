@@ -46,6 +46,20 @@ namespace MonoTouchFixtures.Metal {
 		}
 
 		[Test]
+		public void NullBuffer ()
+		{
+			using var descriptor = MTLArgumentDescriptor.Create ();
+			descriptor.DataType = MTLDataType.Pointer;
+			descriptor.Index = 0;
+			using var argumentEncoder = device.CreateArgumentEncoder (new [] { descriptor });
+			Assert.That (argumentEncoder, Is.Not.Null, "Argument encoder");
+			using var buffer = device.CreateBuffer (argumentEncoder.EncodedLength, MTLResourceOptions.StorageModeShared);
+			Assert.That (buffer, Is.Not.Null, "Argument buffer");
+			argumentEncoder.SetArgumentBuffer (buffer, 0);
+			Assert.DoesNotThrow (() => argumentEncoder.SetBuffers (new IMTLBuffer [] { null }, new nuint [] { 0 }, new NSRange (0, 1)), "Buffer array with null element");
+		}
+
+		[Test]
 		public void SetBuffers ()
 		{
 			Assert.Throws<ArgumentNullException> (() => {

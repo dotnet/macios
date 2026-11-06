@@ -920,7 +920,42 @@ namespace GeneratorTests {
 		public void Bug57531 () => BuildFile (Profile.iOS, "bug57531.cs");
 
 		[Test]
-		public void Bug57870 () => BuildFile (Profile.iOS, true, true, "bug57870.cs");
+		public void Bug57870 ()
+		{
+			var bgen = BuildFile (Profile.iOS, true, true, "bug57870.cs");
+			var type = bgen.ApiAssembly.MainModule.GetType ("Bug57870", "Wrappers");
+			var defaultMessage = "This property is read-only. A mutable subclass may support setting this property.";
+			var escapedMessage = "Use \"mutable\" instead.\nPath: C:\\bindings";
+			var expectedMessages = new [] {
+				("_PresenceType2", defaultMessage),
+				("PresenceType2", "Nope nope nope"),
+				("_PresenceType5", "Custom read-only message"),
+				("PresenceType5", defaultMessage),
+				("_PresenceType6", escapedMessage),
+				("PresenceType6", escapedMessage),
+			};
+
+			foreach (var (propertyName, message) in expectedMessages) {
+				var property = type.Properties.Single (v => v.Name == propertyName);
+				var instructions = property.SetMethod.Body.Instructions;
+				var constructor = (MethodReference) instructions.Single (v => v.OpCode == OpCodes.Newobj).Operand;
+				Assert.That (constructor.DeclaringType.FullName, Is.EqualTo ("System.NotSupportedException"), propertyName + ": exception type");
+				Assert.That (constructor.Parameters.Count, Is.EqualTo (1), propertyName + ": constructor parameters");
+				Assert.That (instructions.Single (v => v.OpCode == OpCodes.Ldstr).Operand, Is.EqualTo (message), propertyName + ": exception message");
+				Assert.That (instructions.Count (v => v.OpCode == OpCodes.Throw), Is.EqualTo (1), propertyName + ": throw");
+				Asserts.DoesNotThrowExceptions (property.GetMethod, propertyName + ": getter");
+			}
+
+			foreach (var propertyName in new [] { "_PresenceType4", "PresenceType4" }) {
+				var property = type.Properties.Single (v => v.Name == propertyName);
+				Asserts.DoesNotThrowExceptions (property.GetMethod, propertyName + ": getter");
+				var exceptionTypes = property.SetMethod.Body.Instructions
+					.Where (v => v.OpCode == OpCodes.Newobj)
+					.Select (v => ((MethodReference) v.Operand).DeclaringType.FullName);
+				Assert.That (exceptionTypes, Does.Not.Contain ("System.NotSupportedException"), propertyName + ": writable setter");
+				Assert.That (exceptionTypes, Does.Not.Contain ("System.NotImplementedException"), propertyName + ": writable setter");
+			}
+		}
 
 		[Test]
 		public void GHIssue3869 () => BuildFile (Profile.iOS, "ghissue3869.cs");

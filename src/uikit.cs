@@ -33696,10 +33696,8 @@ namespace UIKit {
 		[Export ("finalSnapshot")]
 		NSDiffableDataSourceSectionSnapshot<ItemIdentifierType> FinalSnapshot { get; }
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Export ("difference")]
-		NSOrderedCollectionDifference Difference { get; }
-#endif
+		NSOrderedCollectionDifference<ItemIdentifierType> Difference { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -33715,10 +33713,8 @@ namespace UIKit {
 		[Export ("finalSnapshot")]
 		NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> FinalSnapshot { get; }
 
-#if false // https://github.com/dotnet/macios/issues/15577
 		[Export ("difference")]
-		NSOrderedCollectionDifference Difference { get; }
-#endif
+		NSOrderedCollectionDifference<ItemIdentifierType> Difference { get; }
 
 		[Export ("sectionTransactions")]
 		NSDiffableDataSourceSectionTransaction<SectionIdentifierType, ItemIdentifierType> [] SectionTransactions { get; }

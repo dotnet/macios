@@ -13,10 +13,7 @@ using System.Collections.Generic;
 using System.Collections;
 
 namespace Foundation {
-#if false // https://github.com/dotnet/macios/issues/15577
 	public delegate bool NSOrderedCollectionDifferenceEquivalenceTest<TValue> (TValue? first, TValue? second);
-	internal delegate bool NSOrderedCollectionDifferenceEquivalenceTestProxy (IntPtr blockLiteral, /* NSObject */ IntPtr first, /* NSObject */ IntPtr second);
-#endif
 	/// <typeparam name="TKey">To be added.</typeparam>
 	///     <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
@@ -125,47 +122,32 @@ namespace Foundation {
 			return base.ToArray<TKey> ();
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other, NSOrderedCollectionDifferenceCalculationOptions options)
-			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other), options));
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey[] other)
-			=> Runtime.GetNSObject <NSOrderedCollectionDifference<TKey>> (_GetDifference (NSArray.FromNSObjects (other)));
-
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public TKey[]? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
-			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));
-		static readonly NSOrderedCollectionDifferenceEquivalenceTestProxy static_DiffEqualityGeneric = DiffEqualityHandlerGeneric;
-
-		[MonoPInvokeCallback (typeof (NSOrderedCollectionDifferenceEquivalenceTestProxy))]
-		static bool DiffEqualityHandlerGeneric (IntPtr block, IntPtr first, IntPtr second)
+		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey [] other, NSOrderedCollectionDifferenceCalculationOptions options)
 		{
-			var callback = BlockLiteral.GetTarget<NSOrderedCollectionDifferenceEquivalenceTest<TKey>> (block);
-			if (callback is not null) {
-				var nsFirst = Runtime.GetINativeObject<TKey> (first, false);
-				var nsSecond = Runtime.GetINativeObject<TKey> (second, false);
-				return callback (nsFirst, nsSecond);
-			}
-			return false;
+			ArgumentNullException.ThrowIfNull (other);
+			using var array = NSArray.FromNSObjects (other);
+			return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (array, options));
 		}
 
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
-		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest) 
+		public NSOrderedCollectionDifference<TKey>? GetDifference (TKey [] other)
+		{
+			ArgumentNullException.ThrowIfNull (other);
+			using var array = NSArray.FromNSObjects (other);
+			return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifference (array));
+		}
+
+		public new TKey? []? GetArrayByApplyingDifference (NSOrderedCollectionDifference difference)
+			=> NSArray.ArrayFromHandle<TKey> (_GetArrayByApplyingDifference (difference));
+
+		public NSOrderedCollectionDifference<TKey>? GetDifferenceFromArray (NSArray<TKey> other, NSOrderedCollectionDifferenceCalculationOptions options, NSOrderedCollectionDifferenceEquivalenceTest<TKey> equivalenceTest)
 		{
 			if (equivalenceTest is null)
 				throw new ArgumentNullException (nameof (equivalenceTest));
 
-			var block = new BlockLiteral ();
-			block.SetupBlock (static_DiffEqualityGeneric, equivalenceTest);
-			try {
-				return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifferenceFromArray (other, options, ref block));
-			} finally {
-				block.CleanupBlock ();
+			unsafe {
+				using var block = NSOrderedCollectionDifference.CreateEquivalenceTestBlock ((first, second) => equivalenceTest (Runtime.GetINativeObject<TKey> (first, false), Runtime.GetINativeObject<TKey> (second, false)));
+				return Runtime.GetNSObject<NSOrderedCollectionDifference<TKey>> (_GetDifferenceFromArray (other, options, &block));
 			}
 		}
-#endif
 	}
 }

@@ -752,7 +752,7 @@ public partial class Generator : IMemberGatherer {
 				EnsureDelegateCreation (pi.ParameterType);
 				if (AttributeManager.HasAttribute<BlockCallbackAttribute> (pi)) {
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
-					invoke.AppendFormat ("NID{0}.Create ({1})!", Nomenclator.GetTrampolineName (pi.ParameterType), safe_name);
+					invoke.AppendFormat ("{0}.Create ({1})!", MakeTrampoline (pi.ParameterType).NativeInvokerName, safe_name);
 					// The trampoline will eventually be generated in the final loop
 				} else {
 					if (!AttributeManager.HasAttribute<CCallbackAttribute> (pi)) {
@@ -790,10 +790,64 @@ public partial class Generator : IMemberGatherer {
 						 functionPointerSignature: functionPointerSignature);
 
 
-		ti.UserDelegateTypeAttribute = TypeManager.FormatType (null, t);
+		var genericParameters = GetTrampolineGenericParameters (t).Distinct ().ToArray ();
+		if (genericParameters.Length > 0) {
+			ti.GenericArguments = "<" + string.Join (", ", genericParameters.Select (v => v.Name)) + ">";
+			ti.OpenGenericArguments = "<" + new string (',', genericParameters.Length - 1) + ">";
+			ti.GenericConstraints = GetGenericConstraints (genericParameters);
+			ti.NativeArguments = string.Join (", ", pars.Select (v => v.ParameterName));
+		}
+		ti.UserDelegateTypeAttribute = TypeManager.FormatType (null, CloseTrampolineType (t));
 		trampolines [t] = ti;
 
 		return ti;
+	}
+
+	static IEnumerable<Type> GetTrampolineGenericParameters (Type type)
+	{
+		if (type.IsGenericParameter) {
+			yield return type;
+		} else if (type.HasElementType) {
+			foreach (var parameter in GetTrampolineGenericParameters (type.GetElementType ()!))
+				yield return parameter;
+		} else {
+			foreach (var argument in type.GetGenericArguments ()) {
+				foreach (var parameter in GetTrampolineGenericParameters (argument))
+					yield return parameter;
+			}
+		}
+	}
+
+	Type CloseTrampolineType (Type type)
+	{
+		if (type.IsGenericParameter)
+			return type.GetGenericParameterConstraints ().FirstOrDefault (v => !v.IsInterface) ?? TypeCache.NSObject;
+		if (!type.ContainsGenericParameters)
+			return type;
+		if (type.IsArray) {
+			var elementType = CloseTrampolineType (type.GetElementType ()!);
+			return type.GetArrayRank () == 1 ? elementType.MakeArrayType () : elementType.MakeArrayType (type.GetArrayRank ());
+		}
+		return type.GetGenericTypeDefinition ().MakeGenericType (type.GetGenericArguments ().Select (CloseTrampolineType).ToArray ());
+	}
+
+	string GetGenericConstraints (Type [] parameters)
+	{
+		var result = new StringBuilder ();
+		foreach (var parameter in parameters) {
+			var constraints = parameter.GetGenericParameterConstraints ().Select (v => TypeManager.FormatType (null, v)).ToList ();
+			if ((parameter.GenericParameterAttributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0)
+				constraints.Insert (0, "class");
+			if ((parameter.GenericParameterAttributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0) {
+				constraints.RemoveAll (v => v == "ValueType" || v == "global::System.ValueType");
+				constraints.Insert (0, "struct");
+			} else if ((parameter.GenericParameterAttributes & GenericParameterAttributes.DefaultConstructorConstraint) != 0) {
+				constraints.Add ("new ()");
+			}
+			if (constraints.Count > 0)
+				result.Append (" where ").Append (parameter.Name).Append (" : ").Append (string.Join (", ", constraints));
+		}
+		return result.ToString ();
 	}
 
 	//
@@ -1591,10 +1645,10 @@ public partial class Generator : IMemberGatherer {
 		print_generated_code ();
 		print ("static partial class Trampolines {"); indent++;
 
-		while (trampolines.Count > 0) {
-			var queue = trampolines.Values.ToArray ();
-			trampolines.Clear ();
-
+		while (true) {
+			var queue = trampolines.Values.Where (v => !generated_trampolines.ContainsKey (v.Type)).ToArray ();
+			if (queue.Length == 0)
+				break;
 			GenerateTrampolinesForQueue (queue);
 		}
 		indent--; print ("}");
@@ -1614,21 +1668,62 @@ public partial class Generator : IMemberGatherer {
 
 			var mi = ti.Type.GetMethod ("Invoke")!;
 			var parameters = mi.GetParameters ();
+			var isGeneric = ti.GenericArguments.Length > 0;
+			var nativeStaticName = "S" + ti.DelegateName;
 
 			print ("");
 			PrintExperimentalAttribute (ti.Type);
 			print ("[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]");
-			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
+			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegateTypeAttribute);
 			print ("unsafe internal delegate {0} {1} ({2});", ti.ReturnType, ti.DelegateName, ti.Parameters);
 			print ("");
+			if (isGeneric) {
+				// UnmanagedCallersOnly entry points cannot be declared in generic types.
+				PrintExperimentalAttribute (ti.Type);
+				print ("static internal class {0} {{", nativeStaticName); indent++;
+				print ("[UnmanagedCallersOnly]");
+				print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegateTypeAttribute);
+				print ("internal static unsafe {0} Invoke ({1}) {{", ti.ReturnType, ti.Parameters); indent++;
+				var callbackName = "callback";
+				while (parameters.Any (v => v.Name == callbackName))
+					callbackName = "_" + callbackName;
+				print ("var {0} = ({1}) ((Tuple<Delegate, Delegate>) ((BlockLiteral*) block)->Context!).Item1;", callbackName, ti.DelegateName);
+				if (ti.ReturnType == "void")
+					print ("{0} ({1});", callbackName, ti.NativeArguments);
+				else
+					print ("return {0} ({1});", callbackName, ti.NativeArguments);
+				indent--; print ("}");
+				indent--; print ("}");
+				print ("");
+			}
 			print ("//\n// This class bridges native block invocations that call into C#\n//");
 			PrintExperimentalAttribute (ti.Type);
-			print ("static internal class {0} {{", ti.StaticName); indent++;
-			print ("[UnmanagedCallersOnly]");
-			print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
-			print ("internal static unsafe {0} Invoke ({1}) {{", ti.ReturnType, ti.Parameters);
+			print ("{0} internal class {1}{2} {{", isGeneric ? "sealed" : "static", ti.StaticName, ti.GenericConstraints); indent++;
+			if (isGeneric) {
+				print ("internal readonly {0} Callback;", ti.UserDelegate);
+				print ("internal {0} ({1} callback) {{ Callback = callback; }}", nativeStaticName, ti.UserDelegate);
+				print ("internal static readonly Type TrampolineType = typeof ({0});", nativeStaticName);
+				print ("internal static Tuple<Delegate, Delegate> CreateContext ({0} callback)", ti.UserDelegate);
+				print ("{"); indent++;
+				print ("return new Tuple<Delegate, Delegate> (new {0} (new {1} (callback).Invoke), callback);", ti.DelegateName, ti.StaticName);
+				indent--; print ("}");
+				print ("[DynamicDependency (nameof (CreateContext))]");
+				print ("[DynamicDependency (nameof (TrampolineType))]");
+				print ("[DynamicDependency (\"Invoke\", typeof ({0}))]", nativeStaticName);
+				print ("static {0} ()", nativeStaticName);
+				print ("{"); indent++;
+				print ("GC.KeepAlive (null);");
+				indent--; print ("}");
+			} else {
+				print ("[UnmanagedCallersOnly]");
+				print ("[UserDelegateType (typeof ({0}))]", ti.UserDelegate);
+			}
+			print ("internal {0}unsafe {1} Invoke ({2}) {{", isGeneric ? "" : "static ", ti.ReturnType, ti.Parameters);
 			indent++;
-			print ("var del = BlockLiteral.GetTarget<{0}> (block);", ti.UserDelegate);
+			if (isGeneric)
+				print ("var del = Callback;");
+			else
+				print ("var del = BlockLiteral.GetTarget<{0}> (block);", ti.UserDelegate);
 			bool is_void = ti.ReturnType == "void";
 			// FIXME: right now we only support 'null' when the delegate does not return a value
 			// otherwise we will need to know the default value to be returned (likely uncommon)
@@ -1678,8 +1773,14 @@ public partial class Generator : IMemberGatherer {
 			print ("internal static unsafe BlockLiteral CreateBlock ({0} callback)", ti.UserDelegate);
 			print ("{");
 			indent++;
-			print ("delegate* unmanaged<{0}> trampoline = &Invoke;", ti.FunctionPointerSignature);
-			print ("return new BlockLiteral (trampoline, callback, typeof ({0}), nameof (Invoke));", ti.StaticName);
+			if (isGeneric) {
+				print ("delegate* unmanaged<{0}> trampoline = &{1}.Invoke;", ti.FunctionPointerSignature, nativeStaticName);
+				print ("var context = CreateContext (callback);");
+				print ("return new BlockLiteral (trampoline, context, typeof ({0}), nameof ({0}.Invoke));", nativeStaticName);
+			} else {
+				print ("delegate* unmanaged<{0}> trampoline = &Invoke;", ti.FunctionPointerSignature);
+				print ("return new BlockLiteral (trampoline, callback, typeof ({0}), nameof (Invoke));", ti.StaticName);
+			}
 			indent--;
 			print ("}");
 			indent--;
@@ -1690,18 +1791,18 @@ public partial class Generator : IMemberGatherer {
 			//
 			print ("");
 			PrintExperimentalAttribute (ti.Type);
-			print ($"internal sealed class {ti.NativeInvokerName} : TrampolineBlockBase {{");
+			print ($"internal sealed class {ti.NativeInvokerName} : TrampolineBlockBase{ti.GenericConstraints} {{");
 			indent++;
 			print ("{0} invoker;", ti.DelegateName);
 			print ("");
 			print_generated_code ();
-			print ("public unsafe {0} (BlockLiteral *block) : base (block)", ti.NativeInvokerName);
+			print ("public unsafe {0} (BlockLiteral *block) : base (block)", ti.NativeInvokerTypeName);
 			print ("{"); indent++;
 			print ("invoker = block->GetDelegateForBlock<{0}> ();", ti.DelegateName);
 			indent--; print ("}");
 			print ("");
 			print ("[DynamicDependency (nameof (Create))]");
-			print ($"static {ti.NativeInvokerName} ()");
+			print ($"static {ti.NativeInvokerTypeName} ()");
 			print ("{");
 			print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
 			print ("}");
@@ -2926,6 +3027,9 @@ public partial class Generator : IMemberGatherer {
 		if (type.Namespace == "System" && type.Name.StartsWith ("Action", StringComparison.Ordinal))
 			return;
 
+		if (type.IsGenericType)
+			type = type.GetGenericTypeDefinition ();
+
 		if (!delegate_types.ContainsKey (type.FullName!))
 			delegate_types [type.FullName!] = type.GetMethod ("Invoke")!;
 	}
@@ -2949,7 +3053,7 @@ public partial class Generator : IMemberGatherer {
 			if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
 				if (!AttributeManager.HasAttribute<WrapAttribute> (mi)) {
 					var ti = MakeTrampoline (parType);
-					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerAttributeName);
 				} else {
 					EnsureDelegateCreation (parType);
 				}
@@ -4588,7 +4692,7 @@ public partial class Generator : IMemberGatherer {
 	{
 		if (mi.ReturnType.IsSubclassOf (TypeCache.System_Delegate)) {
 			var ti = MakeTrampoline (mi.ReturnType);
-			print ("[return: DelegateProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.StaticName);
+			print ("[return: DelegateProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.StaticAttributeName);
 		}
 	}
 
@@ -4596,7 +4700,7 @@ public partial class Generator : IMemberGatherer {
 	{
 		if (type.IsSubclassOf (TypeCache.System_Delegate)) {
 			var ti = MakeTrampoline (type);
-			print ("[param: BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
+			print ("[param: BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerAttributeName);
 		}
 	}
 
@@ -4940,6 +5044,12 @@ public partial class Generator : IMemberGatherer {
 					print ("/// <summary>A delegate that represents the callback for the corresponding Objective-C delegate/protocol method.</summary>");
 
 				var del = mi.DeclaringType;
+				var constraints = "";
+				if (del.IsGenericTypeDefinition) {
+					var arguments = del.GetGenericArguments ();
+					shortName = shortName.RemoveArity () + "<" + string.Join (", ", arguments.Select (v => v.Name)) + ">";
+					constraints = GetGenericConstraints (arguments);
+				}
 
 				PrintExperimentalAttribute (mi.DeclaringType);
 				if (AttributeManager.HasAttribute (mi.DeclaringType, "MonoNativeFunctionWrapper"))
@@ -4947,12 +5057,13 @@ public partial class Generator : IMemberGatherer {
 
 				var accessibility = mi.DeclaringType.IsInternal (this) ? "internal" : "public";
 				var isUnsafe = mi.GetParameters ().Any ((v => v.ParameterType.IsPointer)) || mi.ReturnType.IsPointer;
-				print ("{3}{4} delegate {0} {1} ({2});",
+				print ("{3}{4} delegate {0} {1} ({2}){5};",
 					   TypeManager.RenderType (mi.ReturnType, mi.ReturnTypeCustomAttributes),
 					   shortName,
 					   RenderParameterDecl (mi.GetParameters ()),
 					   accessibility,
-					   isUnsafe ? " unsafe" : string.Empty);
+					   isUnsafe ? " unsafe" : string.Empty,
+					   constraints);
 			}
 
 			if (group.Namespace is not null) {
@@ -5147,7 +5258,7 @@ public partial class Generator : IMemberGatherer {
 				sb.Append (", ReturnType = typeof (").Append (TypeManager.RenderType (retType)).Append (")");
 				if (retType.IsSubclassOf (TypeCache.System_Delegate)) {
 					var ti = MakeTrampoline (retType);
-					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticName})");
+					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticAttributeName})");
 				}
 			}
 			var parameters = mi.GetParameters ();
@@ -5178,7 +5289,7 @@ public partial class Generator : IMemberGatherer {
 					var parType = parameters [i].ParameterType;
 					if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
 						var ti = MakeTrampoline (parType);
-						blockProxies [i] = $"typeof (ObjCRuntime.Trampolines.{ti.NativeInvokerName})";
+						blockProxies [i] = $"typeof (ObjCRuntime.Trampolines.{ti.NativeInvokerAttributeName})";
 						anyblockProxy = true;
 					}
 				}
@@ -5224,9 +5335,9 @@ public partial class Generator : IMemberGatherer {
 			if (propType.IsSubclassOf (TypeCache.System_Delegate)) {
 				var ti = MakeTrampoline (propType);
 				if (pi.SetMethod is not null)
-					sb.Append ($", ParameterBlockProxy = new Type [] {{ typeof (ObjCRuntime.Trampolines.{ti.NativeInvokerName}) }}");
+					sb.Append ($", ParameterBlockProxy = new Type [] {{ typeof (ObjCRuntime.Trampolines.{ti.NativeInvokerAttributeName}) }}");
 				if (pi.GetMethod is not null)
-					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticName})");
+					sb.Append ($", ReturnTypeDelegateProxy = typeof (ObjCRuntime.Trampolines.{ti.StaticAttributeName})");
 			}
 			sb.Append (")]");
 			print (sb.ToString ());
@@ -7676,7 +7787,7 @@ public partial class Generator : IMemberGatherer {
 					continue;
 
 				// This formats the delegate 
-				delegate_types [deltype.FullName!] = deltype.GetMethod ("Invoke")!;
+				EnsureDelegateCreation (deltype);
 			}
 
 			if (eventArgTypes.Count > 0) {

@@ -4087,7 +4087,7 @@ namespace Registrar {
 								var creatorMethod = GetBlockWrapperCreator (method, i);
 								if (creatorMethod is null) {
 									exceptions.Add (ErrorHelper.CreateWarning (App, 4174, method.Method, Errors.MT4174, method.DescriptiveMethodName, i + 1));
-								} else if (TryCreateTokenReference (creatorMethod, TokenType.Method, out var creator_method_token_ref, out _)) {
+								} else if (!creatorMethod.DeclaringType.HasGenericParameters && TryCreateTokenReference (creatorMethod, TokenType.Method, out var creator_method_token_ref, out _)) {
 									token = $"0x{creator_method_token_ref:X} /* {creatorMethod.FullName} */ ";
 								}
 							}

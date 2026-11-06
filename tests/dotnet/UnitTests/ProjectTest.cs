@@ -1464,6 +1464,42 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (projectPath, GetDefaultProperties (runtimeIdentifiers));
 		}
 
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		public void LibraryBundleResourcesSurviveIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var config = bundleOriginalResources ? "DebugOriginal" : "DebugCompiled";
+			var projectPath = GetProjectPath ("AppWithLibraryWithResourcesReference", runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (projectPath);
+			Clean (GetProjectPath ("LibraryWithResources", platform: platform));
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = config;
+			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+
+			DotNet.AssertBuild (projectPath, properties);
+			var resourcePath = Path.Combine (GetResourcesDirectory (platform, appPath), "C.ttf");
+			Assert.That (resourcePath, Does.Exist, "Library resource after initial build");
+			var expected = File.ReadAllBytes (resourcePath);
+
+			for (var i = 0; i < 3; i++) {
+				Directory.Delete (appPath, true);
+				var result = DotNet.AssertBuild (projectPath, properties);
+				AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_UnpackLibraryResources", $"Incremental build {i}");
+				Assert.That (resourcePath, Does.Exist, $"Library resource after incremental build {i}");
+				Assert.That (File.ReadAllBytes (resourcePath), Is.EqualTo (expected), $"Library resource contents after incremental build {i}");
+			}
+		}
+
 		public enum DuplicatedResourcesScenarios {
 			FirstLibraryAndSecondLibrary,
 			FirstLibraryAndExecutable,

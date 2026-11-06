@@ -226,9 +226,8 @@ namespace UIKit {
 		/// 	</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		[ObsoletedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("ios")]
 		[ObsoletedOSPlatform ("tvos")]
 		[ObsoletedOSPlatform ("maccatalyst")]

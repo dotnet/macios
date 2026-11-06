@@ -32,10 +32,17 @@ namespace UIKit {
 #endif
 	/// <summary>Edge insets that account for text direction.</summary>
 	///     <remarks>To be added.</remarks>
+#if MONOMAC
+	[SupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("ios")]
+	[UnsupportedOSPlatform ("tvos")]
+	[UnsupportedOSPlatform ("maccatalyst")]
+#else
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
+	[UnsupportedOSPlatform ("macos")]
+#endif
 	[StructLayout (LayoutKind.Sequential)]
 	public struct NSDirectionalEdgeInsets {
 

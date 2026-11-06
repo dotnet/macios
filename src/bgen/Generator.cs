@@ -2485,6 +2485,8 @@ public partial class Generator : IMemberGatherer {
 			return prop.DeclaringType?.Namespace;
 		case MethodInfo meth:
 			return meth.DeclaringType?.Namespace;
+		case FieldInfo field:
+			return field.DeclaringType?.Namespace;
 		default:
 			throw new NotImplementedException ($"FindNamespace on {item} of type {item.GetType ()}");
 		}
@@ -2519,28 +2521,20 @@ public partial class Generator : IMemberGatherer {
 	// As a final step, if we are on a namespace that flatly doesn't exist, drop it. Then if we don't have a not supported, add it
 	void StripIntroducedOnNamespaceNotIncluded (List<AvailabilityBaseAttribute> memberAvailability, MemberInfo context)
 	{
-		if (context is TypeInfo containingClass) {
-			var droppedPlatforms = new HashSet<PlatformName> ();
-
-			// Walk all members and look for introduced that are nonsense for our containing class's platform
-			foreach (var introduced in memberAvailability.Where (a => a.AvailabilityKind == AvailabilityKind.Introduced || a.AvailabilityKind == AvailabilityKind.Deprecated).ToList ()) {
-				// Hack - WebKit namespace has two distinct implementations with different types
-				// It can not be hacked in IsInSupportedFramework as AddUnlistedAvailability 
-				// will add iOS implied to the mac version and so on. So hard code it here...
-				if (FindNamespace (containingClass) == "WebKit" && introduced.Platform != PlatformName.TvOS) {
-					continue;
-				}
-				if (!IsInSupportedFramework (containingClass, introduced.Platform)) {
-					memberAvailability.Remove (introduced);
-					droppedPlatforms.Add (introduced.Platform);
-				}
+		var parentAvailability = GetAllParentAttributes (context);
+		foreach (var platform in BindingTouch.AllPlatformNames) {
+			// Hack - WebKit namespace has two distinct implementations with different types
+			// It can not be hacked in IsInSupportedFramework as AddUnlistedAvailability 
+			// will add iOS implied to the mac version and so on. So hard code it here...
+			if (FindNamespace (context) == "WebKit" && platform != PlatformName.TvOS) {
+				continue;
 			}
+			if (IsInSupportedFramework (context, platform) && !PlatformMarkedUnavailable (platform, parentAvailability))
+				continue;
 
-			// For each attribute we dropped, if we don't have an existing non-introduced, create one
-			foreach (var platform in droppedPlatforms) {
-				if (!memberAvailability.Any (a => platform == a.Platform && a.AvailabilityKind != AvailabilityKind.Introduced)) {
-					memberAvailability.Add (AttributeFactory.CreateUnsupportedAttribute (platform));
-				}
+			var removed = memberAvailability.RemoveAll (a => a.Platform == platform && a.AvailabilityKind != AvailabilityKind.Unavailable);
+			if (removed > 0 && !PlatformMarkedUnavailable (platform, memberAvailability)) {
+				memberAvailability.Add (AttributeFactory.CreateUnsupportedAttribute (platform));
 			}
 		}
 	}

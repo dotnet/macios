@@ -3603,7 +3603,9 @@ namespace Registrar {
 #endif
 				sb.AppendLine ("-(id) copyWithZone: (NSZone *) zone");
 				sb.AppendLine ("{");
-				sb.AppendLine ("return xamarin_copyWithZone_trampoline2 (self, _cmd, zone);");
+				sb.AppendLine (App.EnableInvokedSelectorTracking == true
+					? "return xamarin_copyWithZone_trampoline2_with_selector (self, _cmd, zone);"
+					: "return xamarin_copyWithZone_trampoline2 (self, _cmd, zone);");
 				sb.AppendLine ("}");
 				return true;
 			case Trampoline.RetainWeakReference:
@@ -3628,10 +3630,17 @@ namespace Registrar {
 				if (customConformsToProtocol) {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
+					var trackSelector = App.EnableInvokedSelectorTracking == true;
+					if (trackSelector)
+						sb.AppendLine ("BOOL rv;");
+					BeginSelectorTracking (sb);
 					sb.AppendLine ("GCHandle exception_gchandle;");
 					sb.AppendLine ("GCHandle obj_gchandle = xamarin_get_gchandle (self);");
-					sb.AppendLine ("BOOL rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;");
+					sb.AppendLine (trackSelector
+						? "rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;"
+						: "BOOL rv = xamarin_invoke_conforms_to_protocol (obj_gchandle, self, (Protocol *) protocol, &exception_gchandle) != 0;");
 					sb.AppendLine ("xamarin_process_managed_exception_gchandle (exception_gchandle);");
+					EndSelectorTracking (sb);
 					sb.AppendLine ("return rv;");
 					sb.AppendLine ("}");
 					return true;
@@ -4109,6 +4118,25 @@ namespace Registrar {
 			}
 		}
 
+		void BeginSelectorTracking (AutoIndentStringBuilder sb)
+		{
+			if (App.EnableInvokedSelectorTracking != true)
+				return;
+			sb.WriteLine ("SEL previous_selector = xamarin_set_invoked_selector (_cmd);");
+			sb.WriteLine ("@try {");
+		}
+
+		void EndSelectorTracking (AutoIndentStringBuilder sb)
+		{
+			if (App.EnableInvokedSelectorTracking != true)
+				return;
+			sb.WriteLine ("} @catch (id exception) {");
+			sb.WriteLine ("xamarin_set_invoked_selector (previous_selector);");
+			sb.WriteLine ("@throw;");
+			sb.WriteLine ("}");
+			sb.WriteLine ("xamarin_set_invoked_selector (previous_selector);");
+		}
+
 		void Specialize (AutoIndentStringBuilder sb, ObjCMethod method, List<Exception> exceptions)
 		{
 			if (SpecializeTrampoline (sb, method, exceptions))
@@ -4443,14 +4471,18 @@ namespace Registrar {
 			sb.WriteLine (GetObjCSignature (method, exceptions));
 			if (merge_bodies) {
 				sb.WriteLine ("{");
+				var trackSelector = App.EnableInvokedSelectorTracking == true;
+				if (trackSelector && (isCtor || !isVoid))
+					sb.WriteLine ($"{rettype} rv;");
+				BeginSelectorTracking (sb);
 				if (!isGeneric)
 					sb.Write ("static ");
 				sb.WriteLine ("MonoMethod *managed_method = NULL;");
 				if (isCtor) {
 					sb.WriteLine ("bool call_super = false;");
-					sb.Write ("id rv = ");
+					sb.Write (trackSelector ? "rv = " : "id rv = ");
 				} else if (!isVoid) {
-					sb.Write ("return ");
+					sb.Write (trackSelector ? "rv = " : "return ");
 				}
 				sb.Write (b.Name);
 				sb.Write (" (self, _cmd, &managed_method");
@@ -4465,8 +4497,12 @@ namespace Registrar {
 				sb.WriteLine (");");
 				if (isCtor) {
 					GenerateCallToSuperForConstructor (sb, method, exceptions);
-					sb.WriteLine ("return rv;");
+					if (!trackSelector)
+						sb.WriteLine ("return rv;");
 				}
+				EndSelectorTracking (sb);
+				if (trackSelector && (isCtor || !isVoid))
+					sb.WriteLine ("return rv;");
 				sb.WriteLine ("}");
 			} else {
 				sb.WriteLine (body);
@@ -4575,6 +4611,7 @@ namespace Registrar {
 				sb.WriteLine ($"bool call_super = false;");
 			if (hasReturnType)
 				sb.WriteLine ($"{callbackReturnType} rv = {{ 0 }};");
+			BeginSelectorTracking (sb);
 			if (method.CurrentTrampoline == Trampoline.CopyWithZone2) {
 				sb.WriteLine ("id p0 = (id)zone;");
 				sb.WriteLine ("GCHandle gchandle;");
@@ -4611,9 +4648,9 @@ namespace Registrar {
 				sb.Indent ().WriteLine ("xamarin_set_gchandle_with_flags (self, gchandle, flags);").Unindent ();
 			}
 
+			EndSelectorTracking (sb);
 			if (hasReturnType)
 				sb.WriteLine ("return rv;");
-
 			sb.WriteLine ("}");
 		}
 #endif

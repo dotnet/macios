@@ -340,6 +340,16 @@ namespace Xamarin.Linker {
 					}),
 					new SaveValue ((key, storage) => saveNullableBool (key, DynamicRegistrationSupported, storage))
 				)},
+				{ "EnableInvokedSelectorTracking", (
+					new LoadValue ((key, value) => {
+						if (string.IsNullOrEmpty (value))
+							return;
+						if (!TryParseOptionalBoolean (value, out var enabled))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						Application.EnableInvokedSelectorTracking = enabled;
+					}),
+					new SaveValue ((key, storage) => saveNullableBool (key, Application.EnableInvokedSelectorTracking, storage))
+				)},
 				{ "EnableSGenConc", (
 					new LoadValue ((key, value) => Application.EnableSGenConc = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableSGenConc ? "true" : "false")}"))

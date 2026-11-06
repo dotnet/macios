@@ -179,6 +179,7 @@ namespace ObjCRuntime {
 			IsSimulator = 0x10,
 			IsCoreCLR = 0x20,
 			IsNativeAOT = 0x40,
+			InvokedSelectorTracking = 0x80,
 		}
 
 		[StructLayout (LayoutKind.Sequential)]
@@ -209,6 +210,28 @@ namespace ObjCRuntime {
 		}
 
 		internal static unsafe InitializationOptions* options;
+
+		/// <summary>Gets the selector of the innermost active Objective-C-to-managed invocation on the current thread.</summary>
+		/// <value>The invoked selector, or <see langword="null" /> when no selector invocation is active.</value>
+		/// <remarks>
+		///   <para>Tracking is enabled automatically when build inputs reference this property. Set the
+		///   <c>EnableInvokedSelectorTracking</c> MSBuild property to <c>true</c> when accessing it through reflection.</para>
+		///   <para>Nested invocations temporarily replace the selector and restore it on return. Direct managed
+		///   calls do not change it. Capture the value before starting asynchronous work; it does not flow with
+		///   the execution context.</para>
+		/// </remarks>
+		/// <exception cref="NotSupportedException">Selector tracking was not enabled when building the application.</exception>
+		public static unsafe Selector? InvokedSelector {
+			get {
+				if ((options->Flags & InitializationFlags.InvokedSelectorTracking) == 0)
+					throw new NotSupportedException ("Selector tracking is disabled. Build with EnableInvokedSelectorTracking=true to enable it.");
+				var handle = xamarin_get_invoked_selector ();
+				return handle == IntPtr.Zero ? null : new Selector (handle, false);
+			}
+		}
+
+		[DllImport ("__Internal")]
+		static extern IntPtr xamarin_get_invoked_selector ();
 
 		public static class ClassHandles {
 			static NativeHandle unused;

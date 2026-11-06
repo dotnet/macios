@@ -184,13 +184,8 @@ public class AssemblyPreparer : IDisposable {
 
 		steps.Add (new InlineDlfcnMethodsStep ());
 
-		// Only add DetectApiUsageStep if it's needed:
-		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, but
-		//   Export attribute removal still needs the step to detect NSXpcInterface reflection.
-		// * If nothing is being trimmed, the dynamic registrar (which lives in the platform assembly, an SDK
-		//   assembly that's only trimmed when trimming is enabled) can't be removed, so there's nothing to compute.
-		if (configuration.Application.AreAnyAssembliesTrimmed && (!configuration.DynamicRegistrationSupported.HasValue || configuration.Application.TrimExportAttributes != false))
-			steps.Add (new DetectApiUsageStep ());
+		// Selector tracking must also be detected in untrimmed builds.
+		steps.Add (new DetectApiUsageStep ());
 
 		// PreMarkDispatcher: I don't think we need this one
 		steps.Add (new ManagedRegistrarStep ());

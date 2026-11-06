@@ -31,6 +31,7 @@ xamarin_get_exception_for_method (int code, GCHandle inner_exception_gchandle, c
 	return exception_gchandle;
 }
 
+#ifndef XAMARIN_TRACK_INVOKED_SELECTOR
 GCHandle
 xamarin_get_exception_for_parameter (int code, GCHandle inner_exception_gchandle, const char *reason, SEL sel, MonoMethod *method, MonoType *p, int i, bool to_managed)
 {
@@ -77,6 +78,7 @@ xamarin_nsstring_to_string (MonoDomain *domain, NSString *obj)
 		domain = mono_domain_get ();
 	return mono_string_new (domain, [obj UTF8String]);
 }
+#endif
 
 void
 xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel, iterator_func iterator, marshal_return_value_func marshal_return_value, void *context)

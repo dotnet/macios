@@ -145,12 +145,33 @@ Classify reviewed, already-shipped discrepancies in the appropriate `.ignore`
 files; use `.todo` for short-term fixes. Do not infer new baselines from an older
 SDK or hide all uses of a delegate after checking only one of them.
 
+### Enum member values
+
+`EnumCheck` compares numeric values for members whose native name is the native
+enum name followed by the managed member name. Exact-case matches take precedence;
+case-insensitive matching is used only when the native name is unambiguous. This detects
+reordered members even when both enums contain the same set of numeric values.
+Aliases are checked individually. Renamed members that do not follow this naming
+convention still receive the existing missing/extra numeric value checks.
+
+The name-based check skips unavailable or obsolete managed members and unavailable
+or deprecated native members and enums, including plain `deprecated` attributes
+and availability/deprecation attributes on the enum's naming typedef. It preserves the existing equivalence
+between 32-bit and 64-bit all-bits-set values for unsigned native enums.
+Discrepancies are reported as `!wrong-enum-value!` and can be reviewed and classified
+using the usual `.ignore` and `.todo` files.
+
+Run the focused synthetic-header tests with the pinned Clang runtime:
+
+```sh
+make -C tests/xtro-sharpie/UnitTests run-tests TEST_FILTER="--filter FullyQualifiedName~EnumTests"
+```
+
 ### Ideas
 
 Anything we do not check but for which data is available, e.g.
 
 * NullAllowed;
-* Enum member values;
 * Generic updates to existing API (need to find a way to avoid breaking changes first)
 
 

@@ -2085,6 +2085,36 @@ foo.LoadFiles (new NSUrl (url1), new NSUrl (url2), new NSUrl (url3));
 This has the added advantage that it does not require users
 to create an array purely for passing elements.
 
+### ReadOnlySpan&lt;char&gt; parameters
+
+An `NSString` input parameter can also be bound as `ReadOnlySpan<char>`. This lets
+callers pass a slice of a managed string, an array, or stack-allocated characters
+without allocating an intermediate managed string:
+
+```csharp
+[Bind ("initWithString:attributes:")]
+NativeHandle Constructor (ReadOnlySpan<char> str, [NullAllowed] NSDictionary attributes);
+```
+
+The generator copies the characters into a temporary native string and releases
+that string after the native call. An empty or default span creates an empty
+native string, not `nil`. The span's backing storage is not retained by native
+code. Existing `string` overloads can be kept alongside span overloads.
+
+Use `[Bind]` rather than `[Export]` for span overloads. These are managed-only
+wrappers: exporting them would attempt to register an unsupported native callback
+signature, and overloads with the same selector would conflict during registration.
+
+For example, `NSAttributedString` and `NSMutableAttributedString` accept slices:
+
+```csharp
+using var text = new NSAttributedString ("prefix-text-suffix".AsSpan (7, 4));
+```
+
+This support applies to managed-to-native input parameters representing
+`NSString`, not native `char *` parameters, `ref`/`out` parameters, native
+callbacks, or span return values.
+
 <a name="plainstring"></a>
 
 ### PlainString

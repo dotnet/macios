@@ -1021,6 +1021,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.Trans
 Microsoft.MacCatalyst.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Auto
 Microsoft.MacCatalyst.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::BStr
 Microsoft.MacCatalyst.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Unicode
+Microsoft.MacCatalyst.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Utf8
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::TypeEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer..ctor()

@@ -91,6 +91,23 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		[TestCase ("INVALID_RETURN_TYPE")]
+		[TestCase ("VOID_RETURN_TYPE")]
+		[TestCase ("ABSTRACT_RETURN_TYPE")]
+		[TestCase ("DICTIONARY_RETURN_TYPE")]
+		[TestCase ("BINDAS_RETURN_TYPE")]
+		public void AlwaysReturnNewInstanceInvalidReturn (string define)
+		{
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				Defines = new [] { define },
+			};
+			bgen.AddTestApiDefinition ("always-return-new-instance.cs");
+			bgen.AssertExecuteError ("invalid fresh-wrapper return type");
+			bgen.AssertError (1130, "The return value of 'NewInstances.Font.Invalid' uses [AlwaysReturnNewInstance], but is not a concrete NSObject binding type.");
+		}
+
+		[Test]
 		[TestCase (Profile.iOS)]
 		public void BI1036 (Profile profile)
 		{

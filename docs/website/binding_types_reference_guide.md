@@ -1011,6 +1011,30 @@ as your thread did not return control to the main loop. Uf your thread was some
 sort of background downloader that is always alive and waiting for work, the
 images would never be released.
 
+### AlwaysReturnNewInstanceAttribute
+
+Apply `[return: AlwaysReturnNewInstance]` to a method return, or
+`[AlwaysReturnNewInstance]` to a read-only property, when each result must have
+an independently disposable managed wrapper. For example, native font factories
+cache font objects, but disposing one returned wrapper must not invalidate another.
+
+```csharp
+[Static]
+[Export ("systemFontOfSize:")]
+[return: AlwaysReturnNewInstance]
+NSFont CreateSystemFont (nfloat size);
+```
+
+The generator constructs the declared binding type directly instead of consulting
+the managed object cache. The return type must be a concrete Objective-C binding
+class with an accessible native-handle constructor. This also means that native
+subclasses are wrapped as the declared managed type.
+
+Use `[return: NullAllowed]` (or `[NullAllowed]` on a property) for failable results;
+a null native handle stays null. Retained returns annotated with `[return: Release]`
+are balanced after the wrapper takes its own reference. Do not apply this attribute
+to types that rely on a unique managed instance for native callbacks or managed state.
+
 ### ForcedTypeAttribute
 
 The `[ForcedTypeAttribute]` is used to enforce the creation of a managed type even

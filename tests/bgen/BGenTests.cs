@@ -854,6 +854,23 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void AlwaysReturnNewInstance ()
+		{
+			var bgen = BuildFile (Profile.iOS, false, "always-return-new-instance.cs");
+			var type = bgen.ApiAssembly.MainModule.GetType ("NewInstances.Font");
+			var instructions = bgen.ApiAssembly.MainModule.GetTypes ().Where (candidate => candidate == type || candidate.DeclaringType == type)
+				.SelectMany (candidate => candidate.Methods).Where (method => method.HasBody)
+				.SelectMany (method => method.Body.Instructions).ToArray ();
+			Assert.That (instructions.Count (instruction => instruction.OpCode.Code == Code.Newobj
+				&& instruction.Operand is MethodReference method && method.DeclaringType.FullName == type.FullName),
+				Is.EqualTo (7), "Static, direct, and super return paths construct fresh wrappers");
+			Assert.That (instructions.Any (instruction => instruction.Operand is MethodReference method
+				&& method.Name == "GetNSObject"), Is.False, "No managed object cache lookup");
+			Assert.That (instructions.Count (instruction => instruction.Operand is MethodReference method
+				&& method.Name == "DangerousRelease"), Is.EqualTo (2), "Owned direct and super returns balance the constructor retain");
+		}
+
+		[Test]
 		public void ForcedType ()
 		{
 			var bgen = BuildFile (Profile.iOS, false, "forcedtype.cs");

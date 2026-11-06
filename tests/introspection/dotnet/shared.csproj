@@ -99,6 +99,12 @@
     <Compile Include="$(IntrospectionTestDirectory)\ApiStructTest.cs">
       <Link>ApiStructTest.cs</Link>
     </Compile>
+    <Compile Include="$(IntrospectionTestDirectory)\ApiStructSizeTest.cs">
+      <Link>ApiStructSizeTest.cs</Link>
+    </Compile>
+    <Compile Include="$(IntrospectionTestDirectory)\ApiStructSizeTest.generated.cs">
+      <Link>ApiStructSizeTest.generated.cs</Link>
+    </Compile>
     <Compile Include="$(IntrospectionTestDirectory)\ApiTypoTest.cs">
       <Link>ApiTypoTest.cs</Link>
     </Compile>
@@ -145,6 +151,7 @@
 
   <ItemGroup>
     <None Include="Info.plist" />
+    <NativeReference Include="$(TestLibrariesDirectory)\.libs\libstructsizes.xcframework" Kind="Static" />
   </ItemGroup>
 
   <ItemGroup>

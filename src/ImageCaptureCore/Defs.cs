@@ -109,6 +109,8 @@ namespace ImageCaptureCore {
 		MetadataAlreadyFetching = ICReturnCodeOffset.Metadata - 1,
 		MetadataCanceled = ICReturnCodeOffset.Metadata - 2,
 		MetadataInvalid = ICReturnCodeOffset.Metadata - 3,
+		/// <summary>The ExFAT volume is invalid and cannot be enumerated.</summary>
+		ExFatVolumeInvalid = 21200,
 		MultiErrorDictionary = -30000,
 	}
 

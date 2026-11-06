@@ -9,6 +9,31 @@ ms.date: 12/05/2024
 Build items control how .NET for iOS, Mac Catalyst, macOS, and tvOS
 application or library projects are built.
 
+## AdditionalAppClips
+
+An item group that contains any additional prebuilt [App Clips](app-clips.md) (for instance built by Xcode) to copy into the app bundle's `AppClips` directory.
+
+The following metadata can be set:
+
+* Include: The path to the build directory for the Xcode App Clip project.
+* Name: The name of the App Clip.
+* BuildOutput: This value is appended to the `Include` value to produce the location of the `.app` bundle. Typically Xcode will place simulator and device builds in different locations, so this can be used to have a single `AdditionalAppClips` entry pointing to two different bundles, depending on whether building for the simulator or device.
+* CodesignEntitlements: Specifies the entitlements to use when signing the App Clip. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists).
+* CodesignWarnIfNoEntitlements: A warning will be produced if no `CodesignEntitlements` value is set. This property can be set to `false` to silence this warning.
+
+Example:
+
+```xml
+<ItemGroup>
+    <AdditionalAppClips Include="path/to/xcode/project">
+        <Name>MyClip</Name>
+        <BuildOutput Condition="'$(SdkIsSimulator)' == 'false'">DerivedData/MyClip/Build/Products/Debug-iphoneos</BuildOutput>
+        <BuildOutput Condition="'$(SdkIsSimulator)' == 'true'">DerivedData/MyClip/Build/Products/Debug-iphonesimulator</BuildOutput>
+        <CodesignEntitlements>path/to/Entitlements-appclip.plist</CodesignEntitlements>
+    </AdditionalAppClips>
+</ItemGroup>
+```
+
 ## AdditionalAppExtensions
 
 An item group that contains any additional app extensions to copy into the app bundle.

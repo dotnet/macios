@@ -880,6 +880,19 @@ Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) p
 
 See also [MonoMacResourcePrefix](#monomacresourceprefix) and [XamMacResourcePrefix](#xammacresourceprefix).
 
+## IsAppClip
+
+If the project is an [App Clip](app-clips.md).
+
+Set this property to `true` in an iOS executable project that should be embedded
+as an App Clip in a containing app. The containing app must reference the
+App Clip project using a `ProjectReference` with `IsAppClip="true"`.
+
+Release builds of App Clips require NativeAOT (`PublishAot=true`), otherwise the
+build fails (App Clips are limited in size by the App Store).
+
+This property is only supported on iOS.
+
 ## IpaIncludeArtwork
 
 If artwork should be included in the IPA.

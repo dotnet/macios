@@ -183,10 +183,20 @@ namespace Network {
 	public enum NWIPVersion {
 		/// <summary>Allow either IP version.</summary>
 		Any = 0,
+#if !XAMCORE_5_0
 		/// <summary>Use IPv4.</summary>
+		[Obsolete ("Use 'IPv4' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		Version4 = 1,
 		/// <summary>Use IPv6.</summary>
+		[Obsolete ("Use 'IPv6' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		Version6 = 2,
+#endif
+		/// <summary>Use IPv4.</summary>
+		IPv4 = 4,
+		/// <summary>Use IPv6.</summary>
+		IPv6 = 6,
 	}
 
 	/// <summary>Identifies the underlying media of a network interface.</summary>

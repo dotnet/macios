@@ -8,6 +8,18 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetProjectTest : TestBaseClass {
+		[Test]
+		[Category ("WindowsInclusive")]
+		public void NoBindingEmbeddingFalse ()
+		{
+			var projectPath = Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.Shared.ObjCBinding.targets");
+			var properties = new Dictionary<string, string> ();
+			properties ["NoBindingEmbedding"] = "false";
+			var rv = DotNet.AssertBuildFailure (projectPath, properties, target: "_PrepareNativeReferences");
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			AssertErrorMessages (errors, "Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
+		}
+
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
@@ -3447,15 +3459,11 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		public void StripEmbeddedDynamicFramework (ApplePlatform platform, string runtimeIdentifiers)
+		public void StripBindingDynamicFramework (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			// A binding project with 'NoBindingEmbedding=false' embeds its native framework inside the
-			// binding assembly. The managed linker extracts the framework without any 'Kind' metadata, so
-			// make sure such an embedded dynamic framework is stripped correctly (with 'strip -S -x', and
-			// not a full strip, which fails for a dynamic library that references undefined symbols).
-			// The framework embedded by this project (XTest.framework) references the Objective-C runtime,
-			// so a full strip of it would fail. We build in Release (so the linker runs and extracts the
-			// framework) and set NoSymbolStrip=false (so the framework is stripped even for the simulator).
+			// XTest.framework references the Objective-C runtime, so a full strip would fail.
+			// Build in Release and set NoSymbolStrip=false to verify that the framework from the
+			// binding resource package is stripped correctly, even for the simulator.
 			// Ref: https://github.com/dotnet/macios/issues/25952
 			var project = "EmbeddedFrameworkInBindingProjectApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3466,9 +3474,10 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["NoSymbolStrip"] = "false";
-			var rv = DotNet.AssertBuildFailure (project_path, properties);
-			AssertErrorMessages (BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray (),
-				"Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
+			DotNet.AssertBuild (project_path, properties);
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
 		[Test]

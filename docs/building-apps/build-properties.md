@@ -1300,15 +1300,13 @@ using CoreCLR).
 ## NoBindingEmbedding
 
 > [!WARNING]
-> Setting this property to `false` is currently deprecated and will produce a build error in .NET 12+.
+> Setting this property to `false` is not supported in .NET 12+ and produces a build error.
 
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 
-The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
-
-> [!NOTE]
-> Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).
+The only supported value is `true` (the default), which means native libraries are put
+into a `.resources` directory (or `.resources.zip` file) next to the managed assembly.
 
 ## NoDSymUtil
 

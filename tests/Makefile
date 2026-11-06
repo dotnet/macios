@@ -127,6 +127,9 @@ killall:
 test-msbuild run-tests-msbuild:
 	$(MAKE) test-macdev-tests test-macdev-tasks
 
+run-tests-analyzers:
+	$(MAKE) -C analyzers run-tests
+
 # Example TEST_FILTER:
 #    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
@@ -177,6 +180,7 @@ endif
 	$(Q) mv "$@".tmp "$@"
 
 build-all:
+	$(MAKE) build -C analyzers
 	$(MAKE) build -C bgen
 	$(MAKE) build -C cecil-tests
 	$(MAKE) build -C dotnet/UnitTests

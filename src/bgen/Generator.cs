@@ -1367,6 +1367,19 @@ public partial class Generator : IMemberGatherer {
 					throw new BindingException (1008, true);
 
 				var export = GetExportAttribute (pi, out var wrapname);
+				if (pi.GetIndexParameters ().Length > 0) {
+					var indexerGetter = pi.GetGetMethod ();
+					var indexerSetter = pi.GetSetMethod ();
+					var hasWrappedGetter = indexerGetter is null || AttributeManager.HasAttribute<WrapAttribute> (indexerGetter);
+					var hasWrappedSetter = indexerSetter is null || AttributeManager.HasAttribute<WrapAttribute> (indexerSetter) || AttributeManager.HasAttribute<NotImplementedAttribute> (indexerSetter);
+					if (export is not null || wrapname is not null ||
+						AttributeManager.IsStatic (pi) || AttributeManager.IsStatic (indexerGetter) || AttributeManager.IsStatic (indexerSetter) ||
+						AttributeManager.HasAttribute<FieldAttribute> (pi) ||
+						AttributeManager.HasAttribute<ExportAttribute> (indexerGetter) || AttributeManager.HasAttribute<ExportAttribute> (indexerSetter) ||
+						!hasWrappedGetter || !hasWrappedSetter)
+						throw new BindingException (1130, true, pi.DeclaringType, pi.Name);
+					continue;
+				}
 				if (export is null) {
 					if (wrapname is not null)
 						continue;
@@ -2550,7 +2563,7 @@ public partial class Generator : IMemberGatherer {
 	{
 		string name = method.Name;
 		if (name.StartsWith ("get_", StringComparison.Ordinal) || name.StartsWith ("set_", StringComparison.Ordinal)) {
-			return method.DeclaringType!.GetProperty (name.Substring (4));
+			return GetProperty (method);
 		}
 		return null;
 	}
@@ -2991,7 +3004,7 @@ public partial class Generator : IMemberGatherer {
 				if (!parType.IsValueType) {
 					if (AttributeManager.IsNullable (pi)) {
 						sb.Append ('?');
-					} else if (pi.Position == 0 && mi is MethodInfo minfo) {
+					} else if (mi is MethodInfo minfo && pi.Position == minfo.GetParameters ().Length - 1) {
 						// only need to check for setter, since we wouldn't get here for a getter.
 						var propertyInfo = GetProperty (minfo, getter: false, setter: true);
 						if (AttributeManager.IsNullable (propertyInfo)) {
@@ -4068,11 +4081,18 @@ public partial class Generator : IMemberGatherer {
 		var mod = minfo.GetVisibility ();
 		Type? inlinedType = pi.DeclaringType == type ? null : type;
 		GetAccessorInfo (pi, out var getter, out var setter, out var generate_getter, out var generate_setter);
+		var indexParameters = pi.GetIndexParameters ();
+		var propertyName = pi.Name.GetSafeParamName ();
+		if (indexParameters.Length > 0) {
+			var parameters = new StringBuilder ();
+			MakeSignatureFromParameterInfo (false, parameters, getter ?? setter ?? throw new BindingException (1130, true, pi.DeclaringType, pi.Name), type, indexParameters);
+			propertyName = $"this [{parameters}]";
+		}
 
 		var nullable = !pi.PropertyType.IsValueType && AttributeManager.IsNullable (pi);
 
 		// So we don't hide the get or set of a parent property with the same name, we need to see if we have a parent declaring the same property
-		var parentBaseType = TypeManager.GetParentTypeWithSameNamedProperty (ReflectionExtensions.GetBaseTypeAttribute (type, this), pi.Name);
+		var parentBaseType = indexParameters.Length == 0 ? TypeManager.GetParentTypeWithSameNamedProperty (ReflectionExtensions.GetBaseTypeAttribute (type, this), pi.Name) : null;
 
 		// If so, we're not static, and we can't both read and write, but they can
 		if (!minfo.is_static && !(pi.CanRead && pi.CanWrite) && (parentBaseType is not null && parentBaseType.CanRead && parentBaseType.CanWrite)) {
@@ -4161,7 +4181,7 @@ public partial class Generator : IMemberGatherer {
 		string? var_name = null;
 
 		// [Model] has properties that only throws, so there's no point in adding unused backing fields
-		if (!is_model && DoesPropertyNeedBackingField (pi) && !is_interface_impl && !minfo.is_static && !minfo.is_protocol_member && !DoesPropertyNeedDirtyCheck (pi, export)) {
+		if (indexParameters.Length == 0 && !is_model && DoesPropertyNeedBackingField (pi) && !is_interface_impl && !minfo.is_static && !minfo.is_protocol_member && !DoesPropertyNeedDirtyCheck (pi, export)) {
 			var_name = string.Format ("__mt_{0}_var{1}", pi.Name, minfo.is_static ? "_static" : "");
 
 			print_generated_code ();
@@ -4207,7 +4227,7 @@ public partial class Generator : IMemberGatherer {
 			   minfo.GetModifiers (),
 			   propertyTypeName,
 				nullable ? "?" : "",
-				pi.Name.GetSafeParamName ());
+				propertyName);
 		indent++;
 
 		if (minfo.has_inner_wrap_attribute) {
@@ -4901,10 +4921,13 @@ public partial class Generator : IMemberGatherer {
 	static PropertyInfo? GetProperty (MethodInfo method, bool getter = true, bool setter = true)
 	{
 		var props = method.DeclaringType!.GetProperties ();
-		if (method.GetParameters ().Length == 0)
-			return !getter ? null : props.FirstOrDefault (prop => prop.GetGetMethod () == method);
-		else
-			return !setter ? null : props.FirstOrDefault (prop => prop.GetSetMethod () == method);
+		return props.FirstOrDefault (prop => (getter && prop.GetGetMethod () == method) || (setter && prop.GetSetMethod () == method));
+	}
+
+	static bool HaveSamePropertySignature (PropertyInfo first, PropertyInfo second)
+	{
+		return first.Name == second.Name &&
+			first.GetIndexParameters ().Select (p => p.ParameterType).SequenceEqual (second.GetIndexParameters ().Select (p => p.ParameterType));
 	}
 
 	void RenderDelegates (Dictionary<string, MethodInfo> delegateTypes)
@@ -6556,8 +6579,8 @@ public partial class Generator : IMemberGatherer {
 
 			var field_exports = new List<PropertyInfo> ();
 			var notifications = new List<PropertyInfo> ();
-			var bound_properties = new List<string> (); // List of properties bound on the class itself (not via protocols)
-			var generated_properties = new List<string> (); // All properties that have been generated
+			var bound_properties = new List<PropertyInfo> (); // List of properties bound on the class itself (not via protocols)
+			var generated_properties = new List<PropertyInfo> (); // All properties that have been generated
 
 			foreach (var pi in GetTypeContractProperties (type).OrderBy (p => p.Name, StringComparer.Ordinal)) {
 
@@ -6578,17 +6601,17 @@ public partial class Generator : IMemberGatherer {
 				var hasNullableMismatch = false;
 				if (type == pi.DeclaringType || type.IsSubclassOf (pi.DeclaringType!)) {
 					// not an injected protocol property.
-					bound_properties.Add (pi.Name);
+					bound_properties.Add (pi);
 				} else {
 					// don't inject a protocol property if the class already
 					// implements the same property.
-					if (bound_properties.Contains (pi.Name))
+					if (bound_properties.Any (p => HaveSamePropertySignature (p, pi)))
 						continue;
 
-					var protocolsThatHaveThisProp = GetTypeContractProperties (type).Where (x => x.Name == pi.Name);
+					var protocolsThatHaveThisProp = GetTypeContractProperties (type).Where (x => HaveSamePropertySignature (x, pi));
 					if (protocolsThatHaveThisProp.Count () > 1) {
 						// If multiple protocols have this property and we haven't generated a copy yet
-						if (generated_properties.Contains (pi.Name))
+						if (generated_properties.Any (p => HaveSamePropertySignature (p, pi)))
 							continue;
 
 						// If there is a version that has get and set
@@ -6616,7 +6639,7 @@ public partial class Generator : IMemberGatherer {
 					}
 				}
 
-				generated_properties.Add (pi.Name);
+				generated_properties.Add (pi);
 				if (hasNullableMismatch)
 					print ("#pragma warning disable CS8766");
 				GenerateProperty (type, pi, instance_fields_to_clear_on_dispose, is_model);

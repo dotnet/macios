@@ -11,9 +11,6 @@ using NUnit.Framework;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
-using Xamarin.Tests;
-using Xamarin.Utils;
-
 #nullable enable
 
 namespace Cecil.Tests {

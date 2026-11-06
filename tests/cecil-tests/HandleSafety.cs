@@ -9,9 +9,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using NUnit.Framework;
 
-using Xamarin.Tests;
-using Xamarin.Utils;
-
 namespace Cecil.Tests {
 	[TestFixture]
 	public partial class HandleSafetyTest {

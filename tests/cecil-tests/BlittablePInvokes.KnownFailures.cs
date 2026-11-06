@@ -9,9 +9,6 @@ using Mono.Cecil.Cil;
 
 using ObjCRuntime;
 
-using Xamarin.Tests;
-using Xamarin.Utils;
-
 #nullable enable
 
 namespace Cecil.Tests {

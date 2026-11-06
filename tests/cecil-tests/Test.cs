@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 using NUnit.Framework;
 
@@ -121,7 +122,6 @@ namespace Cecil.Tests {
 			"wsprintfa", "wsprintfw", "wvnsprintf", "wvnsprintfa", "wvnsprintfw", "wvsprintf",
 			"wvsprintfa", "wvsprintfw",
 			"malloc", // not banned by binscope, but we want to use calloc instead
-			// keep up-to-date with the 'bannedCApi' list in tests/mtouch/MiscTests.cs
 		};
 
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
@@ -137,6 +137,42 @@ namespace Cecil.Tests {
 			// if multiple p/invoke are defined then the same symbol will show multiple times
 			// it's a feature :)
 			Assert.That (found, Is.Empty, string.Join (", ", found));
+		}
+
+
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void NoBannedApiInNativeCode (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			// we should not p/invoke into API that are banned (by MS) from the C runtime
+			// list is copied from binscope for mac (not all of them actually exists on macOS)
+			var bannedCApi = BannedCApi.Except (["memcpy"]); // memcpy is banned, but we use it a bunch, and so does dotnet/runtime
+
+			var runtimeIdentifiers = Configuration.GetRuntimeIdentifiers (platform);
+			var failed = new HashSet<string> ();
+			var librariesChecked = new HashSet<string> ();
+			foreach (var rid in runtimeIdentifiers) {
+				var nativedir = Path.Combine (Configuration.GetRuntimeDirectory (platform, rid), "native");
+				var paths = new HashSet<string> ();
+				paths.UnionWith (Directory.GetFileSystemEntries (nativedir, "*.a", SearchOption.AllDirectories));
+				paths.UnionWith (Directory.GetFileSystemEntries (nativedir, "*.dylib", SearchOption.AllDirectories));
+
+				foreach (var path in paths) {
+					var symbols = Configuration.GetUndefinedNativeSymbols (path, arch: "all");
+
+					var bannedSymbols = symbols.Intersect (bannedCApi.Select (v => "_" + v));
+					if (bannedSymbols.Any ())
+						failed.Add ($"{path}:\n\t{string.Join ("\n\t", bannedSymbols.ToArray ())}");
+				}
+
+				librariesChecked.UnionWith (paths);
+			}
+			Assert.IsEmpty (string.Join ("\n", failed.OrderBy (v => v)), "Libraries referencing banned symbols");
+			Assert.That (librariesChecked, Is.Not.Empty, "Must have found some libraries to check");
 		}
 
 		// from PlatformAvailability2.cs / keep in sync

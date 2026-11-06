@@ -1,0 +1,13 @@
+<Project DefaultTargets="Build">
+	<PropertyGroup>
+		<TargetFrameworkVersion>v11.0</TargetFrameworkVersion>
+		<!-- Import the shared source targets without requiring an installed Apple workload. -->
+		<_ProjectType>BuildHostTest</_ProjectType>
+	</PropertyGroup>
+
+	<Import Project="../../dotnet/targets/Xamarin.Shared.Sdk.targets" />
+
+	<Target Name="Build">
+		<Message Text="Build host check passed." Importance="high" />
+	</Target>
+</Project>

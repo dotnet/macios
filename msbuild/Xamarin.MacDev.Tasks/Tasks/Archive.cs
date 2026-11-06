@@ -307,7 +307,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		void ArchiveAppExtension (ITaskItem appex, string archiveDir)
 		{
-			var plist = PDictionary.OpenFile (Path.Combine (appex.ItemSpec, "Info.plist"));
+			var plist = PDictionary.OpenFile (PlatformFrameworkHelper.GetAppManifestPath (Platform, appex.ItemSpec));
 
 			if (IsWatchAppExtension (appex, plist, out var watchAppBundleDir)) {
 				var wk = Path.Combine (watchAppBundleDir, "_WatchKitStub", "WK");

@@ -17549,61 +17549,48 @@ namespace AppKit {
 	}
 
 	[NoMacCatalyst]
-	[StrongDictionary ("NSTextCheckingKey")]
+	[StrongDictionary]
 	interface NSTextCheckingOptions {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingOrthographyKey")]
 		NSOrthography Orthography { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingQuotesKey")]
 		string [] Quotes { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingReplacementsKey")]
 		NSDictionary Replacements { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingReferenceDateKey")]
 		NSDate ReferenceDate { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingReferenceTimeZoneKey")]
 		NSTimeZone ReferenceTimeZone { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingDocumentURLKey")]
 		NSUrl DocumentUrl { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("NSTextCheckingDocumentTitleKey")]
 		string DocumentTitle { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		string DocumentAuthor { get; set; }
-	}
-
-	[NoMacCatalyst]
-	[Internal, Static]
-	interface NSTextCheckingKey {
-		[Field ("NSTextCheckingOrthographyKey")]
-		NSString OrthographyKey { get; }
-		[Field ("NSTextCheckingQuotesKey")]
-		NSString QuotesKey { get; }
-		[Field ("NSTextCheckingReplacementsKey")]
-		NSString ReplacementsKey { get; }
-		[Field ("NSTextCheckingReferenceDateKey")]
-		NSString ReferenceDateKey { get; }
-		[Field ("NSTextCheckingReferenceTimeZoneKey")]
-		NSString ReferenceTimeZoneKey { get; }
-		[Field ("NSTextCheckingDocumentURLKey")]
-		NSString DocumentUrlKey { get; }
-		[Field ("NSTextCheckingDocumentTitleKey")]
-		NSString DocumentTitleKey { get; }
 		[Field ("NSTextCheckingDocumentAuthorKey")]
-		NSString DocumentAuthorKey { get; }
+		string DocumentAuthor { get; set; }
 	}
 
 	[NoMacCatalyst]

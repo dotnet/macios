@@ -2536,7 +2536,31 @@ getter and setter for the dictionary.
 This automatically generates a class that can be instantiated from an
 existing `NSDictionary` or that has been created new.
 
-This attribute takes one parameter, the name of the class containing
+Apply `[StrongDictionary]` without arguments and place a `[Field]` attribute
+directly on each property to specify its native `NSString` key:
+
+```csharp
+[StrongDictionary]
+interface MyOption {
+    [Field ("MYOptionNameKey", "__Internal")]
+    string Name { get; set; }
+
+    [Field ("MYOptionAgeKey", "__Internal")]
+    nint Age { get; set; }
+}
+```
+
+The generator loads and caches these keys in a private nested class. Availability
+attributes on the dictionary and its properties also apply to the generated
+keys. As with other `[Field]` bindings, specify the library name for third-party
+libraries (`"__Internal"` for statically linked symbols); platform bindings can
+infer the framework from the namespace. Keys must have non-empty symbol names
+and cannot use `SymbolAddress`.
+
+Inline `[Field]` keys can also be used in dictionaries with a key container.
+Properties without `[Field]` continue to use that container.
+
+Alternatively, this attribute takes one parameter, the name of the class containing
 the keys that are used to access the elements on the dictionary.   By
 default each property in the interface with the attribute will lookup
 a member in the specified type for a name with the suffix "Key".
@@ -2570,7 +2594,8 @@ dictionary to retrieve a string.   And will use the
 `NSNumber` which contains an int.
 
 If you want to use a different key, you can use the export attribute
-on the property, for example:
+on the property, for example (do not combine `[Export]` and `[Field]` on the same
+property):
 
 ```csharp
 [StrongDictionary ("MyColoringKeys")]

@@ -504,21 +504,11 @@ namespace CoreML {
 	}
 
 	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface MLFeatureValueImageOptionKeys {
-
-		[Field ("MLFeatureValueImageOptionCropRect")]
-		NSString CropRectKey { get; }
-
-		[Field ("MLFeatureValueImageOptionCropAndScale")]
-		NSString CropAndScaleKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("MLFeatureValueImageOptionKeys")]
+	[StrongDictionary]
 	interface MLFeatureValueImageOption {
+		[Field ("MLFeatureValueImageOptionCropRect")]
 		CGRect CropRect { get; set; }
+		[Field ("MLFeatureValueImageOptionCropAndScale")]
 		VNImageCropAndScaleOption CropAndScale { get; set; }
 	}
 
@@ -721,52 +711,36 @@ namespace CoreML {
 		NSDictionary<NSString, MLFeatureDescription> StateDescriptionsByName { get; }
 	}
 
-	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface MLModelMetadataKeys {
-
-		[Field ("MLModelDescriptionKey")]
-		NSString DescriptionKey { get; }
-
-		[Field ("MLModelVersionStringKey")]
-		NSString VersionStringKey { get; }
-
-		[Field ("MLModelAuthorKey")]
-		NSString AuthorKey { get; }
-
-		[Field ("MLModelLicenseKey")]
-		NSString LicenseKey { get; }
-
-		[Field ("MLModelCreatorDefinedKey")]
-		NSString CreatorDefinedKey { get; }
-	}
-
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds metadata related to a <see cref="CoreML.MLModel" />.</summary>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("MLModelMetadataKeys")]
+	[StrongDictionary]
 	interface MLModelMetadata {
 		/// <summary>A developer-meaningful description of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("MLModelDescriptionKey")]
 		string Description { get; }
 		/// <summary>A developer-meaningful identifier of the version of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("MLModelVersionStringKey")]
 		string VersionString { get; }
 		/// <summary>The author of the <see cref="CoreML.MLModel" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("MLModelAuthorKey")]
 		string Author { get; }
 		/// <summary>A name or short description of the license and link to a complete definition.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>
 		///           <para>This value should identify the license and provide a resource for the license's complete definition. For instance, "Creative Common License. More information available at http://places.csail.mit.edu"	.</para>
 		///         </remarks>
+		[Field ("MLModelLicenseKey")]
 		string License { get; }
 		/// <summary>Additional metadata defined by the model's creator.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("MLModelCreatorDefinedKey")]
 		string CreatorDefined { get; }
 	}
 

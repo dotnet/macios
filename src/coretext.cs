@@ -477,43 +477,23 @@ namespace CoreText {
 		NSString RemoveDuplicates { get; }
 	}
 
-	[Internal]
-	[Static]
-	interface CTFontDescriptorMatchingKeys {
-		[Field ("kCTFontDescriptorMatchingSourceDescriptor")]
-		NSString SourceDescriptorKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingDescriptors")]
-		NSString DescriptorsKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingResult")]
-		NSString ResultKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingPercentage")]
-		NSString PercentageKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingCurrentAssetSize")]
-		NSString CurrentAssetSizeKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingTotalDownloadedSize")]
-		NSString TotalDownloadedSizeKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingTotalAssetSize")]
-		NSString TotalAssetSizeKey { get; }
-
-		[Field ("kCTFontDescriptorMatchingError")]
-		NSString ErrorKey { get; }
-	}
-
-	[StrongDictionary ("CTFontDescriptorMatchingKeys")]
+	[StrongDictionary]
 	interface CTFontDescriptorMatchingProgress {
+		[Field ("kCTFontDescriptorMatchingSourceDescriptor")]
 		CTFontDescriptor SourceDescriptor { get; }
+		[Field ("kCTFontDescriptorMatchingDescriptors")]
 		CTFontDescriptor [] Descriptors { get; }
+		[Field ("kCTFontDescriptorMatchingResult")]
 		CTFontDescriptor [] Result { get; }
+		[Field ("kCTFontDescriptorMatchingPercentage")]
 		double Percentage { get; }
+		[Field ("kCTFontDescriptorMatchingCurrentAssetSize")]
 		long CurrentAssetSize { get; }
+		[Field ("kCTFontDescriptorMatchingTotalDownloadedSize")]
 		long TotalDownloadedSize { get; }
+		[Field ("kCTFontDescriptorMatchingTotalAssetSize")]
 		long TotalAssetSize { get; }
+		[Field ("kCTFontDescriptorMatchingError")]
 		NSError Error { get; }
 	}
 

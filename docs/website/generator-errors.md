@@ -353,6 +353,16 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The strong dictionary property '\*.\*' must specify a [Field] attribute or a key container in [StrongDictionary].
+
+Use `[Field ("NativeKey", "LibraryName")]` on the property, specify a key
+container with `[StrongDictionary ("KeyContainer")]`, or use an `[Export]`
+attribute with a fully qualified key container member.
+
+### <a name='BI1131'/>BI1131: The [Field] attribute on the strong dictionary property '\*.\*' must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants.
+
+### <a name='BI1132'/>BI1132: The strong dictionary property '\*.\*' cannot specify both [Field] and [Export]. Use [Field] for an inline key or [Export] for a key container member.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

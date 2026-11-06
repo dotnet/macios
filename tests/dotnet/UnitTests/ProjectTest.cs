@@ -3558,6 +3558,44 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void RaisesUncaughtObjectiveCExceptionEvent (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var projectPath = GetProjectPath ("ExceptionalTestApp", runtimeIdentifiers, platform, out var appPath);
+			Clean (projectPath);
+			DotNet.AssertBuild (projectPath, GetDefaultProperties ());
+
+			if (!CanExecute (platform, runtimeIdentifiers))
+				return;
+
+			var executable = GetNativeExecutable (platform, appPath);
+			for (var testCase = 3; testCase <= 8; testCase++) {
+				var env = new Dictionary<string, string?> {
+					{ "EXCEPTIONAL_TEST_CASE", testCase.ToString () },
+				};
+				var result = Execute (executable, out var output, out var magicWord, env);
+				var message = $"Test case {testCase}:\n{output}";
+				Assert.That (result.TimedOut, Is.False, message);
+				Assert.That (result.ExitCode, Is.Not.EqualTo (0), message);
+				Assert.That (output, Does.Contain (magicWord), message);
+				Assert.That (output, Does.Not.Contain ("did not terminate"), message);
+				Assert.That (output, Does.Not.Contain ("Unexpected"), message);
+				var expectsNotification = testCase != 5 && testCase != 6;
+				Assert.That (output.Split ("Uncaught event:").Length - 1, Is.EqualTo (expectsNotification ? 1 : 0), message);
+				Assert.That (output, Does.Contain (testCase >= 7 ? "Testing, testing" : "Uncaught test reason"), message);
+				if (testCase >= 7)
+					Assert.That (output, Does.Contain ("Original managed exception"), message);
+				if (testCase == 4 || testCase == 8) {
+					Assert.That (output, Does.Contain ("UncaughtObjectiveCException event (this exception will be ignored)"), message);
+					Assert.That (output, Does.Contain ("Uncaught handler failure"), message);
+				}
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		public void AppendRuntimeIdentifierToOutputPath_DisableCommandLine (ApplePlatform platform, string runtimeIdentifiers)

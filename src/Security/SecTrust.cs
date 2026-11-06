@@ -11,7 +11,6 @@
 #nullable enable
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
 using CoreFoundation;
@@ -95,7 +94,7 @@ namespace Security {
 			if (policies is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policies));
 
-			using (var array = NSArray.FromNSObjects (policies.ToArray ()))
+			using (var array = NSArray.FromNSObjects (new List<SecPolicy> (policies).ToArray ()))
 				SetPolicies (array.Handle);
 		}
 
@@ -380,7 +379,7 @@ namespace Security {
 			if (ocspResponses is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponses));
 
-			using (var array = NSArray.FromNSObjects (ocspResponses.ToArray ()))
+			using (var array = NSArray.FromNSObjects (new List<NSData> (ocspResponses).ToArray ()))
 				SetOCSPResponse (array.Handle);
 		}
 
@@ -420,7 +419,7 @@ namespace Security {
 			if (sct is null)
 				return SecTrustSetSignedCertificateTimestamps (Handle, IntPtr.Zero);
 
-			using (var array = NSArray.FromNSObjects (sct.ToArray ()))
+			using (var array = NSArray.FromNSObjects (new List<NSData> (sct).ToArray ()))
 				return SecTrustSetSignedCertificateTimestamps (Handle, array.Handle);
 		}
 

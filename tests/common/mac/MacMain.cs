@@ -7,6 +7,12 @@ namespace Xamarin.Mac.Tests {
 	static class MainClass {
 		static async Task<int> Main (string [] args)
 		{
+			if (args.Length == 1 && args [0] == "--test-dispatch-main") {
+				CoreFoundation.DispatchQueue.MainQueue.DispatchAsync (() => _exit (0));
+				CoreFoundation.DispatchQueue.MainIteration ();
+				return 1;
+			}
+
 			TestRuntime.NotifyLaunchCompleted ();
 
 			// Skip arguments added by VSfM/macOS when running from the IDE

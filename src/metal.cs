@@ -2735,7 +2735,7 @@ namespace Metal {
 		IMTLDynamicLibrary [] VertexPreloadedLibraries { get; set; }
 
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
-		[NullAllowed, Export ("vertexLinkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("vertexLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions VertexLinkedFunctions { get; set; }
 
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -2759,7 +2759,7 @@ namespace Metal {
 		IMTLDynamicLibrary [] FragmentPreloadedLibraries { get; set; }
 
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
-		[NullAllowed, Export ("fragmentLinkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("fragmentLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions FragmentLinkedFunctions { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -3518,11 +3518,11 @@ namespace Metal {
 		bool DepthWriteEnabled { [Bind ("isDepthWriteEnabled")] get; set; }
 
 		[Export ("frontFaceStencil", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		MTLStencilDescriptor FrontFaceStencil { get; set; }
 
 		[Export ("backFaceStencil", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		MTLStencilDescriptor BackFaceStencil { get; set; }
 
 		[Export ("label")]
@@ -4595,11 +4595,11 @@ namespace Metal {
 		MTLRenderPassColorAttachmentDescriptorArray ColorAttachments { get; }
 
 		[Export ("depthAttachment", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		MTLRenderPassDepthAttachmentDescriptor DepthAttachment { get; set; }
 
 		[Export ("stencilAttachment", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		MTLRenderPassStencilAttachmentDescriptor StencilAttachment { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -5566,7 +5566,7 @@ namespace Metal {
 		nuint MaxCallStackDepth { get; set; }
 
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
-		[NullAllowed, Export ("linkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("linkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions LinkedFunctions { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -7579,15 +7579,15 @@ namespace Metal {
 		bool SupportIndirectCommandBuffers { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		[NullAllowed, Export ("objectLinkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("objectLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions ObjectLinkedFunctions { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		[NullAllowed, Export ("meshLinkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("meshLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions MeshLinkedFunctions { get; set; }
 
 		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
-		[NullAllowed, Export ("fragmentLinkedFunctions", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("fragmentLinkedFunctions", ArgumentSemantic.Copy)]
 		MTLLinkedFunctions FragmentLinkedFunctions { get; set; }
 
 		[Export ("reset")]
@@ -9516,13 +9516,13 @@ namespace Metal {
 		[Export ("colorAttachments")]
 		MTL4RenderPipelineColorAttachmentDescriptorArray ColorAttachments { get; }
 
-		[NullAllowed, Export ("objectStaticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("objectStaticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor ObjectStaticLinkingDescriptor { get; set; }
 
-		[NullAllowed, Export ("meshStaticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("meshStaticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor MeshStaticLinkingDescriptor { get; set; }
 
-		[NullAllowed, Export ("fragmentStaticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("fragmentStaticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor FragmentStaticLinkingDescriptor { get; set; }
 
 		[Export ("supportObjectBinaryLinking")]
@@ -9625,10 +9625,10 @@ namespace Metal {
 		[Export ("colorAttachments")]
 		MTLRenderPassColorAttachmentDescriptorArray ColorAttachments { get; }
 
-		[NullAllowed, Export ("depthAttachment", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("depthAttachment", ArgumentSemantic.Copy)]
 		MTLRenderPassDepthAttachmentDescriptor DepthAttachment { get; set; }
 
-		[NullAllowed, Export ("stencilAttachment", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("stencilAttachment", ArgumentSemantic.Copy)]
 		MTLRenderPassStencilAttachmentDescriptor StencilAttachment { get; set; }
 
 		[Export ("renderTargetArrayLength")]
@@ -9784,10 +9784,10 @@ namespace Metal {
 		[Export ("inputPrimitiveTopology", ArgumentSemantic.Assign)]
 		MTLPrimitiveTopologyClass InputPrimitiveTopology { get; set; }
 
-		[NullAllowed, Export ("vertexStaticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("vertexStaticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor VertexStaticLinkingDescriptor { get; set; }
 
-		[NullAllowed, Export ("fragmentStaticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("fragmentStaticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor FragmentStaticLinkingDescriptor { get; set; }
 
 		[Export ("supportVertexBinaryLinking")]
@@ -9892,7 +9892,7 @@ namespace Metal {
 		[Export ("requiredThreadsPerThreadgroup", ArgumentSemantic.Assign)]
 		MTLSize RequiredThreadsPerThreadgroup { get; set; }
 
-		[NullAllowed, Export ("staticLinkingDescriptor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("staticLinkingDescriptor", ArgumentSemantic.Copy)]
 		MTL4StaticLinkingDescriptor StaticLinkingDescriptor { get; set; }
 
 		[Export ("supportBinaryLinking")]

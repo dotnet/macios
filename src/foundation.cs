@@ -1883,7 +1883,7 @@ namespace Foundation {
 		[Export ("yearOfCommonEra")]
 		nint YearOfCommonEra { get; }
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Deprecated (PlatformName.MacOSX, 10, 0)]
 		[Export ("calendarFormat")]
 		string CalendarFormat { get; set; }
@@ -1900,7 +1900,7 @@ namespace Foundation {
 		[Export ("descriptionWithLocale:")]
 		string GetDescription ([NullAllowed] NSLocale locale);
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Deprecated (PlatformName.MacOSX, 10, 0)]
 		[Export ("timeZone")]
 		NSTimeZone TimeZone { get; set; }
@@ -2015,6 +2015,7 @@ namespace Foundation {
 	[BaseType (typeof (NSFormatter))]
 	interface NSMassFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSNumberFormatter NumberFormatter { get; set; }
 
 		[Export ("unitStyle")]
@@ -2805,6 +2806,7 @@ namespace Foundation {
 		NSDate Parse (string date);
 
 		[Export ("dateFormat")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string DateFormat { get; set; }
 
 		[Export ("dateStyle")]
@@ -2814,6 +2816,7 @@ namespace Foundation {
 		NSDateFormatterStyle TimeStyle { get; set; }
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("generatesCalendarDates")]
@@ -2826,9 +2829,11 @@ namespace Foundation {
 		NSDateFormatterBehavior DefaultBehavior { get; set; }
 
 		[Export ("timeZone", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSTimeZone TimeZone { get; set; }
 
 		[Export ("calendar", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCalendar Calendar { get; set; }
 
 		// not exposed as a property in documentation
@@ -2846,63 +2851,83 @@ namespace Foundation {
 		NSDate DefaultDate { get; set; }
 
 		[Export ("eraSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] EraSymbols { get; set; }
 
 		[Export ("monthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] MonthSymbols { get; set; }
 
 		[Export ("shortMonthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortMonthSymbols { get; set; }
 
 		[Export ("weekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] WeekdaySymbols { get; set; }
 
 		[Export ("shortWeekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortWeekdaySymbols { get; set; }
 
 		[Export ("AMSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string AMSymbol { get; set; }
 
 		[Export ("PMSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PMSymbol { get; set; }
 
 		[Export ("longEraSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] LongEraSymbols { get; set; }
 
 		[Export ("veryShortMonthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] VeryShortMonthSymbols { get; set; }
 
 		[Export ("standaloneMonthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] StandaloneMonthSymbols { get; set; }
 
 		[Export ("shortStandaloneMonthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortStandaloneMonthSymbols { get; set; }
 
 		[Export ("veryShortStandaloneMonthSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] VeryShortStandaloneMonthSymbols { get; set; }
 
 		[Export ("veryShortWeekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] VeryShortWeekdaySymbols { get; set; }
 
 		[Export ("standaloneWeekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] StandaloneWeekdaySymbols { get; set; }
 
 		[Export ("shortStandaloneWeekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortStandaloneWeekdaySymbols { get; set; }
 
 		[Export ("veryShortStandaloneWeekdaySymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] VeryShortStandaloneWeekdaySymbols { get; set; }
 
 		[Export ("quarterSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] QuarterSymbols { get; set; }
 
 		[Export ("shortQuarterSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortQuarterSymbols { get; set; }
 
 		[Export ("standaloneQuarterSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] StandaloneQuarterSymbols { get; set; }
 
 		[Export ("shortStandaloneQuarterSymbols")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] ShortStandaloneQuarterSymbols { get; set; }
 
 		[Export ("gregorianStartDate", ArgumentSemantic.Copy)]
@@ -2995,15 +3020,19 @@ namespace Foundation {
 	interface NSDateIntervalFormatter {
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("calendar", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCalendar Calendar { get; set; }
 
 		[Export ("timeZone", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSTimeZone TimeZone { get; set; }
 
 		[Export ("dateTemplate")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string DateTemplate { get; set; }
 
 		[Export ("dateStyle")]
@@ -3025,6 +3054,7 @@ namespace Foundation {
 	[BaseType (typeof (NSFormatter))]
 	interface NSEnergyFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSNumberFormatter NumberFormatter { get; set; }
 
 		[Export ("unitStyle")]
@@ -3443,7 +3473,7 @@ namespace Foundation {
 		NSPersonNameComponents GetComponents (string @string);
 
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
-		[NullAllowed, Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("locale", ArgumentSemantic.Copy)]
 		NSLocale Locale { get; set; }
 	}
 
@@ -6689,6 +6719,7 @@ namespace Foundation {
 	[BaseType (typeof (NSFormatter))]
 	interface NSLengthFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSNumberFormatter NumberFormatter { get; set; }
 
 		[Export ("unitStyle")]
@@ -13059,11 +13090,13 @@ namespace Foundation {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityUserInputLabels", ArgumentSemantic.Strong)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] AccessibilityUserInputLabels { get; set; }
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedUserInputLabels", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSAttributedString [] AccessibilityAttributedUserInputLabels { get; set; }
 
 		[NoMac]
@@ -16463,6 +16496,7 @@ namespace Foundation {
 		NSNumberFormatterStyle NumberStyle { get; set; }
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("generatesDecimalNumbers")]
@@ -16476,6 +16510,7 @@ namespace Foundation {
 		NSNumberFormatterBehavior DefaultFormatterBehavior { get; set; }
 
 		[Export ("negativeFormat")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string NegativeFormat { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -16483,6 +16518,7 @@ namespace Foundation {
 		NSDictionary TextAttributesForNegativeValues { get; set; }
 
 		[Export ("positiveFormat")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PositiveFormat { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -16493,18 +16529,21 @@ namespace Foundation {
 		bool AllowsFloats { get; set; }
 
 		[Export ("decimalSeparator")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string DecimalSeparator { get; set; }
 
 		[Export ("alwaysShowsDecimalSeparator")]
 		bool AlwaysShowsDecimalSeparator { get; set; }
 
 		[Export ("currencyDecimalSeparator")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string CurrencyDecimalSeparator { get; set; }
 
 		[Export ("usesGroupingSeparator")]
 		bool UsesGroupingSeparator { get; set; }
 
 		[Export ("groupingSeparator")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string GroupingSeparator { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -16523,6 +16562,7 @@ namespace Foundation {
 		NSDictionary TextAttributesForNil { get; set; }
 
 		[Export ("notANumberSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string NotANumberSymbol { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -16544,39 +16584,51 @@ namespace Foundation {
 		NSDictionary TextAttributesForNegativeInfinity { get; set; }
 
 		[Export ("positivePrefix")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PositivePrefix { get; set; }
 
 		[Export ("positiveSuffix")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PositiveSuffix { get; set; }
 
 		[Export ("negativePrefix")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string NegativePrefix { get; set; }
 
 		[Export ("negativeSuffix")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string NegativeSuffix { get; set; }
 
 		[Export ("currencyCode")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string CurrencyCode { get; set; }
 
 		[Export ("currencySymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string CurrencySymbol { get; set; }
 
 		[Export ("internationalCurrencySymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string InternationalCurrencySymbol { get; set; }
 
 		[Export ("percentSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PercentSymbol { get; set; }
 
 		[Export ("perMillSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PerMillSymbol { get; set; }
 
 		[Export ("minusSign")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string MinusSign { get; set; }
 
 		[Export ("plusSign")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PlusSign { get; set; }
 
 		[Export ("exponentSymbol")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string ExponentSymbol { get; set; }
 
 		[Export ("groupingSize")]
@@ -16593,6 +16645,7 @@ namespace Foundation {
 		nuint FormatWidth { get; set; }
 
 		[Export ("paddingCharacter")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string PaddingCharacter { get; set; }
 
 		[Export ("paddingPosition")]
@@ -16602,6 +16655,7 @@ namespace Foundation {
 		NSNumberFormatterRoundingMode RoundingMode { get; set; }
 
 		[Export ("roundingIncrement", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSNumber RoundingIncrement { get; set; }
 
 		[Export ("minimumIntegerDigits")]
@@ -16625,6 +16679,7 @@ namespace Foundation {
 		NSNumber Maximum { get; set; }
 
 		[Export ("currencyGroupingSeparator")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string CurrencyGroupingSeparator { get; set; }
 
 		/// <summary>To be added.</summary>
@@ -17276,10 +17331,10 @@ namespace Foundation {
 		[Export ("completedUnitCount")]
 		long CompletedUnitCount { get; set; }
 
-		[Export ("localizedDescription", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("localizedDescription", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		string LocalizedDescription { get; set; }
 
-		[Export ("localizedAdditionalDescription", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("localizedAdditionalDescription", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		string LocalizedAdditionalDescription { get; set; }
 
 		/// <summary>Whether this is tracking work that can be cancelled.</summary>
@@ -21070,6 +21125,7 @@ namespace Foundation {
 	interface NSIso8601DateFormatter : NSSecureCoding {
 
 		[Export ("timeZone", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSTimeZone TimeZone { get; set; }
 
 		[Export ("formatOptions", ArgumentSemantic.Assign)]
@@ -22266,9 +22322,11 @@ namespace Foundation {
 		NSFormattingUnitStyle UnitStyle { get; set; }
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSNumberFormatter NumberFormatter { get; set; }
 
 		[Export ("stringFromMeasurement:")]
@@ -22458,6 +22516,7 @@ namespace Foundation {
 	interface NSListFormatter {
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[NullAllowed, Export ("itemFormatter", ArgumentSemantic.Copy)]
@@ -22507,9 +22566,11 @@ namespace Foundation {
 		NSFormattingContext FormattingContext { get; set; }
 
 		[Export ("calendar", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCalendar Calendar { get; set; }
 
 		[Export ("locale", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("localizedStringFromDateComponents:")]

@@ -1977,7 +1977,7 @@ namespace UIKit {
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSTextTab [] TabStops { get; [NotImplemented] set; }
 
 		[MacCatalyst (13, 1)]
@@ -2158,7 +2158,7 @@ namespace UIKit {
 		///         </remarks>
 		[Export ("tabStops", ArgumentSemantic.Copy)]
 		[Override]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSTextTab [] TabStops { get; set; }
 
 		[MacCatalyst (13, 1)]

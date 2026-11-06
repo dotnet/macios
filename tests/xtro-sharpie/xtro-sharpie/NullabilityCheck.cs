@@ -102,6 +102,15 @@ namespace Extrospection {
 			return Array.Empty<Null> ();
 		}
 
+		internal Null GetParameterNullability (ParameterDefinition parameter, MethodDefinition method)
+		{
+			if (parameter.CustomAttributes.Any (v => v.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.AllowNullAttribute") ||
+				IsNullableValueType (parameter.ParameterType))
+				return Null.Annotated;
+
+			return GetNullability (GetNullable (parameter), 0, GetNullableContext (method));
+		}
+
 		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
@@ -147,24 +156,7 @@ namespace Extrospection {
 				if (pt.IsPointer)
 					continue;
 
-				Null parameter_nullable;
-
-				// if we used a nullable type (e.g. `[BindAs]`)
-				// then assume it's meant as a nullable type) without additional decorations
-				if (pt.FullName.StartsWith ("System.Nullable`1<", StringComparison.Ordinal)) {
-					parameter_nullable = Null.Annotated;
-				} else {
-					// check C# 8 compiler attributes
-					var nullable = GetNullable (mp);
-					if (nullable.Length > 1) {
-						// check the type itself, TODO check the generics (don't think we have such cases yet)
-						parameter_nullable = nullable [0];
-					} else if (nullable.Length == 0) {
-						parameter_nullable = managed_default_nullability;
-					} else {
-						parameter_nullable = nullable [0];
-					}
-				}
+				var parameter_nullable = GetParameterNullability (mp, method);
 
 				// match with native and, if needed, report discrepancies
 				var nullability = p.Type.Handle.Nullability;
@@ -204,10 +196,6 @@ namespace Extrospection {
 				// the managed attributes are on the property, not the special methods
 				if (method.IsGetter) {
 					var property = method.FindProperty ()!;
-					// also `null_resettable` will only show something (natively) on the setter (since it does not return null, but accept it)
-					// in this case we'll trust xtro checking the setter only (if it exists, if not then it can't be `null_resettable`)
-					if (property.SetMethod is not null)
-						return;
 					cap = property;
 				} else {
 					cap = method.MethodReturnType;

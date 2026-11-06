@@ -484,7 +484,7 @@ namespace VideoSubscriberAccount {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed] // null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		[Export ("expirationDate", ArgumentSemantic.Copy)]
 		NSDate ExpirationDate { get; set; }
 
@@ -497,7 +497,7 @@ namespace VideoSubscriberAccount {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed] // null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		[Export ("tierIdentifiers", ArgumentSemantic.Copy)]
 		string [] TierIdentifiers { get; set; }
 

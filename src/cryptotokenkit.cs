@@ -672,7 +672,7 @@ namespace CryptoTokenKit {
 		[NullAllowed, Export ("PINMessageIndices", ArgumentSemantic.Assign)]
 		NSNumber [] PinMessageIndices { get; set; }
 
-		[NullAllowed, Export ("locale", ArgumentSemantic.Assign)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("locale", ArgumentSemantic.Assign)]
 		NSLocale Locale { get; set; }
 
 		[Export ("resultSW")]

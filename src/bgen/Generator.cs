@@ -925,7 +925,7 @@ public partial class Generator : IMemberGatherer {
 			if (AttributeManager.IsNullable (mi)) {
 				return false;
 			}
-			if ((propInfo is not null) && AttributeManager.IsNullable (propInfo)) {
+			if ((propInfo is not null) && AttributeManager.AllowsNull (propInfo)) {
 				return false;
 			}
 		}
@@ -2994,7 +2994,7 @@ public partial class Generator : IMemberGatherer {
 					} else if (pi.Position == 0 && mi is MethodInfo minfo) {
 						// only need to check for setter, since we wouldn't get here for a getter.
 						var propertyInfo = GetProperty (minfo, getter: false, setter: true);
-						if (AttributeManager.IsNullable (propertyInfo)) {
+						if (AttributeManager.AllowsNull (propertyInfo)) {
 							sb.Append ('?');
 						}
 					}
@@ -3405,7 +3405,7 @@ public partial class Generator : IMemberGatherer {
 				if (!null_allowed) {
 					var property = GetProperty (mi);
 					if (property is not null)
-						null_allowed = AttributeManager.IsNullable (property);
+						null_allowed = AttributeManager.AllowsNull (property);
 				}
 				var createBlockMethod = null_allowed ? "CreateNullableBlock" : "CreateBlock";
 				convs.AppendFormat ("using var block_{0} = Trampolines.{1}.{3} ({2});\n", pi.Name, trampoline_name, safe_name, createBlockMethod);
@@ -4013,6 +4013,8 @@ public partial class Generator : IMemberGatherer {
 		Type type = minfo.type;
 		var excludedPlatform = is_appearance ? PlatformName.MacOSX : (PlatformName?) null;
 		PrintObsoleteAttributes (pi);
+		if (AttributeManager.HasAllowNullAttribute (pi))
+			print ("[global::System.Diagnostics.CodeAnalysis.AllowNull]");
 
 		foreach (var ba in AttributeManager.GetCustomAttributes<DebuggerBrowsableAttribute> (pi))
 			print ("[DebuggerBrowsable (DebuggerBrowsableState.{0})]", ba.State);
@@ -4295,7 +4297,7 @@ public partial class Generator : IMemberGatherer {
 			bool null_allowed = AttributeManager.IsNullable (setter);
 			if (null_allowed)
 				exceptions.Add (ErrorHelper.CreateWarning (1118, setter));
-			null_allowed |= AttributeManager.IsNullable (pi);
+			null_allowed |= AttributeManager.AllowsNull (pi);
 			var not_implemented_attr = AttributeManager.GetCustomAttribute<NotImplementedAttribute> (setter);
 			string? sel;
 
@@ -4766,7 +4768,7 @@ public partial class Generator : IMemberGatherer {
 					// we do not need the information if it's a getter (it won't change generated code)
 					pinfo = GetProperty (mi, getter: false, setter: true);
 					if (pinfo is not null)
-						null_allowed = AttributeManager.IsNullable (pinfo);
+						null_allowed = AttributeManager.AllowsNull (pinfo);
 				}
 				GenerateMethodBody (minfo, mi, minfo.selector, null_allowed, null, BodyOption.None, pinfo);
 				if (minfo.is_autorelease) {

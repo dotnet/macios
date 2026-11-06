@@ -19,10 +19,9 @@ SHIPPED_HEADERS +=         \
 	xamarin/trampolines.h  \
 	xamarin/runtime.h      \
 	xamarin/runtime-generated.h \
-	xamarin/monovm-bridge.h \
 	xamarin/coreclr-bridge.h \
 
-SHARED_SOURCES += mono-runtime.m bindings.m bindings-generated.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m monovm-bridge.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
+SHARED_SOURCES += bindings.m bindings-generated.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
 SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-x86_64-objc_msgSend.s trampolines-x86_64-objc_msgSendSuper.s trampolines-x86_64-objc_msgSend_stret.s trampolines-x86_64-objc_msgSendSuper_stret.s
 SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
 SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
@@ -49,9 +48,6 @@ xamarin/mono-runtime.h: mono-runtime.h.t4 exports.t4
 	$(Q_GEN) $(TT) $< -o $@
 
 xamarin/runtime-generated.h: runtime-generated.h.t4 delegates.t4
-	$(Q_GEN) $(TT) $< -o $@
-
-mono-runtime.m: mono-runtime.m.t4 exports.t4
 	$(Q_GEN) $(TT) $< -o $@
 
 delegates.%: delegates.%.t4 delegates.t4
@@ -248,7 +244,7 @@ clean-local::
 	$(Q) rm -f *.o
 	$(Q) rm -f *.a
 	$(Q) rm -Rf .libs
-	$(Q) rm -f xamarin/mono-runtime.h mono-runtime.m delegates.h delegates.inc Delegates.generated.cs
+	$(Q) rm -f xamarin/mono-runtime.h delegates.h delegates.inc Delegates.generated.cs
 
 
 include $(TOP)/mk/rules.mk

@@ -51,11 +51,6 @@
 
 // permanent connection variables
 static long monodevelop_port = -1;
-static int sdb_fd = -1;
-static long sdb_timeout_time = -1;
-static int heapshot_fd = -1; // this is the socket to write 'heapshot' to to requests heapshots from the profiler
-static long heapshot_port = -1;
-static char *profiler_description = NULL;
 // old variables
 static char *debug_host = NULL;
 
@@ -77,11 +72,7 @@ enum DebuggingMode
 
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
-static bool debugging_configured = false;
-static bool profiler_configured = false;
 static bool port_forwarding_configured = false;
-static bool config_timedout = false;
-static bool connection_failed = false;
 static DebuggingMode debugging_mode = DebuggingModeWifi;
 static const char *connection_mode = "default"; // this is set from the cmd line, can be either 'usb', 'wifi', 'http' or 'none'
 static int connection_timeout = 2; // seconds to wait for the debugging/hot-reload connection; tunable via __XAMARIN_DEBUG_CONNECTION_TIMEOUT__
@@ -92,14 +83,9 @@ void monotouch_connect_wifi (NSMutableArray *hosts);
 void xamarin_connect_http (NSMutableArray *hosts);
 int monotouch_debug_connect (NSMutableArray *hosts, int debug_port, int output_port);
 void monotouch_configure_debugging ();
-void monotouch_load_profiler ();
-void monotouch_load_debugger ();
 bool monotouch_process_connection (int fd);
 void monotouch_dump_objc_api (Class klass);
 }
-
-static struct timeval wait_tv;
-static struct timespec wait_ts;
 
 void
 monotouch_set_connection_mode (const char *mode)
@@ -111,61 +97,6 @@ void
 monotouch_set_monodevelop_port (int port)
 {
 	monodevelop_port = (long) port;
-}
-
-void
-monotouch_start_debugging ()
-{
-	bool debug_enabled = strcmp (connection_mode, "none");
-	if (xamarin_debug_mode) {
-		if (debug_enabled) {
-			// wait for debug configuration to finish
-			gettimeofday(&wait_tv, NULL);
-
-			int timeout;
-			int iterations = 1;
-			timeout = 2;
-			wait_ts.tv_sec = wait_tv.tv_sec + timeout;
-			wait_ts.tv_nsec = wait_tv.tv_usec * 1000;
-			
-			pthread_mutex_lock (&mutex);
-			while (!debugging_configured && !config_timedout && !connection_failed) {
-				if (pthread_cond_timedwait (&cond, &mutex, &wait_ts) == ETIMEDOUT) {
-					iterations--;
-					if (iterations <= 0) {
-						config_timedout = true;
-					} else {
-						LOG (PRODUCT ": Waiting for connection to the IDE...")
-						// Try again
-						gettimeofday(&wait_tv, NULL);
-						wait_ts.tv_sec = wait_tv.tv_sec + timeout;
-						wait_ts.tv_nsec = wait_tv.tv_usec * 1000;
-					}
-				}
-			}
-			pthread_mutex_unlock (&mutex);
-			
-			if (connection_failed) {
-				LOG (PRODUCT ": Debugger not loaded (failed to connect to the IDE).\n");
-			} else if (config_timedout) {
-				LOG (PRODUCT ": Debugger not loaded (timed out while trying to connect to the IDE).\n");
-			} else {
-				monotouch_load_debugger ();
-			}
-		} else {
-			LOG (PRODUCT ": Not connecting to the IDE, debug has been disabled\n");
-		}
-	
-#if !defined (CORECLR_RUNTIME)
-		char *trace = getenv ("MONO_TRACE");
-		if (trace && *trace) {
-			if (!strncmp (trace, "--trace=", 8))
-				trace += 8;
-
-			mono_jit_set_trace_options (trace);
-		}
-#endif // !defined (CORECLR_RUNTIME)
-	}
 }
 
 // When 'dotnet watch' launches an app on a device, mlaunch sets up port forwarding by
@@ -196,24 +127,6 @@ monotouch_wait_for_port_forwarding ()
 		}
 	}
 	pthread_mutex_unlock (&mutex);
-}
-
-void
-monotouch_start_profiling ()
-{
-	bool debug_enabled = strcmp (connection_mode, "none");
-	if (xamarin_debug_mode && debug_enabled) {
-		// wait for profiler configuration to finish
-		pthread_mutex_lock (&mutex);
-		while (!profiler_configured && !config_timedout) {
-			if (pthread_cond_timedwait (&cond, &mutex, &wait_ts) == ETIMEDOUT)
-				config_timedout = true;
-		}
-		pthread_mutex_unlock (&mutex);
-	
-		if (!config_timedout)
-			monotouch_load_profiler ();
-	}
 }
 
 static NSString *
@@ -289,7 +202,6 @@ xamarin_track_finished_launching ()
 static char *captured_debug_mode = NULL;
 static char *captured_debug_port = NULL;
 static char *captured_debug_hosts = NULL;
-static char *captured_debug_connect_timeout = NULL;
 
 void xamarin_capture_debugging_settings ()
 {
@@ -318,11 +230,6 @@ void xamarin_capture_debugging_settings ()
 		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
-	if (evar != NULL) {
-		captured_debug_connect_timeout = strdup (evar);
-		unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
-	}
 }
 
 void monotouch_configure_debugging ()
@@ -359,8 +266,6 @@ void monotouch_configure_debugging ()
 		captured_debug_port = NULL;
 		free (captured_debug_hosts);
 		captured_debug_hosts = NULL;
-		free (captured_debug_connect_timeout);
-		captured_debug_connect_timeout = NULL;
 		return;
 	}
  
@@ -410,15 +315,6 @@ void monotouch_configure_debugging ()
 	}
 	free (captured_debug_hosts);
 	captured_debug_hosts = NULL;
-
-	if (captured_debug_connect_timeout && *captured_debug_connect_timeout) {
-		if (sdb_timeout_time == -1) {
-			sdb_timeout_time = strtol (captured_debug_connect_timeout, NULL, 10);
-			LOG (PRODUCT ": Found connect timeout %i in environment variables\n", (int) sdb_timeout_time);
-		}
-	}
-	free (captured_debug_connect_timeout);
-	captured_debug_connect_timeout = NULL;
 
 	const char *evar = getenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	if (evar && *evar) {
@@ -518,8 +414,6 @@ void monotouch_configure_debugging ()
 #endif
 				} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
 					monodevelop_port = strtol (line + 6, NULL, 10);
-				} else  if (!strncmp ("Connect Timeout: ", line, 17) && sdb_timeout_time == -1) {
-					sdb_timeout_time = strtol (line + 17, NULL, 10);
 				}
 			}
 		}
@@ -542,7 +436,7 @@ void monotouch_configure_debugging ()
 		if (monodevelop_port <= 0) {
 			LOG (PRODUCT ": Invalid IDE Port: %i\n", (int) monodevelop_port);
 		} else {
-			LOG (PRODUCT ": IDE Port: %i Transport: %s Connect Timeout: %i\n", (int) monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"), (int) sdb_timeout_time);
+			LOG (PRODUCT ": IDE Port: %i Transport: %s\n", (int) monodevelop_port, debugging_mode == DebuggingModeHttp ? "HTTP" : (debugging_mode == DebuggingModeUsb ? "USB" : "WiFi"));
 			if (debugging_mode == DebuggingModeUsb) {
 				monotouch_connect_usb ();
 			} else if (debugging_mode == DebuggingModeWifi) {
@@ -551,36 +445,7 @@ void monotouch_configure_debugging ()
 		}
 	}
 
-	profiler_configured = true;
-	debugging_configured = true;
-	pthread_mutex_lock (&mutex);
-	pthread_cond_signal (&cond);
-	pthread_mutex_unlock (&mutex);
 }
-
-#if !defined (CORECLR_RUNTIME)
-static void sdb_connect (const char *address)
-{
-	gboolean shaked;
-
-	shaked = mono_debugger_agent_transport_handshake ();
-	
-	if (!shaked)
-		PRINT (PRODUCT ": Handshake error with IDE.");
-
-	return;
-}
-
-static void sdb_close1 (void)
-{
-	shutdown (sdb_fd, SHUT_RD);
-}
-
-static void sdb_close2 (void)
-{
-	shutdown (sdb_fd, SHUT_RDWR);
-}
-#endif // !defined (CORECLR_RUNTIME)
 
 static gboolean send_uninterrupted (int fd, const void *buf, size_t len)
 {
@@ -599,43 +464,14 @@ static ssize_t recv_uninterrupted (int fd, void *buf, size_t len)
 	ssize_t total = 0;
 	int flags = 0;
 
-	do { 
-		res = recv (fd, (char *) buf + total, len - (size_t) total, flags); 
+	do {
+		res = recv (fd, (char *) buf + total, len - (size_t) total, flags);
 		if (res > 0)
 			total += res;
 	} while ((res > 0 && (size_t) total < len) || (res == -1 && errno == EINTR));
 
 	return total;
 }
-
-#if !defined (CORECLR_RUNTIME)
-static gboolean sdb_send (void *buf, size_t len)
-{
-	gboolean rv;
-
-	if (debugging_configured) {
-		rv = send_uninterrupted (sdb_fd, buf, len);
-	} else {
-		rv = send_uninterrupted (sdb_fd, buf, len);
-	}
-
-	return rv;
-}
-
-
-static ssize_t sdb_recv (void *buf, size_t len)
-{
-	ssize_t rv;
-
-	if (debugging_configured) {
-		rv = recv_uninterrupted (sdb_fd, buf, len);
-	} else {
-		rv = recv_uninterrupted (sdb_fd, buf, len);
-	}
-
-	return rv;
-}
-#endif // !defined (CORECLR_RUNTIME)
 
 void
 monotouch_connect_wifi (NSMutableArray *ips)
@@ -968,60 +804,6 @@ monotouch_dump_objc_api (Class klass)
 	fflush (stdout);
 }
 
-void
-monotouch_load_debugger ()
-{
-	// main thread only 
-	if (sdb_fd != -1) {
-#if !defined (CORECLR_RUNTIME)
-		DebuggerTransport transport;
-		transport.name = "custom_transport";
-		transport.connect = sdb_connect;
-		transport.close1 = sdb_close1;
-		transport.close2 = sdb_close2;
-		transport.send = sdb_send;
-		transport.recv = sdb_recv;
-
-		mono_debugger_agent_register_transport (&transport);
-
-		char *options;
-		if (sdb_timeout_time != -1) {
-			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1,timeout=%d", (int) sdb_timeout_time);
-		} else {
-			options = xamarin_strdup_printf ("transport=custom_transport,address=dummy,embedding=1");
-		}
-		mono_debugger_agent_parse_options (options);
-		// Can't free the 'options' variable, because mono_debugger_agent_parse_option stores the pointer instead of creating a copy :/
-
-		LOG (PRODUCT ": Debugger loaded with custom transport (fd: %i)\n", sdb_fd);
-#else
-		LOG (PRODUCT ": Debugger not loaded (debugger loading not implemented for CoreCLR).\n");
-#endif
-	} else {
-		LOG (PRODUCT ": Debugger not loaded (disabled).\n");
-	}
-}
-
-void
-monotouch_load_profiler ()
-{
-	// TODO: make this generic enough for other profilers to work too
-	// Main thread only
-	if (profiler_description != NULL) {
-#if !defined (CORECLR_RUNTIME)
-		mono_profiler_load (profiler_description);
-
-		LOG (PRODUCT ": Profiler loaded: %s\n", profiler_description);
-#else
-		LOG (PRODUCT ": Profiler not loaded (profiler loading not implemented for CoreCLR): %s\n", profiler_description);
-#endif
-		free (profiler_description);
-		profiler_description = NULL;
-	} else {
-		LOG (PRODUCT ": Profiler not loaded (disabled)\n");
-	}
-}
-
 struct PortForwardData {
 	int listen_fd; // the local listening socket
 	int dst_fd; // the connection to forward the data to (which relays it onwards)
@@ -1172,72 +954,6 @@ monotouch_process_connection (int fd)
 			LOG (PRODUCT ": The IDE requested an exit, will exit immediately.\n");
 			fflush (stderr);
 			exit (0);
-		} else if (!strncmp (command, "start debugger: ", 16)) {
-			const char *debugger = command + 16;
-			bool use_fd = false;
-			if (!strcmp (debugger, "no")) {
-				/* disabled */
-			} else if (!strcmp (debugger, "sdb")) {
-				sdb_fd = fd;
-				use_fd = true;
-			}
-			debugging_configured = true;
-			pthread_mutex_lock (&mutex);
-			pthread_cond_signal (&cond);
-			pthread_mutex_unlock (&mutex);
-			if (use_fd)
-				return true;
-		} else if (!strncmp (command, "start profiler: ", 16)) {
-			// initialize the log profiler if we're debugging
-			const char *prof = command + 16;
-			bool use_fd = false;
-			
-			if (!strcmp (prof, "no")) {
-				/* disabled */
-			} else if (!strncmp (prof, "log:", 4)) {
-#if defined (__x86_64__)
-				profiler_description = strdup (prof);
-#else
-				use_fd = true;
-				profiler_description = xamarin_strdup_printf ("%s,output=#%i", prof, fd);
-#endif
-			} else {
-				LOG (PRODUCT ": Unknown profiler, expect unexpected behavior (%s)\n", prof);
-				profiler_description = strdup (prof);
-			}
-			profiler_configured = true;
-			pthread_mutex_lock (&mutex);
-			pthread_cond_signal (&cond);
-			pthread_mutex_unlock (&mutex);
-			if (use_fd)
-				return true;
-		} else if (!strncmp (command, "set heapshot port: ", 19)) {
-			heapshot_port = strtol (command + 19, NULL, 0);
-			LOG (PRODUCT ": HeapShot port is now: %i\n", (int) heapshot_port);
-		} else if (!strcmp (command, "heapshot")) {
-			if (heapshot_fd == -1) {
-				struct sockaddr_in heapshot_addr;
-
-				memset (&heapshot_addr, 0, sizeof (heapshot_addr));
-				heapshot_addr.sin_len = sizeof (heapshot_addr);
-				heapshot_addr.sin_port = htons (heapshot_port);
-				heapshot_addr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
-				heapshot_addr.sin_family = AF_INET;
-
-				if ((heapshot_fd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-					LOG (PRODUCT ": Failed to create socket to connect to profiler: %s\n", strerror (errno));
-				} else if (connect (heapshot_fd, (struct sockaddr *) &heapshot_addr, sizeof (heapshot_addr)) != 0) {
-					LOG (PRODUCT ": Failed to connect to profiler to request a heapshot: %s\n", strerror (errno));
-					close (heapshot_fd);
-					heapshot_fd = -1;
-				} else {
-					// Success!
-				}
-			}
-			if (heapshot_fd != -1) {
-				if (!send_uninterrupted (heapshot_fd, "heapshot\n", 9))
-					LOG (PRODUCT ": Failed to request heapshot: %s\n", strerror (errno));
-			}
 		} else if (!strncmp (command, "set environment variable with port replacement: ", 48)) {
 			// Store an environment variable that will be set when the 'forward port' command is processed.
 			// The value may contain %FORWARD_PORT% which will be replaced with the actual listening port.
@@ -1322,9 +1038,6 @@ monotouch_process_connection (int fd)
 					pthread_create (&fwd_thread, NULL, port_forward_thread, fwd_data);
 					pthread_detach (fwd_thread);
 
-					// Signal that debugging is configured so the app startup continues
-					debugging_configured = true;
-					profiler_configured = true;
 					// Signal that port forwarding has been configured (and the
 					// environment variables have been set). The app startup may be
 					// waiting for this in monotouch_wait_for_port_forwarding ().

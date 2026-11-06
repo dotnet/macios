@@ -6602,7 +6602,7 @@ namespace AppKit {
 		// -(NSDictionaryControllerKeyValuePair * __nonnull)newObject;
 		[Export ("newObject")]
 		// [Verify (MethodToProperty)]
-		NSDictionaryControllerKeyValuePair NewObject { get; }
+		NSDictionaryControllerKeyValuePair NewObject { [return: Release] get; }
 
 		[Export ("initialKey")]
 		string InitialKey { get; set; }
@@ -10223,7 +10223,7 @@ namespace AppKit {
 		Class ObjectClass { get; set; }
 
 		[Export ("newObject")]
-		NSObject NewObject { get; }
+		NSObject NewObject { [return: Release] get; }
 
 		[Export ("addObject:")]
 		void AddObject (NSObject object1);

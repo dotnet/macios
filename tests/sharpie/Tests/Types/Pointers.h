@@ -14,3 +14,16 @@ int ***_int_ptr_ptr_ptr ();
 @interface ObjCObjectOutPointers
 -(void)getError:(NSError **)error;
 @end
+
+typedef struct {
+	double latitude;
+	double longitude;
+} CLLocationCoordinate2D;
+
+@interface MAPolygon : NSObject
++(instancetype)polygonWithCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
+-(void)getCoordinates:(CLLocationCoordinate2D *)coords count:(NSUInteger)count;
+-(void)setCoordinates:(const CLLocationCoordinate2D *)coords count:(NSUInteger)count;
+-(CLLocationCoordinate2D *)coordinates;
+-(void)getCoordinatesPointer:(CLLocationCoordinate2D **)coords;
+@end

@@ -6213,8 +6213,28 @@ namespace WebKit {
 	delegate void WKWebViewRestoreDataHandler ([NullAllowed] NSError error);
 
 	/// <summary>Displays a Web page.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebView_Ref/index.html">Apple documentation for <c>WKWebView</c></related>
+	/// <remarks>
+	///   <para>
+	///     Each managed peer reports an estimated 32 MiB of unmanaged memory pressure to the garbage collector during construction
+	///     to account for WebKit resources that are not represented by the managed object's size. This estimate is not a
+	///     measurement of the view's memory usage; WebKit can share resources and use separate helper processes.
+	///     The pressure is removed when disposal starts, either through explicit disposal or finalization, even if releasing
+	///     the native reference is deferred to the main run loop.
+	///   </para>
+	///   <para>
+	///     Reporting memory pressure can cause more frequent application-wide garbage collections. It does not make
+	///     reachable objects collectible or guarantee immediate cleanup of closed views or termination of WebKit helper processes.
+	///     Finalization can defer native releases to the main run loop, and cleanup can require more than one collection.
+	///   </para>
+	///   <para>
+	///     To restore the behavior without memory pressure reporting, call
+	///     <c>AppContext.SetSwitch ("WebKit.WKWebView.EnableMemoryPressure", false)</c> before creating any web views.
+	///     The switch is enabled by default and affects subsequently constructed managed peers, including peers for
+	///     views created by native code or loaded from storyboards. Changing the switch does not remove pressure
+	///     already registered by existing peers.
+	///   </para>
+	/// </remarks>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKWebView_Ref/index.html">Apple documentation for <c>WKWebView</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (
 #if MONOMAC
@@ -6224,6 +6244,7 @@ namespace WebKit {
 #endif
 	)]
 	[DisableDefaultCtor ()] // Crashes during deallocation in Xcode 6 beta 2. radar 17377712.
+	[Dispose ("RemoveMemoryPressure ();")]
 	interface WKWebView
 #if MONOMAC
 		: NSUserInterfaceValidations
@@ -6233,6 +6254,12 @@ namespace WebKit {
 #endif
 	{
 
+		/// <summary>Creates a web view with the specified frame and configuration.</summary>
+		/// <param name="frame">The initial frame of the web view.</param>
+		/// <param name="configuration">The configuration to use for the web view.</param>
+		/// <remarks>
+		///   <para>Construction reports unmanaged memory pressure as described in <see cref="WKWebView" /> unless the <c>WebKit.WKWebView.EnableMemoryPressure</c> AppContext switch is disabled.</para>
+		/// </remarks>
 		[DesignatedInitializer]
 		[Export ("initWithFrame:configuration:")]
 		NativeHandle Constructor (CGRect frame, WKWebViewConfiguration configuration);

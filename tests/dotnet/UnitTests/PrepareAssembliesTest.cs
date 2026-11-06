@@ -96,7 +96,6 @@ namespace Xamarin.Tests {
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = configuration;
-			properties ["EnableAssemblyILStripping"] = "true";
 			properties ["MtouchLink"] = registrar == "managed-static" ? "SdkOnly" : "Full";
 			properties ["PublishReadyToRun"] = "false";
 			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
@@ -115,8 +114,8 @@ namespace Xamarin.Tests {
 				platformAssemblyPath = Configuration.GetBaseLibraryImplementations (platform).First ();
 				appAssemblyPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), project + ".dll");
 			} else {
-				target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish;_ComputeStripAssemblyIL;_StripAssemblyIL";
-				var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), "stripped");
+				target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish";
+				var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), postProcessAssemblies ? "postprocessed-assemblies" : "linked");
 				DotNet.AssertBuild (projectPath, properties, target: target);
 				platformAssemblyPath = Path.Combine (assemblyDirectory, Configuration.GetBaseLibraryName (platform));
 				appAssemblyPath = Path.Combine (assemblyDirectory, project + ".dll");

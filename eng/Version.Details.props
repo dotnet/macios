@@ -12,7 +12,6 @@ This file should be imported by eng/Versions.props
     <MicrosoftDotNetSharedFrameworkSdkPackageVersion>12.0.0-beta.26523.103</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
     <MicrosoftNETILLinkPackageVersion>12.0.0-alpha.1.26523.103</MicrosoftNETILLinkPackageVersion>
     <MicrosoftNETILLinkTasksPackageVersion>12.0.0-alpha.1.26523.103</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>12.0.0-alpha.1.26523.103</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
     <MicrosoftNETSdkPackageVersion>12.0.100-alpha.1.26523.103</MicrosoftNETSdkPackageVersion>
     <MicrosoftNETCoreAppRefPackageVersion>12.0.0-alpha.1.26523.103</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>12.0.100-alpha.1.26523.103</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
@@ -33,7 +32,6 @@ This file should be imported by eng/Versions.props
     <MicrosoftDotNetSharedFrameworkSdkVersion>$(MicrosoftDotNetSharedFrameworkSdkPackageVersion)</MicrosoftDotNetSharedFrameworkSdkVersion>
     <MicrosoftNETILLinkVersion>$(MicrosoftNETILLinkPackageVersion)</MicrosoftNETILLinkVersion>
     <MicrosoftNETILLinkTasksVersion>$(MicrosoftNETILLinkTasksPackageVersion)</MicrosoftNETILLinkTasksVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkVersion>$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)</MicrosoftNETRuntimeMonoTargetsSdkVersion>
     <MicrosoftNETSdkVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftNETSdkVersion>
     <MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
     <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>

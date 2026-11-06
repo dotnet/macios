@@ -20,16 +20,4 @@ location (outside the repo) should work.
 
 ### Easier Analysis
 
-If you want to read/compare the IL inside the assemblies you need to disable IL stripping.
-
-* Legacy (oldnet)
-
-Add this option inside the `Release|iPhone` configuration of `size-comparison/MySingleView/oldnet/MySingleView.csproj`
-
-```xml
-<MtouchExtraArgs>--nostrip</MtouchExtraArgs>
-```
-
-* net6
-
-Build with `/p:EnableAssemblyILStripping=false` set. The `MtouchExtraArgs` legacy option is also honored. 
+IL stripping is no longer performed by the Apple SDK build targets, so no additional options are needed.

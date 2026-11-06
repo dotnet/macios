@@ -51,7 +51,6 @@ namespace Xamarin {
 		public bool? PackageMdb;
 		public bool? MSym;
 		public bool? DSym;
-		public bool? NoStrip;
 		public string NoSymbolStrip;
 		public string Mono;
 
@@ -285,9 +284,6 @@ namespace Xamarin {
 
 			if (PackageMdb.HasValue)
 				sb.Add ($"--package-mdb:{(PackageMdb.Value ? "true" : "false")}");
-
-			if (NoStrip.HasValue && NoStrip.Value)
-				sb.Add ("--nostrip");
 
 			if (NoSymbolStrip is not null) {
 				if (NoSymbolStrip.Length == 0) {

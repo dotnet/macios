@@ -2075,8 +2075,7 @@ namespace AudioToolbox {
 	///     <code lang="csharp lang-csharp"><![CDATA[
 	/// public unsafe static void Callback (IntPtr audioBufferListPtr) {
 	///     AudioBufferList* audioBufferList = (AudioBufferList* ) audioBufferListPtr;
-	///     for (var i = 0; i < audioBufferList->Count; i++) {
-	///         AudioBuffer* buffer = audioBufferList->GetBuffer (index),
+	///     foreach (ref readonly var buffer in audioBufferList->AsReadOnlySpan ()) {
 	///         // Use the buffer for something
 	///     }
 	/// }
@@ -2093,6 +2092,30 @@ namespace AudioToolbox {
 
 		/// <summary>Returns the number of audio buffers in this list.</summary>
 		public uint Count { get => mNumberOfBuffers; }
+
+		/// <summary>Returns a writable span over the audio buffer descriptors in this list.</summary>
+		/// <returns>A span over the list's audio buffer descriptors.</returns>
+		/// <exception cref="OverflowException">The buffer count exceeds <see cref="int.MaxValue" />.</exception>
+		/// <remarks>
+		///   The span does not own or pin the underlying memory. Only call this method on the original list in
+		///   unmanaged memory, not a copy of its header, and keep that memory valid for the entire use of the span.
+		///   The span covers the descriptors, not the audio data referenced by their <see cref="AudioBuffer.Data" /> fields.
+		/// </remarks>
+		public Span<AudioBuffer> AsSpan ()
+		{
+			var count = checked((int) Count);
+			return count == 0 ? Span<AudioBuffer>.Empty : new Span<AudioBuffer> (GetBuffer (0), count);
+		}
+
+		/// <summary>Returns a read-only span over the audio buffer descriptors in this list.</summary>
+		/// <returns>A read-only span over the list's audio buffer descriptors.</returns>
+		/// <exception cref="OverflowException">The buffer count exceeds <see cref="int.MaxValue" />.</exception>
+		/// <remarks>
+		///   The span does not own or pin the underlying memory. Only call this method on the original list in
+		///   unmanaged memory, not a copy of its header, and keep that memory valid for the entire use of the span.
+		///   Read-only access applies to the descriptors, not the audio data referenced by their <see cref="AudioBuffer.Data" /> fields.
+		/// </remarks>
+		public ReadOnlySpan<AudioBuffer> AsReadOnlySpan () => AsSpan ();
 
 		/// <summary>Return a pointer to the <see cref="AudioBuffer" /> at the specified index.</summary>
 		/// <param name="index">The index of the <see cref="AudioBuffer" /> to retrieve.</param>
@@ -2115,7 +2138,9 @@ namespace AudioToolbox {
 				byte* baddress = (byte*) bufferPtr;
 
 				var ptr = baddress + IntPtr.Size + index * sizeof (AudioBuffer);
+#pragma warning disable RBI0043 // This type must point to an unmanaged AudioBufferList, as documented above.
 				return (AudioBuffer*) ptr;
+#pragma warning restore RBI0043
 			}
 		}
 	}

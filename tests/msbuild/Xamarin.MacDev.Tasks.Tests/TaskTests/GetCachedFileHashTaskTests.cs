@@ -72,6 +72,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.That (Hash (cache, file).FilesHashed, Is.EqualTo (1), "Invalid cache");
 			Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Cache warning");
+			Assert.That (Engine.Logger.WarningsEvents [0].Code, Is.EqualTo ("MT7194"), "Cache warning code");
 			Assert.That (Hash (cache, file).FilesHashed, Is.Zero, "Rewritten cache");
 		}
 
@@ -88,6 +89,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = Hash (cache, file);
 			Assert.That (task.FilesHashed, Is.EqualTo (1), "Invalid cached hash");
 			Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Cache warning");
+			Assert.That (Engine.Logger.WarningsEvents [0].Code, Is.EqualTo ("MT7196"), "Cache warning code");
 			Assert.That (task.Items [0].GetMetadata ("FileHash"), Is.EqualTo (expectedHash), "Recomputed hash");
 		}
 

@@ -175,6 +175,12 @@ namespace Xamarin.MacDev.Tasks {
 			task.ProvisioningProfile = GetResourcePath ("WildCardMacAppDevelopment.provisionprofile");
 			ExecuteTask (task, expectedErrorCount: 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (errorMessage), "Error message");
+			var expectedCode = type switch {
+				"Remove" => "MT7102",
+				"Boolean" => "MT7103",
+				_ => "MT7104",
+			};
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo (expectedCode), "Code");
 		}
 
 		[Test]

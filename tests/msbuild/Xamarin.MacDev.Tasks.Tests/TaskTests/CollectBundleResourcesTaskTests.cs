@@ -31,6 +31,8 @@ namespace Xamarin.MacDev.Tasks {
 				task.BundleResources = [item];
 				ExecuteTask (task);
 				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Warnings");
+				Assert.That (Engine.Logger.WarningsEvents [0].Code, Is.EqualTo ("MT0100"), "Warning code");
+				Assert.That (Engine.Logger.WarningsEvents [0].File, Is.EqualTo (item.ItemSpec), "Warning file");
 				Assert.That (Engine.Logger.WarningsEvents [0].Message, Is.EqualTo ("The path '../B/image.png' would result in a file outside of the app bundle and cannot be used."), "Warning Message");
 			} finally {
 				Environment.CurrentDirectory = currentDirectory;

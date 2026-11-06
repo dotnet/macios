@@ -175,11 +175,11 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var compiledApiDefinitionAssembly = CompiledApiDefinitionAssembly;
 			if (compiledApiDefinitionAssembly is null || string.IsNullOrEmpty (compiledApiDefinitionAssembly.ItemSpec)) {
-				Log.LogError ("A compiled API definition assembly is required.");
+				Log.LogError (7206, null, MSBStrings.E7206); // A compiled API definition assembly is required.
 				return false;
 			}
 			if (string.IsNullOrEmpty (GeneratedSourcesDir) || string.IsNullOrEmpty (GeneratedSourcesFileList)) {
-				Log.LogError ("A generated sources directory and file list are required.");
+				Log.LogError (7207, null, MSBStrings.E7207); // A generated sources directory and file list are required.
 				return false;
 			}
 

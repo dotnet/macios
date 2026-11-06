@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 				var destination = Path.Combine (AppBundleDir, "ResourceRules.plist");
 
 				if (!File.Exists (ResourceRules)) {
-					Log.LogError (MSBStrings.E0065, ResourceRules);
+					Log.LogError (65, null, MSBStrings.E0065, ResourceRules); // Resources rules file '{0}' not found.
 					return false;
 				}
 

@@ -239,7 +239,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return !Log.HasLoggedErrors;
 			} catch (Exception ex) {
-				Log.LogError ($"Error computing instruction set: {ex.Message}");
+				Log.LogError (7209, null, MSBStrings.E7209, ex.Message); // Error computing instruction set: {0}
 				return false;
 			}
 		}

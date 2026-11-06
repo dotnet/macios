@@ -123,7 +123,7 @@ namespace Xamarin.MacDev.Tasks {
 			// Ref: https://developer.apple.com/library/archive/documentation/CoreFoundation/Conceptual/CFBundles/BundleTypes/BundleTypes.html#//apple_ref/doc/uid/10000123i-CH101-SW1
 			var resourcesDirectory = Path.Combine (path, "Resources");
 			if (Directory.Exists (resourcesDirectory)) {
-				Log.LogError (MSBStrings.E7123 /* The app bundle '{0}' contains a subdirectory named 'Resources'. This is not allowed on this platform. Typically resource files should be in the root directory of the app bundle (or a custom subdirectory, but named anything other than 'Resources') */, path);
+				Log.LogError (7123, null, MSBStrings.E7123 /* The app bundle '{0}' contains a subdirectory named 'Resources'. This is not allowed on this platform. Typically resource files should be in the root directory of the app bundle (or a custom subdirectory, but named anything other than 'Resources') */, path);
 				return false;
 			}
 
@@ -288,11 +288,11 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (entitlements)) {
 				if (!File.Exists (entitlements)) {
-					Log.LogError (MSBStrings.E0112, entitlements);
+					Log.LogError (112, null, MSBStrings.E0112, entitlements); // Entitlements.plist template '{0}' not found.
 					return false;
 				}
 			} else if (ParseBoolean (item, "CodesignWarnIfNoEntitlements", false)) {
-				Log.LogWarning ($"No entitlements set for {item.ItemSpec}.");
+				Log.LogWarning (7202, null, MSBStrings.W7202, item.ItemSpec); // No entitlements set for {0}.
 			}
 
 			args.Add ("-v");
@@ -309,7 +309,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (useSecureTimestamp) {
 				if (disableTimestamp) {
 					// Conflicting '{0}' and '{1}' options. '{1}' will be ignored.
-					Log.LogWarning (MSBStrings.W0176, "UseSecureTimestamp", "DisableTimestamp");
+					Log.LogWarning (176, null, MSBStrings.W0176, "UseSecureTimestamp", "DisableTimestamp"); // Conflicting '{0}' and '{1}' options. '{1}' will be ignored.
 				}
 				args.Add ("--timestamp");
 			} else
@@ -373,13 +373,13 @@ namespace Xamarin.MacDev.Tasks {
 			if (exitCode != 0) {
 				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
-					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
+					Log.LogError (4, null, MSBStrings.E0004, item.ItemSpec, errors); // Failed to codesign '{0}': {1}
 				else
-					Log.LogError (MSBStrings.E0005, item.ItemSpec);
+					Log.LogError (5, null, MSBStrings.E0005, item.ItemSpec); // Failed to codesign '{0}'
 				if (errors.IndexOf ("errSecInternalComponent", StringComparison.Ordinal) >= 0 && System.Threading.Interlocked.CompareExchange (ref loggedInternalComponentHint, 1, 0) == 0)
-					Log.LogError (MSBStrings.E7184 /* Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'. */);
+					Log.LogError (7184, null, MSBStrings.E7184 /* Codesign failed with 'errSecInternalComponent'. This usually means the keychain is locked, which is common when building over SSH. Unlock the keychain first, for example by running 'security unlock-keychain ~/Library/Keychains/login.keychain-db'. */);
 				if (errors.IndexOf ("resource fork, Finder information, or similar detritus not allowed", StringComparison.Ordinal) >= 0)
-					Log.LogError (MSBStrings.E7198, item.ItemSpec);
+					Log.LogError (7198, null, MSBStrings.E7198, item.ItemSpec); // Codesign failed because '{0}' contains files with extended attributes such as 'com.apple.FinderInfo' or 'com.apple.ResourceFork' that are not allowed when signing. Run 'xattr -lr "{0}"' to locate the affected files. Remove the unwanted attributes from the original source files (for example, with 'xattr -cr "path/to/source/files"'), then clean and rebuild. See https://developer.apple.com/library/archive/qa/qa1940/_index.html for more information.
 			} else {
 				var stampFile = GetCodesignStampFile (item);
 				if (string.IsNullOrEmpty (stampFile)) {
@@ -560,7 +560,7 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				Log.LogWarning ("Unable to sign '{0}': file or directory not found.", res.ItemSpec);
+				Log.LogWarning (7203, null, MSBStrings.W7203, res.ItemSpec); // Unable to sign '{0}': file or directory not found.
 			}
 
 #if false

@@ -41,7 +41,7 @@ namespace Xamarin.MacDev.Tasks {
 		public static void Write (Task task, string? file, IEnumerable<ITaskItem> items, string itemName, bool overwrite, bool includeMetadata)
 		{
 			if (file is null) {
-				task.Log.LogWarning ($"No output file to write to for item {itemName}");
+				task.Log.LogWarning (7224, null, MSBStrings.W7224, itemName); // No output file to write to for item {0}
 				return;
 			}
 

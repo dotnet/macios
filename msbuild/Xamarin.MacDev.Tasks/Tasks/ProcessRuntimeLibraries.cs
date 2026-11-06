@@ -101,7 +101,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					linkWithRuntimeLibraries.AddRange (staticlibs);
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (7170, null, MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}
@@ -113,10 +113,10 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					continue;
 				case "dylib":
 					// NativeAOT is static only
-					Log.LogError (MSBStrings.E7166 /* Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (7166, null, MSBStrings.E7166 /* Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}' */, RuntimeLibLinkMode);
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (7170, null, MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}
@@ -157,12 +157,12 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					copyToAppBundle.AddRange (dylibs);
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (7170, null, MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}
 
-			Log.LogError (MSBStrings.E7165 /* Invalid DotNetRuntime value: '{0}' */, DotNetRuntime);
+			Log.LogError (7165, null, MSBStrings.E7165 /* Invalid DotNetRuntime value: '{0}' */, DotNetRuntime);
 			return false;
 		}
 

@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (string.IsNullOrEmpty (ProjectName)) {
-				Log.LogError (MSBStrings.E0150);
+				Log.LogError (150, null, MSBStrings.E0150); // AssemblyPath cannot be null or empty
 				return false;
 			}
 

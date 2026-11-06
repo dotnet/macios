@@ -229,7 +229,7 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 
 			if (InputAppBundles.Length == 0) {
-				Log.LogError (MSBStrings.E7073 /* At least one app bundle must be specified. */);
+				Log.LogError (7073, null, MSBStrings.E7073 /* At least one app bundle must be specified. */);
 				return false;
 			}
 
@@ -258,12 +258,12 @@ namespace Xamarin.MacDev.Tasks {
 			// Some validation
 			foreach (var input in InputAppBundles) {
 				if (!Directory.Exists (input.ItemSpec)) {
-					Log.LogError (MSBStrings.E7074 /* "The app bundle {0} does not exist." */, input.ItemSpec);
+					Log.LogError (7074, null, MSBStrings.E7074 /* "The app bundle {0} does not exist." */, input.ItemSpec);
 					return false;
 				}
 				var specificSubdirectory = input.GetMetadata ("SpecificSubdirectory");
 				if (string.IsNullOrEmpty (specificSubdirectory)) {
-					Log.LogError (MSBStrings.E7075 /* No 'SpecificSubDirectory' metadata was provided for the app bundle {0}. */, input.ItemSpec);
+					Log.LogError (7075, null, MSBStrings.E7075 /* No 'SpecificSubDirectory' metadata was provided for the app bundle {0}. */, input.ItemSpec);
 					return false;
 				}
 			}
@@ -343,7 +343,7 @@ namespace Xamarin.MacDev.Tasks {
 				var types = kvp.Value.Select (v => v.Type).Distinct ();
 				if (types.Count () > 1) {
 					// Files of different types.
-					Log.LogError (MSBStrings.E7079 /* Invalid app bundle: the file {0} has different types between the input app bundles. */, kvp.Value.First ().RelativePath);
+					Log.LogError (7079, null, MSBStrings.E7079 /* Invalid app bundle: the file {0} has different types between the input app bundles. */, kvp.Value.First ().RelativePath);
 					ListFiles (kvp.Value);
 					return false;
 				}
@@ -388,11 +388,11 @@ namespace Xamarin.MacDev.Tasks {
 					MergeArchitectureSpecific (entries);
 					break;
 				case FileType.Symlink:
-					Log.LogError (MSBStrings.E7076 /* Can't merge the symlink '{0}', it has different targets */, entries [0].RelativePath);
+					Log.LogError (7076, null, MSBStrings.E7076 /* Can't merge the symlink '{0}', it has different targets */, entries [0].RelativePath);
 					ListFiles (entries);
 					break;
 				default:
-					Log.LogError (MSBStrings.E7077 /* Unable to merge the file '{0}', it's different between the input app bundles. */, entries [0].RelativePath);
+					Log.LogError (7077, null, MSBStrings.E7077 /* Unable to merge the file '{0}', it's different between the input app bundles. */, entries [0].RelativePath);
 					ListFiles (entries);
 					break;
 				}
@@ -404,7 +404,7 @@ namespace Xamarin.MacDev.Tasks {
 		void ListFiles (List<Entry> entries)
 		{
 			for (var i = 0; i < entries.Count; i++) {
-				Log.LogError (MSBStrings.E7080 /* App bundle file #{0}: {1} */, i + 1, entries [i].FullPath);
+				Log.LogError (7080, null, MSBStrings.E7080 /* App bundle file #{0}: {1} */, i + 1, entries [i].FullPath);
 			}
 		}
 
@@ -419,7 +419,7 @@ namespace Xamarin.MacDev.Tasks {
 		void MergeMachOFiles (string output, IList<Entry> input)
 		{
 			if (input.Any (v => v.DependentFiles?.Any () == true)) {
-				Log.LogError (MSBStrings.E7078 /* Invalid app bundle: the Mach-O file {0} has dependent files. */, input.First ().RelativePath);
+				Log.LogError (7078, null, MSBStrings.E7078 /* Invalid app bundle: the Mach-O file {0} has dependent files. */, input.First ().RelativePath);
 				return;
 			}
 

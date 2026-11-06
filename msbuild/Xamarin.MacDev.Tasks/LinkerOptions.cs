@@ -34,7 +34,7 @@ namespace Xamarin.MacDev.Tasks {
 				bool boolean;
 
 				if (string.IsNullOrEmpty (value) || !Enum.TryParse (value, out kind)) {
-					Log.LogWarning (MSBStrings.W0051, item.ItemSpec);
+					Log.LogWarning (51, null, MSBStrings.W0051, item.ItemSpec); // Unknown native reference type for '{0}'.
 					continue;
 				}
 
@@ -74,7 +74,7 @@ namespace Xamarin.MacDev.Tasks {
 						Arguments.Add (path);
 					}
 				} else {
-					Log.LogWarning (MSBStrings.W0052, item.ItemSpec);
+					Log.LogWarning (52, null, MSBStrings.W0052, item.ItemSpec); // Dynamic native references are not supported: '{0}'
 					continue;
 				}
 

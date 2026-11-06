@@ -115,7 +115,11 @@ namespace AudioUnit {
 	}
 
 	/// <include file="../../docs/api/AudioUnit/RenderDelegate.xml" path="/Documentation/Docs[@DocId='T:AudioUnit.RenderDelegate']/*" />
+#if XAMCORE_5_0
+	public delegate AudioUnitStatus RenderDelegate (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data);
+#else
 	public delegate AudioUnitStatus RenderDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data);
+#endif
 	/// <param name="actionFlags">To be added.</param>
 	///     <param name="timeStamp">To be added.</param>
 	///     <param name="busNumber">To be added.</param>
@@ -124,7 +128,11 @@ namespace AudioUnit {
 	///     <summary>Callback used with <see cref="AudioUnit.SetInputCallback(InputDelegate,AudioUnitScopeType,System.UInt32)" />.</summary>
 	///     <returns>To be added.</returns>
 	///     <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+	public delegate AudioUnitStatus InputDelegate (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioUnit audioUnit);
+#else
 	public delegate AudioUnitStatus InputDelegate (AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioUnit audioUnit);
+#endif
 
 	delegate AudioUnitStatus CallbackShared (IntPtr /* void* */ clientData, ref AudioUnitRenderActionFlags /* AudioUnitRenderActionFlags* */ actionFlags, ref AudioTimeStamp /* AudioTimeStamp* */ timeStamp, uint /* UInt32 */ busNumber, uint /* UInt32 */ numberFrames, IntPtr /* AudioBufferList* */ data);
 #endif // !COREBUILD
@@ -479,13 +487,22 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe AudioUnitStatus SetFormat (in AudioToolbox.AudioStreamBasicDescription audioFormat, AudioUnitScopeType scope, uint audioUnitElement = 0)
+#else
 		public unsafe AudioUnitStatus SetFormat (AudioToolbox.AudioStreamBasicDescription audioFormat, AudioUnitScopeType scope, uint audioUnitElement = 0)
+#endif
 		{
+#if XAMCORE_5_0
+			fixed (AudioStreamBasicDescription* formatPtr = &audioFormat)
+#else
+			AudioStreamBasicDescription* formatPtr = &audioFormat;
+#endif
 			return (AudioUnitStatus) AudioUnitSetProperty (Handle,
 							   AudioUnitPropertyIDType.StreamFormat,
 							   scope,
 							   audioUnitElement,
-							   &audioFormat,
+							   formatPtr,
 							   (uint) Marshal.SizeOf<AudioToolbox.AudioStreamBasicDescription> ());
 		}
 
@@ -885,7 +902,11 @@ namespace AudioUnit {
 
 			using (var buffers = new AudioBuffers (data)) {
 				unsafe {
+#if XAMCORE_5_0
+					return render (*actionFlags, in *timeStamp, busNumber, numberFrames, buffers);
+#else
 					return render (*actionFlags, *timeStamp, busNumber, numberFrames, buffers);
+#endif
 				}
 			}
 		}
@@ -932,7 +953,11 @@ namespace AudioUnit {
 			if (!inputs.TryGetValue (busNumber, out var input))
 				return AudioUnitStatus.Uninitialized;
 			unsafe {
+#if XAMCORE_5_0
+				return input (*actionFlags, in *timeStamp, busNumber, numberFrames, au);
+#else
 				return input (*actionFlags, *timeStamp, busNumber, numberFrames, au);
+#endif
 			}
 		}
 
@@ -1052,16 +1077,25 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public AudioUnitStatus Render (ref AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#else
 		public AudioUnitStatus Render (ref AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
+#endif
 		{
 			if ((IntPtr) data == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
 			unsafe {
 				fixed (AudioUnitRenderActionFlags* actionFlagsPtr = &actionFlags) {
+#if XAMCORE_5_0
+					fixed (AudioTimeStamp* timeStampPtr = &timeStamp)
+#else
+					AudioTimeStamp* timeStampPtr = &timeStamp;
+#endif
 					return AudioUnitRender (
 						Handle,
 						actionFlagsPtr,
-						&timeStamp,
+						timeStampPtr,
 						busNumber,
 						numberFrames,
 						(IntPtr) data);
@@ -1248,10 +1282,19 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public AudioUnitStatus SetScheduleStartTimeStamp (in AudioTimeStamp timeStamp)
+#else
 		public AudioUnitStatus SetScheduleStartTimeStamp (AudioTimeStamp timeStamp)
+#endif
 		{
 			unsafe {
-				return AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduleStartTimeStamp, AudioUnitScopeType.Global, 0, &timeStamp, Marshal.SizeOf<AudioTimeStamp> ());
+#if XAMCORE_5_0
+				fixed (AudioTimeStamp* timeStampPtr = &timeStamp)
+#else
+				AudioTimeStamp* timeStampPtr = &timeStamp;
+#endif
+				return AudioUnitSetProperty (GetCheckedHandle (), AudioUnitPropertyIDType.ScheduleStartTimeStamp, AudioUnitScopeType.Global, 0, timeStampPtr, Marshal.SizeOf<AudioTimeStamp> ());
 			}
 		}
 

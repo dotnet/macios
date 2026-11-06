@@ -146,10 +146,20 @@ namespace CoreGraphics {
 		///         <param name="transform">To be added.</param>
 		///         <summary>Creates an new <see cref="CoreGraphics.CGPath" /> from the provided <paramref name="reference" /> path by applying the provided <paramref name="transform" /></summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe CGPath (CGPath reference, in CGAffineTransform transform)
+#else
 		public unsafe CGPath (CGPath reference, CGAffineTransform transform)
-			: base (CGPathCreateMutableCopyByTransformingPath (reference.GetNonNullHandle (nameof (reference)), &transform), true)
+#endif
+			: base (CreateMutableCopy (reference, in transform), true)
 		{
 			GC.KeepAlive (reference);
+		}
+
+		static unsafe IntPtr CreateMutableCopy (CGPath reference, in CGAffineTransform transform)
+		{
+			fixed (CGAffineTransform* transformPtr = &transform)
+				return CGPathCreateMutableCopyByTransformingPath (reference.GetNonNullHandle (nameof (reference)), transformPtr);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -245,18 +255,36 @@ namespace CoreGraphics {
 			CGPathMoveToPoint (Handle, null, point.X, point.Y);
 		}
 
+#if XAMCORE_5_0
+		public unsafe void MoveToPoint (in CGAffineTransform transform, nfloat x, nfloat y)
+#else
 		public unsafe void MoveToPoint (CGAffineTransform transform, nfloat x, nfloat y)
+#endif
 		{
-			CGPathMoveToPoint (Handle, &transform, x, y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathMoveToPoint (Handle, transformPtr, x, y);
 		}
 
 		/// <param name="transform">To be added.</param>
 		///         <param name="point">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void MoveToPoint (in CGAffineTransform transform, CGPoint point)
+#else
 		public unsafe void MoveToPoint (CGAffineTransform transform, CGPoint point)
+#endif
 		{
-			CGPathMoveToPoint (Handle, &transform, point.X, point.Y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathMoveToPoint (Handle, transformPtr, point.X, point.Y);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -275,18 +303,36 @@ namespace CoreGraphics {
 			CGPathAddLineToPoint (Handle, null, point.X, point.Y);
 		}
 
+#if XAMCORE_5_0
+		public unsafe void AddLineToPoint (in CGAffineTransform transform, nfloat x, nfloat y)
+#else
 		public unsafe void AddLineToPoint (CGAffineTransform transform, nfloat x, nfloat y)
+#endif
 		{
-			CGPathAddLineToPoint (Handle, &transform, x, y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddLineToPoint (Handle, transformPtr, x, y);
 		}
 
 		/// <param name="transform">To be added.</param>
 		///         <param name="point">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddLineToPoint (in CGAffineTransform transform, CGPoint point)
+#else
 		public unsafe void AddLineToPoint (CGAffineTransform transform, CGPoint point)
+#endif
 		{
-			CGPathAddLineToPoint (Handle, &transform, point.X, point.Y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddLineToPoint (Handle, transformPtr, point.X, point.Y);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -297,17 +343,35 @@ namespace CoreGraphics {
 			CGPathAddQuadCurveToPoint (Handle, null, cpx, cpy, x, y);
 		}
 
+#if XAMCORE_5_0
+		public unsafe void AddQuadCurveToPoint (in CGAffineTransform transform, nfloat cpx, nfloat cpy, nfloat x, nfloat y)
+#else
 		public unsafe void AddQuadCurveToPoint (CGAffineTransform transform, nfloat cpx, nfloat cpy, nfloat x, nfloat y)
+#endif
 		{
-			CGPathAddQuadCurveToPoint (Handle, &transform, cpx, cpy, x, y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddQuadCurveToPoint (Handle, transformPtr, cpx, cpy, x, y);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddCurveToPoint (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, /* CGFloat */ nfloat cp1x, /* CGFloat */ nfloat cp1y, /* CGFloat */ nfloat cp2x, /* CGFloat */ nfloat cp2y, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y);
 
+#if XAMCORE_5_0
+		public unsafe void AddCurveToPoint (in CGAffineTransform transform, nfloat cp1x, nfloat cp1y, nfloat cp2x, nfloat cp2y, nfloat x, nfloat y)
+#else
 		public unsafe void AddCurveToPoint (CGAffineTransform transform, nfloat cp1x, nfloat cp1y, nfloat cp2x, nfloat cp2y, nfloat x, nfloat y)
+#endif
 		{
-			CGPathAddCurveToPoint (Handle, &transform, cp1x, cp1y, cp2x, cp2y, x, y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddCurveToPoint (Handle, transformPtr, cp1x, cp1y, cp2x, cp2y, x, y);
 		}
 
 		/// <param name="transform">To be added.</param>
@@ -316,9 +380,18 @@ namespace CoreGraphics {
 		///         <param name="point">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddCurveToPoint (in CGAffineTransform transform, CGPoint cp1, CGPoint cp2, CGPoint point)
+#else
 		public unsafe void AddCurveToPoint (CGAffineTransform transform, CGPoint cp1, CGPoint cp2, CGPoint point)
+#endif
 		{
-			CGPathAddCurveToPoint (Handle, &transform, cp1.X, cp1.Y, cp2.X, cp2.Y, point.X, point.Y);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddCurveToPoint (Handle, transformPtr, cp1.X, cp1.Y, cp2.X, cp2.Y, point.X, point.Y);
 		}
 
 		public unsafe void AddCurveToPoint (nfloat cp1x, nfloat cp1y, nfloat cp2x, nfloat cp2y, nfloat x, nfloat y)
@@ -353,9 +426,18 @@ namespace CoreGraphics {
 		///         <param name="rect">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddRect (in CGAffineTransform transform, CGRect rect)
+#else
 		public unsafe void AddRect (CGAffineTransform transform, CGRect rect)
+#endif
 		{
-			CGPathAddRect (Handle, &transform, rect);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddRect (Handle, transformPtr, rect);
 		}
 
 		/// <param name="rect">To be added.</param>
@@ -373,11 +455,20 @@ namespace CoreGraphics {
 		///         <param name="rects">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddRects (in CGAffineTransform m, CGRect [] rects)
+#else
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects)
+#endif
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
-			CGPathAddRects (Handle, &m, rects, rects.Length);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddRects (Handle, transformPtr, rects, rects.Length);
 		}
 
 		/// <param name="m">To be added.</param>
@@ -385,13 +476,22 @@ namespace CoreGraphics {
 		///         <param name="count">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddRects (in CGAffineTransform m, CGRect [] rects, int count)
+#else
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects, int count)
+#endif
 		{
 			if (rects is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
 			if (count > rects.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddRects (Handle, &m, rects, count);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddRects (Handle, transformPtr, rects, count);
 		}
 
 		/// <param name="rects">To be added.</param>
@@ -424,11 +524,20 @@ namespace CoreGraphics {
 		///         <param name="points">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddLines (in CGAffineTransform m, CGPoint [] points)
+#else
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points)
+#endif
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-			CGPathAddLines (Handle, &m, points, points.Length);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddLines (Handle, transformPtr, points, points.Length);
 		}
 
 		/// <param name="m">To be added.</param>
@@ -436,13 +545,22 @@ namespace CoreGraphics {
 		///         <param name="count">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddLines (in CGAffineTransform m, CGPoint [] points, int count)
+#else
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points, int count)
+#endif
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
 			if (count > points.Length)
 				throw new ArgumentException (nameof (count));
-			CGPathAddLines (Handle, &m, points, count);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddLines (Handle, transformPtr, points, count);
 		}
 
 		/// <param name="points">To be added.</param>
@@ -475,9 +593,18 @@ namespace CoreGraphics {
 		///         <param name="rect">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddEllipseInRect (in CGAffineTransform m, CGRect rect)
+#else
 		public unsafe void AddEllipseInRect (CGAffineTransform m, CGRect rect)
+#endif
 		{
-			CGPathAddEllipseInRect (Handle, &m, rect);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddEllipseInRect (Handle, transformPtr, rect);
 		}
 
 		/// <param name="rect">To be added.</param>
@@ -491,9 +618,18 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddArc (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* CGFloat */ nfloat radius, /* CGFloat */ nfloat startAngle, /* CGFloat */ nfloat endAngle, byte clockwise);
 
+#if XAMCORE_5_0
+		public unsafe void AddArc (in CGAffineTransform m, nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat endAngle, bool clockwise)
+#else
 		public unsafe void AddArc (CGAffineTransform m, nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat endAngle, bool clockwise)
+#endif
 		{
-			CGPathAddArc (Handle, &m, x, y, radius, startAngle, endAngle, clockwise.AsByte ());
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddArc (Handle, transformPtr, x, y, radius, startAngle, endAngle, clockwise.AsByte ());
 		}
 
 		public unsafe void AddArc (nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat endAngle, bool clockwise)
@@ -504,9 +640,18 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddArcToPoint (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, /* CGFloat */ nfloat x1, /* CGFloat */ nfloat y1, /* CGFloat */ nfloat x2, /* CGFloat */ nfloat y2, /* CGFloat */ nfloat radius);
 
+#if XAMCORE_5_0
+		public unsafe void AddArcToPoint (in CGAffineTransform m, nfloat x1, nfloat y1, nfloat x2, nfloat y2, nfloat radius)
+#else
 		public unsafe void AddArcToPoint (CGAffineTransform m, nfloat x1, nfloat y1, nfloat x2, nfloat y2, nfloat radius)
+#endif
 		{
-			CGPathAddArcToPoint (Handle, &m, x1, y1, x2, y2, radius);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddArcToPoint (Handle, transformPtr, x1, y1, x2, y2, radius);
 		}
 
 		public unsafe void AddArcToPoint (nfloat x1, nfloat y1, nfloat x2, nfloat y2, nfloat radius)
@@ -517,9 +662,18 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static void CGPathAddRelativeArc (/* CGMutablePathRef */ IntPtr path, CGAffineTransform* m, /* CGFloat */ nfloat x, /* CGFloat */ nfloat y, /* CGFloat */ nfloat radius, /* CGFloat */ nfloat startAngle, /* CGFloat */ nfloat delta);
 
+#if XAMCORE_5_0
+		public unsafe void AddRelativeArc (in CGAffineTransform m, nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat delta)
+#else
 		public unsafe void AddRelativeArc (CGAffineTransform m, nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat delta)
+#endif
 		{
-			CGPathAddRelativeArc (Handle, &m, x, y, radius, startAngle, delta);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			CGPathAddRelativeArc (Handle, transformPtr, x, y, radius, startAngle, delta);
 		}
 
 		public unsafe void AddRelativeArc (nfloat x, nfloat y, nfloat radius, nfloat startAngle, nfloat delta)
@@ -534,11 +688,20 @@ namespace CoreGraphics {
 		///         <param name="path2">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe void AddPath (in CGAffineTransform t, CGPath path2)
+#else
 		public unsafe void AddPath (CGAffineTransform t, CGPath path2)
+#endif
 		{
 			if (path2 is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path2));
-			CGPathAddPath (Handle, &t, path2.Handle);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &t)
+#else
+			CGAffineTransform* transformPtr = &t;
+#endif
+			CGPathAddPath (Handle, transformPtr, path2.Handle);
 			GC.KeepAlive (path2);
 		}
 
@@ -627,9 +790,18 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe bool ContainsPoint (in CGAffineTransform m, CGPoint point, bool eoFill)
+#else
 		public unsafe bool ContainsPoint (CGAffineTransform m, CGPoint point, bool eoFill)
+#endif
 		{
-			return CGPathContainsPoint (Handle, &m, point, eoFill.AsByte ()) != 0;
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &m)
+#else
+			CGAffineTransform* transformPtr = &m;
+#endif
+			return CGPathContainsPoint (Handle, transformPtr, point, eoFill.AsByte ()) != 0;
 		}
 
 		/// <param name="point">To be added.</param>
@@ -895,15 +1067,28 @@ namespace CoreGraphics {
 			/* CGFloat */ nfloat* lengths,
 			/* size_t */ nint count);
 
+#if XAMCORE_5_0
+		public CGPath CopyByDashingPath (in CGAffineTransform transform, nfloat [] lengths)
+#else
 		public CGPath CopyByDashingPath (CGAffineTransform transform, nfloat [] lengths)
+#endif
 		{
 			return CopyByDashingPath (transform, lengths, 0);
 		}
 
+#if XAMCORE_5_0
+		public unsafe CGPath CopyByDashingPath (in CGAffineTransform transform, nfloat [] lengths, nfloat phase)
+#else
 		public unsafe CGPath CopyByDashingPath (CGAffineTransform transform, nfloat [] lengths, nfloat phase)
+#endif
 		{
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
 			fixed (nfloat* lengthsPtr = lengths) {
-				return MakeMutable (CGPathCreateCopyByDashingPath (Handle, &transform, phase, lengthsPtr, lengths is null ? 0 : lengths.Length), true);
+				return MakeMutable (CGPathCreateCopyByDashingPath (Handle, transformPtr, phase, lengthsPtr, lengths is null ? 0 : lengths.Length), true);
 			}
 		}
 
@@ -931,9 +1116,18 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		unsafe extern static IntPtr CGPathCreateCopyByStrokingPath (/* CGPathRef */ IntPtr path, CGAffineTransform* transform, nfloat lineWidth, CGLineCap lineCap, CGLineJoin lineJoin, /* CGFloat */ nfloat miterLimit);
 
+#if XAMCORE_5_0
+		public unsafe CGPath CopyByStrokingPath (in CGAffineTransform transform, nfloat lineWidth, CGLineCap lineCap, CGLineJoin lineJoin, nfloat miterLimit)
+#else
 		public unsafe CGPath CopyByStrokingPath (CGAffineTransform transform, nfloat lineWidth, CGLineCap lineCap, CGLineJoin lineJoin, nfloat miterLimit)
+#endif
 		{
-			return MakeMutable (CGPathCreateCopyByStrokingPath (Handle, &transform, lineWidth, lineCap, lineJoin, miterLimit), true);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			return MakeMutable (CGPathCreateCopyByStrokingPath (Handle, transformPtr, lineWidth, lineCap, lineJoin, miterLimit), true);
 		}
 
 		public unsafe CGPath CopyByStrokingPath (nfloat lineWidth, CGLineCap lineCap, CGLineJoin lineJoin, nfloat miterLimit)
@@ -948,10 +1142,19 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public CGPath CopyByTransformingPath (in CGAffineTransform transform)
+#else
 		public CGPath CopyByTransformingPath (CGAffineTransform transform)
+#endif
 		{
 			unsafe {
-				return MakeMutable (CGPathCreateCopyByTransformingPath (Handle, &transform), true);
+#if XAMCORE_5_0
+				fixed (CGAffineTransform* transformPtr = &transform)
+#else
+				CGAffineTransform* transformPtr = &transform;
+#endif
+				return MakeMutable (CGPathCreateCopyByTransformingPath (Handle, transformPtr), true);
 			}
 		}
 
@@ -963,9 +1166,18 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		static public unsafe CGPath EllipseFromRect (CGRect boundingRect, in CGAffineTransform transform)
+#else
 		static public unsafe CGPath EllipseFromRect (CGRect boundingRect, CGAffineTransform transform)
+#endif
 		{
-			return MakeMutable (CGPathCreateWithEllipseInRect (boundingRect, &transform), true);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			return MakeMutable (CGPathCreateWithEllipseInRect (boundingRect, transformPtr), true);
 		}
 
 		/// <param name="boundingRect">To be added.</param>
@@ -985,9 +1197,18 @@ namespace CoreGraphics {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		static public unsafe CGPath FromRect (CGRect rectangle, in CGAffineTransform transform)
+#else
 		static public unsafe CGPath FromRect (CGRect rectangle, CGAffineTransform transform)
+#endif
 		{
-			return MakeMutable (CGPathCreateWithRect (rectangle, &transform), true);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			return MakeMutable (CGPathCreateWithRect (rectangle, transformPtr), true);
 		}
 
 		/// <param name="rectangle">To be added.</param>
@@ -1024,9 +1245,18 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
+#if XAMCORE_5_0
+		static public unsafe CGPath FromRoundedRect (CGRect rectangle, nfloat cornerWidth, nfloat cornerHeight, in CGAffineTransform transform)
+#else
 		static public unsafe CGPath FromRoundedRect (CGRect rectangle, nfloat cornerWidth, nfloat cornerHeight, CGAffineTransform transform)
+#endif
 		{
-			return _FromRoundedRect (rectangle, cornerWidth, cornerHeight, &transform);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			return _FromRoundedRect (rectangle, cornerWidth, cornerHeight, transformPtr);
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
@@ -1036,9 +1266,18 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
+#if XAMCORE_5_0
+		public unsafe void AddRoundedRect (in CGAffineTransform transform, CGRect rect, nfloat cornerWidth, nfloat cornerHeight)
+#else
 		public unsafe void AddRoundedRect (CGAffineTransform transform, CGRect rect, nfloat cornerWidth, nfloat cornerHeight)
+#endif
 		{
-			CGPathAddRoundedRect (Handle, &transform, rect, cornerWidth, cornerHeight);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* transformPtr = &transform)
+#else
+			CGAffineTransform* transformPtr = &transform;
+#endif
+			CGPathAddRoundedRect (Handle, transformPtr, rect, cornerWidth, cornerHeight);
 		}
 
 		[SupportedOSPlatform ("macos")]

@@ -974,7 +974,17 @@ namespace GeneratorTests {
 		[Test]
 		public void RefOutParameters ()
 		{
-			BuildFile (Profile.macOSMobile, true, "ref-out-parameters.cs");
+			var bgen = BuildFile (Profile.macOSMobile, true, "ref-out-parameters.cs");
+			var type = bgen.ApiAssembly.MainModule.GetType ("BI1064.RefOutParameters");
+			foreach (var methodName in new [] { "TestMatrix", ".ctor" }) {
+				var method = type.Methods.Single (v => v.Name == methodName && v.Parameters.Count == 1 && v.Parameters [0].Name == "matrix");
+				Assert.That (method.Parameters [0].IsIn, Is.True, methodName);
+				Assert.That (method.Parameters [0].ParameterType.IsByReference, Is.True, methodName + " by reference");
+			}
+			var callback = bgen.ApiAssembly.MainModule.GetType ("BI1064.MatrixCallback").Methods.Single (v => v.Name == "Invoke");
+			Assert.That (callback.Parameters [0].IsIn, Is.True, "Callback matrix");
+			Assert.That (callback.Parameters [1].IsIn, Is.True, "Callback enabled");
+			Assert.That (callback.Parameters [2].IsIn, Is.False, "Callback stop");
 		}
 
 		[Test]

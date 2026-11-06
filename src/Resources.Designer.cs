@@ -517,7 +517,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The selector {0} on type {1} is found multiple times with different argument out states on argument {2}..
+        ///   Looks up a localized string similar to The selector {0} on type {1} is found multiple times with different reference modifiers on argument {2}..
         /// </summary>
         internal static string BI1040 {
             get {

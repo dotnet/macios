@@ -333,7 +333,7 @@
 	</data>
 
 	<data name="BI1040" xml:space="preserve">
-		<value>The selector {0} on type {1} is found multiple times with different argument out states on argument {2}.</value>
+		<value>The selector {0} on type {1} is found multiple times with different reference modifiers on argument {2}.</value>
 	</data>
 
 	<data name="BI1041" xml:space="preserve">

@@ -82,21 +82,25 @@ namespace SceneKit {
 			: this (new SCNVector3 (x, y, z), w)
 		{ }
 
+#if XAMCORE_5_0
+		public SCNQuaternion (in Matrix3 matrix)
+#else
 		public SCNQuaternion (ref Matrix3 matrix)
+#endif
 		{
 			double scale = System.Math.Pow (matrix.GetDeterminant (), 1.0d / 3.0d);
 			float x, y, z;
 
-			w = (float) (System.Math.Sqrt (System.Math.Max (0, scale + matrix.R0C0 + matrix.R1C1 + matrix.R2C2)) / 2);
-			x = (float) (System.Math.Sqrt (System.Math.Max (0, scale + matrix.R0C0 - matrix.R1C1 - matrix.R2C2)) / 2);
-			y = (float) (System.Math.Sqrt (System.Math.Max (0, scale - matrix.R0C0 + matrix.R1C1 - matrix.R2C2)) / 2);
-			z = (float) (System.Math.Sqrt (System.Math.Max (0, scale - matrix.R0C0 - matrix.R1C1 + matrix.R2C2)) / 2);
+			w = (float) (System.Math.Sqrt (System.Math.Max (0, scale + matrix.M11 + matrix.M22 + matrix.M33)) / 2);
+			x = (float) (System.Math.Sqrt (System.Math.Max (0, scale + matrix.M11 - matrix.M22 - matrix.M33)) / 2);
+			y = (float) (System.Math.Sqrt (System.Math.Max (0, scale - matrix.M11 + matrix.M22 - matrix.M33)) / 2);
+			z = (float) (System.Math.Sqrt (System.Math.Max (0, scale - matrix.M11 - matrix.M22 + matrix.M33)) / 2);
 
 			xyz = new Vector3 (x, y, z);
 
-			if (matrix.R2C1 - matrix.R1C2 < 0) X = -X;
-			if (matrix.R0C2 - matrix.R2C0 < 0) Y = -Y;
-			if (matrix.R1C0 - matrix.R0C1 < 0) Z = -Z;
+			if (matrix.M32 - matrix.M23 < 0) X = -X;
+			if (matrix.M13 - matrix.M31 < 0) Y = -Y;
+			if (matrix.M21 - matrix.M12 < 0) Z = -Z;
 		}
 
 		public SCNQuaternion (Quaternion quaternion)

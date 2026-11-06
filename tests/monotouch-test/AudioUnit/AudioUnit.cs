@@ -18,7 +18,11 @@ namespace Xamarin.Mac.Tests {
 			desc.ComponentFlagsMask = 0;
 			desc.ComponentManufacturer = AudioComponentManufacturerType.Apple;
 
+#if XAMCORE_5_0
+			AudioComponent comp = AudioComponent.FindNextComponent (null, in desc);
+#else
 			AudioComponent comp = AudioComponent.FindNextComponent (null, ref desc);
+#endif
 			theUnit unit = new theUnit (comp);
 			return unit;
 		}

@@ -16,6 +16,8 @@ TVOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/tvos
 MACCATALYST_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/maccatalyst
 
 GENERATOR_FLAGS=-process-enums -core -nostdlib -native-exception-marshalling --ns:ObjCRuntime
+# Existing non-nullable BindAs APIs cannot be made nullable without breaking compatibility.
+GENERATOR_FLAGS+=-nowarn:1130
 
 GENERATOR_TF_VERSION=$(subst net,,$(DOTNET_TFM))
 

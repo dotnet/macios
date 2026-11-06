@@ -2908,6 +2908,7 @@ namespace Xamarin.Tests {
 		// Ported from the legacy mmp test suite.
 		[Test]
 		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		public void HardenedRuntimeCodesign (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2927,6 +2928,16 @@ namespace Xamarin.Tests {
 			// Then build with the hardened runtime, and verify codesign is asked to use it.
 			Clean (project_path);
 			properties ["UseHardenedRuntime"] = "true";
+			result = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
+			Assert.That (errors, Has.Length.EqualTo (1), "Hardened ad-hoc signing errors");
+			Assert.That (errors [0].Message, Does.Contain ("Set 'CodesignKey' to a valid Apple signing identity."), "Hardened ad-hoc signing diagnostic");
+
+			var entitlementsPath = Path.Combine (Cache.CreateTemporaryDirectory (), "Entitlements.plist");
+			new PDictionary {
+				{ "com.apple.security.cs.disable-library-validation", new PBoolean (true) },
+			}.Save (entitlementsPath);
+			properties ["CodesignEntitlements"] = entitlementsPath;
 			result = DotNet.AssertBuild (project_path, properties);
 			var hardenedCodesign = GetLastCodesignInvocation (result.BinLogPath);
 			Assert.That (hardenedCodesign, Does.Contain (" -o runtime"), "Hardened codesign hardened runtime");

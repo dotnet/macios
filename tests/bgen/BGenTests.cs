@@ -1296,6 +1296,9 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
 		public void NoAvailabilityForAccessors (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -1303,7 +1306,23 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.AddTestApiDefinition ("no-availability-for-accessors.cs");
 			bgen.CreateTemporaryBinding ();
+			bgen.ResponseFile = Path.Combine (Cache.CreateTemporaryDirectory (), "rspfile");
+			File.WriteAllText (bgen.ResponseFile, "--inline-selectors=false");
 			bgen.AssertExecute ("build");
+
+			var fields = bgen.ApiAssembly.MainModule.Types.First (v => v.FullName == "NS.Whatever").Fields.Select (v => v.Name).ToArray ();
+			foreach (var property in new [] { "PropA", "IPropA", "IPropAOpt" }) {
+				Assert.That (fields, Does.Contain ($"sel{property}X"), $"{property} getter selector");
+				Assert.That (fields, Does.Contain ($"sel{property}XHandle"), $"{property} getter selector handle");
+				Assert.That (fields, Does.Not.Contain ($"selSet{property}_X"), $"{property} setter selector");
+				Assert.That (fields, Does.Not.Contain ($"selSet{property}_XHandle"), $"{property} setter selector handle");
+			}
+			foreach (var property in new [] { "PropB", "IPropB", "IPropBOpt" }) {
+				Assert.That (fields, Does.Not.Contain ($"sel{property}X"), $"{property} getter selector");
+				Assert.That (fields, Does.Not.Contain ($"sel{property}XHandle"), $"{property} getter selector handle");
+				Assert.That (fields, Does.Contain ($"selSet{property}_X"), $"{property} setter selector");
+				Assert.That (fields, Does.Contain ($"selSet{property}_XHandle"), $"{property} setter selector handle");
+			}
 
 			bgen.AssertMethod ("NS.Whatever", "get_PropA");
 			bgen.AssertNoMethod ("NS.Whatever", "set_PropA", parameterTypes: "Foundation.NSObject");

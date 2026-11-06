@@ -16,7 +16,7 @@ using ProductException = BindingException;
 
 #nullable enable
 
-// Error allocation: the errors are listed (and documented) in $(TOP)/docs/website/generator-errors.md
+// Error allocation: see $(TOP)/docs/messages/README.md and the BI diagnostic pages in that directory.
 
 public class BindingException : Exception {
 

@@ -1,0 +1,3123 @@
+[
+  {
+    "resource": "BI0000",
+    "codes": [
+      "BI0000"
+    ]
+  },
+  {
+    "resource": "BI0001",
+    "codes": [
+      "BI0001"
+    ]
+  },
+  {
+    "resource": "BI0026",
+    "codes": [
+      "BI0026"
+    ]
+  },
+  {
+    "resource": "BI0068",
+    "codes": [
+      "BI0068"
+    ]
+  },
+  {
+    "resource": "BI0070",
+    "codes": [
+      "BI0070"
+    ]
+  },
+  {
+    "resource": "BI0086",
+    "codes": [
+      "BI0086"
+    ]
+  },
+  {
+    "resource": "BI0088",
+    "codes": [
+      "BI0088"
+    ]
+  },
+  {
+    "resource": "BI0089",
+    "codes": [
+      "BI0089"
+    ]
+  },
+  {
+    "resource": "BI0099",
+    "codes": [
+      "BI0099"
+    ]
+  },
+  {
+    "resource": "BI1001",
+    "codes": [
+      "BI1001"
+    ]
+  },
+  {
+    "resource": "BI1002",
+    "codes": [
+      "BI1002"
+    ]
+  },
+  {
+    "resource": "BI1003",
+    "codes": [
+      "BI1003"
+    ]
+  },
+  {
+    "resource": "BI1004",
+    "codes": [
+      "BI1004"
+    ]
+  },
+  {
+    "resource": "BI1005",
+    "codes": [
+      "BI1005"
+    ]
+  },
+  {
+    "resource": "BI1006",
+    "codes": [
+      "BI1006"
+    ]
+  },
+  {
+    "resource": "BI1007",
+    "codes": [
+      "BI1007"
+    ]
+  },
+  {
+    "resource": "BI1008",
+    "codes": [
+      "BI1008"
+    ]
+  },
+  {
+    "resource": "BI1011",
+    "codes": [
+      "BI1011"
+    ]
+  },
+  {
+    "resource": "BI1012",
+    "codes": [
+      "BI1012"
+    ]
+  },
+  {
+    "resource": "BI1016",
+    "codes": [
+      "BI1016"
+    ]
+  },
+  {
+    "resource": "BI1017",
+    "codes": [
+      "BI1017"
+    ]
+  },
+  {
+    "resource": "BI1018",
+    "codes": [
+      "BI1018"
+    ]
+  },
+  {
+    "resource": "BI1019",
+    "codes": [
+      "BI1019"
+    ]
+  },
+  {
+    "resource": "BI1020",
+    "codes": [
+      "BI1020"
+    ]
+  },
+  {
+    "resource": "BI1021",
+    "codes": [
+      "BI1021"
+    ]
+  },
+  {
+    "resource": "BI1023",
+    "codes": [
+      "BI1023"
+    ]
+  },
+  {
+    "resource": "BI1024",
+    "codes": [
+      "BI1024"
+    ]
+  },
+  {
+    "resource": "BI1025",
+    "codes": [
+      "BI1025"
+    ]
+  },
+  {
+    "resource": "BI1026",
+    "codes": [
+      "BI1026"
+    ]
+  },
+  {
+    "resource": "BI1027",
+    "codes": [
+      "BI1027"
+    ]
+  },
+  {
+    "resource": "BI1028",
+    "codes": [
+      "BI1028"
+    ]
+  },
+  {
+    "resource": "BI1029",
+    "codes": [
+      "BI1029"
+    ]
+  },
+  {
+    "resource": "BI1030",
+    "codes": [
+      "BI1030"
+    ]
+  },
+  {
+    "resource": "BI1031",
+    "codes": [
+      "BI1031"
+    ]
+  },
+  {
+    "resource": "BI1032",
+    "codes": [
+      "BI1032"
+    ]
+  },
+  {
+    "resource": "BI1033",
+    "codes": [
+      "BI1033"
+    ]
+  },
+  {
+    "resource": "BI1037",
+    "codes": [
+      "BI1037"
+    ]
+  },
+  {
+    "resource": "BI1038",
+    "codes": [
+      "BI1038"
+    ]
+  },
+  {
+    "resource": "BI1039",
+    "codes": [
+      "BI1039"
+    ]
+  },
+  {
+    "resource": "BI1040",
+    "codes": [
+      "BI1040"
+    ]
+  },
+  {
+    "resource": "BI1041",
+    "codes": [
+      "BI1041"
+    ]
+  },
+  {
+    "resource": "BI1042",
+    "codes": [
+      "BI1042"
+    ]
+  },
+  {
+    "resource": "BI1043",
+    "codes": [
+      "BI1043"
+    ]
+  },
+  {
+    "resource": "BI1044",
+    "codes": [
+      "BI1044"
+    ]
+  },
+  {
+    "resource": "BI1045",
+    "codes": [
+      "BI1045"
+    ]
+  },
+  {
+    "resource": "BI1046",
+    "codes": [
+      "BI1046"
+    ]
+  },
+  {
+    "resource": "BI1047",
+    "codes": [
+      "BI1047"
+    ]
+  },
+  {
+    "resource": "BI1048",
+    "codes": [
+      "BI1048"
+    ]
+  },
+  {
+    "resource": "BI1049",
+    "codes": [
+      "BI1049"
+    ]
+  },
+  {
+    "resource": "BI1050",
+    "codes": [
+      "BI1050"
+    ]
+  },
+  {
+    "resource": "BI1051",
+    "codes": [
+      "BI1051"
+    ]
+  },
+  {
+    "resource": "BI1052",
+    "codes": [
+      "BI1052"
+    ]
+  },
+  {
+    "resource": "BI1053",
+    "codes": [
+      "BI1053"
+    ]
+  },
+  {
+    "resource": "BI1054",
+    "codes": [
+      "BI1054"
+    ]
+  },
+  {
+    "resource": "BI1055",
+    "codes": [
+      "BI1055"
+    ]
+  },
+  {
+    "resource": "BI1056",
+    "codes": [
+      "BI1056"
+    ]
+  },
+  {
+    "resource": "BI1057",
+    "codes": [
+      "BI1057"
+    ]
+  },
+  {
+    "resource": "BI1058",
+    "codes": [
+      "BI1058"
+    ]
+  },
+  {
+    "resource": "BI1059",
+    "codes": [
+      "BI1059"
+    ]
+  },
+  {
+    "resource": "BI1060",
+    "codes": [
+      "BI1060"
+    ]
+  },
+  {
+    "resource": "BI1061",
+    "codes": [
+      "BI1061"
+    ]
+  },
+  {
+    "resource": "BI1062",
+    "codes": [
+      "BI1062"
+    ]
+  },
+  {
+    "resource": "BI1063",
+    "codes": [
+      "BI1063"
+    ]
+  },
+  {
+    "resource": "BI1064",
+    "codes": [
+      "BI1064"
+    ]
+  },
+  {
+    "resource": "BI1065",
+    "codes": [
+      "BI1065"
+    ]
+  },
+  {
+    "resource": "BI1066",
+    "codes": [
+      "BI1066"
+    ]
+  },
+  {
+    "resource": "BI1067",
+    "codes": [
+      "BI1067"
+    ]
+  },
+  {
+    "resource": "BI1068",
+    "codes": [
+      "BI1068"
+    ]
+  },
+  {
+    "resource": "BI1069",
+    "codes": [
+      "BI1069"
+    ]
+  },
+  {
+    "resource": "BI1070",
+    "codes": [
+      "BI1070"
+    ]
+  },
+  {
+    "resource": "BI1071",
+    "codes": [
+      "BI1071"
+    ]
+  },
+  {
+    "resource": "BI1072",
+    "codes": [
+      "BI1072"
+    ]
+  },
+  {
+    "resource": "BI1073",
+    "codes": [
+      "BI1073"
+    ]
+  },
+  {
+    "resource": "BI1074",
+    "codes": [
+      "BI1074"
+    ]
+  },
+  {
+    "resource": "BI1075",
+    "codes": [
+      "BI1075"
+    ]
+  },
+  {
+    "resource": "BI1076",
+    "codes": [
+      "BI1076"
+    ]
+  },
+  {
+    "resource": "BI1077",
+    "codes": [
+      "BI1077"
+    ]
+  },
+  {
+    "resource": "BI1078",
+    "codes": [
+      "BI1078"
+    ]
+  },
+  {
+    "resource": "BI1079",
+    "codes": [
+      "BI1079"
+    ]
+  },
+  {
+    "resource": "BI1080",
+    "codes": [
+      "BI1080"
+    ]
+  },
+  {
+    "resource": "BI1081",
+    "codes": [
+      "BI1081"
+    ]
+  },
+  {
+    "resource": "BI1082",
+    "codes": [
+      "BI1082"
+    ]
+  },
+  {
+    "resource": "BI1083",
+    "codes": [
+      "BI1083"
+    ]
+  },
+  {
+    "resource": "BI1084",
+    "codes": [
+      "BI1084"
+    ]
+  },
+  {
+    "resource": "BI1085",
+    "codes": [
+      "BI1085"
+    ]
+  },
+  {
+    "resource": "BI1086",
+    "codes": [
+      "BI1086"
+    ]
+  },
+  {
+    "resource": "BI1087",
+    "codes": [
+      "BI1087"
+    ]
+  },
+  {
+    "resource": "BI1088",
+    "codes": [
+      "BI1088"
+    ]
+  },
+  {
+    "resource": "BI1101",
+    "codes": [
+      "BI1101"
+    ]
+  },
+  {
+    "resource": "BI1102",
+    "codes": [
+      "BI1102"
+    ]
+  },
+  {
+    "resource": "BI1103",
+    "codes": [
+      "BI1103"
+    ]
+  },
+  {
+    "resource": "BI1104",
+    "codes": [
+      "BI1104"
+    ]
+  },
+  {
+    "resource": "BI1105",
+    "codes": [
+      "BI1105"
+    ]
+  },
+  {
+    "resource": "BI1106",
+    "codes": [
+      "BI1106"
+    ]
+  },
+  {
+    "resource": "BI1107",
+    "codes": [
+      "BI1107"
+    ]
+  },
+  {
+    "resource": "BI1109",
+    "codes": [
+      "BI1109"
+    ]
+  },
+  {
+    "resource": "BI1110",
+    "codes": [
+      "BI1110"
+    ]
+  },
+  {
+    "resource": "BI1111",
+    "codes": [
+      "BI1111"
+    ]
+  },
+  {
+    "resource": "BI1112",
+    "codes": [
+      "BI1112"
+    ]
+  },
+  {
+    "resource": "BI1113",
+    "codes": [
+      "BI1113"
+    ]
+  },
+  {
+    "resource": "BI1114",
+    "codes": [
+      "BI1114"
+    ]
+  },
+  {
+    "resource": "BI1115",
+    "codes": [
+      "BI1115"
+    ]
+  },
+  {
+    "resource": "BI1116",
+    "codes": [
+      "BI1116"
+    ]
+  },
+  {
+    "resource": "BI1117",
+    "codes": [
+      "BI1117"
+    ]
+  },
+  {
+    "resource": "BI1118",
+    "codes": [
+      "BI1118"
+    ]
+  },
+  {
+    "resource": "BI1119",
+    "codes": [
+      "BI1119"
+    ]
+  },
+  {
+    "resource": "BI1120",
+    "codes": [
+      "BI1120"
+    ]
+  },
+  {
+    "resource": "BI1121",
+    "codes": [
+      "BI1121"
+    ]
+  },
+  {
+    "resource": "BI1122",
+    "codes": [
+      "BI1122"
+    ]
+  },
+  {
+    "resource": "BI1123",
+    "codes": [
+      "BI1123"
+    ]
+  },
+  {
+    "resource": "BI1124",
+    "codes": [
+      "BI1124"
+    ]
+  },
+  {
+    "resource": "BI1125",
+    "codes": [
+      "BI1125"
+    ]
+  },
+  {
+    "resource": "BI1126",
+    "codes": [
+      "BI1126"
+    ]
+  },
+  {
+    "resource": "BI1127",
+    "codes": [
+      "BI1127"
+    ]
+  },
+  {
+    "resource": "BI1128",
+    "codes": [
+      "BI1128"
+    ]
+  },
+  {
+    "resource": "BI1129",
+    "codes": [
+      "BI1129"
+    ]
+  },
+  {
+    "resource": "BI1900",
+    "codes": [
+      "BI1900"
+    ]
+  },
+  {
+    "resource": "BI1901",
+    "codes": [
+      "BI1901"
+    ]
+  },
+  {
+    "resource": "BI1902",
+    "codes": [
+      "BI1902"
+    ]
+  },
+  {
+    "resource": "BI1903",
+    "codes": [
+      "BI1903"
+    ]
+  },
+  {
+    "resource": "BI1904",
+    "codes": [
+      "BI1904"
+    ]
+  },
+  {
+    "resource": "BI1905",
+    "codes": [
+      "BI1905"
+    ]
+  },
+  {
+    "resource": "BI1906",
+    "codes": [
+      "BI1906"
+    ]
+  },
+  {
+    "resource": "BI1907",
+    "codes": [
+      "BI1907"
+    ]
+  },
+  {
+    "resource": "BI1908",
+    "codes": [
+      "BI1908"
+    ]
+  },
+  {
+    "resource": "BI1909",
+    "codes": [
+      "BI1909"
+    ]
+  },
+  {
+    "resource": "BI1910",
+    "codes": [
+      "BI1910"
+    ]
+  },
+  {
+    "resource": "MM0001",
+    "codes": [
+      "MM0001"
+    ]
+  },
+  {
+    "resource": "MM0008",
+    "codes": [
+      "MM0008"
+    ]
+  },
+  {
+    "resource": "MM0023",
+    "codes": [
+      "MM0023"
+    ]
+  },
+  {
+    "resource": "MM0050",
+    "codes": [
+      "MM0050"
+    ]
+  },
+  {
+    "resource": "MM0051",
+    "codes": [
+      "MM0051"
+    ]
+  },
+  {
+    "resource": "MM0079",
+    "codes": [
+      "MM0079"
+    ]
+  },
+  {
+    "resource": "MM0097",
+    "codes": [
+      "MM0097"
+    ]
+  },
+  {
+    "resource": "MM0114",
+    "codes": [
+      "MM0114"
+    ]
+  },
+  {
+    "resource": "MM0143",
+    "codes": [
+      "MM0143"
+    ]
+  },
+  {
+    "resource": "MM0144",
+    "codes": [
+      "MM0144"
+    ]
+  },
+  {
+    "resource": "MM0147",
+    "codes": [
+      "MM0147"
+    ]
+  },
+  {
+    "resource": "MM1034",
+    "codes": [
+      "MM1034"
+    ]
+  },
+  {
+    "resource": "MM1401",
+    "codes": [
+      "MM1401"
+    ]
+  },
+  {
+    "resource": "MM1402",
+    "codes": [
+      "MM1402"
+    ]
+  },
+  {
+    "resource": "MM1403",
+    "codes": [
+      "MM1403"
+    ]
+  },
+  {
+    "resource": "MM1404",
+    "codes": [
+      "MM1404"
+    ]
+  },
+  {
+    "resource": "MM1405",
+    "codes": [
+      "MM1405"
+    ]
+  },
+  {
+    "resource": "MM1407",
+    "codes": [
+      "MM1407"
+    ]
+  },
+  {
+    "resource": "MM1501",
+    "codes": [
+      "MM1501"
+    ]
+  },
+  {
+    "resource": "MM2006",
+    "codes": [
+      "MM2006"
+    ]
+  },
+  {
+    "resource": "MM2007",
+    "codes": [
+      "MM2007"
+    ]
+  },
+  {
+    "resource": "MM2009",
+    "codes": [
+      "MM2009"
+    ]
+  },
+  {
+    "resource": "MM2012",
+    "codes": [
+      "MM2012"
+    ]
+  },
+  {
+    "resource": "MM2013",
+    "codes": [
+      "MM2013"
+    ]
+  },
+  {
+    "resource": "MM2106",
+    "codes": [
+      "MM2106"
+    ]
+  },
+  {
+    "resource": "MM2107",
+    "codes": [
+      "MM2107"
+    ]
+  },
+  {
+    "resource": "MM2108",
+    "codes": [
+      "MM2108"
+    ]
+  },
+  {
+    "resource": "MM2110",
+    "codes": [
+      "MM2110"
+    ]
+  },
+  {
+    "resource": "MM3009",
+    "codes": [
+      "MM3009"
+    ]
+  },
+  {
+    "resource": "MM3010",
+    "codes": [
+      "MM3010"
+    ]
+  },
+  {
+    "resource": "MM4134",
+    "codes": [
+      "MM4134"
+    ]
+  },
+  {
+    "resource": "MM5103",
+    "codes": [
+      "MM5103"
+    ]
+  },
+  {
+    "resource": "MM5109",
+    "codes": [
+      "MM5109"
+    ]
+  },
+  {
+    "resource": "MM5202",
+    "codes": [
+      "MM5202"
+    ]
+  },
+  {
+    "resource": "MM5203",
+    "codes": [
+      "MM5203"
+    ]
+  },
+  {
+    "resource": "MM5205",
+    "codes": [
+      "MM5205"
+    ]
+  },
+  {
+    "resource": "MM5220",
+    "codes": [
+      "MM5220"
+    ]
+  },
+  {
+    "resource": "MM5221",
+    "codes": [
+      "MM5221"
+    ]
+  },
+  {
+    "resource": "MM5308",
+    "codes": [
+      "MM5308"
+    ]
+  },
+  {
+    "resource": "MM5310",
+    "codes": [
+      "MM5310"
+    ]
+  },
+  {
+    "resource": "MT0000",
+    "codes": [
+      "MT0000"
+    ]
+  },
+  {
+    "resource": "MT0001",
+    "codes": [
+      "MT0001"
+    ]
+  },
+  {
+    "resource": "MT0002",
+    "codes": [
+      "MT0002"
+    ]
+  },
+  {
+    "resource": "MT0004",
+    "codes": [
+      "MT0004"
+    ]
+  },
+  {
+    "resource": "MT0005",
+    "codes": [
+      "MT0005"
+    ]
+  },
+  {
+    "resource": "MT0006",
+    "codes": [
+      "MT0006"
+    ]
+  },
+  {
+    "resource": "MT0011",
+    "codes": [
+      "MT0011"
+    ]
+  },
+  {
+    "resource": "MT0012",
+    "codes": [
+      "MT0012"
+    ]
+  },
+  {
+    "resource": "MT0013",
+    "codes": [
+      "MT0013"
+    ]
+  },
+  {
+    "resource": "MT0014",
+    "codes": [
+      "MT0014"
+    ]
+  },
+  {
+    "resource": "MT0015",
+    "codes": [
+      "MT0015"
+    ]
+  },
+  {
+    "resource": "MT0019",
+    "codes": [
+      "MT0019"
+    ]
+  },
+  {
+    "resource": "MT0021",
+    "codes": [
+      "MT0021"
+    ]
+  },
+  {
+    "resource": "MT0022",
+    "codes": [
+      "MT0022"
+    ]
+  },
+  {
+    "resource": "MT0023",
+    "codes": [
+      "MT0023"
+    ]
+  },
+  {
+    "resource": "MT0024",
+    "codes": [
+      "MT0024"
+    ]
+  },
+  {
+    "resource": "MT0025",
+    "codes": [
+      "MT0025"
+    ]
+  },
+  {
+    "resource": "MT0027",
+    "codes": [
+      "MT0027"
+    ]
+  },
+  {
+    "resource": "MT0028",
+    "codes": [
+      "MT0028"
+    ]
+  },
+  {
+    "resource": "MT0029",
+    "codes": [
+      "MT0029"
+    ]
+  },
+  {
+    "resource": "MT0030",
+    "codes": [
+      "MT0030"
+    ]
+  },
+  {
+    "resource": "MT0031",
+    "codes": [
+      "MT0031"
+    ]
+  },
+  {
+    "resource": "MT0032",
+    "codes": [
+      "MT0032"
+    ]
+  },
+  {
+    "resource": "MT0034",
+    "codes": [
+      "MT0034"
+    ]
+  },
+  {
+    "resource": "MT0036",
+    "codes": [
+      "MT0036"
+    ]
+  },
+  {
+    "resource": "MT0040",
+    "codes": [
+      "MT0040"
+    ]
+  },
+  {
+    "resource": "MT0041",
+    "codes": [
+      "MT0041"
+    ]
+  },
+  {
+    "resource": "MT0044",
+    "codes": [
+      "MT0044"
+    ]
+  },
+  {
+    "resource": "MT0045",
+    "codes": [
+      "MT0045"
+    ]
+  },
+  {
+    "resource": "MT0047",
+    "codes": [
+      "MT0047"
+    ]
+  },
+  {
+    "resource": "MT0049",
+    "codes": [
+      "MT0049"
+    ]
+  },
+  {
+    "resource": "MT0051",
+    "codes": [
+      "MT0051"
+    ]
+  },
+  {
+    "resource": "MT0052",
+    "codes": [
+      "MT0052"
+    ]
+  },
+  {
+    "resource": "MT0054",
+    "codes": [
+      "MT0054"
+    ]
+  },
+  {
+    "resource": "MT0055",
+    "codes": [
+      "MT0055"
+    ]
+  },
+  {
+    "resource": "MT0057",
+    "codes": [
+      "MT0057"
+    ]
+  },
+  {
+    "resource": "MT0058",
+    "codes": [
+      "MT0058"
+    ]
+  },
+  {
+    "resource": "MT0061",
+    "codes": [
+      "MT0061"
+    ]
+  },
+  {
+    "resource": "MT0062",
+    "codes": [
+      "MT0062"
+    ]
+  },
+  {
+    "resource": "MT0063",
+    "codes": [
+      "MT0063"
+    ]
+  },
+  {
+    "resource": "MT0065",
+    "codes": [
+      "MT0065"
+    ]
+  },
+  {
+    "resource": "MT0066",
+    "codes": [
+      "MT0066"
+    ]
+  },
+  {
+    "resource": "MT0067",
+    "codes": [
+      "MT0067"
+    ]
+  },
+  {
+    "resource": "MT0072",
+    "codes": [
+      "MT0072"
+    ]
+  },
+  {
+    "resource": "MT0073",
+    "codes": [
+      "MT0073"
+    ]
+  },
+  {
+    "resource": "MT0075",
+    "codes": [
+      "MT0075"
+    ]
+  },
+  {
+    "resource": "MT0076",
+    "codes": [
+      "MT0076"
+    ]
+  },
+  {
+    "resource": "MT0078",
+    "codes": [
+      "MT0078"
+    ]
+  },
+  {
+    "resource": "MT0079",
+    "codes": [
+      "MT0079"
+    ]
+  },
+  {
+    "resource": "MT0081",
+    "codes": [
+      "MT0081"
+    ]
+  },
+  {
+    "resource": "MT0082",
+    "codes": [
+      "MT0082"
+    ]
+  },
+  {
+    "resource": "MT0084",
+    "codes": [
+      "MT0084"
+    ]
+  },
+  {
+    "resource": "MT0085",
+    "codes": [
+      "MT0085"
+    ]
+  },
+  {
+    "resource": "MT0087",
+    "codes": [
+      "MT0087"
+    ]
+  },
+  {
+    "resource": "MT0093",
+    "codes": [
+      "MT0093"
+    ]
+  },
+  {
+    "resource": "MT0095",
+    "codes": [
+      "MT0095"
+    ]
+  },
+  {
+    "resource": "MT0100",
+    "codes": [
+      "MT0100"
+    ]
+  },
+  {
+    "resource": "MT0101",
+    "codes": [
+      "MT0101"
+    ]
+  },
+  {
+    "resource": "MT0102",
+    "codes": [
+      "MT0102"
+    ]
+  },
+  {
+    "resource": "MT0103",
+    "codes": [
+      "MT0103"
+    ]
+  },
+  {
+    "resource": "MT0105",
+    "codes": [
+      "MT0105"
+    ]
+  },
+  {
+    "resource": "MT0106",
+    "codes": [
+      "MT0106"
+    ]
+  },
+  {
+    "resource": "MT0107",
+    "codes": [
+      "MT0107"
+    ]
+  },
+  {
+    "resource": "MT0108",
+    "codes": [
+      "MT0108"
+    ]
+  },
+  {
+    "resource": "MT0109",
+    "codes": [
+      "MT0109"
+    ]
+  },
+  {
+    "resource": "MT0112",
+    "codes": [
+      "MT0112"
+    ]
+  },
+  {
+    "resource": "MT0113",
+    "codes": [
+      "MT0113"
+    ]
+  },
+  {
+    "resource": "MT0115",
+    "codes": [
+      "MT0115"
+    ]
+  },
+  {
+    "resource": "MT0116",
+    "codes": [
+      "MT0116"
+    ]
+  },
+  {
+    "resource": "MT0117",
+    "codes": [
+      "MT0117"
+    ]
+  },
+  {
+    "resource": "MT0118",
+    "codes": [
+      "MT0118"
+    ]
+  },
+  {
+    "resource": "MT0123",
+    "codes": [
+      "MT0123"
+    ]
+  },
+  {
+    "resource": "MT0124",
+    "codes": [
+      "MT0124"
+    ]
+  },
+  {
+    "resource": "MT0125",
+    "codes": [
+      "MT0125"
+    ]
+  },
+  {
+    "resource": "MT0126",
+    "codes": [
+      "MT0126"
+    ]
+  },
+  {
+    "resource": "MT0127",
+    "codes": [
+      "MT0127"
+    ]
+  },
+  {
+    "resource": "MT0128",
+    "codes": [
+      "MT0128"
+    ]
+  },
+  {
+    "resource": "MT0136",
+    "codes": [
+      "MT0136"
+    ]
+  },
+  {
+    "resource": "MT0137",
+    "codes": [
+      "MT0137"
+    ]
+  },
+  {
+    "resource": "MT0140",
+    "codes": [
+      "MT0140"
+    ]
+  },
+  {
+    "resource": "MT0141",
+    "codes": [
+      "MT0141"
+    ]
+  },
+  {
+    "resource": "MT0142",
+    "codes": [
+      "MT0142"
+    ]
+  },
+  {
+    "resource": "MT0150",
+    "codes": [
+      "MT0150"
+    ]
+  },
+  {
+    "resource": "MT0156",
+    "codes": [
+      "MT0156"
+    ]
+  },
+  {
+    "resource": "MT0157",
+    "codes": [
+      "MT0157"
+    ]
+  },
+  {
+    "resource": "MT0158",
+    "codes": [
+      "MT0158"
+    ]
+  },
+  {
+    "resource": "MT0159",
+    "codes": [
+      "MT0159"
+    ]
+  },
+  {
+    "resource": "MT0160",
+    "codes": [
+      "MT0160"
+    ]
+  },
+  {
+    "resource": "MT0161",
+    "codes": [
+      "MT0161"
+    ]
+  },
+  {
+    "resource": "MT0168",
+    "codes": [
+      "MT0168"
+    ]
+  },
+  {
+    "resource": "MT1010",
+    "codes": [
+      "MT1010"
+    ]
+  },
+  {
+    "resource": "MT1013",
+    "codes": [
+      "MT1013"
+    ]
+  },
+  {
+    "resource": "MT1014",
+    "codes": [
+      "MT1014"
+    ]
+  },
+  {
+    "resource": "MT1015",
+    "codes": [
+      "MT1015"
+    ]
+  },
+  {
+    "resource": "MT1022",
+    "codes": [
+      "MT1022"
+    ]
+  },
+  {
+    "resource": "MT1035",
+    "codes": [
+      "MT1035"
+    ]
+  },
+  {
+    "resource": "MT1036",
+    "codes": [
+      "MT1036"
+    ]
+  },
+  {
+    "resource": "MT1300",
+    "codes": [
+      "MT1300"
+    ]
+  },
+  {
+    "resource": "MT1301",
+    "codes": [
+      "MT1301"
+    ]
+  },
+  {
+    "resource": "MT1302",
+    "codes": [
+      "MT1302"
+    ]
+  },
+  {
+    "resource": "MT1303",
+    "codes": [
+      "MT1303"
+    ]
+  },
+  {
+    "resource": "MT1305",
+    "codes": [
+      "MT1305"
+    ]
+  },
+  {
+    "resource": "MT1601",
+    "codes": [
+      "MT1601"
+    ]
+  },
+  {
+    "resource": "MT1605",
+    "codes": [
+      "MT1605"
+    ]
+  },
+  {
+    "resource": "MT2002",
+    "codes": [
+      "MT2002"
+    ]
+  },
+  {
+    "resource": "MT2003",
+    "codes": [
+      "MT2003"
+    ]
+  },
+  {
+    "resource": "MT2006",
+    "codes": [
+      "MT2006"
+    ]
+  },
+  {
+    "resource": "MT2007",
+    "codes": [
+      "MT2007"
+    ]
+  },
+  {
+    "resource": "MT2010",
+    "codes": [
+      "MT2010"
+    ]
+  },
+  {
+    "resource": "MT2014",
+    "codes": [
+      "MT2014"
+    ]
+  },
+  {
+    "resource": "MT2018",
+    "codes": [
+      "MT2018"
+    ]
+  },
+  {
+    "resource": "MT2019",
+    "codes": [
+      "MT2019"
+    ]
+  },
+  {
+    "resource": "MT2101",
+    "codes": [
+      "MT2101"
+    ]
+  },
+  {
+    "resource": "MT2102",
+    "codes": [
+      "MT2102"
+    ]
+  },
+  {
+    "resource": "MT3003",
+    "codes": [
+      "MT3003"
+    ]
+  },
+  {
+    "resource": "MT3004",
+    "codes": [
+      "MT3004"
+    ]
+  },
+  {
+    "resource": "MT3005",
+    "codes": [
+      "MT3005"
+    ]
+  },
+  {
+    "resource": "MT3006",
+    "codes": [
+      "MT3006"
+    ]
+  },
+  {
+    "resource": "MT3008",
+    "codes": [
+      "MT3008"
+    ]
+  },
+  {
+    "resource": "MT4001",
+    "codes": [
+      "MT4001"
+    ]
+  },
+  {
+    "resource": "MT4002",
+    "codes": [
+      "MT4002"
+    ]
+  },
+  {
+    "resource": "MT4101",
+    "codes": [
+      "MT4101"
+    ]
+  },
+  {
+    "resource": "MT4102",
+    "codes": [
+      "MT4102"
+    ]
+  },
+  {
+    "resource": "MT4103",
+    "codes": [
+      "MT4103"
+    ]
+  },
+  {
+    "resource": "MT4104",
+    "codes": [
+      "MT4104"
+    ]
+  },
+  {
+    "resource": "MT4105",
+    "codes": [
+      "MT4105"
+    ]
+  },
+  {
+    "resource": "MT4108",
+    "codes": [
+      "MT4108"
+    ]
+  },
+  {
+    "resource": "MT4109",
+    "codes": [
+      "MT4109"
+    ]
+  },
+  {
+    "resource": "MT4110",
+    "codes": [
+      "MT4110"
+    ]
+  },
+  {
+    "resource": "MT4111",
+    "codes": [
+      "MT4111"
+    ]
+  },
+  {
+    "resource": "MT4113",
+    "codes": [
+      "MT4113"
+    ]
+  },
+  {
+    "resource": "MT4114",
+    "codes": [
+      "MT4114"
+    ]
+  },
+  {
+    "resource": "MT4116",
+    "codes": [
+      "MT4116"
+    ]
+  },
+  {
+    "resource": "MT4117",
+    "codes": [
+      "MT4117"
+    ]
+  },
+  {
+    "resource": "MT4118",
+    "codes": [
+      "MT4118"
+    ]
+  },
+  {
+    "resource": "MT4119",
+    "codes": [
+      "MT4119"
+    ]
+  },
+  {
+    "resource": "MT4120",
+    "codes": [
+      "MT4120"
+    ]
+  },
+  {
+    "resource": "MT4121",
+    "codes": [
+      "MT4121"
+    ]
+  },
+  {
+    "resource": "MT4123",
+    "codes": [
+      "MT4123"
+    ]
+  },
+  {
+    "resource": "MT4124",
+    "codes": [
+      "MT4124"
+    ]
+  },
+  {
+    "resource": "MT4125",
+    "codes": [
+      "MT4125"
+    ]
+  },
+  {
+    "resource": "MT4126",
+    "codes": [
+      "MT4126"
+    ]
+  },
+  {
+    "resource": "MT4127",
+    "codes": [
+      "MT4127"
+    ]
+  },
+  {
+    "resource": "MT4128",
+    "codes": [
+      "MT4128"
+    ]
+  },
+  {
+    "resource": "MT4129",
+    "codes": [
+      "MT4129"
+    ]
+  },
+  {
+    "resource": "MT4130",
+    "codes": [
+      "MT4130"
+    ]
+  },
+  {
+    "resource": "MT4131",
+    "codes": [
+      "MT4131"
+    ]
+  },
+  {
+    "resource": "MT4132",
+    "codes": [
+      "MT4132"
+    ]
+  },
+  {
+    "resource": "MT4134",
+    "codes": [
+      "MT4134"
+    ]
+  },
+  {
+    "resource": "MT4135",
+    "codes": [
+      "MT4135"
+    ]
+  },
+  {
+    "resource": "MT4136",
+    "codes": [
+      "MT4136"
+    ]
+  },
+  {
+    "resource": "MT4137",
+    "codes": [
+      "MT4137"
+    ]
+  },
+  {
+    "resource": "MT4138",
+    "codes": [
+      "MT4138"
+    ]
+  },
+  {
+    "resource": "MT4139",
+    "codes": [
+      "MT4139"
+    ]
+  },
+  {
+    "resource": "MT4140",
+    "codes": [
+      "MT4140"
+    ]
+  },
+  {
+    "resource": "MT4141",
+    "codes": [
+      "MT4141"
+    ]
+  },
+  {
+    "resource": "MT4145",
+    "codes": [
+      "MT4145"
+    ]
+  },
+  {
+    "resource": "MT4146",
+    "codes": [
+      "MT4146"
+    ]
+  },
+  {
+    "resource": "MT4147",
+    "codes": [
+      "MT4147"
+    ]
+  },
+  {
+    "resource": "MT4148",
+    "codes": [
+      "MT4148"
+    ]
+  },
+  {
+    "resource": "MT4149",
+    "codes": [
+      "MT4149"
+    ]
+  },
+  {
+    "resource": "MT4150",
+    "codes": [
+      "MT4150"
+    ]
+  },
+  {
+    "resource": "MT4151",
+    "codes": [
+      "MT4151"
+    ]
+  },
+  {
+    "resource": "MT4152",
+    "codes": [
+      "MT4152"
+    ]
+  },
+  {
+    "resource": "MT4153",
+    "codes": [
+      "MT4153"
+    ]
+  },
+  {
+    "resource": "MT4154",
+    "codes": [
+      "MT4154"
+    ]
+  },
+  {
+    "resource": "MT4156",
+    "codes": [
+      "MT4156"
+    ]
+  },
+  {
+    "resource": "MT4157",
+    "codes": [
+      "MT4157"
+    ]
+  },
+  {
+    "resource": "MT4158",
+    "codes": [
+      "MT4158"
+    ]
+  },
+  {
+    "resource": "MT4159",
+    "codes": [
+      "MT4159"
+    ]
+  },
+  {
+    "resource": "MT4160",
+    "codes": [
+      "MT4160"
+    ]
+  },
+  {
+    "resource": "MT4161",
+    "codes": [
+      "MT4161"
+    ]
+  },
+  {
+    "resource": "MT4163",
+    "codes": [
+      "MT4163"
+    ]
+  },
+  {
+    "resource": "MT4164",
+    "codes": [
+      "MT4164"
+    ]
+  },
+  {
+    "resource": "MT4165",
+    "codes": [
+      "MT4165"
+    ]
+  },
+  {
+    "resource": "MT4166",
+    "codes": [
+      "MT4166"
+    ]
+  },
+  {
+    "resource": "MT4167",
+    "codes": [
+      "MT4167"
+    ]
+  },
+  {
+    "resource": "MT4168",
+    "codes": [
+      "MT4168"
+    ]
+  },
+  {
+    "resource": "MT4169",
+    "codes": [
+      "MT4169"
+    ]
+  },
+  {
+    "resource": "MT4170",
+    "codes": [
+      "MT4170"
+    ]
+  },
+  {
+    "resource": "MT4171",
+    "codes": [
+      "MT4171"
+    ]
+  },
+  {
+    "resource": "MT4172",
+    "codes": [
+      "MT4172"
+    ]
+  },
+  {
+    "resource": "MT4173",
+    "codes": [
+      "MT4173"
+    ]
+  },
+  {
+    "resource": "MT4174",
+    "codes": [
+      "MT4174"
+    ]
+  },
+  {
+    "resource": "MT4175",
+    "codes": [
+      "MT4175"
+    ]
+  },
+  {
+    "resource": "MT4176",
+    "codes": [
+      "MT4176"
+    ]
+  },
+  {
+    "resource": "MT4177",
+    "codes": [
+      "MT4177"
+    ]
+  },
+  {
+    "resource": "MT4178",
+    "codes": [
+      "MT4178"
+    ]
+  },
+  {
+    "resource": "MT4179",
+    "codes": [
+      "MT4179"
+    ]
+  },
+  {
+    "resource": "MT4184",
+    "codes": [
+      "MT4184"
+    ]
+  },
+  {
+    "resource": "MT4185",
+    "codes": [
+      "MT4185"
+    ]
+  },
+  {
+    "resource": "MT4186",
+    "codes": [
+      "MT4186"
+    ]
+  },
+  {
+    "resource": "MT4190",
+    "codes": [
+      "MT4190"
+    ]
+  },
+  {
+    "resource": "MT4192",
+    "codes": [
+      "MT4192"
+    ]
+  },
+  {
+    "resource": "MT5101",
+    "codes": [
+      "MT5101"
+    ]
+  },
+  {
+    "resource": "MT5103",
+    "codes": [
+      "MT5103"
+    ]
+  },
+  {
+    "resource": "MT5106",
+    "codes": [
+      "MT5106"
+    ]
+  },
+  {
+    "resource": "MT5107",
+    "codes": [
+      "MT5107"
+    ]
+  },
+  {
+    "resource": "MT5108",
+    "codes": [
+      "MT5108"
+    ]
+  },
+  {
+    "resource": "MT5201",
+    "codes": [
+      "MT5201"
+    ]
+  },
+  {
+    "resource": "MT5202",
+    "codes": [
+      "MT5202"
+    ]
+  },
+  {
+    "resource": "MT5203",
+    "codes": [
+      "MT5203"
+    ]
+  },
+  {
+    "resource": "MT5204",
+    "codes": [
+      "MT5204"
+    ]
+  },
+  {
+    "resource": "MT5209",
+    "codes": [
+      "MT5209"
+    ]
+  },
+  {
+    "resource": "MT5210",
+    "codes": [
+      "MT5210"
+    ]
+  },
+  {
+    "resource": "MT5211",
+    "codes": [
+      "MT5211"
+    ]
+  },
+  {
+    "resource": "MT5212",
+    "codes": [
+      "MT5212"
+    ]
+  },
+  {
+    "resource": "MT5213",
+    "codes": [
+      "MT5213"
+    ]
+  },
+  {
+    "resource": "MT5214",
+    "codes": [
+      "MT5214"
+    ]
+  },
+  {
+    "resource": "MT5215",
+    "codes": [
+      "MT5215"
+    ]
+  },
+  {
+    "resource": "MT5216",
+    "codes": [
+      "MT5216"
+    ]
+  },
+  {
+    "resource": "MT5217",
+    "codes": [
+      "MT5217"
+    ]
+  },
+  {
+    "resource": "MT5218",
+    "codes": [
+      "MT5218"
+    ]
+  },
+  {
+    "resource": "MT5219",
+    "codes": [
+      "MT5219"
+    ]
+  },
+  {
+    "resource": "MT5301",
+    "codes": [
+      "MT5301"
+    ]
+  },
+  {
+    "resource": "MT5302",
+    "codes": [
+      "MT5302"
+    ]
+  },
+  {
+    "resource": "MT5303",
+    "codes": [
+      "MT5303"
+    ]
+  },
+  {
+    "resource": "MT5304",
+    "codes": [
+      "MT5304"
+    ]
+  },
+  {
+    "resource": "MT5306",
+    "codes": [
+      "MT5306"
+    ]
+  },
+  {
+    "resource": "MT8018",
+    "codes": [
+      "MT8018"
+    ]
+  },
+  {
+    "resource": "MX0003",
+    "codes": [
+      "MT0003",
+      "MM0003"
+    ]
+  },
+  {
+    "resource": "MX0007",
+    "codes": [
+      "MT0007",
+      "MM0007"
+    ]
+  },
+  {
+    "resource": "MX0009",
+    "codes": [
+      "MT0009",
+      "MM0009"
+    ]
+  },
+  {
+    "resource": "MX0010",
+    "codes": [
+      "MT0010",
+      "MM0010"
+    ]
+  },
+  {
+    "resource": "MX0016",
+    "codes": [
+      "MT0016",
+      "MM0016"
+    ]
+  },
+  {
+    "resource": "MX0017",
+    "codes": [
+      "MT0017",
+      "MM0017"
+    ]
+  },
+  {
+    "resource": "MX0018",
+    "codes": [
+      "MT0018",
+      "MM0018"
+    ]
+  },
+  {
+    "resource": "MX0020",
+    "codes": [
+      "MT0020",
+      "MM0020"
+    ]
+  },
+  {
+    "resource": "MX0026",
+    "codes": [
+      "MT0026",
+      "MM0026"
+    ]
+  },
+  {
+    "resource": "MX0043",
+    "codes": [
+      "MT0043",
+      "MM0043"
+    ]
+  },
+  {
+    "resource": "MX0056",
+    "codes": [
+      "MT0056",
+      "MM0056"
+    ]
+  },
+  {
+    "resource": "MX0059",
+    "codes": [
+      "MT0059",
+      "MM0059"
+    ]
+  },
+  {
+    "resource": "MX0060",
+    "codes": [
+      "MT0060",
+      "MM0060"
+    ]
+  },
+  {
+    "resource": "MX0068",
+    "codes": [
+      "MT0068",
+      "MM0068"
+    ]
+  },
+  {
+    "resource": "MX0070",
+    "codes": [
+      "MT0070",
+      "MM0070"
+    ]
+  },
+  {
+    "resource": "MX0071",
+    "codes": [
+      "MT0071",
+      "MM0071"
+    ]
+  },
+  {
+    "resource": "MX0074",
+    "codes": [
+      "MT0074",
+      "MM0074"
+    ]
+  },
+  {
+    "resource": "MX0080",
+    "codes": [
+      "MT0080",
+      "MM0080"
+    ]
+  },
+  {
+    "resource": "MX0086",
+    "codes": [
+      "MT0086",
+      "MM0086"
+    ]
+  },
+  {
+    "resource": "MX0090",
+    "codes": [
+      "MT0090",
+      "MM0090"
+    ]
+  },
+  {
+    "resource": "MX0099",
+    "codes": [
+      "MT0099",
+      "MM0099"
+    ]
+  },
+  {
+    "resource": "MX0129",
+    "codes": [
+      "MT0129",
+      "MM0129"
+    ]
+  },
+  {
+    "resource": "MX0130",
+    "codes": [
+      "MT0130",
+      "MM0130"
+    ]
+  },
+  {
+    "resource": "MX0131",
+    "codes": [
+      "MT0131",
+      "MM0131"
+    ]
+  },
+  {
+    "resource": "MX0132",
+    "codes": [
+      "MT0132",
+      "MM0132"
+    ]
+  },
+  {
+    "resource": "MX0133",
+    "codes": [
+      "MT0133",
+      "MM0133"
+    ]
+  },
+  {
+    "resource": "MX0135",
+    "codes": [
+      "MT0135",
+      "MM0135"
+    ]
+  },
+  {
+    "resource": "MX0148",
+    "codes": [
+      "MT0148",
+      "MM0148"
+    ]
+  },
+  {
+    "resource": "MX0176",
+    "codes": [
+      "MT0176",
+      "MM0176"
+    ]
+  },
+  {
+    "resource": "MX0177",
+    "codes": [
+      "MT0177",
+      "MM0177"
+    ]
+  },
+  {
+    "resource": "MX0178",
+    "codes": [
+      "MT0178",
+      "MM0178"
+    ]
+  },
+  {
+    "resource": "MX0179",
+    "codes": [
+      "MT0179",
+      "MM0179"
+    ]
+  },
+  {
+    "resource": "MX0180",
+    "codes": [
+      "MT0180",
+      "MM0180"
+    ]
+  },
+  {
+    "resource": "MX0181",
+    "codes": [
+      "MT0181",
+      "MM0181"
+    ]
+  },
+  {
+    "resource": "MX0182",
+    "codes": [
+      "MT0182",
+      "MM0182"
+    ]
+  },
+  {
+    "resource": "MX0183",
+    "codes": [
+      "MT0183",
+      "MM0183"
+    ]
+  },
+  {
+    "resource": "MX0184",
+    "codes": [
+      "MT0184",
+      "MM0184"
+    ]
+  },
+  {
+    "resource": "MX0185",
+    "codes": [
+      "MT0185",
+      "MM0185"
+    ]
+  },
+  {
+    "resource": "MX0186",
+    "codes": [
+      "MT0186",
+      "MM0186"
+    ]
+  },
+  {
+    "resource": "MX1009",
+    "codes": [
+      "MT1009",
+      "MM1009"
+    ]
+  },
+  {
+    "resource": "MX1306",
+    "codes": [
+      "MT1306",
+      "MM1306"
+    ]
+  },
+  {
+    "resource": "MX1307",
+    "codes": [
+      "MT1307",
+      "MM1307"
+    ]
+  },
+  {
+    "resource": "MX1308",
+    "codes": [
+      "MT1308",
+      "MM1308"
+    ]
+  },
+  {
+    "resource": "MX1502",
+    "codes": [
+      "MT1502",
+      "MM1502"
+    ]
+  },
+  {
+    "resource": "MX1503",
+    "codes": [
+      "MT1503",
+      "MM1503"
+    ]
+  },
+  {
+    "resource": "MX1504",
+    "codes": [
+      "MT1504",
+      "MM1504"
+    ]
+  },
+  {
+    "resource": "MX1600",
+    "codes": [
+      "MT1600",
+      "MM1600"
+    ]
+  },
+  {
+    "resource": "MX1602",
+    "codes": [
+      "MT1602",
+      "MM1602"
+    ]
+  },
+  {
+    "resource": "MX1603",
+    "codes": [
+      "MT1603",
+      "MM1603"
+    ]
+  },
+  {
+    "resource": "MX1604",
+    "codes": [
+      "MT1604",
+      "MM1604"
+    ]
+  },
+  {
+    "resource": "MX2001",
+    "codes": [
+      "MT2001",
+      "MM2001"
+    ]
+  },
+  {
+    "resource": "MX2004",
+    "codes": [
+      "MT2004",
+      "MM2004"
+    ]
+  },
+  {
+    "resource": "MX2005",
+    "codes": [
+      "MT2005",
+      "MM2005"
+    ]
+  },
+  {
+    "resource": "MX2016",
+    "codes": [
+      "MT2016",
+      "MM2016"
+    ]
+  },
+  {
+    "resource": "MX2017",
+    "codes": [
+      "MT2017",
+      "MM2017"
+    ]
+  },
+  {
+    "resource": "MX2103",
+    "codes": [
+      "MT2103",
+      "MM2103"
+    ]
+  },
+  {
+    "resource": "MX2111",
+    "codes": [
+      "MT2111",
+      "MM2111"
+    ]
+  },
+  {
+    "resource": "MX2254",
+    "codes": [
+      "MT2254",
+      "MM2254"
+    ]
+  },
+  {
+    "resource": "MX2255",
+    "codes": [
+      "MT2255",
+      "MM2255"
+    ]
+  },
+  {
+    "resource": "MX2256",
+    "codes": [
+      "MT2256",
+      "MM2256"
+    ]
+  },
+  {
+    "resource": "MX2257",
+    "codes": [
+      "MT2257",
+      "MM2257"
+    ]
+  },
+  {
+    "resource": "MX2258",
+    "codes": [
+      "MT2258",
+      "MM2258"
+    ]
+  },
+  {
+    "resource": "MX2259",
+    "codes": [
+      "MT2259",
+      "MM2259"
+    ]
+  },
+  {
+    "resource": "MX2260",
+    "codes": [
+      "MT2260",
+      "MM2260"
+    ]
+  },
+  {
+    "resource": "MX2261",
+    "codes": [
+      "MT2261",
+      "MM2261"
+    ]
+  },
+  {
+    "resource": "MX2262",
+    "codes": [
+      "MT2262",
+      "MM2262"
+    ]
+  },
+  {
+    "resource": "MX3001",
+    "codes": [
+      "MT3001",
+      "MM3001"
+    ]
+  },
+  {
+    "resource": "MX3007",
+    "codes": [
+      "MT3007",
+      "MM3007"
+    ]
+  },
+  {
+    "resource": "MX4187",
+    "codes": [
+      "MT4187",
+      "MM4187"
+    ]
+  },
+  {
+    "resource": "MX4188",
+    "codes": [
+      "MT4188",
+      "MM4188"
+    ]
+  },
+  {
+    "resource": "MX4189",
+    "codes": [
+      "MT4189",
+      "MM4189"
+    ]
+  },
+  {
+    "resource": "MX4191",
+    "codes": [
+      "MT4191",
+      "MM4191"
+    ]
+  },
+  {
+    "resource": "MX4193",
+    "codes": [
+      "MT4193",
+      "MM4193"
+    ]
+  },
+  {
+    "resource": "MX4194",
+    "codes": [
+      "MT4194",
+      "MM4194"
+    ]
+  },
+  {
+    "resource": "MX4195",
+    "codes": [
+      "MT4195",
+      "MM4195"
+    ]
+  },
+  {
+    "resource": "MX4196",
+    "codes": [
+      "MT4196",
+      "MM4196"
+    ]
+  },
+  {
+    "resource": "MX4197",
+    "codes": [
+      "MT4197",
+      "MM4197"
+    ]
+  },
+  {
+    "resource": "MX4198",
+    "codes": [
+      "MT4198",
+      "MM4198"
+    ]
+  },
+  {
+    "resource": "MX5222",
+    "codes": [
+      "MT5222",
+      "MM5222"
+    ]
+  },
+  {
+    "resource": "MX5223",
+    "codes": [
+      "MT5223",
+      "MM5223"
+    ]
+  },
+  {
+    "resource": "MX5305",
+    "codes": [
+      "MT5305",
+      "MM5305"
+    ]
+  },
+  {
+    "resource": "MX5307",
+    "codes": [
+      "MT5307",
+      "MM5307"
+    ]
+  },
+  {
+    "resource": "MX5309",
+    "codes": [
+      "MT5309",
+      "MM5309"
+    ]
+  },
+  {
+    "resource": "MX5311",
+    "codes": [
+      "MT5311",
+      "MM5311"
+    ]
+  },
+  {
+    "resource": "MX5312",
+    "codes": [
+      "MT5312",
+      "MM5312"
+    ]
+  },
+  {
+    "resource": "MX5313",
+    "codes": [
+      "MT5313",
+      "MM5313"
+    ]
+  },
+  {
+    "resource": "MX5314",
+    "codes": [
+      "MT5314",
+      "MM5314"
+    ]
+  },
+  {
+    "resource": "MX5315",
+    "codes": [
+      "MT5315",
+      "MM5315"
+    ]
+  },
+  {
+    "resource": "MX7000",
+    "codes": [
+      "MT7000",
+      "MM7000"
+    ]
+  },
+  {
+    "resource": "MX8037",
+    "codes": [
+      "MT8037",
+      "MM8037"
+    ]
+  },
+  {
+    "resource": "MX8038",
+    "codes": [
+      "MT8038",
+      "MM8038"
+    ]
+  },
+  {
+    "resource": "MX8039",
+    "codes": [
+      "MT8039",
+      "MM8039"
+    ]
+  },
+  {
+    "resource": "MX8040",
+    "codes": [
+      "MT8040",
+      "MM8040"
+    ]
+  },
+  {
+    "resource": "MX8041",
+    "codes": [
+      "MT8041",
+      "MM8041"
+    ]
+  },
+  {
+    "resource": "MX8042",
+    "codes": [
+      "MT8042",
+      "MM8042"
+    ]
+  },
+  {
+    "resource": "MX8043",
+    "codes": [
+      "MT8043",
+      "MM8043"
+    ]
+  },
+  {
+    "resource": "MX8044",
+    "codes": [
+      "MT8044",
+      "MM8044"
+    ]
+  },
+  {
+    "resource": "MX8045",
+    "codes": [
+      "MT8045",
+      "MM8045"
+    ]
+  },
+  {
+    "resource": "MX8046",
+    "codes": [
+      "MT8046",
+      "MM8046"
+    ]
+  },
+  {
+    "resource": "MX8048",
+    "codes": [
+      "MT8048",
+      "MM8048"
+    ]
+  },
+  {
+    "resource": "MX8049",
+    "codes": [
+      "MT8049",
+      "MM8049"
+    ]
+  },
+  {
+    "resource": "MX8050",
+    "codes": [
+      "MT8050",
+      "MM8050"
+    ]
+  },
+  {
+    "resource": "MX8051",
+    "codes": [
+      "MT8051",
+      "MM8051"
+    ]
+  },
+  {
+    "resource": "MX8052",
+    "codes": [
+      "MT8052",
+      "MM8052"
+    ]
+  },
+  {
+    "resource": "MX8053",
+    "codes": [
+      "MT8053",
+      "MM8053"
+    ]
+  },
+  {
+    "resource": "MX8054",
+    "codes": [
+      "MT8054",
+      "MM8054"
+    ]
+  },
+  {
+    "resource": "MX8055",
+    "codes": [
+      "MT8055",
+      "MM8055"
+    ]
+  },
+  {
+    "resource": "MX8056",
+    "codes": [
+      "MT8056",
+      "MM8056",
+      "MX8056"
+    ]
+  },
+  {
+    "resource": "MX8057",
+    "codes": [
+      "MT8057",
+      "MM8057"
+    ]
+  },
+  {
+    "resource": "MX8058",
+    "codes": [
+      "MT8058",
+      "MM8058"
+    ]
+  },
+  {
+    "resource": "MX8059",
+    "codes": [
+      "MT8059",
+      "MM8059"
+    ]
+  },
+  {
+    "resource": "MX8060",
+    "codes": [
+      "MT8060",
+      "MM8060"
+    ]
+  },
+  {
+    "resource": "MX8061",
+    "codes": [
+      "MT8061",
+      "MM8061"
+    ]
+  },
+  {
+    "resource": "MX8062",
+    "codes": [
+      "MT8062",
+      "MM8062"
+    ]
+  }
+]

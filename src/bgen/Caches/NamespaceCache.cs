@@ -36,7 +36,7 @@ public class NamespaceCache {
 
 		if (Frameworks is null)
 			// we are in a bad state
-			throw ErrorHelper.CreateError (3, CurrentPlatform);
+			throw ErrorHelper.CreateError (1900, CurrentPlatform);
 
 		UINamespaces = new HashSet<string> ();
 		if (Frameworks.HaveAppKit)

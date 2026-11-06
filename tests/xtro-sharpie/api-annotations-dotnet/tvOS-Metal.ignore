@@ -8,15 +8,6 @@
 !unknown-selector! MTLLinkedFunctions::setMotionTransformBuffer: not found
 !unknown-selector! MTLLinkedFunctions::setMotionTransformBufferOffset: not found
 !unknown-selector! MTLLinkedFunctions::setMotionTransformCount: not found
-!deprecated-attribute-missing! MTLBlitCommandEncoder::getTextureAccessCounters:region:mipLevel:slice:resetCounters:countersBuffer:countersBufferOffset: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLBlitCommandEncoder::resetTextureAccessCounters:region:mipLevel:slice: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLDevice::newLibraryWithFile:error: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLDevice::supportsFeatureSet: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLFunction::newArgumentEncoderWithBufferIndex:reflection: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLRenderCommandEncoder::useHeap: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLRenderCommandEncoder::useHeaps:count: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLRenderCommandEncoder::useResource:usage: missing a [Deprecated] attribute
-!deprecated-attribute-missing! MTLRenderCommandEncoder::useResources:count:usage: missing a [Deprecated] attribute
 !missing-null-allowed! 'Foundation.NSError Metal.IMTLCommandBuffer::get_Error()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Metal.IMTLAccelerationStructureCommandEncoder Metal.IMTLCommandBuffer::CreateAccelerationStructureCommandEncoder()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Metal.IMTLBlitCommandEncoder Metal.IMTLCommandBuffer::CreateBlitCommandEncoder(Metal.MTLBlitPassDescriptor)' is missing an [NullAllowed] on return type

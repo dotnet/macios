@@ -215,6 +215,7 @@ namespace ImageCaptureCore {
 		[NullAllowed, Export ("moduleVersion")]
 		string ModuleVersion { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Module executable architecture is no longer available.")]
 		[Export ("moduleExecutableArchitecture")]
 		int ModuleExecutableArchitecture { get; }
 
@@ -275,12 +276,14 @@ namespace ImageCaptureCore {
 		[Export ("requestCloseSession")]
 		void RequestCloseSession ();
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Requesting a device yield is no longer available.")]
 		[Export ("requestYield")]
 		void RequestYield ();
 
 		[Export ("requestSendMessage:outData:maxReturnedDataSize:sendMessageDelegate:didSendMessageSelector:contextInfo:")]
 		void RequestSendMessage (uint messageCode, NSData data, uint maxReturnedDataSize, NSObject sendMessageDelegate, Selector selector, [NullAllowed] IntPtr contextInfo);
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the native 'requestEject' or 'requestEjectWithCompletion:' API instead.")]
 		[Export ("requestEjectOrDisconnect")]
 		void RequestEjectOrDisconnect ();
 	}
@@ -377,12 +380,15 @@ namespace ImageCaptureCore {
 		[NullAllowed, Export ("modificationDate")]
 		NSDate ModificationDate { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the native 'requestThumbnail' or 'requestThumbnailDataWithOptions:completion:' API instead.")]
 		[NullAllowed, Export ("thumbnailIfAvailable")]
 		CGImage ThumbnailIfAvailable { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the native 'requestThumbnail' or 'requestThumbnailDataWithOptions:completion:' API instead.")]
 		[NullAllowed, Export ("largeThumbnailIfAvailable")]
 		CGImage LargeThumbnailIfAvailable { get; }
 
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use the native 'requestMetadata' or 'requestMetadataDictionaryWithOptions:completion:' API instead.")]
 		[NullAllowed, Export ("metadataIfAvailable")]
 		NSDictionary<NSString, NSObject> MetadataIfAvailable { get; }
 
@@ -455,10 +461,12 @@ namespace ImageCaptureCore {
 	interface ICCameraDeviceDelegate : ICDeviceDelegate {
 
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Implement 'DidAddItems' instead.")]
 		[Export ("cameraDevice:didAddItem:")]
 		void DidAddItem (ICCameraDevice camera, ICCameraItem item);
 
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Implement 'DidRemoveItems' instead.")]
 		[Export ("cameraDevice:didRemoveItem:")]
 		void DidRemoveItem (ICCameraDevice camera, ICCameraItem item);
 
@@ -491,6 +499,7 @@ namespace ImageCaptureCore {
 #endif
 
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 10, 15, message: "Implement the native 'cameraDevice:didReceiveMetadata:forItem:error:' callback instead.")]
 		[Export ("cameraDevice:didReceiveMetadataForItem:")]
 		void DidReceiveMetadata (ICCameraDevice camera, ICCameraItem forItem);
 

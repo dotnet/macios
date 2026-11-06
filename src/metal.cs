@@ -1138,6 +1138,10 @@ namespace Metal {
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), MacCatalyst (15, 0)]
+		[Deprecated (PlatformName.MacOSX, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.iOS, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.TvOS, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 4, message: "Access counters are no longer supported in Metal.")]
 		[Export ("getTextureAccessCounters:region:mipLevel:slice:resetCounters:countersBuffer:countersBufferOffset:")]
 		void GetTextureAccessCounters (IMTLTexture texture, MTLRegion region, nuint mipLevel, nuint slice, bool resetCounters, IMTLBuffer countersBuffer, nuint countersBufferOffset);
 
@@ -1146,6 +1150,10 @@ namespace Metal {
 		[Abstract (GenerateExtensionMethod = true)]
 #endif
 		[TV (16, 0), MacCatalyst (15, 0)]
+		[Deprecated (PlatformName.MacOSX, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.iOS, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.TvOS, 26, 4, message: "Access counters are no longer supported in Metal.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 4, message: "Access counters are no longer supported in Metal.")]
 		[Export ("resetTextureAccessCounters:region:mipLevel:slice:")]
 		void ResetTextureAccessCounters (IMTLTexture texture, MTLRegion region, nuint mipLevel, nuint slice);
 
@@ -1369,6 +1377,10 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'CreateLibrary (NSUrl, out NSError)' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'CreateLibrary (NSUrl, out NSError)' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'CreateLibrary (NSUrl, out NSError)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'CreateLibrary (NSUrl, out NSError)' instead.")]
 		[Abstract, Export ("newLibraryWithFile:error:")]
 		[return: Release]
 		IMTLLibrary CreateLibrary (string filepath, out NSError error);
@@ -1503,6 +1515,10 @@ namespace Metal {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'SupportsFamily' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'SupportsFamily' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'SupportsFamily' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'SupportsFamily' instead.")]
 		[Abstract, Export ("supportsFeatureSet:")]
 		bool SupportsFeatureSet (MTLFeatureSet featureSet);
 
@@ -1714,6 +1730,9 @@ namespace Metal {
 
 		[Abstract]
 		[iOS (14, 0), NoTV, MacCatalyst (14, 0)]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'SupportsShaderBarycentricCoordinates' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'SupportsShaderBarycentricCoordinates' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'SupportsShaderBarycentricCoordinates' instead.")]
 		[Export ("barycentricCoordsSupported")]
 		bool BarycentricCoordsSupported { [Bind ("areBarycentricCoordsSupported")] get; }
 
@@ -3212,6 +3231,10 @@ namespace Metal {
 		/// <param name="reflection">The resulting reflection data.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use 'IMTLDevice.CreateArgumentEncoder (IMTLBufferBinding)' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use 'IMTLDevice.CreateArgumentEncoder (IMTLBufferBinding)' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use 'IMTLDevice.CreateArgumentEncoder (IMTLBufferBinding)' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use 'IMTLDevice.CreateArgumentEncoder (IMTLBufferBinding)' instead.")]
 		[Export ("newArgumentEncoderWithBufferIndex:reflection:")]
 		[return: Release]
 		IMTLArgumentEncoder CreateArgumentEncoder (nuint bufferIndex, [NullAllowed] out MTLArgument reflection);
@@ -3998,6 +4021,10 @@ namespace Metal {
 		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use the 'UseResource' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use the 'UseResource' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use the 'UseResource' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use the 'UseResource' overload with 'MTLRenderStages' instead.")]
 		[Export ("useResource:usage:")]
 		void UseResource (IMTLResource resource, MTLResourceUsage usage);
 
@@ -4007,6 +4034,10 @@ namespace Metal {
 		/// <param name="usage">Whether to read, write, or sample the resource.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use the 'UseResources' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use the 'UseResources' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use the 'UseResources' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use the 'UseResources' overload with 'MTLRenderStages' instead.")]
 		[Export ("useResources:count:usage:")]
 		void UseResources (IMTLResource [] resources, nuint count, MTLResourceUsage usage);
 
@@ -4014,6 +4045,10 @@ namespace Metal {
 		/// <param name="heap">The heap from which to read resources that are wrapped in an argument buffer.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use the 'UseHeap' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use the 'UseHeap' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use the 'UseHeap' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use the 'UseHeap' overload with 'MTLRenderStages' instead.")]
 		[Export ("useHeap:")]
 		void UseHeap (IMTLHeap heap);
 
@@ -4022,6 +4057,10 @@ namespace Metal {
 		/// <param name="count">The number of heaps.</param>
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use the 'UseHeaps' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.iOS, 16, 0, message: "Use the 'UseHeaps' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.TvOS, 16, 0, message: "Use the 'UseHeaps' overload with 'MTLRenderStages' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 16, 0, message: "Use the 'UseHeaps' overload with 'MTLRenderStages' instead.")]
 		[Export ("useHeaps:count:")]
 		void UseHeaps (IMTLHeap [] heaps, nuint count);
 

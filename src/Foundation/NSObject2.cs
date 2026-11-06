@@ -701,6 +701,42 @@ namespace Foundation {
 			return ConformsToProtocol (protocol);
 		}
 
+		/// <summary>Returns a managed representation of this object implementing the specified Objective-C protocol.</summary>
+		/// <typeparam name="T">The managed interface representing the Objective-C protocol.</typeparam>
+		/// <returns>This instance if it already implements <typeparamref name="T"/>; otherwise, a protocol wrapper for the same native object.</returns>
+		/// <exception cref="ArgumentException"><typeparamref name="T"/> is not an interface representing a known Objective-C protocol.</exception>
+		/// <exception cref="InvalidCastException">This object does not conform to the specified protocol.</exception>
+		/// <exception cref="ObjectDisposedException">This object's native handle is zero.</exception>
+		/// <remarks>
+		///   <para>This method checks native protocol conformance before returning an existing implementation or creating a wrapper.</para>
+		///   <para>A new wrapper retains the native object without transferring ownership from this instance.</para>
+		/// </remarks>
+		public T AsProtocol<T> () where T : class, INativeObject
+		{
+			if (!typeof (T).IsInterface)
+				throw new ArgumentException ($"'{typeof (T).FullName}' is not a protocol interface.");
+
+			var protocol = Runtime.GetProtocolForType (typeof (T));
+			if (protocol == IntPtr.Zero)
+				throw new ArgumentException ($"'{typeof (T).FullName}' is an unknown protocol.");
+
+			var handle = Handle;
+			if (handle == NativeHandle.Zero)
+				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
+
+			if (ConformsToProtocol (protocol)) {
+				if (this is T implementation)
+					return implementation;
+
+				var wrapper = Runtime.GetINativeObject<T> (handle, false);
+				GC.KeepAlive (this);
+				if (wrapper is not null)
+					return wrapper;
+			}
+
+			throw new InvalidCastException ($"Object of type '{GetType ().FullName}' does not conform to protocol '{typeof (T).FullName}'.");
+		}
+
 		[Export ("conformsToProtocol:")]
 		[Preserve ()]
 		[BindingImpl (BindingImplOptions.Optimizable)]

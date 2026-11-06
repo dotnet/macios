@@ -180,6 +180,80 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void AsProtocol_ExistingImplementation ()
+		{
+			using var str = new NSString ("value");
+			Assert.That (str.AsProtocol<INSCopying> (), Is.SameAs (str), "NSCopying");
+			Assert.That (str.AsProtocol<INSCoding> (), Is.SameAs (str), "NSCoding");
+			Assert.That (str.AsProtocol<INSObjectProtocol> (), Is.SameAs (str), "NSObject");
+		}
+
+		[Test]
+		public void AsProtocol_NativeImplementation ()
+		{
+			using var obj = new AsProtocolCopyingObject ();
+			Assert.That (obj, Is.Not.InstanceOf<INSCopying> (), "Managed interface");
+			using var copying = obj.AsProtocol<INSCopying> ();
+			Assert.That (copying.Handle, Is.EqualTo (obj.Handle), "Handle");
+			Assert.That (copying, Is.Not.SameAs (obj), "Wrapper");
+			using var copy = copying.Copy (null);
+			Assert.That (copy, Is.SameAs (obj), "Copy");
+		}
+
+		class AsProtocolCopyingObject : NSObject {
+			public override bool ConformsToProtocol (NativeHandle protocol)
+			{
+				return protocol == Protocol.GetHandle ("NSCopying") || base.ConformsToProtocol (protocol);
+			}
+
+			[Export ("copyWithZone:")]
+			public NSObject Copy (NSZone zone)
+			{
+				DangerousRetain ();
+				return this;
+			}
+		}
+
+		class NonConformingCopyingObject : AsProtocolCopyingObject, INSCopying {
+			public override bool ConformsToProtocol (NativeHandle protocol)
+			{
+				return false;
+			}
+		}
+
+		interface INotAProtocol : INativeObject { }
+
+		class NonProtocolObject : NSObject, INotAProtocol { }
+
+		[Test]
+		public void AsProtocol_InvalidType ()
+		{
+			using var obj = new NonProtocolObject ();
+			Assert.Throws<ArgumentException> (() => obj.AsProtocol<NSObject> (), "Class");
+			Assert.Throws<ArgumentException> (() => obj.AsProtocol<INativeObject> (), "INativeObject");
+			Assert.Throws<ArgumentException> (() => obj.AsProtocol<INotAProtocol> (), "Non-protocol interface");
+		}
+
+		[Test]
+		public void AsProtocol_DoesNotConform ()
+		{
+			using var obj = new NSObject ();
+			Assert.Throws<InvalidCastException> (() => obj.AsProtocol<INSCopying> (), "NSObject/NSCopying");
+			using var number = new NSNumber (42);
+			Assert.Throws<InvalidCastException> (() => number.AsProtocol<INSMutableCopying> (), "NSNumber/NSMutableCopying");
+			using var nonConforming = new NonConformingCopyingObject ();
+			Assert.Throws<InvalidCastException> (() => nonConforming.AsProtocol<INSCopying> (), "Managed implementation without native conformance");
+		}
+
+		[Test]
+		public void AsProtocol_Disposed ()
+		{
+			var str = new NSString ("value");
+			str.Dispose ();
+			Assert.Throws<ObjectDisposedException> (() => str.AsProtocol<INSCopying> ());
+		}
+
+		[Test]
 		public void Equality ()
 		{
 			using (var o1 = new NSObject ())

@@ -2006,6 +2006,9 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
 		public void ReleaseAttribute (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -2023,6 +2026,7 @@ namespace GeneratorTests {
 						case "GetINativeObject":
 						case "GetNSObject":
 						case "FromHandle":
+						case "ArrayFromHandle":
 							var prev = ins.Previous;
 							return prev.OpCode.Code == Code.Ldc_I4_1;
 						}
@@ -2035,10 +2039,15 @@ namespace GeneratorTests {
 			// The last argument in the call to GetNSObject, GetINativeObject or FromHandle (or any other object-creating methods) must be 'true'.
 			var methods = bgen.ApiAssembly.MainModule.GetType ("NS", "ReleaseAttributeTest").Methods
 								.Where ((v) => !v.IsConstructor)
+								.Where (v => !v.IsSetter)
 								.Where (v => v.Name != "get_ClassHandle");
 			Assert.Multiple (() => {
-				foreach (var method in methods)
+				foreach (var method in methods) {
 					Assert.That (passesOwnsEqualsTrue (method), Is.True, method.Name);
+					Assert.That (method.MethodReturnType.CustomAttributes.Count (attribute => attribute.AttributeType.Name == "ReleaseAttribute"), Is.EqualTo (1), method.Name);
+				}
+				var setter = bgen.ApiAssembly.MainModule.GetType ("NS", "ReleaseAttributeTest").Methods.Single (method => method.Name == "set_NewWritableObject");
+				Assert.That (setter.MethodReturnType.CustomAttributes, Is.Empty, setter.Name);
 			});
 		}
 

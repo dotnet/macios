@@ -18,5 +18,18 @@ namespace NS {
 		[Export ("getINativeObject")]
 		[return: Release]
 		Selector GetINativeObject ();
+
+		[Export ("newObjects")]
+		[return: Release]
+		NSObject [] GetObjects ();
+
+		[Export ("newObject")]
+		NSObject NewObject { [return: Release] get; }
+
+		[Export ("newWritableObject")]
+		NSObject NewWritableObject { [return: Release] get; set; }
+
+		[Export ("newObjectArray")]
+		NSObject [] NewObjectArray { [return: Release] get; }
 	}
 }

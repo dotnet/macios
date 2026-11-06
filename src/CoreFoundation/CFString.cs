@@ -160,17 +160,17 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected CFString () { }
 
-		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
+		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFStringCreateWithCharacters (IntPtr allocator, IntPtr str, nint count);
 
-		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
+		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static nint CFStringGetLength (IntPtr handle);
 
-		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
-		extern static unsafe char* CFStringGetCharactersPtr (IntPtr handle);
+		[DllImport (Constants.CoreFoundationLibrary)]
+		extern static unsafe ushort* CFStringGetCharactersPtr (IntPtr handle);
 
-		[DllImport (Constants.CoreFoundationLibrary, CharSet = CharSet.Unicode)]
-		extern static unsafe IntPtr CFStringGetCharacters (IntPtr handle, CFRange range, char* buffer);
+		[DllImport (Constants.CoreFoundationLibrary)]
+		extern static unsafe IntPtr CFStringGetCharacters (IntPtr handle, CFRange range, ushort* buffer);
 
 		/// <summary>Creates a <see cref="CFString" /> from the C# string and returns a pointer to it.</summary>
 		/// <param name="value">C# String to wrap</param>
@@ -297,7 +297,7 @@ namespace CoreFoundation {
 			CFRange r = new CFRange (0, l);
 			unsafe {
 				// this returns non-null only if the string can be represented as unicode
-				char* u = CFStringGetCharactersPtr (handle);
+				char* u = (char*) CFStringGetCharactersPtr (handle);
 				if (u is null) {
 					// alloc short string on the stack, otherwise use the heap
 					allocate_memory = l > 128;
@@ -310,7 +310,7 @@ namespace CoreFoundation {
 						char* u2 = stackalloc char [l];
 						u = u2;
 					}
-					CFStringGetCharacters (handle, r, u);
+					CFStringGetCharacters (handle, r, (ushort*) u);
 				}
 				str = new string (u, 0, l);
 				if (allocate_memory)

@@ -166,9 +166,13 @@ namespace Network {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_endpoint nw_endpoint_create_url (IntPtr url);
 
+		/// <summary>Creates a network endpoint from the specified URL string.</summary>
+		/// <param name="url">The URL string describing the endpoint.</param>
+		/// <returns>A new <see cref="NWEndpoint" /> instance, or <see langword="null" /> if the URL could not be parsed.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="url" /> is <see langword="null" />.</exception>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
@@ -188,9 +192,11 @@ namespace Network {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern IntPtr nw_endpoint_get_url (OS_nw_endpoint endpoint);
 
+		/// <summary>Gets the URL string associated with this endpoint.</summary>
+		/// <value>The endpoint URL string, or <see langword="null" /> if this endpoint is not a URL endpoint.</value>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

@@ -24,7 +24,7 @@ namespace Network {
 		[Preserve (Conditional = true)]
 		internal NWWebSocketResponse (NativeHandle handle, bool owns) : base (handle, owns) { }
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe OS_nw_ws_response nw_ws_response_create (NWWebSocketResponseStatus status, IntPtr selected_subprotocol);
 
 		static unsafe OS_nw_ws_response nw_ws_response_create (NWWebSocketResponseStatus status, string selected_subprotocol)
@@ -33,10 +33,13 @@ namespace Network {
 			return nw_ws_response_create (status, selected_subprotocolPtr);
 		}
 
+		/// <summary>Initializes a new <see cref="NWWebSocketResponse" /> with the specified handshake status and selected subprotocol.</summary>
+		/// <param name="status">The response status for the WebSocket handshake.</param>
+		/// <param name="subprotocol">The subprotocol selected by the server.</param>
 		public NWWebSocketResponse (NWWebSocketResponseStatus status, string subprotocol)
 			=> InitializeHandle (nw_ws_response_create (status, subprotocol));
 
-		[DllImport (Constants.NetworkLibrary, EntryPoint = "nw_ws_response_get_selected_subprotocol", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary, EntryPoint = "nw_ws_response_get_selected_subprotocol")]
 		static extern IntPtr nw_ws_response_get_selected_subprotocol_ptr (OS_nw_ws_response response);
 
 		static string nw_ws_response_get_selected_subprotocol (OS_nw_ws_response response)
@@ -45,6 +48,8 @@ namespace Network {
 			return TransientString.ToStringAndFree (ptr, TransientString.Encoding.Ansi)!;
 		}
 
+		/// <summary>Gets the WebSocket subprotocol selected by the server.</summary>
+		/// <value>The selected subprotocol identifier.</value>
 		public string SelectedSubprotocol => nw_ws_response_get_selected_subprotocol (GetCheckedHandle ());
 
 		[DllImport (Constants.NetworkLibrary)]
@@ -88,7 +93,7 @@ namespace Network {
 			}
 		}
 
-		[DllImport (Constants.NetworkLibrary, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
+		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_ws_response_add_additional_header (OS_nw_ws_response response, IntPtr name, IntPtr value);
 
 		static void nw_ws_response_add_additional_header (OS_nw_ws_response response, string name, string value)
@@ -98,6 +103,9 @@ namespace Network {
 			nw_ws_response_add_additional_header (response, namePtr, valuePtr);
 		}
 
+		/// <summary>Adds an additional HTTP header to the WebSocket server handshake response.</summary>
+		/// <param name="header">The HTTP header field name.</param>
+		/// <param name="value">The HTTP header field value.</param>
 		public void SetHeader (string header, string value) => nw_ws_response_add_additional_header (GetCheckedHandle (), header, value);
 	}
 }

@@ -917,6 +917,8 @@
 			-->
 			<_CheckForIllegalCrossThreadCalls Condition="'$(CheckForIllegalCrossThreadCalls)' != ''">$(CheckForIllegalCrossThreadCalls)</_CheckForIllegalCrossThreadCalls>
 			<_CheckForIllegalCrossThreadCalls Condition="'$(_CheckForIllegalCrossThreadCalls)' == ''">$(_BundlerDebug)</_CheckForIllegalCrossThreadCalls>
+			<_CheckForEventAndDelegateMismatches Condition="'$(CheckForEventAndDelegateMismatches)' != ''">$(CheckForEventAndDelegateMismatches)</_CheckForEventAndDelegateMismatches>
+			<_CheckForEventAndDelegateMismatches Condition="'$(_CheckForEventAndDelegateMismatches)' == ''">$(_BundlerDebug)</_CheckForEventAndDelegateMismatches>
 
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
@@ -1077,6 +1079,7 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForIllegalCrossThreadCalls" Value="$(_CheckForIllegalCrossThreadCalls)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.CheckForEventAndDelegateMismatches" Value="$(_CheckForEventAndDelegateMismatches)" Trim="true" />
 
 			<!-- Configure System.Net.Http Native Handlers -->
 			<RuntimeHostConfigurationOption Include="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" Value="$(_IsNSUrlSessionHandlerFeature)" Trim="true" />

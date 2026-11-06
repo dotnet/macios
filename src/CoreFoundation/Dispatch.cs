@@ -94,10 +94,10 @@ namespace CoreFoundation {
 		}
 
 		[DllImport (Constants.libcLibrary)]
-		extern static IntPtr dispatch_release (IntPtr o);
+		extern static void dispatch_release (IntPtr o);
 
 		[DllImport (Constants.libcLibrary)]
-		extern static IntPtr dispatch_retain (IntPtr o);
+		extern static void dispatch_retain (IntPtr o);
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
@@ -751,7 +751,7 @@ namespace CoreFoundation {
 		// so not available on Monotouch
 		//
 		[DllImport (Constants.libcLibrary)]
-		static extern IntPtr dispatch_main ();
+		static extern void dispatch_main ();
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>

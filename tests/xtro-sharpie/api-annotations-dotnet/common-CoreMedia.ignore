@@ -196,14 +196,6 @@
 !missing-pinvoke! CMSampleBufferSetDataBufferFromAudioBufferList is not bound
 !missing-pinvoke! CMSampleBufferSetDataFailed is not bound
 !missing-pinvoke! CMSampleBufferSetInvalidateHandler is not bound
-!missing-pinvoke! CMSimpleQueueCreate is not bound
-!missing-pinvoke! CMSimpleQueueDequeue is not bound
-!missing-pinvoke! CMSimpleQueueEnqueue is not bound
-!missing-pinvoke! CMSimpleQueueGetCapacity is not bound
-!missing-pinvoke! CMSimpleQueueGetCount is not bound
-!missing-pinvoke! CMSimpleQueueGetHead is not bound
-!missing-pinvoke! CMSimpleQueueGetTypeID is not bound
-!missing-pinvoke! CMSimpleQueueReset is not bound
 !missing-pinvoke! CMSwapBigEndianClosedCaptionDescriptionToHost is not bound
 !missing-pinvoke! CMSwapBigEndianImageDescriptionToHost is not bound
 !missing-pinvoke! CMSwapBigEndianMetadataDescriptionToHost is not bound

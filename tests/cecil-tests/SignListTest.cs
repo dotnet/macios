@@ -9,7 +9,7 @@ using System.IO.Compression;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Xamarin.Tests;
 
@@ -17,7 +17,7 @@ using Xamarin.Tests;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class SignListTest {
 		const int MaxZipDepth = 8;
 
@@ -26,16 +26,16 @@ namespace Cecil.Tests {
 		// The bundle groups contain the name of an app bundle, and not the name of a file.
 		static bool IsBundleGroup (string group) => group.EndsWith ("Bundle", StringComparison.Ordinal);
 
-		[Test]
+		[TestMethod]
 		public void WorkloadPackagesHaveSigningEntries ()
 		{
 			var root = Configuration.SourceRoot;
 			var signList = Path.Combine (root, "dotnet", "Workloads", "SignList.xml");
 			var packageDir = Configuration.EvaluateVariable ("DOTNET_NUPKG_DIR");
 
-			Assert.That (Directory.Exists (packageDir), Is.True, $"Package directory '{packageDir}' does not exist. Build or download the workload packages first.");
+			Assert.IsTrue (Directory.Exists (packageDir), $"Package directory '{packageDir}' does not exist. Build or download the workload packages first.");
 			var packages = Directory.GetFiles (packageDir, "*.nupkg", SearchOption.TopDirectoryOnly);
-			Assert.That (packages, Is.Not.Empty, $"No nupkgs found in '{packageDir}'.");
+			Assert.IsNotEmpty (packages, $"No nupkgs found in '{packageDir}'.");
 
 			var patterns = ReadPatterns (signList);
 			var matched = new bool [patterns.Count];
@@ -51,8 +51,8 @@ namespace Cecil.Tests {
 						Console.WriteLine ($"Unused SignList.xml entry: <{patterns [i].Group} Include=\"{patterns [i].Include}\" />");
 				}
 			}
-			Assert.That (missing, Is.Empty, $"Files missing from {signList}:\n{string.Join ("\n", missing)}");
-			Assert.That (notExecutables, Is.Empty, $"Files matched by a Mach-O signing entry in {signList} that aren't Mach-O executables:\n{string.Join ("\n", notExecutables)}");
+			Assert.IsEmpty (missing, $"Files missing from {signList}:\n{string.Join ("\n", missing)}");
+			Assert.IsEmpty (notExecutables, $"Files matched by a Mach-O signing entry in {signList} that aren't Mach-O executables:\n{string.Join ("\n", notExecutables)}");
 		}
 
 		static List<(string Group, string Include, Regex Pattern)> ReadPatterns (string signList)
@@ -66,11 +66,11 @@ namespace Cecil.Tests {
 						Assert.Fail ($"{group} entry without Include in {signList}");
 						continue;
 					}
-					Assert.That (include, Does.Not.Contain ("/"), $"Use Windows-style separators in {signList}: {include}");
+					Assert.IsFalse (include.Contains ('/'), $"Use Windows-style separators in {signList}: {include}");
 					string expression;
 					if (IsBundleGroup (group)) {
-						Assert.That (include, Does.EndWith (".app"), $"{group} entries must be the name of an app bundle in {signList}: {include}");
-						Assert.That (include.IndexOfAny (new char [] { '\\', '*', '?' }), Is.EqualTo (-1), $"{group} entries must not contain a path or wildcards in {signList}: {include}");
+						StringAssert.EndsWith (include, ".app", $"{group} entries must be the name of an app bundle in {signList}: {include}");
+						Assert.AreEqual (-1, include.IndexOfAny (new char [] { '\\', '*', '?' }), $"{group} entries must not contain a path or wildcards in {signList}: {include}");
 						expression = Regex.Escape (include) + @"\\Contents\\Info\.plist";
 					} else {
 						expression = Regex.Escape (include).Replace (@"\*", @"[^\\]*").Replace (@"\?", @"[^\\]");
@@ -78,7 +78,7 @@ namespace Cecil.Tests {
 					patterns.Add ((group, include, new Regex ($"(^|\\\\){expression}$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)));
 				}
 			}
-			Assert.That (patterns, Is.Not.Empty, $"No signing entries found in {signList}");
+			Assert.IsNotEmpty (patterns, $"No signing entries found in {signList}");
 			return patterns;
 		}
 
@@ -102,7 +102,7 @@ namespace Cecil.Tests {
 
 				var name = entry.FullName.Replace ('/', '\\');
 				if (entry.Name.EndsWith (".zip", StringComparison.OrdinalIgnoreCase)) {
-					Assert.That (depth, Is.LessThan (MaxZipDepth), $"Nested ZIP depth exceeds {MaxZipDepth}: {archiveName}!{zipPath}{entry.FullName}");
+					Assert.IsLessThan (MaxZipDepth, depth, $"Nested ZIP depth exceeds {MaxZipDepth}: {archiveName}!{zipPath}{entry.FullName}");
 					using var stream = entry.Open ();
 					using var nested = new ZipArchive (stream, ZipArchiveMode.Read);
 					CheckArchive (nested, archiveName, zipPath + entry.FullName + "!", matchPrefix + Path.GetFileNameWithoutExtension (entry.Name) + "\\", patterns, matched, missing, notExecutables, depth + 1);

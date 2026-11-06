@@ -19,6 +19,7 @@
 		<libclangPackageVersion>21.1.8</libclangPackageVersion>
 		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
 		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
+		<MSTestPackageVersion>4.5.2</MSTestPackageVersion>
 		<NUnit3TestAdapterPackageVersion>6.2.0</NUnit3TestAdapterPackageVersion>
 		<NUnitAnalyzersPackageVersion>4.13.0</NUnitAnalyzersPackageVersion>
 		<NUnitPackageVersion>4.6.1</NUnitPackageVersion>

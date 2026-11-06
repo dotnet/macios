@@ -13,8 +13,21 @@ namespace Xamarin.Tests {
 
 		static string TestAssemblyDirectory {
 			get {
+#if MSTEST
+				return Directory.GetCurrentDirectory ();
+#else
 				return TestContext.CurrentContext.WorkDirectory;
+#endif
 			}
+		}
+
+		static void IgnoreTest (string message)
+		{
+#if MSTEST
+			Assert.Inconclusive (message);
+#else
+			Assert.Ignore (message);
+#endif
 		}
 
 		public static void AssertRuntimeIdentifierAvailable (ApplePlatform platform, string runtimeIdentifier)
@@ -25,7 +38,7 @@ namespace Xamarin.Tests {
 			if (GetRuntimeIdentifiers (platform).Contains (runtimeIdentifier))
 				return;
 
-			Assert.Ignore ($"The runtime identifier {runtimeIdentifier} is not available on {platform}");
+			IgnoreTest ($"The runtime identifier {runtimeIdentifier} is not available on {platform}");
 		}
 
 		public static void AssertRuntimeIdentifiersAvailable (ApplePlatform platform, string runtimeIdentifiers)
@@ -39,12 +52,12 @@ namespace Xamarin.Tests {
 
 		public static void AssertiOS32BitAvailable ()
 		{
-			Assert.Ignore ($"32-bit iOS support is not available in the current build.");
+			IgnoreTest ($"32-bit iOS support is not available in the current build.");
 		}
 
 		public static void AssertLegacyXamarinAvailable ()
 		{
-			Assert.Ignore ("Legacy xamarin build not enabled");
+			IgnoreTest ("Legacy xamarin build not enabled");
 		}
 
 		// Calls Assert.Ignore if the given platform isn't included in the current build.
@@ -53,19 +66,19 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 				if (!include_ios)
-					Assert.Ignore ("iOS is not included in this build");
+					IgnoreTest ("iOS is not included in this build");
 				break;
 			case ApplePlatform.TVOS:
 				if (!include_tvos)
-					Assert.Ignore ("tvOS is not included in this build");
+					IgnoreTest ("tvOS is not included in this build");
 				break;
 			case ApplePlatform.MacOSX:
 				if (!include_mac)
-					Assert.Ignore ("macOS is not included in this build");
+					IgnoreTest ("macOS is not included in this build");
 				break;
 			case ApplePlatform.MacCatalyst:
 				if (!include_maccatalyst)
-					Assert.Ignore ("Mac Catalyst is not included in this build");
+					IgnoreTest ("Mac Catalyst is not included in this build");
 				break;
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
@@ -106,7 +119,7 @@ namespace Xamarin.Tests {
 		public static void IgnoreIfAnyIgnoredPlatforms ()
 		{
 			if (AnyIgnoredPlatforms (out var notIncluded))
-				Assert.Ignore ($"This test requires all platforms to be included, but the following platforms aren't included: {string.Join (", ", notIncluded.Select (v => v.AsString ()))}");
+				IgnoreTest ($"This test requires all platforms to be included, but the following platforms aren't included: {string.Join (", ", notIncluded.Select (v => v.AsString ()))}");
 		}
 
 		public static void IgnoreIfNotOnMacOS ()
@@ -123,7 +136,7 @@ namespace Xamarin.Tests {
 		{
 			if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform (platform))
 				return;
-			Assert.Ignore ($"This test is only applicable on {platform}");
+			IgnoreTest ($"This test is only applicable on {platform}");
 		}
 	}
 }

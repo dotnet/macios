@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Xamarin.Tests;
 using Xamarin.Utils;
 
 namespace Cecil.Tests {
+	[TestClass]
 	public partial class SetHandleTest {
 		static string GetLocation (MethodDefinition? method)
 		{
@@ -56,7 +57,7 @@ namespace Cecil.Tests {
 			return true;
 		}
 
-		[Test]
+		[TestMethod]
 		public void NobodyCallsHandleSetter ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();

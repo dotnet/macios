@@ -7,15 +7,15 @@ using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Xamarin.Tests;
 using Xamarin.Utils;
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public partial class HandleSafetyTest {
-		[Test]
+		[TestMethod]
 		public void Check ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -26,7 +26,7 @@ namespace Cecil.Tests {
 				var assembly = info.Assembly;
 				var methodsToCheck = Helper.EnumerateMethods (assembly!, Filter).ToArray ();
 
-				Assert.That (methodsToCheck.Length, Is.GreaterThan (0), "There must be something to check!");
+				Assert.IsGreaterThan (0, methodsToCheck.Length, "There must be something to check!");
 
 				foreach (var m in methodsToCheck) {
 					var state = new MethodState (m);

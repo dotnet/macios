@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -124,7 +124,7 @@ namespace Cecil.Tests {
 	//        bool, which must be changed to 'byte' instead, and the consuming code has
 	//        to change to compare the parameter/return value to 0 (non-zero = true,
 	//        zero = false)
-	[TestFixture]
+	[TestClass]
 	public partial class BlittablePInvokes {
 		struct MethodBlitResult {
 			public MethodBlitResult (bool isBlittable, MethodDefinition method)
@@ -213,7 +213,7 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[Test]
+		[TestMethod]
 		public void NoMarshalAsAttributes ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -247,7 +247,7 @@ namespace Cecil.Tests {
 			Helper.AssertFailures (failures, knownFailuresMarshalAs, nameof (knownFailuresMarshalAs), "APIs with [MarshalAs] attributes.", (v) => $"{v.Location}: {v.Message}");
 		}
 
-		[Test]
+		[TestMethod]
 		public void CheckForNonBlittablePInvokes ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -262,7 +262,7 @@ namespace Cecil.Tests {
 				blitCaches [info.Assembly] = new Dictionary<string, BlitAndReason> ();
 			}
 
-			Assert.That (pinvokes.Count, Is.GreaterThan (0), "Must have some P/Invokes at least");
+			Assert.IsGreaterThan (0, pinvokes.Count, "Must have some P/Invokes at least");
 
 			var results = pinvokes.Select (pi => IsMethodBlittable (pi.Assembly, pi.Method, blitCaches [pi.Assembly])).Where (r => !r.IsBlittable).ToArray ();
 			foreach (var result in results) {
@@ -434,7 +434,7 @@ namespace Cecil.Tests {
 				(method.Attributes & MethodAttributes.PInvokeImpl) != 0);
 		}
 
-		[Test]
+		[TestMethod]
 		public void CheckForBlockLiterals ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -459,7 +459,7 @@ namespace Cecil.Tests {
 							}
 
 							var targetMethod = instr.Operand as MethodReference;
-							Assert.That (targetMethod, Is.Not.Null, "Null operand"); // If this ever fails, the code needs to be updated.
+							Assert.IsNotNull (targetMethod, "Null operand"); // If this ever fails, the code needs to be updated.
 
 							if (!targetMethod!.DeclaringType.Is ("ObjCRuntime", "BlockLiteral"))
 								continue;
@@ -497,7 +497,7 @@ namespace Cecil.Tests {
 		static HashSet<string> knownFailuresBlockLiterals = new HashSet<string> {
 		};
 
-		[Test]
+		[TestMethod]
 		public void CheckForMonoPInvokeCallback ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();

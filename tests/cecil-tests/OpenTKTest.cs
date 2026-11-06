@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public class OpenTKTest {
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
 		// https://github.com/dotnet/macios/issues/9724
-		public void BeGone (AssemblyInfo info)
+		public void BeGone (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			var found = new HashSet<string> ();
 			foreach (var type in assembly.MainModule.Types) {
@@ -22,7 +24,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			Assert.That (found, Is.Empty);
+			Assert.IsEmpty (found, string.Join ("\n", found));
 		}
 	}
 }

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -16,10 +16,10 @@ using Xamarin.Tests;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class ProtocolTest {
 		// This test asserts that newly bound protocols set 'BackwardsCompatibleCodeGeneration = false'
-		[Test]
+		[TestMethod]
 		public void MustSetBackwardsCompatibleCodeGenerationToFalse ()
 		{
 			var found = new HashSet<string> ();
@@ -1162,7 +1162,7 @@ namespace Cecil.Tests {
 				foreach (var f in unexpectedFailures.OrderBy (v => v))
 					Console.WriteLine ($"    {f}");
 			}
-			Assert.That (unexpectedFailures, Is.Empty, $"{unexpectedFailures.Count ()} new protocols found where 'BackwardsCompatibleCodeGeneration' should be set to 'false'.");
+			Assert.IsEmpty (unexpectedFailures, $"{unexpectedFailures.Count ()} new protocols found where 'BackwardsCompatibleCodeGeneration' should be set to 'false'.\n{string.Join ("\n", unexpectedFailures)}");
 		}
 	}
 }

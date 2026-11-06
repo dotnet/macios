@@ -110,6 +110,76 @@ namespace Foundation {
 		Internet = 1196773964, // 'GURL'
 	}
 
+	/// <summary>Four-character codes identifying Apple event parameters and attributes.</summary>
+	[NoiOS, NoTV]
+	[MacCatalyst (13, 1)]
+	public enum AEKeyword : uint {
+		/// <summary>The direct object parameter ('----').</summary>
+		DirectObject = 0x2D2D2D2D,
+		/// <summary>The error number parameter ('errn').</summary>
+		ErrorNumber = 0x6572726E,
+		/// <summary>The error message parameter ('errs').</summary>
+		ErrorString = 0x65727273,
+		/// <summary>The process serial number parameter ('psn ').</summary>
+		ProcessSerialNumber = 0x70736E20,
+		/// <summary>The pre-dispatch handler keyword ('phac').</summary>
+		PreDispatch = 0x70686163,
+		/// <summary>The handler selection keyword ('selh').</summary>
+		SelectProc = 0x73656C68,
+		/// <summary>The number of Apple event recorders ('recr').</summary>
+		RecorderCount = 0x72656372,
+		/// <summary>The Apple Event Manager version ('vers').</summary>
+		Version = 0x76657273,
+		/// <summary>The transaction identifier attribute ('tran').</summary>
+		TransactionIdAttribute = 0x7472616E,
+		/// <summary>The reply return identifier attribute ('rtid').</summary>
+		ReturnIdAttribute = 0x72746964,
+		/// <summary>The event class attribute ('evcl').</summary>
+		EventClassAttribute = 0x6576636C,
+		/// <summary>The event identifier attribute ('evid').</summary>
+		EventIdAttribute = 0x65766964,
+		/// <summary>The target address attribute ('addr').</summary>
+		AddressAttribute = 0x61646472,
+		/// <summary>The list of optional parameter keywords ('optk').</summary>
+		OptionalKeywordAttribute = 0x6F70746B,
+		/// <summary>The reply timeout attribute ('timo').</summary>
+		TimeoutAttribute = 0x74696D6F,
+		/// <summary>The permitted user interaction level attribute ('inte').</summary>
+		InteractLevelAttribute = 0x696E7465,
+		/// <summary>The event source attribute ('esrc').</summary>
+		EventSourceAttribute = 0x65737263,
+		/// <summary>The first unread parameter keyword attribute ('miss').</summary>
+		MissedKeywordAttribute = 0x6D697373,
+		/// <summary>The original sender address attribute ('from').</summary>
+		OriginalAddressAttribute = 0x66726F6D,
+		/// <summary>The event acceptance timeout attribute ('actm').</summary>
+		AcceptTimeoutAttribute = 0x6163746D,
+		/// <summary>The attribute indicating whether a reply was requested ('repq').</summary>
+		ReplyRequestedAttribute = 0x72657071,
+		/// <summary>The sender's effective user identifier attribute ('seid').</summary>
+		SenderEuidAttribute = 0x73656964,
+		/// <summary>The sender's effective group identifier attribute ('sgid').</summary>
+		SenderEgidAttribute = 0x73676964,
+		/// <summary>The sender's user identifier attribute ('uids').</summary>
+		SenderUidAttribute = 0x75696473,
+		/// <summary>The sender's group identifier attribute ('gids').</summary>
+		SenderGidAttribute = 0x67696473,
+		/// <summary>The sender's process identifier attribute ('spid').</summary>
+		SenderPidAttribute = 0x73706964,
+		/// <summary>The sender's audit token attribute ('tokn').</summary>
+		SenderAuditTokenAttribute = 0x746F6B6E,
+		/// <summary>The sender's AppleScript entitlements attribute ('entl').</summary>
+		SenderAppleScriptEntitlementsAttribute = 0x656E746C,
+		/// <summary>The sender's application identifier entitlement attribute ('aiea').</summary>
+		SenderApplicationIdentifierEntitlementAttribute = 0x61696561,
+		/// <summary>The attribute indicating whether the sender is sandboxed ('sssb').</summary>
+		SenderApplicationSandboxed = 0x73737362,
+		/// <summary>The actual sender's audit token ('acat').</summary>
+		ActualSenderAuditToken = 0x61636174,
+		/// <summary>The list of attribute keywords present in an event ('attr').</summary>
+		AppleEventAttributesAttribute = 0x61747472,
+	}
+
 	// Added from NSUserNotification.h
 	[NoiOS, NoTV, NoMacCatalyst]
 	[Native]

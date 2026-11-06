@@ -71,8 +71,7 @@ using System.ComponentModel;
 
 // In Apple headers, this is a typedef to a pointer to a private struct
 using NSAppleEventManagerSuspensionID = System.IntPtr;
-// These two are both four char codes i.e. defined on a uint with constant like 'xxxx'
-using AEKeyword = System.UInt32;
+// This is a four char code i.e. defined on a uint with constants like 'xxxx'
 using OSType = System.UInt32;
 // typedef double NSTimeInterval;
 using NSTimeInterval = System.Double;
@@ -20497,40 +20496,94 @@ namespace Foundation {
 		[Export ("transactionID")]
 		AETransactionID TransactionID ();*/
 
-		[Export ("setParamDescriptor:forKeyword:")]
+		/// <summary>Sets an Apple event parameter for the specified keyword.</summary>
+		/// <param name="descriptor">The parameter descriptor.</param>
+		/// <param name="keyword">The parameter keyword.</param>
 #if XAMCORE_5_0
-		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[Export ("setParamDescriptor:forKeyword:")]
 #else
+		[Wrap ("SetParamDescriptorforKeyword (descriptor, (uint) keyword)")]
+#endif
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#if !XAMCORE_5_0
 		[Obsolete ("Use 'SetParamDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		void SetParamDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[Export ("setParamDescriptor:forKeyword:")]
+		void SetParamDescriptorforKeyword (NSAppleEventDescriptor descriptor, uint keyword);
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Wrap ("SetParamDescriptorforKeyword (descriptor, keyword)")]
-		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, uint keyword);
 #endif
 
+		/// <summary>Gets the Apple event parameter for the specified keyword.</summary>
+		/// <param name="keyword">The parameter keyword.</param>
+		/// <returns>The parameter descriptor, or <see langword="null" /> if the parameter is absent.</returns>
 		[return: NullAllowed]
+#if XAMCORE_5_0
 		[Export ("paramDescriptorForKeyword:")]
+#else
+		[Wrap ("ParamDescriptorForKeyword ((uint) keyword)")]
+#endif
 		NSAppleEventDescriptor ParamDescriptorForKeyword (AEKeyword keyword);
 
+		/// <summary>Removes the Apple event parameter for the specified keyword.</summary>
+		/// <param name="keyword">The parameter keyword.</param>
+#if XAMCORE_5_0
 		[Export ("removeParamDescriptorWithKeyword:")]
+#else
+		[Wrap ("RemoveParamDescriptorWithKeyword ((uint) keyword)")]
+#endif
 		void RemoveParamDescriptorWithKeyword (AEKeyword keyword);
 
-		[Export ("setAttributeDescriptor:forKeyword:")]
-#if XAMCORE_5_0
-		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
-#else
-		[Obsolete ("Use 'SetAttributeDescriptor' instead.")]
+#if !XAMCORE_5_0
+		[return: NullAllowed]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		void SetAttributeDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[Export ("paramDescriptorForKeyword:")]
+		NSAppleEventDescriptor ParamDescriptorForKeyword (uint keyword);
 
-		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, keyword)")]
-		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("removeParamDescriptorWithKeyword:")]
+		void RemoveParamDescriptorWithKeyword (uint keyword);
 #endif
 
+		/// <summary>Sets an Apple event attribute for the specified keyword.</summary>
+		/// <param name="descriptor">The attribute descriptor.</param>
+		/// <param name="keyword">The attribute keyword.</param>
+#if XAMCORE_5_0
+		[Export ("setAttributeDescriptor:forKeyword:")]
+#else
+		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, (uint) keyword)")]
+#endif
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'SetAttributeDescriptor' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("setAttributeDescriptor:forKeyword:")]
+		void SetAttributeDescriptorforKeyword (NSAppleEventDescriptor descriptor, uint keyword);
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, keyword)")]
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, uint keyword);
+#endif
+
+		/// <summary>Gets the Apple event attribute for the specified keyword.</summary>
+		/// <param name="keyword">The attribute keyword.</param>
+		/// <returns>The attribute descriptor, or <see langword="null" /> if the attribute is absent.</returns>
 		[return: NullAllowed]
+#if XAMCORE_5_0
 		[Export ("attributeDescriptorForKeyword:")]
+#else
+		[Wrap ("AttributeDescriptorForKeyword ((uint) keyword)")]
+#endif
 		NSAppleEventDescriptor AttributeDescriptorForKeyword (AEKeyword keyword);
+
+#if !XAMCORE_5_0
+		[return: NullAllowed]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("attributeDescriptorForKeyword:")]
+		NSAppleEventDescriptor AttributeDescriptorForKeyword (uint keyword);
+#endif
 
 		[Export ("numberOfItems")]
 		nint NumberOfItems { get; }
@@ -20565,31 +20618,70 @@ namespace Foundation {
 		[Export ("removeDescriptorAtIndex:")]
 		void RemoveDescriptorAtIndex (nint index);
 
-		[Export ("setDescriptor:forKeyword:")]
+		/// <summary>Sets a record field for the specified keyword.</summary>
+		/// <param name="descriptor">The field descriptor.</param>
+		/// <param name="keyword">The field keyword.</param>
 #if XAMCORE_5_0
-		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[Export ("setDescriptor:forKeyword:")]
 #else
+		[Wrap ("SetDescriptorforKeyword (descriptor, (uint) keyword)")]
+#endif
+		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#if !XAMCORE_5_0
 		[Obsolete ("Use 'SetDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		void SetDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		[Export ("setDescriptor:forKeyword:")]
+		void SetDescriptorforKeyword (NSAppleEventDescriptor descriptor, uint keyword);
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Wrap ("SetDescriptorforKeyword (descriptor, keyword)")]
-		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetDescriptor (NSAppleEventDescriptor descriptor, uint keyword);
 #endif
 
+		/// <summary>Gets the record field for the specified keyword.</summary>
+		/// <param name="keyword">The field keyword.</param>
+		/// <returns>The field descriptor, or <see langword="null" /> if the field is absent.</returns>
 		[return: NullAllowed]
+#if XAMCORE_5_0
 		[Export ("descriptorForKeyword:")]
+#else
+		[Wrap ("DescriptorForKeyword ((uint) keyword)")]
+#endif
 		NSAppleEventDescriptor DescriptorForKeyword (AEKeyword keyword);
 
+		/// <summary>Removes the record field for the specified keyword.</summary>
+		/// <param name="keyword">The field keyword.</param>
+#if XAMCORE_5_0
 		[Export ("removeDescriptorWithKeyword:")]
+#else
+		[Wrap ("RemoveDescriptorWithKeyword ((uint) keyword)")]
+#endif
 		void RemoveDescriptorWithKeyword (AEKeyword keyword);
 
-		/// <param name="index">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the keyword for the record field at the specified index.</summary>
+		/// <param name="index">The one-based index of the field.</param>
+		/// <returns>The field's keyword, or zero if the index is out of range.</returns>
+#if XAMCORE_5_0
 		[Export ("keywordForDescriptorAtIndex:")]
-		AEKeyword KeywordForDescriptorAtIndex (nint index);
+#else
+		[Wrap ("(AEKeyword) KeywordForDescriptorAtIndex (index)")]
+#endif
+		AEKeyword GetKeywordForDescriptorAtIndex (nint index);
+
+#if !XAMCORE_5_0
+		[return: NullAllowed]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("descriptorForKeyword:")]
+		NSAppleEventDescriptor DescriptorForKeyword (uint keyword);
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("removeDescriptorWithKeyword:")]
+		void RemoveDescriptorWithKeyword (uint keyword);
+
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Export ("keywordForDescriptorAtIndex:")]
+		uint KeywordForDescriptorAtIndex (nint index);
+#endif
 
 		/*[Export ("coerceToDescriptorType:")]
 		NSAppleEventDescriptor CoerceToDescriptorType (DescType descriptorType);*/

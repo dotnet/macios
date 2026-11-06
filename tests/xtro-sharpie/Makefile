@@ -124,6 +124,7 @@ IGNORED_MACCATALYST_FRAMEWORKS = \
 COMMON_SHARPIE_ARGUMENTS = \
 	-a arm64 \
 	-modules true \
+	-i compression.h \
 	--custom-delegates \
 	--clang-resource-dir $(TOP)/tools/sharpie/clang \
 
@@ -143,6 +144,7 @@ MACCATALYST_SHARPIE_ARGUMENTS = \
 
 MACOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
+	-i asl.h \
 	$(CORETELEPHONY_HEADERS) \
 	--platform-assembly $(XMACOS_DOTNET) \
 

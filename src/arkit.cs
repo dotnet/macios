@@ -25,6 +25,7 @@ using QuickLook;
 using SpriteKit;
 using SceneKit;
 using UIKit;
+using Vision;
 
 using Vector3 = global::CoreGraphics.NVector3;
 using Matrix3 = global::CoreGraphics.NMatrix3;
@@ -2365,6 +2366,16 @@ namespace ARKit {
 
 		[Export ("isJointTracked:")]
 		bool IsJointTracked (nint jointIndex);
+
+		/// <summary>Returns the ARKit joint name corresponding to a Vision human body joint.</summary>
+		/// <param name="recognizedPointKey">The Vision human body joint to map.</param>
+		/// <returns>The joint name for an <see cref="ARSkeleton2D" />, or <see langword="null" /> if no mapping exists.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">The joint has no associated Vision constant.</exception>
+		[iOS (14, 0), NoMacCatalyst, NoTV]
+		[Static]
+		[return: NullAllowed]
+		[Wrap ("CreateJointName (Vision.VNHumanBodyPoseObservationJointNameExtensions.GetConstant (recognizedPointKey) ?? throw new ArgumentOutOfRangeException (nameof (recognizedPointKey)))")]
+		NSString CreateJointName (VNHumanBodyPoseObservationJointName recognizedPointKey);
 	}
 
 	[BaseType (typeof (ARSkeleton))]

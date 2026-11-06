@@ -8,6 +8,7 @@
 //
 
 using CoreGraphics;
+using System.Linq;
 using ModelIO;
 using SceneKit;
 #if !MONOMAC
@@ -43,6 +44,20 @@ namespace MonoTouchFixtures.ModelIO {
 				obj.SetComponent (new MDLTransform (), p);
 				Assert.That (obj.GetComponent (p), Is.Not.Null);
 			}
+		}
+
+		[Test]
+		public void ContainerEnumeration ()
+		{
+			using var container = new MDLObjectContainer ();
+			using var first = new MDLObject ();
+			using var second = new MDLObject ();
+			Assert.That (container.ToArray (), Is.Empty, "Empty");
+			container.AddObject (first);
+			container.AddObject (second);
+			Assert.That (container.ToArray (), Is.EqualTo (new [] { first, second }), "Class");
+			IMDLObjectContainerComponent protocol = container;
+			Assert.That (protocol.ToArray (), Is.EqualTo (new [] { first, second }), "Protocol");
 		}
 	}
 }

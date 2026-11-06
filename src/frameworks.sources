@@ -957,7 +957,6 @@ GAMECONTROLLER_SOURCES = \
 	GameController/GCInput.cs \
 	GameController/GCMicroGamepadSnapshot.cs \
 	GameController/GCMouse.cs \
-	GameController/GCPhysicalInputElementCollection.cs \
 
 # GameKit
 

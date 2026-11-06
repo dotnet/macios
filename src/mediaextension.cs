@@ -242,6 +242,7 @@ namespace MediaExtension {
 		[Internal]
 		AVSampleCursorChunkInfo_Blittable SyncInfo_Blittable { get; }
 
+		/// <summary>Gets synchronization information for the current sample.</summary>
 		[Wrap ("SyncInfo_Blittable.ToAVSampleCursorChunkInfo ()", IsVirtual = true)]
 		AVSampleCursorChunkInfo SyncInfo { get; }
 #endif
@@ -253,6 +254,7 @@ namespace MediaExtension {
 		[Internal]
 		AVSampleCursorDependencyInfo_Blittable DependencyInfo_Blittable { get; }
 
+		/// <summary>Gets dependency information for the current sample.</summary>
 		[Wrap ("DependencyInfo_Blittable.ToAVSampleCursorDependencyInfo ()", IsVirtual = true)]
 		AVSampleCursorDependencyInfo DependencyInfo { get; }
 #endif

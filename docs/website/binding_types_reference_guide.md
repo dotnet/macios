@@ -2019,6 +2019,14 @@ PersonRelationship PresenceType {
 }
 ```
 
+In a `[Protocol]` definition, wrapped methods and properties generate default
+interface implementations. This includes `[Wrap]` attributes on individual
+accessors. These managed members can forward to exported protocol members to
+provide corrected names, strongly typed delegates, or conversions from native
+types. They do not generate Objective-C selectors or required/optional protocol
+metadata, and implementing a wrapped member does not replace the implementation
+of the exported member it calls.
+
 ## Parameter attributes
 
 This section describes the attributes that you can apply to the parameters in

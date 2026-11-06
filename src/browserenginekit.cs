@@ -547,6 +547,7 @@ namespace BrowserEngineKit {
 	[TV (17, 4), NoMac, iOS (17, 4), MacCatalyst (17, 4)]
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface BETextInput : UIKeyInput, BETextSelectionDirectionNavigation, BEResponderEditActions {
+		/// <summary>Gets or sets the delegate for asynchronous text input updates.</summary>
 		[Wrap ("WeakAsyncInputDelegate"), Abstract]
 		[NullAllowed]
 		IBETextInputDelegate AsyncInputDelegate { get; set; }

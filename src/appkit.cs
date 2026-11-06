@@ -3921,6 +3921,10 @@ namespace AppKit {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		nint GetNumberofItems (NSCollectionView collectionView, nint section);
 
+		/// <summary>Gets the number of items in the specified section of the collection view.</summary>
+		/// <param name="collectionView">The collection view requesting the item count.</param>
+		/// <param name="section">The section whose items are counted.</param>
+		/// <returns>The number of items in the section.</returns>
 		[Wrap ("GetNumberofItems (collectionView, section)")]
 		nint GetNumberOfItems (NSCollectionView collectionView, nint section);
 #endif

@@ -96,7 +96,14 @@ namespace UIKit {
 		Bordered,
 
 		/// <summary>Style for a done button.   This should be used if the screen will be dismissed upon tapping.</summary>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
 		Done,
+
+		/// <summary>A prominent button style for completing or finalizing a task.</summary>
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		Prominent = 2,
 	}
 
 	// NSInteger -> UIBarButtonItem.h

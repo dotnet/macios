@@ -15,7 +15,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst27.0")]
 	[SupportedOSPlatform ("macos27.0")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class CGPDFStructureElement : NativeObject {
+	public class CGPDFStructureElement : NativeObject, ICreatableNativeObject<CGPDFStructureElement> {
 
 		[DynamicDependency (DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof (CGPDFStructureElement))]
 		static CGPDFStructureElement ()
@@ -40,6 +40,8 @@ namespace CoreGraphics {
 			: base (CGPDFStructureElementCreate (tagType), owns: true)
 		{
 		}
+
+		static CGPDFStructureElement ICreatableNativeObject<CGPDFStructureElement>.Create (NativeHandle handle, bool owns) => new CGPDFStructureElement (handle, owns);
 
 		internal CGPDFStructureElement (NativeHandle handle, bool owns)
 			: base (handle, owns)

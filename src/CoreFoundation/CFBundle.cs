@@ -12,7 +12,7 @@ namespace CoreFoundation {
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public partial class CFBundle : NativeObject {
+	public partial class CFBundle : NativeObject, ICreatableNativeObject<CFBundle> {
 
 		/// <summary>To be added.</summary>
 		///     <remarks>To be added.</remarks>
@@ -52,7 +52,8 @@ namespace CoreFoundation {
 			public string Creator { get; private set; }
 		}
 
-		[Preserve (Conditional = true)]
+		static CFBundle ICreatableNativeObject<CFBundle>.Create (NativeHandle handle, bool owns) => new CFBundle (handle, owns);
+
 		internal CFBundle (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

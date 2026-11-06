@@ -25,6 +25,14 @@ namespace Xamarin.Linker {
 		List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> addedAssemblies = new ();
 		List<Exception> exceptions = new List<Exception> ();
 
+		internal static List<AssemblyDefinition> GetAssembliesWithTypeMaps (IEnumerable<AssemblyDefinition> registeredAssemblies, IEnumerable<AssemblyDefinition> assemblies)
+		{
+			var assembliesWithNativeObjects = assemblies.Where (assembly => StaticRegistrar.GetAllTypes (assembly)
+				.Any (type => !type.IsInterface && !type.IsAbstract && type.IsNativeObject ()
+					&& (AppBundleRewriter.FindINativeObjectFactory (type) is not null || AppBundleRewriter.FindINativeObjectConstructor (type) is not null)));
+			return registeredAssemblies.Concat (assembliesWithNativeObjects).Distinct ().OrderBy (v => v.FullName).ToList ();
+		}
+
 		void AddException (Exception exception)
 		{
 			if (exceptions is null)
@@ -293,7 +301,8 @@ namespace Xamarin.Linker {
 
 			Directory.CreateDirectory (App.TypeMapOutputDirectory);
 
-			var typesByAssembly = App.StaticRegistrar.Types.GroupBy (v => v.Key.Module.Assembly);
+			var typesByAssembly = App.StaticRegistrar.Types.ToLookup (v => v.Key.Module.Assembly);
+			var assembliesWithTypeMaps = GetAssembliesWithTypeMaps (typesByAssembly.Select (v => v.Key), Configuration.GetNonDeletedAssemblies (this));
 			var skippedTypesByAssembly = App.StaticRegistrar.SkippedTypes.GroupBy (v => v.Skipped.Module.Assembly).ToDictionary (v => v.Key, v => v.ToList ());
 			// Workaround for https://github.com/dotnet/runtime/issues/127504
 			// Tracking issue: https://github.com/dotnet/macios/issues/25275
@@ -338,7 +347,7 @@ namespace Xamarin.Linker {
 				MetadataResolver = copyAssemblyParametersFrom.MetadataResolver,
 			};
 
-			var rootTypeMapAssembly = CreateTypeMapRootAssembly (assemblyParameters, typesByAssembly.Select (v => v.Key));
+			var rootTypeMapAssembly = CreateTypeMapRootAssembly (assemblyParameters, assembliesWithTypeMaps);
 
 			var categoryMethodsByType = App.StaticRegistrar.Types
 				.Where (v => v.Value.IsCategory)
@@ -373,9 +382,8 @@ namespace Xamarin.Linker {
 				actions.Add (action);
 			}
 
-			foreach (var typesInAssembly in typesByAssembly.OrderBy (v => v.Key.FullName)) {
-				var assembly = typesInAssembly.Key;
-				var types = typesInAssembly.ToList ();
+			foreach (var assembly in assembliesWithTypeMaps) {
+				var types = typesByAssembly [assembly].ToList ();
 
 				// Get the companion assembly (it may already have been created by ManagedRegistrarStep,
 				// which emits the registrar trampolines into it when HotReloadCompatibleBuild is enabled).
@@ -391,16 +399,12 @@ namespace Xamarin.Linker {
 
 				MarkAssemblyAsTrimmable (typeMapAssembly);
 
-				/*
-				 * [assembly: IgnoresAccessChecksTo ("...")] (the attribute type is created by RegistrarCompanionAssembly.GetOrCreate)
-				 */
-				var ignoredAccessChecksCtor = companion.IgnoresAccessChecksToCtor;
-
 				// INativeObject subclasses
 				var inativeObjectTypes = StaticRegistrar.GetAllTypes (assembly).Where (t => !t.IsInterface && !t.IsAbstract && t.IsNativeObject ());
 				foreach (var tr in inativeObjectTypes.OrderBy (v => v.FullName)) {
-					var inativeObjCtor = AppBundleRewriter.FindINativeObjectConstructor (tr);
-					if (inativeObjCtor is null)
+					var sourceFactory = AppBundleRewriter.FindINativeObjectFactory (tr);
+					var constructionMethod = sourceFactory ?? AppBundleRewriter.FindINativeObjectConstructor (tr);
+					if (constructionMethod is null)
 						continue;
 
 					var trImported = typeMapAssembly.MainModule.ImportReference (tr);
@@ -434,12 +438,7 @@ namespace Xamarin.Linker {
 					if (tr.HasGenericParameters) {
 						EmitThrowCannotConstructGenericType (il, tr);
 					} else {
-						il.Append (il.Create (OpCodes.Ldarg_1));
-						if (inativeObjCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-							il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-						il.Append (il.Create (OpCodes.Ldarg_2));
-						il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (inativeObjCtor)));
-						il.Append (il.Create (OpCodes.Ret));
+						abr.EmitINativeObjectProxyConstruction (il, tr);
 					}
 
 					// We add the proxy type as an attribute to itself
@@ -457,7 +456,7 @@ namespace Xamarin.Linker {
 					typeMapAssembly.CustomAttributes.Add (attribute);
 				}
 
-				foreach (var kvp in typesInAssembly.OrderBy (v => v.Key.FullName)) {
+				foreach (var kvp in types.OrderBy (v => v.Key.FullName)) {
 					var tr = kvp.Key;
 					var trNamespace = GetNamespace (tr);
 					var trImported = typeMapAssembly.MainModule.ImportReference (tr);
@@ -662,17 +661,7 @@ namespace Xamarin.Linker {
 						if (protocolWrapperType.HasGenericParameters) {
 							EmitThrowCannotConstructGenericType (il, protocolWrapperType);
 						} else {
-							var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (protocolWrapperType);
-							if (nativeHandleCtor is not null) {
-								il.Append (il.Create (OpCodes.Ldarg_1));
-								if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-									il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_NativeHandle));
-								il.Append (il.Create (OpCodes.Ldarg_2));
-								il.Append (il.Create (OpCodes.Newobj, abr.CurrentAssembly.MainModule.ImportReference (nativeHandleCtor)));
-							} else {
-								il.Append (il.Create (OpCodes.Ldnull));
-							}
-							il.Append (il.Create (OpCodes.Ret));
+							abr.EmitINativeObjectProxyConstruction (il, protocolWrapperType);
 						}
 
 						/*
@@ -722,11 +711,7 @@ namespace Xamarin.Linker {
 					}
 				}
 
-				foreach (var accessesAssembly in accessesAssemblies.OrderBy (v => v.FullName)) {
-					var attrib = abr.CreateAttribute (ignoredAccessChecksCtor);
-					attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, accessesAssembly.Name.Name));
-					typeMapAssembly.CustomAttributes.Add (attrib);
-				}
+				companion.AddAccessCheckAttributes (abr);
 
 				if (skippedTypesByAssembly.Remove (assembly, out var skippedTypes)) {
 					foreach (var skipped in skippedTypes.OrderBy (v => v.Skipped.FullName)) {

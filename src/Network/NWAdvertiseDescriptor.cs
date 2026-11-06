@@ -21,8 +21,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWAdvertiseDescriptor : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWAdvertiseDescriptor : NativeObject, ICreatableNativeObject<NWAdvertiseDescriptor> {
+		static NWAdvertiseDescriptor ICreatableNativeObject<NWAdvertiseDescriptor>.Create (NativeHandle handle, bool owns) => new NWAdvertiseDescriptor (handle, owns);
+
 		internal NWAdvertiseDescriptor (NativeHandle handle, bool owns) : base (handle, owns)
 		{ }
 

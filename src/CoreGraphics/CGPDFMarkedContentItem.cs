@@ -15,12 +15,14 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst27.0")]
 	[SupportedOSPlatform ("macos27.0")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class CGPDFMarkedContentItem : NativeObject {
+	public class CGPDFMarkedContentItem : NativeObject, ICreatableNativeObject<CGPDFMarkedContentItem> {
 
 		[DynamicDependency (DynamicallyAccessedMemberTypes.NonPublicConstructors, typeof (CGPDFMarkedContentItem))]
 		static CGPDFMarkedContentItem ()
 		{
 		}
+
+		static CGPDFMarkedContentItem ICreatableNativeObject<CGPDFMarkedContentItem>.Create (NativeHandle handle, bool owns) => new CGPDFMarkedContentItem (handle, owns);
 
 		internal CGPDFMarkedContentItem (NativeHandle handle, bool owns)
 			: base (handle, owns)

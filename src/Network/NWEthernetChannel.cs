@@ -26,9 +26,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("ios")]
-	public class NWEthernetChannel : NativeObject {
+	public class NWEthernetChannel : NativeObject, ICreatableNativeObject<NWEthernetChannel> {
 
-		[Preserve (Conditional = true)]
+		static NWEthernetChannel ICreatableNativeObject<NWEthernetChannel>.Create (NativeHandle handle, bool owns) => new NWEthernetChannel (handle, owns);
+
 		internal NWEthernetChannel (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

@@ -577,6 +577,7 @@ static partial class BindingSyntaxFactory {
 
 		// needed because you cannot use an in parameter in a lambda
 		var fieldType = property.ReturnType.FullyQualifiedName;
+		var returnType = property.ReturnType;
 		var underlyingEnumType = property.ReturnType.EnumUnderlyingType.GetKeyword ();
 
 		Func<string, string, ExpressionSyntax> WrapGenericCall (TypeSyntax genericType,
@@ -598,6 +599,22 @@ static partial class BindingSyntaxFactory {
 
 		// keep the formatting to make it more readable
 #pragma warning disable format
+		if (returnType.IsCreatableNativeObject) {
+			return (
+				Getter: (libraryName, fieldName) => GetINativeObject (returnType, [
+					Argument (MemberInvocationExpression (Dlfcn, "GetIndirect", [
+						GetLibraryArgument (libraryName),
+						GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName)
+					])),
+					BoolArgument (false)
+				], suppressNullableWarning: !returnType.IsNullable),
+				Setter: (libraryName, fieldName, variableName) => MemberInvocationExpression (Dlfcn, "SetIntPtr", [
+					GetLibraryArgument (libraryName),
+					GetLiteralExpressionArgument (SyntaxKind.StringLiteralExpression, fieldName),
+					Argument (MemberInvocationExpression (IdentifierName (variableName), "GetHandle", []))
+				]));
+		}
+
 		if (property.ReturnType.IsNSObject) {
 			return property.ReturnType switch { 
 				{ FullyQualifiedName: "Foundation.NSString" } => (Getter: GetStringConstant, Setter: SetString), 

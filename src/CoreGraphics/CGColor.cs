@@ -38,9 +38,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGColor.h
-	public class CGColor : NativeObject {
+	public class CGColor : NativeObject, ICreatableNativeObject<CGColor> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGColor ICreatableNativeObject<CGColor>.Create (NativeHandle handle, bool owns) => new CGColor (handle, owns);
+
 		internal CGColor (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using Mono.Cecil;
@@ -46,6 +47,18 @@ namespace Xamarin.Linker {
 			Assembly = assembly;
 			Path = path;
 			IgnoresAccessChecksToCtor = ignoresAccessChecksToCtor;
+		}
+
+		internal void AddAccessCheckAttributes (AppBundleRewriter abr)
+		{
+			/*
+			 * [assembly: IgnoresAccessChecksTo ("...")] (the attribute type is created by RegistrarCompanionAssembly.GetOrCreate)
+			 */
+			foreach (var accessesAssembly in AccessesAssemblies.OrderBy (v => v.FullName)) {
+				var attrib = abr.CreateAttribute (IgnoresAccessChecksToCtor);
+				attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, accessesAssembly.Name.Name));
+				Assembly.CustomAttributes.Add (attrib);
+			}
 		}
 
 		// Returns the companion assembly for the given user assembly, creating it (an empty assembly

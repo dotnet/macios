@@ -44,8 +44,5 @@
 		<Compile Include="../../tools/common/SdkVersions.cs">
 			<Link>external/tools/common/SdkVersions.cs</Link>
 		</Compile>
-		<Compile Include="../../tools/common/StringUtils.cs">
-			<Link>external/tools/common/StringUtils.cs</Link>
-		</Compile>
 	</ItemGroup>
 </Project>

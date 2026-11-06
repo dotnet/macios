@@ -21,7 +21,7 @@ namespace CoreGraphics {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public sealed class CGEvent : NativeObject {
+	public sealed class CGEvent : NativeObject, ICreatableNativeObject<CGEvent> {
 #if !COREBUILD
 		/// <param name="tapProxyEvent">To be added.</param>
 		///     <param name="eventType">To be added.</param>
@@ -201,7 +201,8 @@ namespace CoreGraphics {
 			GC.KeepAlive (eventSource);
 		}
 
-		[Preserve (Conditional = true)]
+		static CGEvent ICreatableNativeObject<CGEvent>.Create (NativeHandle handle, bool owns) => new CGEvent (handle, owns);
+
 		internal CGEvent (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

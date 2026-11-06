@@ -27,13 +27,14 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWBrowser : NativeObject {
+	public class NWBrowser : NativeObject, ICreatableNativeObject<NWBrowser> {
 
 		bool started = false;
 		bool queueSet = false;
 		object startLock = new Object ();
 
-		[Preserve (Conditional = true)]
+		static NWBrowser ICreatableNativeObject<NWBrowser>.Create (NativeHandle handle, bool owns) => new NWBrowser (handle, owns);
+
 		internal NWBrowser (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 			SetChangesHandler (InternalChangesHandler);

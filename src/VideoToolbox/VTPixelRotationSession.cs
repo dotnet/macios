@@ -18,13 +18,14 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
-	public class VTPixelRotationSession : VTSession {
+	public class VTPixelRotationSession : VTSession, ICreatableNativeObject<VTPixelRotationSession> {
 
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static /* CFTypeID */ nint VTPixelRotationSessionGetTypeID ();
 		public static nint GetTypeID () => VTPixelRotationSessionGetTypeID ();
 
-		[Preserve (Conditional = true)]
+		static VTPixelRotationSession ICreatableNativeObject<VTPixelRotationSession>.Create (NativeHandle handle, bool owns) => new VTPixelRotationSession (handle, owns);
+
 		internal VTPixelRotationSession (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

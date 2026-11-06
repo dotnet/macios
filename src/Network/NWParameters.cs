@@ -23,8 +23,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWParameters : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWParameters : NativeObject, ICreatableNativeObject<NWParameters> {
+		static NWParameters ICreatableNativeObject<NWParameters>.Create (NativeHandle handle, bool owns) => new NWParameters (handle, owns);
+
 		internal NWParameters (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

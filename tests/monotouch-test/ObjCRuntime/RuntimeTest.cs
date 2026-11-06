@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using CoreFoundation;
 using CoreGraphics;
 using SpriteKit;
 #if !MONOMAC
@@ -92,6 +93,72 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void GetNSObject_IntPtrZero ()
 		{
 			Assert.That (Runtime.GetNSObject (IntPtr.Zero), Is.Null);
+		}
+
+		class FactoryObject : INativeObject, ICreatableNativeObject<FactoryObject> {
+			public NativeHandle Handle { get; }
+			public bool Owns { get; }
+
+			protected FactoryObject (NativeHandle handle, bool owns)
+			{
+				Handle = handle;
+				Owns = owns;
+			}
+
+			static FactoryObject ICreatableNativeObject<FactoryObject>.Create (NativeHandle handle, bool owns)
+			{
+				if (handle == NativeHandle.Zero)
+					throw new InvalidOperationException ("The runtime must not pass zero handles to the factory.");
+				return new FactoryObject (handle, owns);
+			}
+		}
+
+		class DerivedFactoryObject : FactoryObject, ICreatableNativeObject<DerivedFactoryObject> {
+			DerivedFactoryObject (NativeHandle handle, bool owns) : base (handle, owns) { }
+
+			static DerivedFactoryObject ICreatableNativeObject<DerivedFactoryObject>.Create (NativeHandle handle, bool owns)
+				=> new DerivedFactoryObject (handle, owns);
+		}
+
+		[Test]
+		public void GetCreatableNativeObject_Zero ()
+		{
+			Assert.That (Runtime.GetCreatableNativeObject<FactoryObject> (IntPtr.Zero, false), Is.Null, "Borrowed");
+			Assert.That (Runtime.GetCreatableNativeObject<FactoryObject> (IntPtr.Zero, true), Is.Null, "Owned");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void GetCreatableNativeObject_Factory (bool owns)
+		{
+			// This is not an Objective-C object, and must never be used for native class lookup.
+			var handle = new IntPtr (42);
+			var value = Runtime.GetCreatableNativeObject<FactoryObject> (handle, owns);
+			Assert.That (value, Is.TypeOf<FactoryObject> (), "Base factory");
+			Assert.That (value.Handle, Is.EqualTo ((NativeHandle) handle), "Handle");
+			Assert.That (value.Owns, Is.EqualTo (owns), "Ownership");
+
+			var derived = Runtime.GetCreatableNativeObject<DerivedFactoryObject> (handle, owns);
+			Assert.That (derived, Is.TypeOf<DerivedFactoryObject> (), "Derived factory");
+			Assert.That (derived.Handle, Is.EqualTo ((NativeHandle) handle), "Derived handle");
+			Assert.That (derived.Owns, Is.EqualTo (owns), "Derived ownership");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void GetCreatableNativeObject_NativeOwnership (bool owns)
+		{
+			var text = "Self-typed native wrapper ownership: " + Guid.NewGuid ();
+			var handle = CFString.CreateNative (text);
+			try {
+				var count = CFGetRetainCount (handle);
+				using var value = Runtime.GetCreatableNativeObject<CFString> (handle, owns);
+				Assert.That (CFGetRetainCount (handle), Is.EqualTo (count + (owns ? 0 : 1)), "Retain count");
+				Assert.That (value?.ToString (), Is.EqualTo (text), "Wrapped value");
+			} finally {
+				if (!owns)
+					CFString.ReleaseNative (handle);
+			}
 		}
 
 		[Test]

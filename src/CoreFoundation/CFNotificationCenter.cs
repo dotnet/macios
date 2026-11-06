@@ -82,9 +82,10 @@ namespace CoreFoundation {
 	///
 	///       </para>
 	///     </remarks>
-	public class CFNotificationCenter : NativeObject {
+	public class CFNotificationCenter : NativeObject, ICreatableNativeObject<CFNotificationCenter> {
 		// If this becomes public for some reason, and more than three instances are created, you should revisit the lookup code
-		[Preserve (Conditional = true)]
+		static CFNotificationCenter ICreatableNativeObject<CFNotificationCenter>.Create (NativeHandle handle, bool owns) => new CFNotificationCenter (handle, owns);
+
 		internal CFNotificationCenter (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

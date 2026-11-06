@@ -36,8 +36,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CFNumber.h
-	partial class CFBoolean : NativeObject {
-		[Preserve (Conditional = true)]
+	partial class CFBoolean : NativeObject, ICreatableNativeObject<CFBoolean> {
+		static CFBoolean ICreatableNativeObject<CFBoolean>.Create (NativeHandle handle, bool owns) => new CFBoolean (handle, owns);
+
 		internal CFBoolean (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

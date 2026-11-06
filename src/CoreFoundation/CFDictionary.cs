@@ -32,14 +32,15 @@
 
 namespace CoreFoundation {
 
-	partial class CFDictionary : NativeObject {
+	partial class CFDictionary : NativeObject, ICreatableNativeObject<CFDictionary> {
 		/// <summary>The address of the Core Foundation callback table used for dictionary keys.</summary>
 		public static IntPtr KeyCallbacks = _KeyCallbacks;
 
 		/// <summary>The address of the Core Foundation callback table used for dictionary values.</summary>
 		public static IntPtr ValueCallbacks = _ValueCallbacks;
 
-		[Preserve (Conditional = true)]
+		static CFDictionary ICreatableNativeObject<CFDictionary>.Create (NativeHandle handle, bool owns) => new CFDictionary (handle, owns);
+
 		internal CFDictionary (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

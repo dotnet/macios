@@ -48,7 +48,7 @@ namespace VideoToolbox {
 				GC.KeepAlive (pixelBuffer);
 			}
 
-			image = Runtime.GetINativeObject<CGImage> (imagePtr, true); // This is already retained CM_RETURNS_RETAINED_PARAMETER
+			image = Runtime.GetCreatableNativeObject<CGImage> (imagePtr, true); // This is already retained CM_RETURNS_RETAINED_PARAMETER
 
 			return ret;
 		}

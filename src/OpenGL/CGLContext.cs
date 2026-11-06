@@ -34,9 +34,10 @@ namespace OpenGL {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' Framework instead.")]
-	public class CGLContext : NativeObject {
+	public class CGLContext : NativeObject, ICreatableNativeObject<CGLContext> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGLContext ICreatableNativeObject<CGLContext>.Create (NativeHandle handle, bool owns) => new CGLContext (handle, owns);
+
 		internal CGLContext (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

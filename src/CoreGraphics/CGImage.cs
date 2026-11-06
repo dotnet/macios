@@ -203,9 +203,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGImage.h
-	public class CGImage : NativeObject {
+	public class CGImage : NativeObject, ICreatableNativeObject<CGImage> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGImage ICreatableNativeObject<CGImage>.Create (NativeHandle handle, bool owns) => new CGImage (handle, owns);
+
 		internal CGImage (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -817,7 +818,7 @@ namespace CoreGraphics {
 				throw new ArgumentException (nameof (headroom));
 
 			var rv = CGImageCreateCopyWithContentHeadroom (headroom, GetCheckedHandle ());
-			return Runtime.GetINativeObject<CGImage> (rv, owns: true);
+			return Runtime.GetCreatableNativeObject<CGImage> (rv, owns: true);
 		}
 
 		/// <summary>Get the default content headroom for HDR images.</summary>

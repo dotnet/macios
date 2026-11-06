@@ -35,7 +35,7 @@ namespace Darwin {
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public class SystemLog : DisposableObject {
+	public class SystemLog : DisposableObject, ICreatableNativeObject<SystemLog> {
 		static SystemLog? _default;
 
 		/// <summary>To be added.</summary>
@@ -91,7 +91,8 @@ namespace Darwin {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static SystemLog ICreatableNativeObject<SystemLog>.Create (NativeHandle handle, bool owns) => new SystemLog (handle, owns);
+
 		SystemLog (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -258,7 +259,7 @@ namespace Darwin {
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public class Message : DisposableObject {
+	public class Message : DisposableObject, ICreatableNativeObject<Message> {
 		/// <summary>To be added.</summary>
 		///     <remarks>To be added.</remarks>
 		public enum Kind {
@@ -300,7 +301,8 @@ namespace Darwin {
 			True = 7,
 		}
 
-		[Preserve (Conditional = true)]
+		static Message ICreatableNativeObject<Message>.Create (NativeHandle handle, bool owns) => new Message (handle, owns);
+
 		internal Message (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

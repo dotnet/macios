@@ -43,8 +43,9 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABSource : ABRecord {
-		[Preserve (Conditional = true)]
+	public class ABSource : ABRecord, ICreatableNativeObject<ABSource> {
+		static ABSource ICreatableNativeObject<ABSource>.Create (NativeHandle handle, bool owns) => new ABSource (handle, owns);
+
 		internal ABSource (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

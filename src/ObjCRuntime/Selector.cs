@@ -28,7 +28,7 @@ namespace ObjCRuntime {
 	/// <summary>Represents an Objective-C selector in managed code.</summary>
 	///     <remarks>
 	///     </remarks>
-	public partial class Selector : IEquatable<Selector>, INativeObject {
+	public partial class Selector : IEquatable<Selector>, INativeObject, ICreatableNativeObject<Selector> {
 		internal const string Alloc = "alloc";
 		internal const string Class = "class";
 		internal const string Release = "release";
@@ -51,7 +51,8 @@ namespace ObjCRuntime {
 
 		// this .ctor is required, like for any INativeObject implementation
 		// even if selectors are not disposable
-		[Preserve (Conditional = true)]
+		static Selector ICreatableNativeObject<Selector>.Create (NativeHandle handle, bool owns) => new Selector (handle, owns);
+
 		internal Selector (NativeHandle handle, bool /* unused */ owns)
 		{
 			this.handle = handle;

@@ -23,10 +23,11 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMBlockBuffer : NativeObject, ICMAttachmentBearer {
+	public class CMBlockBuffer : NativeObject, ICMAttachmentBearer, ICreatableNativeObject<CMBlockBuffer> {
 		CMCustomBlockAllocator? customAllocator;
 
-		[Preserve (Conditional = true)]
+		static CMBlockBuffer ICreatableNativeObject<CMBlockBuffer>.Create (NativeHandle handle, bool owns) => new CMBlockBuffer (handle, owns);
+
 		internal CMBlockBuffer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

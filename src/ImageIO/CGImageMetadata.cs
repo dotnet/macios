@@ -44,8 +44,9 @@ namespace ImageIO {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CGImageMetadata : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CGImageMetadata : NativeObject, ICreatableNativeObject<CGImageMetadata> {
+		static CGImageMetadata ICreatableNativeObject<CGImageMetadata>.Create (NativeHandle handle, bool owns) => new CGImageMetadata (handle, owns);
+
 		internal CGImageMetadata (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -141,7 +142,7 @@ namespace ImageIO {
 		static byte TagEnumerator (IntPtr block, NativeHandle key, NativeHandle value)
 		{
 			var nsKey = Runtime.GetNSObject<NSString> (key, false)!;
-			var nsValue = Runtime.GetINativeObject<CGImageMetadataTag> (value, false)!;
+			var nsValue = Runtime.GetCreatableNativeObject<CGImageMetadataTag> (value, false)!;
 			var del = BlockLiteral.GetTarget<CGImageMetadataTagBlock> (block);
 			if (del is null)
 				return default;

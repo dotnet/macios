@@ -20,8 +20,9 @@ namespace CoreGraphics {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public sealed class CGEventSource : NativeObject {
-		[Preserve (Conditional = true)]
+	public sealed class CGEventSource : NativeObject, ICreatableNativeObject<CGEventSource> {
+		static CGEventSource ICreatableNativeObject<CGEventSource>.Create (NativeHandle handle, bool owns) => new CGEventSource (handle, owns);
+
 		internal CGEventSource (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

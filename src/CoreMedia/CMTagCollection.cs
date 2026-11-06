@@ -17,9 +17,10 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
-	public partial class CMTagCollection : NativeObject {
+	public partial class CMTagCollection : NativeObject, ICreatableNativeObject<CMTagCollection> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CMTagCollection ICreatableNativeObject<CMTagCollection>.Create (NativeHandle handle, bool owns) => new CMTagCollection (handle, owns);
+
 		internal CMTagCollection (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -27,12 +27,13 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWWebSocketOptions : NWProtocolOptions {
+	public class NWWebSocketOptions : NWProtocolOptions, ICreatableNativeObject<NWWebSocketOptions> {
 		bool autoReplyPing = false;
 		bool skipHandShake = false;
 		nuint maximumMessageSize;
 
-		[Preserve (Conditional = true)]
+		static NWWebSocketOptions ICreatableNativeObject<NWWebSocketOptions>.Create (NativeHandle handle, bool owns) => new NWWebSocketOptions (handle, owns);
+
 		internal NWWebSocketOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

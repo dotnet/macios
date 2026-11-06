@@ -39,10 +39,11 @@ namespace CoreFoundation {
 	/// 	then be added into the <see cref="CoreFoundation.CFRunLoop" />.
 	///       </para>
 	///     </remarks>
-	public class CFMachPort : NativeObject {
+	public class CFMachPort : NativeObject, ICreatableNativeObject<CFMachPort> {
 		delegate void CFMachPortCallBack (IntPtr cfmachport, IntPtr msg, nint len, IntPtr context);
 
-		[Preserve (Conditional = true)]
+		static CFMachPort ICreatableNativeObject<CFMachPort>.Create (NativeHandle handle, bool owns) => new CFMachPort (handle, owns);
+
 		internal CFMachPort (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

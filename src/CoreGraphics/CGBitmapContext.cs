@@ -38,12 +38,13 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGBitmapContext : CGContext {
+	public class CGBitmapContext : CGContext, ICreatableNativeObject<CGBitmapContext> {
 #if !COREBUILD
 		// If allocated, this points to the byte array buffer that is passed.
 		GCHandle buffer;
 
-		[Preserve (Conditional = true)]
+		static CGBitmapContext ICreatableNativeObject<CGBitmapContext>.Create (NativeHandle handle, bool owns) => new CGBitmapContext (handle, owns);
+
 		internal CGBitmapContext (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

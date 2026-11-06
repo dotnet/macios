@@ -26,7 +26,7 @@ using Xamarin.Bundler;
 
 namespace ObjCRuntime {
 	/// <include file="../../docs/api/ObjCRuntime/Class.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.Class']/*" />
-	public partial class Class : INativeObject
+	public partial class Class : INativeObject, ICreatableNativeObject<Class>
 #if !COREBUILD
 	, IEquatable<Class>
 #endif
@@ -110,7 +110,8 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
-		[Preserve (Conditional = true)]
+		static Class ICreatableNativeObject<Class>.Create (NativeHandle handle, bool owns) => new Class (handle, owns);
+
 		internal Class (NativeHandle handle, bool owns)
 		{
 			// Class(es) can't be freed, so we ignore the 'owns' parameter.

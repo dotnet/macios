@@ -116,8 +116,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTFrame : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTFrame : NativeObject, ICreatableNativeObject<CTFrame> {
+		static CTFrame ICreatableNativeObject<CTFrame>.Create (NativeHandle handle, bool owns) => new CTFrame (handle, owns);
+
 		internal CTFrame (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{

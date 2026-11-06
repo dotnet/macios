@@ -19,7 +19,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGPDFScanner : NativeObject {
+	public class CGPDFScanner : NativeObject, ICreatableNativeObject<CGPDFScanner> {
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGPDFScannerRef */ IntPtr CGPDFScannerCreate (/* CGPDFContentStreamRef */ IntPtr cs,
@@ -53,7 +53,8 @@ namespace CoreGraphics {
 			GC.KeepAlive (table);
 		}
 
-		[Preserve (Conditional = true)]
+		static CGPDFScanner ICreatableNativeObject<CGPDFScanner>.Create (NativeHandle handle, bool owns) => new CGPDFScanner (handle, owns);
+
 		internal CGPDFScanner (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

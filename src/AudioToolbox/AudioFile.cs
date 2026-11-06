@@ -756,13 +756,14 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class AudioFile : DisposableObject {
+	public class AudioFile : DisposableObject, ICreatableNativeObject<AudioFile> {
 		internal AudioFile ()
 		{
 			// This ctor is used by AudioSource that will set the handle later.
 		}
 
-		[Preserve (Conditional = true)]
+		static AudioFile ICreatableNativeObject<AudioFile>.Create (NativeHandle handle, bool owns) => new AudioFile (handle, owns);
+
 		internal AudioFile (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

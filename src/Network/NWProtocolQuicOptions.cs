@@ -12,9 +12,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolQuicOptions : NWProtocolOptions {
+	public class NWProtocolQuicOptions : NWProtocolOptions, ICreatableNativeObject<NWProtocolQuicOptions> {
 
-		[Preserve (Conditional = true)]
+		static NWProtocolQuicOptions ICreatableNativeObject<NWProtocolQuicOptions>.Create (NativeHandle handle, bool owns) => new NWProtocolQuicOptions (handle, owns);
+
 		internal NWProtocolQuicOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWProtocolQuicOptions () : this (nw_quic_create_options (), owns: true) { }

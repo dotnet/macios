@@ -42,8 +42,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CFStream.h
-	public class CFReadStream : CFStream {
-		[Preserve (Conditional = true)]
+	public class CFReadStream : CFStream, ICreatableNativeObject<CFReadStream> {
+		static CFReadStream ICreatableNativeObject<CFReadStream>.Create (NativeHandle handle, bool owns) => new CFReadStream (handle, owns);
+
 		internal CFReadStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

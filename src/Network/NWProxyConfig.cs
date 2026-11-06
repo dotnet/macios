@@ -13,8 +13,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProxyConfig : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWProxyConfig : NativeObject, ICreatableNativeObject<NWProxyConfig> {
+		static NWProxyConfig ICreatableNativeObject<NWProxyConfig>.Create (NativeHandle handle, bool owns) => new NWProxyConfig (handle, owns);
+
 		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

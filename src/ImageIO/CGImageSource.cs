@@ -184,7 +184,7 @@ namespace ImageIO {
 	/// <summary>Image Loader.</summary>
 	///     <remarks>
 	///     </remarks>
-	public partial class CGImageSource : NativeObject {
+	public partial class CGImageSource : NativeObject, ICreatableNativeObject<CGImageSource> {
 #if !COREBUILD
 		/// <summary>Type identifier for the ImageIO.CGImageSource type.</summary>
 		///         <returns>To be added.</returns>
@@ -212,7 +212,8 @@ namespace ImageIO {
 			}
 		}
 #endif
-		[Preserve (Conditional = true)]
+		static CGImageSource ICreatableNativeObject<CGImageSource>.Create (NativeHandle handle, bool owns) => new CGImageSource (handle, owns);
+
 		internal CGImageSource (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -73,10 +73,11 @@ namespace AudioUnit {
 	[ObsoletedOSPlatform ("macos11.0", "Use 'AVAudioEngine' instead.")]
 	[ObsoletedOSPlatform ("ios14.0", "Use 'AVAudioEngine' instead.")]
 	[ObsoletedOSPlatform ("maccatalyst14.0", "Use 'AVAudioEngine' instead.")]
-	public class AUGraph : DisposableObject {
+	public class AUGraph : DisposableObject, ICreatableNativeObject<AUGraph> {
 		readonly GCHandle gcHandle;
 
-		[Preserve (Conditional = true)]
+		static AUGraph ICreatableNativeObject<AUGraph>.Create (NativeHandle handle, bool owns) => new AUGraph (handle, owns);
+
 		internal AUGraph (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

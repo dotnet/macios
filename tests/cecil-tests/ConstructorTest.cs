@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -78,6 +79,40 @@ namespace Cecil.Tests {
 					return false;
 			}
 			return true;
+		}
+
+		[Test]
+		public void NativeObjectFactories ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var missingCoreFactories = new List<string> ();
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				var factoryInterface = info.Assembly.MainModule.GetType ("ObjCRuntime", "ICreatableNativeObject`1");
+				var platform = info.Platform.AsString ().ToLowerInvariant ();
+				using var core = AssemblyDefinition.ReadAssembly (Path.Combine (Configuration.SourceRoot, "src", "build", "dotnet", platform, $"core-{platform}.dll"));
+				Assert.That (factoryInterface.IsPublic, Is.True, "Factory interface visibility");
+				Assert.That (factoryInterface.GenericParameters [0].IsNonVariant, Is.True, "Factory interface variance");
+				foreach (var type in info.Assembly.MainModule.GetTypes ()) {
+					foreach (var ctor in type.Methods.Where (v => IsMatch (v, ("ObjCRuntime", "NativeHandle"), ("System", "Boolean")))) {
+						Assert.That (ctor.CustomAttributes.Any (v => v.AttributeType.Is ("Foundation", "PreserveAttribute")), Is.False, ctor.FullName);
+					}
+
+					if (type.IsAbstract || !type.Interfaces.Any (v => v.InterfaceType.GetElementType ().FullName == factoryInterface.FullName))
+						continue;
+
+					var coreType = core.MainModule.GetType (type.FullName);
+					if (coreType is not null && !coreType.Interfaces.Any (v => v.InterfaceType.GetElementType ().FullName == factoryInterface.FullName))
+						missingCoreFactories.Add ($"{platform}: {type.FullName}");
+
+					var factory = type.Methods.Single (v => v.Overrides.Any (o => o.DeclaringType.GetElementType ().FullName == factoryInterface.FullName && o.Name == "Create"));
+					Assert.That (factory.IsPrivate, Is.True, factory.FullName);
+					Assert.That (factory.IsStatic, Is.True, factory.FullName);
+					Assert.That (factory.Body.Instructions.Where (v => v.OpCode == OpCodes.Newobj).Select (v => ((MethodReference) v.Operand).DeclaringType.GetElementType ().FullName),
+						Does.Contain (type.FullName), factory.FullName);
+				}
+			}
+			Assert.That (missingCoreFactories, Is.Empty, $"Corebuild types must expose their native factory interfaces: {string.Join (", ", missingCoreFactories)}");
 		}
 
 		static MethodDefinition? GetConstructor (TypeDefinition type, params (string Namespace, string Name) [] parameterTypes)

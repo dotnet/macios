@@ -15,7 +15,8 @@ public class MarshalType {
 		Encoding = encode ?? Generator.NativeHandleType;
 		ParameterMarshal = fetch ?? "{0}.Handle";
 		if (create is null) {
-			CreateFromRet = $"Runtime.GetINativeObject<global::{t.FullName}> (";
+			var method = TypeManager.HasNativeObjectFactory (t) ? "GetCreatableNativeObject" : "GetINativeObject";
+			CreateFromRet = $"Runtime.{method}<global::{t.FullName}> (";
 			ClosingCreate = ", %OWNS%)!";
 		} else {
 			CreateFromRet = create;

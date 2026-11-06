@@ -23,9 +23,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWContentContext : NativeObject {
+	public class NWContentContext : NativeObject, ICreatableNativeObject<NWContentContext> {
 		bool global;
-		[Preserve (Conditional = true)]
+		static NWContentContext ICreatableNativeObject<NWContentContext>.Create (NativeHandle handle, bool owns) => new NWContentContext (handle, owns);
+
 		internal NWContentContext (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

@@ -21,8 +21,9 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public class VTSession : NativeObject {
-		[Preserve (Conditional = true)]
+	public class VTSession : NativeObject, ICreatableNativeObject<VTSession> {
+		static VTSession ICreatableNativeObject<VTSession>.Create (NativeHandle handle, bool owns) => new VTSession (handle, owns);
+
 		internal VTSession (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

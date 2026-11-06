@@ -51,9 +51,10 @@ namespace CoreGraphics {
 	///     <remarks>To be added.</remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/ZoomingPdfViewer/">ZoomingPdfViewer</related>
-	public partial class CGPDFPage {
+	public partial class CGPDFPage : ICreatableNativeObject<CGPDFPage> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGPDFPage ICreatableNativeObject<CGPDFPage>.Create (NativeHandle handle, bool owns) => new CGPDFPage (handle, owns);
+
 		internal CGPDFPage (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

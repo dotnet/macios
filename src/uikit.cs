@@ -11905,6 +11905,17 @@ namespace UIKit {
 		[Export ("menuAttachmentPointForConfiguration:")]
 		CGPoint GetMenuAttachmentPoint (UIContextMenuConfiguration configuration);
 
+		// Redeclare the inlined protocol methods because only UIControl requires super.
+		[TV (17, 0), iOS (14, 0), MacCatalyst (14, 0)]
+		[RequiresSuper]
+		[Export ("contextMenuInteraction:willDisplayMenuForConfiguration:animator:")]
+		new void WillDisplayMenu (UIContextMenuInteraction interaction, UIContextMenuConfiguration configuration, [NullAllowed] IUIContextMenuInteractionAnimating animator);
+
+		[TV (17, 0), iOS (14, 0), MacCatalyst (14, 0)]
+		[RequiresSuper]
+		[Export ("contextMenuInteraction:willEndForConfiguration:animator:")]
+		new void WillEnd (UIContextMenuInteraction interaction, UIContextMenuConfiguration configuration, [NullAllowed] IUIContextMenuInteractionAnimating animator);
+
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[NullAllowed, Export ("toolTip")]
 		string ToolTip { get; set; }

@@ -319,10 +319,6 @@
 !missing-selector! UITextInputContext::setPencilInputExpected: not bound
 !missing-type! UITextInputContext not bound
 
-# not really needed, seems that xtro is confused
-!missing-requires-super! UIControl::contextMenuInteraction:willDisplayMenuForConfiguration:animator: is missing an [RequiresSuper] attribute
-!missing-requires-super! UIControl::contextMenuInteraction:willEndForConfiguration:animator: is missing an [RequiresSuper] attribute
-
 # added and deprecated on xcode 15
 !missing-selector! UIControlUIControl::contextMenuInteraction:previewForDismissingMenuWithConfiguration: not bound
 !missing-selector! UIControlUIControl::contextMenuInteraction:previewForHighlightingMenuWithConfiguration: not bound

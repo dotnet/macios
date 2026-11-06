@@ -334,10 +334,6 @@
 !missing-null-allowed! 'UIKit.UIViewController[] UIKit.UIPageViewController::get_ViewControllers()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'UIKit.UIWindow UIKit.UITouch::get_Window()' is missing an [NullAllowed] on return type
 
-## These are inlined by protocol adoption so you can't really add such decoration
-!missing-requires-super! UIControl::contextMenuInteraction:willDisplayMenuForConfiguration:animator: is missing an [RequiresSuper] attribute
-!missing-requires-super! UIControl::contextMenuInteraction:willEndForConfiguration:animator: is missing an [RequiresSuper] attribute
-
 ## Grouped nint constants
 !unknown-native-enum! UIFocusGroupPriority bound
 

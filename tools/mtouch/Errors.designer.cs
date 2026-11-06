@@ -3543,6 +3543,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The platform assembly &apos;{0}&apos; could not be found. This can happen when the app does not use any Apple APIs and the assembly is removed by trimming. Add a reference to an Apple API in the app, for example: System.GC.KeepAlive (typeof (Foundation.NSObject));.
+        /// </summary>
+        public static string MX2113 {
+            get {
+                return ResourceManager.GetString("MX2113", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unsupported primitive field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos;. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MX2254 {

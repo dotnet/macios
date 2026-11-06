@@ -1,3 +1,56 @@
+## Struct pointer parameters
+
+Use `[PointerAsStruct]` on a `T*`, `ref T`, or `out T` parameter to describe a
+pointer to one blittable struct. Existing raw pointer and by-reference bindings
+continue to work without this attribute. `[NullAllowed]` permits a null raw pointer;
+`ref` and `out` always refer to a struct.
+
+Use `[PointerAsArray]` on a one-dimensional `T[]` parameter to pass a contiguous
+buffer of blittable structs instead of an `NSArray`:
+
+```csharp
+[Export ("appendPoints:count:")]
+void AppendPoints (
+    [PointerAsArray (LengthFromParameter = nameof (count))] CGPoint [] points,
+    nint count);
+```
+
+Specify exactly one length source:
+
+* `LengthFromParameter`: the name of an integral, by-value parameter.
+* `LengthFromMember`: the name of a readable integral property or field. Static
+  methods require a static member. Instance members are not available in
+  constructors, and member lengths are not supported on categories.
+* `Length`: a nonnegative constant number of elements.
+
+The generated wrapper checks the length before calling native code: negative
+counts and counts larger than the managed array are rejected with
+`ArgumentOutOfRangeException`. A prefix of an array is valid; equality with the
+array length is not required. Required arrays are null-checked. A `[NullAllowed]`
+array may be null only when the effective length is zero. Empty arrays are passed
+as null pointers.
+
+The array is pinned for the duration of the call, so native writes are visible
+in the managed array. Native code must not retain the pointer after returning.
+For example, MapKit's polygon/polyline factories use internal attributed array
+parameters while their public convenience methods supply the array length.
+AppKit's `NSFont` methods use the same attribute for output struct buffers,
+retaining manual pinning only for the primitive glyph arrays. A fixed-size output
+buffer, such as `NSBezierPath`'s associated points, can instead use `Length = 3`.
+
+This attribute is for synchronous outgoing Objective-C methods and constructors:
+array methods are generated as non-virtual methods without callback exports.
+Protocols, models, delegates, property accessors, abstract/override methods and
+`[Async]` methods are diagnosed rather than given incorrect callback marshalling.
+Use raw pointers and manual marshalling for those cases.
+
+The element must be a non-generic struct with sequential or explicit layout and
+blittable fields. Managed references, `bool`, `char`, native-sized enums and
+fields requiring `[MarshalAs]` are not supported. Pointer-to-pointer parameters,
+`in` parameters, array return values, sentinel-terminated buffers, expressions as
+length sources, and lengths produced by an `out`/`ref` parameter are not supported
+by these attributes.
+
 ## Debugging
 
 

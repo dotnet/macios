@@ -25,6 +25,10 @@ namespace Xamarin.Mac.Tests {
 			var advancement = nsFont.GetAdvancements (glyphs);
 			Assert.That (bounding.Length, Is.EqualTo (5));
 			Assert.That (advancement.Length, Is.EqualTo (5));
+			for (var i = 0; i < glyphs.Length; i++) {
+				Assert.That (bounding [i], Is.EqualTo (nsFont.GetBoundingRect (glyphs [i])), $"Bounding rect {i}");
+				Assert.That (advancement [i], Is.EqualTo (nsFont.GetAdvancement (glyphs [i])), $"Advancement {i}");
+			}
 		}
 
 		[Test]

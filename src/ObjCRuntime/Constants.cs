@@ -33,11 +33,6 @@ namespace ObjCRuntime {
 		/// <summary>Path to the QuartzCore framework to use with DllImport attributes.</summary>
 		public const string QuartzLibrary = "/System/Library/Frameworks/QuartzCore.framework/QuartzCore";
 
-#if __MACOS__ && !XAMCORE_5_0
-		/// <summary>Path to the InputMethodKit framework to use with DllImport attributes.</summary>
-		public const string InputMethodKitLibrary = "/System/Library/Frameworks/InputMethodKit.framework/InputMethodKit";
-#endif
-
 #if __IOS__ && !__MACCATALYST__ && !XAMCORE_5_0
 		// Apple removed the AssetsLibrary framework from iOS in Xcode 15.3.
 		/// <summary>Path to the AssetsLibrary framework to use with DllImport attributes.</summary>

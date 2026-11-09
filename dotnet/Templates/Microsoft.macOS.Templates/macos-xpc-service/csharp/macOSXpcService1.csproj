@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>TFM</TargetFramework>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">macOSXpcService1</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <IsAppExtension>true</IsAppExtension>
+    <IsXPCService>true</IsXPCService>
+    <Registrar>static</Registrar>
+    <ApplicationId>com.companyname.macOSApp1.xpcservice</ApplicationId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Contracts/**/*.cs" />
+    <ProjectReference Include="Contracts/Contracts.csproj" />
+  </ItemGroup>
+</Project>

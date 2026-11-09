@@ -126,6 +126,7 @@ namespace Xamarin.Tests {
 			new TemplateInfo (ApplePlatform.MacOSX, "macoslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.MacOSX, "macosbinding", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.MacOSX, "macostest", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.MacOSX, "macos-xpc-service", TemplateLanguage.CSharp),
 
 			/* item templates */
 			new TemplateInfo (ApplePlatform.iOS, "ios-controller"),

@@ -5,7 +5,7 @@ cd "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE"
 ./configure --enable-ios --enable-tvos --enable-maccatalyst --enable-macos --no-xcode
 MACIOS_UPLOAD_PREFIX="" bash tools/devops/automation/scripts/bash/install-workloads.sh
 make -C tests test.config
-dotnet_path=$(make -s -C tools/devops print-variable VARIABLE=DOTNET)
+dotnet_path=$(make --no-print-directory -s -C tools/devops print-variable VARIABLE=DOTNET)
 dotnet_path="${dotnet_path#*=}"
 "$dotnet_path" test tests/dotnet/UnitTests/DotNetUnitTests.csproj \
     --filter 'TestCategory=Linux' \

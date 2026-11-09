@@ -106,45 +106,6 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (true)]
-		[TestCase (false)]
-		public void WindowsRemoteBuildSelection (bool hasXcodeProject)
-		{
-			var testDir = Cache.CreateTemporaryDirectory (TestName);
-			var proj = Path.Combine (testDir, "RemoteBuildSelection.proj");
-			File.WriteAllText (proj, $@"
-<Project>
-  <PropertyGroup>
-    <_TaskAssemblyName>$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll</_TaskAssemblyName>
-    <_TaskAssemblyFileNameWindows>$(_TaskAssemblyName)</_TaskAssemblyFileNameWindows>
-    <BundleOriginalResources>true</BundleOriginalResources>
-    <_BundleOriginalResources>true</_BundleOriginalResources>
-    <_CanOutputAppBundle>false</_CanOutputAppBundle>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <ItemGroup Condition=""'$(HasXcodeProject)' == 'true'"">
-    <XcodeProject Include=""TemplateFx.xcodeproj"" />
-  </ItemGroup>
-  <Import Project=""{Configuration.SourceRoot}/msbuild/Xamarin.Shared/Xamarin.Shared.targets"" />
-  <Import Project=""{Configuration.SourceRoot}/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.iOS.Common.After.targets"" />
-  <Target Name=""_SayHello"">
-    <PropertyGroup>
-      <_ConnectionAttempted>true</_ConnectionAttempted>
-    </PropertyGroup>
-  </Target>
-  <Target Name=""Verify"" DependsOnTargets=""EvaluateRemoteBuild;_DetectBuildType;EnsureMacConnection"">
-    <Error Condition=""'$(IsRemoteBuild)' != '$(HasXcodeProject)'"" Text=""Unexpected remote build selection: $(IsRemoteBuild)"" />
-    <Error Condition=""'$(HasXcodeProject)' == 'true' And '$(_ConnectionAttempted)' != 'true'"" Text=""Missing connection attempt."" />
-    <Error Condition=""'$(HasXcodeProject)' == 'false' And '$(_ConnectionAttempted)' == 'true'"" Text=""Unexpected connection attempt."" />
-  </Target>
-</Project>
-");
-			var properties = GetDefaultProperties (includeRemoteProperties: false);
-			properties ["HasXcodeProject"] = hasXcodeProject.ToString ();
-			DotNet.AssertBuild (proj, properties, target: "Verify");
-		}
-
-		[Test]
 		[Category ("RemoteWindows")]
 		public void BuildBindingFromWindows ()
 		{

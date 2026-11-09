@@ -336,11 +336,7 @@ namespace Extrospection {
 				// a category could be inlined into the type it extend
 				var category = decl.DeclContext as ObjCCategoryDecl;
 				if (category is not null) {
-					var cname = category.Name;
-					if (cname is null)
-						name = GetCategoryBase (category) + name;
-					else
-						name = name.ReplaceFirstInstance (cname, GetCategoryBase (category));
+					name = (decl.IsClassMethod ? "+" : "") + GetCategoryBase (category) + "::" + selector;
 					found = qualified_selectors.Contains (name);
 				}
 			}

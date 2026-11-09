@@ -2387,6 +2387,7 @@ namespace Xamarin.Tests {
 			Assert.That (extensionAssembly.MainModule.GetType (entryPointType), Is.Not.Null, "Extension entry point");
 
 			var executable = GetNativeExecutable (platform, extensionPath);
+			// A missing extension root can also cause every platform framework to be linked.
 			Assert.That (GetLinkedWithFrameworks (executable), Has.None.Contains ("CoreBluetooth.framework"), "Unused Bluetooth framework");
 		}
 

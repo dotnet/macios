@@ -140,6 +140,13 @@ namespace Xamarin.Tests {
 			AssertTargetNotExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_BuildXcodeProjects", "Unchanged Xcode project");
 			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
 
+			File.AppendAllText (Path.Combine (testDir, "ApiDefinition.cs"), "\n");
+			rv = DotNet.AssertBuild (proj, properties);
+			var bindingTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (bindingTargets, "_BuildXcodeProjects", "Changed binding source");
+			AssertTargetExecuted (bindingTargets, "_CreateBindingResourcePackage", "Changed binding source resources");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
 			var source = Directory.GetFiles (xcodeProjDir, "*.swift", SearchOption.AllDirectories).First ();
 			File.AppendAllText (source, "\n");
 			rv = DotNet.AssertBuild (proj, properties);

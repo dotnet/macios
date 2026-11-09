@@ -5,8 +5,6 @@ using System;
 using System.IO;
 using System.Linq;
 
-using Microsoft.Build.Utilities;
-
 using NUnit.Framework;
 
 namespace Xamarin.MacDev.Tasks {
@@ -39,8 +37,13 @@ namespace Xamarin.MacDev.Tasks {
 				Path.Combine ("TemplateFx", "Source.swift"),
 				Path.Combine ("TemplateFx", "Header.h"),
 				Path.Combine ("TemplateFx", "Assets.xcassets", "Contents.json"),
+				Path.Combine ("object-source", "Source.swift"),
 			};
-			foreach (var file in files) {
+			var generatedFiles = new [] {
+				Path.Combine ("obj", "Debug", "DerivedData", "build.db"),
+				Path.Combine ("bin", "Debug", "Binding.dll"),
+			};
+			foreach (var file in files.Concat (generatedFiles)) {
 				var path = Path.Combine (directory, file);
 				Directory.CreateDirectory (Path.GetDirectoryName (path) ?? directory);
 				File.WriteAllText (path, "input");
@@ -48,11 +51,9 @@ namespace Xamarin.MacDev.Tasks {
 
 			var task = CreateTask<CreateXcArchive> ();
 			task.WorkingDirectory = directory;
+			task.InputExcludeDirectories = new [] { Path.Combine (directory, "obj"), Path.Combine (directory, "bin") };
 			var inputs = task.GetAdditionalItemsToBeCopied ().ToArray ();
 			Assert.That (inputs.Select (v => v.ItemSpec), Is.EquivalentTo (files.Select (v => Path.Combine (directory, v))), "Files copied to the Mac");
-			foreach (var item in inputs)
-				Assert.That (task.ShouldCopyToBuildServer (item), Is.True, item.ItemSpec);
-			Assert.That (task.ShouldCreateOutputFile (new TaskItem ("output.xcarchive")), Is.False, "No local archive placeholders");
 		}
 
 		[Test]

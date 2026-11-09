@@ -123,7 +123,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_DetectBuildType">
 		<PropertyGroup>
-			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false' And '@(XcodeProject)' == ''">False</IsRemoteBuild>
+			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false' And '@(XcodeProject->Count())' == '0'">False</IsRemoteBuild>
 		</PropertyGroup>
 	</Target>
 

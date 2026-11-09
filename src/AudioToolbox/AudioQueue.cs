@@ -888,10 +888,9 @@ namespace AudioToolbox {
 		///         </remarks>
 		public AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc)
 		{
-			if (audioQueueBuffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (audioQueueBuffer));
-
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) audioQueueBuffer, nameof (audioQueueBuffer));
+
 				AudioQueueBuffer* buffer = (AudioQueueBuffer*) audioQueueBuffer;
 				buffer->AudioDataByteSize = (uint) bytes;
 				return EnqueueBuffer (buffer, desc);
@@ -920,8 +919,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public unsafe AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, AudioStreamPacketDescription [] desc)
 		{
-			if (audioQueueBuffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (audioQueueBuffer));
+			ArgumentNullException.ThrowIfNull ((void*) audioQueueBuffer, nameof (audioQueueBuffer));
 
 			fixed (AudioStreamPacketDescription* descPtr = desc) {
 				return AudioQueueEnqueueBuffer (handle, (AudioQueueBuffer*) audioQueueBuffer, desc?.Length ?? 0, descPtr);
@@ -946,8 +944,9 @@ namespace AudioToolbox {
 								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 								   ref AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
 		{
-			if (audioQueueBuffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (audioQueueBuffer));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) audioQueueBuffer, nameof (audioQueueBuffer));
+			}
 
 			actualStartTime = default (AudioTimeStamp);
 
@@ -983,8 +982,9 @@ namespace AudioToolbox {
 							   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 							   out AudioTimeStamp actualStartTime)
 		{
-			if (audioQueueBuffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (audioQueueBuffer));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) audioQueueBuffer, nameof (audioQueueBuffer));
+			}
 
 			actualStartTime = default (AudioTimeStamp);
 
@@ -1354,9 +1354,8 @@ namespace AudioToolbox {
 		/// 	</remarks>
 		public bool GetProperty (AudioQueueProperty property, ref int dataSize, IntPtr outdata)
 		{
-			if (outdata == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (outdata));
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) outdata, nameof (outdata));
 				fixed (int* dataSizePtr = &dataSize) {
 					return AudioQueueGetProperty (handle, (uint) property, outdata, dataSizePtr) == 0;
 				}
@@ -1372,8 +1371,9 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public bool SetProperty (AudioQueueProperty property, int dataSize, IntPtr propertyData)
 		{
-			if (propertyData == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (propertyData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) propertyData, nameof (propertyData));
+			}
 			return AudioQueueSetProperty (handle, property, propertyData, dataSize) == 0;
 		}
 

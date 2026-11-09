@@ -133,8 +133,9 @@ namespace CoreFoundation {
 
 		bool Transform (ref CFRange range, IntPtr transform, bool reverse)
 		{
-			if (transform == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (transform));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) transform, nameof (transform));
+			}
 			str = null; // destroy any cached value
 			unsafe {
 				fixed (CFRange* rangePtr = &range) {
@@ -198,8 +199,9 @@ namespace CoreFoundation {
 
 		bool Transform (IntPtr transform, bool reverse)
 		{
-			if (transform == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (transform));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) transform, nameof (transform));
+			}
 			str = null; // destroy any cached value
 			unsafe {
 				return CFStringTransform (Handle, null, transform, reverse ? (byte) 1 : (byte) 0) != 0;

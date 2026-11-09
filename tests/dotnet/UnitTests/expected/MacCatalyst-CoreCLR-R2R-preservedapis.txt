@@ -1001,8 +1001,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer.Equals(System.Strin
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer.GetHashCode(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ThrowHelper
 Microsoft.MacCatalyst.dll:ObjCRuntime.ThrowHelper.ThrowArgumentException(System.String, System.String)
-Microsoft.MacCatalyst.dll:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
-Microsoft.MacCatalyst.dll:ObjCRuntime.ThrowHelper.ThrowIfNull`1(T, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.TransientCFString
 Microsoft.MacCatalyst.dll:ObjCRuntime.TransientCFString..ctor(System.String)

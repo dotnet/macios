@@ -192,8 +192,9 @@ namespace AudioToolbox {
 
 		internal MusicEventUserData (IntPtr handle)
 		{
-			if (handle == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (handle));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) handle, nameof (handle));
+			}
 
 			int length = Marshal.ReadInt32 (handle);
 

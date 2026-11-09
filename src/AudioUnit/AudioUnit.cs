@@ -1050,9 +1050,8 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public AudioUnitStatus Render (ref AudioUnitRenderActionFlags actionFlags, AudioTimeStamp timeStamp, uint busNumber, uint numberFrames, AudioBuffers data)
 		{
-			if ((IntPtr) data == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (data));
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) (IntPtr) data, nameof (data));
 				fixed (AudioUnitRenderActionFlags* actionFlagsPtr = &actionFlags) {
 					return AudioUnitRender (
 						Handle,

@@ -72,8 +72,9 @@ namespace ImageIO {
 			ArgumentNullException.ThrowIfNull (xmlns);
 			ArgumentNullException.ThrowIfNull (name);
 			// it won't crash - but the instance is invalid (null handle)
-			if (value == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (value));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) value, nameof (value));
+			}
 
 			InitializeHandle (CGImageMetadataTagCreate (xmlns.Handle, prefix.GetHandle (), name.Handle, type, value));
 			GC.KeepAlive (xmlns);

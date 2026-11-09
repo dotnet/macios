@@ -1,7 +1,6 @@
 using System.ComponentModel;
 // the linker will remove the attributes
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 
 #nullable enable
 
@@ -22,6 +21,7 @@ namespace ObjCRuntime {
 			throw new ArgumentException (message, argumentName);
 		}
 
+#if !XAMCORE_5_0
 		[DoesNotReturn]
 		public static void ThrowArgumentNullException (string argumentName)
 		{
@@ -33,6 +33,7 @@ namespace ObjCRuntime {
 		{
 			throw new ArgumentNullException (argumentName, message);
 		}
+#endif
 
 		[DoesNotReturn]
 		public static void ThrowArgumentOutOfRangeException (string argumentName, string message)
@@ -50,12 +51,6 @@ namespace ObjCRuntime {
 		public static void ThrowObjectDisposedException (object o)
 		{
 			throw new ObjectDisposedException (o.GetType ().ToString ());
-		}
-
-		internal static T ThrowIfNull<T> (T? value, [CallerArgumentExpression ("value")] string paramName = "") where T : class
-		{
-			ArgumentNullException.ThrowIfNull (value, paramName);
-			return value;
 		}
 	}
 }

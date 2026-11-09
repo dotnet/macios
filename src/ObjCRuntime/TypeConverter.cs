@@ -124,7 +124,8 @@ namespace ObjCRuntime {
 				throw new ArgumentException ("Unable to convert generic types");
 
 			if (type.IsByRef) {
-				var elementType = ThrowHelper.ThrowIfNull (type.GetElementType ());
+				var elementType = type.GetElementType ();
+				ArgumentNullException.ThrowIfNull (elementType, "type.GetElementType ()");
 				return "^" + ToNative (elementType);
 			}
 			if (type == typeof (IntPtr)) return "^v";

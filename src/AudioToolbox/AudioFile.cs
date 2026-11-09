@@ -1240,8 +1240,7 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public unsafe AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, IntPtr buffer, ref int count, out AudioFileError error, AudioStreamPacketDescription [] descriptions)
 		{
-			if (buffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
 			if (count < 0)
 				throw new ArgumentException (nameof (count), "<0");
 			ArgumentNullException.ThrowIfNull (descriptions);
@@ -1388,10 +1387,9 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, int numPackets, IntPtr buffer, int byteCount)
 		{
-			if (buffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (buffer));
-
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
+
 				if (AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, null, startingPacket, &numPackets, buffer) == 0)
 					return numPackets;
 			}
@@ -1409,8 +1407,9 @@ namespace AudioToolbox {
 		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount)
 		{
 			ArgumentNullException.ThrowIfNull (packetDescriptions);
-			if (buffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (buffer));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
+			}
 			int nPackets = packetDescriptions.Length;
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
@@ -1849,8 +1848,9 @@ namespace AudioToolbox {
 		[Obsolete ("Use 'SetUserData (AudioFileChunkType, int, byte[])' instead.")]
 		public int SetUserData (int userDataId, int index, int userDataSize, IntPtr userData)
 		{
-			if (userData == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (userData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) userData, nameof (userData));
+			}
 			return (int) AudioFileSetUserData (Handle, userDataId, index, userDataSize, userData);
 		}
 #endif // !XAMCORE_5_0
@@ -2101,8 +2101,9 @@ namespace AudioToolbox {
 		/// <returns>Whether the operation succeeded or not.</returns>
 		public bool SetProperty (AudioFileProperty property, int dataSize, IntPtr propertyData)
 		{
-			if (propertyData == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (propertyData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) propertyData, nameof (propertyData));
+			}
 			return AudioFileSetProperty (Handle, property, dataSize, propertyData) == 0;
 		}
 

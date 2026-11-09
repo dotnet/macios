@@ -386,8 +386,9 @@ namespace AudioToolbox {
 		///         </remarks>
 		public AudioFileStreamStatus ParseBytes (int size, IntPtr data, bool discontinuity)
 		{
-			if (data == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (data));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) data, nameof (data));
+			}
 			return LastError = AudioFileStreamParseBytes (handle, size, data, discontinuity ? (uint) 1 : (uint) 0);
 		}
 
@@ -523,9 +524,8 @@ namespace AudioToolbox {
 		///         </remarks>
 		public bool GetProperty (AudioFileStreamProperty property, ref int dataSize, IntPtr outPropertyData)
 		{
-			if (outPropertyData == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (outPropertyData));
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) outPropertyData, nameof (outPropertyData));
 				fixed (int* dataSizePtr = &dataSize)
 					return AudioFileStreamGetProperty (handle, property, dataSizePtr, outPropertyData) == 0;
 			}
@@ -645,8 +645,9 @@ namespace AudioToolbox {
 		///         <remarks>Most properties have been exposed with C# properties, there should be no need to call this directly, unless new properties are introduced that are not bound by MonoTouch.</remarks>
 		public bool SetProperty (AudioFileStreamProperty property, int dataSize, IntPtr propertyData)
 		{
-			if (propertyData == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (propertyData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) propertyData, nameof (propertyData));
+			}
 			LastError = AudioFileStreamSetProperty (handle, property, dataSize, propertyData);
 			return LastError == 0;
 		}

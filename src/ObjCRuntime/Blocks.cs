@@ -492,8 +492,7 @@ namespace ObjCRuntime {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool IsManagedBlock (IntPtr block)
 		{
-			if (block == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (block));
+			ArgumentNullException.ThrowIfNull ((void*) block, nameof (block));
 
 			BlockLiteral* literal = (BlockLiteral*) block;
 			BlockDescriptor* descriptor = (BlockDescriptor*) xamarin_get_block_descriptor ();

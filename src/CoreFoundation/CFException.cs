@@ -101,8 +101,9 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static CFException FromCFError (IntPtr cfErrorHandle, bool release)
 		{
-			if (cfErrorHandle == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (cfErrorHandle));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) cfErrorHandle, nameof (cfErrorHandle));
+			}
 
 			var e = new CFException (
 					CFString.FromHandle (CFErrorCopyDescription (cfErrorHandle), releaseHandle: true),

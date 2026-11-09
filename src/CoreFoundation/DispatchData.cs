@@ -89,8 +89,9 @@ namespace CoreFoundation {
 		//
 		public static DispatchData FromBuffer (IntPtr buffer, nuint size)
 		{
-			if (buffer == IntPtr.Zero)
-				throw new ArgumentNullException (nameof (buffer));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
+			}
 			var dd = dispatch_data_create (buffer, (nuint) size, IntPtr.Zero, destructor: IntPtr.Zero);
 			return new DispatchData (dd, owns: true);
 		}

@@ -175,10 +175,10 @@ namespace CoreGraphics {
 			}
 		}
 
-		/// <param name="memoryBlock">Pointer to the memory block.</param>
-		///         <param name="size">Size of the block.</param>
-		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a data provider by copying an in-memory block.</summary>
+		/// <param name="memoryBlock">Pointer to the memory block to copy.</param>
+		/// <param name="size">Size of the block, in bytes.</param>
+		/// <remarks>The caller retains ownership of the original memory block and is responsible for freeing it.</remarks>
 		public CGDataProvider (IntPtr memoryBlock, int size)
 			: this (memoryBlock, size, false)
 		{
@@ -193,33 +193,35 @@ namespace CoreGraphics {
 			}
 		}
 
+		/// <summary>Creates a data provider from an in-memory block, optionally taking ownership of it.</summary>
 		/// <param name="memoryBlock">Pointer to the memory block.</param>
-		///         <param name="size">Size of the block.</param>
-		///         <param name="ownBuffer">If true this means that the CGDataProvider owns the buffer and will call FreeHGlobal when it is disposed, otherwise it is assumed that the block is owned by another object.</param>
-		///         <summary>Creates a CGDataProvider from an in-memory block.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="size">Size of the block, in bytes.</param>
+		/// <param name="ownBuffer">If <see langword="true" />, the data provider takes ownership of the block without copying it and frees it using <see cref="Marshal.FreeHGlobal(IntPtr)" /> when the data is no longer needed. If <see langword="false" />, the block is copied and the caller retains ownership of the original block.</param>
 		public CGDataProvider (IntPtr memoryBlock, int size, bool ownBuffer)
 			: base (Create (memoryBlock, size, ownBuffer), true)
 		{
 		}
 
-		static IntPtr Create (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
+		static IntPtr Create (IntPtr memoryBlock, int size, Action<IntPtr>? releaseMemoryBlockCallback)
 		{
-			if (releaseMemoryBlockCallback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (releaseMemoryBlockCallback));
-
-			var gch = GCHandle.Alloc (releaseMemoryBlockCallback);
 			unsafe {
+				if (releaseMemoryBlockCallback is null)
+					return CGDataProviderCreateWithData (IntPtr.Zero, memoryBlock, size, null);
+
+				var gch = GCHandle.Alloc (releaseMemoryBlockCallback);
 				return CGDataProviderCreateWithData (GCHandle.ToIntPtr (gch), memoryBlock, size, &ReleaseFunc);
 			}
 		}
 
-		/// <param name="memoryBlock">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <param name="releaseMemoryBlockCallback">To be added.</param>
-		///         <summary>Creates a new <see cref="CoreGraphics.CGDataProvider" /> from the data at the specified <paramref name="memoryBlock" />.</summary>
-		///         <remarks>To be added.</remarks>
-		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr> releaseMemoryBlockCallback)
+		/// <summary>Creates a data provider from an in-memory block without copying it.</summary>
+		/// <param name="memoryBlock">Pointer to the memory block.</param>
+		/// <param name="size">Size of the block, in bytes.</param>
+		/// <param name="releaseMemoryBlockCallback">A callback invoked with <paramref name="memoryBlock" /> when the data is no longer needed, or <see langword="null" /> for no callback.</param>
+		/// <remarks>
+		///   The memory block must remain valid until the data provider and any native objects using its data no longer need it.
+		///   If <paramref name="releaseMemoryBlockCallback" /> is <see langword="null" />, the data provider does not free the block; the caller is responsible for freeing it.
+		/// </remarks>
+		public CGDataProvider (IntPtr memoryBlock, int size, Action<IntPtr>? releaseMemoryBlockCallback)
 			: base (Create (memoryBlock, size, releaseMemoryBlockCallback), true)
 		{
 		}

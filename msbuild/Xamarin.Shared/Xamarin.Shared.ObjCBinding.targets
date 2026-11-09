@@ -110,7 +110,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_PrepareNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_SanitizeNativeReferences">
-		<Warning Condition="'@(ObjcBindingNativeLibrary)' != ''" Text="The ObjcBindingNativeLibrary item group is deprecated. Use NativeReference instead." />
+		<Error Condition="'@(ObjcBindingNativeLibrary->Count())' != '0' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 13.0))" Text="The ObjcBindingNativeLibrary item group is not supported in .NET 13+. Use NativeReference instead." />
+		<Warning Condition="'@(ObjcBindingNativeLibrary->Count())' != '0' And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), 13.0))" Text="The ObjcBindingNativeLibrary item group is deprecated and will not be supported in .NET 13+. Use NativeReference instead." />
 		<Warning Condition="'$(_NoBindingEmbeddingDeprecated)' == 'true'" Text="Setting 'NoBindingEmbedding' to 'false' is deprecated and will not be supported in .NET 12+. Please remove this property from your project file." />
 		<Error Condition="'$(_NoBindingEmbeddingRemoved)' == 'true'" Text="Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file." />
 		<PrepareNativeReferences

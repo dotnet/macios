@@ -1039,11 +1039,21 @@ namespace Xamarin.Tests {
 
 			var properties = GetDefaultProperties ();
 			properties ["NoBindingEmbedding"] = "true";
-			for (var i = 0; i < 2; i++) {
-				var rv = DotNet.AssertBuild (project_path, properties);
+			DotNet.AssertRestore (project_path, properties);
+
+			foreach (var version in new [] { "12.0", "13.0" }) {
+				properties ["TargetFrameworkVersion"] = version;
+				var expectError = version != "12.0";
+				var rv = DotNet.Execute ("build", project_path, properties, assert_success: !expectError, target: "_PrepareNativeReferences", extraArguments: ["--no-restore"]);
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
-				Assert.That (warnings.Length, Is.EqualTo (1), $"Warning count (build {i})");
-				Assert.That (warnings [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is deprecated. Use NativeReference instead."), $"Warning message (build {i})");
+				Assert.That (rv.ExitCode, expectError ? Is.Not.EqualTo (0) : Is.EqualTo (0), $"Exit code (.NET {version})");
+				Assert.That (errors.Length, Is.EqualTo (expectError ? 1 : 0), $"Error count (.NET {version})");
+				Assert.That (warnings.Length, Is.EqualTo (expectError ? 0 : 1), $"Warning count (.NET {version})");
+				if (expectError)
+					Assert.That (errors [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is not supported in .NET 13+. Use NativeReference instead."), $"Error message (.NET {version})");
+				else
+					Assert.That (warnings [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is deprecated and will not be supported in .NET 13+. Use NativeReference instead."), $"Warning message (.NET {version})");
 			}
 		}
 

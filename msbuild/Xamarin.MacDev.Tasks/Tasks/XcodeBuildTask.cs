@@ -10,6 +10,7 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	public abstract class XcodeBuildTask : XamarinTask, ICancelableTask {
 		readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource ();
+		protected CancellationToken CancellationToken => cancellationTokenSource.Token;
 
 		public string WorkingDirectory { get; set; } = string.Empty;
 

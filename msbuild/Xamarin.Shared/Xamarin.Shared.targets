@@ -69,7 +69,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.EmbedProvisionProfile" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FilterStaticFrameworks" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindItemWithLogicalName" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindWatchOS2AppBundle" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateBundleName" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetAvailableDevices" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetCachedFileHash" AssemblyFile="$(_TaskAssemblyName)" />
@@ -770,11 +769,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
 			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_CFBundleShortVersionString" />
 			<Output TaskParameter="CFBundleVersion" PropertyName="_CFBundleVersion" />
-			<Output TaskParameter="CLKComplicationGroup" PropertyName="_CLKComplicationGroup" />
 			<Output TaskParameter="MinimumOSVersion" PropertyName="_MinimumOSVersion" />
 			<Output TaskParameter="NSExtensionPointIdentifier" PropertyName="_NSExtensionPointIdentifier" />
 			<Output TaskParameter="UIDeviceFamily" PropertyName="_UIDeviceFamily" />
-			<Output TaskParameter="WKWatchKitApp" PropertyName="_WKWatchKitApp" />
 			<Output TaskParameter="XSAppIconAssets" PropertyName="_XSAppIconAssets" />
 			<Output TaskParameter="XSLaunchImageAssets" PropertyName="_XSLaunchImageAssets" />
 		</ReadAppManifest>
@@ -971,14 +968,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			AdditionalArgumentsPropertyName="IBToolExtraArgs"
 			AdditionalArgumentsFile="$(_IBToolExtraArgsInput)"
 			BundleIdentifier="$(_BundleIdentifier)"
-			CLKComplicationGroup="$(_CLKComplicationGroup)"
 			EnableOnDemandResources="$(EnableOnDemandResources)"
 			InterfaceDefinitions="@(InterfaceDefinition)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
 			MinimumOSVersion="$(_MinimumOSVersion)"
 			NSExtensionPointIdentifier="$(_NSExtensionPointIdentifier)"
-			IsWatchApp="$(IsWatchApp)"
-			IsWatch2App="$(IsWatch2App)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			SdkDevPath="$(_SdkDevPath)"
@@ -987,7 +981,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SdkVersion="$(_SdkVersion)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UIDeviceFamily="$(_UIDeviceFamily)"
-			WKWatchKitApp="$(_WKWatchKitApp)"
 			XSAppIconAssets="$(_XSAppIconAssets)"
 			XSLaunchImageAssets="$(_XSLaunchImageAssets)"
 			>
@@ -1116,7 +1109,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			AlternateAppIcons="@(AlternateAppIcon)"
 			AppIcon="$(AppIcon)"
 			BundleIdentifier="$(_BundleIdentifier)"
-			CLKComplicationGroup="$(_CLKComplicationGroup)"
 			DeviceModel="$(TargetDeviceModel)"
 			DeviceOSVersion="$(TargetDeviceOSVersion)"
 			EnableOnDemandResources="$(EnableOnDemandResources)"
@@ -1127,7 +1119,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			OptimizePNGs="$(OptimizePNGs)"
 			OutputPath="$(DeviceSpecificOutputPath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
-			IsWatchApp="$(IsWatchApp)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			SdkDevPath="$(_SdkDevPath)"
@@ -1135,7 +1126,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SdkVersion="$(_SdkVersion)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UIDeviceFamily="$(_UIDeviceFamily)"
-			WKWatchKitApp="$(_WKWatchKitApp)"
 			XSAppIconAssets="$(_XSAppIconAssets)"
 			XSLaunchImageAssets="$(_XSLaunchImageAssets)"
 			>
@@ -1233,7 +1223,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
-			IsWatchApp="$(IsWatchApp)"
 			SdkPlatform="$(_SdkPlatform)"
 			SdkDevPath="$(_SdkDevPath)"
 			SdkRoot="$(_SdkRoot)"
@@ -1320,7 +1309,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			DeviceSpecificIntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
-			IsWatchApp="$(IsWatchApp)"
 			MaxDegreeOfParallelism="$(ColladaMaxDegreeOfParallelism)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
@@ -2496,10 +2484,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(_CollectCodesigningData);
 			_PlaceAppExtensions;
 		</_CollectCodesigningDataDependsOn>
-		<_CollectCodesigningDataDependsOn Condition="'$(_PlatformName)' != 'macOS'">
-			$(_CollectCodesigningData);
-			_ResolveWatchAppReferences;
-		</_CollectCodesigningDataDependsOn>
 
 		<_CodesignAppBundleDependsOn>
 			$(_CodesignAppBundleDependsOn);
@@ -2545,7 +2529,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	     ($(IsRemoteBuild) == 'true') so we never surface an incomplete local bundle; surfacing the
 	     .app on Windows is left for a follow-up. -->
 	<Target Name="_CollectAppleAppBundleOutput"
-		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And '$(IsRemoteBuild)' != 'true' And Exists('$(AppBundleDir)')"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsRemoteBuild)' != 'true' And Exists('$(AppBundleDir)')"
 		AfterTargets="Codesign">
 		<ItemGroup>
 			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(AppBundleDir)'))">
@@ -2651,21 +2635,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CodesignItems Include="@(_CodesignAppExtensionItem->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)%(Identity)')" />
 		</ItemGroup>
 
-		<!-- Get app bundles to sign from watch apps -->
-		<ReadItemsFromFile File="@(_ResolvedWatchAppReferences->'%(Identity)\..\codesign-bundle.items')" Condition="Exists('%(Identity)\..\codesign-bundle.items')">
-			<Output TaskParameter="Items" ItemName="_CodesignWatchBundle" />
-		</ReadItemsFromFile>
-		<ItemGroup>
-			<_CodesignBundle Include="@(_CodesignWatchBundle->'$(_AppBundleName)$(AppBundleExtension)/Watch/%(Identity)')" />
-		</ItemGroup>
-		<!-- Get items to sign from watch apps -->
-		<ReadItemsFromFile File="@(_ResolvedWatchAppReferences->'%(Identity)\..\codesign.items')" Condition="Exists('%(Identity)\..\codesign.items')">
-			<Output TaskParameter="Items" ItemName="_CodesignWatchItem" />
-		</ReadItemsFromFile>
-		<ItemGroup>
-			<_CodesignItems Include="@(_CodesignWatchItem->'$(_AppBundleName)$(AppBundleExtension)/Watch/%(Identity)')" />
-		</ItemGroup>
-
 		<!-- Add any user-specified bundles -->
 		<ItemGroup>
 			<_CustomCodesignBundle Include="@(CodesignBundle)" />
@@ -2720,7 +2689,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			    * Not on watch apps
 			    * Not if explicitly disabled by setting EnableCodeSigning=false
 			-->
-			<_CodesignAppBundleCondition Condition="'$(_CodesignAppBundleCondition)' == '' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And '$(_CanOutputAppBundle)' == 'true' And '$(EnableCodeSigning)' != 'false'">true</_CodesignAppBundleCondition>
+			<_CodesignAppBundleCondition Condition="'$(_CodesignAppBundleCondition)' == '' And '$(IsAppExtension)' != 'true' And '$(_CanOutputAppBundle)' == 'true' And '$(EnableCodeSigning)' != 'false'">true</_CodesignAppBundleCondition>
 			<_CodesignAppBundleCondition Condition="'$(_CodesignAppBundleCondition)' == ''">false</_CodesignAppBundleCondition>
 		</PropertyGroup>
 	</Target>
@@ -3044,7 +3013,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_CreateDebugSettings" Condition="'$(_BundlerDebug)' == 'true' And '$(IsWatchApp)' == 'false' And '$(SdkIsDesktop)' != 'true'"
+	<Target Name="_CreateDebugSettings" Condition="'$(_BundlerDebug)' == 'true' And '$(SdkIsDesktop)' != 'true'"
 		DependsOnTargets="_CopyResourcesToBundle"
 		Outputs="$(_AppBundlePath)Settings.bundle\Root.plist" >
 		<CreateDebugSettings
@@ -3056,7 +3025,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</CreateDebugSettings>
 	</Target>
 
-	<Target Name="_CreateDebugConfiguration" Condition="'$(_BundlerDebug)' == 'true' And '$(IsWatchApp)' == 'false' And '$(_PlatformName)' != 'macOS'"
+	<Target Name="_CreateDebugConfiguration" Condition="'$(_BundlerDebug)' == 'true' And '$(_PlatformName)' != 'macOS'"
 		DependsOnTargets="_CopyResourcesToBundle;_DetectDebugNetworkConfiguration"
 		Outputs="$(_AppResourcesPath)MonoTouchDebugConfiguration.txt" >
 		<MakeDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Directories="$(_AppResourcesPath)" />
@@ -3140,10 +3109,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			$(_PrepareForPostProcessingDependsOn);
 			_PlaceAppExtensions;
 		</_PrepareForPostProcessingDependsOn>
-		<_PrepareForPostProcessingDependsOn Condition="'$(_PlatformName)' != 'macOS'">
-			$(_PrepareForPostProcessingDependsOn);
-			_ResolveWatchAppReferences;
-		</_PrepareForPostProcessingDependsOn>
 	</PropertyGroup>
 	<Target
 		Name="_PrepareForPostProcessing"
@@ -3156,7 +3121,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<_AppExtensionPostProcessingItemsPath Include="@(_ResolvedAppExtensionReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')" />
-			<_WatchAppPostProcessingItemPath Include="@(_ResolvedWatchAppReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')"/>
 		</ItemGroup>
 	</Target>
 
@@ -3182,11 +3146,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- read any data from app extensions -->
 		<ReadItemsFromFile File="@(_AppExtensionPostProcessingItemsPath)">
 			<Output TaskParameter="Items" ItemName="_AppExtensionPostProcessingItems" />
-		</ReadItemsFromFile>
-
-		<!-- read any data from watch apps -->
-		<ReadItemsFromFile File="@(_WatchAppPostProcessingItemPath)">
-			<Output TaskParameter="Items" ItemName="_WatchAppPostProcessingItems" />
 		</ReadItemsFromFile>
 
 		<!--
@@ -3251,7 +3210,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<dSYMSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity).dSYM</dSYMSourcePath>
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
-			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
+			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)">
 				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
 				<SymbolFileLocalPath>$(_MtouchSymbolsList)</SymbolFileLocalPath>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
@@ -3279,10 +3238,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_PostProcessingXpcServices Include="@(_AppExtensionPostProcessingItems)" Condition="'%(_AppExtensionPostProcessingItems.IsAppExtension)' == 'true' And '%(_AppExtensionPostProcessingItems.IsXPCService)' == 'true'" />
 			<_PostProcessingItem Include="@(_PostProcessingAppExtensions -> '$(_AppBundleName)$(AppBundleExtension)\$(_AppPlugInsRelativePath)%(Identity)')" Condition="@(_PostProcessingAppExtensions->Count()) &gt; 0" /> <!-- The condition here shouldn't be necessary, but https://github.com/dotnet/msbuild/issues/4056 -->
 			<_PostProcessingItem Include="@(_PostProcessingXpcServices -> '$(_AppBundleName)$(AppBundleExtension)\$(_AppXpcServicesRelativePath)%(Identity)')" Condition="@(_PostProcessingXpcServices->Count()) &gt; 0" /> <!-- The condition here shouldn't be necessary, but https://github.com/dotnet/msbuild/issues/4056 -->
-
-			<!-- Add any items from watch app -->
-			<!-- We must update metadata with paths relative to the root of the app bundle to be relative to the root of the current app bundle -->
-			<_PostProcessingItem Include="@(_WatchAppPostProcessingItems -> '$(_AppBundleName)$(AppBundleExtension)/Watch/%(Identity)')" />
 
 			<!-- Set the SourceProjectPath metadata on all items that don't have it already -->
 			<_PostProcessingItem>
@@ -3345,7 +3300,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- we don't run dsymutil/strip in app extensions, only in the main executable project -->
 		<_PostProcess Condition="'$(IsAppExtension)' == 'true'">false</_PostProcess>
 		<!-- we don't post-process watch apps, only the main executable project -->
-		<_PostProcess Condition="'$(IsWatchApp)' == 'true'">false</_PostProcess>
 		<!-- we don't post-process inner builds of multi-rid builds (in .NET), only the outermost build -->
 		<_PostProcess Condition="'$(_IsMultiRidBuild)' == 'true'">false</_PostProcess>
 		<!-- otherwise post-process -->
@@ -3586,7 +3540,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SolutionPath="$(SolutionPath)"
 			RuntimeIdentifiers="$(RuntimeIdentifiers);$(RuntimeIdentifier)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			WatchAppReferences="@(_ResolvedWatchAppReferences)"
+			WatchOSArtifacts="$(_WatchOSIntermediateOutputPath)"
 			>
 			<Output TaskParameter="ArchiveDir" PropertyName="ArchiveDir"/>
 		</Archive>

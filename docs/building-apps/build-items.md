@@ -37,6 +37,31 @@ Example:
 
 An example solution can be found here: [TestApplication](https://github.com/chamons/xamarin-ios-swift-extension/tree/master/App/net6/TestApplication).
 
+## AdditionalWatchOSApp
+
+Embeds one native watchOS app in an iOS executable project. `Include` is the
+path to an `.xcodeproj`, `.app` directory, or `.zip`. Xcode projects and ZIPs
+support Windows builds with a paired Mac; directory inputs require a local Mac.
+The host must specify a single runtime identifier.
+
+`SchemeName` selects an Xcode scheme (required if more than one exists).
+`Configuration` defaults to the host configuration. `CodesignProvision` selects
+the root watch app's installed profile by name or UUID; `CodesignEntitlements`
+selects its entitlement template. `DSymPath` optionally supplies a directory of
+prebuilt dSYMs.
+
+```xml
+<ItemGroup>
+  <AdditionalWatchOSApp Include="../WatchApp/WatchApp.xcodeproj"
+                        SchemeName="WatchApp" />
+</ItemGroup>
+```
+
+A ZIP can contain one root app, or a variant directory for each supported host
+RID (`ios-arm64`, `iossimulator-arm64`, `iossimulator-x64`). Only the selected
+variant is extracted. See [native watchOS apps](../native-watchos-apps-design.md)
+for the ZIP layout, signing rules, and migration from legacy watch hooks.
+
 ## AlternateAppIcon
 
 The `AlternateAppIcon` item group can be used to specify alternate app icons.
@@ -432,6 +457,23 @@ Example:
 ```
 
 Applicable to all platforms.
+
+## WatchOSAppSigning
+
+Configures signing for a bundle inside an `AdditionalWatchOSApp`. `Include` is
+the bundle identifier. `CodesignProvision` selects an installed profile by name
+or UUID, and `CodesignEntitlements` supplies an entitlement template. Device
+builds use the host signing certificate. Without an explicit profile, automatic
+selection uses the host profile's distribution type.
+
+```xml
+<ItemGroup>
+  <WatchOSAppSigning Include="com.example.Host.watchkitapp.extension"
+                     CodesignEntitlements="WatchExtension.entitlements" />
+</ItemGroup>
+```
+
+See [native watchOS apps](../native-watchos-apps-design.md#signing).
 
 ## XcodeProject
 

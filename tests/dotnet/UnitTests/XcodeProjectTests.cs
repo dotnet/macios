@@ -164,6 +164,68 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		public void BuildNativeWatchApp ()
+		{
+			Configuration.IgnoreIfNotOnMacOS ();
+			BuildNativeWatchApp (false);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		public void BuildNativeWatchAppFromWindows ()
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			BuildNativeWatchApp (true);
+		}
+
+		void BuildNativeWatchApp (bool windows)
+		{
+			var platform = ApplePlatform.iOS;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			const string rid = "iossimulator-arm64";
+			var testDir = Cache.CreateTemporaryDirectory (TestName);
+			var project = Path.Combine (testDir, $"{TestName}.csproj");
+			DotNet.AssertNew (testDir, "ios");
+			var nativeProject = Path.Combine (testDir, "Native watch project");
+			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, "WatchApp"), nativeProject);
+			var item = "<ItemGroup><AdditionalWatchOSApp Include=\"Native watch project/WatchApp.xcodeproj\" SchemeName=\"WatchApp\" /></ItemGroup>";
+			File.WriteAllText (project, File.ReadAllText (project).Replace ("</Project>", item + "</Project>"));
+			var properties = GetDefaultProperties (rid, includeRemoteProperties: windows);
+			properties ["ApplicationId"] = "com.xamarin.NativeWatchApp";
+			properties ["CopyAppBundleToWindows"] = "true";
+
+			void AssertWatchApp (bool present)
+			{
+				if (windows) {
+					var zipPath = Path.Combine (GetObjDir (project, platform, rid, "Debug"), "AppBundle.zip");
+					using var archive = System.IO.Compression.ZipFile.OpenRead (zipPath);
+					var binary = archive.Entries.SingleOrDefault (v => v.FullName.EndsWith ("Watch/WatchApp.app/WatchApp", StringComparison.Ordinal));
+					Assert.That (binary, present ? Is.Not.Null : Is.Null, "watch executable copied from Mac");
+					if (present)
+						Assert.That (binary?.Length, Is.GreaterThan (0), "native binary must not be a placeholder");
+				} else {
+					var binary = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), rid, TestName + ".app", "Watch", "WatchApp.app", "WatchApp");
+					Assert.That (File.Exists (binary), Is.EqualTo (present), "embedded watch executable");
+				}
+			}
+
+			var result = DotNet.AssertBuild (project, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_PrepareNativeWatchOSApp", "initial watch build");
+			AssertWatchApp (true);
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			File.AppendAllText (Path.Combine (nativeProject, "WatchApp.swift"), "\n");
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			DotNet.AssertBuild (project, properties, target: "Clean");
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			File.WriteAllText (project, File.ReadAllText (project).Replace (item, ""));
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (false);
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]

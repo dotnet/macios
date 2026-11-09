@@ -22,7 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string DeviceSpecificIntermediateOutputPath { get; set; } = string.Empty;
 
-		public bool IsWatchApp { get; set; }
 
 		[Required]
 		public string ProjectDir { get; set; } = string.Empty;
@@ -58,7 +57,7 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ($"--sdk-root={SdkRoot}");
 			args.Add ($"--target-build-dir={IntermediateOutputPath}");
 			args.Add ($"--target-version={SdkVersion}");
-			args.Add ($"--target-platform={PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp)}");
+			args.Add ($"--target-platform={PlatformUtils.GetTargetPlatform (SdkPlatform)}");
 
 			return args;
 		}

@@ -1,0 +1,17 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+PRODUCT_NAME = WatchApp
+PRODUCT_BUNDLE_IDENTIFIER = com.xamarin.NativeWatchApp.watchkitapp
+SWIFT_VERSION = 5.0
+SDKROOT = watchos
+SUPPORTED_PLATFORMS = watchos watchsimulator
+WATCHOS_DEPLOYMENT_TARGET = 10.0
+TARGETED_DEVICE_FAMILY = 4
+GENERATE_INFOPLIST_FILE = YES
+INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.xamarin.NativeWatchApp
+INFOPLIST_KEY_CFBundleDisplayName = Native Watch App
+MARKETING_VERSION = 1.0
+CURRENT_PROJECT_VERSION = 1
+CODE_SIGNING_ALLOWED = NO
+ENABLE_USER_SCRIPT_SANDBOXING = YES

@@ -566,7 +566,7 @@ namespace Xamarin.MacDev.Tasks {
 			SetValueIfNotNull (plist, "DTCompiler", sdkSettings.DTCompiler);
 			SetValueIfNotNull (plist, "DTPlatformBuild", dtSettings.DTPlatformBuild);
 			SetValueIfNotNull (plist, "DTSDKBuild", sdkSettings.DTSDKBuild);
-			SetValueIfNotNull (plist, "DTPlatformName", PlatformUtils.GetTargetPlatform (SdkPlatform, false));
+			SetValueIfNotNull (plist, "DTPlatformName", PlatformUtils.GetTargetPlatform (SdkPlatform));
 			SetValueIfNotNull (plist, "DTPlatformVersion", dtSettings.DTPlatformVersion);
 			SetValueIfNotNull (plist, "DTSDKName", sdkSettings.CanonicalName);
 			SetValueIfNotNull (plist, "DTXcode", GetXcodeLocator ().DTXcode);

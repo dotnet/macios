@@ -59,7 +59,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			<_BundleResourceWithLogicalName>
 				<BuildSessionId>$(BuildSessionId)</BuildSessionId>
 				<BuildServerPath>..\..\$(BuildAppName)\$(BuildSessionId)\%(Identity)</BuildServerPath>
-				<BuildServerPath Condition="'$(IsWatchApp)' == 'true' Or '$(IsAppExtension)' == 'true'">..\..\$(_AppBundleName)\$(BuildSessionId)\%(Identity)</BuildServerPath>
+				<BuildServerPath Condition="'$(IsAppExtension)' == 'true'">..\..\$(_AppBundleName)\$(BuildSessionId)\%(Identity)</BuildServerPath>
 			</_BundleResourceWithLogicalName>
 		</ItemGroup>
 		<CollectMonotouchReferences References="@(_MSBuildProjectReferenceExistent)">
@@ -179,8 +179,6 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	</Target>
 	
 	<Target Name="CopyDSYMFromMac" DependsOnTargets="_SayHello" Condition="'$(IsMacEnabled)' == 'true' And '$(IsAppExtension)' == 'false' And '$(SdkIsDevice)' == 'true' And '$(CopyDSYM)' == 'true' And ('$(BuildIpa)' == 'true' Or '$(CopyAppBundle)' == 'true')" BeforeTargets="BeforeDisconnect">
-		<!--Copy watchOS Dsym folders from Mac-->
-		<MSBuild Projects="@(_WatchAppReferenceWithConfigurationExistent)" Targets="CopyDSYMFromMac" Properties="%(_WatchAppReferenceWithConfigurationExistent.SetConfiguration);      %(_WatchAppReferenceWithConfigurationExistent.SetPlatform);      BuildIpa=true" Condition="'$(IsWatchApp)' == 'false' And '@(_WatchAppReferenceWithConfigurationExistent)' != '' And '$(_BuildReferencedExtensionProjects)' != 'true'"></MSBuild>
 		<!--Look for all *.dsym folders int the output path of the main app -->
 		<GetDirectories SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Path="$(DeviceSpecificOutputPath)" Pattern="*.dSYM">
 			<Output TaskParameter="Directories" ItemName="_DSYMDir" />

@@ -36,7 +36,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool IncludeAllAppIcons { get; set; }
 
-		public bool IsWatchApp { get; set; }
 
 		[Required]
 		public bool OptimizePNGs { get; set; }
@@ -118,11 +117,6 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			if (!string.IsNullOrEmpty (CLKComplicationGroup)) {
-				args.Add ("--complication");
-				args.Add (CLKComplicationGroup);
-			}
-
 			if (OptimizePNGs)
 				args.Add ("--compress-pngs");
 
@@ -161,7 +155,7 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add (MinimumOSVersion);
 			}
 
-			var platform = PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp);
+			var platform = PlatformUtils.GetTargetPlatform (SdkPlatform);
 
 			if (platform is not null) {
 				args.Add ("--platform");
@@ -422,7 +416,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				// Only process Contents.json files for on-demand resources (not icon.json files)
-				if (SdkPlatform != "WatchSimulator" && Path.GetFileName (vpath) == "Contents.json") {
+				if (Path.GetFileName (vpath) == "Contents.json") {
 					var text = File.ReadAllText (assetItem.ItemSpec);
 
 					if (string.IsNullOrEmpty (text))

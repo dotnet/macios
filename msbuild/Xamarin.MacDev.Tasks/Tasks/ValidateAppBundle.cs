@@ -71,6 +71,15 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogWarning (MSBStrings.W0073, name, version, mainVersion);
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
+			var extensionKit = plist.Get<PDictionary> ("EXAppExtensionAttributes");
+			if (extensionKit is not null) {
+				if (extension is not null) {
+					Log.LogError (MSBStrings.InvalidAppExtensionManifest, info);
+				} else if (string.IsNullOrEmpty (extensionKit.Get<PString> ("EXExtensionPointIdentifier")?.Value)) {
+					Log.LogError (MSBStrings.MissingExtensionKitPointIdentifier, info);
+				}
+				return;
+			}
 			if (extension is null) {
 				Log.LogError (7009, info, MSBStrings.E7009, name);
 				return;
@@ -359,8 +368,11 @@ namespace Xamarin.MacDev.Tasks {
 			var mainShortVersionString = plist.GetCFBundleShortVersionString ();
 			var mainVersion = plist.GetCFBundleVersion ();
 
-			if (Directory.Exists (Path.Combine (AppBundlePath, "PlugIns"))) {
-				foreach (var plugin in Directory.GetDirectories (Path.Combine (AppBundlePath, "PlugIns"), "*.appex"))
+			foreach (var container in new [] { "PlugIns", "Extensions" }) {
+				var directory = Path.Combine (AppBundlePath, container);
+				if (!Directory.Exists (directory))
+					continue;
+				foreach (var plugin in Directory.GetDirectories (directory, "*.appex"))
 					ValidateAppExtension (plugin, bundleIdentifier, mainShortVersionString, mainVersion);
 			}
 

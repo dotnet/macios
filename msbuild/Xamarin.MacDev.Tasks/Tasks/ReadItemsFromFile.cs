@@ -23,6 +23,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] File { get; set; } = Array.Empty<ITaskItem> ();
 
+		public string [] MetadataToCopy { get; set; } = [];
+
 		#endregion
 
 		#region Outputs
@@ -47,7 +49,12 @@ namespace Xamarin.MacDev.Tasks {
 				var items = document.Root
 					?.Elements (ItemGroupElementName)
 					?.SelectMany (element => element.Elements ())
-					?.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
+					?.Select (element => {
+						var item = this.CreateItemFromElement (element, file.ItemSpec);
+						foreach (var name in MetadataToCopy)
+							item.SetMetadata (name, file.GetMetadata (name));
+						return item;
+					})
 					?.ToList ();
 				if (items is not null)
 					result.AddRange (items);

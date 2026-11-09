@@ -3534,7 +3534,7 @@ public partial class Generator : IMemberGatherer {
 					print ($"var {safe_name}__handle__ = {safe_name}.GetHandle ();");
 				}
 				needsGCKeepAlives = true;
-			} else if (needs_null_check && !null_allowed_override) {
+			} else if (needs_null_check && !(null_allowed_override && pit == TypeCache.System_String)) {
 				print ("if ({0} is null)", safe_name);
 				print ("\tObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof ({0}));", safe_name);
 			}

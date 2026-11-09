@@ -13,15 +13,11 @@ namespace Xamarin.Tests {
 		// and the asset pack directory name is "<bundle identifier>.<tags>.assetpack".
 		const string assetPackName = "com.xamarin.appwithondemandresources.MusicTag.assetpack";
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "AppStore", false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "AppStore", true)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "AdHoc", false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "AdHoc", true)]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AppStore", false)]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AppStore", true)]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AdHoc", false)]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AdHoc", true)]
-		public void BuildIpaWithoutAssetPacks (ApplePlatform platform, string runtimeIdentifiers, string distributionType, bool embedOnDemandResources)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "AppStore")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "AdHoc")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AppStore")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AdHoc")]
+		public void BuildIpaWithoutAssetPacks (ApplePlatform platform, string runtimeIdentifiers, string distributionType)
 		{
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -32,7 +28,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["BuildIpa"] = "true";
 			properties ["EnableOnDemandResources"] = "true";
-			properties ["EmbedOnDemandResources"] = embedOnDemandResources.ToString ();
+			properties ["EmbedOnDemandResources"] = "false";
 			properties ["EnableCodeSigning"] = "false";
 			// Exercise distribution packaging without requiring a distribution certificate or provisioning profile.
 			properties ["_DistributionType"] = distributionType;

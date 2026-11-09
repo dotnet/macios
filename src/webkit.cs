@@ -5974,7 +5974,6 @@ namespace WebKit {
 		[Export ("webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptConfirmPanel (WKWebView webView, string message, WKFrameInfo frame, Action<bool> completionHandler);
 
-#nullable enable
 		/// <summary>Shows a JavaScript text input box to the user.</summary>
 		/// <param name="webView">The web view requesting the text input box.</param>
 		/// <param name="prompt">The message to display.</param>
@@ -5984,7 +5983,6 @@ namespace WebKit {
 		[Export ("webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:")]
 		void RunJavaScriptTextInputPanel (WKWebView webView, string prompt, [NullAllowed] string defaultText,
 			WKFrameInfo frame, Action<string?> completionHandler);
-#nullable restore
 
 		/// <param name="webView">To be added.</param>
 		/// <param name="parameters">To be added.</param>

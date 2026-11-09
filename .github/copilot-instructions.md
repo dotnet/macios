@@ -140,6 +140,10 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+When calling an MSBuild task, put `SessionId` first and `Condition` second (when present),
+then sort the remaining input properties alphabetically. Apply this to new or modified
+task calls without reordering unrelated existing code.
+
 ### Localizable Build Messages
 
 All user-visible messages in `msbuild/Xamarin.MacDev.Tasks` and `tools/assembly-preparer`

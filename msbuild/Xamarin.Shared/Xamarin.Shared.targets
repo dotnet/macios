@@ -2863,6 +2863,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			AppBundleDir="$(_AdditionalAppExtensionBundle)"
 			BundleIdentifier="$(_AdditionalAppExtensionBundleIdentifier)"
 			CompiledEntitlements="$(DeviceSpecificIntermediateOutputPath)additional-app-extensions\%(AdditionalAppExtensions.Name).xcent"
+			Debug="$(_BundlerDebug)"
 			Entitlements="$(_AdditionalAppExtensionEntitlements)"
 			GenerateArchivedExpandedEntitlements="false"
 			ProvisioningProfile="$(_AdditionalAppExtensionProvisioningProfile)"
@@ -2871,7 +2872,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SdkPlatform="$(_SdkPlatform)"
 			SdkVersion="$(_SdkVersion)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			Debug="$(_BundlerDebug)"
 			ValidateEntitlements="$(ValidateEntitlements)">
 			<Output TaskParameter="EntitlementsInSignature" PropertyName="_AdditionalAppExtensionEntitlements" />
 			<Output TaskParameter="EntitlementsInSignature" ItemName="FileWrites" />

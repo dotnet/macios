@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Xml.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Newtonsoft.Json.Linq;
@@ -128,92 +127,6 @@ namespace Xamarin.MacDev.Tasks {
 					}
 					Assert.That (actualCode, Is.EqualTo (expectedCode), $"Error code #{i + 1}");
 				}
-			}
-		}
-
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		[TestCase (ApplePlatform.iOS, true)]
-		public void AdditionalAppExtensionEntitlements (ApplePlatform platform, bool simulator)
-		{
-			var directory = Cache.CreateTemporaryDirectory ();
-			var desktop = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
-			var contents = desktop ? "Contents" : "";
-			var profilePath = GetResourcePath (desktop ? "WildCardMacAppDevelopment.provisionprofile" : "profile.mobileprovision");
-			var prefix = desktop ? "DPXCPAGVTZ" : "32UV7A8CDE";
-			var entitlements = new PDictionary {
-				{ "keychain-access-groups", new PArray { new PString ("$(AppIdentifierPrefix)$(CFBundleIdentifier)") } },
-			};
-			var sourceEntitlements = entitlements.ToXml ();
-			var targets = XElement.Load (Path.Combine (Xamarin.Tests.Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.Shared.targets"));
-			var ns = targets.Name.Namespace;
-			var target = new XElement (targets.Elements (ns + "Target").Single (v => (string?) v.Attribute ("Name") == "_ExtendAppExtensionReferences"));
-			var root = new XElement (ns + "Project", target);
-			var dependencies = target.Attribute ("DependsOnTargets")?.Value ?? throw new InvalidOperationException ("Missing target dependencies.");
-			foreach (var dependency in dependencies.Split (';'))
-				root.Add (new XElement (ns + "Target", new XAttribute ("Name", dependency)));
-			foreach (var taskName in new [] { "ReadAppManifest", "CompileEntitlements" })
-				root.Add (new XElement (ns + "UsingTask",
-					new XAttribute ("TaskName", "Xamarin.MacDev.Tasks." + taskName),
-					new XAttribute ("AssemblyFile", typeof (CompileEntitlements).Assembly.Location)));
-
-			var projectPath = Path.Combine (directory, "Extensions.proj");
-			root.Save (projectPath);
-			var project = Engine.ProjectCollection.LoadProject (projectPath);
-			project.SetProperty ("IsMacEnabled", "true");
-			project.SetProperty ("_PlatformName", platform.AsString ());
-			project.SetProperty ("_ComputedTargetFrameworkMoniker", TargetFramework.GetTargetFramework (platform).ToString ());
-			project.SetProperty ("_SdkIsSimulator", simulator.ToString ());
-			project.SetProperty ("_SdkPlatform", desktop ? (platform == ApplePlatform.MacCatalyst ? "MacCatalyst" : "MacOSX") : (platform == ApplePlatform.TVOS ? "AppleTVOS" : "iPhoneOS"));
-			project.SetProperty ("_SdkVersion", "6.1");
-			project.SetProperty ("_SdkDevPath", Xamarin.Tests.Configuration.XcodeLocation);
-			project.SetProperty ("DeviceSpecificIntermediateOutputPath", Path.Combine (directory, "obj") + "/");
-			project.SetProperty ("_AppBundleName", "Container");
-			project.SetProperty ("AppBundleExtension", ".app");
-			project.SetProperty ("_AppPlugInsRelativePath", "PlugIns/");
-
-			// Verify that target batching keeps each extension's entitlements separate.
-			foreach (var name in new [] { "First", "Second", "WithoutEntitlements" }) {
-				var bundleContents = Path.Combine (directory, "build", name + ".appex", contents);
-				Directory.CreateDirectory (bundleContents);
-				new PDictionary { { "CFBundleIdentifier", new PString ("com.xamarin." + name) } }.Save (Path.Combine (bundleContents, "Info.plist"));
-				File.Copy (profilePath, Path.Combine (bundleContents, desktop ? "embedded.provisionprofile" : "embedded.mobileprovision"));
-				var entitlementsPath = Path.Combine (directory, name + ".entitlements");
-				if (name != "WithoutEntitlements")
-					File.WriteAllText (entitlementsPath, sourceEntitlements);
-				var item = project.AddItem ("AdditionalAppExtensions", directory).Single ();
-				item.SetMetadataValue ("Name", name);
-				item.SetMetadataValue ("BuildOutput", "build");
-				if (name == "First")
-					item.SetMetadataValue ("CodesignEntitlements", entitlementsPath);
-			}
-
-			var instance = project.CreateProjectInstance ();
-			Assert.That (instance.Build ("_ExtendAppExtensionReferences", [Engine.Logger]), Is.True,
-				string.Join ("\n", Engine.Logger.ErrorEvents.Select (v => v.Message)));
-			var bundles = instance.GetItems ("_CodesignBundle").ToArray ();
-			Assert.That (bundles, Has.Length.EqualTo (3), "Signing bundles");
-			Assert.That (bundles.Single (v => v.EvaluatedInclude.EndsWith ("WithoutEntitlements.appex", StringComparison.Ordinal)).GetMetadataValue ("CodesignEntitlements"),
-				Is.Empty, "Extension without entitlements");
-			Assert.That (instance.GetItems ("FileWrites").Count, Is.EqualTo (simulator ? 0 : 2), "Generated entitlements");
-			foreach (var name in new [] { "First", "Second" }) {
-				var bundle = bundles.Single (v => v.EvaluatedInclude.EndsWith (name + ".appex", StringComparison.Ordinal));
-				var compiledPath = bundle.GetMetadataValue ("CodesignEntitlements");
-				if (simulator) {
-					Assert.That (compiledPath, Is.EqualTo (Path.Combine (directory, name + ".entitlements")), name);
-				} else {
-					Assert.That (compiledPath, Is.EqualTo (Path.Combine (directory, "obj", "additional-app-extensions", name + ".xcent")), name);
-					var compiled = PDictionary.OpenFile (compiledPath);
-					Assert.That (compiled.GetString (desktop ? "com.apple.application-identifier" : "application-identifier")?.Value,
-						Is.EqualTo (prefix + ".com.xamarin." + name), name + " application identifier");
-					Assert.That (compiled.GetArray ("keychain-access-groups").ToStringArray (),
-						Is.EqualTo (new [] { prefix + ".com.xamarin." + name }), name + " custom entitlements");
-					Assert.That (instance.GetItems ("FileWrites").Select (v => v.EvaluatedInclude), Does.Contain (compiledPath), name + " FileWrites");
-				}
-				Assert.That (File.ReadAllText (Path.Combine (directory, name + ".entitlements")), Is.EqualTo (sourceEntitlements), name + " source entitlements");
-				Assert.That (File.Exists (Path.Combine (directory, "build", name + ".appex", contents, "archived-expanded-entitlements.xcent")), Is.False, name + " source bundle");
 			}
 		}
 

@@ -1489,32 +1489,41 @@ vice versa.
 Valid values:
 
 * `dynamic`: Registers managed types and methods with the Objective-C runtime at
-  runtime using reflection.
+  runtime using reflection. Fastest at build time, but slowest at runtime and
+  adds a significant startup delay while everything is registered.
 * `partial-static`: Uses pre-generated static registration code for the platform
   assembly (`Microsoft.<Platform>.dll`) and registers all other assemblies at
-  runtime using the dynamic registrar. Requires trimming to be disabled
+  runtime using the dynamic registrar. Almost as fast as `dynamic` at build
+  time, and has almost no startup delay. Requires trimming to be disabled
   ([TrimMode](#trimmode)=`copy`) and [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
   to be `default` (or unset).
 * `static`: Generates Objective-C registration code at build time for all
   assemblies, using native marshalling trampolines. Not supported with
-  NativeAOT.
+  NativeAOT, and not supported in .NET 12+.
 * `managed-static`: Generates Objective-C registration code at build time, using
   managed `[UnmanagedCallersOnly]` marshalling trampolines and per-assembly type
   lookup tables. Modifies user assemblies, so it can't be used with Hot Reload
-  or `dotnet watch`.
+  or `dotnet watch`. Not supported in .NET 12+.
 * `trimmable-static`: A variation of `managed-static` that uses trimmer-friendly
   `TypeMap` attributes for type mapping instead of per-assembly lookup tables,
   allowing the trimmer to remove unused Objective-C types and methods more
-  effectively. Currently can't be used with Hot Reload or `dotnet watch`.
+  effectively. Slowest at build time, but has no startup delay. A number of
+  other optimizations are also only possible when using the `trimmable-static`
+  registrar. Currently can't be used with Hot Reload or `dotnet watch`.
 * `default`: Uses the default registrar for the current build configuration (same
   as leaving the property unset).
 
-When using NativeAOT (`PublishAot=true`), only `managed-static` and
-`trimmable-static` are supported.
+When using NativeAOT (`PublishAot=true`), only `managed-static` (in .NET 11 and
+earlier) and `trimmable-static` are supported.
 
 If this property is not set, the default value is selected as follows:
 
-* .NET 11+:
+* .NET 12+ ([PR #27262](https://github.com/dotnet/macios/pull/27262)):
+  * `partial-static` for debug builds when no assemblies are trimmed and
+    [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
+    unset).
+  * `trimmable-static` otherwise (including release builds and NativeAOT builds).
+* .NET 11:
   * `trimmable-static` when using NativeAOT (`PublishAot=true`).
   * For CoreCLR builds (`UseMonoRuntime` is not `true`): `partial-static` for
     simulator builds when no assemblies are trimmed and
@@ -1532,7 +1541,7 @@ Example:
 
 ```xml
 <PropertyGroup>
-  <Registrar>managed-static</Registrar>
+  <Registrar>trimmable-static</Registrar>
 </PropertyGroup>
 ```
 

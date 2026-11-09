@@ -376,6 +376,11 @@ namespace AVFoundation {
 		[Field ("AVMediaCharacteristicMachineGenerated")]
 		MachineGenerated = 24,
 
+		/// <summary>Indicates media that provides sign language interpretation for accessibility.</summary>
+		[iOS (27, 2), TV (27, 2), Mac (27, 2), MacCatalyst (27, 2)]
+		[Field ("AVMediaCharacteristicSignLanguageInterpretationForAccessibility")]
+		SignLanguageInterpretationForAccessibility = 25,
+
 	}
 
 	enum AVMetadataFormat {
@@ -23545,6 +23550,8 @@ namespace AVFoundation {
 		bool MultipleRoutesDetected { get; }
 
 		[NoTV, NoMac, iOS (16, 0)]
+		[Deprecated (PlatformName.iOS, 27, 2, message: "Use 'AVSystemRouting' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 2, message: "Use 'AVSystemRouting' instead.")]
 		[Export ("detectsCustomRoutes")]
 		bool DetectsCustomRoutes { get; set; }
 	}

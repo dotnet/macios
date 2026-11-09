@@ -1673,7 +1673,7 @@ namespace AVKit {
 		AVPlaybackUserInterfaceMetadataProviding {
 	}
 
-	[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+	[NoTV, NoMac, iOS (27, 1), MacCatalyst (27, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureDeviceDescriptor {
@@ -1697,7 +1697,7 @@ namespace AVKit {
 		string LocalizedName { get; }
 	}
 
-	[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+	[NoTV, NoMac, iOS (27, 1), MacCatalyst (27, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureDeviceDirectionMap {
@@ -1708,10 +1708,10 @@ namespace AVKit {
 		AVCaptureDeviceDescriptor [] BackwardFacingDeviceDescriptors { get; }
 	}
 
-	[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+	[NoTV, NoMac, iOS (27, 1), MacCatalyst (27, 2)]
 	delegate void AVCaptureDeviceDirectionCoordinatorChangeHandler (AVCaptureDeviceDirectionMap deviceDirections);
 
-	[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+	[NoTV, NoMac, iOS (27, 1), MacCatalyst (27, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCaptureDeviceDirectionCoordinator {

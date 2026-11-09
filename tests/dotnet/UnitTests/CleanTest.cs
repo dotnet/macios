@@ -75,12 +75,11 @@ namespace Xamarin.Tests {
 			AssertCleanDirectory (objDirectory);
 			DotNet.AssertBuild (projectPath, properties);
 			Assert.That (appPath, Does.Exist, "Build after clean");
-			if (runtimeIdentifiers.Contains (';')) {
-				properties.Remove ("RuntimeIdentifiers");
-				DotNet.Execute ("clean", projectPath, properties);
-				AssertCleanDirectory (binDirectory);
-				AssertCleanDirectory (objDirectory);
-			}
+			properties.Remove ("RuntimeIdentifier");
+			properties.Remove ("RuntimeIdentifiers");
+			DotNet.Execute ("clean", projectPath, properties);
+			AssertCleanDirectory (binDirectory);
+			AssertCleanDirectory (objDirectory);
 		}
 
 		[TestCase (ApplePlatform.iOS, false)]

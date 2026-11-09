@@ -1509,7 +1509,7 @@ Valid values:
   allowing the trimmer to remove unused Objective-C types and methods more
   effectively. Slowest at build time, but has no startup delay. A number of
   other optimizations are also only possible when using the `trimmable-static`
-  registrar. Currently can't be used with Hot Reload or `dotnet watch`.
+  registrar.
 * `default`: Uses the default registrar for the current build configuration (same
   as leaving the property unset).
 
@@ -1518,7 +1518,7 @@ earlier) and `trimmable-static` are supported.
 
 If this property is not set, the default value is selected as follows:
 
-* .NET 12+ ([PR #27262](https://github.com/dotnet/macios/pull/27262)):
+* .NET 12+:
   * `partial-static` for debug builds when no assemblies are trimmed and
     [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
     unset).

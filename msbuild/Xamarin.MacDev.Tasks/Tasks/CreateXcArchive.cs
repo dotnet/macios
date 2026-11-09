@@ -1,11 +1,13 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Build.Framework;
 
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
+using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
 	public class CreateXcArchive : XcodeBuildTask, ITaskCallback {
@@ -22,6 +24,8 @@ namespace Xamarin.MacDev.Tasks {
 		public string DerivedDataPath { get; set; } = string.Empty;
 
 		public string PackageCachePath { get; set; } = string.Empty;
+
+		public string [] InputExcludeDirectories { get; set; } = [];
 
 
 		readonly string [] archive_args = new string [] {
@@ -95,7 +99,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			return CreateItemsForAllFilesRecursively (WorkingDirectory);
+			return CreateItemsForAllFilesRecursively (WorkingDirectory)
+				.Where (item => !InputExcludeDirectories.Any (directory => PathUtils.IsPathContained (directory, item.ItemSpec)));
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;

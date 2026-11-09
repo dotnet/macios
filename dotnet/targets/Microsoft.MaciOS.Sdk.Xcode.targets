@@ -97,6 +97,7 @@ This file contains MSBuild targets that support building Xcode framework project
         OutputPath="%(XcodeProject.OutputPath)archives/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier).xcarchive"
         DerivedDataPath="$(_XcodeProjectDefaultOutputPathRoot)DerivedData"
         PackageCachePath="$(_XcodeProjectDefaultOutputPathRoot)Cache"
+        InputExcludeDirectories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath);$(BaseOutputPath);$(OutputPath);%(XcodeProject.OutputPath)"
         SdkDevPath="$(_SdkDevPath)"
         WorkingDirectory="%(XcodeProject.RootDir)%(XcodeProject.Directory)" >
     </CreateXcArchive>
@@ -111,6 +112,7 @@ This file contains MSBuild targets that support building Xcode framework project
         ArchivePlatform="$(_XcArchivePlatform) Simulator"
         DerivedDataPath="$(_XcodeProjectDefaultOutputPathRoot)DerivedData"
         PackageCachePath="$(_XcodeProjectDefaultOutputPathRoot)Cache"
+        InputExcludeDirectories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath);$(BaseOutputPath);$(OutputPath);%(XcodeProject.OutputPath)"
         OutputPath="%(XcodeProject.OutputPath)archives/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier)Simulator.xcarchive"
         SdkDevPath="$(_SdkDevPath)"
         WorkingDirectory="%(XcodeProject.RootDir)%(XcodeProject.Directory)" >
@@ -153,15 +155,10 @@ This file contains MSBuild targets that support building Xcode framework project
 
   <Target Name="_CollectXcodeProjectOutputs"
       AfterTargets="_BuildXcodeProjects"
-      Condition=" '@(XcodeProject->Count())' != '0' and '$(IsMacEnabled)' == 'true' " >
-    <GetFileSystemEntries
-        SessionId="$(BuildSessionId)"
-        DirectoryPath="@(XcodeProject->'%(OutputPath)')"
-        Pattern="*"
-        Recursive="true"
-        IncludeDirectories="false" >
-      <Output TaskParameter="Entries" ItemName="FileWrites" />
-    </GetFileSystemEntries>
+      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) " >
+    <ItemGroup>
+      <FileWrites Include="%(XcodeProject.OutputPath)**/*" />
+    </ItemGroup>
   </Target>
 
 

@@ -33,7 +33,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 
 	<Target Name="EnsureMacConnection" 
 		DependsOnTargets="_SayHello" 
-		Condition="'$(_RequiresMacConnection)' == 'true' Or '@(XcodeProject)' != ''"
+		Condition="'$(_RequiresMacConnection)' == 'true' Or '@(XcodeProject->Count())' != '0'"
 		BeforeTargets="_CleanDebugSymbols;_CleanAppBundle;_DetectAppManifest;_DetectSdkLocations;_GenerateBundleName;_CleanXcodeProjects" />
 	
 	<!-- Default context path values for remote builds -->

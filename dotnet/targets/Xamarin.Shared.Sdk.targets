@@ -949,6 +949,7 @@
 				HotReloadModifiedAssemblySafetyNet=$(_HotReloadModifiedAssemblySafetyNet)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
+				IsXPCService=$(IsXPCService)
 				IsMultiRidBuild=$(_IsUniversalBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)

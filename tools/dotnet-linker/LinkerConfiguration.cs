@@ -434,6 +434,10 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => loadBool (key, value, out Application.IsMultiRidBuild)),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsMultiRidBuild, storage))
 				)},
+				{ "IsXPCService", (
+					new LoadValue ((key, value) => Application.IsXpcService = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
+					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.IsXpcService, storage))
+				)},
 				{ "ItemsDirectory", (
 					new LoadValue ((key, value) => ItemsDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, ItemsDirectory, storage))

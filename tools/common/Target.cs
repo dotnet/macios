@@ -402,7 +402,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine (" (int argc, char **argv)");
 			sw.WriteLine ("{");
 			sw.WriteLine ("\tNSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];");
-			if (app.IsExtension) {
+			if (app.IsExtension && !app.IsXpcService) {
 				// the name of the executable must be the bundle id (reverse dns notation)
 				// but we do not want to impose that (ugly) restriction to the managed .exe / project name / ...
 				sw.WriteLine ("\targv [0] = (char *) \"{0}\";", Path.GetFileNameWithoutExtension (app.RootAssemblies [0]));
@@ -415,7 +415,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("}");
 
 			// Add an empty __managed__Main function when building class lib app extensions with NativeAOT to workaround static reference to this symbol from nativeaot-bridge.m
-			if (app.IsExtension && app.XamarinRuntime == XamarinRuntime.NativeAOT) {
+			if (app.IsExtension && !app.IsXpcService && app.XamarinRuntime == XamarinRuntime.NativeAOT) {
 				sw.WriteLine ();
 				sw.Write ("extern \"C\" int __managed__Main (int argc, const char** argv) { return 0; } ");
 				sw.WriteLine ();

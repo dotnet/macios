@@ -1825,4 +1825,35 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
     </data>
+    <data name="E7229" xml:space="preserve">
+        <value>The CodesignItem path '{0}' and FilePattern '{1}' must be relative paths without '..' segments.</value>
+        <comment>{0} - The CodesignItem Include path.
+{1} - Its FilePattern metadata.</comment>
+    </data>
+    <data name="E7230" xml:space="preserve">
+        <value>The CodesignItem file '{0}' does not exist. To search a directory, specify FilePattern metadata.</value>
+        <comment>{0} - The file to sign.</comment>
+    </data>
+    <data name="E7231" xml:space="preserve">
+        <value>The CodesignItem search directory '{0}' does not exist.</value>
+        <comment>{0} - The directory to search for files to sign.</comment>
+    </data>
+    <data name="E7232" xml:space="preserve">
+        <value>The CodesignItem file '{0}' is not a Mach-O executable, dynamic library, or loadable bundle.</value>
+        <comment>{0} - The unsupported file to sign.</comment>
+    </data>
+    <data name="E7233" xml:space="preserve">
+        <value>The CodesignItem path '{0}' is outside its app bundle '{1}' and cannot be signed.</value>
+        <comment>{0} - The path that would escape the owning app bundle.
+{1} - The owning app bundle.</comment>
+    </data>
+    <data name="E7234" xml:space="preserve">
+        <value>The CodesignItem FilePattern '{0}' is not a valid MSBuild wildcard pattern.</value>
+        <comment>{0} - The invalid wildcard pattern.</comment>
+    </data>
+    <data name="E7235" xml:space="preserve">
+        <value>Could not read the CodesignItem file '{0}': {1}</value>
+        <comment>{0} - The file being inspected for signing.
+{1} - The error message.</comment>
+    </data>
 </root>

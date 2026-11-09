@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Build.Framework;
+using Microsoft.Build.Globbing;
 using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
@@ -65,6 +66,10 @@ namespace Xamarin.MacDev.Tasks {
 			// Make sure AppBundleDir has a trailing slash
 			var appBundlePath = PathUtils.EnsureTrailingSlash (Path.GetFullPath (AppBundleDir)!);
 			var appBundleStampPath = Path.Combine (CodesignStampPath, Path.GetFileName (appBundlePath.TrimEnd (Path.DirectorySeparatorChar)));
+			var codesignItems = ExpandCodesignItems (appBundlePath, appBundleStampPath);
+			if (Log.HasLoggedErrors)
+				return false;
+			var explicitPaths = new HashSet<string> (codesignItems.Select (v => PathUtils.ResolveSymbolicLinks (Path.GetFullPath (v.ItemSpec))), StringComparer.Ordinal);
 
 			// Add the app bundles themselves
 			foreach (var bundle in CodesignBundle) {
@@ -115,7 +120,7 @@ namespace Xamarin.MacDev.Tasks {
 				var bundlePath = Path.Combine (Path.GetDirectoryName (Path.GetDirectoryName (appBundlePath)!)!, bundle.ItemSpec);
 				var filesToSign = FindFilesToSign (bundlePath);
 				foreach (var lib in filesToSign) {
-					if (Array.Find (CodesignItems, (v) => string.Equals (v.ItemSpec, lib, StringComparison.OrdinalIgnoreCase)) is not null)
+					if (explicitPaths.Contains (PathUtils.ResolveSymbolicLinks (Path.GetFullPath (lib))))
 						continue;
 					var pathInBundle = lib.Substring (appBundlePath.Length);
 					var relativeLib = Path.Combine (AppBundleDir, pathInBundle);
@@ -143,7 +148,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// Add all additional items
-			foreach (var item in CodesignItems) {
+			foreach (var item in codesignItems) {
 				// Set the stamp file if not already set.
 				item.SetMetadataIfNotSet ("CodesignStampFile", Path.Combine (CodesignStampPath, item.ItemSpec));
 
@@ -156,7 +161,7 @@ namespace Xamarin.MacDev.Tasks {
 			// We may be asked to sign the same item multiple times (in particular for universal .NET builds)
 			// Here we de-duplicate (based on itemspec). We also verify that the metadata is the same between
 			// all deduplicated items, and if not, we show a warning.
-			var grouped = output.GroupBy (v => v.ItemSpec);
+			var grouped = output.GroupBy (v => PathUtils.ResolveSymbolicLinks (Path.GetFullPath (v.ItemSpec)), StringComparer.Ordinal);
 			foreach (var group in grouped) {
 				if (group.Count () < 2)
 					continue;
@@ -166,15 +171,15 @@ namespace Xamarin.MacDev.Tasks {
 				for (var i = 1; i < all.Length; i++) {
 					var nextMetadata = all [i].CloneCustomMetadataToDictionary ();
 					if (nextMetadata.Count != firstMetadata.Count) {
-						Log.LogWarning (MSBStrings.W7095, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata for one are: '{1}', while the metadata for the other are: '{2}' */ group.Key, string.Join (", ", firstMetadata.Keys.OrderBy (v => v)), string.Join (", ", nextMetadata.Keys.OrderBy (v => v)));
+						Log.LogWarning (MSBStrings.W7095, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata for one are: '{1}', while the metadata for the other are: '{2}' */ all [0].ItemSpec, string.Join (", ", firstMetadata.Keys.OrderBy (v => v)), string.Join (", ", nextMetadata.Keys.OrderBy (v => v)));
 					} else {
 						foreach (var kvp in firstMetadata) {
 							if (!nextMetadata.TryGetValue (kvp.Key, out var nextValue)) {
-								Log.LogWarning (MSBStrings.W7096, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}={2}' has been set for one item, but not the other. */ group.Key, kvp.Key, kvp.Value);
+								Log.LogWarning (MSBStrings.W7096, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}={2}' has been set for one item, but not the other. */ all [0].ItemSpec, kvp.Key, kvp.Value);
 								continue;
 							}
 							if (nextValue != kvp.Value) {
-								Log.LogWarning (MSBStrings.W7097, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}' has different values for each item (once it's '{2}', another time it's '{3}'). */ group.Key, kvp.Key, kvp.Value, nextValue);
+								Log.LogWarning (MSBStrings.W7097, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}' has different values for each item (once it's '{2}', another time it's '{3}'). */ all [0].ItemSpec, kvp.Key, kvp.Value, nextValue);
 								continue;
 							}
 						}
@@ -186,6 +191,115 @@ namespace Xamarin.MacDev.Tasks {
 			OutputCodesignItems = output.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		List<ITaskItem> ExpandCodesignItems (string appBundlePath, string appBundleStampPath)
+		{
+			var output = new List<ITaskItem> ();
+			var explicitPaths = new HashSet<string> (StringComparer.Ordinal);
+			foreach (var item in CodesignItems.OrderBy (v => string.IsNullOrEmpty (v.GetMetadata ("FilePattern")) ? 0 : 1)) {
+				var owner = item.GetMetadata ("CodesignItemAppBundle");
+				if (string.IsNullOrEmpty (owner)) {
+					output.Add (item);
+					continue;
+				}
+
+				var path = PathUtils.ConvertToMacPath (item.GetMetadata ("CodesignItemPath"));
+				var pattern = PathUtils.ConvertToMacPath (item.GetMetadata ("FilePattern"));
+				var ownerPath = Path.Combine (Path.GetDirectoryName (AppBundleDir)!, PathUtils.ConvertToMacPath (owner));
+				var canonicalOwner = PathUtils.EnsureTrailingSlash (PathUtils.ResolveSymbolicLinks (Path.GetFullPath (ownerPath)));
+				if (!string.Equals (canonicalOwner, PathUtils.EnsureTrailingSlash (PathUtils.ResolveSymbolicLinks (appBundlePath)), StringComparison.Ordinal) && !ValidateCodesignPath (appBundlePath, ownerPath))
+					continue;
+				if (!IsRelativeCodesignPath (path) || (!string.IsNullOrEmpty (pattern) && !IsRelativeCodesignPath (pattern))) {
+					Log.LogError (MSBStrings.E7229, item.GetMetadata ("CodesignItemPath"), item.GetMetadata ("FilePattern"));
+					continue;
+				}
+
+				path = Path.Combine (ownerPath, path);
+				if (!ValidateCodesignPath (ownerPath, path))
+					continue;
+
+				IEnumerable<string> files;
+				if (string.IsNullOrEmpty (pattern)) {
+					if (!File.Exists (path)) {
+						Log.LogError (MSBStrings.E7230, path);
+						continue;
+					}
+					files = new [] { path };
+				} else {
+					if (!Directory.Exists (path)) {
+						Log.LogError (MSBStrings.E7231, path);
+						continue;
+					}
+					var glob = MSBuildGlob.Parse (Path.GetFullPath (path), pattern);
+					if (!glob.IsLegal) {
+						Log.LogError (MSBStrings.E7234, item.GetMetadata ("FilePattern"));
+						continue;
+					}
+					files = EnumerateCodesignFiles (ownerPath, path).Where (glob.IsMatch);
+				}
+
+				foreach (var file in files) {
+					MachOFile [] slices;
+					try {
+						slices = MachO.IsMachOFile (file) ? MachO.Read (file).ToArray () : [];
+					} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is Xamarin.Bundler.ProductException) {
+						Log.LogError (MSBStrings.E7235, file, ex.Message);
+						continue;
+					}
+					if (slices.Length == 0 || !slices.All (v => v.IsExecutable || v.IsDynamicLibrary || v.IsBundle)) {
+						if (string.IsNullOrEmpty (pattern))
+							Log.LogError (MSBStrings.E7232, file);
+						continue;
+					}
+
+					var canonicalPath = PathUtils.ResolveSymbolicLinks (Path.GetFullPath (file));
+					// Explicit files take precedence over directory discovery, even through symlinks.
+					if (!string.IsNullOrEmpty (pattern) && explicitPaths.Contains (canonicalPath))
+						continue;
+					if (string.IsNullOrEmpty (pattern))
+						explicitPaths.Add (canonicalPath);
+					var result = new TaskItem (canonicalPath);
+					item.CopyMetadataTo (result);
+					result.RemoveMetadata ("CodesignItemAppBundle");
+					result.RemoveMetadata ("CodesignItemPath");
+					result.RemoveMetadata ("FilePattern");
+					result.RemoveMetadata ("OriginalItemSpec");
+					var relativePath = PathUtils.AbsoluteToRelative (PathUtils.ResolveSymbolicLinks (appBundlePath), canonicalPath);
+					result.SetMetadata ("CodesignStampFile", Path.Combine (appBundleStampPath, relativePath));
+					output.Add (result);
+				}
+			}
+			return output;
+		}
+
+		static bool IsRelativeCodesignPath (string path)
+		{
+			return !string.IsNullOrEmpty (path) && !Path.IsPathRooted (path) && path.IndexOf (':') < 0 && !path.Split ('/').Contains ("..");
+		}
+
+		bool ValidateCodesignPath (string ownerPath, string path)
+		{
+			if (PathUtils.IsPathContained (ownerPath, path))
+				return true;
+			Log.LogError (MSBStrings.E7233, path, ownerPath);
+			return false;
+		}
+
+		IEnumerable<string> EnumerateCodesignFiles (string ownerPath, string directory)
+		{
+			foreach (var entry in Directory.EnumerateFileSystemEntries (directory)) {
+				if (!ValidateCodesignPath (ownerPath, entry))
+					continue;
+				if (Directory.Exists (entry)) {
+					if (PathUtils.IsSymlink (entry))
+						continue;
+					foreach (var file in EnumerateCodesignFiles (ownerPath, entry))
+						yield return file;
+				} else {
+					yield return entry;
+				}
+			}
 		}
 
 		string CodeSignatureRelativePath {

@@ -68,7 +68,9 @@ namespace Xamarin {
 		internal const uint FAT_CIGAM = 0xbebafeca; /* NXSwapLong(FAT_MAGIC) */
 
 		internal const uint MH_OBJECT = 0x1; /* relocatable object file */
+		internal const uint MH_EXECUTE = 0x2;
 		internal const uint MH_DYLIB = 0x6; /* dynamically bound shared library */
+		internal const uint MH_BUNDLE = 0x8;
 
 		// Values here match the corresponding values in the Abi enum.
 		public enum Architectures {
@@ -870,6 +872,14 @@ namespace Xamarin {
 
 		public bool IsDynamicLibrary {
 			get { return filetype == MachO.MH_DYLIB; }
+		}
+
+		public bool IsExecutable {
+			get => filetype == MachO.MH_EXECUTE;
+		}
+
+		public bool IsBundle {
+			get => filetype == MachO.MH_BUNDLE;
 		}
 
 		public bool IsObjectFile {

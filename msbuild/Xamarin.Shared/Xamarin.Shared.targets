@@ -2647,7 +2647,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="Items" ItemName="_CodesignAppExtensionItem" />
 		</ReadItemsFromFile>
 		<ItemGroup>
-			<_CodesignItems Include="@(_CodesignAppExtensionItem->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)%(Identity)')" />
+			<_CodesignItems Include="@(_CodesignAppExtensionItem->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)%(Identity)')">
+				<CodesignItemAppBundle Condition="'%(_CodesignAppExtensionItem.CodesignItemAppBundle)' != ''">$(_AppBundleName)$(AppBundleExtension)/%(_CodesignAppExtensionItem.BundleRelativePath)%(_CodesignAppExtensionItem.CodesignItemAppBundle)</CodesignItemAppBundle>
+			</_CodesignItems>
 		</ItemGroup>
 
 		<!-- Get app bundles to sign from watch apps -->
@@ -2662,7 +2664,29 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="Items" ItemName="_CodesignWatchItem" />
 		</ReadItemsFromFile>
 		<ItemGroup>
-			<_CodesignItems Include="@(_CodesignWatchItem->'$(_AppBundleName)$(AppBundleExtension)/Watch/%(Identity)')" />
+			<_CodesignItems Include="@(_CodesignWatchItem->'$(_AppBundleName)$(AppBundleExtension)/Watch/%(Identity)')">
+				<CodesignItemAppBundle Condition="'%(_CodesignWatchItem.CodesignItemAppBundle)' != ''">$(_AppBundleName)$(AppBundleExtension)/Watch/%(_CodesignWatchItem.CodesignItemAppBundle)</CodesignItemAppBundle>
+			</_CodesignItems>
+		</ItemGroup>
+
+		<ItemGroup>
+			<_CustomCodesignItem Include="@(CodesignItem)">
+				<CodesignItemPath>%(CodesignItem.Identity)</CodesignItemPath>
+				<CodesignItemAppBundle>$(_AppBundleName)$(AppBundleExtension)</CodesignItemAppBundle>
+				<CodesignAllocate Condition="'%(CodesignItem.CodesignAllocate)' == ''">$(_CodesignAllocate)</CodesignAllocate>
+				<CodesignDisableTimestamp Condition="'%(CodesignItem.CodesignDisableTimestamp)' == ''">false</CodesignDisableTimestamp>
+				<CodesignDisableTimestamp Condition="'%(CodesignItem.CodesignDisableTimestamp)' == '' And ('$(_SdkIsSimulator)' == 'true' Or '$(_BundlerDebug)' == 'true')">true</CodesignDisableTimestamp>
+				<CodesignExtraArgs Condition="'%(CodesignItem.CodesignExtraArgs)' == ''">$(CodesignExtraArgs)</CodesignExtraArgs>
+				<CodesignKeychain Condition="'%(CodesignItem.CodesignKeychain)' == ''">$(CodesignKeychain)</CodesignKeychain>
+				<CodesignResourceRules Condition="'%(CodesignItem.CodesignResourceRules)' == ''">$(_PreparedResourceRules)</CodesignResourceRules>
+				<CodesignSigningKey Condition="'%(CodesignItem.CodesignSigningKey)' == ''">$(_CodeSigningKey)</CodesignSigningKey>
+				<CodesignUseHardenedRuntime Condition="'%(CodesignItem.CodesignUseHardenedRuntime)' == ''">$(UseHardenedRuntime)</CodesignUseHardenedRuntime>
+				<CodesignUseSecureTimestamp Condition="'%(CodesignItem.CodesignUseSecureTimestamp)' == ''">$(UseHardenedRuntime)</CodesignUseSecureTimestamp>
+				<SourceProjectPath>$(MSBuildProjectDirectory)</SourceProjectPath>
+				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' != 'true'">$(_AppPlugInsRelativePath)</BundleRelativePath>
+				<BundleRelativePath Condition="'$(IsAppExtension)' == 'true' and '$(IsXPCService)' == 'true'">$(_AppXpcServicesRelativePath)</BundleRelativePath>
+			</_CustomCodesignItem>
+			<_CodesignItems Include="@(_CustomCodesignItem->'$(_AppBundleName)$(AppBundleExtension)/%(Identity)')" />
 		</ItemGroup>
 
 		<!-- Add any user-specified bundles -->
@@ -2792,6 +2816,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 			<Output TaskParameter="OutputCodesignItems" ItemName="_ComputedCodesignItems" />
 		</ComputeCodesignItems>
+
+		<ItemGroup>
+			<FileWrites Include="@(_ComputedCodesignItems->'%(CodesignStampFile)')" />
+		</ItemGroup>
 
 		<Codesign
 			SessionId="$(BuildSessionId)"

@@ -401,13 +401,20 @@ the library into the app or configure runtime library resolution. Use
 [NativeReference](#nativereference) to link the static library and configure
 runtime resolution as needed.
 
-The default entry can also be removed:
+The default entry can also be removed. Since the default is added by the
+Apple SDK after project-level items are evaluated, remove it in a target
+that runs before `_ComputeLinkerInputs`:
 
 ```xml
-<ItemGroup>
-    <PInvokeStaticLibraryTargets Remove="__Internal" />
-</ItemGroup>
+<Target Name="RemoveInternalPInvokeTarget" BeforeTargets="_ComputeLinkerInputs">
+    <ItemGroup>
+        <PInvokeStaticLibraryTargets Remove="__Internal" />
+    </ItemGroup>
+</Target>
 ```
+
+This runs before the library names are captured in the linker options and,
+for NativeAOT builds, before they are added to `DirectPInvoke`.
 
 For NativeAOT builds, P/Invokes to these libraries are direct P/Invokes.
 

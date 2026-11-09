@@ -23,7 +23,11 @@
 	<ItemGroup Condition="'$(PreserveRemappedPInvokes)' == 'true'">
 		<PInvokeStaticLibraryTargets Include="RemapMe;RemapMe2" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(RemoveInternalPInvokeTarget)' == 'true'">
-		<PInvokeStaticLibraryTargets Remove="__Internal" />
-	</ItemGroup>
+	<Target Name="RemoveInternalPInvokeTarget"
+			BeforeTargets="_ComputeLinkerInputs"
+			Condition="'$(RemoveInternalPInvokeTarget)' == 'true'">
+		<ItemGroup>
+			<PInvokeStaticLibraryTargets Remove="__Internal" />
+		</ItemGroup>
+	</Target>
 </Project>

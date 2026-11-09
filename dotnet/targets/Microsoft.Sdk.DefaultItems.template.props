@@ -17,10 +17,6 @@
 
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<ItemGroup Condition="'$(TargetPlatformIdentifier)' == '@PLATFORM@' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '@TARGET_FRAMEWORK_VERSION@')) And '$(CurrentHash)' == '@CURRENT_HASH_LONG@'">
-		<PInvokeStaticLibraryTargets Include="__Internal" />
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(EnableDefault@PLATFORM@Items)' == 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '@TARGET_FRAMEWORK_VERSION@')) And '$(CurrentHash)' == '@CURRENT_HASH_LONG@'">
 		<!-- Default plist file inclusion -->
 		<None Include="*.plist">

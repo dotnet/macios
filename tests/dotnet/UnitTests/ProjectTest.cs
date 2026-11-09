@@ -718,6 +718,12 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifier);
 			DotNet.AssertBuild (project_path, properties);
 
+			if (project == "NativeDynamicLibraryReferencesApp") {
+				AssertDynamicLibraryId (platform, appPath, GetRelativeDylibDirectory (platform), "libframework.dylib");
+			} else if (project == "NativeMergeableDylibReferencesApp") {
+				AssertDynamicLibraryId (platform, appPath, GetRelativeDylibDirectory (platform), "libMergeableFramework.dylib");
+			}
+
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");

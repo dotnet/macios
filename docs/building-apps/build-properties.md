@@ -157,6 +157,9 @@ If a package (.ipa) should be created for the app bundle at the end of the build
 
 Only applicable to iOS and tvOS projects.
 
+Setting `BuildIpa=true` also creates an IPA when using `dotnet build`, without
+requiring `dotnet publish`.
+
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 
 Created IPA packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.

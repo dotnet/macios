@@ -459,7 +459,27 @@ namespace Xamarin.Tests {
 			PublishTestImpl (platform, runtimeIdentifiers);
 		}
 
-		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Build;Publish")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "Build;Publish")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "Build;Publish")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", "Build;Publish")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", "Build;Publish")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "Build;Publish")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Publish;Build")]
+		public void PublishTargetOrderTest (ApplePlatform platform, string runtimeIdentifiers, string target)
+		{
+			PublishTestImpl (platform, runtimeIdentifiers, target);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void PublishAfterBuildOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			PublishTestImpl (platform, runtimeIdentifiers, "Build;Publish", timeout: TimeSpan.FromMinutes (25));
+		}
+
+		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers, string? target = null, TimeSpan? timeout = null)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -491,7 +511,9 @@ namespace Xamarin.Tests {
 			properties ["UseMonoRuntime"] = "false";
 			properties [pathVariable] = pkgPath;
 
-			var result = DotNet.AssertPublish (project_path, properties);
+			var result = target is null
+				? DotNet.AssertPublish (project_path, properties)
+				: DotNet.AssertBuild (project_path, properties, target: target, timeout: timeout);
 
 			Assert.That (pkgPath, Does.Exist, "ipa/pkg creation");
 			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, packageExtension, isDirectory: false);

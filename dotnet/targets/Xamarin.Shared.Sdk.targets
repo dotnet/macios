@@ -351,7 +351,7 @@
 		<RemoveDir
 			SessionId="$(BuildSessionId)"
 			Condition="'@(_AppBundleBuildProperties)' != '@(_PreviousAppBundleBuildProperties)'"
-			Directories="$(_AppBundlePath);$(DeviceSpecificIntermediateOutputPath)strip;$(DeviceSpecificIntermediateOutputPath)codesign"
+			Directories="$(_AppBundlePath);$(DeviceSpecificIntermediateOutputPath)strip;$(DeviceSpecificIntermediateOutputPath)codesign;$(DeviceSpecificIntermediateOutputPath)mergeable-library-metadata"
 		/>
 		<!-- These copies use stamps outside the app bundle, so missing bundle files do not invalidate them. -->
 		<Delete

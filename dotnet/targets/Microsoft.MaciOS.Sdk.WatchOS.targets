@@ -82,7 +82,7 @@
 		BeforeTargets="_ValidateAppBundle">
 		<PrepareWatchOSApp
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And ('@(AdditionalWatchOSApp)' != '' Or '@(WatchOSAppSigning)' != '' Or Exists('$(_WatchOSIntermediateOutputPath)enabled.stamp'))"
 			AppBundleDir="$(AppBundleDir)"
 			Apps="@(_NativeWatchOSApp)"
 			ArtifactDirectory="$(_NativeWatchOSArtifactDirectory)"
@@ -105,6 +105,16 @@
 			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
 			<Output TaskParameter="WatchKitSupportPath" PropertyName="_NativeWatchKitSupportPath" />
 		</PrepareWatchOSApp>
+		<WriteLinesToFile
+			Condition="'$(IsMacEnabled)' == 'true' And '@(AdditionalWatchOSApp)' != ''"
+			File="$(_WatchOSIntermediateOutputPath)enabled.stamp"
+			Lines="@(AdditionalWatchOSApp)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true" />
+		<Delete Files="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'@(AdditionalWatchOSApp)' == ''" />
+		<ItemGroup>
+			<FileWrites Include="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'@(AdditionalWatchOSApp)' != ''" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="CreateWatchOSAppZip" DependsOnTargets="_ValidateWatchOSZipProperties;_DetectSdkLocations">

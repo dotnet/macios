@@ -156,6 +156,9 @@ namespace Xamarin.MacDev.Tasks {
 				var stale = Path.Combine (embedded, "stale.txt");
 				File.WriteAllText (stale, "");
 				ExecuteTask (prepare);
+				Assert.That (File.Exists (stale), Is.True, rid + ": unchanged input preserves the staged bundle");
+				File.SetLastWriteTimeUtc (create.ZipPath, File.GetLastWriteTimeUtc (create.ZipPath).AddSeconds (1));
+				ExecuteTask (prepare);
 				Assert.That (File.Exists (stale), Is.False, rid + ": stale content removed");
 				Assert.That (File.Exists (Path.Combine (create.IntermediateOutputPath, rid, "artifact", "WatchApp.app", "WatchApp")), Is.True, rid + ": source preserved");
 				if (rid.StartsWith ("iossimulator-", StringComparison.Ordinal)) {
@@ -176,6 +179,9 @@ namespace Xamarin.MacDev.Tasks {
 					var stamp = prepare.CodesignBundles.Single ().GetMetadata ("CodesignStampFile");
 					Assert.That (File.Exists (stamp), Is.True, rid + ": signing stamp");
 					Assert.That (Directory.Exists (Path.Combine (embedded, "_CodeSignature")), Is.True, rid + ": signed bundle");
+					ExecuteTask (prepare);
+					Assert.That (File.Exists (stamp), Is.True, rid + ": unchanged input preserves signing");
+					File.SetLastWriteTimeUtc (create.ZipPath, File.GetLastWriteTimeUtc (create.ZipPath).AddSeconds (1));
 					ExecuteTask (prepare);
 					Assert.That (File.Exists (stamp), Is.False, rid + ": replacing the signed bundle invalidates signing");
 					Assert.That (Directory.Exists (Path.Combine (create.IntermediateOutputPath, rid, "artifact", "WatchApp.app", "_CodeSignature")), Is.False, rid + ": source remains unsigned");

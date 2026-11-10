@@ -158,7 +158,10 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			return CreateItemsForAllFilesRecursively (Path.GetDirectoryName (ProjectPath) ?? ".")
+			var directory = Path.GetDirectoryName (ProjectPath);
+			if (string.IsNullOrEmpty (directory))
+				directory = ".";
+			return CreateItemsForAllFilesRecursively (directory)
 				.Where (item => !InputExcludeDirectories.Concat (new [] { OutputPath }).Any (directory => !string.IsNullOrEmpty (directory) && PathUtils.IsPathContained (directory, item.ItemSpec)));
 		}
 

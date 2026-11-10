@@ -193,9 +193,9 @@ namespace Xamarin.Tests {
 			manifest.Remove ("CFBundleIdentifier");
 			manifest.SetString ("CFBundleVersion", "1");
 			manifest.Save (manifestPath);
-			var nativeProject = Path.Combine (testDir, "Native watch project");
+			var nativeProject = testDir;
 			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, "WatchApp"), nativeProject);
-			var item = "<ItemGroup><AdditionalWatchOSApp Include=\"Native watch project/WatchApp.xcodeproj\" SchemeName=\"WatchApp\" /></ItemGroup>";
+			var item = "<ItemGroup><AdditionalWatchOSApp Include=\"WatchApp.xcodeproj\" SchemeName=\"WatchApp\" /></ItemGroup>";
 			File.WriteAllText (project, File.ReadAllText (project).Replace ("</Project>", item + "</Project>"));
 			var properties = GetDefaultProperties (rid, includeRemoteProperties: windows);
 			properties ["ApplicationId"] = "com.xamarin.NativeWatchApp";
@@ -219,11 +219,20 @@ namespace Xamarin.Tests {
 			var result = DotNet.AssertBuild (project, properties);
 			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_PrepareNativeWatchOSApp", "initial watch build");
 			AssertWatchApp (true);
+			var signaturePath = Path.Combine (GetObjDir (project, platform, rid, "Debug"), "watch-app", "signing", "com.xamarin.NativeWatchApp.watchkitapp.stamp");
+			if (!windows)
+				Assert.That (signaturePath, Does.Exist, "watch signing stamp");
+			var signatureTimestamp = windows ? DateTime.MinValue : File.GetLastWriteTimeUtc (signaturePath);
 			DotNet.AssertBuild (project, properties);
 			AssertWatchApp (true);
-			File.AppendAllText (Path.Combine (nativeProject, "WatchApp.swift"), "\n");
+			if (!windows)
+				Assert.That (File.GetLastWriteTimeUtc (signaturePath), Is.EqualTo (signatureTimestamp), "unchanged watch app is not signed again");
+			var watchSource = Path.Combine (nativeProject, "WatchApp.swift");
+			File.WriteAllText (watchSource, File.ReadAllText (watchSource).Replace ("Native watch app", "Updated native watch app"));
 			DotNet.AssertBuild (project, properties);
 			AssertWatchApp (true);
+			if (!windows)
+				Assert.That (File.GetLastWriteTimeUtc (signaturePath), Is.GreaterThan (signatureTimestamp), "changed watch app is signed again");
 			DotNet.AssertBuild (project, properties, target: "Clean");
 			DotNet.AssertBuild (project, properties);
 			AssertWatchApp (true);

@@ -123,20 +123,27 @@ namespace Xamarin.MacDev.Tasks {
 			var item = Apps [0];
 			var source = item.ItemSpec;
 			var artifact = ArtifactDirectory;
+			var sourceStamp = "";
 			if (source.EndsWith (".zip", StringComparison.OrdinalIgnoreCase)) {
-				artifact = Path.Combine (IntermediateOutputPath, "extracted");
-				// Replace rather than merge: a new ZIP may have removed files.
-				if (Directory.Exists (artifact))
-					Directory.Delete (artifact, true);
+				sourceStamp = GetSourceStamp (source);
 				using var zip = ZipFile.OpenRead (source);
 				if (!TrySelectZipResource (zip, RuntimeIdentifier, out var resource)) {
 					Log.LogError (7210, null, MSBStrings.E7210, source, RuntimeIdentifier);
 					return false;
 				}
-				var files = new List<string> ();
-				if (!CompressionHelper.TryDecompress (this, source, resource, artifact, files, cancellation.Token, out var extracted))
-					return false;
-				artifact = extracted;
+				var extractionRoot = Path.Combine (IntermediateOutputPath, "extracted");
+				var extractionStamp = Path.Combine (IntermediateOutputPath, "extracted-input.txt");
+				artifact = Path.Combine (extractionRoot, resource);
+				if (!Directory.Exists (artifact) || !File.Exists (extractionStamp) || File.ReadAllText (extractionStamp) != sourceStamp) {
+					File.Delete (extractionStamp);
+					// Replace rather than merge: a new ZIP may have removed files.
+					if (Directory.Exists (extractionRoot))
+						Directory.Delete (extractionRoot, true);
+					var files = new List<string> ();
+					if (!CompressionHelper.TryDecompress (this, source, resource, extractionRoot, files, cancellation.Token, out artifact))
+						return false;
+					File.WriteAllText (extractionStamp, sourceStamp);
+				}
 				var apps = Directory.GetDirectories (artifact, "*.app");
 				if (apps.Length != 1) {
 					Log.LogError (7207, null, MSBStrings.E7207, source);
@@ -167,17 +174,23 @@ namespace Xamarin.MacDev.Tasks {
 						Directory.Delete (oldPath, true);
 				}
 			}
-			if (Directory.Exists (destination))
-				Directory.Delete (destination, true);
-			if (ExecuteAsync ("/usr/bin/ditto", new [] { source, destination }, cancellationToken: cancellation.Token).Result.ExitCode != 0)
-				return false;
+			if (sourceStamp.Length == 0)
+				sourceStamp = GetSourceStamp (source);
+			var inputStamp = Path.Combine (IntermediateOutputPath, "embedded-input.txt");
+			if (!Directory.Exists (destination) || !File.Exists (inputStamp) || File.ReadAllText (inputStamp) != sourceStamp) {
+				File.Delete (inputStamp);
+				if (Directory.Exists (destination))
+					Directory.Delete (destination, true);
+				if (ExecuteAsync ("/usr/bin/ditto", new [] { source, destination }, cancellationToken: cancellation.Token).Result.ExitCode != 0)
+					return false;
+				var signingStamps = Path.Combine (IntermediateOutputPath, "signing");
+				if (Directory.Exists (signingStamps))
+					Directory.Delete (signingStamps, true);
+			}
 			if (!ValidateBundlePaths (destination)) {
 				Log.LogError (7202, destination, MSBStrings.E7202);
 				return false;
 			}
-			var signingStamps = Path.Combine (IntermediateOutputPath, "signing");
-			if (Directory.Exists (signingStamps))
-				Directory.Delete (signingStamps, true);
 			File.WriteAllText (receipt, nameOfApp);
 
 			var bundles = new List<ITaskItem> ();
@@ -312,10 +325,24 @@ namespace Xamarin.MacDev.Tasks {
 			var symbolInput = item.GetMetadata ("DSymPath");
 			if (symbolInput.Length > 0 && ExecuteAsync ("/usr/bin/ditto", new [] { symbolInput, Path.Combine (IntermediateOutputPath, "dSYMs") }, cancellationToken: cancellation.Token).Result.ExitCode != 0)
 				return false;
+			if (Log.HasLoggedErrors)
+				return false;
+			if (!File.Exists (inputStamp) || File.ReadAllText (inputStamp) != sourceStamp)
+				File.WriteAllText (inputStamp, sourceStamp);
 			CodesignBundles = bundles.ToArray ();
 			FileWrites = Directory.GetFiles (IntermediateOutputPath, "*", SearchOption.AllDirectories)
 				.Concat (Directory.GetFiles (destination, "*", SearchOption.AllDirectories)).Select (v => new TaskItem (v)).ToArray ();
 			return !Log.HasLoggedErrors;
+		}
+
+		string GetSourceStamp (string source)
+		{
+			var files = File.Exists (source) ? new [] { source } : Directory.GetFiles (source, "*", SearchOption.AllDirectories);
+			return Path.GetFullPath (source) + "\n" + RuntimeIdentifier + "\n" + string.Join ("\n", files.OrderBy (v => v, StringComparer.Ordinal).Select (path => {
+				var file = new FileInfo (path);
+				var link = (file.Attributes & FileAttributes.ReparsePoint) != 0 ? PathUtils.GetSymlinkTarget (path) : "";
+				return path + "\t" + file.Length + "\t" + file.LastWriteTimeUtc.Ticks + "\t" + link;
+			}));
 		}
 
 		static bool ValidateBundlePaths (string root)

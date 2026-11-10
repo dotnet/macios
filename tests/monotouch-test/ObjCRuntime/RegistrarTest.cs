@@ -56,6 +56,46 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[Test]
+		public void ClosedGenericSignatures ()
+		{
+			if (!Runtime.DynamicRegistrationSupported)
+				Assert.Ignore ("This test requires support for dynamic registration.");
+
+			using var obj = new ClosedGenericSignatureClass ();
+			var invalid = new (Delegate Method, string Selector, string ArgumentType) [] {
+				(new Func<ClosedGenericWrapper<DayOfWeek>> (obj.GetEnum), "getEnum", "System.DayOfWeek"),
+				(new Action<ClosedGenericWrapper<int>> (obj.SetInt), "setInt:", "System.Int32"),
+				(new Func<ClosedGenericWrapper<object>> (obj.GetObject), "getObject", "System.Object"),
+				(new Func<ClosedGenericWrapper<ClosedGenericWrapper<int>>> (obj.GetNested), "getNested", "System.Int32"),
+			};
+			foreach (var entry in invalid) {
+				var exception = Assert.Throws<RuntimeException> (() => Runtime.ConnectMethod (entry.Method.Method, new Selector (entry.Selector)), entry.Selector);
+				Assert.That (exception.Code, Is.EqualTo (4167), entry.Selector);
+				Assert.That (exception.Message, Does.Contain ($"doesn't implement INativeObject ({entry.ArgumentType})"), entry.Selector);
+			}
+
+			var valid = new Func<ClosedGenericWrapper<NSObject>> (obj.GetNativeObject);
+			Assert.DoesNotThrow (() => Runtime.ConnectMethod (valid.Method, new Selector ("getNativeObject")), "Native-object argument");
+			var specialized = new Func<ClosedEnumWrapper> (obj.GetSpecialized);
+			Assert.DoesNotThrow (() => Runtime.ConnectMethod (specialized.Method, new Selector ("getSpecialized")), "Non-generic wrapper");
+		}
+
+		class ClosedGenericWrapper<T> : NSObject {
+		}
+
+		class ClosedEnumWrapper : ClosedGenericWrapper<DayOfWeek> {
+		}
+
+		class ClosedGenericSignatureClass : NSObject {
+			public ClosedGenericWrapper<DayOfWeek> GetEnum () => null;
+			public void SetInt (ClosedGenericWrapper<int> value) { }
+			public ClosedGenericWrapper<object> GetObject () => null;
+			public ClosedGenericWrapper<ClosedGenericWrapper<int>> GetNested () => null;
+			public ClosedGenericWrapper<NSObject> GetNativeObject () => null;
+			public ClosedEnumWrapper GetSpecialized () => null;
+		}
+
+		[Test]
 		public void EventTestCustomType ()
 		{
 			var earthDestroyed = 0;

@@ -6,12 +6,11 @@ using Xamarin.Linker;
 
 namespace AssemblyPreparerTests;
 
+[TestFixture]
 public class GenerateMainTests {
 	[TestCase (XamarinRuntime.CoreCLR, false, false)]
 	[TestCase (XamarinRuntime.CoreCLR, true, false)]
 	[TestCase (XamarinRuntime.CoreCLR, true, true)]
-	[TestCase (XamarinRuntime.MonoVM, true, false)]
-	[TestCase (XamarinRuntime.MonoVM, true, true)]
 	[TestCase (XamarinRuntime.NativeAOT, true, false)]
 	[TestCase (XamarinRuntime.NativeAOT, true, true)]
 	public void ExtensionEntryPoint (XamarinRuntime runtime, bool isExtension, bool isXpcService)

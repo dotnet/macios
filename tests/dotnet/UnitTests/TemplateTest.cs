@@ -244,6 +244,9 @@ namespace Xamarin.Tests {
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
+			if (info.Template == "macos-xpc-service")
+				ExecuteXpcServiceTemplate (tmpDir, outputDir, properties);
+
 			if (info.Execute) {
 				var platform = info.Platform;
 				var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
@@ -263,6 +266,68 @@ namespace Xamarin.Tests {
 				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
+			}
+		}
+
+		void ExecuteXpcServiceTemplate (string directory, string serviceDirectory, Dictionary<string, string> properties)
+		{
+			var hostDirectory = Path.Combine (directory, "Host");
+			Directory.CreateDirectory (hostDirectory);
+			var project = Path.Combine (hostDirectory, "Host.csproj");
+			File.WriteAllText (project, """
+				<Project Sdk="Microsoft.NET.Sdk">
+				  <PropertyGroup>
+				    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)-macos</TargetFramework>
+				    <OutputType>Exe</OutputType>
+				    <ApplicationId>com.companyname.macOSApp1</ApplicationId>
+				    <Registrar>trimmable-static</Registrar>
+				    <ImplicitUsings>true</ImplicitUsings>
+				  </PropertyGroup>
+				  <ItemGroup>
+				    <ProjectReference Include="../macos-xpc-service/Contracts/Contracts.csproj" />
+				    <ProjectReference Include="../macos-xpc-service/macos-xpc-service.csproj" IsAppExtension="true" />
+				  </ItemGroup>
+				</Project>
+				""");
+			File.WriteAllText (Path.Combine (hostDirectory, "Main.cs"), """
+				using Foundation;
+				using macos_xpc_service;
+
+				for (var kind = 0; kind < 3; kind++) {
+					using var pool = new NSAutoreleasePool ();
+					using var connection = new NSXpcConnection ("com.companyname.macOSApp1.xpcservice");
+					var completion = new TaskCompletionSource<string> (TaskCreationOptions.RunContinuationsAsynchronously);
+					connection.RemoteInterface = NSXpcInterface.Create (typeof (IServiceProtocol));
+					connection.InterruptionHandler = () => completion.TrySetException (new IOException ("Service interrupted."));
+					connection.InvalidationHandler = () => completion.TrySetException (new IOException ("Connection invalidated."));
+					connection.Activate ();
+					try {
+						using var proxy = kind switch {
+							0 => connection.CreateRemoteObjectProxy<IServiceProtocol> (),
+							1 => connection.CreateRemoteObjectProxy<IServiceProtocol> (error => completion.TrySetException (new NSErrorException (error))),
+							_ => connection.CreateSynchronousRemoteObjectProxy<IServiceProtocol> (error => completion.TrySetException (new NSErrorException (error))),
+						};
+						proxy.Echo ("XPC reply", reply => completion.TrySetResult (reply));
+						var response = completion.Task.WaitAsync (TimeSpan.FromSeconds (10)).GetAwaiter ().GetResult ();
+						if (response != "XPC reply")
+							throw new InvalidDataException ($"Unexpected reply: {response}");
+					} finally {
+						connection.Invalidate ();
+					}
+				}
+				Console.WriteLine ("All XPC proxies replied and were disposed.");
+				""");
+			DotNet.AssertBuild (project, properties);
+			var linkItems = Directory.GetFiles (serviceDirectory, "_MainLinkWith.items", SearchOption.AllDirectories);
+			Assert.That (linkItems, Is.Not.Empty, "Native link inputs");
+			foreach (var file in linkItems)
+				Assert.That (File.ReadAllText (file), Does.Not.Contain ("libextension"), "XPC services must not link NSExtensionMain");
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (ApplePlatform.MacOSX);
+			if (CanExecute (ApplePlatform.MacOSX, runtimeIdentifiers)) {
+				var executable = GetNativeExecutable (ApplePlatform.MacOSX, GetAppPath (project, ApplePlatform.MacOSX, runtimeIdentifiers));
+				var exitCode = ExecutionHelper.Execute (executable, [], out string? output, TimeSpan.FromSeconds (45));
+				Assert.That (exitCode, Is.Zero, output);
+				Assert.That (output, Does.Contain ("All XPC proxies replied and were disposed."));
 			}
 		}
 

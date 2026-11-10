@@ -115,7 +115,7 @@ namespace Xamarin {
 			string? extensionlib = null;
 			if (app.IsTVExtension) {
 				extensionlib = "libtvextension-dotnet-coreclr.a";
-			} else if (app.IsExtension) {
+			} else if (app.IsExtension && !app.IsXpcService) {
 				extensionlib = "libextension-dotnet-coreclr.a";
 			}
 			if (!string.IsNullOrEmpty (extensionlib)) {

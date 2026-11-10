@@ -24,7 +24,7 @@
       "applyFileRenamesToManualInstructions": true,
       "manualInstructions": [
         {
-          "text": "Add a ProjectReference to macOSXpcService1.csproj with IsAppExtension=true in the containing macOS app. Reference Contracts/Contracts.csproj from the host as well, and set Registrar=trimmable-static in the host project so XPC reply block signatures are available. Connect using NSXpcConnection with the service's ApplicationId. The service is embedded in Contents/XPCServices, not PlugIns."
+          "text": "Add these references to the containing macOS app, adjusting the paths:\n\n<ItemGroup>\n  <ProjectReference Include=\"macOSXpcService1.csproj\" IsAppExtension=\"true\" />\n  <ProjectReference Include=\"Contracts/Contracts.csproj\" />\n</ItemGroup>\n\nSet Registrar=trimmable-static in the host project so XPC reply block signatures are available.\nConnect using NSXpcConnection with the service's ApplicationId.\nThe service is embedded in Contents/XPCServices, not PlugIns."
         }
       ]
     }

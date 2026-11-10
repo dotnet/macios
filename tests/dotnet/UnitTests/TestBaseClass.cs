@@ -428,8 +428,11 @@ namespace Xamarin.Tests {
 		{
 			const string executablePathPrefix = "@executable_path/";
 			if (library.StartsWith (executablePathPrefix, StringComparison.Ordinal)) {
+				var executableDirectory = Path.GetDirectoryName (appExecutable);
+				if (executableDirectory is null)
+					throw new InvalidOperationException ($"Unable to compute the directory of '{appExecutable}'");
 				var relativeToExecutable = library.Substring (executablePathPrefix.Length);
-				var resolvedPath = Path.GetFullPath (Path.Combine (Path.GetDirectoryName (appExecutable)!, relativeToExecutable));
+				var resolvedPath = Path.GetFullPath (Path.Combine (executableDirectory, relativeToExecutable));
 				return File.Exists (resolvedPath);
 			}
 

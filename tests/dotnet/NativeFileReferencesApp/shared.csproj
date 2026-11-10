@@ -24,7 +24,7 @@
 		<PInvokeStaticLibraryTargets Include="RemapMe;RemapMe2" />
 	</ItemGroup>
 	<Target Name="RemoveInternalPInvokeTarget"
-			BeforeTargets="_ComputeLinkerInputs"
+			BeforeTargets="PrepareForBuild"
 			Condition="'$(RemoveInternalPInvokeTarget)' == 'true'">
 		<ItemGroup>
 			<PInvokeStaticLibraryTargets Remove="__Internal" />

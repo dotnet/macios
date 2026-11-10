@@ -403,10 +403,10 @@ runtime resolution as needed.
 
 The default entry can also be removed. Since the default is added by the
 Apple SDK after project-level items are evaluated, remove it in a target
-that runs before `_ComputeLinkerInputs`:
+that runs before the public MSBuild target `PrepareForBuild`:
 
 ```xml
-<Target Name="RemoveInternalPInvokeTarget" BeforeTargets="_ComputeLinkerInputs">
+<Target Name="RemoveInternalPInvokeTarget" BeforeTargets="PrepareForBuild">
     <ItemGroup>
         <PInvokeStaticLibraryTargets Remove="__Internal" />
     </ItemGroup>

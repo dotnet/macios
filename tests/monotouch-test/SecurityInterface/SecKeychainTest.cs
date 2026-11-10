@@ -6,6 +6,10 @@ using System.IO;
 using NUnit.Framework;
 using Security;
 
+#if XAMCORE_5_0
+using SecKeychain = Security.SecKeychain2;
+#endif
+
 namespace MonoTouchFixtures.SecurityInterface {
 
 	[TestFixture]

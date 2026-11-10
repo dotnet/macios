@@ -8,7 +8,7 @@
     <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
     <IsAppExtension>true</IsAppExtension>
     <IsXPCService>true</IsXPCService>
-    <Registrar>static</Registrar>
+    <Registrar>trimmable-static</Registrar>
     <ApplicationId>com.companyname.macOSApp1.xpcservice</ApplicationId>
   </PropertyGroup>
   <ItemGroup>

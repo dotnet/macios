@@ -944,10 +944,10 @@ The service is built as a `.xpc` bundle and embedded in the containing app's
 `Contents/XPCServices` directory. Reference it from the containing app with a
 `ProjectReference` whose `IsAppExtension` metadata is `true`.
 
-Use the static registrar (`Registrar=static`) in both the service and its host
-when their XPC protocol contains reply blocks. Declare reply blocks with named
-delegates instead of generic delegates so their native parameter types are
-preserved.
+Use the trimmable static registrar (`Registrar=trimmable-static`) in both the
+service and its host when their XPC protocol contains reply blocks. Declare reply
+blocks with named delegates instead of generic delegates so their native
+parameter types are preserved.
 
 Only applicable to macOS projects.
 

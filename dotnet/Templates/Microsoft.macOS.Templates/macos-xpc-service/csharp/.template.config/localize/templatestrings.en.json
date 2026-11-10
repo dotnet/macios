@@ -3,7 +3,7 @@
   "name": "macOS XPC Service",
   "description": "A project for creating a bundled XPC service for a .NET macOS application",
   "postActions/addProjectReference/description": "Reference the service and its protocol from the containing macOS app",
-  "postActions/addProjectReference/manualInstructions/default/text": "Add a ProjectReference to macOSXpcService1.csproj with IsAppExtension=true in the containing macOS app. Reference Contracts/Contracts.csproj from the host as well, and set Registrar=static in the host project so XPC reply block signatures are available. Connect using NSXpcConnection with the service's ApplicationId. The service is embedded in Contents/XPCServices, not PlugIns.",
+  "postActions/addProjectReference/manualInstructions/default/text": "Add a ProjectReference to macOSXpcService1.csproj with IsAppExtension=true in the containing macOS app. Reference Contracts/Contracts.csproj from the host as well, and set Registrar=trimmable-static in the host project so XPC reply block signatures are available. Connect using NSXpcConnection with the service's ApplicationId. The service is embedded in Contents/XPCServices, not PlugIns.",
   "symbols/bundleId/displayName": "Bundle ID",
   "symbols/bundleId/description": "The bundle identifier of the containing macOS application",
   "symbols/minOSVersion/displayName": "Minimum OS version",

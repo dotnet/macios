@@ -85,6 +85,8 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (task, expectedErrorCount: 1);
 			Assert.That (task.ResolvedAppExtensionReferences, Is.Empty);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Contain (path), "Error identifies the manifest");
+			if (kind != "missing" && kind != "unreadable")
+				Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo ("MT7236"), "Error code");
 		}
 
 		[TestCase (ApplePlatform.iOS)]

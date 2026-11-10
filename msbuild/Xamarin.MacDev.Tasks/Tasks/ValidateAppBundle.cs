@@ -74,9 +74,9 @@ namespace Xamarin.MacDev.Tasks {
 			var extensionKit = plist.Get<PDictionary> ("EXAppExtensionAttributes");
 			if (extensionKit is not null) {
 				if (extension is not null) {
-					Log.LogError (MSBStrings.InvalidAppExtensionManifest, info);
+					Log.LogError (7236, info, MSBStrings.E7236, info);
 				} else if (string.IsNullOrEmpty (extensionKit.Get<PString> ("EXExtensionPointIdentifier")?.Value)) {
-					Log.LogError (MSBStrings.MissingExtensionKitPointIdentifier, info);
+					Log.LogError (7237, info, MSBStrings.E7237, info);
 				}
 				return;
 			}

@@ -1825,11 +1825,11 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
     </data>
-    <data name="InvalidAppExtensionManifest" xml:space="preserve">
+    <data name="E7236" xml:space="preserve">
         <value>The app extension manifest '{0}' must contain exactly one of the NSExtension and EXAppExtensionAttributes dictionaries.</value>
         <comment>{0} - The path to the extension's Info.plist.</comment>
     </data>
-    <data name="MissingExtensionKitPointIdentifier" xml:space="preserve">
+    <data name="E7237" xml:space="preserve">
         <value>The app extension manifest '{0}' must contain an EXExtensionPointIdentifier value in its EXAppExtensionAttributes dictionary.</value>
         <comment>{0} - The path to the extension's Info.plist.</comment>
     </data>

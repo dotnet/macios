@@ -50,8 +50,10 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkIsSimulator = true;
 			ExecuteTask (task, expectedErrors);
 			Assert.That (Engine.Logger.WarningsEvents, Is.Empty, "ExtensionKit identifiers do not use the legacy allowlist");
-			if (expectedErrors > 0)
+			if (expectedErrors > 0) {
 				Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Contain (Path.Combine (modern, "Info.plist")), "Error identifies the manifest");
+				Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo (kind == "both" ? "MT7236" : "MT7237"), "Error code");
+			}
 		}
 
 		static PDictionary CreateManifest (string identifier, string executable)

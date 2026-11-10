@@ -27,6 +27,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			// Remote builds need the built manifest and payload files from the Mac, not Windows placeholders.
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely (out var _, runner => runner.FixReferencedItems (this, AppExtensionReferences));
 
@@ -47,7 +48,7 @@ namespace Xamarin.MacDev.Tasks {
 					var legacy = plist.Get<PDictionary> ("NSExtension");
 					var extensionKit = plist.Get<PDictionary> ("EXAppExtensionAttributes");
 					if ((legacy is null) == (extensionKit is null)) {
-						Log.LogError (MSBStrings.InvalidAppExtensionManifest, manifestPath);
+						Log.LogError (7236, manifestPath, MSBStrings.E7236, manifestPath);
 						continue;
 					}
 

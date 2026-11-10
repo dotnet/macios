@@ -4,6 +4,13 @@ Templating Engine: https://github.com/dotnet/templating
 
 ## Background download extension
 
+This template requires the SDK change for
+[#19861](https://github.com/dotnet/macios/issues/19861) (currently local commit
+`2d13d0ee2466`) to copy ExtensionKit extensions into `Extensions` and validate
+their manifests.
+That change must land before this template is released. Older SDKs put these
+extensions in `PlugIns`, which prevents installation.
+
 `ios-background-download-extension` creates a Background Assets downloader
 extension for iOS 26.0 or later. It works with asset packs that you host on your own
 server. The system manages the downloads:

@@ -75,9 +75,15 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase ("**/*", new [] { "ffmpeg", "libcodec.dylib", "plugin.so", "sub/ffprobe" })]
 		[TestCase ("**/ff*", new [] { "ffmpeg", "sub/ffprobe" })]
 		[TestCase ("sub/ffprob?", new [] { "sub/ffprobe" })]
-		public void Discovery (string pattern, string [] expected)
+		[TestCase ("*", new [] { "ffmpeg", "libcodec.dylib", "plugin.so" }, true)]
+		[TestCase ("**/*", new [] { "ffmpeg", "libcodec.dylib", "plugin.so", "sub/ffprobe" }, true)]
+		[TestCase ("**/ff*", new [] { "ffmpeg", "sub/ffprobe" }, true)]
+		[TestCase ("sub/ffprob?", new [] { "sub/ffprobe" }, true)]
+		public void Discovery (string pattern, string [] expected, bool relativeBundlePath = false)
 		{
 			var task = CreateComputeTask (CustomItem ("Contents/Helpers", pattern));
+			if (relativeBundlePath)
+				task.AppBundleDir = PathUtils.AbsoluteToRelative (Environment.CurrentDirectory, task.AppBundleDir);
 			var directory = Path.Combine (task.AppBundleDir, "Contents/Helpers");
 			WriteMachO (directory, "ffmpeg");
 			WriteMachO (directory, "sub/ffprobe");
@@ -87,8 +93,14 @@ namespace Xamarin.MacDev.Tasks {
 			WriteMachO (directory, "debug.dSYM", 10);
 			File.WriteAllText (Path.Combine (directory, "README"), "not code");
 			File.WriteAllText (Path.Combine (directory, "archive.a"), "!<arch>\n");
+			File.WriteAllBytes (Path.Combine (directory, "Java.class"), new byte [] { 0xca, 0xfe, 0xba, 0xbe, 0, 0, 0, 61, 0, 1 });
+			File.WriteAllBytes (Path.Combine (directory, "JavaPreview.class"), new byte [] { 0xca, 0xfe, 0xba, 0xbe, 0xff, 0xff, 0, 61, 0, 1 });
+			foreach (var file in new [] { "Java.class", "JavaPreview.class" }) {
+				using var stream = File.OpenWrite (Path.Combine (directory, file));
+				stream.SetLength (4096);
+			}
 			ExecuteTask (task);
-			Assert.That (task.OutputCodesignItems.Select (v => v.ItemSpec), Is.EquivalentTo (expected.Select (v => PathUtils.ResolveSymbolicLinks (Path.Combine (directory, v)))), "Discovered code");
+			Assert.That (task.OutputCodesignItems.Select (v => v.ItemSpec), Is.EquivalentTo (expected.Select (v => PathUtils.ResolveSymbolicLinks (Path.GetFullPath (Path.Combine (directory, v))))), "Discovered code");
 		}
 
 		[Test]

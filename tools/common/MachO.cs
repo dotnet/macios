@@ -450,9 +450,16 @@ namespace Xamarin {
 					switch (magic) {
 					case MH_MAGIC:
 					case MH_MAGIC_64:
+						return true;
 					case FAT_MAGIC: // little-endian fat binary
 					case FAT_CIGAM: // big-endian fat binary
-						return true;
+						if (fs.Length < 8)
+							return true;
+						var architectures = reader.ReadUInt32 ();
+						if (magic == FAT_CIGAM)
+							architectures = ToBigEndian (architectures);
+						// Like file(1), distinguish Java class versions from fat architecture counts.
+						return architectures <= 30;
 					default:
 						return false;
 					}

@@ -236,7 +236,7 @@ namespace Xamarin.MacDev.Tasks {
 						Log.LogError (MSBStrings.E7234, item.GetMetadata ("FilePattern"));
 						continue;
 					}
-					files = EnumerateCodesignFiles (ownerPath, path).Where (glob.IsMatch);
+					files = EnumerateCodesignFiles (ownerPath, path).Where (v => glob.IsMatch (Path.GetFullPath (v)));
 				}
 
 				foreach (var file in files) {

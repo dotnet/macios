@@ -825,9 +825,11 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
-		public void PublishDSymToPublishDirectory (ApplePlatform platform, string runtimeIdentifiers, bool copyDSym)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "Publish")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, "Publish")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "Build;Publish")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, "Build;Publish")]
+		public void PublishDSymToPublishDirectory (ApplePlatform platform, string runtimeIdentifiers, bool copyDSym, string target)
 		{
 			// https://github.com/dotnet/macios/issues/15384
 			// When publishing, the generated *.dSYM directories should be copied to the publish
@@ -845,7 +847,11 @@ namespace Xamarin.Tests {
 			if (!copyDSym)
 				properties ["CopyDSYMToPublishDirectory"] = "false";
 
-			DotNet.AssertPublish (project_path, properties);
+			if (target == "Publish") {
+				DotNet.AssertPublish (project_path, properties);
+			} else {
+				DotNet.AssertBuild (project_path, properties, target: target);
+			}
 
 			var appContainerDir = Path.GetDirectoryName (appPath)!;
 			var appBundleName = Path.GetFileName (appPath);
@@ -866,7 +872,7 @@ namespace Xamarin.Tests {
 
 		[Test]
 		[Combinatorial]
-		public void PublishDSymTargetOrdering ([Values ("Build", "Publish")] string target, [Values] bool remote, [Values] bool copyDSym)
+		public void PublishDSymTargetOrdering ([Values ("Build", "Publish", "Build;Publish")] string target, [Values] bool remote, [Values] bool copyDSym)
 		{
 			var directory = Cache.CreateTemporaryDirectory ();
 			var publishTargets = XDocument.Load (Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.Publish.targets"));
@@ -886,7 +892,8 @@ namespace Xamarin.Tests {
 			// Keep the real target graph and conditions, replacing only the session-aware task bodies.
 			copyTarget.ReplaceNodes (
 				new XElement (ns + "Error", new XAttribute ("Condition", "'$(_DSymGenerated)' != 'true'"), new XAttribute ("Text", "dSYM copy ran before symbol generation.")),
-				new XElement (ns + "Error", new XAttribute ("Condition", "'$(IsRemoteBuild)' == 'true' And '$(_Connected)' != 'true'"), new XAttribute ("Text", "dSYM copy ran after disconnect.")),
+				// Build;Publish uses the remote tasks' automatic reconnection after Build disconnects.
+				new XElement (ns + "Error", new XAttribute ("Condition", "'$(IsRemoteBuild)' == 'true' And '$(AllowReconnect)' != 'true' And '$(_Connected)' != 'true'"), new XAttribute ("Text", "dSYM copy ran after disconnect.")),
 				new XElement (ns + "PropertyGroup", new XElement (ns + "_CopyCount", "$(_CopyCount)x")));
 			var publishTargetsPath = Path.Combine (directory, "Publish.targets");
 			publishTargets.Save (publishTargetsPath);
@@ -905,6 +912,8 @@ namespace Xamarin.Tests {
 					<Import Project="{publishTargetsPath}" />
 					<Target Name="Restore" />
 					<Target Name="Build" DependsOnTargets="$(BuildDependsOn)" />
+					<Target Name="CreateIpa" />
+					<Target Name="_CreateInstaller" />
 					<Target Name="GetApplicationArtifacts" DependsOnTargets="Build" />
 					<Target Name="_GenerateBundleName" />
 					<Target Name="_GenerateBuildSessionId" />
@@ -935,7 +944,8 @@ namespace Xamarin.Tests {
 			var properties = new Dictionary<string, string> {
 				["IsRemoteBuild"] = remote.ToString (),
 				["CopyDSYMToPublishDirectory"] = copyDSym.ToString (),
-				["ExpectedCopyCount"] = target == "Publish" && copyDSym ? "x" : "",
+				["ExpectedCopyCount"] = target.Contains ("Publish", StringComparison.Ordinal) && copyDSym ? "x" : "",
+				["AllowReconnect"] = (target == "Build;Publish").ToString (),
 			};
 			DotNet.AssertBuild (projectPath, properties, target: $"{target};_AssertOrdering");
 		}

@@ -111,9 +111,9 @@
 			Lines="@(AdditionalWatchOSApp)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true" />
-		<Delete Files="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'@(AdditionalWatchOSApp)' == ''" />
+		<Delete Files="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'$(IsMacEnabled)' == 'true' And '@(AdditionalWatchOSApp)' == ''" />
 		<ItemGroup>
-			<FileWrites Include="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'@(AdditionalWatchOSApp)' != ''" />
+			<FileWrites Include="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="Exists('$(_WatchOSIntermediateOutputPath)enabled.stamp')" />
 		</ItemGroup>
 	</Target>
 

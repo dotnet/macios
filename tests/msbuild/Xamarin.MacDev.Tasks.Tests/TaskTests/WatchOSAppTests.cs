@@ -60,8 +60,9 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[TestCase ("../../outside")]
+		[TestCase ("self/../../outside")]
 		[TestCase ("/outside")]
-		public void RejectEscapingZipSymlink (string target)
+		public void RejectEscapingSymlink (string target)
 		{
 			using var stream = new MemoryStream ();
 			using (var archive = new ZipArchive (stream, ZipArchiveMode.Create, true)) {
@@ -73,6 +74,29 @@ namespace Xamarin.MacDev.Tasks {
 			stream.Position = 0;
 			using var input = new ZipArchive (stream, ZipArchiveMode.Read);
 			Assert.That (PrepareWatchOSApp.TrySelectZipResource (input, "ios-arm64", out _), Is.False);
+
+			var directory = Cache.CreateTemporaryDirectory ();
+			var source = Path.Combine (directory, "Watch.app");
+			Directory.CreateDirectory (source);
+			var manifest = new PDictionary ();
+			manifest.SetString ("WKCompanionAppBundleIdentifier", "com.example.host");
+			manifest.Save (Path.Combine (source, "Info.plist"));
+			var linkDirectory = source;
+			if (target.StartsWith ("self/", StringComparison.Ordinal)) {
+				linkDirectory = Path.Combine (source, "nested");
+				Directory.CreateDirectory (linkDirectory);
+				Directory.CreateDirectory (Path.Combine (source, "inner"));
+				Directory.CreateSymbolicLink (Path.Combine (linkDirectory, "self"), "../inner");
+			}
+			File.CreateSymbolicLink (Path.Combine (linkDirectory, "link"), target);
+			var task = CreateTask<PrepareWatchOSApp> ();
+			task.Apps = new [] { new TaskItem (source) };
+			task.AppBundleDir = Path.Combine (directory, "Host.app");
+			task.IntermediateOutputPath = Path.Combine (directory, "obj");
+			task.RuntimeIdentifier = "ios-arm64";
+			task.BundleIdentifier = "com.example.host";
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Code, Is.EqualTo ("MT7202"), "directory input symlink");
 		}
 
 		[Test]
@@ -130,8 +154,9 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Engine.Logger.ErrorEvents.Single ().Code, Is.EqualTo ("MT7205"), "unsupported runtime diagnostic");
 		}
 
-		[Test]
-		public void NativeZipBuildAndEmbedding ()
+		[TestCase (false)]
+		[TestCase (true)]
+		public void NativeZipBuildAndEmbedding (bool singleVariant)
 		{
 			var directory = Cache.CreateTemporaryDirectory ();
 			var create = CreateTask<CreateWatchOSAppZip> ();
@@ -141,8 +166,13 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (create.RuntimeIdentifiers, Is.EquivalentTo (new [] { "ios-arm64", "iossimulator-arm64" }), "default runtime identifiers");
 			ExecuteTask (create);
 			foreach (var rid in create.RuntimeIdentifiers) {
+				var zipPath = create.ZipPath;
+				if (singleVariant) {
+					zipPath = Path.Combine (directory, rid + ".zip");
+					ZipFile.CreateFromDirectory (Path.Combine (create.IntermediateOutputPath, rid, "artifact"), zipPath);
+				}
 				var prepare = CreateTask<PrepareWatchOSApp> ();
-				prepare.Apps = new [] { new TaskItem (create.ZipPath) };
+				prepare.Apps = new [] { new TaskItem (zipPath) };
 				prepare.AppBundleDir = Path.Combine (directory, rid, "Host.app");
 				prepare.IntermediateOutputPath = Path.Combine (directory, rid, "obj");
 				prepare.RuntimeIdentifier = rid;
@@ -152,12 +182,12 @@ namespace Xamarin.MacDev.Tasks {
 				var embedded = Path.Combine (prepare.AppBundleDir, "Watch", "WatchApp.app");
 				Assert.That (File.Exists (Path.Combine (embedded, "WatchApp")), Is.True, rid + ": executable");
 				Assert.That (prepare.CodesignBundles.Select (v => v.ItemSpec), Does.Contain (Path.Combine ("Host.app", "Watch", "WatchApp.app")), rid + ": signing registration");
-				Assert.That (Directory.GetDirectories (Path.Combine (prepare.IntermediateOutputPath, "extracted")).Select (Path.GetFileName), Is.EquivalentTo (new [] { rid }), rid + ": extracted variants");
+				Assert.That (Directory.GetDirectories (Path.Combine (prepare.IntermediateOutputPath, "extracted")).Select (Path.GetFileName), Is.EquivalentTo (singleVariant ? new [] { "WatchApp.app", "dSYMs" } : new [] { rid }), rid + ": extracted variants");
 				var stale = Path.Combine (embedded, "stale.txt");
 				File.WriteAllText (stale, "");
 				ExecuteTask (prepare);
 				Assert.That (File.Exists (stale), Is.True, rid + ": unchanged input preserves the staged bundle");
-				File.SetLastWriteTimeUtc (create.ZipPath, File.GetLastWriteTimeUtc (create.ZipPath).AddSeconds (1));
+				File.SetLastWriteTimeUtc (zipPath, File.GetLastWriteTimeUtc (zipPath).AddMinutes (-1));
 				ExecuteTask (prepare);
 				Assert.That (File.Exists (stale), Is.False, rid + ": stale content removed");
 				Assert.That (File.Exists (Path.Combine (create.IntermediateOutputPath, rid, "artifact", "WatchApp.app", "WatchApp")), Is.True, rid + ": source preserved");
@@ -181,7 +211,7 @@ namespace Xamarin.MacDev.Tasks {
 					Assert.That (Directory.Exists (Path.Combine (embedded, "_CodeSignature")), Is.True, rid + ": signed bundle");
 					ExecuteTask (prepare);
 					Assert.That (File.Exists (stamp), Is.True, rid + ": unchanged input preserves signing");
-					File.SetLastWriteTimeUtc (create.ZipPath, File.GetLastWriteTimeUtc (create.ZipPath).AddSeconds (1));
+					File.SetLastWriteTimeUtc (zipPath, File.GetLastWriteTimeUtc (zipPath).AddSeconds (1));
 					ExecuteTask (prepare);
 					Assert.That (File.Exists (stamp), Is.False, rid + ": replacing the signed bundle invalidates signing");
 					Assert.That (Directory.Exists (Path.Combine (create.IntermediateOutputPath, rid, "artifact", "WatchApp.app", "_CodeSignature")), Is.False, rid + ": source remains unsigned");

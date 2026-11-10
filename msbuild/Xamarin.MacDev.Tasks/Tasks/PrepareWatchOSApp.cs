@@ -136,6 +136,7 @@ namespace Xamarin.MacDev.Tasks {
 				artifact = Path.Combine (extractionRoot, resource);
 				if (!Directory.Exists (artifact) || !File.Exists (extractionStamp) || File.ReadAllText (extractionStamp) != sourceStamp) {
 					File.Delete (extractionStamp);
+					File.Delete (extractionRoot + ".stamp");
 					// Replace rather than merge: a new ZIP may have removed files.
 					if (Directory.Exists (extractionRoot))
 						Directory.Delete (extractionRoot, true);
@@ -345,19 +346,22 @@ namespace Xamarin.MacDev.Tasks {
 			}));
 		}
 
-		static bool ValidateBundlePaths (string root)
+		static bool ValidateBundlePaths (string directory, string? root = null)
 		{
-			if ((File.GetAttributes (root) & FileAttributes.ReparsePoint) != 0)
+			root ??= directory;
+			if ((File.GetAttributes (directory) & FileAttributes.ReparsePoint) != 0)
 				return false;
-			foreach (var path in Directory.EnumerateFileSystemEntries (root)) {
+			foreach (var path in Directory.EnumerateFileSystemEntries (directory)) {
 				if (!PathUtils.IsPathContained (root, path))
 					return false;
 				if ((File.GetAttributes (path) & FileAttributes.ReparsePoint) != 0) {
-					if (Path.IsPathRooted (PathUtils.GetSymlinkTarget (path)))
+					var target = PathUtils.GetSymlinkTarget (path);
+					if (target.Length == 0 || Path.IsPathRooted (target) || target.Contains ('\\') || target.Split ('/').Contains ("..") ||
+						!PathUtils.IsPathContained (root, Path.Combine (directory, target)))
 						return false;
 					continue;
 				}
-				if (Directory.Exists (path) && !ValidateBundlePaths (path))
+				if (Directory.Exists (path) && !ValidateBundlePaths (path, root))
 					return false;
 			}
 			return true;

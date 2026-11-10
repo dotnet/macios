@@ -1820,10 +1820,6 @@ are different (even though the semantics are the same):
 
 Going forward, the `MtouchLink` and `LinkMode` properties will be deprecated, please use `TrimMode` instead.
 
-Changing `TrimMode`, `LinkMode`, `MtouchLink`, or the computed `PublishTrimmed`
-value deletes and recreates the app bundle on the next build. Intermediate
-build outputs are retained.
-
 The default trim mode depends on numerous factors, and may also change in the future.
 
 The current (as of .NET 9) default values are:

@@ -21,6 +21,8 @@ namespace Cecil.Tests {
 		[Test]
 		public void TypeNamesDifferingOnlyByCase ()
 		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
 			var failures = Helper.NetPlatformAssemblyDefinitions
 				.SelectMany (info => info.Assembly.EnumerateTypes ())
 				.Select (type => type.FullName)

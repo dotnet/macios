@@ -221,6 +221,7 @@
 			_WarnRuntimeIdentifiersClash;
 			_ComputePublishTrimmed;
 			BuildOnlySettings;
+			_CleanAppBundleIfBuildPropertiesChanged;
 			MaciOSPrepareForBuild;
 			_BuildXcodeProjects;
 			_CollectBundleResources;
@@ -239,6 +240,7 @@
 			_ErrorRuntimeIdentifiersClash;
 			_ComputePublishTrimmed;
 			BuildOnlySettings;
+			_CleanAppBundleIfBuildPropertiesChanged;
 			MaciOSPrepareForBuild;
 			_BuildXcodeProjects;
 			_CollectBundleResources;
@@ -252,6 +254,7 @@
 		<BuildDependsOn Condition="'$(RuntimeIdentifiers)' != ''">
 			_ErrorRuntimeIdentifiersClash;
 			BuildOnlySettings;
+			_CleanAppBundleIfBuildPropertiesChanged;
 			_CollectBundleResources;
 			_RunRidSpecificBuild;
 			_DetectAppManifest;
@@ -326,6 +329,45 @@
 			Condition=" '$(_MaciOSStampDirectory)' != '' and !Exists('$(_MaciOSStampDirectory)') "
 			Directories="$(_MaciOSStampDirectory)"
 		/>
+	</Target>
+
+	<Target Name="_CleanAppBundleIfBuildPropertiesChanged"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(IsMacEnabled)' == 'true' And '$(DesignTimeBuild)' != 'true' And '$(IsAppDistribution)' != 'true'"
+		DependsOnTargets="_GenerateBundleName"
+		>
+		<PropertyGroup>
+			<_AppBundleBuildPropertiesFile>$(DeviceSpecificIntermediateOutputPath)app-bundle-build-properties.cache</_AppBundleBuildPropertiesFile>
+		</PropertyGroup>
+		<ItemGroup>
+			<_AppBundleBuildProperties Include="LinkMode=$(LinkMode)" />
+			<_AppBundleBuildProperties Include="MtouchLink=$(MtouchLink)" />
+			<_AppBundleBuildProperties Include="PublishTrimmed=$(PublishTrimmed)" />
+			<_AppBundleBuildProperties Include="TrimMode=$(TrimMode)" />
+		</ItemGroup>
+		<ReadLinesFromFile File="$(_AppBundleBuildPropertiesFile)">
+			<Output TaskParameter="Lines" ItemName="_PreviousAppBundleBuildProperties" />
+		</ReadLinesFromFile>
+		<!-- Recopied native files must be stripped and signed again, even if their source timestamps have not changed. -->
+		<RemoveDir
+			SessionId="$(BuildSessionId)"
+			Condition="'@(_AppBundleBuildProperties)' != '@(_PreviousAppBundleBuildProperties)'"
+			Directories="$(_AppBundlePath);$(DeviceSpecificIntermediateOutputPath)strip;$(DeviceSpecificIntermediateOutputPath)codesign"
+		/>
+		<!-- These copies use stamps outside the app bundle, so missing bundle files do not invalidate them. -->
+		<Delete
+			SessionId="$(BuildSessionId)"
+			Condition="'@(_AppBundleBuildProperties)' != '@(_PreviousAppBundleBuildProperties)'"
+			Files="$(DeviceSpecificIntermediateOutputPath)$(_AppBundleName).mergestamp;$(DeviceSpecificOutputPath)embed-ondemandresources.stamp"
+		/>
+		<WriteLinesToFile
+			File="$(_AppBundleBuildPropertiesFile)"
+			Lines="@(_AppBundleBuildProperties)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_AppBundleBuildPropertiesFile)" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_CreateAssetPackManifestMobile" Condition="'$(_PlatformName)' != 'macOS'" DependsOnTargets="_CreateAssetPackManifest;_EmbedOnDemandResources" />
@@ -2762,22 +2804,6 @@
 	<PropertyGroup>
 		<BundleDebugSymbolFileForSdkAssembly Condition="'$(BundleDebugSymbolFileForSdkAssembly)' == ''">$(_BundlerDebug)</BundleDebugSymbolFileForSdkAssembly>
 	</PropertyGroup>
-	<Target Name="_IncludeAppBundleInPriorPublishFileWrites"
-		AfterTargets="_GetCurrentAndPriorPublishFileWrites"
-		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_AppBundlePath)' != ''"
-		>
-		<!-- The SDK only cleans files under PublishDir, but our app bundle is normally outside that directory. -->
-		<FindUnderPath Path="$(_AppBundlePath)" Files="@(_UnfilteredAbsolutePriorPublishFileWrites)" UpdateToAbsolutePaths="true">
-			<Output TaskParameter="InPath" ItemName="_PriorPublishFileWrites" />
-		</FindUnderPath>
-		<ItemGroup>
-			<!-- Match FindUnderPath's normalized paths even when RelativePath contains '..'. -->
-			<_NormalizedCurrentPublishFileWrites Include="@(_CurrentPublishFileWrites -> '%(FullPath)')" />
-			<_CurrentPublishFileWrites Remove="@(_CurrentPublishFileWrites)" />
-			<_CurrentPublishFileWrites Include="@(_NormalizedCurrentPublishFileWrites)" />
-		</ItemGroup>
-	</Target>
-
 	<Target Name="_AddDebugSymbolsToBundle"
 		DependsOnTargets="ResolveRuntimePackAssets;_ComputeFrameworkVariables"
 		BeforeTargets="_ResolveCopyLocalAssetsForPublish"

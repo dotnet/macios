@@ -9,6 +9,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void LinkModeChanges (ApplePlatform platform, string runtimeIdentifiers, bool customPublishDir)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -17,27 +18,47 @@ namespace Xamarin.Tests {
 			var projectPath = GenerateProject (platform, nameof (LinkModeChanges), runtimeIdentifiers, out var appPath);
 			var projectDirectory = Path.GetDirectoryName (projectPath)!;
 			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), "class MainClass { static int Main () => 0; }");
+			var resourcesProject = GetProjectPath ("AppWithResources", subdir: null, platform: platform);
+			File.Copy (Path.Combine (Path.GetDirectoryName (resourcesProject)!, "Main.storyboard"), Path.Combine (projectDirectory, "Main.storyboard"));
+			File.WriteAllText (Path.Combine (projectDirectory, "resource.txt"), "Bundle resource");
+			File.WriteAllText (projectPath, File.ReadAllText (projectPath).Replace ("</Project>", """
+					<ItemGroup>
+						<BundleResource Include="resource.txt" />
+						<PackageReference Include="Xamarin.Tests.FrameworksInRuntimesNativeDirectory" Version="1.0.0" />
+					</ItemGroup>
+				</Project>
+				"""));
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			var linkModeProperty = platform == ApplePlatform.MacOSX ? "LinkMode" : "MtouchLink";
-			if (customPublishDir)
+			if (customPublishDir) {
 				properties ["PublishDir"] = Path.Combine (projectDirectory, "bin") + Path.DirectorySeparatorChar;
+				linkModeProperty = "TrimMode";
+			}
+			var unlinkedMode = customPublishDir ? "copy" : "None";
+			var linkedMode = customPublishDir ? "full" : "SdkOnly";
+			var markerPath = Path.Combine (appPath!, GetRelativeResourcesDirectory (platform), "bundle-marker.txt");
 
-			properties [linkModeProperty] = "None";
+			properties [linkModeProperty] = unlinkedMode;
 			DotNet.AssertBuild (projectPath, properties);
 			var unlinkedFiles = GetManagedBundleFiles ();
+			File.WriteAllText (markerPath, "Removed when build properties change");
 
-			properties [linkModeProperty] = "SdkOnly";
+			properties [linkModeProperty] = linkedMode;
 			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (markerPath, Does.Not.Exist, "Changed properties recreate the bundle");
 			var incrementalFiles = GetManagedBundleFiles ();
+			File.WriteAllText (markerPath, "Preserved when build properties do not change");
 
 			DotNet.AssertBuild (projectPath, properties);
+			Assert.That (markerPath, Does.Exist, "Unchanged properties preserve the bundle");
 			Assert.That (GetManagedBundleFiles (), Is.EquivalentTo (incrementalFiles), "Unchanged linked build");
 
-			properties [linkModeProperty] = "None";
+			properties [linkModeProperty] = unlinkedMode;
 			DotNet.AssertBuild (projectPath, properties);
-			Assert.That (GetManagedBundleFiles ().Keys, Is.EquivalentTo (unlinkedFiles.Keys), "Restored unlinked files");
+			Assert.That (markerPath, Does.Not.Exist, "Restoring unlinked mode recreates the bundle");
+			Assert.That (GetManagedBundleFiles ().Keys.Select (Path.GetFileName).Distinct (), Is.EquivalentTo (unlinkedFiles.Keys.Select (Path.GetFileName).Distinct ()), "Restored unlinked assemblies");
 
-			properties [linkModeProperty] = "SdkOnly";
+			properties [linkModeProperty] = linkedMode;
 			DotNet.AssertBuild (projectPath, properties);
 			Assert.That (GetManagedBundleFiles (), Is.EquivalentTo (incrementalFiles), "Repeated link mode change");
 
@@ -49,6 +70,12 @@ namespace Xamarin.Tests {
 
 			Dictionary<string, long> GetManagedBundleFiles ()
 			{
+				var resourcesDirectory = Path.Combine (appPath!, GetRelativeResourcesDirectory (platform));
+				Assert.That (File.ReadAllText (Path.Combine (resourcesDirectory, "resource.txt")), Is.EqualTo ("Bundle resource"), "Bundle resource");
+				Assert.That (Path.Combine (resourcesDirectory, "Main.storyboardc"), Does.Exist, "Compiled storyboard");
+				Assert.That (GetInfoPListPath (platform, appPath!), Does.Exist, "App manifest");
+				var frameworksDirectory = Path.Combine (appPath!, GetFrameworksRelativePath (platform));
+				Assert.That (Path.Combine (frameworksDirectory, "FrameworksInRuntimesNativeDirectory1.framework"), Does.Exist, "Native framework");
 				var assemblyDirectory = Path.Combine (appPath!, GetRelativeAssemblyDirectory (platform));
 				return Directory.GetFiles (assemblyDirectory, "*", SearchOption.AllDirectories)
 					.Where (v => Path.GetExtension (v) == ".dll" || Path.GetExtension (v) == ".pdb")

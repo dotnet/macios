@@ -11,17 +11,18 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", null)]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", null)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "/does/not/exist")]
-		public void AdditionalAppExtensionTest (ApplePlatform platform, string runtimeIdentifiers, string entitlements)
+		public void AdditionalAppExtensionTest (ApplePlatform platform, string runtimeIdentifiers, string? entitlements)
 		{
 			var project = "AdditionalAppExtensionConsumer";
-			var extensionProjects = new [] { "NativeIntentsExtension", "SecondNativeIntentsExtension" };
+			var extensionProjects = new [] { "NativeIntentsExtension", "SecondNativeIntentsExtension", "NativeIntentsExtensionWithoutEntitlements" };
 			var configuration = "Debug";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath);
 
 			// Manually build the native extension project first using xcodebuild
-			var xcodeProjectSource = Path.Combine (Path.GetDirectoryName (Path.GetDirectoryName (project_path))!, "nativeextension", platform.AsString ());
+			var projectDirectory = Path.GetDirectoryName (Path.GetDirectoryName (project_path)) ?? throw new InvalidOperationException ("The project must have a parent directory.");
+			var xcodeProjectSource = Path.Combine (projectDirectory, "nativeextension", platform.AsString ());
 			var xcodeProjectFolder = Cache.CreateTemporaryDirectory ();
 			var xcodeBuildArgs = new [] {
 				"-configuration", configuration,
@@ -65,14 +66,15 @@ namespace Xamarin.Tests {
 				ExecutionHelper.Execute ("/usr/bin/xcodebuild", args, environmentVariables: env, timeout: TimeSpan.FromMinutes (1), throwOnError: true, hide_output: true);
 				var bundlePath = Path.Combine (extensionProjectFolder, buildOutput, extensionProject + ".appex");
 				File.Copy (profilePath, Path.Combine (bundlePath, desktop ? "Contents/embedded.provisionprofile" : "embedded.mobileprovision"), true);
-				File.WriteAllText (Path.Combine (extensionProjectFolder, extensionProject + ".entitlements"), sourceEntitlements);
+				if (extensionProject != "NativeIntentsExtensionWithoutEntitlements")
+					File.WriteAllText (Path.Combine (extensionProjectFolder, extensionProject == extensionProjects [0] ? "CustomEntitlements.plist" : extensionProject + ".entitlements"), sourceEntitlements);
 			}
 
 			// Now build the containing project
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties.Add ("AdditionalAppExtensionPath", xcodeProjectFolder);
 			properties.Add ("AdditionalAppExtensionBuildOutput", buildOutput);
-			properties.Add ("AdditionalAppExtensionEntitlements", entitlements ?? Path.Combine (xcodeProjectFolder, extensionProjects [0], extensionProjects [0] + ".entitlements"));
+			properties.Add ("AdditionalAppExtensionEntitlements", entitlements ?? Path.Combine (xcodeProjectFolder, extensionProjects [0], "CustomEntitlements.plist"));
 			if (!string.IsNullOrEmpty (entitlements)) {
 				var rv = DotNet.AssertBuildFailure (project_path, properties);
 				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
@@ -83,7 +85,8 @@ namespace Xamarin.Tests {
 				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
 					.FilterWarnings (platform)
 					.ToArray ();
-				AssertWarningMessages (warnings, []);
+				var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "NativeIntentsExtensionWithoutEntitlements.appex");
+				AssertWarningMessages (warnings, $"No entitlements set for {extensionPath}.");
 			}
 
 			var expectedDirectories = new List<string> ();
@@ -92,6 +95,8 @@ namespace Xamarin.Tests {
 				var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), extensionProject + ".appex");
 				expectedDirectories.Add (Path.Combine (extensionPath, GetRelativeCodesignDirectory (platform), "_CodeSignature"));
 				ExecutionHelper.Execute ("/usr/bin/codesign", new [] { "--verify", "--strict", extensionPath }, timeout: TimeSpan.FromSeconds (15), throwOnError: true);
+				if (extensionProject == "NativeIntentsExtensionWithoutEntitlements")
+					continue;
 				Assert.That (TryGetEntitlements (GetNativeExecutable (platform, extensionPath), out var signedEntitlements), Is.True, extensionProject + " signed entitlements");
 				Assert.That (signedEntitlements, Is.Not.Null, extensionProject);
 				var applicationIdentifier = profile.ApplicationIdentifierPrefix [0] + ".com.xamarin.NativeContainer." + extensionProject;
@@ -99,7 +104,7 @@ namespace Xamarin.Tests {
 					Is.EqualTo (applicationIdentifier), extensionProject + " application identifier");
 				Assert.That (signedEntitlements?.GetArray ("keychain-access-groups").ToStringArray (),
 					Is.EqualTo (new [] { applicationIdentifier }), extensionProject + " custom entitlements");
-				Assert.That (File.ReadAllText (Path.Combine (xcodeProjectFolder, extensionProject, extensionProject + ".entitlements")),
+				Assert.That (File.ReadAllText (Path.Combine (xcodeProjectFolder, extensionProject, extensionProject == extensionProjects [0] ? "CustomEntitlements.plist" : extensionProject + ".entitlements")),
 					Is.EqualTo (sourceEntitlements), extensionProject + " source entitlements");
 			}
 

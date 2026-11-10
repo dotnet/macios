@@ -25,5 +25,9 @@
             <Name>SecondNativeIntentsExtension</Name>
             <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
         </AdditionalAppExtensions>
+        <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)/NativeIntentsExtensionWithoutEntitlements">
+            <Name>NativeIntentsExtensionWithoutEntitlements</Name>
+            <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
+        </AdditionalAppExtensions>
     </ItemGroup>
 </Project>

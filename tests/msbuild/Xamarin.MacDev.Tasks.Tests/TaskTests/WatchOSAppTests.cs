@@ -67,7 +67,7 @@ namespace Xamarin.MacDev.Tasks {
 			using var stream = new MemoryStream ();
 			using (var archive = new ZipArchive (stream, ZipArchiveMode.Create, true)) {
 				var entry = archive.CreateEntry ("ios-arm64/Watch.app/link");
-				entry.ExternalAttributes = unchecked ((int) 0xa1ff0000);
+				entry.ExternalAttributes = unchecked((int) 0xa1ff0000);
 				using var writer = new StreamWriter (entry.Open ());
 				writer.Write (target);
 			}

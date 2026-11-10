@@ -11,6 +11,7 @@
 	<Import Project="../../common/shared-dotnet.csproj" />
 
 	<ItemGroup>
+		<ProjectReference Include="../../../bindings-framework-test/dotnet/$(_PlatformName)/bindings-framework-test.csproj" Condition="'$(SystemFramework)' != ''" />
 		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\XTest.framework" Kind="Framework" />
 		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\XStaticArTest.framework" Kind="Framework" CopyToAppBundle="false" />
 		<NativeReference Include="..\..\..\test-libraries\.libs\$(NativeLibName)\XStaticObjectTest.framework" Kind="Framework" CopyToAppBundle="false" />

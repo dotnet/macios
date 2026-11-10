@@ -553,10 +553,9 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MonoTouchTest"), "CFBundleDisplayName");
 		}
 
-		[TestCase (true, "true")]
-		[TestCase (true, "false")]
-		[TestCase (false, "false")]
-		public void BindSystemFramework (bool noBindingEmbedding, string compress)
+		[TestCase ("true")]
+		[TestCase ("false")]
+		public void BindSystemFramework (string compress)
 		{
 			var platform = ApplePlatform.MacOSX;
 			var runtimeIdentifier = "osx-arm64";
@@ -564,11 +563,10 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 
-			var projectPath = GetProjectPath ("EmbeddedFrameworkInBindingProjectApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
+			var projectPath = GetProjectPath ("NativeFrameworkReferencesApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifier);
 			properties ["Configuration"] = "Release";
-			properties ["NoBindingEmbedding"] = noBindingEmbedding.ToString ();
 			properties ["CompressBindingResourcePackage"] = compress;
 			properties ["SystemFramework"] = $"/System/Library/Frameworks/{framework}.framework";
 			DotNet.AssertBuild (projectPath, properties);

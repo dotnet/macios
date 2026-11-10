@@ -42,7 +42,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public static bool IsSupportedRuntimeIdentifier (string rid)
 		{
-			return rid == "ios-arm64" || rid == "iossimulator-arm64" || rid == "iossimulator-x64";
+			return rid == "ios-arm64" || rid == "iossimulator-arm64";
 		}
 
 		protected override IList<string> GenerateCommandLineCommands ()
@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 				"ONLY_ACTIVE_ARCH=NO",
 			};
 			if (simulator)
-				args.Add ("ARCHS=" + (RuntimeIdentifier == "iossimulator-arm64" ? "arm64" : "x86_64"));
+				args.Add ("ARCHS=arm64");
 			return args;
 		}
 
@@ -74,7 +74,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				return ExecuteLocally ();
 			} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is JsonException) {
-				Log.LogError (MSBStrings.WatchOS_ArtifactError, ProjectPath, ex.Message);
+				Log.LogError (7209, null, MSBStrings.E7209, ProjectPath, ex.Message);
 				return false;
 			}
 		}
@@ -82,7 +82,7 @@ namespace Xamarin.MacDev.Tasks {
 		bool ExecuteLocally ()
 		{
 			if (!IsSupportedRuntimeIdentifier (RuntimeIdentifier)) {
-				Log.LogError (MSBStrings.WatchOS_UnsupportedRuntimeIdentifier, RuntimeIdentifier);
+				Log.LogError (7205, null, MSBStrings.E7205, RuntimeIdentifier);
 				return false;
 			}
 			if (!Directory.Exists (ProjectPath) || Path.GetExtension (ProjectPath) != ".xcodeproj") {
@@ -96,7 +96,7 @@ namespace Xamarin.MacDev.Tasks {
 				using var list = JsonDocument.Parse (schemes.Output.StandardOutput.ToString ());
 				var names = list.RootElement.GetProperty ("project").GetProperty ("schemes").EnumerateArray ().Select (v => v.GetString ()).Distinct (StringComparer.Ordinal).ToArray ();
 				if (names.Length != 1 || string.IsNullOrEmpty (names [0])) {
-					Log.LogError (MSBStrings.WatchOS_RequireScheme, ProjectPath);
+					Log.LogError (7206, null, MSBStrings.E7206, ProjectPath);
 					return false;
 				}
 				SchemeName = names [0] ?? "";
@@ -118,7 +118,7 @@ namespace Xamarin.MacDev.Tasks {
 					v.TryGetProperty ("PLATFORM_NAME", out var platform) && (platform.GetString () == "watchos" || platform.GetString () == "watchsimulator"))
 				.ToArray ();
 			if (apps.Length != 1) {
-				Log.LogError (MSBStrings.WatchOS_RequireApp, ProjectPath);
+				Log.LogError (7207, null, MSBStrings.E7207, ProjectPath);
 				return false;
 			}
 

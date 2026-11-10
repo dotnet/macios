@@ -79,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				return ExecuteLocally ();
 			} catch (Exception ex) when (ex is IOException || ex is InvalidDataException || ex is UnauthorizedAccessException || ex is System.Xml.XmlException || ex is ArgumentException) {
-				Log.LogError (MSBStrings.WatchOS_ArtifactError, Apps.FirstOrDefault ()?.ItemSpec ?? "", ex.Message);
+				Log.LogError (7209, null, MSBStrings.E7209, Apps.FirstOrDefault ()?.ItemSpec ?? "", ex.Message);
 				return false;
 			}
 		}
@@ -87,11 +87,11 @@ namespace Xamarin.MacDev.Tasks {
 		bool ExecuteLocally ()
 		{
 			if (Apps.Length > 1) {
-				Log.LogError (MSBStrings.WatchOS_RequireApp, string.Join (";", Apps.Select (v => v.ItemSpec)));
+				Log.LogError (7207, null, MSBStrings.E7207, string.Join (";", Apps.Select (v => v.ItemSpec)));
 				return false;
 			}
 			foreach (var duplicate in Signing.GroupBy (v => v.ItemSpec).Where (v => v.Count () > 1))
-				Log.LogError (MSBStrings.WatchOS_DuplicateSigningBundle, duplicate.Key);
+				Log.LogError (7213, null, MSBStrings.E7213, duplicate.Key);
 			if (Log.HasLoggedErrors)
 				return false;
 			var destinationRoot = Path.Combine (AppBundleDir, "Watch");
@@ -112,11 +112,11 @@ namespace Xamarin.MacDev.Tasks {
 				if (Directory.Exists (oldSymbols))
 					Directory.Delete (oldSymbols, true);
 				foreach (var settings in Signing)
-					Log.LogError (MSBStrings.WatchOS_UnknownSigningBundle, settings.ItemSpec);
+					Log.LogError (7212, null, MSBStrings.E7212, settings.ItemSpec);
 				return !Log.HasLoggedErrors;
 			}
 			if (!BuildWatchOSApp.IsSupportedRuntimeIdentifier (RuntimeIdentifier)) {
-				Log.LogError (MSBStrings.WatchOS_UnsupportedRuntimeIdentifier, RuntimeIdentifier);
+				Log.LogError (7205, null, MSBStrings.E7205, RuntimeIdentifier);
 				return false;
 			}
 			Directory.CreateDirectory (IntermediateOutputPath);
@@ -130,7 +130,7 @@ namespace Xamarin.MacDev.Tasks {
 					Directory.Delete (artifact, true);
 				using var zip = ZipFile.OpenRead (source);
 				if (!TrySelectZipResource (zip, RuntimeIdentifier, out var resource)) {
-					Log.LogError (MSBStrings.WatchOS_InvalidZip, source, RuntimeIdentifier);
+					Log.LogError (7210, null, MSBStrings.E7210, source, RuntimeIdentifier);
 					return false;
 				}
 				var files = new List<string> ();
@@ -139,24 +139,24 @@ namespace Xamarin.MacDev.Tasks {
 				artifact = extracted;
 				var apps = Directory.GetDirectories (artifact, "*.app");
 				if (apps.Length != 1) {
-					Log.LogError (MSBStrings.WatchOS_RequireApp, source);
+					Log.LogError (7207, null, MSBStrings.E7207, source);
 					return false;
 				}
 				source = apps [0];
 			} else if (!source.EndsWith (".app", StringComparison.OrdinalIgnoreCase) || !Directory.Exists (source)) {
-				Log.LogError (MSBStrings.WatchOS_RequireApp, source);
+				Log.LogError (7207, null, MSBStrings.E7207, source);
 				return false;
 			}
 			var manifest = PDictionary.OpenFile (Path.Combine (source, "Info.plist"));
 			if (manifest.GetString ("WKCompanionAppBundleIdentifier")?.Value != BundleIdentifier) {
-				Log.LogError (MSBStrings.WatchOS_CompanionMismatch, source, BundleIdentifier);
+				Log.LogError (7211, null, MSBStrings.E7211, source, BundleIdentifier);
 				return false;
 			}
 			var nameOfApp = Path.GetFileName (source.TrimEnd ('/', '\\'));
 			var destination = Path.Combine (destinationRoot, nameOfApp);
 			if (PathUtils.ResolveSymbolicLinks (Path.GetFullPath (source)) == PathUtils.ResolveSymbolicLinks (Path.GetFullPath (destination)) ||
 				PathUtils.IsPathContained (source, destination) || PathUtils.IsPathContained (destinationRoot, source) || !ValidateBundlePaths (source)) {
-				Log.LogError (MSBStrings.WatchOS_ArtifactError, source, MSBStrings.WatchOS_InvalidBundlePaths);
+				Log.LogError (7202, source, MSBStrings.E7202);
 				return false;
 			}
 			if (File.Exists (receipt)) {
@@ -172,7 +172,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (ExecuteAsync ("/usr/bin/ditto", new [] { source, destination }, cancellationToken: cancellation.Token).Result.ExitCode != 0)
 				return false;
 			if (!ValidateBundlePaths (destination)) {
-				Log.LogError (MSBStrings.WatchOS_ArtifactError, destination, MSBStrings.WatchOS_InvalidBundlePaths);
+				Log.LogError (7202, destination, MSBStrings.E7202);
 				return false;
 			}
 			var signingStamps = Path.Combine (IntermediateOutputPath, "signing");
@@ -190,7 +190,7 @@ namespace Xamarin.MacDev.Tasks {
 				var executable = plist.GetCFBundleExecutable ();
 				if (string.IsNullOrEmpty (identifier) || identifier.IndexOfAny (new [] { '/', '\\', ':' }) >= 0 || identifier == "." || identifier == ".." || !identifiers.Add (identifier) || string.IsNullOrEmpty (executable) ||
 					Path.GetFileName (executable) != executable) {
-					Log.LogError (MSBStrings.WatchOS_ArtifactError, bundle, MSBStrings.WatchOS_InvalidBundleManifest);
+					Log.LogError (7203, bundle, MSBStrings.E7203);
 					return false;
 				}
 				if (!ValidateExecutable (Path.Combine (bundle, executable)))
@@ -241,7 +241,7 @@ namespace Xamarin.MacDev.Tasks {
 					profile = detect.DetectedProvisioningProfile;
 					var selectedProfile = MobileProvisionIndex.GetMobileProvision (MobileProvisionPlatform.iOS, profile);
 					if (selectedProfile is null || selectedProfile.DistributionType != parentProfile.DistributionType) {
-						Log.LogError (MSBStrings.WatchOS_IncompatibleProfile, identifier, profile, parentProfile.Name);
+						Log.LogError (7204, null, MSBStrings.E7204, identifier, profile, parentProfile.Name);
 						return false;
 					}
 					var embed = new EmbedProvisionProfile {
@@ -291,7 +291,7 @@ namespace Xamarin.MacDev.Tasks {
 				bundles.Add (sign);
 			}
 			foreach (var settings in Signing.Where (v => !usedSigning.Contains (v.ItemSpec)))
-				Log.LogError (MSBStrings.WatchOS_UnknownSigningBundle, settings.ItemSpec);
+				Log.LogError (7212, null, MSBStrings.E7212, settings.ItemSpec);
 			foreach (var library in Directory.EnumerateFiles (destination, "*.dylib", SearchOption.AllDirectories)
 				.Concat (Directory.EnumerateDirectories (destination, "*.framework", SearchOption.AllDirectories).Select (v => Path.Combine (v, Path.GetFileNameWithoutExtension (v))))) {
 				if (!ValidateExecutable (library))
@@ -345,7 +345,7 @@ namespace Xamarin.MacDev.Tasks {
 					return "";
 				if (!string.IsNullOrWhiteSpace (result.Output.StandardOutput)) {
 					if (PObject.FromString (result.Output.StandardOutput) is not PDictionary recovered) {
-						Log.LogError (MSBStrings.WatchOS_ArtifactError, bundle, MSBStrings.WatchOS_InvalidEntitlements);
+						Log.LogError (7201, bundle, MSBStrings.E7201);
 						return "";
 					}
 					template = recovered;
@@ -365,7 +365,7 @@ namespace Xamarin.MacDev.Tasks {
 		bool ValidateExecutable (string path)
 		{
 			if (!File.Exists (path)) {
-				Log.LogError (MSBStrings.WatchOS_InvalidExecutable, path, RuntimeIdentifier);
+				Log.LogError (7214, null, MSBStrings.E7214, path, RuntimeIdentifier);
 				return false;
 			}
 			var slices = MachO.Read (path).ToArray ();
@@ -375,16 +375,16 @@ namespace Xamarin.MacDev.Tasks {
 				var platforms = slice.load_commands.OfType<BuildVersionCommand> ().Select (v => v.Platform).ToArray ();
 				var legacyDevice = !Simulator && slice.load_commands.Any (v => v.Command == MachO.LoadCommands.MinwatchOS);
 				if ((platforms.Length == 0 && !legacyDevice) || platforms.Any (v => v != expected)) {
-					Log.LogError (MSBStrings.WatchOS_InvalidExecutable, path, RuntimeIdentifier);
+					Log.LogError (7214, null, MSBStrings.E7214, path, RuntimeIdentifier);
 					return false;
 				}
 				if (Simulator)
-					matchingArchitecture |= slice.Architecture == (RuntimeIdentifier == "iossimulator-x64" ? MachO.Architectures.x86_64 : MachO.Architectures.ARM64);
+					matchingArchitecture |= slice.Architecture == MachO.Architectures.ARM64;
 				else
 					matchingArchitecture |= slice.Architecture == MachO.Architectures.ARMv7k || slice.Architecture == MachO.Architectures.ARM64_32 || slice.Architecture == MachO.Architectures.ARM64;
 			}
 			if (slices.Length == 0 || !matchingArchitecture)
-				Log.LogError (MSBStrings.WatchOS_InvalidExecutable, path, RuntimeIdentifier);
+				Log.LogError (7214, null, MSBStrings.E7214, path, RuntimeIdentifier);
 			return !Log.HasLoggedErrors;
 		}
 

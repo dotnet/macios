@@ -13,60 +13,6 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     
-    <data name="WatchOS_InvalidEntitlements" xml:space="preserve">
-        <value>The watchOS app's signing entitlements must be a property-list dictionary.</value>
-    </data>
-    <data name="WatchOS_InvalidBundlePaths" xml:space="preserve">
-        <value>The watchOS app must be outside its destination and must not contain links outside its bundle.</value>
-    </data>
-    <data name="WatchOS_InvalidBundleManifest" xml:space="preserve">
-        <value>The watchOS bundle must have a valid CFBundleIdentifier and CFBundleExecutable.</value>
-    </data>
-    <data name="WatchOS_IncompatibleProfile" xml:space="preserve">
-        <value>The provisioning profile '{1}' for watchOS bundle '{0}' must have the same distribution type as the host profile '{2}'.</value>
-    </data>
-    <data name="WatchOS_UnsupportedRuntimeIdentifier" xml:space="preserve">
-        <value>The watchOS app does not support runtime identifier '{0}'. Use ios-arm64, iossimulator-arm64, or iossimulator-x64.</value>
-    </data>
-    <data name="WatchOS_RequireScheme" xml:space="preserve">
-        <value>The Xcode project '{0}' has more than one scheme. Specify SchemeName (or WatchOSXcodeScheme for CreateWatchOSAppZip).</value>
-    </data>
-    <data name="WatchOS_RequireApp" xml:space="preserve">
-        <value>Expected exactly one native watchOS app in '{0}'. Specify one AdditionalWatchOSApp item and a scheme that builds one watchOS app.</value>
-    </data>
-    <data name="WatchOS_ZipRequiresMac" xml:space="preserve">
-        <value>CreateWatchOSAppZip must run locally on macOS. Remote execution is not supported.</value>
-    </data>
-    <data name="WatchOS_ArtifactError" xml:space="preserve">
-        <value>Could not prepare watchOS app '{0}': {1}</value>
-    </data>
-    <data name="WatchOS_InvalidZip" xml:space="preserve">
-        <value>The watchOS ZIP '{0}' has an invalid or unsafe layout, or does not contain runtime identifier '{1}'. Use CreateWatchOSAppZip to create the package.</value>
-    </data>
-    <data name="WatchOS_CompanionMismatch" xml:space="preserve">
-        <value>The watchOS app '{0}' must have WKCompanionAppBundleIdentifier set to the containing iOS app's bundle identifier '{1}'.</value>
-    </data>
-    <data name="WatchOS_UnknownSigningBundle" xml:space="preserve">
-        <value>WatchOSAppSigning specifies bundle identifier '{0}', which is not present in the watchOS app.</value>
-    </data>
-    <data name="WatchOS_DuplicateSigningBundle" xml:space="preserve">
-        <value>The bundle identifier '{0}' occurs more than once in WatchOSAppSigning.</value>
-    </data>
-    <data name="WatchOS_InvalidExecutable" xml:space="preserve">
-        <value>The executable '{0}' is missing or is not a watchOS binary compatible with runtime identifier '{1}'.</value>
-    </data>
-    <data name="WatchOS_InvalidProject" xml:space="preserve">
-        <value>AdditionalWatchOSApp requires a single-runtime-identifier iOS executable project, not a library, app extension, or universal build.</value>
-    </data>
-    <data name="WatchOS_DirectoryRequiresMac" xml:space="preserve">
-        <value>A prebuilt watchOS .app directory can only be consumed on macOS. Use a ZIP or an Xcode project for a Windows build with a paired Mac.</value>
-    </data>
-    <data name="WatchOS_ZipPropertiesRequired" xml:space="preserve">
-        <value>CreateWatchOSAppZip requires WatchOSXcodeProject and WatchOSZipPath.</value>
-    </data>
-    <data name="WatchOS_LegacyInput" xml:space="preserve">
-        <value>Managed watchOS projects and private _ResolvedWatchAppReferences inputs are no longer supported. Use AdditionalWatchOSApp to include a native watchOS app.</value>
-    </data>
     <data name="M0001" xml:space="preserve">
         <value>Started external tool execution #{0}: {1} {2}</value>
     </data>
@@ -1879,6 +1825,60 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>Failed to list physical devices with devicectl: {0}</value>
         <comment>Shown when listing the physical devices with 'devicectl' fails, times out, or devicectl can't be run.
 {0} - The reason for the failure, as reported by devicectl or by the device discovery. Do not translate 'devicectl'.</comment>
+    </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The watchOS app's signing entitlements must be a property-list dictionary.</value>
+    </data>
+    <data name="E7202" xml:space="preserve">
+        <value>The watchOS app must not be inside the directory it is copied to, and its symbolic links must stay inside its bundle.</value>
+    </data>
+    <data name="E7203" xml:space="preserve">
+        <value>The watchOS bundle must have a valid CFBundleIdentifier and CFBundleExecutable.</value>
+    </data>
+    <data name="E7204" xml:space="preserve">
+        <value>The provisioning profile '{1}' for watchOS bundle '{0}' must have the same distribution type as the host profile '{2}'.</value>
+    </data>
+    <data name="E7205" xml:space="preserve">
+        <value>The watchOS app does not support runtime identifier '{0}'. Use ios-arm64 or iossimulator-arm64.</value>
+    </data>
+    <data name="E7206" xml:space="preserve">
+        <value>The Xcode project '{0}' has more than one scheme. Specify SchemeName (or WatchOSXcodeScheme for CreateWatchOSAppZip).</value>
+    </data>
+    <data name="E7207" xml:space="preserve">
+        <value>Expected exactly one native watchOS app in '{0}'. Specify one AdditionalWatchOSApp item and a scheme that builds one watchOS app.</value>
+    </data>
+    <data name="E7208" xml:space="preserve">
+        <value>CreateWatchOSAppZip must run on a local Mac. It cannot run through a paired Mac.</value>
+    </data>
+    <data name="E7209" xml:space="preserve">
+        <value>Could not prepare watchOS app '{0}': {1}</value>
+    </data>
+    <data name="E7210" xml:space="preserve">
+        <value>The watchOS ZIP '{0}' has an invalid or unsafe layout, or does not contain runtime identifier '{1}'. Use CreateWatchOSAppZip to create the package.</value>
+    </data>
+    <data name="E7211" xml:space="preserve">
+        <value>The watchOS app '{0}' must have WKCompanionAppBundleIdentifier set to the containing iOS app's bundle identifier '{1}'.</value>
+    </data>
+    <data name="E7212" xml:space="preserve">
+        <value>WatchOSAppSigning specifies bundle identifier '{0}', which is not present in the watchOS app.</value>
+    </data>
+    <data name="E7213" xml:space="preserve">
+        <value>The bundle identifier '{0}' occurs more than once in WatchOSAppSigning.</value>
+    </data>
+    <data name="E7214" xml:space="preserve">
+        <value>The executable '{0}' is missing or is not a watchOS binary compatible with runtime identifier '{1}'.</value>
+    </data>
+    <data name="E7215" xml:space="preserve">
+        <value>AdditionalWatchOSApp requires an iOS app project with a single RuntimeIdentifier. Libraries, app extensions, and builds with multiple runtime identifiers are not supported.</value>
+    </data>
+    <data name="E7216" xml:space="preserve">
+        <value>A prebuilt watchOS .app directory can only be used on macOS. On Windows with a paired Mac, use a ZIP or an Xcode project.</value>
+    </data>
+    <data name="E7217" xml:space="preserve">
+        <value>CreateWatchOSAppZip requires WatchOSXcodeProject and WatchOSZipPath.</value>
+    </data>
+    <data name="E7218" xml:space="preserve">
+        <value>Managed watchOS projects and private _ResolvedWatchAppReferences inputs are no longer supported. Use AdditionalWatchOSApp to include a native watchOS app.</value>
     </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>

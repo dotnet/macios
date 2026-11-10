@@ -1,49 +1,144 @@
-// !$*UTF8*$!
 {
-	archiveVersion = 1;
-	classes = {};
-	objectVersion = 56;
-	objects = {
-		A00000000000000000000001 = {isa = PBXBuildFile; fileRef = A00000000000000000000002; };
-		A00000000000000000000002 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchApp.swift; sourceTree = "<group>"; };
-		A00000000000000000000003 = {isa = PBXFileReference; explicitFileType = wrapper.application; path = WatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A00000000000000000000004 = {isa = PBXGroup; children = (A00000000000000000000002, A00000000000000000000005); sourceTree = "<group>"; };
-		A00000000000000000000005 = {isa = PBXGroup; children = (A00000000000000000000003); name = Products; sourceTree = "<group>"; };
-		A00000000000000000000006 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A00000000000000000000001); runOnlyForDeploymentPostprocessing = 0; };
-		A00000000000000000000007 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		A00000000000000000000008 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		A00000000000000000000009 = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A0000000000000000000000A;
-			buildPhases = (A00000000000000000000006, A00000000000000000000007, A00000000000000000000008);
-			buildRules = ();
-			dependencies = ();
-			name = WatchApp;
-			productName = WatchApp;
-			productReference = A00000000000000000000003;
-			productType = "com.apple.product-type.application";
-		};
-		A0000000000000000000000A = {isa = XCConfigurationList; buildConfigurations = (A0000000000000000000000B, A0000000000000000000000C); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		A0000000000000000000000B = {isa = XCBuildConfiguration; baseConfigurationReference = A00000000000000000000012; buildSettings = {SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
-		A0000000000000000000000C = {isa = XCBuildConfiguration; baseConfigurationReference = A00000000000000000000012; buildSettings = {}; name = Release; };
-		A0000000000000000000000D = {isa = XCConfigurationList; buildConfigurations = (A0000000000000000000000E, A0000000000000000000000F); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		A0000000000000000000000E = {isa = XCBuildConfiguration; buildSettings = {}; name = Debug; };
-		A0000000000000000000000F = {isa = XCBuildConfiguration; buildSettings = {}; name = Release; };
-		A00000000000000000000010 = {
-			isa = PBXProject;
-			attributes = {LastUpgradeCheck = 2700; };
-			buildConfigurationList = A0000000000000000000000D;
-			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
-			hasScannedForEncodings = 0;
-			knownRegions = (en, Base);
-			mainGroup = A00000000000000000000004;
-			productRefGroup = A00000000000000000000005;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (A00000000000000000000009);
-		};
-		A00000000000000000000012 = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WatchApp.xcconfig; sourceTree = SOURCE_ROOT; };
-	};
-	rootObject = A00000000000000000000010;
+  "archiveVersion": "1",
+  "classes": {},
+  "objects": {
+    "A0000000000000000000000A": {
+      "buildConfigurations": [
+        "A0000000000000000000000B",
+        "A0000000000000000000000C"
+      ],
+      "defaultConfigurationIsVisible": "0",
+      "defaultConfigurationName": "Release",
+      "isa": "XCConfigurationList"
+    },
+    "A0000000000000000000000B": {
+      "baseConfigurationReference": "A00000000000000000000012",
+      "buildSettings": {
+        "SWIFT_OPTIMIZATION_LEVEL": "-Onone"
+      },
+      "isa": "XCBuildConfiguration",
+      "name": "Debug"
+    },
+    "A0000000000000000000000C": {
+      "baseConfigurationReference": "A00000000000000000000012",
+      "buildSettings": {},
+      "isa": "XCBuildConfiguration",
+      "name": "Release"
+    },
+    "A0000000000000000000000D": {
+      "buildConfigurations": [
+        "A0000000000000000000000E",
+        "A0000000000000000000000F"
+      ],
+      "defaultConfigurationIsVisible": "0",
+      "defaultConfigurationName": "Release",
+      "isa": "XCConfigurationList"
+    },
+    "A0000000000000000000000E": {
+      "buildSettings": {},
+      "isa": "XCBuildConfiguration",
+      "name": "Debug"
+    },
+    "A0000000000000000000000F": {
+      "buildSettings": {},
+      "isa": "XCBuildConfiguration",
+      "name": "Release"
+    },
+    "A00000000000000000000001": {
+      "fileRef": "A00000000000000000000002",
+      "isa": "PBXBuildFile"
+    },
+    "A00000000000000000000002": {
+      "isa": "PBXFileReference",
+      "lastKnownFileType": "sourcecode.swift",
+      "path": "WatchApp.swift",
+      "sourceTree": "<group>"
+    },
+    "A00000000000000000000003": {
+      "explicitFileType": "wrapper.application",
+      "isa": "PBXFileReference",
+      "path": "WatchApp.app",
+      "sourceTree": "BUILT_PRODUCTS_DIR"
+    },
+    "A00000000000000000000004": {
+      "children": [
+        "A00000000000000000000002",
+        "A00000000000000000000005"
+      ],
+      "isa": "PBXGroup",
+      "sourceTree": "<group>"
+    },
+    "A00000000000000000000005": {
+      "children": [
+        "A00000000000000000000003"
+      ],
+      "isa": "PBXGroup",
+      "name": "Products",
+      "sourceTree": "<group>"
+    },
+    "A00000000000000000000006": {
+      "buildActionMask": "2147483647",
+      "files": [
+        "A00000000000000000000001"
+      ],
+      "isa": "PBXSourcesBuildPhase",
+      "runOnlyForDeploymentPostprocessing": "0"
+    },
+    "A00000000000000000000007": {
+      "buildActionMask": "2147483647",
+      "files": [],
+      "isa": "PBXFrameworksBuildPhase",
+      "runOnlyForDeploymentPostprocessing": "0"
+    },
+    "A00000000000000000000008": {
+      "buildActionMask": "2147483647",
+      "files": [],
+      "isa": "PBXResourcesBuildPhase",
+      "runOnlyForDeploymentPostprocessing": "0"
+    },
+    "A00000000000000000000009": {
+      "buildConfigurationList": "A0000000000000000000000A",
+      "buildPhases": [
+        "A00000000000000000000006",
+        "A00000000000000000000007",
+        "A00000000000000000000008"
+      ],
+      "buildRules": [],
+      "dependencies": [],
+      "isa": "PBXNativeTarget",
+      "name": "WatchApp",
+      "productName": "WatchApp",
+      "productReference": "A00000000000000000000003",
+      "productType": "com.apple.product-type.application"
+    },
+    "A00000000000000000000010": {
+      "attributes": {
+        "LastUpgradeCheck": "2700"
+      },
+      "buildConfigurationList": "A0000000000000000000000D",
+      "compatibilityVersion": "Xcode 14.0",
+      "developmentRegion": "en",
+      "hasScannedForEncodings": "0",
+      "isa": "PBXProject",
+      "knownRegions": [
+        "en",
+        "Base"
+      ],
+      "mainGroup": "A00000000000000000000004",
+      "productRefGroup": "A00000000000000000000005",
+      "projectDirPath": "",
+      "projectRoot": "",
+      "targets": [
+        "A00000000000000000000009"
+      ]
+    },
+    "A00000000000000000000012": {
+      "isa": "PBXFileReference",
+      "lastKnownFileType": "text.xcconfig",
+      "path": "WatchApp.xcconfig",
+      "sourceTree": "SOURCE_ROOT"
+    }
+  },
+  "objectVersion": "56",
+  "rootObject": "A00000000000000000000010"
 }

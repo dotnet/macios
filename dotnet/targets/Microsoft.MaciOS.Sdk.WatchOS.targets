@@ -22,24 +22,28 @@
 		Condition="'$(DesignTimeBuild)' != 'true'">
 		<MacDevMessage
 			Condition="@(AdditionalWatchOSApp->Count()) &gt; 1"
+			Code="MT7207"
 			Error="true"
-			ResourceName="WatchOS_RequireApp"
-			FormatArguments="@(AdditionalWatchOSApp)" />
+			FormatArguments="@(AdditionalWatchOSApp)"
+			ResourceName="E7207" />
 		<MacDevMessage
 			Condition="'@(AdditionalWatchOSApp)' != '' And ('$(_PlatformName)' != 'iOS' Or '$(OutputType)' != 'Exe' Or '$(IsAppExtension)' == 'true' Or '$(RuntimeIdentifiers)' != '' Or '$(_IsMultiRidBuild)' == 'true')"
+			Code="MT7215"
 			Error="true"
-			ResourceName="WatchOS_InvalidProject" />
+			ResourceName="E7215" />
 		<ItemGroup>
 			<_LegacyWatchProject Include="@(ProjectReference)" Condition="'%(ProjectReference.IsWatchApp)' == 'true'" />
 		</ItemGroup>
 		<MacDevMessage
 			Condition="'@(_LegacyWatchProject)' != '' Or '@(_ResolvedWatchAppReferences)' != '' Or '$(IsWatchApp)' == 'true'"
+			Code="MT7218"
 			Error="true"
-			ResourceName="WatchOS_LegacyInput" />
+			ResourceName="E7218" />
 		<MacDevMessage
 			Condition="'%(AdditionalWatchOSApp.Extension)' == '.app' And !$([MSBuild]::IsOSPlatform('osx'))"
+			Code="MT7216"
 			Error="true"
-			ResourceName="WatchOS_DirectoryRequiresMac" />
+			ResourceName="E7216" />
 	</Target>
 
 	<Target Name="_BuildNativeWatchOSApp"
@@ -117,10 +121,10 @@
 	</Target>
 
 	<Target Name="_ValidateWatchOSZipProperties">
-		<MacDevMessage Condition="!$([MSBuild]::IsOSPlatform('osx'))" Error="true" ResourceName="WatchOS_ZipRequiresMac" />
-		<MacDevMessage Condition="'$(WatchOSXcodeProject)' == '' Or '$(WatchOSZipPath)' == ''" Error="true" ResourceName="WatchOS_ZipPropertiesRequired" />
+		<MacDevMessage Condition="!$([MSBuild]::IsOSPlatform('osx'))" Code="MT7208" Error="true" ResourceName="E7208" />
+		<MacDevMessage Condition="'$(WatchOSXcodeProject)' == '' Or '$(WatchOSZipPath)' == ''" Code="MT7217" Error="true" ResourceName="E7217" />
 		<PropertyGroup>
-			<WatchOSRuntimeIdentifiers Condition="'$(WatchOSRuntimeIdentifiers)' == ''">ios-arm64;iossimulator-arm64;iossimulator-x64</WatchOSRuntimeIdentifiers>
+			<WatchOSRuntimeIdentifiers Condition="'$(WatchOSRuntimeIdentifiers)' == ''">ios-arm64;iossimulator-arm64</WatchOSRuntimeIdentifiers>
 		</PropertyGroup>
 	</Target>
 

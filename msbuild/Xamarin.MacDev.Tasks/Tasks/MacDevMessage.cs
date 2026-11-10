@@ -27,6 +27,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool Error { get; set; }
 		public bool Warning { get; set; }
+		public string Code { get; set; } = "";
 
 		public override bool Execute ()
 		{
@@ -34,9 +35,9 @@ namespace Xamarin.MacDev.Tasks {
 			var args = FormatArguments.Select (v => v.ItemSpec).ToArray ();
 			var message = string.Format (msg, args);
 			if (Error) {
-				Log.LogError (message);
+				Log.LogError (null, Code, null, null, 0, 0, 0, 0, message);
 			} else if (Warning) {
-				Log.LogWarning (message);
+				Log.LogWarning (null, Code, null, null, 0, 0, 0, 0, message);
 			} else {
 				Log.LogMessage (message);
 			}

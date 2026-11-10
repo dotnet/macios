@@ -1973,7 +1973,7 @@ The default value is to validate; set to `false` to disable.
 
 The semicolon-separated host runtime identifiers packaged by
 `CreateWatchOSAppZip`. Defaults to
-`ios-arm64;iossimulator-arm64;iossimulator-x64`. The helper builds the
+`ios-arm64;iossimulator-arm64`. The helper builds the
 corresponding native watchOS variants, not iOS executables.
 
 ## WatchOSXcodeProject

@@ -45,9 +45,9 @@ support Windows builds with a paired Mac; directory inputs require a local Mac.
 The host must specify a single runtime identifier.
 
 `SchemeName` selects an Xcode scheme (required if more than one exists).
-`Configuration` defaults to the host configuration. `CodesignProvision` selects
-the root watch app's installed profile by name or UUID; `CodesignEntitlements`
-selects its entitlement template. `DSymPath` optionally supplies a directory of
+`Configuration` defaults to the host configuration. `CodesignProvision` specifies
+an installed profile for the root watch app by name or UUID. `CodesignEntitlements`
+supplies its entitlement template. `DSymPath` optionally supplies a directory of
 prebuilt dSYMs.
 
 ```xml
@@ -58,9 +58,9 @@ prebuilt dSYMs.
 ```
 
 A ZIP can contain one root app, or a variant directory for each supported host
-RID (`ios-arm64`, `iossimulator-arm64`, `iossimulator-x64`). Only the selected
+RID (`ios-arm64` or `iossimulator-arm64`). Only the selected
 variant is extracted. See [native watchOS apps](../native-watchos-apps-design.md)
-for the ZIP layout, signing rules, and migration from legacy watch hooks.
+for the ZIP layout, signing rules, and migration from the old watch project integration.
 
 ## AlternateAppIcon
 
@@ -463,8 +463,8 @@ Applicable to all platforms.
 Configures signing for a bundle inside an `AdditionalWatchOSApp`. `Include` is
 the bundle identifier. `CodesignProvision` selects an installed profile by name
 or UUID, and `CodesignEntitlements` supplies an entitlement template. Device
-builds use the host signing certificate. Without an explicit profile, automatic
-selection uses the host profile's distribution type.
+builds use the host signing certificate. If you do not specify a profile, the
+build selects one with the same distribution type as the host profile.
 
 ```xml
 <ItemGroup>

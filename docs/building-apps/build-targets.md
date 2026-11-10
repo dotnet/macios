@@ -58,8 +58,8 @@ dotnet build -t:CreateWatchOSAppZip \
 ```
 
 `WatchOSXcodeScheme` selects the scheme. `WatchOSRuntimeIdentifiers` optionally
-selects a semicolon-separated subset of `ios-arm64`, `iossimulator-arm64`, and
-`iossimulator-x64`; all three are built by default. `Configuration` selects the
+selects a semicolon-separated subset of `ios-arm64` and `iossimulator-arm64`;
+both are built by default. `Configuration` selects the
 Xcode build configuration.
 
 ## DeployToDevice

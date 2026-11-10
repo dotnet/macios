@@ -106,6 +106,28 @@ namespace Xamarin.MacDev.Tasks {
 			task.RuntimeIdentifier = "iossimulator-arm64";
 			task.Signing = Enumerable.Range (0, duplicate ? 2 : 1).Select (_ => new TaskItem ("com.example.missing")).ToArray ();
 			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Code, Is.EqualTo (duplicate ? "MT7213" : "MT7212"), "diagnostic code");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RejectX64Simulator (bool zip)
+		{
+			var directory = Cache.CreateTemporaryDirectory ();
+			if (zip) {
+				var task = CreateTask<CreateWatchOSAppZip> ();
+				task.RuntimeIdentifiers = new [] { "iossimulator-x64" };
+				task.ProjectPath = Path.Combine (directory, "WatchApp.xcodeproj");
+				task.IntermediateOutputPath = Path.Combine (directory, "obj");
+				task.ZipPath = Path.Combine (directory, "watch.zip");
+				ExecuteTask (task, expectedErrorCount: 1);
+			} else {
+				var task = CreateTask<BuildWatchOSApp> ();
+				task.RuntimeIdentifier = "iossimulator-x64";
+				task.ProjectPath = Path.Combine (directory, "WatchApp.xcodeproj");
+				ExecuteTask (task, expectedErrorCount: 1);
+			}
+			Assert.That (Engine.Logger.ErrorEvents.Single ().Code, Is.EqualTo ("MT7205"), "unsupported runtime diagnostic");
 		}
 
 		[Test]
@@ -116,6 +138,7 @@ namespace Xamarin.MacDev.Tasks {
 			create.ProjectPath = Path.Combine (Configuration.TestProjectsDirectory, "Xcode", "WatchApp", "WatchApp.xcodeproj");
 			create.IntermediateOutputPath = Path.Combine (directory, "build");
 			create.ZipPath = Path.Combine (directory, "watch.zip");
+			Assert.That (create.RuntimeIdentifiers, Is.EquivalentTo (new [] { "ios-arm64", "iossimulator-arm64" }), "default runtime identifiers");
 			ExecuteTask (create);
 			foreach (var rid in create.RuntimeIdentifiers) {
 				var prepare = CreateTask<PrepareWatchOSApp> ();

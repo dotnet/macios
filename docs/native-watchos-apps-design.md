@@ -2,7 +2,7 @@
 
 This design addresses [#20317](https://github.com/dotnet/macios/issues/20317).
 The watch app remains a native Xcode project; .NET does not compile managed
-watchOS code. The iOS project owns embedding, provisioning, and signing.
+watchOS code. The iOS project embeds, provisions, and signs the watch app.
 
 ## Project input
 
@@ -17,23 +17,23 @@ Add exactly one `AdditionalWatchOSApp` to an iOS executable project:
 
 The input can instead be a prebuilt `.app` directory or `.zip`. Xcode projects
 and ZIPs work on a Mac or on Windows with a paired Mac. Directory inputs require
-a local Mac, so executable permissions and symbolic links are preserved.
+a local Mac so that executable permissions and symbolic links are preserved.
 
 The host must use one `RuntimeIdentifier`, not `RuntimeIdentifiers`.
-`ios-arm64` selects watchOS device output; `iossimulator-arm64` and
-`iossimulator-x64` select the matching watchOS simulator architecture.
-The host's architecture is not treated as the watch device's architecture.
+`ios-arm64` selects the watchOS device build; `iossimulator-arm64` selects the
+watchOS simulator build. The watch device's architecture does not need to
+match the iPhone's.
 
 For source inputs, `Configuration` defaults to the host configuration.
 `SchemeName` can be omitted when Xcode lists exactly one scheme. The selected
-scheme must produce exactly one watch app; older layouts with an embedded
-watch extension are also supported. Xcode builds without signing and uses
-intermediate directories separate from the source project.
+scheme must produce exactly one watch app; older watch apps that contain a
+WatchKit extension are also supported. Xcode builds the app unsigned and keeps
+its intermediate files outside the source project.
 
-The native project owns bundle identifiers, versions, deployment targets,
-assets, capabilities, and watch-specific settings. Its
+Set bundle identifiers, versions, deployment targets, assets, capabilities,
+and other watch settings in the Xcode project. Its
 `WKCompanionAppBundleIdentifier` must match the host bundle identifier.
-The existing bundle validator checks identifier relationships and versions.
+The build checks bundle identifier relationships and versions.
 
 ## ZIP format
 
@@ -47,10 +47,10 @@ dSYMs/
   WatchApp.app.dSYM/
 ```
 
-The `Entitlements` and `dSYMs` directories are optional. Entitlement filenames
-are bundle identifiers, including a separate file for each embedded extension.
-They contain the original entitlement templates, not configuration-specific
-expanded values from a previous signature.
+The `Entitlements` and `dSYMs` directories are optional. Name each entitlements
+file after a bundle identifier, with a separate file for each embedded extension.
+Each file contains the original entitlement template, not values already
+expanded for a previous configuration and signature.
 
 A multi-variant ZIP puts this layout under iOS runtime identifier directories:
 
@@ -63,17 +63,13 @@ iossimulator-arm64/
   WatchApp.app/
   Entitlements/
   dSYMs/
-iossimulator-x64/
-  WatchApp.app/
-  Entitlements/
-  dSYMs/
 ```
 
-Only the selected runtime identifier is extracted. Explicit ZIP directory
-entries are not required. Entries must be relative, must not contain traversal
-segments, and must not write through symbolic links. Links must remain inside
-their bundle. Use a Mac ZIP tool that preserves executable permissions and
-symbolic links.
+Only the selected runtime identifier is extracted. The ZIP does not need
+separate entries for directories. Each entry must use a relative path, must
+not contain `..`, and must not place a file inside a symbolic link. Links must
+remain inside their bundle. Use a Mac ZIP tool that preserves executable
+permissions and symbolic links.
 
 ## Creating a reusable ZIP
 
@@ -86,12 +82,12 @@ dotnet build -t:CreateWatchOSAppZip \
   -p:WatchOSZipPath=output/WatchApp.zip
 ```
 
-The helper builds all three supported runtime identifiers, packages their
+The target builds both supported runtime identifiers, packages their
 unsigned bundles, and includes entitlement templates and available dSYMs.
 `WatchOSRuntimeIdentifiers` can select a semicolon-separated subset.
-This helper deliberately does not support remote execution.
+This target only runs on a local Mac, not through a paired Mac.
 
-Consume its output without depending on the original Xcode project:
+Use its output without depending on the original Xcode project:
 
 ```xml
 <ItemGroup>
@@ -102,9 +98,9 @@ Consume its output without depending on the original Xcode project:
 ## Signing
 
 Device builds use the host signing certificate and select a compatible
-installed provisioning profile for each native bundle. Automatic selection
-uses the host profile's distribution type. Debug and Release do not depend on
-the signature that happened to be present in the input.
+installed provisioning profile for each native bundle. When choosing a profile
+automatically, the build selects one with the same distribution type as the
+iOS app's profile. Debug and Release builds replace any existing signature.
 
 Use `CodesignProvision` metadata to select an installed profile by name or UUID.
 Use `CodesignEntitlements` to supply a template explicitly. On
@@ -121,30 +117,31 @@ an embedded extension, or override the root app by bundle identifier, use:
 
 Unmatched or duplicate signing entries are errors. Xcode source builds and
 helper-generated ZIPs carry their original entitlement templates. For other
-prebuilt inputs, existing signature entitlements are recovered when available;
-profile-specific application, team, debugging, and push environment values are
-recomputed. Supply the original template explicitly when changing teams or
-using capabilities with expanded identifiers. Unsigned bundles without a
-template use the selected profile's allowed default entitlements.
+prebuilt inputs, the build reads entitlements from the existing signature, if
+there is one. It recalculates values that depend on the profile: the application
+identifier, team identifier, debugging entitlement, and push environment.
+If you change teams, or use capabilities whose identifiers include the team
+or app ID, supply the original entitlements template. Unsigned bundles without
+a template get the default entitlements allowed by the selected profile.
 
-Profiles and compiled entitlements are written only into staged copies.
+The build adds profiles and compiled entitlements only to its own copy of the app.
 The input bundle is never re-signed or otherwise modified. Simulator bundles
 use normal simulator signing and retain their compiled-in entitlements.
-Watch apps, embedded extensions, frameworks, and libraries participate in the
-existing inside-out codesigning pipeline.
+Watch apps, embedded extensions, frameworks, and libraries are signed the same
+way as other bundles, innermost first.
 
 ## Outputs and migration
 
-The app is staged at `<Host>.app/Watch/<WatchApp>.app`. Replacing an input
-removes stale files; renaming or removing the item removes the previous
-embedded app. Generated files participate in MSBuild clean. Available dSYMs
-are included in archives, and legacy `_WatchKitStub/WK` support is included
-when the native product contains it.
+The app is copied to `<Host>.app/Watch/<WatchApp>.app`. Replacing the input
+removes old files. Renaming or removing the item removes the previously
+embedded app. `dotnet clean` removes generated files. Available dSYMs are
+included in archives. If the native product contains the legacy
+`_WatchKitStub/WK` stub, it is included too.
 
-The old managed watch project resolution, watch-specific asset compilation,
-and signing/post-processing sidecars are removed. Replace `IsWatchApp` project
-references and private `_ResolvedWatchAppReferences` hooks with
-`AdditionalWatchOSApp`; they are not compatibility aliases.
+Support for managed watch projects has been removed, including the watch-specific
+asset and signing steps. Replace `IsWatchApp` project references and private
+`_ResolvedWatchAppReferences` inputs with `AdditionalWatchOSApp`. The old names
+are not accepted as aliases.
 
 This does not add a watchOS target framework, a managed watch runtime,
 automatic changes to Xcode source settings, or watch deployment/debugging.

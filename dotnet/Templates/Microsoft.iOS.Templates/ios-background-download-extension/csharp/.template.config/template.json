@@ -8,7 +8,7 @@
   "groupIdentity": "Microsoft.iOS.iOSBackgroundDownloadExtension",
   "identity": "Microsoft.iOS.iOSBackgroundDownloadExtension.CSharp",
   "name": "iOS Background Download Extension",
-  "description": "A self-hosted, managed Background Assets downloader extension for a .NET iOS application",
+  "description": "A .NET iOS downloader extension for self-hosted Background Assets packs. The system manages the downloads.",
   "shortName": "ios-background-download-extension",
   "tags": {
     "language": "C#",
@@ -29,7 +29,7 @@
       "applyFileRenamesToManualInstructions": true,
       "manualInstructions": [
         {
-          "text": "Add a ProjectReference to iOSBackgroundDownloadExtension1.csproj with IsAppExtension metadata set to true. Configure the containing app for self-hosted, managed Background Assets, and use the same app group in both targets. See https://github.com/dotnet/macios/blob/main/dotnet/Templates/README.md#background-download-extension."
+          "text": "In the app project, add a ProjectReference to iOSBackgroundDownloadExtension1.csproj with IsAppExtension set to true. Configure the app for self-hosted Background Assets with system-managed downloads, and use the same app group in the app and the extension. See https://github.com/dotnet/macios/blob/main/dotnet/Templates/README.md#background-download-extension."
         }
       ]
     }
@@ -38,14 +38,14 @@
     "bundleId": {
       "type": "parameter",
       "displayName": "Bundle ID",
-      "description": "The bundle identifier of the containing iOS application",
+      "description": "The bundle identifier of the app that contains the extension",
       "datatype": "string",
       "replaces": "com.companyname.iOSApp1"
     },
     "appGroupId": {
       "type": "parameter",
       "displayName": "App group ID",
-      "description": "The app group shared with the containing application",
+      "description": "The app group shared by the app and the extension",
       "datatype": "string",
       "replaces": "group.com.companyname.backgroundassets",
       "defaultValue": "group.com.companyname.backgroundassets"
@@ -53,7 +53,7 @@
     "minOSVersion": {
       "type": "parameter",
       "displayName": "Minimum OS version",
-      "description": "Overrides SupportedOSPlatformVersion; must be iOS 26.0 or later",
+      "description": "Overrides SupportedOSPlatformVersion in the project file (must be 26.0 or later)",
       "datatype": "string",
       "replaces": "minOSVersion",
       "defaultValue": "26.0"
@@ -61,7 +61,7 @@
     "extensionClassName": {
       "type": "parameter",
       "displayName": "Extension class name",
-      "description": "The registered downloader extension class",
+      "description": "The downloader class name, used in [Register] and EXPrincipalClass",
       "datatype": "string",
       "replaces": "BackgroundDownloadHandler",
       "defaultValue": "BackgroundDownloadHandler"

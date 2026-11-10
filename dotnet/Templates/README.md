@@ -4,15 +4,16 @@ Templating Engine: https://github.com/dotnet/templating
 
 ## Background download extension
 
-`ios-background-download-extension` creates a self-hosted, managed Background Assets
-extension for iOS 26.0 or later:
+`ios-background-download-extension` creates a Background Assets downloader
+extension for iOS 26.0 or later. It works with asset packs that you host on your own
+server. The system manages the downloads:
 
 ```sh
 dotnet new ios-background-download-extension -n Downloader \
   --bundleId com.example.MyApp --appGroupId group.com.example.MyApp
 ```
 
-Add it to the containing application's project:
+In the app project, reference the extension and add the app group entitlement:
 
 ```xml
 <ItemGroup>
@@ -24,23 +25,24 @@ Add it to the containing application's project:
 </ItemGroup>
 ```
 
-Register the app group for both bundle identifiers and use provisioning profiles
-that include it. In the containing app's `Info.plist`, set `BAAppGroupID` to that
-group, `BAHasManagedAssetPacks` to `true`, and `BAManifestURL` to the HTTPS URL of
+Register the app group for the app and the extension, and use provisioning
+profiles that include that group. In the app's `Info.plist`, set `BAAppGroupID` to
+that group, `BAHasManagedAssetPacks` to `true`, and `BAManifestURL` to the HTTPS URL of
 your download manifest. Leave `BAUsesAppleHosting` unset or `false`. Create the
-asset packs and download manifest with Xcode's `ba-package` tool. Self-hosted
-downloads also need the size and domain restrictions described in Apple's
+asset packs and download manifest with Xcode's `ba-package` tool. For self-hosted
+downloads, the app's `Info.plist` must also set the size limits and allowed domains
+described in Apple's
 [Background Assets configuration guide](https://developer.apple.com/documentation/backgroundassets/configuring-an-unmanaged-background-assets-project).
 
-The extension uses `EXAppExtensionAttributes`, not `NSExtension`, and belongs in the
-containing app's `Extensions` directory, not `PlugIns`. Its `EXPrincipalClass`
-matches the Objective-C name in `[Register]`. The SDK initializes .NET and uses
-`NSExtensionMain`, which is also the entry point inherited by Xcode's
-`com.apple.product-type.extensionkit-extension` product type. No managed `Main`
-method or Swift `AppExtension` implementation is needed.
+The extension's `Info.plist` uses `EXAppExtensionAttributes` instead of
+`NSExtension`, and the extension goes in the app's `Extensions` directory instead
+of `PlugIns`. `EXPrincipalClass` must match the Objective-C name in `[Register]`.
+The SDK starts .NET and then calls `NSExtensionMain`, the same entry point Xcode
+uses for Objective-C ExtensionKit extensions. You don't need a `Main` method or a
+Swift `AppExtension` implementation.
 
-Only override `ShouldDownload` to filter asset packs. Do not implement the
-inherited `IBADownloaderExtension` download callbacks: the system supplies those
+Use `ShouldDownload` to choose which asset packs to download. Don't implement the
+inherited `IBADownloaderExtension` download callbacks: the system implements those
 for managed asset packs. Apple's
 [Objective-C downloader instructions](https://developer.apple.com/documentation/backgroundassets/bamanageddownloaderextension)
 describe the principal-class contract used by this template.

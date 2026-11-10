@@ -6,6 +6,8 @@ using NUnit.Framework;
 
 using Microsoft.Build.Logging.StructuredLogger;
 
+using Xamarin.MacDev;
+
 namespace Xamarin.Tests {
 	public class XcodeProjectTests : TestBaseClass {
 
@@ -186,6 +188,11 @@ namespace Xamarin.Tests {
 			var testDir = Cache.CreateTemporaryDirectory (TestName);
 			var project = Path.Combine (testDir, $"{TestName}.csproj");
 			DotNet.AssertNew (testDir, "ios");
+			var manifestPath = Path.Combine (testDir, "Info.plist");
+			var manifest = PDictionary.OpenFile (manifestPath);
+			manifest.Remove ("CFBundleIdentifier");
+			manifest.SetString ("CFBundleVersion", "1");
+			manifest.Save (manifestPath);
 			var nativeProject = Path.Combine (testDir, "Native watch project");
 			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, "WatchApp"), nativeProject);
 			var item = "<ItemGroup><AdditionalWatchOSApp Include=\"Native watch project/WatchApp.xcodeproj\" SchemeName=\"WatchApp\" /></ItemGroup>";

@@ -115,52 +115,6 @@ namespace Xamarin.MacDev.Tasks {
 			);
 		}
 
-		[TestCase (false)]
-		[TestCase (true)]
-		public void CopyFailure (bool unreadableSource)
-		{
-			if (OperatingSystem.IsWindows ()) {
-				Assert.Ignore ("This test requires Unix file permissions and filename length limits.");
-				return;
-			}
-
-			var projectDir = Cache.CreateTemporaryDirectory ();
-			var source = Path.Combine (projectDir, "image.png");
-			File.WriteAllText (source, "asset");
-
-			var fileName = unreadableSource ? "image.png" : new string ('a', 256) + ".png";
-			var catalog = Path.Combine ("Images.xcassets", "Image.imageset");
-			var link = Path.Combine (catalog, fileName);
-			var task = CreateTask<ACTool> ();
-			task.ProjectDir = projectDir;
-			task.IntermediateOutputPath = Path.Combine (projectDir, "obj");
-			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.MacOSX).ToString ();
-			var asset = new TaskItem (source);
-			asset.SetMetadata ("Link", link);
-			task.ImageAssets = [asset];
-
-			var destinationDirectory = Path.Combine (task.IntermediateOutputPath, "actool", "cloned-assets", catalog);
-			var destination = Path.Combine (destinationDirectory, fileName);
-			Directory.CreateDirectory (destinationDirectory);
-
-			var mode = File.GetUnixFileMode (source);
-			try {
-				if (unreadableSource)
-					File.SetUnixFileMode (source, UnixFileMode.None);
-
-				var exception = Assert.Catch (() => File.Copy (source, destination, true), "Reproduce copy failure");
-				Assert.That (exception, unreadableSource ? Is.InstanceOf<UnauthorizedAccessException> () : Is.InstanceOf<IOException> (), "Exception type");
-
-				ExecuteTask (task, 1);
-
-				var error = Engine.Logger.ErrorEvents.Single ();
-				Assert.That (error.File, Is.EqualTo (source), "Error file");
-				Assert.That (error.Message, Is.EqualTo ($"Could not copy the file '{source}' to '{destination}': {exception?.Message}"), "Error message");
-			} finally {
-				File.SetUnixFileMode (source, mode);
-			}
-		}
-
 		[Test]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]

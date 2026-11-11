@@ -3005,12 +3005,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 		<MakeDir
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_ResolvedAppExtensionReferences->Count())' != '0'"
 			Directories="$(DeviceSpecificIntermediateOutputPath)app-extensions/%(_ResolvedAppExtensionReferences.ContainerName)"
 		/>
 		<WriteLinesToFile
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_ResolvedAppExtensionReferences->Count())' != '0'"
 			File="%(_ResolvedAppExtensionReferences.CopyStampFile).inputs"
 			Lines="%(_ResolvedAppExtensionReferences.InputFiles)"
 			Overwrite="true"

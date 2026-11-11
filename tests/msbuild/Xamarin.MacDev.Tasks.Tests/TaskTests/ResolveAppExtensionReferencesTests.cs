@@ -119,7 +119,7 @@ namespace Xamarin.MacDev.Tasks {
 				      <BuildOutput>build</BuildOutput>
 				      <CodesignEntitlements>legacy.entitlements</CodesignEntitlements>
 				    </AdditionalAppExtensions>
-				    <AdditionalAppExtensions Include="$(MSBuildThisFileDirectory)Modern">
+				    <AdditionalAppExtensions Include="$(MSBuildThisFileDirectory)Modern" Condition="'$(RemoveModern)' != 'true'">
 				      <Name>Modern</Name>
 				      <BuildOutput>build</BuildOutput>
 				      <CodesignEntitlements>modern.entitlements</CodesignEntitlements>
@@ -199,6 +199,10 @@ namespace Xamarin.MacDev.Tasks {
 			properties ["RemoveLegacy"] = "true";
 			Build ();
 			Assert.That (legacyCopy, Does.Not.Exist, "Removed reference cleaned");
+			properties ["RemoveModern"] = "true";
+			Build ();
+			Assert.That (modernCopy, Does.Not.Exist, "Last reference cleaned");
+			Assert.That (Path.Combine (directory, ".inputs"), Does.Not.Exist, "No input list without extensions");
 		}
 
 		static ITaskItem CreateExtension (string directory, string name, string contents, string key)

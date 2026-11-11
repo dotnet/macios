@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Security;
 
+using Microsoft.Build.Framework;
+
 using Xamarin.Localization.MSBuild;
 
 namespace Xamarin.MacDev.Tasks.Messaging;
@@ -12,6 +14,17 @@ namespace Xamarin.MacDev.Tasks.Messaging;
 // need to access shared state from the SayHello task).
 
 public class GenerateBuildSessionId : Xamarin.Messaging.Build.Client.Tasks.GenerateBuildSessionId {
+	[Output]
+	public string? AgentVersion { get; set; }
+
+	public override bool Execute ()
+	{
+		if (!base.Execute ())
+			return false;
+
+		AgentVersion = Xamarin.Messaging.MessagingContext.Version;
+		return true;
+	}
 }
 
 public class SayHello : Xamarin.Messaging.Build.Client.Tasks.SayHello {

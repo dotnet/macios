@@ -18,6 +18,7 @@ public class RemoveRegisterAttributesStep : AssemblyModifierStep {
 		return App.CanTrimRegistrarAttributes
 			&& App.Registrar == RegistrarMode.TrimmableStatic
 			&& !App.IsPostProcessingAssemblies
+			&& !App.DynamicRegistrationSupported
 			&& Annotations.GetAction (assembly) == AssemblyAction.Link;
 	}
 

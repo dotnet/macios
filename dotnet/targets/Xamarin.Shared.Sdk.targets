@@ -693,7 +693,6 @@
 		-->
 		<ItemGroup Condition="'$(_CanTrimRegistrarAttributes)' == 'true' And '$(_DynamicRegistrationSupported)' == 'false'">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" />
-			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimRegistrarAttributes" Value="true" Trim="true" />
 		</ItemGroup>
 	</Target>
 
@@ -1565,13 +1564,14 @@
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
-			InputAssemblies="@(_AssembliesToPostProcess)"
 			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
+			InputAssemblies="@(_AssembliesToPostProcess)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			NativeAOTObjectFile="$(NativeObject)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

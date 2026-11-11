@@ -35,22 +35,25 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 		}
 		""";
 
-	[TestCase (true, RegistrarMode.TrimmableStatic, "link", true)]
-	[TestCase (false, RegistrarMode.TrimmableStatic, "link", false)]
-	[TestCase (true, RegistrarMode.ManagedStatic, "link", false)]
-	[TestCase (true, RegistrarMode.TrimmableStatic, "copy", false)]
-	public void Preparation (bool eligible, RegistrarMode registrar, string trimMode, bool expectedRemoval)
+	[TestCase (true, RegistrarMode.TrimmableStatic, "link", false, true)]
+	[TestCase (false, RegistrarMode.TrimmableStatic, "link", false, false)]
+	[TestCase (true, RegistrarMode.ManagedStatic, "link", false, false)]
+	[TestCase (true, RegistrarMode.TrimmableStatic, "copy", false, false)]
+	[TestCase (true, RegistrarMode.TrimmableStatic, "link", true, false)]
+	public void Preparation (bool eligible, RegistrarMode registrar, string trimMode, bool dynamicRegistrationSupported, bool expectedRemoval)
 	{
 		var directory = Xamarin.Cache.CreateTemporaryDirectory ();
 		var config = $"""
 			AssemblyName=Microsoft.iOS.dll
 			CanTrimRegistrarAttributes={eligible}
+			DynamicRegistrationSupported={dynamicRegistrationSupported}
 			TypeMapAssemblyName=_TypeMap
 			TypeMapOutputDirectory={Path.Combine (directory, "typemaps")}
 			""";
 		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => {
 			p.Registrar = registrar;
 			p.TrimExportAttributes = false;
+			p.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
 		}, Code, out var info, extraConfig: config, testAssemblyTrimMode: trimMode);
 
 		AssertPrepare (preparer);
@@ -70,17 +73,22 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 		AssertRegister (assembly.MainModule.GetType ("NonNSObject"), true);
 	}
 
-	[TestCase (true)]
-	[TestCase (false)]
-	public void PostprocessingRecoversRegistrationMetadata (bool eligible)
+	[TestCase (XamarinRuntime.CoreCLR)]
+	[TestCase (XamarinRuntime.NativeAOT)]
+	public void PostprocessingRecoversRegistrationMetadata (XamarinRuntime runtime)
 	{
 		var directory = Xamarin.Cache.CreateTemporaryDirectory ();
 		var config = $"""
 			AssemblyName=Microsoft.iOS.dll
 			CanTrimRegistrarAttributes=true
+			DynamicRegistrationSupported=false
+			Registrar=trimmable-static
+			PrepareAssemblies=true
 			CacheDirectory={directory}
+			XamarinRuntime={runtime}
 			TypeMapAssemblyName=_TypeMap
 			TypeMapOutputDirectory={Path.Combine (directory, "typemaps")}
+			UnmanagedCallersOnlyMapPath={Path.Combine (directory, "uco.txt")}
 			""";
 		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => {
 			p.Registrar = RegistrarMode.TrimmableStatic;
@@ -96,7 +104,6 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 		using var postprocessor = new AssemblyPreparer (logger, infos, configPath) { Registrar = RegistrarMode.TrimmableStatic };
 		var app = postprocessor.Configuration.Application;
 		app.IsPostProcessingAssemblies = true;
-		app.CanTrimRegistrarAttributes = eligible;
 		var resolver = new DefaultAssemblyResolver ();
 		foreach (var path in preparer.Assemblies.Select (v => Path.GetDirectoryName (v.InputPath)).Distinct ()) {
 			if (path is not null)
@@ -109,10 +116,8 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 		new CoreTypeMapStep ().Process (context);
 		var directBinding = context.IsDirectBindingValue;
 		Assert.That (directBinding, Is.Not.Null, "Postprocessing type map");
-		Assert.That (directBinding.Single (v => v.Key.Name == "DirectWrapper").Value, Is.EqualTo (eligible), "Recovered wrapper state");
-		Assert.That (directBinding.Single (v => v.Key.Name == "SkippedWrapper").Value, Is.EqualTo (eligible), "Recovered skip-registration state");
-		if (!eligible)
-			return;
+		Assert.That (directBinding.Single (v => v.Key.Name == "DirectWrapper").Value, Is.True, "Recovered wrapper state");
+		Assert.That (directBinding.Single (v => v.Key.Name == "SkippedWrapper").Value, Is.True, "Recovered skip-registration state");
 
 		new ManagedRegistrarStep ().Process (context);
 		new RegistrarStep ().Process (context);

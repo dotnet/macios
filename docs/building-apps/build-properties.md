@@ -569,17 +569,13 @@ Set this property to `false` to preserve the attributes. Set it to `true` to
 require their removal; the build will fail if it detects that the attributes
 are needed at runtime.
 
-When `PrepareAssemblies=true`, `PostProcessAssemblies=true`, and
-`Registrar=trimmable-static`, preparation also removes `Foundation.RegisterAttribute`
-from trimmed wrapper types whose `IsDirectBinding` value is known to be `true`.
-Wrapper ancestors with application subclasses retain their registration attributes.
-The post-processing registrar reads removed registration metadata from the original
-assemblies. This removal is independent of `TrimExportAttributes`.
-
-The same assembly preparation, post-processing, and registrar requirements
-apply to removal of `Foundation.ProtocolMemberAttribute`. These attributes
-are retained when dynamic registration is required. The post-processing
-registrar recovers removed metadata from the prepared, pre-trim assemblies.
+`TrimExportAttributes` does not control removal of `Foundation.RegisterAttribute`.
+When `PrepareAssemblies=true`, `PostProcessAssemblies=true`,
+`Registrar=trimmable-static`, and dynamic registration is disabled, assembly
+preparation also removes `Foundation.RegisterAttribute` from each binding type
+in a trimmed assembly when that type's `IsDirectBinding` value is known to be
+`true`. Other types keep the attribute. Runtime reflection will not find removed
+attributes. To keep them, set `DynamicRegistrationSupported=true`.
 
 ## EmbedOnDemandResources
 

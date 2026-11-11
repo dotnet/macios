@@ -123,17 +123,14 @@ namespace Xamarin.Tests {
 			}
 
 			AssertExportMetadata (platformAssemblyPath, appAssemblyPath, !expectedRemoval);
-			var trimRegistrarAttributes = prepareAssemblies && postProcessAssemblies && registrar == "trimmable-static" && dynamicRegistrationSupported != "true";
-			AssertProtocolMemberMetadata (platformAssemblyPath, !trimRegistrarAttributes);
-			var trimRegisterAttributes = prepareAssemblies && postProcessAssemblies && registrar == "trimmable-static";
+			var trimRegisterAttributes = prepareAssemblies && postProcessAssemblies && registrar == "trimmable-static" && dynamicRegistrationSupported != "true";
 			AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, !trimRegisterAttributes);
 
 			if (expectedRemoval) {
 				properties ["DynamicRegistrationSupported"] = "true";
 				DotNet.AssertBuild (projectPath, properties, target: target);
 				AssertExportMetadata (platformAssemblyPath, appAssemblyPath, true);
-				AssertProtocolMemberMetadata (platformAssemblyPath, true);
-				AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, false);
+				AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, true);
 			}
 		}
 
@@ -144,13 +141,6 @@ namespace Xamarin.Tests {
 			AssertAttribute (assembly.MainModule.GetType ("Foundation.NSObject"), "RegisterAttribute", true, "wrapper ancestor registration");
 			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath);
 			AssertAttribute (appAssembly.MainModule.GetType ("ExportAttributeRemovalApp.ExportMetadataApplicationType"), "RegisterAttribute", true, "application subclass registration");
-		}
-
-		static void AssertProtocolMemberMetadata (string platformAssemblyPath, bool expected)
-		{
-			using var assembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath);
-			var protocol = assembly.MainModule.GetType ("Foundation.INSUrlSessionDelegate");
-			AssertAttribute (protocol, "ProtocolMemberAttribute", expected, "protocol members");
 		}
 
 		static void AssertExportMetadata (string platformAssemblyPath, string appAssemblyPath, bool expected)

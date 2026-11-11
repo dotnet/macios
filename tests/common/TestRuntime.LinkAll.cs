@@ -44,11 +44,9 @@ partial class TestRuntime {
 		}
 	}
 
-	// When using NativeAOT on .NET 11+, ILLink isn't executed at all (ILC does all the trimming, see
-	// '_SkipILLink' in Xamarin.Shared.Sdk.targets), which means none of the custom trimmer steps that
-	// modify assemblies are applied to the app. In particular the attributes we'd otherwise remove
-	// (such as [Protocol]) are still there at runtime.
-	public static bool IsILLinkSkipped {
+	// NativeAOT postprocessing normally runs after ILC on .NET 11+, so the assembly-preparer skips
+	// RemoveAttributesStep. Attributes such as [Protocol] are therefore still present at runtime.
+	public static bool IsAttributeRemovalSkipped {
 		get {
 #if NATIVEAOT && NET11_0_OR_GREATER
 			return true;

@@ -96,6 +96,7 @@ stages:
       MAC_AGENT_IP: $[ dependencies.mac_reservation.outputs['macInfo.AGENT_IP'] ]
       MAC_AGENT_SYSTEM_DEFAULTWORKINGDIRECTORY: $[ dependencies.mac_reservation.outputs['macInfo.AGENT_SYSTEM_DEFAULTWORKINGDIRECTORY'] ]
       MAC_AGENT_BUILD_SOURCESDIRECTORY: $[ dependencies.mac_reservation.outputs['macInfo.AGENT_BUILD_SOURCESDIRECTORY'] ]
+      MAC_AGENT_REMOTE_NUGET_CONFIG_FILE: $[ dependencies.mac_reservation.outputs['remoteNuGetConfig.REMOTE_NUGET_CONFIG_FILE'] ]
       MAC_AGENT_USER: builder
 
     steps:

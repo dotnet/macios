@@ -162,6 +162,13 @@ steps:
         ${{ parameters.uploadPrefix }}WorkloadRollback/**
       path: $(Build.SourcesDirectory)/artifacts
 
+- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh
+  name: remoteNuGetConfig
+  displayName: 'Create NuGet feed for remote tests'
+  timeoutInMinutes: 15
+  env:
+    MACIOS_UPLOAD_PREFIX: ${{ parameters.uploadPrefix }}
+
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/install-workloads.sh
   workingDirectory: $(System.DefaultWorkingDirectory)
   displayName: 'Install .NET + workloads'

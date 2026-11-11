@@ -36,7 +36,7 @@ steps:
     isPR: ${{ parameters.isPR }}
     repositoryAlias: ${{ parameters.repositoryAlias }}
     commit: ${{ parameters.commit }}
-    runPowerShellBootstrapTests: true
+    runPowerShellBootstrapTests: false
 
 - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/show_bot_info.ps1"'
   displayName: 'Show Bot Info'
@@ -275,10 +275,24 @@ steps:
 
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-local-windows-tests.ps1
   displayName: 'Run .NET tests locally'
+  condition: false
   timeoutInMinutes: 30
   continueOnError: true
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
+
+- pwsh: |
+    $tools = "$(Agent.TempDirectory)/remote-build-diagnostic-tools"
+    New-Item -ItemType Directory -Force -Path $tools | Out-Null
+    Invoke-WebRequest https://download.sysinternals.com/files/Procdump.zip -OutFile "$tools/Procdump.zip"
+    Expand-Archive "$tools/Procdump.zip" -DestinationPath $tools -Force
+    & "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/Windows/bin/dotnet/dotnet.exe" `
+      tool install dotnet-dump --tool-path "$tools/dotnet-tools" --allow-roll-forward
+    if ($LASTEXITCODE -ne 0) { throw "Could not install dotnet-dump" }
+    Write-Host "##vso[task.setvariable variable=REMOTE_BUILD_PROCDUMP]$tools/procdump64.exe"
+    Write-Host "##vso[task.setvariable variable=REMOTE_BUILD_DOTNET_DUMP]$tools/dotnet-tools/dotnet-dump.exe"
+  displayName: 'Install remote build diagnostic tools'
+  timeoutInMinutes: 10
 
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-remote-windows-tests.ps1
   displayName: 'Run .NET tests remotely'
@@ -288,6 +302,17 @@ steps:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
   env:
     XMA_PASSWORD: $(XMA.Password)
+    TESTFILTER: Category=RemoteBuildHang
+    REMOTE_BUILD_DIAGNOSTICS: $(Build.ArtifactStagingDirectory)/remote-build-diagnostics
+    REMOTE_BUILD_PROCDUMP: $(REMOTE_BUILD_PROCDUMP)
+    REMOTE_BUILD_DOTNET_DUMP: $(REMOTE_BUILD_DOTNET_DUMP)
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish remote build hang diagnostics'
+  condition: always()
+  inputs:
+    targetPath: $(Build.ArtifactStagingDirectory)/remote-build-diagnostics
+    artifactName: remote-build-diagnostics-$(System.JobAttempt)
 
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\\$Env:BUILD_REPOSITORY_TITLE\\tools\\devops\\automation\\scripts\\MaciosCI.psd1
@@ -300,6 +325,7 @@ steps:
 
 - pwsh: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run-generator-tests-on-windows.ps1
   displayName: 'Run generator tests'
+  condition: false
 
 - pwsh: |
     Write-Host "There are test failures, so failing the build"

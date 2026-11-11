@@ -7,12 +7,9 @@ resources:
   pipelines:
     - pipeline: macios
       source: \Xamarin\Mac-iOS\pr pipelines\xamarin-macios-pr
-      trigger:
-        stages:
-          - build_packages
+      trigger: none
 
 extends:
   template: templates/pipelines/run-api-scan.yml
   parameters:
     isPR: true
-

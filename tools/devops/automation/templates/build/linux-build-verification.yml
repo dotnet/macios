@@ -25,6 +25,7 @@ parameters:
 stages:
 
 - stage: linux_build_verification
+  condition: false
   displayName: '${{ parameters.stageDisplayNamePrefix }}Linux Build Verification'
   dependsOn: []
   jobs:

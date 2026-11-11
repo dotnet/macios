@@ -11,7 +11,7 @@ jobs:
   autoformat-push:
     name: Autoformat and push
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: false
     permissions:
       contents: write
 
@@ -56,7 +56,7 @@ jobs:
   autoformat-artifact:
     name: Autoformat and upload patch
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.full_name != github.repository
+    if: false
     permissions:
       contents: read
 

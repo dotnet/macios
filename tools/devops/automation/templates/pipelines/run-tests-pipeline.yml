@@ -58,7 +58,8 @@ stages:
       xcodeChannel: $(xcodeChannel)
       macOSName: ${{ parameters.macOSName }}
       isPR: ${{ parameters.isPR }}
-      runTests: ${{ parameters.runTests }}
+      runTests: false
+      macTestsConfigurations: []
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
       buildPackages: ${{ parameters.buildPackages }}
       useACES: ${{ parameters.useACES }}

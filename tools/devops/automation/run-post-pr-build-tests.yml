@@ -4,6 +4,7 @@
 trigger: none
 
 pr:
+  drafts: true
   autoCancel: true
   branches:
     include:

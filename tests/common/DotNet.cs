@@ -361,7 +361,40 @@ namespace Xamarin.Tests {
 						env [kvp.Key] = kvp.Value;
 				}
 				timeout ??= TimeSpan.FromMinutes (10);
-				var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
+				var execution = new Execution {
+					FileName = Executable,
+					Arguments = args,
+					Environment = env,
+					Log = Console.Out,
+					WorkingDirectory = Path.GetDirectoryName (project),
+					Timeout = timeout,
+				};
+				var diagnosticRoot = Environment.GetEnvironmentVariable ("REMOTE_BUILD_DIAGNOSTICS");
+				string? diagnosticDirectory = null;
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT && verb == "build" && !string.IsNullOrEmpty (diagnosticRoot)) {
+					diagnosticDirectory = Path.Combine (diagnosticRoot, $"{Path.GetFileNameWithoutExtension (project)}-{Guid.NewGuid ():N}");
+					Directory.CreateDirectory (diagnosticDirectory);
+					args.Add ($"/flp:logfile={Path.Combine (diagnosticDirectory, "build.log")};verbosity=diagnostic");
+					var collector = Path.Combine (Configuration.SourceRoot, "tools", "devops", "automation", "scripts", "collect-windows-build-hang.ps1");
+					execution.BeforeTimeout = process => {
+						var collection = Execution.RunAsync ("pwsh", [
+							"-NoProfile", "-File", collector,
+							"-RootProcessId", process.Id.ToString (),
+							"-OutputDirectory", diagnosticDirectory,
+							"-DotNetPath", Executable,
+						], log: Console.Out, timeout: TimeSpan.FromMinutes (8)).Result;
+						Console.WriteLine (collection.Output.MergedOutput);
+						Assert.That (collection.ExitCode, Is.EqualTo (0), "Timeout diagnostic collector");
+					};
+				}
+				var rv = execution.RunAsync ().Result;
+				if (diagnosticDirectory is not null) {
+					File.WriteAllText (Path.Combine (diagnosticDirectory, "console.log"), rv.Output.MergedOutput);
+					File.WriteAllText (Path.Combine (diagnosticDirectory, "result.txt"), $"TimedOut={rv.TimedOut}\nExitCode={rv.ExitCode}\nDuration={rv.Duration}\nBinLog={binlogPath}\n");
+					if (File.Exists (binlogPath))
+						File.Copy (binlogPath, Path.Combine (diagnosticDirectory, "build.binlog"));
+					Assert.That (rv.TimedOut, Is.False, $"Remote build hung. Diagnostics: {diagnosticDirectory}");
+				}
 				var output = rv.Output.MergedOutput;
 				if (assert_success && rv.ExitCode != 0) {
 					Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");

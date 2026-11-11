@@ -88,7 +88,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		class ClosedEnumWrapper : ClosedGenericWrapper<DayOfWeek> {
 		}
 
-		class ClosedNativeWrapper<T> : CoreFoundation.NativeObject {
+		class ClosedNativeWrapper<T> : global::CoreFoundation.NativeObject {
 		}
 
 		class ClosedGenericSignatureClass : NSObject {

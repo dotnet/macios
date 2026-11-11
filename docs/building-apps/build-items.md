@@ -416,7 +416,13 @@ that runs before the public MSBuild target `PrepareForBuild`:
 This runs before the library names are captured in the linker options and,
 for NativeAOT builds, before they are added to `DirectPInvoke`.
 
-For NativeAOT builds, P/Invokes to these libraries are direct P/Invokes.
+Removing `__Internal` also affects the SDK's own P/Invokes to that library.
+Required entry points may be removed by the native linker or symbol stripping,
+which can cause runtime failures. Use `ReferenceNativeSymbol` to preserve any
+entry points that are still needed.
+
+For NativeAOT builds, P/Invokes to these libraries are direct P/Invokes, so
+`NativeLibrary.SetDllImportResolver` is not used for them.
 
 Use [ReferenceNativeSymbol](#referencenativesymbol) when individual symbols
 need to be preserved instead of all P/Invoke entry points for a library.

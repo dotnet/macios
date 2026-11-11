@@ -308,6 +308,13 @@ steps:
   timeoutInMinutes: 1
   condition: eq(variables['Agent.JobStatus'], 'SucceededWithIssues')
 
+# Older PR heads still collect logs from the Windows test job.
+- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\fetch-remote-binlogs.ps1
+  displayName: 'Fetch remote binlogs'
+  timeoutInMinutes: 5
+  condition: and(always(), ne(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
+  continueOnError: true
+
 # Copy the binlogs to the html report
 - pwsh: |
     $sourceDir = '$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests'

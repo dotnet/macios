@@ -162,7 +162,16 @@ steps:
         ${{ parameters.uploadPrefix }}WorkloadRollback/**
       path: $(Build.SourcesDirectory)/artifacts
 
-- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh
+- bash: |
+    set -eu
+    script="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
+    if test -f "$script"; then
+      "$script"
+      echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]true"
+    else
+      echo "This checkout predates ConfigureMac; using the existing remote test setup."
+      echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]false"
+    fi
   name: remoteNuGetConfig
   displayName: 'Create NuGet feed for remote tests'
   timeoutInMinutes: 15

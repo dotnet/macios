@@ -31,7 +31,7 @@ steps:
     KeyVaultName: 'xamarin-ios-vault'
     SecretsFilter: 'RemoteMacIdRsa'
   displayName: 'Download id_rsa'
-  condition: always()
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
 
 - bash: |
@@ -42,7 +42,7 @@ steps:
     chmod 600 "$ID_RSA_PATH"
     echo "##vso[task.setvariable variable=ID_RSA_PATH]$ID_RSA_PATH"
   displayName: 'Write id_rsa'
-  condition: always()
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
   env:
     REMOTE_MAC_ID_RSA: $(RemoteMacIdRsa)
@@ -50,7 +50,7 @@ steps:
 - pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/fetch-remote-binlogs.ps1"'
   displayName: 'Fetch remote logs'
   timeoutInMinutes: 15
-  condition: always()
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
 
 - task: PublishPipelineArtifact@1
@@ -58,12 +58,12 @@ steps:
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)/windows-remote-logs
     artifactName: windows-remote-logs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)
-  condition: always()
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
 
 - bash: rm -f "$ID_RSA_PATH"
   displayName: 'Remove secrets'
-  condition: always()
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
 
 # Sets the AzDO.BearerToken variable used as the auth token to disable/reenable agents

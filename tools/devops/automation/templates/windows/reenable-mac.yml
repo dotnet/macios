@@ -37,7 +37,7 @@ steps:
 - bash: |
     set -euo pipefail
     umask 077
-    ID_RSA_PATH="$AGENT_TEMPDIRECTORY/id_rsa"
+    ID_RSA_PATH="$(mktemp "$AGENT_TEMPDIRECTORY/id_rsa.XXXXXXXX")"
     printf '%s\n' "$REMOTE_MAC_ID_RSA" > "$ID_RSA_PATH"
     chmod 600 "$ID_RSA_PATH"
     echo "##vso[task.setvariable variable=ID_RSA_PATH]$ID_RSA_PATH"

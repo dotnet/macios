@@ -133,6 +133,10 @@ namespace MonoTouchFixtures.HealthKit {
 					if (!TestRuntime.CheckXcodeVersion (27, 0))
 						continue;
 					break;
+				case HKQuantityTypeIdentifier.HipCircumference:
+					if (!TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 27, 3))
+						continue;
+					break;
 				}
 
 				try {

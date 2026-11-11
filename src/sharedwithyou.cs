@@ -21,10 +21,12 @@ using UIMenu = AppKit.NSMenu;
 using UIImage = AppKit.NSImage;
 using ICloudSharingControllerDelegate = AppKit.INSCloudSharingServiceDelegate;
 using UIWindow = AppKit.NSWindow;
+using UIBarButtonItem = Foundation.NSObject;
 #else
 using UIKit;
 using ICloudSharingControllerDelegate = UIKit.IUICloudSharingControllerDelegate;
 using NSMenuItem = Foundation.NSObject;
+using NSToolbarItem = Foundation.NSObject;
 #endif
 
 namespace SharedWithYou {
@@ -334,6 +336,114 @@ namespace SharedWithYou {
 
 		[Export ("setShowManageButton:")]
 		void SetShowManageButton (bool showManageButton);
+	}
+
+	/// <summary>A bar button item that presents collaboration details.</summary>
+	[NoTV, NoMac, iOS (27, 3), MacCatalyst (27, 3)]
+	[BaseType (typeof (UIBarButtonItem))]
+	[DisableDefaultCtor]
+	interface SWCollaborationBarButtonItem {
+		/// <summary>Creates a collaboration bar button item for an item provider.</summary>
+		/// <param name="itemProvider">The item provider describing the collaboration.</param>
+		[Export ("initWithItemProvider:")]
+		NativeHandle Constructor (NSItemProvider itemProvider);
+
+		/// <summary>Gets or sets the delegate for the built-in cloud-sharing controller.</summary>
+		/// <remarks>Keep a strong reference to the delegate while it is in use.</remarks>
+		[Wrap ("WeakCloudSharingControllerDelegate")]
+		[NullAllowed]
+		ICloudSharingControllerDelegate CloudSharingControllerDelegate { get; set; }
+
+		/// <summary>Gets or sets the weakly held delegate for the built-in cloud-sharing controller.</summary>
+		[NullAllowed, Export ("cloudSharingControllerDelegate", ArgumentSemantic.Weak)]
+		NSObject WeakCloudSharingControllerDelegate { get; set; }
+
+		/// <summary>Gets or sets the number of active participants.</summary>
+		[Export ("activeParticipantCount")]
+		nint ActiveParticipantCount { get; set; }
+
+		/// <summary>Gets or sets whether the collaboration button displays the participant count.</summary>
+		[Export ("showsParticipantCount")]
+		bool ShowsParticipantCount { get; set; }
+
+		/// <summary>Gets or sets the number of pending access requests.</summary>
+		[Export ("pendingAccessRequestsCount")]
+		nint PendingAccessRequestsCount { get; set; }
+
+		/// <summary>Gets or sets whether the detail view displays the built-in manage-share button.</summary>
+		[Export ("showManageButton")]
+		bool ShowManageButton { get; set; }
+
+		/// <summary>Gets or sets the title of the built-in manage-share button.</summary>
+		[Export ("manageButtonTitle", ArgumentSemantic.Copy)]
+		string ManageButtonTitle { get; set; }
+
+		/// <summary>Gets or sets additional content for the collaboration detail view.</summary>
+		[NullAllowed, Export ("detailViewListContent", ArgumentSemantic.Strong)]
+		UIView DetailViewListContent { get; set; }
+
+		/// <summary>Dismisses the collaboration popover.</summary>
+		/// <param name="animated">Whether to animate the dismissal.</param>
+		/// <param name="completion">An optional handler invoked when dismissal completes.</param>
+		[Async (XmlDocs = """
+			<summary>Asynchronously dismisses the collaboration popover.</summary>
+			<param name="animated">Whether to animate the dismissal.</param>
+			<returns>A task that completes when the popover dismissal finishes.</returns>
+			""")]
+		[Export ("dismissPopoverAnimated:completion:")]
+		void DismissPopover (bool animated, [NullAllowed] Action completion);
+	}
+
+	/// <summary>A toolbar item that presents collaboration details.</summary>
+	[NoTV, NoiOS, NoMacCatalyst, Mac (27, 3)]
+	[BaseType (typeof (NSToolbarItem))]
+	[DisableDefaultCtor]
+	interface SWCollaborationToolbarItem {
+		/// <summary>Creates a collaboration toolbar item with the specified identifier.</summary>
+		/// <param name="itemIdentifier">The toolbar item's identifier.</param>
+		[DesignatedInitializer]
+		[Export ("initWithItemIdentifier:")]
+		NativeHandle Constructor (string itemIdentifier);
+
+		/// <summary>Creates a collaboration toolbar item for an item provider.</summary>
+		/// <param name="itemProvider">The item provider describing the collaboration.</param>
+		[Export ("initWithItemProvider:")]
+		NativeHandle Constructor (NSItemProvider itemProvider);
+
+		/// <summary>Gets or sets the number of active participants.</summary>
+		[Export ("activeParticipantCount")]
+		nint ActiveParticipantCount { get; set; }
+
+		/// <summary>Gets or sets whether the collaboration button displays the participant count.</summary>
+		[Export ("showsParticipantCount")]
+		bool ShowsParticipantCount { get; set; }
+
+		/// <summary>Gets or sets the number of pending access requests.</summary>
+		[Export ("pendingAccessRequestsCount")]
+		nint PendingAccessRequestsCount { get; set; }
+
+		/// <summary>Gets or sets whether the detail view displays the built-in manage-share button.</summary>
+		[Export ("showManageButton")]
+		bool ShowManageButton { get; set; }
+
+		/// <summary>Gets or sets the title of the built-in manage-share button.</summary>
+		[Export ("manageButtonTitle", ArgumentSemantic.Copy)]
+		string ManageButtonTitle { get; set; }
+
+		/// <summary>Gets or sets additional content for the collaboration detail view.</summary>
+		[NullAllowed, Export ("detailViewListContent", ArgumentSemantic.Strong)]
+		UIView DetailViewListContent { get; set; }
+
+		/// <summary>Dismisses the collaboration popover.</summary>
+		/// <param name="animated">Whether to animate the dismissal.</param>
+		/// <param name="completion">An optional handler invoked when dismissal completes.</param>
+		[Async (XmlDocs = """
+			<summary>Asynchronously dismisses the collaboration popover.</summary>
+			<param name="animated">Whether to animate the dismissal.</param>
+			<returns>A task that completes when the popover dismissal finishes.</returns>
+			""")]
+		[Export ("dismissPopoverAnimated:completion:")]
+		void DismissPopover (bool animated, [NullAllowed] Action completion);
 	}
 
 	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]

@@ -9,6 +9,12 @@ namespace ThreadNetwork {
 	/// <param name="error">The error, or <see langword="null" /> if the operation succeeded.</param>
 	delegate void THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler ([NullAllowed] NSSet<THCredentials> credentials, [NullAllowed] NSError error);
 
+	/// <summary>Handles credentials retrieved for nearby Thread networks.</summary>
+	/// <param name="credentials">The nearby network credentials, or <see langword="null" /> if retrieval failed.</param>
+	/// <param name="error">The error, or <see langword="null" /> if retrieval succeeded.</param>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	delegate void THClientRetrieveNearbyNetworkCredentialsCompletionHandler ([NullAllowed] NSSet<THNearbyNetworkCredentials> credentials, [NullAllowed] NSError error);
+
 	[iOS (15, 0), Mac (13, 0), MacCatalyst (16, 1), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface THClient {
@@ -24,12 +30,25 @@ namespace ThreadNetwork {
 		/// <summary>Retrieves active credentials for nearby Thread networks.</summary>
 		/// <param name="completion">The handler to invoke when the credentials are available.</param>
 		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
+		[Deprecated (PlatformName.iOS, 27, 3, message: "Use 'RetrieveNearbyNetworkCredentials' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 3, message: "Use 'RetrieveNearbyNetworkCredentials' instead.")]
+		[Deprecated (PlatformName.MacOSX, 27, 3, message: "Use 'RetrieveNearbyNetworkCredentials' instead.")]
 		[Async (XmlDocs = """
 			<summary>Asynchronously retrieves active credentials for nearby Thread networks.</summary>
 			<returns>A task that represents the asynchronous retrieval operation.</returns>
 			""")]
 		[Export ("retrieveActiveCredentialsForNearbyNetworksWithCompletion:")]
 		void RetrieveActiveCredentialsForNearbyNetworks (THClientRetrieveActiveCredentialsForNearbyNetworksCompletionHandler completion);
+
+		/// <summary>Retrieves credentials for nearby active Thread networks, including their preferred-network status.</summary>
+		/// <param name="completion">The handler to invoke when retrieval completes.</param>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Async (XmlDocs = """
+			<summary>Asynchronously retrieves credentials for nearby active Thread networks, including their preferred-network status.</summary>
+			<returns>A task that returns the retrieved credentials.</returns>
+			""")]
+		[Export ("retrieveNearbyNetworkCredentialsWithCompletion:")]
+		void RetrieveNearbyNetworkCredentials (THClientRetrieveNearbyNetworkCredentialsCompletionHandler completion);
 
 		[Async]
 		[Export ("deleteCredentialsForBorderAgent:completion:")]
@@ -101,6 +120,17 @@ namespace ThreadNetwork {
 
 		[NullAllowed, Export ("lastModificationDate")]
 		NSDate LastModificationDate { get; }
+	}
+
+	/// <summary>Credentials for a Thread network discovered nearby.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[BaseType (typeof (THCredentials))]
+	[DisableDefaultCtor]
+	interface THNearbyNetworkCredentials {
+		/// <summary>Gets whether these credentials belong to the preferred network.</summary>
+		/// <remarks>This value is a snapshot and does not change when the preferred network changes.</remarks>
+		[Export ("isPreferredNetworkCredentials")]
+		bool IsPreferredNetworkCredentials { get; }
 	}
 
 }

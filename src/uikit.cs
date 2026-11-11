@@ -10615,7 +10615,7 @@ namespace UIKit {
 		/// <summary>Creates a bar layout region on a single edge using the system's default bar extent.</summary>
 		/// <param name="edge">The single edge on which to place the region.</param>
 		/// <returns>The bar layout region.</returns>
-		[NoTV, NoMacCatalyst, iOS (27, 2)]
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
 		[Static]
 		[Export ("layoutRegionForBarOnEdge:")]
 		UIViewLayoutRegion CreateBarLayoutRegion (UIRectEdge edge);
@@ -10623,7 +10623,7 @@ namespace UIKit {
 		/// <summary>Creates a bar layout region on a single directional edge using the system's default bar extent.</summary>
 		/// <param name="edge">The single directional edge on which to place the region.</param>
 		/// <returns>The bar layout region.</returns>
-		[NoTV, NoMacCatalyst, iOS (27, 2)]
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
 		[Static]
 		[Export ("layoutRegionForBarOnDirectionalEdge:")]
 		UIViewLayoutRegion CreateBarLayoutRegion (NSDirectionalRectEdge edge);
@@ -14127,6 +14127,11 @@ namespace UIKit {
 		[Export ("toolbar")]
 		UIToolbar Toolbar { get; }
 
+		/// <summary>Gets or sets how this navigation controller integrates its bar content with parent containers.</summary>
+		[TV (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("barContainerBehavior")]
+		UIBarContainerBehavior BarContainerBehavior { get; set; }
+
 		[Export ("delegate", ArgumentSemantic.Assign)]
 		[NullAllowed]
 		NSObject WeakDelegate { get; set; }
@@ -14874,6 +14879,15 @@ namespace UIKit {
 		[Export ("setItemProviders:localOnly:expirationDate:")]
 		void SetItemProviders (NSItemProvider [] itemProviders, bool localOnly, [NullAllowed] NSDate expirationDate);
 
+		/// <summary>Sets the pasteboard's item providers and privacy options.</summary>
+		/// <param name="itemProviders">The item providers to place on the pasteboard.</param>
+		/// <param name="localOnly">Whether to keep the items on the local device.</param>
+		/// <param name="expirationDate">When the items expire, or <see langword="null" /> for no expiration.</param>
+		/// <param name="concealed">Whether to mark the supplied items as concealed.</param>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("setItemProviders:localOnly:expirationDate:concealed:")]
+		void SetItemProviders (NSItemProvider [] itemProviders, bool localOnly, [NullAllowed] NSDate expirationDate, bool concealed);
+
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("setObjects:")]
@@ -14883,6 +14897,15 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Export ("setObjects:localOnly:expirationDate:")]
 		void SetObjects (INSItemProviderWriting [] objects, bool localOnly, [NullAllowed] NSDate expirationDate);
+
+		/// <summary>Sets the pasteboard's objects and privacy options.</summary>
+		/// <param name="objects">The objects to place on the pasteboard.</param>
+		/// <param name="localOnly">Whether to keep the objects on the local device.</param>
+		/// <param name="expirationDate">When the objects expire, or <see langword="null" /> for no expiration.</param>
+		/// <param name="concealed">Whether to mark the supplied objects as concealed.</param>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("setObjects:localOnly:expirationDate:concealed:")]
+		void SetObjects (INSItemProviderWriting [] objects, bool localOnly, [NullAllowed] NSDate expirationDate, bool concealed);
 	}
 
 	/// <summary>Constants that identify the name of a pasteboard.</summary>
@@ -14918,6 +14941,10 @@ namespace UIKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		bool LocalOnly { get; set; }
+
+		/// <summary>Gets or sets whether to mark pasteboard content as concealed.</summary>
+		[iOS (27, 3), MacCatalyst (27, 3)]
+		bool Concealed { get; set; }
 	}
 
 	[NoTV]
@@ -14935,6 +14962,11 @@ namespace UIKit {
 		///         <remarks>To be added.</remarks>
 		[Field ("UIPasteboardOptionLocalOnly")]
 		NSString LocalOnlyKey { get; }
+
+		/// <summary>Gets the pasteboard option key that marks content as concealed.</summary>
+		[iOS (27, 3), MacCatalyst (27, 3)]
+		[Field ("UIPasteboardOptionConcealed")]
+		NSString ConcealedKey { get; }
 	}
 
 	/// <summary>A <see cref="UIKit.UIView" /> that displays a spinning wheel control used to select data.</summary>
@@ -23460,6 +23492,22 @@ namespace UIKit {
 		[MacCatalyst (14, 0)]
 		[Export ("setNeedsUpdateOfPrefersPointerLocked")]
 		void SetNeedsUpdateOfPrefersPointerLocked ();
+
+		// From the UIViewController direct-touch system-gesture category.
+		/// <summary>Gets whether this view controller prefers to disable direct-touch system gestures in its scene.</summary>
+		[NoiOS, NoTV, MacCatalyst (27, 3)]
+		[Export ("prefersDirectTouchSystemGesturesDisabled")]
+		bool PrefersDirectTouchSystemGesturesDisabled { get; }
+
+		/// <summary>Notifies the system that the direct-touch system-gesture preference or its designated child view controller has changed.</summary>
+		[NoiOS, NoTV, MacCatalyst (27, 3)]
+		[Export ("setNeedsUpdateOfDirectTouchSystemGesturesDisabled")]
+		void SetNeedsUpdateOfDirectTouchSystemGesturesDisabled ();
+
+		/// <summary>Gets the child view controller to query for the direct-touch system-gesture preference, or <see langword="null" /> to query this controller.</summary>
+		[NoiOS, NoTV, MacCatalyst (27, 3)]
+		[NullAllowed, Export ("childViewControllerForDirectTouchSystemGesturesDisabled", ArgumentSemantic.Strong)]
+		UIViewController ChildViewControllerForDirectTouchSystemGesturesDisabled { get; }
 
 		[NoiOS]
 		[NoTV]

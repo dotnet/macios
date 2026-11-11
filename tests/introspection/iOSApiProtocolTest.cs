@@ -1032,6 +1032,9 @@ namespace Introspection {
 				case "UIBarButtonItem":
 				case "MKUserTrackingBarButtonItem":
 					return true;
+				case "SWCollaborationBarButtonItem":
+					// Inherits UIBarButtonItem's category-only conformance.
+					return true;
 				// xcode 16
 				case "UISearchTab":
 				case "UITab":

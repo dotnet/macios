@@ -26032,6 +26032,11 @@ namespace AppKit {
 		[Export ("ignoresMouseEvents")]
 		bool IgnoresMouseEvents { get; set; }
 
+		/// <summary>Gets or sets whether direct-touch system gestures are disabled while this window is visible.</summary>
+		[Mac (27, 3)]
+		[Export ("disablesDirectTouchSystemGestures")]
+		bool DisablesDirectTouchSystemGestures { get; set; }
+
 		[Export ("deviceDescription")]
 		NSDictionary DeviceDescription { get; }
 

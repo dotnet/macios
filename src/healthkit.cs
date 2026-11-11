@@ -997,6 +997,15 @@ namespace HealthKit {
 		[return: NullAllowed]
 		HKBiologicalSexObject GetBiologicalSex (out NSError error);
 
+		/// <summary>Reads the reference sex used to classify clinical measurements.</summary>
+		/// <param name="referenceSex">On success, the reference sex used to select clinical reference ranges.</param>
+		/// <param name="error">The error if the read failed, or <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the read succeeded; otherwise, <see langword="false" />.</returns>
+		/// <remarks>Request authorization for <see cref="HKCharacteristicTypeIdentifier.ReferenceSex" /> before calling this method.</remarks>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		[Export ("getReferenceSex:error:")]
+		bool GetReferenceSex (out HKReferenceSex referenceSex, [NullAllowed] out NSError error);
+
 		// FIXME NS_EXTENSION_UNAVAILABLE("Not available to extensions") ;
 		[Export ("bloodTypeWithError:")]
 		[return: NullAllowed]
@@ -3400,6 +3409,11 @@ namespace HealthKit {
 		[NoTV, iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
 		[Field ("HKQuantityTypeIdentifierHeartRateVariabilityRMSSD")]
 		HeartRateVariabilityRmssd,
+
+		/// <summary>Identifies samples measuring hip circumference.</summary>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		[Field ("HKQuantityTypeIdentifierHipCircumference")]
+		HipCircumference,
 	}
 
 	/// <summary>Contains constants that identify HealthKit correlation types.</summary>
@@ -3814,6 +3828,11 @@ namespace HealthKit {
 		[MacCatalyst (14, 0)]
 		[Field ("HKCharacteristicTypeIdentifierActivityMoveMode")]
 		ActivityMoveMode,
+
+		/// <summary>The reference-sex characteristic used to select clinical reference ranges.</summary>
+		[NoTV, iOS (27, 3), MacCatalyst (27, 3), Mac (27, 3)]
+		[Field ("HKCharacteristicTypeIdentifierReferenceSex")]
+		ReferenceSex,
 	}
 
 	/// <summary>Definitions and utility methods for manipulating measurements of mass, length, volume, and energy.</summary>

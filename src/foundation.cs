@@ -1226,6 +1226,11 @@ namespace Foundation {
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Field ("NSListItemDelimiterAttributeName")]
 		ListItemDelimiter,
+
+		/// <summary>Identifies an attribute specifying the grammatical possessor's morphology.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Field ("NSPossessorMorphologyAttributeName")]
+		PossessorMorphology,
 	}
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
@@ -1246,6 +1251,9 @@ namespace Foundation {
 		Inessive,
 		Locative,
 		Translative,
+		/// <summary>The instrumental grammatical case.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		Instrumental = 15,
 	}
 
 	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]

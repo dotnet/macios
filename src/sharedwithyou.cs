@@ -385,6 +385,11 @@ namespace SharedWithYou {
 		/// <summary>Dismisses the collaboration popover.</summary>
 		/// <param name="animated">Whether to animate the dismissal.</param>
 		/// <param name="completion">An optional handler invoked when dismissal completes.</param>
+		[Async (XmlDocs = """
+			<summary>Asynchronously dismisses the collaboration popover.</summary>
+			<param name="animated">Whether to animate the dismissal.</param>
+			<returns>A task that completes when the popover dismissal finishes.</returns>
+			""")]
 		[Export ("dismissPopoverAnimated:completion:")]
 		void DismissPopover (bool animated, [NullAllowed] Action completion);
 	}
@@ -432,6 +437,11 @@ namespace SharedWithYou {
 		/// <summary>Dismisses the collaboration popover.</summary>
 		/// <param name="animated">Whether to animate the dismissal.</param>
 		/// <param name="completion">An optional handler invoked when dismissal completes.</param>
+		[Async (XmlDocs = """
+			<summary>Asynchronously dismisses the collaboration popover.</summary>
+			<param name="animated">Whether to animate the dismissal.</param>
+			<returns>A task that completes when the popover dismissal finishes.</returns>
+			""")]
 		[Export ("dismissPopoverAnimated:completion:")]
 		void DismissPopover (bool animated, [NullAllowed] Action completion);
 	}

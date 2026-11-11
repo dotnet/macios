@@ -48,4 +48,7 @@ fi
 cat "$CONFIG_FILE"
 ls -la "$FEED_DIR"
 
-echo "##vso[task.setvariable variable=REMOTE_NUGET_CONFIG_FILE;isOutput=true]$CONFIG_FILE"
+ESCAPED_CONFIG_FILE=${CONFIG_FILE//%/%AZP25}
+ESCAPED_CONFIG_FILE=${ESCAPED_CONFIG_FILE//$'\r'/%0D}
+ESCAPED_CONFIG_FILE=${ESCAPED_CONFIG_FILE//$'\n'/%0A}
+echo "##vso[task.setvariable variable=REMOTE_NUGET_CONFIG_FILE;isOutput=true]$ESCAPED_CONFIG_FILE"

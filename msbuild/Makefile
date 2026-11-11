@@ -109,9 +109,20 @@ DOTNET_IOS_WINDOWS_OUTPUT_FILES =                                \
 DOTNET_IOS_WINDOWS_FILES = $(IOS_WINDOWS_TARGETS) $(foreach file,$(DOTNET_IOS_WINDOWS_OUTPUT_FILES),Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/$(file))
 DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Build.zip
 
+ifneq ($(filter iOS,$(DOTNET_PLATFORMS)),)
+.copy-stamp-iOS: .copy-stamp-iOS-configure-mac
+
+.copy-stamp-iOS-configure-mac: .build-stamp Xamarin.iOS.Tasks.Windows/Xamarin.ConfigureMac.targets
+	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/ConfigureMac
+	$(Q) $(CP) Xamarin.iOS.Tasks.Windows/Xamarin.ConfigureMac.targets Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Broker.zip Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Build.zip $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/
+	$(Q) rsync -a --delete --delete-excluded --exclude='*.pdb' Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/ConfigureMac/ $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/ConfigureMac/
+	$(Q) touch $@
+endif
+
 .copy-windows-files: .build-stamp
-	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS
+	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/ConfigureMac
 	$(Q) $(CP) $(DOTNET_IOS_WINDOWS_FILES) $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/
+	$(Q) rsync -a --delete --delete-excluded --exclude='*.pdb' Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/ConfigureMac/ $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/ConfigureMac/
 
 .dotnet-windows: .build-stamp .copy-windows-files
 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<_ConfigureMacTaskFramework Condition="'$(_UseDesktopTaskAssemblies)' == 'true'">netstandard2.0</_ConfigureMacTaskFramework>
+		<_ConfigureMacTaskFramework Condition="'$(_UseDesktopTaskAssemblies)' != 'true'">net12.0</_ConfigureMacTaskFramework>
+	</PropertyGroup>
+
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.Messaging.Remote.Tasks.ConfigureMac" AssemblyFile="$(MSBuildThisFileDirectory)ConfigureMac/$(_ConfigureMacTaskFramework)/Xamarin.Messaging.Remote.Tasks.dll" />
+
+	<Target Name="ConfigureMac" Returns="$(RemoteDotNetRoot)">
+		<PropertyGroup>
+			<ServerSshPort Condition="'$(ServerSshPort)' == ''">22</ServerSshPort>
+			<ResetRemoteCache Condition="'$(ResetRemoteCache)' == ''">false</ResetRemoteCache>
+			<OverwriteRemoteNuGetConfig Condition="'$(OverwriteRemoteNuGetConfig)' == ''">false</OverwriteRemoteNuGetConfig>
+		</PropertyGroup>
+
+		<GenerateBuildSessionId
+			MessagingVersion="$(MessagingVersion)"
+			ProjectFullPath="$(MSBuildProjectFullPath)"
+			ProjectName="$(MSBuildProjectName)"
+			TargetFramework="$(TargetFramework)"
+			VisualStudioProcessId="$(VisualStudioProcessId)">
+			<Output TaskParameter="AgentVersion" PropertyName="_ConfigureMacAgentVersion" />
+		</GenerateBuildSessionId>
+
+		<Xamarin.Messaging.Remote.Tasks.ConfigureMac
+			BrokerAgentZip="$(MSBuildThisFileDirectory)Broker.zip"
+			BuildAgentZip="$(MSBuildThisFileDirectory)Build.zip"
+			DotNetSdkFeed="$(DotNetSdkFeed)"
+			DotNetSdkVersion="$(NETCoreSdkVersion)"
+			IosWorkloadManifestVersion="$(IosWorkloadManifestVersion)"
+			LocalDotNetRoot="$(NetCoreRoot)"
+			MessagingVersion="$(_ConfigureMacAgentVersion)"
+			OverwriteRemoteNuGetConfig="$(OverwriteRemoteNuGetConfig)"
+			ProjectFile="$(MSBuildProjectFullPath)"
+			RemoteBasePath="$(RemoteBasePath)"
+			RemoteNuGetConfigFile="$(RemoteNuGetConfigFile)"
+			ResetRemoteCache="$(ResetRemoteCache)"
+			ServerAddress="$(ServerAddress)"
+			ServerFingerprint="$(ServerFingerprint)"
+			ServerPasswordFile="$(ServerPasswordFile)"
+			ServerSshPort="$(ServerSshPort)"
+			ServerUser="$(ServerUser)"
+			SSHKey="$(SSHKey)"
+			SSHPassPhraseFile="$(SSHPassPhraseFile)"
+			XcodeLocation="$(XcodeLocation)">
+			<Output TaskParameter="RemoteArchitecture" PropertyName="RemoteArchitecture" />
+			<Output TaskParameter="RemoteBasePath" PropertyName="ConfiguredRemoteBasePath" />
+			<Output TaskParameter="RemoteDotNetRoot" PropertyName="RemoteDotNetRoot" />
+			<Output TaskParameter="RemoteHomeDirectory" PropertyName="RemoteHomeDirectory" />
+		</Xamarin.Messaging.Remote.Tasks.ConfigureMac>
+
+		<Error Condition="!$(RemoteDotNetRoot.StartsWith('/'))" Text="ConfigureMac did not return an absolute remote .NET SDK directory." />
+		<PropertyGroup>
+			<_ConfiguredMacInCurrentInvocation>true</_ConfiguredMacInCurrentInvocation>
+		</PropertyGroup>
+	</Target>
+</Project>

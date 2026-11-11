@@ -540,6 +540,12 @@ The full path to the `ditto` executable.
 
 The default behavior is to use `/usr/bin/ditto`.
 
+## DotNetSdkFeed
+
+The URL of the .NET SDK feed used by
+[`ConfigureMac`](build-targets.md#configuremac). By default, the .NET
+installation script uses its standard feeds.
+
 ## DynamicRegistrationSupported
 
 Controls whether the dynamic registrar is available at runtime (as reported by
@@ -872,6 +878,12 @@ Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol
 Specifies the minimum iOS version the app can run on.
 
 Applicable to iOS; setting this value will set [SupportedOSPlatformVersion](#supportedosplatformversion) for iOS projects (only).
+
+## IosWorkloadManifestVersion
+
+The expected iOS workload manifest version for
+[`ConfigureMac`](build-targets.md#configuremac). If set, it must match the
+version selected by the local .NET SDK; it does not select a different version.
 
 ## IPhoneResourcePrefix
 
@@ -1401,6 +1413,12 @@ Example:
 </Target>
 ```
 
+## OverwriteRemoteNuGetConfig
+
+Set this to `true` to let [`ConfigureMac`](build-targets.md#configuremac)
+replace different NuGet configuration files in the Pair to Mac directory.
+The default is `false`.
+
 ## PackageSigningKey
 
 Specifies the code signing key to sign the package when creating .pkg for a macOS and Mac Catalyst project.
@@ -1478,6 +1496,25 @@ Note: the version number may contain more than 2 components ("26.6.1" for instan
 
 See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
 
+## RemoteBasePath
+
+The base directory on the Mac used for remote builds. Pass the same value to
+[`ConfigureMac`](build-targets.md#configuremac) and subsequent builds when
+using a directory other than the default Pair to Mac directory. An explicit
+`BasePath` takes precedence for builds.
+
+## RemoteDotNetRoot
+
+The absolute path to the .NET SDK directory on the Mac used for remote builds.
+Pass the value returned by [`ConfigureMac`](build-targets.md#configuremac) to
+subsequent command-line builds.
+
+## RemoteNuGetConfigFile
+
+The path to a NuGet configuration file on the Mac. [`ConfigureMac`](build-targets.md#configuremac)
+uses this file when installing the remote iOS workload. It does not upload the
+file from the client.
+
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 
 We will automatically scan all libraries for managed classes that map to
@@ -1501,6 +1538,12 @@ only scan libraries with the `[LinkWith]` attribute for Objective-C classes:
   <RequireLinkWithAttributeForObjectiveCClassSearch>true</RequireLinkWithAttributeForObjectiveCClassSearch>
 </PropertyGroup>
 ```
+
+## ResetRemoteCache
+
+Set this to `true` to remove the existing Pair to Mac caches and private SDK
+before [`ConfigureMac`](build-targets.md#configuremac) prepares the Mac.
+The default is `false`.
 
 ## ResolveResourceItemsRelativeToProject
 
@@ -1729,9 +1772,15 @@ However, the either of the following works:
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
 
+## ServerFingerprint
+
+The expected SHA256 SSH host-key fingerprint of the Mac. Use this with
+[`ConfigureMac`](build-targets.md#configuremac) when the host key is not
+already in the client's known-hosts file.
+
 ## ServerPasswordFile
 
-The path on Windows to a UTF-8 file containing the SSH password for a remote Mac.
+The path on the client to a UTF-8 file containing the SSH password for a remote Mac.
 This property takes precedence over `ServerPassword`.
 
 Use this property to keep the password out of MSBuild properties, logs, and
@@ -1739,9 +1788,13 @@ binlogs. Restrict access to the file and delete it when it is no longer needed.
 Don't also pass the password in `ServerPassword` or an environment variable
 when running MSBuild, because those values can be logged.
 
+## ServerSshPort
+
+The SSH port used to connect to the Mac. The default is `22`.
+
 ## SSHPassPhraseFile
 
-The path on Windows to a protected UTF-8 file containing the passphrase for an
+The path on the client to a protected UTF-8 file containing the passphrase for an
 encrypted SSH key. This property takes precedence over `SSHPassPhrase`.
 Restrict access to the file and delete it when it is no longer needed.
 

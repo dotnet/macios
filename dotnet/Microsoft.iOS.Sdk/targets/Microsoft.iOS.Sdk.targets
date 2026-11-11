@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="Xamarin.Shared.Sdk.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\tools\msbuild\Xamarin.ConfigureMac.targets" Condition="$([MSBuild]::IsOSPlatform('OSX'))" />
 </Project>

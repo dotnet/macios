@@ -17,6 +17,7 @@
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <PackageReference Include="Xamarin.Messaging.Build.Client" Version="$(MessagingVersion)" IncludeAssets="contentFiles" />
     <PackageReference Include="Xamarin.Messaging.Core" Version="$(MessagingVersion)" IncludeAssets="build" />
+    <PackageReference Include="Xamarin.Messaging.Remote" Version="$(MessagingRemoteVersion)" ExcludeAssets="all" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="Xamarin.Messaging.Server" Version="$(MessagingVersion)" IncludeAssets="contentFiles" />
     <PackageReference Include="System.Diagnostics.Tracer" Version="2.1.0-alpha" GeneratePathProperty="true" />
     <!-- GitInfo is pulled in because of Xamarin.Messaging from above, but we don't want it, so just exclude all assets from it -->
@@ -37,6 +38,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="*.targets">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="$(PkgXamarin_Messaging_Remote)/tools/**/*" Exclude="$(PkgXamarin_Messaging_Remote)/tools/**/*.pdb" Condition="'$(TargetFramework)' == 'netstandard2.0'">
+      <Link>ConfigureMac/%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="../Versions.g.cs" />
@@ -62,6 +67,10 @@
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\ILMerge.targets" />
+
+  <Target Name="_CleanConfigureMacOutput" BeforeTargets="_CopyOutOfDateSourceItemsToOutputDirectory" Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <RemoveDir Directories="$(OutDir)ConfigureMac" />
+  </Target>
 
   <Target Name="BuildGeneratedVersionsFile" Inputs="../../Make.config.inc;../Makefile" Outputs="../Versions.g.cs" BeforeTargets="BeforeBuild">
     <Exec Command="make -C .. Versions.g.cs" />

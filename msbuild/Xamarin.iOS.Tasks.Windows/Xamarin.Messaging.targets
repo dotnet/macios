@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build"	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayHello" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFileFromBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFilesToBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyLongPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.VerifyBuildSignature" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayGoodbye" AssemblyFile="$(_TaskAssemblyName)" />
+
+	<Import Project="$(MSBuildThisFileDirectory)Xamarin.ConfigureMac.targets" />
 
 	<PropertyGroup>
 		<IsRemoteBuild Condition="'$(IsRemoteBuild)' == ''">true</IsRemoteBuild>

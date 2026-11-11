@@ -39,7 +39,10 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<!-- Default context path values for remote builds -->
 	<!-- When building from VS, these values will be passed directly from the IDE -->
 	<Target Name="EnsureMessagingContext" BeforeTargets="_SayHello">
+		<Error Condition="'$(_ConfiguredMacInCurrentInvocation)' == 'true'" Text="Run ConfigureMac in a separate MSBuild invocation, then pass RemoteDotNetRoot to the build." />
+		<Error Condition="'$(RemoteDotNetRoot)' != '' And !$(RemoteDotNetRoot.StartsWith('/'))" Text="RemoteDotNetRoot must be an absolute path on the remote Mac." />
 		<PropertyGroup>
+			<BasePath Condition="'$(BasePath)' == '' And '$(RemoteBasePath)' != ''">$(RemoteBasePath)</BasePath>
 			<BasePath Condition="'$(BasePath)' == ''">~/Library/Caches/maui/PairToMac</BasePath>
 			<LogsPath Condition="'$(LogsPath)' == ''">~/Library/Logs</LogsPath>
 			<LocalBasePath Condition="'$(LocalBasePath)' == ''">%LOCALAPPDATA%\maui\iOS\PairToMac</LocalBasePath>

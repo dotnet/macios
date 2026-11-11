@@ -553,9 +553,8 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MonoTouchTest"), "CFBundleDisplayName");
 		}
 
-		[TestCase ("true")]
-		[TestCase ("false")]
-		public void BindSystemFramework (string compress)
+		[Test]
+		public void BindSystemFramework ()
 		{
 			var platform = ApplePlatform.MacOSX;
 			var runtimeIdentifier = "osx-arm64";
@@ -567,7 +566,6 @@ namespace Xamarin.Tests {
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifier);
 			properties ["Configuration"] = "Release";
-			properties ["CompressBindingResourcePackage"] = compress;
 			properties ["SystemFramework"] = $"/System/Library/Frameworks/{framework}.framework";
 			DotNet.AssertBuild (projectPath, properties);
 

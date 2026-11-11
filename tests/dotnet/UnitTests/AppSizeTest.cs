@@ -62,6 +62,7 @@ namespace Xamarin.Tests {
 		// * Files added or removed from app bundle
 		// * Total app size changed >10kb
 		// * For those apps where assembly APIs can be compared, any API was added or removed.
+		// * Native library dependencies added, removed, or linked differently.
 		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -97,6 +98,7 @@ namespace Xamarin.Tests {
 			try {
 				Assert.Multiple (() => {
 					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+					AssertNativeDependencies (name, appPath, update, expectedDirectory);
 
 					if (supportsAssemblyInspection)
 						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
@@ -108,6 +110,34 @@ namespace Xamarin.Tests {
 				// Azure DevOps artifact (zipped). This is for diagnostic purposes only.
 				CopyAppBundleForDiagnostics (name, appPath);
 				throw;
+			}
+		}
+
+		static void AssertNativeDependencies (string name, string appPath, bool update, string expectedDirectory)
+		{
+			var dependencies = new List<string> ();
+			foreach (var file in Directory.EnumerateFiles (appPath, "*", SearchOption.AllDirectories)) {
+				if (!MachO.IsMachOFile (file))
+					continue;
+
+				var relativePath = Path.GetRelativePath (appPath, file);
+				foreach (var slice in MachO.Read (file)) {
+					foreach (var command in slice.load_commands.OfType<DylibLoadCommand> ())
+						dependencies.Add ($"{relativePath} [{slice.Architecture}]: {command.Command} {command.name}");
+				}
+			}
+			dependencies.Sort (StringComparer.Ordinal);
+			Assert.That (dependencies, Is.Not.Empty, "No native library dependencies found in the app bundle.");
+
+			var expectedFile = Path.Combine (expectedDirectory, $"{name}-native-dependencies.txt");
+			var expected = File.Exists (expectedFile) ? File.ReadAllLines (expectedFile) : [];
+			var report = string.Join ('\n', dependencies) + "\n";
+			if (update) {
+				Directory.CreateDirectory (expectedDirectory);
+				File.WriteAllText (expectedFile, report);
+			} else if (!dependencies.SequenceEqual (expected)) {
+				UploadUpdatedExpectedFile (expectedFile, report);
+				Assert.That (dependencies, Is.EqualTo (expected), "Native library dependencies changed. " + GetUpdateHint ());
 			}
 		}
 

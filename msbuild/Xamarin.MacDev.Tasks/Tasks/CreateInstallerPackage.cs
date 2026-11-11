@@ -59,14 +59,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		string? GetProjectVersion ()
 		{
-			PDictionary plist;
-
-			try {
-				plist = PDictionary.OpenFile (AppManifest);
-			} catch (Exception ex) {
-				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0010, AppManifest, ex.Message);
+			if (!TryOpenPList (AppManifest, out var plist))
 				return null;
-			}
 
 			return plist.GetCFBundleShortVersionString ();
 		}

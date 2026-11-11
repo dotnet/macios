@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 				updateOnDemandResources = updateOnDemandResources || mtime > onDemandResourcesStamp;
 				updateManifest = updateManifest || mtime > manifestStamp;
 
-				if (!PDictionary.TryOpenFile (path, out info))
+				if (!TryOpenPList (path, out info))
 					continue;
 
 				var bundleIdentifier = info.GetCFBundleIdentifier ();

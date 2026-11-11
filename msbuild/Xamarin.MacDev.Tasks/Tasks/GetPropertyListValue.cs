@@ -9,7 +9,7 @@ using Xamarin.Localization.MSBuild;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class GetPropertyListValue : Task {
+	public class GetPropertyListValue : XamarinTask {
 		#region Inputs
 
 		[Required]
@@ -42,12 +42,9 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			try {
-				value = dict = PDictionary.OpenFile (PropertyListFile);
-			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0010, PropertyListFile, ex.Message);
+			if (!TryOpenPList (PropertyListFile, out dict))
 				return false;
-			}
+			value = dict;
 
 			do {
 				if (dict is not null) {

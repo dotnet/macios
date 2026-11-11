@@ -510,9 +510,10 @@ namespace Xamarin.MacDev.Tasks {
 			if (!File.Exists (Path.GetFullPath (partialAppManifestPath)))
 				Log.LogError (MSBStrings.E0093, Path.GetFullPath (partialAppManifestPath));
 
-			try {
-				var manifestOutput = PDictionary.OpenFile (manifest.ItemSpec);
+			if (!TryOpenPList (manifest.ItemSpec, out var manifestOutput))
+				return false;
 
+			try {
 				LogWarningsAndErrors (manifestOutput, catalogs [0]);
 
 				bundleResources.AddRange (GetCompiledBundleResources (manifestOutput, intermediateBundleDir));

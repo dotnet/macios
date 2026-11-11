@@ -30,14 +30,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			PDictionary plist;
-
-			try {
-				plist = PDictionary.OpenFile (AppManifest);
-			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0055, ex.Message);
+			if (!TryOpenPList (AppManifest, out var plist))
 				return false;
-			}
 
 			ExecutableName = plist.GetCFBundleExecutable ();
 

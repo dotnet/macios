@@ -34,7 +34,8 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.OpenFile (info);
+			if (!TryOpenPList (info, out var plist))
+				return;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
@@ -129,7 +130,9 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.OpenFile (info);
+			if (!TryOpenPList (info, out var plist))
+				return;
+
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
 				Log.LogError (7015, info, MSBStrings.E7015, name);
@@ -202,7 +205,8 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			var plist = PDictionary.OpenFile (info);
+			if (!TryOpenPList (info, out var plist))
+				return;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {
@@ -290,7 +294,8 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			var plist = PDictionary.OpenFile (mainInfoPath);
+			if (!TryOpenPList (mainInfoPath, out var plist))
+				return false;
 
 			var bundleIdentifier = plist.GetCFBundleIdentifier ();
 			if (string.IsNullOrEmpty (bundleIdentifier)) {

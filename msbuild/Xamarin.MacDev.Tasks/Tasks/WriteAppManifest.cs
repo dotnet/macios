@@ -33,15 +33,9 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			PDictionary plist;
-
 			var firstManifest = AppManifests! [0].ItemSpec;
-			try {
-				plist = PDictionary.OpenFile (firstManifest);
-			} catch (Exception ex) {
-				Log.LogError (null, null, null, firstManifest, 0, 0, 0, 0, MSBStrings.E0010, ex.Message);
+			if (!TryOpenPList (firstManifest, out var plist))
 				return false;
-			}
 
 			if (AppManifests.Length > 1)
 				CompileAppManifest.MergePartialPLists (this, plist, AppManifests.Skip (1));

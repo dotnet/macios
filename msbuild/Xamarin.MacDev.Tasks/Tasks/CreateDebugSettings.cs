@@ -34,12 +34,9 @@ namespace Xamarin.MacDev.Tasks {
 			var path = Path.Combine (AppBundleDir, "Settings.bundle", "Root.plist");
 
 			if (File.Exists (path)) {
-				try {
-					plist = PDictionary.OpenFile (path);
-				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0024, Path.GetFileName (AppBundleDir), ex.Message);
+				if (!TryOpenPList (path, out var openedPlist))
 					return false;
-				}
+				plist = openedPlist;
 			} else {
 				plist = new PDictionary ();
 			}

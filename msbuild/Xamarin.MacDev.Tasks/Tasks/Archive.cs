@@ -123,10 +123,12 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 			}
 
+			if (!TryOpenPList (PlatformFrameworkHelper.GetAppManifestPath (Platform, AppBundleDir.ItemSpec), out var plist))
+				return false;
+
 			var archiveDir = CreateArchiveDirectory ();
 			var userProvidedArchiveDir = !string.IsNullOrEmpty (ArchiveDir);
 			try {
-				var plist = PDictionary.OpenFile (PlatformFrameworkHelper.GetAppManifestPath (Platform, AppBundleDir.ItemSpec));
 				var productsDir = Path.Combine (archiveDir, "Products");
 
 				// Archive the OnDemandResources...
@@ -307,7 +309,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		void ArchiveAppExtension (ITaskItem appex, string archiveDir)
 		{
-			var plist = PDictionary.OpenFile (Path.Combine (appex.ItemSpec, "Info.plist"));
+			if (!TryOpenPList (Path.Combine (appex.ItemSpec, "Info.plist"), out var plist))
+				return;
 
 			if (IsWatchAppExtension (appex, plist, out var watchAppBundleDir)) {
 				var wk = Path.Combine (watchAppBundleDir, "_WatchKitStub", "WK");
@@ -371,7 +374,7 @@ namespace Xamarin.MacDev.Tasks {
 			return rv.ExitCode;
 		}
 
-		static bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, [NotNullWhen (true)] out string? watchAppBundleDir)
+		bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, [NotNullWhen (true)] out string? watchAppBundleDir)
 		{
 			watchAppBundleDir = null;
 
@@ -398,9 +401,10 @@ namespace Xamarin.MacDev.Tasks {
 				if (!File.Exists (Path.Combine (bundle, "Info.plist")))
 					continue;
 
-				plist = PDictionary.OpenFile (Path.Combine (bundle, "Info.plist"));
+				if (!TryOpenPList (Path.Combine (bundle, "Info.plist"), out var bundlePlist))
+					continue;
 
-				if (!plist.TryGetValue<PString> ("CFBundleIdentifier", out var bundleIdentifier))
+				if (!bundlePlist.TryGetValue<PString> ("CFBundleIdentifier", out var bundleIdentifier))
 					continue;
 
 				if (bundleIdentifier.Value != expectedBundleIdentifier.Value)

@@ -107,12 +107,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (appManifest is null || string.IsNullOrEmpty (appManifest)) {
 				plist = new PDictionary ();
 			} else if (File.Exists (appManifest)) {
-				try {
-					plist = PDictionary.OpenFile (appManifest);
-				} catch (Exception ex) {
-					LogAppManifestError (MSBStrings.E0010, appManifest, ex.Message);
+				if (!TryOpenPList (appManifest, out var openedPlist))
 					return false;
-				}
+				plist = openedPlist;
 			} else {
 				LogAppManifestWarning (MSBStrings.W7108 /* The file '{0}' does not exist. */, appManifest);
 				plist = new PDictionary ();
@@ -424,21 +421,16 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		public static void MergePartialPLists (Task task, PDictionary plist, IEnumerable<ITaskItem> partialLists)
+		public static void MergePartialPLists (XamarinTask task, PDictionary plist, IEnumerable<ITaskItem> partialLists)
 		{
 			if (partialLists is null)
 				return;
 
 			foreach (var template in partialLists) {
-				PDictionary partial;
 				var overwrite = !string.Equals (template.GetMetadata ("Overwrite"), "false", StringComparison.OrdinalIgnoreCase);
 
-				try {
-					partial = PDictionary.OpenFile (template.ItemSpec);
-				} catch (Exception ex) {
-					task.Log.LogError (MSBStrings.E0107, template.ItemSpec, ex.Message);
+				if (!task.TryOpenPList (template.ItemSpec, out var partial))
 					continue;
-				}
 
 				MergePartialPlistDictionary (plist, partial, overwrite);
 			}

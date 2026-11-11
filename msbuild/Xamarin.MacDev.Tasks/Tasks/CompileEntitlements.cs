@@ -483,29 +483,21 @@ namespace Xamarin.MacDev.Tasks {
 				injectDefaultEntitlements = string.IsNullOrEmpty (Entitlements);
 			}
 			if (injectDefaultEntitlements) {
-				try {
-					var defaultEntitlements = PDictionary.OpenFile (DefaultEntitlementsPath);
-					templates.Add (defaultEntitlements);
-					Log.LogMessage (MessageImportance.Low, $"Loading default entitlements from: {DefaultEntitlementsPath}");
-				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0113, DefaultEntitlementsPath, ex.Message);
+				if (!TryOpenPList (DefaultEntitlementsPath, out var defaultEntitlements))
 					return false;
-				}
+				templates.Add (defaultEntitlements);
+				Log.LogMessage (MessageImportance.Low, $"Loading default entitlements from: {DefaultEntitlementsPath}");
 			}
 
 			if (!string.IsNullOrEmpty (Entitlements)) {
-				try {
-					if (!File.Exists (Entitlements)) {
-						Log.LogError (MSBStrings.E0112, Entitlements);
-						return false;
-					}
-					var projectEntitlements = PDictionary.OpenFile (Entitlements);
-					templates.Add (projectEntitlements);
-					Log.LogMessage (MessageImportance.Low, $"Loading user requested entitlements from: {Entitlements}");
-				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0113, Entitlements, ex.Message);
+				if (!File.Exists (Entitlements)) {
+					Log.LogError (MSBStrings.E0112, Entitlements);
 					return false;
 				}
+				if (!TryOpenPList (Entitlements, out var projectEntitlements))
+					return false;
+				templates.Add (projectEntitlements);
+				Log.LogMessage (MessageImportance.Low, $"Loading user requested entitlements from: {Entitlements}");
 			}
 
 			compiled = GetCompiledEntitlements (profile, templates);
@@ -570,7 +562,9 @@ namespace Xamarin.MacDev.Tasks {
 			var path = Path.Combine (EntitlementBundlePath, "archived-expanded-entitlements.xcent");
 
 			if (File.Exists (path)) {
-				var plist = PDictionary.OpenFile (path);
+				if (!TryOpenPList (path, out var plist))
+					return false;
+
 				var src = archived.ToXml ();
 				var dest = plist.ToXml ();
 

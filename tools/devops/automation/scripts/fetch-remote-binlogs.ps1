@@ -9,7 +9,7 @@ Invoke-SshCommand `
   -- `
   "$quotedCollectScript"
 
-$targetDirectory = Join-Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY" "windows-remote-logs"
+$targetDirectory = Join-Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY" "windows-binlogs"
 New-Item -Path "$targetDirectory" -ItemType "directory" -Force
 
 # Check file existence
@@ -25,3 +25,7 @@ Invoke-SshDownload `
   -RemoteUserName "$Env:MAC_AGENT_USER" `
   -Source "remote_build_testing/windows-remote-logs.zip" `
   -Target (Join-Path "$targetDirectory" "windows-remote-logs.zip")
+
+$reportDirectory = Join-Path (Join-Path $Env:BUILD_SOURCESDIRECTORY $Env:BUILD_REPOSITORY_TITLE) "jenkins-results"
+New-Item -Path "$reportDirectory" -ItemType "directory" -Force
+Copy-Item -LiteralPath (Join-Path "$targetDirectory" "windows-remote-logs.zip") -Destination "$reportDirectory"

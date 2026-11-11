@@ -24,50 +24,6 @@ steps:
   continueOnError: true
   timeoutInMinutes: 10
 
-# Collect the logs on the Mac after the Windows tests are done, and before the Mac is returned to the pool.
-- task: AzureKeyVault@2
-  inputs:
-    azureSubscription: 'Xamarin - SDK Engineering - macios-team-pair-to-mac-ci'
-    KeyVaultName: 'xamarin-ios-vault'
-    SecretsFilter: 'RemoteMacIdRsa'
-  displayName: 'Download id_rsa'
-  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
-
-- bash: |
-    set -euo pipefail
-    umask 077
-    ID_RSA_PATH="$(mktemp "$AGENT_TEMPDIRECTORY/id_rsa.XXXXXXXX")"
-    trap 'rm -f "$ID_RSA_PATH"; exit 1' EXIT
-    printf '%s\n' "$REMOTE_MAC_ID_RSA" > "$ID_RSA_PATH"
-    chmod 600 "$ID_RSA_PATH"
-    echo "##vso[task.setvariable variable=ID_RSA_PATH]$ID_RSA_PATH"
-    trap - EXIT
-  displayName: 'Write id_rsa'
-  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
-  env:
-    REMOTE_MAC_ID_RSA: $(RemoteMacIdRsa)
-
-- pwsh: '& "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/fetch-remote-binlogs.ps1"'
-  displayName: 'Fetch remote logs'
-  timeoutInMinutes: 15
-  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
-
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact: Windows remote logs'
-  inputs:
-    targetPath: $(Build.ArtifactStagingDirectory)/windows-remote-logs
-    artifactName: windows-remote-logs-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)
-  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
-
-- bash: rm -f "$ID_RSA_PATH"
-  displayName: 'Remove secrets'
-  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
-
 # Sets the AzDO.BearerToken variable used as the auth token to disable/reenable agents
 - template: ./generate-token.yml
 

@@ -6603,6 +6603,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -7187,6 +7188,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -7303,6 +7305,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the output file type as an <see cref="AVFileTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[BindAs (typeof (AVFileTypes))]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
@@ -7642,6 +7645,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -8147,6 +8151,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -8615,6 +8620,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -13235,6 +13241,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the supported movie file types as <see cref="AVFileTypes" /> values.</summary>
+		/// <exception cref="NotSupportedException">A native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[Static, BindAs (typeof (AVFileTypes []))]
 		[Export ("movieTypes")]
 #if XAMCORE_5_0
@@ -14720,6 +14727,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets or sets the output file type as an <see cref="AVFileTypes" /> value, or <see langword="null" /> if unset.</summary>
+		/// <exception cref="NotSupportedException">Thrown by the getter when the native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		/// <remarks>The initial value is <see langword="null" />, but assigning <see langword="null" /> raises a native exception.</remarks>
 		[NullAllowed]
 		[BindAs (typeof (AVFileTypes?))]
@@ -14975,7 +14983,7 @@ namespace AVFoundation {
 		[Async (XmlDocs = """
 			<summary>Asynchronously determines the compatible output file types as native string constants.</summary>
 			<returns>A task whose result contains the compatible file type identifiers.</returns>
-			<remarks>The returned identifiers are not limited to the constants represented by AVFileTypes.</remarks>
+			<remarks>The returned identifiers are not limited to the constants represented by <see cref="AVFileTypes" />.</remarks>
 			""")]
 		void DetermineCompatibleFileTypes (Action<string []> compatibleFileTypesHandler);
 
@@ -16322,6 +16330,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -16582,6 +16591,7 @@ namespace AVFoundation {
 
 		/// <summary>Gets the available recording file types as <see cref="AVFileTypes" /> values.</summary>
 		/// <returns>The available recording file types.</returns>
+		/// <exception cref="NotSupportedException">A native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[Static]
 		[return: BindAs (typeof (AVFileTypes []))]
 		[Export ("availableOutputFileTypes")]
@@ -17631,6 +17641,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the processed photo file type as an <see cref="AVFileTypes" /> value, or <see langword="null" /> if unspecified.</summary>
+		/// <exception cref="NotSupportedException">The native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[MacCatalyst (14, 0)]
 		[NullAllowed, BindAs (typeof (AVFileTypes?))]
 		[Export ("processedFileType")]
@@ -17660,6 +17671,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the raw photo file type as an <see cref="AVFileTypes" /> value, or <see langword="null" /> if unspecified.</summary>
+		/// <exception cref="NotSupportedException">The native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[NoMac]
 		[MacCatalyst (14, 0)]
 		[NullAllowed, BindAs (typeof (AVFileTypes?))]
@@ -20288,6 +20300,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type as an <see cref="AVMediaTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
@@ -24273,6 +24286,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the output file type as an <see cref="AVFileTypes" /> value.</summary>
+		/// <exception cref="NotSupportedException">The native file type has no corresponding <see cref="AVFileTypes" /> value.</exception>
 		[BindAs (typeof (AVFileTypes))]
 		[Export ("outputFileType", ArgumentSemantic.Copy)]
 #if XAMCORE_5_0
@@ -28223,6 +28237,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type, or <see cref="AVMediaTypes.Muxed" /> if it cannot be determined.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -28262,6 +28277,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type, or <see cref="AVMediaTypes.Muxed" /> if it cannot be determined.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0
@@ -28363,6 +28379,7 @@ namespace AVFoundation {
 #endif
 
 		/// <summary>Gets the media type, or <see cref="AVMediaTypes.Muxed" /> if it cannot be determined.</summary>
+		/// <exception cref="NotSupportedException">The native media type has no corresponding <see cref="AVMediaTypes" /> value.</exception>
 		[BindAs (typeof (AVMediaTypes))]
 		[Export ("mediaType")]
 #if XAMCORE_5_0

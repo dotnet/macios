@@ -29,21 +29,40 @@ public class GenerateBuildSessionId : Xamarin.Messaging.Build.Client.Tasks.Gener
 
 public class SayHello : Xamarin.Messaging.Build.Client.Tasks.SayHello {
 	public string? ServerPasswordFile { get; set; }
+	public string? SSHPassPhraseFile { get; set; }
+
+	string? ReadCredentialFile (string path, string emptyMessage)
+	{
+		string value;
+		try {
+			value = File.ReadAllText (path);
+		} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException || ex is SecurityException) {
+			Log.LogError (MSBStrings.E0010, path, ex.Message);
+			return null;
+		}
+
+		if (value.Length == 0) {
+			Log.LogError (emptyMessage, path);
+			return null;
+		}
+
+		return value;
+	}
 
 	public override bool Execute ()
 	{
-		if (!string.IsNullOrEmpty (ServerPasswordFile)) {
-			try {
-				ServerPassword = File.ReadAllText (ServerPasswordFile);
-			} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException || ex is SecurityException) {
-				Log.LogError (MSBStrings.E0010, ServerPasswordFile, ex.Message);
+		if (ServerPasswordFile is string passwordFile && !string.IsNullOrEmpty (passwordFile)) {
+			var password = ReadCredentialFile (passwordFile, MSBStrings.ServerPasswordFileEmpty);
+			if (password is null)
 				return false;
-			}
+			ServerPassword = password;
+		}
 
-			if (ServerPassword.Length == 0) {
-				Log.LogError (MSBStrings.ServerPasswordFileEmpty, ServerPasswordFile);
+		if (SSHPassPhraseFile is string passPhraseFile && !string.IsNullOrEmpty (passPhraseFile)) {
+			var passPhrase = ReadCredentialFile (passPhraseFile, MSBStrings.SSHPassPhraseFileEmpty);
+			if (passPhrase is null)
 				return false;
-			}
+			SSHPassPhrase = passPhrase;
 		}
 
 		return base.Execute ();

@@ -1829,6 +1829,10 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The server password file '{0}' is empty.</value>
         <comment>{0} - The path to the password file.</comment>
     </data>
+    <data name="SSHPassPhraseFileEmpty" xml:space="preserve">
+        <value>The SSH key passphrase file '{0}' is empty.</value>
+        <comment>{0} - The path to the passphrase file.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

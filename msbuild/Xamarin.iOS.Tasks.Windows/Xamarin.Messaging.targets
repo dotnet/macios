@@ -132,6 +132,7 @@
 				  ServerUser="$(ServerUser)"
 				  SSHKey="$(SSHKey)"
 				  SSHPassPhrase="$(SSHPassPhrase)"
+				  SSHPassPhraseFile="$(SSHPassPhraseFile)"
 				  VisualStudioProcessId="$(VisualStudioProcessId)">
 			<Output TaskParameter="DidEstablishConnection" PropertyName="_DidEstablishConnection" />
 			<Output TaskParameter="IsBuildServerAvailable" PropertyName="MtouchTargetsEnabled" />

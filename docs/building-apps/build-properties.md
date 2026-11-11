@@ -1739,6 +1739,12 @@ binlogs. Restrict access to the file and delete it when it is no longer needed.
 Don't also pass the password in `ServerPassword` or an environment variable
 when running MSBuild, because those values can be logged.
 
+## SSHPassPhraseFile
+
+The path on Windows to a protected UTF-8 file containing the passphrase for an
+encrypted SSH key. This property takes precedence over `SSHPassPhrase`.
+Restrict access to the file and delete it when it is no longer needed.
+
 ## StripFrameworkHeaders
 
 A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and

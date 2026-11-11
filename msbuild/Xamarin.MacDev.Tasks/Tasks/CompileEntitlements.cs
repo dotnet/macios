@@ -562,14 +562,14 @@ namespace Xamarin.MacDev.Tasks {
 			var path = Path.Combine (EntitlementBundlePath, "archived-expanded-entitlements.xcent");
 
 			if (File.Exists (path)) {
-				if (!TryOpenPList (path, out var plist))
-					return false;
+				// If the existing file can't be loaded, overwrite it below.
+				if (PDictionary.TryOpenFile (path, out var plist)) {
+					var src = archived.ToXml ();
+					var dest = plist.ToXml ();
 
-				var src = archived.ToXml ();
-				var dest = plist.ToXml ();
-
-				if (src == dest)
-					return true;
+					if (src == dest)
+						return true;
+				}
 			}
 
 			try {

@@ -2615,7 +2615,7 @@ namespace Xamarin.Tests {
 			} else {
 				var rv = DotNet.AssertBuildFailure (project_path, properties);
 				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToList ();
-				Assert.That (errors [0].Message, Does.Contain ("Error loading Entitlements.plist template 'Entitlements.plist'"), "Message");
+				Assert.That (errors [0].Message, Does.StartWith ("Error loading '").And.Contain ("Entitlements.plist"), "Message");
 			}
 		}
 

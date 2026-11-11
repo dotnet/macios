@@ -54,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
 					if (!TryOpenPList (AppManifestPath, out var plist))
-						return IPhoneDeviceType.IPhoneAndIPad; // the error has already been logged
+						return Platform == ApplePlatform.TVOS ? IPhoneDeviceType.TV : IPhoneDeviceType.IPhoneAndIPad; // the error has already been logged
 					return plist.GetUIDeviceFamily ();
 				default:
 					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));

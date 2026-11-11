@@ -178,6 +178,13 @@ namespace Xamarin.MacDev.Tasks {
 					// Archive the dSYMs, mSYMs, etc for each of the referenced App Extensions as well...
 					for (int i = 0; i < AppExtensionReferences.Length; i++)
 						ArchiveAppExtension (AppExtensionReferences [i], archiveDir);
+
+					if (Log.HasLoggedErrors) {
+						// Only delete the archive directory on failure if it was auto-generated.
+						if (!userProvidedArchiveDir)
+							Directory.Delete (archiveDir, true);
+						return false;
+					}
 				}
 
 				if (WatchAppReferences is not null) {

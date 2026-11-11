@@ -132,16 +132,24 @@ steps:
   displayName: 'Download id_rsa'
 
 - pwsh: |
-    $idRsaPath = "$(Get-Location)\id_rsa"
-    Write-Host "##vso[task.setvariable variable=ID_RSA_PATH]$idRsaPath"
-    Add-Content -Path "id_rsa"  -Value "$(RemoteMacIdRsa)"
-    # We need to make sure the private key is only accessible by the current user,
-    # otherwise ssh will complain and not use it.
-    icacls id_rsa /inheritance:r
-    $grant="$Env:USERNAME" + ":(R)"
-    icacls id_rsa /grant:r $grant
+    if ($Env:MAC_AGENT_CONFIGURE_MAC_AVAILABLE -ne 'true') {
+      throw "This checkout is missing the secure remote Mac test setup. Update the branch and rerun the tests."
+    }
+    if ([string]::IsNullOrWhiteSpace($Env:REMOTE_MAC_ID_RSA)) {
+      throw "The remote Mac SSH key is empty."
+    }
+    . "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/remote-password-file.ps1"
+    $key = $Env:REMOTE_MAC_ID_RSA
+    if (!$key.EndsWith("`n")) {
+      $key += "`n"
+    }
+    # Protect the key with the same permissions as the password file.
+    $idRsaPath = New-RemotePasswordFile -Password $key -Directory "$(Agent.TempDirectory)"
+    $escapedPath = $idRsaPath.Replace('%', '%AZP25').Replace("`r", '%0D').Replace("`n", '%0A')
+    Write-Host "##vso[task.setvariable variable=ID_RSA_PATH]$escapedPath"
   displayName: "Write and verify id_rsa"
-  continueOnError: true
+  env:
+    REMOTE_MAC_ID_RSA: $(RemoteMacIdRsa)
 
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\\$Env:BUILD_REPOSITORY_TITLE\\tools\\devops\\automation\\scripts\\MaciosCI.psd1
@@ -422,7 +430,10 @@ steps:
   condition: succeededOrFailed()
 
 - pwsh: |
-    Remove-Item "$(ID_RSA_PATH)"
+    if ($Env:ID_RSA_PATH -and (Test-Path -LiteralPath $Env:ID_RSA_PATH)) {
+      . "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/remote-password-file.ps1"
+      Remove-RemotePasswordFile -Path $Env:ID_RSA_PATH
+    }
   displayName: "Remove secrets"
   condition: always()
   continueOnError: true

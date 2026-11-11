@@ -2995,6 +2995,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ItemGroup>
 			<_EmbeddedAppExtensions Include="@(_ResolvedAppExtensionReferences->'$(_AppExtensionRoot)%(ContainerName)/%(Filename)%(Extension)')" />
 			<_StaleAppExtensions Include="@(_PreviousEmbeddedAppExtensions)" />
+			<_StaleAppExtensions Include="@(_ResolvedAppExtensionReferences->'$(_AppExtensionRoot)PlugIns/%(Filename)%(Extension)')" Condition="!Exists('$(_EmbeddedAppExtensionsFile)') And '%(_ResolvedAppExtensionReferences.ContainerName)' == 'Extensions'" />
 			<_StaleAppExtensions Remove="@(_EmbeddedAppExtensions)" />
 		</ItemGroup>
 		<RemoveDir

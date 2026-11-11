@@ -171,6 +171,12 @@ namespace Xamarin.MacDev.Tasks {
 			Build ();
 			Assert.That (File.GetLastWriteTimeUtc (copiedManifest), Is.EqualTo (timestamp), "No-op build must not copy again");
 			Assert.That (Path.Combine (modernCopy, contents, "Frameworks", "Native.framework", "Headers"), Does.Not.Exist, "Framework headers stripped");
+			var oldModernCopy = Path.Combine (app, contents, "PlugIns", "Modern.appex");
+			Directory.CreateDirectory (oldModernCopy);
+			File.Copy (copiedManifest, Path.Combine (oldModernCopy, "Info.plist"));
+			File.Delete (Path.Combine (directory, "obj", "embedded-app-extensions.items"));
+			Build ();
+			Assert.That (oldModernCopy, Does.Not.Exist, "Wrong placement from an older SDK cleaned without a tracking file");
 
 			var reader = CreateTask<ReadItemsFromFile> ();
 			reader.File = new [] { new TaskItem (Path.Combine (directory, "signing.items")) };

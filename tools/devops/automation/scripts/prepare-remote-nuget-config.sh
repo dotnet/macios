@@ -15,6 +15,12 @@ PACKAGES_DIR="$BUILD_SOURCESDIRECTORY/artifacts/${MACIOS_UPLOAD_PREFIX:-}not-sig
 OUTPUT_DIR="$HOME/remote_build_testing/nuget"
 FEED_DIR="$OUTPUT_DIR/feed"
 CONFIG_FILE="$OUTPUT_DIR/NuGet.config"
+ESCAPED_FEED_DIR=$(printf '%s' "$FEED_DIR" | sed \
+	-e 's/&/\&amp;/g' \
+	-e 's/</\&lt;/g' \
+	-e 's/>/\&gt;/g' \
+	-e 's/"/\&quot;/g' \
+	-e 's/[\\&|]/\\&/g')
 
 if ! ls "$PACKAGES_DIR/"*.nupkg >/dev/null 2>&1; then
 	echo "No NuGet packages found in $PACKAGES_DIR"
@@ -31,7 +37,7 @@ cp "$PACKAGES_DIR/"*.nupkg "$FEED_DIR"
 sed \
 	-e '/key="repositorypath"/d' \
 	-e '/key="globalPackagesFolder"/d' \
-	-e "s|<add key=\"local-tests-feed\" value=\"[^\"]*\" />|<add key=\"macios-ci-feed\" value=\"$FEED_DIR\" />|" \
+	-e "s|<add key=\"local-tests-feed\" value=\"[^\"]*\" />|<add key=\"macios-ci-feed\" value=\"$ESCAPED_FEED_DIR\" />|" \
 	"$REPO_DIR/NuGet.config" > "$CONFIG_FILE"
 
 if ! grep -q 'key="macios-ci-feed"' "$CONFIG_FILE"; then

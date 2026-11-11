@@ -7,8 +7,8 @@ Invoke-SshCommand `
   -- `
   "$Env:MAC_AGENT_BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tests/dotnet/Windows/collect-binlogs.sh"
 
-New-Item -Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY" -Name "windows-binlogs" -ItemType "directory"
-New-Item -Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY\windows-binlogs" -Name "windows-remote-logs.zip" -ItemType "file" -Value "zip"
+$targetDirectory = Join-Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY" "windows-remote-logs"
+New-Item -Path "$targetDirectory" -ItemType "directory" -Force
 
 # Check file existence
 Invoke-SshCommand `
@@ -22,7 +22,4 @@ Invoke-SshDownload `
   -RemoteHost "$Env:MAC_AGENT_IP" `
   -RemoteUserName "$Env:MAC_AGENT_USER" `
   -Source "remote_build_testing/windows-remote-logs.zip" `
-  -Target "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY\windows-binlogs\windows-remote-logs.zip"
-
-# Copy the binlogs to the html report
-Copy-Item "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY\windows-binlogs\windows-remote-logs.zip" -Destination "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\jenkins-results"
+  -Target (Join-Path "$targetDirectory" "windows-remote-logs.zip")

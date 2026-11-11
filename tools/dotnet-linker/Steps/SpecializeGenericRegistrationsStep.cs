@@ -26,27 +26,34 @@ public class SpecializeGenericRegistrationsStep : ConfigurationAwareStep {
 		if (App.Optimizations.SpecializeGenericRegistrations != true || !App.IsAnyStaticRegistrar || App.IsPostProcessingAssemblies)
 			return;
 
-		// Use a separate registrar so the regular registrar first sees the completed forwarders.
-		var registrar = new StaticRegistrar (App);
+		var registrar = App.StaticRegistrar;
 		registrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		var modified = new HashSet<AssemblyDefinition> ();
 		var helpers = new Dictionary<MethodDefinition, MethodDefinition> ();
 
+		bool CanSpecialize (Registrar.Registrar.ObjCType objcType)
+		{
+			var type = objcType.Type.Resolve ();
+			return !objcType.IsWrapper && !objcType.IsModel && !objcType.IsProtocol && !objcType.IsCategory
+				&& !ManagedRegistrarStep.IsOpenType (type)
+				&& !Configuration.Profile.IsSdkAssembly (type.Module.Assembly)
+				&& (!Configuration.HotReloadCompatibleBuild || Annotations.GetAction (type.Module.Assembly) == AssemblyAction.Link);
+		}
+
 		foreach (var objcType in registrar.Types.Values) {
 			var type = objcType.Type.Resolve ();
-			if (objcType.IsWrapper || objcType.IsModel || objcType.IsProtocol || objcType.IsCategory || ManagedRegistrarStep.IsOpenType (type))
-				continue;
-			if (Configuration.Profile.IsSdkAssembly (type.Module.Assembly))
-				continue;
-			if (Configuration.HotReloadCompatibleBuild && Annotations.GetAction (type.Module.Assembly) != AssemblyAction.Link)
+			if (!CanSpecialize (objcType))
 				continue;
 
 			var selectors = new HashSet<string> (objcType.Methods?.Where (v => !v.IsStatic).Select (v => v.Selector) ?? []);
 			var baseType = type.BaseType;
 			while (baseType is not null) {
 				var definition = baseType.Resolve ();
-				if (registrar.TryFindType (definition, out var baseObjCType) && baseObjCType.Methods is not null) {
-					foreach (var method in baseObjCType.Methods) {
+				if (registrar.TryFindType (definition, out var baseObjCType)) {
+					// Closed base classes get their own forwarders, which Objective-C subclasses inherit.
+					if (CanSpecialize (baseObjCType))
+						break;
+					foreach (var method in baseObjCType.Methods ?? []) {
 						if (method.Method is null || method.IsStatic || method.IsConstructor || !selectors.Add (method.Selector))
 							continue;
 						if (baseType is not GenericInstanceType genericType || baseObjCType.IsWrapper || baseObjCType.IsModel)
@@ -70,6 +77,15 @@ public class SpecializeGenericRegistrationsStep : ConfigurationAwareStep {
 						var forwarder = CreateForwarder (type, target, genericType, true);
 						CopyMarshallingAttributes (registrar, method, forwarder);
 						AddExportAttribute (forwarder, method);
+						var registeredForwarder = new Registrar.Registrar.ObjCMethod (registrar, objcType, forwarder) {
+							Selector = method.Selector,
+							ArgumentSemantic = method.ArgumentSemantic,
+							IsVariadic = method.IsVariadic,
+						};
+						List<Exception>? exceptions = null;
+						objcType.Add (registeredForwarder, ref exceptions);
+						if (exceptions is not null && exceptions.Count > 0)
+							throw new AggregateException (exceptions);
 						modified.Add (type.Module.Assembly);
 					}
 				}

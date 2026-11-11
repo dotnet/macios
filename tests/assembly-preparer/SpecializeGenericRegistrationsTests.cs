@@ -88,6 +88,8 @@ public class SpecializeGenericRegistrationsTests : BaseClass {
 
 		var overridden = assembly.MainModule.Types.Single (v => v.Name == "Override");
 		Assert.That (overridden.Methods.Count (v => Selector (v) == "echo:"), Is.Zero, "Existing override is not duplicated");
+		var derived = assembly.MainModule.Types.Single (v => v.Name == "Derived");
+		Assert.That (derived.Methods.Any (v => v.Name.StartsWith ("__Registrar_Specialized_", StringComparison.Ordinal)), Is.False, "Closed base forwarders are inherited");
 		var recursive = assembly.MainModule.Types.Single (v => v.Name == "Recursive");
 		var recursiveEcho = recursive.Methods.Single (v => Selector (v) == "echo:");
 		Assert.That (recursiveEcho.ReturnType.FullName, Is.EqualTo ("Recursive"), "Recursive generic argument");

@@ -12,9 +12,10 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
-		[TestCase (true)]
-		[TestCase (false)]
-		public void SpecializedGenericRegistrations (bool prepareAssemblies)
+		[TestCase (true, "trimmable-static")]
+		[TestCase (false, "trimmable-static")]
+		[TestCase (false, "static")]
+		public void SpecializedGenericRegistrations (bool prepareAssemblies, string registrar)
 		{
 			var platform = ApplePlatform.MacOSX;
 			var runtimeIdentifier = "osx-arm64";
@@ -39,6 +40,7 @@ namespace Xamarin.Tests {
 				}
 
 				class Closed : Generic<Closed> { }
+				[Register (SkipRegistration = true)]
 				sealed class Derived : Closed {
 					public override nuint GetNativeHash () => 99;
 				}
@@ -69,10 +71,14 @@ namespace Xamarin.Tests {
 				""");
 
 			var properties = GetDefaultProperties (runtimeIdentifier);
-			properties ["Registrar"] = "trimmable-static";
+			properties ["Registrar"] = registrar;
 			properties ["PrepareAssemblies"] = prepareAssemblies ? "true" : "false";
 			properties ["HotReloadCompatibleBuild"] = "false";
 			properties ["LinkMode"] = "full";
+			if (prepareAssemblies) {
+				properties ["DynamicRegistrationSupported"] = "false";
+				properties ["TrimExportAttributes"] = "true";
+			}
 			properties ["AppBundleExtraOptions"] = "--optimize=+specialize-generic-registrations";
 			DotNet.AssertBuild (projectPath, properties);
 			var appPath = GetAppPath (projectPath, platform, runtimeIdentifier);
@@ -80,6 +86,10 @@ namespace Xamarin.Tests {
 			using var assembly = AssemblyDefinition.ReadAssembly (assemblyPath);
 			var closedType = assembly.MainModule.Types.Single (v => v.Name == "Closed");
 			Assert.That (closedType.Methods.Count (v => v.Name.StartsWith ("__Registrar_Specialized_", StringComparison.Ordinal)), Is.EqualTo (3), "Closed native entry points");
+			var objDir = GetObjDir (projectPath, platform, runtimeIdentifier);
+			var registrarSource = File.ReadAllText (Directory.GetFiles (objDir, "registrar.mm", SearchOption.AllDirectories).Single ());
+			var closedImplementation = System.Text.RegularExpressions.Regex.Match (registrarSource, @"@implementation Closed\b.*?@end", System.Text.RegularExpressions.RegexOptions.Singleline).Value;
+			Assert.That (closedImplementation, Does.Contain ("hash"), "Closed native hash registration");
 			ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifier);
 		}
 

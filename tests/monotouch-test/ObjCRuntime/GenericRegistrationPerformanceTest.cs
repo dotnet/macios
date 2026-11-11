@@ -61,7 +61,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Measure (closedHandle, selector, 10000);
 			Measure (baselineHandle, selector, 10000);
 			var iterations = 1000;
-			while (Measure (baselineHandle, selector, iterations) < Stopwatch.Frequency / 20 && iterations < 1000000)
+			while (Measure (baselineHandle, selector, iterations) < Stopwatch.Frequency / 10 && iterations < 1000000)
 				iterations *= 2;
 
 			const int samples = 9;

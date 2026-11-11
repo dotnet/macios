@@ -25,6 +25,8 @@ namespace Xamarin.Linker {
 				// but to do that, we have to register the
 				// assemblies.
 				Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+				if (app.Optimizations.SpecializeGenericRegistrations == true)
+					app.StaticRegistrar.FilterTrimmedApi (Annotations);
 				// Rewrite will do nothing if the optimization is off
 				Configuration.Application.StaticRegistrar.Rewrite ();
 			}

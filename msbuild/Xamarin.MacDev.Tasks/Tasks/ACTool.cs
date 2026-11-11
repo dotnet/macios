@@ -70,31 +70,18 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
 		{
-			var assetDirs = new HashSet<string> (items.Select (x => BundleResource.GetVirtualProjectPath (this, x)));
-
 			if (!string.IsNullOrEmpty (XSAppIconAssets) && !string.IsNullOrEmpty (AppIcon)) {
 				Log.LogError (MSBStrings.E7129 /* Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other. */);
 				return;
 			}
 
 			if (!string.IsNullOrEmpty (XSAppIconAssets)) {
-				int index = XSAppIconAssets.IndexOf (".xcassets" + Path.DirectorySeparatorChar, StringComparison.Ordinal);
-				string? assetDir = null;
-				var rpath = XSAppIconAssets;
+				args.Add ("--app-icon");
+				args.Add (Path.GetFileNameWithoutExtension (XSAppIconAssets));
 
-				if (index != -1)
-					assetDir = rpath.Substring (0, index + ".xcassets".Length);
-
-				if (assetDirs is not null && assetDir is not null && assetDirs.Contains (assetDir)) {
-					var assetName = Path.GetFileNameWithoutExtension (rpath);
-
-					args.Add ("--app-icon");
-					args.Add (assetName);
-
-					if (IsMessagesExtension) {
-						args.Add ("--product-type");
-						args.Add ("com.apple.product-type.app-extension.messages");
-					}
+				if (IsMessagesExtension) {
+					args.Add ("--product-type");
+					args.Add ("com.apple.product-type.app-extension.messages");
 				}
 			}
 
@@ -104,18 +91,8 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!string.IsNullOrEmpty (XSLaunchImageAssets)) {
-				int index = XSLaunchImageAssets.IndexOf (".xcassets" + Path.DirectorySeparatorChar, StringComparison.Ordinal);
-				string? assetDir = null;
-				var rpath = XSLaunchImageAssets;
-
-				if (index != -1)
-					assetDir = rpath.Substring (0, index + ".xcassets".Length);
-
-				if (assetDirs is not null && assetDir is not null && assetDirs.Contains (assetDir)) {
-					var assetName = Path.GetFileNameWithoutExtension (rpath);
-					args.Add ("--launch-image");
-					args.Add (assetName);
-				}
+				args.Add ("--launch-image");
+				args.Add (Path.GetFileNameWithoutExtension (XSLaunchImageAssets));
 			}
 
 			if (!string.IsNullOrEmpty (CLKComplicationGroup)) {

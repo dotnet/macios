@@ -10,6 +10,7 @@ namespace BlockObjectMarshalling {
 	delegate NSData OutErrorHandler (out NSError error);
 	delegate Callbacks BoundObjectHandler (ref Callbacks value);
 	delegate NSError ForcedObjectHandler ([ForcedType] ref NSError value);
+	delegate Callbacks ForcedOwnedObjectHandler ([ForcedType (true)] ref Callbacks value);
 	delegate CGPDFDocument NativeObjectHandler (ref CGPDFDocument value);
 	delegate INSCoding ProtocolHandler (ref INSCoding value);
 
@@ -26,6 +27,9 @@ namespace BlockObjectMarshalling {
 
 		[Export ("forcedObjectHandler")]
 		ForcedObjectHandler ForcedObjectHandler { get; set; }
+
+		[Export ("forcedOwnedObjectHandler")]
+		ForcedOwnedObjectHandler ForcedOwnedObjectHandler { get; set; }
 
 		[Export ("nativeObjectHandler")]
 		NativeObjectHandler NativeObjectHandler { get; set; }

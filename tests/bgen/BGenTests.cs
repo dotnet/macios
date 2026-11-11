@@ -480,29 +480,41 @@ namespace GeneratorTests {
 		}
 
 		[TestCase (Profile.iOS)]
-		[TestCase (Profile.tvOS)]
-		[TestCase (Profile.MacCatalyst)]
-		[TestCase (Profile.macOSMobile)]
 		public void BlockObjectMarshalling (Profile profile)
 		{
 			var bgen = BuildFile (profile, "block-object-marshalling.cs");
 			var trampolines = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines");
-			foreach (var handler in new [] { "ErrorHandler", "OutErrorHandler", "BoundObjectHandler", "ForcedObjectHandler", "NativeObjectHandler", "ProtocolHandler" }) {
+			foreach (var handler in new [] { "ErrorHandler", "OutErrorHandler", "BoundObjectHandler", "ForcedObjectHandler", "ForcedOwnedObjectHandler", "NativeObjectHandler", "ProtocolHandler" }) {
 				var trampoline = trampolines.NestedTypes.Single (v => v.Name == $"SD{handler}");
 				var invoke = trampoline.Methods.Single (v => v.Name == "Invoke");
 				var isNSObject = handler != "NativeObjectHandler" && handler != "ProtocolHandler";
-				var useGetNSObject = isNSObject && handler != "ForcedObjectHandler";
-				bgen.AssertApiCallsMethod (invoke, useGetNSObject ? "GetNSObject" : "GetINativeObject", handler);
-				bgen.AssertApiCallsMethod (invoke, isNSObject ? "RetainAndAutoreleaseNSObject" : "RetainAndAutoreleaseNativeObject", handler);
+				var isForced = handler == "ForcedObjectHandler" || handler == "ForcedOwnedObjectHandler";
+				var useGetNSObject = isNSObject && !isForced;
+				var isOut = handler == "OutErrorHandler";
 				var calls = invoke.Body.Instructions
 					.Where (v => v.OpCode.FlowControl == FlowControl.Call)
 					.Select (v => v.Operand)
 					.OfType<MethodReference> ()
 					.Select (v => v.Name)
 					.ToArray ();
-				Assert.That (calls, Does.Not.Contain (useGetNSObject ? "GetINativeObject" : "GetNSObject"), handler);
+				if (isOut) {
+					Assert.That (calls, Does.Not.Contain ("GetNSObject"), handler);
+					Assert.That (calls, Does.Not.Contain ("GetINativeObject"), handler);
+				} else {
+					Assert.That (calls, Does.Contain (useGetNSObject ? "GetNSObject" : "GetINativeObject"), handler);
+					Assert.That (calls, Does.Not.Contain (useGetNSObject ? "GetINativeObject" : "GetNSObject"), handler);
+				}
 				Assert.That (calls, Does.Not.Contain (isNSObject ? "RetainAndAutoreleaseNativeObject" : "RetainAndAutoreleaseNSObject"), handler);
 				Assert.That (calls.Count (v => v == (isNSObject ? "RetainAndAutoreleaseNSObject" : "RetainAndAutoreleaseNativeObject")), Is.EqualTo (2), handler);
+				if (isForced) {
+					foreach (var typeName in new [] { $"SD{handler}", $"NID{handler}" }) {
+						var method = trampolines.NestedTypes.Single (v => v.Name == typeName).Methods.Single (v => v.Name == "Invoke");
+						var lookup = method.Body.Instructions.Single (v => v.Operand is MethodReference mr && mr.Name == "GetINativeObject");
+						Assert.That (((MethodReference) lookup.Operand).Parameters.Count, Is.EqualTo (3), typeName);
+						Assert.That (lookup.Previous.Previous.OpCode, Is.EqualTo (OpCodes.Ldc_I4_1), $"{typeName}: forced type");
+						Assert.That (lookup.Previous.OpCode, Is.EqualTo (handler == "ForcedOwnedObjectHandler" ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0), $"{typeName}: owns");
+					}
+				}
 			}
 		}
 

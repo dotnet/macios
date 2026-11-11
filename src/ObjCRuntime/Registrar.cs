@@ -2820,7 +2820,7 @@ namespace Registrar {
 				if (HasModelAttribute (argument))
 					throw CreateException (4192, member, Errors.MT4192, GetTypeFullName (argument), GetTypeFullName (type));
 
-				if (!IsINativeObject (argument))
+				if (IsNSObject (type) && !IsINativeObject (argument))
 					throw CreateException (4167, member, Errors.MT4167, member?.FullName, GetTypeFullName (type), GetTypeFullName (argument));
 
 				if (IsGenericType (argument))

@@ -2491,7 +2491,7 @@ This usually indicates a bug in Xamarin.iOS. Please file a new issue on [GitHub]
 
 ### MT4167: Cannot register the method '\*' because the signature contains a generic type (\*) with a generic argument type that doesn't implement INativeObject (*).
 
-Generic type arguments in an exported native-object signature must implement `ObjCRuntime.INativeObject`. An `NSObject`-derived generic wrapper with an enum or other non-native type argument is not supported in an exported signature. Use a non-generic subclass of the wrapper instead. See [issue #15709](https://github.com/dotnet/macios/issues/15709) for an example.
+The generic type arguments of an `NSObject` subclass used in an exported signature must implement `ObjCRuntime.INativeObject`. For example, `MyWrapper<MyEnum>` isn't supported. Use a non-generic subclass of the wrapper instead. See [issue #15709](https://github.com/dotnet/macios/issues/15709) for an example.
 
 <a name="MT4168"></a>
 

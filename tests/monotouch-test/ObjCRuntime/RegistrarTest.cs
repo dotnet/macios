@@ -78,12 +78,17 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.DoesNotThrow (() => Runtime.ConnectMethod (valid.Method, new Selector ("getNativeObject")), "Native-object argument");
 			var specialized = new Func<ClosedEnumWrapper> (obj.GetSpecialized);
 			Assert.DoesNotThrow (() => Runtime.ConnectMethod (specialized.Method, new Selector ("getSpecialized")), "Non-generic wrapper");
+			var native = new Func<ClosedNativeWrapper<string>> (obj.GetNativeWrapper);
+			Assert.DoesNotThrow (() => Runtime.ConnectMethod (native.Method, new Selector ("getNativeWrapper")), "Non-NSObject native wrapper");
 		}
 
 		class ClosedGenericWrapper<T> : NSObject {
 		}
 
 		class ClosedEnumWrapper : ClosedGenericWrapper<DayOfWeek> {
+		}
+
+		class ClosedNativeWrapper<T> : CoreFoundation.NativeObject {
 		}
 
 		class ClosedGenericSignatureClass : NSObject {
@@ -93,6 +98,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			public ClosedGenericWrapper<ClosedGenericWrapper<int>> GetNested () => null;
 			public ClosedGenericWrapper<NSObject> GetNativeObject () => null;
 			public ClosedEnumWrapper GetSpecialized () => null;
+			public ClosedNativeWrapper<string> GetNativeWrapper () => null;
 		}
 
 		[Test]

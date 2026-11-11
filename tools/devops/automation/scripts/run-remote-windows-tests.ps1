@@ -6,9 +6,13 @@ if ("$Env:BUILD_REPOSITORY_TITLE" -eq "") {
 if ("$Env:DOTNET" -eq "") {
     $Env:DOTNET = "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tests\dotnet\Windows\bin\dotnet\dotnet.exe"
 }
-$Env:ServerAddress = $Env:MAC_AGENT_IP
-$Env:ServerUser = $Env:MAC_AGENT_USER
-$Env:_DotNetRootRemoteDirectory = "/Users/$Env:MAC_AGENT_USER/Library/Caches/maui/PairToMac/Sdks/dotnet/"
+# MSBuild unescapes percent sequences in property values.
+$Env:ServerAddress = "$Env:MAC_AGENT_IP".Replace('%', '%25')
+$Env:ServerUser = "$Env:MAC_AGENT_USER".Replace('%', '%25')
+if ([string]::IsNullOrWhiteSpace($Env:MAC_AGENT_DOTNET_ROOT) -or !$Env:MAC_AGENT_DOTNET_ROOT.StartsWith('/')) {
+    throw "MAC_AGENT_DOTNET_ROOT must be set to the absolute .NET directory returned by ConfigureMac."
+}
+$Env:RemoteDotNetRoot = $Env:MAC_AGENT_DOTNET_ROOT.Replace('%', '%25')
 
 if ("$Env:TESTFILTER" -eq "") {
     $Env:TESTFILTER = "Category=RemoteWindows|Category=RemoteWindowsInclusive"
@@ -24,7 +28,7 @@ try {
         $createdPasswordFile = New-RemotePasswordFile -Password $Env:XMA_PASSWORD
         $Env:XMA_PASSWORD_FILE = $createdPasswordFile
     }
-    $Env:ServerPasswordFile = $Env:XMA_PASSWORD_FILE
+    $Env:ServerPasswordFile = "$Env:XMA_PASSWORD_FILE".Replace('%', '%25')
     $Env:ServerPassword = $null
     $Env:XMA_PASSWORD = $null
 

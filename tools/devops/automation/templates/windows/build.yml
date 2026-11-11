@@ -298,6 +298,14 @@ steps:
   env:
     XMA_PASSWORD: $(XMA.Password)
 
+- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\configure-remote-mac.ps1
+  displayName: 'Configure remote Mac'
+  timeoutInMinutes: 45
+  condition: and(succeeded(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
+  env:
+    DotNetSdkFeed: https://ci.dot.net/public
+    XMA_PASSWORD_FILE: $(MAC_AGENT_PASSWORD_FILE)
+
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-remote-windows-tests.ps1
   displayName: 'Run .NET tests remotely'
   timeoutInMinutes: 120

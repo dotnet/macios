@@ -80,7 +80,7 @@ stages:
     dependsOn:
     - mac_reservation
     displayName: 'Dotnet tests'
-    timeoutInMinutes: 120
+    timeoutInMinutes: 180
     workspace:
       clean: all
 

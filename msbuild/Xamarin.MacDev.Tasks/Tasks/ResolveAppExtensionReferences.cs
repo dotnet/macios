@@ -27,9 +27,19 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			// Remote builds need the built manifest and payload files from the Mac, not Windows placeholders.
-			if (ShouldExecuteRemotely ())
-				return ExecuteRemotely (out var _, runner => runner.FixReferencedItems (this, AppExtensionReferences));
+			if (ShouldExecuteRemotely ()) {
+				var references = AppExtensionReferences.Select (v => new TaskItem (v)).ToArray ();
+				if (!ExecuteRemotely (out var _, runner => runner.FixReferencedItems (this, AppExtensionReferences)))
+					return false;
+
+				for (var i = 0; i < references.Length; i++) {
+					// Only placement metadata crosses back: signing imports still need the Windows paths.
+					references [i].SetMetadata ("ContainerName", ResolvedAppExtensionReferences [i].GetMetadata ("ContainerName"));
+					references [i].SetMetadata ("BundleRelativePath", ResolvedAppExtensionReferences [i].GetMetadata ("BundleRelativePath"));
+				}
+				ResolvedAppExtensionReferences = references;
+				return true;
+			}
 
 			var resolved = new List<ITaskItem> ();
 			foreach (var reference in AppExtensionReferences) {
@@ -68,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 					var destination = Path.Combine (AppBundlePath, relativePath, Path.GetFileName (item.ItemSpec));
 					var sourcePrefix = item.ItemSpec.TrimEnd (Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar;
 					var outputs = files.Select (v => v.Substring (sourcePrefix.Length))
-						.Where (v => !v.Split (Path.DirectorySeparatorChar).Contains ("_CodeSignature"))
+						.Where (v => !IsRemovedAfterCopy (v))
 						.Select (v => Path.Combine (destination, v));
 					item.SetMetadata ("OutputFiles", string.Join (";", outputs));
 				}
@@ -83,6 +93,29 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item) => false;
 
-		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
+		static bool IsRemovedAfterCopy (string relativePath)
+		{
+			var components = relativePath.Split (Path.DirectorySeparatorChar);
+			for (var i = 0; i < components.Length; i++) {
+				if (components [i] == "_CodeSignature")
+					return true;
+				if (!components [i].EndsWith (".framework", StringComparison.OrdinalIgnoreCase))
+					continue;
+				var directory = i + 1;
+				if (directory + 2 < components.Length && components [directory] == "Versions")
+					directory += 2;
+				if (directory < components.Length && (components [directory] == "Headers" || components [directory] == "Modules" || components [directory] == "PrivateHeaders"))
+					return true;
+			}
+			return false;
+		}
+
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
+		{
+			return AppExtensionReferences
+				.Where (v => v.GetMetadata ("IsAdditionalAppExtension") == "true" && Directory.Exists (v.ItemSpec))
+				.SelectMany (v => Directory.GetFiles (v.ItemSpec, "*", SearchOption.AllDirectories))
+				.Select (v => new TaskItem (v));
+		}
 	}
 }

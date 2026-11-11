@@ -32,6 +32,9 @@ namespace Xamarin.MacDev.Tasks {
 				CreateExtension (directory, "Modern", contents, "EXAppExtensionAttributes"),
 				new TaskItem (Path.Combine (directory, "Service.xpc")),
 			};
+			task.AppExtensionReferences [1].SetMetadata ("IsAdditionalAppExtension", "true");
+			Assert.That (task.GetAdditionalItemsToBeCopied ().Select (v => v.ItemSpec),
+				Is.EqualTo (new [] { Path.Combine (task.AppExtensionReferences [1].ItemSpec, contents, "Info.plist") }), "Upload only native extension files");
 
 			ExecuteTask (task);
 			Assert.That (task.ResolvedAppExtensionReferences.Select (v => v.GetMetadata ("ContainerName")), Is.EqualTo (new [] { "PlugIns", "Extensions", "XPCServices" }));
@@ -100,6 +103,9 @@ namespace Xamarin.MacDev.Tasks {
 			var contents = platform == ApplePlatform.MacOSX ? "Contents" : "";
 			var legacy = CreateExtension (Path.Combine (directory, "Legacy", "build"), "Legacy", contents, "NSExtension");
 			var modern = CreateExtension (Path.Combine (directory, "Modern", "build"), "Modern", contents, "NSExtension");
+			var headers = Path.Combine (modern.ItemSpec, contents, "Frameworks", "Native.framework", "Headers");
+			Directory.CreateDirectory (headers);
+			File.WriteAllText (Path.Combine (headers, "Native.h"), "header");
 			var project = Path.Combine (directory, "Placement.proj");
 			File.WriteAllText (project, """
 				<Project>
@@ -121,9 +127,11 @@ namespace Xamarin.MacDev.Tasks {
 				  </ItemGroup>
 				  <Target Name="_ResolveAppExtensionReferences" />
 				  <Target Name="_DetectSigningIdentity" />
+				  <Target Name="_GenerateBundleName" />
 				  <Target Name="Restore" />
-				  <Target Name="Check" DependsOnTargets="_CopyAppExtensionsToBundle;_CollectAdditionalAppExtensionCodesigningData">
+				  <Target Name="Check" DependsOnTargets="_CopyAppExtensionsToBundle;_CollectAdditionalAppExtensionCodesigningData;_StripFrameworkHeaders;_RegisterEmbeddedAppExtensionFileWrites">
 				    <WriteItemsToFile File="$(MSBuildThisFileDirectory)signing.items" ItemName="Bundle" Items="@(_CodesignBundle)" IncludeMetadata="true" Overwrite="true" />
+				    <WriteItemsToFile File="$(MSBuildThisFileDirectory)writes.items" ItemName="File" Items="@(FileWrites)" Overwrite="true" />
 				  </Target>
 				</Project>
 				""");
@@ -137,6 +145,8 @@ namespace Xamarin.MacDev.Tasks {
 				{ "_AppBundleName", "Container" },
 				{ "AppBundleExtension", ".app" },
 				{ "_AppBundlePath", app + Path.DirectorySeparatorChar },
+				{ "AppBundleDir", app },
+				{ "StripFrameworkHeaders", "true" },
 				{ "_AppExtensionRoot", Path.Combine (app, contents) + Path.DirectorySeparatorChar },
 				{ "_AppCodeSignatureRelativePath", string.IsNullOrEmpty (contents) ? "" : contents + Path.DirectorySeparatorChar },
 				{ "DeviceSpecificIntermediateOutputPath", Path.Combine (directory, "obj") + Path.DirectorySeparatorChar },
@@ -160,6 +170,7 @@ namespace Xamarin.MacDev.Tasks {
 			var timestamp = File.GetLastWriteTimeUtc (copiedManifest);
 			Build ();
 			Assert.That (File.GetLastWriteTimeUtc (copiedManifest), Is.EqualTo (timestamp), "No-op build must not copy again");
+			Assert.That (Path.Combine (modernCopy, contents, "Frameworks", "Native.framework", "Headers"), Does.Not.Exist, "Framework headers stripped");
 
 			var reader = CreateTask<ReadItemsFromFile> ();
 			reader.File = new [] { new TaskItem (Path.Combine (directory, "signing.items")) };
@@ -169,6 +180,12 @@ namespace Xamarin.MacDev.Tasks {
 				Path.Combine ("Container.app", contents, "Extensions", "Modern.appex"),
 			}), "Signing paths match placement");
 			Assert.That (reader.Items.Select (v => v.GetMetadata ("CodesignEntitlements")), Is.EqualTo (new [] { "legacy.entitlements", "modern.entitlements" }));
+			Assert.That (reader.Items.Select (v => v.GetMetadata ("InputFiles")), Is.All.Empty, "Signing data excludes copy inputs");
+			reader.File = new [] { new TaskItem (Path.Combine (directory, "writes.items")) };
+			reader.Items = [];
+			ExecuteTask (reader);
+			Assert.That (reader.Items.Select (v => v.ItemSpec), Does.Contain (copiedManifest), "FileWrites contains concrete copied paths");
+			Assert.That (reader.Items.Select (v => v.ItemSpec), Has.None.Contains ("*"), "FileWrites expands wildcards");
 
 			File.Delete (copiedManifest);
 			Build ();

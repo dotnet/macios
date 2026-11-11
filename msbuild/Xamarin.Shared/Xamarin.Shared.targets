@@ -2856,7 +2856,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_CollectAdditionalAppExtensionCodesigningData" DependsOnTargets="_PlaceAppExtensions">
 		<ItemGroup>
-			<_AdditionalAppExtensionToSign Include="@(_ResolvedAppExtensionReferences)" Condition="'%(_ResolvedAppExtensionReferences.IsAdditionalAppExtension)' == 'true'" />
+			<_AdditionalAppExtensionToSign Include="@(_ResolvedAppExtensionReferences)" Condition="'%(_ResolvedAppExtensionReferences.IsAdditionalAppExtension)' == 'true'" RemoveMetadata="InputFiles;OutputFiles;ManifestPath;CopyStampFile" />
 			<_CodesignBundle Include="@(_AdditionalAppExtensionToSign->'$(_AppBundleName)$(AppBundleExtension)/%(BundleRelativePath)%(Filename)%(Extension)')">
 				<CodesignAllocate>$(_CodesignAllocate)</CodesignAllocate>
 				<CodesignDisableTimestamp>false</CodesignDisableTimestamp>
@@ -3043,7 +3043,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			StampFile="%(_ResolvedAppExtensionReferences.CopyStampFile)"
 			TouchDestinationFiles="true"
 			>
-			<Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
 		</Ditto>
 
 		<!-- Delete any code signatures and dSYM dirs since they are now invalid -->
@@ -3066,7 +3065,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_EmbeddedAppExtensionsFile)" />
 			<FileWrites Include="@(_ResolvedAppExtensionReferences->'%(CopyStampFile)')" />
 			<FileWrites Include="@(_ResolvedAppExtensionReferences->'%(CopyStampFile).inputs')" />
-			<FileWrites Include="@(_EmbeddedAppExtensions->'%(Identity)/**/*')" />
+			<FileWrites Include="$(_AppExtensionRoot)PlugIns/**/*;$(_AppExtensionRoot)Extensions/**/*;$(_AppExtensionRoot)XPCServices/**/*" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_RegisterEmbeddedAppExtensionFileWrites" BeforeTargets="IncrementalClean;_CleanGetCurrentAndPriorFileWrites" DependsOnTargets="_GenerateBundleName">
+		<ItemGroup>
+			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)embedded-app-extensions.items" Condition="Exists('$(DeviceSpecificIntermediateOutputPath)embedded-app-extensions.items')" />
+			<FileWrites Include="$(DeviceSpecificIntermediateOutputPath)app-extensions/**/*" />
+			<FileWrites Include="$(_AppExtensionRoot)PlugIns/**/*;$(_AppExtensionRoot)Extensions/**/*;$(_AppExtensionRoot)XPCServices/**/*" />
 		</ItemGroup>
 	</Target>
 

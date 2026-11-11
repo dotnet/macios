@@ -57,6 +57,14 @@ steps:
   name: macInfo
   displayName: Set agent information
 
+- bash: |
+    script="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/clean-for-remote-tests.sh"
+    if ! grep -Fq 'RESET_XMA_CACHE' "$script"; then
+      echo "This checkout uses an outdated remote test cleanup that resets XMA caches. Update the branch to run remote tests."
+      exit 1
+    fi
+  displayName: 'Check remote test cleanup'
+
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/clean-for-remote-tests.sh
   displayName: 'Clean for remote tests'
   continueOnError: true

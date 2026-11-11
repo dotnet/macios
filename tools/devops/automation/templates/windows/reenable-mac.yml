@@ -38,9 +38,11 @@ steps:
     set -euo pipefail
     umask 077
     ID_RSA_PATH="$(mktemp "$AGENT_TEMPDIRECTORY/id_rsa.XXXXXXXX")"
+    trap 'rm -f "$ID_RSA_PATH"; exit 1' EXIT
     printf '%s\n' "$REMOTE_MAC_ID_RSA" > "$ID_RSA_PATH"
     chmod 600 "$ID_RSA_PATH"
     echo "##vso[task.setvariable variable=ID_RSA_PATH]$ID_RSA_PATH"
+    trap - EXIT
   displayName: 'Write id_rsa'
   condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true

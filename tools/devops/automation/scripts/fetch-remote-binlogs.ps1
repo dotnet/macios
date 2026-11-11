@@ -15,13 +15,13 @@ Invoke-SshCommand `
   -RemoteHost "$Env:MAC_AGENT_IP" `
   -RemoteUserName "$Env:MAC_AGENT_USER" `
   -- `
-  ls -la "/Users/$Env:MAC_AGENT_USER/remote_build_testing/windows-remote-logs.zip"
+  ls -la "remote_build_testing/windows-remote-logs.zip"
 
 # Copy the zip from the remote Mac to this machine
 Invoke-SshDownload `
   -RemoteHost "$Env:MAC_AGENT_IP" `
   -RemoteUserName "$Env:MAC_AGENT_USER" `
-  -Source "/Users/$Env:MAC_AGENT_USER/remote_build_testing/windows-remote-logs.zip" `
+  -Source "remote_build_testing/windows-remote-logs.zip" `
   -Target "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY\windows-binlogs\windows-remote-logs.zip"
 
 # Copy the binlogs to the html report

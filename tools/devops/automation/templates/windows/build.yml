@@ -287,10 +287,22 @@ steps:
     Invoke-WebRequest https://download.sysinternals.com/files/Procdump.zip -OutFile "$tools/Procdump.zip"
     Expand-Archive "$tools/Procdump.zip" -DestinationPath $tools -Force
     & "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/Windows/bin/dotnet/dotnet.exe" `
-      tool install dotnet-dump --tool-path "$tools/dotnet-tools" --allow-roll-forward
+      tool install dotnet-dump --tool-path "$tools/dotnet-tools" --allow-roll-forward `
+      --version 10.0.755903 --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json
     if ($LASTEXITCODE -ne 0) { throw "Could not install dotnet-dump" }
+    [xml] $installer = (Invoke-WebRequest https://aka.ms/windbg/download).Content
+    Invoke-WebRequest $installer.AppInstaller.MainBundle.Uri -OutFile "$tools/windbg-bundle.zip"
+    $bundle = [System.IO.Compression.ZipFile]::OpenRead("$tools/windbg-bundle.zip")
+    try {
+      [System.IO.Compression.ZipFileExtensions]::ExtractToFile(
+        $bundle.GetEntry('windbg_win-x64.msix'), "$tools/windbg-x64.zip", $true)
+    } finally {
+      $bundle.Dispose()
+    }
+    Expand-Archive "$tools/windbg-x64.zip" -DestinationPath "$tools/windbg" -Force
     Write-Host "##vso[task.setvariable variable=REMOTE_BUILD_PROCDUMP]$tools/procdump64.exe"
     Write-Host "##vso[task.setvariable variable=REMOTE_BUILD_DOTNET_DUMP]$tools/dotnet-tools/dotnet-dump.exe"
+    Write-Host "##vso[task.setvariable variable=REMOTE_BUILD_CDB]$tools/windbg/amd64/cdb.exe"
   displayName: 'Install remote build diagnostic tools'
   timeoutInMinutes: 10
 
@@ -306,6 +318,7 @@ steps:
     REMOTE_BUILD_DIAGNOSTICS: $(Build.ArtifactStagingDirectory)/remote-build-diagnostics
     REMOTE_BUILD_PROCDUMP: $(REMOTE_BUILD_PROCDUMP)
     REMOTE_BUILD_DOTNET_DUMP: $(REMOTE_BUILD_DOTNET_DUMP)
+    REMOTE_BUILD_CDB: $(REMOTE_BUILD_CDB)
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish remote build hang diagnostics'

@@ -8,12 +8,17 @@ $ErrorActionPreference = 'Stop'
 New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
 
 function Invoke-DiagnosticTool {
-    param([string] $FilePath, [string[]] $Arguments, [string] $LogPath, [int] $TimeoutSeconds = 60)
+    param([string] $FilePath, [string[]] $Arguments, [string] $LogPath, [int] $TimeoutSeconds = 60,
+        [int[]] $SuccessExitCodes = @(0), [switch] $UnicodeOutput)
 
     $startInfo = [System.Diagnostics.ProcessStartInfo]::new($FilePath)
     $startInfo.UseShellExecute = $false
     $startInfo.RedirectStandardOutput = $true
     $startInfo.RedirectStandardError = $true
+    if ($UnicodeOutput) {
+        $startInfo.StandardOutputEncoding = [System.Text.Encoding]::Unicode
+        $startInfo.StandardErrorEncoding = [System.Text.Encoding]::Unicode
+    }
     foreach ($argument in $Arguments) {
         $startInfo.ArgumentList.Add($argument)
     }
@@ -32,7 +37,7 @@ function Invoke-DiagnosticTool {
             Add-Content "$OutputDirectory/collector-errors.txt" "$FilePath timed out after $TimeoutSeconds seconds"
         }
         Set-Content $LogPath ($stdout.GetAwaiter().GetResult() + $stderr.GetAwaiter().GetResult())
-        if ($process.ExitCode -ne 0) {
+        if ($process.ExitCode -notin $SuccessExitCodes) {
             Add-Content "$OutputDirectory/collector-errors.txt" "$FilePath exited with $($process.ExitCode); see $LogPath"
         }
     } finally {
@@ -59,6 +64,24 @@ $targets = @($allProcesses | Where-Object {
 $targets | Select-Object ProcessId, ParentProcessId, CommandLine |
     Format-List | Out-String -Width 4096 | Set-Content "$OutputDirectory/dump-targets.txt"
 
+$runtimeDirectories = @{}
+foreach ($entry in $targets) {
+    $targetId = [int] $entry.ProcessId
+    $modules = @((Get-Process -Id $targetId).Modules)
+    $modules | Select-Object ModuleName, FileName, FileVersionInfo |
+        Format-List | Out-String -Width 4096 | Set-Content "$OutputDirectory/modules-$targetId.txt"
+    $runtimeModule = $modules | Where-Object ModuleName -eq 'coreclr.dll' | Select-Object -First 1
+    if ($null -ne $runtimeModule) {
+        $runtimeDirectory = Split-Path $runtimeModule.FileName
+        $runtimeDirectories[$targetId] = $runtimeDirectory
+        $savedRuntime = "$OutputDirectory/runtime-$targetId"
+        New-Item -ItemType Directory -Force -Path $savedRuntime | Out-Null
+        foreach ($name in @('coreclr.dll', 'mscordaccore.dll', 'mscordbi.dll')) {
+            Copy-Item (Join-Path $runtimeDirectory $name) $savedRuntime
+        }
+    }
+}
+
 for ($snapshot = 1; $snapshot -le 2; $snapshot++) {
     foreach ($entry in $targets) {
         $targetId = [int] $entry.ProcessId
@@ -74,9 +97,14 @@ for ($snapshot = 1; $snapshot -le 2; $snapshot++) {
             Add-Content "$OutputDirectory/collector-errors.txt" "Thread snapshot $snapshot, PID ${targetId}: $_"
         }
         try {
+            $dumpPath = "$OutputDirectory/process-$targetId-$snapshot.dmp"
             Invoke-DiagnosticTool -FilePath $Env:REMOTE_BUILD_PROCDUMP `
-                -Arguments @('-accepteula', '-ma', "$targetId", "$OutputDirectory/process-$targetId-$snapshot.dmp") `
-                -LogPath "$OutputDirectory/procdump-$targetId-$snapshot.log" -TimeoutSeconds 60
+                -Arguments @('-accepteula', '-ma', "$targetId", $dumpPath) `
+                -LogPath "$OutputDirectory/procdump-$targetId-$snapshot.log" -TimeoutSeconds 60 `
+                -SuccessExitCodes @(0, 1) -UnicodeOutput
+            if (-not (Test-Path $dumpPath) -or (Get-Item $dumpPath).Length -eq 0) {
+                throw "ProcDump did not create $dumpPath"
+            }
         } catch {
             Add-Content "$OutputDirectory/collector-errors.txt" "Snapshot $snapshot, PID ${targetId}: $_"
         }
@@ -92,8 +120,20 @@ Invoke-DiagnosticTool -FilePath $DotNetPath -Arguments @('workload', 'list') -Lo
 $Env:DOTNET_ROOT = Split-Path $DotNetPath
 $Env:DOTNET_ROLL_FORWARD = 'Major'
 foreach ($dump in Get-ChildItem "$OutputDirectory/*.dmp") {
+    $targetId = [int] ($dump.BaseName -split '-')[1]
+    $runtimeDirectory = $runtimeDirectories[$targetId]
+    if ([string]::IsNullOrEmpty($runtimeDirectory)) {
+        throw "No runtime directory recorded for PID $targetId"
+    }
+    $sos = Join-Path (Split-Path $Env:REMOTE_BUILD_CDB) 'winext/sos/sos.dll'
+    $commands = "~* kv; .load `"$sos`"; !setclrpath `"$runtimeDirectory`"; !threads; ~*e !clrstack; q"
+    Invoke-DiagnosticTool -FilePath $Env:REMOTE_BUILD_CDB `
+        -Arguments @('-y', "srv*$OutputDirectory/symbols*https://msdl.microsoft.com/download/symbols",
+            '-z', $dump.FullName, '-c', $commands) `
+        -LogPath "$($dump.FullName).native-stacks.txt" -TimeoutSeconds 120
     Invoke-DiagnosticTool -FilePath $Env:REMOTE_BUILD_DOTNET_DUMP `
-        -Arguments @('analyze', $dump.FullName, '-c', 'clrthreads', '-c', 'clrstack -all', '-c', 'exit') `
+        -Arguments @('analyze', $dump.FullName, '-c', "setclrpath $runtimeDirectory",
+            '-c', 'clrthreads', '-c', 'clrstack -all', '-c', 'exit') `
         -LogPath "$($dump.FullName).stacks.txt" -TimeoutSeconds 60
 }
 

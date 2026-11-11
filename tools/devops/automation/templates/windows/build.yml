@@ -290,7 +290,9 @@ steps:
       tool install dotnet-dump --tool-path "$tools/dotnet-tools" --allow-roll-forward `
       --version 10.0.755903 --add-source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-tools/nuget/v3/index.json
     if ($LASTEXITCODE -ne 0) { throw "Could not install dotnet-dump" }
-    [xml] $installer = (Invoke-WebRequest https://aka.ms/windbg/download).Content
+    Invoke-WebRequest https://aka.ms/windbg/download -OutFile "$tools/windbg.appinstaller"
+    $installer = [System.Xml.XmlDocument]::new()
+    $installer.Load("$tools/windbg.appinstaller")
     Invoke-WebRequest $installer.AppInstaller.MainBundle.Uri -OutFile "$tools/windbg-bundle.zip"
     $bundle = [System.IO.Compression.ZipFile]::OpenRead("$tools/windbg-bundle.zip")
     try {

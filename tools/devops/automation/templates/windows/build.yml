@@ -280,14 +280,30 @@ steps:
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
 
+- pwsh: |
+    . "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/remote-password-file.ps1"
+    $passwordFile = New-RemotePasswordFile -Password $Env:XMA_PASSWORD -Directory "$(Agent.TempDirectory)"
+    $escapedPath = $passwordFile.Replace('%', '%AZP25').Replace("`r", '%0D').Replace("`n", '%0A')
+    Write-Host "##vso[task.setvariable variable=MAC_AGENT_PASSWORD_FILE]$escapedPath"
+  displayName: 'Prepare remote Mac credentials'
+  condition: and(succeeded(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
+  env:
+    XMA_PASSWORD: $(XMA.Password)
+
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-remote-windows-tests.ps1
   displayName: 'Run .NET tests remotely'
   timeoutInMinutes: 120
+  condition: and(succeeded(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
   continueOnError: true
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
   env:
-    XMA_PASSWORD: $(XMA.Password)
+    XMA_PASSWORD_FILE: $(MAC_AGENT_PASSWORD_FILE)
+
+- pwsh: |
+    throw "This checkout is missing the secure remote Mac test setup. Update the branch and rerun the tests."
+  displayName: 'Check remote Mac test setup'
+  condition: and(succeeded(), ne(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
 
 - pwsh: |
     Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\\$Env:BUILD_REPOSITORY_TITLE\\tools\\devops\\automation\\scripts\\MaciosCI.psd1
@@ -307,13 +323,6 @@ steps:
   displayName: 'Fail if test failures'
   timeoutInMinutes: 1
   condition: eq(variables['Agent.JobStatus'], 'SucceededWithIssues')
-
-# Older PR heads still collect logs from the Windows test job.
-- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\fetch-remote-binlogs.ps1
-  displayName: 'Fetch remote binlogs'
-  timeoutInMinutes: 5
-  condition: and(always(), ne(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
-  continueOnError: true
 
 # Copy the binlogs to the html report
 - pwsh: |
@@ -417,3 +426,14 @@ steps:
   displayName: "Remove secrets"
   condition: always()
   continueOnError: true
+
+- pwsh: |
+    if (Test-Path -LiteralPath $Env:XMA_PASSWORD_FILE) {
+      . "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/remote-password-file.ps1"
+      Remove-RemotePasswordFile -Path $Env:XMA_PASSWORD_FILE
+    }
+  displayName: 'Remove remote Mac credentials'
+  condition: and(always(), eq(variables['MAC_AGENT_CONFIGURE_MAC_AVAILABLE'], 'true'))
+  continueOnError: true
+  env:
+    XMA_PASSWORD_FILE: $(MAC_AGENT_PASSWORD_FILE)

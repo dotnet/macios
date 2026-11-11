@@ -164,12 +164,18 @@ steps:
 
 - bash: |
     set -eu
-    script="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
-    if test -f "$script"; then
+    repo="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE"
+    script="$repo/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
+    if test -f "$script" &&
+       test -f "$repo/tools/devops/automation/scripts/remote-password-file.ps1" &&
+       grep -Fq 'XMA_PASSWORD_FILE' "$repo/tools/devops/automation/scripts/run-remote-windows-tests.ps1" &&
+       grep -Fq 'ServerPasswordFile' "$repo/tests/dotnet/UnitTests/TestBaseClass.cs" &&
+       grep -Fq 'ServerPasswordFile' "$repo/msbuild/Xamarin.MacDev.Tasks/Tasks/MessagingTasks.cs" &&
+       grep -Fq 'ServerPasswordFile' "$repo/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.Messaging.targets"; then
       "$script"
       echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]true"
     else
-      echo "This checkout predates ConfigureMac; using the existing remote test setup."
+      echo "This checkout is missing the secure remote Mac test setup. Update the branch to run remote tests."
       echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]false"
     fi
   name: remoteNuGetConfig

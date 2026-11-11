@@ -108,30 +108,31 @@
 				DotNetSdkPath=$(_DotNetRootRemoteDirectory),
 				ContinueOnDisconnected=$(ContinueOnDisconnected)" />
 
-		<SayHello Condition="'$(ServerAddress)' != ''" 
-				  SessionId="$(BuildSessionId)"
-				  LocalBasePath="$(LocalBasePath)"
-				  LocalSettingsPath="$(LocalSettingsPath)"
+		<SayHello SessionId="$(BuildSessionId)"
+				  Condition="'$(ServerAddress)' != ''"
+				  AgentsDirectory="$(MessagingAgentsDirectory)"
+				  AppName="$(BuildAppName)"
 				  BasePath="$(BasePath)"
 				  BuildsPath="$(BuildsPath)"
-				  LogsPath="$(LogsPath)"
-				  IntermediateDir="$(IntermediateOutputPath)build_package\"
+				  ContinueOnDisconnected="$(ContinueOnDisconnected)"
 				  DotNetRuntimePath="$(DotNetRuntimePath)"
 				  DotNetSdkPath="$(_DotNetRootRemoteDirectory)"
+				  GenerateCache="$(GenerateCache)"
+				  IntermediateDir="$(IntermediateOutputPath)build_package\"
+				  LocalBasePath="$(LocalBasePath)"
+				  LocalSettingsPath="$(LocalSettingsPath)"
+				  LogsPath="$(LogsPath)"
+				  NoWarn="$(NoWarn)"
+				  ProjectDirectory="$(MSBuildProjectDirectory)"
 				  ServerAddress="$(ServerAddress)"
+				  ServerPassword="$(ServerPassword)"
+				  ServerPasswordFile="$(ServerPasswordFile)"
 				  ServerSshPort="$(ServerSshPort)"
 				  ServerTcpPort="$(ServerTcpPort)"
 				  ServerUser="$(ServerUser)"
-				  ServerPassword="$(ServerPassword)"
 				  SSHKey="$(SSHKey)"
 				  SSHPassPhrase="$(SSHPassPhrase)"
-				  AppName="$(BuildAppName)"
-				  GenerateCache="$(GenerateCache)"
-				  ProjectDirectory="$(MSBuildProjectDirectory)"
-				  ContinueOnDisconnected="$(ContinueOnDisconnected)"
-				  VisualStudioProcessId="$(VisualStudioProcessId)"
-				  NoWarn="$(NoWarn)"
-				  AgentsDirectory="$(MessagingAgentsDirectory)">
+				  VisualStudioProcessId="$(VisualStudioProcessId)">
 			<Output TaskParameter="DidEstablishConnection" PropertyName="_DidEstablishConnection" />
 			<Output TaskParameter="IsBuildServerAvailable" PropertyName="MtouchTargetsEnabled" />
 			<Output TaskParameter="IsBuildServerAvailable" PropertyName="IsMacEnabled" />

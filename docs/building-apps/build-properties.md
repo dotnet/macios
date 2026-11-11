@@ -1729,6 +1729,16 @@ However, the either of the following works:
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
 
+## ServerPasswordFile
+
+The path on Windows to a UTF-8 file containing the SSH password for a remote Mac.
+This property takes precedence over `ServerPassword`.
+
+Use this property to keep the password out of MSBuild properties, logs, and
+binlogs. Restrict access to the file and delete it when it is no longer needed.
+Don't also pass the password in `ServerPassword` or an environment variable
+when running MSBuild, because those values can be logged.
+
 ## StripFrameworkHeaders
 
 A boolean property that specifies whether the `Headers`, `PrivateHeaders`, and

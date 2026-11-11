@@ -1,3 +1,9 @@
+using System;
+using System.IO;
+using System.Security;
+
+using Xamarin.Localization.MSBuild;
+
 namespace Xamarin.MacDev.Tasks.Messaging;
 
 // We subclass the Xamarin.Messaging.Build.Client tasks so that we have all our tasks in the same
@@ -9,6 +15,26 @@ public class GenerateBuildSessionId : Xamarin.Messaging.Build.Client.Tasks.Gener
 }
 
 public class SayHello : Xamarin.Messaging.Build.Client.Tasks.SayHello {
+	public string? ServerPasswordFile { get; set; }
+
+	public override bool Execute ()
+	{
+		if (!string.IsNullOrEmpty (ServerPasswordFile)) {
+			try {
+				ServerPassword = File.ReadAllText (ServerPasswordFile);
+			} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException || ex is ArgumentException || ex is NotSupportedException || ex is SecurityException) {
+				Log.LogError (MSBStrings.E0010, ServerPasswordFile, ex.Message);
+				return false;
+			}
+
+			if (ServerPassword.Length == 0) {
+				Log.LogError (MSBStrings.ServerPasswordFileEmpty, ServerPasswordFile);
+				return false;
+			}
+		}
+
+		return base.Execute ();
+	}
 }
 
 public class CopyFileFromBuildServer : Xamarin.Messaging.Build.Client.Tasks.CopyFileFromBuildServer {

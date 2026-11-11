@@ -129,12 +129,6 @@
     <Compile Include="..\..\src\ObjCRuntime\NativeNameAttribute.cs">
       <Link>external/src/ObjCRuntime/NativeNameAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\PListObject.cs">
-      <Link>external/Xamarin.MacDev/Xamarin.MacDev/PListObject.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\MacCatalystSupport.cs">
-      <Link>external/Xamarin.MacDev/Xamarin.MacDev/MacCatalystSupport.cs</Link>
-    </Compile>
     <Compile Include="..\..\src\ObjCRuntime\Registrar.cs">
       <Link>external/src/ObjCRuntime/Registrar.cs</Link>
     </Compile>
@@ -187,6 +181,7 @@
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <PackageReference Include="Mono.Options" Version="6.12.0.148" />
+    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Errors.resx">

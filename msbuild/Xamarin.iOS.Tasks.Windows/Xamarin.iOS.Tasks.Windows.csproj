@@ -15,6 +15,7 @@
   <Import Project="..\..\eng\Versions.props" />
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
+    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
     <PackageReference Include="Xamarin.Messaging.Build.Client" Version="$(MessagingVersion)" IncludeAssets="contentFiles" />
     <PackageReference Include="Xamarin.Messaging.Core" Version="$(MessagingVersion)" IncludeAssets="build" />
     <PackageReference Include="Xamarin.Messaging.Server" Version="$(MessagingVersion)" IncludeAssets="contentFiles" />
@@ -28,9 +29,6 @@
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" />
     <!-- Fix transient dependency issue found by component governance -->
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="*.props">

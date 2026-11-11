@@ -14,7 +14,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.ILLink" Version="$(MicrosoftNETILLinkPackageVersion)" />
     <PackageReference Include="Microsoft.DotNet.Cecil" Version="$(MicrosoftDotNetCecilPackageVersion)" />
+    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
   </ItemGroup>
+  <Import Project="..\..\msbuild\ILMerge.targets" />
+  <Target Name="SelectMaciOSAssembliesForMerge" BeforeTargets="ILRepack">
+    <ItemGroup>
+      <MergedAssemblies Include="@(ReferencePath)" Condition="'%(FileName)' == 'Xamarin.Apple.Tools.MaciOS'" />
+    </ItemGroup>
+  </Target>
   <ItemGroup>
     <Compile Include="..\common\ApplePlatform.cs">
       <Link>external/tools/common/ApplePlatform.cs</Link>
@@ -211,12 +218,6 @@
     </Compile>
     <Compile Include="..\..\builds\mono-ios-sdk-destdir\ios-sources\external\linker\src\tuner\Mono.Tuner\CecilRocks.cs">
       <Link>external/mono-archive/Mono.Tuner/CecilRocks.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\PListObject.cs">
-      <Link>external/Xamarin.MacDev/Xamarin.MacDev/PListObject.cs</Link>
-    </Compile>
-    <Compile Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\MacCatalystSupport.cs">
-      <Link>external/Xamarin.MacDev/Xamarin.MacDev/MacCatalystSupport.cs</Link>
     </Compile>
     <Compile Include="..\common\BitCodeMode.cs">
       <Link>external/tools/common/BitCodeMode.cs</Link>

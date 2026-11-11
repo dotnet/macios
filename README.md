@@ -40,6 +40,28 @@ If you are interested in fixing issues and contributing directly to the code bas
 - [Coding Guidelines](https://github.com/dotnet/macios/wiki/How-to-Contribute#coding-guidelines)
 - [Submitting pull requests](https://github.com/dotnet/macios/wiki/How-to-Contribute#pull-requests)
 
+### Developing macios-devtools changes locally
+
+To test changes to [macios-devtools](https://github.com/dotnet/macios-devtools) before publishing a package, pack it into a local feed:
+
+```sh
+# In the macios-devtools checkout:
+export MACIOS_DEVTOOLS_FEED="$HOME/macios-devtools-feed"
+export MACIOS_DEVTOOLS_VERSION=1.0.0-local.1
+dotnet pack Xamarin.MacDev/Xamarin.MacDev.csproj -c Release \
+    -p:PackageVersion="$MACIOS_DEVTOOLS_VERSION" -o "$MACIOS_DEVTOOLS_FEED"
+```
+
+In the macios checkout, select that version and add the local feed to the configured sources:
+
+```sh
+export XamarinAppleToolsMaciOSPackageVersion="$MACIOS_DEVTOOLS_VERSION"
+export RestoreAdditionalProjectSources="$MACIOS_DEVTOOLS_FEED"
+dotnet build tools/assembly-preparer/assembly-preparer.csproj
+```
+
+Use a new package version after each change, since NuGet caches packages by version. For Make-based builds, run `touch Directory.Build.props` after changing the version override so Make rebuilds the affected tools.
+
 ## Downloads
 
 Install the .NET workloads for Apple platforms using the .NET CLI:

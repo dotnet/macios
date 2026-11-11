@@ -63,6 +63,23 @@ namespace Xamarin.Tests {
 			AssertTargetNotExecuted (targets, "ILLink", "The trimmer should not have executed.");
 		}
 
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CustomLinkerStepsLoad (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = "SdkOnly";
+			properties ["PrepareAssemblies"] = "false";
+			properties ["PostProcessAssemblies"] = "false";
+
+			var result = DotNet.AssertBuild (projectPath, properties);
+			AssertThatLinkerExecuted (result);
+		}
+
 		[TestCase (ApplePlatform.iOS)]
 		public void RemoveFoundationMemberAttributes (ApplePlatform platform)
 		{

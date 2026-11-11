@@ -36,6 +36,7 @@ steps:
 
 - bash: |
     set -euo pipefail
+    umask 077
     ID_RSA_PATH="$AGENT_TEMPDIRECTORY/id_rsa"
     printf '%s\n' "$REMOTE_MAC_ID_RSA" > "$ID_RSA_PATH"
     chmod 600 "$ID_RSA_PATH"

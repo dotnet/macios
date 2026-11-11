@@ -836,6 +836,11 @@ public class Frameworks : Dictionary<string, Framework> {
 			}
 		}
 
+		GatherFrameworks (app, namespaces, frameworks, weak_frameworks, include_framework);
+	}
+
+	static void GatherFrameworks (Application app, HashSet<string> namespaces, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
+	{
 		// Iterate over all the namespaces and check which frameworks we need to link with.
 		if (!TryGetFrameworks (app.Platform, out var all_frameworks))
 			return;
@@ -869,6 +874,166 @@ public class Frameworks : Dictionary<string, Framework> {
 		// Keep the weak ones.
 		frameworks.ExceptWith (weak_frameworks);
 	}
+
+#if !LEGACY_TOOLS
+	static IEnumerable<TypeDefinition> GetAllTypes (AssemblyDefinition assembly)
+	{
+		var pending = new Stack<TypeDefinition> (assembly.Modules.SelectMany (v => v.Types));
+		while (pending.Count > 0) {
+			var type = pending.Pop ();
+			yield return type;
+			foreach (var nested in type.NestedTypes)
+				pending.Push (nested);
+		}
+	}
+
+	static string SanitizeNativeAOTModuleName (string name)
+	{
+		var chars = name.ToCharArray ();
+		for (var i = 0; i < chars.Length; i++) {
+			if (!char.IsLetterOrDigit (chars [i]) && chars [i] != '_')
+				chars [i] = '_';
+		}
+		return new string (chars);
+	}
+
+	static bool IsNativeAOTPInvokeSurviving (string moduleName, string entryPoint, HashSet<string> symbols)
+	{
+		// NativeAOT emits a __pinvoke_ symbol for each indirect P/Invoke. Its module name is
+		// sanitized by NameMangler and the entry point is appended verbatim.
+		var moduleMarker = $"_Module__{SanitizeNativeAOTModuleName (moduleName)}__{entryPoint}";
+		foreach (var symbol in symbols) {
+			if (symbol.StartsWith ("__pinvoke_", StringComparison.Ordinal) &&
+				symbol.Contains (moduleMarker, StringComparison.Ordinal))
+				return true;
+		}
+
+		// __Internal is configured as DirectPInvoke by our NativeAOT targets. Other unresolved
+		// symbols don't identify their importing module, so they can't safely be matched here.
+		return string.Equals (moduleName, "__Internal", StringComparison.Ordinal) && symbols.Contains (entryPoint);
+	}
+
+	static bool TryGetSurvivingDlfcnFramework (Application app, TypeDefinition type, IList<CustomAttribute> attributes, HashSet<string> survivingDlfcnSymbols, [NotNullWhen (true)] out string? framework)
+	{
+		framework = null;
+		foreach (var attrib in attributes) {
+			if (!attrib.AttributeType.Is ("Foundation", "FieldAttribute") || attrib.ConstructorArguments.Count == 0)
+				continue;
+
+			if (attrib.ConstructorArguments [0].Value is not string symbolName || !survivingDlfcnSymbols.Contains (symbolName))
+				continue;
+
+			if (attrib.ConstructorArguments.Count > 1 && attrib.ConstructorArguments [1].Value is string libraryName && !string.IsNullOrEmpty (libraryName)) {
+				if (GetFrameworkFromLibraryName (app.Platform, libraryName) is Framework libraryFramework)
+					framework = libraryFramework.Namespace;
+				return framework is not null;
+			}
+
+			return TryGetFramework (app, type, out framework);
+		}
+
+		return false;
+	}
+
+	static Framework? GetFrameworkFromLibraryName (ApplePlatform platform, string libraryName)
+	{
+		if (!TryGetFrameworks (platform, out var all_frameworks))
+			return null;
+
+		foreach (var framework in all_frameworks.Values) {
+			if (string.Equals (framework.LibraryPath, libraryName, StringComparison.Ordinal) ||
+				string.Equals (framework.Name, libraryName, StringComparison.Ordinal) ||
+				string.Equals (framework.SubFramework, libraryName, StringComparison.Ordinal))
+				return framework;
+		}
+
+		return null;
+	}
+
+	/// <summary>
+	/// Gathers framework dependencies from NativeAOT symbols that survived ILC. Binding assemblies
+	/// and explicit LinkWith/NativeReference dependencies remain included as before; product assembly
+	/// frameworks are selected using surviving Objective-C class lookups and P/Invokes.
+	/// </summary>
+	public static void GatherNativeAOT (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
+	{
+		var namespaces = new HashSet<string> ();
+		var allAssemblies = assemblies.ToArray ();
+		var symbols = app.NativeAOTSurvivingPInvokeSymbols;
+		if (symbols is null)
+			return;
+
+		const string dlfcnPrefix = "xamarin_Dlfcn_";
+		const string dlfcnSuffix = "_Native";
+		var survivingDlfcnSymbols = new HashSet<string> ();
+		foreach (var symbol in symbols) {
+			if (symbol.StartsWith (dlfcnPrefix, StringComparison.Ordinal) && symbol.EndsWith (dlfcnSuffix, StringComparison.Ordinal))
+				survivingDlfcnSymbols.Add (symbol.Substring (dlfcnPrefix.Length, symbol.Length - dlfcnPrefix.Length - dlfcnSuffix.Length));
+		}
+
+		var survivingModules = new HashSet<string> ();
+		var referencedClasses = app.ClassesReferencedByInlinedClassGetHandle ?? [];
+
+		foreach (var assembly in allAssemblies) {
+			var isProductAssembly = app.Profile.IsProductAssembly (assembly);
+
+			// Keep the existing conservative behavior for external binding assemblies, whose
+			// ObjectiveCFramework attributes are explicit native dependency declarations.
+			if (!isProductAssembly) {
+				Gather (app, [assembly], frameworks, weak_frameworks);
+			}
+
+			foreach (var type in GetAllTypes (assembly)) {
+				if (app.StaticRegistrar.TryFindType (type, out var objcType) && referencedClasses.Contains (objcType.ExportedName) &&
+					TryGetFramework (app, type, out string? classFramework))
+					namespaces.Add (classFramework);
+
+				foreach (var method in type.Methods) {
+					if (!method.IsPInvokeImpl || method.PInvokeInfo is not { } pinvoke)
+						continue;
+
+					var moduleName = pinvoke.Module.Name;
+					var entryPoint = pinvoke.EntryPoint ?? method.Name;
+					if (!IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols))
+						continue;
+
+					survivingModules.Add (moduleName);
+					var framework = GetFrameworkFromLibraryName (app.Platform, moduleName);
+					if (framework is not null) {
+						namespaces.Add (framework.Namespace);
+					} else if (TryGetFramework (app, type, out string? methodFramework)) {
+						namespaces.Add (methodFramework);
+					}
+				}
+
+				if (survivingDlfcnSymbols.Count == 0)
+					continue;
+
+				foreach (var property in type.Properties) {
+					if (property.HasCustomAttributes &&
+						TryGetSurvivingDlfcnFramework (app, type, property.CustomAttributes, survivingDlfcnSymbols, out string? fieldFramework))
+						namespaces.Add (fieldFramework);
+				}
+
+				foreach (var field in type.Fields) {
+					if (field.HasCustomAttributes &&
+						TryGetSurvivingDlfcnFramework (app, type, field.CustomAttributes, survivingDlfcnSymbols, out string? fieldFramework))
+						namespaces.Add (fieldFramework);
+				}
+
+				foreach (var method in type.Methods) {
+					if (method.HasCustomAttributes &&
+						TryGetSurvivingDlfcnFramework (app, type, method.CustomAttributes, survivingDlfcnSymbols, out string? fieldFramework))
+						namespaces.Add (fieldFramework);
+				}
+			}
+		}
+
+		app.NativeAOTSurvivingPInvokeModules = survivingModules;
+
+		GatherFrameworks (app, namespaces, frameworks, weak_frameworks, framework => FilterFrameworks (app, framework));
+	}
+#endif
 
 	static bool FilterFrameworks (Application app, Framework framework)
 	{

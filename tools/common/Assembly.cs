@@ -525,6 +525,9 @@ namespace Xamarin.Bundler {
 					if (string.IsNullOrEmpty (name))
 						continue; // obfuscated assemblies.
 
+					if (App.NativeAOTSurvivingPInvokeModules is { } survivingModules && !survivingModules.Contains (name))
+						continue;
+
 					string file = Path.GetFileNameWithoutExtension (name);
 
 					if (App.IsFrameworkUnavailable (file)) {

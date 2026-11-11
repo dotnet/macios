@@ -824,14 +824,18 @@
 
 		<PropertyGroup>
 			<!--
-				Keep running ILLink for NativeAOT even when the assembly-preparer runs our custom steps.
-				Postprocessing gathers framework dependencies from the managed assemblies, and ILC does not
-				write trimmed managed assemblies. Without ILLink, every framework in the untrimmed platform
-				assembly is linked into the app, including frameworks the app never uses.
+				When using NativeAOT + PrepareAssemblies, all our custom linker steps are executed by the
+				assembly-preparer instead of inside ILLink. ILC does its own trimming, so running ILLink as well
+				is redundant. Framework dependencies are collected after ILC from its surviving native symbols,
+				so the framework gather step no longer requires ILLink's trimmed managed assemblies.
+
+				This is gated on .NET 11+: feeding the untrimmed assemblies to ILC hits ILC's duplicate-type-name
+				bug (https://github.com/dotnet/runtime/issues/127004), which is fixed in the .NET 11+ ILC.
 			-->
+			<_SkipILLink Condition="'$(_SkipILLink)' == '' And '$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">true</_SkipILLink>
 			<_SkipILLink Condition="'$(_SkipILLink)' == ''">false</_SkipILLink>
 
-			<!-- NativeAOT sets RunILLink=false by default, so enable it unless explicitly skipped. -->
+			<!-- NativeAOT sets RunILLink=false by default, so enable it unless we're skipping ILLink. -->
 			<RunILLink Condition="'$(PublishAot)' == 'true' And '$(_SkipILLink)' != 'true'">true</RunILLink>
 
 			<TypeMapEntryAssembly Condition="'$(Registrar)' == 'trimmable-static'">$(_TypeMapAssemblyName)</TypeMapEntryAssembly>
@@ -1437,14 +1441,14 @@
 
 
 	<!--
-		When building for NativeAOT with the trimmable-static registrar (and PrepareAssemblies), we generate
+		When using NativeAOT with the trimmable static registrar, we need to generate
 		the native registrar code *after* the NativeAOT compiler (ILC) has run, instead of before. This lets
 		the registrar inspect ILC's output to see which UnmanagedCallersOnly trampolines survived trimming, and
 		avoid emitting direct native references to trampolines ILC trimmed away (which would be undefined symbols
-		at native link time). ILC consumes ILLink's output, and postprocessing must not modify those assemblies.
-		Pass the original assemblies as well, so the registrar can read attributes removed during trimming.
-		The gate is computed statically (all the properties are available at evaluation time) so it can be
-		used both in static target wiring and in runtime target conditions. On .NET 10, postprocessing still
+		at native link time). This is only possible because ILLink is skipped in this scenario, so ILC consumes the
+		prepared assemblies and postprocessing no longer feeds ILC. The gate is computed statically (all the
+		properties are available at evaluation time) so it can be used both in static target wiring and in runtime
+		target conditions. It mirrors the conditions that make _SkipILLink true; on .NET 10 postprocessing still
 		runs before ILC, so _PostprocessAssemblies handles it as usual and this target stays off.
 	-->
 	<PropertyGroup>

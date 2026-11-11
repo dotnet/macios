@@ -22,11 +22,18 @@ namespace Xamarin {
 		{
 			base.TryProcessAssembly (assembly);
 
-			global::Frameworks.Gather (Configuration.Application, [assembly], Frameworks, WeakFrameworks);
+			var app = Configuration.Application;
+			if (app.XamarinRuntime == Xamarin.Bundler.XamarinRuntime.NativeAOT && app.NativeAOTSurvivingPInvokeSymbols is not null)
+				return;
+
+			global::Frameworks.Gather (app, [assembly], Frameworks, WeakFrameworks);
 		}
 
 		protected override void TryEndProcess ()
 		{
+			var app = Configuration.Application;
+			if (app.XamarinRuntime == Xamarin.Bundler.XamarinRuntime.NativeAOT && app.NativeAOTSurvivingPInvokeSymbols is not null)
+				global::Frameworks.GatherNativeAOT (app, Configuration.Assemblies, Frameworks, WeakFrameworks);
 
 			Configuration.Application.ComputeLinkerFlags ();
 

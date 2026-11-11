@@ -64,12 +64,15 @@ namespace Xamarin.Utils {
 			var methodNameEnd = docCommentId.IndexOf ('(');
 			if (methodNameEnd == -1) {
 				// in some cases there aren't any brackets so the end of the doc comment is the end of the method name
-				methodNameEnd = docCommentId.Length - 1;
+				methodNameEnd = docCommentId.Length;
 			}
 
-			var methodNameStart = 1 + docCommentId.LastIndexOf ('.', startIndex: methodNameEnd);
+			var methodNameStart = 1 + docCommentId.LastIndexOf ('.', startIndex: methodNameEnd - 1);
+			var methodName = docCommentId.Substring (methodNameStart, methodNameEnd - methodNameStart);
 
-			return docCommentId.Substring (methodNameStart);
+			// ILLink/ILC require angle brackets in explicit interface member names, but braces in parameter types.
+			// https://github.com/dotnet/runtime/issues/137350
+			return methodName.Replace ('{', '<').Replace ('}', '>') + docCommentId.Substring (methodNameEnd);
 		}
 
 		/// <summary>

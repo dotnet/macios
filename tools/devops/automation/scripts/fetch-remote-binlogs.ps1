@@ -1,11 +1,13 @@
 Import-Module "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/MaciosCI.psd1"
 
 # Zip up all the binlogs into one file
+$collectScript = "$Env:MAC_AGENT_BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tests/dotnet/Windows/collect-binlogs.sh"
+$quotedCollectScript = "'" + $collectScript.Replace("'", "'\''") + "'"
 Invoke-SshCommand `
   -RemoteHost "$Env:MAC_AGENT_IP" `
   -RemoteUserName "$Env:MAC_AGENT_USER" `
   -- `
-  "$Env:MAC_AGENT_BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tests/dotnet/Windows/collect-binlogs.sh"
+  "$quotedCollectScript"
 
 $targetDirectory = Join-Path "$Env:BUILD_ARTIFACTSTAGINGDIRECTORY" "windows-remote-logs"
 New-Item -Path "$targetDirectory" -ItemType "directory" -Force

@@ -6168,6 +6168,24 @@ namespace Metal {
 		[NullAllowed, Export ("captureObject", ArgumentSemantic.Strong)]
 		NSObject CaptureObject { get; set; }
 
+		/// <summary>Sets the object whose Metal commands should be captured.</summary>
+		/// <param name="value">The <see cref="IMTLDevice" /> to capture, or <see langword="null" /> to clear the capture object.</param>
+		[Sealed]
+		[Export ("setCaptureObject:")]
+		void SetCaptureObject ([NullAllowed] IMTLDevice value);
+
+		/// <summary>Sets the object whose Metal commands should be captured.</summary>
+		/// <param name="value">The <see cref="IMTLCommandQueue" /> to capture, or <see langword="null" /> to clear the capture object.</param>
+		[Sealed]
+		[Export ("setCaptureObject:")]
+		void SetCaptureObject ([NullAllowed] IMTLCommandQueue value);
+
+		/// <summary>Sets the object whose Metal commands should be captured.</summary>
+		/// <param name="value">The <see cref="IMTLCaptureScope" /> to capture, or <see langword="null" /> to clear the capture object.</param>
+		[Sealed]
+		[Export ("setCaptureObject:")]
+		void SetCaptureObject ([NullAllowed] IMTLCaptureScope value);
+
 		[Export ("destination", ArgumentSemantic.Assign)]
 		MTLCaptureDestination Destination { get; set; }
 

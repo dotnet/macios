@@ -186,6 +186,13 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (str.AsProtocol<INSCopying> (), Is.SameAs (str), "NSCopying");
 			Assert.That (str.AsProtocol<INSCoding> (), Is.SameAs (str), "NSCoding");
 			Assert.That (str.AsProtocol<INSObjectProtocol> (), Is.SameAs (str), "NSObject");
+
+			Assert.That (str.TryAsProtocol<INSCopying> (out var copying), Is.True, "TryAsProtocol NSCopying");
+			Assert.That (copying, Is.SameAs (str), "TryAsProtocol NSCopying result");
+			Assert.That (str.TryAsProtocol<INSCoding> (out var coding), Is.True, "TryAsProtocol NSCoding");
+			Assert.That (coding, Is.SameAs (str), "TryAsProtocol NSCoding result");
+			Assert.That (str.TryAsProtocol<INSObjectProtocol> (out var nsobj), Is.True, "TryAsProtocol NSObject");
+			Assert.That (nsobj, Is.SameAs (str), "TryAsProtocol NSObject result");
 		}
 
 		[Test]
@@ -198,6 +205,13 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (copying, Is.Not.SameAs (obj), "Wrapper");
 			using var copy = copying.Copy (null);
 			Assert.That (copy, Is.SameAs (obj), "Copy");
+
+			Assert.That (obj.TryAsProtocol<INSCopying> (out var tryCopying), Is.True, "TryAsProtocol");
+			using (tryCopying) {
+				Assert.That (tryCopying, Is.Not.Null, "TryAsProtocol result");
+				Assert.That (tryCopying!.Handle, Is.EqualTo (obj.Handle), "TryAsProtocol Handle");
+				Assert.That (tryCopying, Is.Not.SameAs (obj), "TryAsProtocol Wrapper");
+			}
 		}
 
 		class AsProtocolCopyingObject : NSObject {
@@ -232,6 +246,10 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentException> (() => obj.AsProtocol<NSObject> (), "Class");
 			Assert.Throws<ArgumentException> (() => obj.AsProtocol<INativeObject> (), "INativeObject");
 			Assert.Throws<ArgumentException> (() => obj.AsProtocol<INotAProtocol> (), "Non-protocol interface");
+
+			Assert.Throws<ArgumentException> (() => obj.TryAsProtocol<NSObject> (out _), "TryAsProtocol Class");
+			Assert.Throws<ArgumentException> (() => obj.TryAsProtocol<INativeObject> (out _), "TryAsProtocol INativeObject");
+			Assert.Throws<ArgumentException> (() => obj.TryAsProtocol<INotAProtocol> (out _), "TryAsProtocol Non-protocol interface");
 		}
 
 		[Test]
@@ -239,10 +257,18 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using var obj = new NSObject ();
 			Assert.Throws<InvalidCastException> (() => obj.AsProtocol<INSCopying> (), "NSObject/NSCopying");
+			Assert.That (obj.TryAsProtocol<INSCopying> (out var copying), Is.False, "TryAsProtocol NSObject/NSCopying");
+			Assert.That (copying, Is.Null, "TryAsProtocol NSObject/NSCopying result");
+
 			using var number = new NSNumber (42);
 			Assert.Throws<InvalidCastException> (() => number.AsProtocol<INSMutableCopying> (), "NSNumber/NSMutableCopying");
+			Assert.That (number.TryAsProtocol<INSMutableCopying> (out var mutableCopying), Is.False, "TryAsProtocol NSNumber/NSMutableCopying");
+			Assert.That (mutableCopying, Is.Null, "TryAsProtocol NSNumber/NSMutableCopying result");
+
 			using var nonConforming = new NonConformingCopyingObject ();
 			Assert.Throws<InvalidCastException> (() => nonConforming.AsProtocol<INSCopying> (), "Managed implementation without native conformance");
+			Assert.That (nonConforming.TryAsProtocol<INSCopying> (out var nonConformingCopying), Is.False, "TryAsProtocol Managed implementation without native conformance");
+			Assert.That (nonConformingCopying, Is.Null, "TryAsProtocol Managed implementation without native conformance result");
 		}
 
 		[Test]
@@ -251,6 +277,7 @@ namespace MonoTouchFixtures.Foundation {
 			var str = new NSString ("value");
 			str.Dispose ();
 			Assert.Throws<ObjectDisposedException> (() => str.AsProtocol<INSCopying> ());
+			Assert.Throws<ObjectDisposedException> (() => str.TryAsProtocol<INSCopying> (out _));
 		}
 
 		[Test]

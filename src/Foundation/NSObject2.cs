@@ -690,6 +690,24 @@ namespace Foundation {
 		/// </remarks>
 		public T AsProtocol<T> () where T : class, INativeObject
 		{
+			if (TryAsProtocol<T> (out var result))
+				return result;
+
+			throw new InvalidCastException ($"Object of type '{GetType ().FullName}' does not conform to protocol '{typeof (T).FullName}'.");
+		}
+
+		/// <summary>Attempts to get a managed representation of this object implementing the specified Objective-C protocol.</summary>
+		/// <typeparam name="T">The managed interface representing the Objective-C protocol.</typeparam>
+		/// <param name="result">When this method returns <see langword="true"/>, contains this instance if it already implements <typeparamref name="T"/>, or a protocol wrapper for the same native object; otherwise, <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if this object conforms to <typeparamref name="T"/>; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentException"><typeparamref name="T"/> is not an interface representing a known Objective-C protocol.</exception>
+		/// <exception cref="ObjectDisposedException">This object's native handle is zero.</exception>
+		/// <remarks>
+		///   <para>This method checks native protocol conformance before returning an existing implementation or creating a wrapper.</para>
+		///   <para>A new wrapper retains the native object without transferring ownership from this instance.</para>
+		/// </remarks>
+		public bool TryAsProtocol<T> ([NotNullWhen (true)] out T? result) where T : class, INativeObject
+		{
 			if (!typeof (T).IsInterface)
 				throw new ArgumentException ($"'{typeof (T).FullName}' is not a protocol interface.");
 
@@ -702,16 +720,21 @@ namespace Foundation {
 				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
 
 			if (ConformsToProtocol (protocol)) {
-				if (this is T implementation)
-					return implementation;
+				if (this is T implementation) {
+					result = implementation;
+					return true;
+				}
 
 				var wrapper = Runtime.GetINativeObject<T> (handle, false);
 				GC.KeepAlive (this);
-				if (wrapper is not null)
-					return wrapper;
+				if (wrapper is not null) {
+					result = wrapper;
+					return true;
+				}
 			}
 
-			throw new InvalidCastException ($"Object of type '{GetType ().FullName}' does not conform to protocol '{typeof (T).FullName}'.");
+			result = null;
+			return false;
 		}
 
 		[Export ("conformsToProtocol:")]

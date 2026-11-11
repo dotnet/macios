@@ -27915,7 +27915,6 @@ M:UIKit.UIView.UpdateConstraintsIfNeeded
 M:UIKit.UIView.UpdateProperties
 M:UIKit.UIView.UpdatePropertiesIfNeeded
 M:UIKit.UIView.UpdateTraitsIfNeeded
-M:UIKit.UIView.WillMoveToSuperview(UIKit.UIView)
 M:UIKit.UIView.WillMoveToWindow(UIKit.UIWindow)
 M:UIKit.UIView.WillRemoveSubview(UIKit.UIView)
 M:UIKit.UIViewConfigurationState.#ctor(UIKit.UITraitCollection)
@@ -51740,7 +51739,6 @@ P:UIKit.UIView.SemanticContentAttribute
 P:UIKit.UIView.ShouldGroupAccessibilityChildren
 P:UIKit.UIView.ShowsLargeContentViewer
 P:UIKit.UIView.Subviews
-P:UIKit.UIView.Superview
 P:UIKit.UIView.Tag
 P:UIKit.UIView.TintAdjustmentMode
 P:UIKit.UIView.TopAnchor

@@ -21740,6 +21740,18 @@ namespace UIKit {
 		[Export ("sizeToFit")]
 		void SizeToFit ();
 
+		/// <summary>Gets the view that contains this view.</summary>
+		/// <value>The parent view, or <see langword="null" /> if this view has no parent.</value>
+		/// <remarks>
+		///   <para>
+		///     Do not read this property while the parent view is being deallocated. During that teardown,
+		///     UIKit calls <see cref="WillMoveToSuperview(UIView)" /> on this view, and the native
+		///     <c>superview</c> property still returns the parent. Reading this property creates a managed
+		///     wrapper that retains the parent, but the retain does not stop deallocation, so releasing
+		///     the wrapper later crashes.
+		///   </para>
+		///   <para>Read what you need from the parent before teardown begins.</para>
+		/// </remarks>
 		[NullAllowed]
 		[Export ("superview")]
 		UIView Superview { get; }
@@ -21806,6 +21818,18 @@ namespace UIKit {
 		[Export ("willRemoveSubview:")]
 		void WillRemoveSubview (UIView uiview);
 
+		/// <summary>Notifies this view before its parent view changes.</summary>
+		/// <param name="newsuper">The new parent view, or <see langword="null" /> if this view is being removed.</param>
+		/// <remarks>
+		///   <para>
+		///     UIKit calls this method with <paramref name="newsuper" /> set to <see langword="null" />
+		///     while it deallocates the current parent. During that call, <see cref="Superview" /> still
+		///     returns the parent being deallocated. Do not read <see cref="Superview" /> in an override
+		///     then: creating a managed wrapper for the parent retains it, but the retain does not stop
+		///     deallocation, so releasing the wrapper later crashes.
+		///   </para>
+		///   <para>Read what you need from the old parent before teardown begins.</para>
+		/// </remarks>
 		[Export ("willMoveToSuperview:")]
 		void WillMoveToSuperview ([NullAllowed] UIView newsuper);
 

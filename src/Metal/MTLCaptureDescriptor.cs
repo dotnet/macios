@@ -14,7 +14,7 @@ namespace Metal {
 		/// <returns><see langword="true" /> if <see cref="CaptureObject" /> is non-null and conforms to <see cref="IMTLDevice" />; otherwise, <see langword="false" />.</returns>
 		public bool TryGetCaptureObject ([NotNullWhen (true)] out IMTLDevice? value)
 		{
-			if (CaptureObject is { } obj && obj.TryAsProtocol (out value))
+			if (CaptureObject is { } obj && obj.TryAsProtocol<IMTLDevice> (out value))
 				return true;
 
 			value = null;
@@ -26,7 +26,7 @@ namespace Metal {
 		/// <returns><see langword="true" /> if <see cref="CaptureObject" /> is non-null and conforms to <see cref="IMTLCommandQueue" />; otherwise, <see langword="false" />.</returns>
 		public bool TryGetCaptureObject ([NotNullWhen (true)] out IMTLCommandQueue? value)
 		{
-			if (CaptureObject is { } obj && obj.TryAsProtocol (out value))
+			if (CaptureObject is { } obj && obj.TryAsProtocol<IMTLCommandQueue> (out value))
 				return true;
 
 			value = null;
@@ -38,7 +38,7 @@ namespace Metal {
 		/// <returns><see langword="true" /> if <see cref="CaptureObject" /> is non-null and conforms to <see cref="IMTLCaptureScope" />; otherwise, <see langword="false" />.</returns>
 		public bool TryGetCaptureObject ([NotNullWhen (true)] out IMTLCaptureScope? value)
 		{
-			if (CaptureObject is { } obj && obj.TryAsProtocol (out value))
+			if (CaptureObject is { } obj && obj.TryAsProtocol<IMTLCaptureScope> (out value))
 				return true;
 
 			value = null;

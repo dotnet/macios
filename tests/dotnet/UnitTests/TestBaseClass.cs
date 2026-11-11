@@ -53,8 +53,8 @@ namespace Xamarin.Tests {
 		{
 			properties ??= new Dictionary<string, string> ();
 			// MSBuild unescapes percent sequences in property values.
-			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP")?.Replace ("%", "%25") ?? string.Empty;
-			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER")?.Replace ("%", "%25") ?? string.Empty;
+			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP")?.Replace ("%", "%25") ?? "";
+			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER")?.Replace ("%", "%25") ?? "";
 			if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XMA_PASSWORD")) || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ServerPassword")))
 				throw new InvalidOperationException ("Unset XMA_PASSWORD and ServerPassword before starting dotnet. Use run-remote-windows-tests.ps1 or set XMA_PASSWORD_FILE to a protected password file.");
 			var passwordFile = Environment.GetEnvironmentVariable ("XMA_PASSWORD_FILE");

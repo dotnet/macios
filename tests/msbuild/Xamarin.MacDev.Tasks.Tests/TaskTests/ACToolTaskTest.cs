@@ -125,12 +125,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		[TestCase ("Resources/Images.xcassets")]
 		[TestCase ("Shared/Images.xcassets")]
-		public void ExternalAssetCatalog (string catalogPath)
+		[TestCase (null)]
+		public void ExternalAssetCatalog (string? catalogPath)
 		{
 			var sourceDir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "AppWithXCAssets", "tvos", "Resources", "Images.xcassets");
 			var files = Directory.GetFiles (sourceDir, "*", SearchOption.AllDirectories);
 			var imageAssets = files.Select (v => v + "|" + catalogPath + v.Substring (sourceDir.Length)).ToArray ();
 			var actool = CreateACToolTask (ApplePlatform.TVOS, Cache.CreateTemporaryDirectory (), out var _, imageAssets);
+			if (catalogPath is null) {
+				foreach (var item in actool.ImageAssets) {
+					item.RemoveMetadata ("Link");
+					item.SetMetadata ("LocalMSBuildProjectFullPath", Path.Combine (actool.ProjectDir, "App.csproj"));
+					item.SetMetadata ("LocalDefiningProjectFullPath", Path.Combine (actool.ProjectDir, "App.csproj"));
+				}
+			}
 			actool.XSAppIconAssets = "Resources/Images.xcassets/AlternateBrandAssets.brandassets";
 			actool.XSLaunchImageAssets = "Resources/Images.xcassets/tvOSLaunchImage.launchimage";
 

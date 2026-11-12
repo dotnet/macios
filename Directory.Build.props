@@ -24,7 +24,6 @@
 		<NUnitPackageVersion>4.6.1</NUnitPackageVersion>
 		<NUnitLitePackageVersion>$(NUnitPackageVersion)</NUnitLitePackageVersion>
 		<NUnitV2ResultWriterPackageVersion>3.8.0</NUnitV2ResultWriterPackageVersion>
-		<XamarinAppleToolsMaciOSPackageVersion Condition="'$(XamarinAppleToolsMaciOSPackageVersion)' == ''">1.0.0-preview.1.26561.1</XamarinAppleToolsMaciOSPackageVersion>
 
 		<!-- Use the latest C# version by default -->
 		<LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>

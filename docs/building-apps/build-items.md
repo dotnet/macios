@@ -215,6 +215,9 @@ An item group that contains image assets, including files inside asset catalogs
 The `XSAppIconAssets` and `XSLaunchImageAssets` keys in `Info.plist` select
 assets by name; the directory part of each value is ignored. This also applies
 to asset catalogs outside the project directory or linked into the project.
+On iOS, a name that does not match an included asset causes an `actool` error,
+even if the directory part does not match any catalog. Remove stale keys from
+`Info.plist` if those assets are no longer used.
 
 ## InterfaceDefinition
 

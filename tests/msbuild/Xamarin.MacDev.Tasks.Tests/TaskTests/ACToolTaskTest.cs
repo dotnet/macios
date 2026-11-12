@@ -152,6 +152,21 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (manifest.Get<PDictionary> ("TVTopShelfImage")?.Get<PString> ("TVTopShelfPrimaryImageWide")?.Value, Is.EqualTo ("TopShelfImageWide"), "Wide top shelf image");
 		}
 
+		[TestCase (true)]
+		[TestCase (false)]
+		public void InexistentManifestAsset (bool appIcon)
+		{
+			var actool = CreateACToolTaskWithResources (ApplePlatform.iOS);
+			if (appIcon) {
+				actool.XSAppIconAssets = "Missing.xcassets/InexistentAppIcon.appiconset";
+			} else {
+				actool.XSLaunchImageAssets = "Missing.xcassets/InexistentLaunchImage.launchimage";
+			}
+
+			Assert.That (actool.Execute (), Is.False, "Task result");
+			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Has.Some.Contain (appIcon ? "InexistentAppIcon" : "InexistentLaunchImage"), "Missing asset error");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]

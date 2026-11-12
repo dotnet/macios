@@ -232,12 +232,9 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.M0119, item.ItemSpec, manifest.ItemSpec);
 				}
 
-				try {
-					var dict = PDictionary.OpenFile (manifest.ItemSpec);
-
+				if (TryOpenPList (manifest.ItemSpec, out var dict)) {
 					LogWarningsAndErrors (dict, item);
-				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message);
+				} else {
 					if (File.Exists (manifest.ItemSpec))
 						Log.LogError ("ibtool log: {0}", File.ReadAllText (manifest.ItemSpec));
 					continue;

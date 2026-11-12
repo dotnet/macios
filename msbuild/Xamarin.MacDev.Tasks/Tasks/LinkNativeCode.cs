@@ -254,7 +254,7 @@ namespace Xamarin.MacDev.Tasks {
 			return rv;
 		}
 
-		public static string [] GetEmbedEntitlementsInExecutableLinkerFlags (string entitlements)
+		public string [] GetEmbedEntitlementsInExecutableLinkerFlags (string entitlements)
 		{
 			if (string.IsNullOrEmpty (entitlements))
 				return Array.Empty<string> ();
@@ -285,9 +285,9 @@ namespace Xamarin.MacDev.Tasks {
 			return derEntitlements;
 		}
 
-		static bool EntitlementsRequireLinkerFlags (string path)
+		bool EntitlementsRequireLinkerFlags (string path)
 		{
-			if (!PDictionary.TryOpenFile (path, out var plist))
+			if (!TryOpenPList (path, out var plist))
 				return false;
 
 			// FIXME: most keys do not require linking in the entitlements file, so we

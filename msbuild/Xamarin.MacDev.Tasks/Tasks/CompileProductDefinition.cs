@@ -41,12 +41,9 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary plist;
 
 			if (File.Exists (ProductDefinition)) {
-				try {
-					plist = PDictionary.OpenFile (ProductDefinition);
-				} catch (Exception ex) {
-					LogProductDefinitionError (MSBStrings.E0010, ProductDefinition, ex.Message);
+				if (!TryOpenPList (ProductDefinition, out var openedPlist))
 					return false;
-				}
+				plist = openedPlist;
 			} else {
 				plist = new PDictionary ();
 			}
@@ -92,14 +89,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		private string? GetMinimumOSVersion ()
 		{
-			PDictionary plist;
-
-			try {
-				plist = PDictionary.OpenFile (AppManifest);
-			} catch (Exception ex) {
-				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0010, AppManifest, ex.Message);
+			if (!TryOpenPList (AppManifest, out var plist))
 				return null;
-			}
 
 			return plist.GetMinimumSystemVersion ();
 		}

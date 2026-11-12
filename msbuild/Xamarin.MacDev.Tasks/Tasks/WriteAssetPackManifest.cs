@@ -31,7 +31,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			var template = PDictionary.OpenFile (TemplatePath!.ItemSpec);
+			if (!TryOpenPList (TemplatePath!.ItemSpec, out var template))
+				return false;
+
 			var resources = template.GetArray ("resources");
 
 			foreach (var resource in resources.OfType<PDictionary> ()) {

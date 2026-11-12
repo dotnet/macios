@@ -35,6 +35,15 @@ namespace Xamarin.MacDev.Tasks {
 			set => verbosity = value;
 		}
 
+		internal bool TryOpenPList (string path, [NotNullWhen (true)] out PDictionary? plist)
+		{
+			if (PDictionary.TryOpenFile (path, out plist, out Exception? exception))
+				return true;
+
+			Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0010 /* Error loading '{0}': {1} */, path, exception.Message);
+			return false;
+		}
+
 		public string GetSdkDevPath ()
 		{
 			if (string.IsNullOrEmpty (SdkDevPath)) {

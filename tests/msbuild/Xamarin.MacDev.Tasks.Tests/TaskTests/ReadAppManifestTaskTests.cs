@@ -49,6 +49,17 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void InvalidAppManifest ()
+		{
+			var task = CreateTask ();
+			var path = task.AppManifest!.ItemSpec;
+			File.WriteAllText (path, "<<<<<<< HEAD\n");
+			ExecuteTask (task, expectedErrorCount: 1);
+			Assert.That (Engine.Logger.ErrorEvents [0].File, Is.EqualTo (path), "File");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.StartWith ("Error loading '"), "Message");
+		}
+
+		[Test]
 		public void MacCatalystVersionConversion ()
 		{
 			var task = CreateTask (platform: ApplePlatform.MacCatalyst, (plist) => {

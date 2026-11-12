@@ -45,12 +45,9 @@ namespace Xamarin.MacDev.Tasks {
 
 				var path = ITunesMetadata [0].GetMetadata ("FullPath");
 
-				try {
-					metadata = PDictionary.OpenFile (path);
-				} catch (Exception ex) {
-					Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0010, path, ex.Message);
+				if (!TryOpenPList (path, out var openedMetadata))
 					return false;
-				}
+				metadata = openedMetadata;
 			} else {
 				var displayName = BundleDisplayName;
 				var bundleVersion = BundleVersion;

@@ -63,12 +63,8 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary? plist = null;
 
 			if (!string.IsNullOrEmpty (AppManifest?.ItemSpec)) {
-				try {
-					plist = PDictionary.OpenFile (AppManifest!.ItemSpec);
-				} catch (Exception ex) {
-					Log.LogError (null, null, null, AppManifest!.ItemSpec, 0, 0, 0, 0, MSBStrings.E0010, AppManifest.ItemSpec, ex.Message);
+				if (!TryOpenPList (AppManifest!.ItemSpec, out plist))
 					return false;
-				}
 			}
 
 			CFBundleExecutable = plist?.GetCFBundleExecutable ();

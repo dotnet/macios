@@ -3890,6 +3890,7 @@ namespace Xamarin.BindingMethods.Generator {
 					rv.Parameters [i] = new ParameterData ();
 					rv.Parameters [i].TypeData = Parameters [i].TypeData.AsSpecificNativeType (as32bit);
 					rv.Parameters [i].IsRef = Parameters [i].IsRef;
+					rv.Parameters [i].IsOut = Parameters [i].IsOut;
 				}
 			}
 			rv.MarshalExceptions = MarshalExceptions;

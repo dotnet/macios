@@ -464,8 +464,8 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("HttpListener is not supported");
 			}
 
-			var (statusCode, targetRequestCount, targetAuthorizationHeaderCount) = RunRedirectTestOnBackgroundThread (() => {
-				using var server = new RedirectBasicAuthServer (crossOrigin: true);
+			var (statusCode, targetRequestCount, targetAuthorizationHeaderCount) = RunRedirectTestOnBackgroundThread (log => {
+				using var server = new RedirectBasicAuthServer (log, crossOrigin: true);
 				using var handler = new NSUrlSessionHandler ();
 				var username = "origin-user";
 				var password = "origin-password";
@@ -480,7 +480,7 @@ namespace MonoTests.System.Net.Http {
 				}
 
 				using var client = new HttpClient (handler);
-				using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+				using var response = GetResponseWithTimeout (log, client, new Uri (server.OriginUri, "start"));
 				return (response.StatusCode, server.TargetRequestCount, server.TargetAuthorizationHeaders.Length);
 			});
 
@@ -501,14 +501,14 @@ namespace MonoTests.System.Net.Http {
 			try {
 				AppContext.SetSwitch (AllowSameOriginRedirectCredentialsSwitch, allowSameOriginRedirectCredentials);
 
-				var (statusCode, targetRequestCount, targetAuthorizationHeaderCount) = RunRedirectTestOnBackgroundThread (() => {
-					using var server = new RedirectBasicAuthServer (crossOrigin: false);
+				var (statusCode, targetRequestCount, targetAuthorizationHeaderCount) = RunRedirectTestOnBackgroundThread (log => {
+					using var server = new RedirectBasicAuthServer (log, crossOrigin: false);
 					using var handler = new NSUrlSessionHandler {
 						Credentials = new NetworkCredential ("origin-user", "origin-password"),
 					};
 
 					using var client = new HttpClient (handler);
-					using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+					using var response = GetResponseWithTimeout (log, client, new Uri (server.OriginUri, "start"));
 					return (response.StatusCode, server.TargetRequestCount, server.TargetAuthorizationHeaders.Length);
 				});
 
@@ -532,8 +532,8 @@ namespace MonoTests.System.Net.Http {
 			try {
 				AppContext.SetSwitch (UseSharedCredentialStorageSwitch, useSharedCredentialStorage);
 
-				var (statusCode, authHeadersFromSecondRequest) = RunRedirectTestOnBackgroundThread (() => {
-					using var server = new RedirectBasicAuthServer (crossOrigin: true);
+				var (statusCode, authHeadersFromSecondRequest) = RunRedirectTestOnBackgroundThread (log => {
+					using var server = new RedirectBasicAuthServer (log, crossOrigin: true);
 
 					// First, prime the shared credential storage by making a successful auth request
 					// using a CredentialCache with the target URI. When shared storage is enabled,
@@ -544,7 +544,7 @@ namespace MonoTests.System.Net.Http {
 
 					using (var primingHandler = new NSUrlSessionHandler { Credentials = cache }) {
 						using var primingClient = new HttpClient (primingHandler);
-						using var primingResponse = GetResponseWithTimeout (primingClient, new Uri (server.OriginUri, "start"));
+						using var primingResponse = GetResponseWithTimeout (log, primingClient, new Uri (server.OriginUri, "start"));
 					}
 
 					// Record how many auth headers the server received from the priming request
@@ -560,7 +560,7 @@ namespace MonoTests.System.Net.Http {
 					};
 
 					using var client = new HttpClient (handler);
-					using var response = GetResponseWithTimeout (client, new Uri (server.OriginUri, "start"));
+					using var response = GetResponseWithTimeout (log, client, new Uri (server.OriginUri, "start"));
 					return (response.StatusCode, server.TargetAuthorizationHeaders.Length - authHeadersAfterPriming);
 				});
 
@@ -899,42 +899,40 @@ namespace MonoTests.System.Net.Http {
 
 		static readonly TimeSpan RedirectTestTimeout = TimeSpan.FromMinutes (2);
 		static readonly TimeSpan RedirectRequestTimeout = TimeSpan.FromSeconds (30);
-		static readonly object redirectTestLogLock = new object ();
-		static StringBuilder redirectTestLog = new StringBuilder ();
 
-		static void LogRedirectTest (string message)
+		static void LogRedirectTest (StringBuilder log, string message)
 		{
-			lock (redirectTestLogLock)
-				redirectTestLog.AppendLine ($"{DateTime.Now:HH:mm:ss.fff} {message}");
+			lock (log)
+				log.AppendLine ($"{DateTime.Now:HH:mm:ss.fff} {message}");
 			Console.WriteLine (message);
 		}
 
 		// Run the networking part of a test on a background thread, and wait for it with a timeout.
 		// Nothing here needs the main thread, and this way a hang anywhere (listener startup, the request, or disposal)
 		// fails the test instead of blocking the main thread (and thus the entire test run) indefinitely.
-		static T RunRedirectTestOnBackgroundThread<T> (Func<T> func)
+		static T RunRedirectTestOnBackgroundThread<T> (Func<StringBuilder, T> func)
 		{
-			lock (redirectTestLogLock)
-				redirectTestLog = new StringBuilder ();
+			var log = new StringBuilder ();
 
-			var task = Task.Factory.StartNew (func, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-			if (!((IAsyncResult) task).AsyncWaitHandle.WaitOne (RedirectTestTimeout)) {
-				string log;
-				lock (redirectTestLogLock)
-					log = redirectTestLog.ToString ();
-				Assert.Fail ($"The test did not complete within {RedirectTestTimeout.TotalSeconds} seconds. Progress:\n{log}");
+			var task = Task.Factory.StartNew (() => func (log), CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+			using var waitHandle = ((IAsyncResult) task).AsyncWaitHandle;
+			if (!waitHandle.WaitOne (RedirectTestTimeout)) {
+				string progress;
+				lock (log)
+					progress = log.ToString ();
+				Assert.Fail ($"The test did not complete within {RedirectTestTimeout.TotalSeconds} seconds. Progress:\n{progress}");
 			}
 			return task.GetAwaiter ().GetResult ();
 		}
 
-		static HttpResponseMessage GetResponseWithTimeout (HttpClient client, Uri uri)
+		static HttpResponseMessage GetResponseWithTimeout (StringBuilder log, HttpClient client, Uri uri)
 		{
 			var stopwatch = Stopwatch.StartNew ();
 			using var cts = new CancellationTokenSource (RedirectRequestTimeout);
-			LogRedirectTest ($"RedirectBasicAuthServer starting HttpClient.GetAsync for {uri}.");
+			LogRedirectTest (log, $"RedirectBasicAuthServer starting HttpClient.GetAsync for {uri}.");
 			try {
 				var response = client.GetAsync (uri, cts.Token).GetAwaiter ().GetResult ();
-				LogRedirectTest ($"RedirectBasicAuthServer completed HttpClient.GetAsync for {uri} with status {(int) response.StatusCode} after {stopwatch.ElapsedMilliseconds} ms.");
+				LogRedirectTest (log, $"RedirectBasicAuthServer completed HttpClient.GetAsync for {uri} with status {(int) response.StatusCode} after {stopwatch.ElapsedMilliseconds} ms.");
 				return response;
 			} catch (OperationCanceledException e) when (cts.IsCancellationRequested) {
 				throw new TimeoutException ($"Request to {uri} timed out after {stopwatch.ElapsedMilliseconds} ms.", e);
@@ -942,6 +940,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		sealed class RedirectBasicAuthServer : IDisposable {
+			readonly StringBuilder log;
 			readonly bool crossOrigin;
 			readonly HttpListener originListener;
 			readonly HttpListener? targetListener;
@@ -963,8 +962,9 @@ namespace MonoTests.System.Net.Http {
 				}
 			}
 
-			public RedirectBasicAuthServer (bool crossOrigin, string username = "origin-user", string password = "origin-password")
+			public RedirectBasicAuthServer (StringBuilder log, bool crossOrigin, string username = "origin-user", string password = "origin-password")
 			{
+				this.log = log;
 				this.crossOrigin = crossOrigin;
 				expectedBasicAuth = "Basic " + Convert.ToBase64String (global::System.Text.Encoding.UTF8.GetBytes ($"{username}:{password}"));
 				originListener = CreateStartedHttpListener (out var originUri);
@@ -1056,7 +1056,7 @@ namespace MonoTests.System.Net.Http {
 				}
 			}
 
-			static HttpListener CreateStartedHttpListener (out Uri uri)
+			HttpListener CreateStartedHttpListener (out Uri uri)
 			{
 				const int MinPort = 49215;
 				const int MaxPort = 65535;
@@ -1074,10 +1074,10 @@ namespace MonoTests.System.Net.Http {
 					var url = $"http://127.0.0.1:{port}/";
 					listener.Prefixes.Add (url);
 					try {
-						LogRedirectTest ($"RedirectBasicAuthServer starting listener on {url} after {stopwatch.ElapsedMilliseconds} ms.");
+						LogRedirectTest (log, $"RedirectBasicAuthServer starting listener on {url} after {stopwatch.ElapsedMilliseconds} ms.");
 						listener.Start ();
 						uri = new Uri (url);
-						LogRedirectTest ($"RedirectBasicAuthServer listening on {uri} after {attempt + 1} attempt(s) in {stopwatch.ElapsedMilliseconds} ms.");
+						LogRedirectTest (log, $"RedirectBasicAuthServer listening on {uri} after {attempt + 1} attempt(s) in {stopwatch.ElapsedMilliseconds} ms.");
 						return listener;
 					} catch (Exception ex) {
 						lastException = ex;
@@ -1090,7 +1090,7 @@ namespace MonoTests.System.Net.Http {
 
 			public void Dispose ()
 			{
-				LogRedirectTest ($"RedirectBasicAuthServer stopping origin {OriginUri} and target {TargetUri}.");
+				LogRedirectTest (log, $"RedirectBasicAuthServer stopping origin {OriginUri} and target {TargetUri}.");
 				originListener.Close ();
 				targetListener?.Close ();
 
@@ -1102,7 +1102,7 @@ namespace MonoTests.System.Net.Http {
 				} catch {
 					// Listener disposal wakes the request loops.
 				}
-				LogRedirectTest ($"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
+				LogRedirectTest (log, $"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
 			}
 		}
 

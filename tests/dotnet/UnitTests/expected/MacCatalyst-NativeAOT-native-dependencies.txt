@@ -1,4 +1,6 @@
+Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
+Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/GSS.framework/Versions/A/GSS

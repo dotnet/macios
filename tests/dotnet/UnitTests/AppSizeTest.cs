@@ -8,6 +8,7 @@ using Mono.Cecil;
 
 namespace Xamarin.Tests {
 	[TestFixture]
+	[NonParallelizable]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -22,6 +23,32 @@ namespace Xamarin.Tests {
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "disabled")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "compatibility")]
+		public void NativeAOT_InlineClassGetHandle (ApplePlatform platform, string runtimeIdentifiers, string mode)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "InlineClassGetHandle", mode },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-InlineClassGetHandle-{mode}", false, dict);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void NativeAOT_NoLink (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "InlineClassGetHandle", "strict" },
+				{ "MtouchLink", "None" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-NoLink", false, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]

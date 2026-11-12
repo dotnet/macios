@@ -53,8 +53,10 @@ namespace Xamarin.Tests {
 			AssertTargetExecuted (targets, "_ExecutePostprocessAssemblies", "Configuration change post-processing");
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void NativeAotIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", null)]
+		public void NativeAotIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers, bool? skipILLink)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -67,9 +69,13 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = configuration;
 			properties ["PublishAot"] = "true";
 			properties ["_IsPublishing"] = "true";
+			if (skipILLink.HasValue)
+				properties ["_SkipILLink"] = skipILLink.Value ? "true" : "false";
 			properties ["Registrar"] = "trimmable-static";
 
-			DotNet.AssertBuild (project_path, properties);
+			var firstBuild = DotNet.AssertBuild (project_path, properties);
+			var firstBuildTargets = BinLog.GetAllTargets (firstBuild.BinLogPath);
+			AssertTargetExecuted (firstBuildTargets, "_ExecutePostprocessAssembliesAfterIlc", "Post-ILC NativeAOT post-processing");
 
 			var result = DotNet.AssertBuild (project_path, properties);
 			var targets = BinLog.GetAllTargets (result.BinLogPath);

@@ -995,6 +995,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 		var survivingModules = new HashSet<string> ();
 		var referencedClasses = app.ClassesReferencedByInlinedClassGetHandle ?? [];
+		var registrarTypes = new HashSet<Registrar.Registrar.ObjCType> ();
 
 		foreach (var assembly in allAssemblies) {
 			var isProductAssembly = app.Profile.IsProductAssembly (assembly);
@@ -1006,9 +1007,11 @@ public class Frameworks : Dictionary<string, Framework> {
 			}
 
 			foreach (var type in GetAllTypes (assembly)) {
-				if (app.StaticRegistrar.TryFindType (type, out var objcType) && referencedClasses.Contains (objcType.ExportedName) &&
-					TryGetFramework (app, type, out string? classFramework))
-					namespaces.Add (classFramework);
+				if (app.StaticRegistrar.TryFindType (type, out var objcType)) {
+					registrarTypes.Add (objcType);
+					if (referencedClasses.Contains (objcType.ExportedName) && TryGetFramework (app, type, out string? classFramework))
+						namespaces.Add (classFramework);
+				}
 
 				foreach (var method in type.Methods) {
 					if (!method.IsPInvokeImpl || method.PInvokeInfo is not { } pinvoke)
@@ -1049,6 +1052,11 @@ public class Frameworks : Dictionary<string, Framework> {
 						namespaces.Add (fieldFramework);
 				}
 			}
+		}
+
+		foreach (var type in app.StaticRegistrar.GetClassesForNativeAOTFrameworks (registrarTypes)) {
+			if (TryGetFramework (app, type.Type.Resolve (), out string? classFramework))
+				namespaces.Add (classFramework);
 		}
 
 		app.NativeAOTSurvivingPInvokeModules = survivingModules;

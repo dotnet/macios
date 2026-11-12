@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 
 using Mono.Cecil;
+using Mono.Linker;
 
 using Xamarin.Linker;
 using Xamarin.Utils;
@@ -23,9 +24,15 @@ namespace Xamarin {
 			base.TryProcessAssembly (assembly);
 
 			var app = Configuration.Application;
-			if (app.XamarinRuntime == Xamarin.Bundler.XamarinRuntime.NativeAOT && app.NativeAOTSurvivingPInvokeSymbols is not null)
+			if (app.XamarinRuntime == Xamarin.Bundler.XamarinRuntime.NativeAOT &&
+				app.NativeAOTSurvivingPInvokeSymbols is not null &&
+				app.Registrar == Xamarin.Bundler.RegistrarMode.TrimmableStatic &&
+				Configuration.InlineClassGetHandle == InlineClassGetHandleMode.Strict &&
+				Annotations.GetAction (assembly) == AssemblyAction.Link)
 				return;
 
+			// Non-strict Class.GetHandle calls use runtime Objective-C lookup and leave no native class
+			// symbol for ILC to report. Keep the conservative assembly scan in those modes.
 			global::Frameworks.Gather (app, [assembly], Frameworks, WeakFrameworks);
 		}
 

@@ -1,4 +1,5 @@
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreFoundation.framework/CoreFoundation
+SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreImage.framework/CoreImage
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CryptoKit.framework/CryptoKit
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Foundation.framework/Foundation
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Network.framework/Network

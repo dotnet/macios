@@ -2715,8 +2715,8 @@ System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Manua
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.SemaphoreSlim::s_cancellationTokenCanceledEventHandler
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_continuation
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Sources.ManualResetValueTaskSourceCoreShared::s_sentinel
-System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__43_0
-System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__43_1
+System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__44_0
+System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__44_1
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.TaskSchedulerAwaitTaskContinuation/<>c::<>9__3_0
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.ValueTask/ValueTaskSourceAsTask::s_completionAction
 System.Private.CoreLib.dll:System.Action`1<System.Object> System.Threading.Tasks.ValueTask`1/ValueTaskSourceAsTask::s_completionAction
@@ -2873,13 +2873,10 @@ System.Private.CoreLib.dll:System.Array.get_NativeLength()
 System.Private.CoreLib.dll:System.Array.get_Rank()
 System.Private.CoreLib.dll:System.Array.GetCorElementTypeOfElementType()
 System.Private.CoreLib.dll:System.Array.GetFlattenedIndex(System.Int32)
-System.Private.CoreLib.dll:System.Array.GetFlattenedIndex(System.ReadOnlySpan`1<System.Int32>)
 System.Private.CoreLib.dll:System.Array.GetLowerBound(System.Int32)
 System.Private.CoreLib.dll:System.Array.GetNormalizedIntegralArrayElementType(System.Reflection.CorElementType)
 System.Private.CoreLib.dll:System.Array.GetValue(System.Int32)
-System.Private.CoreLib.dll:System.Array.GetValue(System.Int32[])
 System.Private.CoreLib.dll:System.Array.GetValue(System.Int64)
-System.Private.CoreLib.dll:System.Array.GetValue(System.ReadOnlySpan`1<System.Int32>)
 System.Private.CoreLib.dll:System.Array.IndexOf`1(T[], T, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Array.IndexOf`1(T[], T)
 System.Private.CoreLib.dll:System.Array.InternalCreate(System.Runtime.CompilerServices.QCallTypeHandle, System.Int32, System.Int32*, System.Int32*, System.Boolean, System.Runtime.CompilerServices.ObjectHandleOnStack)
@@ -2889,9 +2886,7 @@ System.Private.CoreLib.dll:System.Array.InternalGetValue(System.IntPtr)
 System.Private.CoreLib.dll:System.Array.InternalSetValue(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Array.Resize`1(T[]&, System.Int32)
 System.Private.CoreLib.dll:System.Array.SetValue(System.Object, System.Int32)
-System.Private.CoreLib.dll:System.Array.SetValue(System.Object, System.Int32[])
 System.Private.CoreLib.dll:System.Array.SetValue(System.Object, System.Int64)
-System.Private.CoreLib.dll:System.Array.SetValue(System.Object, System.ReadOnlySpan`1<System.Int32>)
 System.Private.CoreLib.dll:System.Array.Sort`1(T[], System.Comparison`1<T>)
 System.Private.CoreLib.dll:System.Array.Sort`1(T[], System.Int32, System.Int32, System.Collections.Generic.IComparer`1<T>)
 System.Private.CoreLib.dll:System.Array.Sort`2(TKey[], TValue[], System.Int32, System.Int32, System.Collections.Generic.IComparer`1<TKey>)
@@ -2973,6 +2968,10 @@ System.Private.CoreLib.dll:System.Attribute.GetParentDefinition(System.Reflectio
 System.Private.CoreLib.dll:System.Attribute.InternalGetAttributeUsage(System.Type)
 System.Private.CoreLib.dll:System.Attribute.InternalGetCustomAttributes(System.Reflection.EventInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Attribute.InternalGetCustomAttributes(System.Reflection.PropertyInfo, System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Attribute.InternalIsDefined(System.Reflection.EventInfo, System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Attribute.InternalIsDefined(System.Reflection.PropertyInfo, System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Attribute.IsDefined(System.Reflection.MemberInfo, System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Attribute.IsDefined(System.Reflection.MemberInfo, System.Type)
 System.Private.CoreLib.dll:System.AttributeTargets
 System.Private.CoreLib.dll:System.AttributeTargets System.AttributeTargets::All
 System.Private.CoreLib.dll:System.AttributeTargets System.AttributeTargets::Assembly
@@ -3022,7 +3021,12 @@ System.Private.CoreLib.dll:System.BitConverter.Int64BitsToDouble(System.Int64)
 System.Private.CoreLib.dll:System.BitConverter.SingleToInt32Bits(System.Single)
 System.Private.CoreLib.dll:System.BitConverter.SingleToUInt32Bits(System.Single)
 System.Private.CoreLib.dll:System.BitConverter.ToInt32(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.BitConverter.ToUInt16(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.BitConverter.ToUInt32(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.BitConverter.ToUInt64(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.BitConverter.TryWriteBytes(System.Span`1<System.Byte>, System.UInt16)
+System.Private.CoreLib.dll:System.BitConverter.TryWriteBytes(System.Span`1<System.Byte>, System.UInt32)
+System.Private.CoreLib.dll:System.BitConverter.TryWriteBytes(System.Span`1<System.Byte>, System.UInt64)
 System.Private.CoreLib.dll:System.BitConverter.UInt16BitsToHalf(System.UInt16)
 System.Private.CoreLib.dll:System.BitConverter.UInt32BitsToSingle(System.UInt32)
 System.Private.CoreLib.dll:System.BitConverter.UInt64BitsToDouble(System.UInt64)
@@ -3083,6 +3087,18 @@ System.Private.CoreLib.dll:System.Boolean System.Delegate::IsClosed()
 System.Private.CoreLib.dll:System.Boolean System.Delegate::IsUnmanagedFunctionPtr()
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute::<ReturnValue>k__BackingField
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger::IsAttached()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation::_hasThis
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation::UsesExternalResult()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation::UsesValueTypeResult()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/Argument::IsBoxedTemporary
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/Argument::IsByRef
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/Argument::IsTypedLocal
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/Argument::UsesDirectHome
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/Argument::UsesInterior
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::HasMemory()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::IsHandle()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::IsInRegister()
+System.Private.CoreLib.dll:System.Boolean System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::IsLiteral()
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.StackFrame::_isLastFrameFromForeignExceptionStackTrace
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.StackFrame::IsLastFrameFromForeignExceptionStackTrace()
 System.Private.CoreLib.dll:System.Boolean System.Diagnostics.StackTrace::<IsLineNumberSupported>k__BackingField
@@ -3223,9 +3239,17 @@ System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.AssemblyBuilder
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.AssemblyBuilder::t_allowDynamicCode
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.AssemblyBuilder/ForceAllowDynamicCodeScope::_previous
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::_initLocals
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::_isDiagnosticsHidden
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::_restrictedSkipVisibility
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::_skipVisibility
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::InitLocals()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.DynamicMethod::IsDiagnosticsHidden()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.MethodBuilderInstantiation::ContainsGenericParameters()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.MethodBuilderInstantiation::IsGenericMethod()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.MethodBuilderInstantiation::IsGenericMethodDefinition()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeLocalBuilder::IsPinned()
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeLocalBuilder::m_isPinned
+System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeMethodBuilder::m_bIsBaked
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeTypeBuilder::IsByRefLike()
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeTypeBuilder::IsConstructedGenericType()
 System.Private.CoreLib.dll:System.Boolean System.Reflection.Emit.RuntimeTypeBuilder::IsGenericParameter()
@@ -3483,6 +3507,7 @@ System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::IsD
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::m_isDefault
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::m_isFlowSuppressed
 System.Private.CoreLib.dll:System.Boolean System.Threading.Lock::IsHeldByCurrentThread()
+System.Private.CoreLib.dll:System.Boolean System.Threading.Lock::IsHeldByCurrentThreadCore()
 System.Private.CoreLib.dll:System.Boolean System.Threading.Lock::IsSingleProcessor()
 System.Private.CoreLib.dll:System.Boolean System.Threading.Lock::s_isSingleProcessor
 System.Private.CoreLib.dll:System.Boolean System.Threading.Lock::ShouldStopPreemptingWaiters()
@@ -3495,6 +3520,7 @@ System.Private.CoreLib.dll:System.Boolean System.Threading.Lock/State::ShouldNot
 System.Private.CoreLib.dll:System.Boolean System.Threading.Lock/State::UseTrivialWaits()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ManualResetEventSlim::IsDisposed()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ManualResetEventSlim::IsSet()
+System.Private.CoreLib.dll:System.Boolean System.Threading.ManualResetEventSlim::IsSetCore()
 System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool::HasForcedMaxThreads()
 System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool::HasForcedMinThreads()
 System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool/BlockingConfig::IgnoreMemoryUsage
@@ -3505,6 +3531,7 @@ System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool/Ga
 System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool/HillClimbing::IsDisabled
 System.Private.CoreLib.dll:System.Boolean System.Threading.PortableThreadPool/ThreadCounts::IsSaturated()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ProcessorIdCache::s_isProcessorNumberReallyFast
+System.Private.CoreLib.dll:System.Boolean System.Threading.SemaphoreSlim::IsDisposed()
 System.Private.CoreLib.dll:System.Boolean System.Threading.SpinLock::IsHeldByCurrentThread()
 System.Private.CoreLib.dll:System.Boolean System.Threading.SpinLock::IsThreadOwnerTrackingEnabled()
 System.Private.CoreLib.dll:System.Boolean System.Threading.SpinWait::NextSpinWillYield()
@@ -4140,6 +4167,7 @@ System.Private.CoreLib.dll:System.Byte* Interop/Sys/DirectoryEntry::Name
 System.Private.CoreLib.dll:System.Byte* Interop/Sys/IOVector::Base
 System.Private.CoreLib.dll:System.Byte* modreq(System.Runtime.CompilerServices.IsVolatile) System.Runtime.EH/ExInfo::_handlingFramePC
 System.Private.CoreLib.dll:System.Byte* modreq(System.Runtime.CompilerServices.IsVolatile) System.Runtime.EH/ExInfo::_pCatchHandler
+System.Private.CoreLib.dll:System.Byte* System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::Literal
 System.Private.CoreLib.dll:System.Byte* System.IO.UnmanagedMemoryStream::_mem
 System.Private.CoreLib.dll:System.Byte* System.MdUtf8String::m_pStringHeap
 System.Private.CoreLib.dll:System.Byte* System.Reflection.NativeAssemblyNameParts::_pPublicKeyOrToken
@@ -4152,6 +4180,7 @@ System.Private.CoreLib.dll:System.Byte* System.Runtime.InteropServices.Marshalli
 System.Private.CoreLib.dll:System.Byte* System.Runtime.StackFrameIterator::ControlPC
 System.Private.CoreLib.dll:System.Byte* System.Runtime.StackFrameIterator::OriginalControlPC()
 System.Private.CoreLib.dll:System.Byte* System.Text.DecoderFallbackBuffer::byteStart
+System.Private.CoreLib.dll:System.Byte** System.Diagnostics.Debugger/FunctionEvaluation/Context::Homes
 System.Private.CoreLib.dll:System.Byte& System.ByReference::Value
 System.Private.CoreLib.dll:System.Byte& System.Reflection.MethodBase/StackAllocatedByRefs::_arg0
 System.Private.CoreLib.dll:System.Byte& System.Runtime.CompilerServices.ByteRef::_ref
@@ -4487,6 +4516,7 @@ System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2/Enumerator.Mo
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int32,System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary/DelayedTypeCollection> System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary::_lazyData
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int64,System.WeakReference`1<System.Runtime.Loader.AssemblyLoadContext>> System.Runtime.Loader.AssemblyLoadContext::AllContexts()
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Int64,System.WeakReference`1<System.Runtime.Loader.AssemblyLoadContext>> System.Runtime.Loader.AssemblyLoadContext::s_allContexts
+System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.Runtime.InteropServices.GCHandle,System.Int32> System.Diagnostics.Debugger/FunctionEvaluation::_handleAliasMap
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Boolean> System.AppContext::s_switches
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Globalization.CultureData> System.Globalization.CultureData::s_cachedCultures
 System.Private.CoreLib.dll:System.Collections.Generic.Dictionary`2<System.String,System.Globalization.CultureInfo> System.Globalization.CultureInfo::CachedCulturesByName()
@@ -4810,13 +4840,11 @@ System.Private.CoreLib.dll:System.Collections.Hashtable..ctor()
 System.Private.CoreLib.dll:System.Collections.Hashtable..ctor(System.Int32, System.Single)
 System.Private.CoreLib.dll:System.Collections.Hashtable/Bucket
 System.Private.CoreLib.dll:System.Collections.Hashtable/Bucket[] System.Collections.Hashtable::_buckets
-System.Private.CoreLib.dll:System.Collections.ICollection
 System.Private.CoreLib.dll:System.Collections.IDictionary
 System.Private.CoreLib.dll:System.Collections.IDictionary System.Exception::_data
 System.Private.CoreLib.dll:System.Collections.IEnumerable
 System.Private.CoreLib.dll:System.Collections.IEnumerator
 System.Private.CoreLib.dll:System.Collections.IEnumerator.MoveNext()
-System.Private.CoreLib.dll:System.Collections.IList
 System.Private.CoreLib.dll:System.Collections.ObjectModel.ReadOnlyCollection
 System.Private.CoreLib.dll:System.Collections.ObjectModel.ReadOnlyCollection`1
 System.Private.CoreLib.dll:System.Collections.ObjectModel.ReadOnlyCollection`1..cctor()
@@ -5686,7 +5714,6 @@ System.Private.CoreLib.dll:System.DefaultBinder
 System.Private.CoreLib.dll:System.DefaultBinder System.DefaultBinder::Instance
 System.Private.CoreLib.dll:System.DefaultBinder..cctor()
 System.Private.CoreLib.dll:System.DefaultBinder..ctor()
-System.Private.CoreLib.dll:System.DefaultBinder.BindToField(System.Reflection.BindingFlags, System.Reflection.FieldInfo[], System.Object, System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.DefaultBinder.BindToMethod(System.Reflection.BindingFlags, System.Reflection.MethodBase[], System.Object[]&, System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[], out System.Object&)
 System.Private.CoreLib.dll:System.DefaultBinder.CanChangePrimitive(System.Type, System.Type)
 System.Private.CoreLib.dll:System.DefaultBinder.ChangeType(System.Object, System.Type, System.Globalization.CultureInfo)
@@ -5696,7 +5723,6 @@ System.Private.CoreLib.dll:System.DefaultBinder.ExactBinding(System.Reflection.M
 System.Private.CoreLib.dll:System.DefaultBinder.ExactPropertyBinding(System.Reflection.PropertyInfo[], System.Type, System.Type[])
 System.Private.CoreLib.dll:System.DefaultBinder.FindMostDerivedNewSlotMeth(System.Reflection.MethodBase[], System.Int32)
 System.Private.CoreLib.dll:System.DefaultBinder.FindMostSpecific(System.ReadOnlySpan`1<System.Reflection.ParameterInfo>, System.Int32[], System.Type, System.ReadOnlySpan`1<System.Reflection.ParameterInfo>, System.Int32[], System.Type, System.Type[], System.Object[])
-System.Private.CoreLib.dll:System.DefaultBinder.FindMostSpecificField(System.Reflection.FieldInfo, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.DefaultBinder.FindMostSpecificMethod(System.Reflection.MethodBase, System.Int32[], System.Type, System.Reflection.MethodBase, System.Int32[], System.Type, System.Type[], System.Object[])
 System.Private.CoreLib.dll:System.DefaultBinder.FindMostSpecificProperty(System.Reflection.PropertyInfo, System.Reflection.PropertyInfo)
 System.Private.CoreLib.dll:System.DefaultBinder.FindMostSpecificType(System.Type, System.Type, System.Type)
@@ -5855,6 +5881,7 @@ System.Private.CoreLib.dll:System.Diagnostics.Debugger.Break()
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.BreakInternal()
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.CustomNotification(System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.get_IsAttached()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger.InvokeFunction(System.IntPtr)
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.IsManagedDebuggerAttached()
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.Log(System.Int32, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.LogInternal(System.Int32, System.String, System.String)
@@ -5862,6 +5889,71 @@ System.Private.CoreLib.dll:System.Diagnostics.Debugger.NotifyOfCrossThreadDepend
 System.Private.CoreLib.dll:System.Diagnostics.Debugger.UserBreakpoint()
 System.Private.CoreLib.dll:System.Diagnostics.Debugger/CrossThreadDependencyNotification
 System.Private.CoreLib.dll:System.Diagnostics.Debugger/CrossThreadDependencyNotification..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation..ctor(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.Void**)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<GetArgumentType>g____PInvoke|46_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<GetMethod>g____PInvoke|44_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<PrepareResult>g____PInvoke|45_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<ReadPrimitiveRegister>g____PInvoke|47_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.UInt64*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<WriteObjectRegister>g____PInvoke|48_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.<WriteRegister>g____PInvoke|49_0(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Void*, System.UInt32, System.IntPtr*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.CapturePrimitiveArguments()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.CopyBackArgument(System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.CopyBackHandles()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.CopyBackTypedArgument`1(System.Int32, T&)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.get_UsesExternalResult()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.get_UsesValueTypeResult()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.GetArgumentType(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.GetMethod(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.GetPrimitiveSize(System.Reflection.CorElementType)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.InitializeTypedArgument`1(System.Int32, T&)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.Invoke()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.IsNewObject()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.IsObject(System.Reflection.CorElementType)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.NeedsCopyBack(System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.NormalizeBoolValue(System.UInt64)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.PrepareArgument(System.Int32, System.RuntimeType, System.Boolean)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.PrepareResult(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.Runtime.CompilerServices.QCallTypeHandle)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadByteRef(System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadCapturedArgument(System.Int32, System.UInt32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadObject(System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadPrimitive(System.Byte&, System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadPrimitive(System.UInt32, System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ReadPrimitiveRegister(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, out System.UInt64&)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.Run(System.Diagnostics.Debugger/FunctionEvaluation/Context*)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.SetStorage`1(System.Int32, T&)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.UsesTypedArgument(System.Int32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.ValidateThis(System.RuntimeType, System.Reflection.MethodBase)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.WriteArgument(System.Int32, System.Byte&, System.UInt32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.WriteObjectArgument(System.Int32, System.Object&)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.WriteObjectRegister(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.WritePrimitive(System.Span`1<System.Byte>, System.UInt64)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation.WriteRegister(System.Diagnostics.Debugger/FunctionEvaluation/Context*, System.UInt32, System.Void*, System.UInt32)
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/Argument
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/Argument[] System.Diagnostics.Debugger/FunctionEvaluation::_arguments
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags::Handle
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags::Literal
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags::Memory
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags::Register
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::Flags
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/Context
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/Context* System.Diagnostics.Debugger/FunctionEvaluation::_context
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags System.Diagnostics.Debugger/FunctionEvaluation/Context::Flags
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags::ExternalResult
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags::NewObject
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags::ValueTypeResult
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument System.Diagnostics.Debugger/FunctionEvaluation/Argument::Input
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument.get_HasMemory()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument.get_IsHandle()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument.get_IsInRegister()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument.get_IsLiteral()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument.get_Type()
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument* System.Diagnostics.Debugger/FunctionEvaluation/Context::Arguments
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeCapturedArgument
+System.Private.CoreLib.dll:System.Diagnostics.Debugger/FunctionEvaluation/NativeCapturedArgument* System.Diagnostics.Debugger/FunctionEvaluation/Context::CapturedArguments
 System.Private.CoreLib.dll:System.Diagnostics.EditAndContinueHelper
 System.Private.CoreLib.dll:System.Diagnostics.StackFrame
 System.Private.CoreLib.dll:System.Diagnostics.StackFrame..ctor(System.Diagnostics.StackFrameHelper, System.Int32, System.Boolean)
@@ -6168,10 +6260,6 @@ System.Private.CoreLib.dll:System.DuplicateWaitObjectException..ctor(System.Stri
 System.Private.CoreLib.dll:System.DuplicateWaitObjectException..ctor(System.String, System.String)
 System.Private.CoreLib.dll:System.DuplicateWaitObjectException..ctor(System.String)
 System.Private.CoreLib.dll:System.Empty
-System.Private.CoreLib.dll:System.Empty System.Empty::Value
-System.Private.CoreLib.dll:System.Empty..cctor()
-System.Private.CoreLib.dll:System.Empty..ctor()
-System.Private.CoreLib.dll:System.Empty.ToString()
 System.Private.CoreLib.dll:System.EntryPointNotFoundException
 System.Private.CoreLib.dll:System.EntryPointNotFoundException..ctor()
 System.Private.CoreLib.dll:System.EntryPointNotFoundException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
@@ -6604,11 +6692,11 @@ System.Private.CoreLib.dll:System.GC._RefreshMemoryLimit(System.GC/GCHeapHardLim
 System.Private.CoreLib.dll:System.GC._RegisterFrozenSegment(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.GC._UnregisterFrozenSegment(System.IntPtr)
 System.Private.CoreLib.dll:System.GC.<_Collect>g____PInvoke|8_0(System.Int32, System.Int32, System.Byte, System.IntPtr*)
-System.Private.CoreLib.dll:System.GC.<_RefreshMemoryLimit>g____PInvoke|88_0(System.GC/GCHeapHardLimitInfo, System.IntPtr*)
+System.Private.CoreLib.dll:System.GC.<_RefreshMemoryLimit>g____PInvoke|81_0(System.GC/GCHeapHardLimitInfo, System.IntPtr*)
 System.Private.CoreLib.dll:System.GC.<_RegisterFrozenSegment>g____PInvoke|40_0(System.IntPtr, System.IntPtr, System.IntPtr*)
 System.Private.CoreLib.dll:System.GC.<_UnregisterFrozenSegment>g____PInvoke|41_0(System.IntPtr, System.IntPtr*)
 System.Private.CoreLib.dll:System.GC.<AllocateNewArray>g____PInvoke|6_0(System.IntPtr, System.Int32, System.GC/GC_ALLOC_FLAGS, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.GC.<AllocateUninitializedArray>g__AllocateNewArrayWorker|77_0`1(System.Int32, System.Boolean)
+System.Private.CoreLib.dll:System.GC.<AllocateUninitializedArray>g__AllocateNewArrayWorker|70_0`1(System.Int32, System.Boolean)
 System.Private.CoreLib.dll:System.GC.<GetNextFinalizeableObject>g____PInvoke|31_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.GC.<ReRegisterForFinalize>g____PInvoke|37_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.GC.AllocateNewArray(System.IntPtr, System.Int32, System.GC/GC_ALLOC_FLAGS, System.Runtime.CompilerServices.ObjectHandleOnStack)
@@ -9101,8 +9189,11 @@ System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerato
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_fixupCount
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_labelCount
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_length
+System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_localCount
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_maxDepth
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeILGenerator::m_targetDepth
+System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeLocalBuilder::LocalIndex()
+System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeLocalBuilder::m_localIndex
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeModuleBuilder::MDStreamVersion()
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeModuleBuilder::MetadataToken()
 System.Private.CoreLib.dll:System.Int32 System.Reflection.Emit.RuntimeTypeBuilder::GenericParameterPosition()
@@ -9135,6 +9226,7 @@ System.Private.CoreLib.dll:System.Int32 System.Reflection.FieldAttributes::value
 System.Private.CoreLib.dll:System.Int32 System.Reflection.GenericParameterAttributes::value__
 System.Private.CoreLib.dll:System.Int32 System.Reflection.ImageFileMachine::value__
 System.Private.CoreLib.dll:System.Int32 System.Reflection.IntrinsicInvokeHelper/InvokeState::InvocationsUntilSpecialization
+System.Private.CoreLib.dll:System.Int32 System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0::resultSlot
 System.Private.CoreLib.dll:System.Int32 System.Reflection.LoaderAllocator::m_slotsUsed
 System.Private.CoreLib.dll:System.Int32 System.Reflection.LocalVariableInfo::LocalIndex()
 System.Private.CoreLib.dll:System.Int32 System.Reflection.MdFieldInfo::m_tkField
@@ -9394,6 +9486,7 @@ System.Private.CoreLib.dll:System.Int32 System.Threading.ManagedThreadId::Curren
 System.Private.CoreLib.dll:System.Int32 System.Threading.ManagedThreadId::t_currentManagedThreadId
 System.Private.CoreLib.dll:System.Int32 System.Threading.ManualResetEventSlim::m_combinedState
 System.Private.CoreLib.dll:System.Int32 System.Threading.ManualResetEventSlim::SpinCount()
+System.Private.CoreLib.dll:System.Int32 System.Threading.ManualResetEventSlim::SpinCountCore()
 System.Private.CoreLib.dll:System.Int32 System.Threading.ObjectHeader/HeaderLockResult::value__
 System.Private.CoreLib.dll:System.Int32 System.Threading.PortableThreadPool::_cpuUtilization
 System.Private.CoreLib.dll:System.Int32 System.Threading.PortableThreadPool::_numThreadsBeingKeptAlive
@@ -9824,6 +9917,8 @@ System.Private.CoreLib.dll:System.IntPtr System.Delegate::UnmanagedMarker
 System.Private.CoreLib.dll:System.IntPtr System.Delegate/BindToMethodDetails::extraData
 System.Private.CoreLib.dll:System.IntPtr System.Delegate/BindToMethodDetails::methodPtr
 System.Private.CoreLib.dll:System.IntPtr System.Delegate/BindToMethodDetails::methodPtrAux
+System.Private.CoreLib.dll:System.IntPtr System.Diagnostics.Debugger/FunctionEvaluation/Context::Evaluation
+System.Private.CoreLib.dll:System.IntPtr System.Diagnostics.Debugger/FunctionEvaluation/Context::ResultHandle
 System.Private.CoreLib.dll:System.IntPtr System.Diagnostics.Tracing.EventSource::m_writeEventStringEventHandle
 System.Private.CoreLib.dll:System.IntPtr System.Exception::_xptrs
 System.Private.CoreLib.dll:System.IntPtr System.IntPtr::_value
@@ -9991,6 +10086,7 @@ System.Private.CoreLib.dll:System.IntPtr.TryFormat(System.Span`1<System.Char>, o
 System.Private.CoreLib.dll:System.IntPtr[] System.Diagnostics.StackFrameHelper::rgInMemoryPdbAddress
 System.Private.CoreLib.dll:System.IntPtr[] System.Diagnostics.StackFrameHelper::rgLoadedPeAddress
 System.Private.CoreLib.dll:System.IntPtr[] System.Diagnostics.StackFrameHelper::rgMethodHandle
+System.Private.CoreLib.dll:System.IntPtr* System.Diagnostics.Debugger/FunctionEvaluation/Context::Interiors
 System.Private.CoreLib.dll:System.IntPtr* System.Runtime.CompilerServices.StaticsHelpers/ThreadLocalData::_collectibleTlsArrayData
 System.Private.CoreLib.dll:System.IntPtr& System.Runtime.CompilerServices.AsyncProfiler/Info::ContinuationTable
 System.Private.CoreLib.dll:System.InvalidCastException
@@ -10956,7 +11052,7 @@ System.Private.CoreLib.dll:System.ModuleHandle
 System.Private.CoreLib.dll:System.ModuleHandle System.ModuleHandle::EmptyHandle
 System.Private.CoreLib.dll:System.ModuleHandle System.Reflection.Module::ModuleHandle()
 System.Private.CoreLib.dll:System.ModuleHandle..ctor(System.Reflection.RuntimeModule)
-System.Private.CoreLib.dll:System.ModuleHandle.<GetDynamicMethod>g____PInvoke|9_0(System.Runtime.CompilerServices.QCallModule, System.Byte*, System.Byte*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.ModuleHandle.<GetDynamicMethod>g____PInvoke|9_0(System.Runtime.CompilerServices.QCallModule, System.Byte*, System.Byte*, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.ModuleHandle.<GetModuleType>g____PInvoke|27_0(System.Runtime.CompilerServices.QCallModule, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.ModuleHandle.<GetPEKind>g____PInvoke|29_0(System.Runtime.CompilerServices.QCallModule, System.Int32*, System.Int32*, System.IntPtr*)
 System.Private.CoreLib.dll:System.ModuleHandle.<ResolveMethod>g____PInvoke|22_0(System.Runtime.CompilerServices.QCallModule, System.Int32, System.IntPtr*, System.Int32, System.IntPtr*, System.Int32, System.IntPtr*)
@@ -10964,8 +11060,8 @@ System.Private.CoreLib.dll:System.ModuleHandle.<ResolveType>g____PInvoke|17_0(Sy
 System.Private.CoreLib.dll:System.ModuleHandle.<ValidateModulePointer>g__ThrowInvalidOperationException|13_0()
 System.Private.CoreLib.dll:System.ModuleHandle.Equals(System.ModuleHandle)
 System.Private.CoreLib.dll:System.ModuleHandle.Equals(System.Object)
-System.Private.CoreLib.dll:System.ModuleHandle.GetDynamicMethod(System.Reflection.RuntimeModule, System.String, System.Byte[], System.Resolver)
-System.Private.CoreLib.dll:System.ModuleHandle.GetDynamicMethod(System.Runtime.CompilerServices.QCallModule, System.String, System.Byte[], System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.ModuleHandle.GetDynamicMethod(System.Reflection.RuntimeModule, System.String, System.Byte[], System.Resolver, System.Boolean)
+System.Private.CoreLib.dll:System.ModuleHandle.GetDynamicMethod(System.Runtime.CompilerServices.QCallModule, System.String, System.Byte[], System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Boolean, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.ModuleHandle.GetHashCode()
 System.Private.CoreLib.dll:System.ModuleHandle.GetMDStreamVersion(System.Reflection.RuntimeModule)
 System.Private.CoreLib.dll:System.ModuleHandle.GetMDStreamVersion(System.Runtime.CompilerServices.QCallModule)
@@ -12102,6 +12198,7 @@ System.Private.CoreLib.dll:System.Object.MemberwiseClone()
 System.Private.CoreLib.dll:System.Object.ToString()
 System.Private.CoreLib.dll:System.Object[] modreq(System.Runtime.CompilerServices.IsVolatile) System.Threading.ThreadPoolWorkQueue/WorkStealingQueue::m_array
 System.Private.CoreLib.dll:System.Object[] System.Collections.Concurrent.ConcurrentDictionary`2/Tables::_locks
+System.Private.CoreLib.dll:System.Object[] System.Diagnostics.Debugger/FunctionEvaluation::_objects
 System.Private.CoreLib.dll:System.Object[] System.Reflection.LoaderAllocator::m_slots
 System.Private.CoreLib.dll:System.Object[] System.Runtime.CompilerServices.StaticsHelpers/ThreadLocalData::NonCollectibleTlsArrayData()
 System.Private.CoreLib.dll:System.Object[] System.RuntimeType/RuntimeTypeCache::_emptyArray
@@ -12212,8 +12309,8 @@ System.Private.CoreLib.dll:System.PlatformNotSupportedException..ctor(System.Str
 System.Private.CoreLib.dll:System.Predicate`1
 System.Private.CoreLib.dll:System.Predicate`1..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Predicate`1.Invoke(T)
-System.Private.CoreLib.dll:System.Predicate`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__223_0
-System.Private.CoreLib.dll:System.Predicate`1<System.Threading.Tasks.Task> System.Threading.Tasks.Task/<>c::<>9__142_0
+System.Private.CoreLib.dll:System.Predicate`1<System.Object> System.Threading.Tasks.Task/<>c::<>9__221_0
+System.Private.CoreLib.dll:System.Predicate`1<System.Threading.Tasks.Task> System.Threading.Tasks.Task/<>c::<>9__143_0
 System.Private.CoreLib.dll:System.Random
 System.Private.CoreLib.dll:System.Random/ImplBase
 System.Private.CoreLib.dll:System.Random/ImplBase..ctor()
@@ -12410,8 +12507,6 @@ System.Private.CoreLib.dll:System.Reflection.Assembly.get_FullName()
 System.Private.CoreLib.dll:System.Reflection.Assembly.get_IsDynamic()
 System.Private.CoreLib.dll:System.Reflection.Assembly.get_Location()
 System.Private.CoreLib.dll:System.Reflection.Assembly.get_ManifestModule()
-System.Private.CoreLib.dll:System.Reflection.Assembly.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Assembly.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetEntryAssembly()
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetEntryAssemblyInternal()
 System.Private.CoreLib.dll:System.Reflection.Assembly.GetEntryAssemblyNative(System.Runtime.CompilerServices.ObjectHandleOnStack)
@@ -12549,7 +12644,6 @@ System.Private.CoreLib.dll:System.Reflection.Associates/Attributes System.Reflec
 System.Private.CoreLib.dll:System.Reflection.Binder
 System.Private.CoreLib.dll:System.Reflection.Binder System.Type::DefaultBinder()
 System.Private.CoreLib.dll:System.Reflection.Binder..ctor()
-System.Private.CoreLib.dll:System.Reflection.Binder.BindToField(System.Reflection.BindingFlags, System.Reflection.FieldInfo[], System.Object, System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.Binder.BindToMethod(System.Reflection.BindingFlags, System.Reflection.MethodBase[], System.Object[]&, System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[], out System.Object&)
 System.Private.CoreLib.dll:System.Reflection.Binder.ChangeType(System.Object, System.Type, System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.Binder.ReorderArgumentArray(System.Object[]&, System.Object)
@@ -12595,6 +12689,7 @@ System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflectio
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.CallingConventions::VarArgs
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.Emit.DynamicMethod::_callingConvention
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.Emit.DynamicMethod::CallingConvention()
+System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.Emit.MethodBuilderInstantiation::CallingConvention()
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.MethodBase::CallingConvention()
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.RuntimeConstructorInfo::CallingConvention()
 System.Private.CoreLib.dll:System.Reflection.CallingConventions System.Reflection.RuntimeMethodInfo::CallingConvention()
@@ -12631,6 +12726,8 @@ System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.GetReturnType()
 System.Private.CoreLib.dll:System.Reflection.ConstructorInfo.Invoke(System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.CorElementType
+System.Private.CoreLib.dll:System.Reflection.CorElementType System.Diagnostics.Debugger/FunctionEvaluation/Argument::SignatureType
+System.Private.CoreLib.dll:System.Reflection.CorElementType System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::Type()
 System.Private.CoreLib.dll:System.Reflection.CorElementType System.Reflection.CorElementType::ELEMENT_TYPE_ARRAY
 System.Private.CoreLib.dll:System.Reflection.CorElementType System.Reflection.CorElementType::ELEMENT_TYPE_BOOLEAN
 System.Private.CoreLib.dll:System.Reflection.CorElementType System.Reflection.CorElementType::ELEMENT_TYPE_BYREF
@@ -12679,7 +12776,6 @@ System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_AttributeTy
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_Constructor()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_ConstructorArguments()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_NamedArguments()
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.GetCustomAttributes(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.GetCustomAttributes(System.Reflection.ParameterInfo)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.ToString()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument
@@ -12714,7 +12810,6 @@ System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/Cust
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetI8()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetNamedArgumentCount()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetPackedLength(System.Byte)
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetProlog()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetR4()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetR8()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncodedArgument/CustomAttributeDataParser.GetString()
@@ -12758,6 +12853,7 @@ System.Private.CoreLib.dll:System.Reflection.CustomAttributeEncoding System.Refl
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute`1(System.Reflection.MemberInfo)
+System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.IsDefined(System.Reflection.MemberInfo, System.Type)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
@@ -12853,7 +12949,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstan
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation.GetParameters()
@@ -12867,6 +12962,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator System.Reflection.Emit.DynamicMethod::_ilGenerator
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator..ctor(System.Reflection.Emit.DynamicMethod, System.Byte[], System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator.AddParameters(System.Reflection.Emit.SignatureHelper, System.Type[], System.Type[][], System.Type[][])
+System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator.DeclareLocal(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.ConstructorInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.MethodInfo)
@@ -12892,8 +12988,9 @@ System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod System.Reflection.Emit.DynamicResolver::m_method
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod System.Reflection.Emit.VarArgMethod::m_dynamicMethod
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod..cctor()
+System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod..ctor(System.String, System.Type, System.Type[], System.Reflection.Module, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod..ctor(System.String, System.Type, System.Type[], System.Reflection.Module, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.<get_Signature>g__LazyCreateSignature|23_0()
+System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.<get_Signature>g__LazyCreateSignature|27_0()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.CreateDelegate(System.Type, System.Object)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.CreateDelegate(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_Attributes()
@@ -12901,6 +12998,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_CallingConve
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_DeclaringType()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_InitLocals()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_Invoker()
+System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_IsDiagnosticsHidden()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_Module()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_Name()
@@ -12908,7 +13006,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_ReflectedTyp
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_ReturnParameter()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_ReturnType()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.get_Signature()
-System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.GetDynamicMethodsModule()
 System.Private.CoreLib.dll:System.Reflection.Emit.DynamicMethod.GetILGenerator()
@@ -12970,7 +13067,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiatio
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.get_FieldType()
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.GetValue(System.Object)
 System.Private.CoreLib.dll:System.Reflection.Emit.FieldOnTypeBuilderInstantiation.IsDefined(System.Type, System.Boolean)
@@ -12981,13 +13077,17 @@ System.Private.CoreLib.dll:System.Reflection.Emit.GenericMethodInfo
 System.Private.CoreLib.dll:System.Reflection.Emit.GenericMethodInfo..ctor(System.RuntimeMethodHandle, System.RuntimeTypeHandle)
 System.Private.CoreLib.dll:System.Reflection.Emit.GenericTypeParameterBuilder
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator
+System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0::il
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator..ctor()
+System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.DeclareLocal(System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.DeclareLocal(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.DefineLabel()
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Byte)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Int16)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.ConstructorInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.Emit.Label)
+System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.Emit.LocalBuilder)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.MethodInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.ILGenerator.Emit(System.Reflection.Emit.OpCode, System.SByte)
@@ -13003,14 +13103,42 @@ System.Private.CoreLib.dll:System.Reflection.Emit.Label.Equals(System.Object)
 System.Private.CoreLib.dll:System.Reflection.Emit.Label.Equals(System.Reflection.Emit.Label)
 System.Private.CoreLib.dll:System.Reflection.Emit.Label.get_Id()
 System.Private.CoreLib.dll:System.Reflection.Emit.Label.GetHashCode()
+System.Private.CoreLib.dll:System.Reflection.Emit.LocalBuilder
+System.Private.CoreLib.dll:System.Reflection.Emit.LocalBuilder..ctor()
+System.Private.CoreLib.dll:System.Reflection.Emit.LocalBuilder[] System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0::locals
+System.Private.CoreLib.dll:System.Reflection.Emit.LocalBuilder[] System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0::usesLocal
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilder
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation..ctor(System.Reflection.MethodInfo, System.Type[])
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_Attributes()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_CallingConvention()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_ContainsGenericParameters()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_DeclaringType()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_IsGenericMethod()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_IsGenericMethodDefinition()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_MemberType()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_MethodHandle()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_Module()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_Name()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_ReflectedType()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_ReturnParameter()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.get_ReturnType()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetCustomAttributes(System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetGenericArguments()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetGenericMethodDefinition()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetMethodImplementationFlags()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetParameters()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.GetParameterTypes()
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.IsDefined(System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.MakeGenericMethod(System.Reflection.MethodInfo, System.Type[])
+System.Private.CoreLib.dll:System.Reflection.Emit.MethodBuilderInstantiation.MakeGenericMethod(System.Type[])
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.get_Attributes()
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.get_DeclaringType()
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.Emit.MethodOnTypeBuilderInstantiation.GetParameters()
@@ -13527,8 +13655,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.get_Ful
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.get_InternalAssembly()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.get_ManifestModule()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.get_SyncRoot()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.GetModules(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.GetName(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeAssemblyBuilder.GetType(System.String, System.Boolean, System.Boolean)
@@ -13540,7 +13666,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.get_
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeConstructorBuilder.GetMethodSignature()
@@ -13559,7 +13684,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.get_Underly
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -13573,7 +13697,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetNestedTy
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.IsByRefImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeEnumBuilder.IsDefined(System.Type, System.Boolean)
@@ -13590,7 +13713,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBui
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -13604,7 +13726,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBui
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.IsByRefImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeGenericTypeParameterBuilder.IsDefined(System.Type, System.Boolean)
@@ -13615,6 +13736,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator..ctor(System.Reflection.MethodInfo, System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.AddFixup(System.Reflection.Emit.Label, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.BakeByteArray()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.DeclareLocal(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.DefineLabel()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.DefineLabel(System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Byte)
@@ -13622,6 +13744,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.ConstructorInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.Emit.Label)
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.Emit.LocalBuilder)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Reflection.MethodInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.Emit(System.Reflection.Emit.OpCode, System.Type)
@@ -13641,6 +13764,12 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.MarkLabel(S
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.PutInteger4(System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.SortExceptions(System.Reflection.Emit.__ExceptionInfo[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeILGenerator.UpdateStackSize(System.Reflection.Emit.OpCode, System.Int32)
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder..ctor(System.Int32, System.Type, System.Reflection.MethodInfo, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder.get_IsPinned()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder.get_LocalIndex()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder.get_LocalType()
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeLocalBuilder.GetMethodBuilder()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder System.Reflection.Emit.RuntimeTypeBuilder::m_declMeth
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.get_Attributes()
@@ -13648,7 +13777,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.get_Decla
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetMethodBaseReturnType(System.Reflection.MethodBase)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetMethodImplementationFlags()
@@ -13657,6 +13785,7 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetParame
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.GetTypeBuilder()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.IsDefined(System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeMethodBuilder.IsTypeCreated()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder System.Reflection.Emit.RuntimeAssemblyBuilder::_manifestModuleBuilder
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder System.Reflection.Emit.RuntimeTypeBuilder::m_module
@@ -13680,8 +13809,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.get_SyncR
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodToken(System.Runtime.CompilerServices.QCallModule, System.Int32, System.String, System.Byte[], System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodToken(System.Type, System.String, System.Reflection.CallingConventions, System.Type, System.Type[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodTokenNoLock(System.Type, System.String, System.Reflection.CallingConventions, System.Type, System.Type[])
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetFieldMetadataToken(System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetFieldTokenNoLock(System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeModuleBuilder.GetGenericMethodBaseDefinition(System.Reflection.MethodBase)
@@ -13748,7 +13875,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.get_Underly
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -13766,7 +13892,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetNestedTy
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.IsAssignableFrom(System.Reflection.TypeInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.RuntimeTypeBuilder.IsAssignableFrom(System.Type)
@@ -13788,13 +13913,17 @@ System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper System.Reflect
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper..ctor(System.Reflection.Module, System.Reflection.MdSigCallingConvention, System.Int32, System.Type, System.Type[], System.Type[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper..ctor(System.Reflection.Module, System.Reflection.MdSigCallingConvention)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper..ctor(System.Reflection.Module, System.Type)
+System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddArgument(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddArgument(System.Type, System.Type[], System.Type[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddArgument(System.Type)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddArguments(System.Reflection.Emit.DynamicScope, System.Type[], System.Type[][], System.Type[][])
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddArguments(System.Type[], System.Type[][], System.Type[][])
+System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddCustomModifiers(System.Type[], System.Boolean, System.String)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddData(System.Int32)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddDynamicArgument(System.Reflection.Emit.DynamicScope, System.Type, System.Type[], System.Type[], System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddDynamicCustomModifiers(System.Reflection.Emit.DynamicScope, System.Type[], System.Boolean, System.String)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddElementType(System.Reflection.CorElementType)
+System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddOneArgTypeHelper(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddOneArgTypeHelper(System.Type, System.Reflection.Emit.DynamicScope)
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddOneArgTypeHelper(System.Type, System.Type[], System.Type[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SignatureHelper.AddOneArgTypeHelperWorker(System.Type, System.Boolean, System.Reflection.Emit.DynamicScope)
@@ -13865,7 +13994,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.get_DeclaringType
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.get_Name()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolMethod.GetModule()
@@ -13892,7 +14020,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetArrayRank()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -13908,7 +14035,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetNullableUnderlyi
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.IsAssignableFrom(System.Reflection.TypeInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.SymbolType.IsByRefImpl()
@@ -13958,7 +14084,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.get_U
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -13976,7 +14101,6 @@ System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetNu
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.IsAssignableFrom(System.Reflection.TypeInfo)
 System.Private.CoreLib.dll:System.Reflection.Emit.TypeBuilderInstantiation.IsAssignableFrom(System.Type)
@@ -14142,7 +14266,6 @@ System.Private.CoreLib.dll:System.Reflection.FieldInfo.GetValue(System.Object)
 System.Private.CoreLib.dll:System.Reflection.FieldInfo.op_Equality(System.Reflection.FieldInfo, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.FieldInfo.op_Inequality(System.Reflection.FieldInfo, System.Reflection.FieldInfo)
 System.Private.CoreLib.dll:System.Reflection.FieldInfo.SetValue(System.Object, System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Globalization.CultureInfo)
-System.Private.CoreLib.dll:System.Reflection.FieldInfo.SetValue(System.Object, System.Object)
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.Reflection.Emit.RuntimeTypeBuilder::GenericParameterAttributes()
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.Reflection.Emit.RuntimeTypeBuilder::m_genParamAttributes
@@ -14158,9 +14281,6 @@ System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.R
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.Reflection.SignatureType::GenericParameterAttributes()
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.RuntimeType::GenericParameterAttributes()
 System.Private.CoreLib.dll:System.Reflection.GenericParameterAttributes System.Type::GenericParameterAttributes()
-System.Private.CoreLib.dll:System.Reflection.ICustomAttributeProvider
-System.Private.CoreLib.dll:System.Reflection.ICustomAttributeProvider.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.ICustomAttributeProvider.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.ImageFileMachine
 System.Private.CoreLib.dll:System.Reflection.ImageFileMachine System.Reflection.ImageFileMachine::AMD64
 System.Private.CoreLib.dll:System.Reflection.ImageFileMachine System.Reflection.ImageFileMachine::ARM
@@ -14336,10 +14456,31 @@ System.Private.CoreLib.dll:System.Reflection.InvocationFlags System.Reflection.M
 System.Private.CoreLib.dll:System.Reflection.InvocationFlags System.Reflection.RuntimeConstructorInfo::InvocationFlags()
 System.Private.CoreLib.dll:System.Reflection.InvocationFlags System.Reflection.RuntimeMethodInfo::InvocationFlags()
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.<CreateInvokeDelegate_Debugger>g__EmitCopyBack|1_1(System.Int32, System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0&)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.<CreateInvokeDelegate_Debugger>g__EmitResult|1_2(System.Reflection.Emit.LocalBuilder, System.Type, System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0&)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.<CreateInvokeDelegate_Debugger>g__EmitTypedArgument|1_0(System.Int32, System.Type, System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0&)
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.CanCallConstructorOnExistingInstance(System.Type)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.CreateInvokeDelegate_Debugger(System.Reflection.MethodBase)
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.CreateInvokeDelegate_RefArgs(System.Reflection.MethodBase, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.EmitCall(System.Reflection.Emit.ILGenerator, System.Reflection.MethodBase, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.EmitCallAndReturnHandling(System.Reflection.Emit.ILGenerator, System.Reflection.MethodBase, System.Boolean, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.EmitLoadRefArguments(System.Reflection.Emit.ILGenerator, System.ReadOnlySpan`1<System.Reflection.ParameterInfo>)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.EmitLoadRefArgument(System.Reflection.Emit.ILGenerator, System.Int32, System.Int32)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil.EmitLoadRefArguments(System.Reflection.Emit.ILGenerator, System.ReadOnlySpan`1<System.Reflection.ParameterInfo>, System.Int32, System.Int32)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/<>c__DisplayClass1_0
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods..cctor()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_CopyBackArgument()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_CopyBackTypedArgument()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_InitializeTypedArgument()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_IsNewObject()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_NeedsCopyBack()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.get_UsesTypedArgument()
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/EvaluationMethods.GetMethod(System.String)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_Debugger
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_Debugger System.Diagnostics.Debugger/FunctionEvaluation::_invoke
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_Debugger System.Reflection.MethodBaseInvoker::_invokeFunc_Debugger
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_Debugger..ctor(System.Object, System.IntPtr)
+System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_Debugger.Invoke(System.Diagnostics.Debugger/FunctionEvaluation, System.Void**)
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_ObjSpanArgs
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_ObjSpanArgs System.Reflection.MethodBaseInvoker::_invokeFunc_ObjSpanArgs
 System.Private.CoreLib.dll:System.Reflection.InvokerEmitUtil/InvokeFunc_ObjSpanArgs..ctor(System.Object, System.IntPtr)
@@ -14362,10 +14503,6 @@ System.Private.CoreLib.dll:System.Reflection.InvokeUtils.ConvertOrWiden(System.R
 System.Private.CoreLib.dll:System.Reflection.InvokeUtils.PrimitiveWiden(System.Byte&, System.Byte&, System.Reflection.CorElementType, System.Reflection.CorElementType)
 System.Private.CoreLib.dll:System.Reflection.InvokeUtils.TryConvertPointer(System.Object, out System.Object&)
 System.Private.CoreLib.dll:System.Reflection.IReflect
-System.Private.CoreLib.dll:System.Reflection.IReflect.GetFields(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.IReflect.GetMethods(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.IReflect.GetProperties(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.IReflect.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.LoaderAllocator
 System.Private.CoreLib.dll:System.Reflection.LoaderAllocator..ctor()
 System.Private.CoreLib.dll:System.Reflection.LoaderAllocator.Create(System.Object*, System.Exception*)
@@ -14444,9 +14581,7 @@ System.Private.CoreLib.dll:System.Reflection.MemberInfo.get_MetadataToken()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.get_Module()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.get_ReflectedType()
-System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.HasSameMetadataDefinitionAsCore`1(System.Reflection.MemberInfo)
@@ -14455,6 +14590,7 @@ System.Private.CoreLib.dll:System.Reflection.MemberInfo.op_Equality(System.Refle
 System.Private.CoreLib.dll:System.Reflection.MemberInfo.op_Inequality(System.Reflection.MemberInfo, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.MemberTypes
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.ConstructorInfo::MemberType()
+System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.Emit.MethodBuilderInstantiation::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.EventInfo::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.FieldInfo::MemberType()
 System.Private.CoreLib.dll:System.Reflection.MemberTypes System.Reflection.MemberInfo::MemberType()
@@ -14668,6 +14804,7 @@ System.Private.CoreLib.dll:System.Reflection.MethodAttributes
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.DynamicMethod::_attributes
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.DynamicMethod::Attributes()
+System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.MethodBuilderInstantiation::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.MethodOnTypeBuilderInstantiation::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.RuntimeConstructorBuilder::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.Emit.RuntimeMethodBuilder::Attributes()
@@ -14702,6 +14839,7 @@ System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.RuntimeMethodInfo::Attributes()
 System.Private.CoreLib.dll:System.Reflection.MethodAttributes System.Reflection.RuntimeMethodInfo::m_methodAttributes
 System.Private.CoreLib.dll:System.Reflection.MethodBase
+System.Private.CoreLib.dll:System.Reflection.MethodBase System.Diagnostics.Debugger/FunctionEvaluation::_method
 System.Private.CoreLib.dll:System.Reflection.MethodBase System.Diagnostics.StackFrame::_method
 System.Private.CoreLib.dll:System.Reflection.MethodBase System.Exception::_exceptionMethod
 System.Private.CoreLib.dll:System.Reflection.MethodBase System.Exception::TargetSite()
@@ -14730,7 +14868,6 @@ System.Private.CoreLib.dll:System.Reflection.MethodBase.get_MethodHandle()
 System.Private.CoreLib.dll:System.Reflection.MethodBase.get_MethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.MethodBase.GetGenericArguments()
 System.Private.CoreLib.dll:System.Reflection.MethodBase.GetHashCode()
-System.Private.CoreLib.dll:System.Reflection.MethodBase.GetMethodDesc()
 System.Private.CoreLib.dll:System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
 System.Private.CoreLib.dll:System.Reflection.MethodBase.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.MethodBase.GetParameters()
@@ -14772,6 +14909,7 @@ System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker..ctor(System.Refl
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker..ctor(System.Reflection.RuntimeMethodInfo)
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.CheckArguments(System.ReadOnlySpan`1<System.Object>, System.Span`1<System.Object>, System.Span`1<System.Boolean>, System.Reflection.Binder, System.Globalization.CultureInfo, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.CopyBack(System.Object[], System.Span`1<System.Object>, System.Span`1<System.Boolean>)
+System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.GetDebuggerInvokeDelegate()
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.InvokeConstructorWithoutAlloc(System.Object, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.InvokeConstructorWithoutAlloc(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.MethodBaseInvoker.InvokeDirectByRef(System.Object, System.IntPtr*)
@@ -14808,8 +14946,22 @@ System.Private.CoreLib.dll:System.Reflection.MethodImplAttributes System.Reflect
 System.Private.CoreLib.dll:System.Reflection.MethodImplAttributes System.Reflection.MethodImplAttributes::Unmanaged
 System.Private.CoreLib.dll:System.Reflection.MethodInfo
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Delegate::Method()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.Emit.MethodBuilderInstantiation::_method
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.Emit.MethodOnTypeBuilderInstantiation::_method
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.Emit.RuntimeILGenerator::m_methodBuilder
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.Emit.RuntimeLocalBuilder::m_methodBuilder
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<CopyBackArgument>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<CopyBackTypedArgument>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<InitializeTypedArgument>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<IsNewObject>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<NeedsCopyBack>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::<UsesTypedArgument>k__BackingField
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::CopyBackArgument()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::CopyBackTypedArgument()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::InitializeTypedArgument()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::IsNewObject()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::NeedsCopyBack()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/EvaluationMethods::UsesTypedArgument()
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/Methods::s_Pointer_Box
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/Methods::s_ThrowHelper_Throw_NotSupportedException
 System.Private.CoreLib.dll:System.Reflection.MethodInfo System.Reflection.InvokerEmitUtil/Methods::s_ThrowHelper_Throw_NullReference_InvokeNullRefReturned
@@ -14826,6 +14978,7 @@ System.Private.CoreLib.dll:System.Reflection.MethodInfo.get_ReturnType()
 System.Private.CoreLib.dll:System.Reflection.MethodInfo.GetGenericArguments()
 System.Private.CoreLib.dll:System.Reflection.MethodInfo.GetGenericMethodDefinition()
 System.Private.CoreLib.dll:System.Reflection.MethodInfo.GetHashCode()
+System.Private.CoreLib.dll:System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])
 System.Private.CoreLib.dll:System.Reflection.MethodInfo.op_Equality(System.Reflection.MethodInfo, System.Reflection.MethodInfo)
 System.Private.CoreLib.dll:System.Reflection.MethodInfo.op_Inequality(System.Reflection.MethodInfo, System.Reflection.MethodInfo)
 System.Private.CoreLib.dll:System.Reflection.MethodInfo[] System.Reflection.RuntimeEventInfo::m_otherMethod
@@ -14851,6 +15004,7 @@ System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Assembly::
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.DynamicMethod::_module
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.DynamicMethod::Module()
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.DynamicMethod::s_anonymouslyHostedDynamicMethodsModule
+System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.MethodBuilderInstantiation::Module()
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.RuntimeAssemblyBuilder::ManifestModule()
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.RuntimeEnumBuilder::Module()
 System.Private.CoreLib.dll:System.Reflection.Module System.Reflection.Emit.RuntimeGenericTypeParameterBuilder::Module()
@@ -14876,8 +15030,6 @@ System.Private.CoreLib.dll:System.Reflection.Module.get_MetadataToken()
 System.Private.CoreLib.dll:System.Reflection.Module.get_ModuleHandle()
 System.Private.CoreLib.dll:System.Reflection.Module.get_ModuleVersionId()
 System.Private.CoreLib.dll:System.Reflection.Module.get_ScopeName()
-System.Private.CoreLib.dll:System.Reflection.Module.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.Module.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.Module.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.Module.GetModuleHandleImpl()
 System.Private.CoreLib.dll:System.Reflection.Module.GetPEKind(out System.Reflection.PortableExecutableKinds&, out System.Reflection.ImageFileMachine&)
@@ -14909,6 +15061,7 @@ System.Private.CoreLib.dll:System.Reflection.ParameterAttributes System.Reflecti
 System.Private.CoreLib.dll:System.Reflection.ParameterAttributes System.Reflection.ParameterInfo::AttrsImpl
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo System.Reflection.Emit.DynamicMethod::ReturnParameter()
+System.Private.CoreLib.dll:System.Reflection.ParameterInfo System.Reflection.Emit.MethodBuilderInstantiation::ReturnParameter()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo System.Reflection.MethodInfo::ReturnParameter()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo System.Reflection.RuntimeMethodInfo::m_returnParameter
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo System.Reflection.RuntimeMethodInfo::ReturnParameter()
@@ -14924,7 +15077,6 @@ System.Private.CoreLib.dll:System.Reflection.ParameterInfo.get_MetadataToken()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.get_ParameterType()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.get_Position()
-System.Private.CoreLib.dll:System.Reflection.ParameterInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.ParameterInfo.GetOptionalCustomModifiers()
@@ -15004,12 +15156,8 @@ System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetIndexParameters()
 System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetSetMethod()
 System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetSetMethod(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetValue(System.Object, System.Object[])
-System.Private.CoreLib.dll:System.Reflection.PropertyInfo.GetValue(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.PropertyInfo.op_Equality(System.Reflection.PropertyInfo, System.Reflection.PropertyInfo)
 System.Private.CoreLib.dll:System.Reflection.PropertyInfo.op_Inequality(System.Reflection.PropertyInfo, System.Reflection.PropertyInfo)
-System.Private.CoreLib.dll:System.Reflection.PropertyInfo.SetValue(System.Object, System.Object, System.Object[])
-System.Private.CoreLib.dll:System.Reflection.PropertyInfo.SetValue(System.Object, System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute
 System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute..cctor()
 System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute.CreatePseudoCustomAttributeHashSet()
@@ -15027,13 +15175,11 @@ System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute.IsDefined(Sys
 System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute.IsDefined(System.Reflection.RuntimeParameterInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.PseudoCustomAttribute.IsDefined(System.RuntimeType, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList
-System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeAssembly)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeConstructorInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeEventInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeFieldInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeMethodInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeModule, System.Int32)
-System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeModule)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimeParameterInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.Reflection.RuntimePropertyInfo)
 System.Private.CoreLib.dll:System.Reflection.QCustomAttributeList..ctor(System.RuntimeType)
@@ -15098,8 +15244,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.get_ManifestModule(
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.get_SyncRoot()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetCodeBase()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetCodeBase(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetFlags()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetFlags(System.Runtime.CompilerServices.QCallAssembly)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetFullName(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack)
@@ -15120,8 +15264,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetPublicKey()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetPublicKey(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetSimpleName()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetSimpleName(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetToken(System.Reflection.RuntimeAssembly)
-System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetTokenInternal(System.Reflection.RuntimeAssembly)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetType(System.String, System.Boolean, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetTypeCore(System.Runtime.CompilerServices.QCallAssembly, System.String, System.ReadOnlySpan`1<System.String>, System.Int32, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.GetTypeCore(System.String, System.ReadOnlySpan`1<System.String>, System.Boolean, System.Boolean)
@@ -15134,7 +15276,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.InternalLoad(System
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.InternalLoad(System.String, System.Threading.StackCrawlMark&, System.Runtime.Loader.AssemblyLoadContext)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo..ctor(System.RuntimeMethodHandleInternal, System.RuntimeType, System.RuntimeType/RuntimeTypeCache, System.Reflection.MethodAttributes, System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.<get_Signature>g__LazyCreateSignature|20_0()
+System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.<get_Signature>g__LazyCreateSignature|21_0()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.CacheEquals(System.Object)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.CheckCanCreateInstance(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.ComputeAndUpdateInvocationFlags()
@@ -15154,9 +15296,8 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.get_ReflectedType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.get_ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.get_Signature()
-System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetCustomAttributesData()
+System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetDebuggerInvokeDelegate()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetMethodImplementationFlags()
 System.Private.CoreLib.dll:System.Reflection.RuntimeConstructorInfo.GetParameters()
@@ -15181,12 +15322,10 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.FilterCustom
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetAttributeBlob(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetAttributeUsage(System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.QCustomAttributeList, System.Int32, System.RuntimeType)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeAssembly, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeConstructorInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeEventInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeFieldInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeMethodInfo, System.RuntimeType, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeModule, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimeParameterInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.Reflection.RuntimePropertyInfo, System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttribute.GetCustomAttributes(System.RuntimeType, System.RuntimeType, System.Boolean)
@@ -15219,13 +15358,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.get_Name
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCombinedList(System.Collections.Generic.IList`1<System.Reflection.CustomAttributeData>, System.ListBuilder`1<System.Attribute>&)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributeRecords(System.Reflection.RuntimeModule, System.Int32)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributes(System.Reflection.QCustomAttributeList)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimeConstructorInfo)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimeEventInfo)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimeFieldInfo)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimeMethodInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimeParameterInfo)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.Reflection.RuntimePropertyInfo)
-System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.GetCustomAttributesInternal(System.RuntimeType)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.Init(System.Object)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.Init(System.Runtime.CompilerServices.TypeForwardedToAttribute)
 System.Private.CoreLib.dll:System.Reflection.RuntimeCustomAttributeData.Init(System.Runtime.InteropServices.DllImportAttribute)
@@ -15245,9 +15378,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.get_ReflectedType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.get_ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetAddMethod(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.GetRuntimeModule()
 System.Private.CoreLib.dll:System.Reflection.RuntimeEventInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
@@ -15271,9 +15402,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.get_MemberType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.get_Module()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.get_ReflectedType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.get_ReflectedTypeInternal()
-System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetRuntimeModule()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.GetRuntimeType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeFieldInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
@@ -15323,12 +15452,11 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_MethodHandle(
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_Module()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_ReflectedType()
+System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_ReturnParameter()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_ReturnType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_Signature()
-System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetDeclaringTypeInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetGenericArguments()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.GetGenericArgumentsInternal()
@@ -15344,6 +15472,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.HasSameMetadataDe
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.InvokePropertySetter(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.IsDefined(System.Type, System.Boolean)
+System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.MakeGenericMethod(System.Type[])
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.ThrowNoInvokeException()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.ToString()
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule
@@ -15363,8 +15492,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeModule.get_MetadataToken()
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.get_ModuleVersionId()
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.get_RuntimeType()
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.get_ScopeName()
-System.Private.CoreLib.dll:System.Reflection.RuntimeModule.GetCustomAttributes(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimeModule.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.GetModuleHandleImpl()
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.GetPEKind(out System.Reflection.PortableExecutableKinds&, out System.Reflection.ImageFileMachine&)
 System.Private.CoreLib.dll:System.Reflection.RuntimeModule.GetRuntimeAssembly()
@@ -15384,7 +15511,6 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.get_HasDefault
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.get_MetadataToken()
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.get_Name()
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.get_ParameterType()
-System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimeParameterInfo.GetDefaultValue(System.Boolean)
@@ -15418,21 +15544,15 @@ System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.get_PropertyTyp
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.get_ReflectedType()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.get_ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.get_Signature()
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetGetMethod(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetHashCode()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetIndexParameters()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetIndexParametersSpan()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetRuntimeModule()
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetSetMethod(System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetValue(System.Object, System.Object[])
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.GetValue(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.IsDefined(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.SetValue(System.Object, System.Object, System.Object[])
-System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.SetValue(System.Object, System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
 System.Private.CoreLib.dll:System.Reflection.RuntimePropertyInfo.ToString()
 System.Private.CoreLib.dll:System.Reflection.SignatureArrayType
 System.Private.CoreLib.dll:System.Reflection.SignatureArrayType..ctor(System.Reflection.SignatureType, System.Int32, System.Boolean)
@@ -15551,9 +15671,7 @@ System.Private.CoreLib.dll:System.Reflection.SignatureType.GetArrayRank()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.SignatureType.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.SignatureType.GetCustomAttributesData()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetEnumUnderlyingType()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -15574,7 +15692,6 @@ System.Private.CoreLib.dll:System.Reflection.SignatureType.GetPropertyImpl(Syste
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetTypeCodeImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.HasElementTypeImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
-System.Private.CoreLib.dll:System.Reflection.SignatureType.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsAssignableFrom(System.Type)
 System.Private.CoreLib.dll:System.Reflection.SignatureType.IsByRefImpl()
@@ -15662,7 +15779,6 @@ System.Private.CoreLib.dll:System.Reflection.TypeDelegator.get_UnderlyingSystemT
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetAttributeFlagsImpl()
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetConstructorImpl(System.Reflection.BindingFlags, System.Reflection.Binder, System.Reflection.CallingConventions, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetConstructors(System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetCustomAttributes(System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetElementType()
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetEvent(System.String, System.Reflection.BindingFlags)
@@ -15676,7 +15792,6 @@ System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetNestedType(System.
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetProperties(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.HasElementTypeImpl()
-System.Private.CoreLib.dll:System.Reflection.TypeDelegator.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.IsByRefImpl()
 System.Private.CoreLib.dll:System.Reflection.TypeDelegator.IsDefined(System.Type, System.Boolean)
@@ -15739,7 +15854,6 @@ System.Private.CoreLib.dll:System.Resources.MissingManifestResourceException..ct
 System.Private.CoreLib.dll:System.Resources.MissingManifestResourceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Resources.NeutralResourcesLanguageAttribute
 System.Private.CoreLib.dll:System.Resources.NeutralResourcesLanguageAttribute..ctor(System.String)
-System.Private.CoreLib.dll:System.Resources.ResourceManager
 System.Private.CoreLib.dll:System.Resources.UltimateResourceFallbackLocation
 System.Private.CoreLib.dll:System.Resources.UltimateResourceFallbackLocation System.Resources.NeutralResourcesLanguageAttribute::<Location>k__BackingField
 System.Private.CoreLib.dll:System.Resources.UltimateResourceFallbackLocation System.Resources.UltimateResourceFallbackLocation::MainAssembly
@@ -16967,6 +17081,7 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.InternalFreeW
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.InternalGet(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.InternalSet(System.IntPtr, System.Object)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.IsPinned(System.IntPtr)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.set_Target(System.Object)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.ThrowIfInvalid(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.ToIntPtr(System.Runtime.InteropServices.GCHandle)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle`1
@@ -18221,6 +18336,8 @@ System.Private.CoreLib.dll:System.Runtime.StackFrameIterator.get_RegisterSet()
 System.Private.CoreLib.dll:System.Runtime.StackFrameIterator.get_SP()
 System.Private.CoreLib.dll:System.Runtime.StackFrameIterator.Init(System.Runtime.EH/PAL_LIMITED_CONTEXT*, System.Boolean, System.Boolean*)
 System.Private.CoreLib.dll:System.Runtime.StackFrameIterator.Next(System.UInt32*, System.Boolean*, System.Boolean*)
+System.Private.CoreLib.dll:System.Runtime.SuppressReadyToRunCanonicalRootingAttribute
+System.Private.CoreLib.dll:System.Runtime.SuppressReadyToRunCanonicalRootingAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.Versioning.NonVersionableAttribute
 System.Private.CoreLib.dll:System.Runtime.Versioning.NonVersionableAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.Versioning.OSPlatformAttribute
@@ -18288,6 +18405,7 @@ System.Private.CoreLib.dll:System.RuntimeMethodHandle
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.ConstructorOnTypeBuilderInstantiation::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.DynamicMethod::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.GenericMethodInfo::m_methodHandle
+System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.MethodBuilderInstantiation::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.MethodOnTypeBuilderInstantiation::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.RuntimeConstructorBuilder::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.Emit.RuntimeMethodBuilder::MethodHandle()
@@ -18297,15 +18415,16 @@ System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.RuntimeC
 System.Private.CoreLib.dll:System.RuntimeMethodHandle System.Reflection.RuntimeMethodInfo::MethodHandle()
 System.Private.CoreLib.dll:System.RuntimeMethodHandle..ctor(System.IRuntimeMethodInfo)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.<ConstructInstantiation>g____PInvoke|24_0(System.RuntimeMethodHandleInternal, System.TypeNameFormatFlags, System.Runtime.CompilerServices.StringHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<Destroy>g____PInvoke|61_0(System.RuntimeMethodHandleInternal, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<Destroy>g____PInvoke|62_0(System.RuntimeMethodHandleInternal, System.IntPtr*)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetFunctionPointer>g____PInvoke|15_0(System.RuntimeMethodHandleInternal, System.IntPtr*)
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetMethodInstantiation>g____PInvoke|39_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, Interop/BOOL, System.IntPtr*)
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetStubIfNeeded>g__GetStubIfNeededWorker|47_0(System.RuntimeMethodHandleInternal, System.RuntimeType, System.RuntimeType[])
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetStubIfNeededSlow>g____PInvoke|46_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetTypicalMethodDefinition>g____PInvoke|54_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetMethodInstantiation>g____PInvoke|40_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, Interop/BOOL, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetStubIfNeeded>g__GetStubIfNeededWorker|48_0(System.RuntimeMethodHandleInternal, System.RuntimeType, System.RuntimeType[])
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetStubIfNeededSlow>g____PInvoke|47_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetTypicalMethodDefinition>g____PInvoke|55_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.<GetVirtualFunctionPointer>g____PInvoke|17_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.<IsCAVisibleFromDecoratedType>g____PInvoke|20_0(System.Runtime.CompilerServices.QCallTypeHandle, System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.QCallModule, System.IntPtr*)
-System.Private.CoreLib.dll:System.RuntimeMethodHandle.<StripMethodInstantiation>g____PInvoke|58_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.<StripMethodInstantiation>g____PInvoke|59_0(System.RuntimeMethodHandleInternal, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.RuntimeMethodHandle.BoxToNullable(System.Byte&, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.ConstructInstantiation(System.IRuntimeMethodInfo, System.TypeNameFormatFlags)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.ConstructInstantiation(System.RuntimeMethodHandleInternal, System.TypeNameFormatFlags, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.RuntimeMethodHandle.Destroy(System.RuntimeMethodHandleInternal)
@@ -18378,6 +18497,8 @@ System.Private.CoreLib.dll:System.RuntimeMethodInfoStub
 System.Private.CoreLib.dll:System.RuntimeMethodInfoStub..ctor(System.RuntimeMethodHandleInternal, System.Object)
 System.Private.CoreLib.dll:System.RuntimeMethodInfoStub.FromPtr(System.IntPtr)
 System.Private.CoreLib.dll:System.RuntimeType
+System.Private.CoreLib.dll:System.RuntimeType System.Diagnostics.Debugger/FunctionEvaluation::_returnType
+System.Private.CoreLib.dll:System.RuntimeType System.Diagnostics.Debugger/FunctionEvaluation/Argument::Type
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.Emit.DynamicMethod::_returnType
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.Emit.DynamicMethod::_typeOwner
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.Emit.RuntimeTypeBuilder::m_bakedRuntimeType
@@ -18393,6 +18514,7 @@ System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeFieldInfo
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeFieldInfo::ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeLocalVariableInfo::_type
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeMethodInfo::m_declaringType
+System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeMethodInfo::ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeModule::m_runtimeType
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimeModule::RuntimeType()
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimePropertyInfo::m_declaringType
@@ -18412,9 +18534,6 @@ System.Private.CoreLib.dll:System.RuntimeType System.Signature::FieldType()
 System.Private.CoreLib.dll:System.RuntimeType System.Signature::ReturnType()
 System.Private.CoreLib.dll:System.RuntimeType..ctor()
 System.Private.CoreLib.dll:System.RuntimeType.<CreateInstanceImpl>g__CreateInstanceLocal|147_0(System.Boolean)
-System.Private.CoreLib.dll:System.RuntimeType.<InvokeMember>g__GetFields|215_0(System.RuntimeType, System.String, System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.RuntimeType.<InvokeMember>g__GetMethods|215_1(System.RuntimeType, System.String, System.Reflection.BindingFlags)
-System.Private.CoreLib.dll:System.RuntimeType.<InvokeMember>g__GetProperties|215_2(System.RuntimeType, System.String, System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.RuntimeType.AllocateValueType(System.RuntimeType, System.Object)
 System.Private.CoreLib.dll:System.RuntimeType.Box(System.Byte&)
 System.Private.CoreLib.dll:System.RuntimeType.CacheEquals(System.Object)
@@ -18474,10 +18593,7 @@ System.Private.CoreLib.dll:System.RuntimeType.GetConstructorImpl(System.Reflecti
 System.Private.CoreLib.dll:System.RuntimeType.GetConstructors(System.Reflection.BindingFlags)
 System.Private.CoreLib.dll:System.RuntimeType.GetConstructorWithSameMetadataDefinitionAs(System.RuntimeType, System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.GetCorElementType()
-System.Private.CoreLib.dll:System.RuntimeType.GetCustomAttributes(System.Boolean)
 System.Private.CoreLib.dll:System.RuntimeType.GetCustomAttributes(System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.RuntimeType.GetCustomAttributesData()
-System.Private.CoreLib.dll:System.RuntimeType.GetDefaultMemberName()
 System.Private.CoreLib.dll:System.RuntimeType.GetElementType()
 System.Private.CoreLib.dll:System.RuntimeType.GetEmptyArray()
 System.Private.CoreLib.dll:System.RuntimeType.GetEnumUnderlyingType()
@@ -18528,7 +18644,6 @@ System.Private.CoreLib.dll:System.RuntimeType.GetUninitializedObject()
 System.Private.CoreLib.dll:System.RuntimeType.HasElementTypeImpl()
 System.Private.CoreLib.dll:System.RuntimeType.HasSameMetadataDefinitionAs(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.RuntimeType.InitializeCache()
-System.Private.CoreLib.dll:System.RuntimeType.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.RuntimeType.IsArrayImpl()
 System.Private.CoreLib.dll:System.RuntimeType.IsAssignableFrom(System.Reflection.TypeInfo)
 System.Private.CoreLib.dll:System.RuntimeType.IsAssignableFrom(System.Type)
@@ -18638,7 +18753,6 @@ System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.get_IsGlobal()
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.get_TypeCode()
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetConstructor(System.RuntimeType, System.RuntimeMethodHandleInternal)
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetConstructorList(System.RuntimeType/MemberListType, System.String)
-System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetDefaultMemberName()
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetEmptyArray()
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetEnclosingType()
 System.Private.CoreLib.dll:System.RuntimeType/RuntimeTypeCache.GetEventList(System.RuntimeType/MemberListType, System.String)
@@ -19519,6 +19633,7 @@ System.Private.CoreLib.dll:System.String System.Reflection.Emit.ConstructorOnTyp
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.DynamicMethod::_name
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.DynamicMethod::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.FieldOnTypeBuilderInstantiation::Name()
+System.Private.CoreLib.dll:System.String System.Reflection.Emit.MethodBuilderInstantiation::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.MethodOnTypeBuilderInstantiation::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.OpCode::Name()
 System.Private.CoreLib.dll:System.String System.Reflection.Emit.RuntimeAssemblyBuilder::FullName()
@@ -19619,7 +19734,6 @@ System.Private.CoreLib.dll:System.String System.Runtime.Versioning.TargetFramewo
 System.Private.CoreLib.dll:System.String System.RuntimeType::FullName()
 System.Private.CoreLib.dll:System.String System.RuntimeType::Name()
 System.Private.CoreLib.dll:System.String System.RuntimeType::Namespace()
-System.Private.CoreLib.dll:System.String System.RuntimeType/RuntimeTypeCache::m_defaultMemberName
 System.Private.CoreLib.dll:System.String System.RuntimeType/RuntimeTypeCache::m_fullName
 System.Private.CoreLib.dll:System.String System.RuntimeType/RuntimeTypeCache::m_name
 System.Private.CoreLib.dll:System.String System.RuntimeType/RuntimeTypeCache::m_namespace
@@ -20978,7 +21092,6 @@ System.Private.CoreLib.dll:System.Threading.Lock System.Threading.TimerQueue::<S
 System.Private.CoreLib.dll:System.Threading.Lock System.Threading.TimerQueue::s_timerEventLock
 System.Private.CoreLib.dll:System.Threading.Lock System.Threading.TimerQueue::SharedLock()
 System.Private.CoreLib.dll:System.Threading.Lock..ctor()
-System.Private.CoreLib.dll:System.Threading.Lock..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Lock.CreateWaitEvent(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Lock.DetermineMaxSpinCount()
 System.Private.CoreLib.dll:System.Threading.Lock.DetermineMinSpinCountForAdaptiveSpin()
@@ -20990,10 +21103,12 @@ System.Private.CoreLib.dll:System.Threading.Lock.Exit(System.Int32)
 System.Private.CoreLib.dll:System.Threading.Lock.ExitAll()
 System.Private.CoreLib.dll:System.Threading.Lock.ExitImpl()
 System.Private.CoreLib.dll:System.Threading.Lock.get_IsHeldByCurrentThread()
+System.Private.CoreLib.dll:System.Threading.Lock.get_IsHeldByCurrentThreadCore()
 System.Private.CoreLib.dll:System.Threading.Lock.get_IsSingleProcessor()
 System.Private.CoreLib.dll:System.Threading.Lock.get_ShouldStopPreemptingWaiters()
 System.Private.CoreLib.dll:System.Threading.Lock.get_WaitEvent()
 System.Private.CoreLib.dll:System.Threading.Lock.GetOrCreateCondition()
+System.Private.CoreLib.dll:System.Threading.Lock.Initialize()
 System.Private.CoreLib.dll:System.Threading.Lock.InitializeForMonitor(System.Int32, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Lock.InitializeForMonitor(System.Threading.Lock*, System.Int32, System.UInt32, System.Exception*)
 System.Private.CoreLib.dll:System.Threading.Lock.IsAdaptiveSpinEnabled(System.Int16)
@@ -21029,7 +21144,6 @@ System.Private.CoreLib.dll:System.Threading.Lock/State.get_ShouldNonWaiterAttemp
 System.Private.CoreLib.dll:System.Threading.Lock/State.get_ShouldNotPreemptWaiters()
 System.Private.CoreLib.dll:System.Threading.Lock/State.get_UseTrivialWaits()
 System.Private.CoreLib.dll:System.Threading.Lock/State.GetHashCode()
-System.Private.CoreLib.dll:System.Threading.Lock/State.InitializeUseTrivialWaits(System.Threading.Lock, System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Lock/State.Neg(System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Lock/State.op_Equality(System.Threading.Lock/State, System.Threading.Lock/State)
 System.Private.CoreLib.dll:System.Threading.Lock/State.SetIsLocked()
@@ -21160,18 +21274,23 @@ System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim..ctor(System.Bo
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.CancellationTokenCallback(System.Object)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Dispose()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Dispose(System.Boolean)
+System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.DisposeCore(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.EnsureLockObjectCreated()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.ExtractStatePortionAndShiftRight(System.Int32, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.get_IsDisposed()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.get_IsSet()
+System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.get_IsSetCore()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.get_SpinCount()
+System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.get_SpinCountCore()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Initialize(System.Boolean, System.Int32)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.InterlockedDecrementWaiters()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.InterlockedIncrementWaiters()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.set_SpinCount(System.Int32)
+System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.set_SpinCountCore(System.Int32)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Set()
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Set(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.Wait(System.Int32, System.Threading.CancellationToken)
+System.Private.CoreLib.dll:System.Threading.ManualResetEventSlim.WaitCore(System.Int32, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.Monitor
 System.Private.CoreLib.dll:System.Threading.Monitor.Enter(System.Object, System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.Monitor.Enter(System.Object)
@@ -21184,8 +21303,8 @@ System.Private.CoreLib.dll:System.Threading.Monitor.SynchronizedMethodExit(Syste
 System.Private.CoreLib.dll:System.Threading.Monitor.ThrowLockTakenException()
 System.Private.CoreLib.dll:System.Threading.Monitor.Wait(System.Object, System.Int32)
 System.Private.CoreLib.dll:System.Threading.ObjectHeader
-System.Private.CoreLib.dll:System.Threading.ObjectHeader.<GetLockObject>g__GetLockObjectFallback|11_0(System.Object)
-System.Private.CoreLib.dll:System.Threading.ObjectHeader.<GetOrCreateLockObject>g____PInvoke|13_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
+System.Private.CoreLib.dll:System.Threading.ObjectHeader.<GetLockObject>g__GetLockObjectFallback|10_0(System.Object)
+System.Private.CoreLib.dll:System.Threading.ObjectHeader.<GetOrCreateLockObject>g____PInvoke|12_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.Threading.ObjectHeader.AcquireThinLock(System.Object)
 System.Private.CoreLib.dll:System.Threading.ObjectHeader.GetHeaderPtr(System.IntPtr*)
 System.Private.CoreLib.dll:System.Threading.ObjectHeader.GetLockHandleIfExists(System.Object)
@@ -21372,13 +21491,18 @@ System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.CheckDispose()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.CreateAndAddAsyncWaiter()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.Dispose()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.Dispose(System.Boolean)
+System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.DisposeCore(System.Boolean)
+System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.get_IsDisposed()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.Release()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.Release(System.Int32)
+System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.ReleaseCore(System.Int32)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.RemoveAsyncWaiter(System.Threading.SemaphoreSlim/TaskNode)
+System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.RemoveAsyncWaiterWithLock(System.Threading.SemaphoreSlim/TaskNode)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.Wait()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitAsync()
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitAsync(System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitAsyncCore(System.Int64, System.Threading.CancellationToken)
+System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitAsyncCoreLocked(System.Int64, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitCore(System.Int64, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitUntilCountOrTimeout(System.Int64, System.Int64, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.SemaphoreSlim.WaitUntilCountOrTimeoutAsync(System.Threading.SemaphoreSlim/TaskNode, System.Int64, System.Threading.CancellationToken)
@@ -21396,7 +21520,7 @@ System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.Co
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter/<>c::<>9__5_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.CancellationTokenSource/<>c::<>9__36_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.Tasks.SynchronizationContextAwaitTaskContinuation::s_postCallback
-System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.Tasks.Task/<>c::<>9__135_0
+System.Private.CoreLib.dll:System.Threading.SendOrPostCallback System.Threading.Tasks.Task/<>c::<>9__136_0
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Threading.SendOrPostCallback.Invoke(System.Object)
 System.Private.CoreLib.dll:System.Threading.SpinLock
@@ -21407,11 +21531,14 @@ System.Private.CoreLib.dll:System.Threading.SpinLock.ContinueTryEnter(System.Int
 System.Private.CoreLib.dll:System.Threading.SpinLock.ContinueTryEnterWithThreadTracking(System.Int32, System.Int64, System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.SpinLock.DecrementWaiters()
 System.Private.CoreLib.dll:System.Threading.SpinLock.Enter(System.Boolean&)
+System.Private.CoreLib.dll:System.Threading.SpinLock.EnterCore(System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.SpinLock.Exit(System.Boolean)
+System.Private.CoreLib.dll:System.Threading.SpinLock.ExitCore(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.SpinLock.ExitSlowPath(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.SpinLock.get_IsHeldByCurrentThread()
 System.Private.CoreLib.dll:System.Threading.SpinLock.get_IsThreadOwnerTrackingEnabled()
 System.Private.CoreLib.dll:System.Threading.SpinLock.TryEnter(System.Boolean&)
+System.Private.CoreLib.dll:System.Threading.SpinLock.TryEnterCore(System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.SpinWait
 System.Private.CoreLib.dll:System.Threading.SpinWait..cctor()
 System.Private.CoreLib.dll:System.Threading.SpinWait.get_Count()
@@ -21584,7 +21711,7 @@ System.Private.CoreLib.dll:System.Threading.Tasks.Task..ctor()
 System.Private.CoreLib.dll:System.Threading.Tasks.Task..ctor(System.Boolean, System.Threading.Tasks.TaskCreationOptions, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task..ctor(System.Delegate, System.Object, System.Threading.Tasks.Task, System.Threading.CancellationToken, System.Threading.Tasks.TaskCreationOptions, System.Threading.Tasks.InternalTaskOptions, System.Threading.Tasks.TaskScheduler)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task..ctor(System.Object, System.Threading.Tasks.TaskCreationOptions, System.Boolean)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task.<EnsureContingentPropertiesInitialized>g__InitializeContingentProperties|88_0()
+System.Private.CoreLib.dll:System.Threading.Tasks.Task.<EnsureContingentPropertiesInitialized>g__InitializeContingentProperties|89_0()
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.AddCompletionAction(System.Threading.Tasks.ITaskCompletionAction, System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.AddException(System.Object, System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.AddException(System.Object)
@@ -21596,6 +21723,7 @@ System.Private.CoreLib.dll:System.Threading.Tasks.Task.AssignCancellationToken(S
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.AtomicStateUpdate(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.AtomicStateUpdateSlow(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.CancellationCleanupLogic()
+System.Private.CoreLib.dll:System.Threading.Tasks.Task.CheckPromiseCreationOptions(System.Threading.Tasks.TaskCreationOptions)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.ConfigureAwait(System.Boolean)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.ConfigureAwait(System.Threading.Tasks.ConfigureAwaitOptions)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task.ContinueWith(System.Action`2<System.Threading.Tasks.Task,System.Object>, System.Object, System.Threading.CancellationToken, System.Threading.Tasks.TaskContinuationOptions, System.Threading.Tasks.TaskScheduler)
@@ -21695,13 +21823,13 @@ System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c System.Threading.Tasks.Task/<>c::<>9
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c..cctor()
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c..ctor()
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<.cctor>b__302_0(System.Object)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AddTaskContinuationComplex>b__223_0(System.Object)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AssignCancellationToken>b__43_0(System.Object)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AssignCancellationToken>b__43_1(System.Object)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<FinishSlow>b__142_0(System.Threading.Tasks.Task)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<ThrowAsync>b__135_0(System.Object)
-System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<ThrowAsync>b__135_1(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<.cctor>b__304_0(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AddTaskContinuationComplex>b__221_0(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AssignCancellationToken>b__44_0(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<AssignCancellationToken>b__44_1(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<FinishSlow>b__143_0(System.Threading.Tasks.Task)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<ThrowAsync>b__136_0(System.Object)
+System.Private.CoreLib.dll:System.Threading.Tasks.Task/<>c.<ThrowAsync>b__136_1(System.Object)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/CancellationPromise`1
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/CancellationPromise`1..ctor(System.Threading.Tasks.Task, System.UInt32, System.TimeProvider, System.Threading.CancellationToken)
 System.Private.CoreLib.dll:System.Threading.Tasks.Task/CancellationPromise`1.Cleanup()
@@ -21980,7 +22108,7 @@ System.Private.CoreLib.dll:System.Threading.Thread..ctor(System.Threading.Parame
 System.Private.CoreLib.dll:System.Threading.Thread..ctor(System.Threading.ParameterizedThreadStart)
 System.Private.CoreLib.dll:System.Threading.Thread..ctor(System.Threading.ThreadStart, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Thread..ctor(System.Threading.ThreadStart)
-System.Private.CoreLib.dll:System.Threading.Thread.<get_WaitInfo>g__AllocateWaitInfo|34_0()
+System.Private.CoreLib.dll:System.Threading.Thread.<get_WaitInfo>g__AllocateWaitInfo|40_0()
 System.Private.CoreLib.dll:System.Threading.Thread.<GetCurrentThread>g____PInvoke|52_0(System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.Threading.Thread.<GetQCallSpecialException>g____PInvoke|14_0(System.IntPtr, System.Runtime.CompilerServices.ObjectHandleOnStack, System.IntPtr*)
 System.Private.CoreLib.dll:System.Threading.Thread.<InformThreadNameChange>g____PInvoke|55_0(System.Threading.ThreadHandle, System.UInt16*, System.Int32, System.IntPtr*)
@@ -22299,7 +22427,7 @@ System.Private.CoreLib.dll:System.Threading.WaitCallback
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Runtime.CompilerServices.YieldAwaitable/YieldAwaiter::s_waitCallbackRunAction
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.QueueUserWorkItemCallback::_callback
 System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.QueueUserWorkItemCallbackDefaultContext::_callback
-System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.Tasks.Task/<>c::<>9__135_1
+System.Private.CoreLib.dll:System.Threading.WaitCallback System.Threading.Tasks.Task/<>c::<>9__136_1
 System.Private.CoreLib.dll:System.Threading.WaitCallback..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Threading.WaitCallback.Invoke(System.Object)
 System.Private.CoreLib.dll:System.Threading.WaitHandle
@@ -22409,6 +22537,8 @@ System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.SignalM
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.UnsignalEvent(System.Threading.WaitSubsystem/LockHolder&)
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.Wait_Locked(System.Threading.WaitSubsystem/ThreadWaitInfo, System.Int32, System.Boolean, System.Threading.WaitSubsystem/LockHolder&)
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.Wait(System.Threading.WaitSubsystem/WaitableObject[], System.Int32, System.Boolean, System.Threading.WaitSubsystem/ThreadWaitInfo, System.Int32, System.Boolean)
+System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.WaitUnsignaled(System.Threading.WaitSubsystem/ThreadWaitInfo, System.Int32, System.Boolean, System.Threading.WaitSubsystem/LockHolder&)
+System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.WaitUnsignaled(System.Threading.WaitSubsystem/WaitableObject[], System.Int32, System.Boolean, System.Threading.WaitSubsystem/ThreadWaitInfo, System.Int32, System.Boolean, System.Threading.WaitSubsystem/LockHolder&)
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.WouldWaitForAllBeSatisfiedOrAborted(System.Threading.Thread, System.Threading.WaitSubsystem/WaitableObject[], System.Int32, System.Int32, System.Boolean&, System.Boolean&)
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject[] System.Threading.WaitSubsystem/ThreadWaitInfo::_waitedObjects
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject/OwnershipInfo
@@ -22862,6 +22992,9 @@ System.Private.CoreLib.dll:System.Type System.Reflection.Emit.DynamicMethod::Ret
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.FieldOnTypeBuilderInstantiation::DeclaringType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.FieldOnTypeBuilderInstantiation::FieldType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.FieldOnTypeBuilderInstantiation::ReflectedType()
+System.Private.CoreLib.dll:System.Type System.Reflection.Emit.MethodBuilderInstantiation::DeclaringType()
+System.Private.CoreLib.dll:System.Type System.Reflection.Emit.MethodBuilderInstantiation::ReflectedType()
+System.Private.CoreLib.dll:System.Type System.Reflection.Emit.MethodBuilderInstantiation::ReturnType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.MethodOnTypeBuilderInstantiation::DeclaringType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.MethodOnTypeBuilderInstantiation::ReflectedType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeConstructorBuilder::DeclaringType()
@@ -22870,6 +23003,8 @@ System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeEnumBuilder
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeEnumBuilder::UnderlyingSystemType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeGenericTypeParameterBuilder::BaseType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeGenericTypeParameterBuilder::UnderlyingSystemType()
+System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeLocalBuilder::LocalType()
+System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeLocalBuilder::m_localType
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeMethodBuilder::DeclaringType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeMethodBuilder::ReflectedType()
 System.Private.CoreLib.dll:System.Type System.Reflection.Emit.RuntimeTypeBuilder::BaseType()
@@ -23047,7 +23182,6 @@ System.Private.CoreLib.dll:System.Type.GetTypeCodeImpl()
 System.Private.CoreLib.dll:System.Type.GetTypeFromHandle(System.RuntimeTypeHandle)
 System.Private.CoreLib.dll:System.Type.HasElementTypeImpl()
 System.Private.CoreLib.dll:System.Type.ImplementInterface(System.Type)
-System.Private.CoreLib.dll:System.Type.InvokeMember(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object, System.Object[], System.Reflection.ParameterModifier[], System.Globalization.CultureInfo, System.String[])
 System.Private.CoreLib.dll:System.Type.IsArrayImpl()
 System.Private.CoreLib.dll:System.Type.IsAssignableFrom(System.Type)
 System.Private.CoreLib.dll:System.Type.IsAssignableTo(System.Type)
@@ -23066,6 +23200,7 @@ System.Private.CoreLib.dll:System.Type.MakePointerType()
 System.Private.CoreLib.dll:System.Type.op_Equality(System.Type, System.Type)
 System.Private.CoreLib.dll:System.Type.op_Inequality(System.Type, System.Type)
 System.Private.CoreLib.dll:System.Type.ToString()
+System.Private.CoreLib.dll:System.Type[] System.Reflection.Emit.MethodBuilderInstantiation::_inst
 System.Private.CoreLib.dll:System.Type[] System.Reflection.Emit.TypeBuilderInstantiation::_typeArguments
 System.Private.CoreLib.dll:System.Type[] System.Reflection.ReflectionTypeLoadException::<Types>k__BackingField
 System.Private.CoreLib.dll:System.Type[] System.Reflection.SignatureConstructedGenericType::_genericTypeArguments
@@ -23468,6 +23603,13 @@ System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc/Buf16::U2
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc/Buf16::U3
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc/Buf24::_e0
 System.Private.CoreLib.dll:System.UInt32 System.Decimal/DecCalc/Buf24::U2()
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/ArgumentFlags::value__
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/Context::ArgumentCount
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/Context::GenericArgsCount
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/Context::MethodToken
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/Context::ParameterCount
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/EvaluationFlags::value__
+System.Private.CoreLib.dll:System.UInt32 System.Diagnostics.Debugger/FunctionEvaluation/NativeArgument::ElementType
 System.Private.CoreLib.dll:System.UInt32 System.Globalization.CultureData/LocaleGroupingData::value__
 System.Private.CoreLib.dll:System.UInt32 System.Globalization.CultureData/LocaleNumberData::value__
 System.Private.CoreLib.dll:System.UInt32 System.Globalization.CultureData/LocaleStringData::value__
@@ -23663,6 +23805,7 @@ System.Private.CoreLib.dll:System.UInt64 System.Decimal/DecCalc/Buf16::Low64()
 System.Private.CoreLib.dll:System.UInt64 System.Decimal/DecCalc/Buf24::High64()
 System.Private.CoreLib.dll:System.UInt64 System.Decimal/DecCalc/Buf24::Low64()
 System.Private.CoreLib.dll:System.UInt64 System.Decimal/DecCalc/Buf24::Mid64()
+System.Private.CoreLib.dll:System.UInt64 System.Diagnostics.Debugger/FunctionEvaluation/Argument::Primitive
 System.Private.CoreLib.dll:System.UInt64 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.DenormalMantissaMask()
 System.Private.CoreLib.dll:System.UInt64 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.InfinityBits()
 System.Private.CoreLib.dll:System.UInt64 System.Double::System.IBinaryFloatParseAndFormatInfo<System.Double>.MaxMantissaFastPath()
@@ -23825,6 +23968,8 @@ System.Private.CoreLib.dll:System.UIntPtr modreq(System.Runtime.CompilerServices
 System.Private.CoreLib.dll:System.UIntPtr modreq(System.Runtime.CompilerServices.IsVolatile) System.Runtime.EH/ExInfo::_notifyDebuggerSP
 System.Private.CoreLib.dll:System.UIntPtr modreq(System.Runtime.CompilerServices.IsVolatile) System.Threading.Volatile/VolatileUIntPtr::Value
 System.Private.CoreLib.dll:System.UIntPtr System.Array::NativeLength()
+System.Private.CoreLib.dll:System.UIntPtr System.Diagnostics.Debugger/FunctionEvaluation/NativeCapturedArgument::High
+System.Private.CoreLib.dll:System.UIntPtr System.Diagnostics.Debugger/FunctionEvaluation/NativeCapturedArgument::Low
 System.Private.CoreLib.dll:System.UIntPtr System.Exception::_ipForWatsonBuckets
 System.Private.CoreLib.dll:System.UIntPtr System.Exception/DispatchState::IpForWatsonBuckets
 System.Private.CoreLib.dll:System.UIntPtr System.IO.UnmanagedMemoryStream::_capacity
@@ -23996,6 +24141,9 @@ System.Private.CoreLib.dll:System.Version.TryFormatCore`1(System.Span`1<TChar>, 
 System.Private.CoreLib.dll:System.Void
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::_pointer
 System.Private.CoreLib.dll:System.Void* System.Buffers.MemoryHandle::Pointer()
+System.Private.CoreLib.dll:System.Void* System.Diagnostics.Debugger/FunctionEvaluation/Context::Module
+System.Private.CoreLib.dll:System.Void* System.Diagnostics.Debugger/FunctionEvaluation/Context::ResultData
+System.Private.CoreLib.dll:System.Void* System.Diagnostics.Debugger/FunctionEvaluation/Context::TemporaryResultHandle
 System.Private.CoreLib.dll:System.Void* System.Reflection.Pointer::_ptr
 System.Private.CoreLib.dll:System.Void* System.Reflection.RuntimeEventInfo::m_utf8name
 System.Private.CoreLib.dll:System.Void* System.Reflection.RuntimePropertyInfo::m_utf8name
@@ -24024,6 +24172,8 @@ System.Private.CoreLib.dll:System.Void* System.RuntimeType/BoxCache::_allocatorF
 System.Private.CoreLib.dll:System.Void* System.RuntimeType/CreateUninitializedCache::_allocatorFirstArg
 System.Private.CoreLib.dll:System.Void* System.Signature::_sig
 System.Private.CoreLib.dll:System.Void* System.Threading.ThreadBlockingInfo::_objectPtr
+System.Private.CoreLib.dll:System.Void** System.Diagnostics.Debugger/FunctionEvaluation::_storage
+System.Private.CoreLib.dll:System.Void** System.Diagnostics.Debugger/FunctionEvaluation/Context::ResultByRefs
 System.Private.CoreLib.dll:System.Void** System.Runtime.GCFrameRegistration::_pObjRefs
 System.Private.CoreLib.dll:System.WeakReference
 System.Private.CoreLib.dll:System.WeakReference`1

@@ -6,5 +6,3 @@
 !unknown-selector! MDLAsset::components not found
 !unknown-selector! MDLAsset::setComponent:forProtocol: not found
 !extra-null-allowed! 'ModelIO.IMDLMeshBufferZone ModelIO.IMDLMeshBuffer::get_Zone()' has a extraneous [NullAllowed] on return type
-!wrong-simd-missing-marshaldirective! ModelIO.MDLAxisAlignedBoundingBox ModelIO.IMDLLightProbeIrradianceDataSource::get_BoundingBox(): simd type: MDLAxisAlignedBoundingBox
-!wrong-simd-missing-marshaldirective! System.Void ModelIO.IMDLLightProbeIrradianceDataSource::set_BoundingBox(ModelIO.MDLAxisAlignedBoundingBox): simd type: MDLAxisAlignedBoundingBox

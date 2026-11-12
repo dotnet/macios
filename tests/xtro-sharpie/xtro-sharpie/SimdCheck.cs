@@ -167,37 +167,20 @@ namespace Extrospection {
 			return managed_simd_types.TryGetValue (td.Name, out invalid_for_simd);
 		}
 
-		bool ContainsSimdTypes (ObjCMethodDecl decl, MethodDefinition? method, ref string simd_type, ref bool requires_marshal_directive, ref bool only_return_type_is_simd)
+		bool ContainsSimdTypes (ObjCMethodDecl decl, ref string simd_type, ref bool requires_marshal_directive, ref bool only_return_type_is_simd)
 		{
 			if (IsSimdType (decl, decl.ReturnType, ref simd_type, ref requires_marshal_directive))
 				return true;
 
 			var is_simd_type = false;
-			for (var index = 0; index < decl.Parameters.Count; index++) {
-				var param = decl.Parameters [index];
-				var parameter_requires_marshal_directive = false;
-				if (!IsSimdType (decl, param.Type, ref simd_type, ref parameter_requires_marshal_directive))
+			foreach (var param in decl.Parameters) {
+				if (!IsSimdType (decl, param.Type, ref simd_type, ref requires_marshal_directive))
 					continue;
 				is_simd_type = true;
 				only_return_type_is_simd = false;
-				if (method is not null && method.Parameters.Count == decl.Parameters.Count &&
-					IsLayoutCompatibleMatrixPointer (param.Type, method.Parameters [index].ParameterType))
-					continue;
-				requires_marshal_directive |= parameter_requires_marshal_directive;
 			}
 
 			return is_simd_type;
-		}
-
-		bool IsLayoutCompatibleMatrixPointer (ClangSharp.Type native_type, TypeReference managed_type)
-		{
-			if (native_type.CanonicalType is not ClangSharp.PointerType pointer || pointer.PointeeType.CanonicalType is not RecordType ||
-				managed_type is not ByReferenceType reference || reference.ElementType.FullName != "CoreGraphics.NMatrix4")
-				return false;
-
-			// NMatrix4 has the same column-major storage as the native matrix; only by-value calls need an ABI shim.
-			var name = Undecorate (native_type.ToString ());
-			return name == "simd_float4x4" || name == "matrix_float4x4";
 		}
 
 		bool IsExtVector (Decl decl, ClangSharp.Type type, ref string simd_type)
@@ -396,9 +379,10 @@ namespace Extrospection {
 			var simd_type = string.Empty;
 			var requires_marshal_directive = false;
 			var only_return_type_is_simd = true;
+			var native_simd = ContainsSimdTypes (decl, ref simd_type, ref requires_marshal_directive, ref only_return_type_is_simd);
+
 			managed_methods.TryGetValue (decl.GetName (), out var info);
 			var method = info?.Method;
-			var native_simd = ContainsSimdTypes (decl, method, ref simd_type, ref requires_marshal_directive, ref only_return_type_is_simd);
 
 			if (!native_simd) {
 				if (method is not null) {

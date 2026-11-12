@@ -36,7 +36,7 @@
     <ProjectReference Include="../../../msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
     <ProjectReference Include="../../../msbuild/Messaging/Xamarin.Messaging.Build/Xamarin.Messaging.Build.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
 
-    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" ExcludeAssets="runtime" />
+    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" ExcludeAssets="runtime" Condition="'$(DesignTimeBuild)' == 'true'" />
     <PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
     <PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
@@ -50,13 +50,6 @@
     <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 -->
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
   </ItemGroup>
-
-  <!-- The merged task assembly supplies these types at runtime; the package is needed only for IntelliSense. -->
-  <Target Name="RemoveMacDevToolsReference" AfterTargets="ResolveLockFileReferences" Condition="'$(DesignTimeBuild)' != 'true'">
-    <ItemGroup>
-      <Reference Remove="@(Reference)" Condition="'%(Reference.NuGetPackageId)' == 'Xamarin.Apple.Tools.MaciOS'" />
-    </ItemGroup>
-  </Target>
 
   <Target Name="BuildTasksAssembly" AfterTargets="BeforeBuild" Condition="'$(DesignTimeBuild)' != 'true'">
     <MSBuild Projects="..\..\..\msbuild\Xamarin.MacDev.Tasks\Xamarin.MacDev.Tasks.csproj;..\..\..\msbuild\Messaging\Xamarin.Messaging.Build\Xamarin.Messaging.Build.csproj" Targets="Restore" Properties="SomeGlobalPropertyToMakeThisUnique=RestoreMe" />

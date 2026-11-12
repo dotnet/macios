@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -306,26 +307,21 @@ namespace Xamarin.MacDev.Tasks {
 
 		static void WriteXcent (PObject doc, string path)
 		{
-			var buf = doc.ToByteArray (false);
+			// Normalize CRLF to LF because Apple's AMFI XML parser in codesign rejects CR characters.
+			var src = Encoding.UTF8.GetBytes (doc.ToXml ().Replace ("\r\n", "\n"));
+			bool save;
 
-			using (var stream = new MemoryStream ()) {
-				stream.Write (buf, 0, buf.Length);
+			// Note: if the destination file already exists, only re-write it if the content will change
+			if (File.Exists (path)) {
+				var dest = File.ReadAllBytes (path);
 
-				var src = stream.ToArray ();
-				bool save;
-
-				// Note: if the destination file already exists, only re-write it if the content will change
-				if (File.Exists (path)) {
-					var dest = File.ReadAllBytes (path);
-
-					save = !AreEqual (src, dest);
-				} else {
-					save = true;
-				}
-
-				if (save)
-					File.WriteAllBytes (path, src);
+				save = !AreEqual (src, dest);
+			} else {
+				save = true;
 			}
+
+			if (save)
+				File.WriteAllBytes (path, src);
 		}
 
 		protected virtual PDictionary GetCompiledEntitlements (MobileProvision? profile, IEnumerable<PDictionary> templates)
@@ -569,17 +565,9 @@ namespace Xamarin.MacDev.Tasks {
 
 			var path = Path.Combine (EntitlementBundlePath, "archived-expanded-entitlements.xcent");
 
-			if (File.Exists (path)) {
-				var plist = PDictionary.OpenFile (path);
-				var src = archived.ToXml ();
-				var dest = plist.ToXml ();
-
-				if (src == dest)
-					return true;
-			}
-
 			try {
-				archived.Save (path, true);
+				Directory.CreateDirectory (EntitlementBundlePath);
+				WriteXcent (archived, path);
 			} catch (Exception ex) {
 				Log.LogError (MSBStrings.E0115, ex.Message);
 				return false;

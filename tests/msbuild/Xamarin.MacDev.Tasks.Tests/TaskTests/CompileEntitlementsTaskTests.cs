@@ -151,6 +151,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			var archived = PDictionary.FromFile (archivedEntitlements);
 			Assert.That (compiled.ContainsKey ("application-identifier"), Is.True, "archived");
+			Assert.That (File.ReadAllText (compiledEntitlements), Does.Not.Contain ("\r"), "no CR in compiled entitlements");
+			Assert.That (File.ReadAllText (archivedEntitlements), Does.Not.Contain ("\r"), "no CR in archived entitlements");
 		}
 
 		[TestCase ("Invalid", null, "Unknown type 'Invalid' for the entitlement 'com.xamarin.custom.entitlement' specified in the CustomEntitlements item group. Expected 'Remove', 'Boolean', 'String', or 'StringArray'.")]

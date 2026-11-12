@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
+#if !ASSEMBLY_PREPARER
+using System.Runtime.Loader;
+#endif
 
 using Mono.Cecil;
 using Mono.Linker.Steps;
@@ -13,6 +17,28 @@ using Xamarin.Bundler;
 
 namespace Xamarin.Linker {
 	public abstract class ConfigurationAwareStep : BaseStep {
+#if !ASSEMBLY_PREPARER
+		static ConfigurationAwareStep ()
+		{
+			AssemblyLoadContext.Default.Resolving += (context, name) => {
+				if (name.Name == "Xamarin.Apple.Tools.MaciOS") {
+					var toolsDir = Path.GetDirectoryName (typeof (ConfigurationAwareStep).Assembly.Location);
+					if (!string.IsNullOrEmpty (toolsDir)) {
+						var msbuildDir = Path.GetFullPath (Path.Combine (toolsDir, "..", "msbuild"));
+						if (Directory.Exists (msbuildDir)) {
+							foreach (var dir in Directory.EnumerateDirectories (msbuildDir, "net*")) {
+								var candidate = Path.Combine (dir, "Xamarin.Apple.Tools.MaciOS.dll");
+								if (File.Exists (candidate))
+									return context.LoadFromAssemblyPath (candidate);
+							}
+						}
+					}
+				}
+				return null;
+			};
+		}
+#endif
+
 		public LinkerConfiguration Configuration {
 			get { return LinkerConfiguration.GetInstance (Context); }
 		}

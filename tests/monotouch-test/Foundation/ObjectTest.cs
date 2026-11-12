@@ -209,7 +209,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (obj.TryAsProtocol<INSCopying> (out var tryCopying), Is.True, "TryAsProtocol");
 			using (tryCopying) {
 				Assert.That (tryCopying, Is.Not.Null, "TryAsProtocol result");
-				Assert.That (tryCopying!.Handle, Is.EqualTo (obj.Handle), "TryAsProtocol Handle");
+				Assert.That (tryCopying?.Handle, Is.EqualTo (obj.Handle), "TryAsProtocol Handle");
 				Assert.That (tryCopying, Is.Not.SameAs (obj), "TryAsProtocol Wrapper");
 			}
 		}

@@ -29,6 +29,7 @@ namespace Xamarin.Bundler {
 			"experimental-xforms-product-type",
 			"force-rejected-types-removal",
 			"redirect-class-handles",
+			"fixed-frame-objc-msgsend",
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
@@ -50,6 +51,7 @@ namespace Xamarin.Bundler {
 			/* Opt.ExperimentalFormsProductType       */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.ForceRejectedTypesRemoval          */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RedirectClassHandles               */ new ApplePlatform [] {                                                                                        },
+			/* Opt.FixedFrameObjCMsgSend               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 		};
 
 		enum Opt {
@@ -71,9 +73,15 @@ namespace Xamarin.Bundler {
 			ExperimentalFormsProductType,
 			ForceRejectedTypesRemoval,
 			RedirectClassHandles,
+			FixedFrameObjCMsgSend,
 		}
 
 		bool? [] values;
+
+		public bool? FixedFrameObjCMsgSend {
+			get { return values [(int) Opt.FixedFrameObjCMsgSend]; }
+			set { values [(int) Opt.FixedFrameObjCMsgSend] = value; }
+		}
 
 		public bool? RemoveUIThreadChecks {
 			get { return values [(int) Opt.RemoveUIThreadChecks]; }
@@ -299,6 +307,9 @@ namespace Xamarin.Bundler {
 			// by default we remove rarely used custom attributes
 			if (!CustomAttributesRemoval.HasValue)
 				CustomAttributesRemoval = true;
+
+			if (!FixedFrameObjCMsgSend.HasValue)
+				FixedFrameObjCMsgSend = app.AreAnyAssembliesTrimmed;
 		}
 
 		public void Parse (ApplePlatform platform, string options, List<ProductException> messages)

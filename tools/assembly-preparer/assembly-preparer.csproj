@@ -198,6 +198,9 @@
 		<Compile Include="../dotnet-linker/Steps/InlineDlfcnMethodsStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/InlineDlfcnMethodsStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/Steps/OptimizeObjCMsgSendStep.cs">
+			<Link>external/tools/dotnet-linker/Steps/OptimizeObjCMsgSendStep.cs</Link>
+		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ManagedRegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ManagedRegistrarStep.cs</Link>
 		</Compile>

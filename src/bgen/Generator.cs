@@ -1015,7 +1015,10 @@ public partial class Generator : IMemberGatherer {
 		if (!string.IsNullOrEmpty (marshalDirective?.NativeSuffix))
 			sb.Append (marshalDirective.NativeSuffix);
 
-		return sb.ToString ();
+		var name = sb.ToString ();
+		if (GetExportAttribute (mi)?.IsVariadic == true && marshalDirective?.Library is null && !name.StartsWith ("xamarin_", StringComparison.Ordinal))
+			name += "_variadic";
+		return name;
 	}
 
 	void RegisterMethod (bool need_stret, MethodInfo mi, string method_name, bool aligned)
@@ -1063,6 +1066,8 @@ public partial class Generator : IMemberGatherer {
 			entry_point = need_stret ? "objc_msgSend_stret" : "objc_msgSend";
 
 		var marshalDirective = AttributeManager.GetCustomAttribute<MarshalDirectiveAttribute> (mi);
+		if (GetExportAttribute (mi)?.IsVariadic != true)
+			print (m, "\t\t[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 		if (marshalDirective is not null && marshalDirective.Library is not null) {
 			print (m, "\t\t[DllImport (\"{0}\", EntryPoint=\"{1}\")]", marshalDirective.Library, method_name);
 		} else if (method_name.StartsWith ("xamarin_", StringComparison.Ordinal)) {
@@ -1334,16 +1339,20 @@ public partial class Generator : IMemberGatherer {
 			print (m, "\t\tinternal const string LIBOBJC_DYLIB = \"/usr/lib/libobjc.dylib\";\n");
 			print (m, "\t\tstatic internal System.Reflection.Assembly this_assembly = typeof (Messaging).Assembly;\n");
 			// IntPtr_objc_msgSend[Super]: for init
+			print (m, "\t\t[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSend\")]");
 			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSend (IntPtr receiever, IntPtr selector);");
 			send_methods ["IntPtr_objc_msgSend"] = "IntPtr_objc_msgSend";
+			print (m, "\t\t[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
 			print (m, "\t\tpublic unsafe extern static IntPtr IntPtr_objc_msgSendSuper (ObjCSuper* receiever, IntPtr selector);");
 			send_methods ["IntPtr_objc_msgSendSuper"] = "IntPtr_objc_msgSendSuper";
 			// IntPtr_objc_msgSendSuper_IntPtr: for initWithCoder:
+			print (m, "\t\t[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSend\")]");
 			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSend_IntPtr (IntPtr receiever, IntPtr selector, IntPtr arg1);");
 			send_methods ["IntPtr_objc_msgSend_IntPtr"] = "IntPtr_objc_msgSend_IntPtr";
+			print (m, "\t\t[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
 			print (m, "\t\tpublic unsafe extern static IntPtr IntPtr_objc_msgSendSuper_IntPtr (ObjCSuper* receiever, IntPtr selector, IntPtr arg1);");
 			send_methods ["IntPtr_objc_msgSendSuper_IntPtr"] = "IntPtr_objc_msgSendSuper_IntPtr";
@@ -7281,6 +7290,7 @@ public partial class Generator : IMemberGatherer {
 						// Make sure we generate the required signature in Messaging only if needed 
 						// bool_objc_msgSendSuper_IntPtr: for respondsToSelector:
 						if (!send_methods.ContainsKey ("bool_objc_msgSendSuper_IntPtr")) {
+							print (m, "[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]");
 							print (m, "[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
 							print (m, "public unsafe extern static byte bool_objc_msgSendSuper_IntPtr (ObjCSuper* receiever, IntPtr selector, IntPtr arg1);");
 							RegisterMethodName ("bool_objc_msgSendSuper_IntPtr");

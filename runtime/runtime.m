@@ -1874,8 +1874,16 @@ xamarin_process_nsexception (NSException *ns_exception)
 	xamarin_process_nsexception_using_mode (ns_exception, false, NULL);
 }
 
-void
-xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception)
+static __thread bool xamarin_use_managed_pending_exception;
+
+bool
+xamarin_is_managed_pending_exception ()
+{
+	return xamarin_use_managed_pending_exception;
+}
+
+static void
+xamarin_process_nsexception_using_mode_impl (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception, bool managed_pending)
 {
 	XamarinGCHandle *exc_handle;
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
@@ -1939,7 +1947,18 @@ xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwMan
 
 		if (output_exception == NULL) {
 			MonoObject *exc = xamarin_gchandle_get_target (handle);
-			mono_runtime_set_pending_exception ((MonoException *) exc, false);
+			// Select the owner only while handing the exception to managed code.
+			// Nested message sends during exception conversion still use their own boundary.
+			bool previous = xamarin_use_managed_pending_exception;
+			xamarin_use_managed_pending_exception = managed_pending;
+			// @finally in Objective-C++ would require the C++ exception runtime.
+			@try {
+				mono_runtime_set_pending_exception ((MonoException *) exc, false);
+			} @catch (id exception) {
+				xamarin_use_managed_pending_exception = previous;
+				@throw;
+			}
+			xamarin_use_managed_pending_exception = previous;
 			xamarin_mono_object_release (&exc);
 			xamarin_gchandle_free (handle);
 		} else {
@@ -1951,6 +1970,18 @@ xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwMan
 		xamarin_assertion_message ("Aborting due to unhandled Objective-C exception:\n%s\n", [[ns_exception description] UTF8String]);
 		break;
 	}
+}
+
+void
+xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception)
+{
+	xamarin_process_nsexception_using_mode_impl (ns_exception, throwManagedAsDefault, output_exception, false);
+}
+
+void
+xamarin_process_nsexception_with_managed_pending (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception)
+{
+	xamarin_process_nsexception_using_mode_impl (ns_exception, throwManagedAsDefault, output_exception, true);
 }
 
 // Since this method may not return, it will release the given exception object.

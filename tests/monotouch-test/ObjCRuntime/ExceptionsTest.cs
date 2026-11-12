@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Threading;
+using System.Runtime.InteropServices;
 
 #if !MONOMAC
 using UIKit;
@@ -11,6 +12,69 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class ExceptionsTest {
+
+		static class Messaging {
+			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
+			[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+			internal static extern void SendWithOwnedPendingException (IntPtr receiver, IntPtr selector);
+		}
+
+		[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+		static extern void SendWithRuntimePendingException (IntPtr receiver, IntPtr selector);
+
+		static void Send (NSObject receiver, string selector, bool owned)
+		{
+			if (owned) {
+				Messaging.SendWithOwnedPendingException (receiver.Handle, Selector.GetHandle (selector));
+			} else {
+				SendWithRuntimePendingException (receiver.Handle, Selector.GetHandle (selector));
+			}
+		}
+
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		public void MixedPendingExceptionOwners (bool outerOwned, bool innerOwned)
+		{
+			if (RuntimeInformation.ProcessArchitecture != Architecture.Arm64)
+				Assert.Ignore ("Fixed-frame message sends require arm64.");
+
+			using var receiver = new ManagedExceptionTest ();
+			var nested = false;
+			var nestedCount = 0;
+			MarshalObjectiveCExceptionHandler objectiveC = (sender, args) => {
+				args.ExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
+				if (nested)
+					return;
+				nested = true;
+				try {
+					var exception = Assert.Throws<ObjCException> (() => Send (receiver, "throwObjCException", innerOwned));
+					Assert.That (exception.Name, Is.EqualTo ("Some exception"), "Nested exception");
+					Send (receiver, "self", innerOwned);
+					nestedCount++;
+				} finally {
+					nested = false;
+				}
+			};
+			MarshalManagedExceptionHandler managed = (sender, args) => args.ExceptionMode = MarshalManagedExceptionMode.ThrowObjectiveCException;
+			Runtime.MarshalObjectiveCException += objectiveC;
+			Runtime.MarshalManagedException += managed;
+			try {
+				var exception = Assert.Throws<ObjCException> (() => Send (receiver, "throwObjCException", outerOwned));
+				Assert.That (exception.Name, Is.EqualTo ("Some exception"), "Outer exception");
+				Send (receiver, "self", outerOwned);
+				var passthrough = Assert.Throws<ApplicationException> (() => Send (receiver, "invokeManagedExceptionThrower", outerOwned));
+				Assert.That (passthrough, Is.SameAs (receiver.Exception), "Exception identity");
+				Assert.That (passthrough.StackTrace, Does.Contain (nameof (ManagedExceptionTest.ThrowManagedException)), "Original stack");
+				Assert.That (nestedCount, Is.EqualTo (2), "Reentrant exception conversion");
+				Send (receiver, "self", !outerOwned);
+				Runtime.ThrowPendingException ();
+			} finally {
+				Runtime.MarshalManagedException -= managed;
+				Runtime.MarshalObjectiveCException -= objectiveC;
+			}
+		}
 
 		MarshalObjectiveCExceptionMode defaultObjectiveCExceptionMode = MarshalObjectiveCExceptionMode.ThrowManagedException;
 		MarshalManagedExceptionMode defaultManagedExceptionMode = MarshalManagedExceptionMode.Default;

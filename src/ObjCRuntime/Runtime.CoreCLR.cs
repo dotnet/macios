@@ -303,9 +303,32 @@ namespace ObjCRuntime {
 		[SupportedOSPlatform ("macos")]
 		static unsafe void SetPendingException (MonoObject* exception_obj)
 		{
+			var managedPending = xamarin_is_managed_pending_exception () != 0;
 			var exc = (Exception?) GetMonoObjectTarget (exception_obj);
 			log_coreclr ($"Runtime.SetPendingException ({exc})");
-			ObjectiveCMarshal.SetMessageSendPendingException (exc);
+			if (managedPending)
+				pendingMessageSendException = exc;
+			else
+				ObjectiveCMarshal.SetMessageSendPendingException (exc);
+		}
+
+		[DllImport ("__Internal")]
+		static extern byte xamarin_is_managed_pending_exception ();
+
+		[ThreadStatic]
+		static Exception? pendingMessageSendException;
+
+		/// <summary>Throws and clears the pending exception from a generated Objective-C message send.</summary>
+		/// <remarks>This method is used by generated binding code.</remarks>
+		[System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
+		[MethodImpl (MethodImplOptions.AggressiveInlining)]
+		public static void ThrowPendingException ()
+		{
+			var exception = pendingMessageSendException;
+			if (exception is null)
+				return;
+			pendingMessageSendException = null;
+			ExceptionDispatchInfo.Throw (exception);
 		}
 
 		unsafe static sbyte IsClassOfType (MonoObject* typeobj, TypeLookup match)

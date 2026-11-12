@@ -26,6 +26,16 @@ Lfunc_begin2:
 	.cfi_offset w20, -32
 Lbeforeinvoke:
 
+#if defined (FRAME_LENGTH)
+	sub sp, sp, #FRAME_LENGTH
+	; x9-x15 are scratch registers; preserve all argument registers, including x8.
+	.set offset, 0
+	.rept FRAME_LENGTH / 16
+	ldp x9, x10, [x29, #(16 + offset)]
+	stp x9, x10, [sp, #offset]
+	.set offset, offset + 16
+	.endr
+#else
 	; calculate the amount of stack space we need
 	sub sp, sp, #400
 
@@ -95,10 +105,14 @@ L_end:
 	ldp  q2, q3, [x22, #0x80]
 	ldp  q4, q5, [x22, #0xa0]
 	ldp  q6, q7, [x22, #0xc0]
+#endif
 
 	bl	OBJCMSGCALL
 
 Lafterinvoke:
+#if defined (FRAME_LENGTH)
+	add sp, sp, #FRAME_LENGTH
+#else
 	; restore the stack to it's previous value
 	add sp, sp, x21
 
@@ -106,6 +120,7 @@ Lafterinvoke:
 	ldp x21, x22, [sp, #0x50]
 
 	add sp, sp, #400
+#endif
 
 	ldp	x29, x30, [sp, #16]             ; 16-byte Folded Reload
 	ldp	x20, x19, [sp], #32             ; 16-byte Folded Reload
@@ -123,14 +138,27 @@ Lloh1:
 Lloh2:
 	ldr	w0, [x8]
 	cmp	w0, #4
+#if defined (FRAME_LENGTH)
+	b.eq	Ldisabledexception
+#else
 	b.eq	Lnomatchexception
+#endif
 
 	mov	x0, x19
 	bl	_objc_begin_catch
 Lcatchbegin:
 	mov	w1, #0
 	mov	x2, #0
+#if defined (FRAME_LENGTH)
+	bl	_xamarin_process_nsexception_with_managed_pending
+	b	Lcatchend
+Ldisabledexception:
+	mov	x0, x19
+	bl	_objc_begin_catch
+	bl	_objc_exception_rethrow
+#else
 	bl	_xamarin_process_nsexception_using_mode
+#endif
 Lcatchend:
 	bl	_objc_end_catch
 	; xamarin_process_nsexception_using_mode might have set a pending managed exception, which means we end up executing more code here

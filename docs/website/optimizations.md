@@ -14,6 +14,51 @@ no-loc: [Objective-C, registrar, Registrar]
 This document explains the various optimizations that are applied at build time for
 Xamarin.iOS and Xamarin.Mac apps.
 
+## Fixed-frame Objective-C message sends
+
+For trimmed arm64 assemblies using CoreCLR or NativeAOT, the build rewrites eligible
+generated `Messaging` imports to call fixed-frame trampolines linked into the app
+(`__Internal`). The trampolines copy a fixed-size block of stack arguments instead
+of looking up the
+Objective-C method signature on every call. They retain the native exception-catching
+boundary and normal GC transitions.
+
+Each rewritten import has a managed wrapper that calls `Runtime.ThrowPendingException`
+immediately after the P/Invoke returns, before using its result. On an exception,
+the native catch boundary selects macios-owned thread-local storage when handing
+the exception to managed code. The managed check clears that storage before
+rethrowing, preserving the exception object and its stack trace.
+
+Unconverted imports still use the runtime's pending-exception storage and automatic
+check. Each exception is stored in only one of the two places. The choice is made
+when the exception is passed to managed code, not for the whole message send, so
+nested calls and reentrant exception handlers can mix both kinds of imports.
+
+NativeAOT can use its existing `DirectPInvoke` setting for `__Internal`: the managed
+wrapper supplies the exception check without relying on the compiler to recognize a
+libobjc import. Do not enable direct P/Invoke for standard libobjc message-send functions;
+those still need the runtime's message-send callbacks and pending-exception checks.
+
+The generator marks eligible `Messaging` methods with
+`[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]`.
+Binding libraries built with older generators keep their original imports until
+rebuilt. Hand-written methods without this marker are not changed, even when they
+share a partial `Messaging` class with generated methods.
+
+This optimization leaves Mono, other architectures, untrimmed assemblies, explicit
+native-exception wrappers, and signatures with unknown native layouts unchanged.
+It supports fixed argument frames up to 80 bytes, including direct and super sends
+and arm64 struct returns. Variadic helpers, custom marshaling, packed or explicit
+struct layouts, and non-blittable signatures keep their existing paths.
+
+Disable it with:
+
+```xml
+<PropertyGroup>
+  <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize=-fixed-frame-objc-msgsend</AppBundleExtraOptions>
+</PropertyGroup>
+```
+
 ## Remove UIApplication.EnsureUIThread / NSApplication.EnsureUIThread
 
 > [!NOTE]

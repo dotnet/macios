@@ -35,6 +35,8 @@ void *xamarin_marshal_return_value (SEL sel, MonoType *mtype, const char *type, 
 
 void xamarin_dyn_objc_msgSend ();
 void xamarin_dyn_objc_msgSendSuper ();
+bool xamarin_is_managed_pending_exception (void);
+void xamarin_process_nsexception_with_managed_pending (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception);
 void xamarin_dyn_objc_msgSend_stret ();
 void xamarin_dyn_objc_msgSendSuper_stret ();
 

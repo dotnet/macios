@@ -318,11 +318,7 @@ namespace ObjCRuntime {
 		[ThreadStatic]
 		static Exception? pendingMessageSendException;
 
-		/// <summary>Throws and clears the pending exception from a generated Objective-C message send.</summary>
-		/// <remarks>This method is used by generated binding code.</remarks>
-		[System.ComponentModel.EditorBrowsable (System.ComponentModel.EditorBrowsableState.Never)]
-		[MethodImpl (MethodImplOptions.AggressiveInlining)]
-		public static void ThrowPendingException ()
+		static void ThrowPendingException ()
 		{
 			var exception = pendingMessageSendException;
 			if (exception is null)

@@ -14,12 +14,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	public class ExceptionsTest {
 
 		static class Messaging {
-			[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
 			[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
 			internal static extern void SendWithOwnedPendingException (IntPtr receiver, IntPtr selector);
 		}
 
 		[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+		[Preserve]
 		static extern void SendWithRuntimePendingException (IntPtr receiver, IntPtr selector);
 
 		static void Send (NSObject receiver, string selector, bool owned)
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.That (passthrough.StackTrace, Does.Contain (nameof (ManagedExceptionTest.ThrowManagedException)), "Original stack");
 				Assert.That (nestedCount, Is.EqualTo (2), "Reentrant exception conversion");
 				Send (receiver, "self", !outerOwned);
-				Runtime.ThrowPendingException ();
+				Send (receiver, "self", true);
 			} finally {
 				Runtime.MarshalManagedException -= managed;
 				Runtime.MarshalObjectiveCException -= objectiveC;

@@ -17,9 +17,10 @@ Xamarin.iOS and Xamarin.Mac apps.
 ## Fixed-frame Objective-C message sends
 
 For trimmed arm64 assemblies using CoreCLR or NativeAOT, the build rewrites eligible
-generated `Messaging` imports to call fixed-frame trampolines linked into the app
-(`__Internal`). The trampolines copy a fixed-size block of stack arguments instead
-of looking up the
+`objc_msgSend` and `objc_msgSendSuper` imports to call a shared trampoline linked into
+the app (`__Internal`). Each wrapper passes the calculated stack size, receiver,
+and direct/super dispatch flag in a descriptor. The trampoline copies the stack
+arguments instead of looking up the
 Objective-C method signature on every call. They retain the native exception-catching
 boundary and normal GC transitions.
 
@@ -39,17 +40,19 @@ wrapper supplies the exception check without relying on the compiler to recogniz
 libobjc import. Do not enable direct P/Invoke for standard libobjc message-send functions;
 those still need the runtime's message-send callbacks and pending-exception checks.
 
-The generator marks eligible `Messaging` methods with
-`[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]`.
-Binding libraries built with older generators keep their original imports until
-rebuilt. Hand-written methods without this marker are not changed, even when they
-share a partial `Messaging` class with generated methods.
+The exception-check helper is private in the platform assembly and becomes public
+only when the build inserts calls to it. Eligible imports are rewritten regardless
+of their declaring type, generator version, or binding-generation attributes.
 
 This optimization leaves Mono, other architectures, untrimmed assemblies, explicit
 native-exception wrappers, and signatures with unknown native layouts unchanged.
-It supports fixed argument frames up to 80 bytes, including direct and super sends
-and arm64 struct returns. Variadic helpers, custom marshaling, packed or explicit
-struct layouts, and non-blittable signatures keep their existing paths.
+It supports direct and super sends, arm64 struct returns, and stack frames beyond
+80 bytes. This includes variadic helpers with fixed P/Invoke signatures, such as
+the existing helpers that shuffle variadic arguments into native stack slots.
+True managed varargs, custom marshaling, packed or explicit struct layouts, and
+non-blittable signatures keep their existing paths.
+Imports with a managed-byref receiver also keep their original P/Invoke so the
+runtime can pin the receiver; unsafe pointer receivers remain eligible.
 
 Disable it with:
 

@@ -17,10 +17,9 @@ namespace Xamarin.Linker.Steps;
 
 public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 	protected override string Name => "Optimize Objective-C Message Sends";
-	protected override int ErrorCode => 99;
+	protected override int ErrorCode => 2570;
 
 	public const string Library = "/usr/lib/libobjc.dylib";
-	public const int MaximumFrameLength = 80;
 
 	protected override bool IsActiveFor (AssemblyDefinition assembly)
 	{
@@ -34,9 +33,7 @@ public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 
 	protected override bool ProcessType (TypeDefinition type)
 	{
-		// Limit rewriting to the generated messaging surface. Hand-written and
-		// third-party canonical imports keep the runtime's pending-exception checks.
-		if (type.Name != "Messaging" || type.HasGenericParameters)
+		if (type.HasGenericParameters)
 			return false;
 
 		var modified = false;
@@ -50,25 +47,22 @@ public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 		if (!CanRewrite (method, out var length))
 			return false;
 
-		var check = abr.ObjCRuntime_Runtime.Resolve ().Methods.Single (v => v.Name == "ThrowPendingException" && !v.HasParameters);
-		Rewrite (method, length, method.Module.ImportReference (check));
+		var check = abr.GetMethodReference (abr.PlatformAssembly, abr.ObjCRuntime_Runtime, "ThrowPendingException", v => !v.HasParameters);
+		Rewrite (method, length, check);
 		return true;
 	}
 
 	public static bool CanRewrite (MethodDefinition method, out int length)
 	{
 		length = 0;
-		return method.DeclaringType.Name == "Messaging"
-			&& !method.DeclaringType.HasGenericParameters
-			&& method.CustomAttributes.Any (v => v.AttributeType.FullName == "ObjCRuntime.BindingImplAttribute"
-				&& v.ConstructorArguments.Count == 1 && v.ConstructorArguments [0].Value is int options && (options & 3) == 3)
-			&& TryComputeFrameLength (method, out length)
-			&& length <= MaximumFrameLength;
+		return !method.DeclaringType.HasGenericParameters
+			&& TryComputeFrameLength (method, out length);
 	}
 
 	public static void Rewrite (MethodDefinition method, int length, MethodReference check)
 	{
 		var module = method.Module;
+		check = module.ImportReference (check);
 		var library = module.ModuleReferences.FirstOrDefault (v => v.Name == "__Internal");
 		if (library is null) {
 			library = new ModuleReference ("__Internal");
@@ -77,20 +71,56 @@ public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 		var name = method.Name + "_Native";
 		while (method.DeclaringType.Methods.Any (v => v.Name == name))
 			name += "_";
+		var arguments = method.DeclaringType.NestedTypes.FirstOrDefault (v => v.Name == "<ObjCMessageSendArguments>");
+		if (arguments is null) {
+			arguments = new TypeDefinition ("", "<ObjCMessageSendArguments>",
+				TypeAttributes.NestedPrivate | TypeAttributes.SequentialLayout | TypeAttributes.Sealed,
+				new TypeReference ("System", "ValueType", module, module.TypeSystem.CoreLibrary));
+			arguments.Fields.Add (new FieldDefinition ("FrameLength", FieldAttributes.Public, module.TypeSystem.IntPtr));
+			arguments.Fields.Add (new FieldDefinition ("Receiver", FieldAttributes.Public, module.TypeSystem.IntPtr));
+			arguments.Fields.Add (new FieldDefinition ("IsSuper", FieldAttributes.Public, module.TypeSystem.IntPtr));
+			method.DeclaringType.NestedTypes.Add (arguments);
+		}
 		var native = new MethodDefinition (name, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PInvokeImpl, method.ReturnType) {
 			ImplAttributes = MethodImplAttributes.PreserveSig,
-			PInvokeInfo = new PInvokeInfo (method.PInvokeInfo.Attributes, "xamarin_dyn_" + method.PInvokeInfo.EntryPoint + "_" + length, library),
+			PInvokeInfo = new PInvokeInfo (method.PInvokeInfo.Attributes, "xamarin_fixed_objc_msgSend", library),
 		};
-		foreach (var parameter in method.Parameters)
+		native.Parameters.Add (new ParameterDefinition ("arguments", ParameterAttributes.None, new PointerType (arguments)));
+		foreach (var parameter in method.Parameters.Skip (1))
 			native.Parameters.Add (new ParameterDefinition (parameter.Name, parameter.Attributes, parameter.ParameterType));
 		method.DeclaringType.Methods.Add (native);
 
+		var super = method.PInvokeInfo.EntryPoint == "objc_msgSendSuper";
 		method.PInvokeInfo = null;
 		method.IsPInvokeImpl = false;
 		method.ImplAttributes = MethodImplAttributes.IL | MethodImplAttributes.Managed | MethodImplAttributes.AggressiveInlining;
-		method.Body = new MethodBody (method);
+		method.Body = new MethodBody (method) { InitLocals = true };
+		var local = new VariableDefinition (arguments);
+		method.Body.Variables.Add (local);
 		var il = method.Body.GetILProcessor ();
-		foreach (var parameter in method.Parameters)
+		il.Emit (OpCodes.Ldloca, local);
+		il.Emit (OpCodes.Ldc_I4, length);
+		il.Emit (OpCodes.Conv_I);
+		il.Emit (OpCodes.Stfld, arguments.Fields [0]);
+		il.Emit (OpCodes.Ldloca, local);
+		il.Emit (OpCodes.Ldarg, method.Parameters [0]);
+		var receiverType = method.Parameters [0].ParameterType;
+		if (receiverType.FullName == "ObjCRuntime.NativeHandle") {
+			var conversion = receiverType.Resolve ().Methods.Single (v => v.Name == "op_Implicit"
+				&& v.ReturnType.MetadataType == MetadataType.IntPtr && v.Parameters.Count == 1
+				&& v.Parameters [0].ParameterType.FullName == receiverType.FullName);
+			il.Emit (OpCodes.Call, module.ImportReference (conversion));
+		} else {
+			il.Emit (OpCodes.Conv_I);
+		}
+		il.Emit (OpCodes.Stfld, arguments.Fields [1]);
+		il.Emit (OpCodes.Ldloca, local);
+		il.Emit (super ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0);
+		il.Emit (OpCodes.Conv_I);
+		il.Emit (OpCodes.Stfld, arguments.Fields [2]);
+		il.Emit (OpCodes.Ldloca, local);
+		il.Emit (OpCodes.Conv_U);
+		foreach (var parameter in method.Parameters.Skip (1))
 			il.Emit (OpCodes.Ldarg, parameter);
 		il.Emit (OpCodes.Call, native);
 		// Leave the native return value on the evaluation stack, without consuming
@@ -108,10 +138,12 @@ public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 			return false;
 		if (!method.IsStatic || method.HasGenericParameters || method.CallingConvention == MethodCallingConvention.VarArg
 			|| !method.IsPreserveSig || method.Parameters.Count < 2
-			|| method.Name.IndexOf ("variadic", StringComparison.OrdinalIgnoreCase) >= 0
 			|| method.CustomAttributes.Any (v => v.AttributeType.FullName != "ObjCRuntime.BindingImplAttribute"))
 			return false;
 		if (!IsPointer (method.Parameters [0].ParameterType) || !IsPointer (method.Parameters [1].ParameterType))
+			return false;
+		// Moving a managed byref into the descriptor would hide its pinning requirement.
+		if (method.Parameters [0].ParameterType.IsByReference)
 			return false;
 		if (method.MethodReturnType.HasMarshalInfo || method.ReturnType.IsByReference)
 			return false;
@@ -148,6 +180,8 @@ public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 			var aggregate = layout.IsAggregate && layout.FloatCount == 0;
 			var stackAlignment = aggregate ? Math.Max (8, layout.Alignment) : layout.Alignment;
 			var stackSize = aggregate ? Align (layout.Size, 8) : layout.Size;
+			if (length > int.MaxValue - stackSize - stackAlignment - 15)
+				return false;
 			length = Align (length, stackAlignment) + stackSize;
 		}
 		length = Align (length, 16);

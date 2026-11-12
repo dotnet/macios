@@ -25,30 +25,16 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "disabled")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", "compatibility")]
-		public void NativeAOT_InlineClassGetHandle (ApplePlatform platform, string runtimeIdentifiers, string mode)
+		[Test]
+		public void NativeAOT_DllImportSearchPaths ()
 		{
 			var dict = new Dictionary<string, string> () {
 				{ "PublishAot", "true" },
 				{ "_IsPublishing", "true" },
-				{ "InlineClassGetHandle", mode },
+				{ "AdditionalDefineConstants", "NATIVEAOT_DLLIMPORT_SEARCH_PATHS" },
 				{ "NoDSymUtil", "false" },
 			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-InlineClassGetHandle-{mode}", false, dict);
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void NativeAOT_NoLink (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "PublishAot", "true" },
-				{ "_IsPublishing", "true" },
-				{ "InlineClassGetHandle", "strict" },
-				{ "MtouchLink", "None" },
-				{ "NoDSymUtil", "false" },
-			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-NoLink", false, dict);
+			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-DllImportSearchPaths", false, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]

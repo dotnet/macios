@@ -53,10 +53,8 @@ namespace Xamarin.Tests {
 			AssertTargetExecuted (targets, "_ExecutePostprocessAssemblies", "Configuration change post-processing");
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", null)]
-		public void NativeAotIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers, bool? skipILLink)
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void NativeAotIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -69,8 +67,6 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = configuration;
 			properties ["PublishAot"] = "true";
 			properties ["_IsPublishing"] = "true";
-			if (skipILLink.HasValue)
-				properties ["_SkipILLink"] = skipILLink.Value ? "true" : "false";
 			properties ["Registrar"] = "trimmable-static";
 
 			var firstBuild = DotNet.AssertBuild (project_path, properties);

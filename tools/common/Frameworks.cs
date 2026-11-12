@@ -899,19 +899,50 @@ public class Frameworks : Dictionary<string, Framework> {
 
 	static bool IsNativeAOTPInvokeSurviving (string moduleName, string entryPoint, HashSet<string> symbols)
 	{
-		// NativeAOT emits a __pinvoke_ symbol for each indirect P/Invoke. Its module name is
-		// sanitized by NameMangler and the entry point is appended verbatim.
-		var moduleMarker = $"_Module__{SanitizeNativeAOTModuleName (moduleName)}__{entryPoint}";
-		foreach (var symbol in symbols) {
-			if (symbol.StartsWith ("__pinvoke_", StringComparison.Ordinal) &&
-				symbol.Contains (moduleMarker, StringComparison.Ordinal))
-				return true;
-		}
-
 		// Direct P/Invokes don't have a __pinvoke_ symbol, but their entry point is unresolved
 		// in ILC's output. The importing module isn't encoded, so matching by entry point may
 		// conservatively keep multiple modules if they export the same symbol.
-		return symbols.Contains (entryPoint);
+		if (symbols.Contains (entryPoint))
+			return true;
+
+		// NativeAOT emits a __pinvoke_ symbol for each indirect P/Invoke. Its module name is
+		// sanitized by NameMangler and the entry point is appended verbatim. A
+		// DefaultDllImportSearchPathsAttribute adds numeric search path flags to the module.
+		var moduleMarker = $"_Module__{SanitizeNativeAOTModuleName (moduleName)}";
+		var entryPointMarker = $"__{entryPoint}";
+		foreach (var symbol in symbols) {
+			if (!symbol.StartsWith ("__pinvoke_", StringComparison.Ordinal))
+				continue;
+
+			var moduleMarkerIndex = symbol.IndexOf (moduleMarker, StringComparison.Ordinal);
+			if (moduleMarkerIndex < 0)
+				continue;
+
+			var moduleMarkerEnd = moduleMarkerIndex + moduleMarker.Length;
+			if (symbol.IndexOf (entryPointMarker, moduleMarkerEnd, StringComparison.Ordinal) == moduleMarkerEnd)
+				return true;
+
+			if (moduleMarkerEnd >= symbol.Length || symbol [moduleMarkerEnd] != '_')
+				continue;
+
+			var searchPathFlagsStart = moduleMarkerEnd + 1;
+			var entryPointIndex = symbol.IndexOf ("__", searchPathFlagsStart, StringComparison.Ordinal);
+			if (entryPointIndex <= searchPathFlagsStart ||
+				symbol.IndexOf (entryPointMarker, entryPointIndex, StringComparison.Ordinal) != entryPointIndex)
+				continue;
+
+			var hasNumericSearchPathFlags = true;
+			for (var i = searchPathFlagsStart; i < entryPointIndex; i++) {
+				if (symbol [i] < '0' || symbol [i] > '9') {
+					hasNumericSearchPathFlags = false;
+					break;
+				}
+			}
+			if (hasNumericSearchPathFlags)
+				return true;
+		}
+
+		return false;
 	}
 
 	static bool TryGetSurvivingDlfcnFramework (Application app, TypeDefinition type, IList<CustomAttribute> attributes, HashSet<string> survivingDlfcnSymbols, [NotNullWhen (true)] out string? framework)
@@ -944,10 +975,11 @@ public class Frameworks : Dictionary<string, Framework> {
 			return null;
 
 		if (!string.IsNullOrEmpty (libraryName) && libraryName [0] == '+') {
+			// Keep these pseudo-library mappings in sync with Generator.TryComputeLibraryName.
 			var frameworkNamespace = libraryName switch {
-				"+CoreImage" => "CoreImage",
+				"+CoreImage" => platform == ApplePlatform.MacOSX ? "Quartz" : "CoreImage",
 				"+CoreServices" => platform == ApplePlatform.MacOSX ? "CoreServices" : "MobileCoreServices",
-				"+PDFKit" => "PdfKit",
+				"+PDFKit" => platform == ApplePlatform.MacOSX ? "Quartz" : "PdfKit",
 				_ => null,
 			};
 			if (frameworkNamespace is not null && all_frameworks.TryGetValue (frameworkNamespace, out var mappedFramework))

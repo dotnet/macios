@@ -908,9 +908,10 @@ public class Frameworks : Dictionary<string, Framework> {
 				return true;
 		}
 
-		// __Internal is configured as DirectPInvoke by our NativeAOT targets. Other unresolved
-		// symbols don't identify their importing module, so they can't safely be matched here.
-		return string.Equals (moduleName, "__Internal", StringComparison.Ordinal) && symbols.Contains (entryPoint);
+		// Direct P/Invokes don't have a __pinvoke_ symbol, but their entry point is unresolved
+		// in ILC's output. The importing module isn't encoded, so matching by entry point may
+		// conservatively keep multiple modules if they export the same symbol.
+		return symbols.Contains (entryPoint);
 	}
 
 	static bool TryGetSurvivingDlfcnFramework (Application app, TypeDefinition type, IList<CustomAttribute> attributes, HashSet<string> survivingDlfcnSymbols, [NotNullWhen (true)] out string? framework)
@@ -926,7 +927,9 @@ public class Frameworks : Dictionary<string, Framework> {
 			if (attrib.ConstructorArguments.Count > 1 && attrib.ConstructorArguments [1].Value is string libraryName && !string.IsNullOrEmpty (libraryName)) {
 				if (GetFrameworkFromLibraryName (app.Platform, libraryName) is Framework libraryFramework)
 					framework = libraryFramework.Namespace;
-				return framework is not null;
+				else if (!TryGetFramework (app, type, out framework))
+					return false;
+				return true;
 			}
 
 			return TryGetFramework (app, type, out framework);
@@ -940,14 +943,33 @@ public class Frameworks : Dictionary<string, Framework> {
 		if (!TryGetFrameworks (platform, out var all_frameworks))
 			return null;
 
-		foreach (var framework in all_frameworks.Values) {
-			if (string.Equals (framework.LibraryPath, libraryName, StringComparison.Ordinal) ||
-				string.Equals (framework.Name, libraryName, StringComparison.Ordinal) ||
-				string.Equals (framework.SubFramework, libraryName, StringComparison.Ordinal))
-				return framework;
+		if (!string.IsNullOrEmpty (libraryName) && libraryName [0] == '+') {
+			var frameworkNamespace = libraryName switch {
+				"+CoreImage" => "CoreImage",
+				"+CoreServices" => platform == ApplePlatform.MacOSX ? "CoreServices" : "MobileCoreServices",
+				"+PDFKit" => "PdfKit",
+				_ => null,
+			};
+			if (frameworkNamespace is not null && all_frameworks.TryGetValue (frameworkNamespace, out var mappedFramework))
+				return mappedFramework;
 		}
 
-		return null;
+		if (all_frameworks.TryGetValue (libraryName, out var namespaceFramework))
+			return namespaceFramework;
+
+		Framework? match = null;
+		foreach (var framework in all_frameworks.Values) {
+			if (string.Equals (framework.LibraryPath, libraryName, StringComparison.Ordinal))
+				return framework;
+			if (!string.Equals (framework.Name, libraryName, StringComparison.Ordinal) &&
+				!string.Equals (framework.SubFramework, libraryName, StringComparison.Ordinal))
+				continue;
+			if (match is not null && match != framework)
+				return null;
+			match = framework;
+		}
+
+		return match;
 	}
 
 	/// <summary>

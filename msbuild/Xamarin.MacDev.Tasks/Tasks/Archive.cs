@@ -53,7 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string SigningKey { get; set; } = "";
 
-		public ITaskItem [] WatchAppReferences { get; set; } = [];
+		public string WatchOSArtifacts { get; set; } = "";
 		#endregion
 
 		#region Outputs
@@ -117,6 +117,8 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
+				if (WatchOSArtifacts.Length > 0)
+					WatchOSArtifacts = PathUtils.AbsoluteToRelative (Environment.CurrentDirectory, WatchOSArtifacts).Replace ('\\', '/');
 				if (AppExtensionReferences is not null)
 					TaskItemFixer.ReplaceItemSpecsWithBuildServerPath (AppExtensionReferences, SessionId);
 
@@ -178,10 +180,20 @@ namespace Xamarin.MacDev.Tasks {
 						ArchiveAppExtension (AppExtensionReferences [i], archiveDir);
 				}
 
-				if (WatchAppReferences is not null) {
-					// Archive the dSYMs, mSYMs, etc for each of the referenced WatchOS2 Apps as well...
-					for (int i = 0; i < WatchAppReferences.Length; i++)
-						ArchiveWatchApp (WatchAppReferences [i], archiveDir);
+				var watchSymbols = Path.Combine (WatchOSArtifacts, "dSYMs");
+				if (WatchOSArtifacts.Length > 0 && Directory.Exists (watchSymbols))
+					foreach (var symbols in Directory.GetDirectories (watchSymbols, "*.dSYM"))
+						ArchiveDSym (symbols, archiveDir);
+				var watchDirectory = Path.Combine (AppBundleDir.ItemSpec, "Watch");
+				if (Directory.Exists (watchDirectory)) {
+					foreach (var watchApp in Directory.GetDirectories (watchDirectory, "*.app")) {
+						var stub = Path.Combine (watchApp, "_WatchKitStub", "WK");
+						if (File.Exists (stub)) {
+							var support = Path.Combine (archiveDir, "WatchKitSupport2");
+							Directory.CreateDirectory (support);
+							File.Copy (stub, Path.Combine (support, "WK"), true);
+						}
+					}
 				}
 
 				if (ITunesSourceFiles is not null) {
@@ -307,18 +319,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		void ArchiveAppExtension (ITaskItem appex, string archiveDir)
 		{
-			var plist = PDictionary.OpenFile (Path.Combine (appex.ItemSpec, "Info.plist"));
-
-			if (IsWatchAppExtension (appex, plist, out var watchAppBundleDir)) {
-				var wk = Path.Combine (watchAppBundleDir, "_WatchKitStub", "WK");
-				var supportDir = Path.Combine (archiveDir, "WatchKitSupport");
-
-				if (File.Exists (wk) && !Directory.Exists (supportDir)) {
-					Directory.CreateDirectory (supportDir);
-					File.Copy (wk, Path.Combine (supportDir, "WK"), true);
-				}
-			}
-
 			// Note: App Extension dSYM dirs exist alongside the main app bundle now that they are generated from the main app's MSBuild targets
 			var dsymDir = Path.Combine (Path.GetDirectoryName (AppBundleDir.ItemSpec)!, Path.GetFileName (appex.ItemSpec) + ".dSYM");
 			ArchiveDSym (dsymDir, archiveDir);
@@ -343,23 +343,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		void ArchiveWatchApp (ITaskItem watchApp, string archiveDir)
-		{
-			var wk = Path.Combine (watchApp.ItemSpec, "_WatchKitStub", "WK");
-			var supportDir = Path.Combine (archiveDir, "WatchKitSupport2");
-
-			if (File.Exists (wk) && !Directory.Exists (supportDir)) {
-				Directory.CreateDirectory (supportDir);
-				File.Copy (wk, Path.Combine (supportDir, "WK"), true);
-			}
-
-			var dsymDir = watchApp.ItemSpec + ".dSYM";
-			ArchiveDSym (dsymDir, archiveDir);
-
-			var msymDir = watchApp.ItemSpec + ".mSYM";
-			ArchiveMSym (msymDir, archiveDir);
-		}
-
 		protected int Ditto (string source, string destination)
 		{
 			var args = new string [] {
@@ -369,49 +352,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			var rv = ExecuteAsync ("/usr/bin/ditto", args).Result;
 			return rv.ExitCode;
-		}
-
-		static bool IsWatchAppExtension (ITaskItem appex, PDictionary plist, [NotNullWhen (true)] out string? watchAppBundleDir)
-		{
-			watchAppBundleDir = null;
-
-			if (!plist.TryGetValue<PDictionary> ("NSExtension", out var extension))
-				return false;
-
-			if (!extension.TryGetValue<PString> ("NSExtensionPointIdentifier", out var extensionPoint))
-				return false;
-
-			if (extensionPoint.Value != "com.apple.watchkit")
-				return false;
-
-			// Okay, we've found the WatchKit App Extension...
-			if (!extension.TryGetValue<PDictionary> ("NSExtensionAttributes", out var attributes))
-				return false;
-
-			if (!attributes.TryGetValue<PString> ("WKAppBundleIdentifier", out var expectedBundleIdentifier))
-				return false;
-
-			var pwd = PathUtils.ResolveSymbolicLinks (Environment.CurrentDirectory);
-
-			// Scan the *.app subdirectories to find the WatchApp bundle...
-			foreach (var bundle in Directory.GetDirectories (appex.ItemSpec, "*.app")) {
-				if (!File.Exists (Path.Combine (bundle, "Info.plist")))
-					continue;
-
-				plist = PDictionary.OpenFile (Path.Combine (bundle, "Info.plist"));
-
-				if (!plist.TryGetValue<PString> ("CFBundleIdentifier", out var bundleIdentifier))
-					continue;
-
-				if (bundleIdentifier.Value != expectedBundleIdentifier.Value)
-					continue;
-
-				watchAppBundleDir = PathUtils.AbsoluteToRelative (pwd, PathUtils.ResolveSymbolicLinks (bundle));
-
-				return true;
-			}
-
-			return false;
 		}
 
 		void AddIconPaths (PArray icons, PArray iconFiles, string productsDir)

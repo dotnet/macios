@@ -18,7 +18,7 @@ The following metadata can be set:
 * Include: The path to the build directory for the Xcode app extension project.
 * Name: The name of the extension.
 * BuildOutput: This value is appended to the `Include` value to produce the location of the appex bundle. Typically Xcode will place simulator and device builds in different locations, so this can be used to have a single `AdditionalAppExtensions` entry pointing to two different appex bundles, depending on whether building for the simulator or device.
-* CodesignEntitlements: Specifies the entitlements to use when signing the app extension. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists).
+* CodesignEntitlements: Specifies the entitlements to use when signing the app extension. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists). For device and desktop builds, these entitlements are merged with the extension's embedded provisioning profile and expanded using the extension's bundle identifier before signing. The source entitlements file is not modified.
 * CodesignWarnIfNoEntitlements: A warning will be produced if no `CodesignEntitlements` value is set. This property can be set to `false` to silence this warning.
 
 Example:
@@ -36,6 +36,31 @@ Example:
 ```
 
 An example solution can be found here: [TestApplication](https://github.com/chamons/xamarin-ios-swift-extension/tree/master/App/net6/TestApplication).
+
+## AdditionalWatchOSApp
+
+Embeds one native watchOS app in an iOS executable project. `Include` is the
+path to an `.xcodeproj`, `.app` directory, or `.zip`. Xcode projects and ZIPs
+support Windows builds with a paired Mac; directory inputs require a local Mac.
+The host must specify a single runtime identifier.
+
+`SchemeName` selects an Xcode scheme (required if more than one exists).
+`Configuration` defaults to the host configuration. `CodesignProvision` specifies
+an installed profile for the root watch app by name or UUID. `CodesignEntitlements`
+supplies its entitlement template. `DSymPath` optionally supplies a directory of
+prebuilt dSYMs.
+
+```xml
+<ItemGroup>
+  <AdditionalWatchOSApp Include="../WatchApp/WatchApp.xcodeproj"
+                        SchemeName="WatchApp" />
+</ItemGroup>
+```
+
+A ZIP can contain one root app, or a variant directory for each supported host
+RID (`ios-arm64` or `iossimulator-arm64`). Only the selected
+variant is extracted. See [native watchOS apps](../native-watchos-apps-design.md)
+for the ZIP layout, signing rules, and migration from the old watch project integration.
 
 ## AlternateAppIcon
 
@@ -433,10 +458,31 @@ Example:
 
 Applicable to all platforms.
 
+## WatchOSAppSigning
+
+Configures signing for a bundle inside an `AdditionalWatchOSApp`. `Include` is
+the bundle identifier. `CodesignProvision` selects an installed profile by name
+or UUID, and `CodesignEntitlements` supplies an entitlement template. Device
+builds use the host signing certificate. If you do not specify a profile, the
+build selects one with the same distribution type as the host profile.
+
+```xml
+<ItemGroup>
+  <WatchOSAppSigning Include="com.example.Host.watchkitapp.extension"
+                     CodesignEntitlements="WatchExtension.entitlements" />
+</ItemGroup>
+```
+
+See [native watchOS apps](../native-watchos-apps-design.md#signing).
+
 ## XcodeProject
 
 `<XcodeProject>` can be used to build and consume the outputs
 of Xcode framework projects created in Xcode or elsewehere.
+
+Building these items from Windows requires a connection to a Mac. For iOS binding
+projects built using Pair to Mac, the Xcode project sources are copied to the
+Mac and built there, and binding resource packages are copied back to Windows.
 
 The `Include` metadata should point to the path of the XCODEPROJ file to be built.
 

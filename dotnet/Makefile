@@ -43,6 +43,7 @@ $(1)_NUGET_TARGETS = \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/dotnet-xcsync.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.MaciOS.Sdk.Xcode.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.MaciOS.Sdk.WatchOS.targets \
 
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DefineTargets,$(platform))))

@@ -1,0 +1,147 @@
+<!-- Copyright (c) Microsoft Corporation. Licensed under the MIT License. -->
+<Project>
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.BuildWatchOSApp" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareWatchOSApp" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateWatchOSAppZip" AssemblyFile="$(_TaskAssemblyName)" />
+
+	<PropertyGroup>
+		<_WatchOSIntermediateOutputPath>$(DeviceSpecificIntermediateOutputPath)watch-app/</_WatchOSIntermediateOutputPath>
+		<_NativeWatchOSAppOnBuildServer>false</_NativeWatchOSAppOnBuildServer>
+		<CreateAppBundleDependsOn>$(CreateAppBundleDependsOn);_PrepareNativeWatchOSApp</CreateAppBundleDependsOn>
+		<_CollectCodesigningDataDependsOn>$(_CollectCodesigningDataDependsOn);_PrepareNativeWatchOSApp</_CollectCodesigningDataDependsOn>
+	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<AdditionalWatchOSApp>
+			<Configuration>$(Configuration)</Configuration>
+		</AdditionalWatchOSApp>
+	</ItemDefinitionGroup>
+
+	<Target Name="_ValidateNativeWatchOSApp"
+		BeforeTargets="PrepareForBuild"
+		Condition="'$(DesignTimeBuild)' != 'true'">
+		<MacDevMessage
+			Condition="@(AdditionalWatchOSApp->Count()) &gt; 1"
+			Code="MT7207"
+			Error="true"
+			FormatArguments="@(AdditionalWatchOSApp)"
+			ResourceName="E7207" />
+		<MacDevMessage
+			Condition="'@(AdditionalWatchOSApp)' != '' And ('$(_PlatformName)' != 'iOS' Or '$(OutputType)' != 'Exe' Or '$(IsAppExtension)' == 'true' Or '$(RuntimeIdentifiers)' != '' Or '$(_IsMultiRidBuild)' == 'true')"
+			Code="MT7215"
+			Error="true"
+			ResourceName="E7215" />
+		<ItemGroup>
+			<_LegacyWatchProject Include="@(ProjectReference)" Condition="'%(ProjectReference.IsWatchApp)' == 'true'" />
+		</ItemGroup>
+		<MacDevMessage
+			Condition="'@(_LegacyWatchProject)' != '' Or '@(_ResolvedWatchAppReferences)' != '' Or '$(IsWatchApp)' == 'true'"
+			Code="MT7218"
+			Error="true"
+			ResourceName="E7218" />
+		<MacDevMessage
+			Condition="'%(AdditionalWatchOSApp.Extension)' == '.app' And !$([MSBuild]::IsOSPlatform('osx'))"
+			Code="MT7216"
+			Error="true"
+			ResourceName="E7216" />
+	</Target>
+
+	<Target Name="_BuildNativeWatchOSApp"
+		DependsOnTargets="_DetectSdkLocations;_ValidateNativeWatchOSApp"
+		Condition="'@(AdditionalWatchOSApp)' != '' And '$(DesignTimeBuild)' != 'true'">
+		<BuildWatchOSApp
+			SessionId="$(BuildSessionId)"
+			Condition="'%(AdditionalWatchOSApp.Extension)' == '.xcodeproj'"
+			Configuration="%(AdditionalWatchOSApp.Configuration)"
+			InputExcludeDirectories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath);$(BaseOutputPath);$(OutputPath)"
+			OutputPath="$(_WatchOSIntermediateOutputPath)build"
+			ProjectPath="%(AdditionalWatchOSApp.Identity)"
+			RuntimeIdentifier="$(RuntimeIdentifier)"
+			SchemeName="%(AdditionalWatchOSApp.SchemeName)"
+			SdkDevPath="$(_SdkDevPath)">
+			<Output TaskParameter="AppBundlePath" PropertyName="_NativeWatchOSAppPath" />
+			<Output TaskParameter="ArtifactDirectory" PropertyName="_NativeWatchOSArtifactDirectory" />
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+		</BuildWatchOSApp>
+		<PropertyGroup>
+			<_NativeWatchOSAppOnBuildServer>false</_NativeWatchOSAppOnBuildServer>
+			<_NativeWatchOSAppOnBuildServer Condition="'$(_NativeWatchOSAppPath)' != ''">true</_NativeWatchOSAppOnBuildServer>
+		</PropertyGroup>
+		<ItemGroup>
+			<_NativeWatchOSApp Include="@(AdditionalWatchOSApp)" Condition="'%(AdditionalWatchOSApp.Extension)' != '.xcodeproj'" />
+			<_NativeWatchOSApp Include="$(_NativeWatchOSAppPath)" Condition="'$(_NativeWatchOSAppPath)' != ''">
+				<CodesignEntitlements>%(AdditionalWatchOSApp.CodesignEntitlements)</CodesignEntitlements>
+				<CodesignProvision>%(AdditionalWatchOSApp.CodesignProvision)</CodesignProvision>
+			</_NativeWatchOSApp>
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_PrepareNativeWatchOSApp"
+		DependsOnTargets="_BuildNativeWatchOSApp;_GenerateBundleName;_DetectSigningIdentity;_ReadAppManifest"
+		Condition="'$(_PlatformName)' == 'iOS' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(DesignTimeBuild)' != 'true' And '$(RuntimeIdentifiers)' == ''"
+		BeforeTargets="_ValidateAppBundle">
+		<PrepareWatchOSApp
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And ('@(AdditionalWatchOSApp)' != '' Or '@(WatchOSAppSigning)' != '' Or Exists('$(_WatchOSIntermediateOutputPath)enabled.stamp'))"
+			AppBundleDir="$(AppBundleDir)"
+			Apps="@(_NativeWatchOSApp)"
+			ArtifactDirectory="$(_NativeWatchOSArtifactDirectory)"
+			BundleIdentifier="$(_BundleIdentifier)"
+			CodesignAllocate="$(_CodesignAllocate)"
+			CodesignKeychain="$(CodesignKeychain)"
+			Debug="$(_BundlerDebug)"
+			EnableCodeSigning="$(EnableCodeSigning)"
+			InputIsOnBuildServer="$(_NativeWatchOSAppOnBuildServer)"
+			IntermediateOutputPath="$(_WatchOSIntermediateOutputPath)"
+			ProvisioningProfile="$(_ProvisioningProfile)"
+			RuntimeIdentifier="$(RuntimeIdentifier)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkVersion="$(_SdkVersion)"
+			Signing="@(WatchOSAppSigning)"
+			SigningKey="$(_CodeSigningKey)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			ValidateEntitlements="$(ValidateEntitlements)">
+			<Output TaskParameter="CodesignBundles" ItemName="_CodesignBundle" />
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+			<Output TaskParameter="WatchKitSupportPath" PropertyName="_NativeWatchKitSupportPath" />
+		</PrepareWatchOSApp>
+		<WriteLinesToFile
+			Condition="'$(IsMacEnabled)' == 'true' And '@(AdditionalWatchOSApp)' != ''"
+			File="$(_WatchOSIntermediateOutputPath)enabled.stamp"
+			Lines="@(AdditionalWatchOSApp)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true" />
+		<Delete Files="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="'$(IsMacEnabled)' == 'true' And '@(AdditionalWatchOSApp)' == ''" />
+		<ItemGroup>
+			<FileWrites Include="$(_WatchOSIntermediateOutputPath)enabled.stamp" Condition="Exists('$(_WatchOSIntermediateOutputPath)enabled.stamp')" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CreateWatchOSAppZip" DependsOnTargets="_ValidateWatchOSZipProperties;_DetectSdkLocations">
+		<CreateWatchOSAppZip
+			Configuration="$(Configuration)"
+			IntermediateOutputPath="$(IntermediateOutputPath)watch-zip"
+			ProjectPath="$(WatchOSXcodeProject)"
+			RuntimeIdentifiers="$(WatchOSRuntimeIdentifiers)"
+			SchemeName="$(WatchOSXcodeScheme)"
+			SdkDevPath="$(_SdkDevPath)"
+			ZipPath="$(WatchOSZipPath)">
+			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
+		</CreateWatchOSAppZip>
+	</Target>
+
+	<Target Name="_ValidateWatchOSZipProperties">
+		<MacDevMessage Condition="!$([MSBuild]::IsOSPlatform('osx'))" Code="MT7208" Error="true" ResourceName="E7208" />
+		<MacDevMessage Condition="'$(WatchOSXcodeProject)' == '' Or '$(WatchOSZipPath)' == ''" Code="MT7217" Error="true" ResourceName="E7217" />
+		<PropertyGroup>
+			<WatchOSRuntimeIdentifiers Condition="'$(WatchOSRuntimeIdentifiers)' == ''">ios-arm64;iossimulator-arm64</WatchOSRuntimeIdentifiers>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_CleanNativeWatchOSApp" AfterTargets="_CleanAppBundle">
+		<RemoveDir
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			Directories="$(_WatchOSIntermediateOutputPath);$(IntermediateOutputPath)watch-zip" />
+	</Target>
+</Project>

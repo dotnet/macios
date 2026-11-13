@@ -24,7 +24,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 
 	<PropertyGroup>
 		<_CanDeployToDeviceOrSimulator>False</_CanDeployToDeviceOrSimulator>
-		<_CanDeployToDeviceOrSimulator Condition="('$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true') And '$(IsWatchApp)' == 'false'">True</_CanDeployToDeviceOrSimulator>
+		<_CanDeployToDeviceOrSimulator Condition="'$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true'">True</_CanDeployToDeviceOrSimulator>
 
 		<_PreparedResourceRules></_PreparedResourceRules>
 	</PropertyGroup>
@@ -172,27 +172,12 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		</Touch>
 	</Target>
 
-	<Target Name="_GetWatchAppBundlePath" DependsOnTargets="_GenerateBundleName;$(_GetWatchAppBundlePathDependsOn)">
-		<PropertyGroup>
-			<!-- needed for GetTargetPath/Build/Rebuild task outputs -->
-			<_WatchAppBundlePath>$(MSBuildProjectDirectory)\$(AppBundleDir)</_WatchAppBundlePath>
-		</PropertyGroup>
-		<ItemGroup>
-			<_WatchAppBundlePath Include="$(MSBuildProjectDirectory)\$(AppBundleDir)">
-				<!-- We need this metadata to fix the source in VS -->
-				<BuildSessionId>$(BuildSessionId)</BuildSessionId>
-				<BuildServerPath>..\..\$(BuildAppName)\$(BuildSessionId)\$(AppBundleDir)</BuildServerPath>
-			</_WatchAppBundlePath>
-		</ItemGroup>
-	</Target>
-
 	<Target Name="GetAppBundleDir" DependsOnTargets="_GenerateBundleName" Returns="$(AppBundleDir)"/>
 
 	<PropertyGroup>
 		<_CompileAppManifestDependsOn>
 			$(_CompileAppManifestDependsOn);
 			_PrepareResourceRules;
-			_ResolveWatchAppReferences;
 			_DetectDebugNetworkConfiguration;
 		</_CompileAppManifestDependsOn>
 	</PropertyGroup>
@@ -206,7 +191,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		</_CompileITunesMetadataDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_CompileITunesMetadata" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'"
+	<Target Name="_CompileITunesMetadata" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false'"
 		DependsOnTargets="$(_CompileITunesMetadataDependsOn)"
 		Inputs="@(ITunesMetadata)"
 		Outputs="$(DeviceSpecificOutputPath)iTunesMetadata.plist" >
@@ -221,7 +206,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		/>
 	</Target>
 
-	<Target Name="_CollectITunesArtwork" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'">
+	<Target Name="_CollectITunesArtwork" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false'">
 		<CollectITunesArtwork
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -231,7 +216,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		</CollectITunesArtwork>
 	</Target>
 
-	<Target Name="_CopyITunesArtwork" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'"
+	<Target Name="_CopyITunesArtwork" Condition="'$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false'"
 		DependsOnTargets="_CollectITunesArtwork"
 		Inputs="@(_ITunesArtworkWithLogicalName)" Outputs="$(DeviceSpecificOutputPath)%(_ITunesArtworkWithLogicalName.LogicalName)">
 		<Copy
@@ -266,104 +251,13 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		<Error Text="Support for Xamarin projects has ended. Please migrate your project to .NET" />
 	</Target>
 
-	<Target Name="_ValidateAppBundle" Condition="'$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'" DependsOnTargets="_DetectSdkLocations;_ComputeTargetFrameworkMoniker;_GenerateBundleName">
+	<Target Name="_ValidateAppBundle" Condition="'$(IsAppExtension)' == 'false'" DependsOnTargets="_DetectSdkLocations;_ComputeTargetFrameworkMoniker;_GenerateBundleName">
 		<ValidateAppBundleTask
 			Condition="'$(IsMacEnabled)' == 'true'"
 			SessionId="$(BuildSessionId)"
 			AppBundlePath="$(_AppBundlePath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-		/>
-	</Target>
-
-	<Target Name="_SeparateWatchAppReferences" BeforeTargets="AssignProjectConfiguration" Condition="'$(IsAppExtension)' == 'true' Or '$(OutputType)' == 'Exe'">
-		<CreateItem Include="@(ProjectReference)" PreserveExistingMetadata="true" Condition="'%(Identity)' != '' And '%(ProjectReference.IsWatchApp)' == 'true'">
-			<Output ItemName="_WatchAppReference" TaskParameter="Include" />
-		</CreateItem>
-
-		<ItemGroup>
-			<ProjectReference Remove="@(_WatchAppReference)" />
-		</ItemGroup>
-
-		<!--<Warning Text="_SeparateWatchAppReferences: '@(_WatchAppReference)'"/>-->
-	</Target>
-
-	<Target Name="_AssignWatchAppConfiguration" Condition="'@(_WatchAppReference)' != ''">
-		<!-- assign configs if building a solution file -->
-		<AssignProjectConfiguration
-			ProjectReferences = "@(_WatchAppReference)"
-			SolutionConfigurationContents = "$(CurrentSolutionConfigurationContents)"
-			Condition="'$(CurrentSolutionConfigurationContents)' != ''">
-
-			<Output TaskParameter="AssignedProjects" ItemName="_WatchAppReferenceWithConfiguration"/>
-		</AssignProjectConfiguration>
-
-		<!-- Else, just -->
-		<CreateItem Include="@(_WatchAppReference)" 
-					Condition="'$(CurrentSolutionConfigurationContents)' == ''">
-			<Output TaskParameter="Include" ItemName="_WatchAppReferenceWithConfiguration"/>
-		</CreateItem>
-
-		<!--<Warning Text="_AssignWatchAppConfiguration: '@(_WatchAppReferenceWithConfiguration)'"/>-->
-	</Target>
-
-	<!-- Split iOS Watch App projects into 2 lists
-		_WatchAppReferenceWithConfigurationExistent: Projects existent on disk
-		_WatchAppReferenceWithConfigurationNonExistent: Projects non-existent on disk -->
-	<Target Name="_SplitWatchAppReferencesByExistent" DependsOnTargets="_SeparateWatchAppReferences;_AssignWatchAppConfiguration">
-		<CreateItem Include="@(_WatchAppReferenceWithConfiguration)" Condition="'@(_WatchAppReferenceWithConfiguration)' != ''">
-			<Output TaskParameter="Include" ItemName="_WatchAppReferenceWithConfigurationExistent" 
-				Condition="Exists ('%(_WatchAppReferenceWithConfiguration.Identity)')"/>
-
-			<Output TaskParameter="Include" ItemName="_WatchAppReferenceWithConfigurationNonExistent"
-				Condition="!Exists ('%(_WatchAppReferenceWithConfiguration.Identity)')"/>
-		</CreateItem>
-
-		<!--<Warning Text="_SplitWatchAppReferencesByExistent: '@(_WatchAppReferenceWithConfigurationExistent)'"/>-->
-	</Target>
-
-	<Target Name="_ResolveWatchAppReferences" DependsOnTargets="_SplitWatchAppReferencesByExistent">
-		<PropertyGroup>
-			<!-- Always build the referenced extension projects unless the IDE has explicitly set this property.
-			     This used to only be done when not building from the IDE, but some versions of the IDE don't
-			     build extension projects correctly, so default to always building them. Ref: https://github.com/dotnet/macios/issues/25461 -->
-			<_BuildReferencedExtensionProjects Condition="'$(_BuildReferencedExtensionProjects)' == ''">true</_BuildReferencedExtensionProjects>
-		</PropertyGroup>
-
-		<!-- If the referenced projects have already been built, then just get the target paths -->
-		<MSBuild
-			Projects="@(_WatchAppReferenceWithConfigurationExistent)"
-			Targets="GetAppExtensionBundlePath"
-			Properties="%(_WatchAppReferenceWithConfigurationExistent.SetConfiguration); %(_WatchAppReferenceWithConfigurationExistent.SetPlatform)"
-			Condition="'@(_WatchAppReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
-
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedWatchAppReferences" />
-		</MSBuild>
-
-		<!-- Build the referenced project if required -->
-		<MSBuild
-			Projects="@(_WatchAppReferenceWithConfigurationExistent)"
-			Properties="%(_WatchAppReferenceWithConfigurationExistent.SetConfiguration); %(_WatchAppReferenceWithConfigurationExistent.SetPlatform)"
-			Condition="'@(_WatchAppReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
-
-			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedWatchAppReferences" />
-		</MSBuild>
-
-		<Warning Text="Referenced iOS Watch App Project %(_WatchAppReferenceWithConfigurationNonExistent.Identity) not found, ignoring."
-			 Condition="'@(_WatchAppReferenceWithConfigurationNonExistent)' != ''"/>
-
-		<PropertyGroup>
-			<IsWatchExtension Condition="'$(IsAppExtension)' == 'true' And '@(_ResolvedWatchAppReferences)' != ''">True</IsWatchExtension>
-		</PropertyGroup>
-	</Target>
-
-	<Target Name="_CopyWatchOS2AppsToBundle" Condition="'$(OutputType)' == 'Exe'" DependsOnTargets="_ResolveWatchAppReferences">
-		<Ditto
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '@(_ResolvedWatchAppReferences)' != '' And '%(_ResolvedWatchAppReferences.Identity)' != ''"
-			DittoPath="$(DittoPath)"
-			Source="@(_ResolvedWatchAppReferences)"
-			Destination="$(_AppBundlePath)Watch\%(_ResolvedWatchAppReferences.FileName)%(_ResolvedWatchAppReferences.Extension)"
 		/>
 	</Target>
 
@@ -385,18 +279,10 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 			Destination="$(_IpaAppBundleDir)"
 		/>
 
-		<FindWatchOS2AppBundle
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '@(_ResolvedWatchAppReferences)' != ''"
-			WatchAppReferences="@(_ResolvedWatchAppReferences)"
-			>
-			<Output TaskParameter="WatchOS2AppBundle" PropertyName="_WatchOS2AppBundle"/>
-		</FindWatchOS2AppBundle>
-
 		<Copy
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(_WatchOS2AppBundle)' != '' And Exists('$(_WatchOS2AppBundle)\_WatchKitStub\WK')"
-			SourceFiles="$(_WatchOS2AppBundle)\_WatchKitStub\WK"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(_NativeWatchKitSupportPath)' != ''"
+			SourceFiles="$(_NativeWatchKitSupportPath)"
 			DestinationFolder="$(DeviceSpecificIntermediateOutputPath)ipa\WatchKitSupport2"
 		/>
 

@@ -17,9 +17,6 @@ namespace Xamarin.MacDev.Tasks {
 		public bool DisableMinimumOSVersion { get; set; }
 
 		[Output]
-		public string? CLKComplicationGroup { get; set; }
-
-		[Output]
 		public string? CFBundleExecutable { get; set; }
 
 		[Output]
@@ -45,9 +42,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Output]
 		public string? UIDeviceFamily { get; set; }
-
-		[Output]
-		public bool WKWatchKitApp { get; set; }
 
 		[Output]
 		public string? XSAppIconAssets { get; set; }
@@ -77,7 +71,6 @@ namespace Xamarin.MacDev.Tasks {
 			CFBundleIdentifier = plist?.GetCFBundleIdentifier ();
 			CFBundleShortVersionString = plist?.GetCFBundleShortVersionString ();
 			CFBundleVersion = plist?.GetCFBundleVersion ();
-			CLKComplicationGroup = plist?.Get<PString> (ManifestKeys.CLKComplicationGroup)?.Value;
 
 			if (!DisableMinimumOSVersion) {
 				MinimumOSVersion = plist?.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
@@ -92,7 +85,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			NSExtensionPointIdentifier = plist?.GetNSExtensionPointIdentifier ();
 			UIDeviceFamily = plist?.GetUIDeviceFamily ().ToString ();
-			WKWatchKitApp = plist?.GetWKWatchKitApp () == true;
 			XSAppIconAssets = plist?.Get<PString> (ManifestKeys.XSAppIconAssets)?.Value;
 			XSLaunchImageAssets = plist?.Get<PString> (ManifestKeys.XSLaunchImageAssets)?.Value;
 

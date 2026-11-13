@@ -1343,12 +1343,12 @@ namespace MonoTests.System.Net.Http {
 				if (!done) // timeouts happen in the bots due to dns issues, connection issues etc., we do not want to fail
 					Assert.Inconclusive ("Request timedout.");
 
-				if (callbackWasExecuted)
-					break;
-
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				if (result is not null)
 					TestRuntime.IgnoreInCIIfBadNetwork (result.StatusCode);
+
+				if (callbackWasExecuted)
+					break;
 
 				if (ex is not null)
 					break;

@@ -233,6 +233,7 @@ Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionE
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
+Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.UncaughtObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSException..cctor()
 Microsoft.iOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
@@ -818,8 +819,10 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.NSLog(System.String)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.ObjectGetType(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.on_marshal_managed_exception(System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.on_marshal_objectivec_exception(System.IntPtr, System.SByte, System.IntPtr*)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.on_uncaught_objectivec_exception(System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.OnMarshalManagedException(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.OnMarshalObjectiveCException(System.IntPtr, System.SByte)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.OnUncaughtObjectiveCException(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.print_all_exceptions_wrapper(System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.PrintAllExceptions(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.PrintException(System.Exception, System.Boolean, System.Text.StringBuilder)
@@ -1023,6 +1026,12 @@ Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt64
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer.Equals(System.UInt64, System.UInt64)
 Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer.GetHashCode(System.UInt64)
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs..ctor(Foundation.NSException)
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler ObjCRuntime.Runtime::UncaughtObjectiveCException
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler..ctor(System.Object, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler.Invoke(System.Object, ObjCRuntime.UncaughtObjectiveCExceptionEventArgs)
 Microsoft.iOS.dll:System.Boolean Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.IsReadOnly()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::disposed()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::HasManagedRef()
@@ -1179,6 +1188,7 @@ Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_managed_ty
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_unmanaged_function
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_managed_exception
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_objectivec_exception
+Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_uncaught_objectivec_exception
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::print_all_exceptions_wrapper
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::reflection_type_get_full_name
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_assembly

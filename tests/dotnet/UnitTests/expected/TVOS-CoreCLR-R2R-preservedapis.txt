@@ -233,6 +233,7 @@ Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCException
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
 Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
+Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.UncaughtObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.tvOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSException..cctor()
 Microsoft.tvOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
@@ -818,8 +819,10 @@ Microsoft.tvOS.dll:ObjCRuntime.Runtime.NSLog(System.String)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.ObjectGetType(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.on_marshal_managed_exception(System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.on_marshal_objectivec_exception(System.IntPtr, System.SByte, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.on_uncaught_objectivec_exception(System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.OnMarshalManagedException(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.OnMarshalObjectiveCException(System.IntPtr, System.SByte)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.OnUncaughtObjectiveCException(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.print_all_exceptions_wrapper(System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.PrintAllExceptions(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.PrintException(System.Exception, System.Boolean, System.Text.StringBuilder)
@@ -1023,6 +1026,12 @@ Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt6
 Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
 Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer.Equals(System.UInt64, System.UInt64)
 Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer.GetHashCode(System.UInt64)
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionEventArgs..ctor(Foundation.NSException)
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler ObjCRuntime.Runtime::UncaughtObjectiveCException
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler..ctor(System.Object, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.UncaughtObjectiveCExceptionHandler.Invoke(System.Object, ObjCRuntime.UncaughtObjectiveCExceptionEventArgs)
 Microsoft.tvOS.dll:System.Boolean Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.IsReadOnly()
 Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::disposed()
 Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::HasManagedRef()
@@ -1179,6 +1188,7 @@ Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_managed_t
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_unmanaged_function
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_managed_exception
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_objectivec_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_uncaught_objectivec_exception
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::print_all_exceptions_wrapper
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::reflection_type_get_full_name
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_assembly

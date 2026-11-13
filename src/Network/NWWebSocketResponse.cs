@@ -42,7 +42,7 @@ namespace Network {
 		static string nw_ws_response_get_selected_subprotocol (OS_nw_ws_response response)
 		{
 			var ptr = nw_ws_response_get_selected_subprotocol_ptr (response);
-			return TransientString.ToStringAndFree (ptr, TransientString.Encoding.Ansi)!;
+			return TransientString.ToStringAndFree (ptr, TransientString.Encoding.Utf8)!;
 		}
 
 		public string SelectedSubprotocol => nw_ws_response_get_selected_subprotocol (GetCheckedHandle ());

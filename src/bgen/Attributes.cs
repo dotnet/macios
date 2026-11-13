@@ -51,6 +51,11 @@ public class ForcedTypeAttribute : Attribute {
 	public bool Owns;
 }
 
+// Bypass the managed object cache for independently disposable return values.
+[AttributeUsage (AttributeTargets.ReturnValue | AttributeTargets.Property)]
+public class AlwaysReturnNewInstanceAttribute : Attribute {
+}
+
 #if !XAMCORE_5_0
 // Used to flag a type as needing to be turned into a protocol on output for Unified
 // For example:

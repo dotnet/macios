@@ -2896,14 +2896,6 @@ namespace UIKit {
 		Black,
 	}
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
-	public enum UIFontWidth {
-		Condensed,
-		Standard,
-		Expanded,
-		Compressed,
-	}
-
 	/// <summary>How the views in a <see cref="UIKit.UIStackView" /> are distributed along the view's alignment axis.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]

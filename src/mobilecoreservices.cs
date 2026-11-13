@@ -12,1044 +12,627 @@ namespace MobileCoreServices {
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 	[Partial]
 	interface UTType {
-		/// <summary>Represents the value associated with the constant kUTTypeItem</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an item.</summary>
 		[Field ("kUTTypeItem")]
 		NSString Item { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeContent</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for content.</summary>
 		[Field ("kUTTypeContent")]
 		NSString Content { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCompositeContent</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for content with embedded parts.</summary>
 		[Field ("kUTTypeCompositeContent")]
 		NSString CompositeContent { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMessage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a message.</summary>
 		[Field ("kUTTypeMessage")]
 		NSString Message { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeContact</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a contact.</summary>
 		[Field ("kUTTypeContact")]
 		NSString Contact { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeArchive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an archive.</summary>
 		[Field ("kUTTypeArchive")]
 		NSString Archive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeDiskImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a disk image.</summary>
 		[Field ("kUTTypeDiskImage")]
 		NSString DiskImage { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeData</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for data.</summary>
 		[Field ("kUTTypeData")]
 		NSString Data { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeDirectory</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a directory.</summary>
 		[Field ("kUTTypeDirectory")]
 		NSString Directory { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeResolvable</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a resolvable item, such as a symbolic link or alias.</summary>
 		[Field ("kUTTypeResolvable")]
 		NSString Resolvable { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeSymLink</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a symbolic link.</summary>
 		[Field ("kUTTypeSymLink")]
 		NSString SymLink { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeExecutable</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for executable content.</summary>
 		[Field ("kUTTypeExecutable")]
 		[MacCatalyst (13, 1)]
 		NSString Executable { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMountPoint</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a file-system mount point.</summary>
 		[Field ("kUTTypeMountPoint")]
 		NSString MountPoint { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAliasFile</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an alias file.</summary>
 		[Field ("kUTTypeAliasFile")]
 		NSString AliasFile { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAliasRecord</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an alias record.</summary>
 		[Field ("kUTTypeAliasRecord")]
 		NSString AliasRecord { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeURLBookmarkData</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for URL bookmark data.</summary>
 		[Field ("kUTTypeURLBookmarkData")]
 		[MacCatalyst (13, 1)]
 		NSString URLBookmarkData { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeURL</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a URL.</summary>
 		[Field ("kUTTypeURL")]
 		NSString URL { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeFileURL</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a file URL.</summary>
 		[Field ("kUTTypeFileURL")]
 		NSString FileURL { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for text.</summary>
 		[Field ("kUTTypeText")]
 		NSString Text { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePlainText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for plain text.</summary>
 		[Field ("kUTTypePlainText")]
 		NSString PlainText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeUTF8PlainText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for UTF-8 plain text.</summary>
 		[Field ("kUTTypeUTF8PlainText")]
 		NSString UTF8PlainText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeUTF16ExternalPlainText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for externally encoded UTF-16 plain text.</summary>
 		[Field ("kUTTypeUTF16ExternalPlainText")]
 		NSString UTF16ExternalPlainText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeUTF16PlainText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for UTF-16 plain text.</summary>
 		[Field ("kUTTypeUTF16PlainText")]
 		NSString UTF16PlainText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeDelimitedText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for delimited text.</summary>
 		[Field ("kUTTypeDelimitedText")]
 		[MacCatalyst (13, 1)]
 		NSString DelimitedText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCommaSeparatedText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for comma-separated text.</summary>
 		[Field ("kUTTypeCommaSeparatedText")]
 		[MacCatalyst (13, 1)]
 		NSString CommaSeparatedText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeTabSeparatedText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for tab-separated text.</summary>
 		[Field ("kUTTypeTabSeparatedText")]
 		[MacCatalyst (13, 1)]
 		NSString TabSeparatedText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeUTF8TabSeparatedText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for UTF-8 tab-separated text.</summary>
 		[Field ("kUTTypeUTF8TabSeparatedText")]
 		[MacCatalyst (13, 1)]
 		NSString UTF8TabSeparatedText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeRTF</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for rich text in RTF format.</summary>
 		[Field ("kUTTypeRTF")]
 		NSString RTF { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeHTML</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for HTML content.</summary>
 		[Field ("kUTTypeHTML")]
 		NSString HTML { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeXML</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for XML content.</summary>
 		[Field ("kUTTypeXML")]
 		NSString XML { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeSourceCode</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for source code.</summary>
 		[Field ("kUTTypeSourceCode")]
 		NSString SourceCode { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAssemblyLanguageSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for assembly language source code.</summary>
 		[Field ("kUTTypeAssemblyLanguageSource")]
 		[MacCatalyst (13, 1)]
 		NSString AssemblyLanguageSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for C source code.</summary>
 		[Field ("kUTTypeCSource")]
 		NSString CSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeObjectiveCSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Objective-C source code.</summary>
 		[Field ("kUTTypeObjectiveCSource")]
 		NSString ObjectiveCSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCPlusPlusSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for C++ source code.</summary>
 		[Field ("kUTTypeCPlusPlusSource")]
 		NSString CPlusPlusSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeObjectiveCPlusPlusSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Objective-C++ source code.</summary>
 		[Field ("kUTTypeObjectiveCPlusPlusSource")]
 		NSString ObjectiveCPlusPlusSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCHeader</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a C header.</summary>
 		[Field ("kUTTypeCHeader")]
 		NSString CHeader { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCPlusPlusHeader</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a C++ header.</summary>
 		[Field ("kUTTypeCPlusPlusHeader")]
 		NSString CPlusPlusHeader { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJavaSource</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Java source code.</summary>
 		[Field ("kUTTypeJavaSource")]
 		NSString JavaSource { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a script.</summary>
 		[Field ("kUTTypeScript")]
 		[MacCatalyst (13, 1)]
 		NSString Script { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAppleScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an AppleScript script.</summary>
 		[Field ("kUTTypeAppleScript")]
 		[MacCatalyst (13, 1)]
 		NSString AppleScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeOSAScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an Open Scripting Architecture script.</summary>
 		[Field ("kUTTypeOSAScript")]
 		[MacCatalyst (13, 1)]
 		NSString OSAScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeOSAScriptBundle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an Open Scripting Architecture script bundle.</summary>
 		[Field ("kUTTypeOSAScriptBundle")]
 		[MacCatalyst (13, 1)]
 		NSString OSAScriptBundle { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJavaScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for JavaScript source code.</summary>
 		[Field ("kUTTypeJavaScript")]
 		[MacCatalyst (13, 1)]
 		NSString JavaScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeShellScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a shell script.</summary>
 		[Field ("kUTTypeShellScript")]
 		[MacCatalyst (13, 1)]
 		NSString ShellScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePerlScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Perl script.</summary>
 		[Field ("kUTTypePerlScript")]
 		[MacCatalyst (13, 1)]
 		NSString PerlScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePythonScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Python script.</summary>
 		[Field ("kUTTypePythonScript")]
 		[MacCatalyst (13, 1)]
 		NSString PythonScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeRubyScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Ruby script.</summary>
 		[Field ("kUTTypeRubyScript")]
 		[MacCatalyst (13, 1)]
 		NSString RubyScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePHPScript</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a PHP script.</summary>
 		[Field ("kUTTypePHPScript")]
 		[MacCatalyst (13, 1)]
 		NSString PHPScript { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJSON</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for JSON content.</summary>
 		[Field ("kUTTypeJSON")]
 		[MacCatalyst (13, 1)]
 		NSString JSON { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePropertyList</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a property list.</summary>
 		[Field ("kUTTypePropertyList")]
 		[MacCatalyst (13, 1)]
 		NSString PropertyList { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeXMLPropertyList</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an XML property list.</summary>
 		[Field ("kUTTypeXMLPropertyList")]
 		[MacCatalyst (13, 1)]
 		NSString XMLPropertyList { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeBinaryPropertyList</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a binary property list.</summary>
 		[Field ("kUTTypeBinaryPropertyList")]
 		[MacCatalyst (13, 1)]
 		NSString BinaryPropertyList { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePDF</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a PDF document.</summary>
 		[Field ("kUTTypePDF")]
 		NSString PDF { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeRTFD</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a rich text document with attachments in RTFD format.</summary>
 		[Field ("kUTTypeRTFD")]
 		NSString RTFD { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeFlatRTFD</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a flattened RTFD document.</summary>
 		[Field ("kUTTypeFlatRTFD")]
 		NSString FlatRTFD { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeTXNTextAndMultimediaData</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Textension text and multimedia data.</summary>
 		[Field ("kUTTypeTXNTextAndMultimediaData")]
 		NSString TXNTextAndMultimediaData { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeWebArchive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a web archive.</summary>
 		[Field ("kUTTypeWebArchive")]
 		NSString WebArchive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an image.</summary>
 		[Field ("kUTTypeImage")]
 		NSString Image { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJPEG</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a JPEG image.</summary>
 		[Field ("kUTTypeJPEG")]
 		NSString JPEG { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJPEG2000</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a JPEG 2000 image.</summary>
 		[Field ("kUTTypeJPEG2000")]
 		NSString JPEG2000 { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeTIFF</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a TIFF image.</summary>
 		[Field ("kUTTypeTIFF")]
 		NSString TIFF { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePICT</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a PICT image.</summary>
 		[Field ("kUTTypePICT")]
 		NSString PICT { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeGIF</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a GIF image.</summary>
 		[Field ("kUTTypeGIF")]
 		NSString GIF { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePNG</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a PNG image.</summary>
 		[Field ("kUTTypePNG")]
 		NSString PNG { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeQuickTimeImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a QuickTime image.</summary>
 		[Field ("kUTTypeQuickTimeImage")]
 		NSString QuickTimeImage { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAppleICNS</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an Apple icon image in ICNS format.</summary>
 		[Field ("kUTTypeAppleICNS")]
 		NSString AppleICNS { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeBMP</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a BMP image.</summary>
 		[Field ("kUTTypeBMP")]
 		NSString BMP { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeICO</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an ICO image.</summary>
 		[Field ("kUTTypeICO")]
 		NSString ICO { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeRawImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a RAW image.</summary>
 		[Field ("kUTTypeRawImage")]
 		[MacCatalyst (13, 1)]
 		NSString RawImage { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeScalableVectorGraphics</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a scalable vector graphics image.</summary>
 		[Field ("kUTTypeScalableVectorGraphics")]
 		[MacCatalyst (13, 1)]
 		NSString ScalableVectorGraphics { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAudiovisualContent</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for audiovisual content.</summary>
 		[Field ("kUTTypeAudiovisualContent")]
 		NSString AudiovisualContent { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMovie</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a movie.</summary>
 		[Field ("kUTTypeMovie")]
 		NSString Movie { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeVideo</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for video.</summary>
 		[Field ("kUTTypeVideo")]
 		NSString Video { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAudio</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for audio.</summary>
 		[Field ("kUTTypeAudio")]
 		NSString Audio { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeQuickTimeMovie</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a QuickTime movie.</summary>
 		[Field ("kUTTypeQuickTimeMovie")]
 		NSString QuickTimeMovie { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMPEG</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an MPEG movie.</summary>
 		[Field ("kUTTypeMPEG")]
 		NSString MPEG { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMPEG2Video</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for MPEG-2 video.</summary>
 		[Field ("kUTTypeMPEG2Video")]
 		[MacCatalyst (13, 1)]
 		NSString MPEG2Video { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMPEG2TransportStream</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an MPEG-2 transport stream.</summary>
 		[Field ("kUTTypeMPEG2TransportStream")]
 		[MacCatalyst (13, 1)]
 		NSString MPEG2TransportStream { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMP3</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for MP3 audio.</summary>
 		[Field ("kUTTypeMP3")]
 		NSString MP3 { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMPEG4</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an MPEG-4 movie.</summary>
 		[Field ("kUTTypeMPEG4")]
 		NSString MPEG4 { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMPEG4Audio</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for MPEG-4 audio.</summary>
 		[Field ("kUTTypeMPEG4Audio")]
 		NSString MPEG4Audio { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAppleProtectedMPEG4Audio</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Apple-protected MPEG-4 audio.</summary>
 		[Field ("kUTTypeAppleProtectedMPEG4Audio")]
 		NSString AppleProtectedMPEG4Audio { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAppleProtectedMPEG4Video</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Apple-protected MPEG-4 video.</summary>
 		[Field ("kUTTypeAppleProtectedMPEG4Video")]
 		[MacCatalyst (13, 1)]
 		NSString AppleProtectedMPEG4Video { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAVIMovie</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an AVI movie.</summary>
 		[Field ("kUTTypeAVIMovie")]
 		[MacCatalyst (13, 1)]
 		NSString AVIMovie { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeAudioInterchangeFileFormat</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for audio in Audio Interchange File Format.</summary>
 		[Field ("kUTTypeAudioInterchangeFileFormat")]
 		[MacCatalyst (13, 1)]
 		NSString AudioInterchangeFileFormat { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeWaveformAudio</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for waveform audio.</summary>
 		[Field ("kUTTypeWaveformAudio")]
 		[MacCatalyst (13, 1)]
 		NSString WaveformAudio { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeMIDIAudio</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for MIDI data.</summary>
 		[Field ("kUTTypeMIDIAudio")]
 		[MacCatalyst (13, 1)]
 		NSString MIDIAudio { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePlaylist</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a playlist.</summary>
 		[Field ("kUTTypePlaylist")]
 		[MacCatalyst (13, 1)]
 		NSString Playlist { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeM3UPlaylist</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an M3U playlist.</summary>
 		[Field ("kUTTypeM3UPlaylist")]
 		[MacCatalyst (13, 1)]
 		NSString M3UPlaylist { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeFolder</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a folder.</summary>
 		[Field ("kUTTypeFolder")]
 		NSString Folder { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeVolume</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a volume.</summary>
 		[Field ("kUTTypeVolume")]
 		NSString Volume { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePackage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a package.</summary>
 		[Field ("kUTTypePackage")]
 		NSString Package { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeBundle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a bundle.</summary>
 		[Field ("kUTTypeBundle")]
 		NSString Bundle { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePluginBundle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a plug-in bundle.</summary>
 		[Field ("kUTTypePluginBundle")]
 		[MacCatalyst (13, 1)]
 		NSString PluginBundle { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeSpotlightImporter</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Spotlight importer.</summary>
 		[Field ("kUTTypeSpotlightImporter")]
 		[MacCatalyst (13, 1)]
 		NSString SpotlightImporter { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeQuickLookGenerator</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Quick Look generator.</summary>
 		[Field ("kUTTypeQuickLookGenerator")]
 		[MacCatalyst (13, 1)]
 		NSString QuickLookGenerator { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeXPCService</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an XPC service.</summary>
 		[Field ("kUTTypeXPCService")]
 		[MacCatalyst (13, 1)]
 		NSString XPCService { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeFramework</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a framework.</summary>
 		[Field ("kUTTypeFramework")]
 		NSString Framework { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeApplication</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an application.</summary>
 		[Field ("kUTTypeApplication")]
 		NSString Application { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeApplicationBundle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an application bundle.</summary>
 		[Field ("kUTTypeApplicationBundle")]
 		NSString ApplicationBundle { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeApplicationFile</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a single-file application.</summary>
 		[Field ("kUTTypeApplicationFile")]
 		NSString ApplicationFile { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeUnixExecutable</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a UNIX executable.</summary>
 		[Field ("kUTTypeUnixExecutable")]
 		[MacCatalyst (13, 1)]
 		NSString UnixExecutable { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeWindowsExecutable</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Windows executable.</summary>
 		[Field ("kUTTypeWindowsExecutable")]
 		[MacCatalyst (13, 1)]
 		NSString WindowsExecutable { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJavaClass</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Java class file.</summary>
 		[Field ("kUTTypeJavaClass")]
 		[MacCatalyst (13, 1)]
 		NSString JavaClass { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeJavaArchive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Java archive.</summary>
 		[Field ("kUTTypeJavaArchive")]
 		[MacCatalyst (13, 1)]
 		NSString JavaArchive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeSystemPreferencesPane</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a system preferences pane.</summary>
 		[Field ("kUTTypeSystemPreferencesPane")]
 		[MacCatalyst (13, 1)]
 		NSString SystemPreferencesPane { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeGNUZipArchive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a gzip archive.</summary>
 		[Field ("kUTTypeGNUZipArchive")]
 		[MacCatalyst (13, 1)]
 		NSString GNUZipArchive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeBzip2Archive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a bzip2 archive.</summary>
 		[Field ("kUTTypeBzip2Archive")]
 		[MacCatalyst (13, 1)]
 		NSString Bzip2Archive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeZipArchive</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a ZIP archive.</summary>
 		[Field ("kUTTypeZipArchive")]
 		[MacCatalyst (13, 1)]
 		NSString ZipArchive { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeSpreadsheet</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a spreadsheet.</summary>
 		[Field ("kUTTypeSpreadsheet")]
 		[MacCatalyst (13, 1)]
 		NSString Spreadsheet { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePresentation</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a presentation.</summary>
 		[Field ("kUTTypePresentation")]
 		[MacCatalyst (13, 1)]
 		NSString Presentation { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeDatabase</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a database.</summary>
 		[Field ("kUTTypeDatabase")]
 		[MacCatalyst (13, 1)]
 		NSString Database { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeVCard</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a vCard.</summary>
 		[Field ("kUTTypeVCard")]
 		NSString VCard { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeToDoItem</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a to-do item.</summary>
 		[Field ("kUTTypeToDoItem")]
 		[MacCatalyst (13, 1)]
 		NSString ToDoItem { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeCalendarEvent</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a calendar event.</summary>
 		[Field ("kUTTypeCalendarEvent")]
 		[MacCatalyst (13, 1)]
 		NSString CalendarEvent { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeEmailMessage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an email message.</summary>
 		[Field ("kUTTypeEmailMessage")]
 		[MacCatalyst (13, 1)]
 		NSString EmailMessage { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeInternetLocation</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an internet location.</summary>
 		[Field ("kUTTypeInternetLocation")]
 		[MacCatalyst (13, 1)]
 		NSString InternetLocation { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeInkText</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Ink text data.</summary>
 		[Field ("kUTTypeInkText")]
 		NSString InkText { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeFont</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a font.</summary>
 		[Field ("kUTTypeFont")]
 		[MacCatalyst (13, 1)]
 		NSString Font { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeBookmark</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a bookmark.</summary>
 		[Field ("kUTTypeBookmark")]
 		[MacCatalyst (13, 1)]
 		NSString Bookmark { get; }
 
-		/// <summary>Represents the value associated with the constant kUTType3DContent</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for 3D content.</summary>
 		[Field ("kUTType3DContent")]
 		[MacCatalyst (13, 1)]
 		NSString ThreeDContent { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypePKCS12</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a PKCS #12 file.</summary>
 		[Field ("kUTTypePKCS12")]
 		[MacCatalyst (13, 1)]
 		NSString PKCS12 { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeX509Certificate</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an X.509 certificate.</summary>
 		[Field ("kUTTypeX509Certificate")]
 		[MacCatalyst (13, 1)]
 		NSString X509Certificate { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeElectronicPublication</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for an electronic publication.</summary>
 		[Field ("kUTTypeElectronicPublication")]
 		[MacCatalyst (13, 1)]
 		NSString ElectronicPublication { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeLog</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a log.</summary>
 		[Field ("kUTTypeLog")]
 		[MacCatalyst (13, 1)]
 		NSString Log { get; }
 
-		/// <summary>Represents the value associated with the constant kUTExportedTypeDeclarationsKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the property-list key for exported type declarations.</summary>
 		[Field ("kUTExportedTypeDeclarationsKey")]
 		NSString ExportedTypeDeclarationsKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTImportedTypeDeclarationsKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the property-list key for imported type declarations.</summary>
 		[Field ("kUTImportedTypeDeclarationsKey")]
 		NSString ImportedTypeDeclarationsKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeIdentifierKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for the type identifier.</summary>
 		[Field ("kUTTypeIdentifierKey")]
 		NSString IdentifierKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeTagSpecificationKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for tag specifications.</summary>
 		[Field ("kUTTypeTagSpecificationKey")]
 		NSString TagSpecificationKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeConformsToKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for the identifiers of types to which the declared type conforms.</summary>
 		[Field ("kUTTypeConformsToKey")]
 		NSString ConformsToKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeDescriptionKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for the type description.</summary>
 		[Field ("kUTTypeDescriptionKey")]
 		NSString DescriptionKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeIconFileKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for an icon file.</summary>
 		[Field ("kUTTypeIconFileKey")]
 		NSString IconFileKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeReferenceURLKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for a reference URL.</summary>
 		[Field ("kUTTypeReferenceURLKey")]
 		NSString ReferenceURLKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTypeVersionKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the type-declaration key for the declaration version.</summary>
 		[Field ("kUTTypeVersionKey")]
 		NSString VersionKey { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTagClassFilenameExtension</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the tag class for filename extensions.</summary>
 		[Field ("kUTTagClassFilenameExtension")]
 		NSString TagClassFilenameExtension { get; }
 
-		/// <summary>Represents the value associated with the constant kUTTagClassMIMEType</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the tag class for MIME types.</summary>
 		[Field ("kUTTagClassMIMEType")]
 		NSString TagClassMIMEType { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the tag class for pasteboard types.</summary>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Field ("kUTTagClassNSPboardType")]
 		NSString TagClassNSPboardType { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the tag class for HFS type codes.</summary>
 		[NoiOS]
 		[NoMacCatalyst]
 		[NoTV]
 		[Field ("kUTTagClassOSType")]
 		NSString TagClassOSType { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for Swift source code.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeSwiftSource")]
 		NSString SwiftSource { get; }
@@ -1093,9 +676,7 @@ namespace MobileCoreServices {
 		[Field ("kUTTypeUniversalSceneDescriptionMobile", "ModelIO")]
 		NSString UniversalSceneDescriptionMobile { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the uniform type identifier for a Live Photo.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kUTTypeLivePhoto")]

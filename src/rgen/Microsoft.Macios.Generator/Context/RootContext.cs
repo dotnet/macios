@@ -46,6 +46,12 @@ class RootContext {
 	}
 
 	// TODO: clean code coming from the old generator
+	/// <summary>Computes the native library used by a field binding and records it when its identifier is valid.</summary>
+	/// <param name="attributeLibraryName">The library name or path specified by the field attribute, if any.</param>
+	/// <param name="typeNamespace">The namespace to use when no library is specified.</param>
+	/// <param name="libraryName">The computed library name, which may not be a valid C# identifier.</param>
+	/// <param name="libraryPath">The specified library name or path, or <see langword="null" /> when using the namespace.</param>
+	/// <returns><see langword="true" /> if the library name is a valid C# identifier; otherwise, <see langword="false" />.</returns>
 	public bool TryComputeLibraryName (string? attributeLibraryName, string typeNamespace,
 		[NotNullWhen (true)] out string? libraryName,
 		out string? libraryPath)

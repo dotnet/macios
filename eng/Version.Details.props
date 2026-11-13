@@ -21,6 +21,8 @@ This file should be imported by eng/Versions.props
     <MicrosoftMacCatalystSdknet110_272PackageVersion>27.2.11039</MicrosoftMacCatalystSdknet110_272PackageVersion>
     <MicrosoftmacOSSdknet110_272PackageVersion>27.2.11039</MicrosoftmacOSSdknet110_272PackageVersion>
     <MicrosofttvOSSdknet110_272PackageVersion>27.2.11039</MicrosofttvOSSdknet110_272PackageVersion>
+    <!-- dotnet-macios-devtools dependencies -->
+    <XamarinAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26563.1</XamarinAppleToolsMaciOSPackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26556.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
@@ -42,6 +44,8 @@ This file should be imported by eng/Versions.props
     <MicrosoftMacCatalystSdknet110_272Version>$(MicrosoftMacCatalystSdknet110_272PackageVersion)</MicrosoftMacCatalystSdknet110_272Version>
     <MicrosoftmacOSSdknet110_272Version>$(MicrosoftmacOSSdknet110_272PackageVersion)</MicrosoftmacOSSdknet110_272Version>
     <MicrosofttvOSSdknet110_272Version>$(MicrosofttvOSSdknet110_272PackageVersion)</MicrosofttvOSSdknet110_272Version>
+    <!-- dotnet-macios-devtools dependencies -->
+    <XamarinAppleToolsMaciOSVersion>$(XamarinAppleToolsMaciOSPackageVersion)</XamarinAppleToolsMaciOSVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
   </PropertyGroup>

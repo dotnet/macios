@@ -299,11 +299,14 @@ namespace Xamarin.MacDev.Tasks {
 
 			dylibDirectory = PathUtils.EnsureTrailingSlash (dylibDirectory);
 			metallibDirectory = PathUtils.EnsureTrailingSlash (metallibDirectory);
+			var contentsDirectory = Platform == ApplePlatform.MacOSX || Platform == ApplePlatform.MacCatalyst ? "Contents" : "";
+			var pluginsPrefix = Path.Combine (contentsDirectory, "PlugIns") + Path.DirectorySeparatorChar;
+			var extensionsPrefix = Path.Combine (contentsDirectory, "Extensions") + Path.DirectorySeparatorChar;
 
 			foreach (var entry in EnumerateAppBundleEntries (appPath)) {
 				var relativePath = entry.Substring (appPath.Length);
 				// Don't recurse into the PlugIns directory, that's already handled for any app bundle inside the PlugIns directory
-				if (relativePath.StartsWith ("PlugIns" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+				if (relativePath.StartsWith (pluginsPrefix, StringComparison.OrdinalIgnoreCase) || relativePath.StartsWith (extensionsPrefix, StringComparison.OrdinalIgnoreCase))
 					continue;
 				// Don't recurse into the Watch directory, for the same reason
 				if (relativePath.StartsWith ("Watch" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))

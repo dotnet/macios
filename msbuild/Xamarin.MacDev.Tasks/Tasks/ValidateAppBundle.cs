@@ -28,7 +28,7 @@ namespace Xamarin.MacDev.Tasks {
 		void ValidateAppExtension (string path, string mainBundleIdentifier, string mainShortVersionString, string mainVersion)
 		{
 			var name = Path.GetFileNameWithoutExtension (path);
-			var info = Path.Combine (path, "Info.plist");
+			var info = PlatformFrameworkHelper.GetAppManifestPath (Platform, path);
 			if (!File.Exists (info)) {
 				Log.LogError (7003, path, MSBStrings.E7003, name);
 				return;
@@ -71,6 +71,15 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogWarning (MSBStrings.W0073, name, version, mainVersion);
 
 			var extension = plist.Get<PDictionary> ("NSExtension");
+			var extensionKit = plist.Get<PDictionary> ("EXAppExtensionAttributes");
+			if (extensionKit is not null) {
+				if (extension is not null) {
+					Log.LogError (7236, info, MSBStrings.E7236, info);
+				} else if (string.IsNullOrEmpty (extensionKit.Get<PString> ("EXExtensionPointIdentifier")?.Value)) {
+					Log.LogError (7237, info, MSBStrings.E7237, info);
+				}
+				return;
+			}
 			if (extension is null) {
 				Log.LogError (7009, info, MSBStrings.E7009, name);
 				return;
@@ -359,8 +368,12 @@ namespace Xamarin.MacDev.Tasks {
 			var mainShortVersionString = plist.GetCFBundleShortVersionString ();
 			var mainVersion = plist.GetCFBundleVersion ();
 
-			if (Directory.Exists (Path.Combine (AppBundlePath, "PlugIns"))) {
-				foreach (var plugin in Directory.GetDirectories (Path.Combine (AppBundlePath, "PlugIns"), "*.appex"))
+			foreach (var container in new [] { "PlugIns", "Extensions" }) {
+				var root = Platform == ApplePlatform.MacOSX || Platform == ApplePlatform.MacCatalyst ? Path.Combine (AppBundlePath, "Contents") : AppBundlePath;
+				var directory = Path.Combine (root, container);
+				if (!Directory.Exists (directory))
+					continue;
+				foreach (var plugin in Directory.GetDirectories (directory, "*.appex"))
 					ValidateAppExtension (plugin, bundleIdentifier, mainShortVersionString, mainVersion);
 			}
 

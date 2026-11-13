@@ -58,5 +58,25 @@ namespace Bug57870 {
 			[Wrap ("_PresenceType4 = value.GetConstant ()")]
 			set;
 		}
+
+		[Export ("presenceType5")]
+		NSString _PresenceType5 { get; [NotImplemented ("Custom read-only message")] set; }
+
+		PersonRelationship PresenceType5 {
+			[Wrap ("PersonRelationshipExtensions.GetValue (_PresenceType5)")]
+			get;
+			[NotImplemented]
+			set;
+		}
+
+		[Export ("presenceType6")]
+		NSString _PresenceType6 { get; [NotImplemented ("Use \"mutable\" instead.\nPath: C:\\bindings")] set; }
+
+		PersonRelationship PresenceType6 {
+			[Wrap ("PersonRelationshipExtensions.GetValue (_PresenceType6)")]
+			get;
+			[NotImplemented ("Use \"mutable\" instead.\nPath: C:\\bindings")]
+			set;
+		}
 	}
 }

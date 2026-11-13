@@ -17,20 +17,17 @@ namespace Foundation {
 	// This allows the Foo.set_XXX to exists but throw an exception
 	// but derived classes would then override the property
 	//
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Marks a property setter as unsupported on the bound type.</summary>
+	/// <remarks>The binding generator emits a setter that throws <see cref="NotSupportedException" />. A mutable subclass may override the property to support setting its value.</remarks>
 	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
 	public class NotImplementedAttribute : Attribute {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes the attribute with the default read-only property message.</summary>
 		public NotImplementedAttribute () { }
-		/// <param name="message">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes the attribute with a custom exception message.</summary>
+		/// <param name="message">The message for the <see cref="NotSupportedException" /> thrown by the generated setter.</param>
 		public NotImplementedAttribute (string message) { Message = message; }
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the exception message for the generated setter.</summary>
+		/// <value>The custom message, or <see langword="null" /> to use the default message explaining that the property is read-only and a mutable subclass may support setting it.</value>
 		public string? Message { get; set; }
 	}
 }

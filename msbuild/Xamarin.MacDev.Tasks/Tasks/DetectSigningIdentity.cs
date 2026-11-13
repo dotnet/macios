@@ -522,6 +522,26 @@ namespace Xamarin.MacDev.Tasks {
 			return matches [0];
 		}
 
+		protected virtual IList<MobileProvision> GetMobileProvisions (MobileProvisionPlatform platform)
+		{
+			return MobileProvisionIndex.GetMobileProvisions (platform, includeExpired: true);
+		}
+
+		protected void ReportSigningIdentityMismatch (MobileProvisionPlatform platform, MobileProvision profile)
+		{
+			if (profile.Uuid == ProvisioningProfile) {
+				Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+				return;
+			}
+
+			var matches = GetMobileProvisions (platform).Where (v => v.Name == ProvisioningProfile).Select (v => v.Uuid).Distinct ().ToArray ();
+			if (matches.Length > 1) {
+				Log.LogError (MSBStrings.MultipleProvisioningProfiles, matches.Length, ProvisioningProfile, string.Join ("', '", matches));
+			} else {
+				Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+			}
+		}
+
 		public override bool Execute ()
 		{
 			try {
@@ -646,7 +666,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (certs.Count > 0) {
 					identity.SigningKey = certs.FirstOrDefault (c => profile.DeveloperCertificates.Any (p => p.Thumbprint == c.Thumbprint));
 					if (identity.SigningKey is null) {
-						Log.LogError (MSBStrings.E0145, PlatformName, ProvisioningProfile);
+						ReportSigningIdentityMismatch (platform, profile);
 						return false;
 					}
 				}

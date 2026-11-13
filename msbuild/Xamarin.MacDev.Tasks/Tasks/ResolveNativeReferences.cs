@@ -339,7 +339,28 @@ namespace Xamarin.MacDev.Tasks {
 			"PublishFolderType",
 			"TargetDirectory",
 			"SourceDirectory",
+			"TargetPath",
+			"Link",
+			"DestinationSubDirectory",
 		};
+
+		internal static void ApplyManifestMetadata (TaskLoggingHelper log, ITaskItem item, XmlNode referenceNode, string manifest)
+		{
+			foreach (XmlNode attribute in referenceNode.ChildNodes) {
+				if (attribute.NodeType != XmlNodeType.Element)
+					continue;
+				if (!blockedManifestMetadata.Contains (attribute.Name)) {
+					try {
+						item.SetMetadata (attribute.Name, attribute.InnerText);
+						continue;
+					} catch (ArgumentException) {
+						// Reserved MSBuild metadata names (e.g. 'FullPath') can't be set and shouldn't appear
+						// in a manifest; ignore (and warn about) them rather than failing the build.
+					}
+				}
+				log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in '{2}': this metadata is computed by the build and can't be set in a native reference manifest. */, attribute.Name, referenceNode.Attributes? ["Name"]?.Value, manifest);
+			}
+		}
 
 		// Returns true if 'path' is not a safe relative subpath: i.e. it's rooted/absolute, drive-qualified,
 		// or contains a '..' traversal segment. Used to validate untrusted path-shaped values that come
@@ -437,21 +458,7 @@ namespace Xamarin.MacDev.Tasks {
 				// Values from the manifest, overriding the defaults above if provided. Skip the
 				// build-controlled path/layout/identity metadata: the manifest is passive data and must not
 				// be able to inject metadata that could redirect output outside the intended directory.
-				foreach (XmlNode attribute in referenceNode.ChildNodes) {
-					if (attribute.NodeType != XmlNodeType.Element)
-						continue;
-					if (blockedManifestMetadata.Contains (attribute.Name)) {
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
-						continue;
-					}
-					try {
-						t.SetMetadata (attribute.Name, attribute.InnerText);
-					} catch (ArgumentException) {
-						// Reserved MSBuild metadata names (e.g. 'FullPath') can't be set and shouldn't appear
-						// in a manifest; ignore (and warn about) them rather than failing the build.
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
-					}
-				}
+				ApplyManifestMetadata (Log, t, referenceNode, r.ItemSpec);
 
 				native_frameworks.Add (t);
 			}

@@ -2555,6 +2555,7 @@
 			<_LinkNativeExecutableCache Include="@(_MainLinkerFlags)" />
 			<_LinkNativeExecutableCache Include="@(_LinkNativeExecutableInputs)" />
 			<_LinkNativeExecutableCache Include="@(_NativeReferences)" />
+			<_LinkNativeExecutableCache Include="@(_NativeReferences -> '%(ForceLoad);%(Frameworks);%(WeakFrameworks);%(IsCxx);%(LinkerFlags);%(NeedsGccExceptionHandling);%(SmartLink)')" />
 			<_LinkNativeExecutableCache Include="@(_ProcessedReferenceNativeSymbol)" />
 			<_LinkNativeExecutableCache Include="@(_UseClassicLinker)" />
 			<_LinkNativeExecutableCache Include="@(_AllLinkerFlags)" />

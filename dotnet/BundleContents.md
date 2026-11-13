@@ -219,6 +219,46 @@ We will link with these libraries when linking the native executable.
 
 Static libraries are not copied to the app bundle.
 
+### Native library manifests
+
+NuGet packages can supply additional linker options for native libraries without
+requiring a binding project. Place a manifest next to the library, using the same
+base name and the `.manifest` extension: for example, `libtest.manifest` next to
+`libtest.a`.
+
+The manifest uses the binding resource package format:
+
+```xml
+<BindingAssembly>
+  <NativeReference Name="libtest.a">
+    <ForceLoad>True</ForceLoad>
+    <Frameworks>CoreLocation Foundation ModelIO</Frameworks>
+    <IsCxx>True</IsCxx>
+    <LinkerFlags>-lz</LinkerFlags>
+    <NeedsGccExceptionHandling>False</NeedsGccExceptionHandling>
+    <SmartLink>False</SmartLink>
+    <WeakFrameworks>Metal</WeakFrameworks>
+  </NativeReference>
+</BindingAssembly>
+```
+
+The `Name` must match the library's filename, including its extension. Only the
+matching `NativeReference` supplies metadata; the manifest does not add other
+native libraries. Omitted metadata retains the normal build behavior.
+
+Manifests are supported for static libraries (`.a`), dynamic libraries (`.dylib`),
+plugins (`.so`), frameworks, xcframeworks, and compressed frameworks or
+xcframeworks. For `Test.framework`, `Test.xcframework`, `Test.framework.zip`, or
+`Test.xcframework.zip`, the sidecar is `Test.manifest`, next to the directory or
+archive, and `Name` is the directory or archive's filename.
+Plugins retain their normal on-demand loading behavior; supplying a manifest does
+not cause them to be linked into the executable.
+
+The manifest is build metadata and is not copied into the app bundle.
+Build-controlled path and layout metadata cannot be overridden by a manifest.
+Malformed manifests or manifests without exactly one matching native reference
+cause a build error.
+
 ### Unknown
 
 We show a warning, and we don't copy the item to the app bundle (i.e. treat it

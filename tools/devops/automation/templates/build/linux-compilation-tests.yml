@@ -1,0 +1,98 @@
+parameters:
+
+- name: isPR
+  type: boolean
+
+- name: repositoryAlias
+  type: string
+  default: self
+
+- name: commit
+  type: string
+  default: HEAD
+
+- name: buildPackages
+  type: boolean
+
+- name: stageDisplayNamePrefix
+  type: string
+  default: ''
+
+stages:
+
+- stage: linux_compilation_tests
+  displayName: '${{ parameters.stageDisplayNamePrefix }}Linux Compilation Tests'
+  dependsOn:
+  - ${{ if parameters.buildPackages }}:
+    - build_packages
+  - configure_build
+  condition: >-
+    and(succeeded(),
+      contains(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], 'ios'),
+      contains(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], 'tvos'),
+      contains(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], 'maccatalyst'),
+      contains(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], 'macos'))
+  jobs:
+  - job: linux_compilation
+    displayName: 'Compile MySimpleApp for all Apple platforms on Linux'
+    pool:
+      vmImage: ubuntu-latest
+    timeoutInMinutes: 60
+    steps:
+    - template: ../common/checkout.yml
+      parameters:
+        isPR: ${{ parameters.isPR }}
+        repositoryAlias: ${{ parameters.repositoryAlias }}
+        commit: ${{ parameters.commit }}
+
+    - ${{ if parameters.buildPackages }}:
+      - task: DownloadPipelineArtifact@2
+        displayName: 'Download built workloads'
+        inputs:
+          patterns: |
+            not-signed-package/**
+            WorkloadRollback/**
+          path: $(Build.SourcesDirectory)/artifacts
+    - ${{ else }}:
+      - download: macios
+        artifact: not-signed-package
+      - download: macios
+        artifact: WorkloadRollback
+      - task: CopyFiles@2
+        displayName: 'Copy workload artifacts'
+        inputs:
+          SourceFolder: $(Pipeline.Workspace)/macios
+          Contents: |
+            not-signed-package/**
+            WorkloadRollback/**
+          TargetFolder: $(Build.SourcesDirectory)/artifacts
+
+    - task: Bash@3
+      displayName: 'Install workloads and compile MySimpleApp'
+      inputs:
+        targetType: filePath
+        filePath: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/run-linux-compilation-tests.sh
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Linux compilation results'
+      condition: always()
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: $(Build.SourcesDirectory)/linux-test-results/*.trx
+        failTaskOnFailedTests: true
+        failTaskOnMissingResultsFile: true
+
+    - task: CopyFiles@2
+      displayName: 'Collect MySimpleApp build logs'
+      condition: always()
+      inputs:
+        SourceFolder: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/MySimpleApp
+        Contents: '**/*.binlog'
+        TargetFolder: $(Build.ArtifactStagingDirectory)/linux-compilation-logs
+
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish MySimpleApp build logs'
+      condition: always()
+      inputs:
+        targetPath: $(Build.ArtifactStagingDirectory)/linux-compilation-logs
+        artifact: linux-compilation-logs

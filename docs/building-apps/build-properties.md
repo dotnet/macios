@@ -934,6 +934,17 @@ If a project is an app extension.
 
 If a project is a binding project.
 
+## IsMacEnabled
+
+Whether Apple-native build steps can execute locally or on a connected Mac.
+
+Defaults to `true` on macOS and `false` on other operating systems. A connected
+Windows build sets this property when establishing the connection to its Mac.
+
+On Linux, `dotnet build` compiles the managed code without running the Apple-native
+build steps. This does not produce a functional `.app` bundle; native compilation,
+resource processing, signing, and packaging still require a Mac and Xcode.
+
 ## IsXPCService
 
 If a macOS extension is an xpc service.

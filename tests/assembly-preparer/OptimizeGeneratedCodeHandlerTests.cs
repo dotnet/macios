@@ -44,6 +44,36 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		Assert.That (cctor.Body.Instructions [0].OpCode.Code, Is.EqualTo (Code.Ret), "Static constructor should only contain ret");
 	}
 
+	[TestCase ("link", true)]
+	[TestCase ("copy", false)]
+	public void SetBeforeFieldInitForTrimmedProtocolInterfaces (string trimMode, bool expectedBeforeFieldInit)
+	{
+		var code = @"
+		using System;
+		using Foundation;
+		using ObjCRuntime;
+
+		[Protocol]
+		interface IMyProtocol {
+			[BindingImpl (BindingImplOptions.Optimizable)]
+			static IMyProtocol () {
+				GC.KeepAlive (null);
+			}
+		}
+
+		class MyClass : NSObject, IMyProtocol {
+		}";
+
+		AssertPrepareCode (ApplePlatform.MacOSX, true, preparer => {
+			preparer.Registrar = RegistrarMode.Dynamic;
+			preparer.Optimizations.RegisterProtocols = true;
+		}, code, out var outputPath, testAssemblyTrimMode: trimMode);
+
+		using var assemblyDefinition = AssemblyDefinition.ReadAssembly (outputPath);
+		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "IMyProtocol");
+		Assert.That (type.IsBeforeFieldInit, Is.EqualTo (expectedBeforeFieldInit), "BeforeFieldInit");
+	}
+
 	[Test]
 	[TestCase (ApplePlatform.MacCatalyst, false)]
 	[TestCase (ApplePlatform.iOS, false)]

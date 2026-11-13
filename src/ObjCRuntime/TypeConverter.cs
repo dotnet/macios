@@ -29,7 +29,7 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)] // To inline the Runtime.DynamicRegistrationSupported code if possible.
 		public static Type ToManaged (string type)
 		{
-			type = ThrowHelper.ThrowIfNull (type);
+			ArgumentNullException.ThrowIfNull (type);
 			if (type.Length == 0)
 				ThrowHelper.ThrowArgumentException (nameof (type), "The type encoding must not be empty.");
 
@@ -118,13 +118,14 @@ namespace ObjCRuntime {
 		/// </remarks>
 		public static string ToNative (Type type)
 		{
-			type = ThrowHelper.ThrowIfNull (type);
+			ArgumentNullException.ThrowIfNull (type);
 
 			if (type.IsGenericParameter)
 				throw new ArgumentException ("Unable to convert generic types");
 
 			if (type.IsByRef) {
-				var elementType = ThrowHelper.ThrowIfNull (type.GetElementType ());
+				var elementType = type.GetElementType ();
+				ArgumentNullException.ThrowIfNull (elementType, "type.GetElementType ()");
 				return "^" + ToNative (elementType);
 			}
 			if (type == typeof (IntPtr)) return "^v";

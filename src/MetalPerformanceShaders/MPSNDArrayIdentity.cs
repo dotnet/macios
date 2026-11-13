@@ -40,8 +40,7 @@ namespace MetalPerformanceShaders {
 		[UnsupportedSimulator ("tvos")]
 		public void ReshapeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray sourceArray, nuint [] dimensionSizes, MPSNDArray destinationArray)
 		{
-			if (dimensionSizes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dimensionSizes));
+			ArgumentNullException.ThrowIfNull (dimensionSizes);
 
 			unsafe {
 				fixed (nuint* dimensionsPtr = dimensionSizes) {

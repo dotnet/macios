@@ -619,8 +619,7 @@ namespace AudioUnit {
 		public void ValidateAsync (NSDictionary? validationParameters,
 				Action<AudioComponentValidationResult, NSDictionary?> onCompletion, out int resultCode)
 		{
-			if (onCompletion is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompletion));
+			ArgumentNullException.ThrowIfNull (onCompletion);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, AudioComponentValidationResult, IntPtr, void> trampoline = &TrampolineAction;

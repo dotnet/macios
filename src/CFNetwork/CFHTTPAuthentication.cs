@@ -33,8 +33,7 @@ namespace CFNetwork {
 
 		public static CFHTTPAuthentication? CreateFromResponse (CFHTTPMessage response)
 		{
-			if (response is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (response));
+			ArgumentNullException.ThrowIfNull (response);
 
 			if (response.IsRequest)
 				throw new InvalidOperationException ();
@@ -59,8 +58,7 @@ namespace CFNetwork {
 
 		public bool AppliesToRequest (CFHTTPMessage request)
 		{
-			if (request is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
+			ArgumentNullException.ThrowIfNull (request);
 
 			if (!request.IsRequest)
 				throw new InvalidOperationException ();

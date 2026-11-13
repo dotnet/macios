@@ -516,8 +516,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static CMTime FromDictionary (NSDictionary dict)
 		{
-			if (dict is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dict));
+			ArgumentNullException.ThrowIfNull (dict);
 			CMTime result = CMTimeMakeFromDictionary (dict.Handle);
 			GC.KeepAlive (dict);
 			return result;

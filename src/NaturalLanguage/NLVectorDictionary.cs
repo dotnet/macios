@@ -21,8 +21,7 @@ namespace NaturalLanguage {
 
 		public float []? this [NSString key] {
 			get {
-				if (key is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+				ArgumentNullException.ThrowIfNull (key);
 
 				var a = Dictionary.LowlevelObjectForKey (key);
 				return NSArray.ArrayFromHandleDropNullElements<float> (a, input => {
@@ -30,8 +29,7 @@ namespace NaturalLanguage {
 				});
 			}
 			set {
-				if (key is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+				ArgumentNullException.ThrowIfNull (key);
 
 				if (value is null)
 					RemoveValue (key);

@@ -70,8 +70,7 @@ namespace Security {
 		///         </remarks>
 		public SecCertificate (NSData data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			Initialize (data);
 		}
@@ -82,8 +81,7 @@ namespace Security {
 		///         </remarks>
 		public SecCertificate (byte [] data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			using (NSData cert = NSData.FromArray (data)) {
 				Initialize (cert);
@@ -96,8 +94,7 @@ namespace Security {
 		///         </remarks>
 		public SecCertificate (X509Certificate certificate)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 
 			using (NSData cert = NSData.FromArray (certificate.GetRawCertData ())) {
 				Initialize (cert);
@@ -110,8 +107,7 @@ namespace Security {
 		///         </remarks>
 		public SecCertificate (X509Certificate2 certificate)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 
 			using (NSData cert = NSData.FromArray (certificate.RawData)) {
 				Initialize (cert);
@@ -185,10 +181,8 @@ namespace Security {
 			 * This is a little bit expensive, but unfortunately there is no better API to compare two
 			 * SecCertificateRef's for equality.
 			 */
-			if (first is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (first));
-			if (second is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (second));
+			ArgumentNullException.ThrowIfNull (first);
+			ArgumentNullException.ThrowIfNull (second);
 			if (first.Handle == second.Handle)
 				return true;
 
@@ -529,8 +523,7 @@ namespace Security {
 		/// </remarks>
 		public static SecIdentity Import (byte [] data, string password)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			if (string.IsNullOrEmpty (password)) // SecPKCS12Import() doesn't allow empty passwords.
 				throw new ArgumentException (nameof (password));
 			using (var pwstring = new NSString (password))
@@ -623,8 +616,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public static SecIdentity Import (X509Certificate2 certificate)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 			if (!certificate.HasPrivateKey)
 				throw new InvalidOperationException ("Need X509Certificate2 with a private key.");
 
@@ -691,8 +683,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateRandomKey' instead.")]
 		public static SecStatusCode GenerateKeyPair (NSDictionary parameters, out SecKey? publicKey, out SecKey? privateKey)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			IntPtr pub, priv;
 
@@ -857,8 +848,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateSignature' instead.")]
 		public unsafe SecStatusCode RawSign (SecPadding padding, byte [] dataToSign, out byte [] result)
 		{
-			if (dataToSign is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dataToSign));
+			ArgumentNullException.ThrowIfNull (dataToSign);
 
 			fixed (byte* bp = dataToSign)
 				return _RawSign (padding, (IntPtr) bp, dataToSign.Length, out result);
@@ -943,10 +933,8 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'VerifySignature' instead.")]
 		public SecStatusCode RawVerify (SecPadding padding, byte [] signedData, byte [] signature)
 		{
-			if (signature is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (signature));
-			if (signedData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (signedData));
+			ArgumentNullException.ThrowIfNull (signature);
+			ArgumentNullException.ThrowIfNull (signedData);
 			unsafe {
 				// SecKeyRawVerify will try to read from the signedData/signature pointers even if
 				// the corresponding length is 0, which may crash (happens in Xcode 11 beta 1)
@@ -1008,10 +996,8 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateEncryptedData' instead.")]
 		public SecStatusCode Encrypt (SecPadding padding, byte [] plainText, byte [] cipherText)
 		{
-			if (cipherText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cipherText));
-			if (plainText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (plainText));
+			ArgumentNullException.ThrowIfNull (cipherText);
+			ArgumentNullException.ThrowIfNull (plainText);
 			unsafe {
 				fixed (byte* cp = cipherText)
 				fixed (byte* pp = plainText) {
@@ -1087,8 +1073,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios15.0", "Use 'CreateDecryptedData' instead.")]
 		SecStatusCode _Decrypt (SecPadding padding, byte [] cipherText, ref byte []? plainText)
 		{
-			if (cipherText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cipherText));
+			ArgumentNullException.ThrowIfNull (cipherText);
 
 			unsafe {
 				fixed (byte* cp = cipherText) {
@@ -1148,8 +1133,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		static public SecKey? CreateRandomKey (NSDictionary parameters, out NSError? error)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			IntPtr err;
 			IntPtr key;
@@ -1193,8 +1177,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		static public SecKey? CreateRandomKey (SecKeyGenerationParameters parameters, out NSError? error)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 			if (parameters.KeyType == SecKeyType.Invalid)
 				throw new ArgumentException ("invalid 'SecKeyType'", "SecKeyGeneration.KeyType");
 
@@ -1222,10 +1205,8 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		static public SecKey? Create (NSData keyData, NSDictionary parameters, out NSError? error)
 		{
-			if (keyData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (keyData));
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (keyData);
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			IntPtr err;
 			IntPtr key;
@@ -1388,8 +1369,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? CreateSignature (SecKeyAlgorithm algorithm, NSData dataToSign, out NSError? error)
 		{
-			if (dataToSign is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dataToSign));
+			ArgumentNullException.ThrowIfNull (dataToSign);
 
 			IntPtr data;
 			IntPtr err;
@@ -1423,10 +1403,8 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool VerifySignature (SecKeyAlgorithm algorithm, NSData signedData, NSData signature, out NSError? error)
 		{
-			if (signedData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (signedData));
-			if (signature is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (signature));
+			ArgumentNullException.ThrowIfNull (signedData);
+			ArgumentNullException.ThrowIfNull (signature);
 
 			bool result;
 			IntPtr err;
@@ -1460,8 +1438,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? CreateEncryptedData (SecKeyAlgorithm algorithm, NSData plaintext, out NSError? error)
 		{
-			if (plaintext is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (plaintext));
+			ArgumentNullException.ThrowIfNull (plaintext);
 
 			IntPtr data;
 			IntPtr err;
@@ -1494,8 +1471,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? CreateDecryptedData (SecKeyAlgorithm algorithm, NSData ciphertext, out NSError? error)
 		{
-			if (ciphertext is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ciphertext));
+			ArgumentNullException.ThrowIfNull (ciphertext);
 
 			IntPtr data;
 			IntPtr err;
@@ -1529,10 +1505,8 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? GetKeyExchangeResult (SecKeyAlgorithm algorithm, SecKey publicKey, NSDictionary parameters, out NSError? error)
 		{
-			if (publicKey is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (publicKey));
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (publicKey);
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			IntPtr data;
 			IntPtr err;
@@ -1560,8 +1534,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public NSData? GetKeyExchangeResult (SecKeyAlgorithm algorithm, SecKey publicKey, SecKeyKeyExchangeParameter parameters, out NSError? error)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			return GetKeyExchangeResult (algorithm, publicKey, parameters.Dictionary!, out error);
 		}

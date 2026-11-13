@@ -162,8 +162,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public MidiError SetParams (MidiThruConnectionParams connectionParams)
 		{
-			if (connectionParams is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connectionParams));
+			ArgumentNullException.ThrowIfNull (connectionParams);
 
 			using (var data = connectionParams.WriteStruct ()) {
 				var error = MIDIThruConnectionSetParams (GetCheckedHandle (), data.Handle);
@@ -183,8 +182,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public static MidiThruConnection []? Find (string persistentOwnerID, out MidiError error)
 		{
-			if (persistentOwnerID is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (persistentOwnerID));
+			ArgumentNullException.ThrowIfNull (persistentOwnerID);
 
 			IntPtr ret;
 			using var persistentOwnerIDHandle = new TransientCFString (persistentOwnerID);

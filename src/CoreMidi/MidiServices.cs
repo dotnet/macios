@@ -329,8 +329,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public void SetData (IntPtr property, NSData data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			MIDIObjectSetDataProperty (handle, property, data.Handle);
 			GC.KeepAlive (data);
 		}
@@ -368,8 +367,7 @@ namespace CoreMidi {
 		///         <remarks>To be added.</remarks>
 		public void SetString (IntPtr property, string value)
 		{
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 			using (var nsval = new NSString (value)) {
 				MIDIObjectSetDictionaryProperty (handle, property, nsval.Handle);
 			}
@@ -864,8 +862,7 @@ namespace CoreMidi {
 
 		MidiPacket (long timestamp, byte [] bytes, int start, int length, bool check)
 		{
-			if (bytes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bytes));
+			ArgumentNullException.ThrowIfNull (bytes);
 			if (length > UInt16.MaxValue)
 				throw new ArgumentException ("length is bigger than 64k");
 
@@ -1152,8 +1149,7 @@ namespace CoreMidi {
 		///         <remarks>This method can be called multiple times to connect various endpoints to this port.</remarks>
 		public MidiError ConnectSource (MidiEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			MidiError result = (MidiError) MIDIPortConnectSource (handle, endpoint.handle, GCHandle.ToIntPtr (gch));
 			GC.KeepAlive (endpoint);
 			return result;
@@ -1168,8 +1164,7 @@ namespace CoreMidi {
 		///         </remarks>
 		public MidiError Disconnect (MidiEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			MidiError result = (MidiError) MIDIPortDisconnectSource (handle, endpoint.handle);
 			GC.KeepAlive (endpoint);
 			return result;
@@ -1208,10 +1203,8 @@ namespace CoreMidi {
 		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiError Send (MidiEndpoint endpoint, MidiPacket [] packets)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			if (packets is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packets));
+			ArgumentNullException.ThrowIfNull (endpoint);
+			ArgumentNullException.ThrowIfNull (packets);
 			var p = MidiPacket.CreatePacketList (packets);
 			var code = MIDISend (handle, endpoint.handle, p);
 			GC.KeepAlive (endpoint);
@@ -1343,8 +1336,7 @@ namespace CoreMidi {
 				return GetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID, value);
 			}
 		}
@@ -1369,8 +1361,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDisplayName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDisplayName, value);
 			}
 		}
@@ -1383,8 +1374,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner, value);
 			}
 		}
@@ -1508,8 +1498,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyModel);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyModel, value);
 			}
 		}
@@ -1522,8 +1511,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyName, value);
 			}
 		}
@@ -1536,8 +1524,7 @@ namespace CoreMidi {
 				return GetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration, value);
 			}
 		}
@@ -1873,8 +1860,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyImage);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyImage, value);
 			}
 		}
@@ -1887,8 +1873,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDriverDeviceEditorApp);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDriverDeviceEditorApp, value);
 			}
 		}
@@ -1965,8 +1950,7 @@ namespace CoreMidi {
 #endif
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 #if __MACOS__
 				SetString (MidiPropertyExtensions.kMIDIPropertyFactoryPatchNameFile, value);
 #endif
@@ -1995,8 +1979,7 @@ namespace CoreMidi {
 #endif
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 #if __MACOS__
 				SetString (MidiPropertyExtensions.kMIDIPropertyUserPatchNameFile, value);
@@ -2013,8 +1996,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyNameConfigurationDictionary);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyNameConfigurationDictionary, value);
 			}
 		}
@@ -2063,8 +2045,7 @@ namespace CoreMidi {
 				return GetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID, value);
 			}
 		}
@@ -2089,8 +2070,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDisplayName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDisplayName, value);
 			}
 		}
@@ -2103,8 +2083,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner, value);
 			}
 		}
@@ -2174,8 +2153,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyManufacturer);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyManufacturer, value);
 			}
 		}
@@ -2230,8 +2208,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyModel);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyModel, value);
 			}
 		}
@@ -2244,8 +2221,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyName, value);
 			}
 		}
@@ -2258,8 +2234,7 @@ namespace CoreMidi {
 				return GetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration, value);
 			}
 		}
@@ -2713,8 +2688,7 @@ namespace CoreMidi {
 		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiError Received (MidiPacket [] packets)
 		{
-			if (packets is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packets));
+			ArgumentNullException.ThrowIfNull (packets);
 
 			var block = MidiPacket.CreatePacketList (packets);
 			var code = MIDIReceived (handle, block);
@@ -2789,8 +2763,7 @@ namespace CoreMidi {
 				return GetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetData (MidiPropertyExtensions.kMIDIPropertyConnectionUniqueID, value);
 			}
 		}
@@ -2803,8 +2776,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDisplayName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDisplayName, value);
 			}
 		}
@@ -2817,8 +2789,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyDriverOwner, value);
 			}
 		}
@@ -2855,8 +2826,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyManufacturer);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyManufacturer, value);
 			}
 		}
@@ -2887,8 +2857,7 @@ namespace CoreMidi {
 				return GetString (MidiPropertyExtensions.kMIDIPropertyName);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetString (MidiPropertyExtensions.kMIDIPropertyName, value);
 			}
 		}
@@ -2901,8 +2870,7 @@ namespace CoreMidi {
 				return GetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				SetDictionary (MidiPropertyExtensions.kMIDIPropertyNameConfiguration, value);
 			}
 		}

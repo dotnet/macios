@@ -303,8 +303,7 @@ namespace CoreGraphics {
 		public ushort GetGlyphWithGlyphName (string s)
 		{
 			// note: the API is marked to accept a null CFStringRef but it currently (iOS9 beta 4) crash when provided one
-			if (s is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (s));
+			ArgumentNullException.ThrowIfNull (s);
 			var sHandle = CFString.CreateNative (s);
 			try {
 				return CGFontGetGlyphWithGlyphName (Handle, sHandle);

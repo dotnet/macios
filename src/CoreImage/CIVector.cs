@@ -51,8 +51,7 @@ namespace CoreImage {
 		[Export ("initWithValues:count:")]
 		public unsafe CIVector (nfloat [] values, nint count) : base (NSObjectFlag.Empty)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			if (count > values.Length)
 				throw new ArgumentOutOfRangeException (nameof (count));
 
@@ -75,8 +74,7 @@ namespace CoreImage {
 		/// <param name="values">The values.</param>
 		public unsafe static CIVector FromValues (nfloat [] values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			fixed (nfloat* ptr = values)
 				return _FromValues ((IntPtr) ptr, values.Length);
 		}

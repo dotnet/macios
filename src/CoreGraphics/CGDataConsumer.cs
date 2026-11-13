@@ -62,8 +62,7 @@ namespace CoreGraphics {
 		static IntPtr Create (NSMutableData data)
 		{
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			IntPtr result = CGDataConsumerCreateWithCFData (data.Handle);
 			GC.KeepAlive (data);
 			return result;
@@ -82,8 +81,7 @@ namespace CoreGraphics {
 		static IntPtr Create (NSUrl url)
 		{
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			IntPtr result = CGDataConsumerCreateWithURL (url.Handle);
 			GC.KeepAlive (url);
 			return result;

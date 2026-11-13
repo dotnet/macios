@@ -986,8 +986,6 @@ Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer.Equals(System.String, Syste
 Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer.GetHashCode(System.String)
 Microsoft.iOS.dll:ObjCRuntime.ThrowHelper
 Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentException(System.String, System.String)
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowIfNull`1(T, System.String)
 Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.TransientCFString
 Microsoft.iOS.dll:ObjCRuntime.TransientCFString..ctor(System.String)

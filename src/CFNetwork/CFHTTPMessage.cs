@@ -77,10 +77,8 @@ namespace CFNetwork {
 
 		public static CFHTTPMessage CreateRequest (CFUrl url, NSString method, Version? version)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			if (method is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (method));
+			ArgumentNullException.ThrowIfNull (url);
+			ArgumentNullException.ThrowIfNull (method);
 
 			var handle = CFHTTPMessageCreateRequest (
 				IntPtr.Zero, method.Handle, url.Handle, GetVersion (version));
@@ -96,8 +94,7 @@ namespace CFNetwork {
 
 		public static CFHTTPMessage CreateRequest (Uri uri, string method, Version? version)
 		{
-			if (uri is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uri));
+			ArgumentNullException.ThrowIfNull (uri);
 
 			// the method is obsolete, but EscapeDataString does not work the same way. We could get the components
 			// of the Uri and then EscapeDataString, but this might introduce bugs, so for now we will ignore the warning
@@ -187,8 +184,7 @@ namespace CFNetwork {
 
 		public bool AppendBytes (byte [] bytes)
 		{
-			if (bytes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bytes));
+			ArgumentNullException.ThrowIfNull (bytes);
 
 			unsafe {
 				fixed (byte* byteptr = bytes) {
@@ -199,8 +195,7 @@ namespace CFNetwork {
 
 		public bool AppendBytes (byte [] bytes, nint count)
 		{
-			if (bytes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bytes));
+			ArgumentNullException.ThrowIfNull (bytes);
 
 			if (bytes.Length < count)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (count), count, "Must not be longer than array length");
@@ -257,10 +252,8 @@ namespace CFNetwork {
 
 		public void ApplyCredentials (CFHTTPAuthentication? auth, NetworkCredential credential)
 		{
-			if (auth is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (auth));
-			if (credential is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (credential));
+			ArgumentNullException.ThrowIfNull (auth);
+			ArgumentNullException.ThrowIfNull (credential);
 
 			if (auth.RequiresAccountDomain) {
 				ApplyCredentialDictionary (auth, credential);
@@ -336,10 +329,8 @@ namespace CFNetwork {
 									   NSString password, AuthenticationScheme scheme,
 									   bool forProxy)
 		{
-			if (username is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (username));
-			if (password is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (password));
+			ArgumentNullException.ThrowIfNull (username);
+			ArgumentNullException.ThrowIfNull (password);
 
 			bool result = CFHTTPMessageAddAuthentication (
 				Handle, failureResponse.GetHandle (), username.Handle,
@@ -356,10 +347,8 @@ namespace CFNetwork {
 
 		public void ApplyCredentialDictionary (CFHTTPAuthentication auth, NetworkCredential credential)
 		{
-			if (auth is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (auth));
-			if (credential is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (credential));
+			ArgumentNullException.ThrowIfNull (auth);
+			ArgumentNullException.ThrowIfNull (credential);
 
 			var length = credential.Domain is null ? 2 : 3;
 			var keys = new NSString [length];
@@ -403,8 +392,7 @@ namespace CFNetwork {
 
 		public void SetHeaderFieldValue (string name, string value)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var nameHandle = CFString.CreateNative (name);
 			var valueHandle = CFString.CreateNative (value);
@@ -422,8 +410,7 @@ namespace CFNetwork {
 
 		public void SetBody (byte [] buffer)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 
 			using (var data = new CFDataBuffer (buffer))
 				CFHTTPMessageSetBody (Handle, data.Handle);

@@ -48,8 +48,7 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException"><paramref name="self" /> is <see langword="null" />.</exception>
 		public static NSString [] GetConstants (this NSRunLoopMode [] self)
 		{
-			if (self is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (self));
+			ArgumentNullException.ThrowIfNull (self);
 
 			var array = new NSString [self.Length];
 			for (int n = 0; n < self.Length; n++)

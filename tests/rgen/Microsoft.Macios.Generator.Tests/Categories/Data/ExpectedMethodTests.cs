@@ -77,8 +77,7 @@ public static partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -109,8 +108,7 @@ public static partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity2boolstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -141,8 +139,7 @@ public static partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public static unsafe partial void CompleteRequest (this global::Foundation.NSObject self, global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity3boolstringstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -189,8 +186,7 @@ public static partial class MethodTests
 	[Export ("filteredArrayUsingStrings:")]
 	public static unsafe partial global::Foundation.NSArray FilterStrings (this global::Foundation.NSObject self, string[] predicate)
 	{
-		if (predicate is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (predicate));
+		global::System.ArgumentNullException.ThrowIfNull (predicate, nameof (predicate));
 		using var nsa_predicate = global::Foundation.NSArray.FromStrings (predicate);
 		global::Foundation.NSArray ret;
 		ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (self.Handle, global::ObjCRuntime.Selector.GetHandle ("filteredArrayUsingStrings:"), nsa_predicate.Handle))!;
@@ -207,8 +203,7 @@ public static partial class MethodTests
 	[Export ("arrayWithContentsOfFile:")]
 	public static unsafe partial static global::Foundation.NSArray FromFile (this global::Foundation.NSObject self, string path)
 	{
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		global::Foundation.NSArray ret;
 		ret = global::ObjCRuntime.Runtime.GetNSObject<global::Foundation.NSArray> (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (self.Handle, global::ObjCRuntime.Selector.GetHandle ("arrayWithContentsOfFile:"), nspath))!;
@@ -243,8 +238,7 @@ public static partial class MethodTests
 	[Export ("bookmarkDataWithContentsOfURL:subdomain:error:")]
 	public static unsafe partial global::Foundation.NSData GetBookmarkData (this global::Foundation.NSObject self, global::Foundation.NSUrl bookmarkFileUrl, string subdomain, out global::Foundation.NSError? error)
 	{
-		if (subdomain is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (subdomain));
+		global::System.ArgumentNullException.ThrowIfNull (subdomain, nameof (subdomain));
 		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
 		var nssubdomain = global::CoreFoundation.CFString.CreateNative (subdomain);
 		global::ObjCRuntime.NativeHandle error__handle__;
@@ -265,8 +259,7 @@ public static partial class MethodTests
 	[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
 	public partial static void LoadFromHtml (this global::Foundation.NSObject self, global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		if (completionHandler is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		global::System.ArgumentNullException.ThrowIfNull (completionHandler, nameof (completionHandler));
 		var request__handle__ = request!.GetNonNullHandle (nameof (request));
 		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
@@ -302,8 +295,7 @@ public static partial class MethodTests
 	[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
 	public partial static void LoadFromHtmlNoName (this global::Foundation.NSObject self, global::Foundation.NSUrlRequest request, global::Foundation.NSDictionary options, global::Foundation.NSAttributedStringCompletionHandler completionHandler)
 	{
-		if (completionHandler is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		global::System.ArgumentNullException.ThrowIfNull (completionHandler, nameof (completionHandler));
 		var request__handle__ = request!.GetNonNullHandle (nameof (request));
 		var options__handle__ = options!.GetNonNullHandle (nameof (options));
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDNSAttributedStringCompletionHandler.CreateNullableBlock (completionHandler);
@@ -355,8 +347,7 @@ public static partial class MethodTests
 	[Export ("sortedArrayUsingComparator:")]
 	public static unsafe partial global::Foundation.NSArray Sort (this global::Foundation.NSObject self, global::Foundation.NSComparator cmptr)
 	{
-		if (cmptr is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmptr));
+		global::System.ArgumentNullException.ThrowIfNull (cmptr, nameof (cmptr));
 		using var block_cmptr = global::ObjCRuntime.Trampolines.SDNSComparator.CreateNullableBlock (cmptr);
 		global::ObjCRuntime.BlockLiteral* block_ptr_cmptr = cmptr is not null ? &block_cmptr : null;
 		global::Foundation.NSArray ret;
@@ -389,8 +380,7 @@ public static partial class MethodTests
 	[Export ("writeToFile:atomically:")]
 	public static unsafe partial bool WriteToFile (this global::Foundation.NSObject self, string path, bool useAuxiliaryFile)
 	{
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		bool ret;
 		ret = global::ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle_bool (self.Handle, global::ObjCRuntime.Selector.GetHandle ("writeToFile:atomically:"), nspath, useAuxiliaryFile ? (byte) 1 : (byte) 0) != 0;

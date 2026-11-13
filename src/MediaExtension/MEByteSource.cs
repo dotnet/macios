@@ -19,8 +19,7 @@ namespace MediaExtension {
 		/// <param name="completionHandler">The delegate which is called when the read operation has completed.</param>
 		public void ReadData (nuint length, long offset, byte [] data, MEByteSourceReadBytesCallback completionHandler)
 		{
-			if (data is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			if (length > (nuint) data.Length)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (length), length, $"length cannot be higher than the length of the data array.");
@@ -53,8 +52,7 @@ namespace MediaExtension {
 		/// <returns>True if successful, false otherwise.</returns>
 		public bool ReadData (nuint length, long offset, byte [] data, out nuint bytesRead, out NSError? error)
 		{
-			if (data is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			if (length > (nuint) data.Length)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (length), length, $"length cannot be higher than the length of the data array.");

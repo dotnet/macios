@@ -173,8 +173,7 @@ namespace CoreImage {
 		/// <param name="colorSpace">The color space for the resulting image.</param>
 		public static CIImage FromCGImage (CGImage image, CGColorSpace colorSpace)
 		{
-			if (colorSpace is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (colorSpace));
+			ArgumentNullException.ThrowIfNull (colorSpace);
 
 			CIImage result;
 			using (var dict = new NSMutableDictionary ()) {

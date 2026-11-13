@@ -75,8 +75,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public static bool TryOpen (string path, out OSStatus status, [NotNullWhen (true)] out SecKeychain? keychain)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			using var pathStr = new TransientString (path);
 			IntPtr handle = IntPtr.Zero;
 			unsafe {

@@ -124,8 +124,7 @@ namespace Vision {
 
 		public static VNCircle? CreateBoundingCircle (Vector2 [] points, out NSError error)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			if (points.Length == 0)
 				throw new ArgumentException ($"'{nameof (points)}' array must have more than zero elements.");
 

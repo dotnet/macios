@@ -162,8 +162,7 @@ namespace AudioUnit {
 		///         <remarks>Use RemoveRenderNotify to remove the notification.</remarks>
 		public AudioUnitStatus AddRenderNotify (RenderDelegate callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			AudioUnitStatus error = AudioUnitStatus.OK;
 			unsafe {
@@ -184,8 +183,7 @@ namespace AudioUnit {
 		///         </remarks>
 		public AudioUnitStatus RemoveRenderNotify (RenderDelegate callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 			if (!graphUserCallbacks.Contains (callback))
 				throw new ArgumentException ("Cannot unregister a callback that has not been registered");
 

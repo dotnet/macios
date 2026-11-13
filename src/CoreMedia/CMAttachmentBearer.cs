@@ -25,8 +25,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static NSDictionary? GetAttachments (this ICMAttachmentBearer target, CMAttachmentMode attachmentMode)
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
+			ArgumentNullException.ThrowIfNull (target);
 			var attachments = CMCopyDictionaryOfAttachments (IntPtr.Zero, target.Handle, attachmentMode);
 			GC.KeepAlive (target);
 			if (attachments == IntPtr.Zero)
@@ -47,8 +46,7 @@ namespace CoreMedia {
 			where TKey : class, INativeObject
 			where TValue : class, INativeObject
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
+			ArgumentNullException.ThrowIfNull (target);
 			var attachments = CMCopyDictionaryOfAttachments (IntPtr.Zero, target.Handle, attachmentMode);
 			GC.KeepAlive (target);
 			if (attachments == IntPtr.Zero)
@@ -68,10 +66,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static T? GetAttachment<T> (this ICMAttachmentBearer target, string key, out CMAttachmentMode attachmentModeOut) where T : class, INativeObject
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (target);
+			ArgumentNullException.ThrowIfNull (key);
 			var nsKey = CFString.CreateNative (key);
 			IntPtr attchm;
 			attachmentModeOut = default;
@@ -106,10 +102,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static void PropagateAttachments (this ICMAttachmentBearer source, ICMAttachmentBearer destination)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
-			if (destination is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
+			ArgumentNullException.ThrowIfNull (source);
+			ArgumentNullException.ThrowIfNull (destination);
 			CMPropagateAttachments (source.Handle, destination.Handle);
 			GC.KeepAlive (source);
 			GC.KeepAlive (destination);
@@ -122,8 +116,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveAllAttachments (this ICMAttachmentBearer target)
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
+			ArgumentNullException.ThrowIfNull (target);
 			CMRemoveAllAttachments (target.Handle);
 			GC.KeepAlive (target);
 		}
@@ -136,10 +129,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static void RemoveAttachment (this ICMAttachmentBearer target, string key)
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (target);
+			ArgumentNullException.ThrowIfNull (key);
 			var nsKey = CFString.CreateNative (key);
 			CMRemoveAttachment (target.Handle, nsKey);
 			GC.KeepAlive (target);
@@ -157,12 +148,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static void SetAttachment (this ICMAttachmentBearer target, string key, INativeObject value, CMAttachmentMode attachmentMode)
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (target);
+			ArgumentNullException.ThrowIfNull (value);
+			ArgumentNullException.ThrowIfNull (key);
 			var nsKey = CFString.CreateNative (key);
 			CMSetAttachment (target.Handle, nsKey, value.Handle, attachmentMode);
 			GC.KeepAlive (target);
@@ -180,10 +168,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static void SetAttachments (this ICMAttachmentBearer target, NSDictionary theAttachments, CMAttachmentMode attachmentMode)
 		{
-			if (target is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (target));
-			if (theAttachments is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (theAttachments));
+			ArgumentNullException.ThrowIfNull (target);
+			ArgumentNullException.ThrowIfNull (theAttachments);
 			CMSetAttachments (target.Handle, theAttachments.Handle, attachmentMode);
 			GC.KeepAlive (target);
 			GC.KeepAlive (theAttachments);

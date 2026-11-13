@@ -23,8 +23,7 @@ namespace NetworkExtension {
 				return NSArray.NonNullEnumsFromHandle<NEHotspotConfigurationEapType> (_SupportedEapTypes);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 				var ret = NSArray.From (value, value.Length);
 				_SupportedEapTypes = ret.Handle;

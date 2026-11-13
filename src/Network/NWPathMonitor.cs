@@ -74,8 +74,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void SetQueue (DispatchQueue queue)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+			ArgumentNullException.ThrowIfNull (queue);
 			nw_path_monitor_set_queue (GetCheckedHandle (), queue.Handle);
 			GC.KeepAlive (queue);
 		}

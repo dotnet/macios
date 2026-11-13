@@ -63,11 +63,9 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetPongHandler (DispatchQueue queue, Action<NWError?> handler)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+			ArgumentNullException.ThrowIfNull (queue);
 
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolinePongHandler;

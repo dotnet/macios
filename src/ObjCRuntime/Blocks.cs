@@ -306,8 +306,7 @@ namespace ObjCRuntime {
 
 		void SetupFunctionPointerBlock (IntPtr invokeMethod, object context, byte [] utf8Signature)
 		{
-			if (utf8Signature is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (utf8Signature));
+			ArgumentNullException.ThrowIfNull (utf8Signature);
 
 			if (utf8Signature.Length == 0)
 				ThrowHelper.ThrowArgumentException (nameof (utf8Signature), Errors.MX8052 /* The signature must be a non-empty string. */);
@@ -357,8 +356,7 @@ namespace ObjCRuntime {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void SetupBlock (Delegate trampoline, Delegate userDelegate)
 		{
-			if (trampoline is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (trampoline));
+			ArgumentNullException.ThrowIfNull (trampoline);
 
 			VerifyBlockDelegates (trampoline, userDelegate);
 
@@ -494,8 +492,7 @@ namespace ObjCRuntime {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool IsManagedBlock (IntPtr block)
 		{
-			if (block == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
+			ArgumentNullException.ThrowIfNull ((void*) block, nameof (block));
 
 			BlockLiteral* literal = (BlockLiteral*) block;
 			BlockDescriptor* descriptor = (BlockDescriptor*) xamarin_get_block_descriptor ();
@@ -582,11 +579,9 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static IntPtr CreateBlockForDelegate (Delegate @delegate, Delegate delegateProxyFieldValue, string? signature)
 		{
-			if (@delegate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (@delegate));
+			ArgumentNullException.ThrowIfNull (@delegate, nameof (@delegate));
 
-			if (delegateProxyFieldValue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (delegateProxyFieldValue));
+			ArgumentNullException.ThrowIfNull (delegateProxyFieldValue);
 
 			// Note that we must create a heap-allocated block, so we
 			// start off by creating a stack-allocated block, and then

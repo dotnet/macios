@@ -101,8 +101,7 @@ namespace CoreText {
 
 		public static CTFontNameKey ToFontNameKey (NSString key)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			if (key == Copyright) return CTFontNameKey.Copyright;
 			if (key == Family) return CTFontNameKey.Family;

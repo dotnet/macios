@@ -74,8 +74,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public CTFrameAttributes (NSDictionary dictionary)
 		{
-			if (dictionary is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionary));
+			ArgumentNullException.ThrowIfNull (dictionary);
 			Dictionary = dictionary;
 		}
 
@@ -194,8 +193,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public void GetLineOrigins (NSRange range, CGPoint [] origins)
 		{
-			if (origins is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (origins));
+			ArgumentNullException.ThrowIfNull (origins);
 			if (range.Length != 0 && origins.Length < range.Length)
 				throw new ArgumentException ("origins must contain at least range.Length elements.", nameof (origins));
 			else if (origins.Length < CFArray.GetCount (CTFrameGetLines (Handle)))
@@ -211,8 +209,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public void Draw (CGContext ctx)
 		{
-			if (ctx is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ctx));
+			ArgumentNullException.ThrowIfNull (ctx);
 
 			CTFrameDraw (Handle, ctx.Handle);
 			GC.KeepAlive (ctx);

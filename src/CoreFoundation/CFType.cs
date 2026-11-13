@@ -36,8 +36,9 @@ namespace CoreFoundation {
 		/// <param name="handle">Handle to the native CoreFoundation object.</param>
 		public string? GetDescription (IntPtr handle)
 		{
-			if (handle == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handle));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) handle, nameof (handle));
+			}
 
 			return CFString.FromHandle (CFCopyDescription (handle), true);
 		}

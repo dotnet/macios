@@ -28,11 +28,9 @@ namespace AVFoundation {
         [iOS (14, 5), TV (14, 5)]
         public static bool AttachContentKey (this CMSampleBuffer sampleBuffer, AVContentKey contentKey, out NSError error)
         {
-            if (sampleBuffer is null)
-                ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sampleBuffer));
+            ArgumentNullException.ThrowIfNull (sampleBuffer);
 
-            if (contentKey is null)
-                ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentKey));
+            ArgumentNullException.ThrowIfNull (contentKey);
             
             IntPtr outerr;
             byte retVal;

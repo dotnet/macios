@@ -73,8 +73,7 @@ namespace Security {
 		///         </remarks>
 		public SecTrust (X509Certificate certificate, SecPolicy? policy)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
@@ -89,8 +88,7 @@ namespace Security {
 		///         </remarks>
 		public SecTrust (X509Certificate2 certificate, SecPolicy? policy)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 
 			using (SecCertificate cert = new SecCertificate (certificate)) {
 				Initialize (cert.Handle, policy);
@@ -104,8 +102,7 @@ namespace Security {
 		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509CertificateCollection certificates, SecPolicy? policy)
 		{
-			if (certificates is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificates));
+			ArgumentNullException.ThrowIfNull (certificates);
 
 			SecCertificate [] array = new SecCertificate [certificates.Count];
 			int i = 0;
@@ -120,8 +117,7 @@ namespace Security {
 		///         <remarks>The first certificate (in the collection) is the one to be evaluated, the others will be used to build a chain of trust.</remarks>
 		public SecTrust (X509Certificate2Collection certificates, SecPolicy? policy)
 		{
-			if (certificates is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificates));
+			ArgumentNullException.ThrowIfNull (certificates);
 
 			SecCertificate [] array = new SecCertificate [certificates.Count];
 			int i = 0;

@@ -27,7 +27,7 @@ namespace CloudKit {
 		public static CKUserIdentityLookupInfo FromEmail (string email)
 		{
 			if (string.IsNullOrEmpty (email))
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (email));
+				throw new ArgumentNullException (nameof (email));
 			return new CKUserIdentityLookupInfo (email, 0);
 		}
 
@@ -37,7 +37,7 @@ namespace CloudKit {
 		public static CKUserIdentityLookupInfo FromPhoneNumber (string phoneNumber)
 		{
 			if (string.IsNullOrEmpty (phoneNumber))
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (phoneNumber));
+				throw new ArgumentNullException (nameof (phoneNumber));
 			return new CKUserIdentityLookupInfo (phoneNumber, 1);
 		}
 	}

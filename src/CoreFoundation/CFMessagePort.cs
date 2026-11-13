@@ -109,8 +109,7 @@ namespace CoreFoundation {
 				return CFString.FromHandle (CFMessagePortGetName (GetCheckedHandle ()));
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				TrySetName (value);
 			}
 		}
@@ -122,8 +121,7 @@ namespace CoreFoundation {
 		/// <remarks>This method returns <see langword="false" /> for remote ports, duplicate names, invalid names, and native registration failures.</remarks>
 		public bool TrySetName (string name)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var n = CFString.CreateNative (name);
 			try {
@@ -215,8 +213,7 @@ namespace CoreFoundation {
 		/// <remarks>If another local port with the same name already exists in the process, Core Foundation returns that port and continues to use its original callback.</remarks>
 		public static CFMessagePort? CreateLocalPort (string? name, CFMessagePortCallBack callback, CFAllocator? allocator = null)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			var n = CFString.CreateNative (name);
 			byte shouldFreeInfo = 0;
@@ -303,8 +300,7 @@ namespace CoreFoundation {
 		/// <exception cref="ArgumentNullException"><paramref name="name" /> is <see langword="null" />.</exception>
 		public static CFMessagePort? CreateRemotePort (CFAllocator? allocator, string name)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var n = CFString.CreateNative (name);
 			try {

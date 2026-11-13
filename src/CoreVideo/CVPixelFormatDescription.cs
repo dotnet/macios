@@ -253,8 +253,7 @@ namespace CoreVideo {
 		/// <param name="pixelFormat">The pixel format to register.</param>
 		public static void Register (NSDictionary description, CVPixelFormatType pixelFormat)
 		{
-			if (description is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (description));
+			ArgumentNullException.ThrowIfNull (description);
 
 			CVPixelFormatDescriptionRegisterDescriptionWithPixelFormatType (description.Handle, (int) pixelFormat);
 			GC.KeepAlive (description);

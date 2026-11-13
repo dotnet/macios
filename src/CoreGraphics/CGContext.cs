@@ -297,8 +297,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void AddRects (CGRect [] rects)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			CGContextAddRects (Handle, rects, rects.Length);
 		}
 
@@ -307,8 +306,7 @@ namespace CoreGraphics {
 		/// <include file="../../docs/api/CoreGraphics/CGContext.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContext.AddLines(CoreGraphics.CGPoint[])']/*" />
 		public void AddLines (CGPoint [] points)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			CGContextAddLines (Handle, points, points.Length);
 		}
 
@@ -349,8 +347,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void AddPath (CGPath path)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			CGContextAddPath (Handle, path.Handle);
 			GC.KeepAlive (path);
 		}
@@ -477,8 +474,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void ContextFillRects (CGRect [] rects)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			CGContextFillRects (Handle, rects, rects.Length);
 		}
 
@@ -635,8 +631,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void ClipToRects (CGRect [] rects)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			CGContextClipToRects (Handle, rects, rects.Length);
 		}
 
@@ -1512,8 +1507,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void DrawLayer (CGLayer layer, CGRect rect)
 		{
-			if (layer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layer));
+			ArgumentNullException.ThrowIfNull (layer);
 			CGContextDrawLayerInRect (Handle, rect, layer.Handle);
 			GC.KeepAlive (layer);
 		}
@@ -1527,8 +1521,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void DrawLayer (CGLayer layer, CGPoint point)
 		{
-			if (layer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layer));
+			ArgumentNullException.ThrowIfNull (layer);
 			CGContextDrawLayerAtPoint (Handle, point, layer.Handle);
 			GC.KeepAlive (layer);
 		}

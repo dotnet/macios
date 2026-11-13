@@ -156,8 +156,7 @@ namespace CoreText {
 		///         </remarks>
 		public CTFontDescriptorAttributes (NSDictionary dictionary)
 		{
-			if (dictionary is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionary));
+			ArgumentNullException.ThrowIfNull (dictionary);
 			Dictionary = dictionary;
 		}
 
@@ -583,8 +582,7 @@ namespace CoreText {
 		static extern IntPtr CTFontDescriptorCreateWithNameAndSize (IntPtr name, nfloat size);
 		static IntPtr Create (string name, nfloat size)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 			var nameHandle = CFString.CreateNative (name);
 			try {
 				return CTFontDescriptorCreateWithNameAndSize (nameHandle, size);
@@ -602,8 +600,7 @@ namespace CoreText {
 		static extern IntPtr CTFontDescriptorCreateWithAttributes (IntPtr attributes);
 		static IntPtr Create (CTFontDescriptorAttributes attributes)
 		{
-			if (attributes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			ArgumentNullException.ThrowIfNull (attributes);
 			var dict = attributes.Dictionary;
 			IntPtr result = CTFontDescriptorCreateWithAttributes (dict.Handle);
 			GC.KeepAlive (dict);
@@ -636,8 +633,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public CTFontDescriptor? WithAttributes (NSDictionary attributes)
 		{
-			if (attributes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			ArgumentNullException.ThrowIfNull (attributes);
 			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributes.Handle));
 			GC.KeepAlive (attributes);
 			return descriptor;
@@ -666,8 +662,7 @@ namespace CoreText {
 		///         </remarks>
 		public CTFontDescriptor? WithAttributes (CTFontDescriptorAttributes attributes)
 		{
-			if (attributes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			ArgumentNullException.ThrowIfNull (attributes);
 			var attributesDictionary = attributes.Dictionary;
 			CTFontDescriptor? descriptor = CreateDescriptor (CTFontDescriptorCreateCopyWithAttributes (Handle, attributesDictionary.Handle));
 			GC.KeepAlive (attributesDictionary);
@@ -1120,8 +1115,7 @@ namespace CoreText {
 		///         <remarks>You can use <see cref="CoreText.CTFontDescriptor.GetAttributes" /> method to get all the attributes at once with a strongly typed set of properties.</remarks>
 		public NSObject? GetAttribute (NSString attribute)
 		{
-			if (attribute is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
+			ArgumentNullException.ThrowIfNull (attribute);
 			NSObject? result = Runtime.GetNSObject<NSObject> (CTFontDescriptorCopyAttribute (Handle, attribute.Handle), true);
 			GC.KeepAlive (attribute);
 			return result;
@@ -1190,11 +1184,9 @@ namespace CoreText {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static bool MatchFontDescriptors (CTFontDescriptor [] descriptors, NSSet? mandatoryAttributes, CTFontDescriptorProgressHandler progressHandler)
 		{
-			if (descriptors is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptors));
+			ArgumentNullException.ThrowIfNull (descriptors);
 
-			if (progressHandler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (progressHandler));
+			ArgumentNullException.ThrowIfNull (progressHandler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, CTFontDescriptorMatchingState, IntPtr, byte> trampoline = &MatchFontDescriptorsHandler;

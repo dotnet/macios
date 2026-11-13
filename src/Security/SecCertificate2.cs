@@ -36,8 +36,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public SecCertificate2 (SecCertificate certificate)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 			InitializeHandle (sec_certificate_create (certificate.Handle));
 			GC.KeepAlive (certificate);
 		}

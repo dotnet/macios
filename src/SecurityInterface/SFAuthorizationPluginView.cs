@@ -16,8 +16,7 @@ namespace SecurityInterface {
 		public unsafe SFAuthorizationPluginView (AuthorizationCallbacks* callbacks, AuthorizationEngine engineRef)
 			: base (NSObjectFlag.Empty)
 		{
-			if (callbacks is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callbacks));
+			ArgumentNullException.ThrowIfNull (callbacks);
 			ArgumentNullException.ThrowIfNull (engineRef);
 			var engineHandle = engineRef.GetCheckedHandle ();
 			InitializeHandle (_InitWithCallbacks ((IntPtr) callbacks, engineHandle), "initWithCallbacks:andEngineRef:");

@@ -23,10 +23,8 @@ namespace ModelIO {
 	public partial class MDLAnimatedQuaternion {
 		public virtual void Reset (Quaternion [] values, double [] times)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
-			if (times is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (times));
+			ArgumentNullException.ThrowIfNull (values);
+			ArgumentNullException.ThrowIfNull (times);
 			if (values.Length != times.Length)
 				throw new ArgumentOutOfRangeException ($"The '{nameof (values)}' and '{nameof (times)}' arrays must have the same length");
 			int typeSize = Marshal.SizeOf<Quaternion> ();
@@ -39,10 +37,8 @@ namespace ModelIO {
 
 		public virtual void Reset (Quaterniond [] values, double [] times)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
-			if (times is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (times));
+			ArgumentNullException.ThrowIfNull (values);
+			ArgumentNullException.ThrowIfNull (times);
 			if (values.Length != times.Length)
 				throw new ArgumentOutOfRangeException ($"The '{nameof (values)}' and '{nameof (times)}' arrays must have the same length");
 

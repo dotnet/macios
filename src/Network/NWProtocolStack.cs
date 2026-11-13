@@ -36,8 +36,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void PrependApplicationProtocol (NWProtocolOptions options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 			nw_protocol_stack_prepend_application_protocol (GetCheckedHandle (), options.Handle);
 			GC.KeepAlive (options);
 		}

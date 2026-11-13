@@ -158,8 +158,7 @@ namespace Foundation {
 		[CLSCompliant (false)]
 		public NSUrlSessionHandler (NSUrlSessionConfiguration configuration)
 		{
-			if (configuration is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (configuration));
+			ArgumentNullException.ThrowIfNull (configuration);
 
 			// HACK: we need to store the following because session.Configuration gets a copy of the object and the value gets lost
 			sessionType = configuration.SessionType;
@@ -1544,8 +1543,7 @@ namespace Foundation {
 
 			public MonoStreamContent (Stream content, int bufferSize)
 			{
-				if (content is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (content));
+				ArgumentNullException.ThrowIfNull (content);
 
 				if (bufferSize <= 0)
 					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (bufferSize), bufferSize, "Buffer size must be >0");

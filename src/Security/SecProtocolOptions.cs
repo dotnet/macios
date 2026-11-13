@@ -38,8 +38,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void SetLocalIdentity (SecIdentity2 identity)
 		{
-			if (identity is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
+			ArgumentNullException.ThrowIfNull (identity);
 			sec_protocol_options_set_local_identity (GetCheckedHandle (), identity.GetCheckedHandle ());
 			GC.KeepAlive (identity);
 		}
@@ -228,8 +227,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void AddTlsApplicationProtocol (string applicationProtocol)
 		{
-			if (applicationProtocol is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationProtocol));
+			ArgumentNullException.ThrowIfNull (applicationProtocol);
 			using var applicationProtocolPtr = new TransientString (applicationProtocol);
 			sec_protocol_options_add_tls_application_protocol (GetCheckedHandle (), applicationProtocolPtr);
 		}
@@ -242,8 +240,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void SetTlsServerName (string serverName)
 		{
-			if (serverName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (serverName));
+			ArgumentNullException.ThrowIfNull (serverName);
 			using var serverNamePtr = new TransientString (serverName);
 			sec_protocol_options_set_tls_server_name (GetCheckedHandle (), serverNamePtr);
 		}
@@ -272,8 +269,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("maccatalyst", "Use non-DHE cipher suites instead.")]
 		public void SetTlsDiffieHellmanParameters (DispatchData parameters)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
 			GC.KeepAlive (parameters);
 		}
@@ -294,8 +290,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("maccatalyst", "Use non-DHE cipher suites instead.")]
 		public void AddPreSharedKey (DispatchData parameters)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 			sec_protocol_options_set_tls_diffie_hellman_parameters (GetCheckedHandle (), parameters.Handle);
 			GC.KeepAlive (parameters);
 		}
@@ -374,10 +369,8 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetKeyUpdateCallback (SecProtocolKeyUpdate keyUpdate, DispatchQueue keyUpdateQueue)
 		{
-			if (keyUpdate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (keyUpdate));
-			if (keyUpdateQueue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (keyUpdateQueue));
+			ArgumentNullException.ThrowIfNull (keyUpdate);
+			ArgumentNullException.ThrowIfNull (keyUpdateQueue);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, void> trampoline = &Trampolines.SDSecProtocolKeyUpdate.Invoke;
@@ -437,8 +430,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		public void SetTlsPreSharedKeyIdentityHint (DispatchData pskIdentityHint)
 		{
-			if (pskIdentityHint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pskIdentityHint));
+			ArgumentNullException.ThrowIfNull (pskIdentityHint);
 			sec_protocol_options_set_tls_pre_shared_key_identity_hint (GetCheckedHandle (), pskIdentityHint.Handle);
 			GC.KeepAlive (pskIdentityHint);
 		}

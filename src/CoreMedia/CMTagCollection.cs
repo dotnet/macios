@@ -205,8 +205,7 @@ namespace CoreMedia {
 		/// <returns>True if the tag collection contains all the specified tags, false otherwise.</returns>
 		public bool ContainsTags (params CMTag [] tags)
 		{
-			if (tags is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tags));
+			ArgumentNullException.ThrowIfNull (tags);
 
 			unsafe {
 				fixed (CMTag* tagPtr = tags)
@@ -272,8 +271,7 @@ namespace CoreMedia {
 		/// <returns>An error code in case of failure, 0 in case of success. <see cref="CMTagCollectionError.ExhaustedBufferSize" /> is returned if the <paramref name="tags" /> array isn't big enough for all the tags (but as many tags as the array could hold were copied to the array).</returns>
 		public CMTagCollectionError GetTags (CMTag [] tags, nint tagCount, out nint tagsCopied)
 		{
-			if (tags is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tags));
+			ArgumentNullException.ThrowIfNull (tags);
 
 			if (tagCount > tags.Length || tagCount < 0)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (tagCount), "Must not be higher than the length of the 'tags' array.");
@@ -318,8 +316,7 @@ namespace CoreMedia {
 		/// <returns>An error code in case of failure, 0 in case of success. <see cref="CMTagCollectionError.ExhaustedBufferSize" /> is returned if the <paramref name="tags" /> array isn't big enough for all the tags (but as many tags as the array could hold were copied to the array).</returns>
 		public CMTagCollectionError GetTags (CMTagCategory category, CMTag [] tags, nint tagCount, out nint tagsCopied)
 		{
-			if (tags is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tags));
+			ArgumentNullException.ThrowIfNull (tags);
 
 			if (tagCount > tags.Length || tagCount < 0)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (tagCount), "Must not be higher than the length of the 'tags' array.");
@@ -396,11 +393,9 @@ namespace CoreMedia {
 		/// <returns>An error code in case of failure, 0 in case of success. <see cref="CMTagCollectionError.ExhaustedBufferSize" /> is returned if the <paramref name="tags" /> array isn't big enough for all the tags (but as many tags as the array could hold were copied to the array).</returns>
 		public CMTagCollectionError GetTags (CMTagCollectionTagFilterFunction filter, CMTag [] tags, nint tagCount, out nint tagsCopied)
 		{
-			if (filter is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (filter));
+			ArgumentNullException.ThrowIfNull (filter);
 
-			if (tags is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tags));
+			ArgumentNullException.ThrowIfNull (tags);
 
 			if (tagCount > tags.Length || tagCount < 0)
 				ThrowHelper.ThrowArgumentOutOfRangeException (nameof (tagCount), "Must not be higher than the length of the 'tags' array.");
@@ -441,8 +436,7 @@ namespace CoreMedia {
 		/// <returns>A new tag collection, with all the tags matching the specified categories from this tag collection, or null in case of failure.</returns>
 		public CMTagCollection? CreateWithCopyOfTags (out CMTagCollectionError status, params CMTagCategory [] categories)
 		{
-			if (categories is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (categories));
+			ArgumentNullException.ThrowIfNull (categories);
 
 			IntPtr handle;
 			unsafe {
@@ -712,8 +706,7 @@ namespace CoreMedia {
 		/// <returns>An error code in case of failure, 0 in case of success.</returns>
 		public CMTagCollectionError Add (params CMTag [] tags)
 		{
-			if (tags is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tags));
+			ArgumentNullException.ThrowIfNull (tags);
 
 			unsafe {
 				fixed (CMTag* tagPtr = tags)

@@ -2900,8 +2900,7 @@ namespace ObjCRuntime {
 			if (block == IntPtr.Zero)
 				return @delegate;
 
-			if (@delegate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (@delegate));
+			ArgumentNullException.ThrowIfNull (@delegate, nameof (@delegate));
 
 			if (block_lifetime_table.TryGetValue (@delegate, out var existingCollector)) {
 				existingCollector.Add (block);

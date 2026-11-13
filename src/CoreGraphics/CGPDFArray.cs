@@ -218,8 +218,7 @@ namespace CoreGraphics {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool Apply (ApplyCallback callback, object? info = null)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, nint, IntPtr, IntPtr, byte> trampoline = &ApplyBlockHandler;

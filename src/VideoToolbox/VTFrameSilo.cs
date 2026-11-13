@@ -72,8 +72,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public VTStatus AddSampleBuffer (CMSampleBuffer sampleBuffer)
 		{
-			if (sampleBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sampleBuffer));
+			ArgumentNullException.ThrowIfNull (sampleBuffer);
 
 			VTStatus status = VTFrameSiloAddSampleBuffer (Handle, sampleBuffer.Handle);
 			GC.KeepAlive (sampleBuffer);
@@ -92,8 +91,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public unsafe VTStatus SetTimeRangesForNextPass (CMTimeRange [] ranges)
 		{
-			if (ranges is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ranges));
+			ArgumentNullException.ThrowIfNull (ranges);
 
 			if (ranges.Length > 0)
 				fixed (CMTimeRange* first = ranges) {

@@ -250,8 +250,7 @@ static partial class Trampolines
 
 		unsafe void Invoke (string obj)
 		{
-			if (obj is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
+			global::System.ArgumentNullException.ThrowIfNull (obj, nameof (obj));
 			var nsobj = global::CoreFoundation.CFString.CreateNative (obj);
 			invoker (BlockLiteral, nsobj);
 			global::CoreFoundation.CFString.ReleaseNative (nsobj);

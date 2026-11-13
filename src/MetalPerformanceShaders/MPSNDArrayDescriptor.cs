@@ -10,8 +10,7 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("tvos18.0")]
 		public void PermuteWithDimensionOrder (nuint [] dimensionOrder)
 		{
-			if (dimensionOrder is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dimensionOrder));
+			ArgumentNullException.ThrowIfNull (dimensionOrder);
 
 			if (dimensionOrder.Length != (int) NumberOfDimensions)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (dimensionOrder), $"Length must be equal to 'NumberOfDimensions'.");

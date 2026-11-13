@@ -223,8 +223,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateGateways (Func<NWEndpoint, bool> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineGatewaysHandler;

@@ -56,10 +56,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool RegisterNamespace (NSString xmlns, NSString prefix, out NSError? error)
 		{
-			if (xmlns is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (xmlns));
-			if (prefix is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (prefix));
+			ArgumentNullException.ThrowIfNull (xmlns);
+			ArgumentNullException.ThrowIfNull (prefix);
 			byte result;
 			IntPtr err;
 			unsafe {
@@ -84,10 +82,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool SetTag (CGImageMetadataTag? parent, NSString path, CGImageMetadataTag tag)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
-			if (tag is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tag));
+			ArgumentNullException.ThrowIfNull (path);
+			ArgumentNullException.ThrowIfNull (tag);
 			bool result = CGImageMetadataSetTagWithPath (Handle, parent.GetHandle (), path.Handle, tag.Handle) != 0;
 			GC.KeepAlive (parent);
 			GC.KeepAlive (path);
@@ -108,8 +104,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool SetValue (CGImageMetadataTag? parent, NSString path, NSObject value)
 		{
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 			bool result = SetValue (parent, path, value.Handle);
 			GC.KeepAlive (value);
 			return result;
@@ -128,8 +123,7 @@ namespace ImageIO {
 
 		bool SetValue (CGImageMetadataTag? parent, NSString path, IntPtr value)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			bool result = CGImageMetadataSetValueWithPath (Handle, parent.GetHandle (), path.Handle, value) != 0;
 			GC.KeepAlive (parent);
 			GC.KeepAlive (path);
@@ -147,8 +141,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool RemoveTag (CGImageMetadataTag? parent, NSString path)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			bool result = CGImageMetadataRemoveTagWithPath (Handle, parent.GetHandle (), path.Handle) != 0;
 			GC.KeepAlive (parent);
 			GC.KeepAlive (path);
@@ -169,8 +162,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public bool SetValueMatchingImageProperty (NSString dictionaryName, NSString propertyName, NSObject value)
 		{
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 			bool result = SetValueMatchingImageProperty (dictionaryName, propertyName, value.Handle);
 			GC.KeepAlive (value);
 			return result;
@@ -189,10 +181,8 @@ namespace ImageIO {
 
 		bool SetValueMatchingImageProperty (NSString dictionaryName, NSString propertyName, IntPtr value)
 		{
-			if (dictionaryName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionaryName));
-			if (propertyName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyName));
+			ArgumentNullException.ThrowIfNull (dictionaryName);
+			ArgumentNullException.ThrowIfNull (propertyName);
 			bool result = CGImageMetadataSetValueMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle, value) != 0;
 			GC.KeepAlive (dictionaryName);
 			GC.KeepAlive (propertyName);

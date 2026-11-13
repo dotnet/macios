@@ -47,8 +47,7 @@ namespace CoreAnimation {
 		[Export ("initWithLayer:")]
 		public CALayer (CALayer other)
 		{
-			if (other is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (other));
+			ArgumentNullException.ThrowIfNull (other);
 
 			if (this.GetType () == typeof (CALayer)) {
 				Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle (selInitWithLayer), other.Handle);

@@ -239,8 +239,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageSource? FromUrl (NSUrl url, CGImageOptions? options)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithURL (url.Handle, dict.GetHandle ());
@@ -270,8 +269,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageSource? FromDataProvider (CGDataProvider provider, CGImageOptions? options)
 		{
-			if (provider is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (provider));
+			ArgumentNullException.ThrowIfNull (provider);
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithDataProvider (provider.Handle, dict.GetHandle ());
@@ -300,8 +298,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageSource? FromData (NSData data, CGImageOptions? options)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			using (var dict = options?.ToDictionary ()) {
 				var result = CGImageSourceCreateWithData (data.Handle, dict.GetHandle ());
@@ -358,8 +355,7 @@ namespace ImageIO {
 		[Advice ("Use 'GetProperties'.")]
 		public NSDictionary? CopyProperties (CGImageOptions options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 			using var dict = options.ToDictionary ();
 			return CopyProperties (dict);
 		}
@@ -390,8 +386,7 @@ namespace ImageIO {
 		[Advice ("Use 'GetProperties'.")]
 		public NSDictionary? CopyProperties (CGImageOptions options, int imageIndex)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 			using var dict = options.ToDictionary ();
 			return CopyProperties (dict, imageIndex);
 		}
@@ -475,8 +470,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void UpdateData (NSData data, bool final)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			CGImageSourceUpdateData (Handle, data.Handle, final ? (byte) 1 : (byte) 0);
 			GC.KeepAlive (data);
 		}
@@ -492,8 +486,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void UpdateDataProvider (CGDataProvider provider, bool final)
 		{
-			if (provider is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (provider));
+			ArgumentNullException.ThrowIfNull (provider);
 			CGImageSourceUpdateDataProvider (Handle, provider.Handle, final ? (byte) 1 : (byte) 0);
 			GC.KeepAlive (provider);
 		}

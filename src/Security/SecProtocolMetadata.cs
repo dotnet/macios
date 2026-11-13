@@ -184,8 +184,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetDistinguishedNamesForPeerHandler (Action<DispatchData> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineDistinguishedNamesForPeer;
@@ -216,8 +215,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetOcspResponseForPeerHandler (Action<DispatchData> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineOcspReposeForPeer;
@@ -248,8 +246,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetCertificateChainForPeerHandler (Action<SecCertificate> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineCertificateChainForPeer;
@@ -279,8 +276,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void SetSignatureAlgorithmsForPeerHandler (Action<ushort> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, ushort, void> trampoline = &TrampolineSignatureAlgorithmsForPeer;
@@ -297,8 +293,7 @@ namespace Security {
 
 		public DispatchData? CreateSecret (string label, nuint exporterLength)
 		{
-			if (label is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
+			ArgumentNullException.ThrowIfNull (label);
 			using var labelPtr = new TransientString (label, TransientString.Encoding.Ansi);
 			return CreateDispatchData (sec_protocol_metadata_create_secret (GetCheckedHandle (), (nuint) label.Length, labelPtr, exporterLength));
 		}
@@ -308,10 +303,8 @@ namespace Security {
 
 		public unsafe DispatchData? CreateSecret (string label, byte [] context, nuint exporterLength)
 		{
-			if (label is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
+			ArgumentNullException.ThrowIfNull (label);
+			ArgumentNullException.ThrowIfNull (context);
 			using var labelPtr = new TransientString (label, TransientString.Encoding.Ansi);
 			fixed (byte* p = context)
 				return CreateDispatchData (sec_protocol_metadata_create_secret_with_context (GetCheckedHandle (), (nuint) label.Length, labelPtr, (nuint) context.Length, p, exporterLength));
@@ -385,8 +378,7 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool AccessPreSharedKeys (SecAccessPreSharedKeysHandler handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineAccessPreSharedKeys;

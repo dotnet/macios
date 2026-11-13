@@ -986,8 +986,6 @@ Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer.Equals(System.String, Syst
 Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer.GetHashCode(System.String)
 Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper
 Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentException(System.String, System.String)
-Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
-Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowIfNull`1(T, System.String)
 Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
 Microsoft.tvOS.dll:ObjCRuntime.TransientCFString
 Microsoft.tvOS.dll:ObjCRuntime.TransientCFString..ctor(System.String)

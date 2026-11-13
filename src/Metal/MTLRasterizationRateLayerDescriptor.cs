@@ -57,10 +57,8 @@ namespace Metal {
 		[SupportedOSPlatform ("tvos16.0")]
 		static public MTLRasterizationRateLayerDescriptor Create (MTLSize sampleCount, float [] horizontal, float [] vertical)
 		{
-			if (horizontal is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (horizontal));
-			if (vertical is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (vertical));
+			ArgumentNullException.ThrowIfNull (horizontal);
+			ArgumentNullException.ThrowIfNull (vertical);
 			if (sampleCount.Width != horizontal.Length)
 				throw new ArgumentOutOfRangeException ("Horizontal length should be equal to the sampleCount.Width.");
 			if (sampleCount.Height != vertical.Length)
@@ -84,10 +82,8 @@ namespace Metal {
 		[SupportedOSPlatform ("tvos16.0")]
 		public static MTLRasterizationRateLayerDescriptor Create (float [] horizontal, float [] vertical)
 		{
-			if (horizontal is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (horizontal));
-			if (vertical is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (vertical));
+			ArgumentNullException.ThrowIfNull (horizontal);
+			ArgumentNullException.ThrowIfNull (vertical);
 
 			return Create (new MTLSize (horizontal.Length, vertical.Length, 0), horizontal, vertical);
 		}

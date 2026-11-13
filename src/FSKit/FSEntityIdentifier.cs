@@ -12,10 +12,8 @@ namespace FSKit {
 		[SupportedOSPlatform ("macos27.0")]
 		public static FSEntityIdentifier? Create (NSUuid uuid, NSData qualifierData)
 		{
-			if (uuid is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uuid));
-			if (qualifierData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (qualifierData));
+			ArgumentNullException.ThrowIfNull (uuid);
+			ArgumentNullException.ThrowIfNull (qualifierData);
 
 			var rv = new FSEntityIdentifier (NSObjectFlag.Empty);
 			rv.InitializeHandle (rv._InitWithUuidQualifierData (uuid, qualifierData), "initWithUUID:qualifierData:", false);

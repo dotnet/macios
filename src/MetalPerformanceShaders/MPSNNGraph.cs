@@ -48,8 +48,7 @@ namespace MetalPerformanceShaders {
 
 		static void ValidateParameters (MPSNNImageNode [] resultImages, bool []? resultsAreNeeded, out byte []? results)
 		{
-			if (resultImages is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (resultImages));
+			ArgumentNullException.ThrowIfNull (resultImages);
 
 			if (resultsAreNeeded is not null && resultsAreNeeded.Length < resultImages.Length)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (resultsAreNeeded), "The length of 'resultsAreNeeded' must be at least as much as the length of 'resultImages' (or null).");

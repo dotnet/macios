@@ -485,8 +485,7 @@ namespace CoreGraphics {
 		///         </remarks>
 		public CGImage? WithMask (CGImage mask)
 		{
-			if (mask is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mask));
+			ArgumentNullException.ThrowIfNull (mask);
 			CGImage? result = FromHandle (CGImageCreateWithMask (Handle, mask.Handle), true);
 			GC.KeepAlive (mask);
 			return result;

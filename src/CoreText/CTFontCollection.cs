@@ -58,8 +58,7 @@ namespace CoreText {
 		///         </remarks>
 		public CTFontCollectionOptions (NSDictionary dictionary)
 		{
-			if (dictionary is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionary));
+			ArgumentNullException.ThrowIfNull (dictionary);
 			Dictionary = dictionary;
 		}
 

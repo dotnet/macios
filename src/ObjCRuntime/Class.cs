@@ -875,8 +875,7 @@ namespace ObjCRuntime {
 
 		static internal Class [] FromTypes (params Type [] types)
 		{
-			if (types is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (types));
+			ArgumentNullException.ThrowIfNull (types);
 
 			var classes = new Class [types.Length];
 			for (var i = 0; i < types.Length; i++)

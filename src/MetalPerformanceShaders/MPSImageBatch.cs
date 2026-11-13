@@ -26,8 +26,7 @@ namespace MetalPerformanceShaders {
 		// Using 'NSArray<MPSImage>' instead of `MPSImage[]` because image array 'Handle' matters.
 		public static nuint IncrementReadCount (NSArray<MPSImage> imageBatch, nint amount)
 		{
-			if (imageBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
+			ArgumentNullException.ThrowIfNull (imageBatch);
 
 			nuint count = MPSImageBatchIncrementReadCount (imageBatch.Handle, amount);
 			GC.KeepAlive (imageBatch);
@@ -44,10 +43,8 @@ namespace MetalPerformanceShaders {
 		///         <remarks>To be added.</remarks>
 		public static void Synchronize (NSArray<MPSImage> imageBatch, IMTLCommandBuffer commandBuffer)
 		{
-			if (imageBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
-			if (commandBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (commandBuffer));
+			ArgumentNullException.ThrowIfNull (imageBatch);
+			ArgumentNullException.ThrowIfNull (commandBuffer);
 
 			MPSImageBatchSynchronize (imageBatch.Handle, commandBuffer.Handle);
 			GC.KeepAlive (imageBatch);
@@ -72,8 +69,7 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static nuint GetResourceSize (NSArray<MPSImage> imageBatch)
 		{
-			if (imageBatch is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBatch));
+			ArgumentNullException.ThrowIfNull (imageBatch);
 
 			nuint size = MPSImageBatchResourceSize (imageBatch.Handle);
 			GC.KeepAlive (imageBatch);
@@ -103,8 +99,7 @@ namespace MetalPerformanceShaders {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static nint Iterate (NSArray<MPSImage> imageBatch, MPSImageBatchIterator iterator)
 		{
-			if (iterator is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iterator));
+			ArgumentNullException.ThrowIfNull (iterator);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, nuint, nint> trampoline = &InvokeIterator;

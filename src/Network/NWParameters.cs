@@ -339,8 +339,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void ProhibitInterface (NWInterface iface)
 		{
-			if (iface is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (iface));
+			ArgumentNullException.ThrowIfNull (iface);
 
 			nw_parameters_prohibit_interface (GetCheckedHandle (), iface.Handle);
 			GC.KeepAlive (iface);

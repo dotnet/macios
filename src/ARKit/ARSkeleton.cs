@@ -15,8 +15,7 @@ namespace ARKit {
 		[UnsupportedOSPlatform ("tvos")]
 		public static NSString? CreateJointName (NSString recognizedPointKey)
 		{
-			if (recognizedPointKey is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (recognizedPointKey));
+			ArgumentNullException.ThrowIfNull (recognizedPointKey);
 			NSString? result = Runtime.GetNSObject<NSString> (ARSkeletonJointNameForRecognizedPointKey (recognizedPointKey.Handle));
 			GC.KeepAlive (recognizedPointKey);
 			return result;

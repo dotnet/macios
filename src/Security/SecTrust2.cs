@@ -36,8 +36,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public SecTrust2 (SecTrust trust)
 		{
-			if (trust is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (trust));
+			ArgumentNullException.ThrowIfNull (trust);
 
 			InitializeHandle (sec_trust_create (trust.Handle));
 			GC.KeepAlive (trust);

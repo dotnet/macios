@@ -71,8 +71,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public CTFrame? GetFrame (NSRange stringRange, CGPath path, CTFrameAttributes? frameAttributes)
 		{
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			var frame = CTFramesetterCreateFrame (Handle, stringRange, path.Handle, frameAttributes.GetHandle ());
 			GC.KeepAlive (path);
 			GC.KeepAlive (frameAttributes);
@@ -139,8 +138,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static CTFramesetter? Create (CTTypesetter typesetter)
 		{
-			if (typesetter is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (typesetter));
+			ArgumentNullException.ThrowIfNull (typesetter);
 
 			var ret = CTFramesetterCreateWithTypesetter (typesetter.Handle);
 			GC.KeepAlive (typesetter);

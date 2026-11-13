@@ -210,6 +210,7 @@
 		<Compile Include="../dotnet-linker/Steps/ManagedRegistrarStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ManagedRegistrarStep.cs</Link>
 		</Compile>
+		<Compile Include="../dotnet-linker/Steps/SpecializeGenericRegistrationsStep.cs" />
 		<Compile Include="../dotnet-linker/Steps/ManagedRegistrarLookupTablesStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ManagedRegistrarLookupTablesStep.cs</Link>
 		</Compile>

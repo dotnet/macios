@@ -30,7 +30,7 @@ public class AssemblyPreparer : IDisposable {
 
 	public string MakeReproPath { get; set; } = "";
 
-	// The original assemblies from before preparation and trimming. Used during post-processing with the
+	// The prepared assemblies from before trimming. Used during post-processing with the
 	// trimmable static registrar to read selected registrar attributes that were removed during trimming.
 	// This is a complete metadata universe separate from the post-trim assemblies.
 	public List<string> PreTrimAssemblies { get; } = new List<string> ();
@@ -168,6 +168,7 @@ public class AssemblyPreparer : IDisposable {
 		};
 		steps.Add (new ComputeMethodOverridesStep ());
 		steps.Add (new CoreTypeMapStep ());
+		steps.Add (new SpecializeGenericRegistrationsStep ());
 		steps.Add (new CollectFieldsStep ()); // ProcessExportedFields
 
 		// These steps only do anything for assemblies that are being trimmed (their IsActiveFor requires

@@ -12,6 +12,87 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
+		[TestCase (true, "trimmable-static")]
+		[TestCase (false, "trimmable-static")]
+		[TestCase (false, "static")]
+		public void SpecializedGenericRegistrations (bool prepareAssemblies, string registrar)
+		{
+			var platform = ApplePlatform.MacOSX;
+			var runtimeIdentifier = "osx-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			var projectPath = GenerateProject (platform, nameof (SpecializedGenericRegistrations), runtimeIdentifier, out _);
+			var projectDirectory = Path.GetDirectoryName (projectPath) ?? throw new InvalidOperationException ();
+			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), """
+				using System;
+				using System.Runtime.InteropServices;
+				using Foundation;
+				using ObjCRuntime;
+
+				class Generic<T> : NSObject where T : NSObject {
+					public override nuint GetNativeHash () => 42;
+
+					[Export ("echo:")]
+					public virtual T Echo (T value) => value;
+
+					[Export ("privateValue")]
+					int PrivateValue () => 17;
+				}
+
+				class Closed : Generic<Closed> { }
+				[Register (SkipRegistration = true)]
+				sealed class Derived : Closed {
+					public override nuint GetNativeHash () => 99;
+				}
+
+				class MainClass {
+					[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+					static extern nuint Send (IntPtr self, IntPtr selector);
+
+					[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+					static extern IntPtr Echo (IntPtr self, IntPtr selector, IntPtr value);
+
+					static void Main ()
+					{
+						using var closed = new Closed ();
+						using var derived = new Derived ();
+						var hash = Selector.GetHandle ("hash");
+						var echo = Selector.GetHandle ("echo:");
+						var privateValue = Selector.GetHandle ("privateValue");
+						if (Send (closed.Handle, hash) != 42 || Send (derived.Handle, hash) != 99)
+							throw new Exception ("Incorrect virtual hash dispatch.");
+						if (Echo (closed.Handle, echo, derived.Handle) != derived.Handle)
+							throw new Exception ("Incorrect closed generic parameter/return conversion.");
+						if (Send (closed.Handle, privateValue) != 17)
+							throw new Exception ("Incorrect private export dispatch.");
+						Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+					}
+				}
+				""");
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Registrar"] = registrar;
+			properties ["PrepareAssemblies"] = prepareAssemblies ? "true" : "false";
+			properties ["HotReloadCompatibleBuild"] = "false";
+			properties ["LinkMode"] = "full";
+			if (prepareAssemblies) {
+				properties ["DynamicRegistrationSupported"] = "false";
+				properties ["TrimExportAttributes"] = "true";
+			}
+			properties ["AppBundleExtraOptions"] = "--optimize=+specialize-generic-registrations";
+			DotNet.AssertBuild (projectPath, properties);
+			var appPath = GetAppPath (projectPath, platform, runtimeIdentifier);
+			var assemblyPath = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform), nameof (SpecializedGenericRegistrations) + ".dll");
+			using var assembly = AssemblyDefinition.ReadAssembly (assemblyPath);
+			var closedType = assembly.MainModule.Types.Single (v => v.Name == "Closed");
+			Assert.That (closedType.Methods.Count (v => v.Name.StartsWith ("__Registrar_Specialized_", StringComparison.Ordinal)), Is.EqualTo (3), "Closed native entry points");
+			var objDir = GetObjDir (projectPath, platform, runtimeIdentifier);
+			var registrarSource = File.ReadAllText (Directory.GetFiles (objDir, "registrar.mm", SearchOption.AllDirectories).Single ());
+			var closedImplementation = System.Text.RegularExpressions.Regex.Match (registrarSource, @"@implementation Closed\b.*?@end", System.Text.RegularExpressions.RegexOptions.Singleline).Value;
+			Assert.That (closedImplementation, Does.Contain ("hash"), "Closed native hash registration");
+			ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifier);
+		}
+
 		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
 		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
 		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)

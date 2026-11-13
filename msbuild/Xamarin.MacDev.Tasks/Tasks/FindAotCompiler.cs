@@ -44,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 
 			if (!File.Exists (AotCompiler))
-				Log.LogError (MSBStrings.E7081 /*"The AOT compiler '{0}' does not exist." */, AotCompiler);
+				Log.LogError (7081, null, MSBStrings.E7081 /*"The AOT compiler '{0}' does not exist." */, AotCompiler);
 
 			return !Log.HasLoggedErrors;
 		}

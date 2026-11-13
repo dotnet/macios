@@ -20,13 +20,13 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (StaticLibrary is null) {
-				Log.LogError ("StaticLibrary is required.");
+				Log.LogError (7204, null, MSBStrings.E7204); // StaticLibrary is required.
 				return false;
 			}
 
 			var path = StaticLibrary.ItemSpec;
 			if (!File.Exists (path)) {
-				Log.LogError ("Static library not found: {0}", path);
+				Log.LogError (7205, null, MSBStrings.E7205, path); // Static library not found: {0}
 				return false;
 			}
 

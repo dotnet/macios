@@ -153,7 +153,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					onDemandResources.Save (onDemandResourcesPath, true, true);
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0120, onDemandResourcesPath, ex.Message);
+					Log.LogError (120, null, MSBStrings.E0120, onDemandResourcesPath, ex.Message); // Error saving `{0}': {1}
 				}
 			}
 
@@ -161,7 +161,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					manifest.Save (manifestPath, true, true);
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0120, manifestPath, ex.Message);
+					Log.LogError (120, null, MSBStrings.E0120, manifestPath, ex.Message); // Error saving `{0}': {1}
 				}
 			}
 

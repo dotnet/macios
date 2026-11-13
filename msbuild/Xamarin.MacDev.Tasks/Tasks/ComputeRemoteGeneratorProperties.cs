@@ -99,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteAsync (executable, arguments, workingDirectory: workingDirectory, environment: environment).Wait ();
 			if (!File.Exists (outputFile)) {
-				Log.LogError (MSBStrings.E7120 /* Unable to compute the remote generator properties. Please file an issue at https://github.com/dotnet/macios/issues/new and attach the following file: {0} */, binlog);
+				Log.LogError (7120, null, MSBStrings.E7120 /* Unable to compute the remote generator properties. Please file an issue at https://github.com/dotnet/macios/issues/new and attach the following file: {0} */, binlog);
 				return;
 			}
 			var computedPropertes = File.ReadAllLines (outputFile);
@@ -126,7 +126,7 @@ namespace Xamarin.MacDev.Tasks {
 					GeneratorAttributeAssembly = value;
 					break;
 				default:
-					Log.LogError (MSBStrings.E7101 /* Unknown property '{0}' with value '{1}'. */, property, value);
+					Log.LogError (7101, null, MSBStrings.E7101 /* Unknown property '{0}' with value '{1}'. */, property, value);
 					break;
 				}
 			}

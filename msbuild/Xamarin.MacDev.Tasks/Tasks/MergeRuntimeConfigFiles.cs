@@ -37,7 +37,7 @@ namespace Xamarin.MacDev.Tasks {
 				using var stream = File.OpenRead (path);
 				return JsonNode.Parse (stream, documentOptions: documentOptions);
 			} catch (Exception e) {
-				Log.LogError (MSBStrings.E7186 /* Could not read the runtime configuration file '{0}': {1} */, path, e.Message);
+				Log.LogError (7186, null, MSBStrings.E7186 /* Could not read the runtime configuration file '{0}': {1} */, path, e.Message);
 				return null;
 			}
 		}
@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (TryParse (RuntimeConfigFile) is not JsonObject mainObject) {
 				if (!Log.HasLoggedErrors)
-					Log.LogError (MSBStrings.E7188 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
+					Log.LogError (7188, null, MSBStrings.E7188 /* The runtime configuration file '{0}' is not a valid JSON object. */, RuntimeConfigFile);
 				return false;
 			}
 

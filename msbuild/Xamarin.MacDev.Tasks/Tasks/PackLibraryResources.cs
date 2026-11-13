@@ -82,7 +82,7 @@ namespace Xamarin.MacDev.Tasks {
 				var logicalName = item.GetMetadata ("LogicalName");
 
 				if (string.IsNullOrEmpty (logicalName)) {
-					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0161);
+					Log.LogError (161, item.ItemSpec, MSBStrings.E0161); // Items must have logical names computed.
 					continue;
 				}
 
@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var logicalName = item.GetMetadata ("LogicalName");
 			if (string.IsNullOrEmpty (logicalName)) {
-				Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0161);
+				Log.LogError (161, item.ItemSpec, MSBStrings.E0161); // Items must have logical names computed.
 				mangled = null;
 				return false;
 			}

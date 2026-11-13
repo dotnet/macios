@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
 
@@ -30,13 +31,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			var code = 0;
+			if ((Error || Warning) && (ResourceName.Length < 5 ||
+				(ResourceName [0] != 'E' && ResourceName [0] != 'W') ||
+				!int.TryParse (ResourceName.Substring (1, 4), NumberStyles.None, CultureInfo.InvariantCulture, out code))) {
+				Log.LogError (7223, null, MSBStrings.E7223, ResourceName); // The resource '{0}' is not a numbered SDK diagnostic.
+				return false;
+			}
 			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture) ?? $"Could not find the resource '{ResourceName}'.";
 			var args = FormatArguments.Select (v => v.ItemSpec).ToArray ();
 			var message = string.Format (msg, args);
 			if (Error) {
-				Log.LogError (message);
+				Log.LogError (code, null, "{0}", message);
 			} else if (Warning) {
-				Log.LogWarning (message);
+				Log.LogWarning (code, null, "{0}", message);
 			} else {
 				Log.LogMessage (message);
 			}

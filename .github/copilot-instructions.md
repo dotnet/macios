@@ -148,6 +148,32 @@ must come from an English `.resx` resource, such as
 This includes logged errors, warnings, informational messages, and exception messages
 shown to users. Do not hard-code these messages in C# or edit generated translations.
 
+### Diagnostic Codes in MSBuild Tasks
+
+When logging SDK warnings or errors in `msbuild/Xamarin.MacDev.Tasks`, use the
+`LoggingExtensions.LogWarning` or `LoggingExtensions.LogError` overload that takes
+the numeric diagnostic code, a file name (or `null`), and the localized resource
+message. Do not use the message-only `TaskLoggingHelper` overloads: the resource
+name alone does not attach a diagnostic code, so users cannot control the diagnostic
+by its code.
+
+```csharp
+Log.LogWarning (51, null, MSBStrings.W0051, item.ItemSpec); // Unknown native reference type for '{0}'.
+```
+
+Use the numeric part of the resource name as the code, preserve any relevant file
+and line information, and include the English resource message in a comment on
+the logging line. Any task-specific logging wrapper must also accept and forward
+the diagnostic code. Ordinary informational `LogMessage` calls do not require a
+diagnostic code. When forwarding diagnostics from external tools, preserve their
+existing codes and source locations instead of inventing an SDK code.
+
+`BannedSymbols.txt` in the task project bans both message-only and full
+`TaskLoggingHelper.LogWarning` / `LogError` overloads. The BannedApiAnalyzers
+diagnostic `RS0030` is a build error. Do not disable the rule globally: use a
+narrow `#pragma warning disable RS0030` / `restore` pair with an explanation
+only in the logging helpers themselves or when forwarding external diagnostics.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building

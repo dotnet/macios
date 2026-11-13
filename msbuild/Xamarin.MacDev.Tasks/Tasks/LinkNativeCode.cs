@@ -162,7 +162,7 @@ namespace Xamarin.MacDev.Tasks {
 						arguments.Add (Path.GetFileNameWithoutExtension (lib));
 						break;
 					default:
-						Log.LogError ($"Unknown library extension '{libExtension}' to link with for {lib}.");
+						Log.LogError (7211, null, MSBStrings.E7211, libExtension, lib); // Unknown library extension '{0}' to link with for {1}.
 						return false;
 					}
 				}
@@ -218,7 +218,7 @@ namespace Xamarin.MacDev.Tasks {
 #else
 				if (stderr is null || string.IsNullOrEmpty (stderr)) {
 #endif
-					Log.LogError (MSBStrings.E0117, /* {0} exited with code {1} */ linkerExecutable, rv.ExitCode);
+					Log.LogError (117, null, MSBStrings.E0117, /* {0} exited with code {1} */ linkerExecutable, rv.ExitCode);
 				} else {
 					// Don't show any lines with "ld: warning: " in the error message, they're typically confusing.
 					// Also show a max of 25 lines just to not overload the error output, the native linker can
@@ -233,7 +233,7 @@ namespace Xamarin.MacDev.Tasks {
 						errorOutput = stderr;
 					}
 
-					Log.LogError (MSBStrings.E0118, /* {0} exited with code {1}:\n{2} */ linkerExecutable, rv.ExitCode, errorOutput);
+					Log.LogError (118, null, MSBStrings.E0118, /* {0} exited with code {1}:\n{2} */ linkerExecutable, rv.ExitCode, errorOutput);
 				}
 			}
 

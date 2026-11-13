@@ -60,13 +60,19 @@ namespace Xamarin.MacDev.Tasks {
 
 				switch (type) {
 				case "warning":
+#pragma warning disable RS0030 // Forward libpng's diagnostic text and source location.
 					Log.LogWarning (null, null, null, inputImage, 0, 0, 0, 0, "{0}", tokens [1].Trim ());
+#pragma warning restore RS0030
 					break;
 				case "error":
+#pragma warning disable RS0030 // Forward libpng's diagnostic text and source location.
 					Log.LogError (null, null, null, inputImage, 0, 0, 0, 0, "{0}", tokens [1].Trim ());
+#pragma warning restore RS0030
 					break;
 				default:
+#pragma warning disable RS0030 // Forward unparsed libpng output without assigning an SDK code.
 					Log.LogError (null, null, null, inputImage, 0, 0, 0, 0, "{0}", singleLine);
+#pragma warning restore RS0030
 					break;
 				}
 			} else {
@@ -98,7 +104,7 @@ namespace Xamarin.MacDev.Tasks {
 					.ContinueWith ((v) => {
 						Execution execution = v.Result;
 						if (execution.ExitCode != 0)
-							Log.LogError (MSBStrings.E7134 /* Failed to optimize the image {0}, pngcrush exited with code {1}. */, Path.GetFileName (arg.Input), execution.ExitCode);
+							Log.LogError (7134, null, MSBStrings.E7134 /* Failed to optimize the image {0}, pngcrush exited with code {1}. */, Path.GetFileName (arg.Input), execution.ExitCode);
 
 						var output = execution.Output.MergedOutput;
 						foreach (var line in output.Split ('\n')) {

@@ -147,24 +147,24 @@ namespace Xamarin.MacDev.Tasks {
 					int width, height;
 
 					if (!File.Exists (path)) {
-						Log.LogError (MSBStrings.E0006, path);
+						Log.LogError (6, null, MSBStrings.E0006, path); // '{0}' not found.
 						continue;
 					}
 
 					if (!GetPngImageSize (path, out width, out height) && !GetJpgImageSize (path, out width, out height)) {
-						Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0007, path);
+						Log.LogError (7, path, MSBStrings.E0007, path); // Error loading '{0}': Unknown image format.
 						return false;
 					}
 
 					if (width != height || (width != 512 && width != 1024)) {
-						Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0008, width, height, path);
+						Log.LogError (8, path, MSBStrings.E0008, width, height, path); // Invalid iTunesArtwork dimensions ({0}x{1}) for '{2}'.
 						return false;
 					}
 
 					logicalName = width == 1024 ? "iTunesArtwork@2x" : "iTunesArtwork";
 
 					if (!artwork.Add (logicalName)) {
-						Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0009, width, height, path);
+						Log.LogError (9, path, MSBStrings.E0009, width, height, path); // Multiple iTunesArtwork files with the same dimensions detected ({0}x{1}) for '{2}'.
 						return false;
 					}
 

@@ -1646,7 +1646,7 @@
 	<Target Name="_VerifyValidProperties">
 		<MacDevMessage
 			Warning="true"
-			ResourceName="UseNativeHttpHandlerHasNoEffectOnMacOS"
+			ResourceName="W7225"
 			Condition="'$(_PlatformName)' == 'macOS' And '$(UseNativeHttpHandler)' == 'true'"
 			/>
 		<Error

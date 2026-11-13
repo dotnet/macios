@@ -65,33 +65,33 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!Enum.TryParse<TargetArchitecture> (Architectures, out var architectures)) {
-				Log.LogError (MSBStrings.E0057, Architectures);
+				Log.LogError (57, null, MSBStrings.E0057, Architectures); // Invalid architectures: '{0}'.
 				return false;
 			}
 
 			var plist = PObject.FromString (TargetiOSDevice) as PDictionary;
 			if (plist is null) {
-				Log.LogError (MSBStrings.E0058);
+				Log.LogError (58, null, MSBStrings.E0058); // Failed to parse the target device information.
 				return false;
 			}
 
 			if (!plist.TryGetValue<PDictionary> ("device", out var device)) {
-				Log.LogError (MSBStrings.E0059);
+				Log.LogError (59, null, MSBStrings.E0059); // No target device found.
 				return false;
 			}
 
 			if (!device.TryGetValue<PString> ("architecture", out var value)) {
-				Log.LogError (MSBStrings.E0060);
+				Log.LogError (60, null, MSBStrings.E0060); // No device architecture information found.
 				return false;
 			}
 
 			if (!Enum.TryParse<TargetArchitecture> (value.Value, out var deviceArchitectures) || deviceArchitectures == TargetArchitecture.Default) {
-				Log.LogError (MSBStrings.E0061, value.Value);
+				Log.LogError (61, null, MSBStrings.E0061, value.Value); // Invalid target architecture: '{0}'
 				return false;
 			}
 
 			if (!device.TryGetValue<PString> ("os", out var os)) {
-				Log.LogError (MSBStrings.E0062);
+				Log.LogError (62, null, MSBStrings.E0062); // No device operating system information found.
 				return false;
 			}
 
@@ -119,14 +119,14 @@ namespace Xamarin.MacDev.Tasks {
 			TargetArchitectures = target.ToString ();
 
 			if (!device.TryGetValue ("model", out value)) {
-				Log.LogError (MSBStrings.E0063);
+				Log.LogError (63, null, MSBStrings.E0063); // No device model information found.
 				return false;
 			}
 
 			TargetDeviceModel = value.Value;
 
 			if (!device.TryGetValue ("os-version", out value)) {
-				Log.LogError (MSBStrings.E0064);
+				Log.LogError (64, null, MSBStrings.E0064); // No iOS version information found.
 				return false;
 			}
 

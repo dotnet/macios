@@ -172,6 +172,7 @@ namespace Cecil.Tests {
 
 			// Dictionary of (FullName of Member) -> (Dictionary of (Actual Platform) -> Platform Claim Info)
 			var harvestedInfo = new Dictionary<string, Dictionary<string, PlatformClaimInfo>> ();
+			var actualMembers = new HashSet<(string Member, string Platform)> ();
 
 			// Load each platform assembly
 			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
@@ -183,19 +184,12 @@ namespace Cecil.Tests {
 					if (!type.IsPubliclyVisible ())
 						continue;
 
-					switch (type.Namespace) {
-					case "AppKit":
-					case "UIKit":
-						// The availability attributes between AppKit and UIKit are quite inconsistent:
-						// https://github.com/dotnet/macios/issues/17292
-						// So let's just skip these two namespaces for now.
-						continue;
-					}
 					foreach (var member in GetAllTypeMembers (type)) {
+						string key = GetMemberLookupKey (member);
+						actualMembers.Add ((key, currentPlatform));
 						var mentionedPlatforms = GetAvailabilityAttributes (member).ToList ();
 						if (mentionedPlatforms.Any ()) {
 							var claimedPlatforms = GetSupportedAvailabilityAttributes (member).ToList ();
-							string key = GetMemberLookupKey (member);
 							if (!harvestedInfo.ContainsKey (key)) {
 								harvestedInfo [key] = new Dictionary<string, PlatformClaimInfo> ();
 							}
@@ -227,7 +221,7 @@ namespace Cecil.Tests {
 				// Since we know each platform claims are now equal, just use the first one
 				var claimedPlatforms = info.First ().Value.ClaimedPlatforms;
 				foreach (var platform in claimedPlatforms) {
-					if (!info.ContainsKey (platform)) {
+					if (!actualMembers.Contains ((member, platform))) {
 						var detailedPlatformBreakdown = string.Join ("\n\t", info.Select (x => ($"Assembly {x.Key} => Declares ({string.Join (" ", x.Value)})")));
 						var errorMessage = $"{member} was not found on {platform} despite being declared supported there:\n\t{detailedPlatformBreakdown}";
 						if (failures.TryGetValue (member, out var existingFailure)) {
@@ -376,6 +370,9 @@ namespace Cecil.Tests {
 		static string GetMemberLookupKey (IMemberDefinition member)
 		{
 			var key = GetMemberLookupKeyInternal (member);
+			var ns = member is TypeDefinition type ? type.Namespace : member.DeclaringType.Namespace;
+			if (ns == "AppKit" || ns == "UIKit")
+				return key;
 
 			// The availability attributes between AppKit and UIKit are quite inconsistent:
 			// https://github.com/dotnet/macios/issues/17292
@@ -389,6 +386,29 @@ namespace Cecil.Tests {
 				.Replace ("UIKit", "XKit");
 
 			return key;
+		}
+
+		[Test]
+		public void AvailabilityLookupKeys ()
+		{
+			using var module = ModuleDefinition.CreateModule ("AvailabilityLookupKeys", ModuleKind.Dll);
+			var appKitType = new TypeDefinition ("AppKit", "NSView", TypeAttributes.Public, module.TypeSystem.Object);
+			var uiKitType = new TypeDefinition ("UIKit", "UIView", TypeAttributes.Public, module.TypeSystem.Object);
+			module.Types.Add (appKitType);
+			module.Types.Add (uiKitType);
+			Assert.That (GetMemberLookupKey (appKitType), Is.Not.EqualTo (GetMemberLookupKey (uiKitType)), "Distinct namespaces");
+
+			var method = new MethodDefinition ("Method", MethodAttributes.Public, module.TypeSystem.Void);
+			var genericMethod = new MethodDefinition ("Method", MethodAttributes.Public, module.TypeSystem.Void);
+			genericMethod.GenericParameters.Add (new GenericParameter ("T", genericMethod));
+			var twoParameterMethod = new MethodDefinition ("Method", MethodAttributes.Public, module.TypeSystem.Void);
+			twoParameterMethod.GenericParameters.Add (new GenericParameter ("T1", twoParameterMethod));
+			twoParameterMethod.GenericParameters.Add (new GenericParameter ("T2", twoParameterMethod));
+			uiKitType.Methods.Add (method);
+			uiKitType.Methods.Add (genericMethod);
+			uiKitType.Methods.Add (twoParameterMethod);
+			Assert.That (new [] { GetMemberLookupKey (method), GetMemberLookupKey (genericMethod), GetMemberLookupKey (twoParameterMethod) },
+				Is.Unique, "Generic arity without generic parameters in the signature");
 		}
 
 		public static string GetMemberLookupKeyInternal (IMemberDefinition member)
@@ -406,7 +426,7 @@ namespace Cecil.Tests {
 				sb.Append (GetMemberLookupKeyInternal (md.DeclaringType));
 				sb.Append ('.');
 				sb.Append (md.Name);
-				if (md.ContainsGenericParameter) {
+				if (md.HasGenericParameters) {
 					sb.Append ('`');
 					sb.Append (md.GenericParameters.Count.ToString ());
 				}

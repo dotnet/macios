@@ -74,10 +74,17 @@ namespace UIKit {
 		/// <param name="textMatrix">The text matrix.</param>
 		/// <param name="attributes">The attributes.</param>
 		/// <param name="graphicsContext">The graphics context.</param>
-		[SupportedOSPlatform ("tvos")]
+#if MONOMAC
 		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+#else
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
+#endif
 		public unsafe void ShowGlyphs (
 			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,
 			CGPoint [] /* const CGPoint* */ positions,

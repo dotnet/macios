@@ -95,6 +95,26 @@ namespace MonoTouchFixtures.ImageIO {
 			}
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void Save (bool useSave)
+		{
+			using var data = NSData.FromFile (NSBundle.MainBundle.PathForResource ("basn3p08", "png"));
+			using var source = CGImageSource.FromData (data);
+			using var destData = new NSMutableData ();
+			using var destination = CGImageDestination.Create (destData, GoodUti, 1);
+			destination.AddImage (source, 0);
+
+			Assert.That (useSave ? destination.Save () : destination.Close (), Is.True, "Save result");
+			Assert.That (destination.Handle, Is.EqualTo (IntPtr.Zero), "Disposed");
+			Assert.That (destData.Length, Is.GreaterThan ((nuint) 0), "Saved data");
+			using var savedSource = CGImageSource.FromData (destData);
+			Assert.That (savedSource, Is.Not.Null, "Saved source");
+			Assert.That (savedSource.ImageCount, Is.EqualTo ((nint) 1), "Image count");
+			using var image = savedSource.CreateImage (0, null);
+			Assert.That (image, Is.Not.Null, "Saved image");
+		}
+
 		[Test]
 		public void AddImageAndMetadata ()
 		{

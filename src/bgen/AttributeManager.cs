@@ -183,6 +183,8 @@ public class AttributeManager {
 			return typeof (PrivateDefaultCtorAttribute);
 		case "ProtectedAttribute":
 			return typeof (ProtectedAttribute);
+		case "PropagateToSubclassesAttribute":
+			return typeof (PropagateToSubclassesAttribute);
 		case "SealedAttribute":
 			return typeof (SealedAttribute);
 		case "StaticAttribute":

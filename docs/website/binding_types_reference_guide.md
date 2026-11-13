@@ -1873,6 +1873,39 @@ When the `[Static]` attribute is applied to a method or property, this generates
 static method or property. If this attribute is not specified, then the
 generator produces an instance method or property.
 
+<a name="PropagateToSubclassesAttribute"></a>
+
+### PropagateToSubclassesAttribute
+
+Apply `[PropagateToSubclasses]` to a `[Static]` method or property to generate a
+separate binding in every subclass declared through `[BaseType]`. Each generated
+member sends its Objective-C message to the subclass's native class, rather than
+calling the managed base class's static member. This is useful for class methods
+such as `ARConfiguration.IsSupported`, whose result depends on the receiving class.
+
+```csharp
+[BaseType (typeof (NSObject))]
+interface Configuration {
+    [PropagateToSubclasses]
+    [Static]
+    [Export ("isSupported")]
+    bool IsSupported { get; }
+}
+
+[BaseType (typeof (Configuration))]
+interface SpecializedConfiguration {
+}
+```
+
+Both generated classes declare `IsSupported`; the subclass member uses `new static`.
+Member attributes, including availability, are preserved. An explicit declaration
+in a subclass takes precedence over a propagated member with the same managed
+property name or method signature. Methods with different parameter types remain
+separate overloads. Unannotated static members are not propagated.
+
+The attribute is only valid on methods and properties. Applying it without
+`[Static]` produces error `BI1130`.
+
 ### TransientAttribute
 
 Use this attribute to flag properties whose values are transient, that is,

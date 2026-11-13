@@ -353,6 +353,12 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The [PropagateToSubclasses] attribute on '\*.\*' can only be used on static methods and properties. Add [Static] or remove [PropagateToSubclasses].
+
+Only static methods and properties can be propagated to subclasses. Add `[Static]`
+if the native member is a class method, or remove `[PropagateToSubclasses]` if it
+is an instance member.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

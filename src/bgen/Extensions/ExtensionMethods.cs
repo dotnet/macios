@@ -152,6 +152,16 @@ public static class ReflectionExtensions {
 	{
 		var properties = new List<PropertyInfo> (type.GetProperties (flags));
 
+		var propertyNames = new HashSet<string> (properties.Select (p => p.Name));
+		for (var parent = GetBaseType (type, generator); parent != generator.TypeCache.System_Object; parent = GetBaseType (parent, generator)) {
+			if (parent.IsUnavailable (generator))
+				continue;
+			foreach (var property in parent.GetProperties (flags)) {
+				if (generator.AttributeManager.HasAttribute<PropagateToSubclassesAttribute> (property) && propertyNames.Add (property.Name))
+					properties.Add (property);
+			}
+		}
+
 		if (generator.IsPublicMode)
 			return properties;
 
@@ -204,6 +214,18 @@ public static class ReflectionExtensions {
 	{
 		var methods = new List<MethodInfo> (type.GetMethods (flags));
 
+		for (var parent = GetBaseType (type, generator); parent != generator.TypeCache.System_Object; parent = GetBaseType (parent, generator)) {
+			if (parent.IsUnavailable (generator))
+				continue;
+			foreach (var method in parent.GetMethods (flags)) {
+				if (method.IsSpecialName)
+					continue;
+				if (generator.AttributeManager.HasAttribute<PropagateToSubclassesAttribute> (method) &&
+					!methods.Any (m => m.Name == method.Name && m.GetParameters ().Select (p => p.ParameterType).SequenceEqual (method.GetParameters ().Select (p => p.ParameterType))))
+					methods.Add (method);
+			}
+		}
+
 		if (generator.IsPublicMode)
 			return methods;
 
@@ -212,7 +234,7 @@ public static class ReflectionExtensions {
 		if (parentType != generator.TypeCache.NSObject) {
 			if (generator.AttributeManager.HasAttribute<ModelAttribute> (parentType))
 				foreach (MethodInfo minfo in parentType.GetMethods ())
-					if (generator.AttributeManager.HasAttribute<ExportAttribute> (minfo))
+					if (generator.AttributeManager.HasAttribute<ExportAttribute> (minfo) && !methods.Contains (minfo))
 						methods.Add (minfo);
 		}
 

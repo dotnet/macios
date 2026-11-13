@@ -13,14 +13,14 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		public void DotNetWatch (ApplePlatform platform, bool enableSandbox)
+		[TestCase (ApplePlatform.MacOSX, false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		[TestCase (ApplePlatform.iOS, false, true)]
+		[TestCase (ApplePlatform.MacCatalyst, true, false)]
+		[TestCase (ApplePlatform.MacOSX, true, true)]
+		public void DotNetWatch (ApplePlatform platform, bool enableSandbox, bool publishAot)
 		{
-			DotNetWatchImpl (platform, enableSandbox, usePhysicalDevice: false);
+			DotNetWatchImpl (platform, enableSandbox, usePhysicalDevice: false, publishAot: publishAot);
 		}
 
 		// This test is opt-in: set the DEVICE environment variable to the name of a connected device.
@@ -49,7 +49,7 @@ namespace Xamarin.Tests {
 			DotNetWatchImpl (platform, enableSandbox: false, usePhysicalDevice: true, connectionMode: "wifi");
 		}
 
-		void DotNetWatchImpl (ApplePlatform platform, bool enableSandbox, bool usePhysicalDevice, string connectionMode = "usb")
+		void DotNetWatchImpl (ApplePlatform platform, bool enableSandbox, bool usePhysicalDevice, string connectionMode = "usb", bool publishAot = false)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -130,20 +130,22 @@ namespace Xamarin.Tests {
 			Log ($"Wrote initial content to {additionalFile}.");
 
 			var output = new List<string> ();
-			var appStarted = new TaskCompletionSource<bool> ();
+			var appStarted = new TaskCompletionSource<int> ();
 			var waitingForChanges = new TaskCompletionSource<bool> ();
-			var variableChanged = new TaskCompletionSource<bool> ();
+			var variableChanged = new TaskCompletionSource<int> ();
 			var cts = new CancellationTokenSource ();
 			var appOutput = new List<string> ();
 
 			var outputProcessor = new Action<string> (line => {
-				if (line.Contains ("Variable has not changed")) {
-					if (appStarted.TrySetResult (true))
-						Log ("Got 'Variable has not changed' => the app has started.");
-				}
-				if (line.Contains ("Variable has changed")) {
-					if (variableChanged.TrySetResult (true))
-						Log ("Got 'Variable has changed' => the variable changed after the hot reload.");
+				var variableIndex = line.IndexOf (" Variable=", StringComparison.Ordinal);
+				if (variableIndex > 0) {
+					var iterationIndex = line.LastIndexOf (' ', variableIndex - 1) + 1;
+					if (int.TryParse (line.AsSpan (iterationIndex, variableIndex - iterationIndex), out var iteration)) {
+						if (line.Contains ("Variable will change...") && appStarted.TrySetResult (iteration))
+							Log ($"Got 'Variable will change...' at iteration {iteration} => the app has started.");
+						if (line.Contains ("Variable has changed") && variableChanged.TrySetResult (iteration))
+							Log ($"Got 'Variable has changed' at iteration {iteration} => the variable changed after the hot reload.");
+					}
 				}
 				if (line.Contains ("Waiting for changes")) {
 					if (waitingForChanges.TrySetResult (true))
@@ -244,6 +246,9 @@ namespace Xamarin.Tests {
 				{ "EnableSandbox", enableSandbox ? "true" : "false" },
 			};
 
+			if (publishAot)
+				env ["PublishAot"] = "true";
+
 			if (usePhysicalDevice) {
 				// On a physical device, the app can't write to the Mac filesystem, so don't set the log file path.
 				// The app's stdout will be captured by mlaunch and forwarded to dotnet watch.
@@ -311,18 +316,28 @@ namespace Xamarin.Tests {
 				}
 				Log ("Waiting for changes!");
 
+				if (publishAot) {
+					// dotnet watch can enable startup hooks in runtimeconfig.dev.json even when the SDK default is false.
+					var properties = GetDefaultProperties ();
+					properties ["PublishAot"] = "true";
+					properties ["UseMonoRuntime"] = "false";
+					Assert.That (DotNet.GetProperty (projectPath, "StartupHookSupport", properties), Is.EqualTo ("true"), "StartupHookSupport");
+				}
+
 				// Write AdditionalFile.cs to trigger a rebuild via dotnet watch
 				Log ($"Writing updated content to {additionalFile} to trigger a hot reload...");
 				File.WriteAllText (additionalFile, secondContent);
 				Log ($"Wrote updated content to {additionalFile}.");
 
 				// Wait for dotnet watch to pick up the change and the app to show the updated output
-				Log ("Waiting for app restart...");
+				Log ("Waiting for hot reload...");
 				if (!variableChanged.Task.Wait (TimeSpan.FromMinutes (1))) {
 					Log ("Timed out waiting for the variable to change.");
 					Assert.Fail ($"Timed out waiting for the variable to change. Output:\n{string.Join ("\n", output)}\nDebug output:\n{string.Join ("\n", File.ReadAllLines (debugLogPath))}");
 				}
-				Log ("App restarted!");
+				// A restart resets the loop counter; Hot Reload leaves it increasing.
+				Assert.That (variableChanged.Task.Result, Is.GreaterThan (appStarted.Task.Result), "The application must not restart");
+				Log ("Hot reload applied without restarting.");
 			} finally {
 				// Always cancel the watch process, even if the test failed
 				Log ("Terminating the watch process...");

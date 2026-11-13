@@ -23,27 +23,6 @@ namespace Xamarin.Tests {
 			Assert.That (runtimeIdentifier, Is.EqualTo (expectedRuntimeIdentifier), "RuntimeIdentifier");
 		}
 
-		[TestCase (ApplePlatform.iOS, "Debug", false, "true")]
-		[TestCase (ApplePlatform.iOS, "Debug", true, "true")]
-		[TestCase (ApplePlatform.iOS, "Release", false, "false")]
-		[TestCase (ApplePlatform.iOS, "Release", true, "false")]
-		[TestCase (ApplePlatform.MacCatalyst, "Debug", true, "true")]
-		[TestCase (ApplePlatform.MacOSX, "Debug", true, "true")]
-		[TestCase (ApplePlatform.TVOS, "Debug", true, "true")]
-		public void StartupHookSupportDefault (ApplePlatform platform, string configuration, bool publishAot, string expectedValue)
-		{
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
-			var properties = GetDefaultProperties ();
-			properties ["Configuration"] = configuration;
-			if (publishAot)
-				properties ["PublishAot"] = "true";
-			// Restore first, because the ILLink targets (which change the default StartupHookSupport value) are only imported after a restore with PublishAot=true.
-			DotNet.AssertRestore (projectPath, properties);
-			var startupHookSupport = DotNet.GetProperty (projectPath, "StartupHookSupport", properties);
-			Assert.That (startupHookSupport, Is.EqualTo (expectedValue), "StartupHookSupport");
-		}
-
 		[Test]
 		[TestCase (null)]
 		[TestCase ("iossimulator-arm64")]

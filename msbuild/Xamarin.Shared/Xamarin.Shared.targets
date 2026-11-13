@@ -18,6 +18,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<PropertyGroup>
+		<_AppleMSBuildWarningsAsMessages>$(NoWarn.Replace(',', ';'))</_AppleMSBuildWarningsAsMessages>
+		<_AppleMSBuildWarningsAsErrors>$(WarningsAsErrors.Replace(',', ';'))</_AppleMSBuildWarningsAsErrors>
+		<_AppleMSBuildWarningsNotAsErrors>$(WarningsNotAsErrors.Replace(',', ';'))</_AppleMSBuildWarningsNotAsErrors>
+		<_AppleMSBuildTreatWarningsAsErrors>$(TreatWarningsAsErrors)</_AppleMSBuildTreatWarningsAsErrors>
+		<!-- MSBuild's logging engine requires these standard property names. -->
+		<MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);$(_AppleMSBuildWarningsAsMessages)</MSBuildWarningsAsMessages>
+		<MSBuildWarningsAsErrors Condition="'$(_AppleMSBuildWarningsAsErrors)' != ''">$(MSBuildWarningsAsErrors);$(_AppleMSBuildWarningsAsErrors)</MSBuildWarningsAsErrors>
+		<MSBuildWarningsNotAsErrors>$(MSBuildWarningsNotAsErrors);$(_AppleMSBuildWarningsNotAsErrors)</MSBuildWarningsNotAsErrors>
+		<MSBuildTreatWarningsAsErrors Condition="'$(MSBuildTreatWarningsAsErrors)' == ''">$(_AppleMSBuildTreatWarningsAsErrors)</MSBuildTreatWarningsAsErrors>
+	</PropertyGroup>
+
 	<!-- Tasks that override built-in tasks to support remoting from VS/Windows -->
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Copy" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Delete" AssemblyFile="$(_TaskAssemblyName)" />

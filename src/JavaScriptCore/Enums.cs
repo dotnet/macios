@@ -54,11 +54,16 @@ namespace JavaScriptCore {
 		NoAutomaticPrototype = 1 << 1,
 	}
 
+	/// <summary>Identifies the result of comparing two JavaScript operands.</summary>
 	[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 	public enum JSRelationCondition : uint {
+		/// <summary>The operands cannot be compared.</summary>
 		Undefined,
+		/// <summary>The operands have equivalent values.</summary>
 		Equal,
+		/// <summary>The left operand is greater than the right operand.</summary>
 		GreaterThan,
+		/// <summary>The left operand is less than the right operand.</summary>
 		LessThan,
 	}
 }

@@ -4218,10 +4218,6 @@ F:Intents.INVocabularyStringType.MediaShowTitle
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
 F:iTunesLibrary.ITLibPlaylistProperty.Primary
-F:JavaScriptCore.JSRelationCondition.Equal
-F:JavaScriptCore.JSRelationCondition.GreaterThan
-F:JavaScriptCore.JSRelationCondition.LessThan
-F:JavaScriptCore.JSRelationCondition.Undefined
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed

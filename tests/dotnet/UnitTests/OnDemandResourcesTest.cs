@@ -13,6 +13,33 @@ namespace Xamarin.Tests {
 		// and the asset pack directory name is "<bundle identifier>.<tags>.assetpack".
 		const string assetPackName = "com.xamarin.appwithondemandresources.MusicTag.assetpack";
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "AppStore")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "AdHoc")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AppStore")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "AdHoc")]
+		public void BuildIpaWithoutAssetPacks (ApplePlatform platform, string runtimeIdentifiers, string distributionType)
+		{
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var projectPath = GetProjectPath ("MySimpleApp", runtimeIdentifiers, platform, out var appPath);
+			Clean (projectPath);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["EnableOnDemandResources"] = "true";
+			properties ["EmbedOnDemandResources"] = "false";
+			properties ["EnableCodeSigning"] = "false";
+			// Exercise distribution packaging without requiring a distribution certificate or provisioning profile.
+			properties ["_DistributionType"] = distributionType;
+
+			var result = DotNet.AssertBuild (projectPath, properties);
+
+			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_PackageOnDemandResources", "On-demand resources packaging");
+			Assert.That (Path.Combine (appPath, "..", "MySimpleApp.ipa"), Does.Exist, "IPA creation without asset packs");
+			Assert.That (Path.Combine (appPath, "..", "OnDemandResources"), Does.Not.Exist, "No asset packs to export");
+		}
+
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
 		public void OnDemandResourcesAreEmbeddedForSimulator (ApplePlatform platform, string runtimeIdentifiers)

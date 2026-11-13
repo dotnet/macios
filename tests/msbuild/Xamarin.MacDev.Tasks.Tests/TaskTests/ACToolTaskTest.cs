@@ -17,6 +17,14 @@ namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class ACToolTaskTests : TestBase {
 		class TestACTool : ACTool {
+			public List<string> CommandLineArguments { get; } = new ();
+
+			protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
+			{
+				base.AppendCommandLineArguments (environment, args, items);
+				CommandLineArguments.AddRange (args);
+			}
+
 			public bool InvokeAppendAdditionalArguments (List<string> arguments)
 			{
 				return base.AppendAdditionalArguments (arguments);
@@ -50,13 +58,13 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (arguments, Is.Empty, "Arguments");
 		}
 
-		ACTool CreateACToolTask (ApplePlatform platform, string projectDir, out string intermediateOutputPath, params string [] imageAssets)
+		TestACTool CreateACToolTask (ApplePlatform platform, string projectDir, out string intermediateOutputPath, params string [] imageAssets)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
 			intermediateOutputPath = Cache.CreateTemporaryDirectory ();
 
-			var task = CreateTask<ACTool> ();
+			var task = CreateTask<TestACTool> ();
 
 			var version = AppleSdkVersion.UseDefault.ToString ();
 			string sdkPlatform;
@@ -113,6 +121,50 @@ namespace Xamarin.MacDev.Tasks {
 				out var _,
 				imageAssets
 			);
+		}
+
+		[TestCase ("Resources/Images.xcassets")]
+		[TestCase ("Shared/Images.xcassets")]
+		[TestCase (null)]
+		public void ExternalAssetCatalog (string? catalogPath)
+		{
+			var sourceDir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "AppWithXCAssets", "tvos", "Resources", "Images.xcassets");
+			var files = Directory.GetFiles (sourceDir, "*", SearchOption.AllDirectories);
+			var imageAssets = files.Select (v => v + "|" + catalogPath + v.Substring (sourceDir.Length)).ToArray ();
+			var actool = CreateACToolTask (ApplePlatform.TVOS, Cache.CreateTemporaryDirectory (), out var _, imageAssets);
+			if (catalogPath is null) {
+				foreach (var item in actool.ImageAssets) {
+					item.RemoveMetadata ("Link");
+					item.SetMetadata ("LocalMSBuildProjectFullPath", Path.Combine (actool.ProjectDir, "App.csproj"));
+					item.SetMetadata ("LocalDefiningProjectFullPath", Path.Combine (actool.ProjectDir, "App.csproj"));
+				}
+			}
+			actool.XSAppIconAssets = "Resources/Images.xcassets/AlternateBrandAssets.brandassets";
+			actool.XSLaunchImageAssets = "Resources/Images.xcassets/tvOSLaunchImage.launchimage";
+
+			ExecuteTask (actool);
+
+			Assert.That (actool.CommandLineArguments.SkipWhile (v => v != "--app-icon").Take (2), Is.EqualTo (new [] { "--app-icon", "AlternateBrandAssets" }), "App icon arguments");
+			Assert.That (actool.CommandLineArguments.SkipWhile (v => v != "--launch-image").Take (2), Is.EqualTo (new [] { "--launch-image", "tvOSLaunchImage" }), "Launch image arguments");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
+			var manifest = PDictionary.OpenFile (actool.PartialAppManifest?.ItemSpec ?? "");
+			Assert.That (manifest.Get<PDictionary> ("CFBundleIcons")?.Get<PString> ("CFBundlePrimaryIcon")?.Value, Is.EqualTo ("AppIcon"), "Primary icon");
+			Assert.That (manifest.Get<PDictionary> ("TVTopShelfImage")?.Get<PString> ("TVTopShelfPrimaryImageWide")?.Value, Is.EqualTo ("TopShelfImageWide"), "Wide top shelf image");
+		}
+
+		[TestCase (true)]
+		[TestCase (false)]
+		public void InexistentManifestAsset (bool appIcon)
+		{
+			var actool = CreateACToolTaskWithResources (ApplePlatform.iOS);
+			if (appIcon) {
+				actool.XSAppIconAssets = "Missing.xcassets/InexistentAppIcon.appiconset";
+			} else {
+				actool.XSLaunchImageAssets = "Missing.xcassets/InexistentLaunchImage.launchimage";
+			}
+
+			Assert.That (actool.Execute (), Is.False, "Task result");
+			Assert.That (Engine.Logger.ErrorEvents.Select (v => v.Message), Has.Some.Contain (appIcon ? "InexistentAppIcon" : "InexistentLaunchImage"), "Missing asset error");
 		}
 
 		[Test]

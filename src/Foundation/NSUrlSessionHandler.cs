@@ -1667,7 +1667,15 @@ namespace Foundation {
 				return ReadAsync (buffer, offset, count).Result;
 			}
 
-			public override async Task<int> ReadAsync (byte [] buffer, int offset, int count, CancellationToken cancellationToken)
+			/// <inheritdoc />
+			public override Task<int> ReadAsync (byte [] buffer, int offset, int count, CancellationToken cancellationToken)
+			{
+				ValidateBufferArguments (buffer, offset, count);
+				return ReadAsync (buffer.AsMemory (offset, count), cancellationToken).AsTask ();
+			}
+
+			/// <inheritdoc />
+			public override async ValueTask<int> ReadAsync (Memory<byte> buffer, CancellationToken cancellationToken = default)
 			{
 				// try to throw on enter
 				ThrowIfNeeded (cancellationToken);
@@ -1693,8 +1701,9 @@ namespace Foundation {
 				ThrowIfNeeded (cancellationToken);
 
 				var d = currentStream!;
-				var bufferCount = Math.Min (count, (int) (d.Length - d.Position));
-				var bytesRead = await d.ReadAsync (buffer, offset, bufferCount, cancellationToken).ConfigureAwait (false);
+				var bufferCount = (int) Math.Min (buffer.Length, d.Length - d.Position);
+				// NSData is already in memory; read the span directly to avoid Stream's array fallback.
+				var bytesRead = d.Read (buffer.Span.Slice (0, bufferCount));
 
 				// add the bytes read from the pointer to the position
 				position += bytesRead;

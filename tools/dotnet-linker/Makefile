@@ -20,7 +20,7 @@ dotnet-linker.csproj.inc: export DOTNET:=$(DOTNET)
 dotnet-linker.csproj.inc: dotnet-linker.csproj
 -include dotnet-linker.csproj.inc
 
-$(BUILD_DIR)/dotnet-linker%dll $(BUILD_DIR)/dotnet-linker%pdb: Makefile $(dotnet_linker_dependencies)
+$(BUILD_DIR)/dotnet-linker%dll $(BUILD_DIR)/dotnet-linker%pdb: Makefile $(dotnet_linker_dependencies) $(TOP)/Directory.Build.props
 	$(Q_DOTNET_BUILD) $(DOTNET) build dotnet-linker.csproj /bl:dotnet-linker.binlog $(DOTNET_BUILD_VERBOSITY)
 	$(Q) touch $(BUILD_DIR)/dotnet-linker.dll $(BUILD_DIR)/dotnet-linker.pdb
 

@@ -17,7 +17,7 @@ ASSEMBLY_PREPARER_NETCORE=bin/Debug/$(DOTNET_TFM)/assembly-preparer.dll
 ASSEMBLY_PREPARER_NETSTD=bin/Debug/netstandard2.0/assembly-preparer.dll
 ASSEMBLIES=$(ASSEMBLY_PREPARER_NETCORE) $(ASSEMBLY_PREPARER_NETSTD)
 
-.build-stamp: $(assembly_preparer_dependencies)
+.build-stamp: $(assembly_preparer_dependencies) $(TOP)/Directory.Build.props
 	$(Q_BUILD) $(DOTNET) build /bl:$@.binlog *.csproj $(DOTNET_BUILD_VERBOSITY)
 	$(Q) touch $(ASSEMBLIES)
 

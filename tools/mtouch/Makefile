@@ -22,7 +22,7 @@ DOTNET_PLATFORMS_CORECLR_MTOUCH=$(DOTNET_CORECLR_PLATFORMS)
 mtouch.csproj.inc: export BUILD_VERBOSITY=$(MSBUILD_VERBOSITY)
 -include mtouch.csproj.inc
 
-$(LOCAL_MTOUCH): $(mtouch_dependencies)
+$(LOCAL_MTOUCH): $(mtouch_dependencies) $(TOP)/Directory.Build.props
 	$(Q_GEN) $(DOTNET) build mtouch.csproj $(DOTNET_BUILD_VERBOSITY) /p:Configuration=$(MTOUCH_CONF)
 
 $(abspath Constants.cs): Constants.cs.in Makefile $(TOP)/Make.config.inc

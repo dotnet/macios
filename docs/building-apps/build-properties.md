@@ -551,8 +551,8 @@ needed, making the app smaller).
 
 Set this property to `true` or `false` to override the computed default.
 
-Removing the dynamic registrar requires a static registrar (`Registrar=static` or
-`Registrar=managed-static`) and trimming, so setting this property has no effect (and the
+Removing the dynamic registrar requires a static registrar (`Registrar=static`,
+`Registrar=managed-static`, or `Registrar=trimmable-static`; see [Registrar](#registrar)) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.
 
 ## TrimExportAttributes
@@ -562,7 +562,7 @@ and `Foundation.OutletAttribute` instances are removed during trimming.
 
 If this property is not specified, the build automatically removes these
 attributes when assembly preparation and post-processing are enabled, the
-trimmable static registrar is selected, dynamic registration is not required,
+trimmable static registrar ([Registrar](#registrar)=`trimmable-static`) is selected, dynamic registration is not required,
 and no runtime fallback needs the attributes.
 
 Set this property to `false` to preserve the attributes. Set it to `true` to
@@ -760,7 +760,7 @@ Reload). This will disable a few minor optimizations, but will otherwies not
 affect anything.
 
 The default value is `true` for non-NativeAOT debug builds that don't use the
-managed static registrar, and `false` otherwise (the managed static registrar
+managed static registrar ([Registrar](#registrar)=`managed-static`), and `false` otherwise (the managed static registrar
 modifies user assemblies, which is incompatible with Hot Reload).
 
 ## IBToolExtraArgs
@@ -1481,6 +1481,76 @@ Note: the version number may contain more than 2 components ("26.6.1" for instan
 ## ReferenceNativeSymbol
 
 See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
+
+## Registrar
+
+Selects the registrar used to map managed types and methods to Objective-C and
+vice versa.
+
+Valid values:
+
+* `dynamic`: Registers managed types and methods with the Objective-C runtime at
+  runtime using reflection. Fastest at build time, but slowest at runtime and
+  adds a significant startup delay while everything is registered.
+* `partial-static`: Uses pre-generated static registration code for the platform
+  assembly (`Microsoft.<Platform>.dll`) and registers all other assemblies at
+  runtime using the dynamic registrar. Almost as fast as `dynamic` at build
+  time, and has almost no startup delay. Requires trimming to be disabled
+  ([TrimMode](#trimmode)=`copy`) and [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
+  to be `default` (or unset).
+* `static`: Generates Objective-C registration code at build time for all
+  assemblies, using native marshalling trampolines. Not supported with
+  NativeAOT, and not supported in .NET 12+.
+* `managed-static`: Generates Objective-C registration code at build time, using
+  managed `[UnmanagedCallersOnly]` marshalling trampolines and per-assembly type
+  lookup tables. Modifies user assemblies, so it can't be used with Hot Reload
+  or `dotnet watch`. Not supported in .NET 12+.
+* `trimmable-static`: A variation of `managed-static` that uses trimmer-friendly
+  `TypeMap` attributes for type mapping instead of per-assembly lookup tables,
+  allowing the trimmer to remove unused Objective-C types and methods more
+  effectively. Slowest at build time, but has no startup delay. A number of
+  other optimizations are also only possible when using the `trimmable-static`
+  registrar.
+* `default`: Uses the default registrar for the current build configuration (same
+  as leaving the property unset).
+
+When using NativeAOT (`PublishAot=true`), only `managed-static` (in .NET 11 and
+earlier) and `trimmable-static` are supported.
+
+If this property is not set, the default value is selected as follows:
+
+* .NET 12+:
+  * `partial-static` for debug builds when no assemblies are trimmed and
+    [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
+    unset).
+  * `trimmable-static` otherwise (including release builds and NativeAOT builds).
+* .NET 11:
+  * `trimmable-static` when using NativeAOT (`PublishAot=true`).
+  * For CoreCLR builds (`UseMonoRuntime` is not `true`): `partial-static` for
+    simulator builds when no assemblies are trimmed and
+    [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
+    unset); `trimmable-static` otherwise.
+* .NET 10 and earlier (or when `UseMonoRuntime=true`):
+  * `managed-static` for NativeAOT builds, iOS and tvOS device builds, and
+    macOS and Mac Catalyst release builds.
+  * `partial-static` when no assemblies are trimmed and
+    [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
+    unset).
+  * `dynamic` otherwise.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <Registrar>trimmable-static</Registrar>
+</PropertyGroup>
+```
+
+See also:
+
+* [DynamicRegistrationSupported](#dynamicregistrationsupported)
+* [HotReloadCompatibleBuild](#hotreloadcompatiblebuild)
+* [TrimExportAttributes](#trimexportattributes)
 
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 

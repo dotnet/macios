@@ -457,7 +457,7 @@ namespace CoreSpotlight {
 		bool IsUpdate { get; set; }
 
 #if !XAMCORE_5_0 && __TVOS__
-		[Obsolete ("This property is not available on tvOS.")]
+		[Obsolete (Constants.ApiUnavailableOnTVOS)]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 #endif
 		[NoTV, iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
@@ -551,7 +551,7 @@ namespace CoreSpotlight {
 #endif
 	[MacCatalyst (13, 1)]
 #if !XAMCORE_5_0 && __TVOS__
-	[Obsolete ("This type is not available on tvOS.")]
+	[Obsolete (Constants.ApiUnavailableOnTVOS)]
 	[EditorBrowsable (EditorBrowsableState.Never)]
 #else
 	[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2747,7 +2747,7 @@ namespace CoreSpotlight {
 		[NoTV, NoiOS, NoMacCatalyst]
 #elif !__MACOS__
 		/// <summary>Gets or sets the sources that the query can search.</summary>
-		[Obsolete ("This property is not available on this platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 #else
 		/// <summary>Gets or sets the sources that the query can search.</summary>
@@ -2762,7 +2762,7 @@ namespace CoreSpotlight {
 #else
 #if !__MACOS__
 	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
-	[Obsolete ("This enum is not available on this platform.")]
+	[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 	[EditorBrowsable (EditorBrowsableState.Never)]
 #else
 	/// <summary>Specifies the sources that a Core Spotlight query can search.</summary>
@@ -2792,7 +2792,7 @@ namespace CoreSpotlight {
 	[NoTV]
 #else
 #if __TVOS__
-	[Obsolete ("This enum is not available on tvOS.")]
+	[Obsolete (Constants.ApiUnavailableOnTVOS)]
 	[EditorBrowsable (EditorBrowsableState.Never)]
 #endif
 	[TV (18, 4)]

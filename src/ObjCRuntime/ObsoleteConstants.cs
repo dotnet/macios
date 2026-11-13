@@ -27,6 +27,10 @@ namespace ObjCRuntime {
 
 		internal const string UnavailableOnThisPlatform = "This type is not available on this Platform.";
 
+		internal const string ApiUnavailableOnThisPlatform = "This API is not available on this platform.";
+
+		internal const string ApiUnavailableOnTVOS = "This API is not available on tvOS.";
+
 		internal const string TypeUnavailable = "This type has been removed from the current platform.";
 
 		internal const string ApiRemovedGeneral = "This API has been removed from the framework.";

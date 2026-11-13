@@ -3331,7 +3331,7 @@ namespace GameController {
 #if !XAMCORE_5_0
 	[TV (18, 0)]
 #if __TVOS__
-	[Obsolete ("This enum does not exist on this platform.")]
+	[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 #endif
 	[NoMac, iOS (18, 0), MacCatalyst (18, 0)]

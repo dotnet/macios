@@ -5,19 +5,6 @@ using System.IO.Compression;
 namespace Xamarin.Tests {
 	public class PackTest : TestBaseClass {
 
-		bool PackBindingProject (string projectPath, Dictionary<string, string> properties, bool noBindingEmbedding)
-		{
-			if (noBindingEmbedding) {
-				DotNet.AssertPack (projectPath, properties, msbuildParallelism: false);
-				return true;
-			}
-
-			var rv = DotNet.AssertPackFailure (projectPath, properties, msbuildParallelism: false);
-			AssertErrorMessages (BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray (),
-				"Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
-			return false;
-		}
-
 		// Create a temporary directory for OutputPath
 		// Uses a path relative to the current directory on Windows (as opposed to an absolute path),
 		// because otherwise we run into limitations in our build where building with an absolute
@@ -73,17 +60,18 @@ namespace Xamarin.Tests {
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 
-			PackBindingProject (project_path, properties, noBindingEmbedding: false);
+			var rv = DotNet.AssertPackFailure (project_path, properties, msbuildParallelism: false);
+			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+			Assert.That (errors.Length, Is.EqualTo (1), "Error count");
+			Assert.That (errors [0].Message, Is.EqualTo ("Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file."), "Error message");
 		}
 
 		[Test]
 		[Category ("Multiplatform")]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
 		// The bindings-framework-test project doesn't work on iOS or tvOS.
-		public void BindingFrameworksProject (ApplePlatform platform, bool noBindingEmbedding)
+		public void BindingFrameworksProject (ApplePlatform platform)
 		{
 			var project = "bindings-framework-test";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -97,10 +85,8 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties ();
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
-			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
 
-			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
-				return;
+			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
 
 			var nupkg = Path.Combine (outputPath, project + ".1.0.0.nupkg");
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
@@ -108,40 +94,30 @@ namespace Xamarin.Tests {
 			using var archive = ZipFile.OpenRead (nupkg);
 			var files = archive.Entries.Select (v => v.FullName).ToHashSet ();
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
-			var hasSymlinks = noBindingEmbedding && (platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX);
-			if (noBindingEmbedding) {
-				Assert.That (archive.Entries.Count, Is.EqualTo (hasSymlinks ? 6 : 10), $"nupkg file count - {nupkg}");
-			} else {
-				Assert.That (archive.Entries.Count, Is.EqualTo (5), $"nupkg file count - {nupkg}");
-			}
+			var hasSymlinks = platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX;
+			Assert.That (archive.Entries.Count, Is.EqualTo (hasSymlinks ? 6 : 10), $"nupkg file count - {nupkg}");
 			Assert.That (files, Does.Contain (project + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ("_rels/.rels"), ".rels");
 			Assert.That (files, Does.Contain ("[Content_Types].xml"), "[Content_Types].xml");
 			Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.dll"), $"{project}.dll");
 			Assert.That (files, Has.Some.Matches<string> (v => v.StartsWith ("package/services/metadata/core-properties/", StringComparison.Ordinal) && v.EndsWith (".psmdcp", StringComparison.Ordinal)), "psmdcp");
-			if (noBindingEmbedding) {
-				if (hasSymlinks) {
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
-				} else {
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XStaticArTest.framework/XStaticArTest"), $"XStaticArTest.framework/XStaticArTest");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XStaticObjectTest.framework/XStaticObjectTest"), $"XStaticObjectTest.framework/XStaticObjectTest");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XTest.framework/XTest"), $"XTest.framework/XTest");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XTest.framework/Info.plist"), $"XTest.framework/Info.plist");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/manifest"), $"manifest");
-				}
+			if (hasSymlinks) {
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
+			} else {
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XStaticArTest.framework/XStaticArTest"), $"XStaticArTest.framework/XStaticArTest");
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XStaticObjectTest.framework/XStaticObjectTest"), $"XStaticObjectTest.framework/XStaticObjectTest");
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XTest.framework/XTest"), $"XTest.framework/XTest");
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XTest.framework/Info.plist"), $"XTest.framework/Info.plist");
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/manifest"), $"manifest");
 			}
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.TVOS, true)]
-		[TestCase (ApplePlatform.TVOS, false)]
-		[TestCase (ApplePlatform.MacOSX, true)]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		public void BindingMergeableFrameworksProject (ApplePlatform platform, bool noBindingEmbedding)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void BindingMergeableFrameworksProject (ApplePlatform platform)
 		{
 			var project = "bindings-framework-test-mergeable";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -155,10 +131,8 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties ();
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
-			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
 
-			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
-				return;
+			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
 
 			var nupkg = Path.Combine (outputPath, project + ".1.0.0.nupkg");
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
@@ -168,85 +142,68 @@ namespace Xamarin.Tests {
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
 			Assert.That (files, Does.Contain (project + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.dll"), $"{project}.dll");
-			if (noBindingEmbedding) {
-				// The XMergeableTest framework is always packaged as a .resources.zip
-				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
-			}
+			// The XMergeableTest framework is always packaged as a .resources.zip
+			Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
 		}
 
 		[Test]
 		[Category ("Multiplatform")]
-		[TestCase (ApplePlatform.iOS, true, true, true)]
-		[TestCase (ApplePlatform.iOS, true, true, false)]
-		[TestCase (ApplePlatform.iOS, true, false, true)]
-		[TestCase (ApplePlatform.iOS, true, false, false)]
-		[TestCase (ApplePlatform.iOS, false, false, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true, true, true)]
-		[TestCase (ApplePlatform.MacCatalyst, true, true, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true, false, true)]
-		[TestCase (ApplePlatform.MacCatalyst, true, false, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false, false, false)]
-		[TestCase (ApplePlatform.TVOS, true, true, true)]
-		[TestCase (ApplePlatform.TVOS, false, false, false)]
-		[TestCase (ApplePlatform.MacOSX, true, false, false)]
-		[TestCase (ApplePlatform.MacOSX, false, false, false)]
-		public void BindingXcFrameworksProject (ApplePlatform platform, bool noBindingEmbedding, bool platformSpecificXcframework, bool compressedXcframework)
+		[TestCase (ApplePlatform.iOS, true, true)]
+		[TestCase (ApplePlatform.iOS, true, false)]
+		[TestCase (ApplePlatform.iOS, false, true)]
+		[TestCase (ApplePlatform.iOS, false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true, true)]
+		[TestCase (ApplePlatform.MacCatalyst, true, false)]
+		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false, false)]
+		[TestCase (ApplePlatform.TVOS, true, true)]
+		[TestCase (ApplePlatform.MacOSX, false, false)]
+		public void BindingXcFrameworksProject (ApplePlatform platform, bool platformSpecificXcframework, bool compressedXcframework)
 		{
-			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding, platformSpecificXcframework, compressedXcframework);
+			BindingXcFrameworksProjectImpl (platform, platformSpecificXcframework, compressedXcframework);
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.iOS, true, true, true)]
-		[TestCase (ApplePlatform.iOS, true, true, false)]
-		[TestCase (ApplePlatform.iOS, true, false, true)]
-		[TestCase (ApplePlatform.iOS, false, false, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true, true, true)]
-		[TestCase (ApplePlatform.MacCatalyst, true, false, true)]
-		[TestCase (ApplePlatform.MacCatalyst, false, false, false)]
-		[TestCase (ApplePlatform.TVOS, true, true, true)]
-		[TestCase (ApplePlatform.TVOS, false, false, false)]
-		[TestCase (ApplePlatform.MacOSX, true, false, true)]
-		[TestCase (ApplePlatform.MacOSX, false, false, false)]
+		[TestCase (ApplePlatform.iOS, true, true)]
+		[TestCase (ApplePlatform.iOS, true, false)]
+		[TestCase (ApplePlatform.iOS, false, true)]
+		[TestCase (ApplePlatform.MacCatalyst, true, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		[TestCase (ApplePlatform.TVOS, true, true)]
+		[TestCase (ApplePlatform.MacOSX, false, true)]
 		[Category ("Windows")]
-		public void BindingXcFrameworksProjectOnWindows (ApplePlatform platform, bool noBindingEmbedding, bool platformSpecificXcframework, bool compressedXcframework)
+		public void BindingXcFrameworksProjectOnWindows (ApplePlatform platform, bool platformSpecificXcframework, bool compressedXcframework)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding, platformSpecificXcframework, compressedXcframework);
+			BindingXcFrameworksProjectImpl (platform, platformSpecificXcframework, compressedXcframework);
 		}
 
 		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, true, true, true)]
-		[TestCase (ApplePlatform.iOS, true, true, false)]
-		[TestCase (ApplePlatform.iOS, true, false, true)]
-		[TestCase (ApplePlatform.iOS, false, false, false)]
-		public void BindingXcFrameworksProjectOnRemoteWindows (ApplePlatform platform, bool noBindingEmbedding, bool platformSpecificXcframework, bool compressedXcframework)
+		[TestCase (ApplePlatform.iOS, true, true)]
+		[TestCase (ApplePlatform.iOS, true, false)]
+		[TestCase (ApplePlatform.iOS, false, true)]
+		public void BindingXcFrameworksProjectOnRemoteWindows (ApplePlatform platform, bool platformSpecificXcframework, bool compressedXcframework)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding, platformSpecificXcframework, compressedXcframework, AddRemoteProperties ());
+			BindingXcFrameworksProjectImpl (platform, platformSpecificXcframework, compressedXcframework, AddRemoteProperties ());
 		}
 
 		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, true, true, true)]
-		[TestCase (ApplePlatform.iOS, true, true, false)]
-		[TestCase (ApplePlatform.iOS, true, false, true)]
-		[TestCase (ApplePlatform.iOS, false, false, false)]
-		public void BindingXcFrameworksProjectOnRemoteWindowsUsingFallback (ApplePlatform platform, bool noBindingEmbedding, bool platformSpecificXcframework, bool compressedXcframework)
+		[TestCase (ApplePlatform.iOS, true, true)]
+		[TestCase (ApplePlatform.iOS, true, false)]
+		[TestCase (ApplePlatform.iOS, false, true)]
+		public void BindingXcFrameworksProjectOnRemoteWindowsUsingFallback (ApplePlatform platform, bool platformSpecificXcframework, bool compressedXcframework)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
 			var properties = AddRemoteProperties ();
 			properties ["BuildBindingProjectLocally"] = "false";
-			BindingXcFrameworksProjectImpl (platform, noBindingEmbedding, platformSpecificXcframework, compressedXcframework, properties);
+			BindingXcFrameworksProjectImpl (platform, platformSpecificXcframework, compressedXcframework, properties);
 		}
 
-		void BindingXcFrameworksProjectImpl (ApplePlatform platform, bool noBindingEmbedding, bool platformSpecificXcframework, bool compressedXcframework, Dictionary<string, string>? properties = null)
+		void BindingXcFrameworksProjectImpl (ApplePlatform platform, bool platformSpecificXcframework, bool compressedXcframework, Dictionary<string, string>? properties = null)
 		{
 			var project = "bindings-xcframework-test";
 			var assemblyName = "bindings-framework-test";
-
-			if (!noBindingEmbedding) {
-				Assert.That (platformSpecificXcframework, Is.False, "Invalid test variation: platformSpecificXcframework");
-				Assert.That (compressedXcframework, Is.False, "Invalid test variation: compressedXcframework");
-			}
 
 			if (!platformSpecificXcframework) {
 				// This tests gets really complicated if not all platforms are included,
@@ -269,14 +226,12 @@ namespace Xamarin.Tests {
 			properties = GetDefaultProperties (extraProperties: properties);
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
-			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
 			if (platformSpecificXcframework)
 				properties ["UsePlatformSpecificXcframework"] = "true";
 			if (compressedXcframework)
 				properties ["UseZippedXcframework"] = "true";
 
-			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
-				return;
+			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
 
 			string nupkg;
 			if (Configuration.IsBuildingRemotely) {
@@ -298,64 +253,62 @@ namespace Xamarin.Tests {
 			};
 			expectedZipFiles.Add (files.Where (v => v.StartsWith ("package/services/metadata/core-properties/", StringComparison.Ordinal) && v.EndsWith (".psmdcp", StringComparison.Ordinal)).Single ());
 
-			if (noBindingEmbedding) {
-				bool isCompressedBindingPackage;
-				if (compressedXcframework) {
-					isCompressedBindingPackage = false; // there are no symlinks if we only have zip files, so binding package isn't compressed
-				} else {
-					isCompressedBindingPackage = UsesCompressedBindingResourcePackage (platform);
-				}
+			bool isCompressedBindingPackage;
+			if (compressedXcframework) {
+				isCompressedBindingPackage = false; // there are no symlinks if we only have zip files, so binding package isn't compressed
+			} else {
+				isCompressedBindingPackage = UsesCompressedBindingResourcePackage (platform);
+			}
 
-				if (isCompressedBindingPackage) {
-					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources.zip");
+			if (isCompressedBindingPackage) {
+				expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources.zip");
+			} else {
+				expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/manifest");
+				if (compressedXcframework) {
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework.zip");
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework.zip");
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework.zip");
 				} else {
-					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/manifest");
-					if (compressedXcframework) {
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework.zip");
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework.zip");
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework.zip");
-					} else {
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/Info.plist");
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/Info.plist");
-						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/Info.plist");
-						if (!platformSpecificXcframework || platform == ApplePlatform.iOS) {
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64-simulator/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64-simulator/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64/XTest.framework/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64/XTest.framework/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64-simulator/XTest.framework/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64-simulator/XTest.framework/XTest");
-						}
-						if (!platformSpecificXcframework || platform == ApplePlatform.MacCatalyst) {
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64_x86_64-maccatalyst/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64_x86_64-maccatalyst/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Resources");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/A/Resources/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/A/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/Current");
-						}
-						if (!platformSpecificXcframework || platform == ApplePlatform.MacOSX) {
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/macos-arm64_x86_64/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/macos-arm64_x86_64/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Resources");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/A/Resources/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/A/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/Current");
-						}
-						if (!platformSpecificXcframework || platform == ApplePlatform.TVOS) {
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/tvos-arm64/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/tvos-arm64-simulator/XStaticArTest.framework/XStaticArTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/tvos-arm64/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/tvos-arm64-simulator/XStaticObjectTest.framework/XStaticObjectTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/XTest");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64-simulator/XTest.framework/Info.plist");
-							expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64-simulator/XTest.framework/XTest");
-						}
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/Info.plist");
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/Info.plist");
+					expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/Info.plist");
+					if (!platformSpecificXcframework || platform == ApplePlatform.iOS) {
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64-simulator/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64-simulator/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64/XTest.framework/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64/XTest.framework/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64-simulator/XTest.framework/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64-simulator/XTest.framework/XTest");
+					}
+					if (!platformSpecificXcframework || platform == ApplePlatform.MacCatalyst) {
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/ios-arm64_x86_64-maccatalyst/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/ios-arm64_x86_64-maccatalyst/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Resources");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/A/Resources/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/A/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/ios-arm64_x86_64-maccatalyst/XTest.framework/Versions/Current");
+					}
+					if (!platformSpecificXcframework || platform == ApplePlatform.MacOSX) {
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/macos-arm64_x86_64/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/macos-arm64_x86_64/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Resources");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/A/Resources/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/A/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/macos-arm64_x86_64/XTest.framework/Versions/Current");
+					}
+					if (!platformSpecificXcframework || platform == ApplePlatform.TVOS) {
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/tvos-arm64/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticArTest.xcframework/tvos-arm64-simulator/XStaticArTest.framework/XStaticArTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/tvos-arm64/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XStaticObjectTest.xcframework/tvos-arm64-simulator/XStaticObjectTest.framework/XStaticObjectTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64/XTest.framework/XTest");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64-simulator/XTest.framework/Info.plist");
+						expectedZipFiles.Add ($"lib/{tfm}/{assemblyName}.resources/XTest.xcframework/tvos-arm64-simulator/XTest.framework/XTest");
 					}
 				}
 			}

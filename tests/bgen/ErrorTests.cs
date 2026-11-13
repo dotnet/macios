@@ -7,6 +7,30 @@ namespace GeneratorTests {
 	[TestFixture ()]
 	[Parallelizable (ParallelScope.All)]
 	public class ErrorTests {
+		[TestCase (1900, "Frameworks were not loaded for platform Type.")]
+		[TestCase (1901, "Universe was not loaded for platform Type.")]
+		[TestCase (1902, "Could not parse the command line argument 'Type': Member")]
+		[TestCase (1903, "No selector specified for method `Type.Member'")]
+		[TestCase (1904, "No Export attribute on Type.Member property")]
+		[TestCase (1905, "Unsupported type for Fields (string), you probably meant NSString")]
+		[TestCase (1906, "Unsupported type for Fields: Type for 'Member'.")]
+		[TestCase (1907, "In class Type You specified the Events property, but did not bind those to names with Delegates")]
+		[TestCase (1908, "Model classes can not be categories")]
+		[TestCase (1909, "The property Type on class Member is hiding a property from a parent class Base but the selectors do not match.")]
+		[TestCase (1910, "The last parameter in the method 'Type.Member' must be a delegate (it's 'Base').")]
+		public void RenumberedBindingDiagnostics (int code, string message)
+		{
+			var culture = System.Globalization.CultureInfo.CurrentUICulture;
+			try {
+				System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.InvariantCulture;
+				var exception = new BindingException (code, true, "Type", "Member", "Base");
+				Assert.That (exception.Code, Is.EqualTo (code));
+				Assert.That (exception.Message, Is.EqualTo (message));
+			} finally {
+				System.Globalization.CultureInfo.CurrentUICulture = culture;
+			}
+		}
+
 		[Test]
 		[NonParallelizable]
 		public void ApiDefinitionSourceIsNotSupported ()
@@ -92,7 +116,7 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
-		public void BI1036 (Profile profile)
+		public void BI1910 (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
@@ -101,7 +125,7 @@ namespace GeneratorTests {
 			bgen.ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bi1036.cs"));
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1036, "The last parameter in the method 'NS.Foo.Method' must be a delegate (it's 'System.String').");
+			bgen.AssertError (1910, "The last parameter in the method 'NS.Foo.Method' must be a delegate (it's 'System.String').");
 		}
 
 		[Test]
@@ -603,7 +627,7 @@ namespace Bug57094 {
 	}
 }");
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1014, "Unsupported type for Fields: byte[] for 'Bug57094.FooObject SomeField'.");
+			bgen.AssertError (1906, "Unsupported type for Fields: byte[] for 'Bug57094.FooObject SomeField'.");
 		}
 
 		[Test]

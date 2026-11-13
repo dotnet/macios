@@ -1,0 +1,57 @@
+[
+  {
+    "oldCode": "BI0003",
+    "newCode": "BI1900",
+    "reason": "Introduced by the 2023 binding-generator cache refactoring, after the conflicting tool diagnostic."
+  },
+  {
+    "oldCode": "BI0004",
+    "newCode": "BI1901",
+    "reason": "Introduced by the 2023 binding-generator cache refactoring, after the conflicting tool diagnostic."
+  },
+  {
+    "oldCode": "BI0027",
+    "newCode": "BI1902",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1009",
+    "newCode": "BI1903",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1010",
+    "newCode": "BI1904",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1013",
+    "newCode": "BI1905",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1014",
+    "newCode": "BI1906",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1015",
+    "newCode": "BI1907",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1022",
+    "newCode": "BI1908",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1035",
+    "newCode": "BI1909",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  },
+  {
+    "oldCode": "BI1036",
+    "newCode": "BI1910",
+    "reason": "The unrelated tool and binding allocations predate the initial repository import; retain the tool allocation and move this binding diagnostic into the unallocated 1900 range."
+  }
+]

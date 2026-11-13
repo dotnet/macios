@@ -64,6 +64,107 @@ namespace MonoTouchFixtures.CoreFoundation {
 		}
 
 		[Test]
+		public void CreateWithNativeObjectsTest ()
+		{
+			using var first = new NSString ("first");
+			using var last = new NSString ("last");
+			var handle = CFArray.Create (new INativeObject? [] { first, null, last });
+			try {
+				var values = CFArray.ArrayFromHandle<NSString> (handle);
+				Assert.That (values, Is.EqualTo (new NSString? [] { first, null, last }), "Null elements round-trip as NSNull");
+				Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "Array is owned by the caller");
+				CFRetain (handle);
+				CFRelease (handle);
+				Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "Release releases one reference");
+			} finally {
+				CFRelease (handle);
+			}
+		}
+
+		[Test]
+		public void CreateNestedNativeObjectsTest ()
+		{
+			using var first = new NSString ("first");
+			using var last = new NSString ("last");
+			var handle = CFArray.Create (new INativeObject [] [] { [first, last], [] });
+			try {
+				using var array = Runtime.GetINativeObject<CFArray> (handle, false);
+				Assert.That (array, Is.Not.Null, "Array");
+				ArgumentNullException.ThrowIfNull (array);
+				Assert.That (array.Count, Is.EqualTo ((nint) 2), "Rows");
+				Assert.That (CFArray.ArrayFromHandle<NSString> (array.GetValue (0)), Is.EqualTo (new [] { first, last }), "First row");
+				Assert.That (CFArray.ArrayFromHandle<NSString> (array.GetValue (1)), Is.Empty, "Empty row");
+				Assert.That (CFGetRetainCount (array.GetValue (0)), Is.EqualTo ((nint) 1), "Only the outer array retains the row");
+			} finally {
+				CFRelease (handle);
+			}
+		}
+
+		[Test]
+		public void CreateNativeObjectMatrixTest ()
+		{
+			using var first = new NSString ("first");
+			using var last = new NSString ("last");
+			var handle = CFArray.Create (new INativeObject [,] { { first, last, first }, { last, first, last } });
+			try {
+				using var array = Runtime.GetINativeObject<CFArray> (handle, false);
+				Assert.That (array, Is.Not.Null, "Array");
+				ArgumentNullException.ThrowIfNull (array);
+				Assert.That (array.Count, Is.EqualTo ((nint) 3), "Rows use the second dimension");
+				Assert.That (CFArray.ArrayFromHandle<NSString> (array.GetValue (0)), Is.EqualTo (new [] { first, last }), "Row 0");
+				Assert.That (CFArray.ArrayFromHandle<NSString> (array.GetValue (1)), Is.EqualTo (new [] { last, first }), "Row 1");
+				Assert.That (CFArray.ArrayFromHandle<NSString> (array.GetValue (2)), Is.EqualTo (new [] { first, last }), "Row 2");
+			} finally {
+				CFRelease (handle);
+			}
+		}
+
+		[Test]
+		public void CreateNestedNativeObjectsRejectsNullTest ()
+		{
+			using var value = new NSObject ();
+			var retainCount = CFGetRetainCount (value.Handle);
+			var rows = new INativeObject [2] [];
+			rows [0] = [value];
+			Assert.Throws<ArgumentNullException> (() => CFArray.Create (rows), "Null row");
+			Assert.That (CFGetRetainCount (value.Handle), Is.EqualTo (retainCount), "Release rows created before the null row");
+			rows [1] = new INativeObject [1];
+			Assert.Throws<ArgumentNullException> (() => CFArray.Create (rows), "Null element");
+			Assert.That (CFGetRetainCount (value.Handle), Is.EqualTo (retainCount), "Release rows created before the null element");
+		}
+
+		[Test]
+		public void CreateNullArraysTest ()
+		{
+			Assert.That (CFArray.Create ((INativeObject? []?) null), Is.EqualTo (NativeHandle.Zero), "Objects");
+			Assert.That (CFArray.Create ((INativeObject [] []?) null), Is.EqualTo (NativeHandle.Zero), "Jagged objects");
+			Assert.That (CFArray.Create ((INativeObject [,]?) null), Is.EqualTo (NativeHandle.Zero), "Object matrix");
+			Assert.That (CFArray.Create ((string? []?) null), Is.EqualTo (NativeHandle.Zero), "Strings");
+			Assert.That (CFArray.Create ((IReadOnlyList<string?>?) null), Is.EqualTo (NativeHandle.Zero), "String list");
+		}
+
+		[Test]
+		public void TransientCFObjectTest ()
+		{
+			using var value = new NSObject ();
+			var handle = CFArray.Create (new INativeObject [] { value });
+			try {
+				CFRetain (handle);
+				var holder = new TransientCFObject (handle);
+				Assert.That ((NativeHandle) holder, Is.EqualTo (handle), "Handle conversion");
+				Assert.That ((IntPtr) holder, Is.EqualTo ((IntPtr) handle), "Pointer conversion");
+				holder.Dispose ();
+				Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "Disposal releases one reference");
+				Assert.That ((NativeHandle) holder, Is.EqualTo (NativeHandle.Zero), "Disposed handle");
+				holder.Dispose ();
+				Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "Repeated disposal");
+			} finally {
+				CFRelease (handle);
+			}
+			using var empty = new TransientCFObject (IntPtr.Zero);
+		}
+
+		[Test]
 		public void FromStringsWithNullItemsTest ()
 		{
 			using var a = CFArray.FromStrings (new string? [] { "x", null, "y" });

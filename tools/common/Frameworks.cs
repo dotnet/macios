@@ -145,6 +145,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				mac_frameworks = new Frameworks () {
 					{ "Accelerate", 10, 0 },
 					{ "AppKit", 10, 0 },
+					{ "ApplicationServices", 10, 0 },
 					{ "CoreAudio", "CoreAudio", 10, 0 },
 					{ "CoreFoundation", "CoreFoundation", 10, 0 },
 					// The CoreImage framework by itself was introduced in 10.11

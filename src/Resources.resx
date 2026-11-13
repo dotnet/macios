@@ -644,4 +644,8 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>The interface '{0}' is being ignored because it does not have a [BaseType], [Protocol], [Static], [Partial] or [StrongDictionary] attribute.</value>
+	</data>
 </root>

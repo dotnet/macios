@@ -76,6 +76,89 @@ namespace GeneratorTests {
 			bgen.AssertError (86, "A target framework (--target-framework) must be specified.");
 		}
 
+		[TestCase (Profile.iOS, "warning")]
+		[TestCase (Profile.iOS, "error")]
+		[TestCase (Profile.iOS, "disabled")]
+		[TestCase (Profile.macOSMobile, "warning")]
+		[TestCase (Profile.macOSMobile, "error")]
+		[TestCase (Profile.macOSMobile, "disabled")]
+		public void BI1130 (Profile profile, string warningLevel)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = profile,
+				WarnAsError = warningLevel == "error" ? "1130" : null,
+				NoWarn = warningLevel == "disabled" ? "1130" : null,
+			};
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+using ObjCRuntime;
+
+namespace UnusedInterfaces {
+	[Protocol]
+	interface Parent {}
+
+	interface Unused : Parent {}
+
+	interface Standalone {}
+}");
+			const string message = "The interface 'UnusedInterfaces.{0}' is being ignored because it does not have a [BaseType], [Protocol], [Static], [Partial] or [StrongDictionary] attribute.";
+			if (warningLevel == "error") {
+				bgen.AssertExecuteError ("unused interfaces treated as errors");
+				bgen.AssertError (1130, string.Format (message, "Unused"));
+				// Warnings promoted to errors stop API parsing at the first ignored interface.
+				bgen.AssertErrorCount (1);
+			} else {
+				bgen.AssertExecute ("unused interfaces");
+				bgen.AssertErrorCount (0);
+				if (warningLevel == "disabled") {
+					bgen.AssertNoWarnings ();
+				} else {
+					bgen.AssertWarning (1130, string.Format (message, "Unused"));
+					bgen.AssertWarning (1130, string.Format (message, "Standalone"));
+					bgen.AssertWarningCount (2);
+				}
+			}
+		}
+
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.macOSMobile)]
+		public void BI1130_RecognizedInterfaces (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = profile,
+			};
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+using ObjCRuntime;
+
+namespace RecognizedInterfaces {
+	[BaseType (typeof (NSObject))]
+	interface BoundClass {}
+
+	[Protocol]
+	interface BoundProtocol {}
+
+	[Static]
+	interface Keys {}
+
+	[Partial]
+	interface PartialClass {}
+
+	[StrongDictionary (""Keys"")]
+	interface Dictionary {}
+
+	class Helper {}
+
+	enum Values { None }
+
+	delegate void Callback ();
+}");
+			bgen.AssertExecute ("recognized interfaces and non-interface types");
+			bgen.AssertNoWarnings ();
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void InvalidSelectorDoesNotExitProcess (Profile profile)

@@ -1917,10 +1917,7 @@ namespace CoreImage {
 	///     <remarks>At this point, this only includes the CIFilterOutputKey</remarks>
 	[Static]
 	interface CIFilterOutputKey {
-		/// <summary>Represents the value associated with the constant kCIOutputImageKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's output image.</summary>
 		[Field ("kCIOutputImageKey")]
 		NSString Image { get; }
 	}
@@ -1928,269 +1925,202 @@ namespace CoreImage {
 	/// <summary>Keys that can be used to configure the CIFilter input values.</summary>
 	[Static]
 	interface CIFilterInputKey {
-		/// <summary>Represents the value associated with the constant kCIInputBackgroundImageKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's background image input.</summary>
 		[Field ("kCIInputBackgroundImageKey")]
 		NSString BackgroundImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputImageKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's image input.</summary>
 		[Field ("kCIInputImageKey")]
 		NSString Image { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputVersionKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's version input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputVersionKey")]
 		NSString Version { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputRefractionKey.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's refraction input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputRefractionKey")]
 		NSString Refraction { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputGradientImageKey.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's gradient image input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputGradientImageKey")]
 		NSString GradientImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputShadingImageKey.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's shading image input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputShadingImageKey")]
 		NSString ShadingImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputTimeKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's time input.</summary>
 		[Field ("kCIInputTimeKey")]
 		NSString Time { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputTransformKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's transform input.</summary>
 		[Field ("kCIInputTransformKey")]
 		NSString Transform { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputScaleKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's scale input.</summary>
 		[Field ("kCIInputScaleKey")]
 		NSString Scale { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputAspectRatioKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's aspect ratio input.</summary>
 		[Field ("kCIInputAspectRatioKey")]
 		NSString AspectRatio { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputCenterKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's center input.</summary>
 		[Field ("kCIInputCenterKey")]
 		NSString Center { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputRadiusKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's radius input.</summary>
 		[Field ("kCIInputRadiusKey")]
 		NSString Radius { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputAngleKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's angle input.</summary>
 		[Field ("kCIInputAngleKey")]
 		NSString Angle { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputWidthKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's width input.</summary>
 		[Field ("kCIInputWidthKey")]
 		NSString Width { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputSharpnessKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's sharpness input.</summary>
 		[Field ("kCIInputSharpnessKey")]
 		NSString Sharpness { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputIntensityKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's intensity input.</summary>
 		[Field ("kCIInputIntensityKey")]
 		NSString Intensity { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputEVKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's exposure value input.</summary>
 		[Field ("kCIInputEVKey")]
 		NSString EV { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputSaturationKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's saturation input.</summary>
 		[Field ("kCIInputSaturationKey")]
 		NSString Saturation { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputColorKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's color input.</summary>
 		[Field ("kCIInputColorKey")]
 		NSString Color { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputBrightnessKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's brightness input.</summary>
 		[Field ("kCIInputBrightnessKey")]
 		NSString Brightness { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputContrastKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's contrast input.</summary>
 		[Field ("kCIInputContrastKey")]
 		NSString Contrast { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputBiasKey.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's bias input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputBiasKey")]
 		NSString BiasKey { get; }
 
-		/// <summary>A key indicating a value that is a weight matrix for a convolution filter.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the weight matrix input of a convolution filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputWeightsKey")]
 		NSString WeightsKey { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputMaskImageKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's mask image input.</summary>
 		[Field ("kCIInputMaskImageKey")]
 		NSString MaskImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputTargetImageKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's target image input.</summary>
 		[Field ("kCIInputTargetImageKey")]
 		NSString TargetImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIInputExtentKey</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's extent input.</summary>
 		[Field ("kCIInputExtentKey")]
 		NSString Extent { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's depth image input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputDepthImageKey")]
 		NSString DepthImage { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's disparity image input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputDisparityImageKey")]
 		NSString DisparityImage { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's matte image input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputMatteImageKey")]
 		NSString MatteImage { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's amount input.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIInputAmountKey")]
 		NSString Amount { get; }
 
+		/// <summary>Gets the key for a filter's count input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputCountKey")]
 		NSString Count { get; }
 
+		/// <summary>Gets the key for a filter's threshold input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputThresholdKey")]
 		NSString Threshold { get; }
 
+		/// <summary>Gets the key for a filter's first radius input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputRadius0Key")]
 		NSString Radius0 { get; }
 
+		/// <summary>Gets the key for a filter's second radius input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputRadius1Key")]
 		NSString Radius1 { get; }
 
+		/// <summary>Gets the key for a filter's first color input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputColor0Key")]
 		NSString Color0 { get; }
 
+		/// <summary>Gets the key for a filter's second color input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputColor1Key")]
 		NSString Color1 { get; }
 
+		/// <summary>Gets the key for a filter's color space input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputColorSpaceKey")]
 		NSString ColorSpace { get; }
 
+		/// <summary>Gets the key for a filter's extrapolation input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputExtrapolateKey")]
 		NSString Extrapolate { get; }
 
+		/// <summary>Gets the key for a filter's perceptual color processing input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputPerceptualKey")]
 		NSString Perceptual { get; }
 
+		/// <summary>Gets the key for a filter's bias vector input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputBiasVectorKey")]
 		NSString BiasVector { get; }
 
+		/// <summary>Gets the key for a filter's backside image input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputBacksideImageKey")]
 		NSString BacksideImage { get; }
 
+		/// <summary>Gets the key for a filter's palette image input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputPaletteImageKey")]
 		NSString PaletteImage { get; }
 
+		/// <summary>Gets the key for a filter's first point input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputPoint0Key")]
 		NSString Point0 { get; }
 
+		/// <summary>Gets the key for a filter's second point input.</summary>
 		[MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0), TV (26, 0)]
 		[Field ("kCIInputPoint1Key")]
 		NSString Point1 { get; }
@@ -2211,242 +2141,148 @@ namespace CoreImage {
 	/// <summary>Constants used for CIFilter's attributes</summary>
 	[Static]
 	interface CIFilterAttributes {
-		/// <summary>Represents the value associated with the constant kCIAttributeFilterName</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's name.</summary>
 		[Field ("kCIAttributeFilterName")]
 		NSString FilterName { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeFilterDisplayName</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's localized display name.</summary>
 		[Field ("kCIAttributeFilterDisplayName")]
 		NSString FilterDisplayName { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeDescription</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's localized description.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeDescription")]
 		NSString Description { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeReferenceDocumentation</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the URL of a filter's reference documentation.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeReferenceDocumentation")]
 		NSString ReferenceDocumentation { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeFilterCategories</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the filter's category names.</summary>
 		[Field ("kCIAttributeFilterCategories")]
 		NSString FilterCategories { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeClass</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter's class name.</summary>
 		[Field ("kCIAttributeClass")]
 		NSString Class { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeType</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter attribute's type.</summary>
 		[Field ("kCIAttributeType")]
 		NSString Type { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeMin</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter attribute's minimum value.</summary>
 		[Field ("kCIAttributeMin")]
 		NSString Min { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeMax</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter attribute's maximum value.</summary>
 		[Field ("kCIAttributeMax")]
 		NSString Max { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeSliderMin</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the minimum slider value.</summary>
 		[Field ("kCIAttributeSliderMin")]
 		NSString SliderMin { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeSliderMax</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the maximum slider value.</summary>
 		[Field ("kCIAttributeSliderMax")]
 		NSString SliderMax { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeDefault</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the default value.</summary>
 		[Field ("kCIAttributeDefault")]
 		NSString Default { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeIdentity</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the value that leaves the filter without an effect.</summary>
 		[Field ("kCIAttributeIdentity")]
 		NSString Identity { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeName</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter attribute's nonlocalized name.</summary>
 		[Field ("kCIAttributeName")]
 		NSString Name { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeDisplayName</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for a filter attribute's localized display name.</summary>
 		[Field ("kCIAttributeDisplayName")]
 		NSString DisplayName { get; }
 
-		/// <summary>Represents the value associated with the constant kCIUIParameterSet</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key used to request a set of filter controls.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIUIParameterSet")]
 		NSString UIParameterSet { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeTime</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for time.</summary>
 		[Field ("kCIAttributeTypeTime")]
 		NSString TypeTime { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeScalar</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a scalar.</summary>
 		[Field ("kCIAttributeTypeScalar")]
 		NSString TypeScalar { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeDistance</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for distance.</summary>
 		[Field ("kCIAttributeTypeDistance")]
 		NSString TypeDistance { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeAngle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an angle.</summary>
 		[Field ("kCIAttributeTypeAngle")]
 		NSString TypeAngle { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeBoolean</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a Boolean.</summary>
 		[Field ("kCIAttributeTypeBoolean")]
 		NSString TypeBoolean { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeInteger</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an integer.</summary>
 		[Field ("kCIAttributeTypeInteger")]
 		NSString TypeInteger { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeCount</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a nonnegative integer count.</summary>
 		[Field ("kCIAttributeTypeCount")]
 		NSString TypeCount { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypePosition</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a two-dimensional position.</summary>
 		[Field ("kCIAttributeTypePosition")]
 		NSString TypePosition { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeOffset</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an offset.</summary>
 		[Field ("kCIAttributeTypeOffset")]
 		NSString TypeOffset { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypePosition3</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a three-dimensional position.</summary>
 		[Field ("kCIAttributeTypePosition3")]
 		NSString TypePosition3 { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeRectangle</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a rectangle.</summary>
 		[Field ("kCIAttributeTypeRectangle")]
 		NSString TypeRectangle { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeOpaqueColor</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an opaque color.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeOpaqueColor")]
 		NSString TypeOpaqueColor { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeGradient</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a gradient.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeGradient")]
 		NSString TypeGradient { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an image.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeImage")]
 		NSString TypeImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeTransform</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for an affine transform.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeTransform")]
 		NSString TypeTransform { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeTypeColor</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter attribute type value for a color.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeTypeColor")]
 		NSString TypeColor { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeFilterAvailable_Mac</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the first macOS version that supports the filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeFilterAvailable_Mac")]
 		NSString Available_Mac { get; }
 
-		/// <summary>Represents the value associated with the constant kCIAttributeFilterAvailable_iOS</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the key for the first iOS version that supports the filter.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCIAttributeFilterAvailable_iOS")]
 		NSString Available_iOS { get; }
@@ -2455,149 +2291,87 @@ namespace CoreImage {
 	/// <summary>Constants used for CIFilter filtering facilities to find filters by category.</summary>
 	[Static]
 	interface CIFilterCategory {
-		/// <summary>Represents the value associated with the constant kCICategoryDistortionEffect</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for distortion effects.</summary>
 		[Field ("kCICategoryDistortionEffect")]
 		NSString DistortionEffect { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryGeometryAdjustment</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for geometry adjustments.</summary>
 		[Field ("kCICategoryGeometryAdjustment")]
 		NSString GeometryAdjustment { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryCompositeOperation</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for compositing operations.</summary>
 		[Field ("kCICategoryCompositeOperation")]
 		NSString CompositeOperation { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryHalftoneEffect</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for halftone effects.</summary>
 		[Field ("kCICategoryHalftoneEffect")]
 		NSString HalftoneEffect { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryColorAdjustment</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for color adjustments.</summary>
 		[Field ("kCICategoryColorAdjustment")]
 		NSString ColorAdjustment { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryColorEffect</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for color effects.</summary>
 		[Field ("kCICategoryColorEffect")]
 		NSString ColorEffect { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryTransition</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for transitions.</summary>
 		[Field ("kCICategoryTransition")]
 		NSString Transition { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryTileEffect</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for tile effects.</summary>
 		[Field ("kCICategoryTileEffect")]
 		NSString TileEffect { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryGenerator</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for image-generating filters.</summary>
 		[Field ("kCICategoryGenerator")]
 		NSString Generator { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryReduction</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for image reduction.</summary>
 		[Field ("kCICategoryReduction")]
 		NSString Reduction { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryGradient</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for gradients.</summary>
 		[Field ("kCICategoryGradient")]
 		NSString Gradient { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryStylize</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for stylization.</summary>
 		[Field ("kCICategoryStylize")]
 		NSString Stylize { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategorySharpen</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for sharpening.</summary>
 		[Field ("kCICategorySharpen")]
 		NSString Sharpen { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryBlur</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for blurring.</summary>
 		[Field ("kCICategoryBlur")]
 		NSString Blur { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryVideo</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for video.</summary>
 		[Field ("kCICategoryVideo")]
 		NSString Video { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryStillImage</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for still images.</summary>
 		[Field ("kCICategoryStillImage")]
 		NSString StillImage { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryInterlaced</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for interlaced images.</summary>
 		[Field ("kCICategoryInterlaced")]
 		NSString Interlaced { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryNonSquarePixels</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for images with non-square pixels.</summary>
 		[Field ("kCICategoryNonSquarePixels")]
 		NSString NonSquarePixels { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryHighDynamicRange</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filters used for high dynamic range images.</summary>
 		[Field ("kCICategoryHighDynamicRange")]
 		NSString HighDynamicRange { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryBuiltIn</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for built-in filters.</summary>
 		[Field ("kCICategoryBuiltIn")]
 		NSString BuiltIn { get; }
 
-		/// <summary>Represents the value associated with the constant kCICategoryFilterGenerator</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the category for filter generators.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("kCICategoryFilterGenerator")]
 		NSString FilterGenerator { get; }
@@ -2623,57 +2397,42 @@ namespace CoreImage {
 	[Static]
 	[MacCatalyst (13, 1)]
 	interface CIUIParameterSet {
-		/// <summary>Basic  user interface set.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter user-interface parameter set for basic use.</summary>
 		[Field ("kCIUISetBasic")]
 		NSString Basic { get; }
 
-		/// <summary>Intermediate user interface set.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter user-interface parameter set for intermediate use.</summary>
 		[Field ("kCIUISetIntermediate")]
 		NSString Intermediate { get; }
 
-		/// <summary>Advanced user interface set.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter user-interface parameter set for advanced use.</summary>
 		[Field ("kCIUISetAdvanced")]
 		NSString Advanced { get; }
 
-		/// <summary>Development user interface set.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the filter user-interface parameter set for development use.</summary>
 		[Field ("kCIUISetDevelopment")]
 		NSString Development { get; }
 	}
 
+	/// <summary>Keys for options used when applying a Core Image filter kernel.</summary>
 	[NoiOS]
 	[NoMacCatalyst]
 	[NoTV]
 	[Static]
 	interface CIFilterApply {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the option key for the extent of the output image.</summary>
 		[Field ("kCIApplyOptionExtent")]
 		NSString OptionExtent { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the option key for the domain of definition of the output image.</summary>
 		[Field ("kCIApplyOptionDefinition")]
 		NSString OptionDefinition { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the option key for user information.</summary>
 		[Field ("kCIApplyOptionUserInfo")]
 		NSString OptionUserInfo { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the option key for the kernel output color space.</summary>
 		[Field ("kCIApplyOptionColorSpace")]
 		NSString OptionColorSpace { get; }
 	}
@@ -2786,21 +2545,15 @@ namespace CoreImage {
 		[Export ("classAttributes")]
 		NSDictionary ClassAttributes { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary key for a target object's exported key.</summary>
 		[Field ("kCIFilterGeneratorExportedKey")]
 		NSString ExportedKey { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary key for the target object of an exported key.</summary>
 		[Field ("kCIFilterGeneratorExportedKeyTargetObject")]
 		NSString ExportedKeyTargetObject { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the dictionary key for the name under which a key is exported.</summary>
 		[Field ("kCIFilterGeneratorExportedKeyName")]
 		NSString ExportedKeyName { get; }
 	}

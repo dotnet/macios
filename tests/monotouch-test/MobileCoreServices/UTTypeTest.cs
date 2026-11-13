@@ -32,6 +32,10 @@ namespace MonoTouchFixtures.MobileCoreServices {
 
 			Assert.That (UTType.TagClassFilenameExtension, Is.Not.Null, "TagClassFilenameExtension");
 			Assert.That (UTType.TagClassMIMEType, Is.Not.Null, "TagClassMIMEType");
+#if __MACOS__
+			Assert.That (UTType.TagClassNSPboardType?.ToString (), Is.EqualTo ("com.apple.nspboard-type"), "TagClassNSPboardType");
+			Assert.That (UTType.TagClassOSType?.ToString (), Is.EqualTo ("com.apple.ostype"), "TagClassOSType");
+#endif
 
 			Assert.That (UTType.Item, Is.Not.Null, "Item");
 			Assert.That (UTType.Content, Is.Not.Null, "Content");

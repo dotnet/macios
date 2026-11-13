@@ -62,7 +62,6 @@ namespace Xamarin {
 
 				mtouch.DSym = false; // faster test
 				mtouch.MSym = false; // faster test
-				mtouch.NoStrip = true; // faster test
 
 				mtouch.Profiling = true;
 				mtouch.SymbolList = Path.Combine (tmpdir, "symbollist.txt");
@@ -245,7 +244,6 @@ public class B : A {}
 				mtouch.Abi = abi;
 				mtouch.AssemblyBuildTargets.AddRange (assembly_build_targets);
 				mtouch.Debug = false;
-				mtouch.NoStrip = true; // faster test
 				mtouch.NoSymbolStrip = string.Empty; // faster test
 				mtouch.Verbosity = 4; // This is needed to get mtouch to print the output we're verifying
 				if (Configuration.iOSSupports32BitArchitectures)
@@ -282,7 +280,6 @@ public class B : A {}
 				mtouch.Abi = abi;
 				mtouch.Debug = debug;
 				mtouch.TargetVer = SdkVersions.MiniOS;
-				mtouch.NoStrip = true;
 				DateTime dt = DateTime.MinValue;
 
 				mtouch.DSym = false; // we don't need the dSYMs for this test, so disable them to speed up the test.
@@ -404,7 +401,6 @@ public class B : A {}
 				extension.AssemblyBuildTargets.AddRange (assembly_build_targets);
 				extension.DSym = false; // faster test
 				extension.MSym = false; // faster test
-				extension.NoStrip = true; // faster test
 				extension.AssertExecute (MTouchAction.BuildDev, "extension build");
 
 				using (var mtouch = new MTouchTool ()) {
@@ -418,8 +414,7 @@ public class B : A {}
 					mtouch.AssemblyBuildTargets.AddRange (assembly_build_targets);
 					mtouch.DSym = false; // faster test
 					mtouch.MSym = false; // faster test
-					mtouch.NoStrip = true; // faster test
-										   //mtouch.Verbosity = 20; // Set the mtouch verbosity to something to print the mtouch output to the terminal. This will also enable additional debug output.
+										 //mtouch.Verbosity = 20; // Set the mtouch verbosity to something to print the mtouch output to the terminal. This will also enable additional debug output.
 
 					System.Action assertSupportsDynamicRegistrar = () => {
 						// Assert that the xamarin_supports_dynamic_registration is identical between the app and the extension.
@@ -1938,7 +1933,6 @@ public class TestApp {
 				}
 				mtouch.CreateTemporaryCacheDirectory ();
 				mtouch.AssemblyBuildTargets.Add ("@all=framework=MyApp");
-				mtouch.NoStrip = true; // faster test
 				mtouch.DSym = false; // faster test
 				mtouch.Bitcode = bitcode;
 				mtouch.AssertExecute (MTouchAction.BuildDev, "build");
@@ -2601,7 +2595,6 @@ public class TestApp {
 				extension.Abi = "arm64";
 				extension.TargetVer = SdkVersions.MiniOS;
 				extension.Linker = MTouchLinker.LinkAll; // faster test
-				extension.NoStrip = true; // faster test
 				extension.AssertExecute (MTouchAction.BuildDev, "build extension");
 				using (var app = new MTouchTool ()) {
 					app.AppExtensions.Add (extension);
@@ -2609,7 +2602,6 @@ public class TestApp {
 					app.CreateTemporaryCacheDirectory ();
 					app.Abi = "arm64";
 					app.Linker = MTouchLinker.LinkAll; // faster test
-					app.NoStrip = true; // faster test
 					app.AssertExecute (MTouchAction.BuildDev, "build app");
 
 					var mono_framework = Path.Combine (app.AppPath, "Frameworks", "Mono.framework", "Mono");
@@ -4088,7 +4080,6 @@ public partial class KeyboardViewController : UIKit.UIInputViewController
 				extension.Abi = "arm64";
 				extension.DSym = false; // faster test
 				extension.MSym = false; // faster test
-				extension.NoStrip = true; // faster test
 				extension.AssertExecute (MTouchAction.BuildDev, "extension build");
 
 				using (var mtouch = new MTouchTool ()) {
@@ -4098,7 +4089,6 @@ public partial class KeyboardViewController : UIKit.UIInputViewController
 					mtouch.Abi = "arm64";
 					mtouch.DSym = false; // faster test
 					mtouch.MSym = false; // faster test
-					mtouch.NoStrip = true; // faster test
 
 					mtouch.AssertExecute (MTouchAction.BuildDev, "build");
 					mtouch.AssertNoWarnings ();
@@ -4115,7 +4105,6 @@ public partial class KeyboardViewController : UIKit.UIInputViewController
 				intents_extension.CreateTemporaryCacheDirectory ();
 				intents_extension.DSym = false; // faster test
 				intents_extension.MSym = false; // faster test
-				intents_extension.NoStrip = true; // faster test
 
 				intents_extension.AssertExecute (MTouchAction.BuildDev, "extension build");
 
@@ -4126,7 +4115,6 @@ public partial class KeyboardViewController : UIKit.UIInputViewController
 					watch_extension.CreateTemporaryWatchKitExtension ();
 					watch_extension.DSym = false; // faster test
 					watch_extension.MSym = false; // faster test
-					watch_extension.NoStrip = true; // faster test
 
 					watch_extension.AssertExecute (MTouchAction.BuildDev, "build");
 					watch_extension.AssertNoWarnings ();

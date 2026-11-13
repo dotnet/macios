@@ -56,10 +56,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public string? RequirePInvokeWrappers { get; set; }
 
-		// This is input too
-		[Output]
-		public string? NoStrip { get; set; }
-
 		[Output]
 		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
@@ -206,10 +202,6 @@ namespace Xamarin.MacDev.Tasks {
 							xml = new List<string> ();
 						value = hasValue ? value : nextValue; // requires a value, which might be the next option
 						xml.Add (value);
-						break;
-					case "nostrip":
-						// Output is EnableAssemblyILStripping so we enable if --nostrip=false and disable if true
-						NoStrip = ParseBool (value) ? "false" : "true";
 						break;
 					case "gcc_flags": // mtouch uses gcc_flags
 					case "link_flags": // mmp uses link_flags

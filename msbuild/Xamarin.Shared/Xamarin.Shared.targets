@@ -2480,7 +2480,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="WarnAsError" PropertyName="_BundlerWarnAsError" />
 			<Output TaskParameter="Warn" PropertyName="_BundlerWarn" />
 			<Output TaskParameter="XmlDefinitions" ItemName="_BundlerXmlDefinitions" />
-			<Output TaskParameter="NoStrip" PropertyName="EnableAssemblyILStripping" />
 		</ParseBundlerArguments>
 
 		<PropertyGroup>

@@ -48,9 +48,9 @@ namespace JavaScriptCore {
 	/// <summary>Enumerates class attributes.</summary>
 	[Flags]
 	public enum JSClassAttributes : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The class has no special attributes.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The class does not automatically create a shared prototype for its instances. Use <c>JSObjectSetPrototype</c> to manage prototypes manually.</summary>
 		NoAutomaticPrototype = 1 << 1,
 	}
 

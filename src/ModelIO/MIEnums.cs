@@ -372,13 +372,14 @@ namespace ModelIO {
 		Orthographic = 1,
 	}
 
+	/// <summary>Specifies the face or faces to which a material applies.</summary>
 	[Native]
 	public enum MDLMaterialFace : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies that the material applies to front-facing polygons.</summary>
 		Front = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies that the material applies to back-facing polygons.</summary>
 		Back,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies that the material applies to both front- and back-facing polygons.</summary>
 		DoubleSided,
 	}
 

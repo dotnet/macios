@@ -57999,7 +57999,6 @@ T:ModelIO.MDLAnimatedValueInterpolation
 T:ModelIO.MDLAnimationBindComponent
 T:ModelIO.MDLBundleAssetResolver
 T:ModelIO.MDLDataPrecision
-T:ModelIO.MDLMaterialFace
 T:ModelIO.MDLNoiseTextureType
 T:ModelIO.MDLObjectHandler
 T:ModelIO.MDLPackedJointAnimation

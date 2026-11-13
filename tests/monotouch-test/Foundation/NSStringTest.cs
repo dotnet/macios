@@ -3,6 +3,26 @@ namespace monotouchtest {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NSStringTest {
+		[TestCase (false)]
+		[TestCase (true)]
+		public void ConstructorRetainCount (bool substring)
+		{
+			// Use a long non-ASCII string to avoid tagged pointers and cached strings.
+			var text = new string ('\u00e9', 64);
+			using var str = substring ? new NSString ("_" + text + "_", 1, text.Length) : new NSString (text);
+			Assert.That (str.ToString (), Is.EqualTo (text), "Value");
+			Assert.That (str.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
+		}
+
+		[Test]
+		public void ExplicitConversionRetainCount ()
+		{
+			var text = new string ('\u00e9', 64);
+			using var str = (NSString) text;
+			Assert.That (str.ToString (), Is.EqualTo (text), "Value");
+			Assert.That (str.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
+		}
+
 		[Test]
 		public void LocalizedFormatTest ()
 		{

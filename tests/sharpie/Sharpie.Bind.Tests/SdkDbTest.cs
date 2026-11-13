@@ -3,10 +3,34 @@
 
 using Xamarin;
 using Xamarin.Tests;
+using Xamarin.Utils;
 
 namespace Sharpie.Bind.Tests;
 
 public class SdkDbTest {
+
+	[TestCase (null)]
+	[TestCase (true)]
+	[TestCase (false)]
+	public void CommandLineModules (bool? modules)
+	{
+		Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
+		var args = new List<string> {
+			"--sdk=macosx",
+			"--output=" + Cache.CreateTemporaryDirectory (),
+			"--clang-resource-dir=" + Extensions.GetClangResourceDirectory (),
+		};
+		var sdk = new Sdk (new BindingResult (), "macosx");
+		args.AddRange (sdk.Frameworks.Where (fx => fx.Name != "Foundation").Select (fx => "--exclude=" + fx.Name));
+		if (modules.HasValue)
+			args.Add ("--modules=" + modules.Value);
+		using var binder = Tools.CreateSdkDbTool (args.ToArray ()) ?? throw new InvalidOperationException ("Expected an SDK tool.");
+		Assert.That (binder.EnableModules, Is.EqualTo (modules ?? true), "Module setting");
+		var translationUnit = binder.CreateTranslationUnit ();
+		binder.BindingResult.AssertSuccess (null);
+		binder.BindingResult.AssertNoWarnings ();
+		Assert.That (translationUnit, Is.Not.Null, "Translation unit");
+	}
 
 	static IEnumerable<TestCaseData> TestCases {
 		get {

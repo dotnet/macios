@@ -1021,7 +1021,7 @@ namespace Mono.Options
 			var ae = new ArgumentEnumerator (arguments);
 			foreach (string argument in ae) {
 				++c.OptionIndex;
-				if (endOfParsingArguments.Contains (argument)) {
+				if (process && endOfParsingArguments.Contains (argument)) {
 					process = false;
 					continue;
 				}
@@ -1974,4 +1974,3 @@ namespace Mono.Options
 		}
 	}
 }
-

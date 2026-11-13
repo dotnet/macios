@@ -8,22 +8,24 @@
 
 namespace JavaScriptCore {
 	// untyped enum -> JSValueRef.h
-	/// <summary>An enumeration whose values specify JavaScript types, including <c>Object</c> and <c>undefined</c>.</summary>
+	/// <summary>Identifies the type of a JavaScript value.</summary>
 	public enum JSType {
-		/// <summary>To be added.</summary>
+		/// <summary>The unique undefined value.</summary>
 		Undefined,
-		/// <summary>To be added.</summary>
+		/// <summary>The unique null value.</summary>
 		Null,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive Boolean value, either <see langword="true"/> or <see langword="false"/>.</summary>
 		Boolean,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive number value.</summary>
 		Number,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive string value.</summary>
 		String,
-		/// <summary>To be added.</summary>
+		/// <summary>An object value, represented by a <c>JSObjectRef</c>.</summary>
 		Object,
+		/// <summary>A primitive symbol value.</summary>
 		[MacCatalyst (13, 1)]
 		Symbol,
+		/// <summary>A primitive BigInt value.</summary>
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
 		BigInt,
 	}

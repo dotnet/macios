@@ -4222,8 +4222,6 @@ F:JavaScriptCore.JSRelationCondition.Equal
 F:JavaScriptCore.JSRelationCondition.GreaterThan
 F:JavaScriptCore.JSRelationCondition.LessThan
 F:JavaScriptCore.JSRelationCondition.Undefined
-F:JavaScriptCore.JSType.BigInt
-F:JavaScriptCore.JSType.Symbol
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed

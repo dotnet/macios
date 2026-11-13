@@ -5643,7 +5643,6 @@ F:PhotosUI.PHPickerMetadataOptions.RemoveCaptions
 F:PhotosUI.PHPickerMetadataOptions.RemoveLocation
 F:PhotosUI.PHPickerMode.Compact
 F:PhotosUI.PHPickerMode.Default
-F:PhotosUI.PHProjectCategory.Undefined
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Private
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Public
 F:PushToTalk.PTChannelError.AppNotForeground
@@ -58456,7 +58455,6 @@ T:PhotosUI.PHPickerSearchText
 T:PhotosUI.PHPickerUpdateConfiguration
 T:PhotosUI.PHPickerViewController
 T:PhotosUI.PHProjectAssetElement
-T:PhotosUI.PHProjectCategory
 T:PhotosUI.PHProjectElement
 T:PhotosUI.PHProjectExtensionContext
 T:PhotosUI.PHProjectInfo

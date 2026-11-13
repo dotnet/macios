@@ -40,31 +40,33 @@ namespace PhotosUI {
 		LiveOff = 1 << 1,
 	}
 #endif
+	/// <summary>Enumerates the project categories supported by a Photos project extension.</summary>
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
 	public enum PHProjectCategory {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for book projects.</summary>
 		[Field ("PHProjectCategoryBook")]
 		Book,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for calendar projects.</summary>
 		[Field ("PHProjectCategoryCalendar")]
 		Calendar,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for card projects.</summary>
 		[Field ("PHProjectCategoryCard")]
 		Card,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for print projects.</summary>
 		[Field ("PHProjectCategoryPrints")]
 		Prints,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for slideshow projects.</summary>
 		[Field ("PHProjectCategorySlideshow")]
 		Slideshow,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for wall decor projects.</summary>
 		[Field ("PHProjectCategoryWallDecor")]
 		WallDecor,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for other project types.</summary>
 		[Field ("PHProjectCategoryOther")]
 		Other,
+		/// <summary>Indicates that a project type description data source provides descriptions for all project types.</summary>
 		[NoMacCatalyst]
 		[Field ("PHProjectCategoryUndefined")]
 		Undefined,

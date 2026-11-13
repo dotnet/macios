@@ -895,10 +895,12 @@ namespace UIKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityUserInputLabels", ArgumentSemantic.Strong)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string [] AccessibilityUserInputLabels { get; set; }
 
 		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedUserInputLabels", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSAttributedString [] AccessibilityAttributedUserInputLabels { get; set; }
 
 		[MacCatalyst (13, 1)]
@@ -6466,6 +6468,7 @@ namespace UIKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		[Export ("collectionView", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UICollectionView CollectionView { get; set; }
 
 		[Export ("clearsSelectionOnViewWillAppear")]
@@ -7744,6 +7747,7 @@ namespace UIKit {
 		void EnableEditing ();
 
 		[Export ("undoManager", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSUndoManager UndoManager { get; set; }
 
 		[Export ("hasUnsavedChanges")]
@@ -10716,7 +10720,7 @@ namespace UIKit {
 		/// <summary>The color of the UIActivityIndicatorView.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[Export ("color", ArgumentSemantic.Retain), NullAllowed]
+		[Export ("color", ArgumentSemantic.Retain), System.Diagnostics.CodeAnalysis.AllowNull]
 		[Appearance]
 		UIColor Color { get; set; }
 	}
@@ -11482,7 +11486,7 @@ namespace UIKit {
 		[NullAllowed, Export ("shadowPath", ArgumentSemantic.Copy)]
 		UIBezierPath ShadowPath { get; set; }
 
-		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("backgroundColor", ArgumentSemantic.Copy)]
 		UIColor BackgroundColor { get; set; }
 	}
 
@@ -12457,6 +12461,7 @@ namespace UIKit {
 		/// <remarks>To be added.</remarks>
 		[Export ("font", ArgumentSemantic.Retain)]
 		[Appearance]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIFont Font { get; set; }
 
 		/// <summary>The color of the text in the UILabel.</summary>
@@ -12464,7 +12469,7 @@ namespace UIKit {
 		/// <remarks>To be added.</remarks>
 		[Export ("textColor", ArgumentSemantic.Retain)]
 		[Appearance]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIColor TextColor { get; set; }
 
 		/// <summary>The color used for shadowing in the UILabel.</summary>
@@ -12756,7 +12761,7 @@ namespace UIKit {
 		NSTimeZone TimeZone { get; set; }
 
 		[Export ("calendar", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSCalendar Calendar { get; set; }
 
 		// not fully clear from docs but null is not allowed:
@@ -19829,6 +19834,7 @@ namespace UIKit {
 		NativeHandle Constructor (UITableViewStyle withStyle);
 
 		[Export ("tableView", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UITableView TableView { get; set; }
 
 		[Export ("clearsSelectionOnViewWillAppear")]
@@ -20785,7 +20791,7 @@ namespace UIKit {
 		NativeHandle Constructor (CGRect frame);
 
 		[Export ("text", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Text { get; set; }
 
 		[NullAllowed] // by default this property is null
@@ -20876,6 +20882,7 @@ namespace UIKit {
 		bool AllowsEditingTextAttributes { get; set; }
 
 		[Export ("attributedText", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSAttributedString AttributedText { get; set; }
 
 		[Export ("clearsOnInsertion")]
@@ -20938,6 +20945,7 @@ namespace UIKit {
 		NSTextStorage TextStorage { get; }
 
 		[Export ("linkTextAttributes", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSDictionary WeakLinkTextAttributes { get; set; }
 
 		[MacCatalyst (13, 1)]
@@ -20973,7 +20981,7 @@ namespace UIKit {
 		UITextViewBorderStyle BorderStyle { get; set; }
 
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
-		[Export ("textHighlightAttributes", ArgumentSemantic.Copy), NullAllowed]
+		[Export ("textHighlightAttributes", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull]
 		NSDictionary<NSString, NSObject> TextHighlightAttributes { get; set; }
 
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -22212,7 +22220,7 @@ namespace UIKit {
 		/// <summary>The color used for tinting.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("tintColor")]
 		[Appearance]
 		UIColor TintColor { get; set; }
@@ -22655,7 +22663,7 @@ namespace UIKit {
 		NativeHandle Constructor ([NullAllowed] string nibName, [NullAllowed] NSBundle bundle);
 
 		[Export ("view", ArgumentSemantic.Retain)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIView View { get; set; }
 
 		[Export ("loadView")]
@@ -22747,6 +22755,7 @@ namespace UIKit {
 		UIViewController ParentViewController { get; }
 
 		[Export ("tabBarItem", ArgumentSemantic.Retain)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UITabBarItem TabBarItem { get; set; }
 
 		// UIViewControllerRotation category
@@ -28067,7 +28076,7 @@ namespace UIKit {
 		UIView PreferredFocusedView { get; set; }
 
 		[MacCatalyst (13, 1)]
-		[Export ("preferredFocusEnvironments", ArgumentSemantic.Copy), NullAllowed] // null_resettable
+		[Export ("preferredFocusEnvironments", ArgumentSemantic.Copy), System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		IUIFocusEnvironment [] PreferredFocusEnvironments { get; set; }
 	}
 
@@ -30212,7 +30221,7 @@ namespace UIKit {
 		[NullAllowed, Export ("title")]
 		string Title { get; set; }
 
-		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("backgroundColor", ArgumentSemantic.Copy)]
 		UIColor BackgroundColor { get; set; }
 
 		[NullAllowed, Export ("image", ArgumentSemantic.Copy)]
@@ -30965,6 +30974,7 @@ namespace UIKit {
 		void OpenUrl (NSUrl url, [NullAllowed] UISceneOpenExternalUrlOptions options, [NullAllowed] Action<bool> completion);
 
 		[Export ("title")]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		string Title { get; set; }
 
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -31988,6 +31998,7 @@ namespace UIKit {
 		void ReplaceTextualPortion (UITextRange textRange, UISearchToken token, nuint tokenIndex);
 
 		[Export ("tokenBackgroundColor", ArgumentSemantic.Strong)]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIColor TokenBackgroundColor { get; set; }
 
 		[Export ("allowsDeletingTokens")]
@@ -33294,7 +33305,7 @@ namespace UIKit {
 		[Export ("maintainsFixedSize")]
 		bool MaintainsFixedSize { get; set; }
 
-		[NullAllowed, Export ("position", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("position", ArgumentSemantic.Copy)]
 		UICellAccessoryPosition Position { get; set; }
 	}
 
@@ -34853,7 +34864,7 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIWindowSceneActivationAction {
 
-		[NullAllowed, Export ("title")]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("title")]
 		string Title { get; set; }
 
 		[Static]

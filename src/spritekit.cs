@@ -814,7 +814,7 @@ namespace SpriteKit {
 		nfloat ColorBlendFactor { get; set; }
 
 		[Export ("color", ArgumentSemantic.Retain)]
-		[NullAllowed] // it's actually null-resetable (see unit tests)
+		[System.Diagnostics.CodeAnalysis.AllowNull] // it's actually null-resetable (see unit tests)
 		UIColor Color { get; set; }
 
 		[Export ("blendMode")]

@@ -3624,7 +3624,7 @@ namespace MediaPlayer {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed] // null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] // null_resettable
 		[Export ("authorDisplayName")]
 		string AuthorDisplayName { get; set; }
 

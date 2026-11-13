@@ -2623,7 +2623,7 @@ namespace PassKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
 		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
@@ -2703,7 +2703,7 @@ namespace PassKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 	}
 
@@ -2732,7 +2732,7 @@ namespace PassKit {
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems);
 
 		[MacCatalyst (13, 1)]
-		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
 		// inlined
@@ -3373,7 +3373,7 @@ namespace PassKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor ([NullAllowed] NSError [] errors, PKPaymentSummaryItem [] paymentSummaryItems, PKShippingMethod [] shippingMethods);
 
-		[NullAllowed, Export ("errors", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("errors", ArgumentSemantic.Copy)]
 		NSError [] Errors { get; set; }
 
 		[iOS (16, 0), MacCatalyst (16, 0), NoTV]

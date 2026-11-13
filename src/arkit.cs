@@ -1243,7 +1243,7 @@ namespace ARKit {
 		[NullAllowed, Export ("initialWorldMap", ArgumentSemantic.Strong)]
 		ARWorldMap InitialWorldMap { get; set; }
 
-		[NullAllowed] //null_resettable
+		[System.Diagnostics.CodeAnalysis.AllowNull] //null_resettable
 		[Export ("detectionImages", ArgumentSemantic.Copy)]
 		NSSet<ARReferenceImage> DetectionImages { get; set; }
 
@@ -2657,7 +2657,7 @@ namespace ARKit {
 		[Export ("planeDetection", ArgumentSemantic.Assign)]
 		ARPlaneDetection PlaneDetection { get; set; }
 
-		[NullAllowed, Export ("detectionImages", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("detectionImages", ArgumentSemantic.Copy)]
 		NSSet<ARReferenceImage> DetectionImages { get; set; }
 
 		[Export ("automaticImageScaleEstimationEnabled")]

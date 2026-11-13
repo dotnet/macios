@@ -391,7 +391,7 @@ namespace Xamarin.Linker {
 			body.FinalizeGeneratedBody ();
 		}
 
-		void GenerateConstructINativeObject (TypeDefinition registrarType)
+		internal void GenerateConstructINativeObject (TypeDefinition registrarType)
 		{
 			var createInstanceMethod = registrarType.AddMethod ("ConstructINativeObject", MethodAttributes.Private | MethodAttributes.Final | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
 			var typeHandleParameter = createInstanceMethod.AddParameter (abr.System_RuntimeTypeHandle); // typeHandle
@@ -411,15 +411,17 @@ namespace Xamarin.Linker {
 
 			foreach (var type in types) {
 				var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
+				var factoryRef = AppBundleRewriter.FindINativeObjectFactory (type);
 
-				if (ctorRef is not null) {
-					var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+				if (factoryRef is not null || ctorRef is not null) {
+					var target = abr.CurrentAssembly.MainModule.ImportReference (factoryRef ?? ctorRef);
 
 					// we need to preserve the constructor because it might not be used anywhere else
-					MarkConstructorIfTrimmed (ctor);
+					if (factoryRef is null)
+						MarkConstructorIfTrimmed (target);
 
 					if (!ManagedRegistrarStep.IsOpenType (type)) {
-						EnsureVisible (createInstanceMethod, ctor);
+						EnsureVisible (createInstanceMethod, target);
 
 						il.Emit (OpCodes.Ldarga_S, typeHandleParameter);
 						il.Emit (OpCodes.Ldtoken, type);
@@ -428,10 +430,10 @@ namespace Xamarin.Linker {
 						il.Emit (OpCodes.Brfalse_S, falseTarget);
 
 						il.Emit (OpCodes.Ldarg, nativeHandleParameter);
-						if (ctor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
+						if (target.Parameters [0].ParameterType.Is ("System", "IntPtr"))
 							il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
 						il.Emit (OpCodes.Ldarg, ownsParameter);
-						il.Emit (OpCodes.Newobj, ctor);
+						il.Emit (factoryRef is null ? OpCodes.Newobj : OpCodes.Call, target);
 						il.Emit (OpCodes.Ret);
 
 						il.Append (falseTarget);
@@ -700,4 +702,3 @@ namespace Xamarin.Linker {
 		}
 	}
 }
-

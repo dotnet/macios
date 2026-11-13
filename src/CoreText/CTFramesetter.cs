@@ -40,8 +40,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTFramesetter : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTFramesetter : NativeObject, ICreatableNativeObject<CTFramesetter> {
+		static CTFramesetter ICreatableNativeObject<CTFramesetter>.Create (NativeHandle handle, bool owns) => new CTFramesetter (handle, owns);
+
 		internal CTFramesetter (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

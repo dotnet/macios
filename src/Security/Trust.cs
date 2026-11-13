@@ -37,8 +37,9 @@ using CoreFoundation;
 namespace Security {
 	/// <summary>A trust level. A trust object combines a certificate with a policy or policies. </summary>
 	///     <remarks>To be added.</remarks>
-	public partial class SecTrust : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class SecTrust : NativeObject, ICreatableNativeObject<SecTrust> {
+		static SecTrust ICreatableNativeObject<SecTrust>.Create (NativeHandle handle, bool owns) => new SecTrust (handle, owns);
+
 		internal SecTrust (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

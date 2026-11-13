@@ -21,8 +21,9 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-	public class CVMetalTexture : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CVMetalTexture : NativeObject, ICreatableNativeObject<CVMetalTexture> {
+		static CVMetalTexture ICreatableNativeObject<CVMetalTexture>.Create (NativeHandle handle, bool owns) => new CVMetalTexture (handle, owns);
+
 		internal CVMetalTexture (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

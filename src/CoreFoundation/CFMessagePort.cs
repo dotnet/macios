@@ -48,7 +48,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFMessagePort : NativeObject {
+	public class CFMessagePort : NativeObject, ICreatableNativeObject<CFMessagePort> {
 		sealed class MessagePortContext {
 			int retainCount = 1;
 
@@ -167,7 +167,8 @@ namespace CoreFoundation {
 			}
 		}
 
-		[Preserve (Conditional = true)]
+		static CFMessagePort ICreatableNativeObject<CFMessagePort>.Create (NativeHandle handle, bool owns) => new CFMessagePort (handle, owns);
+
 		internal CFMessagePort (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -19,8 +19,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWWebSocketRequest : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWWebSocketRequest : NativeObject, ICreatableNativeObject<NWWebSocketRequest> {
+		static NWWebSocketRequest ICreatableNativeObject<NWWebSocketRequest>.Create (NativeHandle handle, bool owns) => new NWWebSocketRequest (handle, owns);
+
 		internal NWWebSocketRequest (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

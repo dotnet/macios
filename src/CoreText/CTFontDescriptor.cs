@@ -571,8 +571,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CTFontDescriptor : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CTFontDescriptor : NativeObject, ICreatableNativeObject<CTFontDescriptor> {
+		static CTFontDescriptor ICreatableNativeObject<CTFontDescriptor>.Create (NativeHandle handle, bool owns) => new CTFontDescriptor (handle, owns);
+
 		internal CTFontDescriptor (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

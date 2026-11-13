@@ -54,8 +54,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTRun : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTRun : NativeObject, ICreatableNativeObject<CTRun> {
+		static CTRun ICreatableNativeObject<CTRun>.Create (NativeHandle handle, bool owns) => new CTRun (handle, owns);
+
 		internal CTRun (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

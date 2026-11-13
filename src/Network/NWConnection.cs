@@ -57,8 +57,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWConnection : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWConnection : NativeObject, ICreatableNativeObject<NWConnection> {
+		static NWConnection ICreatableNativeObject<NWConnection>.Create (NativeHandle handle, bool owns) => new NWConnection (handle, owns);
+
 		internal NWConnection (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

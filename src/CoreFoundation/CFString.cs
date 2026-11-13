@@ -150,7 +150,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("tvos")]
 	public class CFString
 #if !COREBUILD
-		: NativeObject
+		: NativeObject, ICreatableNativeObject<CFString>
+#else
+		: ICreatableNativeObject<CFString>
 #endif
 	{
 #if !COREBUILD
@@ -274,7 +276,8 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary, EntryPoint = "CFStringGetTypeID")]
 		public extern static nint GetTypeID ();
 
-		[Preserve (Conditional = true)]
+		static CFString ICreatableNativeObject<CFString>.Create (NativeHandle handle, bool owns) => new CFString (handle, owns);
+
 		internal CFString (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

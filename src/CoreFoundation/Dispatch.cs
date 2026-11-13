@@ -83,7 +83,6 @@ namespace CoreFoundation {
 		//
 		// Constructors and lifecycle
 		//
-		[Preserve (Conditional = true)]
 		internal DispatchObject (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{
@@ -158,9 +157,10 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public sealed class DispatchQueue : DispatchObject {
+	public sealed class DispatchQueue : DispatchObject, ICreatableNativeObject<DispatchQueue> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static DispatchQueue ICreatableNativeObject<DispatchQueue>.Create (NativeHandle handle, bool owns) => new DispatchQueue (handle, owns);
+
 		internal DispatchQueue (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}
@@ -951,9 +951,10 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class DispatchGroup : DispatchObject {
+	public class DispatchGroup : DispatchObject, ICreatableNativeObject<DispatchGroup> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static DispatchGroup ICreatableNativeObject<DispatchGroup>.Create (NativeHandle handle, bool owns) => new DispatchGroup (handle, owns);
+
 		private DispatchGroup (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

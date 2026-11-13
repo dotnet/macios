@@ -21,8 +21,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWPathMonitor : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWPathMonitor : NativeObject, ICreatableNativeObject<NWPathMonitor> {
+		static NWPathMonitor ICreatableNativeObject<NWPathMonitor>.Create (NativeHandle handle, bool owns) => new NWPathMonitor (handle, owns);
+
 		internal NWPathMonitor (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 			_SetUpdatedSnapshotHandler (SetUpdatedSnapshotHandlerWrapper);

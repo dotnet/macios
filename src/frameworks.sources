@@ -1043,6 +1043,7 @@ IMAGEIO_API_SOURCES = \
 	ImageIO/Enums.cs \
 
 IMAGEIO_CORE_SOURCES = \
+	ImageIO/CoreBuildTypes.cs \
 	ImageIO/CGImageSource.cs \
 
 IMAGEIO_SOURCES = \

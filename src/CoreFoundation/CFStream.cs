@@ -788,7 +788,6 @@ namespace CoreFoundation {
 		}
 #endif // XAMCORE_5_0
 
-		[Preserve (Conditional = true)]
 		protected CFStream (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

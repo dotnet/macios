@@ -264,11 +264,12 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABMultiValue<T> : NativeObject, IEnumerable<ABMultiValueEntry<T>> {
+	public class ABMultiValue<T> : NativeObject, IEnumerable<ABMultiValueEntry<T>>, ICreatableNativeObject<ABMultiValue<T>> {
 		internal Converter<NativeHandle, T> toManaged;
 		internal Converter<T, NativeHandle> toNative;
 
-		[Preserve (Conditional = true)]
+		static ABMultiValue<T> ICreatableNativeObject<ABMultiValue<T>>.Create (NativeHandle handle, bool owns) => new ABMultiValue<T> (handle, owns);
+
 		internal ABMultiValue (NativeHandle handle, bool owns)
 			: this (handle,
 					v => (T) (object) Runtime.GetNSObject (v)!,
@@ -444,8 +445,9 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABMutableMultiValue<T> : ABMultiValue<T> {
-		[Preserve (Conditional = true)]
+	public class ABMutableMultiValue<T> : ABMultiValue<T>, ICreatableNativeObject<ABMutableMultiValue<T>> {
+		static ABMutableMultiValue<T> ICreatableNativeObject<ABMutableMultiValue<T>>.Create (NativeHandle handle, bool owns) => new ABMutableMultiValue<T> (handle, owns);
+
 		internal ABMutableMultiValue (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

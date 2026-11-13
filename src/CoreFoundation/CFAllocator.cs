@@ -32,7 +32,7 @@
 namespace CoreFoundation {
 
 	// CFBase.h
-	public partial class CFAllocator : NativeObject {
+	public partial class CFAllocator : NativeObject, ICreatableNativeObject<CFAllocator> {
 #if !COREBUILD
 		static CFAllocator? Default_cf;
 		static CFAllocator? SystemDefault_cf;
@@ -41,7 +41,8 @@ namespace CoreFoundation {
 		static CFAllocator? Null_cf;
 #endif
 
-		[Preserve (Conditional = true)]
+		static CFAllocator ICreatableNativeObject<CFAllocator>.Create (NativeHandle handle, bool owns) => new CFAllocator (handle, owns);
+
 		internal CFAllocator (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

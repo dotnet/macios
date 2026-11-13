@@ -10,12 +10,13 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWPrivacyContext : NativeObject {
+	public class NWPrivacyContext : NativeObject, ICreatableNativeObject<NWPrivacyContext> {
 
 		public static NWPrivacyContext Default =>
 			new NWPrivacyContext (NWPrivacyContextConstants._DefaultContext, false);
 
-		[Preserve (Conditional = true)]
+		static NWPrivacyContext ICreatableNativeObject<NWPrivacyContext>.Create (NativeHandle handle, bool owns) => new NWPrivacyContext (handle, owns);
+
 		internal NWPrivacyContext (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

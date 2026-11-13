@@ -81,7 +81,7 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CGColorSpace : NativeObject {
+	public class CGColorSpace : NativeObject, ICreatableNativeObject<CGColorSpace> {
 #if !COREBUILD
 		static IntPtr Create (CFPropertyList propertyList)
 		{
@@ -100,7 +100,8 @@ namespace CoreGraphics {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static CGColorSpace ICreatableNativeObject<CGColorSpace>.Create (NativeHandle handle, bool owns) => new CGColorSpace (handle, owns);
+
 		internal CGColorSpace (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -768,7 +769,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public CGColorSpace? CreateLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateLinearized (Handle), owns: true);
+		public CGColorSpace? CreateLinearized () => Runtime.GetCreatableNativeObject<CGColorSpace> (CGColorSpaceCreateLinearized (Handle), owns: true);
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -781,7 +782,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public CGColorSpace? CreateExtended () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtended (Handle), owns: true);
+		public CGColorSpace? CreateExtended () => Runtime.GetCreatableNativeObject<CGColorSpace> (CGColorSpaceCreateExtended (Handle), owns: true);
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
@@ -794,7 +795,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public CGColorSpace? CreateExtendedLinearized () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateExtendedLinearized (Handle), owns: true);
+		public CGColorSpace? CreateExtendedLinearized () => Runtime.GetCreatableNativeObject<CGColorSpace> (CGColorSpaceCreateExtendedLinearized (Handle), owns: true);
 
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]
@@ -807,7 +808,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public CGColorSpace? CreateCopyWithStandardRange () => Runtime.GetINativeObject<CGColorSpace> (CGColorSpaceCreateCopyWithStandardRange (Handle), owns: true);
+		public CGColorSpace? CreateCopyWithStandardRange () => Runtime.GetCreatableNativeObject<CGColorSpace> (CGColorSpaceCreateCopyWithStandardRange (Handle), owns: true);
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]

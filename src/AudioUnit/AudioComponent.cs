@@ -274,9 +274,10 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class AudioComponent : DisposableObject {
+	public class AudioComponent : DisposableObject, ICreatableNativeObject<AudioComponent> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static AudioComponent ICreatableNativeObject<AudioComponent>.Create (NativeHandle handle, bool owns) => new AudioComponent (handle, owns);
+
 		internal AudioComponent (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

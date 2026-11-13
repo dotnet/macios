@@ -37,9 +37,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGShading.h
-	public class CGShading : NativeObject {
+	public class CGShading : NativeObject, ICreatableNativeObject<CGShading> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGShading ICreatableNativeObject<CGShading>.Create (NativeHandle handle, bool owns) => new CGShading (handle, owns);
+
 		internal CGShading (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

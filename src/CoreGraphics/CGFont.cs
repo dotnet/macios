@@ -40,9 +40,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGFont.h
-	public class CGFont : NativeObject {
+	public class CGFont : NativeObject, ICreatableNativeObject<CGFont> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGFont ICreatableNativeObject<CGFont>.Create (NativeHandle handle, bool owns) => new CGFont (handle, owns);
+
 		internal CGFont (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -124,7 +124,7 @@ static partial class BindingSyntaxFactory {
 					VariableAssignment (
 						variableName: parameter.Name,
 						value: GetINativeObject (
-							nsObjectType: parameter.Type.WithNullable (isNullable: false).GetIdentifierSyntax (), 
+							nsObjectType: parameter.Type.WithNullable (isNullable: false), 
 							args: [
 								Argument (IdentifierName (GetNameForVariableType (parameter.Name, VariableType.Handle)!)),
 							], 
@@ -173,12 +173,13 @@ static partial class BindingSyntaxFactory {
 				],
 			
 			// by ref we need to create a native handle for the NSArray 
-			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true }
+			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } or
+			{ IsByRef: true, Type.IsArray: true, Type.ArrayElementIsCreatableNativeObject: true }
 				=> [
 					VariableAssignment (
  						variableName: parameter.Name,
 					    value: GetCFArrayFromHandle (
-						    nsObjectType: parameter.Type.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax (), 
+						    nsObjectType: parameter.Type.ToArrayElementType ().WithNullable (isNullable: false), 
 						    args: [ 
 							    Argument (IdentifierName(GetNameForVariableType (parameter.Name, VariableType.NSArray)!)) 
 						    ], 

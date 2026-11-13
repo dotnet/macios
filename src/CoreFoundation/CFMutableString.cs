@@ -14,8 +14,9 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFMutableString : CFString {
-		[Preserve (Conditional = true)]
+	public class CFMutableString : CFString, ICreatableNativeObject<CFMutableString> {
+		static CFMutableString ICreatableNativeObject<CFMutableString>.Create (NativeHandle handle, bool owns) => new CFMutableString (handle, owns);
+
 		internal CFMutableString (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

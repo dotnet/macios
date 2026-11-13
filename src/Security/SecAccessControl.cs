@@ -118,9 +118,10 @@ namespace Security {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class SecAccessControl : NativeObject {
+	public partial class SecAccessControl : NativeObject, ICreatableNativeObject<SecAccessControl> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static SecAccessControl ICreatableNativeObject<SecAccessControl>.Create (NativeHandle handle, bool owns) => new SecAccessControl (handle, owns);
+
 		internal SecAccessControl (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

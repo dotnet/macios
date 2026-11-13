@@ -22,8 +22,9 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'CVMetalTexture' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'CVMetalTexture' instead.")]
-	public class CVOpenGLESTexture : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CVOpenGLESTexture : NativeObject, ICreatableNativeObject<CVOpenGLESTexture> {
+		static CVOpenGLESTexture ICreatableNativeObject<CVOpenGLESTexture>.Create (NativeHandle handle, bool owns) => new CVOpenGLESTexture (handle, owns);
+
 		internal CVOpenGLESTexture (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

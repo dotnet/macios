@@ -21,9 +21,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NSProtocolFramerOptions : NWProtocolOptions {
+	public class NSProtocolFramerOptions : NWProtocolOptions, ICreatableNativeObject<NSProtocolFramerOptions> {
 
-		[Preserve (Conditional = true)]
+		static NSProtocolFramerOptions ICreatableNativeObject<NSProtocolFramerOptions>.Create (NativeHandle handle, bool owns) => new NSProtocolFramerOptions (handle, owns);
+
 		internal NSProtocolFramerOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

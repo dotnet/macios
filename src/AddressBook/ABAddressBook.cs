@@ -105,7 +105,7 @@ namespace AddressBook {
 	/// <summary>Provides access to the legacy Address Book database.</summary>
 	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
-	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord> {
+	public partial class ABAddressBook : NativeObject, IEnumerable<ABRecord>, ICreatableNativeObject<ABAddressBook> {
 
 #if !XAMCORE_5_0
 		/// <summary>Identifies the error domain under which Address Book errors are grouped.</summary>
@@ -165,7 +165,8 @@ namespace AddressBook {
 			return new ABAddressBook (handle, true);
 		}
 
-		[Preserve (Conditional = true)]
+		static ABAddressBook ICreatableNativeObject<ABAddressBook>.Create (NativeHandle handle, bool owns) => new ABAddressBook (handle, owns);
+
 		internal ABAddressBook (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

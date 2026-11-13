@@ -20,8 +20,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolTlsOptions : NWProtocolOptions {
-		[Preserve (Conditional = true)]
+	public class NWProtocolTlsOptions : NWProtocolOptions, ICreatableNativeObject<NWProtocolTlsOptions> {
+		static NWProtocolTlsOptions ICreatableNativeObject<NWProtocolTlsOptions>.Create (NativeHandle handle, bool owns) => new NWProtocolTlsOptions (handle, owns);
+
 		internal NWProtocolTlsOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWProtocolTlsOptions () : this (nw_tls_create_options (), owns: true) { }

@@ -30,7 +30,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public sealed class OSLog : NativeObject {
+	public sealed class OSLog : NativeObject, ICreatableNativeObject<OSLog> {
 
 		static OSLog? _default;
 
@@ -70,7 +70,8 @@ namespace CoreFoundation {
 		[DllImport ("__Internal")]
 		extern static void xamarin_os_log (IntPtr logHandle, OSLogLevel level, IntPtr message);
 
-		[Preserve (Conditional = true)]
+		static OSLog ICreatableNativeObject<OSLog>.Create (NativeHandle handle, bool owns) => new OSLog (handle, owns);
+
 		internal OSLog (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

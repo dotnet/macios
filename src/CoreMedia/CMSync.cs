@@ -21,8 +21,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CMClock : CMClockOrTimebase {
-		[Preserve (Conditional = true)]
+	public partial class CMClock : CMClockOrTimebase, ICreatableNativeObject<CMClock> {
+		static CMClock ICreatableNativeObject<CMClock>.Create (NativeHandle handle, bool owns) => new CMClock (handle, owns);
+
 		internal CMClock (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -250,8 +251,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMTimebase : CMClockOrTimebase {
-		[Preserve (Conditional = true)]
+	public class CMTimebase : CMClockOrTimebase, ICreatableNativeObject<CMTimebase> {
+		static CMTimebase ICreatableNativeObject<CMTimebase>.Create (NativeHandle handle, bool owns) => new CMTimebase (handle, owns);
+
 		private CMTimebase (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -969,8 +971,9 @@ namespace CoreMedia {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CMClockOrTimebase : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CMClockOrTimebase : NativeObject, ICreatableNativeObject<CMClockOrTimebase> {
+		static CMClockOrTimebase ICreatableNativeObject<CMClockOrTimebase>.Create (NativeHandle handle, bool owns) => new CMClockOrTimebase (handle, owns);
+
 		internal CMClockOrTimebase (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -1120,7 +1123,7 @@ namespace CoreMedia {
 		public CMTimebase? SourceTimebase {
 			get {
 				var source = CMTimebaseCopySourceTimebase (Handle);
-				return Runtime.GetINativeObject<CMTimebase> (source, true);
+				return Runtime.GetCreatableNativeObject<CMTimebase> (source, true);
 			}
 			set {
 				CMTimebaseSetSourceTimebase (Handle, value.GetHandle ());
@@ -1149,7 +1152,7 @@ namespace CoreMedia {
 		public CMClock? SourceClock {
 			get {
 				var clock = CMTimebaseCopySourceClock (Handle);
-				return Runtime.GetINativeObject<CMClock> (clock, true);
+				return Runtime.GetCreatableNativeObject<CMClock> (clock, true);
 			}
 			set {
 				CMTimebaseSetSourceClock (Handle, value.GetHandle ());
@@ -1171,7 +1174,7 @@ namespace CoreMedia {
 		public CMClock? UltimateSourceClock {
 			get {
 				var clock = CMTimebaseCopyUltimateSourceClock (Handle);
-				return Runtime.GetINativeObject<CMClock> (clock, true);
+				return Runtime.GetCreatableNativeObject<CMClock> (clock, true);
 			}
 		}
 

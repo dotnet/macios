@@ -27,6 +27,23 @@ static partial class BindingSyntaxFactory {
 		var propertyType = property.ReturnType;
 		var propertyTypeSyntax = property.ReturnType.WithNullable (isNullable: false).GetIdentifierSyntax ();
 		return property.ReturnType switch {
+			{ IsArray: false, IsCreatableNativeObject: true } => (
+				ConditionalExpression (
+					Getter ("TryGetNativeValue", [
+						Argument (DeclarationExpression (IdentifierName ("var"),
+							SingleVariableDesignation (Identifier ("__xamarin_nativeValue"))))
+							.WithRefKindKeyword (Token (SyntaxKind.OutKeyword).WithTrailingTrivia (Space))
+					]),
+					GetINativeObject (propertyType, [Argument (IdentifierName ("__xamarin_nativeValue")), BoolArgument (false)]),
+					LiteralExpression (SyntaxKind.NullLiteralExpression)).NormalizeWhitespace (),
+				Setter ("SetNativeValue")
+				),
+			{ IsArray: true, ArrayElementIsCreatableNativeObject: true } => (
+				GenericGetter ("GetArray",
+					types: [propertyType.ToArrayElementType ().WithNullable (isNullable: false).GetIdentifierSyntax ()],
+					arguments: [Argument (NativeObjectFactoryLambda (propertyType.ToArrayElementType ()))]),
+				Setter ("SetArrayValue")
+				),
 			{ IsArray: false, SpecialType: SpecialType.System_Boolean } => (
 				Getter ("GetBoolValue"), 
 				Setter ("SetBooleanValue")

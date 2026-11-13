@@ -23,7 +23,7 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolMetadata : NativeObject {
+	public class NWProtocolMetadata : NativeObject, ICreatableNativeObject<NWProtocolMetadata> {
 
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern OS_nw_protocol_metadata nw_ip_create_metadata ();
@@ -31,7 +31,8 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern OS_nw_protocol_metadata nw_udp_create_metadata ();
 
-		[Preserve (Conditional = true)]
+		static NWProtocolMetadata ICreatableNativeObject<NWProtocolMetadata>.Create (NativeHandle handle, bool owns) => new NWProtocolMetadata (handle, owns);
+
 		internal NWProtocolMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

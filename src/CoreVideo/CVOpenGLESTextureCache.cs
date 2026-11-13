@@ -22,7 +22,7 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("ios")]
 	[ObsoletedOSPlatform ("tvos12.0", "Use 'CVMetalTextureCache' instead.")]
 	[ObsoletedOSPlatform ("ios12.0", "Use 'CVMetalTextureCache' instead.")]
-	public class CVOpenGLESTextureCache : NativeObject {
+	public class CVOpenGLESTextureCache : NativeObject, ICreatableNativeObject<CVOpenGLESTextureCache> {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static int CVOpenGLESTextureCacheCreate (
 			/* CFAllocatorRef __nullable */ IntPtr allocator,
@@ -31,7 +31,8 @@ namespace CoreVideo {
 			/* CFDictionaryRef __nullable */ IntPtr textureAttextureAttributestr,
 			/* CVOpenGLESTextureCacheRef __nullable * __nonnull */ IntPtr* cacheOut);
 
-		[Preserve (Conditional = true)]
+		static CVOpenGLESTextureCache ICreatableNativeObject<CVOpenGLESTextureCache>.Create (NativeHandle handle, bool owns) => new CVOpenGLESTextureCache (handle, owns);
+
 		CVOpenGLESTextureCache (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

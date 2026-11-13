@@ -130,8 +130,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTTypesetter : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTTypesetter : NativeObject, ICreatableNativeObject<CTTypesetter> {
+		static CTTypesetter ICreatableNativeObject<CTTypesetter>.Create (NativeHandle handle, bool owns) => new CTTypesetter (handle, owns);
+
 		internal CTTypesetter (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{

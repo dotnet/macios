@@ -22,10 +22,11 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
-	public class VTCompressionSession : VTSession {
+	public class VTCompressionSession : VTSession, ICreatableNativeObject<VTCompressionSession> {
 		GCHandle callbackHandle;
 
-		[Preserve (Conditional = true)]
+		static VTCompressionSession ICreatableNativeObject<VTCompressionSession>.Create (NativeHandle handle, bool owns) => new VTCompressionSession (handle, owns);
+
 		internal VTCompressionSession (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

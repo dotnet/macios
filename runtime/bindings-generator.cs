@@ -2088,6 +2088,20 @@ namespace Xamarin.BindingMethods.Generator {
 
 			data.Add (
 				new FunctionData {
+					Comment = " // bool func (out NMatrix4, NativeHandle, ref NativeHandle)",
+					Prefix = "simd__",
+					Variants = Variants.NonStret,
+					ReturnType = Types.Bool,
+					Parameters = new ParameterData [] {
+						new ParameterData { TypeData = Types.NMatrix4, IsOut = true },
+						new ParameterData { TypeData = Types.NativeHandle },
+						new ParameterData { TypeData = Types.NativeHandle, IsRef = true },
+					},
+				}
+			);
+
+			data.Add (
+				new FunctionData {
 					Comment = " // IntPtr func (NMatrix4)",
 					Prefix = "simd__",
 					Variants = Variants.NonStret,
@@ -3069,7 +3083,9 @@ namespace Xamarin.BindingMethods.Generator {
 			if (func.Parameters is not null) {
 				for (int i = 0; i < func.Parameters.Length; i++) {
 					funcName.Append ("_");
-					if (func.Parameters [i].IsRef)
+					if (func.Parameters [i].IsOut)
+						funcName.Append ("out_");
+					else if (func.Parameters [i].IsRef)
 						funcName.Append ("ref_");
 					funcName.Append (GetTypeNameForSignature (func.Parameters [i].TypeData.ManagedType));
 				}
@@ -3089,7 +3105,9 @@ namespace Xamarin.BindingMethods.Generator {
 				if (!p.TypeData.RequireMarshal)
 					continue;
 
-				writer.WriteLine ("\t{0} v{1};", p.TypeData.NativeType, i);
+				writer.WriteLine (p.IsOut ? "\t{0} v{1} = {{0}};" : "\t{0} v{1};", p.TypeData.NativeType, i);
+				if (p.IsOut)
+					continue;
 				MarshalToNative (writer, p.TypeData, "v" + i.ToString (), "p" + i.ToString (), p.IsRef);
 			}
 		}
@@ -3102,7 +3120,7 @@ namespace Xamarin.BindingMethods.Generator {
 			for (int i = 0; i < ps.Length; i++) {
 				var p = ps [i];
 				writer.Write (", ");
-				if (p.IsRef && p.TypeData != Types.IntPtr)
+				if ((p.IsRef || p.IsOut) && p.TypeData.RequireMarshal)
 					writer.Write ("&");
 				if (p.TypeData.RequireMarshal) {
 					writer.Write ("v{0}", i);
@@ -3122,7 +3140,7 @@ namespace Xamarin.BindingMethods.Generator {
 				var p = parameters [i];
 				writer.Write (", ");
 				writer.Write (isTypedef ? p.TypeData.NativeType : p.TypeData.NativeWrapperType);
-				if (p.IsRef && p.TypeData != Types.IntPtr)
+				if ((p.IsRef || p.IsOut) && p.TypeData != Types.IntPtr)
 					writer.Write ("*");
 				writer.Write (" ");
 				writer.Write (isTypedef ? "f" : "p");
@@ -3162,7 +3180,7 @@ namespace Xamarin.BindingMethods.Generator {
 
 			for (int i = 0; i < func.Parameters.Length; i++) {
 				var p = func.Parameters [i];
-				if (!p.IsRef || !p.TypeData.RequireMarshal)
+				if ((!p.IsRef && !p.IsOut) || !p.TypeData.RequireMarshal)
 					continue;
 				MarshalToManaged (writer, p.TypeData, $"v{i}", $"p{i}", true);
 			}
@@ -3184,7 +3202,7 @@ namespace Xamarin.BindingMethods.Generator {
 
 		static void Write_objc_msgSend (StringWriter writer, FunctionData func)
 		{
-			var tmpReturnValue = func.ReturnType is not null && (func.ReturnType.RequireMarshal == true || func.Parameters?.Any ((v) => v.IsRef && v.TypeData.RequireMarshal) == true);
+			var tmpReturnValue = func.ReturnType is not null && (func.ReturnType.RequireMarshal == true || func.Parameters?.Any ((v) => (v.IsRef || v.IsOut) && v.TypeData.RequireMarshal) == true);
 
 			// func name
 			var overload = "objc_msgSend";
@@ -3247,7 +3265,7 @@ namespace Xamarin.BindingMethods.Generator {
 
 		static void Write_objc_msgSendSuper (StringWriter writer, FunctionData func)
 		{
-			var tmpReturnValue = func.ReturnType is not null && (func.ReturnType.RequireMarshal == true || func.Parameters?.Any ((v) => v.IsRef && v.TypeData.RequireMarshal) == true);
+			var tmpReturnValue = func.ReturnType is not null && (func.ReturnType.RequireMarshal == true || func.Parameters?.Any ((v) => (v.IsRef || v.IsOut) && v.TypeData.RequireMarshal) == true);
 
 			// func name
 			var overload = "objc_msgSendSuper";
@@ -3828,6 +3846,7 @@ namespace Xamarin.BindingMethods.Generator {
 		TypeData? typeData;
 		public TypeData TypeData { get => typeData!; set => typeData = value; }
 		public bool IsRef;
+		public bool IsOut;
 	}
 
 	class FunctionData {
@@ -3871,6 +3890,7 @@ namespace Xamarin.BindingMethods.Generator {
 					rv.Parameters [i] = new ParameterData ();
 					rv.Parameters [i].TypeData = Parameters [i].TypeData.AsSpecificNativeType (as32bit);
 					rv.Parameters [i].IsRef = Parameters [i].IsRef;
+					rv.Parameters [i].IsOut = Parameters [i].IsOut;
 				}
 			}
 			rv.MarshalExceptions = MarshalExceptions;

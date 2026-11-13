@@ -2818,43 +2818,32 @@ namespace Vision {
 		CGRect RegionOfInterest { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface VNImageOptionKeys {
-		[Field ("VNImageOptionProperties")]
-		NSString PropertiesKey { get; }
-
-		[Field ("VNImageOptionCameraIntrinsics")]
-		NSString CameraIntrinsicsKey { get; }
-
-		[Field ("VNImageOptionCIContext")]
-		NSString CIContextKey { get; }
-	}
-
 	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding options to be used in Vision queries.</summary>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("VNImageOptionKeys")]
+	[StrongDictionary]
 	interface VNImageOptions {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("PropertiesKey")] // Have the option to set your own dict
+		[Field ("VNImageOptionProperties")] // Have the option to set your own dict
 		NSDictionary WeakProperties { get; set; }
 
 		/// <summary>Gets or sets the <see cref="CoreGraphics.CGImageProperties" /> used with the <see cref="Vision.VNImageRequestHandler" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[StrongDictionary] // Yep we need CoreGraphics to disambiguate
+		[Field ("VNImageOptionProperties")]
 		CoreGraphics.CGImageProperties Properties { get; set; }
 
 		/// <summary>Gets or sets the camera intrinsic data, used in camera calibration.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VNImageOptionCameraIntrinsics")]
 		NSData CameraIntrinsics { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VNImageOptionCIContext")]
 		CIContext CIContext { get; set; }
 	}
 

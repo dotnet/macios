@@ -94,45 +94,31 @@ namespace VideoSubscriberAccount {
 
 
 	[NoMacCatalyst]
-	[Static]
-	[Internal]
-	interface VSErrorInfoKeys {
-
-		[Field ("VSErrorInfoKeySAMLResponse")]
-		NSString SamlResponseKey { get; }
-
-		[Field ("VSErrorInfoKeySAMLResponseStatus")]
-		NSString SamlResponseStatusKey { get; }
-
-		[Field ("VSErrorInfoKeyUnsupportedProviderIdentifier")]
-		NSString UnsupportedProviderIdentifierKey { get; }
-
-		[Field ("VSErrorInfoKeyAccountProviderResponse")]
-		NSString AccountProviderResponseKey { get; }
-	}
-
-	[NoMacCatalyst]
-	[StrongDictionary ("VSErrorInfoKeys")]
+	[StrongDictionary]
 	interface VSErrorInfo {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VSErrorInfoKeySAMLResponse")]
 		string SamlResponse { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VSErrorInfoKeySAMLResponseStatus")]
 		string SamlResponseStatus { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VSErrorInfoKeyUnsupportedProviderIdentifier")]
 		string UnsupportedProviderIdentifier { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("VSErrorInfoKeyAccountProviderResponse")]
 		string AccountProviderResponse { get; }
 	}
 

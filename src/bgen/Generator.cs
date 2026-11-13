@@ -1939,18 +1939,65 @@ public partial class Generator : IMemberGatherer {
 				}
 				print ("public {0} (NSDictionary? dictionary) : base (dictionary) {{}}\n", typeName);
 
-				foreach (var pi in dictType.GatherProperties (this)) {
-					if (pi.IsUnavailable (this))
-						continue;
+				var properties = dictType.GatherProperties (this).Where (pi => !pi.IsUnavailable (this)).ToArray ();
+				var inlineFields = properties.Where (pi => AttributeManager.HasAttribute<FieldAttribute> (pi)).ToArray ();
+				var keyMemberNames = new HashSet<string> (properties.Select (pi => pi.Name), StringComparer.Ordinal) { typeName };
+				var keysTypeName = "Keys";
+				while (!keyMemberNames.Add (keysTypeName))
+					keysTypeName = "_" + keysTypeName;
+				if (inlineFields.Length > 0) {
+					PrintPlatformAttributes (dictType);
+					print ("static class {0} {{", keysTypeName);
+					indent++;
+					foreach (var pi in inlineFields) {
+						var field = AttributeManager.GetCustomAttribute<FieldAttribute> (pi)!;
+						if (string.IsNullOrEmpty (field.SymbolName) || field.SymbolAddress)
+							throw ErrorHelper.CreateError (1131, dictType.FullName, pi.Name);
+						if (AttributeManager.HasAttribute<ExportAttribute> (pi))
+							throw ErrorHelper.CreateError (1132, dictType.FullName, pi.Name);
+						if (field.LibraryName == "" || !TryComputeLibraryName (field.LibraryName, dictType, out var libraryName, out var libraryPath))
+							throw ErrorHelper.CreateError (1042, dictType.FullName + "." + pi.Name);
 
+						var cacheName = "_" + pi.Name;
+						while (!keyMemberNames.Add (cacheName))
+							cacheName = "_" + cacheName;
+						print ("static NSString? {0};", cacheName);
+						print ("[Field (\"{0}\", \"{1}\")]", field.SymbolName, libraryPath ?? libraryName);
+						PrintPlatformAttributes (pi);
+						print ("internal static NSString {0} {{", pi.Name);
+						indent++;
+						print ("get {");
+						indent++;
+						print ("if ({0} is null)", cacheName);
+						indent++;
+						print ("{0} = Dlfcn.GetStringConstant (Libraries.{1}.Handle, \"{2}\")!;", cacheName, libraryName, field.SymbolName);
+						indent--;
+						print ("return {0};", cacheName);
+						indent--;
+						print ("}");
+						indent--;
+						print ("}");
+					}
+					indent--;
+					print ("}\n");
+				}
+
+				foreach (var pi in properties) {
 					string keyname;
 					var attrs = AttributeManager.GetCustomAttributes<ExportAttribute> (pi);
-					if (attrs.Length == 0)
+					if (AttributeManager.HasAttribute<FieldAttribute> (pi))
+						keyname = keysTypeName + "." + pi.Name;
+					else if (attrs.Length == 0) {
+						if (string.IsNullOrEmpty (keyContainerType))
+							throw ErrorHelper.CreateError (1130, dictType.FullName, pi.Name);
 						keyname = keyContainerType + "." + pi.Name + suffix + "!";
-					else {
+					} else {
 						keyname = attrs [0].Selector!;
-						if (keyname.IndexOf ('.') == -1)
+						if (keyname.IndexOf ('.') == -1) {
+							if (string.IsNullOrEmpty (keyContainerType))
+								throw ErrorHelper.CreateError (1130, dictType.FullName, pi.Name);
 							keyname = keyContainerType + "." + keyname + "!";
+						}
 					}
 
 					WriteDocumentation (pi);

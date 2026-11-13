@@ -644,4 +644,16 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+
+	<data name="BI1130" xml:space="preserve">
+		<value>The strong dictionary property '{0}.{1}' must specify a [Field] attribute or a key container in [StrongDictionary].</value>
+	</data>
+
+	<data name="BI1131" xml:space="preserve">
+		<value>The [Field] attribute on the strong dictionary property '{0}.{1}' must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants.</value>
+	</data>
+
+	<data name="BI1132" xml:space="preserve">
+		<value>The strong dictionary property '{0}.{1}' cannot specify both [Field] and [Export]. Use [Field] for an inline key or [Export] for a key container member.</value>
+	</data>
 </root>

@@ -1551,28 +1551,19 @@ namespace Security {
 	}
 
 	[MacCatalyst (13, 1)]
-	[Internal]
-	[Static]
-	interface SecKeyKeyExchangeParameterKey {
-		[Field ("kSecKeyKeyExchangeParameterRequestedSize")]
-		NSString RequestedSizeKey { get; }
-
-		[Field ("kSecKeyKeyExchangeParameterSharedInfo")]
-		NSString SharedInfoKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("SecKeyKeyExchangeParameterKey")]
+	[StrongDictionary]
 	interface SecKeyKeyExchangeParameter {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kSecKeyKeyExchangeParameterRequestedSize")]
 		int RequestedSize { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("kSecKeyKeyExchangeParameterSharedInfo")]
 		NSData SharedInfo { get; set; }
 	}
 

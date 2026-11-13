@@ -1208,5 +1208,32 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The strong dictionary property &apos;{0}.{1}&apos; must specify a [Field] attribute or a key container in [StrongDictionary]..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [Field] attribute on the strong dictionary property &apos;{0}.{1}&apos; must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants..
+        /// </summary>
+        internal static string BI1131 {
+            get {
+                return ResourceManager.GetString("BI1131", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The strong dictionary property &apos;{0}.{1}&apos; cannot specify both [Field] and [Export]. Use [Field] for an inline key or [Export] for a key container member..
+        /// </summary>
+        internal static string BI1132 {
+            get {
+                return ResourceManager.GetString("BI1132", resourceCulture);
+            }
+        }
     }
 }

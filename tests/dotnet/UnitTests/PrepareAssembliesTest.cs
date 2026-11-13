@@ -123,12 +123,24 @@ namespace Xamarin.Tests {
 			}
 
 			AssertExportMetadata (platformAssemblyPath, appAssemblyPath, !expectedRemoval);
+			var trimRegisterAttributes = prepareAssemblies && postProcessAssemblies && registrar == "trimmable-static" && dynamicRegistrationSupported != "true";
+			AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, !trimRegisterAttributes);
 
 			if (expectedRemoval) {
 				properties ["DynamicRegistrationSupported"] = "true";
 				DotNet.AssertBuild (projectPath, properties, target: target);
 				AssertExportMetadata (platformAssemblyPath, appAssemblyPath, true);
+				AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, true);
 			}
+		}
+
+		static void AssertRegisterMetadata (string platformAssemblyPath, string appAssemblyPath, bool expectedDirectWrapper)
+		{
+			using var assembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath);
+			AssertAttribute (assembly.MainModule.GetType ("Foundation.NSBundle"), "RegisterAttribute", expectedDirectWrapper, "direct-binding wrapper registration");
+			AssertAttribute (assembly.MainModule.GetType ("Foundation.NSObject"), "RegisterAttribute", true, "wrapper ancestor registration");
+			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath);
+			AssertAttribute (appAssembly.MainModule.GetType ("ExportAttributeRemovalApp.ExportMetadataApplicationType"), "RegisterAttribute", true, "application subclass registration");
 		}
 
 		static void AssertExportMetadata (string platformAssemblyPath, string appAssemblyPath, bool expected)

@@ -92,6 +92,7 @@ namespace Xamarin.Bundler {
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 		public bool PrepareAssemblies; // True if '$(PrepareAssemblies)' == 'true'
+		public bool CanTrimRegistrarAttributes;
 		public bool? TrimExportAttributes;
 		public HashSet<ExportAttributeRemovalBlocker> TrimExportAttributesBlockers = new HashSet<ExportAttributeRemovalBlocker> ();
 

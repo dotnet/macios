@@ -139,6 +139,76 @@ Example:
 
 Any metadata not set will use the corresponding property instead (for instance if the `CodesignSigningKey` metadata is not set, the value of the `CodesignSigningKey` property will be used instead.)
 
+## CodesignItem
+
+Additional native files inside the app bundle that should be signed. This can
+be used for command-line tools such as `ffmpeg` in macOS and Mac Catalyst apps.
+It does not copy files into the app bundle or enable running subprocesses on
+iOS or tvOS.
+
+The `Include` path is relative to the root of the app bundle, without the app
+bundle name. In an app extension project, it is relative to that extension's
+bundle. Files must be copied into the bundle before signing.
+
+For example:
+
+```xml
+<ItemGroup>
+    <Content Include="tools/ffmpeg"
+             PublishFolderType="RootDirectory"
+             TargetPath="Contents/MacOS/ffmpeg" />
+    <CodesignItem Include="Contents/MacOS/ffmpeg">
+        <CodesignEntitlements>Helper.entitlements</CodesignEntitlements>
+        <CodesignExtraArgs>--identifier=com.example.myapp.ffmpeg</CodesignExtraArgs>
+    </CodesignItem>
+</ItemGroup>
+```
+
+To discover multiple binaries, set `Include` to a directory inside the bundle
+and specify `FilePattern`:
+
+```xml
+<ItemGroup>
+    <CodesignItem Include="Contents/Helpers" FilePattern="**/*" />
+    <CodesignItem Include="Contents/Helpers/ffmpeg"
+                  CodesignEntitlements="Helper.entitlements" />
+</ItemGroup>
+```
+
+`FilePattern` is relative to the included directory and supports MSBuild
+wildcards: `*`, `?`, and `**` for recursive directory matching. The search runs
+on the Mac after the bundle is created, including for remote builds. Do not
+put output-directory wildcards in `Include`: MSBuild expands those before
+signing, against the project directory.
+
+Discovery selects Mach-O executables, dynamic libraries, and loadable bundles,
+including universal binaries. It ignores other files, such as text files,
+object files, and static libraries. An explicitly included file must exist and
+be one of these supported types; a discovery directory must also exist.
+Use [CodesignBundle](#codesignbundle) for application bundles.
+
+Both `Include` and `FilePattern` must be relative paths without `..` segments.
+Signing outside the owning app bundle is an error, including paths that escape
+through symbolic links. Directory searches do not follow directory symlinks.
+
+The signing metadata listed under [CodesignBundle](#codesignbundle) is also
+supported. Unspecified settings use the app's signing settings, except for
+`CodesignEntitlements`, which is **not inherited**. Set it explicitly for
+helpers that need entitlements. Relative entitlement paths are resolved
+against the project that declares the item. For sandboxed helpers, see
+[Apple's helper tool guidance](https://developer.apple.com/documentation/xcode/embedding-a-helper-tool-in-a-sandboxed-app);
+the main app's entitlements are generally not appropriate for its helpers.
+
+Explicit file settings take precedence over directory discovery and automatic
+library discovery. Duplicate file requests with different settings produce a
+warning. [SkipCodesignItems](#skipcodesignitems) can exclude files or
+directories. Files are signed before their enclosing bundles, using the
+existing incremental signing behavior.
+
+Signing alone does not guarantee notarization or App Store approval. Binaries
+must also have suitable architectures, dependencies, entitlements, and bundle
+locations. In particular, Apple recommends `Contents/MacOS` for helper tools.
+
 ## Collada
 
 An item group that contains collada assets.

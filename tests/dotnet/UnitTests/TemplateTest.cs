@@ -102,6 +102,7 @@ namespace Xamarin.Tests {
 			new TemplateInfo (ApplePlatform.iOS, "ioslib", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ioslib", TemplateLanguage.VisualBasic),
 			new TemplateInfo (ApplePlatform.iOS, "iosbinding", TemplateLanguage.CSharp),
+			new TemplateInfo (ApplePlatform.iOS, "ios-background-download-extension", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-content-extension", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "ios-notification-service-extension", TemplateLanguage.CSharp),
 			new TemplateInfo (ApplePlatform.iOS, "iostest", TemplateLanguage.CSharp),
@@ -296,6 +297,35 @@ namespace Xamarin.Tests {
 				var source = File.ReadAllText (Path.Combine (outputDir, "NotificationServiceClass.cs"));
 				Assert.That (source, Does.Contain ("class CustomNotificationService"), "Extension class name");
 			}
+		}
+
+		[Test]
+		public void CreateBackgroundDownloadExtensionWithParameters ()
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+
+			var outputDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (outputDir, "ios-background-download-extension", name: "Downloader", extraArguments: [
+				"--output", outputDir,
+				"--bundleId", "com.example.MyApp",
+				"--appGroupId", "group.com.example.MyApp",
+				"--extensionClassName", "CustomDownloader",
+			]);
+
+			var project = File.ReadAllText (Path.Combine (outputDir, "Downloader.csproj"));
+			Assert.That (project, Does.Contain ("<ApplicationId>com.example.MyApp.backgrounddownloadextension</ApplicationId>"), "Bundle identifier");
+			Assert.That (project, Does.Contain ("Value=\"group.com.example.MyApp\""), "App group");
+			Assert.That (project, Does.Contain ("<SupportedOSPlatformVersion>26.0</SupportedOSPlatformVersion>"), "Minimum OS version");
+
+			var manifest = PDictionary.FromFile (Path.Combine (outputDir, "Info.plist"));
+			Assert.That (manifest.ContainsKey ("NSExtension"), Is.False, "Must use ExtensionKit packaging");
+			var attributes = manifest.Get<PDictionary> ("EXAppExtensionAttributes");
+			Assert.That (attributes.GetString ("EXExtensionPointIdentifier").Value, Is.EqualTo ("com.apple.background-asset-downloader-extension"), "Extension point");
+			Assert.That (attributes.GetString ("EXPrincipalClass").Value, Is.EqualTo ("CustomDownloader"), "Principal class");
+
+			var source = File.ReadAllText (Path.Combine (outputDir, "BackgroundDownloadHandler.cs"));
+			Assert.That (source, Does.Contain ("[Register (\"CustomDownloader\")]"), "Registered class");
+			Assert.That (source, Does.Contain ("class CustomDownloader : NSObject, IBAManagedDownloaderExtension"), "Downloader protocol");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-controller")]

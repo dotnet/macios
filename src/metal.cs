@@ -284,6 +284,13 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLBufferLayoutDescriptorArray {
+		MTLBufferLayoutDescriptor this [nuint idx] {
+			[Wrap ("ObjectAtIndexedSubscript (idx)")]
+			get;
+			[Wrap ("SetObject (value, idx)")]
+			set;
+		}
+
 		[Internal]
 		[Export ("objectAtIndexedSubscript:")]
 		MTLBufferLayoutDescriptor ObjectAtIndexedSubscript (nuint index);
@@ -2774,6 +2781,13 @@ namespace Metal {
 	[BaseType (typeof (NSObject))]
 	interface MTLRenderPipelineColorAttachmentDescriptorArray {
 
+		MTLRenderPipelineColorAttachmentDescriptor this [nint idx] {
+			[Wrap ("ObjectAtIndexedSubscript ((nuint) idx)")]
+			get;
+			[Wrap ("SetObject (value, (nuint) idx)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:"), Internal]
 		MTLRenderPipelineColorAttachmentDescriptor ObjectAtIndexedSubscript (nuint attachmentIndex);
 
@@ -2959,6 +2973,13 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLVertexBufferLayoutDescriptorArray {
+		MTLVertexBufferLayoutDescriptor this [nint idx] {
+			[Wrap ("ObjectAtIndexedSubscript ((nuint) idx)")]
+			get;
+			[Wrap ("SetObject (value, (nuint) idx)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:"), Internal]
 		MTLVertexBufferLayoutDescriptor ObjectAtIndexedSubscript (nuint index);
 
@@ -3013,6 +3034,13 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLAttributeDescriptorArray {
+		MTLAttributeDescriptor this [nuint idx] {
+			[Wrap ("ObjectAtIndexedSubscript (idx)")]
+			get;
+			[Wrap ("SetObject (value, idx)")]
+			set;
+		}
+
 		[Internal]
 		[Export ("objectAtIndexedSubscript:")]
 		MTLAttributeDescriptor ObjectAtIndexedSubscript (nuint index);
@@ -3044,6 +3072,13 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLVertexAttributeDescriptorArray {
+		MTLVertexAttributeDescriptor this [nint idx] {
+			[Wrap ("ObjectAtIndexedSubscript ((nuint) idx)")]
+			get;
+			[Wrap ("SetObject (value, (nuint) idx)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:"), Internal]
 		MTLVertexAttributeDescriptor ObjectAtIndexedSubscript (nuint index);
 
@@ -4577,6 +4612,13 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLRenderPassColorAttachmentDescriptorArray {
+		MTLRenderPassColorAttachmentDescriptor this [nint idx] {
+			[Wrap ("ObjectAtIndexedSubscript ((nuint) idx)")]
+			get;
+			[Wrap ("SetObject (value, (nuint) idx)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:"), Internal]
 		MTLRenderPassColorAttachmentDescriptor ObjectAtIndexedSubscript (nuint attachmentIndex);
 
@@ -5231,6 +5273,16 @@ namespace Metal {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MTLPipelineBufferDescriptorArray {
+		/// <summary>Gets or sets the pipeline buffer descriptor at the specified index.</summary>
+		/// <value>The buffer descriptor at the specified index.</value>
+		/// <param name="index">The index of the buffer descriptor to get or set.</param>
+		MTLPipelineBufferDescriptor this [nuint index] {
+			[Wrap ("GetObject (index)")]
+			get;
+			[Wrap ("SetObject (value, index)")]
+			set;
+		}
+
 		[Internal]
 		[Export ("objectAtIndexedSubscript:")]
 		MTLPipelineBufferDescriptor GetObject (nuint bufferIndex);
@@ -5459,6 +5511,15 @@ namespace Metal {
 	[TV (14, 5)]
 	[BaseType (typeof (NSObject))]
 	interface MTLTileRenderPipelineColorAttachmentDescriptorArray {
+#if IOS
+		MTLTileRenderPipelineColorAttachmentDescriptor this [nuint index] {
+			[Wrap ("GetObject (index)")]
+			get;
+			[Wrap ("SetObject (value, index)")]
+			set;
+		}
+#endif
+
 		[Internal]
 		[Export ("objectAtIndexedSubscript:")]
 		MTLTileRenderPipelineColorAttachmentDescriptor GetObject (nuint attachmentIndex);
@@ -6471,6 +6532,13 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLBlitPassSampleBufferAttachmentDescriptorArray {
+		MTLBlitPassSampleBufferAttachmentDescriptor this [nuint i] {
+			[Wrap ("GetObject (i)")]
+			get;
+			[Wrap ("SetObject (value, i)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:")]
 		MTLBlitPassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
 
@@ -6532,6 +6600,13 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLComputePassSampleBufferAttachmentDescriptorArray {
+		MTLComputePassSampleBufferAttachmentDescriptor this [nuint i] {
+			[Wrap ("GetObject (i)")]
+			get;
+			[Wrap ("SetObject (value, i)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:")]
 		MTLComputePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
 
@@ -6743,6 +6818,13 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLRenderPassSampleBufferAttachmentDescriptorArray {
+		MTLRenderPassSampleBufferAttachmentDescriptor this [nuint i] {
+			[Wrap ("GetObject (i)")]
+			get;
+			[Wrap ("SetObject (value, i)")]
+			set;
+		}
+
 		[Export ("objectAtIndexedSubscript:")]
 		MTLRenderPassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
 
@@ -6788,6 +6870,15 @@ namespace Metal {
 	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
 	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassSampleBufferAttachmentDescriptorArray {
+#if !TVOS
+		MTLResourceStatePassSampleBufferAttachmentDescriptor this [nuint i] {
+			[Wrap ("GetObject (i)")]
+			get;
+			[Wrap ("SetObject (value, i)")]
+			set;
+		}
+#endif
+
 		[Export ("objectAtIndexedSubscript:")]
 		MTLResourceStatePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
 

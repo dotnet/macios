@@ -224,11 +224,15 @@ public class MemberInformation {
 		// but only if no Export is already found on property level.
 		if (export is null) {
 			wpmi = new WrapPropMemberInformation (pi, generator);
-			has_inner_wrap_attribute = wpmi.HasWrapOnGetter || wpmi.HasWrapOnSetter;
+			has_inner_wrap_attribute = wpmi.HasWrapOnGetter || wpmi.HasWrapOnSetter ||
+				(pi.GetIndexParameters ().Length > 0 && AttributeManager.HasAttribute<NotImplementedAttribute> (pi.SetMethod));
 
 			// Wrap can only be used either at property level or getter/setter level at a given time.
 			if (wrap_method is not null && has_inner_wrap_attribute)
 				throw new BindingException (1063, true, pi.DeclaringType, pi.Name);
+
+			if (has_inner_wrap_attribute && pi.GetIndexParameters ().Length > 0)
+				is_virtual_method = false;
 		}
 	}
 

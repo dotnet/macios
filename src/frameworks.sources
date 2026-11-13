@@ -1203,22 +1203,17 @@ METAL_SOURCES = \
 	Metal/MTL4UpdateSparseBufferMappingOperation.cs \
 	Metal/MTL4UpdateSparseTextureMappingOperation.cs \
 	Metal/MTLArgumentEncoder.cs \
-	Metal/MTLBlitPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLCommandBuffer.cs \
 	Metal/MTLCommandQueue.cs \
 	Metal/MTLIOCompression.cs \
 	Metal/MTLComputeCommandEncoder.cs \
-	Metal/MTLComputePassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLDevice.cs \
 	Metal/MTLIntersectionFunctionTable.cs \
-	Metal/MTLArrays.cs \
 	Metal/MTLRasterizationRateLayerDescriptor.cs \
 	Metal/MTLRenderCommandEncoder.cs \
 	Metal/MTLRenderPassDescriptor.cs \
-	Metal/MTLRenderPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLResidencySet.cs \
 	Metal/MTLResourceStateCommandEncoder.cs \
-	Metal/MTLResourceStatePassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLTensorExtents.cs \
 	Metal/MTLVertexDescriptor.cs \
 

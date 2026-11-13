@@ -102,6 +102,25 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "bug24078-ignore-methods-events.cs");
 		}
 
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		public void ObsoleteEventOverrides (Profile profile)
+		{
+			var bgen = BuildFile (profile, "obsolete-event-overrides.cs");
+			var bridge = bgen.ApiAssembly.MainModule.GetTypes ().Single (v => v.Name == "_LegacyEventDelegate");
+			foreach (var name in new [] { "LegacyCallback", "LegacyDecision" }) {
+				var method = bridge.Methods.Single (v => v.Name == name);
+				var obsolete = method.CustomAttributes.Single (v => v.AttributeType.Name == "ObsoleteAttribute");
+				Assert.That (obsolete.ConstructorArguments [0].Value, Is.EqualTo ("Use another callback."), name + " message");
+				Assert.That (obsolete.ConstructorArguments [1].Value, Is.EqualTo (name == "LegacyDecision"), name + " error flag");
+			}
+			var current = bridge.Methods.Single (v => v.Name == "CurrentCallback");
+			Assert.That (current.CustomAttributes.Any (v => v.AttributeType.Name == "ObsoleteAttribute"), Is.False, "Current callback");
+			Assert.That (bgen.Output.ToString (), Does.Not.Contain ("CS0672"), "Compiler output");
+		}
+
 		[Test]
 		public void Bug27428 ()
 		{

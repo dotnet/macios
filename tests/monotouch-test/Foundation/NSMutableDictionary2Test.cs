@@ -788,6 +788,11 @@ namespace MonoTouchFixtures.Foundation {
 			// GetEnumerator
 			var enumerated = Enumerable.ToArray (dict);
 			Assert.That (enumerated.Length, Is.EqualTo (2), "Enumerator Count");
+
+			var direct = new List<KeyValuePair<NSString, NSDate>> ();
+			foreach (var item in dictobj)
+				direct.Add (item);
+			Assert.That (direct, Is.EquivalentTo (enumerated), "Direct enumeration");
 		}
 
 		[Test]

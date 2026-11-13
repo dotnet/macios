@@ -615,7 +615,7 @@ namespace Cecil.Tests {
 			"UIKit.UIAccessibilityCustomAction/FuncBoolDispatcher.Probe(UIKit.UIAccessibilityCustomAction)",
 			"UIKit.UIControlEventProxy.Activated()",
 			"UIKit.UIGestureRecognizer.OnDispose()",
-			"UIKit.UIGestureRecognizer/Callback`1.Activated(T)",
+			"UIKit.UIGestureRecognizer/Callback.Activated(UIKit.UIGestureRecognizer)",
 			"UIKit.UIGestureRecognizer/ParameterlessDispatch.Activated()",
 			"UIKit.UIGestureRecognizer/ParametrizedDispatch.Activated(UIKit.UIGestureRecognizer)",
 			"UIKit.UIImageStatusDispatcher.Callback(UIKit.UIImage, Foundation.NSError, System.IntPtr)",

@@ -36,6 +36,8 @@ namespace Xamarin.MacDev.Tasks {
 		// with the managed side about whether the dynamic registrar is available).
 		public string DynamicRegistrationSupported { get; set; } = "";
 
+		public string EnableInvokedSelectorTracking { get; set; } = "";
+
 		public string OutputDirectory { get; set; } = "";
 
 		[Required]
@@ -93,6 +95,8 @@ namespace Xamarin.MacDev.Tasks {
 					preparer.Configuration.DynamicRegistrationSupported = dynamicRegistrationSupported;
 					preparer.Configuration.Application.Optimizations.RemoveDynamicRegistrar = !dynamicRegistrationSupported;
 				}
+				if (!string.IsNullOrEmpty (EnableInvokedSelectorTracking))
+					preparer.Configuration.Application.EnableInvokedSelectorTracking = bool.Parse (EnableInvokedSelectorTracking);
 				bool rv;
 				List<ProductException> exceptions;
 

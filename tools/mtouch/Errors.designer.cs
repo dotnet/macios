@@ -3624,6 +3624,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The assembly &apos;{0}&apos; references Runtime.InvokedSelector, but EnableInvokedSelectorTracking is false. Remove the reference or enable selector tracking..
+        /// </summary>
+        public static string MX2388 {
+            get {
+                return ResourceManager.GetString("MX2388", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {

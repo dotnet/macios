@@ -9,6 +9,10 @@ namespace MySimpleApp {
 		{
 			GC.KeepAlive (typeof (NSObject)); // prevent linking away the platform assembly
 
+#if INVOKED_SELECTOR_TRACKING
+			GC.KeepAlive (ObjCRuntime.Runtime.InvokedSelector);
+#endif
+
 			if (Environment.GetEnvironmentVariable ("CRASH_ON_LAUNCH") == "1")
 				Environment.FailFast ("Crashing on launch as requested by the CRASH_ON_LAUNCH environment variable.");
 

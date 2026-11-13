@@ -31,14 +31,41 @@ namespace MonoTouch.Tuner {
 
 #if !ASSEMBLY_PREPARER
 		AssemblyDefinition? PlatformAssembly;
+		bool DetectDynamicRegistrationUsage => !App.PrepareAssemblies;
+#else
+		bool DetectDynamicRegistrationUsage => App.AreAnyAssembliesTrimmed && (!Configuration.DynamicRegistrationSupported.HasValue || App.TrimExportAttributes != false);
 #endif
 
 		bool dynamic_registration_support_required;
 
 		void Process (AssemblyDefinition assembly)
 		{
+			if (App.EnableInvokedSelectorTracking != true && UsesInvokedSelector (assembly)) {
+				if (App.EnableInvokedSelectorTracking == false)
+					throw ErrorHelper.CreateError (2388, Errors.MX2388, assembly.Name.Name);
+				App.EnableInvokedSelectorTracking = true;
+			}
+			if (!DetectDynamicRegistrationUsage)
+				return;
 			if (Optimizations.RemoveDynamicRegistrar != false)
 				dynamic_registration_support_required |= RequiresDynamicRegistrar (assembly, Optimizations.RemoveDynamicRegistrar == true);
+		}
+
+		bool UsesInvokedSelector (AssemblyDefinition assembly)
+		{
+			foreach (var module in assembly.Modules) {
+				if (assembly.Name.Name != PlatformAssemblyName && !module.AssemblyReferences.Any (reference => reference.Name == PlatformAssemblyName))
+					continue;
+				foreach (var member in module.GetMemberReferences ()) {
+					if (member is not MethodReference method || method.Name != "get_InvokedSelector" || !method.DeclaringType.Is ("ObjCRuntime", "Runtime"))
+						continue;
+					var scope = method.DeclaringType.Scope;
+					var assemblyName = scope is ModuleDefinition definition ? definition.Assembly.Name.Name : scope.Name;
+					if (assemblyName == PlatformAssemblyName)
+						return true;
+				}
+			}
+			return false;
 		}
 
 		// If certain conditions are met, we can optimize away the code for the dynamic registrar.
@@ -178,6 +205,12 @@ namespace MonoTouch.Tuner {
 
 		protected override void TryEndProcess ()
 		{
+			App.EnableInvokedSelectorTracking ??= false;
+#if ASSEMBLY_PREPARER
+			Configuration.SetOutputForMSBuild ("EnableInvokedSelectorTracking", App.EnableInvokedSelectorTracking.Value ? "true" : "false");
+#endif
+			if (!DetectDynamicRegistrationUsage)
+				return;
 			if (!Optimizations.RemoveDynamicRegistrar.HasValue) {
 				// If dynamic registration is not required, and removal of the dynamic registrar hasn't already
 				// been disabled, then we can remove it!

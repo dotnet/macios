@@ -3797,7 +3797,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 		<WriteLinesToFile
 			File="$(_AssemblyPreparerConfigurationStamp)"
-			Lines="DynamicRegistrationSupported=$(DynamicRegistrationSupported);LinkMode=$(_LinkMode);Optimize=$(_BundlerOptimize);PublishTrimmed=$(PublishTrimmed);TrimMode=$(TrimMode);TrimExportAttributes=$(_TrimExportAttributes);@(_AssembliesToPrepare -> 'Assembly=%(Identity)|IsTrimmable=%(IsTrimmable)|TrimMode=%(TrimMode)')"
+			Lines="DynamicRegistrationSupported=$(DynamicRegistrationSupported);EnableInvokedSelectorTracking=$(EnableInvokedSelectorTracking);LinkMode=$(_LinkMode);Optimize=$(_BundlerOptimize);PublishTrimmed=$(PublishTrimmed);TrimMode=$(TrimMode);TrimExportAttributes=$(_TrimExportAttributes);@(_AssembliesToPrepare -> 'Assembly=%(Identity)|IsTrimmable=%(IsTrimmable)|TrimMode=%(TrimMode)')"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
@@ -3882,6 +3882,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<PrepareAssemblies
 			InputAssemblies="@(_AssembliesToPostProcess)"
 			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
+			EnableInvokedSelectorTracking="$(_EnableInvokedSelectorTracking)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"

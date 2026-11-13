@@ -295,7 +295,12 @@ namespace PhotosUI {
 		[Export ("typeDescriptionDataSourceForCategory:invalidator:")]
 		IPHProjectTypeDescriptionDataSource GetTypeDescriptionDataSource (NSString category, IPHProjectTypeDescriptionInvalidator invalidator);
 
-		[Wrap ("GetTypeDescriptionDataSource (category.GetConstant(), invalidator)")]
+		/// <summary>Gets the project type description data source for a category.</summary>
+		/// <param name="category">The category of project types to describe.</param>
+		/// <param name="invalidator">The object to notify when the project type descriptions change.</param>
+		/// <returns>The data source for the requested category.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">The category does not have a corresponding native constant.</exception>
+		[Wrap ("GetTypeDescriptionDataSource (category.GetConstant () ?? throw new ArgumentOutOfRangeException (nameof (category)), invalidator)")]
 		IPHProjectTypeDescriptionDataSource GetTypeDescriptionDataSource (PHProjectCategory category, IPHProjectTypeDescriptionInvalidator invalidator);
 	}
 

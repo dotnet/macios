@@ -24031,6 +24031,10 @@ M:Security.SecIdentity2.AccessCertificates(System.Action{Security.SecCertificate
 M:Security.SecImportExport.#ctor
 M:Security.SecKey.Decrypt(Security.SecPadding,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr@)
 M:Security.SecKey.Encrypt(Security.SecPadding,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr@)
+M:Security.SecKeychain.GetDefault(System.Int32@)
+M:Security.SecKeychain.GetPath(System.Int32@)
+M:Security.SecKeychain.GetTypeId
+M:Security.SecKeychain.TryOpen(System.String,System.Int32@,Security.SecKeychain@)
 M:Security.SecProtocolMetadata.AccessPreSharedKeys(Security.SecProtocolMetadata.SecAccessPreSharedKeysHandler)
 M:Security.SecProtocolMetadata.CreateSecret(System.String,System.Byte[],System.UIntPtr)
 M:Security.SecProtocolMetadata.CreateSecret(System.String,System.UIntPtr)
@@ -24053,6 +24057,9 @@ M:Security.SslContext.Read(System.Byte[],System.IntPtr@)
 M:Security.SslContext.Write(System.Byte[],System.IntPtr@)
 M:Security.SslStreamConnection.Read(System.IntPtr,System.IntPtr@)
 M:Security.SslStreamConnection.Write(System.IntPtr,System.IntPtr@)
+M:SecurityInterface.SFKeychainSettingsPanel.BeginSheet(AppKit.NSWindow,Foundation.NSObject,ObjCRuntime.Selector,System.IntPtr,Security.SecKeychainSettings@,Security.SecKeychain)
+M:SecurityInterface.SFKeychainSettingsPanel.BeginSheet(AppKit.NSWindow,Security.SecKeychainSettings@,Security.SecKeychain,System.Action{AppKit.NSModalResponse})
+M:SecurityInterface.SFKeychainSettingsPanel.RunModal(Security.SecKeychainSettings@,Security.SecKeychain)
 M:SecurityUI.SFCertificatePresentation.#ctor(Security.SecTrust)
 M:SecurityUI.SFCertificatePresentation.DismissSheet
 M:SecurityUI.SFCertificatePresentation.PresentSheet(AppKit.NSWindow,System.Action)
@@ -47381,6 +47388,7 @@ P:Security.SecProtocolOptions.DefaultMinDtlsProtocolVersion
 P:Security.SecProtocolOptions.DefaultMinTlsProtocolVersion
 P:Security.SecRecord.UseDataProtectionKeychain
 P:Security.SecTrust.Item(System.IntPtr)
+P:SecurityInterface.SFKeychainSavePanel.Keychain
 P:SecurityUI.SFCertificatePresentation.HelpUrl
 P:SecurityUI.SFCertificatePresentation.Message
 P:SecurityUI.SFCertificatePresentation.Title
@@ -58653,6 +58661,7 @@ T:ScriptingBridge.SBObject
 T:SearchKit.SKTextAnalysis
 T:SearchKit.SKTextAnalysisKeys
 T:Security.SecKeyAlgorithm
+T:Security.SecKeychain
 T:Security.SecKeyKeyExchangeParameter
 T:Security.SecKeyOperationType
 T:Security.SecProtocolChallenge

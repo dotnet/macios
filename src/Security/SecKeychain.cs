@@ -9,14 +9,29 @@ using System.Text;
 using ObjCRuntime;
 using CoreFoundation;
 
+#if XAMCORE_5_0
+using SecKeychain = Security.SecKeychain2;
+#endif
+
 namespace Security {
 
+	// Rename to avoid a documentation clash with Security.SecKeyChain on case-insensitive file systems.
+#if XAMCORE_5_0
 	/// <summary>Represents a keychain on macOS.</summary>
+#endif
 	[SupportedOSPlatform ("macos")]
 	[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
+#if XAMCORE_5_0
+	public class SecKeychain2 : NativeObject {
+#else
 	public class SecKeychain : NativeObject {
+#endif
 		[Preserve (Conditional = true)]
+#if XAMCORE_5_0
+		internal SecKeychain2 (NativeHandle handle, bool owns)
+#else
 		internal SecKeychain (NativeHandle handle, bool owns)
+#endif
 			: base (handle, owns)
 		{
 		}
@@ -26,8 +41,10 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static nint SecKeychainGetTypeID ();
 
-		/// <summary>Returns the Core Foundation type identifier for SecKeychain.</summary>
+#if XAMCORE_5_0
+		/// <summary>Returns the Core Foundation type identifier for <see cref="SecKeychain2" />.</summary>
 		/// <returns>The Core Foundation type identifier.</returns>
+#endif
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public static nint GetTypeId ()
@@ -40,9 +57,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static unsafe OSStatus SecKeychainCopyDefault (IntPtr* keychain);
 
+#if XAMCORE_5_0
 		/// <summary>Gets the default keychain.</summary>
 		/// <param name="status">The status returned by the native operation.</param>
-		/// <returns>The default <see cref="SecKeychain" />, or <see langword="null" /> on failure.</returns>
+		/// <returns>The default <see cref="SecKeychain2" />, or <see langword="null" /> on failure.</returns>
+#endif
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public static SecKeychain? GetDefault (out OSStatus status)
@@ -66,11 +85,13 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static unsafe OSStatus SecKeychainGetStatus (IntPtr keychainRef, uint* keychainStatus);
 
+#if XAMCORE_5_0
 		/// <summary>Opens the keychain at the specified file path.</summary>
 		/// <param name="path">The file system path of the keychain to open.</param>
 		/// <param name="status">The status returned when opening the keychain or confirming that it exists.</param>
 		/// <param name="keychain">The opened keychain on success; otherwise, <see langword="null" />.</param>
 		/// <returns><see langword="true" /> if the keychain was opened; otherwise, <see langword="false" />.</returns>
+#endif
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public static bool TryOpen (string path, out OSStatus status, [NotNullWhen (true)] out SecKeychain? keychain)
@@ -104,9 +125,11 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static unsafe OSStatus SecKeychainGetPath (IntPtr keychainRef, uint* ioPathLength, byte* pathName);
 
+#if XAMCORE_5_0
 		/// <summary>Gets the file system path of this keychain.</summary>
 		/// <param name="status">The status returned by the native operation.</param>
 		/// <returns>The POSIX path of the keychain, or <see langword="null" /> on failure.</returns>
+#endif
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public string? GetPath (out OSStatus status)

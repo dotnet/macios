@@ -587,7 +587,11 @@ namespace Cecil.Tests {
 			"Security.SecIdentity..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecIdentity2..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecKey..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
+#if XAMCORE_5_0
+			"Security.SecKeychain2..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
+#else
 			"Security.SecKeychain..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
+#endif
 			"Security.SecPolicy..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecProtocolMetadata..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"Security.SecProtocolOptions..ctor(ObjCRuntime.NativeHandle, System.Boolean)",

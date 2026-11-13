@@ -12347,7 +12347,6 @@ M:AVFoundation.AVAssetExportSession.CancelExport
 M:AVFoundation.AVAssetExportSession.ConfigureForResumableExport(System.Action{AVFoundation.AVAssetExportSessionResumptionState})
 M:AVFoundation.AVAssetExportSession.ConfigureForResumableExportAsync
 M:AVFoundation.AVAssetExportSession.DetermineCompatibilityOfExportPreset(System.String,AVFoundation.AVAsset,System.String,System.Action{System.Boolean})
-M:AVFoundation.AVAssetExportSession.DetermineCompatibleFileTypes(System.Action{System.String[]})
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDuration(System.Action{CoreMedia.CMTime,Foundation.NSError})
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDurationAsync
 M:AVFoundation.AVAssetExportSession.EstimateOutputFileLength(System.Action{System.Int64,Foundation.NSError})
@@ -12616,7 +12615,6 @@ M:AVFoundation.AVCaptionRuby.#ctor(System.String)
 M:AVFoundation.AVCaptionSize.Create(AVFoundation.AVCaptionDimension,AVFoundation.AVCaptionDimension)
 M:AVFoundation.AVCaptureAudioDataOutput.GetRecommendedAudioSettingsForAssetWriter(System.String)
 M:AVFoundation.AVCaptureAudioDataOutput.SetSampleBufferDelegate(AVFoundation.IAVCaptureAudioDataOutputSampleBufferDelegate,CoreFoundation.DispatchQueue)
-M:AVFoundation.AVCaptureAudioFileOutput.AvailableOutputFileTypes
 M:AVFoundation.AVCaptureAudioFileOutput.StartRecording(Foundation.NSUrl,System.String,AVFoundation.IAVCaptureFileOutputRecordingDelegate)
 M:AVFoundation.AVCaptureAutoExposureBracketedStillImageSettings.Create(System.Single)
 M:AVFoundation.AVCaptureBroadcastVideoOutput.ResetFrameBuffer
@@ -34167,13 +34165,11 @@ P:AVFoundation.AVAssetExportSession.FileLengthLimit
 P:AVFoundation.AVAssetExportSession.MaxDuration
 P:AVFoundation.AVAssetExportSession.Metadata
 P:AVFoundation.AVAssetExportSession.MetadataItemFilter
-P:AVFoundation.AVAssetExportSession.OutputFileType
 P:AVFoundation.AVAssetExportSession.OutputUrl
 P:AVFoundation.AVAssetExportSession.PresetName
 P:AVFoundation.AVAssetExportSession.Progress
 P:AVFoundation.AVAssetExportSession.ShouldOptimizeForNetworkUse
 P:AVFoundation.AVAssetExportSession.Status
-P:AVFoundation.AVAssetExportSession.SupportedFileTypes
 P:AVFoundation.AVAssetExportSession.TimeRange
 P:AVFoundation.AVAssetExportSession.VideoComposition
 P:AVFoundation.AVAssetExportSessionResumptionState.ConfigurationFailureReason
@@ -34198,7 +34194,6 @@ P:AVFoundation.AVAssetReaderAudioMixOutput.AudioMix
 P:AVFoundation.AVAssetReaderAudioMixOutput.AudioTimePitchAlgorithm
 P:AVFoundation.AVAssetReaderAudioMixOutput.AudioTracks
 P:AVFoundation.AVAssetReaderOutput.AlwaysCopiesSampleData
-P:AVFoundation.AVAssetReaderOutput.MediaType
 P:AVFoundation.AVAssetReaderOutput.SupportsRandomAccess
 P:AVFoundation.AVAssetReaderOutputCaptionAdaptor.AssetReaderTrackOutput
 P:AVFoundation.AVAssetReaderOutputCaptionAdaptor.ValidationDelegate
@@ -34253,7 +34248,6 @@ P:AVFoundation.AVAssetTrack.ExtendedLanguageTag
 P:AVFoundation.AVAssetTrack.FormatDescriptionsAsObjects
 P:AVFoundation.AVAssetTrack.HasAudioSampleDependencies
 P:AVFoundation.AVAssetTrack.LanguageCode
-P:AVFoundation.AVAssetTrack.MediaType
 P:AVFoundation.AVAssetTrack.Metadata
 P:AVFoundation.AVAssetTrack.MinFrameDuration
 P:AVFoundation.AVAssetTrack.NaturalSize
@@ -34268,7 +34262,6 @@ P:AVFoundation.AVAssetTrack.TotalSampleDataLength
 P:AVFoundation.AVAssetTrack.TrackID
 P:AVFoundation.AVAssetTrackGroup.TrackIDs
 P:AVFoundation.AVAssetTrackPlan.AssemblyTrackId
-P:AVFoundation.AVAssetTrackPlan.MediaType
 P:AVFoundation.AVAssetTrackPlan.SegmentConfigurations
 P:AVFoundation.AVAssetTrackSegment.TimeMapping
 P:AVFoundation.AVAssetVariant.AudioAttributes
@@ -34289,7 +34282,6 @@ P:AVFoundation.AVAssetVariantVideoAttributes.VideoRange
 P:AVFoundation.AVAssetVariantVideoLayoutAttributes.ProjectionType
 P:AVFoundation.AVAssetVariantVideoLayoutAttributes.StereoViewComponents
 P:AVFoundation.AVAssetVideoTrackPlan.VideoCodecType
-P:AVFoundation.AVAssetWriter.AvailableMediaTypes
 P:AVFoundation.AVAssetWriter.Delegate
 P:AVFoundation.AVAssetWriter.DirectoryForTemporaryFiles
 P:AVFoundation.AVAssetWriter.Error
@@ -34302,7 +34294,6 @@ P:AVFoundation.AVAssetWriter.IsProVideoStorageSupported
 P:AVFoundation.AVAssetWriter.Metadata
 P:AVFoundation.AVAssetWriter.MovieFragmentInterval
 P:AVFoundation.AVAssetWriter.MovieTimeScale
-P:AVFoundation.AVAssetWriter.OutputFileType
 P:AVFoundation.AVAssetWriter.OutputFileTypeProfile
 P:AVFoundation.AVAssetWriter.OutputURL
 P:AVFoundation.AVAssetWriter.OverallDurationHint
@@ -34320,7 +34311,6 @@ P:AVFoundation.AVAssetWriterInput.LanguageCode
 P:AVFoundation.AVAssetWriterInput.MarksOutputTrackAsEnabled
 P:AVFoundation.AVAssetWriterInput.MediaDataLocation
 P:AVFoundation.AVAssetWriterInput.MediaTimeScale
-P:AVFoundation.AVAssetWriterInput.MediaType
 P:AVFoundation.AVAssetWriterInput.Metadata
 P:AVFoundation.AVAssetWriterInput.NaturalSize
 P:AVFoundation.AVAssetWriterInput.OutputSettings
@@ -34702,7 +34692,6 @@ P:AVFoundation.AVCaptureDeviceFormat.IsVideoHdrSupported
 P:AVFoundation.AVCaptureDeviceFormat.MaxExposureDuration
 P:AVFoundation.AVCaptureDeviceFormat.MaxISO
 P:AVFoundation.AVCaptureDeviceFormat.MaxSimulatedAperture
-P:AVFoundation.AVCaptureDeviceFormat.MediaType
 P:AVFoundation.AVCaptureDeviceFormat.MinExposureDuration
 P:AVFoundation.AVCaptureDeviceFormat.MinISO
 P:AVFoundation.AVCaptureDeviceFormat.MinSimulatedAperture
@@ -34788,7 +34777,6 @@ P:AVFoundation.AVCaptureInput.Ports
 P:AVFoundation.AVCaptureInputPort.Clock
 P:AVFoundation.AVCaptureInputPort.FormatDescription
 P:AVFoundation.AVCaptureInputPort.Input
-P:AVFoundation.AVCaptureInputPort.MediaType
 P:AVFoundation.AVCaptureInputPort.SourceDevicePosition
 P:AVFoundation.AVCaptureInputPort.SourceDeviceType
 P:AVFoundation.AVCaptureManualExposureBracketedStillImageSettings.ExposureDuration
@@ -34895,9 +34883,7 @@ P:AVFoundation.AVCapturePhotoSettings.MaxPhotoDimensions
 P:AVFoundation.AVCapturePhotoSettings.Metadata
 P:AVFoundation.AVCapturePhotoSettings.PhotoQualityPrioritization
 P:AVFoundation.AVCapturePhotoSettings.PreviewPhotoFormat
-P:AVFoundation.AVCapturePhotoSettings.ProcessedFileType
 P:AVFoundation.AVCapturePhotoSettings.RawFileFormat
-P:AVFoundation.AVCapturePhotoSettings.RawFileType
 P:AVFoundation.AVCapturePhotoSettings.RawPhotoPixelFormatType
 P:AVFoundation.AVCapturePhotoSettings.ShutterSoundSuppressionEnabled
 P:AVFoundation.AVCapturePhotoSettings.UniqueID
@@ -35146,7 +35132,6 @@ P:AVFoundation.AVMediaSelectionOption.DisplayName
 P:AVFoundation.AVMediaSelectionOption.ExtendedLanguageTag
 P:AVFoundation.AVMediaSelectionOption.Locale
 P:AVFoundation.AVMediaSelectionOption.MediaSubTypes
-P:AVFoundation.AVMediaSelectionOption.MediaType
 P:AVFoundation.AVMediaSelectionOption.PropertyList
 P:AVFoundation.AVMetadataBodyObject.BodyId
 P:AVFoundation.AVMetadataFaceObject.FaceID
@@ -35190,7 +35175,6 @@ P:AVFoundation.AVMetadataSalientObject.ObjectId
 P:AVFoundation.AVMetricContentKeyRequestEvent.ContentKeySpecifier
 P:AVFoundation.AVMetricContentKeyRequestEvent.IsClientInitiated
 P:AVFoundation.AVMetricContentKeyRequestEvent.MediaResourceRequestEvent
-P:AVFoundation.AVMetricContentKeyRequestEvent.MediaType
 P:AVFoundation.AVMetricDownloadSummaryEvent.BytesDownloadedCount
 P:AVFoundation.AVMetricDownloadSummaryEvent.DownloadDuration
 P:AVFoundation.AVMetricDownloadSummaryEvent.ErrorEvent
@@ -35206,12 +35190,10 @@ P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.ByteRange
 P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.IndexFileUrl
 P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.IsMapSegment
 P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.MediaResourceRequestEvent
-P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.MediaType
 P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.SegmentDuration
 P:AVFoundation.AVMetricHlsMediaSegmentRequestEvent.Url
 P:AVFoundation.AVMetricHlsPlaylistRequestEvent.IsMultivariantPlaylist
 P:AVFoundation.AVMetricHlsPlaylistRequestEvent.MediaResourceRequestEvent
-P:AVFoundation.AVMetricHlsPlaylistRequestEvent.MediaType
 P:AVFoundation.AVMetricHlsPlaylistRequestEvent.Url
 P:AVFoundation.AVMetricMediaRendition.StableId
 P:AVFoundation.AVMetricMediaRendition.Url
@@ -35279,7 +35261,6 @@ P:AVFoundation.AVMovie.CanContainMovieFragments
 P:AVFoundation.AVMovie.ContainsMovieFragments
 P:AVFoundation.AVMovie.Data
 P:AVFoundation.AVMovie.DefaultMediaDataStorage
-P:AVFoundation.AVMovie.MovieTypes
 P:AVFoundation.AVMovie.Tracks
 P:AVFoundation.AVMovie.URL
 P:AVFoundation.AVMovieTrack.AlternateGroupID
@@ -35373,7 +35354,6 @@ P:AVFoundation.AVMutableVideoCompositionInstruction.RequiredSourceSampleDataTrac
 P:AVFoundation.AVMutableVideoCompositionInstruction.TimeRange
 P:AVFoundation.AVMutableVideoCompositionLayerInstruction.TrackID
 P:AVFoundation.AVOutputSettingsAssistant.AvailableOutputSettingsPresets
-P:AVFoundation.AVOutputSettingsAssistant.OutputFileType
 P:AVFoundation.AVOutputSettingsAssistant.SourceAudioFormat
 P:AVFoundation.AVOutputSettingsAssistant.SourceVideoAverageFrameDuration
 P:AVFoundation.AVOutputSettingsAssistant.SourceVideoFormat
@@ -35716,7 +35696,6 @@ P:AVFoundation.AVTimedMetadataGroup.Items
 P:AVFoundation.AVTimedMetadataGroup.TimeRange
 P:AVFoundation.AVUrlAsset.AudiovisualContentTypes
 P:AVFoundation.AVUrlAsset.AudiovisualMimeTypes
-P:AVFoundation.AVUrlAsset.AudiovisualTypes
 P:AVFoundation.AVUrlAsset.Cache
 P:AVFoundation.AVUrlAsset.HttpSessionIdentifier
 P:AVFoundation.AVUrlAsset.MediaExtensionProperties

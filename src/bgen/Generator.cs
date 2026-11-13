@@ -4245,6 +4245,7 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		if (generate_getter) {
+			minfo.is_return_release = getter is not null && AttributeManager.HasAttribute<ReleaseAttribute> (getter.ReturnParameter);
 			var ba = GetBindAttribute (getter);
 			var sel = ba is not null ? ba.Selector! : export?.Selector!;
 
@@ -4254,6 +4255,8 @@ public partial class Generator : IMemberGatherer {
 				PrintExport (minfo, sel, export!.ArgumentSemantic);
 			}
 
+			if (minfo.is_return_release)
+				print ("[return: ReleaseAttribute ()]");
 			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType, dynamicDependency: true);
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("get {");
@@ -4289,6 +4292,7 @@ public partial class Generator : IMemberGatherer {
 				}
 				print ("}\n");
 			}
+			minfo.is_return_release = false;
 		}
 		if (generate_setter) {
 			var ba = GetBindAttribute (setter);

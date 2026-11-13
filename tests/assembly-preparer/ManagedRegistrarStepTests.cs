@@ -103,6 +103,131 @@ public class ManagedRegistrarStepTests : BaseClass {
 	}
 
 	[Test]
+	public void StaticRegistrarUsesPreTrimSupportedOSPlatformAttribute ()
+	{
+		var code = @"
+		using Foundation;
+		using ObjCRuntime;
+		using System.Runtime.Versioning;
+
+		[SupportedOSPlatform (""macos99.0"")]
+		[Register (IsWrapper = true)]
+		class FutureType : NSObject {
+		}
+
+		class CurrentType : NSObject {
+			[Export (""future"")]
+			public FutureType Future () => null;
+		}
+		";
+
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Static,
+			code, out _);
+		var context = preparer.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		var resolver = new PreTrimTestResolver ();
+		resolver.AddPaths (preparer.Assemblies.Select (v => v.InputPath));
+		preparer.Configuration.Application.PreTrimAssemblyResolver = resolver;
+		preparer.Configuration.Application.IsPostProcessingAssemblies = true;
+
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var futureType = assembly.MainModule.Types.Single (v => v.Name == "FutureType");
+		futureType.CustomAttributes.Remove (futureType.CustomAttributes.Single (v => v.AttributeType.Name == "SupportedOSPlatformAttribute"));
+
+		new RegistrarStep ().Process (context);
+
+		var logger = (TestLogger) preparer.Configuration.Logger;
+		Assert.That (logger.Errors.Any (v => v.Code == 4162), Is.True, "SDK-introduction validation");
+		Assert.That (resolver.TestResolveCount, Is.GreaterThan (0), "Pre-trim assembly lookup");
+	}
+
+	[Test]
+	public void StaticRegistrarUsesPostTrimBlockAndDelegateProxyTokens ()
+	{
+		var code = @"
+		using System;
+		using Foundation;
+		using ObjCRuntime;
+
+		class RemovedType {
+		}
+
+		class BlockProxy {
+			public static void RemovedMethod () { }
+			public static Action Create (IntPtr block) => null;
+		}
+
+		class DelegateProxy {
+		}
+
+		class BaseClass : NSObject {
+			[Export (""setCallback:"")]
+			public virtual void SetCallback ([BlockProxy (typeof (BlockProxy))] Action callback) { }
+
+			[return: DelegateProxy (typeof (DelegateProxy))]
+			[Export (""callback"")]
+			public virtual Action GetCallback () => null;
+		}
+
+		class DerivedClass : BaseClass {
+			public override void SetCallback (Action callback) { }
+			public override Action GetCallback () => null;
+		}
+		";
+
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => {
+			p.Registrar = RegistrarMode.Static;
+			p.Optimizations.StaticBlockToDelegateLookup = true;
+			p.Optimizations.OptimizeBlockLiteralSetupBlock = true;
+		}, code, out var testInfo, testAssemblyHasOriginalInputPath: true);
+
+		using var preTrimAssembly = Mono.Cecil.AssemblyDefinition.ReadAssembly (testInfo.InputPath);
+		var preTrimBlockMethod = preTrimAssembly.MainModule.Types.Single (v => v.Name == "BlockProxy").Methods.Single (v => v.Name == "Create");
+		var preTrimDelegateType = preTrimAssembly.MainModule.Types.Single (v => v.Name == "DelegateProxy");
+		var postTrimPath = Path.Combine (Path.GetDirectoryName (testInfo.InputPath)!, "post-trim.dll");
+		using (var postTrimAssembly = Mono.Cecil.AssemblyDefinition.ReadAssembly (testInfo.InputPath)) {
+			postTrimAssembly.MainModule.Types.Remove (postTrimAssembly.MainModule.Types.Single (v => v.Name == "RemovedType"));
+			postTrimAssembly.MainModule.Types.Single (v => v.Name == "BlockProxy").Methods.Remove (
+				postTrimAssembly.MainModule.Types.Single (v => v.Name == "BlockProxy").Methods.Single (v => v.Name == "RemovedMethod"));
+			postTrimAssembly.Write (postTrimPath);
+		}
+
+		using var verifiedPostTrimAssembly = Mono.Cecil.AssemblyDefinition.ReadAssembly (postTrimPath);
+		var postTrimBlockMethod = verifiedPostTrimAssembly.MainModule.Types.Single (v => v.Name == "BlockProxy").Methods.Single (v => v.Name == "Create");
+		var postTrimDelegateType = verifiedPostTrimAssembly.MainModule.Types.Single (v => v.Name == "DelegateProxy");
+		Assert.That (postTrimBlockMethod.MetadataToken, Is.Not.EqualTo (preTrimBlockMethod.MetadataToken), "Block proxy method token changed");
+		Assert.That (postTrimDelegateType.MetadataToken, Is.Not.EqualTo (preTrimDelegateType.MetadataToken), "Delegate proxy type token changed");
+
+		var tempDir = Path.GetDirectoryName (postTrimPath)!;
+		var postDir = Path.Combine (tempDir, "post");
+		var infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (
+			v.InputPath == testInfo.InputPath ? postTrimPath : v.InputPath,
+			Path.Combine (postDir, Path.GetFileName (v.OutputPath)),
+			v.InputPath == testInfo.InputPath ? testInfo.InputPath : v.OriginalInputPath,
+			v.IsTrimmable,
+			v.TrimMode)).ToArray ();
+		var configPath = Path.Combine (Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, "..")), "config.txt");
+		var logger = new TestLogger { Platform = ApplePlatform.MacOSX };
+		using var postprocessor = new AssemblyPreparer (logger, infos, configPath) { Registrar = RegistrarMode.Static };
+		postprocessor.Optimizations.StaticBlockToDelegateLookup = true;
+		postprocessor.Optimizations.OptimizeBlockLiteralSetupBlock = true;
+		postprocessor.Configuration.Application.IsPostProcessingAssemblies = true;
+		var resolver = new PreTrimTestResolver ();
+		resolver.AddPaths (preparer.Assemblies.Select (v => v.InputPath));
+		postprocessor.Configuration.Application.PreTrimAssemblyResolver = resolver;
+
+		var context = postprocessor.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		new RegistrarStep ().Process (context);
+
+		var registrar = File.ReadAllText (Path.Combine (postprocessor.Configuration.CacheDirectory, "registrar.mm"));
+		Assert.That (registrar, Does.Contain ($"0x{postTrimBlockMethod.MetadataToken.ToUInt32 ():X} /* {postTrimBlockMethod.FullName} */"), "Post-trim block proxy method token");
+		Assert.That (registrar, Does.Contain ($"0x{postTrimDelegateType.MetadataToken.ToUInt32 ():X} /* {postTrimDelegateType.FullName} */"), "Post-trim delegate proxy type token");
+		Assert.That (registrar, Does.Not.Contain ($"0x{preTrimBlockMethod.MetadataToken.ToUInt32 ():X} /* {preTrimBlockMethod.FullName} */"), "Pre-trim block proxy method token");
+		Assert.That (registrar, Does.Not.Contain ($"0x{preTrimDelegateType.MetadataToken.ToUInt32 ():X} /* {preTrimDelegateType.FullName} */"), "Pre-trim delegate proxy type token");
+	}
+
+	[Test]
 	public void FactoryMethodsNotAddedToReloadableAssemblies ()
 	{
 		var code = @"

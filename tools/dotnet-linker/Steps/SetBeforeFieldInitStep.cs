@@ -1,3 +1,4 @@
+using Mono.Linker;
 using Mono.Linker.Steps;
 using Xamarin.Linker;
 using Xamarin.Linker.Steps;
@@ -17,6 +18,11 @@ namespace Xamarin.Linker.Steps {
 			if (Configuration.DerivedLinkContext.App.Optimizations.RegisterProtocols != true)
 				return false;
 			return base.ModifyAssembly (assembly);
+		}
+
+		protected override bool IsActiveFor (AssemblyDefinition assembly)
+		{
+			return Annotations.GetAction (assembly) == AssemblyAction.Link;
 		}
 
 		protected override bool ProcessType (TypeDefinition type)

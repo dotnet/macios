@@ -1915,6 +1915,10 @@ namespace Registrar {
 			if (td is null)
 				return null;
 
+#if !LEGACY_TOOLS
+			if (CollectAvailabilityAttributes (GetAvailabilityAttributes (obj), out var sdkVersion, out message))
+				return sdkVersion;
+#else
 			if (td.HasCustomAttributes) {
 				if (CollectAvailabilityAttributes (td.CustomAttributes, out var sdkVersion, out message))
 					return sdkVersion;
@@ -1924,6 +1928,7 @@ namespace Registrar {
 				if (CollectAvailabilityAttributes ((IEnumerable<ICustomAttribute>) attribObjects, out var sdkVersion, out message))
 					return sdkVersion;
 			}
+#endif
 
 			return null;
 		}

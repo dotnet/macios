@@ -173,6 +173,7 @@ public class AssemblyPreparer : IDisposable {
 		// These steps only do anything for assemblies that are being trimmed (their IsActiveFor requires
 		// AssemblyAction.Link), so don't even add them to the list when nothing's being trimmed.
 		if (configuration.Application.AreAnyAssembliesTrimmed) {
+			steps.Add (new SetBeforeFieldInitStep ());
 			steps.Add (new PreserveProtocolsStep ());
 			steps.Add (new PreserveSmartEnumConversionsStep ());
 			steps.Add (new PreserveBlockCodeStep ());
@@ -198,6 +199,8 @@ public class AssemblyPreparer : IDisposable {
 		steps.Add (new TrimmableRegistrarStep ());
 		steps.Add (new ManagedRegistrarLookupTablesStep ());
 		steps.Add (new InlineClassGetHandleStep ());
+		if (configuration.Application.AreAnyAssembliesTrimmed)
+			steps.Add (new DelayDisposeFieldClearsStep ());
 		steps.Add (new SaveAssembliesStep ());
 
 		return RunSteps (steps, out exceptions);
@@ -248,6 +251,7 @@ public class AssemblyPreparer : IDisposable {
 			// post-sweep
 			.. removeAttributesStep, // from PostSweepDispatcher.
 			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
+			new RestoreDisposeFieldClearsStep (),
 			new ExtractBindingLibrariesStep (),
 			// The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries
 			new ListExportedSymbols (),

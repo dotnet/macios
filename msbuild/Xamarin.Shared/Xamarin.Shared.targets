@@ -209,6 +209,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			>
 		</CreateBindingResourcePackage>
 
+		<ItemGroup>
+			<FileWrites Include="$(BindingResourcePath).zip" Condition="Exists('$(BindingResourcePath).zip')" />
+		</ItemGroup>
+
 		<MakeDir
 			Directories="$([System.IO.Path]::GetDirectoryName($(BindingResourcePath)))"
 		/>
@@ -368,6 +372,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_CleanBindingResourcePackage">
 		<RemoveDir Directories="$(BindingResourcePath);" />  
+		<Delete Files="$(BindingResourcePath).zip;$(BindingResourcePath).stamp" />
 	</Target>
 
 	<Target Name="_CleanDebugSymbols" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="_GenerateBundleName">
@@ -408,12 +413,20 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<_IpaPackageFile Include="$(DeviceSpecificOutputPath)*.ipa" />
+			<_PkgPackageFile Include="$(DeviceSpecificOutputPath)*.pkg" />
 		</ItemGroup>
 
 		<Delete Files="$(DeviceSpecificOutputPath)codesign.items" />
 		<Delete Files="$(DeviceSpecificOutputPath)codesign-bundle.items" />
 		<Delete Files="$(DeviceSpecificOutputPath)native-frameworks.items" />
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="@(_IpaPackageFile)" />
+		<!-- Failed or older builds may not have recorded these native build caches in FileWrites. -->
+		<Delete Files="$(DeviceSpecificOutputPath)LinkerInputs.cache;
+				$(DeviceSpecificOutputPath)LinkerInputs.cache.xml;
+				$(DeviceSpecificOutputPath)AOTCompileInputs.cache;
+				$(DeviceSpecificOutputPath)AOTCompileInputs.cache.uptodate;
+				$(DeviceSpecificOutputPath)NativeLink.cache;
+				$(DeviceSpecificOutputPath)NativeLink.cache.uptodate" />
+		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="@(_IpaPackageFile);@(_PkgPackageFile)" />
 	</Target>
 
 	<PropertyGroup>
@@ -3676,6 +3689,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ProjectPath="$(MSBuildProjectFullPath)"
 		>
 			<Output TaskParameter="PkgPackagePath" PropertyName="PkgPackagePath" />
+			<Output TaskParameter="PkgPackagePath" ItemName="FileWrites" />
 		</CreateInstallerPackage>
 	</Target>
 

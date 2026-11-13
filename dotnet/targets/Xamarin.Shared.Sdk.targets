@@ -319,6 +319,53 @@
 		</CreateAppBundleDependsOn>
 	</PropertyGroup>
 
+	<!-- Native build targets add FileWrites after CoreBuild. Record them only after bundling,
+	     so Clean can delete them and subsequent incremental builds don't consider them orphaned.
+	     Unescape preserves the target-list separators after Replace. -->
+	<PropertyGroup Condition="'$(_CanOutputAppBundle)' == 'true'">
+		<CoreBuildDependsOn>$([MSBuild]::Unescape($(CoreBuildDependsOn.Replace('IncrementalClean', ''))))</CoreBuildDependsOn>
+		<BuildDependsOn>$(BuildDependsOn);IncrementalClean</BuildDependsOn>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<CoreCleanDependsOn>
+			_CleanRidSpecificBuilds;
+			$(CoreCleanDependsOn);
+		</CoreCleanDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_CleanRidSpecificBuilds"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_CleaningRidSpecificBuild)' != 'true' And ('$(RuntimeIdentifiers)' != '' Or '$(_CleanAllRuntimeIdentifiers)' == 'true')">
+		<ItemGroup>
+			<_RuntimeIdentifiersToClean Include="$(RuntimeIdentifiers)" Condition="'$(_CleanAllRuntimeIdentifiers)' != 'true'" />
+			<!-- A clean without an explicit RID must also cover builds for a previously selected IDE device. -->
+			<_RuntimeIdentifiersToClean Include="@(_XamarinValidRuntimeIdentifier->WithMetadataValue('Platform', '$(_PlatformName)'))" Condition="'$(_CleanAllRuntimeIdentifiers)' == 'true'" />
+		</ItemGroup>
+		<MSBuild
+			Projects="$(MSBuildProjectFullPath)"
+			Targets="Clean"
+			Properties="
+				RuntimeIdentifier=%(_RuntimeIdentifiersToClean.Identity);
+				RuntimeIdentifiers=;
+				AppendRuntimeIdentifierToOutputPath=true;
+				BuildProjectReferences=false;
+				_CleaningRidSpecificBuild=true;
+			"
+		/>
+		<!-- Clean the RID-independent outputs of a previous universal build as well. -->
+		<MSBuild
+			Condition="'$(_CleanAllRuntimeIdentifiers)' == 'true' And '$(RuntimeIdentifier)' != ''"
+			Projects="$(MSBuildProjectFullPath)"
+			Targets="Clean"
+			Properties="
+				RuntimeIdentifier=;
+				RuntimeIdentifiers=$(RuntimeIdentifier);
+				BuildProjectReferences=false;
+				_CleaningRidSpecificBuild=true;
+			"
+		/>
+	</Target>
+
 	<!-- Used to extend the build process, .csproj files can declare <MaciOSPrepareForBuildDependsOn>SomeTarget</MaciOSPrepareForBuildDependsOn> to run a target at the beginning of the build -->
 	<Target Name="MaciOSPrepareForBuild"
 			DependsOnTargets="$(MaciOSPrepareForBuildDependsOn)" >

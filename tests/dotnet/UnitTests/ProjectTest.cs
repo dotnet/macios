@@ -4635,6 +4635,7 @@ namespace Xamarin.Tests {
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";
 			properties ["XamarinDebugPort"] = "123";
+			properties ["XamarinDebugConnectTimeout"] = "10";
 			properties ["StandardOutputPath"] = stdout;
 			properties ["StandardErrorPath"] = stderr;
 			properties ["OpenNewInstance"] = "true";

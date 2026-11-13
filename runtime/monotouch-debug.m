@@ -230,6 +230,7 @@ void xamarin_capture_debugging_settings ()
 		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
 
+	unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
 }
 
 void monotouch_configure_debugging ()

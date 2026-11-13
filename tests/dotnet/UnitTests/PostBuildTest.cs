@@ -660,8 +660,9 @@ namespace Xamarin.Tests {
 			// Verify the path does NOT contain ".framework/" (the bug was that dylibs were treated as frameworks)
 			Assert.That (dylibItem.ItemSpec, Does.Not.Contain (".framework/"), "Dylib path should not contain .framework/");
 
-			// Verify the path contains the full dylib filename
-			Assert.That (dylibItem.ItemSpec, Does.Contain ("libframework.dylib"), "Dylib path should contain the full dylib filename");
+			// Verify the path matches the expected bundle layout
+			var expectedItemSpec = Path.Combine (Path.GetFileName (appPath), GetRelativeDylibDirectory (platform), "libframework.dylib");
+			Assert.That (dylibItem.ItemSpec, Is.EqualTo (expectedItemSpec), "Dylib path should match the bundle layout");
 
 			// Verify the DSymName is correct for a dylib (should be "libframework.dSYM", not "libframework.dylib.dSYM")
 			var dSymName = dylibItem.GetMetadata ("DSymName");

@@ -3459,29 +3459,63 @@ namespace CarPlay {
 		[NullAllowed, Export ("timeZone")]
 		NSTimeZone TimeZone { get; }
 
+		/// <summary>Initializes a waypoint with a name, address, and entry-point buffer.</summary>
+		/// <param name="centerPoint">The geographic center and altitude.</param>
+		/// <param name="locationThreshold">The optional distance threshold for reaching the waypoint.</param>
+		/// <param name="name">The optional display name.</param>
+		/// <param name="address">The optional address.</param>
+		/// <param name="entryPoints">The entry points, or <see langword="null" /> when <paramref name="entryPointsCount" /> is zero.</param>
+		/// <param name="entryPointsCount">The number of entry points to copy, at most the array length.</param>
+		/// <param name="timeZone">The optional time zone.</param>
+		/// <returns>The initialized native handle.</returns>
 		[Internal]
 		[Export ("initWithCenterPoint:locationThreshold:name:address:entryPoints:entryPointsCount:timeZone:")]
-		NativeHandle _InitWithCenterPoint (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed] string name, [NullAllowed] string address, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
+		NativeHandle _InitWithCenterPoint (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed] string name, [NullAllowed] string address, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
 
+		/// <summary>Initializes a waypoint with name and address variants and an entry-point buffer.</summary>
+		/// <param name="centerPoint">The geographic center and altitude.</param>
+		/// <param name="locationThreshold">The optional distance threshold for reaching the waypoint.</param>
+		/// <param name="nameVariants">The display names, ordered from most to least preferred.</param>
+		/// <param name="addressVariants">The addresses, ordered from most to least preferred.</param>
+		/// <param name="entryPoints">The entry points, or <see langword="null" /> when <paramref name="entryPointsCount" /> is zero.</param>
+		/// <param name="entryPointsCount">The number of entry points to copy, at most the array length.</param>
+		/// <param name="timeZone">The optional time zone.</param>
 		[NoMacCatalyst, iOS (27, 0)]
 		[Internal]
 		[Export ("initWithCenterPoint:locationThreshold:nameVariants:addressVariants:entryPoints:entryPointsCount:timeZone:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, string [] nameVariants, string [] addressVariants, IntPtr entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
+		NativeHandle Constructor (CPLocationCoordinate3D centerPoint, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, string [] nameVariants, string [] addressVariants, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount, [NullAllowed] NSTimeZone timeZone);
 
+		/// <summary>Initializes a waypoint from a map item and an entry-point buffer.</summary>
+		/// <param name="mapItem">The map item describing the waypoint.</param>
+		/// <param name="locationThreshold">The optional distance threshold for reaching the waypoint.</param>
+		/// <param name="entryPoints">The entry points, or <see langword="null" /> when <paramref name="entryPointsCount" /> is zero.</param>
+		/// <param name="entryPointsCount">The number of entry points to copy, at most the array length.</param>
+		/// <returns>The initialized native handle.</returns>
 		[Internal]
 		[Export ("initWithMapItem:locationThreshold:entryPoints:entryPointsCount:")]
-		NativeHandle _InitWithMapItem (MKMapItem mapItem, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, IntPtr entryPoints, nuint entryPointsCount);
+		NativeHandle _InitWithMapItem (MKMapItem mapItem, [NullAllowed] NSMeasurement<NSUnitLength> locationThreshold, [NullAllowed, PointerAsArray (LengthFromParameter = nameof (entryPointsCount))] CPLocationCoordinate3D [] entryPoints, nuint entryPointsCount);
 	}
 
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPRouteSegment : NSCopying {
+		/// <summary>Initializes a route segment with navigation instructions and a coordinate buffer.</summary>
+		/// <param name="origin">The starting waypoint.</param>
+		/// <param name="destination">The ending waypoint.</param>
+		/// <param name="maneuvers">The maneuvers along the segment.</param>
+		/// <param name="laneGuidances">The lane guidance instructions along the segment.</param>
+		/// <param name="currentManeuvers">The maneuvers currently presented to the driver.</param>
+		/// <param name="currentLaneGuidance">The lane guidance currently presented to the driver.</param>
+		/// <param name="tripTravelEstimates">The remaining travel estimates for the trip.</param>
+		/// <param name="maneuverTravelEstimates">The travel estimates for the current maneuver.</param>
+		/// <param name="coordinates">The ordered geographic coordinates and altitudes.</param>
+		/// <param name="coordinatesCount">The nonnegative number of coordinates to copy, at most the array length.</param>
 		[Internal]
 		[Export ("initWithOrigin:destination:maneuvers:laneGuidances:currentManeuvers:currentLaneGuidance:tripTravelEstimates:maneuverTravelEstimates:coordinates:coordinatesCount:")]
 		[DesignatedInitializer]
-		NativeHandle Constructor (CPNavigationWaypoint origin, CPNavigationWaypoint destination, CPManeuver [] maneuvers, CPLaneGuidance [] laneGuidances, CPManeuver [] currentManeuvers, CPLaneGuidance currentLaneGuidance, CPTravelEstimates tripTravelEstimates, CPTravelEstimates maneuverTravelEstimates, IntPtr coordinates, nint coordinatesCount);
+		NativeHandle Constructor (CPNavigationWaypoint origin, CPNavigationWaypoint destination, CPManeuver [] maneuvers, CPLaneGuidance [] laneGuidances, CPManeuver [] currentManeuvers, CPLaneGuidance currentLaneGuidance, CPTravelEstimates tripTravelEstimates, CPTravelEstimates maneuverTravelEstimates, [PointerAsArray (LengthFromParameter = nameof (coordinatesCount))] CPLocationCoordinate3D [] coordinates, nint coordinatesCount);
 
 		[Export ("identifier", ArgumentSemantic.Strong)]
 		NSUuid Identifier { get; }

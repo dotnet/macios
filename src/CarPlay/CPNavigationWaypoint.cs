@@ -9,18 +9,25 @@ namespace CarPlay {
 
 	public partial class CPNavigationWaypoint {
 
+		/// <summary>Creates a navigation waypoint with a name and address.</summary>
+		/// <param name="centerPoint">The geographic center and altitude of the waypoint.</param>
+		/// <param name="locationThreshold">The optional distance threshold for reaching the waypoint.</param>
+		/// <param name="name">The waypoint's display name, or <see langword="null" />.</param>
+		/// <param name="address">The waypoint's address, or <see langword="null" />.</param>
+		/// <param name="entryPoints">The waypoint's entry points, or <see langword="null" /> or an empty array for none.</param>
+		/// <param name="timeZone">The waypoint's time zone, or <see langword="null" />.</param>
+		/// <returns>A new navigation waypoint.</returns>
+		/// <remarks>The entry points are copied during this call, so the array can be modified afterward without changing the waypoint.</remarks>
 		[SupportedOSPlatform ("ios26.4")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios27.0", "Use 'CreateWithVariants' instead.")]
-		public static unsafe CPNavigationWaypoint Create (CPLocationCoordinate3D centerPoint, NSMeasurement<NSUnitLength>? locationThreshold, string? name, string? address, CPLocationCoordinate3D []? entryPoints, NSTimeZone? timeZone)
+		public static CPNavigationWaypoint Create (CPLocationCoordinate3D centerPoint, NSMeasurement<NSUnitLength>? locationThreshold, string? name, string? address, CPLocationCoordinate3D []? entryPoints, NSTimeZone? timeZone)
 		{
-			fixed (CPLocationCoordinate3D* first = entryPoints) {
-				var obj = new CPNavigationWaypoint (NSObjectFlag.Empty);
-				obj.InitializeHandle (obj._InitWithCenterPoint (centerPoint, locationThreshold, name, address, (IntPtr) first, (nuint) (entryPoints?.Length ?? 0), timeZone), "initWithCenterPoint:locationThreshold:name:address:entryPoints:entryPointsCount:timeZone:");
-				return obj;
-			}
+			var obj = new CPNavigationWaypoint (NSObjectFlag.Empty);
+			obj.InitializeHandle (obj._InitWithCenterPoint (centerPoint, locationThreshold, name, address, entryPoints, (nuint) (entryPoints?.Length ?? 0), timeZone), "initWithCenterPoint:locationThreshold:name:address:entryPoints:entryPointsCount:timeZone:");
+			return obj;
 		}
 
 		/// <summary>Creates a waypoint with display name and address variants.</summary>
@@ -31,31 +38,36 @@ namespace CarPlay {
 		/// <param name="entryPoints">The optional entry points for the waypoint.</param>
 		/// <param name="timeZone">The optional time zone for the waypoint.</param>
 		/// <returns>A new waypoint.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="nameVariants" /> or <paramref name="addressVariants" /> is <see langword="null" />.</exception>
+		/// <remarks>A null or empty <paramref name="entryPoints" /> array specifies no entry points. The entry points are copied during this call.</remarks>
 		[SupportedOSPlatform ("ios27.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-		public static unsafe CPNavigationWaypoint CreateWithVariants (CPLocationCoordinate3D centerPoint, NSMeasurement<NSUnitLength>? locationThreshold, string [] nameVariants, string [] addressVariants, CPLocationCoordinate3D []? entryPoints, NSTimeZone? timeZone)
+		public static CPNavigationWaypoint CreateWithVariants (CPLocationCoordinate3D centerPoint, NSMeasurement<NSUnitLength>? locationThreshold, string [] nameVariants, string [] addressVariants, CPLocationCoordinate3D []? entryPoints, NSTimeZone? timeZone)
 		{
 			ArgumentNullException.ThrowIfNull (nameVariants);
 			ArgumentNullException.ThrowIfNull (addressVariants);
 
-			fixed (CPLocationCoordinate3D* first = entryPoints) {
-				return new CPNavigationWaypoint (centerPoint, locationThreshold, nameVariants, addressVariants, (IntPtr) first, (nuint) (entryPoints?.Length ?? 0), timeZone);
-			}
+			return new CPNavigationWaypoint (centerPoint, locationThreshold, nameVariants, addressVariants, entryPoints, (nuint) (entryPoints?.Length ?? 0), timeZone);
 		}
 
+		/// <summary>Creates a navigation waypoint from a map item.</summary>
+		/// <param name="mapItem">The map item describing the waypoint.</param>
+		/// <param name="locationThreshold">The optional distance threshold for reaching the waypoint.</param>
+		/// <param name="entryPoints">The waypoint's entry points, or <see langword="null" /> or an empty array for none.</param>
+		/// <returns>A new navigation waypoint.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="mapItem" /> is <see langword="null" />.</exception>
+		/// <remarks>The entry points are copied during this call, so the array can be modified afterward without changing the waypoint.</remarks>
 		[SupportedOSPlatform ("ios26.4")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
-		public static unsafe CPNavigationWaypoint Create (MKMapItem mapItem, NSMeasurement<NSUnitLength>? locationThreshold, CPLocationCoordinate3D []? entryPoints)
+		public static CPNavigationWaypoint Create (MKMapItem mapItem, NSMeasurement<NSUnitLength>? locationThreshold, CPLocationCoordinate3D []? entryPoints)
 		{
-			fixed (CPLocationCoordinate3D* first = entryPoints) {
-				var obj = new CPNavigationWaypoint (NSObjectFlag.Empty);
-				obj.InitializeHandle (obj._InitWithMapItem (mapItem, locationThreshold, (IntPtr) first, (nuint) (entryPoints?.Length ?? 0)), "initWithMapItem:locationThreshold:entryPoints:entryPointsCount:");
-				return obj;
-			}
+			var obj = new CPNavigationWaypoint (NSObjectFlag.Empty);
+			obj.InitializeHandle (obj._InitWithMapItem (mapItem, locationThreshold, entryPoints, (nuint) (entryPoints?.Length ?? 0)), "initWithMapItem:locationThreshold:entryPoints:entryPointsCount:");
+			return obj;
 		}
 
 		[SupportedOSPlatform ("ios26.4")]

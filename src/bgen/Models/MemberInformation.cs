@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using Foundation;
 
@@ -28,6 +29,8 @@ public class MemberInformation {
 	public readonly ThreadCheck threadCheck;
 	public bool is_unsafe;
 	public bool is_virtual_method;
+	/// <summary>Disables managed array overrides and callback exports without changing native super dispatch.</summary>
+	public readonly bool has_pointer_array_parameter;
 	public bool is_export;
 	public bool is_category_extension;
 	public bool is_variadic;
@@ -144,6 +147,9 @@ public class MemberInformation {
 	{
 		is_basewrapper_protocol_method = isBaseWrapperProtocolMethod;
 		foreach (ParameterInfo pi in mi.GetParameters ()) {
+			if (generator.AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi) || generator.AttributeManager.HasAttribute<PointerAsStructAttribute> (pi)) {
+				is_unsafe = true;
+			}
 			if (pi.ParameterType.IsSubclassOf (Generator.TypeCache.System_Delegate)) {
 				is_unsafe = true;
 				break;
@@ -200,6 +206,8 @@ public class MemberInformation {
 
 		if (is_static || is_category_extension || isInterfaceImpl || isExtensionMethod || is_type_sealed)
 			is_virtual_method = false;
+
+		has_pointer_array_parameter = mi.GetParameters ().Any (pi => AttributeManager.HasAttribute<PointerAsArrayAttribute> (pi));
 	}
 
 	public MemberInformation (Generator generator, IMemberGatherer gather, PropertyInfo pi, Type type, bool is_interface_impl = false)
@@ -273,7 +281,7 @@ public class MemberInformation {
 			mods += "virtual ";
 		} else if (is_abstract) {
 			mods += "virtual ";
-		} else if (is_virtual_method && !is_type_sealed) {
+		} else if (is_virtual_method && !is_type_sealed && !has_pointer_array_parameter) {
 			mods += is_override ? "override " : "virtual ";
 		}
 

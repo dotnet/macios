@@ -132,10 +132,10 @@ namespace Darwin {
 		}
 
 		[DllImport (Constants.SystemLibrary)]
-		extern static IntPtr asl_add_log_file (IntPtr handle, int /* int */ fd);
+		extern static int asl_add_log_file (IntPtr handle, int /* int */ fd);
 
 		[DllImport (Constants.SystemLibrary)]
-		extern static IntPtr asl_remove_log_file (IntPtr handle, int /* int */ fd);
+		extern static int asl_remove_log_file (IntPtr handle, int /* int */ fd);
 
 		/// <param name="descriptor">To be added.</param>
 		///         <summary>To be added.</summary>
@@ -153,13 +153,25 @@ namespace Darwin {
 			asl_remove_log_file (Handle, descriptor);
 		}
 
-		[DllImport (Constants.SystemLibrary)]
-		extern static int asl_log (IntPtr handle, IntPtr msgHandle, IntPtr text);
-
-		static int asl_log (IntPtr handle, IntPtr msgHandle, string text)
+		int LogText (Message? message, string text)
 		{
-			using var textStr = new TransientString (text);
-			return asl_log (handle, msgHandle, textStr);
+			// asl_send accepts literal text without the variadic asl_log ABI or printf formatting.
+			using var copy = new Message (Message.Kind.Message);
+			if (message is not null) {
+				for (var i = 0; ; i++) {
+					var key = message [i];
+					if (key is null)
+						break;
+					var status = copy.SetValue (key, message [key]);
+					if (status != 0)
+						return status;
+				}
+				GC.KeepAlive (message);
+			}
+			var result = copy.SetValue ("Message", text);
+			if (result != 0)
+				return result;
+			return Log (copy);
 		}
 
 		/// <param name="msg">To be added.</param>
@@ -170,12 +182,8 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public int Log (Message msg, string text, params object [] args)
 		{
-			var txt = text is null ? string.Empty : String.Format (text, args);
-			if (txt.IndexOf ('%') != -1)
-				txt = txt.Replace ("%", "%%");
-			int result = asl_log (Handle, msg.GetHandle (), txt);
-			GC.KeepAlive (msg);
-			return result;
+			var txt = text is null ? "" : String.Format (text, args);
+			return LogText (msg, txt);
 		}
 
 		/// <param name="text">To be added.</param>
@@ -187,7 +195,7 @@ namespace Darwin {
 			if (text is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (text));
 
-			return asl_log (Handle, IntPtr.Zero, text);
+			return LogText (null, text);
 		}
 
 		[DllImport (Constants.SystemLibrary)]
@@ -334,6 +342,15 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static int asl_set (IntPtr handle, IntPtr key, IntPtr value);
 
+		internal int SetValue (string key, string value)
+		{
+			using var keyStr = new TransientString (key);
+			using var valueStr = new TransientString (value);
+			var result = asl_set (Handle, keyStr, valueStr);
+			GC.KeepAlive (this);
+			return result;
+		}
+
 		public string this [string key] {
 			get {
 				if (key is null)
@@ -344,9 +361,7 @@ namespace Darwin {
 			set {
 				if (key is null)
 					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-				using var keyStr = new TransientString (key);
-				using var valueStr = new TransientString (value);
-				asl_set (Handle, keyStr, valueStr);
+				SetValue (key, value);
 			}
 		}
 

@@ -1603,6 +1603,43 @@ public partial class Generator : IMemberGatherer {
 	}
 
 	Dictionary<Type, bool> generated_trampolines = new Dictionary<Type, bool> ();
+	bool generatedNativeObjectActionInvoker;
+
+	bool CanShareNativeObjectActionInvoker (MethodInfo method, ParameterInfo [] parameters)
+	{
+		if (method.ReturnType != TypeCache.System_Void || parameters.Length != 1)
+			return false;
+
+		var parameter = parameters [0];
+		var type = parameter.ParameterType;
+		return !type.IsByRef && !type.IsValueType && !HasBindAsAttribute (parameter) &&
+			(TypeManager.IsWrappedType (type) || TypeCache.INativeObject.IsAssignableFrom (type));
+	}
+
+	void GenerateNativeObjectActionInvoker ()
+	{
+		print ("");
+		print ("[UnmanagedFunctionPointerAttribute (CallingConvention.Cdecl)]");
+		print ($"unsafe delegate void NativeObjectAction (IntPtr block, {NativeHandleType} obj);");
+		print ("");
+		print ("internal class NativeObjectActionInvoker : TrampolineBlockBase {"); indent++;
+		print ("readonly NativeObjectAction invoker;");
+		print ("");
+		print_generated_code ();
+		print ("public unsafe NativeObjectActionInvoker (BlockLiteral *block) : base (block)");
+		print ("{"); indent++;
+		print ("invoker = block->GetDelegateForBlock<NativeObjectAction> ();");
+		indent--; print ("}");
+		print ("");
+		print_generated_code ();
+		print ("protected void Invoke (INativeObject? obj)");
+		print ("{"); indent++;
+		print ("var handle = obj.GetHandle ();");
+		print ("invoker (BlockPointer, handle);");
+		print ("GC.KeepAlive (obj);");
+		indent--; print ("}");
+		indent--; print ("}");
+	}
 
 	void GenerateTrampolinesForQueue (TrampolineInfo [] queue)
 	{
@@ -1688,16 +1725,23 @@ public partial class Generator : IMemberGatherer {
 			//
 			// Now generate the class that allows us to invoke a Objective-C block from C#
 			//
+			var shareNativeObjectActionInvoker = CanShareNativeObjectActionInvoker (mi, parameters);
+			if (shareNativeObjectActionInvoker && !generatedNativeObjectActionInvoker) {
+				GenerateNativeObjectActionInvoker ();
+				generatedNativeObjectActionInvoker = true;
+			}
 			print ("");
 			PrintExperimentalAttribute (ti.Type);
-			print ($"internal sealed class {ti.NativeInvokerName} : TrampolineBlockBase {{");
+			print ($"internal sealed class {ti.NativeInvokerName} : {(shareNativeObjectActionInvoker ? "NativeObjectActionInvoker" : "TrampolineBlockBase")} {{");
 			indent++;
-			print ("{0} invoker;", ti.DelegateName);
+			if (!shareNativeObjectActionInvoker)
+				print ("{0} invoker;", ti.DelegateName);
 			print ("");
 			print_generated_code ();
 			print ("public unsafe {0} (BlockLiteral *block) : base (block)", ti.NativeInvokerName);
 			print ("{"); indent++;
-			print ("invoker = block->GetDelegateForBlock<{0}> ();", ti.DelegateName);
+			if (!shareNativeObjectActionInvoker)
+				print ("invoker = block->GetDelegateForBlock<{0}> ();", ti.DelegateName);
 			indent--; print ("}");
 			print ("");
 			print ("[DynamicDependency (nameof (Create))]");
@@ -1713,6 +1757,11 @@ public partial class Generator : IMemberGatherer {
 			print ($"var del = ({ti.UserDelegate}?) GetExistingManagedDelegate (block);");
 			print ($"return del ?? new {ti.NativeInvokerName} ((BlockLiteral *) block).Invoke;");
 			indent--; print ("}");
+			if (shareNativeObjectActionInvoker) {
+				indent--;
+				print ("}} /* class {0} */", ti.NativeInvokerName);
+				continue;
+			}
 			print ("");
 			var string_pars = new StringBuilder ();
 			MakeSignatureFromParameterInfo (false, string_pars, mi, declaringType: null, parameters: parameters);

@@ -1118,6 +1118,43 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.macOSMobile)]
+		public void SharedNativeObjectTrampolines (Profile profile)
+		{
+			var bgen = BuildFile (profile, "shared-native-object-trampolines.cs");
+			var types = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes;
+			var shared = types.Single (v => v.Name == "NativeObjectActionInvoker");
+			var invoke = shared.Methods.Single (v => v.Name == "Invoke");
+			Assert.That (invoke.Parameters.Single ().ParameterType.FullName, Is.EqualTo ("ObjCRuntime.INativeObject"), "Shared parameter type");
+			var calls = invoke.Body.Instructions.Where (v => v.OpCode.FlowControl == FlowControl.Call)
+				.Select (v => (MethodReference) v.Operand).ToArray ();
+			Assert.That (calls.Select (v => v.Name), Is.EqualTo (new [] { "GetHandle", "get_BlockPointer", "Invoke", "KeepAlive" }), "Null conversion and lifetime");
+
+			foreach (var name in new [] { "ObjectCallback", "StringObjectCallback", "ImageCallback", "ProtocolCallback", "NestedObjectCallback" }) {
+				var invoker = types.Single (v => v.Name == "NID" + name);
+				Assert.That (invoker.BaseType.FullName, Is.EqualTo (shared.FullName), name + " base");
+				Assert.That (invoker.Methods.Any (v => v.Name == "Invoke"), Is.False, name + " has no duplicate Invoke");
+				Assert.That (invoker.Fields, Is.Empty, name + " has no duplicate invoker field");
+				var create = invoker.Methods.Single (v => v.Name == "Create");
+				Assert.That (create.ReturnType.FullName, Is.EqualTo ("SharedNativeObjectTrampolines." + name), name + " factory return type");
+				Assert.That (create.Body.Instructions.Any (v => v.OpCode == OpCodes.Ldftn &&
+					((MethodReference) v.Operand).DeclaringType.FullName == shared.FullName), Is.True, name + " binds shared Invoke");
+				Assert.That (create.Body.Instructions.Any (v => v.Operand is MethodReference method &&
+					method.Name == "GetExistingManagedDelegate"), Is.True, name + " preserves managed delegates");
+				var bridge = types.Single (v => v.Name == "SD" + name).Methods.Single (v => v.Name == "Invoke");
+				var attribute = bridge.CustomAttributes.Single (v => v.AttributeType.Name == "UserDelegateTypeAttribute");
+				Assert.That (((TypeReference) attribute.ConstructorArguments [0].Value).Name, Is.EqualTo (name), name + " bridge metadata");
+			}
+
+			foreach (var name in new [] { "ReturningCallback", "RefCallback", "ArrayCallback", "StringCallback", "MultipleCallback", "ValueCallback", "NestedCallback" }) {
+				var invoker = types.Single (v => v.Name == "NID" + name);
+				Assert.That (invoker.BaseType.FullName, Is.EqualTo ("ObjCRuntime.TrampolineBlockBase"), name + " remains specialized");
+				Assert.That (invoker.Methods.Any (v => v.Name == "Invoke"), Is.True, name + " has specialized Invoke");
+			}
+		}
+
+		[Test]
 		public void DelegateWithINativeObjectReturnType ()
 		{
 			var bgen = BuildFile (Profile.iOS, "delegate-with-inativeobject-return-type.cs");
@@ -1126,6 +1163,7 @@ namespace GeneratorTests {
 			// Assert that the return type from the delegate is IntPtr
 			var type = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes.First (v => v.Name == "DMyHandler");
 			Assert.That (type, Is.Not.Null, "DMyHandler");
+			Assert.That (type.DeclaringType.NestedTypes.Any (v => v.Name == "NativeObjectActionInvoker"), Is.False, "No shared invoker without compatible callbacks");
 			var method = type.Methods.First (v => v.Name == "Invoke");
 			Assert.That (method.ReturnType.FullName, Is.EqualTo ("ObjCRuntime.NativeHandle"), "Return type");
 		}

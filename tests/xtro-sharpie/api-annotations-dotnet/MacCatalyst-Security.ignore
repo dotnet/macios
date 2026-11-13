@@ -225,7 +225,9 @@
 
 # Only shown MacCatalyst and there is not public documentation about them.
 
-# Deprecated and not used in MacCatalyst
+# Retained obsolete compatibility imports: AuthorizationExecuteWithPrivileges is declared
+# macOS-only, and SecCertificateCopySerialNumber has platform-specific legacy signatures.
+# Do not infer Catalyst ABI/support from macOS exports or apply the macOS $LEGACYMAC alias here.
 !unknown-pinvoke! AuthorizationExecuteWithPrivileges bound
 !unknown-pinvoke! SecCertificateCopySerialNumber bound
 

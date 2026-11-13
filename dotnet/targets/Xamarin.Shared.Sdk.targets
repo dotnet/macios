@@ -3145,6 +3145,26 @@
 		<Error Text="WinExe is not a valid output type for $(_PlatformName)" Condition="'$(OutputType)' == 'WinExe'"/>
 	</Target>
 
+	<ItemGroup>
+		<AdditionalTargetFrameworkInfoProperty Include="OutputType;IsAppExtension;MSBuildProjectFullPath" />
+	</ItemGroup>
+
+	<Target Name="_WarnOnExecutableProjectReferences"
+		AfterTargets="_GetProjectReferenceTargetFrameworkProperties"
+		Condition="'$(WarnOnExecutableProjectReferences)' != 'false' And '$(DesignTimeBuild)' != 'true'">
+		<XmlPeek
+			Condition="'%(_MSBuildProjectReferenceExistent.AdditionalPropertiesFromProject)' != '' And '%(_MSBuildProjectReferenceExistent.ReferenceOutputAssembly)' != 'false'"
+			XmlContent="%(_MSBuildProjectReferenceExistent.AdditionalPropertiesFromProject)"
+			Query="/AdditionalProjectProperties/*[local-name() = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)' or @Name = '%(_MSBuildProjectReferenceExistent.NearestTargetFramework)'][translate(OutputType, 'EXE', 'exe') = 'exe' and not(translate(IsAppExtension, 'TRUE', 'true') = 'true')]/MSBuildProjectFullPath/text()">
+			<Output TaskParameter="Result" ItemName="_ExecutableProjectReference" />
+		</XmlPeek>
+		<MacDevMessage
+			Warning="true"
+			Condition="'@(_ExecutableProjectReference)' != ''"
+			ResourceName="W7201"
+			FormatArguments="%(_ExecutableProjectReference.Identity)" />
+	</Target>
+
 	<PropertyGroup>
 		<BuildDependsOn>
 			_ValidateRuntimeIdentifiers;

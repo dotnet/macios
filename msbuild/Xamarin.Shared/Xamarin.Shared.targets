@@ -3875,7 +3875,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target
 		Name="_ExecutePostprocessAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
-		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
+		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>

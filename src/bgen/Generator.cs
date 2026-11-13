@@ -3869,7 +3869,9 @@ public partial class Generator : IMemberGatherer {
 				continue;
 			// skip case where the interface implemented comes from an already built assembly (e.g. monotouch.dll)
 			// e.g. Dispose won't have an [Export] since it's present to satisfy System.IDisposable
-			if (parent.FullName != "System.IDisposable") {
+			if (parent.FullName != "System.IDisposable" &&
+				parent.FullName != "System.Collections.IEnumerable" &&
+				!(parent.IsGenericType && parent.GetGenericTypeDefinition ().FullName == "System.Collections.Generic.IEnumerable`1")) {
 				foreach (var method in parent.GatherMethods (BindingFlags.Public | BindingFlags.Instance, this)) {
 					// Skip methods the interface implements (with a default implementation) unless they have an Export attributes
 					if (!method.IsAbstract) {
@@ -5077,6 +5079,57 @@ public partial class Generator : IMemberGatherer {
 		return false;
 	}
 
+	string? GetFastEnumerationElementType (Type type)
+	{
+		var attribute = AttributeManager.GetCustomAttribute<NSFastEnumerationAttribute> (type);
+		if (attribute is null) {
+			foreach (var iface in type.GetInterfaces ()) {
+				if (iface.IsUnavailable (this))
+					continue;
+				attribute = AttributeManager.GetCustomAttribute<NSFastEnumerationAttribute> (iface);
+				if (attribute is not null)
+					break;
+			}
+		}
+		if (attribute is null)
+			return null;
+
+		if (attribute.GenericParameterName is not null) {
+			var parameter = type.GetGenericArguments ().FirstOrDefault (v => v.Name == attribute.GenericParameterName);
+			if (parameter is null)
+				throw new BindingException (1130, true, type.FullName, attribute.GenericParameterName);
+			return TypeManager.FormatType (type, parameter);
+		}
+
+		var elementType = attribute.ElementType ?? TypeCache.NSObject;
+		if (elementType.IsValueType || (!IsNSObject (elementType) && !IsProtocolInterface (elementType, false) && !TypeCache.INativeObject.IsAssignableFrom (elementType)))
+			throw new BindingException (1130, true, type.FullName, elementType.FullName);
+		return TypeManager.FormatType (type, elementType);
+	}
+
+	void GenerateFastEnumeration (string elementType, bool isInterface = false, bool hidesBase = false)
+	{
+		var enumerable = $"global::System.Collections.Generic.IEnumerable<{elementType}>";
+		var enumerator = $"global::System.Collections.Generic.IEnumerator<{elementType}>";
+		var methodName = isInterface ? $"{enumerable}.GetEnumerator" : "GetEnumerator";
+		var modifiers = isInterface ? string.Empty : hidesBase ? "public new " : "public ";
+		if (!isInterface && BindingTouch.SupportsXmlDocumentation) {
+			print ("/// <summary>Returns an enumerator over the objects in this native collection.</summary>");
+			print ("/// <returns>An enumerator that uses the NSFastEnumeration protocol.</returns>");
+		}
+		print_generated_code ();
+		print ($"{modifiers}{enumerator} {methodName} ()");
+		print ("{");
+		print ($"\treturn new global::Foundation.NSFastEnumerator<{elementType}> (this);");
+		print ("}");
+		print_generated_code ();
+		print ("global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator ()");
+		print ("{");
+		print ($"\treturn (({enumerable}) this).GetEnumerator ();");
+		print ("}");
+		print ("");
+	}
+
 	void GenerateProtocolTypes (Type type, string class_visibility, string TypeName, string protocol_name, ProtocolAttribute protocolAttribute)
 	{
 		var protocol = AttributeManager.GetOneCustomAttribute<ProtocolAttribute> (type);
@@ -5233,7 +5286,9 @@ public partial class Generator : IMemberGatherer {
 		}
 
 		PrintXpcInterfaceAttribute (type);
-		print ("{0} partial interface I{1} : INativeObject, IDisposable{2}", class_visibility, TypeName, ifaces.Count () > 0 ? ", " : string.Empty);
+		var fastEnumerationElementType = GetFastEnumerationElementType (type);
+		var fastEnumerationInterface = fastEnumerationElementType is null ? string.Empty : $", global::System.Collections.Generic.IEnumerable<{fastEnumerationElementType}>";
+		print ("{0} partial interface I{1} : INativeObject, IDisposable{2}{3}", class_visibility, TypeName, fastEnumerationInterface, ifaces.Count () > 0 ? ", " : string.Empty);
 		indent++;
 		sb.Clear ();
 		foreach (var iface in ifaces) {
@@ -5256,6 +5311,9 @@ public partial class Generator : IMemberGatherer {
 
 		print ("{");
 		indent++;
+
+		if (fastEnumerationElementType is not null)
+			GenerateFastEnumeration (fastEnumerationElementType, isInterface: true);
 
 		foreach (var ctor in allProtocolConstructors) {
 			var minfo = new MemberInformation (this, this, ctor, type, null);
@@ -6141,6 +6199,13 @@ public partial class Generator : IMemberGatherer {
 			// followed by the protocol interface, followed by any other
 			// interfaces in ascending order
 			var implements_list = new List<string> ();
+			var fastEnumerationElementType = GetFastEnumerationElementType (type);
+			var baseFastEnumerationElementType = fastEnumerationElementType is null ? null : GetFastEnumerationElementType (base_type);
+			if (fastEnumerationElementType is not null) {
+				if (is_static_class || is_category_class)
+					throw new BindingException (1131, true, type.FullName);
+				implements_list.Add ($"global::System.Collections.Generic.IEnumerable<{fastEnumerationElementType}>");
+			}
 
 			foreach (var protocolType in type.GetInterfaces ()) {
 				if (!AttributeManager.HasAttribute<ProtocolAttribute> (protocolType)) {
@@ -6255,6 +6320,12 @@ public partial class Generator : IMemberGatherer {
 				   where_list);
 
 			indent++;
+
+			if (fastEnumerationElementType is not null && fastEnumerationElementType != baseFastEnumerationElementType) {
+				var hidesBaseEnumerator = baseFastEnumerationElementType is not null ||
+					base_type.GetMethods (BindingFlags.Public | BindingFlags.Instance).Any (v => v.Name == "GetEnumerator" && v.GetParameters ().Length == 0);
+				GenerateFastEnumeration (fastEnumerationElementType, hidesBase: hidesBaseEnumerator);
+			}
 
 			if (!is_model && !is_partial) {
 				foreach (var ea in selectors [type].OrderBy (s => s, StringComparer.Ordinal)) {

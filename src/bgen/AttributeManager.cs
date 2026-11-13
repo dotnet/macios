@@ -135,6 +135,8 @@ public class AttributeManager {
 			return typeof (NoMethodAttribute);
 		case "NotificationAttribute":
 			return typeof (NotificationAttribute);
+		case "NSFastEnumerationAttribute":
+			return typeof (NSFastEnumerationAttribute);
 		case "NullAllowedAttribute":
 			return typeof (NullAllowedAttribute);
 		case "ObjCRuntime.ArgumentSemantic":

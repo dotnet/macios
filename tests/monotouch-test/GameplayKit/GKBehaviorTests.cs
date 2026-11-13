@@ -9,11 +9,21 @@
 //
 
 using GameplayKit;
+using System.Linq;
 
 namespace MonoTouchFixtures.GamePlayKit {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class GKBehaviorTests {
+
+		[Test]
+		public void Enumeration ()
+		{
+			using var first = GKGoal.GetGoalToReachTargetSpeed (10);
+			using var second = GKGoal.GetGoalToReachTargetSpeed (15);
+			using var behavior = GKBehavior.FromGoals (new [] { first, second });
+			Assert.That (behavior.ToArray (), Is.EquivalentTo (new [] { first, second }), "Goals");
+		}
 
 		[Test]
 		public void ObjectForKeyedSubscriptTest ()

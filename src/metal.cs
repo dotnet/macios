@@ -7016,11 +7016,13 @@ namespace Metal {
 	}
 
 	interface IMTLLogContainer { }
+	interface IMTLFunctionLog { }
 
 	[iOS (14, 0), TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	[Protocol]
-	interface MTLLogContainer : INSFastEnumeration {
+	[NSFastEnumeration (typeof (IMTLFunctionLog))]
+	interface MTLLogContainer {
 
 	}
 

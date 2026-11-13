@@ -933,7 +933,8 @@ namespace ModelIO {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMaterial_Class/index.html">Apple documentation for <c>MDLMaterial</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-	interface MDLMaterial : MDLNamed, INSFastEnumeration {
+	[NSFastEnumeration (typeof (MDLMaterialProperty))]
+	interface MDLMaterial : MDLNamed {
 		/// <param name="name">To be added.</param>
 		/// <param name="scatteringFunction">To be added.</param>
 		/// <summary>Creates a new named material with the specified scattering function.</summary>
@@ -2250,7 +2251,8 @@ namespace ModelIO {
 
 	[MacCatalyst (13, 1)]
 	[Protocol]
-	interface MDLObjectContainerComponent : MDLComponent, INSFastEnumeration {
+	[NSFastEnumeration (typeof (MDLObject))]
+	interface MDLObjectContainerComponent : MDLComponent {
 		/// <param name="object">To be added.</param>
 		/// <summary>Adds <paramref name="object" /> to the list of objects that are contained by this IMDLObjectContainerComponent.</summary>
 		/// <remarks>To be added.</remarks>

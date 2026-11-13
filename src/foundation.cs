@@ -23172,7 +23172,8 @@ namespace Foundation {
 	interface NSOrderedCollectionDifference <TKey> : NSOrderedCollectionDifference {}
 	
 	[BaseType (typeof (NSObject))]
-	interface NSOrderedCollectionDifference : INSFastEnumeration
+	[NSFastEnumeration (typeof (NSOrderedCollectionChange))]
+	interface NSOrderedCollectionDifference
 	{
 		[Export ("initWithChanges:")]
 		NativeHandle Constructor (NSOrderedCollectionChange[] changes);

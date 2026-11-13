@@ -644,4 +644,10 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+	<data name="BI1130" xml:space="preserve">
+		<value>The [NSFastEnumeration] attribute on '{0}' specifies an invalid element type '{1}'. Use a native object type, a protocol type, or the name of a generic type parameter.</value>
+	</data>
+	<data name="BI1131" xml:space="preserve">
+		<value>The [NSFastEnumeration] attribute on '{0}' can't be used on a static binding or a category.</value>
+	</data>
 </root>

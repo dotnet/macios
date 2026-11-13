@@ -289,14 +289,12 @@ namespace Foundation {
 			return copy;
 		}
 
-#if false // https://github.com/dotnet/macios/issues/15577
-		[SupportedOSPlatform ("ios"), SupportedOSPlatform ("tvos"), SupportedOSPlatform ("macos")]
 		public void ApplyDifference (NSOrderedCollectionDifference<TKey> difference)
 		{
 			if (difference is null)
 				throw new ArgumentNullException (nameof (difference));
 			_ApplyDifference (difference.Handle);
+			GC.KeepAlive (difference);
 		}
-#endif
 	}
 }

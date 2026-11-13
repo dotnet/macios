@@ -7,9 +7,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using NUnit.Framework;
 
-using Xamarin.Tests;
-using Xamarin.Utils;
-
 namespace Cecil.Tests {
 	public partial class ConstructorTest {
 		static bool TryFindBaseConstructorCalled (MethodDefinition ctor, [NotNullWhen (true)] out MethodReference? ctorCalled, [NotNullWhen (false)] out string? failureReason)

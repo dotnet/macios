@@ -2558,7 +2558,7 @@ static size_t xamarin_coreclr_get_runtime_property (const char *key, char *value
 	if (dir == NULL)
 		return (size_t) -1;
 
-	size_t len = strlen (dir);
+	size_t len = strnlen (dir, PATH_MAX);
 	size_t required = len + 1; // include null terminator
 	if (value_buffer != NULL && value_buffer_size >= required)
 		memcpy (value_buffer, dir, required);

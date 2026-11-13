@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
 using Mono.Cecil.Cil;
-using Xamarin.Utils;
-using Xamarin.Tests;
 #nullable enable
 
 namespace Cecil.Tests {

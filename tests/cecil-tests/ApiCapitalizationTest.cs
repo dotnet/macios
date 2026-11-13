@@ -9,8 +9,6 @@ using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 using Mono.Cecil;
-using Xamarin.Tests;
-using Xamarin.Utils;
 using System.Configuration.Assemblies;
 using MethodAttributes = Mono.Cecil.MethodAttributes;
 using ICustomAttributeProvider = Mono.Cecil.ICustomAttributeProvider;

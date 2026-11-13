@@ -83,7 +83,7 @@ namespace Xharness.Jenkins {
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
 			this.TunnelBore = tunnelBore ?? throw new ArgumentNullException (nameof (tunnelBore));
 			Harness = harness ?? throw new ArgumentNullException (nameof (harness));
-			Simulators = new SimulatorLoader (processManager, new SimulatorSelector ());
+			Simulators = new SimulatorLoader (processManager, new SimulatorSelector (processManager.XcodeRoot));
 			Devices = new HardwareDeviceLoader (processManager);
 			testSelector = new TestSelector (this, new GitHub (harness, processManager));
 			testVariationsFactory = new TestVariationsFactory (this, processManager);
@@ -103,7 +103,7 @@ namespace Xharness.Jenkins {
 				return false;
 			}
 
-			if (!TestSelection.IsEnabled (TestLabel.SystemPermission) && project.Label == TestLabel.Introspection) {
+			if (Harness.IncludeSystemPermissionTests == false && project.Label == TestLabel.Introspection) {
 				MainLog.WriteLine ($"Ignoring {project.Name} with label {project.Label} because we cannot include the system permission tests");
 				return false;
 			}

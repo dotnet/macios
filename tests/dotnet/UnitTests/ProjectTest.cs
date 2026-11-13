@@ -282,6 +282,7 @@ namespace Xamarin.Tests {
 				"FSharpOptimizationCompressedDataB.fsharplibrary",
 				"FSharpSignatureCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedDataB.fsharplibrary",
+				"ILLink.Substitutions.xml",
 			};
 			if (platform != ApplePlatform.MacOSX)
 				expectedFSharpResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
@@ -486,6 +487,64 @@ namespace Xamarin.Tests {
 			// The native library is removed from the resources by the linker
 			var actualResources2 = ad2.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, false)]
+		public void NativeAotEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers, bool prepareAssemblies, bool postProcessAssemblies)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["PrepareAssemblies"] = prepareAssemblies.ToString ();
+			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
+			if (platform == ApplePlatform.iOS)
+				properties ["NativeLibName"] = "ios";
+
+			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
+			// Device and simulator frameworks share the binding project's output paths.
+			Clean (bindingProjectPath);
+			try {
+				DotNet.AssertBuild (projectPath, properties);
+
+				var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
+				using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
+				var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
+				var embeddedFramework = resource.GetResourceData ();
+				Assert.That (embeddedFramework.Length, Is.GreaterThan (0), "The binding must contain the embedded framework");
+				var executable = File.ReadAllBytes (GetNativeExecutable (platform, appPath));
+				Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
+
+				var substitutionsPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "nativeaot-resource-substitutions.xml");
+				if (prepareAssemblies) {
+					var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
+					Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
+						.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
+
+					var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
+					var result = DotNet.AssertBuild (projectPath, properties);
+					AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
+					Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
+
+					File.Delete (substitutionsPath);
+					result = DotNet.AssertBuild (projectPath, properties);
+					AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
+					Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
+				} else {
+					Assert.That (substitutionsPath, Does.Not.Exist, "ILLink removes native resources without a substitution file");
+				}
+			} finally {
+				Clean (bindingProjectPath);
+			}
 		}
 
 		[Test]
@@ -3306,6 +3365,33 @@ namespace Xamarin.Tests {
 			AssertWarningMessages (warnings, $"The property '{property}' has no effect when not using the Mono runtime (for instance when using CoreCLR).");
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void ExportedSymbolsFile (bool hasExportedSymbols)
+		{
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifiers = "ios-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath ("TrimmerMetadata", platform: platform);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["UseMonoRuntime"] = "false";
+			properties ["_ExportSymbolsExplicitly"] = "true";
+			if (hasExportedSymbols)
+				properties ["TestReferenceNativeSymbol"] = "xamarin_release_managed_ref";
+
+			var result = DotNet.AssertBuild (project_path, properties);
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "_ExportedSymbolsFile", out var exportedSymbolsFile), Is.True, "Exported symbols file property");
+			if (hasExportedSymbols) {
+				Assert.That (exportedSymbolsFile, Does.EndWith ("mtouch-symbols.list"), "Nonempty export list");
+				Assert.That (File.ReadAllLines (Path.Combine (GetObjDir (project_path, platform, runtimeIdentifiers), "mtouch-symbols.list")), Does.Contain ("_xamarin_release_managed_ref"), "Exported symbol");
+			} else {
+				Assert.That (exportedSymbolsFile, Is.EqualTo ("/dev/null"), "Empty export list must not require transferring an empty file to the remote Mac");
+			}
+		}
+
 		[Test]
 		// The trailing semi-colon for single-arch platforms is significant:
 		// it means we'll use "RuntimeIdentifiers" (plural) instead of "RuntimeIdentifier" (singular)
@@ -3688,6 +3774,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/LinkPresentation.framework/LinkPresentation",
 			"/System/Library/Frameworks/LinkSecurity.framework/LinkSecurity",
 			"/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication",
+			"/System/Library/Frameworks/LocalAuthenticationEmbeddedUI.framework/LocalAuthenticationEmbeddedUI",
 			"/System/Library/Frameworks/MapKit.framework/MapKit",
 			"/System/Library/Frameworks/MediaAccessibility.framework/MediaAccessibility",
 			"/System/Library/Frameworks/MediaPlayer.framework/MediaPlayer",
@@ -4435,6 +4522,39 @@ namespace Xamarin.Tests {
 				actualFrameworks.OrderBy (v => v).ToArray (),
 				Is.EquivalentTo (expectedFrameworks.OrderBy (v => v).ToArray ()),
 				"Frameworks");
+		}
+
+		[TestCase ("KEEP_LARIGHT", true)]
+		[TestCase ("KEEP_LAPERSISTEDRIGHT", true)]
+		[TestCase ("KEEP_LACONTEXT", false)]
+		public void LocalAuthenticationUILinking (string defineConstant, bool expected)
+		{
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifier = "ios-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			var projectPath = GetProjectPath ("ApiTestApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["AdditionalDefineConstants"] = defineConstant;
+			properties ["MtouchLink"] = "Full";
+			properties ["LinkMode"] = "Full";
+			properties ["UseInterpreter"] = "true";
+			DotNet.AssertBuild (projectPath, properties);
+			var executable = GetNativeExecutable (platform, appPath);
+			Assert.That (GetLinkedWithFrameworks (executable), Does.Contain ("/System/Library/Frameworks/LocalAuthentication.framework/LocalAuthentication"), "LocalAuthentication must be retained");
+			AssertLocalAuthenticationUILinked (executable, expected);
+		}
+
+		static void AssertLocalAuthenticationUILinked (string executable, bool expected)
+		{
+			const string library = "/System/Library/Frameworks/LocalAuthenticationEmbeddedUI.framework/LocalAuthenticationEmbeddedUI";
+			foreach (var file in MachO.Read (executable)) {
+				var commands = file.load_commands.OfType<DylibLoadCommand> ().Where (v => v.name == library).ToArray ();
+				Assert.That (commands.Length, Is.EqualTo (expected ? 1 : 0), "LocalAuthenticationEmbeddedUI load commands");
+				if (expected)
+					Assert.That (commands [0].cmd, Is.EqualTo ((uint) MachO.LoadCommands.LoadWeakDylib), "LocalAuthenticationEmbeddedUI must be weakly linked");
+			}
 		}
 
 		static HashSet<string> GetLinkedWithFrameworks (string path)

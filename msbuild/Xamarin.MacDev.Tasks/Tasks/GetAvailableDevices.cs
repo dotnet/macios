@@ -45,8 +45,13 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		System.Threading.Tasks.Task.WhenAll (new [] { devicectlTask, simctlTask }).Wait (cancellationTokenSource.Token);
 
 		var devices = new List<DeviceInfo> ();
-		devices.AddRange (devicectlTask.Result);
-		devices.AddRange (simctlTask.Result);
+		var simulators = simctlTask.Result.ToList ();
+		var simulatorUdids = new HashSet<string> (simulators.Select (d => d.Udid), StringComparer.OrdinalIgnoreCase);
+		foreach (var device in devicectlTask.Result) {
+			if (!simulatorUdids.Contains (device.Udid))
+				devices.Add (device);
+		}
+		devices.AddRange (simulators);
 
 		// filter to the current platform
 		foreach (var d in devices.Where (d => !d.Discarded && d.Platform != Platform))
@@ -133,15 +138,17 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	class DeviceInfo {
 		public ITaskItem Item { get; set; }
+		public string Udid { get; set; }
 		public IEnumerable<string> RuntimeIdentifiers { get; set; }
 		public ApplePlatform Platform { get; set; }
 		public IPhoneDeviceType DeviceType { get; set; }
 		public Version MinimumOSVersion { get; set; }
 		public string DiscardedReason { get; set; }
 		public bool Discarded { get => !string.IsNullOrEmpty (DiscardedReason); }
-		public DeviceInfo (ITaskItem item, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, string discardedReason)
+		public DeviceInfo (ITaskItem item, string udid, IEnumerable<string> runtimeIdentifiers, ApplePlatform platform, IPhoneDeviceType deviceType, Version minimumOSVersion, string discardedReason)
 		{
 			Item = item;
+			Udid = udid;
 			RuntimeIdentifiers = runtimeIdentifiers;
 			Platform = platform;
 			DeviceType = deviceType;
@@ -252,7 +259,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 			Version.TryParse (device.OSVersion, out var minimumOSVersion);
 
-			rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), discardedReason));
+			rv.Add (new DeviceInfo (item, udid, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), discardedReason));
 		}
 		return rv;
 	}
@@ -390,7 +397,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				}
 			}
 
-			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, discardedReason));
+			rv.Add (new DeviceInfo (item, device.Udid, runtimeIdentifiers, platform, deviceType, minimumOSVersion, discardedReason));
 		}
 		return rv;
 	}

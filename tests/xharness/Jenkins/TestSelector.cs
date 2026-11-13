@@ -208,8 +208,10 @@ namespace Xharness.Jenkins {
 			}
 
 			// special case to consider, since might set or remove all tests, we need to process it first
-			if (labelSelectedTests.ContainsKey ("all")) {
-				selection.SetEnabled ("all", labelSelectedTests ["all"]);
+			var includeAllTests = false;
+			if (labelSelectedTests.TryGetValue ("all", out var allTests)) {
+				selection.SetEnabled ("all", allTests);
+				includeAllTests = allTests;
 				labelSelectedTests.Remove ("all");
 			}
 
@@ -217,7 +219,10 @@ namespace Xharness.Jenkins {
 				selection.SetEnabled (entry.Key, entry.Value);
 			}
 
-			Harness.IncludeSystemPermissionTests = selection.IsEnabled (TestLabel.SystemPermission);
+			if (labelSelectedTests.TryGetValue ("system-permission", out var includeSystemPermissionTests))
+				Harness.IncludeSystemPermissionTests = includeSystemPermissionTests;
+			else if (includeAllTests)
+				Harness.IncludeSystemPermissionTests = true;
 
 			// old simulator tests is also a bit special:
 			// - enabled by default if using a beta Xcode, otherwise disabled by default

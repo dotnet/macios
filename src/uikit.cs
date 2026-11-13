@@ -5498,6 +5498,10 @@ namespace UIKit {
 		[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[Export ("paddingRemoved")]
 		bool PaddingRemoved { [Bind ("isPaddingRemoved")] get; [Bind ("setPaddingRemoved:")] set; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("axisBehavior", ArgumentSemantic.Assign)]
+		UIBarButtonItemAxisBehavior AxisBehavior { get; set; }
 	}
 
 	[Static]
@@ -10603,6 +10607,32 @@ namespace UIKit {
 		[Static]
 		[Export ("readableContentLayoutRegionWithCornerAdaptation:")]
 		UIViewLayoutRegion CreateReadableContentLayoutRegion (UIViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Static]
+		[Export ("layoutRegionForBarOnEdge:extent:")]
+		UIViewLayoutRegion CreateBarLayoutRegion (UIRectEdge edge, nfloat extent);
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Static]
+		[Export ("layoutRegionForBarOnDirectionalEdge:extent:")]
+		UIViewLayoutRegion CreateBarLayoutRegion (NSDirectionalRectEdge edge, nfloat extent);
+
+		/// <summary>Creates a bar layout region on a single edge using the system's default bar extent.</summary>
+		/// <param name="edge">The single edge on which to place the region.</param>
+		/// <returns>The bar layout region.</returns>
+		[NoTV, NoMacCatalyst, iOS (27, 2)]
+		[Static]
+		[Export ("layoutRegionForBarOnEdge:")]
+		UIViewLayoutRegion CreateBarLayoutRegion (UIRectEdge edge);
+
+		/// <summary>Creates a bar layout region on a single directional edge using the system's default bar extent.</summary>
+		/// <param name="edge">The single directional edge on which to place the region.</param>
+		/// <returns>The bar layout region.</returns>
+		[NoTV, NoMacCatalyst, iOS (27, 2)]
+		[Static]
+		[Export ("layoutRegionForBarOnDirectionalEdge:")]
+		UIViewLayoutRegion CreateBarLayoutRegion (NSDirectionalRectEdge edge);
 	}
 
 	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
@@ -13779,6 +13809,16 @@ namespace UIKit {
 		[NullAllowed] // by default this property is null
 		[Export ("title", ArgumentSemantic.Copy)]
 		string Title { get; set; }
+
+		/// <summary>Gets or sets the preferred alignment of the navigation bar's title.</summary>
+		/// <value>The preferred alignment. The default is <see cref="UINavigationItemTitleAlignment.Automatic" />.</value>
+		[NoTV, iOS (27, 2), MacCatalyst (27, 2)]
+		[Export ("titleAlignment", ArgumentSemantic.Assign)]
+		UINavigationItemTitleAlignment TitleAlignment { get; set; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("verticalBarCompressionBehavior", ArgumentSemantic.Assign)]
+		UIVerticalBarCompressionBehavior VerticalBarCompressionBehavior { get; set; }
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -22554,6 +22594,14 @@ namespace UIKit {
 		[Export ("layoutGuideForLayoutRegion:")]
 		UILayoutGuide GetLayoutGuide (UIViewLayoutRegion layoutRegion);
 
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("reservedRegionsOfKind:")]
+		UIViewReservedRegion [] GetReservedRegions (UIViewReservedRegionKind kind);
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("reservedRegionsOfKind:options:")]
+		UIViewReservedRegion [] GetReservedRegions (UIViewReservedRegionKind kind, UIViewReservedRegionQueryOptions options);
+
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("cornerConfiguration", ArgumentSemantic.Copy)]
 		UICornerConfiguration CornerConfiguration { get; set; }
@@ -23518,6 +23566,22 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (27, 0)]
 		[Export ("unregisterSceneAccessory:")]
 		void UnregisterSceneAccessory (UISceneAccessoryRegistration registration);
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[NullAllowed, Export ("arrangementViewController")]
+		UIArrangementViewController ArrangementViewController { get; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("preferredVerticalBarBehavior")]
+		UIVerticalBarBehavior PreferredVerticalBarBehavior { get; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[NullAllowed, Export ("childViewControllerForPreferredVerticalBarBehavior")]
+		UIViewController ChildViewControllerForPreferredVerticalBarBehavior { get; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("setNeedsUpdateOfVerticalBarConfiguration")]
+		void SetNeedsUpdateOfVerticalBarConfiguration ();
 	}
 
 	[MacCatalyst (13, 1)]
@@ -23946,6 +24010,20 @@ namespace UIKit {
 		[Sealed]
 		Class [] SystemTraitsAffectingImageLookup2 { get; }
 #endif
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Static]
+		[Export ("systemTraitsAffectingVerticalBarEdge")]
+		Class [] SystemTraitsAffectingVerticalBarEdge { get; }
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Export ("verticalBarEdge")]
+		UIVerticalBarEdge VerticalBarEdge { get; }
+
+		/// <summary>Gets the title alignment resolved by the navigation bar, or Automatic if it has not yet been resolved.</summary>
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
+		[Export ("navigationTitleAlignment", ArgumentSemantic.Assign)]
+		UINavigationItemTitleAlignment NavigationTitleAlignment { get; }
 
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("typesettingLanguage")]
@@ -24733,7 +24811,7 @@ namespace UIKit {
 		[Field ("UITextContentTypeSublocality")]
 		NSString Sublocality { get; }
 
-		/// <summary>Indicates a text fieldn address field that holds the name of a country.</summary>
+		/// <summary>Indicates a text field that holds the name of a country/region.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("UITextContentTypeCountryName")]
@@ -32323,6 +32401,16 @@ namespace UIKit {
 		[Static]
 		[Export ("externalNonInteractiveSceneAccessoryWithConfiguration:userInfo:")]
 		UISceneAccessory CreateExternalNonInteractive (UISceneConfiguration sceneConfiguration, NSObject userInfo);
+
+		[iOS (27, 1)]
+		[Static]
+		[Export ("cameraCaptureSceneAccessoryWithConfiguration:")]
+		UISceneAccessory CreateCameraCapture (UISceneConfiguration sceneConfiguration);
+
+		[iOS (27, 1)]
+		[Static]
+		[Export ("cameraCaptureSceneAccessoryWithConfiguration:userInfo:")]
+		UISceneAccessory CreateCameraCapture (UISceneConfiguration sceneConfiguration, NSObject userInfo);
 	}
 
 	[NoTV, NoMacCatalyst, iOS (27, 0)]
@@ -38523,6 +38611,12 @@ namespace UIKit {
 
 	}
 
+	/// <summary>A trait that reports the navigation bar's resolved title alignment.</summary>
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
+	[BaseType (typeof (NSObject))]
+	interface UITraitNavigationTitleAlignment : UINSIntegerTraitDefinition {
+	}
+
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	delegate void UIMenuElementProviderCreateHandler ([BlockCallback] UIMenuElementProviderCompletion handler);
 
@@ -38645,6 +38739,237 @@ namespace UIKit {
 		[Static]
 		[Export ("effectWithColor:")]
 		UIColorEffect Create ([NullAllowed] UIColor color);
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIArrangementViewState : NSCopying {
+		[Export ("zIndex")]
+		nint ZIndex { get; }
+
+		[Export ("splitAxis")]
+		UIAxis SplitAxis { get; }
+
+		[Export ("hidden")]
+		bool Hidden { [Bind ("isHidden")] get; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIArrangement : NSCopying { }
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (UIViewController))]
+	[DisableDefaultCtor]
+	interface UIArrangementViewController {
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Export ("updateArrangement:")]
+		void UpdateArrangement (UIArrangement arrangement);
+
+		[Export ("updateArrangement:animated:")]
+		void UpdateArrangement (UIArrangement arrangement, bool animated);
+
+		[Export ("stateForPlacement:")]
+		[return: NullAllowed]
+		UIArrangementViewState GetState (UIArrangementViewControllerViewPlacement placement);
+
+		[Export ("viewControllerForPlacement:")]
+		[return: NullAllowed]
+		UIViewController GetViewController (UIArrangementViewControllerViewPlacement placement);
+
+		[Export ("placementForViewController:")]
+		UIArrangementViewControllerViewPlacement GetPlacement (UIViewController viewController);
+
+		[Export ("setViewController:forPlacement:")]
+		void SetViewController ([NullAllowed] UIViewController viewController, UIArrangementViewControllerViewPlacement placement);
+
+		[Export ("setViewController:forPlacement:animated:")]
+		void SetViewController ([NullAllowed] UIViewController viewController, UIArrangementViewControllerViewPlacement placement, bool animated);
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIOverlayArrangementViewProperties : NSCopying {
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Export ("edge", ArgumentSemantic.Assign)]
+		NSDirectionalRectEdge Edge { get; set; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (UIArrangement))]
+	[DisableDefaultCtor]
+	interface UIOverlayArrangement {
+		[Static]
+		[Export ("overlayArrangement")]
+		UIOverlayArrangement Create ();
+
+		[Export ("axes", ArgumentSemantic.Assign)]
+		UIAxis Axes { get; set; }
+
+		[Export ("defaultViewProperties", ArgumentSemantic.Copy)]
+		UIOverlayArrangementViewProperties DefaultViewProperties { get; }
+
+		[Export ("setViewProperties:forPlacement:")]
+		void SetViewProperties (UIOverlayArrangementViewProperties viewProperties, UIArrangementViewControllerViewPlacement placement);
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISplitArrangementDimension : NSCopying {
+		[Static]
+		[Export ("automaticDimension")]
+		UISplitArrangementDimension CreateAutomatic ();
+
+		[Static]
+		[Export ("intrinsicDimension")]
+		UISplitArrangementDimension CreateIntrinsic ();
+
+		[Static]
+		[Export ("fractionalDimension:")]
+		UISplitArrangementDimension CreateFractional (nfloat fraction);
+
+		[Static]
+		[Export ("absoluteDimension:")]
+		UISplitArrangementDimension CreateAbsolute (nfloat absoluteValue);
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISplitArrangementDimensionRange : NSCopying {
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Export ("minimum", ArgumentSemantic.Copy)]
+		UISplitArrangementDimension Minimum { get; set; }
+
+		[Export ("preferred", ArgumentSemantic.Copy)]
+		UISplitArrangementDimension Preferred { get; set; }
+
+		[Export ("maximum", ArgumentSemantic.Copy)]
+		UISplitArrangementDimension Maximum { get; set; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISplitArrangementViewProperties : NSCopying {
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Export ("width", ArgumentSemantic.Copy)]
+		UISplitArrangementDimensionRange Width { get; set; }
+
+		[Export ("height", ArgumentSemantic.Copy)]
+		UISplitArrangementDimensionRange Height { get; set; }
+
+		[Export ("layoutPriority")]
+		nfloat LayoutPriority { get; set; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (UIArrangement))]
+	[DisableDefaultCtor]
+	interface UISplitArrangement {
+		[Static]
+		[Export ("splitArrangement")]
+		UISplitArrangement Create ();
+
+		[Export ("axes", ArgumentSemantic.Assign)]
+		UIAxis Axes { get; set; }
+
+		[Export ("defaultViewProperties", ArgumentSemantic.Copy)]
+		UISplitArrangementViewProperties DefaultViewProperties { get; }
+
+		[Export ("setViewProperties:forPlacement:")]
+		void SetViewProperties (UISplitArrangementViewProperties viewProperties, UIArrangementViewControllerViewPlacement placement);
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIHinge : NSCopying {
+		[Export ("status")]
+		UIHingeStatus Status { get; }
+
+		[Export ("angle")]
+		nfloat Angle { get; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIHingeInteractionUpdate : NSCopying {
+		[NullAllowed, Export ("hinge", ArgumentSemantic.Copy)]
+		UIHinge Hinge { get; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	delegate void UIHingeInteractionUpdateHandler (UIHingeInteraction interaction, UIHingeInteractionUpdate update);
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIHingeInteraction : UIInteraction {
+		[DesignatedInitializer]
+		[Export ("initWithUpdateHandler:")]
+		NativeHandle Constructor (UIHingeInteractionUpdateHandler updateHandler);
+
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; set; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	[Sealed]
+	interface UIViewReservedRegion : NSCopying {
+		[Export ("identifier")]
+		UIViewReservedRegionIdentifier Identifier { get; }
+
+		[Export ("kind")]
+		UIViewReservedRegionKind Kind { get; }
+
+		[Export ("frame")]
+		CGRect Frame { get; }
+
+		[Export ("margins")]
+		UIEdgeInsets Margins { get; }
+
+		[Export ("active")]
+		bool Active { [Bind ("isActive")] get; }
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	[Sealed]
+	interface UIViewReservedRegionIdentifier : NSCopying { }
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	[Sealed]
+	interface UIViewReservedRegionKind : NSCopying {
+		[Static]
+		[Export ("occlusionRegionKind")]
+		UIViewReservedRegionKind CreateOcclusion ();
+
+		[Static]
+		[Export ("divisionRegionKind")]
+		UIViewReservedRegionKind CreateDivision ();
 	}
 
 }

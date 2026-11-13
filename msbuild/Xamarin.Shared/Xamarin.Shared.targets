@@ -72,6 +72,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindWatchOS2AppBundle" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateBundleName" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetAvailableDevices" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetCachedFileHash" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetDirectories" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFiles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFileSystemEntries" AssemblyFile="$(_TaskAssemblyName)" />
@@ -682,6 +683,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
 			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
 			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+			<_CompileAppManifestInputLine Include="ValidateSceneManifest=$(ValidateSceneManifest)" />
 			<!-- @(_CompileAppManifestInputFile) contains additional files to use as Inputs -->
 			<_CompileAppManifestInputFile Include="$(_CompileAppManifestInputFile)" />
 			<_CompileAppManifestInputFile Include="@(_FontFilesToRegister)" />
@@ -703,7 +705,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifest"
 		Condition="'$(_BundleOriginalResources)' != 'true'"
 		DependsOnTargets="$(_CompileAppManifestDependsOn)"
-		Inputs="@(_CompileAppManifestInputFile)"
+		Inputs="@(_CompileAppManifestInputFile);$(AppBundleManifest)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
 
@@ -735,6 +737,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			TargetArchitectures="$(TargetArchitectures)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			Validate="$(_CreateAppManifest)"
+			ValidateSceneManifest="$(ValidateSceneManifest)"
 			>
 		</CompileAppManifest>
 	</Target>
@@ -856,6 +859,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- $(_CompiledEntitlements) will be passed to the native compiler, it's used to embed the entitlements in the executable -->
 			<Output TaskParameter="EntitlementsInExecutable" PropertyName="_CompiledEntitlements" />
+			<Output TaskParameter="EntitlementsInExecutableHash" PropertyName="_CompiledEntitlementsHash" />
 
 			<!-- $(_CompiledCodesignEntitlements) will be used only with Codesign tasks when building for device or desktop. MUST NOT BE SET for iOS Simulator builds. -->
 			<Output TaskParameter="EntitlementsInSignature" PropertyName="_CompiledCodesignEntitlements" />
@@ -3737,11 +3741,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_AddAppleApplicationArtifactMetadata"
-		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And Exists('$(_AppBundleManifestPath)')">
 		<ReadAppManifest
-			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
 			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
@@ -3806,7 +3810,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Name="_ExecutePrepareAssemblies"
 		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
 		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
-		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
+		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile);$(_NativeAOTResourceSubstitutions)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
 		<PrepareAssemblies
@@ -3845,6 +3849,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
+			<FileWrites Include="$(_NativeAOTResourceSubstitutions)" Condition="'$(_NativeAOTResourceSubstitutions)' != ''" />
 		</ItemGroup>
 	</Target>
 

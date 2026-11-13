@@ -449,6 +449,7 @@
 				_ProcessedTextureAtlasesPath=$(_ProcessedTextureAtlasesPath);
 				_ProcessedCoreMLModelsPath=$(_ProcessedCoreMLModelsPath);
 				_CompiledEntitlements=$(_CompiledEntitlements);
+				_CompiledEntitlementsHash=$(_CompiledEntitlementsHash);
 				_CompiledEntitlementsPath=$(_CompiledEntitlementsPath);
 			</_RidSpecificProperties>
 		</PropertyGroup>
@@ -859,6 +860,7 @@
 			<!-- The files the assembly-preparer writes its MSBuild output properties to (one per pass; read back in _SetDynamicRegistrationSupportedFeature and added to FileWrites). -->
 			<_AssemblyPreparerMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-preparer-msbuild-output.txt</_AssemblyPreparerMSBuildOutputFile>
 			<_AssemblyPostProcessorMSBuildOutputFile Condition="'$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)assembly-postprocessor-msbuild-output.txt</_AssemblyPostProcessorMSBuildOutputFile>
+			<_NativeAOTResourceSubstitutions Condition="'$(_UseNativeAot)' == 'true' And '$(PrepareAssemblies)' == 'true'">$(DeviceSpecificIntermediateOutputPath)nativeaot-resource-substitutions.xml</_NativeAOTResourceSubstitutions>
 
 			<!-- The directory where the linker puts *.items files that will be loaded in the _LoadLinkerOutput target -->
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
@@ -1519,6 +1521,8 @@
 			</ResolvedFileToPublish>
 			<FileWrites Include="@(_TypeMapAssemblies)" />
 			<FileWrites Include="@(_ManagedAssemblyToLinkFromLinker)" />
+			<FileWrites Include="@(_RegistrarFile)" />
+			<FileWrites Include="@(_RegistrarFile -> '%(AdditionalDependencies)')" />
 		</ItemGroup>
 		<PropertyGroup Condition="'$(RunILLink)' == 'true' And '$(_UseNativeAot)' == 'true' And @(_TrimmerRootDescriptorFromCustomLinkerSteps->Count()) &gt; 0">
 			<!-- When the custom linker steps produce xml root descriptors, those xml root descriptors may refer to types and members that are removed
@@ -2134,6 +2138,11 @@
 			<IlcReference Include="@(_ManagedAssemblyToLinkFromLinker)" />
 		</ItemGroup>
 
+		<!-- Assembly preparation keeps native resources available for extraction, but excludes them from ILC's output. -->
+		<ItemGroup>
+			<IlcArg Include="--substitution:$(_NativeAOTResourceSubstitutions)" Condition="'$(_NativeAOTResourceSubstitutions)' != ''" />
+		</ItemGroup>
+
 		<ItemGroup>
 			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
 			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
@@ -2217,12 +2226,14 @@
 			<_CompileNativeExecutableFile Include="@(_MainFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
-			<_CompileNativeExecutableFile Include="@(_RegistrarFile)">
+			<_CompileNativeExecutableFile Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' != '.o'">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
 			<_CompileNativeExecutableFile Include="@(_ReferencesFile)">
 				<OutputFile>$(_IntermediateNativeLibraryDir)%(Filename).o</OutputFile>
 			</_CompileNativeExecutableFile>
+			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<_NativeExecutableObjectFiles Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' == '.o'" />
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
 	</Target>
@@ -2369,7 +2380,7 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_NativeExecutableObjectFiles Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
+			<FileWrites Include="@(_CompileNativeExecutableFile -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -2458,7 +2469,7 @@
 
 	<Target Name="_ComputeLinkNativeExecutableInputs" Condition="'$(IsMacEnabled)' == 'true'">
 		<PropertyGroup>
-			<_ExportedSymbolsFile Condition="'$(_ExportedSymbolsFile)' == '' and '$(_MtouchSymbolsList)' == ''">/dev/null</_ExportedSymbolsFile> <!-- nothing to export -->
+			<_ExportedSymbolsFile Condition="'$(_ExportedSymbolsFile)' == '' And ('$(_MtouchSymbolsList)' == '' Or @(_ProcessedReferenceNativeSymbol->Count()) == 0)">/dev/null</_ExportedSymbolsFile> <!-- nothing to export -->
 			<_ExportedSymbolsFile Condition="'$(_ExportedSymbolsFile)' == ''">$(_MtouchSymbolsList)</_ExportedSymbolsFile>
 
 			<_NativeLinkCachePath>$(DeviceSpecificOutputPath)NativeLink.cache</_NativeLinkCachePath>
@@ -2544,6 +2555,7 @@
 			<_LinkNativeExecutableCache Include="@(_AllLinkerFlags)" />
 			<_LinkNativeExecutableCache Include="$(_DylibRPath)" />
 			<_LinkNativeExecutableCache Include="$(_CompiledEntitlements)" />
+			<_LinkNativeExecutableCache Include="$(_CompiledEntitlementsHash)" />
 			<_LinkNativeExecutableCache Include="$(_EmbeddedFrameworksRPath)" />
 			<_LinkNativeExecutableCache Include="@(_BindingLibraryFrameworks)" />
 			<_LinkNativeExecutableCache Include="@(_BindingLibraryLinkWith)" />

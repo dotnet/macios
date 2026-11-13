@@ -379,6 +379,18 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		NativeHandle Constructor (string str, [NullAllowed] NSDictionary attributes);
 
+		/// <summary>Creates an attributed string by copying the characters in a span.</summary>
+		/// <param name="str">The characters to copy.</param>
+		[Bind ("initWithString:")]
+		NativeHandle Constructor (ReadOnlySpan<char> str);
+
+		/// <summary>Creates an attributed string by copying the characters in a span and applying attributes.</summary>
+		/// <param name="str">The characters to copy.</param>
+		/// <param name="attributes">The attributes to apply, or <see langword="null" /> for no attributes.</param>
+		[Bind ("initWithString:attributes:")]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		NativeHandle Constructor (ReadOnlySpan<char> str, [NullAllowed] NSDictionary attributes);
+
 		[Export ("initWithAttributedString:")]
 		NativeHandle Constructor (NSAttributedString other);
 
@@ -5620,6 +5632,18 @@ namespace Foundation {
 
 		[Export ("initWithString:attributes:")]
 		NativeHandle Constructor (string str, [NullAllowed] NSDictionary attributes);
+
+		/// <summary>Creates a mutable attributed string by copying the characters in a span.</summary>
+		/// <param name="str">The characters to copy.</param>
+		[Bind ("initWithString:")]
+		NativeHandle Constructor (ReadOnlySpan<char> str);
+
+		/// <summary>Creates a mutable attributed string by copying the characters in a span and applying attributes.</summary>
+		/// <param name="str">The characters to copy.</param>
+		/// <param name="attributes">The attributes to apply, or <see langword="null" /> for no attributes.</param>
+		[Bind ("initWithString:attributes:")]
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		NativeHandle Constructor (ReadOnlySpan<char> str, [NullAllowed] NSDictionary attributes);
 
 		[Export ("initWithAttributedString:")]
 		NativeHandle Constructor (NSAttributedString other);

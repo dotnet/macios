@@ -353,6 +353,11 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The member '\*.\*' has a ReadOnlySpan&lt;char&gt; parameter and cannot be exported to Objective-C.
+
+Use `[Bind]` instead of `[Export]` for managed-only span overloads. Span parameters
+can be marshalled to native strings, but cannot be registered as native callbacks.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

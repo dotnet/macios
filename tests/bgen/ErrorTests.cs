@@ -92,6 +92,31 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void ExportedReadOnlySpanParameter (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = profile,
+			};
+			bgen.CreateTemporaryBinding ("""
+				using System;
+				using Foundation;
+
+				namespace SpanTests {
+					[BaseType (typeof (NSObject))]
+					interface SpanConsumer {
+						[Export ("consume:")]
+						void Consume (ReadOnlySpan<char> value);
+					}
+				}
+				""");
+
+			bgen.AssertExecuteError ("exported span parameter");
+			bgen.AssertError (1130, "The member 'SpanTests.SpanConsumer.Consume' has a ReadOnlySpan<char> parameter and cannot be exported to Objective-C. Use [Bind] instead of [Export] for managed-only span overloads.");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void BI1036 (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

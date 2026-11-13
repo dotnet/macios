@@ -20,6 +20,7 @@ public class TypeCache {
 	public Type System_Int64 { get; }
 	public Type System_IntPtr { get; }
 	public Type System_Object { get; }
+	public Type System_ReadOnlySpan_Char { get; }
 	public Type System_SByte { get; }
 	public Type System_String { get; }
 	public Type System_String_Array { get; }
@@ -196,6 +197,8 @@ public class TypeCache {
 
 		System_nint = Lookup (corlibAssembly, "System", "IntPtr");
 		System_nuint = Lookup (corlibAssembly, "System", "UIntPtr");
+		var runtimeAssembly = Universe.LoadFromAssemblyName ("System.Runtime");
+		System_ReadOnlySpan_Char = Lookup (runtimeAssembly, "System", "ReadOnlySpan`1").MakeGenericType (System_Char);
 		var interopAssembly = Universe.LoadFromAssemblyName ("System.Runtime.InteropServices");
 		System_nfloat = Lookup (interopAssembly, "System.Runtime.InteropServices", "NFloat");
 

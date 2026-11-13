@@ -221,6 +221,9 @@ public partial class Generator : IMemberGatherer {
 		if (TypeManager.IsNativeType (mai.Type))
 			return PrimitiveType (mai.Type, formatted);
 
+		if (mai.Type == TypeCache.System_ReadOnlySpan_Char)
+			return NativeHandleType;
+
 		if (mai.Type == TypeCache.System_String) {
 			if (mai.PlainString)
 				return "string";
@@ -830,6 +833,9 @@ public partial class Generator : IMemberGatherer {
 
 		if (TypeManager.IsNativeType (pi.ParameterType))
 			return safe_name;
+
+		if (pi.ParameterType == TypeCache.System_ReadOnlySpan_Char)
+			return "ns" + pi.Name;
 
 		if (pi.ParameterType == TypeCache.System_String) {
 			var mai = new MarshalInfo (this, mi, pi);
@@ -3374,7 +3380,7 @@ public partial class Generator : IMemberGatherer {
 			}
 
 			// Construct conversions
-			if (mai.Type == TypeCache.System_String && !mai.PlainString) {
+			if ((mai.Type == TypeCache.System_String && !mai.PlainString) || mai.Type == TypeCache.System_ReadOnlySpan_Char) {
 				bool probe_null = null_allowed_override || AttributeManager.IsNullable (pi);
 
 				convs.AppendFormat (GenerateMarshalString (probe_null), pi.Name, pi.Name.GetSafeParamName ());
@@ -4639,6 +4645,9 @@ public partial class Generator : IMemberGatherer {
 		// skip if we provide a manual implementation that would conflict with the generated code
 		if (AttributeManager.HasAttribute<ManualAttribute> (mi))
 			return;
+
+		if (minfo.is_export && mi.GetParameters ().Any (pi => pi.ParameterType == TypeCache.System_ReadOnlySpan_Char))
+			throw new BindingException (1130, true, mi.DeclaringType?.FullName, mi.Name);
 
 		foreach (var pi in mi.GetParameters ())
 			if (AttributeManager.HasAttribute<RetainAttribute> (pi)) {

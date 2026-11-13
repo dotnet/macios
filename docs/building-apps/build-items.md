@@ -340,7 +340,8 @@ This item group is deprecated, use [NativeReference](#nativereference) instead.
 
 An item group that lists all the native libraries that should be included in a binding project.
 
-This item group is deprecated, use [NativeReference](#nativereference) instead.
+This item group is deprecated. Use [NativeReference](#nativereference) instead.
+It produces a build warning when targeting .NET 12 or earlier, and a build error when targeting .NET 13 or later.
 
 ## PartialAppManifest
 

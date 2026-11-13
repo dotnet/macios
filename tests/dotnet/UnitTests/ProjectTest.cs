@@ -1030,6 +1030,38 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		[TestCase (ApplePlatform.MacOSX)]
+		public void BindingWithObsoleteNativeLibrary (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath ("BindingOldStyle", platform: platform);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties ();
+			properties ["NoBindingEmbedding"] = "true";
+			DotNet.AssertRestore (project_path, properties);
+
+			foreach (var version in new [] { "12.0", "13.0" }) {
+				properties ["TargetFrameworkVersion"] = version;
+				var expectError = version != "12.0";
+				var rv = DotNet.Execute ("build", project_path, properties, assert_success: !expectError, target: "_PrepareNativeReferences", extraArguments: ["--no-restore"]);
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
+				Assert.That (rv.ExitCode, expectError ? Is.Not.EqualTo (0) : Is.EqualTo (0), $"Exit code (.NET {version})");
+				Assert.That (errors.Length, Is.EqualTo (expectError ? 1 : 0), $"Error count (.NET {version})");
+				Assert.That (warnings.Length, Is.EqualTo (expectError ? 0 : 1), $"Warning count (.NET {version})");
+				if (expectError)
+					Assert.That (errors [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is not supported in .NET 13+. Use NativeReference instead."), $"Error message (.NET {version})");
+				else
+					Assert.That (warnings [0].Message, Is.EqualTo ("The ObjcBindingNativeLibrary item group is deprecated and will not be supported in .NET 13+. Use NativeReference instead."), $"Warning message (.NET {version})");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
 		public void BindingWithDefaultCompileInclude (ApplePlatform platform)
 		{
 			var project = "BindingWithDefaultCompileInclude";

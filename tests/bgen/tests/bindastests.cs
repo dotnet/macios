@@ -42,6 +42,22 @@ namespace BindAsTests {
 		[Static, Export ("sbyteMethodS")]
 		NSNumber SbyteMethodS ();
 
+		[return: BindAs (typeof (int)), Release]
+		[Static, Export ("newInt")]
+		NSNumber CreateInt ();
+
+		[return: BindAs (typeof (int?)), Release]
+		[Static, Export ("newNullableInt")]
+		NSNumber CreateNullableInt ();
+
+		[return: BindAs (typeof (CAScroll?)), Release]
+		[Export ("newNullableScroll")]
+		NSNumber CreateNullableScroll ();
+
+		[return: BindAs (typeof (float []))]
+		[Export ("getFloats")]
+		NSNumber [] GetFloats ();
+
 		[return: BindAs (typeof (CMTime))]
 		[Export ("cmtimeMethod")]
 		NSValue CMTimeMethod ();

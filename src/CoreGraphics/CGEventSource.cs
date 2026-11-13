@@ -27,7 +27,7 @@ namespace CoreGraphics {
 		{
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static IntPtr CGEventSourceCreate (CGEventSourceStateID stateID);
 
 		/// <param name="stateID">To be added.</param>
@@ -38,10 +38,10 @@ namespace CoreGraphics {
 		{
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static int /* CGEventSourceKeyboardType = uint32_t */ CGEventSourceGetKeyboardType (IntPtr handle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSourceSetKeyboardType (IntPtr handle, int /* CGEventSourceKeyboardType = uint32_t */ keyboardType);
 
 		/// <summary>To be added.</summary>
@@ -56,7 +56,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGEventSourceStateID CGEventSourceGetSourceStateID (IntPtr handle);
 
 		/// <summary>To be added.</summary>
@@ -69,10 +69,10 @@ namespace CoreGraphics {
 		}
 
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static double CGEventSourceGetPixelsPerLine (IntPtr handle);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSourceSetPixelsPerLine (IntPtr handle, double value);
 
 		/// <summary>To be added.</summary>
@@ -87,7 +87,7 @@ namespace CoreGraphics {
 			}
 		}
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGEventSourceButtonState (CGEventSourceStateID stateID, CGMouseButton button);
 
 		/// <param name="stateID">To be added.</param>
@@ -98,7 +98,7 @@ namespace CoreGraphics {
 		public static bool GetButtonState (CGEventSourceStateID stateID, CGMouseButton button)
 			=> CGEventSourceButtonState (stateID, button) != 0;
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static byte CGEventSourceKeyState (CGEventSourceStateID stateID, ushort keycode);
 
 		/// <param name="stateID">To be added.</param>
@@ -109,33 +109,31 @@ namespace CoreGraphics {
 		public static bool GetKeyState (CGEventSourceStateID stateID, ushort keycode)
 			=> CGEventSourceKeyState (stateID, keycode) != 0;
 
-		/// <param name="stateID">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSourceFlagsState")]
+		/// <summary>Gets the current event flags for an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <returns>The modifier and event flags in the specified state table.</returns>
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceFlagsState")]
 		public extern static CGEventFlags GetFlagsState (CGEventSourceStateID stateID);
 
-		/// <param name="stateID">To be added.</param>
-		///         <param name="eventType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSourceSecondsSinceLastEventType")]
+		/// <summary>Gets the elapsed time since the last event of the specified type was recorded in an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <param name="eventType">The type of event to query.</param>
+		/// <returns>The number of seconds since the last event of the specified type.</returns>
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceSecondsSinceLastEventType")]
 		public extern static double GetSecondsSinceLastEventType (CGEventSourceStateID stateID, CGEventType eventType);
 
-		/// <param name="stateID">To be added.</param>
-		///         <param name="eventType">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary, EntryPoint = "CGEventSourceCounterForEventType")]
+		/// <summary>Gets the number of events of the specified type recorded in an event source state table.</summary>
+		/// <param name="stateID">The event source state table to query.</param>
+		/// <param name="eventType">The type of event to count.</param>
+		/// <returns>The number of events of the specified type recorded since the Window Server started.</returns>
+		/// <remarks>Key autorepeat events are not counted.</remarks>
+		[DllImport (Constants.CoreGraphicsLibrary, EntryPoint = "CGEventSourceCounterForEventType")]
 		public extern static uint /* uint32_t */ GetCounterForEventType (CGEventSourceStateID stateID, CGEventType eventType);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSourceSetUserData (IntPtr handle, long data);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static long CGEventSourceGetUserData (IntPtr handle);
 
 		/// <summary>To be added.</summary>
@@ -151,7 +149,7 @@ namespace CoreGraphics {
 		}
 
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSourceSetLocalEventsFilterDuringSuppressionState (IntPtr handle, CGEventFilterMask filter, CGEventSuppressionState state);
 
 		/// <param name="filter">To be added.</param>
@@ -169,7 +167,7 @@ namespace CoreGraphics {
 		public void SetLocalEventsFilterDuringSupressionState (CGEventFilterMask filter, CGEventSuppressionState state) => SetLocalEventsFilterDuringSuppressionState (filter, state);
 #endif
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static CGEventFilterMask CGEventSourceGetLocalEventsFilterDuringSuppressionState (IntPtr handle, CGEventSuppressionState state);
 
 		/// <param name="state">To be added.</param>
@@ -187,10 +185,10 @@ namespace CoreGraphics {
 		public CGEventFilterMask GetLocalEventsFilterDuringSupressionState (CGEventSuppressionState state) => GetLocalEventsFilterDuringSuppressionState (state);
 #endif
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static void CGEventSourceSetLocalEventsSuppressionInterval (IntPtr handle, double seconds);
 
-		[DllImport (Constants.ApplicationServicesCoreGraphicsLibrary)]
+		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static double CGEventSourceGetLocalEventsSuppressionInterval (IntPtr handle);
 
 		/// <summary>To be added.</summary>

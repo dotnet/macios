@@ -8,6 +8,8 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class MauiTest : TestBaseClass {
+		// When bumping the .NET version, ignore these tests until MAUI has packages for that version.
+		[Ignore ("MAUI doesn't support .NET 12 yet (https://github.com/dotnet/macios/issues/27060)")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void BuildMauiApp (ApplePlatform platform, string runtimeIdentifiers)
@@ -65,6 +67,7 @@ namespace Xamarin.Tests {
 			Assert.That (linkModeValue, Is.EqualTo ("SdkOnly"), "LinkMode");
 		}
 
+		[Ignore ("MAUI doesn't support .NET 12 yet (https://github.com/dotnet/macios/issues/27060)")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		// [Category ("RemoteWindows")]
 		public void BuildMauiAppWithDeviceSpecificBuilds (ApplePlatform platform, string runtimeIdentifiers)

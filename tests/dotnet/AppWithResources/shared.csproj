@@ -26,9 +26,9 @@
 		<CoreMLModel Include="../*.mlmodel" />
 
 		<!-- This is just pure evil 😈 -->
-		<BundleResource Include="../arm64.txt" Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" />
-		<BundleResource Include="../arm.txt" Condition="$(RuntimeIdentifier.EndsWith('-arm'))" />
-		<BundleResource Include="../x64.txt" Condition="$(RuntimeIdentifier.EndsWith('-x64'))" />
+		<BundleResource Include="../arm64.txt" LogicalName="arm64.txt" Condition="$(RuntimeIdentifier.EndsWith('-arm64'))" />
+		<BundleResource Include="../arm.txt" LogicalName="arm.txt" Condition="$(RuntimeIdentifier.EndsWith('-arm'))" />
+		<BundleResource Include="../x64.txt" LogicalName="x64.txt" Condition="$(RuntimeIdentifier.EndsWith('-x64'))" />
 	</ItemGroup>
 </Project>
 

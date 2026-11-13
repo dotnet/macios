@@ -164,7 +164,6 @@ namespace Introspection {
 					break;
 				return "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CFNetwork.framework/CFNetwork";
 			case "CoreText":
-			case "CoreGraphics":
 				if (Mac.IsAtLeast (10, 8))
 					break;
 				return string.Format ("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/{0}.framework/{0}", libraryName);

@@ -294,7 +294,9 @@ namespace Xamarin.Tests {
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+			var rv = DotNet.AssertBuildFailure (project_path, properties);
+			AssertErrorMessages (BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray (),
+				"Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
 		}
 
 		[Category ("RemoteWindows")]
@@ -315,6 +317,8 @@ namespace Xamarin.Tests {
 
 			var result = DotNet.AssertBuild (projectPath, properties, timeout: TimeSpan.FromMinutes (15));
 			AssertThatLinkerExecuted (result);
+			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "_ExportedSymbolsFile", out var exportedSymbolsFile), Is.True, "Exported symbols file property");
+			Assert.That (exportedSymbolsFile, Is.EqualTo ("/dev/null"), "Empty export list must not require transferring an empty file to the remote Mac");
 
 			var assemblyPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers), "linked", "TrimmerMetadataLibrary.dll");
 			Assert.That (assemblyPath, Does.Exist, "Linked library should be copied back to Windows");

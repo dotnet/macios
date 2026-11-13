@@ -1217,5 +1217,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0042Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Keep all uses of a fixed pointer inside the fixed statement, or explicitly pin the memory for the entire lifetime of the returned pointer..
+        /// </summary>
+        internal static string RBI0043Description {
+            get {
+                return ResourceManager.GetString("RBI0043Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do not return a pointer obtained from a fixed statement; the managed memory is no longer pinned when the caller uses it.
+        /// </summary>
+        internal static string RBI0043MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0043MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed pointer escapes its pinned lifetime.
+        /// </summary>
+        internal static string RBI0043Title {
+            get {
+                return ResourceManager.GetString("RBI0043Title", resourceCulture);
+            }
+        }
     }
 }

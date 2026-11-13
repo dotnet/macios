@@ -9,6 +9,8 @@ using UIKit;
 #nullable enable
 
 namespace NS {
+	delegate void RequiredCompletionCallback ([BlockCallback] Action completionHandler);
+
 	[BaseType (typeof (NSObject))]
 	interface Widget {
 		// === Properties ===
@@ -72,6 +74,12 @@ namespace NS {
 		// Method with mixed nullable/non-nullable Action parameter
 		[Export ("doSomethingElse:completionHandler:")]
 		void DoSomethingElse (NSObject obj, Action<NSObject?, NSError> completionHandler);
+
+		[Export ("prompt:defaultText:completionHandler:")]
+		void Prompt (string prompt, [NullAllowed] string defaultText, Action<string?> completionHandler);
+
+		[Export ("withRequiredCompletion:")]
+		void WithRequiredCompletion (RequiredCompletionCallback callback);
 
 		// Async method with nullable NSError in completion handler
 		[Async]

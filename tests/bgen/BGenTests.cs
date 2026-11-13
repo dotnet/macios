@@ -1946,6 +1946,24 @@ namespace GeneratorTests {
 			// Method with mixed nullable/non-nullable Action parameter
 			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError>"), "DoSomethingElse should have mixed nullability in method parameter");
 
+			Assert.That (contents, Does.Contain ("Action<string?>"), "Prompt should allow a null completion result");
+			Assert.That (contents, Does.Contain ("ThrowArgumentNullException (nameof (prompt))"), "Required method arguments must still reject null");
+			var stringInvoker = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes
+				.Where (v => v.Name.StartsWith ("NID", StringComparison.Ordinal))
+				.SelectMany (v => v.Methods)
+				.Single (v => v.Name == "Invoke" && v.Parameters.Count == 1 && v.Parameters [0].ParameterType.FullName == "System.String");
+			Assert.That (stringInvoker.Body.Instructions
+				.Where (v => v.Operand is MethodReference)
+				.Select (v => ((MethodReference) v.Operand).Name),
+				Does.Not.Contain ("ThrowArgumentNullException"), "The native completion handler must accept null when the user cancels");
+
+			var callbackInvoker = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes
+				.Single (v => v.Name == "NIDRequiredCompletionCallback").Methods.Single (v => v.Name == "Invoke");
+			Assert.That (callbackInvoker.Body.Instructions
+				.Where (v => v.Operand is MethodReference)
+				.Select (v => ((MethodReference) v.Operand).Name),
+				Does.Contain ("ThrowArgumentNullException"), "Required nested callbacks must still reject null");
+
 			// Async method: completion handler with nullable NSError should generate Tuple<bool,NSError?>
 			Assert.That (contents, Does.Contain ("Action<bool, NSError?>"), "ConfirmAcquired should have nullable NSError in method parameter");
 			Assert.That (contents, Does.Contain ("Tuple<bool,NSError?>"), "ConfirmAcquired async should generate Tuple with nullable NSError");

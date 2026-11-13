@@ -210,6 +210,26 @@ The default value of this property `false` in .NET 9, and `true` in .NET 10+.
 > [!NOTE]
 > File an issue if you find that you need to disable this feature, as it's possible that the option to disable it will be removed in future.
 
+## CheckForEventAndDelegateMismatches
+
+Controls whether the generated bindings diagnose conflicts between events and
+Objective-C delegate objects. When set to `true`, mixing events with a custom
+delegate in a way that overwrites one of them throws an exception. When set to
+`false`, these checks are disabled.
+
+This property is emitted as the
+`ObjCRuntime.Runtime.CheckForEventAndDelegateMismatches` runtime feature switch.
+It takes effect even when trimming is disabled: application initialization sets
+the `[NS|UI]Application.CheckForEventAndDelegateMismatches` field when the checks
+are enabled. The field can still be set to `false` at runtime to disable them.
+
+When trimming is enabled and this property is `false`, the trimmer removes the
+check code and, unless otherwise referenced, the field. Setting the field to
+`true` at runtime cannot restore checks removed by the trimmer.
+
+If this value is not specified, the checks are enabled in debug builds and
+disabled in release builds, independently of debugger support.
+
 ## CheckForIllegalCrossThreadCalls
 
 Controls whether the UI thread checks (the `[NS|UI]Application.EnsureUIThread`

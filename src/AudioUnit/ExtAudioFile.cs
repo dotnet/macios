@@ -331,7 +331,11 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static ExtAudioFile? CreateWithUrl (NSUrl url, AudioFileType fileType, in AudioStreamBasicDescription inStreamDesc, AudioFileFlags fileFlags, out ExtAudioFileError error)
+#else
 		public static ExtAudioFile? CreateWithUrl (NSUrl url, AudioFileType fileType, AudioStreamBasicDescription inStreamDesc, AudioFileFlags fileFlags, out ExtAudioFileError error)
+#endif
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
@@ -349,7 +353,11 @@ namespace AudioUnit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public static ExtAudioFile? CreateWithUrl (CFUrl url, AudioFileType fileType, in AudioStreamBasicDescription inStreamDesc, AudioFileFlags flag, out ExtAudioFileError error)
+#else
 		public static ExtAudioFile? CreateWithUrl (CFUrl url, AudioFileType fileType, AudioStreamBasicDescription inStreamDesc, AudioFileFlags flag, out ExtAudioFileError error)
+#endif
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
@@ -368,7 +376,11 @@ namespace AudioUnit {
 		///         <remarks>To be added.</remarks>
 		public static ExtAudioFile CreateWithUrl (CFUrl url,
 			AudioFileType fileType,
+#if XAMCORE_5_0
+			in AudioStreamBasicDescription inStreamDesc,
+#else
 			AudioStreamBasicDescription inStreamDesc,
+#endif
 			//AudioChannelLayout channelLayout, 
 			AudioFileFlags flag)
 		{
@@ -387,11 +399,12 @@ namespace AudioUnit {
 			return audioFile;
 		}
 
-		static ExtAudioFile? CreateWithUrl (IntPtr urlHandle, AudioFileType fileType, AudioStreamBasicDescription inStreamDesc, AudioFileFlags flag, out ExtAudioFileError error)
+		static ExtAudioFile? CreateWithUrl (IntPtr urlHandle, AudioFileType fileType, in AudioStreamBasicDescription inStreamDesc, AudioFileFlags flag, out ExtAudioFileError error)
 		{
 			IntPtr ptr;
 			unsafe {
-				error = (ExtAudioFileError) ExtAudioFileCreateWithUrl (urlHandle, fileType, &inStreamDesc, IntPtr.Zero, (uint) flag, &ptr);
+				fixed (AudioStreamBasicDescription* streamDescPtr = &inStreamDesc)
+					error = (ExtAudioFileError) ExtAudioFileCreateWithUrl (urlHandle, fileType, streamDescPtr, IntPtr.Zero, (uint) flag, &ptr);
 			}
 			if (error != ExtAudioFileError.OK || ptr == IntPtr.Zero)
 				return null;

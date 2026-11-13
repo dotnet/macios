@@ -72,7 +72,11 @@ namespace Foundation {
 		/// <param name="left">The first value to compare.</param>
 		/// <param name="right">The second value to compare.</param>
 		/// <returns>An <see cref="NSComparisonResult"/> indicating the ordering of the two values.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSComparisonResult Compare (in NSDecimal left, in NSDecimal right)
+#else
 		public unsafe static NSComparisonResult Compare (ref NSDecimal left, ref NSDecimal right)
+#endif
 		{
 			fixed (NSDecimal* leftPtr = &left, rightPtr = &right) {
 				return (NSComparisonResult) (long) NSDecimalCompare (leftPtr, rightPtr);
@@ -86,7 +90,11 @@ namespace Foundation {
 		/// <param name="number">The number to round.</param>
 		/// <param name="scale">The number of decimal places to round to.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
+#if XAMCORE_5_0
+		public unsafe static void Round (out NSDecimal result, in NSDecimal number, nint scale, NSRoundingMode mode)
+#else
 		public unsafe static void Round (out NSDecimal result, ref NSDecimal number, nint scale, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
@@ -119,7 +127,11 @@ namespace Foundation {
 		/// <param name="right">The second value to add.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError Add (out NSDecimal result, in NSDecimal left, in NSDecimal right, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError Add (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
@@ -139,7 +151,11 @@ namespace Foundation {
 		/// <param name="right">The value to subtract.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError Subtract (out NSDecimal result, in NSDecimal left, in NSDecimal right, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError Subtract (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
@@ -159,7 +175,11 @@ namespace Foundation {
 		/// <param name="right">The second value to multiply.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError Multiply (out NSDecimal result, in NSDecimal left, in NSDecimal right, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError Multiply (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
@@ -179,7 +199,11 @@ namespace Foundation {
 		/// <param name="right">The divisor.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError Divide (out NSDecimal result, in NSDecimal left, in NSDecimal right, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError Divide (out NSDecimal result, ref NSDecimal left, ref NSDecimal right, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, leftPtr = &left, rightPtr = &right) {
@@ -199,7 +223,11 @@ namespace Foundation {
 		/// <param name="power">The exponent.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError Power (out NSDecimal result, in NSDecimal number, nint power, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError Power (out NSDecimal result, ref NSDecimal number, nint power, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
@@ -219,7 +247,11 @@ namespace Foundation {
 		/// <param name="power10">The power of 10 to multiply by.</param>
 		/// <param name="mode">The <see cref="NSRoundingMode"/> to use.</param>
 		/// <returns>An <see cref="NSCalculationError"/> indicating whether the operation succeeded or failed.</returns>
+#if XAMCORE_5_0
+		public unsafe static NSCalculationError MultiplyByPowerOf10 (out NSDecimal result, in NSDecimal number, short power10, NSRoundingMode mode)
+#else
 		public unsafe static NSCalculationError MultiplyByPowerOf10 (out NSDecimal result, ref NSDecimal number, short power10, NSRoundingMode mode)
+#endif
 		{
 			result = default (NSDecimal);
 			fixed (NSDecimal* resultPtr = &result, numberPtr = &number) {
@@ -256,7 +288,11 @@ namespace Foundation {
 		{
 			NSDecimal result;
 
+#if XAMCORE_5_0
+			Add (out result, in left, in right, NSRoundingMode.Plain);
+#else
 			Add (out result, ref left, ref right, NSRoundingMode.Plain);
+#endif
 			return result;
 		}
 
@@ -268,7 +304,11 @@ namespace Foundation {
 		{
 			NSDecimal result;
 
+#if XAMCORE_5_0
+			Subtract (out result, in left, in right, NSRoundingMode.Plain);
+#else
 			Subtract (out result, ref left, ref right, NSRoundingMode.Plain);
+#endif
 			return result;
 		}
 
@@ -280,7 +320,11 @@ namespace Foundation {
 		{
 			NSDecimal result;
 
+#if XAMCORE_5_0
+			Multiply (out result, in left, in right, NSRoundingMode.Plain);
+#else
 			Multiply (out result, ref left, ref right, NSRoundingMode.Plain);
+#endif
 			return result;
 		}
 
@@ -292,7 +336,11 @@ namespace Foundation {
 		{
 			NSDecimal result;
 
+#if XAMCORE_5_0
+			Divide (out result, in left, in right, NSRoundingMode.Plain);
+#else
 			Divide (out result, ref left, ref right, NSRoundingMode.Plain);
+#endif
 			return result;
 		}
 
@@ -302,7 +350,11 @@ namespace Foundation {
 		/// <returns><see langword="true"/> if the values are equal; otherwise, <see langword="false"/>.</returns>
 		public static bool operator == (NSDecimal left, NSDecimal right)
 		{
+#if XAMCORE_5_0
+			return Compare (in left, in right) == NSComparisonResult.Same;
+#else
 			return Compare (ref left, ref right) == NSComparisonResult.Same;
+#endif
 		}
 
 		/// <summary>Determines whether two <see cref="NSDecimal"/> values are not equal.</summary>
@@ -311,7 +363,11 @@ namespace Foundation {
 		/// <returns><see langword="true"/> if the values are not equal; otherwise, <see langword="false"/>.</returns>
 		public static bool operator != (NSDecimal left, NSDecimal right)
 		{
+#if XAMCORE_5_0
+			return Compare (in left, in right) != NSComparisonResult.Same;
+#else
 			return Compare (ref left, ref right) != NSComparisonResult.Same;
+#endif
 		}
 
 		/// <summary>Implicitly converts an <see cref="int"/> to an <see cref="NSDecimal"/>.</summary>

@@ -21,17 +21,31 @@ namespace MonoTouchFixtures.CoreMedia {
 		[Test]
 		public void CreateForImageBuffer ()
 		{
-			var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB);
+			using var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB);
 
 			CMFormatDescriptionError fde;
-			var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde);
+			using var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde);
+			Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.None), "Format");
 
-			var sampleTiming = new CMSampleTimingInfo ();
+			var sampleTiming = new CMSampleTimingInfo {
+				Duration = new CMTime (1, 30),
+				PresentationTimeStamp = new CMTime (90, 30),
+				DecodeTimeStamp = new CMTime (89, 30),
+			};
+			var expected = sampleTiming;
 
 			CMSampleBufferError sbe;
-			var sb = CMSampleBuffer.CreateForImageBuffer (pixelBuffer, true, desc, sampleTiming, out sbe);
+#if XAMCORE_5_0
+			using var sb = CMSampleBuffer.CreateForImageBuffer (pixelBuffer, true, desc, in sampleTiming, out sbe);
+#else
+			using var sb = CMSampleBuffer.CreateForImageBuffer (pixelBuffer, true, desc, sampleTiming, out sbe);
+#endif
 			Assert.That (sb, Is.Not.Null, "#1");
 			Assert.That (sbe, Is.EqualTo (CMSampleBufferError.None), "#2");
+			Assert.That (sb.Duration, Is.EqualTo (expected.Duration), "Duration");
+			Assert.That (sb.PresentationTimeStamp, Is.EqualTo (expected.PresentationTimeStamp), "PresentationTimeStamp");
+			Assert.That (sb.DecodeTimeStamp, Is.EqualTo (expected.DecodeTimeStamp), "DecodeTimeStamp");
+			Assert.That (sampleTiming, Is.EqualTo (expected), "Input");
 		}
 
 		[Test]
@@ -80,10 +94,23 @@ namespace MonoTouchFixtures.CoreMedia {
 			using (var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB))
 			using (var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde)) {
 				CMSampleBufferError sbe;
-				var sti = new CMSampleTimingInfo ();
+				var sti = new CMSampleTimingInfo {
+					Duration = new CMTime (1, 30),
+					PresentationTimeStamp = new CMTime (90, 30),
+					DecodeTimeStamp = new CMTime (89, 30),
+				};
+				var expected = sti;
+#if XAMCORE_5_0
+				using (var sb = CMSampleBuffer.CreateReadyWithImageBuffer (pixelBuffer, desc, in sti, out sbe)) {
+#else
 				using (var sb = CMSampleBuffer.CreateReadyWithImageBuffer (pixelBuffer, desc, ref sti, out sbe)) {
+#endif
 					Assert.That (sb.Handle, Is.Not.EqualTo (IntPtr.Zero), "CMSampleBuffer");
 					Assert.That (sbe, Is.EqualTo (CMSampleBufferError.None), "CMSampleBufferError");
+					Assert.That (sb.Duration, Is.EqualTo (expected.Duration), "Duration");
+					Assert.That (sb.PresentationTimeStamp, Is.EqualTo (expected.PresentationTimeStamp), "PresentationTimeStamp");
+					Assert.That (sb.DecodeTimeStamp, Is.EqualTo (expected.DecodeTimeStamp), "DecodeTimeStamp");
+					Assert.That (sti, Is.EqualTo (expected), "Input");
 				}
 			}
 		}

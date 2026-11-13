@@ -214,13 +214,23 @@ namespace CoreGraphics {
 		{
 		}
 
+		unsafe static IntPtr Create (CGDataConsumer dataConsumer, in CGRect mediaBox, CGPDFInfo? info)
+		{
+			fixed (CGRect* mediaBoxPtr = &mediaBox)
+				return Create (dataConsumer, mediaBoxPtr, info);
+		}
+
 		/// <param name="dataConsumer">To be added.</param>
 		///         <param name="mediaBox">To be added.</param>
 		///         <param name="info">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe CGContextPDF (CGDataConsumer dataConsumer, in CGRect mediaBox, CGPDFInfo? info) :
+#else
 		public unsafe CGContextPDF (CGDataConsumer dataConsumer, CGRect mediaBox, CGPDFInfo? info) :
-			this (dataConsumer, &mediaBox, info)
+#endif
+			base (Create (dataConsumer, in mediaBox, info), true)
 		{
 		}
 
@@ -228,8 +238,12 @@ namespace CoreGraphics {
 		///         <param name="mediaBox">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe CGContextPDF (CGDataConsumer dataConsumer, in CGRect mediaBox) :
+#else
 		public unsafe CGContextPDF (CGDataConsumer dataConsumer, CGRect mediaBox) :
-			this (dataConsumer, &mediaBox, null)
+#endif
+			base (Create (dataConsumer, in mediaBox, null), true)
 		{
 		}
 
@@ -263,13 +277,23 @@ namespace CoreGraphics {
 		{
 		}
 
+		unsafe static IntPtr Create (NSUrl url, in CGRect mediaBox, CGPDFInfo? info)
+		{
+			fixed (CGRect* mediaBoxPtr = &mediaBox)
+				return Create (url, mediaBoxPtr, info);
+		}
+
 		/// <param name="url">To be added.</param>
 		///         <param name="mediaBox">To be added.</param>
 		///         <param name="info">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public unsafe CGContextPDF (NSUrl url, in CGRect mediaBox, CGPDFInfo? info) :
+#else
 		public unsafe CGContextPDF (NSUrl url, CGRect mediaBox, CGPDFInfo? info) :
-			this (url, &mediaBox, info)
+#endif
+			base (Create (url, in mediaBox, info), true)
 		{
 		}
 
@@ -278,8 +302,12 @@ namespace CoreGraphics {
 		///         <summary>Creates a new CGContext that records its commands into a PDF file with the mediaBox dimensions stored in the specified url.</summary>
 		///         <remarks>
 		///         </remarks>
+#if XAMCORE_5_0
+		public unsafe CGContextPDF (NSUrl url, in CGRect mediaBox) :
+#else
 		public unsafe CGContextPDF (NSUrl url, CGRect mediaBox) :
-			this (url, &mediaBox, null)
+#endif
+			base (Create (url, in mediaBox, null), true)
 		{
 		}
 

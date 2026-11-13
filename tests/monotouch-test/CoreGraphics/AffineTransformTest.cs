@@ -15,6 +15,72 @@ namespace MonoTouchFixtures.CoreGraphics {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AffineTransformTest {
+		static void AssertTransform (CGAffineTransform actual, CGAffineTransform expected, string message)
+		{
+			Assert.That ((double) actual.A, Is.EqualTo ((double) expected.A).Within (0.00001), message + " A");
+			Assert.That ((double) actual.B, Is.EqualTo ((double) expected.B).Within (0.00001), message + " B");
+			Assert.That ((double) actual.C, Is.EqualTo ((double) expected.C).Within (0.00001), message + " C");
+			Assert.That ((double) actual.D, Is.EqualTo ((double) expected.D).Within (0.00001), message + " D");
+			Assert.That ((double) actual.Tx, Is.EqualTo ((double) expected.Tx).Within (0.00001), message + " Tx");
+			Assert.That ((double) actual.Ty, Is.EqualTo ((double) expected.Ty).Within (0.00001), message + " Ty");
+		}
+
+		[Test]
+		public void StaticTransformInputs ()
+		{
+			var a = new CGAffineTransform (1, 2, 3, 4, 5, 6);
+			var b = new CGAffineTransform (7, 8, 9, 10, 11, 12);
+			var savedA = a;
+			var savedB = b;
+			var product = new CGAffineTransform (25, 28, 57, 64, 100, 112);
+			var square = new CGAffineTransform (7, 10, 15, 22, 28, 40);
+			var scaled = new CGAffineTransform (2, 4, 9, 12, 5, 6);
+			var translated = new CGAffineTransform (1, 2, 3, 4, 36, 52);
+			var rotated = new CGAffineTransform (3, 4, -1, -2, 5, 6);
+			var angle = (nfloat) (Math.PI / 2);
+#if XAMCORE_5_0
+			AssertTransform (CGAffineTransform.Multiply (in a, in b), product, "Static multiply");
+			AssertTransform (CGAffineTransform.Multiply (in a, in a), square, "Static self multiply");
+			AssertTransform (CGAffineTransform.Scale (in a, 2, 3), scaled, "Static scale");
+			AssertTransform (CGAffineTransform.Translate (in a, 7, 8), translated, "Static translate");
+			AssertTransform (CGAffineTransform.Rotate (in a, angle), rotated, "Static rotate");
+#else
+			AssertTransform (CGAffineTransform.Multiply (a, b), product, "Static multiply");
+			AssertTransform (CGAffineTransform.Multiply (a, a), square, "Static self multiply");
+			AssertTransform (CGAffineTransform.Scale (a, 2, 3), scaled, "Static scale");
+			AssertTransform (CGAffineTransform.Translate (a, 7, 8), translated, "Static translate");
+			AssertTransform (CGAffineTransform.Rotate (a, angle), rotated, "Static rotate");
+#endif
+			Assert.That (a, Is.EqualTo (savedA), "First input unchanged");
+			Assert.That (b, Is.EqualTo (savedB), "Second input unchanged");
+			AssertTransform (a * b, product, "Operator");
+			var instance = a;
+			instance.Multiply (b);
+			AssertTransform (instance, product, "Instance multiply");
+			instance = a;
+			instance.Multiply (instance);
+			AssertTransform (instance, square, "Instance self multiply");
+			instance = a;
+			instance.Scale (2, 3, MatrixOrder.Prepend);
+			AssertTransform (instance, scaled, "Prepend scale");
+			instance = a;
+			instance.Translate (7, 8, MatrixOrder.Prepend);
+			AssertTransform (instance, translated, "Prepend translate");
+			instance = a;
+			instance.Rotate (angle, MatrixOrder.Prepend);
+			AssertTransform (instance, rotated, "Prepend rotate");
+			instance = a;
+			instance.Scale (2, 3);
+			AssertTransform (instance, new CGAffineTransform (2, 6, 6, 12, 10, 18), "Default scale");
+			instance = a;
+			instance.Translate (7, 8);
+			AssertTransform (instance, new CGAffineTransform (1, 2, 3, 4, 12, 14), "Default translate");
+			instance = a;
+			instance.Rotate (angle);
+			AssertTransform (instance, new CGAffineTransform (-2, 1, -4, 3, -6, 5), "Default rotate");
+			Assert.That (b, Is.EqualTo (savedB), "Instance multiply input unchanged");
+		}
+
 		[Test]
 		public void Ctor ()
 		{

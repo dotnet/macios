@@ -15,6 +15,83 @@ namespace MonoTouchFixtures.CoreGraphics {
 	[Preserve (AllMembers = true)]
 	public class PDFContextTest {
 
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		public void MediaBoxInputs (bool useUrl, bool withInfo)
+		{
+			var mediaBox = new CGRect (10, 20, 200, 300);
+			var saved = mediaBox;
+			var path = System.IO.Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.CommonDocuments), Guid.NewGuid () + ".pdf");
+			using var url = NSUrl.FromFilename (path);
+			using var data = new NSMutableData ();
+			using var consumer = new CGDataConsumer (data);
+			var info = new CGPDFInfo { Title = "Media box input" };
+			try {
+#if XAMCORE_5_0
+				using var context = useUrl
+					? (withInfo ? new CGContextPDF (url, in mediaBox, info) : new CGContextPDF (url, in mediaBox))
+					: (withInfo ? new CGContextPDF (consumer, in mediaBox, info) : new CGContextPDF (consumer, in mediaBox));
+#else
+				using var context = useUrl
+					? (withInfo ? new CGContextPDF (url, mediaBox, info) : new CGContextPDF (url, mediaBox))
+					: (withInfo ? new CGContextPDF (consumer, mediaBox, info) : new CGContextPDF (consumer, mediaBox));
+#endif
+				context.BeginPage ((CGPDFPageInfo) null);
+				context.FillRect (new CGRect (20, 30, 40, 50));
+				context.EndPage ();
+				context.Close ();
+				using var provider = useUrl ? new CGDataProvider (path) : new CGDataProvider (data);
+				using var document = new CGPDFDocument (provider);
+				Assert.That (document.Pages, Is.EqualTo ((nint) 1), "Page count");
+				using var page = document.GetPage (1);
+				Assert.That (page.GetBoxRect (CGPDFBox.Media), Is.EqualTo (saved), "Page media box");
+				if (withInfo) {
+					Assert.That (document.GetInfo ().GetString ("Title", out var title), Is.True, "Title exists");
+					Assert.That (title, Is.EqualTo (info.Title), "Title");
+				}
+				Assert.That (mediaBox, Is.EqualTo (saved), "Input unchanged");
+			} finally {
+				if (System.IO.File.Exists (path))
+					System.IO.File.Delete (path);
+			}
+		}
+
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		public void DefaultMediaBox (bool useUrl, bool withInfo)
+		{
+			var path = System.IO.Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.CommonDocuments), Guid.NewGuid () + ".pdf");
+			using var url = NSUrl.FromFilename (path);
+			using var data = new NSMutableData ();
+			using var consumer = new CGDataConsumer (data);
+			var info = new CGPDFInfo { Title = "Default media box" };
+			try {
+				using var context = useUrl
+					? (withInfo ? new CGContextPDF (url, info) : new CGContextPDF (url))
+					: (withInfo ? new CGContextPDF (consumer, info) : new CGContextPDF (consumer));
+				context.BeginPage ((CGPDFPageInfo) null);
+				context.FillRect (new CGRect (20, 30, 40, 50));
+				context.EndPage ();
+				context.Close ();
+				using var provider = useUrl ? new CGDataProvider (path) : new CGDataProvider (data);
+				using var document = new CGPDFDocument (provider);
+				Assert.That (document.Pages, Is.EqualTo ((nint) 1), "Page count");
+				using var page = document.GetPage (1);
+				Assert.That (page.GetBoxRect (CGPDFBox.Media), Is.EqualTo (new CGRect (0, 0, 612, 792)), "Default page media box");
+				if (withInfo) {
+					Assert.That (document.GetInfo ().GetString ("Title", out var title), Is.True, "Title exists");
+					Assert.That (title, Is.EqualTo (info.Title), "Title");
+				}
+			} finally {
+				if (System.IO.File.Exists (path))
+					System.IO.File.Delete (path);
+			}
+		}
+
 		static string filename;
 
 		static PDFContextTest ()

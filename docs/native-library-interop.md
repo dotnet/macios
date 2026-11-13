@@ -19,6 +19,11 @@ the build process will attempt to create an XCFramework from the specified Xcode
 output will be added as a `@(NativeReference)` to the .NET project so that it can be bound and have its
 API surfaced via an [API definition][0] file.
 
+Frameworks installed in the Xcode archive, including dynamic framework dependencies,
+are each packaged as a separate XCFramework and added as a `@(NativeReference)`.
+This ensures that dynamic dependencies are also included in applications consuming the binding.
+The Xcode project must be configured to include these dependencies in its archive.
+
 Please see the [build-items](building-apps/build-items.md) docs for more information about
 the `@(XcodeProject)` build action.
 

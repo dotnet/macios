@@ -1,4 +1,4 @@
-AppBundleSize: 11,035,077 bytes (10,776.4 KB = 10.5 MB)
+AppBundleSize: 11,035,329 bytes (10,776.7 KB = 10.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.tvOS.TypeMap.dll:
     16,384 bytes (16.0 KB = 0.0 MB)
@@ -7,31 +7,31 @@ _Microsoft.tvOS.TypeMaps.dll:
 _SizeTestApp.TypeMap.dll:
     2,560 bytes (2.5 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/Info.plist:
-    777 bytes (0.8 KB = 0.0 MB)
+    813 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
     4,115,424 bytes (4,019.0 KB = 3.9 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
-    819 bytes (0.8 KB = 0.0 MB)
+    855 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:
     90,576 bytes (88.5 KB = 0.1 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/Info.plist:
-    821 bytes (0.8 KB = 0.0 MB)
+    857 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native:
     1,393,640 bytes (1,361.0 KB = 1.3 MB)
 Frameworks/libSystem.Native.framework/Info.plist:
-    791 bytes (0.8 KB = 0.0 MB)
+    827 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Native.framework/libSystem.Native:
     143,672 bytes (140.3 KB = 0.1 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist:
-    847 bytes (0.8 KB = 0.0 MB)
+    883 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple:
     216,728 bytes (211.6 KB = 0.2 MB)
 Frameworks/SizeTestApp.r2r.framework/Info.plist:
-    789 bytes (0.8 KB = 0.0 MB)
+    825 bytes (0.8 KB = 0.0 MB)
 Frameworks/SizeTestApp.r2r.framework/SizeTestApp.r2r:
     3,396,256 bytes (3,316.7 KB = 3.2 MB)
 Info.plist:
-    1,105 bytes (1.1 KB = 0.0 MB)
+    1,141 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
     64,512 bytes (63.0 KB = 0.1 MB)
 PkgInfo:

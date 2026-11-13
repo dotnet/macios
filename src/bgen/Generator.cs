@@ -5288,6 +5288,8 @@ public partial class Generator : IMemberGatherer {
 			// Tell the trimmer to not remove any instance method/property if the interface itself isn't trimmed away.
 			// These members are required for the registrar to determine if a particular implementing method
 			// implements a member from a protocol or not (and thus expose it to Objective-C).
+			// Assembly preparation removes these dependencies when registrar metadata can be trimmed:
+			// registration runs before trimming, and post-processing can consult the pre-trim assemblies.
 			// Note: the non-empty static cctor is somewhat ugly, a better way might be to emit a
 			// linker description file (which supports conditional preservation better).
 			// Ref: https://github.com/dotnet/runtime/issues/37352#issuecomment-644385807

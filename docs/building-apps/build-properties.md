@@ -551,6 +551,12 @@ needed, making the app smaller).
 
 Set this property to `true` or `false` to override the computed default.
 
+When assembly preparation is enabled and the trimmable static registrar is used,
+disabling dynamic registration also allows unused protocol members and their
+metadata dependencies to be trimmed. The registrar reads the members before
+trimming, and post-processing can retrieve missing metadata from the pre-trim
+assemblies. Dependencies on protocol wrappers are preserved.
+
 Removing the dynamic registrar requires a static registrar (`Registrar=static` or
 `Registrar=managed-static`) and trimming, so setting this property has no effect (and the
 build warns) when those conditions aren't met.

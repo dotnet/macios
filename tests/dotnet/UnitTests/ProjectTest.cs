@@ -4406,6 +4406,39 @@ namespace Xamarin.Tests {
 				"Frameworks");
 		}
 
+		[TestCase (false, false)]
+		[TestCase (true, false)]
+		[TestCase (false, true)]
+		public void OptionalProtocolMemberLinking (bool implementCallbacks, bool dynamicRegistrationSupported)
+		{
+			var platform = ApplePlatform.MacOSX;
+			var runtimeIdentifier = "osx-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			var projectPath = GetProjectPath ("ApiTestApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			properties ["AdditionalDefineConstants"] = implementCallbacks ? "KEEP_APPLICATION_DELEGATE;IMPLEMENT_OPTIONAL_CALLBACKS" : "KEEP_APPLICATION_DELEGATE";
+			properties ["LinkMode"] = "Full";
+			properties ["TrimMode"] = "full";
+			properties ["Registrar"] = "trimmable-static";
+			properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported ? "true" : "false";
+			DotNet.AssertBuild (projectPath, properties);
+
+			var executable = GetNativeExecutable (platform, appPath);
+			var frameworks = GetLinkedWithFrameworks (executable);
+			foreach (var framework in new [] { "CloudKit", "Intents" }) {
+				var matches = frameworks.Where (v => v.StartsWith ($"/System/Library/Frameworks/{framework}.framework/", StringComparison.Ordinal)).ToArray ();
+				Assert.That (matches.Length, Is.EqualTo (implementCallbacks || dynamicRegistrationSupported ? 1 : 0), framework);
+			}
+			if (CanExecute (platform, runtimeIdentifier)) {
+				var output = ExecuteWithMagicWordAndAssert (executable);
+				if (implementCallbacks)
+					Assert.That (output, Does.Contain ("Optional protocol callbacks invoked."), "Native callback dispatch");
+			}
+		}
+
 		[TestCase ("KEEP_LARIGHT", true)]
 		[TestCase ("KEEP_LAPERSISTEDRIGHT", true)]
 		[TestCase ("KEEP_LACONTEXT", false)]

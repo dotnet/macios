@@ -390,6 +390,13 @@ namespace Xharness {
 					Filter = "",
 				},
 				new {
+					Label = TestLabel.Generator,
+					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "analyzers", "Microsoft.Macios.Analyzers.Tests.csproj")),
+					Name = "Apple SDK Analyzer tests",
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Filter = "",
+				},
+				new {
 					Label = TestLabel.DotnetTest,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "dotnet", "UnitTests", "DotNetUnitTests.csproj")),
 					Name = "DotNet tests",

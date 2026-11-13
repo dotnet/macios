@@ -17,6 +17,8 @@
 		<ClangSharpPackageVersion>21.1.8.3</ClangSharpPackageVersion>
 		<ICSharpCodeNRefactoryPackageVersion>5.5.1</ICSharpCodeNRefactoryPackageVersion>
 		<libclangPackageVersion>21.1.8</libclangPackageVersion>
+		<MicrosoftCodeAnalysisCSharpPackageVersion>4.9.2</MicrosoftCodeAnalysisCSharpPackageVersion>
+		<MicrosoftCodeAnalysisAnalyzersPackageVersion>3.11.0</MicrosoftCodeAnalysisAnalyzersPackageVersion>
 		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
 		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
 		<NUnit3TestAdapterPackageVersion>6.2.0</NUnit3TestAdapterPackageVersion>

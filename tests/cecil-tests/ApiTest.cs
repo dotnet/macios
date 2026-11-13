@@ -18,6 +18,23 @@ namespace Cecil.Tests {
 
 	[TestFixture]
 	public partial class ApiTest {
+		[Test]
+		public void TypeNamesDifferingOnlyByCase ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var failures = Helper.NetPlatformAssemblyDefinitions
+				.SelectMany (info => info.Assembly.EnumerateTypes ())
+				.Select (type => type.FullName)
+				.Distinct (StringComparer.Ordinal)
+				.GroupBy (name => name, StringComparer.OrdinalIgnoreCase)
+				.Where (group => group.Count () > 1)
+				.Select (group => string.Join (", ", group.OrderBy (name => name, StringComparer.Ordinal)))
+				.ToHashSet (StringComparer.Ordinal);
+
+			Helper.AssertFailures (failures, knownFailuresTypeNamesDifferingOnlyByCase, nameof (knownFailuresTypeNamesDifferingOnlyByCase), "Type full names must not differ only by case across platforms");
+		}
+
 		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
 		public void ARConfiguration_GetSupportedVideoFormats (AssemblyInfo info)
 		{

@@ -7181,12 +7181,22 @@ namespace WebKit {
 
 	[iOS (14, 5)]
 	[MacCatalyst (14, 5)]
+#if XAMCORE_5_0
 	[Native]
+#else
+	[Native (ConvertToNative = "global::WebKit.WKMediaPlaybackStateExtensions.ToNative", ConvertToManaged = "global::WebKit.WKMediaPlaybackStateExtensions.ToManaged")]
+#endif
 	enum WKMediaPlaybackState : ulong {
-		None,
-		Paused,
-		Suspended,
-		Playing,
+		None = 0,
+#if XAMCORE_5_0
+		Paused = 2,
+		Suspended = 3,
+		Playing = 1,
+#else
+		Paused = 1,
+		Suspended = 2,
+		Playing = 3,
+#endif
 	}
 
 	interface IWKDownloadDelegate { }

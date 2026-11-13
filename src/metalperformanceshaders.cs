@@ -346,27 +346,54 @@ namespace MetalPerformanceShaders {
 		[Export ("zeroHistogram")]
 		bool ZeroHistogram { get; set; }
 
+#if XAMCORE_5_0
 		/// <summary>Gets the configuration of the histogram.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The configuration of the histogram.</value>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
+#else
+		[Internal]
+		[Export ("histogramInfo")]
+		MPSImageHistogramInfo_Blittable _HistogramInfo {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+		}
+
+		/// <summary>Gets the configuration of the histogram.</summary>
+		/// <value>The configuration of the histogram.</value>
+		[Wrap ("_HistogramInfo.ToMPSImageHistogramInfo ()", IsVirtual = true)]
+		MPSImageHistogramInfo HistogramInfo { get; }
+#endif
 
 		// Could not initialize an instance of the type 'MetalPerformanceShaders.MPSImageHistogram': the native 'initWithDevice:' method returned nil.
 		//		[Export ("initWithDevice:")]
 		//		NativeHandle Constructor (IMTLDevice device);
 
+#if XAMCORE_5_0
+		/// <summary>Creates a new <see cref="MPSImageHistogram" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
 		/// <param name="device">The device on which the histogram filter will be run.</param>
 		/// <param name="histogramInfo">Configuration data for the histogram.</param>
-		/// <summary>Creates a new <c>MPSImageHistogram</c> for the specified <paramref name="device" />.</summary>
-		/// <remarks>To be added.</remarks>
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#else
+		[Export ("initWithDevice:histogramInfo:")]
+		[DesignatedInitializer]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		[Internal]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo_Blittable histogramInfo);
+
+		/// <summary>Creates a new <see cref="MPSImageHistogram" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
+		/// <param name="device">The device on which the histogram filter will be run.</param>
+		/// <param name="histogramInfo">Configuration data for the histogram.</param>
+		[DesignatedInitializer]
+		[Wrap ("this (device, ref histogramInfo.ToBlittable ())")]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <param name="commandBuffer">To be added.</param>
 		/// <param name="source">To be added.</param>
@@ -404,23 +431,50 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageHistogramEqualization {
+#if XAMCORE_5_0
+		/// <summary>Creates a new <see cref="MPSImageHistogramEqualization" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
 		/// <param name="device">The device on which the histogram equalization will be run.</param>
 		/// <param name="histogramInfo">The histogram format.</param>
-		/// <summary>Creates a new <c>MPSImageHistogramEqualization</c> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
-		/// <remarks>To be added.</remarks>
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#else
+		[Export ("initWithDevice:histogramInfo:")]
+		[DesignatedInitializer]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		[Internal]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo_Blittable histogramInfo);
 
+		/// <summary>Creates a new <see cref="MPSImageHistogramEqualization" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
+		/// <param name="device">The device on which the histogram equalization will be run.</param>
+		/// <param name="histogramInfo">The histogram format.</param>
+		[DesignatedInitializer]
+		[Wrap ("this (device, ref histogramInfo.ToBlittable ())")]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
+
+#if XAMCORE_5_0
 		/// <summary>Gets the configuration of the current histogram.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The configuration of the current histogram.</value>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
+#else
+		[Internal]
+		[Export ("histogramInfo")]
+		MPSImageHistogramInfo_Blittable _HistogramInfo {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+		}
+
+		/// <summary>Gets the configuration of the current histogram.</summary>
+		/// <value>The configuration of the current histogram.</value>
+		[Wrap ("_HistogramInfo.ToMPSImageHistogramInfo ()", IsVirtual = true)]
+		MPSImageHistogramInfo HistogramInfo { get; }
+#endif
 
 		/// <param name="commandBuffer">The command buffer in which to encode the transformation.</param>
 		/// <param name="source">The source image.</param>
@@ -452,23 +506,50 @@ namespace MetalPerformanceShaders {
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageHistogramSpecification {
+#if XAMCORE_5_0
+		/// <summary>Creates a new <see cref="MPSImageHistogramSpecification" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
 		/// <param name="device">The device on which the histogram specification will be run.</param>
 		/// <param name="histogramInfo">The histogram format.</param>
-		/// <summary>Creates a new <c>MPSImageHistogramSpecification</c> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
-		/// <remarks>To be added.</remarks>
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#else
+		[Export ("initWithDevice:histogramInfo:")]
+		[DesignatedInitializer]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		[Internal]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo_Blittable histogramInfo);
 
+		/// <summary>Creates a new <see cref="MPSImageHistogramSpecification" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
+		/// <param name="device">The device on which the histogram specification will be run.</param>
+		/// <param name="histogramInfo">The histogram format.</param>
+		[DesignatedInitializer]
+		[Wrap ("this (device, ref histogramInfo.ToBlittable ())")]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
+
+#if XAMCORE_5_0
 		/// <summary>Gets the configuration of the current and desired histograms.</summary>
-		///         <value>The configuration of the current and desired histograms.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The configuration of the current and desired histograms.</value>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
+#else
+		[Internal]
+		[Export ("histogramInfo")]
+		MPSImageHistogramInfo_Blittable _HistogramInfo {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+		}
+
+		/// <summary>Gets the configuration of the current and desired histograms.</summary>
+		/// <value>The configuration of the current and desired histograms.</value>
+		[Wrap ("_HistogramInfo.ToMPSImageHistogramInfo ()", IsVirtual = true)]
+		MPSImageHistogramInfo HistogramInfo { get; }
+#endif
 
 		/// <param name="commandBuffer">To be added.</param>
 		/// <param name="source">To be added.</param>
@@ -12069,23 +12150,50 @@ namespace MetalPerformanceShaders {
 		[Export ("zeroHistogram")]
 		bool ZeroHistogram { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		/// <summary>Gets the configuration of the normalized histogram.</summary>
+		/// <value>The configuration of the normalized histogram.</value>
 		[Export ("histogramInfo")]
 		MPSImageHistogramInfo HistogramInfo {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 			get;
 		}
+#else
+		[Internal]
+		[Export ("histogramInfo")]
+		MPSImageHistogramInfo_Blittable _HistogramInfo {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+		}
 
-		/// <param name="device">To be added.</param>
-		/// <param name="histogramInfo">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Gets the configuration of the normalized histogram.</summary>
+		/// <value>The configuration of the normalized histogram.</value>
+		[Wrap ("_HistogramInfo.ToMPSImageHistogramInfo ()", IsVirtual = true)]
+		MPSImageHistogramInfo HistogramInfo { get; }
+#endif
+
+#if XAMCORE_5_0
+		/// <summary>Creates a new <see cref="MPSImageNormalizedHistogram" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
+		/// <param name="device">The device on which the normalized histogram filter will be run.</param>
+		/// <param name="histogramInfo">Configuration data for the normalized histogram.</param>
 		[Export ("initWithDevice:histogramInfo:")]
 		[DesignatedInitializer]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#else
+		[Export ("initWithDevice:histogramInfo:")]
+		[DesignatedInitializer]
+		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+		[Internal]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo_Blittable histogramInfo);
+
+		/// <summary>Creates a new <see cref="MPSImageNormalizedHistogram" /> for the specified <paramref name="device" /> and <paramref name="histogramInfo" />.</summary>
+		/// <param name="device">The device on which the normalized histogram filter will be run.</param>
+		/// <param name="histogramInfo">Configuration data for the normalized histogram.</param>
+		[DesignatedInitializer]
+		[Wrap ("this (device, ref histogramInfo.ToBlittable ())")]
+		NativeHandle Constructor (IMTLDevice device, ref MPSImageHistogramInfo histogramInfo);
+#endif
 
 		/// <param name="aDecoder">To be added.</param>
 		/// <param name="device">To be added.</param>

@@ -949,6 +949,7 @@
 				HotReloadModifiedAssemblySafetyNet=$(_HotReloadModifiedAssemblySafetyNet)
 				ItemsDirectory=$(_LinkerItemsDirectory)
 				IsAppExtension=$(IsAppExtension)
+				IsXPCService=$(IsXPCService)
 				IsMultiRidBuild=$(_IsUniversalBuild)
 				IsSimulatorBuild=$(_SdkIsSimulator)
 				LibMonoLinkMode=$(_LibMonoLinkMode)
@@ -1902,7 +1903,7 @@
 	</Target>
 
 	<Target Name="_PostPrepareForILLinkFixups" AfterTargets="PrepareForILLink">
-		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
+		<ItemGroup Condition="'$(IsAppExtension)' == 'true' And '$(IsXPCService)' != 'true'">
 			<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
 			<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
 				 So here we set RootMode=Library for these cases. -->

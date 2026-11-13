@@ -153,6 +153,7 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 
 		public bool IsExtension;
+		public bool IsXpcService;
 		public TargetFramework TargetFramework { get; set; }
 		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>TFM</TargetFramework>
+    <AssemblyName>macOSXpcService1.Contracts</AssemblyName>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <IsBindingProject>true</IsBindingProject>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ObjcBindingApiDefinition Include="ApiDefinition.cs" />
+  </ItemGroup>
+</Project>

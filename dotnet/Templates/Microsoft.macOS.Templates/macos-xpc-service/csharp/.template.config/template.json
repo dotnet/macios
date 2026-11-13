@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Microsoft",
+  "classifications": [ "Desktop", "macOS", "XPC" ],
+  "groupIdentity": "Microsoft.macOS.macOSXpcService",
+  "identity": "Microsoft.macOS.macOSXpcService.CSharp",
+  "name": "macOS XPC Service",
+  "description": "A project for creating a bundled XPC service for a .NET macOS application",
+  "shortName": "macos-xpc-service",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "macOSXpcService1",
+  "sources": [ { "source": "./", "target": "./" } ],
+  "preferNameDirectory": true,
+  "primaryOutputs": [ { "path": "macOSXpcService1.csproj" } ],
+  "postActions": [
+    {
+      "id": "addProjectReference",
+      "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
+      "description": "Reference the service and its protocol from the containing macOS app",
+      "sourceName": "macOSXpcService1.csproj",
+      "applyFileRenamesToManualInstructions": true,
+      "manualInstructions": [
+        {
+          "text": "Add these references to the containing macOS app, adjusting the paths:\n\n<ItemGroup>\n  <ProjectReference Include=\"macOSXpcService1.csproj\" IsAppExtension=\"true\" />\n  <ProjectReference Include=\"Contracts/Contracts.csproj\" />\n</ItemGroup>\n\nSet Registrar=trimmable-static in the host project so XPC reply block signatures are available.\nConnect using NSXpcConnection with the service's ApplicationId.\nThe service is embedded in Contents/XPCServices, not PlugIns."
+        }
+      ]
+    }
+  ],
+  "symbols": {
+    "bundleId": {
+      "type": "parameter",
+      "displayName": "Bundle ID",
+      "description": "The bundle identifier of the containing macOS application",
+      "datatype": "string",
+      "replaces": "com.companyname.macOSApp1"
+    },
+    "minOSVersion": {
+      "type": "parameter",
+      "displayName": "Minimum OS version",
+      "description": "Overrides SupportedOSPlatformVersion in the project files",
+      "replaces": "minOSVersion",
+      "datatype": "string",
+      "defaultValue": "14.0"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the projects.",
+      "datatype": "choice",
+      "choices": [ { "choice": "net12.0-macos", "description": "Target net12.0-macos" } ],
+      "replaces": "TFM",
+      "defaultValue": "net12.0-macos"
+    }
+  },
+  "defaultName": "macOSXpcService1"
+}

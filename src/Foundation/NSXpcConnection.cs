@@ -32,7 +32,7 @@ namespace Foundation {
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateRemoteObjectProxy ();
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, false)!;
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace Foundation {
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateRemoteObjectProxy (errorHandler);
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, false)!;
 		}
 
 		/// <summary>
@@ -58,7 +58,7 @@ namespace Foundation {
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateSynchronousRemoteObjectProxy (errorHandler);
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, false)!;
 		}
 	}
 }

@@ -34,13 +34,13 @@ namespace JavaScriptCore {
 	/// <summary>Enumerates attributes of properties.</summary>
 	[Flags]
 	public enum JSPropertyAttributes : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The property has no special attributes.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The property is read-only.</summary>
 		ReadOnly = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The property is not enumerated by JavaScript property enumerators or <c>for...in</c> loops.</summary>
 		DontEnum = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The delete operation fails for the property.</summary>
 		DontDelete = 1 << 3,
 	}
 

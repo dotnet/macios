@@ -26,7 +26,19 @@ namespace Network {
 		internal NWProtocolIPOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public void SetVersion (NWIPVersion version)
-			=> nw_ip_options_set_version (GetCheckedHandle (), version);
+		{
+#if !XAMCORE_5_0
+			switch ((int) version) {
+			case 1:
+				version = NWIPVersion.IPv4;
+				break;
+			case 2:
+				version = NWIPVersion.IPv6;
+				break;
+			}
+#endif
+			nw_ip_options_set_version (GetCheckedHandle (), version);
+		}
 
 		public void SetHopLimit (nuint hopLimit)
 			=> nw_ip_options_set_hop_limit (GetCheckedHandle (), (byte) hopLimit);

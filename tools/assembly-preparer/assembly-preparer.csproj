@@ -183,9 +183,6 @@
 		<Compile Include="../dotnet-linker/Steps/DoneStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/DoneStep.cs</Link>
 		</Compile>
-		<Compile Include="../dotnet-linker/Steps/DisposeFieldClearsStep.cs">
-			<Link>external/tools/dotnet-linker/Steps/DisposeFieldClearsStep.cs</Link>
-		</Compile>
 		<Compile Include="../dotnet-linker/Steps/ExtractBindingLibrariesStep.cs">
 			<Link>external/tools/dotnet-linker/Steps/ExtractBindingLibrariesStep.cs</Link>
 		</Compile>

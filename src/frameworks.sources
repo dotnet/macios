@@ -1759,6 +1759,7 @@ UIKIT_SOURCES = \
 	UIKit/UICollectionViewLayoutAttributes.cs \
 	UIKit/UIColor.cs \
 	UIKit/UIConfigurationColorTransformer.cs \
+	UIKit/UIContentConfiguration.cs \
 	UIKit/UIContentSizeCategory.cs \
 	UIKit/UIControl.cs \
 	UIKit/UIDevice.cs \

@@ -4057,6 +4057,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/OSLog.framework/Versions/A/OSLog",
 			"/System/Library/Frameworks/PassKit.framework/Versions/A/PassKit",
 			"/System/Library/Frameworks/PencilKit.framework/Versions/A/PencilKit",
+			"/System/Library/Frameworks/PDFKit.framework/Versions/A/PDFKit",
 			"/System/Library/Frameworks/PHASE.framework/Versions/A/PHASE",
 			"/System/Library/Frameworks/Photos.framework/Versions/A/Photos",
 			"/System/Library/Frameworks/PhotosUI.framework/Versions/A/PhotosUI",

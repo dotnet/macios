@@ -18,26 +18,6 @@ namespace GeneratorTests {
 			Assert.That (applicationClassName, Is.EqualTo (expected));
 		}
 
-		[TestCase (PlatformName.iOS, "CoreImage")]
-		[TestCase (PlatformName.TvOS, "CoreImage")]
-		[TestCase (PlatformName.MacCatalyst, "CoreImage")]
-		[TestCase (PlatformName.MacOSX, "Quartz")]
-		public void GetCoreImageMapTest (PlatformName platformName, string expected)
-			=> Assert.That (platformName.GetCoreImageMap (), Is.EqualTo (expected));
-
-		[TestCase (PlatformName.iOS, "MobileCoreServices")]
-		[TestCase (PlatformName.TvOS, "MobileCoreServices")]
-		[TestCase (PlatformName.MacCatalyst, "MobileCoreServices")]
-		[TestCase (PlatformName.MacOSX, "CoreServices")]
-		public void GetCoreServicesMap (PlatformName platformName, string expected)
-			=> Assert.That (platformName.GetCoreServicesMap (), Is.EqualTo (expected));
-
-		[TestCase (PlatformName.iOS, "PDFKit")]
-		[TestCase (PlatformName.MacCatalyst, "PDFKit")]
-		[TestCase (PlatformName.MacOSX, "Quartz")]
-		public void GetPDFKitMapTest (PlatformName platformName, string expected)
-			=> Assert.That (platformName.GetPDFKitMap (), Is.EqualTo (expected));
-
 		[TestCase (PlatformName.iOS, ApplePlatform.iOS)]
 		[TestCase (PlatformName.TvOS, ApplePlatform.TVOS)]
 		[TestCase (PlatformName.MacCatalyst, ApplePlatform.MacCatalyst)]

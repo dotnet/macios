@@ -825,21 +825,20 @@ namespace GeneratorTests {
 						[Field ("CustomPath", "/tmp/libCustom.dylib")]
 						CustomPath,
 
-						[Field ("RemappedCoreImage", "+CoreImage")]
-						RemappedCoreImage,
+						[Field ("CoreImageName", "CoreImage")]
+						CoreImageName,
 					}
 				}
 				""");
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 
-			var coreImageLibrary = profile == Profile.macOSMobile ? "Quartz" : "CoreImage";
 			var expectedLibraries = new [] {
 				(Symbol: "Internal", Library: "__Internal", Path: "__Internal"),
 				(Symbol: "FoundationPath", Library: "Foundation", Path: "/System/Library/Frameworks/Foundation.framework/Foundation"),
 				(Symbol: "CoreFoundationName", Library: "CoreFoundation", Path: "CoreFoundation"),
 				(Symbol: "CustomPath", Library: "libCustomdylib", Path: "/tmp/libCustom.dylib"),
-				(Symbol: "RemappedCoreImage", Library: coreImageLibrary, Path: coreImageLibrary),
+				(Symbol: "CoreImageName", Library: "CoreImage", Path: "CoreImage"),
 			};
 			var extensions = bgen.ApiAssembly.MainModule.GetType ("SmartEnumWithLibraryPaths", "TestEnumExtensions");
 			foreach (var expected in expectedLibraries) {

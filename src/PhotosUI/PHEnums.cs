@@ -14,14 +14,15 @@ namespace PhotosUI {
 	}
 
 #if MONOMAC
+	/// <summary>Specifies how a <see cref="PHLivePhotoView" /> fits its content within its bounds.</summary>
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
 	[Native]
 	public enum PHLivePhotoViewContentMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the Live Photo to fit within the view's bounds while preserving its aspect ratio.</summary>
 		AspectFit,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the Live Photo to fill the view's bounds while preserving its aspect ratio; some content may be cropped.</summary>
 		AspectFill,
 	}
 #else

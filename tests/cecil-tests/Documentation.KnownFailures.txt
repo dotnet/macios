@@ -58443,7 +58443,6 @@ T:Photos.PHProjectCreationSource
 T:Photos.PHProjectSectionType
 T:Photos.PHProjectTextElementType
 T:PhotosUI.PHEditingExtensionContext
-T:PhotosUI.PHLivePhotoViewContentMode
 T:PhotosUI.PHPhotoLibrary_PhotosUISupport
 T:PhotosUI.PHPickerCapabilities
 T:PhotosUI.PHPickerConfiguration

@@ -613,7 +613,7 @@ namespace Cecil.Tests {
 			"UIKit.NIDUICellAccessoryPosition.Create(System.IntPtr)",
 			"UIKit.NIDUIConfigurationColorTransformerHandler.Create(System.IntPtr)",
 			"UIKit.UIAccessibilityCustomAction/FuncBoolDispatcher.Probe(UIKit.UIAccessibilityCustomAction)",
-			"UIKit.UIControlEventProxy.Activated()",
+			"UIKit.UIControlEventProxy.Activated(UIKit.UIControl, UIKit.UIEvent)",
 			"UIKit.UIGestureRecognizer.OnDispose()",
 			"UIKit.UIGestureRecognizer/Callback`1.Activated(T)",
 			"UIKit.UIGestureRecognizer/ParameterlessDispatch.Activated()",

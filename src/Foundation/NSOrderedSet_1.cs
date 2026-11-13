@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Foundation {
 	[Register ("NSOrderedSet", SkipRegistration = true)]
@@ -151,10 +152,12 @@ namespace Foundation {
 		}
 		#endregion
 
-		/// <summary>Combines two ordered sets into a new ordered set.</summary>
-		/// <param name="first">The first ordered set.</param>
-		/// <param name="second">The second ordered set.</param>
-		/// <returns>A new ordered set containing the union of both sets, or <see langword="null"/> if both sets are <see langword="null"/>.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSOrderedSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSOrderedSet<TKey>? operator + (NSOrderedSet<TKey>? first, NSOrderedSet<TKey>? second)
 		{
 			if (first is null)
@@ -167,10 +170,12 @@ namespace Foundation {
 			return copyset;
 		}
 
-		/// <summary>Combines an ordered set with an unordered set into a new ordered set.</summary>
-		/// <param name="first">The ordered set.</param>
-		/// <param name="second">The unordered set.</param>
-		/// <returns>A new ordered set containing the union of both sets, or <see langword="null"/> if both sets are <see langword="null"/>.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSOrderedSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSOrderedSet<TKey>? operator + (NSOrderedSet<TKey>? first, NSSet<TKey>? second)
 		{
 			if (first is null)
@@ -183,10 +188,11 @@ namespace Foundation {
 			return copyset;
 		}
 
-		/// <summary>Subtracts one ordered set from another.</summary>
-		/// <param name="first">The ordered set to subtract from.</param>
-		/// <param name="second">The ordered set to subtract.</param>
-		/// <returns>A new ordered set containing the elements in the first set that are not in the second set, or <see langword="null"/> if the first set is <see langword="null"/>.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSOrderedSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSOrderedSet<TKey>? operator - (NSOrderedSet<TKey>? first, NSOrderedSet<TKey>? second)
 		{
 			if (first is null)
@@ -199,10 +205,11 @@ namespace Foundation {
 			return copyset;
 		}
 
-		/// <summary>Subtracts an unordered set from an ordered set.</summary>
-		/// <param name="first">The ordered set to subtract from.</param>
-		/// <param name="second">The unordered set to subtract.</param>
-		/// <returns>A new ordered set containing the elements in the first set that are not in the second set, or <see langword="null"/> if the first set is <see langword="null"/>.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSOrderedSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSOrderedSet<TKey>? operator - (NSOrderedSet<TKey>? first, NSSet<TKey>? second)
 		{
 			if (first is null)

@@ -144,7 +144,7 @@ namespace Foundation {
 			return base.ToArray<TKey> ();
 		}
 
-		/// <summary>Adds two sets together, creating a new set that contains all elements from both sets.</summary>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
 		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
@@ -152,11 +152,8 @@ namespace Foundation {
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSSet<TKey>? operator + (NSSet<TKey>? first, NSSet<TKey>? second)
 		{
-			if (first is null && second is null)
-				return null;
-
 			if (first is null)
-				return new NSSet<TKey> (second!);
+				return second is not null ? new NSSet<TKey> (second) : null;
 
 			if (second is null)
 				return new NSSet<TKey> (first);
@@ -175,10 +172,11 @@ namespace Foundation {
 		/// <summary>Subtracts the elements of the second set from the first set.</summary>
 		/// <param name="first">The set to subtract from.</param>
 		/// <param name="second">The set whose elements should be removed.</param>
-		/// <returns>A new <see cref="NSSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" /> or empty.</returns>
+		/// <returns>A new <see cref="NSSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSSet<TKey>? operator - (NSSet<TKey>? first, NSSet<TKey>? second)
 		{
-			if (first is null || first.Count == 0)
+			if (first is null)
 				return null;
 			if (second is null || second.Count == 0)
 				return new NSSet<TKey> (first);

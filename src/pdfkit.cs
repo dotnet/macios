@@ -64,99 +64,99 @@ namespace PdfKit {
 	enum PdfAnnotationKey {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyAppearanceDictionary", "+PDFKit")]
+		[Field ("PDFAnnotationKeyAppearanceDictionary")]
 		AppearanceDictionary,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyAppearanceState", "+PDFKit")]
+		[Field ("PDFAnnotationKeyAppearanceState")]
 		AppearanceState,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyBorder", "+PDFKit")]
+		[Field ("PDFAnnotationKeyBorder")]
 		Border,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyColor", "+PDFKit")]
+		[Field ("PDFAnnotationKeyColor")]
 		Color,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyContents", "+PDFKit")]
+		[Field ("PDFAnnotationKeyContents")]
 		Contents,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyFlags", "+PDFKit")]
+		[Field ("PDFAnnotationKeyFlags")]
 		Flags,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyDate", "+PDFKit")]
+		[Field ("PDFAnnotationKeyDate")]
 		Date,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyName", "+PDFKit")]
+		[Field ("PDFAnnotationKeyName")]
 		Name,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyPage", "+PDFKit")]
+		[Field ("PDFAnnotationKeyPage")]
 		Page,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyRect", "+PDFKit")]
+		[Field ("PDFAnnotationKeyRect")]
 		Rect,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeySubtype", "+PDFKit")]
+		[Field ("PDFAnnotationKeySubtype")]
 		Subtype,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyAction", "+PDFKit")]
+		[Field ("PDFAnnotationKeyAction")]
 		Action,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyAdditionalActions", "+PDFKit")]
+		[Field ("PDFAnnotationKeyAdditionalActions")]
 		AdditionalActions,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyBorderStyle", "+PDFKit")]
+		[Field ("PDFAnnotationKeyBorderStyle")]
 		BorderStyle,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyDefaultAppearance", "+PDFKit")]
+		[Field ("PDFAnnotationKeyDefaultAppearance")]
 		DefaultAppearance,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyDestination", "+PDFKit")]
+		[Field ("PDFAnnotationKeyDestination")]
 		Destination,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyHighlightingMode", "+PDFKit")]
+		[Field ("PDFAnnotationKeyHighlightingMode")]
 		HighlightingMode,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyInklist", "+PDFKit")]
+		[Field ("PDFAnnotationKeyInklist")]
 		Inklist,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyInteriorColor", "+PDFKit")]
+		[Field ("PDFAnnotationKeyInteriorColor")]
 		InteriorColor,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyLinePoints", "+PDFKit")]
+		[Field ("PDFAnnotationKeyLinePoints")]
 		LinePoints,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyLineEndingStyles", "+PDFKit")]
+		[Field ("PDFAnnotationKeyLineEndingStyles")]
 		LineEndingStyles,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyIconName", "+PDFKit")]
+		[Field ("PDFAnnotationKeyIconName")]
 		IconName,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyOpen", "+PDFKit")]
+		[Field ("PDFAnnotationKeyOpen")]
 		Open,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyParent", "+PDFKit")]
+		[Field ("PDFAnnotationKeyParent")]
 		Parent,
 
 		/// <summary>To be added.</summary>
@@ -164,71 +164,71 @@ namespace PdfKit {
 		Popup,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyQuadding", "+PDFKit")]
+		[Field ("PDFAnnotationKeyQuadding")]
 		Quadding,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyQuadPoints", "+PDFKit")]
+		[Field ("PDFAnnotationKeyQuadPoints")]
 		QuadPoints,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyTextLabel", "+PDFKit")]
+		[Field ("PDFAnnotationKeyTextLabel")]
 		TextLabel,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetDownCaption", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetDownCaption")]
 		WidgetDownCaption,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetBorderColor", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetBorderColor")]
 		WidgetBorderColor,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetBackgroundColor", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetBackgroundColor")]
 		WidgetBackgroundColor,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetCaption", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetCaption")]
 		WidgetCaption,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetDefaultValue", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetDefaultValue")]
 		WidgetDefaultValue,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetFieldFlags", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetFieldFlags")]
 		WidgetFieldFlags,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetFieldType", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetFieldType")]
 		WidgetFieldType,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetAppearanceDictionary", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetAppearanceDictionary")]
 		WidgetAppearanceDictionary,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetMaxLen", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetMaxLen")]
 		WidgetMaxLen,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetOptions", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetOptions")]
 		WidgetOptions,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetRotation", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetRotation")]
 		WidgetRotation,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetRolloverCaption", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetRolloverCaption")]
 		WidgetRolloverCaption,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetTextLabelUI", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetTextLabelUI")]
 		WidgetTextLabelUI,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationKeyWidgetValue", "+PDFKit")]
+		[Field ("PDFAnnotationKeyWidgetValue")]
 		WidgetValue,
 	}
 
@@ -237,55 +237,55 @@ namespace PdfKit {
 	enum PdfAnnotationSubtype {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeText", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeText")]
 		Text,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeLink", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeLink")]
 		Link,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeFreeText", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeFreeText")]
 		FreeText,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeLine", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeLine")]
 		Line,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeSquare", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeSquare")]
 		Square,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeCircle", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeCircle")]
 		Circle,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeHighlight", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeHighlight")]
 		Highlight,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeUnderline", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeUnderline")]
 		Underline,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeStrikeOut", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeStrikeOut")]
 		StrikeOut,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeInk", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeInk")]
 		Ink,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeStamp", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeStamp")]
 		Stamp,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypePopup", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypePopup")]
 		Popup,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationSubtypeWidget", "+PDFKit")]
+		[Field ("PDFAnnotationSubtypeWidget")]
 		Widget,
 	}
 
@@ -294,19 +294,19 @@ namespace PdfKit {
 	enum PdfAnnotationWidgetSubtype {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationWidgetSubtypeButton", "+PDFKit")]
+		[Field ("PDFAnnotationWidgetSubtypeButton")]
 		Button,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationWidgetSubtypeChoice", "+PDFKit")]
+		[Field ("PDFAnnotationWidgetSubtypeChoice")]
 		Choice,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationWidgetSubtypeSignature", "+PDFKit")]
+		[Field ("PDFAnnotationWidgetSubtypeSignature")]
 		Signature,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationWidgetSubtypeText", "+PDFKit")]
+		[Field ("PDFAnnotationWidgetSubtypeText")]
 		Text,
 	}
 
@@ -315,27 +315,27 @@ namespace PdfKit {
 	enum PdfAnnotationLineEndingStyle {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleNone", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleNone")]
 		None,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleSquare", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleSquare")]
 		Square,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleCircle", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleCircle")]
 		Circle,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleDiamond", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleDiamond")]
 		Diamond,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleOpenArrow", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleOpenArrow")]
 		OpenArrow,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationLineEndingStyleClosedArrow", "+PDFKit")]
+		[Field ("PDFAnnotationLineEndingStyleClosedArrow")]
 		ClosedArrow,
 	}
 
@@ -344,31 +344,31 @@ namespace PdfKit {
 	enum PdfAnnotationTextIconType {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeComment", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeComment")]
 		Comment,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeKey", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeKey")]
 		Key,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeNote", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeNote")]
 		Note,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeHelp", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeHelp")]
 		Help,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeNewParagraph", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeNewParagraph")]
 		NewParagraph,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeParagraph", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeParagraph")]
 		Paragraph,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationTextIconTypeInsert", "+PDFKit")]
+		[Field ("PDFAnnotationTextIconTypeInsert")]
 		Insert,
 	}
 
@@ -377,19 +377,19 @@ namespace PdfKit {
 	enum PdfAnnotationHighlightingMode {
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationHighlightingModeNone", "+PDFKit")]
+		[Field ("PDFAnnotationHighlightingModeNone")]
 		None,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationHighlightingModeInvert", "+PDFKit")]
+		[Field ("PDFAnnotationHighlightingModeInvert")]
 		Invert,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationHighlightingModeOutline", "+PDFKit")]
+		[Field ("PDFAnnotationHighlightingModeOutline")]
 		Outline,
 
 		/// <summary>To be added.</summary>
-		[Field ("PDFAnnotationHighlightingModePush", "+PDFKit")]
+		[Field ("PDFAnnotationHighlightingModePush")]
 		Push,
 	}
 
@@ -424,37 +424,37 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyBackgroundColor", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyBackgroundColor")]
 		NSString BackgroundColorKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyBorderColor", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyBorderColor")]
 		NSString BorderColorKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyRotation", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyRotation")]
 		NSString RotationKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyCaption", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyCaption")]
 		NSString CaptionKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyRolloverCaption", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyRolloverCaption")]
 		NSString RolloverCaptionKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFAppearanceCharacteristicsKeyDownCaption", "+PDFKit")]
+		[Field ("PDFAppearanceCharacteristicsKeyDownCaption")]
 		NSString DownCaptionKey { get; }
 	}
 
@@ -466,19 +466,19 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFBorderKeyLineWidth", "+PDFKit")]
+		[Field ("PDFBorderKeyLineWidth")]
 		NSString LineWidthKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFBorderKeyStyle", "+PDFKit")]
+		[Field ("PDFBorderKeyStyle")]
 		NSString StyleKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Field ("PDFBorderKeyDashPattern", "+PDFKit")]
+		[Field ("PDFBorderKeyDashPattern")]
 		NSString DashPatternKey { get; }
 	}
 
@@ -488,28 +488,28 @@ namespace PdfKit {
 	[Static]
 	interface PdfDocumentAttributeKeys {
 
-		[Field ("PDFDocumentTitleAttribute", "+PDFKit")]
+		[Field ("PDFDocumentTitleAttribute")]
 		NSString TitleKey { get; }
 
-		[Field ("PDFDocumentAuthorAttribute", "+PDFKit")]
+		[Field ("PDFDocumentAuthorAttribute")]
 		NSString AuthorKey { get; }
 
-		[Field ("PDFDocumentSubjectAttribute", "+PDFKit")]
+		[Field ("PDFDocumentSubjectAttribute")]
 		NSString SubjectKey { get; }
 
-		[Field ("PDFDocumentCreatorAttribute", "+PDFKit")]
+		[Field ("PDFDocumentCreatorAttribute")]
 		NSString CreatorKey { get; }
 
-		[Field ("PDFDocumentProducerAttribute", "+PDFKit")]
+		[Field ("PDFDocumentProducerAttribute")]
 		NSString ProducerKey { get; }
 
-		[Field ("PDFDocumentCreationDateAttribute", "+PDFKit")]
+		[Field ("PDFDocumentCreationDateAttribute")]
 		NSString CreationDateKey { get; }
 
-		[Field ("PDFDocumentModificationDateAttribute", "+PDFKit")]
+		[Field ("PDFDocumentModificationDateAttribute")]
 		NSString ModificationDateKey { get; }
 
-		[Field ("PDFDocumentKeywordsAttribute", "+PDFKit")]
+		[Field ("PDFDocumentKeywordsAttribute")]
 		NSString KeywordsKey { get; }
 	}
 
@@ -585,30 +585,30 @@ namespace PdfKit {
 	[Static]
 	interface PdfDocumentWriteOptionKeys {
 
-		[Field ("PDFDocumentOwnerPasswordOption", "+PDFKit")]
+		[Field ("PDFDocumentOwnerPasswordOption")]
 		NSString OwnerPasswordKey { get; }
 
-		[Field ("PDFDocumentUserPasswordOption", "+PDFKit")]
+		[Field ("PDFDocumentUserPasswordOption")]
 		NSString UserPasswordKey { get; }
 
 		[iOS (15, 0), MacCatalyst (15, 0)]
-		[Field ("PDFDocumentAccessPermissionsOption", "+PDFKit")]
+		[Field ("PDFDocumentAccessPermissionsOption")]
 		NSString AccessPermissionsKey { get; }
 
 		[iOS (16, 0), MacCatalyst (16, 0)]
-		[Field ("PDFDocumentBurnInAnnotationsOption", "+PDFKit")]
+		[Field ("PDFDocumentBurnInAnnotationsOption")]
 		NSString BurnInAnnotationsKey { get; }
 
 		[iOS (16, 0), MacCatalyst (16, 0)]
-		[Field ("PDFDocumentSaveTextFromOCROption", "+PDFKit")]
+		[Field ("PDFDocumentSaveTextFromOCROption")]
 		NSString SaveTextFromOcrKey { get; }
 
 		[iOS (16, 4), MacCatalyst (16, 4)]
-		[Field ("PDFDocumentSaveImagesAsJPEGOption", "+PDFKit")]
+		[Field ("PDFDocumentSaveImagesAsJPEGOption")]
 		NSString SaveImagesAsJpegKey { get; }
 
 		[iOS (16, 4), MacCatalyst (16, 4)]
-		[Field ("PDFDocumentOptimizeImagesForScreenOption", "+PDFKit")]
+		[Field ("PDFDocumentOptimizeImagesForScreenOption")]
 		NSString OptimizeImagesForScreenKey { get; }
 	}
 
@@ -1907,43 +1907,43 @@ namespace PdfKit {
 	[BaseType (typeof (NSObject), Name = "PDFDocument", Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (PdfDocumentDelegate) })]
 	interface PdfDocument : NSCopying {
 
-		[Field ("PDFDocumentDidUnlockNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidUnlockNotification")]
 		[Notification]
 		NSString DidUnlockNotification { get; }
 
-		[Field ("PDFDocumentDidBeginFindNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidBeginFindNotification")]
 		[Notification]
 		NSString DidBeginFindNotification { get; }
 
-		[Field ("PDFDocumentDidEndFindNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidEndFindNotification")]
 		[Notification]
 		NSString DidEndFindNotification { get; }
 
-		[Field ("PDFDocumentDidBeginPageFindNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidBeginPageFindNotification")]
 		[Notification]
 		NSString DidBeginPageFindNotification { get; }
 
-		[Field ("PDFDocumentDidEndPageFindNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidEndPageFindNotification")]
 		[Notification]
 		NSString DidEndPageFindNotification { get; }
 
-		[Field ("PDFDocumentDidFindMatchNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidFindMatchNotification")]
 		[Notification]
 		NSString DidFindMatchNotification { get; }
 
-		[Field ("PDFDocumentDidBeginWriteNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidBeginWriteNotification")]
 		[Notification]
 		NSString DidBeginWriteNotification { get; }
 
-		[Field ("PDFDocumentDidEndWriteNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidEndWriteNotification")]
 		[Notification]
 		NSString DidEndWriteNotification { get; }
 
-		[Field ("PDFDocumentDidBeginPageWriteNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidBeginPageWriteNotification")]
 		[Notification]
 		NSString DidBeginPageWriteNotification { get; }
 
-		[Field ("PDFDocumentDidEndPageWriteNotification", "+PDFKit")]
+		[Field ("PDFDocumentDidEndPageWriteNotification")]
 		[Notification]
 		NSString DidEndPageWriteNotification { get; }
 
@@ -2938,7 +2938,7 @@ namespace PdfKit {
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
-		[Field ("PDFThumbnailViewDocumentEditedNotification", "+PDFKit")]
+		[Field ("PDFThumbnailViewDocumentEditedNotification")]
 		[Notification]
 		NSString DocumentEditedNotification { get; }
 
@@ -3606,51 +3606,51 @@ namespace PdfKit {
 		[Export ("enableDataDetectors")]
 		bool EnableDataDetectors { get; set; }
 
-		[Field ("PDFViewChangedHistoryNotification", "+PDFKit")]
+		[Field ("PDFViewChangedHistoryNotification")]
 		[Notification]
 		NSString ChangedHistoryNotification { get; }
 
-		[Field ("PDFViewDocumentChangedNotification", "+PDFKit")]
+		[Field ("PDFViewDocumentChangedNotification")]
 		[Notification]
 		NSString DocumentChangedNotification { get; }
 
-		[Field ("PDFViewPageChangedNotification", "+PDFKit")]
+		[Field ("PDFViewPageChangedNotification")]
 		[Notification]
 		NSString PageChangedNotification { get; }
 
-		[Field ("PDFViewScaleChangedNotification", "+PDFKit")]
+		[Field ("PDFViewScaleChangedNotification")]
 		[Notification]
 		NSString ScaleChangedNotification { get; }
 
-		[Field ("PDFViewAnnotationHitNotification", "+PDFKit")]
+		[Field ("PDFViewAnnotationHitNotification")]
 		[Notification (typeof (PdfViewAnnotationHitEventArgs))]
 		NSString AnnotationHitNotification { get; }
 
-		[Field ("PDFViewCopyPermissionNotification", "+PDFKit")]
+		[Field ("PDFViewCopyPermissionNotification")]
 		[Notification]
 		NSString CopyPermissionNotification { get; }
 
-		[Field ("PDFViewPrintPermissionNotification", "+PDFKit")]
+		[Field ("PDFViewPrintPermissionNotification")]
 		[Notification]
 		NSString PrintPermissionNotification { get; }
 
-		[Field ("PDFViewAnnotationWillHitNotification", "+PDFKit")]
+		[Field ("PDFViewAnnotationWillHitNotification")]
 		[Notification]
 		NSString AnnotationWillHitNotification { get; }
 
-		[Field ("PDFViewSelectionChangedNotification", "+PDFKit")]
+		[Field ("PDFViewSelectionChangedNotification")]
 		[Notification]
 		NSString SelectionChangedNotification { get; }
 
-		[Field ("PDFViewDisplayModeChangedNotification", "+PDFKit")]
+		[Field ("PDFViewDisplayModeChangedNotification")]
 		[Notification]
 		NSString DisplayModeChangedNotification { get; }
 
-		[Field ("PDFViewDisplayBoxChangedNotification", "+PDFKit")]
+		[Field ("PDFViewDisplayBoxChangedNotification")]
 		[Notification]
 		NSString DisplayBoxChangedNotification { get; }
 
-		[Field ("PDFViewVisiblePagesChangedNotification", "+PDFKit")]
+		[Field ("PDFViewVisiblePagesChangedNotification")]
 		[Notification]
 		NSString VisiblePagesChangedNotification { get; }
 

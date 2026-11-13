@@ -87,6 +87,7 @@ Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Network
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/NotificationCenter.framework/Versions/A/NotificationCenter
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/OSLog.framework/Versions/A/OSLog
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL
+Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/PDFKit.framework/Versions/A/PDFKit
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/PHASE.framework/Versions/A/PHASE
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/PassKit.framework/Versions/A/PassKit
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/PencilKit.framework/Versions/A/PencilKit
@@ -263,6 +264,7 @@ Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/Networ
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/NotificationCenter.framework/Versions/A/NotificationCenter
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/OSLog.framework/Versions/A/OSLog
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL
+Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/PDFKit.framework/Versions/A/PDFKit
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/PHASE.framework/Versions/A/PHASE
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/PassKit.framework/Versions/A/PassKit
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/PencilKit.framework/Versions/A/PencilKit

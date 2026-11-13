@@ -18,6 +18,8 @@ namespace MonoTouchFixtures.MobileCoreServices {
 		[Test]
 		public void NSStringConstants ()
 		{
+			Assert.That (UTType.PDF.ToString (), Is.EqualTo ("com.adobe.pdf"), "PDF value");
+			Assert.That (UTType.TagClassFilenameExtension.ToString (), Is.EqualTo ("public.filename-extension"), "Filename extension tag class");
 			Assert.That (UTType.ExportedTypeDeclarationsKey, Is.Not.Null, "ExportedTypeDeclarationsKey");
 			Assert.That (UTType.ImportedTypeDeclarationsKey, Is.Not.Null, "ImportedTypeDeclarationsKey");
 			Assert.That (UTType.IdentifierKey, Is.Not.Null, "IdentifierKey");

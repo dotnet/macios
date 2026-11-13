@@ -171,12 +171,10 @@ namespace Introspection {
 				if (Mac.IsAtLeast (10, 9))
 					break;
 				return "/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ImageIO.framework/ImageIO";
-			case "CoreImage":
-				// generated code uses QuartzCore correctly - even if the [Field] property is wrong
-				libraryName = "QuartzCore";
+			case "MobileCoreServices":
+				libraryName = "CoreServices";
 				break;
 			case "QuartzComposer":
-			case "PdfKit":
 			case "ImageKit":
 				// generated code uses Quartz correctly - even if the [Field] property is wrong
 				libraryName = "Quartz";

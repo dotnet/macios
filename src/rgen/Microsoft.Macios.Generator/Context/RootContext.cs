@@ -53,32 +53,16 @@ class RootContext {
 		libraryPath = null;
 
 		if (!string.IsNullOrEmpty (attributeLibraryName)) {
-			// Remapped
 			libraryName = attributeLibraryName;
-			if (libraryName [0] == '+') {
-				switch (libraryName) {
-				case "+CoreImage":
-					CurrentPlatform.TryGetCoreImageMap (out libraryName);
-					break;
-				case "+CoreServices":
-					CurrentPlatform.TryGetCoreServicesMap (out libraryName);
-					break;
-				case "+PDFKit":
-					libraryName = "PdfKit";
-					CurrentPlatform.TryGetPDFKitMap (out libraryPath);
-					break;
-				}
-			} else {
-				// we get something in LibraryName from FieldAttribute so we assume
-				// it is a path to a library, so we save the path and change library name
-				// to a valid identifier if needed
-				libraryPath = libraryName;
-				// without extension makes more sense, but we can't change it since it breaks compat
-				libraryName = Path.GetFileNameWithoutExtension (libraryName);
+			// we get something in LibraryName from FieldAttribute so we assume
+			// it is a path to a library, so we save the path and change library name
+			// to a valid identifier if needed
+			libraryPath = libraryName;
+			// without extension makes more sense, but we can't change it since it breaks compat
+			libraryName = Path.GetFileNameWithoutExtension (libraryName);
 
-				if (libraryName.Contains ('.'))
-					libraryName = libraryName.Replace (".", string.Empty);
-			}
+			if (libraryName.Contains ('.'))
+				libraryName = libraryName.Replace (".", string.Empty);
 		} else {
 			libraryName = typeNamespace;
 		}

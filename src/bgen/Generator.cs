@@ -5921,38 +5921,21 @@ public partial class Generator : IMemberGatherer {
 
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
-		// Keep the pseudo-library mappings in sync with Frameworks.GetFrameworkFromLibraryName.
 		library_path = null;
 
 		if (attributeLibraryName is not null) {
-			// Remapped
 			library_name = attributeLibraryName;
-			if (library_name [0] == '+') {
-				switch (library_name) {
-				case "+CoreImage":
-					library_name = CurrentPlatform.GetCoreImageMap ();
-					break;
-				case "+CoreServices":
-					library_name = CurrentPlatform.GetCoreServicesMap ();
-					break;
-				case "+PDFKit":
-					library_name = "PdfKit";
-					library_path = CurrentPlatform.GetPDFKitMap ();
-					break;
-				}
+			// we get something in LibraryName from FieldAttribute so we asume
+			// it is a path to a library, so we save the path and change library name
+			// to a valid identifier if needed
+			library_path = library_name;
+			if (BindThirdPartyLibrary /* without extension makes more sense, but we can't change it since it breaks compat */) {
+				library_name = Path.GetFileName (library_name);
 			} else {
-				// we get something in LibraryName from FieldAttribute so we asume
-				// it is a path to a library, so we save the path and change library name
-				// to a valid identifier if needed
-				library_path = library_name;
-				if (BindThirdPartyLibrary /* without extension makes more sense, but we can't change it since it breaks compat */) {
-					library_name = Path.GetFileName (library_name);
-				} else {
-					library_name = Path.GetFileNameWithoutExtension (library_name);
-				}
-				if (library_name.Contains ('.'))
-					library_name = library_name.Replace (".", string.Empty);
+				library_name = Path.GetFileNameWithoutExtension (library_name);
 			}
+			if (library_name.Contains ('.'))
+				library_name = library_name.Replace (".", string.Empty);
 		} else if (BindThirdPartyLibrary) {
 			// User should provide a LibraryName
 			library_name = null;

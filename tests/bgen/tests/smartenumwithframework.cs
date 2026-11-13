@@ -5,10 +5,10 @@ using Foundation;
 namespace SmartEnumWithFramework {
 
 	enum FooEnumTest {
-		[Field ("First", "+CoreImage")]
+		[Field ("First", "CoreImage")]
 		First,
 
-		[Field ("Second", "+CoreImage")]
+		[Field ("Second", "CoreImage")]
 		Second,
 	}
 }

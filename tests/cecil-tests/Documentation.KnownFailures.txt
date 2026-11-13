@@ -4218,12 +4218,6 @@ F:Intents.INVocabularyStringType.MediaShowTitle
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
 F:iTunesLibrary.ITLibPlaylistProperty.Primary
-F:JavaScriptCore.JSRelationCondition.Equal
-F:JavaScriptCore.JSRelationCondition.GreaterThan
-F:JavaScriptCore.JSRelationCondition.LessThan
-F:JavaScriptCore.JSRelationCondition.Undefined
-F:JavaScriptCore.JSType.BigInt
-F:JavaScriptCore.JSType.Symbol
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
@@ -5649,7 +5643,6 @@ F:PhotosUI.PHPickerMetadataOptions.RemoveCaptions
 F:PhotosUI.PHPickerMetadataOptions.RemoveLocation
 F:PhotosUI.PHPickerMode.Compact
 F:PhotosUI.PHPickerMode.Default
-F:PhotosUI.PHProjectCategory.Undefined
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Private
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Public
 F:PushToTalk.PTChannelError.AppNotForeground
@@ -57022,7 +57015,6 @@ T:iTunesLibrary.ITLibrary
 T:iTunesLibrary.ITLibraryNotifications
 T:iTunesLibrary.MediaItemProperty
 T:JavaScriptCore.JSPromiseCreationExecutor
-T:JavaScriptCore.JSRelationCondition
 T:LinkPresentation.LPErrorCode
 T:LinkPresentation.LPLinkMetadata
 T:LinkPresentation.LPLinkView
@@ -58005,12 +57997,9 @@ T:ModelIO.MDLAnimatedValueInterpolation
 T:ModelIO.MDLAnimationBindComponent
 T:ModelIO.MDLBundleAssetResolver
 T:ModelIO.MDLDataPrecision
-T:ModelIO.MDLMaterialFace
-T:ModelIO.MDLNoiseTextureType
 T:ModelIO.MDLObjectHandler
 T:ModelIO.MDLPackedJointAnimation
 T:ModelIO.MDLPathAssetResolver
-T:ModelIO.MDLProbePlacement
 T:ModelIO.MDLRelativeAssetResolver
 T:ModelIO.MDLSkeleton
 T:ModelIO.MDLTransformMatrixOp
@@ -58452,7 +58441,6 @@ T:Photos.PHProjectCreationSource
 T:Photos.PHProjectSectionType
 T:Photos.PHProjectTextElementType
 T:PhotosUI.PHEditingExtensionContext
-T:PhotosUI.PHLivePhotoViewContentMode
 T:PhotosUI.PHPhotoLibrary_PhotosUISupport
 T:PhotosUI.PHPickerCapabilities
 T:PhotosUI.PHPickerConfiguration
@@ -58466,7 +58454,6 @@ T:PhotosUI.PHPickerSearchText
 T:PhotosUI.PHPickerUpdateConfiguration
 T:PhotosUI.PHPickerViewController
 T:PhotosUI.PHProjectAssetElement
-T:PhotosUI.PHProjectCategory
 T:PhotosUI.PHProjectElement
 T:PhotosUI.PHProjectExtensionContext
 T:PhotosUI.PHProjectInfo

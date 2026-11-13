@@ -5914,6 +5914,7 @@ public partial class Generator : IMemberGatherer {
 
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
+		// Keep the pseudo-library mappings in sync with Frameworks.GetFrameworkFromLibraryName.
 		library_path = null;
 
 		if (attributeLibraryName is not null) {

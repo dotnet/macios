@@ -48,10 +48,9 @@ namespace Xamarin.MacDev.Tasks {
 		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 
-		// When set (to ILC's output object file), the defined symbols in this file are used to determine
-		// which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC). This is passed only
-		// when postprocessing runs after ILC (trimmable-static registrar + NativeAOT), so that the native
-		// registrar code doesn't emit direct references to trampolines ILC trimmed away.
+		// When set (to ILC's output object file), its defined and unresolved symbols are used to determine
+		// which trampolines, P/Invokes, and Objective-C classes survived ILC. This is passed only when
+		// postprocessing runs after ILC (trimmable-static registrar + NativeAOT).
 		public string NativeAOTObjectFile { get; set; } = "";
 
 		#region Outputs
@@ -98,20 +97,38 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (PostProcessing) {
 					if (!string.IsNullOrEmpty (NativeAOTObjectFile)) {
+						var definedSymbols = Xamarin.StaticLibrary.GetDefinedSymbols (NativeAOTObjectFile);
+						var unresolvedSymbols = Xamarin.StaticLibrary.GetUnresolvedSymbols (NativeAOTObjectFile);
+
 						// Determine which UnmanagedCallersOnly trampolines survived ILC by inspecting the
 						// defined symbols in ILC's output object file. The native symbols have a leading
 						// underscore that we strip to match the managed entry-point names.
 						var survivingSymbols = new HashSet<string> ();
-						foreach (var symbol in Xamarin.StaticLibrary.GetDefinedSymbols (NativeAOTObjectFile)) {
+						foreach (var symbol in definedSymbols) {
 							var name = symbol.StartsWith ("_", StringComparison.Ordinal) ? symbol.Substring (1) : symbol;
 							survivingSymbols.Add (name);
 						}
 						preparer.Configuration.Application.SurvivingTrampolineSymbols = survivingSymbols;
 
+						// ILC emits P/Invoke fixup records for imported methods that survived trimming.
+						// Keep those alongside unresolved symbols so postprocessing can identify the
+						// frameworks required by both indirect and direct P/Invokes.
+						var survivingPInvokeSymbols = new HashSet<string> ();
+						foreach (var symbol in definedSymbols) {
+							var name = symbol.StartsWith ("_", StringComparison.Ordinal) ? symbol.Substring (1) : symbol;
+							if (name.StartsWith ("__pinvoke_", StringComparison.Ordinal))
+								survivingPInvokeSymbols.Add (name);
+						}
+						foreach (var symbol in unresolvedSymbols) {
+							var name = symbol.StartsWith ("_", StringComparison.Ordinal) ? symbol.Substring (1) : symbol;
+							survivingPInvokeSymbols.Add (name);
+						}
+						preparer.Configuration.Application.NativeAOTSurvivingPInvokeSymbols = survivingPInvokeSymbols;
+
 						// A class whose trampolines were all trimmed away by ILC must still be registered if
 						// managed code that survived ILC looks up its class handle, because the generated
 						// inlined Class.GetHandle native code references the Objective-C class.
-						var referencedClasses = new HashSet<string> (CollectPostILTrimInformation.FilterToClassSymbols (Xamarin.StaticLibrary.GetUnresolvedSymbols (NativeAOTObjectFile)));
+						var referencedClasses = new HashSet<string> (CollectPostILTrimInformation.FilterToClassSymbols (unresolvedSymbols));
 						preparer.Configuration.Application.ClassesReferencedByInlinedClassGetHandle = referencedClasses;
 					}
 					rv = preparer.PostProcess (out exceptions);

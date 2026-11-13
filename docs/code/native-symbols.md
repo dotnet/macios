@@ -80,3 +80,20 @@ references, and its build targets omit the globalization library when
 When no native symbols need exporting, the native linker uses `/dev/null` as
 the export list. Remote builds skip transferring empty files, so referencing
 an empty `mtouch-symbols.list` on the Mac would fail.
+
+## NativeAOT framework dependencies
+
+Framework dependencies are collected after ILC has trimmed the app. The
+assembly-preparer uses ILC's output to find surviving native references:
+
+* Inlined `Class.GetHandle` calls identify Objective-C classes. Their managed
+  binding types map those class names to frameworks.
+* Direct P/Invokes appear as unresolved native symbols.
+* Indirect P/Invokes appear as `__pinvoke_` fixup symbols. Their module and
+  entry-point names are matched against P/Invoke declarations in the assemblies
+  to determine which frameworks they need.
+
+Binding assemblies' `ObjectiveCFramework` attributes and explicit framework
+dependencies remain included independently of those references. This preserves
+dependencies declared for use through native code or runtime lookups, even when
+no managed P/Invoke or Objective-C class reference identifies them.

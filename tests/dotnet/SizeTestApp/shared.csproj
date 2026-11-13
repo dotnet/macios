@@ -5,6 +5,7 @@
 
 		<ApplicationTitle>SizeTestApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.sizetestapp</ApplicationId>
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>

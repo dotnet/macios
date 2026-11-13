@@ -5575,10 +5575,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			var members = type.GetMembers (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
 #if NATIVEAOT && NET11_0_OR_GREATER
-			// ILLink isn't executed when using NativeAOT on .NET 11+ (ILC does all the trimming), and
-			// monotouch-test tells ILC to keep complete reflection metadata (NUnit requires
-			// $(IlcGenerateCompleteTypeMetadata)=true and $(IlcTrimMetadata)=false), so even though ILC
-			// trims away the code, the reflection metadata for the members is still there.
+			// ILLink isn't executed when using NativeAOT on .NET 11+, and monotouch-test tells ILC
+			// to keep complete reflection metadata (NUnit requires $(IlcGenerateCompleteTypeMetadata)=true
+			// and $(IlcTrimMetadata)=false), so the member metadata is still there.
 			var expectNoMembers = false;
 #elif OPTIMIZEALL || NATIVEAOT
 			var expectNoMembers = true;

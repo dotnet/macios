@@ -3021,36 +3021,7 @@ namespace Registrar {
 			GetTypeMapDictionary (exceptions);
 
 #if !LEGACY_TOOLS
-			// When we know which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC) - which
-			// is only the case for the trimmable static registrar with NativeAOT + PrepareAssemblies, where the
-			// native registrar code is generated after ILC - we can skip generating the native code for any class
-			// whose trampolines were all trimmed away by ILC (ILC only trims a class's trampolines when it has
-			// determined the class can't be constructed, so nothing will reference it). We must however keep any
-			// class that's the base class of a class we're keeping, because its @implementation is still needed
-			// as a superclass.
-			HashSet<ObjCType>? classesToKeep = null;
-			HashSet<ObjCType>? classesWithTrampolines = null;
-			if (App.Registrar == RegistrarMode.TrimmableStatic && App.SurvivingTrampolineSymbols is not null) {
-				classesToKeep = new HashSet<ObjCType> ();
-				classesWithTrampolines = new HashSet<ObjCType> ();
-				foreach (var type in allTypes) {
-					if (type.IsProtocol || type.IsCategory)
-						continue;
-					var survived = ClassHasSurvivingTrampolines (type, out var hadTrampolines);
-					if (hadTrampolines)
-						classesWithTrampolines.Add (type);
-					// A class is skipped only if it had trampolines and none survived ILC. Every other class is
-					// emitted, so we must keep its entire base class chain (their @implementation is needed as
-					// superclasses), even if a base class itself had all its trampolines trimmed away.
-					// A class whose class handle is still looked up from managed code that survived ILC must
-					// also be kept, even if all its trampolines were trimmed away.
-					if (!hadTrampolines || survived || App.IsClassReferencedByInlinedClassGetHandle (type.ExportedName)) {
-						var keep = type;
-						while (keep is not null && classesToKeep.Add (keep))
-							keep = keep.SuperType;
-					}
-				}
-			}
+			var classesToKeep = GetClassesToKeep (allTypes, out var classesWithTrampolines);
 #endif
 
 			foreach (var @class in allTypes) {
@@ -3065,9 +3036,7 @@ namespace Registrar {
 #if !LEGACY_TOOLS
 				// This class had UnmanagedCallersOnly trampolines, but none survived ILC, and it's not needed as
 				// a base class of a class we're keeping - so ILC determined it can't be constructed: skip it.
-				if (classesWithTrampolines is not null
-					&& classesWithTrampolines.Contains (@class)
-					&& classesToKeep?.Contains (@class) == false)
+				if (ShouldSkipRegistrarClass (@class, classesToKeep, classesWithTrampolines))
 					continue;
 #endif
 
@@ -3137,9 +3106,6 @@ namespace Registrar {
 						CheckNamespace (@class, exceptions);
 					}
 				}
-				if (@class.IsWrapper && isPlatformType)
-					continue;
-
 #if !LEGACY_TOOLS
 				if (!@class.IsProtocol && !@class.IsCategory && IsUnavailablePlatformRegistrarType (@class)) {
 					App.Log (3, "Not emitting the registrar implementation for the platform type '{0}' because it or one of its implemented protocols is unavailable at the deployment target {1}.", @class.Type.FullName, App.DeploymentTarget);
@@ -3147,8 +3113,15 @@ namespace Registrar {
 				}
 #endif
 
+#if !LEGACY_TOOLS
+				if (!ShouldGenerateRegistrarImplementation (@class, isPlatformType))
+					continue;
+#else
+				if (@class.IsWrapper && isPlatformType)
+					continue;
 				if (@class.Methods is null && isPlatformType && !@class.IsProtocol && !@class.IsCategory)
 					continue;
+#endif
 
 				CheckNamespace (@class, exceptions);
 				if (@class.BaseType is not null)
@@ -4474,6 +4447,77 @@ namespace Registrar {
 		}
 
 #if !LEGACY_TOOLS
+		internal HashSet<ObjCType>? GetClassesToKeep (IEnumerable<ObjCType> allTypes, out HashSet<ObjCType>? classesWithTrampolines)
+		{
+			classesWithTrampolines = null;
+			if (App.Registrar != RegistrarMode.TrimmableStatic || App.SurvivingTrampolineSymbols is null)
+				return null;
+
+			// When we know which UnmanagedCallersOnly trampolines survived the NativeAOT compiler (ILC), we can
+			// skip generating the native code for any class whose trampolines were all trimmed away by ILC (ILC
+			// only trims a class's trampolines when it has determined the class can't be constructed, so nothing
+			// will reference it). We must however keep any class that's the base class of a class we're keeping,
+			// because its @implementation is still needed as a superclass.
+			var classesToKeep = new HashSet<ObjCType> ();
+			classesWithTrampolines = new HashSet<ObjCType> ();
+			foreach (var type in allTypes) {
+				if (type.IsProtocol || type.IsCategory)
+					continue;
+				var survived = ClassHasSurvivingTrampolines (type, out var hadTrampolines);
+				if (hadTrampolines)
+					classesWithTrampolines.Add (type);
+				// A class is skipped by this check only if it had trampolines and none survived ILC. Keep the
+				// base class chain of every other class, because its @implementation is needed as a superclass.
+				// A class whose class handle is still looked up from managed code that survived ILC must
+				// also be kept, even if all its trampolines were trimmed away.
+				if (!hadTrampolines || survived || App.IsClassReferencedByInlinedClassGetHandle (type.ExportedName)) {
+					var keep = type;
+					while (keep is not null && classesToKeep.Add (keep))
+						keep = keep.SuperType;
+				}
+			}
+			return classesToKeep;
+		}
+
+		internal HashSet<ObjCType> GetClassesForNativeAOTFrameworks (IEnumerable<ObjCType> allTypes)
+		{
+			var types = allTypes.ToArray ();
+			var classesToKeep = GetClassesToKeep (types, out var classesWithTrampolines);
+			var classes = new HashSet<ObjCType> ();
+			if (classesToKeep is null)
+				return classes;
+
+			foreach (var type in types) {
+				if (ShouldSkipRegistrarClass (type, classesToKeep, classesWithTrampolines) ||
+					!ShouldGenerateRegistrarImplementation (type, IsPlatformType (type.Type)))
+					continue;
+
+				var keep = type.IsCategory ? type.BaseType : type;
+				while (keep is not null && classes.Add (keep))
+					keep = keep.SuperType;
+			}
+
+			return classes;
+		}
+
+		bool ShouldSkipRegistrarClass (ObjCType type, HashSet<ObjCType>? classesToKeep, HashSet<ObjCType>? classesWithTrampolines)
+		{
+			return classesWithTrampolines is not null &&
+				classesWithTrampolines.Contains (type) &&
+				classesToKeep?.Contains (type) == false;
+		}
+
+		bool ShouldGenerateRegistrarImplementation (ObjCType type, bool isPlatformType)
+		{
+			if (type.IsWrapper && isPlatformType)
+				return false;
+#if !LEGACY_TOOLS
+			if (!type.IsProtocol && !type.IsCategory && IsUnavailablePlatformRegistrarType (type))
+				return false;
+#endif
+			return type.Methods is not null || !isPlatformType || type.IsProtocol || type.IsCategory;
+		}
+
 		// Returns true if the class has at least one UnmanagedCallersOnly trampoline that survived the NativeAOT
 		// compiler (ILC). 'hadTrampolines' is set to true if the class had any UnmanagedCallersOnly trampolines at
 		// all. This is only meaningful when App.SurvivingTrampolineSymbols is set (see App.DidTrampolineSurviveIlc).

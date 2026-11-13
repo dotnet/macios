@@ -112,6 +112,38 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (didRun, Is.True, "didRun");
 		}
 
+#if !TVOS
+		[Test]
+		public void ScreenEdgePanGenericCallbackTest ()
+		{
+			var didRun = false;
+			var callbackEvent = new AutoResetEvent (false);
+			Action<UIScreenEdgePanGestureRecognizer> callback = (UIScreenEdgePanGestureRecognizer _) => {
+				didRun = true;
+				callbackEvent.Set ();
+			};
+
+			using var recognizer = new UIScreenEdgePanGestureRecognizer (callback);
+			Assert.That (recognizer.GetTargets (), Is.Not.Empty, "GetTargets");
+
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+
+			// add gesture recognizer to UI view
+			using UIView view = new UIView ();
+			view.AddGestureRecognizer (recognizer);
+			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
+				// change state of gesture recognizer to execute callback
+				recognizer.State = UIGestureRecognizerState.Changed;
+				recognizer.State = UIGestureRecognizerState.Ended;
+			}, () => didRun);
+
+			// blocks main thread until event is trigerred
+			callbackEvent.WaitOne (30000);
+			Assert.That (didRun, Is.True, "didRun");
+		}
+#endif
+
 		class FinalizerNotifier {
 			public Action Action;
 			public FinalizerNotifier (Action action)

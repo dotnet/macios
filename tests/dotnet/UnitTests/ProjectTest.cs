@@ -554,6 +554,28 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		public void BindSystemFramework ()
+		{
+			var platform = ApplePlatform.MacOSX;
+			var runtimeIdentifier = "osx-arm64";
+			const string framework = "InputMethodKit";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("NativeFrameworkReferencesApp", runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			properties ["SystemFramework"] = $"/System/Library/Frameworks/{framework}.framework";
+			DotNet.AssertBuild (projectPath, properties);
+
+			var executable = GetNativeExecutable (platform, appPath);
+			Assert.That (GetLinkedWithFrameworks (executable), Does.Contain ($"/System/Library/Frameworks/{framework}.framework/Versions/A/{framework}"), "System framework linkage");
+			Assert.That (Directory.GetDirectories (appPath, $"{framework}.framework", SearchOption.AllDirectories), Is.Empty, "System framework must not be bundled");
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifier, executable);
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]

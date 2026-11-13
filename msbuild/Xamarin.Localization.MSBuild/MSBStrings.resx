@@ -1825,4 +1825,11 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
     </data>
+    <data name="E7238" xml:space="preserve">
+        <value>Could not copy the file '{0}' to '{1}': {2}</value>
+        <comment>Shown when copying an asset catalog file fails.
+{0} - The source file path.
+{1} - The destination file path.
+{2} - The error message.</comment>
+    </data>
 </root>

@@ -2,6 +2,7 @@
 <Project>
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 
 		<ApplicationTitle>NativeFileReferencesApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.nativefilereferences</ApplicationId>
@@ -18,4 +19,15 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 	</ItemGroup>
+
+	<ItemGroup Condition="'$(PreserveRemappedPInvokes)' == 'true'">
+		<PInvokeStaticLibraryTargets Include="RemapMe;RemapMe2" />
+	</ItemGroup>
+	<Target Name="RemoveInternalPInvokeTarget"
+			BeforeTargets="PrepareForBuild"
+			Condition="'$(RemoveInternalPInvokeTarget)' == 'true'">
+		<ItemGroup>
+			<PInvokeStaticLibraryTargets Remove="__Internal" />
+		</ItemGroup>
+	</Target>
 </Project>

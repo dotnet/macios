@@ -7,6 +7,10 @@
 	<Import Project="Microsoft.$(_PlatformName).Sdk.SupportedTargetPlatforms.props" />
 
 	<Import Project="Xamarin.Shared.Sdk.TargetFrameworkInference.props" />
+
+	<ItemGroup>
+		<PInvokeStaticLibraryTargets Include="__Internal" />
+	</ItemGroup>
 	
 	<PropertyGroup>
 		<!-- e.g: C:\Users\user1\app1\app1\obj\ -->

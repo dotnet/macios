@@ -5,7 +5,6 @@ using CoreFoundation;
 namespace CloudKit {
 	// NSInteger -> CKContainer.h
 	/// <summary>Enumerates values that indicate whether a user's iCloud account is available.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKAccountStatus : long {
 		/// <summary>An error occurred when the application tried to determine if the user's account is available.</summary>
@@ -16,13 +15,12 @@ namespace CloudKit {
 		Restricted = 2,
 		/// <summary>The user has no iCloud account.</summary>
 		NoAccount = 3,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		TemporarilyUnavailable = 4,
 	}
 
 	// NSUInteger -> CKContainer.h
 	/// <summary>Enumerates a value that indicates that other app users can discover the current user by email address.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum CKApplicationPermissions : ulong {
@@ -32,7 +30,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKContainer.h
 	/// <summary>Enumerates the states that an application can have when attempting to obtain a permission.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKApplicationPermissionStatus : long {
 		/// <summary>The application has not yet requested the permission.</summary>
@@ -47,7 +44,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKError.h
 	/// <summary>Enumerates CloudKit error conditions.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("CKErrorDomain")]
 	public enum CKErrorCode : long {
@@ -129,7 +125,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKModifyRecordsOperation.h
 	/// <summary>Enumerates policies that control when or if a record should be saved.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKRecordSavePolicy : long {
 		/// <summary>Do not save data if the record was changed after the local copy was created.</summary>
@@ -142,7 +137,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKNotification.h
 	/// <summary>Enumerates the events that can generate a push notification.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKNotificationType : long {
 		/// <summary>The conditions of an app developer's query, specified in a subscription, were met.</summary>
@@ -152,13 +146,11 @@ namespace CloudKit {
 		/// <summary>A notification was marked as having been read.</summary>
 		ReadNotification = 3,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Database = 4,
 	}
 
 	// NSInteger -> CKNotification.h
 	/// <summary>Enumerates the persistent storage events that can trigger data lifecycle notifications.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQueryNotificationReason : long {
 		/// <summary>A record that matched the subscription's query was created.</summary>
@@ -171,7 +163,6 @@ namespace CloudKit {
 
 	// NSUInteger -> CKRecordZone.h
 	/// <summary>Enumerates the special operations that a zone is capable of.</summary>
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum CKRecordZoneCapabilities : ulong {
@@ -180,17 +171,14 @@ namespace CloudKit {
 		/// <summary>The zone supports atomic operations on sets of records.</summary>
 		Atomic = 1 << 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Sharing = 1 << 2,
 		[iOS (15, 0), TV (15, 0)]
-		[MacCatalyst (15, 0)]
 		ZoneWideSharing = 1 << 3,
 
 	}
 
 	// NSUInteger -> CKReference.h
 	/// <summary>Enumerates values that control whether a reference should delete itself when its target record is deleted.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKReferenceAction : ulong {
 		/// <summary>No action will be perfromed on records that contain a reference to the target record when the target record is deleted.</summary>
@@ -201,7 +189,6 @@ namespace CloudKit {
 
 	// NSInteger -> CKSubscription.h
 	/// <summary>Enumerates subscription types.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKSubscriptionType : long {
 		/// <summary>The subscription tracks data lifecycle events for records that satisfy a query.</summary>
@@ -209,14 +196,12 @@ namespace CloudKit {
 		/// <summary>The subscription tracks data lifecycle events for records in a particular record zone.</summary>
 		RecordZone = 2,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Database = 3,
 	}
 
 	// NSInteger -> CKSubscription.h
 
 	/// <summary>Enumerates values that tell whether a database is private, shared, or public.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKDatabaseScope : long {
 		/// <summary>Indicates a public database.</summary>
@@ -228,7 +213,6 @@ namespace CloudKit {
 	}
 
 	/// <summary>Enumerates responses to share participation requests.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantAcceptanceStatus : long {
 		/// <summary>The user's status is unknown.</summary>
@@ -242,7 +226,6 @@ namespace CloudKit {
 	}
 
 	/// <summary>Enumerates user share permissions.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantPermission : long {
 		/// <summary>The user's share access permissions are unknown.</summary>
@@ -259,7 +242,6 @@ namespace CloudKit {
 	[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'CKShareParticipantRole' instead.")]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'CKShareParticipantRole' instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'CKShareParticipantRole' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CKShareParticipantRole' instead.")]
 	[Native]
 	public enum CKShareParticipantType : long {
@@ -274,7 +256,6 @@ namespace CloudKit {
 	}
 
 	/// <summary>Enumerates the time or times when a <see cref="CloudKit.CKSubscription" /> fires a notification.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKQuerySubscriptionOptions : ulong {
 		/// <summary>To be added.</summary>
@@ -287,7 +268,6 @@ namespace CloudKit {
 		FiresOnce = 1 << 3,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKOperationGroupTransferSize : long {
 		/// <summary>To be added.</summary>
@@ -308,7 +288,6 @@ namespace CloudKit {
 		HundredsOfGigabytes,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantRole : long {
 		/// <summary>To be added.</summary>
@@ -323,7 +302,7 @@ namespace CloudKit {
 		Administrator = 2,
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantAccessOption : ulong {
 		AnyoneWithLink = 1uL << 0,
@@ -331,7 +310,7 @@ namespace CloudKit {
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 
-	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantPermissionOption : ulong {
 		ReadOnly = 1uL << 0,
@@ -340,7 +319,7 @@ namespace CloudKit {
 	}
 
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEngineAccountChangeType : long {
 		SignIn,
@@ -348,14 +327,14 @@ namespace CloudKit {
 		SwitchAccounts,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEngineSyncReason : long {
 		Scheduled,
 		Manual,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEngineEventType : long {
 		StateUpdate,
@@ -372,14 +351,14 @@ namespace CloudKit {
 		DidSendChanges,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingRecordZoneChangeType : long {
 		SaveRecord,
 		DeleteRecord,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEngineZoneDeletionReason : long {
 		Deleted,
@@ -387,7 +366,7 @@ namespace CloudKit {
 		EncryptedDataReset,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingDatabaseChangeType : long {
 		SaveZone,

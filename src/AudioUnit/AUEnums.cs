@@ -118,7 +118,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		InvalidFormat = -66746,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		RenderTimeout = -66745,
 	}
 
@@ -203,7 +202,7 @@ namespace AudioUnit {
 		Ratio = 25,
 		/// <summary>To be added.</summary>
 		CustomUnit = 26,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		MIDI2Controller = 27,
 	}
 
@@ -215,7 +214,6 @@ namespace AudioUnit {
 		CFNameRelease = (1 << 4),
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		OmitFromPresets = (1 << 13),
 		/// <summary>To be added.</summary>
 		PlotHistory = (1 << 14),
@@ -271,7 +269,6 @@ namespace AudioUnit {
 		System = 0,
 	}
 
-	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertySelector : uint {
@@ -305,7 +302,6 @@ namespace AudioUnit {
 		TranslateUidToClockDevice = 1969841251, // 'uidc',
 #if !XAMCORE_5_0
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)] // This is required for .NET, because otherwise the generator thinks it's not available because it's not available on iOS.
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the 'ProcessIsMain' element instead.")]
@@ -314,7 +310,7 @@ namespace AudioUnit {
 		ProcessIsMaster = 1835103092, // 'mast'
 #endif // !XAMCORE_5_0
 		[NoiOS]
-		[MacCatalyst (15, 0), NoTV]
+		[NoTV]
 		ProcessIsMain = 1835100526, // 'main'
 		/// <summary>To be added.</summary>
 		IsInitingOrExiting = 1768845172, // 'inot'
@@ -338,13 +334,12 @@ namespace AudioUnit {
 		ClockDevice = 1634755428, // 'apcd',
 		IOThreadOSWorkgroup = 1869838183, // 'oswg'
 		[NoiOS]
-		[MacCatalyst (15, 0), NoTV]
+		[NoTV]
 		ProcessMute = 1634758765, // 'appm'
-		[MacCatalyst (17, 0), NoTV]
+		[NoTV]
 		InputMute = 1852403056, //pmin
 	}
 
-	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertyScope : uint {
@@ -359,7 +354,6 @@ namespace AudioUnit {
 	}
 
 	/// <summary>Identifies an element of an audio object property.</summary>
-	[MacCatalyst (13, 1)]
 	[NoTV]
 	[NoiOS]
 	public enum AudioObjectPropertyElement : uint {
@@ -434,15 +428,12 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		OfflineRender = 37,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ParameterIDName = 34,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ParameterStringFromValue = 33,
 		/// <summary>To be added.</summary>
 		ParameterClumpName = 35,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ParameterValueFromString = 38,
 		/// <summary>To be added.</summary>
 		ContextName = 25,
@@ -455,18 +446,16 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		ParametersForOverview = 57,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		SupportsMpe = 58,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		LastRenderSampleTime = 61,
 		[iOS (14, 5), TV (14, 5)]
-		[MacCatalyst (14, 5)]
 		LoadedOutOfProcess = 62,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		MIDIOutputEventListCallback = 63,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		AudioUnitMIDIProtocol = 64,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		HostMIDIProtocol = 65,
 
 #if MONOMAC
@@ -583,7 +572,7 @@ namespace AudioUnit {
 		VoiceProcessingEnableAGC = 2101,
 		/// <summary>To be added.</summary>
 		MuteOutput = 2104,
-		[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
+		[iOS (15, 0), NoMac, NoTV]
 		MutedSpeechActivityEventListener = 2106,
 
 		// AUNBandEQ unit
@@ -607,7 +596,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		MeterClipping = 3011,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		InputAnchorTimeStamp = 3016,
 
 		// SpatialMixer
@@ -810,10 +798,8 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		ReverbFilterGain = 16,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ReverbFilterType = 17,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		ReverbFilterEnable = 18,
 
 		// AUMultiChannelMixer
@@ -936,7 +922,7 @@ namespace AudioUnit {
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use 'DynamicsProcessorOverallGain' instead.")]
 		DynamicsProcessorMasterGain = 6,
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		DynamicsProcessorOverallGain = 6,
 		/// <summary>To be added.</summary>
 		DynamicsProcessorCompressionAmount = 1000,
@@ -1078,7 +1064,6 @@ namespace AudioUnit {
 	}
 
 	/// <summary>Enumerates attenuation modes.</summary>
-	[MacCatalyst (13, 1)]
 	public enum SpatialMixerAttenuation {
 		/// <summary>To be added.</summary>
 		Power = 0,
@@ -1092,7 +1077,6 @@ namespace AudioUnit {
 
 	/// <summary>Flagging enumeration used to control spatial mixing.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum SpatialMixerRenderingFlags {
 		/// <summary>To be added.</summary>
 		InterAuralDelay = (1 << 0),
@@ -1115,13 +1099,10 @@ namespace AudioUnit {
 		BeganToRenderLate = 0x04,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Loop = 0x08,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Interrupt = 0x10,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		InterruptAtLoop = 0x20,
 	}
 
@@ -1205,7 +1186,6 @@ namespace AudioUnit {
 	}
 
 	/// <summary>Enumerates options that can be used while instantiating a <see cref="AUAudioUnit" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum AudioComponentInstantiationOptions : uint {
 		/// <summary>To be added.</summary>
 		OutOfProcess = 1,
@@ -1213,7 +1193,6 @@ namespace AudioUnit {
 		[NoiOS, NoTV, NoMacCatalyst]
 		InProcess = 2,
 		[iOS (14, 5), TV (14, 5), NoMac]
-		[MacCatalyst (14, 5)]
 		LoadedRemotely = 1u << 31,
 	}
 
@@ -1380,7 +1359,6 @@ namespace AudioUnit {
 		HrtfHQ = 6,
 		[iOS (14, 0)]
 		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		UseOutputType = 7,
 	}
 
@@ -1403,7 +1381,6 @@ namespace AudioUnit {
 		DistanceAttenuation = (1 << 2),
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum AUParameterAutomationEventType : uint {
 		/// <summary>To be added.</summary>
 		Value = 0,
@@ -1413,13 +1390,13 @@ namespace AudioUnit {
 		Release = 2,
 	}
 
-	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0), TV (15, 0)]
 	public enum AUVoiceIOSpeechActivityEvent : uint {
 		Started = 0,
 		Ended = 1,
 	}
 
-	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0), TV (16, 0)]
 	public enum AudioUnitEventType : uint {
 		ParameterValueChange = 0,
 		BeginParameterChangeGesture = 1,
@@ -1492,7 +1469,7 @@ namespace AudioUnit {
 		/// <summary>A light reverb.</summary>
 		Reverb2 = 0x72766232, // 'rvb2'
 		/// <summary>An audio unit that can be used to isolate a sound type.</summary>
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		AUSoundIsolation = 0x766f6973, // 'vois'
 		/// <summary>An audio unit that supports AudioMix separate-and-remix.</summary>
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
@@ -1537,7 +1514,7 @@ namespace AudioUnit {
 #endif
 	}
 
-	[MacCatalyst (17, 0), NoTV, NoiOS]
+	[NoTV, NoiOS]
 	public enum AudioAggregateDriftCompensation : uint {
 		MinQuality = 0,
 		LowQuality = 0x20,

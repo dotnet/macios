@@ -3,7 +3,6 @@
 
 namespace BusinessChat {
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum BCChatButtonStyle : long {
 		/// <summary>A light-themed chat button.</summary>
@@ -14,7 +13,6 @@ namespace BusinessChat {
 
 	[Deprecated (PlatformName.MacOSX, 13, 1)]
 	[Deprecated (PlatformName.iOS, 16, 2)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 16, 2)]
 	public enum BCParameterName {
 

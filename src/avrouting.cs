@@ -14,7 +14,7 @@ using OS_nw_endpoint = ObjCRuntime.NativeHandle;
 
 namespace AVRouting {
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), NoTV]
 	[Native]
 	public enum AVCustomRoutingEventReason : long {
 		Activate = 0,
@@ -22,7 +22,7 @@ namespace AVRouting {
 		Reactivate,
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AVCustomDeviceRoute {
 		[Internal]
@@ -33,7 +33,7 @@ namespace AVRouting {
 		NSUuid BluetoothIdentifier { get; }
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AVCustomRoutingActionItem {
 		[Export ("type", ArgumentSemantic.Copy)]
@@ -43,7 +43,7 @@ namespace AVRouting {
 		string OverrideTitle { get; set; }
 	}
 
-	[NoTV, NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+	[NoTV, NoMac, iOS (16, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVCustomRoutingPartialIP {
@@ -58,7 +58,7 @@ namespace AVRouting {
 		NativeHandle Constructor (NSData address, NSData mask);
 	}
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AVCustomRoutingController {
 		[Wrap ("WeakDelegate")]
@@ -70,7 +70,7 @@ namespace AVRouting {
 		[Export ("authorizedRoutes")]
 		AVCustomDeviceRoute [] AuthorizedRoutes { get; }
 
-		[NoTV, NoMac, iOS (16, 4), MacCatalyst (16, 4)]
+		[NoTV, NoMac, iOS (16, 4)]
 		[Export ("knownRouteIPs", ArgumentSemantic.Strong)]
 		AVCustomRoutingPartialIP [] KnownRouteIPs { get; set; }
 
@@ -86,7 +86,7 @@ namespace AVRouting {
 		[Export ("isRouteActive:")]
 		bool IsRouteActive (AVCustomDeviceRoute route);
 
-		[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, NoMac, iOS (16, 0)]
 		[Notification, Field ("AVCustomRoutingControllerAuthorizedRoutesDidChangeNotification")]
 		NSString AuthorizedRoutesDidChangeNotification { get; }
 	}
@@ -102,7 +102,7 @@ namespace AVKit {
 
 	interface IAVCustomRoutingControllerDelegate { }
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 #if !XAMCORE_5_0
@@ -126,7 +126,7 @@ namespace AVRouting {
 #endif
 
 
-	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, NoMac, iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface AVCustomRoutingEvent {
 		[Export ("reason")]

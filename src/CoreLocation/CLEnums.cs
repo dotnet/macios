@@ -147,7 +147,6 @@ namespace CoreLocation {
 		/// <summary>Indicates that the app is involved in navigation, but not in a car. This value should be used for tracking motion in, e.g., trains, planes, and boats.</summary>
 		OtherNavigation,
 		/// <summary>Indicates that the app is involved in airborne activities.</summary>
-		[MacCatalyst (13, 1)]
 		Airborne,
 		/// <summary>Indicates navigation for vehicular activities on the water.</summary>
 		[Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0), TV (27, 0)]
@@ -156,7 +155,6 @@ namespace CoreLocation {
 
 	[Native]
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	public enum CLAccuracyAuthorization : long {
 		FullAccuracy,
 		ReducedAccuracy,

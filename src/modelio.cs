@@ -42,7 +42,6 @@ using AUViewControllerBase = UIKit.UIViewController;
 
 namespace ModelIO {
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum MDLAnimatedValueInterpolation : ulong {
 		/// <summary>To be added.</summary>
@@ -51,7 +50,6 @@ namespace ModelIO {
 		Linear,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum MDLTransformOpRotationOrder : ulong {
 		/// <summary>To be added.</summary>
@@ -68,7 +66,6 @@ namespace ModelIO {
 		Zyx,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum MDLDataPrecision : ulong {
 		/// <summary>To be added.</summary>
@@ -84,7 +81,6 @@ namespace ModelIO {
 	/// <summary>A basic high-performance light for illuminating scenes from a lit shape.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLAreaLight_Class/index.html">Apple documentation for <c>MDLAreaLight</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLPhysicallyPlausibleLight))]
 	[DisableDefaultCtor]
 	interface MDLAreaLight {
@@ -115,7 +111,6 @@ namespace ModelIO {
 	/// <summary>A container that stores 3D assets as an indexed collection of <see cref="ModelIO.MDLObject" /> trees.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLAsset_Class/index.html">Apple documentation for <c>MDLAsset</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLAsset : NSCopying {
 		/// <param name="url">To be added.</param>
@@ -144,7 +139,6 @@ namespace ModelIO {
 		///         </param>
 		/// <summary>Creates a new Model IO asset by using the provided <paramref name="bufferAllocator" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
@@ -180,7 +174,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("objectAtPath:")]
 		MDLObject GetObject (string atPath);
 
@@ -203,7 +196,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("components", ArgumentSemantic.Copy)]
 		IMDLComponent [] Components { get; }
 
@@ -211,7 +203,6 @@ namespace ModelIO {
 		///         <param name="protocol">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("setComponent:forProtocol:")]
 		void SetComponent (IMDLComponent component, Protocol protocol);
@@ -220,7 +211,6 @@ namespace ModelIO {
 		///         <param name="type">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetComponent (component, new Protocol (type))")]
 		void SetComponent (IMDLComponent component, Type type);
 
@@ -228,7 +218,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("componentConformingToProtocol:")]
 		[return: NullAllowed]
@@ -238,7 +227,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("GetComponent (new Protocol (type!))")]
 		[return: NullAllowed]
 		IMDLComponent GetComponent (Type type);
@@ -247,13 +235,11 @@ namespace ModelIO {
 		///         <summary>Gets the asset's child assets.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("childObjectsOfClass:")]
 		MDLObject [] GetChildObjects (Class objectClass);
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("loadTextures")]
 		void LoadTextures ();
 
@@ -294,7 +280,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("upAxis", ArgumentSemantic.Assign)]
 		NVector3 UpAxis {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -318,7 +303,6 @@ namespace ModelIO {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("resolver", ArgumentSemantic.Retain)]
 		IMDLAssetResolver Resolver { get; set; }
 
@@ -377,18 +361,16 @@ namespace ModelIO {
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the 'Originals' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the 'Originals' property instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the 'Originals' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Export ("masters", ArgumentSemantic.Retain)]
 		IMDLObjectContainerComponent Masters { get; set; }
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		[Export ("originals", ArgumentSemantic.Retain)]
 		IMDLObjectContainerComponent Originals { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("animations", ArgumentSemantic.Retain)]
 		IMDLObjectContainerComponent Animations { get; set; }
 
@@ -408,7 +390,6 @@ namespace ModelIO {
 		///         <summary>Creates and returns a new Model IO asset from the provided Scene Kit scene, using the specified buffer allocator.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("assetWithSCNScene:bufferAllocator:")]
 		MDLAsset FromScene (SCNScene scene, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
@@ -423,7 +404,6 @@ namespace ModelIO {
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("placeLightProbesWithDensity:heuristic:usingIrradianceDataSource:")]
-		[MacCatalyst (13, 1)]
 		MDLLightProbe [] PlaceLightProbes (float density, MDLProbePlacement type, IMDLLightProbeIrradianceDataSource dataSource);
 	}
 
@@ -431,7 +411,6 @@ namespace ModelIO {
 
 	// Added in iOS 10 SDK but it is supposed to be present in iOS 9.
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/ModelIO/MDLLightProbeIrradianceDataSource">Apple documentation for <c>MDLLightProbeIrradianceDataSource</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface MDLLightProbeIrradianceDataSource {
@@ -456,7 +435,6 @@ namespace ModelIO {
 	/// <summary>A point of view that looks into a 3D scence, and that can simulate certain aspects of a physical camera.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLCamera_Class/index.html">Apple documentation for <c>MDLCamera</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLCamera {
 		/// <summary>Gets or sets the transformation that determines what portion of a scene that the camera can view.</summary>
@@ -471,7 +449,6 @@ namespace ModelIO {
 		/// <summary>Gets or sets a value that controls whether the projection is perspective or orthographic.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("projection", ArgumentSemantic.Assign)]
 		MDLCameraProjection Projection { get; set; }
 
@@ -682,7 +659,6 @@ namespace ModelIO {
 	/// <summary>Procedurally generates a checkerboard texture on demand, and caches the result.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLCheckerboardTexture_Class/index.html">Apple documentation for <c>MDLCheckerboardTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLCheckerboardTexture {
@@ -753,7 +729,6 @@ namespace ModelIO {
 	/// <summary>Texture that contains a gradient between two colors.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLColorSwatchTexture_Class/index.html">Apple documentation for <c>MDLColorSwatchTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLColorSwatchTexture {
@@ -808,7 +783,6 @@ namespace ModelIO {
 	/// <summary>Base class for light sources.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLLight_Class/index.html">Apple documentation for <c>MDLLight</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLLight {
 		/// <param name="point">To be added.</param>
@@ -832,7 +806,6 @@ namespace ModelIO {
 		/// <summary>Gets or sets the light's color space.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("colorSpace")]
 		// No documentation to confirm but this should be a constant (hence NSString).
 		NSString ColorSpace { get; set; }
@@ -849,7 +822,6 @@ namespace ModelIO {
 	/// <summary>A light source that defines the color and intensity of its light in all directions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLLightProbe_Class/index.html">Apple documentation for <c>MDLLightProbe</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLLight))]
 	interface MDLLightProbe {
 		/// <param name="reflectiveTexture">
@@ -931,7 +903,6 @@ namespace ModelIO {
 	/// <summary>Defines how a surface should appear when rendered.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMaterial_Class/index.html">Apple documentation for <c>MDLMaterial</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMaterial : MDLNamed, INSFastEnumeration {
 		/// <param name="name">To be added.</param>
@@ -973,7 +944,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("propertiesWithSemantic:")]
 		MDLMaterialProperty [] GetProperties (MDLMaterialSemantic semantic);
 
@@ -988,7 +958,6 @@ namespace ModelIO {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resolveTexturesWithResolver:")]
 		void ResolveTextures (IMDLAssetResolver resolver);
 
@@ -998,7 +967,6 @@ namespace ModelIO {
 		///         </param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("loadTexturesUsingResolver:")]
 		void LoadTextures (IMDLAssetResolver resolver);
 
@@ -1036,7 +1004,6 @@ namespace ModelIO {
 		/// <summary>Gets or sets a value that determines whether the material is a back, front, or double-sided face.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("materialFace", ArgumentSemantic.Assign)]
 		MDLMaterialFace MaterialFace { get; set; }
 
@@ -1052,7 +1019,6 @@ namespace ModelIO {
 	/// <summary>Defines a specific parameter that controls the rendering of a material surface.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMaterialProperty_Class/index.html">Apple documentation for <c>MDLMaterialProperty</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialProperty : MDLNamed, NSCopying {
@@ -1170,7 +1136,6 @@ namespace ModelIO {
 		/// <param name="type">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setType:")]
 		void SetType (MDLMaterialPropertyType type);
 
@@ -1264,13 +1229,11 @@ namespace ModelIO {
 		/// <summary>Gets or sets the luminance of the material.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("luminance")]
 		float Luminance { get; set; }
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/ModelIO/MDLMaterialPropertyConnection">Apple documentation for <c>MDLMaterialPropertyConnection</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyConnection : MDLNamed {
@@ -1301,7 +1264,6 @@ namespace ModelIO {
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/ModelIO/MDLMaterialPropertyNode">Apple documentation for <c>MDLMaterialPropertyNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyNode : MDLNamed {
@@ -1333,7 +1295,6 @@ namespace ModelIO {
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/ModelIO/MDLMaterialPropertyGraph">Apple documentation for <c>MDLMaterialPropertyGraph</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLMaterialPropertyNode))]
 	[DisableDefaultCtor]
 	interface MDLMaterialPropertyGraph {
@@ -1365,7 +1326,6 @@ namespace ModelIO {
 	/// <summary>A collection of <see cref="ModelIO.MDLSubmesh" /> objects that, together, define the geometric and material properties for rendering a 3D object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMesh_Class/index.html">Apple documentation for <c>MDLMesh</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	interface MDLMesh {
 		/// <param name="bufferAllocator">
@@ -1374,7 +1334,6 @@ namespace ModelIO {
 		///         </param>
 		/// <summary>Creates a new Model IO mesh with the specified buffer allocator.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBufferAllocator:")]
 		NativeHandle Constructor ([NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
 
@@ -1406,7 +1365,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("vertexAttributeDataForAttributeNamed:asFormat:")]
 		[return: NullAllowed]
 		MDLVertexAttributeData GetVertexAttributeData (string attributeName, MDLVertexFormat format);
@@ -1435,7 +1393,6 @@ namespace ModelIO {
 		[Export ("vertexCount")]
 		nuint VertexCount {
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -1445,7 +1402,6 @@ namespace ModelIO {
 		[Export ("vertexBuffers", ArgumentSemantic.Retain)]
 		IMDLMeshBuffer [] VertexBuffers {
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -1459,14 +1415,12 @@ namespace ModelIO {
 		[Export ("submeshes", ArgumentSemantic.Copy)]
 		NSMutableArray<MDLSubmesh> Submeshes {
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allocator", ArgumentSemantic.Retain)]
 		IMDLMeshBufferAllocator Allocator { get; }
 
@@ -1486,7 +1440,6 @@ namespace ModelIO {
 		/// <param name="stride">To be added.</param>
 		/// <summary>Adds a vertex attribute and a corresponding empty vertex buffer.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride);
 
@@ -1498,7 +1451,6 @@ namespace ModelIO {
 		/// <param name="time">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addAttributeWithName:format:type:data:stride:time:")]
 		void AddAttribute (string name, MDLVertexFormat format, string type, NSData data, nint stride, double time);
 
@@ -1536,21 +1488,18 @@ namespace ModelIO {
 		///         <param name="tangentAttributeName">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addOrthTanBasisForTextureCoordinateAttributeNamed:normalAttributeNamed:tangentAttributeNamed:")]
 		void AddOrthTanBasis (string textureCoordinateAttributeName, string normalAttributeName, string tangentAttributeName);
 
 		/// <param name="textureCoordinateAttributeName">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addUnwrappedTextureCoordinatesForAttributeNamed:")]
 		void AddUnwrappedTextureCoordinates (string textureCoordinateAttributeName);
 
 		/// <param name="inTextureCoordinateAttributeNamed">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("flipTextureCoordinatesInAttributeNamed:")]
 		void FlipTextureCoordinates (string inTextureCoordinateAttributeNamed);
 
@@ -1567,7 +1516,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("makeVerticesUniqueAndReturnError:")]
 		bool MakeVerticesUnique (out NSError error);
 
@@ -1575,7 +1523,6 @@ namespace ModelIO {
 		///         <param name="newData">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("replaceAttributeNamed:withData:")]
 		void ReplaceAttribute (string name, MDLVertexAttributeData newData);
 
@@ -1583,14 +1530,12 @@ namespace ModelIO {
 		///         <param name="newData">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("updateAttributeNamed:withData:")]
 		void UpdateAttribute (string name, MDLVertexAttributeData newData);
 
 		/// <param name="name">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("removeAttributeNamed:")]
 		void RemoveAttribute (string name);
 
@@ -1666,7 +1611,6 @@ namespace ModelIO {
 
 		/// <include file="../docs/api/ModelIO/MDLMesh.xml" path="/Documentation/Docs[@DocId='M:ModelIO.MDLMesh.CreateCapsule(System.Single,OpenTK.Vector2,System.nuint,System.nuint,System.nuint,ModelIO.MDLGeometryType,System.Boolean,ModelIO.IMDLMeshBufferAllocator)']/*" />
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("newCapsuleWithHeight:radii:radialSegments:verticalSegments:hemisphereSegments:geometryType:inwardNormals:allocator:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateCapsule (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, nuint hemisphereSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
@@ -1700,7 +1644,6 @@ namespace ModelIO {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("newIcosahedronWithRadius:inwardNormals:geometryType:allocator:")]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, MDLGeometryType geometryType, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
@@ -1791,7 +1734,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("meshWithSCNGeometry:bufferAllocator:")]
 		MDLMesh FromGeometry (SCNGeometry geometry, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
@@ -1799,7 +1741,6 @@ namespace ModelIO {
 
 	interface IMDLMeshBuffer { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBuffer : NSCopying {
 		/// <param name="data">To be added.</param>
@@ -1849,7 +1790,6 @@ namespace ModelIO {
 
 	interface IMDLMeshBufferAllocator { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferAllocator {
 		/// <param name="capacity">To be added.</param>
@@ -1913,7 +1853,6 @@ namespace ModelIO {
 	/// <summary>An implementation of <see cref="ModelIO.IMDLMeshBufferAllocator" /> that allocates mesh buffer data space within main memory, not GPU memory.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferDataAllocator_Class/index.html">Apple documentation for <c>MDLMeshBufferDataAllocator</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferDataAllocator : MDLMeshBufferAllocator {
 
@@ -1922,7 +1861,6 @@ namespace ModelIO {
 	/// <summary>A default implementation of a <see cref="ModelIO.IMDLMeshBufferZone" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferZoneDefault_Class/index.html">Apple documentation for <c>MDLMeshBufferZoneDefault</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferZoneDefault : MDLMeshBufferZone {
 		// We get Capacity and Allocator from MDLMeshBufferZone
@@ -1936,7 +1874,6 @@ namespace ModelIO {
 	/// <summary>Provides storage for vertex and index data for a <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferData_Class/index.html">Apple documentation for <c>MDLMeshBufferData</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferData : MDLMeshBuffer, NSCopying {
 		/// <param name="type">To be added.</param>
@@ -1965,7 +1902,6 @@ namespace ModelIO {
 
 	interface IMDLMeshBufferZone { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLMeshBufferZone {
 		/// <summary>Gets the capacity of the zone, in bytes.</summary>
@@ -1984,7 +1920,6 @@ namespace ModelIO {
 	}
 
 	/// <summary>Interface whose implementers define a <see cref="ModelIO.IMDLNamed.Name" /> property.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLNamed {
 		/// <summary>Gets or sets the descriptive name of the named object.</summary>
@@ -1998,7 +1933,6 @@ namespace ModelIO {
 	/// <summary>Class that generates a texture that consists of random color or direction noise.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLNoiseTexture_Class/index.html">Apple documentation for <c>MDLNoiseTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLNoiseTexture {
@@ -2043,7 +1977,6 @@ namespace ModelIO {
 		NativeHandle Constructor (float smoothness, [NullAllowed] string name, Vector2i textureDimensions, int channelCount, MDLTextureChannelEncoding channelEncoding, bool grayscale);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("initCellularNoiseWithFrequency:name:textureDimensions:channelEncoding:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		IntPtr _InitCellularNoiseWithFrequency (float frequency, [NullAllowed] string name, Vector2i textureDimensions, MDLTextureChannelEncoding channelEncoding);
@@ -2052,7 +1985,6 @@ namespace ModelIO {
 	/// <summary>Class that generates a texture that contains surface normal data.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLNormalMapTexture_Class/index.html">Apple documentation for <c>MDLNormalMapTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLNormalMapTexture {
@@ -2092,13 +2024,11 @@ namespace ModelIO {
 	/// <summary>Base class for objects in a <see cref="ModelIO.MDLAsset" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObject_Class/index.html">Apple documentation for <c>MDLObject</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLObject : MDLNamed {
 		/// <summary>Gets the array of components that belong to this Model I/O object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("components", ArgumentSemantic.Copy)]
 		IMDLComponent [] Components { get; }
 
@@ -2148,14 +2078,12 @@ namespace ModelIO {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("instance", ArgumentSemantic.Retain)]
 		MDLObject Instance { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("path")]
 		string Path { get; }
 
@@ -2163,7 +2091,6 @@ namespace ModelIO {
 		///         <summary>Returns the Model IO object at the specified path.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("objectAtPath:")]
 		MDLObject GetObject (string path);
 
@@ -2173,7 +2100,6 @@ namespace ModelIO {
 		///         <param name="stop">Developers set this value to <see langword="true" /> to stop enumeration.</param>
 		///         <summary>Runs the provided <paramref name="handler" /> on each component in <paramref name="root" />'s object hierarchy that matches the specified <paramref name="objectClass" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateChildObjectsOfClass:root:usingBlock:stopPointer:")]
 		void EnumerateChildObjects (Class objectClass, MDLObject root, MDLObjectHandler handler, ref bool stop);
 
@@ -2198,7 +2124,6 @@ namespace ModelIO {
 		/// <summary>Gets or sets a Boolean value that controls whether the Model IO object is hidden.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("hidden")]
 		bool Hidden { get; set; }
 
@@ -2232,7 +2157,6 @@ namespace ModelIO {
 		///         <summary>Creates and returns a new Model IO object from the provided node.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("objectWithSCNNode:bufferAllocator:")]
 		MDLObject FromNode (SCNNode node, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
@@ -2241,14 +2165,12 @@ namespace ModelIO {
 	/// <summary>A default implementation of the abstract <see cref="ModelIO.IMDLObjectContainerComponent" /> class.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLObjectContainer_Class/index.html">Apple documentation for <c>MDLObjectContainer</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLObjectContainer : MDLObjectContainerComponent {
 	}
 
 	interface IMDLObjectContainerComponent { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLObjectContainerComponent : MDLComponent, INSFastEnumeration {
 		/// <param name="object">To be added.</param>
@@ -2270,7 +2192,6 @@ namespace ModelIO {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("objectAtIndexedSubscript:")]
 		MDLObject GetObject (nuint index);
 
@@ -2278,7 +2199,6 @@ namespace ModelIO {
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
-		[MacCatalyst (13, 1)]
 		[Export ("count")]
 		nuint Count { get; }
 
@@ -2292,7 +2212,6 @@ namespace ModelIO {
 
 	interface IMDLComponent { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLComponent {
 	}
@@ -2300,7 +2219,6 @@ namespace ModelIO {
 	/// <summary>Represents a light that is derived from photometric data.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLPhotometricLight_Class/index.html">Apple documentation for <c>MDLPhotometricLight</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLPhysicallyPlausibleLight))]
 	interface MDLPhotometricLight {
 		/// <param name="url">To be added.</param>
@@ -2325,7 +2243,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("generateTexture:")]
 		MDLTexture GenerateTexture (nuint textureSize);
 
@@ -2357,7 +2274,6 @@ namespace ModelIO {
 	/// <summary>Represents a light that plausibly attenutates and can represent black-body incandescence.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLPhysicallyPlausibleLight_Class/index.html">Apple documentation for <c>MDLPhysicallyPlausibleLight</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLLight))]
 	interface MDLPhysicallyPlausibleLight {
 		/// <param name="temperature">To be added.</param>
@@ -2409,7 +2325,6 @@ namespace ModelIO {
 	/// <summary>Represents a bidirectional reflectance distribution function to use when rendering a <see cref="ModelIO.MDLMaterialTextureWrapMode" />.</summary>
 	///     <remarks>The properties on this object, except for <see cref="ModelIO.MDLPhysicallyPlausibleScatteringFunction.Version" /> have valid values only in the range [0.0, 1.0].</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLPhysicallyPlausibleScatteringFunction_Class/index.html">Apple documentation for <c>MDLPhysicallyPlausibleScatteringFunction</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLScatteringFunction))]
 	interface MDLPhysicallyPlausibleScatteringFunction {
 		/// <summary>Gets the scattering function version.</summary>
@@ -2488,7 +2403,6 @@ namespace ModelIO {
 	/// <summary>Represents a Bidirectional Reflectance Distribution Funcion (BRDF) that defines a material's response to lighting conditions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLScatteringFunction_Class/index.html">Apple documentation for <c>MDLScatteringFunction</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLScatteringFunction : MDLNamed {
 		/// <summary>Gets the base color of the material.</summary>
@@ -2543,7 +2457,6 @@ namespace ModelIO {
 	/// <summary>A texture that represents a realistic sunlit sky.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLSkyCubeTexture_Class/index.html">Apple documentation for <c>MDLSkyCubeTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture))]
 	[DisableDefaultCtor]
 	interface MDLSkyCubeTexture {
@@ -2596,7 +2509,6 @@ namespace ModelIO {
 		/// <param name="groundAlbedo">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithName:channelEncoding:textureDimensions:turbidity:sunElevation:sunAzimuth:upperAtmosphereScattering:groundAlbedo:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor ([NullAllowed] string name, MDLTextureChannelEncoding channelEncoding, Vector2i textureDimensions, float turbidity, float sunElevation, float sunAzimuth, float upperAtmosphereScattering, float groundAlbedo);
@@ -2621,7 +2533,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("sunAzimuth")]
 		float SunAzimuth { get; set; }
 
@@ -2698,7 +2609,6 @@ namespace ModelIO {
 	/// <summary>A camera that can be used to render stereoscopic views of a scene.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLStereoscopicCamera_Class/index.html">Apple documentation for <c>MDLStereoscopicCamera</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLCamera))]
 	interface MDLStereoscopicCamera {
 		/// <summary>Gets or sets the distance, in millimeters, between the centers of the camera viewpoints.</summary>
@@ -2765,7 +2675,6 @@ namespace ModelIO {
 	/// <summary>Indexes and identifies a portion of an MDLMesh, and contains material information about the indexed portion.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLSubmesh_Class/index.html">Apple documentation for <c>MDLSubmesh</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmesh : MDLNamed {
 		/// <param name="name">To be added.</param>
@@ -2831,7 +2740,6 @@ namespace ModelIO {
 		///         <summary>Returns the index buffer for the submesh with the specified bit depth.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("indexBufferAsIndexType:")]
 		IMDLMeshBuffer GetIndexBuffer (MDLIndexBitDepth indexType);
 
@@ -2871,7 +2779,6 @@ namespace ModelIO {
 		[NullAllowed, Export ("topology", ArgumentSemantic.Retain)]
 		MDLSubmeshTopology Topology {
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -2891,7 +2798,6 @@ namespace ModelIO {
 		///         <summary>Creates a new submesh from the provided Scene Kit element.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("submeshWithSCNGeometryElement:bufferAllocator:")]
 		MDLSubmesh FromGeometryElement (SCNGeometryElement element, [NullAllowed] IMDLMeshBufferAllocator bufferAllocator);
@@ -2900,7 +2806,6 @@ namespace ModelIO {
 	/// <summary>Represents texel data for surface rendering.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLTexture_Class/index.html">Apple documentation for <c>MDLTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // designated
 	interface MDLTexture : MDLNamed {
@@ -2928,7 +2833,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textureNamed:assetResolver:")]
 		[return: NullAllowed]
@@ -3008,7 +2912,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:level:")]
 		bool WriteToUrl (NSUrl url, nuint level);
 
@@ -3026,7 +2929,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:type:level:")]
 		bool WriteToUrl (NSUrl nsurl, string type, nuint level);
 
@@ -3041,7 +2943,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("imageFromTextureAtLevel:")]
 		[return: NullAllowed]
 		CGImage GetImageFromTexture (nuint level);
@@ -3120,7 +3021,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("hasAlphaValues")]
 		bool HasAlphaValues { get; set; }
 	}
@@ -3128,7 +3028,6 @@ namespace ModelIO {
 	/// <summary>Describes filtering modes for rendering by sampling a texture.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLTextureFilter_Class/index.html">Apple documentation for <c>MDLTextureFilter</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTextureFilter {
 		/// <summary>Gets or sets the wrapping mode for S-coordinates.</summary>
@@ -3171,7 +3070,6 @@ namespace ModelIO {
 	/// <summary>Represents a texture and sampling parameters to use when rendering the texture.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLTextureSampler_Class/index.html">Apple documentation for <c>MDLTextureSampler</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTextureSampler {
 		/// <summary>Gets or sets the texture to sample.</summary>
@@ -3205,7 +3103,6 @@ namespace ModelIO {
 	/// <summary>Represents static and animated coordinate transformations.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLTransform_Class/index.html">Apple documentation for <c>MDLTransform</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface MDLTransform : MDLTransformComponent, NSCopying {
@@ -3220,7 +3117,6 @@ namespace ModelIO {
 		/// <param name="resetsTransform">To be added.</param>
 		/// <summary>Creates a new transform that represents the specified transform <paramref name="component" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithTransformComponent:resetsTransform:")]
 		NativeHandle Constructor (IMDLTransformComponent component, bool resetsTransform);
 
@@ -3235,7 +3131,6 @@ namespace ModelIO {
 		/// <param name="resetsTransform">To be added.</param>
 		/// <summary>Creates a new MDLTransform from the specified matrix.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithMatrix:resetsTransform:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		NativeHandle Constructor (Matrix4 matrix, bool resetsTransform);
@@ -3301,7 +3196,6 @@ namespace ModelIO {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetRotation (Vector3 rotation, double time);
 
-		[MacCatalyst (13, 1)]
 		[Export ("setMatrix:forTime:")]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		void SetMatrix (Matrix4 matrix, double time);
@@ -3353,7 +3247,6 @@ namespace ModelIO {
 
 	interface IMDLTransformComponent { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLTransformComponent : MDLComponent {
 		/// <summary>Gets or sets the matrix of the transform at the earliest specified time.</summary>
@@ -3369,7 +3262,6 @@ namespace ModelIO {
 		}
 
 		/// <summary>Inserts the specified transform at the specified time.</summary>
-		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("resetsTransform")]
 		bool ResetsTransform { get; set; }
@@ -3392,7 +3284,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Abstract]
 		[Export ("keyTimes", ArgumentSemantic.Copy)]
 		NSNumber [] KeyTimes { get; }
@@ -3427,7 +3318,6 @@ namespace ModelIO {
 	/// <summary>Encapsulates on-demand loading of a texture at a URL.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLURLTexture_Class/index.html">Apple documentation for <c>MDLURLTexture</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLTexture), Name = "MDLURLTexture")]
 	[DisableDefaultCtor]
 	interface MDLUrlTexture {
@@ -3471,7 +3361,6 @@ namespace ModelIO {
 	/// <summary>Describes the physical layout and semantic content of vertex data in an index buffer.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexAttribute_Class/index.html">Apple documentation for <c>MDLVertexAttribute</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexAttribute : NSCopying {
 		/// <param name="name">To be added.</param>
@@ -3510,7 +3399,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("time")]
 		double Time { get; set; }
 
@@ -3529,7 +3417,6 @@ namespace ModelIO {
 	/// <summary>Provides convenient access to vertex data for a specific <see cref="ModelIO.MDLMesh" /> object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexAttributeData_Class/index.html">Apple documentation for <c>MDLVertexAttributeData</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // apple headers: created by MDLMesh's vertexAttributeData selector
 	interface MDLVertexAttributeData {
@@ -3563,7 +3450,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("bufferSize", ArgumentSemantic.Assign)]
 		nuint BufferSize { get; set; }
 	}
@@ -3571,7 +3457,6 @@ namespace ModelIO {
 	/// <summary>Class that provides temporary access to mesh data in shared memory.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLMeshBufferMap_Class/index.html">Apple documentation for <c>MDLMeshBufferMap</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLMeshBufferMap {
 		// FIXME: provide better API.
@@ -3595,7 +3480,6 @@ namespace ModelIO {
 	/// <summary>Describes the format of vertices in a mesh buffer.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexDescriptor_Class/index.html">Apple documentation for <c>MDLVertexDescriptor</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexDescriptor : NSCopying {
 		/// <param name="vertexDescriptor">To be added.</param>
@@ -3621,7 +3505,6 @@ namespace ModelIO {
 		/// <param name="name">To be added.</param>
 		///         <summary>Removes the attribute that has the specified name.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("removeAttributeNamed:")]
 		void RemoveAttribute (string name);
 
@@ -3656,7 +3539,6 @@ namespace ModelIO {
 	/// <summary>Models a 3D object as a collection of volumetric elements, called voxels.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVoxelArray_Class/index.html">Apple documentation for <c>MDLVoxelArray</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	[DisableDefaultCtor]
 	interface MDLVoxelArray {
@@ -3702,7 +3584,6 @@ namespace ModelIO {
 		/// <param name="patchRadius">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithAsset:divisions:patchRadius:")]
 		NativeHandle Constructor (MDLAsset asset, int divisions, float patchRadius);
 
@@ -3739,7 +3620,6 @@ namespace ModelIO {
 		///         <param name="patchRadius">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setVoxelsForMesh:divisions:patchRadius:")]
 		void SetVoxels (MDLMesh mesh, int divisions, float patchRadius);
 
@@ -3851,35 +3731,30 @@ namespace ModelIO {
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("convertToSignedShellField")]
 		void ConvertToSignedShellField ();
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isValidSignedShellField")]
 		bool IsValidSignedShellField { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shellFieldInteriorThickness")]
 		float ShellFieldInteriorThickness { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shellFieldExteriorThickness")]
 		float ShellFieldExteriorThickness { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("coarseMesh")]
 		[return: NullAllowed]
 		MDLMesh GetCoarseMesh ();
@@ -3891,7 +3766,6 @@ namespace ModelIO {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("coarseMeshUsingAllocator:")]
 		[return: NullAllowed]
 		MDLMesh GetCoarseMeshUsingAllocator ([NullAllowed] IMDLMeshBufferAllocator allocator);
@@ -3899,7 +3773,6 @@ namespace ModelIO {
 
 	/// <summary>Contains valid vertex attribute names.</summary>
 	[Static]
-	[MacCatalyst (13, 1)]
 	interface MDLVertexAttributes {
 		/// <summary>The vertex attribute data describe the degree to which the surface changes appearance with rotation.</summary>
 		///         <value>To be added.</value>
@@ -3995,13 +3868,11 @@ namespace ModelIO {
 	/// <summary>Describes the layout of vertices in a mesh buffer object.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLVertexBufferLayout_Class/index.html">Apple documentation for <c>MDLVertexBufferLayout</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLVertexBufferLayout : NSCopying {
 		/// <param name="stride">To be added.</param>
 		/// <summary>Creates a new vertex buffer layout with the specified <paramref name="stride" />.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithStride:")]
 		NativeHandle Constructor (nuint stride);
 
@@ -4015,13 +3886,11 @@ namespace ModelIO {
 	/// <summary>Describes the topology of the vertices that are indexed by a submesh's index buffers.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ModelIO/Reference/MDLSubmeshTopology_Class/index.html">Apple documentation for <c>MDLSubmeshTopology</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLSubmeshTopology {
 		/// <param name="submesh">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSubmesh:")]
 		NativeHandle Constructor (MDLSubmesh submesh);
 
@@ -4104,7 +3973,6 @@ namespace ModelIO {
 		nuint HoleCount { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLAnimatedValue : NSCopying {
 
@@ -4161,7 +4029,6 @@ namespace ModelIO {
 		nuint _GetTimes (IntPtr timesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedScalarArray {
 
@@ -4207,7 +4074,6 @@ namespace ModelIO {
 		nuint _GetDoubleArray (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector3Array {
 
@@ -4253,7 +4119,6 @@ namespace ModelIO {
 		nuint _GetDouble3Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedQuaternionArray {
 
@@ -4299,7 +4164,6 @@ namespace ModelIO {
 		nuint _GetDoubleQuaternionArray (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedScalar {
 
@@ -4348,7 +4212,6 @@ namespace ModelIO {
 		nuint _GetDoubleArray (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector2 {
 
@@ -4393,7 +4256,6 @@ namespace ModelIO {
 		nuint _GetDouble2Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector3 {
 
@@ -4438,7 +4300,6 @@ namespace ModelIO {
 		nuint _GetDouble3Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedVector4 {
 
@@ -4483,7 +4344,6 @@ namespace ModelIO {
 		nuint _GetDouble4Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedMatrix4x4 {
 
@@ -4528,7 +4388,6 @@ namespace ModelIO {
 		nuint _GetDouble4x4Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	[DisableDefaultCtor]
 	interface MDLSkeleton : NSCopying {
@@ -4548,7 +4407,6 @@ namespace ModelIO {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("jointRestTransforms")]
 		MDLMatrix4x4Array JointRestTransforms { get; }
 
@@ -4562,12 +4420,10 @@ namespace ModelIO {
 
 	interface IMDLJointAnimation { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLJointAnimation {
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLObject))]
 	[DisableDefaultCtor]
 	interface MDLPackedJointAnimation : NSCopying, MDLJointAnimation {
@@ -4604,7 +4460,6 @@ namespace ModelIO {
 		NativeHandle Constructor (string name, string [] jointPaths);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLAnimationBindComponent : NSCopying, MDLComponent {
 
@@ -4649,7 +4504,6 @@ namespace ModelIO {
 
 	interface IMDLAssetResolver { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLAssetResolver {
 
@@ -4670,7 +4524,6 @@ namespace ModelIO {
 		NSUrl ResolveAsset (string name);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLRelativeAssetResolver : MDLAssetResolver {
@@ -4691,7 +4544,6 @@ namespace ModelIO {
 		MDLAsset Asset { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLPathAssetResolver : MDLAssetResolver {
@@ -4709,7 +4561,6 @@ namespace ModelIO {
 		string Path { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLBundleAssetResolver : MDLAssetResolver {
@@ -4729,7 +4580,6 @@ namespace ModelIO {
 
 	interface IMDLTransformOp { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MDLTransformOp {
 
@@ -4766,7 +4616,6 @@ namespace ModelIO {
 		bool IsInverseOp { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformRotateXOp : MDLTransformOp {
 
@@ -4781,7 +4630,6 @@ namespace ModelIO {
 		MDLAnimatedScalar AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformRotateYOp : MDLTransformOp {
 
@@ -4796,7 +4644,6 @@ namespace ModelIO {
 		MDLAnimatedScalar AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformRotateZOp : MDLTransformOp {
 
@@ -4811,7 +4658,6 @@ namespace ModelIO {
 		MDLAnimatedScalar AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformRotateOp : MDLTransformOp {
 
@@ -4826,7 +4672,6 @@ namespace ModelIO {
 		MDLAnimatedVector3 AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformTranslateOp : MDLTransformOp {
 
@@ -4841,7 +4686,6 @@ namespace ModelIO {
 		MDLAnimatedVector3 AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformScaleOp : MDLTransformOp {
 
@@ -4856,7 +4700,6 @@ namespace ModelIO {
 		MDLAnimatedVector3 AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformMatrixOp : MDLTransformOp {
 
@@ -4871,7 +4714,6 @@ namespace ModelIO {
 		MDLAnimatedMatrix4x4 AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformOrientOp : MDLTransformOp {
 
@@ -4883,7 +4725,6 @@ namespace ModelIO {
 		MDLAnimatedQuaternion AnimatedValue { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MDLTransformStack : NSCopying, MDLTransformComponent {
 
@@ -4944,7 +4785,6 @@ namespace ModelIO {
 		[Export ("addMatrixOp:inverse:")]
 		MDLTransformMatrixOp AddMatrixOp (string animatedValueName, bool inverse);
 
-		[MacCatalyst (13, 1)]
 		[Export ("addOrientOp:inverse:")]
 		MDLTransformOrientOp AddOrientOp (string animatedValueName, bool inverse);
 
@@ -4988,7 +4828,6 @@ namespace ModelIO {
 		IMDLTransformOp [] TransformOps { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MDLMatrix4x4Array : NSCopying {
@@ -5030,7 +4869,6 @@ namespace ModelIO {
 		nuint _GetDouble4x4Array (IntPtr valuesArray, nuint maxCount);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MDLAnimatedValue))]
 	interface MDLAnimatedQuaternion {
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]

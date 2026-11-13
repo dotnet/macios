@@ -2,7 +2,6 @@
 namespace AdServices {
 
 	[iOS (14, 3)]
-	[MacCatalyst (14, 3)]
 	[NoTV]
 	[Native]
 	[ErrorDomain ("AAAttributionErrorDomain")]
@@ -13,7 +12,6 @@ namespace AdServices {
 	}
 
 	[iOS (14, 3)]
-	[MacCatalyst (14, 3)]
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

@@ -11,7 +11,6 @@
 
 namespace WebKit {
 	/// <summary>Enumerates the types of action that can cause navigation.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationType : long {
 		/// <summary>The user activated a link.</summary>
@@ -29,7 +28,6 @@ namespace WebKit {
 	}
 
 	/// <summary>Contains values that enumerate whether to cancel or allow navigation actions.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationActionPolicy : long {
 		/// <summary>Cancel navigation.</summary>
@@ -37,12 +35,10 @@ namespace WebKit {
 		/// <summary>Allow navigation.</summary>
 		Allow,
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Download,
 	}
 
 	/// <summary>Contains values that enumerate whether the response delegate should cancel or allow navigation.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKNavigationResponsePolicy : long {
 		/// <summary>Cancel navigation.</summary>
@@ -50,12 +46,10 @@ namespace WebKit {
 		/// <summary>Allow navigation.</summary>
 		Allow,
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		Download,
 	}
 
 	/// <summary>Enumerates values that indicate when to inject a script.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKUserScriptInjectionTime : long {
 		/// <summary>Inject the script before the document begins to load.</summary>
@@ -65,7 +59,6 @@ namespace WebKit {
 	}
 
 	/// <summary>Enumerates WebKit errors.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("WKErrorDomain")]
 	public enum WKErrorCode : long {
@@ -105,7 +98,6 @@ namespace WebKit {
 
 	/// <summary>Enumerates values the controls how selections are created.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum WKSelectionGranularity : long {
 		/// <summary>Jump to word boundaries as the user selects.</summary>
@@ -116,7 +108,6 @@ namespace WebKit {
 
 	/// <summary>Enumerates the kinds of data that are detected and converted to links.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum WKDataDetectorTypes : ulong {
@@ -143,7 +134,6 @@ namespace WebKit {
 	}
 
 	/// <summary>Enumerates media types.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum WKAudiovisualMediaTypes : ulong {
@@ -157,7 +147,7 @@ namespace WebKit {
 		All = UInt64.MaxValue,
 	}
 
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0)]
+	[iOS (15, 0), NoTV]
 	[Native]
 	public enum WKMediaCaptureState : long {
 		None,
@@ -165,7 +155,7 @@ namespace WebKit {
 		Muted,
 	}
 
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0)]
+	[iOS (15, 0), NoTV]
 	[Native]
 	public enum WKMediaCaptureType : long {
 		Camera,
@@ -173,7 +163,7 @@ namespace WebKit {
 		CameraAndMicrophone,
 	}
 
-	[iOS (15, 0), NoTV, MacCatalyst (15, 0)]
+	[iOS (15, 0), NoTV]
 	[Native]
 	public enum WKPermissionDecision : long {
 		Prompt,

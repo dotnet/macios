@@ -4,7 +4,6 @@ using Metal;
 namespace MetalPerformanceShaders {
 
 	/// <summary>Enumerates ORable kernel options that improve performance in certain cases.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Native] // NSUInteger
 	[Flags] // NS_OPTIONS
 	public enum MPSKernelOptions : ulong {
@@ -15,18 +14,14 @@ namespace MetalPerformanceShaders {
 		/// <summary>Allow the use of reduced-precision types in calculations.</summary>
 		AllowReducedPrecision = 1 << 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		DisableInternalTiling = 1 << 2,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		InsertDebugGroups = 1 << 3,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Verbose = 1 << 4,
 	}
 
 	/// <summary>Enumerates shader behavior at the edges of regions and images.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Native] // NSUInteger
 	public enum MPSImageEdgeMode : ulong {
 		/// <summary>Pixels outside the region of interest are set to zero. (The alpha channel is set to 0.0 for pixels with an alpha channel, and to 1.0 for those without.)</summary>
@@ -34,18 +29,14 @@ namespace MetalPerformanceShaders {
 		/// <summary>Pixels outside the region of interest are clamped to the values at the edge of the region.</summary>
 		Clamp = 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Mirror,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MirrorWithEdge,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Constant,
 	}
 
 	/// <summary>Enumerates values that indicate if and what kind of color premultiplication will be applied to color values.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSAlphaType : ulong {
 		/// <summary>Indicates that the image will not be premultiplied, and the alpha channel will not be guaranteed to be 1.</summary>
@@ -57,7 +48,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates values that specify floating point data types.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSDataType : uint { // uint32_t
 		/// <summary>To be added.</summary>
 		Invalid = 0,
@@ -81,11 +71,11 @@ namespace MetalPerformanceShaders {
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		Float8E8M0 = FloatBit | 0x800000 | 8,
 
-		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		[iOS (16, 2), TV (16, 2)]
 		ComplexBit = 0x01000000,
-		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		[iOS (16, 2), TV (16, 2)]
 		ComplexFloat32 = FloatBit | ComplexBit | 64,
-		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
+		[iOS (16, 2), TV (16, 2)]
 		ComplexFloat16 = FloatBit | ComplexBit | 32,
 		[iOS (26, 4), MacCatalyst (26, 4), TV (26, 4)]
 		ComplexBFloat16 = AlternateEncodingBit | FloatBit | ComplexBit | 32,
@@ -103,7 +93,6 @@ namespace MetalPerformanceShaders {
 		Int32 = SignedBit | 32,
 		[iOS (14, 1)]
 		[TV (14, 2)]
-		[MacCatalyst (14, 1)]
 		Int64 = SignedBit | 64,
 
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
@@ -118,30 +107,25 @@ namespace MetalPerformanceShaders {
 		UInt32 = 32,
 		[iOS (14, 1)]
 		[TV (14, 2)]
-		[MacCatalyst (14, 1)]
 		UInt64 = 64,
 
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		AlternateEncodingBit = 0x80000000,
-		[iOS (15, 0), MacCatalyst (15, 0), TV (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		Bool = AlternateEncodingBit | 8,
-		[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
+		[iOS (16, 0), TV (16, 0)]
 		BFloat16 = AlternateEncodingBit | Float16,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		NormalizedBit = 0x40000000,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Unorm1 = NormalizedBit | 1,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Unorm8 = NormalizedBit | 8,
 	}
 
 	[Flags]
 	[Native]
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSAliasingStrategy : ulong {
 		Default = 0x0,
 		DontCare = Default,
@@ -153,7 +137,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates image channel descriptions.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Native]
 	public enum MPSImageFeatureChannelFormat : ulong {
 		/// <summary>Indicates an invalid format.</summary>
@@ -166,14 +149,12 @@ namespace MetalPerformanceShaders {
 		Float16 = 3,
 		/// <summary>Indicates a single-precision floating point format.</summary>
 		Float32 = 4,
-		[MacCatalyst (13, 1)]
 		Reserved0 = 5,
 
 		//Count, // must always be last, and because of this it will cause breaking changes.
 	}
 
 	/// <summary>Enumerates the result forms of a matrix decomposition.</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSMatrixDecompositionStatus {
 		/// <summary>To be added.</summary>
 		Success = 0,
@@ -185,19 +166,16 @@ namespace MetalPerformanceShaders {
 		NonPositiveDefinite = -3,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Flags]
 	[Native]
 	public enum MPSMatrixRandomDistribution : ulong {
 		Default = 0x1,
 		Uniform = 0x2,
 		[iOS (14, 0), TV (14, 0)]
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		Normal = Default | Uniform,
 	}
 
 	/// <summary>Enumerates the propagation direction in a layer in a recurrent neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSRnnSequenceDirection : ulong {
 		/// <summary>To be added.</summary>
@@ -207,7 +185,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates how input matrices or images should be combined in a recurrent neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSRnnBidirectionalCombineMode : ulong {
 		/// <summary>To be added.</summary>
@@ -219,7 +196,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates the available activation functions of a neuron.</summary>
-	[MacCatalyst (13, 1)]
 	public enum MPSCnnNeuronType {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -246,20 +222,15 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		ReLun,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Power,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Exponential,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Logarithm,
-		[MacCatalyst (13, 1)]
 		GeLU,
 	}
 
 	/// <summary>Flagging enumeration for options available to binary convolution kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum MPSCnnBinaryConvolutionFlags : ulong {
@@ -270,7 +241,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates the operation used in a binary convolution.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSCnnBinaryConvolutionType : ulong {
 		/// <summary>To be added.</summary>
@@ -282,7 +252,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Options for how a neural network graph will pad results.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSNNPaddingMethod : ulong {
 		/// <summary>To be added.</summary>
@@ -320,7 +289,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates whether a data buffer is row- or column-major</summary>
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Native]
 	public enum MPSDataLayout : ulong {
 		/// <summary>To be added.</summary>
@@ -329,7 +297,6 @@ namespace MetalPerformanceShaders {
 		FeatureChannelsPerHeightPerWidth = 1,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	[Native]
 	public enum MPSStateResourceType : ulong {
 		/// <summary>To be added.</summary>
@@ -340,7 +307,6 @@ namespace MetalPerformanceShaders {
 		Texture = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSIntersectionType : ulong {
 		/// <summary>To be added.</summary>
@@ -349,7 +315,6 @@ namespace MetalPerformanceShaders {
 		Any = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSTriangleIntersectionTestType : ulong {
 		/// <summary>To be added.</summary>
@@ -358,18 +323,15 @@ namespace MetalPerformanceShaders {
 		Watertight = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSBoundingBoxIntersectionTestType : ulong {
 		/// <summary>To be added.</summary>
 		Default = 0,
 		/// <summary>To be added.</summary>
 		AxisAligned = 1,
-		[MacCatalyst (13, 1)]
 		Fast = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum MPSRayMaskOptions : ulong {
@@ -381,7 +343,6 @@ namespace MetalPerformanceShaders {
 		Instance = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSRayDataType : ulong {
 		/// <summary>To be added.</summary>
@@ -390,11 +351,9 @@ namespace MetalPerformanceShaders {
 		OriginMinDistanceDirectionMaxDistance = 1,
 		/// <summary>To be added.</summary>
 		OriginMaskDirectionMaxDistance = 2,
-		[MacCatalyst (13, 1)]
 		PackedOriginDirection = 3,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSIntersectionDataType : ulong {
 		/// <summary>To be added.</summary>
@@ -408,20 +367,19 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		PrimitiveIndexInstanceIndexCoordinates = 4,
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		PrimitiveIndexBufferIndex = 5,
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		PrimitiveIndexBufferIndexCoordinates = 6,
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		PrimitiveIndexBufferIndexInstanceIndex = 7,
 
-		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0), TV (15, 0)]
 		PrimitiveIndexBufferIndexInstanceIndexCoordinates = 8,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSTransformType : ulong {
 		/// <summary>To be added.</summary>
@@ -430,7 +388,6 @@ namespace MetalPerformanceShaders {
 		Identity = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum MPSAccelerationStructureUsage : ulong {
@@ -440,13 +397,10 @@ namespace MetalPerformanceShaders {
 		Refit = 1,
 		/// <summary>To be added.</summary>
 		FrequentRebuild = 2,
-		[MacCatalyst (13, 1)]
 		PreferGpuBuild = 4,
-		[MacCatalyst (13, 1)]
 		PreferCpuBuild = 8,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSAccelerationStructureStatus : ulong {
 		/// <summary>To be added.</summary>
@@ -455,7 +409,6 @@ namespace MetalPerformanceShaders {
 		Built = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum MPSCnnWeightsQuantizationType : uint {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -467,7 +420,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MPSCnnConvolutionGradientOption : ulong {
 		/// <summary>To be added.</summary>
 		GradientWithData = 0x1,
@@ -479,7 +431,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MPSNNComparisonType : ulong {
 		/// <summary>To be added.</summary>
 		Equal,
@@ -495,7 +446,6 @@ namespace MetalPerformanceShaders {
 		GreaterOrEqual,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSCnnLossType : uint {
 		/// <summary>To be added.</summary>
 		MeanAbsoluteError = 0,
@@ -520,7 +470,6 @@ namespace MetalPerformanceShaders {
 		//Count, // must always be last, and because of this it will cause breaking changes.
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSCnnReductionType {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -535,7 +484,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MPSNNConvolutionAccumulatorPrecisionOption : ulong {
 		/// <summary>To be added.</summary>
 		Half = 0x0,
@@ -545,7 +493,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MPSCnnBatchNormalizationFlags : ulong {
 		/// <summary>To be added.</summary>
 		Default = 0x0,
@@ -559,7 +506,6 @@ namespace MetalPerformanceShaders {
 		CalculateStatisticsMask = 0x3,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSNNRegularizationType : ulong {
 		/// <summary>To be added.</summary>
@@ -570,7 +516,6 @@ namespace MetalPerformanceShaders {
 		L2 = 2,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum MPSNNTrainingStyle : ulong {
@@ -583,7 +528,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MPSRnnMatrixId : ulong {
 		/// <summary>To be added.</summary>
 		SingleGateInputWeights = 0,
@@ -646,7 +590,6 @@ namespace MetalPerformanceShaders {
 		//Count, // must always be last, and because of this it will cause breaking changes.
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSCustomKernelIndex : uint {
 		DestIndex = 0,
 		Src0Index = 0,
@@ -657,7 +600,6 @@ namespace MetalPerformanceShaders {
 		UserDataIndex = 30,
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSImageType : uint {
 		Type2d = 0,
 		Type2dArray = 1,
@@ -691,7 +633,6 @@ namespace MetalPerformanceShaders {
 
 	[Flags]
 	[Native]
-	[Introduced (PlatformName.MacCatalyst, 13, 0)]
 	public enum MPSDeviceOptions : ulong {
 		Default = 0x0,
 		LowPower = 0x1,

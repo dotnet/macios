@@ -3,7 +3,6 @@
 
 namespace CoreMedia {
 	// keys names got changed at some point, but they all refer to a CMSampleBuffer (there is not CMSample obj)
-	[MacCatalyst (13, 1)]
 	enum CMSampleBufferAttachmentKey {
 		/// <summary>To be added.</summary>
 		[Field ("kCMSampleAttachmentKey_NotSync")]
@@ -30,19 +29,15 @@ namespace CoreMedia {
 		[Field ("kCMSampleAttachmentKey_DoNotDisplay")]
 		DoNotDisplay,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCTemporalLevelInfo")]
 		HevcTemporalLevelInfo,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCTemporalSubLayerAccess")]
 		HevcTemporalSubLayerAccess,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCStepwiseTemporalSubLayerAccess")]
 		HevcStepwiseTemporalSubLayerAccess,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCSyncSampleNALUnitType")]
 		HevcSyncSampleNalUnitType,
 		/// <summary>To be added.</summary>
@@ -97,27 +92,21 @@ namespace CoreMedia {
 		[Field ("kCMSampleBufferAttachmentKey_GradualDecoderRefresh")]
 		GradualDecoderRefresh,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_DroppedFrameReason")]
 		DroppedFrameReason,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_StillImageLensStabilizationInfo")]
 		StillImageLensStabilizationInfo,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix")]
 		CameraIntrinsicMatrix,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_DroppedFrameReasonInfo")]
 		DroppedFrameReasonInfo,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_ForceKeyFrame")]
 		ForceKeyFrame,
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		// Declared available at iOS/tvOS 16.0 but only added to the simulator runtimes in a later release.
 		[SupportedSimulator ("ios16.1")]
 		[SupportedSimulator ("tvos16.1")]

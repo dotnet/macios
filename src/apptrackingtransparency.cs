@@ -8,7 +8,6 @@
 namespace AppTrackingTransparency {
 
 	[iOS (14, 0), TV (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	public enum ATTrackingManagerAuthorizationStatus : ulong {
 		NotDetermined = 0,
@@ -18,7 +17,6 @@ namespace AppTrackingTransparency {
 	}
 
 	[iOS (14, 0), TV (14, 0)]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ATTrackingManager {

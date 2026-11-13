@@ -13,7 +13,6 @@ namespace CoreSpotlight {
 	// NSInteger -> CNContact.h
 	/// <summary>Enumerates possible errors associated with using Core Spotlight and searching.</summary>
 	[NoTV] // CS_TVOS_UNAVAILABLE
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("CSIndexErrorDomain")]
 	public enum CSIndexErrorCode : long {
@@ -37,7 +36,6 @@ namespace CoreSpotlight {
 	/// <summary>Enumerates errors that can occur while running a Core Spotlight query with <see cref="CoreSpotlight.CSSearchQuery.Start" />.</summary>
 	///     <remarks>Developers can use the <see cref="CoreSpotlight.CSSearchQueryErrorCodeExtensions.GetDomain(CoreSpotlight.CSSearchQueryErrorCode)" /> extension method to get the error domain.</remarks>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("CSSearchQueryErrorDomain")]
 	[Native]
 	public enum CSSearchQueryErrorCode : long {
@@ -54,7 +52,6 @@ namespace CoreSpotlight {
 	/// <summary>Enumerates file protection options in calls to <see cref="CSSearchableIndex.CSSearchableIndex(string,CSFileProtection)" />.</summary>
 	[NoTV]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	public enum CSFileProtection {
 		/// <summary>The file is not protected.</summary>
 		None,

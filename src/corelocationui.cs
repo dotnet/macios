@@ -3,7 +3,7 @@ using UIKit;
 
 namespace CoreLocationUI {
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum CLLocationButtonIcon : long {
 		None = 0,
@@ -11,7 +11,7 @@ namespace CoreLocationUI {
 		ArrowOutline,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum CLLocationButtonLabel : long {
 		None = 0,
@@ -22,7 +22,7 @@ namespace CoreLocationUI {
 		ShareMyCurrentLocation,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[BaseType (typeof (UIControl))]
 	interface CLLocationButton : NSSecureCoding {
 

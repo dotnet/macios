@@ -12,7 +12,6 @@ using CoreFoundation;
 namespace BackgroundTasks {
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTaskRequest))]
 	[DisableDefaultCtor]
 	interface BGAppRefreshTaskRequest {
@@ -21,7 +20,6 @@ namespace BackgroundTasks {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTaskRequest))]
 	[DisableDefaultCtor]
 	interface BGProcessingTaskRequest {
@@ -37,7 +35,6 @@ namespace BackgroundTasks {
 
 	[Abstract]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BGTaskRequest : NSCopying {
@@ -49,7 +46,6 @@ namespace BackgroundTasks {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BGTask {
@@ -64,14 +60,12 @@ namespace BackgroundTasks {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTask))]
 	[DisableDefaultCtor]
 	interface BGAppRefreshTask {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTask))]
 	[DisableDefaultCtor]
 	interface BGProcessingTask {
@@ -81,7 +75,6 @@ namespace BackgroundTasks {
 	delegate void BGTaskSchedulerSubmitCompletionHandler ([NullAllowed] NSError error);
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BGTaskScheduler {
@@ -126,11 +119,11 @@ namespace BackgroundTasks {
 	[TV (17, 0)]
 	[Obsoleted (PlatformName.TvOS, 27, 0, message: "This type is not available on tvOS 27.0 or later.")]
 #endif
-	[NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[NoMac, iOS (17, 0)]
 	[BaseType (typeof (BGProcessingTask))]
 	interface BGHealthResearchTask { }
 
-	[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), NoMac, iOS (17, 0)]
 	[BaseType (typeof (BGProcessingTaskRequest))]
 	interface BGHealthResearchTaskRequest {
 		[Export ("protectionTypeOfRequiredData")]

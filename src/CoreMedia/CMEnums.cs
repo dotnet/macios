@@ -16,7 +16,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify valid types of media.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMMediaType : uint {
 		/// <summary>To be added.</summary>
 		Video = 1986618469, // 'vide'
@@ -35,13 +34,12 @@ namespace CoreMedia {
 							   // note: the 4CC was obsoleted, i.e. Metadata is a new 4CC
 		/// <summary>To be added.</summary>
 		Metadata = 0x6D657461, // 'meta'
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		TaggedBufferGroup = ('t' << 24) + ('b' << 16) + ('g' << 8) + 'r', // 'tbgr',
 	}
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify a closed-captioning standard.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMClosedCaptionFormatType : uint {
 		/// <summary>To be added.</summary>
 		CEA608 = 0x63363038, // 'c608',
@@ -55,7 +53,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify valid types of multiplexed media.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMMuxedStreamType : uint {
 		/// <summary>To be added.</summary>
 		MPEG1System = 0x6D703173, // 'mp1s',
@@ -65,7 +62,7 @@ namespace CoreMedia {
 		MPEG2Program = 0x6D703270, // 'mp2p',
 		/// <summary>To be added.</summary>
 		DV = 0x64762020, // 'dv  '
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		EmbeddedDeviceScreenRecording = 0x69737220, // 'isr '
 
 		// any new entries here might need new entries in the CMMediaSubType enum as well
@@ -73,7 +70,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify a subtitling standard.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMSubtitleFormatType : uint {
 		/// <summary>To be added.</summary>
 		Text3G = 0x74783367, // 'tx3g'
@@ -85,7 +81,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify types of timed metadata.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMMetadataFormatType : uint {
 		/// <summary>To be added.</summary>
 		ICY = 0x69637920, // 'icy '
@@ -101,7 +96,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify the type of a time code.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMTimeCodeFormatType : uint {
 		/// <summary>To be added.</summary>
 		TimeCode32 = 0x746D6364, // 'tmcd',
@@ -117,7 +111,6 @@ namespace CoreMedia {
 
 	// uint32_t -> CMTime.h
 	/// <summary>An enumeration whose values specify the rounding method to be used with a <see cref="CoreMedia.CMTime" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMTimeRoundingMethod : uint {
 		/// <summary>To be added.</summary>
 		RoundHalfAwayFromZero = 1,
@@ -137,7 +130,6 @@ namespace CoreMedia {
 
 	// FourCharCode -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify types of video codecs.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMVideoCodecType : uint {
 		/// <summary>Indicates YCbCR content.</summary>
 		YUV422YpCbCr8 = 0x32767579,
@@ -165,7 +157,6 @@ namespace CoreMedia {
 		/// <summary>Indicates MPEG-1 content.</summary>
 		Mpeg1Video = 0x6d703176,
 		[iOS (14, 0), TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		VP9 = 0x76703039,
 		/// <summary>Indicates DV NTSC content.</summary>
 		DvcNtsc = 0x64766320,
@@ -207,7 +198,6 @@ namespace CoreMedia {
 		HevcWithAlpha = 0x6d757861, // 'muxa'
 		[iOS (14, 5)]
 		[TV (14, 5)]
-		[MacCatalyst (14, 5)]
 		DolbyVisionHevc = 0x64766831,
 		DisparityHevc = 0x64697368,
 		DepthHevc = 0x64657068,
@@ -219,7 +209,6 @@ namespace CoreMedia {
 
 	// UInt32 enum => CMFormatDescription.h
 	/// <summary>Enumerates pixel formats.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMPixelFormat : uint {
 		/// <summary>To be added.</summary>
 		AlphaRedGreenBlue32bits = 32,
@@ -259,7 +248,6 @@ namespace CoreMedia {
 
 	/// <summary>Enumerates attachment propagation policies.</summary>
 	///     <remarks>This setting controls whether <see cref="CoreMedia.CMAttachmentBearer.PropagateAttachments(CoreMedia.ICMAttachmentBearer,CoreMedia.ICMAttachmentBearer)" /> will propagate a given attachment.</remarks>
-	[MacCatalyst (13, 1)]
 	public enum CMAttachmentMode : uint {
 		/// <summary>Indicates that the attachment does not propagate.</summary>
 		ShouldNotPropagate = 0,
@@ -269,7 +257,6 @@ namespace CoreMedia {
 
 	// untyped enum (used as OSStatus) -> CMBlockBuffer.h
 	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMBlockBuffer" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -296,7 +283,6 @@ namespace CoreMedia {
 	// uint32_t -> CMBlockBuffer.h
 	/// <summary>An enumeration of flags to be used with <see cref="CoreMedia.CMBlockBuffer.CreateEmpty(System.UInt32,CoreMedia.CMBlockBufferFlags,out CoreMedia.CMBlockBufferError)" />.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum CMBlockBufferFlags : uint {
 		/// <summary>To be added.</summary>
 		AssureMemoryNow = (1 << 0),
@@ -310,7 +296,6 @@ namespace CoreMedia {
 
 	// untyped enum (uses as OSStatus) -> CMFormatDescription.h
 	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMFormatDescription" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMFormatDescriptionError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -324,7 +309,6 @@ namespace CoreMedia {
 
 	// untyped enum (used as an OSStatus) -> CMSampleBuffer.h
 	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMSampleBuffer" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMSampleBufferError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -375,7 +359,6 @@ namespace CoreMedia {
 
 	// untyped enum (used as OSStatus) -> CMSync.h
 	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMClock" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMClockError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -393,7 +376,6 @@ namespace CoreMedia {
 
 	// untyped enum (used as OSStatus) -> CMSync.h
 	/// <summary>An enumeration whose values specify errors relating to <see cref="CoreMedia.CMTimebase" />s.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMTimebaseError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -411,7 +393,6 @@ namespace CoreMedia {
 
 	// untyped enum (used as OSStatus) -> CMSync.h
 	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,out System.Double,out CoreMedia.CMTime,out CoreMedia.CMTime)" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMSyncError : int {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -425,7 +406,6 @@ namespace CoreMedia {
 		RateMustBeNonZero = -12755,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum CMAudioCodecType : uint {
 		AacLCProtected = 0x70616163, // 'paac'
 		AacAudibleProtected = 0x61616163, // 'aaac'
@@ -433,7 +413,6 @@ namespace CoreMedia {
 		// any new entries here might need new entries in the CMMediaSubType enum as well
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum CMTextFormatType : uint {
 		QTText = 0x74657874, // 'text'
 		Text3G = 0x74783367, // 'tx3g'
@@ -445,7 +424,6 @@ namespace CoreMedia {
 	// The easiest way to get a list of all the names is to look in /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/lib/swift/CoreMedia.swiftmodule/arm64e-apple-ios.swiftinterface
 	// Then the values are looked up manually using the corresponding Objective-C constant (this involves a lot of searching and guessing)
 	/// <summary>This enum contains most values that can be returned from <see cref="CMFormatDescription.MediaSubType" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CMMediaSubType : uint {
 		/// <summary>This has the same value as <see cref="AudioFormatType.LinearPCM" />.</summary>
 		LinearPcm = (uint) AudioFormatType.LinearPCM,
@@ -636,7 +614,7 @@ namespace CoreMedia {
 		/// <summary>This has the same value as <see cref="CMMuxedStreamType.DV" />.</summary>
 		Dv = (uint) CMMuxedStreamType.DV,
 		/// <summary>This has the same value as <see cref="CMMuxedStreamType.EmbeddedDeviceScreenRecording" />.</summary>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		EmbeddedDeviceScreenRecording = (uint) CMMuxedStreamType.EmbeddedDeviceScreenRecording,
 		/// <summary>This has the same value as <see cref="CMClosedCaptionFormatType.CEA608" />.</summary>
 		Cea608 = (uint) CMClosedCaptionFormatType.CEA608,

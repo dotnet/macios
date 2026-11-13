@@ -265,11 +265,9 @@ namespace Foundation {
 		[Export ("removeObserver:fromObjectsAtIndexes:forKeyPath:")]
 		void RemoveObserver (NSObject observer, NSIndexSet indexes, string keyPath);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeToURL:error:")]
 		bool Write (NSUrl url, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("arrayWithContentsOfURL:error:")]
 		[return: NullAllowed]
@@ -920,7 +918,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("drawWithRect:options:context:")]
 		void DrawString (CGRect rect, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
@@ -934,14 +931,12 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("boundingRectWithSize:options:context:")]
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, [NullAllowed] NSStringDrawingContext context);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("size")]
 		CGSize Size { get; }
 
@@ -962,7 +957,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("containsAttachmentsInRange:")]
 		bool ContainsAttachmentsInRange (NSRange range);
 
@@ -974,7 +968,6 @@ namespace Foundation {
 		// inlined from NSAttributedStringWebKitAdditions category (since they are all static members)
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithRequest:options:completionHandler:")]
 		[PreSnippet ("GC.KeepAlive (WebKit.WKContentMode.Recommended); // no-op to ensure WebKit.framework is loaded into memory", Optimizable = true)]
@@ -983,14 +976,12 @@ namespace Foundation {
 		void LoadFromHtml (NSUrlRequest request, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
 		[Wrap ("LoadFromHtml (request, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (NSUrlRequest request, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithFileURL:options:completionHandler:")]
 		[PreSnippet ("GC.KeepAlive (WebKit.WKContentMode.Recommended); // no-op to ensure WebKit.framework is loaded into memory", Optimizable = true)]
@@ -999,14 +990,12 @@ namespace Foundation {
 		void LoadFromHtml (NSUrl fileUrl, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
 		[Wrap ("LoadFromHtml (fileUrl, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (NSUrl fileUrl, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithString:options:completionHandler:")]
 		[PreSnippet ("GC.KeepAlive (WebKit.WKContentMode.Recommended); // no-op to ensure WebKit.framework is loaded into memory", Optimizable = true)]
@@ -1015,14 +1004,12 @@ namespace Foundation {
 		void LoadFromHtml (string @string, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
 		[Wrap ("LoadFromHtml (@string, options.GetDictionary ()!, completionHandler)")]
 		void LoadFromHtml (string @string, NSAttributedStringDocumentAttributes options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("loadFromHTMLWithData:options:completionHandler:")]
 		[PreSnippet ("GC.KeepAlive (WebKit.WKContentMode.Recommended); // no-op to ensure WebKit.framework is loaded into memory", Optimizable = true)]
@@ -1031,7 +1018,6 @@ namespace Foundation {
 		void LoadFromHtml (NSData data, NSDictionary options, NSAttributedStringCompletionHandler completionHandler);
 
 		[NoTV] // really inside WebKit
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (ResultTypeName = "NSLoadFromHtmlResult")]
 		[Wrap ("LoadFromHtml (data, options.GetDictionary ()!, completionHandler)")]
@@ -1039,44 +1025,44 @@ namespace Foundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithContentsOfMarkdownFileAtURL:options:baseURL:error:")]
 		NativeHandle Constructor (NSUrl markdownFile, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 #endif
 
 		[Internal]
 		[Sealed]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithContentsOfMarkdownFileAtURL:options:baseURL:error:")]
 		NativeHandle _InitWithContentsOfMarkdownFile (NSUrl markdownFile, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithMarkdown:options:baseURL:error:")]
 		NativeHandle Constructor (NSData markdown, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 #endif
 
 		[Internal]
 		[Sealed]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithMarkdown:options:baseURL:error:")]
 		NativeHandle _InitWithMarkdown (NSData markdown, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use the 'Create' method instead, because there's no way to return an error from a constructor.")]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithMarkdownString:options:baseURL:error:")]
 		NativeHandle Constructor (string markdownString, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 #endif
 
 		[Internal]
 		[Sealed]
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("initWithMarkdownString:options:baseURL:error:")]
 		NativeHandle _InitWithMarkdownString (string markdownString, [NullAllowed] NSAttributedStringMarkdownParsingOptions options, [NullAllowed] NSUrl baseUrl, [NullAllowed] out NSError error);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("attributedStringByInflectingString")]
 		NSAttributedString AttributedStringByInflectingString { get; }
 
@@ -1138,7 +1124,6 @@ namespace Foundation {
 #else
 		[Field ("NSTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[MacCatalyst (13, 1)]
 		NSString TextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
 
@@ -1148,7 +1133,6 @@ namespace Foundation {
 #else
 		[Field ("NSSourceTextScalingDocumentAttribute", "UIKit")]
 #endif
-		[MacCatalyst (13, 1)]
 		NSString SourceTextScalingDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
 
@@ -1158,7 +1142,6 @@ namespace Foundation {
 #else
 		[Field ("NSCocoaVersionDocumentAttribute", "UIKit")]
 #endif
-		[MacCatalyst (13, 1)]
 		NSString CocoaVersionDocumentAttribute { get; }
 #endif // !XAMCORE_5_0
 
@@ -1170,7 +1153,7 @@ namespace Foundation {
 	}
 
 	// we follow the API found in swift
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	public enum NSAttributedStringNameKey {
 
 		[Field ("NSAlternateDescriptionAttributeName")]
@@ -1192,7 +1175,6 @@ namespace Foundation {
 		LanguageIdentifier,
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Field ("NSMarkdownSourcePositionAttributeName")]
 		MarkdownSourcePosition,
 
@@ -1205,15 +1187,15 @@ namespace Foundation {
 		[Field ("NSReplacementIndexAttributeName")]
 		ReplacementIndex,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSInflectionAgreementArgumentAttributeName")]
 		InflectionAgreementArgument,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSInflectionAgreementConceptAttributeName")]
 		InflectionAgreementConcept,
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSInflectionReferentConceptAttributeName")]
 		InflectionReferentConcept,
 
@@ -1226,7 +1208,7 @@ namespace Foundation {
 		ListItemDelimiter,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NSGrammaticalCase : long {
 		NotSet = 0,
@@ -1246,7 +1228,7 @@ namespace Foundation {
 		Translative,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NSGrammaticalPronounType : long {
 		NotSet = 0,
@@ -1255,7 +1237,7 @@ namespace Foundation {
 		Possessive,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NSGrammaticalDefiniteness : long {
 		NotSet = 0,
@@ -1263,7 +1245,7 @@ namespace Foundation {
 		Definite,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NSGrammaticalDetermination : long {
 		NotSet = 0,
@@ -1271,7 +1253,7 @@ namespace Foundation {
 		Dependent,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[Native]
 	public enum NSGrammaticalPerson : long {
 		NotSet = 0,
@@ -1281,7 +1263,6 @@ namespace Foundation {
 	}
 
 	[NoTV] // really inside WebKit
-	[MacCatalyst (13, 1)]
 	delegate void NSAttributedStringCompletionHandler ([NullAllowed] NSAttributedString attributedString, [NullAllowed] NSDictionary<NSString, NSObject> attributes, [NullAllowed] NSError error);
 
 	[BaseType (typeof (NSObject),
@@ -1487,23 +1468,18 @@ namespace Foundation {
 		string PMSymbol { get; }
 
 		[Export ("compareDate:toDate:toUnitGranularity:")]
-		[MacCatalyst (13, 1)]
 		NSComparisonResult CompareDate (NSDate date1, NSDate date2, NSCalendarUnit granularity);
 
 		[Export ("component:fromDate:")]
-		[MacCatalyst (13, 1)]
 		nint GetComponentFromDate (NSCalendarUnit unit, NSDate date);
 
 		[Export ("components:fromDateComponents:toDateComponents:options:")]
-		[MacCatalyst (13, 1)]
 		NSDateComponents ComponentsFromDateToDate (NSCalendarUnit unitFlags, NSDateComponents startingDate, NSDateComponents resultDate, NSCalendarOptions options);
 
 		[Export ("componentsInTimeZone:fromDate:")]
-		[MacCatalyst (13, 1)]
 		NSDateComponents ComponentsInTimeZone (NSTimeZone timezone, NSDate date);
 
 		[Export ("date:matchesComponents:")]
-		[MacCatalyst (13, 1)]
 		bool Matches (NSDate date, NSDateComponents components);
 
 		/// <param name="unit">To be added.</param>
@@ -1514,7 +1490,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("dateByAddingUnit:value:toDate:options:")]
-		[MacCatalyst (13, 1)]
 		NSDate DateByAddingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
 		/// <param name="hour">To be added.</param>
@@ -1526,7 +1501,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingHour:minute:second:ofDate:options:")]
-		[MacCatalyst (13, 1)]
 		NSDate DateBySettingsHour (nint hour, nint minute, nint second, NSDate date, NSCalendarOptions options);
 
 		/// <param name="unit">To be added.</param>
@@ -1537,7 +1511,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("dateBySettingUnit:value:ofDate:options:")]
-		[MacCatalyst (13, 1)]
 		NSDate DateBySettingUnit (NSCalendarUnit unit, nint value, NSDate date, NSCalendarOptions options);
 
 		/// <param name="era">To be added.</param>
@@ -1552,7 +1525,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:year:month:day:hour:minute:second:nanosecond:")]
-		[MacCatalyst (13, 1)]
 		NSDate Date (nint era, nint year, nint month, nint date, nint hour, nint minute, nint second, nint nanosecond);
 
 		/// <param name="era">To be added.</param>
@@ -1567,11 +1539,9 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("dateWithEra:yearForWeekOfYear:weekOfYear:weekday:hour:minute:second:nanosecond:")]
-		[MacCatalyst (13, 1)]
 		NSDate DateForWeekOfYear (nint era, nint year, nint week, nint weekday, nint hour, nint minute, nint second, nint nanosecond);
 
 		[Export ("enumerateDatesStartingAfterDate:matchingComponents:options:usingBlock:")]
-		[MacCatalyst (13, 1)]
 		void EnumerateDatesStartingAfterDate (NSDate start, NSDateComponents matchingComponents, NSCalendarOptions options, [BlockCallback] EnumerateDatesCallback callback);
 
 		/// <param name="era">To be added.</param>
@@ -1582,7 +1552,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("getEra:year:month:day:fromDate:")]
-		[MacCatalyst (13, 1)]
 		void GetComponentsFromDate (out nint era, out nint year, out nint month, out nint day, NSDate date);
 
 		/// <param name="era">To be added.</param>
@@ -1593,7 +1562,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("getEra:yearForWeekOfYear:weekOfYear:weekday:fromDate:")]
-		[MacCatalyst (13, 1)]
 		void GetComponentsFromDateForWeekOfYear (out nint era, out nint year, out nint weekOfYear, out nint weekday, NSDate date);
 
 		/// <param name="hour">To be added.</param>
@@ -1604,35 +1572,27 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("getHour:minute:second:nanosecond:fromDate:")]
-		[MacCatalyst (13, 1)]
 		void GetHourComponentsFromDate (out nint hour, out nint minute, out nint second, out nint nanosecond, NSDate date);
 
 		[Export ("isDate:equalToDate:toUnitGranularity:")]
-		[MacCatalyst (13, 1)]
 		bool IsEqualToUnitGranularity (NSDate date1, NSDate date2, NSCalendarUnit unit);
 
 		[Export ("isDate:inSameDayAsDate:")]
-		[MacCatalyst (13, 1)]
 		bool IsInSameDay (NSDate date1, NSDate date2);
 
 		[Export ("isDateInToday:")]
-		[MacCatalyst (13, 1)]
 		bool IsDateInToday (NSDate date);
 
 		[Export ("isDateInTomorrow:")]
-		[MacCatalyst (13, 1)]
 		bool IsDateInTomorrow (NSDate date);
 
 		[Export ("isDateInWeekend:")]
-		[MacCatalyst (13, 1)]
 		bool IsDateInWeekend (NSDate date);
 
 		[Export ("isDateInYesterday:")]
-		[MacCatalyst (13, 1)]
 		bool IsDateInYesterday (NSDate date);
 
 		[Export ("nextDateAfterDate:matchingComponents:options:")]
-		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, NSDateComponents components, NSCalendarOptions options);
@@ -1646,7 +1606,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingHour:minute:second:options:")]
-		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, nint hour, nint minute, nint second, NSCalendarOptions options);
@@ -1659,17 +1618,14 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("nextDateAfterDate:matchingUnit:value:options:")]
-		[MacCatalyst (13, 1)]
 		[MarshalNativeExceptions]
 		[return: NullAllowed]
 		NSDate FindNextDateAfterDateMatching (NSDate date, NSCalendarUnit unit, nint value, NSCalendarOptions options);
 
 		[Export ("nextWeekendStartDate:interval:options:afterDate:")]
-		[MacCatalyst (13, 1)]
 		bool FindNextWeekend (out NSDate date, out double /* NSTimeInterval */ interval, NSCalendarOptions options, NSDate afterDate);
 
 		[Export ("rangeOfWeekendStartDate:interval:containingDate:")]
-		[MacCatalyst (13, 1)]
 		bool RangeOfWeekendContainingDate (out NSDate weekendStartDate, out double /* NSTimeInterval */ interval, NSDate date);
 
 		// although the ideal would be to use GetRange, we already have the method
@@ -1691,10 +1647,8 @@ namespace Foundation {
 		bool Range (NSCalendarUnit unit, [NullAllowed] out NSDate datep, out double /* NSTimeInterval */ interval, NSDate date);
 
 		[Export ("startOfDayForDate:")]
-		[MacCatalyst (13, 1)]
 		NSDate StartOfDayForDate (NSDate date);
 
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSCalendarDayChangedNotification")]
 		NSString DayChangedNotification { get; }
@@ -1766,12 +1720,10 @@ namespace Foundation {
 		EthiopicAmeteMihret = 13,
 
 		/// <summary>Tabular Islamic calendar.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSCalendarIdentifierIslamicTabular")]
 		IslamicTabular = 14,
 
 		/// <summary>Islamic Umm al-Qura calendar.</summary>
-		[MacCatalyst (13, 1)]
 		[Field ("NSCalendarIdentifierIslamicUmmAlQura")]
 		IslamicUmmAlQura = 15,
 
@@ -2011,7 +1963,6 @@ namespace Foundation {
 		NSCharacterSet UrlUserAllowed { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSMassFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
@@ -2065,80 +2016,61 @@ namespace Foundation {
 		[Export ("invert")]
 		void Invert ();
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("alphanumericCharacterSet")]
 		NSCharacterSet Alphanumerics { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("capitalizedLetterCharacterSet")]
 		NSCharacterSet Capitalized { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("characterSetWithBitmapRepresentation:")]
 		NSCharacterSet FromBitmapRepresentation (NSData data);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("characterSetWithCharactersInString:")]
 		NSCharacterSet FromString (string aString);
 
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Static, Export ("characterSetWithContentsOfFile:")]
 		NSCharacterSet FromFile (string path);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("characterSetWithRange:")]
 		NSCharacterSet FromRange (NSRange aRange);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("controlCharacterSet")]
 		NSCharacterSet Controls { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("decimalDigitCharacterSet")]
 		NSCharacterSet DecimalDigits { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("decomposableCharacterSet")]
 		NSCharacterSet Decomposables { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("illegalCharacterSet")]
 		NSCharacterSet Illegals { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("letterCharacterSet")]
 		NSCharacterSet Letters { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("lowercaseLetterCharacterSet")]
 		NSCharacterSet LowercaseLetters { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("newlineCharacterSet")]
 		NSCharacterSet Newlines { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("nonBaseCharacterSet")]
 		NSCharacterSet Marks { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("punctuationCharacterSet")]
 		NSCharacterSet Punctuation { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("symbolCharacterSet")]
 		NSCharacterSet Symbols { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("uppercaseLetterCharacterSet")]
 		NSCharacterSet UppercaseLetters { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("whitespaceAndNewlineCharacterSet")]
 		NSCharacterSet WhitespaceAndNewlines { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("whitespaceCharacterSet")]
 		NSCharacterSet Whitespaces { get; }
 	}
@@ -2257,60 +2189,49 @@ namespace Foundation {
 		bool RequiresSecureCoding ();
 
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectAndReturnError:")]
 		NSObject DecodeTopLevelObject ([NullAllowed] out NSError error);
 
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectForKey:error:")]
 		NSObject DecodeTopLevelObject (string key, [NullAllowed] out NSError error);
 
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectOfClass:forKey:error:")]
 		NSObject DecodeTopLevelObject (Class klass, string key, [NullAllowed] out NSError error);
 
 		[return: NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectOfClasses:forKey:error:")]
 		NSObject DecodeTopLevelObject ([NullAllowed] NSSet<Class> setOfClasses, string key, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("failWithError:")]
 		void Fail (NSError error);
 
 		[Export ("systemVersion")]
 		uint SystemVersion { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("decodingFailurePolicy")]
 		NSDecodingFailurePolicy DecodingFailurePolicy { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("error", ArgumentSemantic.Copy)]
 		NSError Error { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("decodeArrayOfObjectsOfClass:forKey:")]
 		[return: NullAllowed]
 		NSObject [] DecodeArrayOfObjects (Class @class, string key);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("decodeArrayOfObjectsOfClasses:forKey:")]
 		[return: NullAllowed]
 		NSObject [] DecodeArrayOfObjects (NSSet<Class> classes, string key);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("decodeDictionaryWithKeysOfClass:objectsOfClass:forKey:")]
 		[return: NullAllowed]
 		NSDictionary DecodeDictionary (Class keyClass, Class objectClass, string key);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("decodeDictionaryWithKeysOfClasses:objectsOfClasses:forKey:")]
 		[return: NullAllowed]
 		NSDictionary DecodeDictionary (NSSet<Class> keyClasses, NSSet<Class> objectClasses, string key);
@@ -2369,62 +2290,62 @@ namespace Foundation {
 		NSData DecodeDataObject ();
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodePoint:")]
 		void Encode (CGPoint point);
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodePoint")]
 		CGPoint DecodePoint ();
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodeSize:")]
 		void Encode (CGSize size);
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodeSize")]
 		CGSize DecodeSize ();
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodeRect:")]
 		void Encode (CGRect rect);
 
 		// from the NSGeometryCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodeRect")]
 		CGRect DecodeRect ();
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodePoint:forKey:")]
 		void Encode (CGPoint point, string key);
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodeSize:forKey:")]
 		void Encode (CGSize size, string key);
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("encodeRect:forKey:")]
 		void Encode (CGRect rect, string key);
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodePointForKey:")]
 		CGPoint DecodePoint (string key);
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodeSizeForKey:")]
 		CGSize DecodeSize (string key);
 
 		// from the NSGeometryKeyedCoding (NSCoder) category
-		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[NoiOS, NoTV]
 		[Export ("decodeRectForKey:")]
 		CGRect DecodeRect (string key);
 	}
@@ -2579,38 +2500,30 @@ namespace Foundation {
 		[Export ("rangeOfData:options:range:")]
 		NSRange Find (NSData dataToFind, NSDataSearchOptions searchOptions, NSRange searchRange);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBase64EncodedString:options:")]
 		NativeHandle Constructor (string base64String, NSDataBase64DecodingOptions options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBase64EncodedData:options:")]
 		NativeHandle Constructor (NSData base64Data, NSDataBase64DecodingOptions options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("base64EncodedDataWithOptions:")]
 		NSData GetBase64EncodedData (NSDataBase64EncodingOptions options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("base64EncodedStringWithOptions:")]
 		string GetBase64EncodedString (NSDataBase64EncodingOptions options);
 
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateByteRangesUsingBlock:")]
 		void EnumerateByteRange (NSDataByteRangeEnumerator enumerator);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBytesNoCopy:length:deallocator:")]
 		NativeHandle Constructor (IntPtr bytes, nuint length, [NullAllowed] Action<IntPtr, nuint> deallocator);
 
 		// NSDataCompression (NSData)
 
-		[MacCatalyst (13, 1)]
 		[Export ("decompressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
 		NSData Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("compressedDataUsingAlgorithm:error:")]
 		[return: NullAllowed]
 		NSData Compress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
@@ -2713,11 +2626,9 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("isValidDate")]
-		[MacCatalyst (13, 1)]
 		bool IsValidDate { get; }
 
 		[Export ("isValidDateInCalendar:")]
-		[MacCatalyst (13, 1)]
 		bool IsValidDateInCalendar (NSCalendar calendar);
 
 		/// <param name="value">To be added.</param>
@@ -2725,11 +2636,9 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("setValue:forComponent:")]
-		[MacCatalyst (13, 1)]
 		void SetValueForComponent (nint value, NSCalendarUnit unit);
 
 		[Export ("valueForComponent:")]
-		[MacCatalyst (13, 1)]
 		nint GetValueForComponent (NSCalendarUnit unit);
 
 		[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
@@ -2777,21 +2686,17 @@ namespace Foundation {
 		[Export ("countStyle")]
 		NSByteCountFormatterCountStyle CountStyle { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("formattingContext")]
 		NSFormattingContext FormattingContext { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("stringForObjectValue:")]
 		[return: NullAllowed]
 		string GetString ([NullAllowed] NSObject obj);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("stringFromMeasurement:countStyle:")]
 		string Create (NSUnitInformationStorage measurement, NSByteCountFormatterCountStyle countStyle);
 
-		[MacCatalyst (13, 1)]
 		[Export ("stringFromMeasurement:")]
 		string Create (NSUnitInformationStorage measurement);
 	}
@@ -2925,16 +2830,13 @@ namespace Foundation {
 		[Export ("doesRelativeDateFormatting")]
 		bool DoesRelativeDateFormatting { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setLocalizedDateFormatFromTemplate:")]
 		void SetLocalizedDateFormatFromTemplate (string dateFormatTemplate);
 
-		[MacCatalyst (13, 1)]
 		[Export ("formattingContext", ArgumentSemantic.Assign)]
 		NSFormattingContext FormattingContext { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSDateComponentsFormatter {
 		[Export ("unitsStyle")]
@@ -2985,12 +2887,10 @@ namespace Foundation {
 		[Export ("getObjectValue:forString:errorDescription:")]
 		bool GetObjectValue (out NSObject obj, string str, out string error);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("referenceDate", ArgumentSemantic.Copy)]
 		NSDate ReferenceDate { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSDateIntervalFormatter {
 
@@ -3015,13 +2915,11 @@ namespace Foundation {
 		[Export ("stringFromDate:toDate:")]
 		string StringFromDate (NSDate fromDate, NSDate toDate);
 
-		[MacCatalyst (13, 1)]
 		[Export ("stringFromDateInterval:")]
 		[return: NullAllowed]
 		string ToString (NSDateInterval dateInterval);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSEnergyFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
@@ -3093,7 +2991,6 @@ namespace Foundation {
 		[Export ("readDataToEndOfFile")]
 		NSData ReadDataToEndOfFile ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("readDataToEndOfFileAndReturnError:")]
 		[return: NullAllowed]
 		NSData ReadToEnd ([NullAllowed] out NSError error);
@@ -3109,7 +3006,6 @@ namespace Foundation {
 		[Export ("readDataOfLength:")]
 		NSData ReadDataOfLength (nuint length);
 
-		[MacCatalyst (13, 1)]
 		[Export ("readDataUpToLength:error:")]
 		[return: NullAllowed]
 		NSData Read (nuint length, [NullAllowed] out NSError error);
@@ -3121,7 +3017,6 @@ namespace Foundation {
 		[Export ("writeData:")]
 		void WriteData (NSData data);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeData:error:")]
 		bool Write (NSData data, [NullAllowed] out NSError error);
 
@@ -3132,7 +3027,6 @@ namespace Foundation {
 		[Export ("offsetInFile")]
 		ulong OffsetInFile ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("getOffset:error:")]
 		bool GetOffset (out ulong offsetInFile, [NullAllowed] out NSError error);
 
@@ -3143,7 +3037,6 @@ namespace Foundation {
 		[Export ("seekToEndOfFile")]
 		ulong SeekToEndOfFile ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("seekToEndReturningOffset:error:")]
 		bool SeekToEnd ([NullAllowed] out ulong offsetInFile, [NullAllowed] out NSError error);
 
@@ -3154,7 +3047,6 @@ namespace Foundation {
 		[Export ("seekToFileOffset:")]
 		void SeekToFileOffset (ulong offset);
 
-		[MacCatalyst (13, 1)]
 		[Export ("seekToOffset:error:")]
 		bool Seek (ulong offset, [NullAllowed] out NSError error);
 
@@ -3165,7 +3057,6 @@ namespace Foundation {
 		[Export ("truncateFileAtOffset:")]
 		void TruncateFileAtOffset (ulong offset);
 
-		[MacCatalyst (13, 1)]
 		[Export ("truncateAtOffset:error:")]
 		bool Truncate (ulong offset, [NullAllowed] out NSError error);
 
@@ -3176,7 +3067,6 @@ namespace Foundation {
 		[Export ("synchronizeFile")]
 		void SynchronizeFile ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeAndReturnError:")]
 		bool Synchronize ([NullAllowed] out NSError error);
 
@@ -3187,7 +3077,6 @@ namespace Foundation {
 		[Export ("closeFile")]
 		void CloseFile ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("closeAndReturnError:")]
 		bool Close ([NullAllowed] out NSError error);
 
@@ -3333,7 +3222,6 @@ namespace Foundation {
 
 	/// <summary>Represents the components of a person name.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface NSPersonNameComponent {
 		/// <summary>Gets the key for the name component.</summary>
@@ -3386,7 +3274,6 @@ namespace Foundation {
 	}
 
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSPersonNameComponents : NSCopying, NSSecureCoding {
 
@@ -3412,7 +3299,6 @@ namespace Foundation {
 		NSPersonNameComponents PhoneticRepresentation { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSPersonNameComponentsFormatter {
 		[Export ("style", ArgumentSemantic.Assign)]
@@ -3437,12 +3323,11 @@ namespace Foundation {
 		[Export ("getObjectValue:forString:errorDescription:")]
 		bool GetObjectValue (out NSObject result, string str, out string errorDescription);
 
-		[MacCatalyst (13, 1)]
 		[Export ("personNameComponentsFromString:")]
 		[return: NullAllowed]
 		NSPersonNameComponents GetComponents (string @string);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[NullAllowed, Export ("locale", ArgumentSemantic.Copy)]
 		NSLocale Locale { get; set; }
 	}
@@ -3712,7 +3597,6 @@ namespace Foundation {
 	[DisableDefaultCtor]
 	interface NSKeyedArchiver {
 
-		[MacCatalyst (13, 1)]
 		[Export ("initRequiringSecureCoding:")]
 		NativeHandle Constructor (bool requiresSecureCoding);
 
@@ -3720,7 +3604,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'NSKeyedArchiver (bool)' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSKeyedArchiver (bool)' instead.")]
 		[Export ("init")]
 		NativeHandle Constructor ();
@@ -3732,7 +3615,6 @@ namespace Foundation {
 		[Export ("initForWritingWithMutableData:")]
 		NativeHandle Constructor (NSMutableData data);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("archivedDataWithRootObject:requiringSecureCoding:error:")]
 		[return: NullAllowed]
@@ -3784,14 +3666,12 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSKeyedArchiveRootObjectKey")]
 		NSString RootObjectKey { get; }
 
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("encodedData", ArgumentSemantic.Strong)]
 		NSData EncodedData { get; }
 	}
@@ -3802,11 +3682,9 @@ namespace Foundation {
 	// Objective-C exception thrown.  Name: NSInvalidArgumentException Reason: *** -[NSKeyedUnarchiver init]: cannot use -init for initialization
 	[DisableDefaultCtor]
 	interface NSKeyedUnarchiver {
-		[MacCatalyst (13, 1)]
 		[Export ("initForReadingFromData:error:")]
 		NativeHandle Constructor (NSData data, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClass:fromData:error:")]
 		[return: NullAllowed]
@@ -3818,13 +3696,11 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new Class (type), data, out error)")]
 		[return: NullAllowed]
 		NSObject GetUnarchivedObject (Type type, NSData data, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClasses:fromData:error:")]
 		[return: NullAllowed]
@@ -3836,7 +3712,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Wrap ("GetUnarchivedObject (new NSSet<Class> (Array.ConvertAll (types, t => new Class (t))), data, out error)")]
 		[return: NullAllowed]
@@ -3862,7 +3737,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'GetUnarchivedObject ()' instead.")]
 		[Static, Export ("unarchiveTopLevelObjectWithData:error:")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetUnarchivedObject ()' instead.")]
 		// FIXME: [MarshalNativeExceptions]
 		NSObject UnarchiveTopLevelObject (NSData data, out NSError error);
@@ -3903,28 +3777,24 @@ namespace Foundation {
 		bool RequiresSecureCoding { get; set; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedArrayOfObjectsOfClass:fromData:error:")]
 		[return: NullAllowed]
 		NSObject [] GetUnarchivedArray (Class @class, NSData data, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedArrayOfObjectsOfClasses:fromData:error:")]
 		[return: NullAllowed]
 		NSObject [] GetUnarchivedArray (NSSet<Class> classes, NSData data, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedDictionaryWithKeysOfClass:objectsOfClass:fromData:error:")]
 		[return: NullAllowed]
 		NSDictionary GetUnarchivedDictionary (Class keyClass, Class valueClass, NSData data, [NullAllowed] out NSError error);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("unarchivedDictionaryWithKeysOfClasses:objectsOfClasses:fromData:error:")]
 		[return: NullAllowed]
@@ -4105,7 +3975,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope")]
 		NSString AccessibleUbiquitousExternalDocumentsScope { get; }
 
@@ -4162,7 +4031,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataItemContentTypeKey")]
 		NSString ContentTypeKey { get; }
 
@@ -4170,7 +4038,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataItemContentTypeTreeKey")]
 		NSString ContentTypeTreeKey { get; }
 
@@ -4225,7 +4092,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadingStatusKey")]
 		NSString UbiquitousItemDownloadingStatusKey { get; }
 
@@ -4233,7 +4099,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadingErrorKey")]
 		NSString UbiquitousItemDownloadingErrorKey { get; }
 
@@ -4241,7 +4106,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemUploadingErrorKey")]
 		NSString UbiquitousItemUploadingErrorKey { get; }
 
@@ -4263,7 +4127,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemDownloadRequestedKey")]
 		NSString UbiquitousItemDownloadRequestedKey { get; }
 
@@ -4271,7 +4134,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemIsExternalDocumentKey")]
 		NSString UbiquitousItemIsExternalDocumentKey { get; }
 
@@ -4279,7 +4141,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemContainerDisplayNameKey")]
 		NSString UbiquitousItemContainerDisplayNameKey { get; }
 
@@ -4287,7 +4148,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemURLInLocalContainerKey")]
 		NSString UbiquitousItemURLInLocalContainerKey { get; }
 
@@ -5310,7 +5170,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousItemIsSharedKey")]
 		NSString UbiquitousItemIsSharedKey { get; }
 
@@ -5318,7 +5177,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemCurrentUserRoleKey")]
 		NSString UbiquitousSharedItemCurrentUserRoleKey { get; }
 
@@ -5326,7 +5184,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemCurrentUserPermissionsKey")]
 		NSString UbiquitousSharedItemCurrentUserPermissionsKey { get; }
 
@@ -5334,7 +5191,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemOwnerNameComponentsKey")]
 		NSString UbiquitousSharedItemOwnerNameComponentsKey { get; }
 
@@ -5342,7 +5198,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemMostRecentEditorNameComponentsKey")]
 		NSString UbiquitousSharedItemMostRecentEditorNameComponentsKey { get; }
 
@@ -5350,7 +5205,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemRoleOwner")]
 		NSString UbiquitousSharedItemRoleOwner { get; }
 
@@ -5358,7 +5212,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemRoleParticipant")]
 		NSString UbiquitousSharedItemRoleParticipant { get; }
 
@@ -5366,7 +5219,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemPermissionsReadOnly")]
 		NSString UbiquitousSharedItemPermissionsReadOnly { get; }
 
@@ -5374,27 +5226,22 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("searchItems", ArgumentSemantic.Copy)]
 		// DOC: object is a mixture of NSString, NSMetadataItem, NSUrl
 		NSObject [] SearchItems { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("operationQueue", ArgumentSemantic.Retain)]
 		NSOperationQueue OperationQueue { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateResultsUsingBlock:")]
 		void EnumerateResultsUsingBlock (NSMetadataQueryEnumerationCallback callback);
 
 		[Export ("enumerateResultsWithOptions:usingBlock:")]
-		[MacCatalyst (13, 1)]
 		void EnumerateResultsWithOptions (NSEnumerationOptions opts, NSMetadataQueryEnumerationCallback block);
 
 		//
@@ -5403,21 +5250,18 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateAddedItemsKey")]
 		NSString QueryUpdateAddedItemsKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateChangedItemsKey")]
 		NSString QueryUpdateChangedItemsKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSMetadataQueryUpdateRemovedItemsKey")]
 		NSString QueryUpdateRemovedItemsKey { get; }
 	}
@@ -5597,11 +5441,9 @@ namespace Foundation {
 		[Export ("removeObjectsAtIndexes:")]
 		void RemoveObjectsAtIndexes (NSIndexSet indexSet);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("arrayWithContentsOfFile:")]
 		NSMutableArray FromFile (string path);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("arrayWithContentsOfURL:")]
 		NSMutableArray FromUrl (NSUrl url);
 
@@ -5687,7 +5529,6 @@ namespace Foundation {
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ReadFromUrl' instead.")]
 		[Export ("readFromFileURL:options:documentAttributes:error:")]
 		bool ReadFromFile (NSUrl url, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
@@ -5702,7 +5543,6 @@ namespace Foundation {
 		[NoMac]
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'ReadFromUrl' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ReadFromUrl' instead.")]
 		[Wrap ("ReadFromFile (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromFile (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary returnOptions, ref NSError error);
@@ -5715,7 +5555,6 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("readFromData:options:documentAttributes:error:")]
 		bool ReadFromData (NSData data, NSDictionary options, ref NSDictionary returnOptions, ref NSError error);
 
@@ -5727,13 +5566,11 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromData (data, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromData (NSData data, NSAttributedStringDocumentAttributes options, ref NSDictionary returnOptions, ref NSError error);
 
 		[Internal]
 		[Sealed]
-		[MacCatalyst (13, 1)]
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
@@ -5744,7 +5581,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("readFromURL:options:documentAttributes:error:")]
 		bool ReadFromUrl (NSUrl url, NSDictionary<NSString, NSObject> options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 
@@ -5755,7 +5591,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("ReadFromUrl (url, options.GetDictionary ()!, ref returnOptions, ref error)")]
 		bool ReadFromUrl (NSUrl url, NSAttributedStringDocumentAttributes options, ref NSDictionary<NSString, NSObject> returnOptions, ref NSError error);
 	}
@@ -5831,16 +5666,13 @@ namespace Foundation {
 
 		// NSMutableDataCompression (NSMutableData)
 
-		[MacCatalyst (13, 1)]
 		[Export ("decompressUsingAlgorithm:error:")]
 		bool Decompress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("compressUsingAlgorithm:error:")]
 		bool Compress (NSDataCompressionAlgorithm algorithm, [NullAllowed] out NSError error);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSDataCompressionAlgorithm : long {
 		Lzfse = 0,
@@ -5909,20 +5741,17 @@ namespace Foundation {
 
 		[NoTV, NoMac]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Static]
 		[Export ("dateWithSRAbsoluteTime:")]
 		NSDate CreateFromSRAbsoluteTime (double time);
 
 		[NoTV, NoMac]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("initWithSRAbsoluteTime:")]
 		NativeHandle Constructor (double srAbsoluteTime);
 
 		[NoTV, NoMac]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("srAbsoluteTime")]
 		double SrAbsoluteTime { get; }
 
@@ -5997,11 +5826,9 @@ namespace Foundation {
 		[Export ("initWithContentsOfURL:")]
 		NativeHandle Constructor (NSUrl url);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithContentsOfURL:error:")]
 		NativeHandle Constructor (NSUrl url, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("dictionaryWithContentsOfURL:error:")]
 		[return: NullAllowed]
@@ -6183,7 +6010,6 @@ namespace Foundation {
 		string HelpAnchor { get; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("underlyingErrors", ArgumentSemantic.Copy)]
 		NSError [] UnderlyingErrors { get; }
 
@@ -6226,7 +6052,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSNetServicesErrorDomain")]
 		NSString NSNetServicesErrorDomain { get; }
 
@@ -6265,12 +6090,11 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac, NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("CMErrorDomain", "CoreMotion")]
 		NSString CoreMotionErrorDomain { get; }
 
 		[NoMac, NoTV]
-		[NoMacCatalyst] // We don't expose CarPlay on Mac Catalyst for the moment // [MacCatalyst (14, 0)]
+		[NoMacCatalyst] // We don't expose CarPlay on Mac Catalyst for the moment // 
 		[Field ("CarPlayErrorDomain", "CarPlay")]
 		NSString CarPlayErrorDomain { get; }
 
@@ -6282,7 +6106,6 @@ namespace Foundation {
 		NSString UnderlyingErrorKey { get; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Field ("NSMultipleUnderlyingErrorsKey")]
 		NSString MultipleUnderlyingErrorsKey { get; }
 
@@ -6349,23 +6172,19 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSDebugDescriptionErrorKey")]
 		NSString DebugDescriptionErrorKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSLocalizedFailureErrorKey")]
 		NSString LocalizedFailureErrorKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("setUserInfoValueProviderForDomain:provider:")]
 		void SetUserInfoValueProvider (string errorDomain, [NullAllowed] NSErrorUserInfoValueProvider provider);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("userInfoValueProviderForDomain:")]
 		[return: NullAllowed]
@@ -6498,17 +6317,14 @@ namespace Foundation {
 		[Static, Export ("expressionForBlock:arguments:")]
 		NSExpression FromFunction (NSExpressionCallbackHandler target, NSExpression [] parameters);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("expressionForAnyKey")]
 		NSExpression FromAnyKey ();
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("expressionForConditional:trueExpression:falseExpression:")]
 		NSExpression FromConditional (NSPredicate predicate, NSExpression trueExpression, NSExpression falseExpression);
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowEvaluation")]
 		void AllowEvaluation ();
 
@@ -6552,11 +6368,9 @@ namespace Foundation {
 		[Sealed, Internal, Export ("rightExpression")]
 		NSExpression _RightExpression { get; }
 
-		[MacCatalyst (13, 1)]
 		[Sealed, Internal, Export ("trueExpression")]
 		NSExpression _TrueExpression { get; }
 
-		[MacCatalyst (13, 1)]
 		[Sealed, Internal, Export ("falseExpression")]
 		NSExpression _FalseExpression { get; }
 
@@ -6565,7 +6379,6 @@ namespace Foundation {
 		NSObject EvaluateWith ([NullAllowed] NSObject obj, [NullAllowed] NSMutableDictionary context);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSExtensionContext {
 
@@ -6608,31 +6421,26 @@ namespace Foundation {
 		NSString ItemsAndErrorsKey { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillEnterForegroundNotification")]
 		NSString HostWillEnterForegroundNotification { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostDidEnterBackgroundNotification")]
 		NSString HostDidEnterBackgroundNotification { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostWillResignActiveNotification")]
 		NSString HostWillResignActiveNotification { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSExtensionHostDidBecomeActiveNotification")]
 		NSString HostDidBecomeActiveNotification { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSExtensionItem : NSCopying, NSSecureCoding {
 
@@ -6685,7 +6493,6 @@ namespace Foundation {
 		IntPtr _NullHandle { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSLengthFormatter {
 		[Export ("numberFormatter", ArgumentSemantic.Copy)]
@@ -6794,11 +6601,9 @@ namespace Foundation {
 		[Export ("string", ArgumentSemantic.Retain)]
 		string AnalysisString { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("tagsInRange:unit:scheme:options:tokenRanges:")]
 		string [] GetTags (NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, [NullAllowed] out NSValue [] tokenRanges);
 
-		[MacCatalyst (13, 1)]
 		[Export ("enumerateTagsInRange:unit:scheme:options:usingBlock:")]
 		void EnumerateTags (NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, LinguisticTagEnumerator enumerator);
 
@@ -6812,7 +6617,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("tagAtIndex:unit:scheme:tokenRange:")]
 		[return: NullAllowed]
 		string GetTag (nuint charIndex, NSLinguisticTaggerUnit unit, string scheme, [NullAllowed] ref NSRange tokenRange);
@@ -6822,20 +6626,16 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("tokenRangeAtIndex:unit:")]
 		NSRange GetTokenRange (nuint charIndex, NSLinguisticTaggerUnit unit);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("availableTagSchemesForUnit:language:")]
 		string [] GetAvailableTagSchemes (NSLinguisticTaggerUnit unit, string language);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("dominantLanguage")]
 		string DominantLanguage { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("dominantLanguageForString:")]
 		[return: NullAllowed]
@@ -6856,18 +6656,15 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tagForString:atIndex:unit:scheme:orthography:tokenRange:")]
 		[return: NullAllowed]
 		string GetTag (string str, nuint charIndex, NSLinguisticTaggerUnit unit, string scheme, [NullAllowed] NSOrthography orthography, [NullAllowed] ref NSRange tokenRange);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("tagsForString:range:unit:scheme:options:orthography:tokenRanges:")]
 		string [] GetTags (string str, NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, [NullAllowed] out NSValue [] tokenRanges);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("enumerateTagsForString:range:unit:scheme:options:orthography:usingBlock:")]
 		void EnumerateTags (string str, NSRange range, NSLinguisticTaggerUnit unit, string scheme, NSLinguisticTaggerOptions options, [NullAllowed] NSOrthography orthography, LinguisticTagEnumerator enumerator);
@@ -7020,20 +6817,18 @@ namespace Foundation {
 
 		// follow the pattern of NSLocale.cs which included managed helpers that did the same
 
-		[MacCatalyst (13, 1)]
 		[Export ("calendarIdentifier")]
 		string CalendarIdentifier { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedStringForCalendarIdentifier:")]
 		[return: NullAllowed]
 		string GetLocalizedCalendarIdentifier (string calendarIdentifier);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("languageIdentifier")]
 		string LanguageIdentifier { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[NullAllowed, Export ("regionCode")]
 		string RegionCode { get; }
 	}
@@ -7184,11 +6979,9 @@ namespace Foundation {
 		[Wrap ("RunUntil (runLoopMode.GetConstant ()!, limitDate)")]
 		bool RunUntil (NSRunLoopMode runLoopMode, NSDate limitDate);
 
-		[MacCatalyst (13, 1)]
 		[Export ("performBlock:")]
 		void Perform (Action block);
 
-		[MacCatalyst (13, 1)]
 		[Export ("performInModes:block:")]
 		void Perform (NSString [] modes, Action block);
 
@@ -7196,7 +6989,6 @@ namespace Foundation {
 		///         <param name="block">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Perform (modes.GetConstants ()!, block)")]
 		void Perform (NSRunLoopMode [] modes, Action block);
 	}
@@ -7303,7 +7095,6 @@ namespace Foundation {
 		[Export ("reversedSortDescriptor")]
 		NSObject ReversedSortDescriptor { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowEvaluation")]
 		void AllowEvaluation ();
 	}
@@ -7353,7 +7144,6 @@ namespace Foundation {
 		[Static, Export ("scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:")]
 		NSTimer CreateScheduledTimer (double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("scheduledTimerWithTimeInterval:repeats:block:")]
 		NSTimer CreateScheduledTimer (double interval, bool repeats, Action<NSTimer> block);
@@ -7361,7 +7151,6 @@ namespace Foundation {
 		[Static, Export ("timerWithTimeInterval:target:selector:userInfo:repeats:")]
 		NSTimer CreateTimer (double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("timerWithTimeInterval:repeats:block:")]
 		NSTimer CreateTimer (double interval, bool repeats, Action<NSTimer> block);
@@ -7370,7 +7159,6 @@ namespace Foundation {
 		[Export ("initWithFireDate:interval:target:selector:userInfo:repeats:")]
 		NativeHandle Constructor (NSDate date, double seconds, NSObject target, Selector selector, [NullAllowed] NSObject userInfo, bool repeats);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithFireDate:interval:repeats:block:")]
 		NativeHandle Constructor (NSDate date, double seconds, bool repeats, Action<NSTimer> block);
 
@@ -7397,7 +7185,6 @@ namespace Foundation {
 		[Export ("userInfo")]
 		NSObject UserInfo { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("tolerance")]
 		double Tolerance { get; set; }
 	}
@@ -7609,12 +7396,11 @@ namespace Foundation {
 		[Export ("UUIDString")]
 		string AsString ();
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("compare:")]
 		NSComparisonResult Compare (NSUuid otherUuid);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // xcode 8 beta 4 marks it as API_DEPRECATED
 	partial interface NSUserActivity
@@ -7681,40 +7467,33 @@ namespace Foundation {
 			""")]
 		void GetContinuationStreams (Action<NSInputStream, NSOutputStream, NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("requiredUserInfoKeys", ArgumentSemantic.Copy)]
 		NSSet<NSString> RequiredUserInfoKeys { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("expirationDate", ArgumentSemantic.Copy)]
 		NSDate ExpirationDate { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("keywords", ArgumentSemantic.Copy)]
 		NSSet<NSString> Keywords { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("resignCurrent")]
 		void ResignCurrent ();
 
 		/// <summary>Gets or sets whether this NSUserActivity is eligible for handoff.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("eligibleForHandoff")]
 		bool EligibleForHandoff { [Bind ("isEligibleForHandoff")] get; set; }
 
 		/// <summary>Gets or sets whether this NSUserActivity is eligible for search.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("eligibleForSearch")]
 		bool EligibleForSearch { [Bind ("isEligibleForSearch")] get; set; }
 
 		/// <summary>Gets or sets whether this NSUserActivity may have entries in public indices.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("eligibleForPublicIndexing")]
 		bool EligibleForPublicIndexing { [Bind ("isEligibleForPublicIndexing")] get; set; }
 
@@ -7725,12 +7504,10 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("contentAttributeSet", ArgumentSemantic.Copy)] // From CSSearchableItemAttributeSet.h
 		CSSearchableItemAttributeSet ContentAttributeSet { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("referrerURL", ArgumentSemantic.Copy)]
 		NSUrl ReferrerUrl { get; set; }
 
@@ -7739,7 +7516,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("detectedBarcodeDescriptor", ArgumentSemantic.Copy)]
 		CIBarcodeDescriptor DetectedBarcodeDescriptor { get; }
 
@@ -7748,7 +7524,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoTV]
 		[Export ("isClassKitDeepLink")]
 		bool IsClassKitDeepLink { get; }
@@ -7756,7 +7531,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoTV]
 		[NullAllowed, Export ("contextIdentifierPath", ArgumentSemantic.Strong)]
 		string [] ContextIdentifierPath { get; }
@@ -7767,7 +7541,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("suggestedInvocationPhrase")]
 		string SuggestedInvocationPhrase {
 			// This _simply_ ensure that the Intents namespace (via the enum) will be present which,
@@ -7784,17 +7557,14 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV, NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("eligibleForPrediction")]
 		bool EligibleForPrediction { [Bind ("isEligibleForPrediction")] get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("persistentIdentifier")]
 		string PersistentIdentifier { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (XmlDocs = """
 			<param name="persistentIdentifiers">To be added.</param>
@@ -7806,7 +7576,6 @@ namespace Foundation {
 		void DeleteSavedUserActivities (string [] persistentIdentifiers, Action handler);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (XmlDocs = """
 			<summary>To be added.</summary>
@@ -7818,7 +7587,6 @@ namespace Foundation {
 
 		// Inlined from NSUserActivity (UISceneActivationConditions)
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetContentIdentifier")]
 		string TargetContentIdentifier { get; set; }
 
@@ -7827,7 +7595,6 @@ namespace Foundation {
 		[iOS (14, 0)]
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (14, 0)]
 		[Export ("appClipActivationPayload", ArgumentSemantic.Strong)]
 		[NullAllowed]
 		APActivationPayload AppClipActivationPayload { get; }
@@ -7836,7 +7603,6 @@ namespace Foundation {
 
 	/// <summary>Defines types of <see cref="Foundation.NSUserActivity" /> available from the system (currently only browsing the Web).</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Static]
 	partial interface NSUserActivityType {
 		/// <summary>Represents the value associated with the constant NSUserActivityTypeBrowsingWeb</summary>
@@ -7852,7 +7618,6 @@ namespace Foundation {
 	/// <summary>Delegate object for <see cref="Foundation.NSUserActivity" /> objects, exposing events relating to an activity begun on one device and continued on another.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSUserActivityDelegate_Protocol/index.html">Apple documentation for <c>NSUserActivityDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	partial interface NSUserActivityDelegate {
@@ -7899,7 +7664,6 @@ namespace Foundation {
 		IntPtr _InitWithUserName (string username);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSuiteName:")]
 		IntPtr _InitWithSuiteName ([NullAllowed] string suiteName);
 
@@ -8069,7 +7833,6 @@ namespace Foundation {
 		NSString RegistrationDomain { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUserDefaultsSizeLimitExceededNotification")]
 		NSString SizeLimitExceededNotification { get; }
@@ -8078,7 +7841,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsNoCloudAccountNotification")]
 		NSString NoCloudAccountNotification { get; }
@@ -8087,7 +7849,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsDidChangeAccountsNotification")]
 		NSString DidChangeAccountsNotification { get; }
@@ -8096,7 +7857,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.TvOS, 9, 3, "This notification is never posted.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, "This notification is never posted.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSUbiquitousUserDefaultsCompletedInitialSyncNotification")]
 		NSString CompletedInitialSyncNotification { get; }
@@ -8146,7 +7906,7 @@ namespace Foundation {
 		[Static]
 		NSUrl _FromStringRelative (string url, NSUrl relative);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Static]
 		[Export ("URLWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -8252,33 +8012,26 @@ namespace Foundation {
 		[Export ("URLByDeletingPathExtension")]
 		NSUrl RemovePathExtension ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("getFileSystemRepresentation:maxLength:")]
 		bool GetFileSystemRepresentation (IntPtr buffer, nint maxBufferLength);
 
-		[MacCatalyst (13, 1)]
 		[Export ("fileSystemRepresentation")]
 		IntPtr GetFileSystemRepresentationAsUtf8Ptr { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCachedResourceValueForKey:")]
 		void RemoveCachedResourceValueForKey (NSString key);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeAllCachedResourceValues")]
 		void RemoveAllCachedResourceValues ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("setTemporaryResourceValue:forKey:")]
 		void SetTemporaryResourceValue (NSObject value, NSString key);
 
 		[DesignatedInitializer]
-		[MacCatalyst (13, 1)]
 		[Export ("initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:")]
 		NativeHandle Constructor (IntPtr ptrUtf8path, bool isDir, [NullAllowed] NSUrl baseURL);
 
 		[Static, Export ("fileURLWithFileSystemRepresentation:isDirectory:relativeToURL:")]
-		[MacCatalyst (13, 1)]
 		NSUrl FromUTF8Pointer (IntPtr ptrUtf8path, bool isDir, [NullAllowed] NSUrl baseURL);
 
 		/* These methods come from NURL_AppKitAdditions */
@@ -8699,7 +8452,6 @@ namespace Foundation {
 		NSString FileResourceTypeKey { get; }
 
 		[TV (16, 4), iOS (16, 4)]
-		[MacCatalyst (16, 4)]
 		[Field ("NSURLFileIdentifierKey")]
 		NSString FileIdentifierKey { get; }
 
@@ -8902,61 +8654,52 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeIsEncryptedKey")]
 		NSString VolumeIsEncryptedKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeIsRootFileSystemKey")]
 		NSString VolumeIsRootFileSystemKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsCompressionKey")]
 		NSString VolumeSupportsCompressionKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsFileCloningKey")]
 		NSString VolumeSupportsFileCloningKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsSwapRenamingKey")]
 		NSString VolumeSupportsSwapRenamingKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsExclusiveRenamingKey")]
 		NSString VolumeSupportsExclusiveRenamingKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsImmutableFilesKey")]
 		NSString VolumeSupportsImmutableFilesKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeSupportsAccessPermissionsKey")]
 		NSString VolumeSupportsAccessPermissionsKey { get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLVolumeSupportsFileProtectionKey")]
 		NSString VolumeSupportsFileProtectionKey { get; }
 
@@ -8964,7 +8707,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeAvailableCapacityForImportantUsageKey")]
 		NSString VolumeAvailableCapacityForImportantUsageKey { get; }
 
@@ -8972,22 +8714,18 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLVolumeAvailableCapacityForOpportunisticUsageKey")]
 		NSString VolumeAvailableCapacityForOpportunisticUsageKey { get; }
 
 		[TV (16, 4), iOS (16, 4)]
-		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeTypeNameKey")]
 		NSString VolumeTypeNameKey { get; }
 
 		[TV (16, 4), iOS (16, 4)]
-		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeSubtypeKey")]
 		NSString VolumeSubtypeKey { get; }
 
 		[TV (16, 4), iOS (16, 4)]
-		[MacCatalyst (16, 4)]
 		[Field ("NSURLVolumeMountFromLocationKey")]
 		NSString VolumeMountFromLocationKey { get; }
 
@@ -9061,7 +8799,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemIsSharedKey")]
 		NSString UbiquitousItemIsSharedKey { get; }
 
@@ -9069,7 +8806,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemCurrentUserRoleKey")]
 		NSString UbiquitousSharedItemCurrentUserRoleKey { get; }
 
@@ -9077,7 +8813,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemCurrentUserPermissionsKey")]
 		NSString UbiquitousSharedItemCurrentUserPermissionsKey { get; }
 
@@ -9085,7 +8820,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemOwnerNameComponentsKey")]
 		NSString UbiquitousSharedItemOwnerNameComponentsKey { get; }
 
@@ -9093,7 +8827,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemMostRecentEditorNameComponentsKey")]
 		NSString UbiquitousSharedItemMostRecentEditorNameComponentsKey { get; }
 
@@ -9101,7 +8834,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemRoleOwner")]
 		NSString UbiquitousSharedItemRoleOwner { get; }
 
@@ -9109,7 +8841,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemRoleParticipant")]
 		NSString UbiquitousSharedItemRoleParticipant { get; }
 
@@ -9117,7 +8848,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadOnly")]
 		NSString UbiquitousSharedItemPermissionsReadOnly { get; }
 
@@ -9125,7 +8855,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousSharedItemPermissionsReadWrite")]
 		NSString UbiquitousSharedItemPermissionsReadWrite { get; }
 
@@ -9161,7 +8890,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusKey")]
 		NSString UbiquitousItemDownloadingStatusKey { get; }
 
@@ -9169,7 +8897,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingErrorKey")]
 		NSString UbiquitousItemDownloadingErrorKey { get; }
 
@@ -9177,7 +8904,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemUploadingErrorKey")]
 		NSString UbiquitousItemUploadingErrorKey { get; }
 
@@ -9185,7 +8911,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusNotDownloaded")]
 		NSString UbiquitousItemDownloadingStatusNotDownloaded { get; }
 
@@ -9193,7 +8918,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusDownloaded")]
 		NSString UbiquitousItemDownloadingStatusDownloaded { get; }
 
@@ -9201,19 +8925,15 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadingStatusCurrent")]
 		NSString UbiquitousItemDownloadingStatusCurrent { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("startAccessingSecurityScopedResource")]
 		bool StartAccessingSecurityScopedResource ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("stopAccessingSecurityScopedResource")]
 		void StopAccessingSecurityScopedResource ();
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("URLByResolvingAliasFileAtURL:options:error:")]
 		NSUrl ResolveAlias (NSUrl aliasFileUrl, NSUrlBookmarkResolutionOptions options, out NSError error);
 
@@ -9224,7 +8944,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLAddedToDirectoryDateKey")]
 		NSString AddedToDirectoryDateKey { get; }
 
@@ -9232,7 +8951,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLDocumentIdentifierKey")]
 		NSString DocumentIdentifierKey { get; }
 
@@ -9240,7 +8958,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLGenerationIdentifierKey")]
 		NSString GenerationIdentifierKey { get; }
 
@@ -9248,7 +8965,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLThumbnailDictionaryKey")]
 		NSString ThumbnailDictionaryKey { get; }
 
@@ -9256,12 +8972,10 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemContainerDisplayNameKey")]
 		NSString UbiquitousItemContainerDisplayNameKey { get; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Field ("NSURLUbiquitousItemIsExcludedFromSyncKey")]
 		NSString UbiquitousItemIsExcludedFromSyncKey { get; }
 
@@ -9269,7 +8983,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLUbiquitousItemDownloadRequestedKey")]
 		NSString UbiquitousItemDownloadRequestedKey { get; }
 
@@ -9277,11 +8990,9 @@ namespace Foundation {
 		// iOS 9.0/osx 10.11 additions
 		//
 		[DesignatedInitializer]
-		[MacCatalyst (13, 1)]
 		[Export ("initFileURLWithPath:isDirectory:relativeToURL:")]
 		NativeHandle Constructor (string path, bool isDir, [NullAllowed] NSUrl relativeToUrl);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("fileURLWithPath:isDirectory:relativeToURL:")]
 		NSUrl CreateFileUrl (string path, bool isDir, [NullAllowed] NSUrl relativeToUrl);
@@ -9298,125 +9009,106 @@ namespace Foundation {
 		[Export ("fileURLWithPath:")]
 		NSUrl CreateFileUrl (string path);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("URLWithDataRepresentation:relativeToURL:")]
 		NSUrl CreateWithDataRepresentation (NSData data, [NullAllowed] NSUrl relativeToUrl);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("absoluteURLWithDataRepresentation:relativeToURL:")]
 		NSUrl CreateAbsoluteUrlWithDataRepresentation (NSData data, [NullAllowed] NSUrl relativeToUrl);
 
-		[MacCatalyst (13, 1)]
 		[Export ("dataRepresentation", ArgumentSemantic.Copy)]
 		NSData DataRepresentation { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("hasDirectoryPath")]
 		bool HasDirectoryPath { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLIsApplicationKey")]
 		NSString IsApplicationKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionKey")]
 		NSString FileProtectionKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionNone")]
 		NSString FileProtectionNone { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionComplete")]
 		NSString FileProtectionComplete { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionCompleteUnlessOpen")]
 		NSString FileProtectionCompleteUnlessOpen { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLFileProtectionCompleteUntilFirstUserAuthentication")]
 		NSString FileProtectionCompleteUntilFirstUserAuthentication { get; }
 
-		[TV (17, 0), NoMac, iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), NoMac, iOS (17, 0)]
 		[Field ("NSURLFileProtectionCompleteWhenUserInactive")]
 		NSString FileProtectionCompleteWhenUserInactive { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSURLDirectoryEntryCountKey")]
 		NSString DirectoryEntryCountKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLContentTypeKey")]
 		NSString ContentTypeKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLFileContentIdentifierKey")]
 		NSString FileContentIdentifierKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLIsPurgeableKey")]
 		NSString IsPurgeableKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLIsSparseKey")]
 		NSString IsSparseKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLMayHaveExtendedAttributesKey")]
 		NSString MayHaveExtendedAttributesKey { get; }
 
 		[TV (14, 0)]
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Field ("NSURLMayShareFileContentKey")]
 		NSString MayShareFileContentKey { get; }
 
 		// From the NSItemProviderReading protocol
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("readableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		new string [] ReadableTypeIdentifiers { get; }
 
 		// From the NSItemProviderReading protocol
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("objectWithItemProviderData:typeIdentifier:error:")]
 		[return: NullAllowed]
 		new NSUrl GetObject (NSData data, string typeIdentifier, [NullAllowed] out NSError outError);
 
 		// From the NSItemProviderWriting protocol
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		new string [] WritableTypeIdentifiers { get; }
@@ -9436,7 +9128,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("checkPromisedItemIsReachableAndReturnError:")]
 		bool CheckPromisedItemIsReachable (out NSError error);
 
@@ -9446,7 +9137,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("getPromisedItemResourceValue:forKey:error:")]
 		bool GetPromisedItemResourceValue (out NSObject value, NSString key, out NSError error);
 
@@ -9455,14 +9145,12 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("promisedItemResourceValuesForKeys:error:")]
 		[return: NullAllowed]
 		NSDictionary GetPromisedItemResourceValues (NSString [] keys, out NSError error);
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLQueryItem")]
 	interface NSUrlQueryItem : NSSecureCoding, NSCopying {
 		[DesignatedInitializer]
@@ -9534,7 +9222,6 @@ namespace Foundation {
 		[Export ("initWithMemoryCapacity:diskCapacity:diskPath:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] string diskPath);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithMemoryCapacity:diskCapacity:directoryURL:")]
 		NativeHandle Constructor (nuint memoryCapacity, nuint diskCapacity, [NullAllowed] NSUrl directoryUrl);
 
@@ -9562,15 +9249,12 @@ namespace Foundation {
 		[Export ("currentDiskUsage")]
 		nuint CurrentDiskUsage { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCachedResponsesSinceDate:")]
 		void RemoveCachedResponsesSinceDate (NSDate date);
 
-		[MacCatalyst (13, 1)]
 		[Export ("storeCachedResponse:forDataTask:")]
 		void StoreCachedResponse (NSCachedUrlResponse cachedResponse, NSUrlSessionDataTask dataTask);
 
-		[MacCatalyst (13, 1)]
 		[Export ("getCachedResponseForDataTask:completionHandler:")]
 		[Async (XmlDocs = """
 			<param name="dataTask">To be added.</param>
@@ -9585,12 +9269,10 @@ namespace Foundation {
 			""")]
 		void GetCachedResponse (NSUrlSessionDataTask dataTask, Action<NSCachedUrlResponse> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCachedResponseForDataTask:")]
 		void RemoveCachedResponse (NSUrlSessionDataTask dataTask);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLComponents")]
 	partial interface NSUrlComponents : NSCopying {
 		[Export ("initWithURL:resolvingAgainstBaseURL:")]
@@ -9605,7 +9287,7 @@ namespace Foundation {
 		[Static, Export ("componentsWithString:")]
 		NSUrlComponents FromString (string urlString);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Static]
 		[Export ("componentsWithString:encodingInvalidCharacters:")]
 		[return: NullAllowed]
@@ -9663,7 +9345,6 @@ namespace Foundation {
 		string PercentEncodedHost { get; set; }
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[NullAllowed, Export ("encodedHost")]
 		string EncodedHost { get; set; }
 
@@ -9679,48 +9360,37 @@ namespace Foundation {
 		[Export ("percentEncodedFragment", ArgumentSemantic.Copy)]
 		string PercentEncodedFragment { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("queryItems")]
 		NSUrlQueryItem [] QueryItems { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("string")]
 		string AsString ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfScheme")]
 		NSRange RangeOfScheme { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfUser")]
 		NSRange RangeOfUser { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfPassword")]
 		NSRange RangeOfPassword { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfHost")]
 		NSRange RangeOfHost { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfPort")]
 		NSRange RangeOfPort { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfPath")]
 		NSRange RangeOfPath { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfQuery")]
 		NSRange RangeOfQuery { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeOfFragment")]
 		NSRange RangeOfFragment { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("percentEncodedQueryItems", ArgumentSemantic.Copy)]
 		NSUrlQueryItem [] PercentEncodedQueryItems { get; set; }
 	}
@@ -9824,7 +9494,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession' instead.")]
 		[Export ("connectionWithRequest:delegate:")]
 		[Static]
@@ -9871,12 +9540,10 @@ namespace Foundation {
 		void Unschedule (NSRunLoop aRunLoop, NSRunLoopMode forMode);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("originalRequest")]
 		NSUrlRequest OriginalRequest { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("currentRequest")]
 		NSUrlRequest CurrentRequest { get; }
 
@@ -9886,7 +9553,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession' instead.")]
 		[Static]
 		[Export ("sendSynchronousRequest:returningResponse:error:")]
@@ -9896,7 +9562,6 @@ namespace Foundation {
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.TvOS, 9, 0, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSUrlSession.CreateDataTask' instead.")]
 		[Static]
 		[Export ("sendAsynchronousRequest:queue:completionHandler:")]
@@ -10148,7 +9813,6 @@ namespace Foundation {
 		[Export ("setDefaultCredential:forProtectionSpace:")]
 		void SetDefaultCredential (NSUrlCredential credential, NSUrlProtectionSpace forProtectionSpace);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCredential:forProtectionSpace:options:")]
 		void RemoveCredential (NSUrlCredential credential, NSUrlProtectionSpace forProtectionSpace, NSDictionary options);
 
@@ -10156,7 +9820,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSURLCredentialStorageRemoveSynchronizableCredentials")]
 		NSString RemoveSynchronizableCredentials { get; }
 
@@ -10168,7 +9831,6 @@ namespace Foundation {
 		[Notification]
 		NSString ChangedNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="protectionSpace">To be added.</param>
 			<param name="task">To be added.</param>
@@ -10181,15 +9843,12 @@ namespace Foundation {
 		[Export ("getCredentialsForProtectionSpace:task:completionHandler:")]
 		void GetCredentials (NSUrlProtectionSpace protectionSpace, NSUrlSessionTask task, [NullAllowed] Action<NSDictionary> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("setCredential:forProtectionSpace:task:")]
 		void SetCredential (NSUrlCredential credential, NSUrlProtectionSpace protectionSpace, NSUrlSessionTask task);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCredential:forProtectionSpace:options:task:")]
 		void RemoveCredential (NSUrlCredential credential, NSUrlProtectionSpace protectionSpace, NSDictionary options, NSUrlSessionTask task);
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="space">To be added.</param>
 			<param name="task">To be added.</param>
@@ -10205,7 +9864,6 @@ namespace Foundation {
 		[Export ("getDefaultCredentialForProtectionSpace:task:completionHandler:")]
 		void GetDefaultCredential (NSUrlProtectionSpace space, NSUrlSessionTask task, [NullAllowed] Action<NSUrlCredential> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("setDefaultCredential:forProtectionSpace:task:")]
 		void SetDefaultCredential (NSUrlCredential credential, NSUrlProtectionSpace protectionSpace, NSUrlSessionTask task);
 
@@ -10248,7 +9906,6 @@ namespace Foundation {
 	// but Apple has flagged these as not allowing null.
 	//
 	// Leaving the null allowed for now.
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSession")]
 	[DisableDefaultCtorAttribute]
 	partial interface NSUrlSession {
@@ -10519,7 +10176,6 @@ namespace Foundation {
 		NSUrlSessionDownloadTask CreateDownloadTaskFromResumeData (NSData resumeData, [NullAllowed] NSUrlDownloadSessionResponse completionHandler);
 
 
-		[MacCatalyst (13, 1)]
 		[Export ("getAllTasksWithCompletionHandler:")]
 		[Async (ResultTypeName = "NSUrlSessionCombinedTasks", XmlDocs = """
 			<summary>To be added.</summary>
@@ -10538,37 +10194,32 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("streamTaskWithHostName:port:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (string hostname, nint port);
 
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 		[Export ("streamTaskWithNetService:")]
 		NSUrlSessionStreamTask CreateBidirectionalStream (NSNetService service);
 
-		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url);
 
-		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithURL:protocols:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrl url, string [] protocols);
 
-		[MacCatalyst (13, 1)]
 		[Export ("webSocketTaskWithRequest:")]
 		NSUrlSessionWebSocketTask CreateWebSocketTask (NSUrlRequest request);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("uploadTaskWithResumeData:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData);
 
 		[Async (ResultTypeName = "NSUrlSessionUploadTaskResumeRequest")]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("uploadTaskWithResumeData:completionHandler:")]
 		[return: ForcedType]
 		NSUrlSessionUploadTask CreateUploadTask (NSData resumeData, Action<NSData, NSUrlResponse, NSError> completionHandler);
@@ -10577,7 +10228,6 @@ namespace Foundation {
 	/// <summary>Delegate object for <see cref="Foundation.NSUrlSession" /> objects that have <see cref="Foundation.NSUrlSessionStreamTask" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Foundation/NSURLSessionStreamDelegate">Apple documentation for <c>NSURLSessionStreamDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionStreamDelegate")]
 	interface NSUrlSessionStreamDelegate {
@@ -10618,7 +10268,6 @@ namespace Foundation {
 	}
 
 	delegate void NSUrlSessionDataRead ([NullAllowed] NSData data, bool atEof, [NullAllowed] NSError error);
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionStreamTask")]
 	[DisableDefaultCtor] // now (xcode11) marked as deprecated
 	interface NSUrlSessionStreamTask {
@@ -10674,7 +10323,6 @@ namespace Foundation {
 		void StopSecureConnection ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionTask")]
 	[DisableDefaultCtor]
 	partial interface NSUrlSessionTask : NSCopying, NSProgressReporting {
@@ -10735,32 +10383,27 @@ namespace Foundation {
 		[Field ("NSURLSessionTransferSizeUnknown")]
 		long TransferSizeUnknown { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("priority")]
 		float Priority { get; set; } /* float, not CGFloat */
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("prefersIncrementalDelivery")]
 		bool PrefersIncrementalDelivery { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("earliestBeginDate", ArgumentSemantic.Copy)]
 		NSDate EarliestBeginDate { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfBytesClientExpectsToSend")]
 		long CountOfBytesClientExpectsToSend { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfBytesClientExpectsToReceive")]
 		long CountOfBytesClientExpectsToReceive { get; set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Retain)]
 		NSObject WeakDelegate { get; set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		INSUrlSessionTaskDelegate Delegate { get; set; }
@@ -10769,7 +10412,6 @@ namespace Foundation {
 	/// <summary>Defines constants for use with <see cref="Foundation.NSUrlSessionTask.Priority" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[Static]
-	[MacCatalyst (13, 1)]
 	interface NSUrlSessionTaskPriority {
 		/// <summary>Represents the value associated with the constant NSURLSessionTaskPriorityDefault</summary>
 		///         <value>
@@ -10796,7 +10438,6 @@ namespace Foundation {
 	// All of the NSUrlSession APIs are either 10.10, or 10.9 and 64-bit only
 	// "NSURLSession is not available for i386 targets before Mac OS X 10.10."
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionDataTask")]
 	[DisableDefaultCtor]
 	partial interface NSUrlSessionDataTask {
@@ -10808,7 +10449,6 @@ namespace Foundation {
 		NativeHandle Constructor ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionDataTask), Name = "NSURLSessionUploadTask")]
 	[DisableDefaultCtor]
 	partial interface NSUrlSessionUploadTask {
@@ -10819,17 +10459,16 @@ namespace Foundation {
 		[Export ("init")]
 		NativeHandle Constructor ();
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("NSURLSessionUploadTaskResumeData")]
 		NSString ResumeDataKey { get; }
 
 		[Async]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("cancelByProducingResumeData:")]
 		void CancelByProducingResumeData (Action<NSData> completionHandler);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionDownloadTask")]
 	[DisableDefaultCtor]
 	partial interface NSUrlSessionDownloadTask {
@@ -10846,7 +10485,6 @@ namespace Foundation {
 
 	[Internal]
 	[Static]
-	[MacCatalyst (13, 1)]
 	interface ProxyConfigurationDictionaryKeys {
 		[Field ("kCFNetworkProxiesHTTPEnable")]
 		NSString HttpEnableKey { get; }
@@ -10869,7 +10507,6 @@ namespace Foundation {
 		NSString HttpsProxyPortKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("ProxyConfigurationDictionaryKeys")]
 	interface ProxyConfigurationDictionary {
 		bool HttpEnable { get; set; }
@@ -10882,7 +10519,6 @@ namespace Foundation {
 		int HttpsProxyPort { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionConfiguration")]
 	[DisableDefaultCtorAttribute]
 	partial interface NSUrlSessionConfiguration : NSCopying {
@@ -10923,7 +10559,6 @@ namespace Foundation {
 		[Export ("discretionary")]
 		bool Discretionary { [Bind ("isDiscretionary")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("sessionSendsLaunchEvents")]
 		bool SessionSendsLaunchEvents { get; set; }
 
@@ -10931,7 +10566,6 @@ namespace Foundation {
 		[Export ("connectionProxyDictionary", ArgumentSemantic.Copy)]
 		NSDictionary ConnectionProxyDictionary { get; set; }
 
-		[MacCatalyst (13, 1)]
 		ProxyConfigurationDictionary StrongConnectionProxyDictionary {
 			[Wrap ("new ProxyConfigurationDictionary (ConnectionProxyDictionary!)")]
 			get;
@@ -10946,7 +10580,6 @@ namespace Foundation {
 		[Export ("TLSMinimumSupportedProtocol")]
 		SslProtocol TLSMinimumSupportedProtocol { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("TLSMinimumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMinimumSupportedProtocolVersion { get; set; }
 
@@ -10957,7 +10590,6 @@ namespace Foundation {
 		[Export ("TLSMaximumSupportedProtocol")]
 		SslProtocol TLSMaximumSupportedProtocol { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("TLSMaximumSupportedProtocolVersion", ArgumentSemantic.Assign)]
 		TlsProtocolVersion TlsMaximumSupportedProtocolVersion { get; set; }
 
@@ -10998,12 +10630,10 @@ namespace Foundation {
 		NSArray WeakProtocolClasses { get; set; }
 
 		[NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("sharedContainerIdentifier")]
 		string SharedContainerIdentifier { get; set; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Static, Export ("backgroundSessionConfigurationWithIdentifier:")]
 		NSUrlSessionConfiguration _CreateBackgroundSessionConfiguration (string identifier);
 
@@ -11011,24 +10641,19 @@ namespace Foundation {
 		[Deprecated (PlatformName.TvOS, 18, 4, message: "Not supported anymore.")]
 		[Deprecated (PlatformName.MacCatalyst, 18, 4, message: "Not supported anymore.")]
 		[Deprecated (PlatformName.MacOSX, 15, 4, message: "Not supported anymore.")]
-		[MacCatalyst (13, 1)]
 		[Export ("shouldUseExtendedBackgroundIdleMode")]
 		bool ShouldUseExtendedBackgroundIdleMode { get; set; }
 
 		[NoTV, NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("multipathServiceType", ArgumentSemantic.Assign)]
 		NSUrlSessionMultipathServiceType MultipathServiceType { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("waitsForConnectivity")]
 		bool WaitsForConnectivity { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
 
@@ -11037,7 +10662,6 @@ namespace Foundation {
 		bool AllowsUltraConstrainedNetworkAccess { get; set; }
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
 
@@ -11054,7 +10678,6 @@ namespace Foundation {
 		bool EnablesEarlyData { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject), Name = "NSURLSessionDelegate")]
 	[Protocol]
 	partial interface NSUrlSessionDelegate {
@@ -11076,14 +10699,12 @@ namespace Foundation {
 		/// <param name="session">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("URLSessionDidFinishEventsForBackgroundURLSession:")]
 		void DidFinishEventsForBackgroundSession (NSUrlSession session);
 	}
 
 	public interface INSUrlSessionTaskDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionDelegate), Name = "NSURLSessionTaskDelegate")]
 	[Protocol]
@@ -11139,7 +10760,6 @@ namespace Foundation {
 		/// <param name="metrics">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("URLSession:task:didFinishCollectingMetrics:")]
 		void DidFinishCollectingMetrics (NSUrlSession session, NSUrlSessionTask task, NSUrlSessionTaskMetrics metrics);
 
@@ -11149,7 +10769,6 @@ namespace Foundation {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("URLSession:task:willBeginDelayedRequest:completionHandler:")]
 		void WillBeginDelayedRequest (NSUrlSession session, NSUrlSessionTask task, NSUrlRequest request, Action<NSUrlSessionDelayedRequestDisposition, NSUrlRequest> completionHandler);
 
@@ -11157,25 +10776,22 @@ namespace Foundation {
 		/// <param name="task">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("URLSession:taskIsWaitingForConnectivity:")]
 		void TaskIsWaitingForConnectivity (NSUrlSession session, NSUrlSessionTask task);
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Export ("URLSession:didCreateTask:")]
 		void DidCreateTask (NSUrlSession session, NSUrlSessionTask task);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("URLSession:task:didReceiveInformationalResponse:")]
 		void DidReceiveInformationalResponse (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response);
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("URLSession:task:needNewBodyStreamFromOffset:completionHandler:")]
 		void NeedNewBodyStream (NSUrlSession session, NSUrlSessionTask task, long offset, Action<NSInputStream> completionHandler);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDataDelegate")]
 	[Protocol]
@@ -11219,12 +10835,10 @@ namespace Foundation {
 		/// <param name="streamTask">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("URLSession:dataTask:didBecomeStreamTask:")]
 		void DidBecomeStreamTask (NSUrlSession session, NSUrlSessionDataTask dataTask, NSUrlSessionStreamTask streamTask);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionDownloadDelegate")]
 	[Protocol]
@@ -11427,7 +11041,6 @@ namespace Foundation {
 		[Notification (typeof (NSUndoManagerCloseUndoGroupEventArgs))]
 		NSString DidCloseUndoGroupNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerUndoWithTarget:handler:")]
 		void RegisterUndo (NSObject target, Action<NSObject> undoHandler);
 
@@ -11638,11 +11251,9 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; [NotImplemented] set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; [NotImplemented] set; }
 
@@ -11671,17 +11282,15 @@ namespace Foundation {
 		bool ShouldHandleCookies { get; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("assumesHTTP3Capable")]
 		bool AssumesHttp3Capable { get; [NotImplemented] set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("attribution")]
 		NSURLRequestAttribution Attribution { get; }
 
 		// macOS is documented out of sync with iOS here
 		[TV (16, 1), iOS (16, 1)]
-		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; }
 
@@ -11876,11 +11485,9 @@ namespace Foundation {
 		[Export ("allowsCellularAccess")]
 		bool AllowsCellularAccess { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsExpensiveNetworkAccess")]
 		bool AllowsExpensiveNetworkAccess { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
 
@@ -11890,17 +11497,15 @@ namespace Foundation {
 		// bool AllowsUltraConstrainedNetworkAccess { get; set; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Export ("assumesHTTP3Capable")]
 		bool AssumesHttp3Capable { get; set; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("attribution", ArgumentSemantic.Assign)]
 		NSURLRequestAttribution Attribution { get; set; }
 
 		// Documented as 16.0 but did not work until 16.1 - https://github.com/xamarin/maccore/issues/2608 - https://feedbackassistant.apple.com/feedback/10897552
 		[TV (16, 1), iOS (16, 1)]
-		[MacCatalyst (16, 1)]
 		[Export ("requiresDNSSECValidation")]
 		bool RequiresDnsSecValidation { get; set; }
 
@@ -12170,7 +11775,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Advanced]
-		[MacCatalyst (13, 1)]
 		[Field ("NSStreamNetworkServiceTypeCallSignaling")]
 		NSString NetworkServiceTypeCallSignaling { get; }
 
@@ -12179,7 +11783,6 @@ namespace Foundation {
 		/// <param name="outputStream">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("getBoundStreamsWithBufferSize:inputStream:outputStream:")]
 		void GetBoundStreams (nuint bufferSize, out NSInputStream inputStream, out NSOutputStream outputStream);
 
@@ -12189,7 +11792,6 @@ namespace Foundation {
 		/// <param name="outputStream">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("getStreamsToHostWithName:port:inputStream:outputStream:")]
 		void GetStreamsToHost (string hostname, nint port, out NSInputStream inputStream, out NSOutputStream outputStream);
 	}
@@ -12375,15 +11977,12 @@ namespace Foundation {
 		[Export ("uppercaseStringWithLocale:")]
 		string ToUpper (NSLocale locale);
 
-		[MacCatalyst (13, 1)]
 		[Export ("containsString:")]
 		bool Contains (NSString str);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedCaseInsensitiveContainsString:")]
 		bool LocalizedCaseInsensitiveContains (NSString str);
 
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Static, Export ("stringEncodingForData:encodingOptions:convertedString:usedLossyConversion:")]
 		nuint DetectStringEncoding (NSData rawData, NSDictionary options, out string convertedString, out bool usedLossyConversion);
@@ -12395,35 +11994,27 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Wrap ("DetectStringEncoding(rawData,options.GetDictionary ()!, out convertedString, out usedLossyConversion)")]
 		nuint DetectStringEncoding (NSData rawData, EncodingDetectionOptions options, out string convertedString, out bool usedLossyConversion);
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionSuggestedEncodingsKey")]
 		NSString EncodingDetectionSuggestedEncodingsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionDisallowedEncodingsKey")]
 		NSString EncodingDetectionDisallowedEncodingsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionUseOnlySuggestedEncodingsKey")]
 		NSString EncodingDetectionUseOnlySuggestedEncodingsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionAllowLossyKey")]
 		NSString EncodingDetectionAllowLossyKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionFromWindowsKey")]
 		NSString EncodingDetectionFromWindowsKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionLossySubstitutionKey")]
 		NSString EncodingDetectionLossySubstitutionKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Internal, Field ("NSStringEncodingDetectionLikelyLanguageKey")]
 		NSString EncodingDetectionLikelyLanguageKey { get; }
 
@@ -12443,31 +12034,24 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("variantFittingPresentationWidth:")]
 		NSString GetVariantFittingPresentationWidth (nint width);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedStandardContainsString:")]
 		bool LocalizedStandardContainsString (NSString str);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedStandardRangeOfString:")]
 		NSRange LocalizedStandardRangeOfString (NSString str);
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedUppercaseString")]
 		NSString LocalizedUppercaseString { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedLowercaseString")]
 		NSString LocalizedLowercaseString { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("localizedCapitalizedString")]
 		NSString LocalizedCapitalizedString { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("stringByApplyingTransform:reverse:")]
 		[return: NullAllowed]
 		NSString TransliterateString (NSString transform, bool reverse);
@@ -12485,7 +12069,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("localizedUserNotificationStringForKey:arguments:")]
 		NSString GetLocalizedUserNotificationString (NSString key, [Params][NullAllowed] NSObject [] arguments);
@@ -12510,19 +12093,16 @@ namespace Foundation {
 
 		// From the NSItemProviderReading protocol
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("readableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		new string [] ReadableTypeIdentifiers { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("objectWithItemProviderData:typeIdentifier:error:")]
 		[return: NullAllowed]
 		new NSString GetObject (NSData data, string typeIdentifier, [NullAllowed] out NSError outError);
 
 		// From the NSItemProviderWriting protocol
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("writableTypeIdentifiersForItemProvider", ArgumentSemantic.Copy)]
 		new string [] WritableTypeIdentifiers { get; }
@@ -12604,7 +12184,6 @@ namespace Foundation {
 		nuint ReplaceOccurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
 #endif
 
-		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		[Export ("applyTransform:reverse:range:updatedRange:")]
 		bool ApplyTransform (NSString transform, bool reverse, NSRange range, out NSRange resultingRange);
@@ -12616,7 +12195,6 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("ApplyTransform (transform.GetConstant ()!, reverse, range, out resultingRange)")]
 		bool ApplyTransform (NSStringTransform transform, bool reverse, NSRange range, out NSRange resultingRange);
 
@@ -12659,7 +12237,6 @@ namespace Foundation {
 	// This comes from UIKit.framework/Headers/NSStringDrawing.h
 	/// <include file="../docs/api/Foundation/NSStringDrawingContext.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSStringDrawingContext']/*" />
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[ObjectiveCFramework ("UIKit")]
 	interface NSStringDrawingContext {
@@ -12693,7 +12270,6 @@ namespace Foundation {
 		///         </remarks>
 		[NoTV]
 		[Deprecated (PlatformName.iOS, 7, 0)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("actualTrackingAdjustment")]
 		nfloat ActualTrackingAdjustment { get; }
@@ -13038,11 +12614,9 @@ namespace Foundation {
 		[Static, Export ("cancelPreviousPerformRequestsWithTarget:selector:object:")]
 		void CancelPreviousPerformRequest (NSObject aTarget, Selector selector, [NullAllowed] NSObject argument);
 
-		[MacCatalyst (13, 1)]
 		[Export ("prepareForInterfaceBuilder")]
 		void PrepareForInterfaceBuilder ();
 
-		[MacCatalyst (13, 1)]
 #if MONOMAC
 		// comes from NSNibAwaking category and does not requires calling super
 #else
@@ -13052,22 +12626,18 @@ namespace Foundation {
 		void AwakeFromNib ();
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("accessibilityRespondsToUserInteraction")]
 		bool AccessibilityRespondsToUserInteraction { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("accessibilityUserInputLabels", ArgumentSemantic.Strong)]
 		string [] AccessibilityUserInputLabels { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("accessibilityAttributedUserInputLabels", ArgumentSemantic.Copy)]
 		NSAttributedString [] AccessibilityAttributedUserInputLabels { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("accessibilityTextualContext", ArgumentSemantic.Strong)]
 		string AccessibilityTextualContext { get; set; }
 	}
@@ -13354,11 +12924,9 @@ namespace Foundation {
 		[Export ("asynchronous")]
 		bool Asynchronous { [Bind ("isAsynchronous")] get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("name")]
 		string Name { get; set; }
@@ -13405,7 +12973,6 @@ namespace Foundation {
 		[Export ("operationCount")]
 		nint OperationCount { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("addBarrierBlock:")]
 		void AddBarrier (Action barrier);
 
@@ -13437,12 +13004,10 @@ namespace Foundation {
 		[Export ("suspended")]
 		bool Suspended { [Bind ("isSuspended")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
 		[NullAllowed]
-		[MacCatalyst (13, 1)]
 		[Export ("underlyingQueue", ArgumentSemantic.UnsafeUnretained)]
 		DispatchQueue UnderlyingQueue { get; set; }
 
@@ -13959,19 +13524,15 @@ namespace Foundation {
 		[Field ("NSHTTPCookiePort")]
 		NSString KeyPort { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSitePolicy")]
 		NSString KeySameSitePolicy { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteLax")]
 		NSString KeySameSiteLax { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("NSHTTPCookieSameSiteStrict")]
 		NSString KeySameSiteStrict { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("sameSitePolicy")]
 		NSString SameSitePolicy { get; }
 
@@ -14009,16 +13570,13 @@ namespace Foundation {
 		NSHttpCookie [] GetSortedCookies (NSSortDescriptor [] sortDescriptors);
 
 		// @required - (void)removeCookiesSinceDate:(NSDate *)date;
-		[MacCatalyst (13, 1)]
 		[Export ("removeCookiesSinceDate:")]
 		void RemoveCookiesSinceDate (NSDate date);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("sharedCookieStorageForGroupContainerIdentifier:")]
 		NSHttpCookieStorage GetSharedCookieStorage (string groupContainerIdentifier);
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="task">To be added.</param>
 			<summary>To be added.</summary>
@@ -14033,7 +13591,6 @@ namespace Foundation {
 		[Export ("getCookiesForTask:completionHandler:")]
 		void GetCookiesForTask (NSUrlSessionTask task, Action<NSHttpCookie []> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("storeCookies:forTask:")]
 		void StoreCookies (NSHttpCookie [] cookies, NSUrlSessionTask task);
 
@@ -14087,7 +13644,6 @@ namespace Foundation {
 		[Static]
 		string LocalizedStringForStatusCode (nint statusCode);
 
-		[MacCatalyst (13, 1)]
 		[Export ("valueForHTTPHeaderField:")]
 		[return: NullAllowed]
 		string GetHttpHeaderValue (string headerField);
@@ -14322,7 +13878,6 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("loadNibNamed:owner:options:")]
 		[return: NullAllowed]
 		NSArray LoadNib (string nibName, [NullAllowed] NSObject owner, [NullAllowed] NSDictionary options);
@@ -14413,7 +13968,6 @@ namespace Foundation {
 		NSUrl [] GetUrlsForResourcesWithExtension ([NullAllowed] string fileExtension, [NullAllowed] string subdirectory, [NullAllowed] string localizationName);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
@@ -14421,14 +13975,13 @@ namespace Foundation {
 		double GetPreservationPriority (NSString tag);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
 		[Export ("setPreservationPriority:forTags:")]
 		void SetPreservationPriority (double priority, NSSet<NSString> tags);
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Export ("localizedAttributedStringForKey:value:table:")]
 		NSAttributedString GetLocalizedAttributedString (string key, [NullAllowed] string value, [NullAllowed] string tableName);
 
@@ -14443,7 +13996,6 @@ namespace Foundation {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use Background Assets instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use Background Assets instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use Background Assets instead.")]
@@ -14534,7 +14086,6 @@ namespace Foundation {
 		[Internal]
 		void _GetIndexes (IntPtr target);
 
-		[MacCatalyst (13, 1)]
 		[Export ("getIndexes:range:")]
 		[Internal]
 		void _GetIndexes (IntPtr target, NSRange positionRange);
@@ -14547,13 +14098,11 @@ namespace Foundation {
 
 		// see monotouch/src/UIKit/Addition.cs for int-returning Row/Section properties
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("row")]
 		nint LongRow { get; }
 
 		/// <summary>The index of a section within a <see cref="UIKit.UITableView" /> (read-only).</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("section")]
 		nint LongSection { get; }
 
@@ -14562,7 +14111,6 @@ namespace Foundation {
 		/// <param name="section">The index of the section in the <see cref="UIKit.UITableView" /> that contains the <paramref name="row" />.</param>
 		/// <returns>An <see cref="Foundation.NSIndexPath" /> object, or <see langword="null" /> if it could not be created.</returns>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("indexPathForRow:inSection:")]
 		NSIndexPath FromRowSection (nint row, nint section);
@@ -14578,13 +14126,11 @@ namespace Foundation {
 		/// <param name="section">Section value.</param>
 		/// <returns>New instance of the <see cref="NSIndexPath" />.</returns>
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("indexPathForItem:inSection:")]
 		NSIndexPath FromItemSection (nint item, nint section);
 
 		/// <summary>The item component of this <see cref="NSIndexPath" />.</summary>
 		[Export ("item")]
-		[MacCatalyst (13, 1)]
 		nint Item { get; }
 	}
 
@@ -14716,7 +14262,6 @@ namespace Foundation {
 	}
 
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	partial interface NSItemProvider : NSCopying {
@@ -14809,12 +14354,10 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("preferredPresentationSize")]
 		CGSize PreferredPresentationSize {
 			get;
 			[NoMac]
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -14833,23 +14376,18 @@ namespace Foundation {
 		[Export ("registerCloudKitShare:container:")]
 		void RegisterCloudKitShare (CKShare share, CKContainer container);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerDataRepresentationForTypeIdentifier:visibility:loadHandler:")]
 		void RegisterDataRepresentation (string typeIdentifier, NSItemProviderRepresentationVisibility visibility, RegisterDataRepresentationLoadHandler loadHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerFileRepresentationForTypeIdentifier:fileOptions:visibility:loadHandler:")]
 		void RegisterFileRepresentation (string typeIdentifier, NSItemProviderFileOptions fileOptions, NSItemProviderRepresentationVisibility visibility, RegisterFileRepresentationLoadHandler loadHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registeredTypeIdentifiersWithFileOptions:")]
 		string [] GetRegisteredTypeIdentifiers (NSItemProviderFileOptions fileOptions);
 
-		[MacCatalyst (13, 1)]
 		[Export ("hasRepresentationConformingToTypeIdentifier:fileOptions:")]
 		bool HasConformingRepresentation (string typeIdentifier, NSItemProviderFileOptions fileOptions);
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="typeIdentifier">To be added.</param>
 			<summary>To be added.</summary>
@@ -14867,7 +14405,6 @@ namespace Foundation {
 			"""), Export ("loadDataRepresentationForTypeIdentifier:completionHandler:")]
 		NSProgress LoadDataRepresentation (string typeIdentifier, Action<NSData, NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="typeIdentifier">To be added.</param>
 			<summary>To be added.</summary>
@@ -14885,7 +14422,6 @@ namespace Foundation {
 			"""), Export ("loadFileRepresentationForTypeIdentifier:completionHandler:")]
 		NSProgress LoadFileRepresentation (string typeIdentifier, Action<NSUrl, NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Async (ResultTypeName = "LoadInPlaceResult", XmlDocs = """
 			<param name="typeIdentifier">To be added.</param>
 			<summary>To be added.</summary>
@@ -14904,19 +14440,15 @@ namespace Foundation {
 		NSProgress LoadInPlaceFileRepresentation (string typeIdentifier, LoadInPlaceFileRepresentationHandler completionHandler);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("suggestedName")]
 		string SuggestedName { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithObject:")]
 		NativeHandle Constructor (INSItemProviderWriting @object);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerObject:visibility:")]
 		void RegisterObject (INSItemProviderWriting @object, NSItemProviderRepresentationVisibility visibility);
 
-		[MacCatalyst (13, 1)]
 		[Export ("registerObjectOfClass:visibility:loadHandler:")]
 		void RegisterObject (Class aClass, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
 
@@ -14925,11 +14457,9 @@ namespace Foundation {
 		///         <param name="loadHandler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("RegisterObject (new Class (type), visibility, loadHandler)")]
 		void RegisterObject (Type type, NSItemProviderRepresentationVisibility visibility, RegisterObjectRepresentationLoadHandler loadHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("canLoadObjectOfClass:")]
 		bool CanLoadObject (Class aClass);
 
@@ -14937,11 +14467,9 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("CanLoadObject (new Class (type))")]
 		bool CanLoadObject (Type type);
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="aClass">To be added.</param>
 			<summary>To be added.</summary>
@@ -14972,7 +14500,6 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("teamData", ArgumentSemantic.Copy)]
 		NSData TeamData { get; set; }
 
@@ -14981,58 +14508,57 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[NoTV]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("preferredPresentationStyle", ArgumentSemantic.Assign)]
 		UIPreferredPresentationStyle PreferredPresentationStyle { get; set; }
 
 		// extension methods from CloudKit
 
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("registerCKShareWithContainer:allowedSharingOptions:preparationHandler:")]
 		void RegisterCKShare (CKContainer container, CKAllowedSharingOptions allowedOptions, Action preparationHandler);
 
-		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0)]
 		[Export ("registerCKShare:container:allowedSharingOptions:")]
 		void RegisterCKShare (CKShare share, CKContainer container, CKAllowedSharingOptions allowedOptions);
 
 		// from interface UTType (NSItemProvider)
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("initWithContentsOfURL:contentType:openInPlace:coordinated:visibility:")]
 		NativeHandle Constructor (NSUrl fileUrl, [NullAllowed] UTType contentType, bool openInPlace, bool coordinated, NSItemProviderRepresentationVisibility visibility);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("registerDataRepresentationForContentType:visibility:loadHandler:")]
 		void RegisterDataRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("registerFileRepresentationForContentType:visibility:openInPlace:loadHandler:")]
 		void RegisterFileRepresentation (UTType contentType, NSItemProviderRepresentationVisibility visibility, bool openInPlace, NSItemProviderUTTypeLoadDelegate loadHandler);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("registeredContentTypes", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypes { get; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("registeredContentTypesForOpenInPlace", ArgumentSemantic.Copy)]
 		UTType [] RegisteredContentTypesForOpenInPlace { get; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("registeredContentTypesConformingToContentType:")]
 		UTType [] RegisteredContentTypesConforming (UTType contentType);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("loadDataRepresentationForContentType:completionHandler:")]
 		NSProgress LoadDataRepresentation (UTType contentType, ItemProviderDataCompletionHandler completionHandler);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("loadFileRepresentationForContentType:openInPlace:completionHandler:")]
 		NSProgress LoadFileRepresentation (UTType contentType, bool openInPlace, LoadFileRepresentationHandler completionHandler);
 	}
 
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	delegate NSProgress NSItemProviderUTTypeLoadDelegate ([BlockCallback] ItemProviderDataCompletionHandler completionHandler);
-	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0)]
 	delegate void LoadFileRepresentationHandler ([NullAllowed] NSUrl fileUrl, bool openInPlace, [NullAllowed] NSError error);
 	delegate NSProgress RegisterFileRepresentationLoadHandler ([BlockCallback] RegisterFileRepresentationCompletionHandler completionHandler);
 	delegate void RegisterFileRepresentationCompletionHandler (NSUrl fileUrl, bool coordinated, NSError error);
@@ -15044,7 +14570,6 @@ namespace Foundation {
 
 	interface INSItemProviderReading { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSItemProviderReading {
 		// This static method has to be implemented on each class that implements
@@ -15077,7 +14602,6 @@ namespace Foundation {
 
 	/// <summary>Interface used by <see cref="Foundation.NSItemProvider" /> for retrieving data from an object.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSItemProviderWriting {
 		//
@@ -15141,7 +14665,6 @@ namespace Foundation {
 	/// <summary>Defines the strings associated with the constants <c>NSExtensionJavaScriptFinalizeArgumentKey</c> and <c>NSExtensionJavaScriptPreprocessingResultsKey</c>.</summary>
 	/// <remarks>To be added.</remarks>
 	[Static]
-	[MacCatalyst (13, 1)]
 	partial interface NSJavaScriptExtension {
 		/// <summary>A key whose value is an <see cref="Foundation.NSDictionary" /> whose contents are the argument to a JavaScript completion function.</summary>
 		///         <value>To be added.</value>
@@ -15156,7 +14679,6 @@ namespace Foundation {
 		NSString FinalizeArgumentKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	interface NSTypeIdentifier {
 		[Field ("NSTypeIdentifierDateText")]
 		NSString DateText { get; }
@@ -15276,7 +14798,6 @@ namespace Foundation {
 	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 	[DisableDefaultCtor] // the instance just crash when trying to call selectors
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (NSNetServiceDelegate) })]
@@ -15347,7 +14868,6 @@ namespace Foundation {
 		[Export ("resolve")]
 		[Deprecated (PlatformName.iOS, 2, 0, message: "Use 'Resolve (double)' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 4, message: "Use 'Resolve (double)' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Resolve (double)' instead.")]
 		void Resolve ();
 
@@ -15385,14 +14905,12 @@ namespace Foundation {
 		[Export ("stopMonitoring")]
 		void StopMonitoring ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("includesPeerToPeer")]
 		bool IncludesPeerToPeer { get; set; }
 	}
 
 	interface INSNetServiceDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSNetServiceDelegate {
@@ -15491,7 +15009,6 @@ namespace Foundation {
 	[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.iOS, 15, 0, message: "Use the Network.framework instead.")]
 	[Deprecated (PlatformName.TvOS, 15, 0, message: "Use the Network.framework instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 15, 0, message: "Use the Network.framework instead.")]
 	[BaseType (typeof (NSObject),
 		   Delegates = new string [] { "WeakDelegate" },
@@ -15543,14 +15060,12 @@ namespace Foundation {
 		[Export ("stop")]
 		void Stop ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("includesPeerToPeer")]
 		bool IncludesPeerToPeer { get; set; }
 	}
 
 	interface INSNetServiceBrowserDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
 	interface NSNetServiceBrowserDelegate {
@@ -15688,7 +15203,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSDistributedLock {
@@ -15717,7 +15231,6 @@ namespace Foundation {
 	/// <summary>Allows notifications to be sent to objects in other tasks.</summary>
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSNotificationCenter))]
 	interface NSDistributedNotificationCenter {
 		[Static]
@@ -15800,7 +15313,6 @@ namespace Foundation {
 		[Export ("getValue:")]
 		void StoreValueAtAddress (IntPtr value);
 
-		[MacCatalyst (13, 1)]
 		[Export ("getValue:size:")]
 		void StoreValueAtAddress (IntPtr value, nuint size);
 
@@ -15844,14 +15356,12 @@ namespace Foundation {
 		///         <summary>Creates an NSValue that wraps a CMTime object..</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTime:")]
 		NSValue FromCMTime (CMTime time);
 
 		/// <summary>Returns the CMTime value wrapped by this NSValue object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("CMTimeValue")]
 		CMTime CMTimeValue { get; }
 
@@ -15859,14 +15369,12 @@ namespace Foundation {
 		///         <summary>Creates an NSValue that wraps a CMTimeMapping object.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeMapping:")]
 		NSValue FromCMTimeMapping (CMTimeMapping timeMapping);
 
 		/// <summary>Returns the CMTimeMapping value wrapped by this NSValue object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("CMTimeMappingValue")]
 		CMTimeMapping CMTimeMappingValue { get; }
 
@@ -15874,14 +15382,12 @@ namespace Foundation {
 		///         <summary>Creates an NSValue that wraps a CMTimeRange object.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithCMTimeRange:")]
 		NSValue FromCMTimeRange (CMTimeRange timeRange);
 
 		/// <summary>Returns the CMTimeRange value wrapped by this NSValue object.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("CMTimeRangeValue")]
 		CMTimeRange CMTimeRangeValue { get; }
 
@@ -15909,7 +15415,6 @@ namespace Foundation {
 		[Static]
 		NSValue FromCGPoint (CGPoint point);
 
-		[MacCatalyst (15, 0)]
 #if MONOMAC
 		[Export ("rectValue")]
 #else
@@ -15917,7 +15422,6 @@ namespace Foundation {
 #endif
 		CGRect CGRectValue { get; }
 
-		[MacCatalyst (15, 0)]
 #if MONOMAC
 		[Export ("sizeValue")]
 #else
@@ -15925,7 +15429,6 @@ namespace Foundation {
 #endif
 		CGSize CGSizeValue { get; }
 
-		[MacCatalyst (15, 0)]
 #if MONOMAC
 		[Export ("pointValue")]
 #else
@@ -15937,7 +15440,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("CGAffineTransformValue")]
 		CoreGraphics.CGAffineTransform CGAffineTransformValue { get; }
 
@@ -15947,7 +15449,6 @@ namespace Foundation {
 		///         <remarks>
 		///         </remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("UIEdgeInsetsValue")]
 		UIEdgeInsets UIEdgeInsetsValue { get; }
 
@@ -15955,7 +15456,6 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("directionalEdgeInsetsValue")]
 		NSDirectionalEdgeInsets DirectionalEdgeInsetsValue { get; }
 
@@ -15964,7 +15464,6 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("valueWithCGAffineTransform:")]
 		[Static]
 		NSValue FromCGAffineTransform (CoreGraphics.CGAffineTransform tran);
@@ -15976,7 +15475,6 @@ namespace Foundation {
 		///         <remarks>
 		///         </remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("valueWithUIEdgeInsets:")]
 		[Static]
 		NSValue FromUIEdgeInsets (UIEdgeInsets insets);
@@ -15986,7 +15484,6 @@ namespace Foundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithDirectionalEdgeInsets:")]
 		NSValue FromDirectionalEdgeInsets (NSDirectionalEdgeInsets insets);
@@ -16000,7 +15497,6 @@ namespace Foundation {
 		[Export ("valueWithUIOffset:")]
 		[Static]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		NSValue FromUIOffset (UIOffset insets);
 
 		/// <summary>Returns the UIOffset value wrapped by in this NSValue.</summary>
@@ -16010,7 +15506,6 @@ namespace Foundation {
 		///         </remarks>
 		[Export ("UIOffsetValue")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		UIOffset UIOffsetValue { get; }
 		// from UIGeometry.h - those are in iOS8 only (even if the header is silent about them)
 		// and not in OSX 10.10
@@ -16020,7 +15515,6 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[Export ("CGVectorValue")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		CGVector CGVectorValue { get; }
 
 		/// <param name="vector">To be added.</param>
@@ -16029,7 +15523,6 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[Static, Export ("valueWithCGVector:")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		NSValue FromCGVector (CGVector vector);
 
 		// Maybe we should include this inside mapkit.cs instead (it's a partial interface, so that's trivial)?
@@ -16037,7 +15530,6 @@ namespace Foundation {
 		///         <summary>Creates an NSValue that stores a CLLocationCoordinate2D.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinate:")]
 		NSValue FromMKCoordinate (CoreLocation.CLLocationCoordinate2D coordinate);
 
@@ -16045,21 +15537,18 @@ namespace Foundation {
 		///         <summary>Creates an NSValue that stores an MKCoordinateSpan.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithMKCoordinateSpan:")]
 		NSValue FromMKCoordinateSpan (MapKit.MKCoordinateSpan coordinateSpan);
 
 		/// <summary>The CLLocationCoordinate2D stored in this NSValue.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("MKCoordinateValue")]
 		CoreLocation.CLLocationCoordinate2D CoordinateValue { get; }
 
 		/// <summary>The MKCoordinateSpan stored in this NSValue.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("MKCoordinateSpanValue")]
 		MapKit.MKCoordinateSpan CoordinateSpanValue { get; }
 
@@ -16078,13 +15567,11 @@ namespace Foundation {
 		CoreAnimation.CATransform3D CATransform3DValue { get; }
 
 		[iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
 		[Export ("CMVideoDimensionsValue")]
 		CMVideoDimensions CMVideoDimensionsValue { get; }
 
 		[iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[TV (16, 0)]
 		[Export ("valueWithCMVideoDimensions:")]
 		[Static]
@@ -16096,14 +15583,12 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector3:")]
 		NSValue FromVector (SCNVector3 vector);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("SCNVector3Value")]
 		SCNVector3 Vector3Value { get; }
 
@@ -16111,14 +15596,12 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNVector4:")]
 		NSValue FromVector (SCNVector4 vector);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("SCNVector4Value")]
 		SCNVector4 Vector4Value { get; }
 
@@ -16126,14 +15609,12 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static, Export ("valueWithSCNMatrix4:")]
 		NSValue FromSCNMatrix4 (SCNMatrix4 matrix);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("SCNMatrix4Value")]
 		SCNMatrix4 SCNMatrix4Value { get; }
 
@@ -16213,12 +15694,10 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSSecureUnarchiveFromDataTransformerName")]
 		NSString SecureUnarchiveFromDataTransformerName { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSValueTransformer))]
 	interface NSSecureUnarchiveFromDataTransformer {
 		[Static]
@@ -16839,7 +16318,6 @@ namespace Foundation {
 		[Export ("main")]
 		void Main ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("qualityOfService")]
 		NSQualityOfService QualityOfService { get; set; }
 
@@ -16963,11 +16441,9 @@ namespace Foundation {
 	}
 
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (15, 0)]
 	interface NSPortMessage {
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[DesignatedInitializer]
 		[Export ("initWithSendPort:receivePort:components:")]
 		NativeHandle Constructor ([NullAllowed] NSPort sendPort, [NullAllowed] NSPort recvPort, [NullAllowed] NSArray components);
@@ -16975,7 +16451,6 @@ namespace Foundation {
 		[NullAllowed]
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[Export ("components")]
 		NSArray Components { get; }
 
@@ -16985,27 +16460,23 @@ namespace Foundation {
 		// The selectors Apple *currently* dislike are removed from the iOS build
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[Export ("sendBeforeDate:")]
 		bool SendBefore (NSDate date);
 
 		[NullAllowed]
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[Export ("receivePort")]
 		NSPort ReceivePort { get; }
 
 		[NullAllowed]
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[Export ("sendPort")]
 		NSPort SendPort { get; }
 
 		[NoiOS]
 		[NoTV]
-		[MacCatalyst (15, 0)]
 		[Export ("msgid")]
 		uint MsgId { get; set; } /* uint32_t */
 	}
@@ -17121,23 +16592,18 @@ namespace Foundation {
 		[Export ("systemUptime")]
 		double SystemUptime { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("beginActivityWithOptions:reason:")]
 		NSObject BeginActivity (NSActivityOptions options, string reason);
 
-		[MacCatalyst (13, 1)]
 		[Export ("endActivity:")]
 		void EndActivity (NSObject activity);
 
-		[MacCatalyst (13, 1)]
 		[Export ("performActivityWithOptions:reason:usingBlock:")]
 		void PerformActivity (NSActivityOptions options, string reason, Action runCode);
 
-		[MacCatalyst (13, 1)]
 		[Export ("isOperatingSystemAtLeastVersion:")]
 		bool IsOperatingSystemAtLeastVersion (NSOperatingSystemVersion version);
 
-		[MacCatalyst (13, 1)]
 		[Export ("operatingSystemVersion")]
 		NSOperatingSystemVersion OperatingSystemVersion { get; }
 
@@ -17172,7 +16638,6 @@ namespace Foundation {
 		bool AutomaticTerminationSupportEnabled { get; set; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("performExpiringActivityWithReason:usingBlock:")]
 		void PerformExpiringActivity (string reason, Action<bool> block);
 
@@ -17180,31 +16645,25 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[TV (15, 0)]
-		[MacCatalyst (13, 1)]
 		[Export ("lowPowerModeEnabled")]
 		bool LowPowerModeEnabled { [Bind ("isLowPowerModeEnabled")] get; }
 
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("NSProcessInfoPowerStateDidChangeNotification")]
 		NSString PowerStateDidChangeNotification { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("thermalState")]
 		NSProcessInfoThermalState ThermalState { get; }
 
 		[Field ("NSProcessInfoThermalStateDidChangeNotification")]
-		[MacCatalyst (13, 1)]
 		[Notification]
 		NSString ThermalStateDidChangeNotification { get; }
 
 		#region NSProcessInfoPlatform (NSProcessInfo)
-		[MacCatalyst (13, 1)]
 		[Export ("macCatalystApp")]
 		bool IsMacCatalystApplication { [Bind ("isMacCatalystApp")] get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("iOSAppOnMac")]
 		bool IsiOSApplicationOnMac { [Bind ("isiOSAppOnMac")] get; }
 
@@ -17238,7 +16697,6 @@ namespace Foundation {
 		string GetFullUserName ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSProgress {
 
@@ -17248,11 +16706,9 @@ namespace Foundation {
 		[Static, Export ("progressWithTotalUnitCount:")]
 		NSProgress FromTotalUnitCount (long unitCount);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("discreteProgressWithTotalUnitCount:")]
 		NSProgress GetDiscreteProgress (long unitCount);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("progressWithTotalUnitCount:parent:pendingUnitCount:")]
 		NSProgress FromTotalUnitCount (long unitCount, NSProgress parent, long portionOfParentTotalUnitCount);
 
@@ -17266,7 +16722,6 @@ namespace Foundation {
 		[Export ("resignCurrent")]
 		void ResignCurrent ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("addChild:withPendingUnitCount:")]
 		void AddChild (NSProgress child, long pendingUnitCount);
 
@@ -17321,7 +16776,6 @@ namespace Foundation {
 		/// <param name="handler">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("setResumingHandler:")]
 		void SetResumingHandler (Action handler);
 
@@ -17343,7 +16797,6 @@ namespace Foundation {
 		[Export ("pause")]
 		void Pause ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("resume")]
 		void Resume ();
 
@@ -17463,7 +16916,6 @@ namespace Foundation {
 		NSString FileOperationKindCopying { get; }
 
 		[TV (14, 5), iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[Field ("NSProgressFileOperationKindUploading")]
 		NSString FileOperationKindUploading { get; }
 
@@ -17488,7 +16940,7 @@ namespace Foundation {
 		[Field ("NSProgressFileCompletedCountKey")]
 		NSString FileCompletedCountKey { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Field ("NSProgressFileOperationKindDuplicating")]
 		NSString FileOperationKindDuplicatingKey { get; }
 
@@ -17519,7 +16971,6 @@ namespace Foundation {
 		[Field ("NSProgressFileIconKey")]
 		NSString FileIconKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="unitCount">To be added.</param>
 			<summary>To be added.</summary>
@@ -17538,33 +16989,27 @@ namespace Foundation {
 		bool Finished { [Bind ("isFinished")] get; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("estimatedTimeRemaining", ArgumentSemantic.Copy)]
 		//[BindAs (typeof (nint?))]
 		NSNumber _EstimatedTimeRemaining { get; set; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("throughput", ArgumentSemantic.Copy)]
 		//[BindAs (typeof (nint?))]
 		NSNumber _Throughput { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fileOperationKind")]
 		string FileOperationKind { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fileURL", ArgumentSemantic.Copy)]
 		NSUrl FileUrl { get; set; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fileTotalCount", ArgumentSemantic.Copy)]
 		//[BindAs (typeof (nint?))]
 		NSNumber _FileTotalCount { get; set; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fileCompletedCount", ArgumentSemantic.Copy)]
 		//[BindAs (typeof (nint?))]
 		NSNumber _FileCompletedCount { get; set; }
@@ -17572,7 +17017,6 @@ namespace Foundation {
 
 	interface INSProgressReporting { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSProgressReporting {
 		[Abstract]
@@ -17659,7 +17103,6 @@ namespace Foundation {
 		[Export ("prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")]
 		void CoordinateBatch (NSUrl [] readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSUrl [] writingURLs, NSFileCoordinatorWritingOptions writingOptions, out NSError error, /* non null */ Action batchHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("coordinateAccessWithIntents:queue:byAccessor:")]
 		void CoordinateAccess (NSFileAccessIntent [] intents, NSOperationQueue executionQueue, Action<NSError> accessor);
 
@@ -17676,12 +17119,10 @@ namespace Foundation {
 		string PurposeIdentifier { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("itemAtURL:didChangeUbiquityAttributes:")]
 		void ItemUbiquityAttributesChanged (NSUrl url, NSSet<NSString> attributes);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSFileAccessIntent {
@@ -17883,7 +17324,6 @@ namespace Foundation {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionKey")]
 		NSString FileProtectionKey { get; }
 
@@ -17892,7 +17332,6 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
-		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionNone")]
 		NSString FileProtectionNone { get; }
 
@@ -17901,7 +17340,6 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
-		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionComplete")]
 		NSString FileProtectionComplete { get; }
 
@@ -17910,7 +17348,6 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
-		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUnlessOpen")]
 		NSString FileProtectionCompleteUnlessOpen { get; }
 
@@ -17919,7 +17356,6 @@ namespace Foundation {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[Obsolete ("Use the 'NSFileProtectionType' instead.")]
-		[MacCatalyst (13, 1)]
 		[Field ("NSFileProtectionCompleteUntilFirstUserAuthentication")]
 		NSString FileProtectionCompleteUntilFirstUserAuthentication { get; }
 
@@ -18139,11 +17575,9 @@ namespace Foundation {
 		[Export ("containerURLForSecurityApplicationGroupIdentifier:")]
 		NSUrl GetContainerUrl (string securityApplicationGroupIdentifier);
 
-		[MacCatalyst (13, 1)]
 		[Export ("getRelationship:ofDirectory:inDomain:toItemAtURL:error:")]
 		bool GetRelationship (out NSUrlRelationship outRelationship, NSSearchPathDirectory directory, NSSearchPathDomain domain, NSUrl toItemAtUrl, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("getRelationship:ofDirectoryAtURL:toItemAtURL:error:")]
 		bool GetRelationship (out NSUrlRelationship outRelationship, NSUrl directoryURL, NSUrl otherURL, out NSError error);
 
@@ -18161,7 +17595,6 @@ namespace Foundation {
 		void UnmountVolume (NSUrl url, NSFileManagerUnmountOptions mask, Action<NSError> completionHandler);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="url">To be added.</param>
 			<summary>To be added.</summary>
@@ -18222,7 +17655,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldCopyItemAtURL:toURL:")]
 		bool ShouldCopyItemAtUrl (NSFileManager fm, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18233,7 +17665,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldLinkItemAtURL:toURL:")]
 		bool ShouldLinkItemAtUrl (NSFileManager fileManager, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18244,7 +17675,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldMoveItemAtURL:toURL:")]
 		bool ShouldMoveItemAtUrl (NSFileManager fileManager, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18256,7 +17686,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:copyingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorCopyingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18268,7 +17697,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:linkingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorLinkingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18280,7 +17708,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:movingItemAtURL:toURL:")]
 		bool ShouldProceedAfterErrorMovingItem (NSFileManager fileManager, NSError error, NSUrl srcUrl, NSUrl dstUrl);
 
@@ -18290,7 +17717,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldRemoveItemAtURL:")]
 		bool ShouldRemoveItemAtUrl (NSFileManager fileManager, NSUrl url);
 
@@ -18301,7 +17727,6 @@ namespace Foundation {
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("fileManager:shouldProceedAfterError:removingItemAtURL:")]
 		bool ShouldProceedAfterErrorRemovingItem (NSFileManager fileManager, NSError error, NSUrl url);
 
@@ -18387,7 +17812,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryDirectory")]
 		NSUrl GetTemporaryDirectory ();
 
@@ -18535,7 +17959,6 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("presentedItemDidChangeUbiquityAttributes:")]
 		void PresentedItemChangedUbiquityAttributes (NSSet<NSString> attributes);
 
@@ -18546,7 +17969,6 @@ namespace Foundation {
 		///           <para tool="threads">This can be used from a background thread.</para>
 		///         </remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("observedPresentedItemUbiquityAttributes", ArgumentSemantic.Strong)]
 		NSSet<NSString> PresentedItemObservedUbiquityAttributes { get; }
 	}
@@ -18593,11 +18015,9 @@ namespace Foundation {
 		[Export ("discardable")]
 		bool Discardable { [Bind ("isDiscardable")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("hasLocalContents")]
 		bool HasLocalContents { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("hasThumbnail")]
 		bool HasThumbnail { get; }
 
@@ -18605,7 +18025,6 @@ namespace Foundation {
 		[Export ("currentVersionOfItemAtURL:")]
 		NSFileVersion GetCurrentVersion (NSUrl url);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (XmlDocs = """
 			<param name="url">To be added.</param>
@@ -18659,7 +18078,6 @@ namespace Foundation {
 		bool RemoveOtherVersions (NSUrl url, out NSError outError);
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("originatorNameComponents", ArgumentSemantic.Copy)]
 		NSPersonNameComponents OriginatorNameComponents { get; }
 	}
@@ -18781,11 +18199,9 @@ namespace Foundation {
 #endif
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("level")]
 		nint Level { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("isEnumeratingDirectoryPostOrder")]
 		bool IsEnumeratingDirectoryPostOrder { get; }
 	}
@@ -18832,7 +18248,6 @@ namespace Foundation {
 		[Export ("predicateFromMetadataQueryString:")]
 		NSPredicate FromMetadataQueryString (string query);
 
-		[MacCatalyst (13, 1)]
 		[Export ("allowEvaluation")]
 		void AllowEvaluation ();
 
@@ -19272,7 +18687,6 @@ namespace Foundation {
 
 	interface INSExtensionRequestHandling { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSExtensionRequestHandling {
@@ -19345,7 +18759,6 @@ namespace Foundation {
 		string ReplacementString { get; }
 
 		[Export ("alternativeStrings")]
-		[MacCatalyst (13, 1)]
 		string [] AlternativeStrings { get; }
 
 		//		NSRegularExpression isn't bound
@@ -19440,7 +18853,6 @@ namespace Foundation {
 
 		[Static]
 		[Export ("correctionCheckingResultWithRange:replacementString:alternativeStrings:")]
-		[MacCatalyst (13, 1)]
 		NSTextCheckingResult CorrectionCheckingResult (NSRange range, string replacementString, string [] alternativeStrings);
 
 		//		NSRegularExpression isn't bound
@@ -19466,7 +18878,6 @@ namespace Foundation {
 		[Wrap ("TransitInformationCheckingResult (range, components.GetDictionary ()!)")]
 		NSTextCheckingResult TransitInformationCheckingResult (NSRange range, NSTextCheckingTransitComponents components);
 
-		[MacCatalyst (13, 1)]
 		[Export ("rangeWithName:")]
 		NSRange GetRange (string name);
 
@@ -19730,7 +19141,6 @@ namespace Foundation {
 		NSImage ImageForResource (string name);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSDateInterval : NSCopying, NSSecureCoding {
 		[Export ("startDate", ArgumentSemantic.Copy)]
@@ -19767,7 +19177,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSUnit : NSCopying, NSSecureCoding {
 		[Export ("symbol")]
@@ -19778,7 +19187,6 @@ namespace Foundation {
 		NativeHandle Constructor (string symbol);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSUnitConverter {
 		[Export ("baseUnitValueFromValue:")]
@@ -19788,7 +19196,6 @@ namespace Foundation {
 		double GetValue (double baseUnitValue);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUnitConverter))]
 	interface NSUnitConverterLinear : NSSecureCoding {
 
@@ -19806,7 +19213,6 @@ namespace Foundation {
 		NativeHandle Constructor (double coefficient, double constant);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUnit))]
 	[Abstract] // abstract subclass of NSUnit
 	[DisableDefaultCtor] // there's a designated initializer
@@ -19831,7 +19237,6 @@ namespace Foundation {
 		//NSDimension BaseUnit { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor] // base type has a designated initializer
 	interface NSUnitTemperature : NSSecureCoding {
@@ -19861,7 +19266,6 @@ namespace Foundation {
 	partial interface NSFileManager {
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("trashItemAtURL:resultingItemURL:error:")]
 		bool TrashItem (NSUrl url, out NSUrl resultingItemUrl, out NSError error);
 
@@ -19878,7 +19282,6 @@ namespace Foundation {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSFileProviderService {
@@ -19963,7 +19366,6 @@ namespace Foundation {
 
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (15, 0)]
 	[NoiOS]
 	[NoTV]
 	partial interface NSScriptCommand : NSCoding {
@@ -19992,7 +19394,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandArgumentDescriptionKeys")]
 	partial interface NSScriptCommandArgumentDescription {
 		/// <summary>To be added.</summary>
@@ -20011,7 +19412,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[StrongDictionary ("NSScriptCommandDescriptionDictionaryKeys")]
 	partial interface NSScriptCommandDescriptionDictionary {
 		/// <summary>To be added.</summary>
@@ -20042,7 +19442,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface NSScriptCommandDescription : NSCoding {
@@ -20101,7 +19500,6 @@ namespace Foundation {
 	[NoiOS, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
-	[MacCatalyst (13, 1)]
 	interface NSAffineTransform : NSSecureCoding, NSCopying {
 		[Export ("initWithTransform:")]
 		NativeHandle Constructor (NSAffineTransform transform);
@@ -20391,7 +19789,6 @@ namespace Foundation {
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAppleEventDescriptor : NSSecureCoding, NSCopying {
 		[Static]
@@ -20594,42 +19991,34 @@ namespace Foundation {
 		/*[Export ("coerceToDescriptorType:")]
 		NSAppleEventDescriptor CoerceToDescriptorType (DescType descriptorType);*/
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("currentProcessDescriptor")]
 		NSAppleEventDescriptor CurrentProcessDescriptor { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithDouble:")]
 		NSAppleEventDescriptor FromDouble (double doubleValue);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithDate:")]
 		NSAppleEventDescriptor FromDate (NSDate date);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithFileURL:")]
 		NSAppleEventDescriptor FromFileURL (NSUrl fileURL);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithProcessIdentifier:")]
 		NSAppleEventDescriptor FromProcessIdentifier (int processIdentifier);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithBundleIdentifier:")]
 		NSAppleEventDescriptor FromBundleIdentifier (string bundleIdentifier);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("descriptorWithApplicationURL:")]
 		NSAppleEventDescriptor FromApplicationURL (NSUrl applicationURL);
 
-		[MacCatalyst (13, 1)]
 		[Export ("doubleValue")]
 		double DoubleValue { get; }
 
@@ -20638,21 +20027,17 @@ namespace Foundation {
 		[return: NullAllowed]
 		NSAppleEventDescriptor SendEvent (NSAppleEventSendOptions sendOptions, double timeoutInSeconds, [NullAllowed] out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("isRecordDescriptor")]
 		bool IsRecordDescriptor { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("dateValue", ArgumentSemantic.Copy)]
 		NSDate DateValue { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fileURLValue", ArgumentSemantic.Copy)]
 		NSUrl FileURLValue { get; }
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAppleEventManager {
 		[Static]
@@ -20694,7 +20079,6 @@ namespace Foundation {
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface NSTask {
@@ -21017,7 +20401,6 @@ namespace Foundation {
 	}
 
 	[NoiOS, NoTV]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSAppleScript : NSCopying {
@@ -21064,7 +20447,6 @@ namespace Foundation {
 		NSAttributedString RichTextSource { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter), Name = "NSISO8601DateFormatter")]
 	[DesignatedDefaultCtor]
 	interface NSIso8601DateFormatter : NSSecureCoding {
@@ -21087,7 +20469,6 @@ namespace Foundation {
 		string Format (NSDate date, NSTimeZone timeZone, NSIso8601DateFormatOptions formatOptions);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionTaskTransactionMetrics")]
 	[DisableDefaultCtor]
 	interface NSUrlSessionTaskTransactionMetrics {
@@ -21158,85 +20539,67 @@ namespace Foundation {
 		[Export ("resourceFetchType", ArgumentSemantic.Assign)]
 		NSUrlSessionTaskMetricsResourceFetchType ResourceFetchType { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestHeaderBytesSent")]
 		long CountOfRequestHeaderBytesSent { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesSent")]
 		long CountOfRequestBodyBytesSent { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfRequestBodyBytesBeforeEncoding")]
 		long CountOfRequestBodyBytesBeforeEncoding { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseHeaderBytesReceived")]
 		long CountOfResponseHeaderBytesReceived { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesReceived")]
 		long CountOfResponseBodyBytesReceived { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("countOfResponseBodyBytesAfterDecoding")]
 		long CountOfResponseBodyBytesAfterDecoding { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localAddress")]
 		string LocalAddress { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("localPort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber LocalPort { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remoteAddress")]
 		string RemoteAddress { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("remotePort", ArgumentSemantic.Copy)]
 		// 0-1023
 		[BindAs (typeof (ushort?))]
 		NSNumber RemotePort { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSProtocolVersion", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_protocol_version_t`
 		[BindAs (typeof (SslProtocol?))]
 		NSNumber NegotiatedTlsProtocolVersion { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("negotiatedTLSCipherSuite", ArgumentSemantic.Copy)]
 		// <quote>It is a 2-byte sequence in host byte order.</quote> but it refers to (nicer) `tls_ciphersuite_t`
 		[BindAs (typeof (TlsCipherSuite?))]
 		NSNumber NegotiatedTlsCipherSuite { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("cellular")]
 		bool Cellular { [Bind ("isCellular")] get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("expensive")]
 		bool Expensive { [Bind ("isExpensive")] get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("constrained")]
 		bool Constrained { [Bind ("isConstrained")] get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("multipath")]
 		bool Multipath { [Bind ("isMultipath")] get; }
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("domainResolutionProtocol")]
 		NSUrlSessionTaskMetricsDomainResolutionProtocol DomainResolutionProtocol { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionTaskMetrics")]
 	[DisableDefaultCtor]
 	interface NSUrlSessionTaskMetrics {
@@ -21259,7 +20622,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitAcceleration : NSSecureCoding {
 		// inline from base type
@@ -21282,7 +20644,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitAngle : NSSecureCoding {
 		// inline from base type
@@ -21321,7 +20682,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitArea : NSSecureCoding {
 		// inline from base type
@@ -21392,7 +20752,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitConcentrationMass : NSSecureCoding {
 		// inline from base type
@@ -21419,7 +20778,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitDispersion : NSSecureCoding {
 		// inline from base type
@@ -21438,7 +20796,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitDuration : NSSecureCoding {
 		// inline from base type
@@ -21463,29 +20820,24 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("milliseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Milliseconds { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("microseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Microseconds { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nanoseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Nanoseconds { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("picoseconds", ArgumentSemantic.Copy)]
 		NSUnitDuration Picoseconds { get; }
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitElectricCharge : NSSecureCoding {
 		// inline from base type
@@ -21524,7 +20876,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitElectricCurrent : NSSecureCoding {
 		// inline from base type
@@ -21559,7 +20910,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitElectricPotentialDifference : NSSecureCoding {
 		// inline from base type
@@ -21594,7 +20944,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitElectricResistance : NSSecureCoding {
 		// inline from base type
@@ -21629,7 +20978,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitEnergy : NSSecureCoding {
 		// inline from base type
@@ -21664,7 +21012,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitFrequency : NSSecureCoding {
 		// inline from base type
@@ -21709,14 +21056,12 @@ namespace Foundation {
 		[Export ("baseUnit")]
 		NSDimension BaseUnit { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("framesPerSecond", ArgumentSemantic.Copy)]
 		NSUnitFrequency FramesPerSecond { get; }
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitFuelEfficiency : NSSecureCoding {
 		// inline from base type
@@ -21743,7 +21088,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitLength : NSSecureCoding {
 		// inline from base type
@@ -21846,7 +21190,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitIlluminance : NSSecureCoding {
 		// inline from base type
@@ -21865,7 +21208,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitMass : NSSecureCoding {
 		// inline from base type
@@ -21944,7 +21286,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitPower : NSSecureCoding {
 		// inline from base type
@@ -22003,7 +21344,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitPressure : NSSecureCoding {
 		// inline from base type
@@ -22058,7 +21398,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitSpeed : NSSecureCoding {
 		// inline from base type
@@ -22089,7 +21428,6 @@ namespace Foundation {
 	}
 
 	[DisableDefaultCtor] // -init should never be called on NSUnit!
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	interface NSUnitVolume : NSSecureCoding {
 		// inline from base type
@@ -22227,7 +21565,6 @@ namespace Foundation {
 		NSDimension BaseUnit { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMeasurement<UnitType> : NSCopying, NSSecureCoding
@@ -22255,7 +21592,6 @@ namespace Foundation {
 		NSMeasurement<UnitType> GetMeasurementBySubtracting (NSMeasurement<UnitType> measurement);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSMeasurementFormatter : NSSecureCoding {
 
@@ -22347,7 +21683,6 @@ namespace Foundation {
 		NSXpcConnection CurrentConnection { [return: NullAllowed] get; }
 
 		[Export ("scheduleSendBarrierBlock:")]
-		[MacCatalyst (13, 1)]
 		void ScheduleSendBarrier (Action block);
 
 		[Export ("remoteObjectProxy"), Internal]
@@ -22356,12 +21691,10 @@ namespace Foundation {
 		[Export ("remoteObjectProxyWithErrorHandler:"), Internal]
 		IntPtr _CreateRemoteObjectProxy ([BlockCallback] Action<NSError> errorHandler);
 
-		[MacCatalyst (13, 1)]
 		[Export ("synchronousRemoteObjectProxyWithErrorHandler:"), Internal]
 		IntPtr _CreateSynchronousRemoteObjectProxy ([BlockCallback] Action<NSError> errorHandler);
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("activate")]
 		void Activate ();
 
@@ -22412,7 +21745,6 @@ namespace Foundation {
 		void Invalidate ();
 
 		[TV (14, 0), iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("activate")]
 		void Activate ();
 
@@ -22453,7 +21785,6 @@ namespace Foundation {
 	interface NSXpcListenerEndpoint : NSSecureCoding {
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSListFormatter {
 
@@ -22477,14 +21808,12 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterStyle : long {
 		Numeric = 0,
 		Named,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSRelativeDateTimeFormatterUnitsStyle : long {
 		Full = 0,
@@ -22493,7 +21822,6 @@ namespace Foundation {
 		Abbreviated,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSFormatter))]
 	interface NSRelativeDateTimeFormatter {
 
@@ -22526,14 +21854,12 @@ namespace Foundation {
 		string GetString ([NullAllowed] NSObject obj);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSCollectionChangeType : long {
 		Insert,
 		Remove,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSOrderedCollectionDifferenceCalculationOptions : ulong {
 		OmitInsertedObjects = (1uL << 0),
@@ -22541,7 +21867,6 @@ namespace Foundation {
 		InferMoves = (1uL << 2),
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSDimension))]
 	[DisableDefaultCtor] // NSGenericException Reason: -init should never be called on NSUnit!
 	interface NSUnitInformationStorage : NSSecureCoding {
@@ -22697,14 +22022,12 @@ namespace Foundation {
 		NSUnitInformationStorage Kibibits { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketMessageType : long {
 		Data = 0,
 		String = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "NSURLSessionWebSocketMessage")]
 	[DisableDefaultCtor]
 	interface NSUrlSessionWebSocketMessage {
@@ -22727,7 +22050,6 @@ namespace Foundation {
 		string String { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlSessionWebSocketCloseCode : long {
 		Invalid = 0,
@@ -22745,7 +22067,6 @@ namespace Foundation {
 		TlsHandshakeFailure = 1015,
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSUrlSessionTask), Name = "NSURLSessionWebSocketTask")]
 	[DisableDefaultCtor]
 	interface NSUrlSessionWebSocketTask {
@@ -22775,7 +22096,6 @@ namespace Foundation {
 		NSData CloseReason { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSUrlSessionTaskDelegate), Name = "NSURLSessionWebSocketDelegate")]
@@ -22788,7 +22108,6 @@ namespace Foundation {
 		void DidClose (NSUrlSession session, NSUrlSessionWebSocketTask webSocketTask, NSUrlSessionWebSocketCloseCode closeCode, [NullAllowed] NSData reason);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	enum NSUrlErrorNetworkUnavailableReason : long {
 		Cellular = 0,
@@ -22845,7 +22164,6 @@ namespace Foundation {
 	}
 
 	[TV (14, 0), iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum NSUrlSessionTaskMetricsDomainResolutionProtocol : long {
 		Unknown,
@@ -22857,7 +22175,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[Native]
 	public enum NSNotificationSuspensionBehavior : ulong {
 		/// <summary>To be added.</summary>
@@ -22872,7 +22189,6 @@ namespace Foundation {
 
 	[NoiOS]
 	[NoTV]
-	[MacCatalyst (15, 0)]
 	[Flags]
 	[Native]
 	public enum NSNotificationFlags : ulong {
@@ -22894,7 +22210,7 @@ namespace Foundation {
 		WithoutUI = 1 << 1,
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSPresentationIntent : NSCopying, NSSecureCoding {
@@ -22983,7 +22299,7 @@ namespace Foundation {
 		bool IsEquivalent (NSPresentationIntent other);
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAttributedStringMarkdownParsingOptions : NSCopying {
 		[Export ("allowsExtendedAttributes")]
@@ -22999,12 +22315,11 @@ namespace Foundation {
 		string LanguageCode { get; set; }
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		[Export ("appliesSourcePositionAttributes")]
 		bool AppliesSourcePositionAttributes { get; set; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSInflectionRule : NSCopying, NSSecureCoding {
@@ -23013,19 +22328,17 @@ namespace Foundation {
 		NSInflectionRule AutomaticRule { get; }
 
 		[TV (15, 0), iOS (15, 0)]
-		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("canInflectLanguage:")]
 		bool CanInflectLanguage (string language);
 
 		[TV (15, 0), iOS (15, 0)]
-		[MacCatalyst (15, 0)]
 		[Static]
 		[Export ("canInflectPreferredLocalization")]
 		bool CanInflectPreferredLocalization { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSInflectionRule))]
 	interface NSInflectionRuleExplicit {
 		[Export ("initWithMorphology:")]
@@ -23036,7 +22349,7 @@ namespace Foundation {
 		NSMorphology Morphology { get; }
 	}
 
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMorphology : NSCopying, NSSecureCoding {
 		[Export ("grammaticalGender", ArgumentSemantic.Assign)]
@@ -23070,23 +22383,23 @@ namespace Foundation {
 		[Export ("userMorphology")]
 		NSMorphology UserMorphology { get; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("grammaticalCase", ArgumentSemantic.Assign)]
 		NSGrammaticalCase GrammaticalCase { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("determination", ArgumentSemantic.Assign)]
 		NSGrammaticalDetermination Determination { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("grammaticalPerson", ArgumentSemantic.Assign)]
 		NSGrammaticalPerson GrammaticalPerson { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("pronounType", ArgumentSemantic.Assign)]
 		NSGrammaticalPronounType PronounType { get; set; }
 
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Export ("definiteness", ArgumentSemantic.Assign)]
 		NSGrammaticalDefiniteness Definiteness { get; set; }
 	}
@@ -23095,7 +22408,7 @@ namespace Foundation {
 	[Obsoleted (PlatformName.iOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 	[Obsoleted (PlatformName.MacCatalyst, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
 	[Obsoleted (PlatformName.TvOS, 17, 0, message: "Use 'NSTermOfAddress' instead.")]
-	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+	[TV (15, 0), iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSMorphologyCustomPronoun : NSCopying, NSSecureCoding {
 		[Static]
@@ -23214,7 +22527,6 @@ namespace Foundation {
 #endif
 
 	[TV (16, 0), iOS (16, 0)]
-	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	interface NSAttributedStringMarkdownSourcePosition : NSCopying, NSSecureCoding {
 		[Export ("startLine")]
@@ -23236,7 +22548,7 @@ namespace Foundation {
 		NSRange RangeInString (string @string);
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTermOfAddress : NSCopying, NSSecureCoding {
@@ -23268,7 +22580,7 @@ namespace Foundation {
 		NSTermOfAddress CurrentUser { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSMorphologyPronoun : NSCopying, NSSecureCoding {

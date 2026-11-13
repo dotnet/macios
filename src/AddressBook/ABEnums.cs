@@ -40,7 +40,6 @@ namespace AddressBook {
 	///       <see cref="AddressBook.ABAddressBookError" /> values.
 	///     </remarks>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
 	[ErrorDomain ("ABAddressBookErrorDomain")]
 	public enum ABAddressBookError {
@@ -52,7 +51,6 @@ namespace AddressBook {
 
 	/// <summary>An enumeration whose values specify the possible results of the <see cref="AddressBook.ABAddressBook.GetAuthorizationStatus" /> method.</summary>
 	[Deprecated (PlatformName.iOS, 9, 0, message: "Use the 'Contacts' API instead.")]
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use the 'Contacts' API instead.")]
 	[Native]
 	public enum ABAuthorizationStatus : long {

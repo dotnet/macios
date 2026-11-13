@@ -40,7 +40,6 @@ namespace AudioUnit {
 			uint frameCount, nint inputBusNumber, AudioBuffers inputData);
 
 	delegate void AUScheduleParameterBlock (AUEventSampleTime eventSampleTime, uint rampDurationSampleFrames, ulong parameterAddress, float value);
-	[MacCatalyst (13, 1)]
 	delegate int AUMidiOutputEventBlock (long eventSampleTime, byte cable, nint length, IntPtr midiBytes);
 	/// <param name="param">The parameter that changed.</param>
 	///     <param name="value">The new parameter value.</param>
@@ -98,13 +97,11 @@ namespace AudioUnit {
 	///     <returns>The new audio unit value.</returns>
 	delegate float AUImplementorValueFromStringCallback (AUParameter param, string str);
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	delegate void AUMidiCIProfileChangedCallback (byte cable, byte channel, MidiCIProfile profile, bool enabled);
 
 	/// <summary>A subclass of <see cref="AVFoundation.AVAudioNode" /> whose subclasses process audio.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUAudioUnit_ClassReference/index.html">Apple documentation for <c>AUAudioUnit</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AUAudioUnit {
@@ -216,7 +213,6 @@ namespace AudioUnit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("audioUnitShortName")]
 		string ShortName { get; }
 
@@ -271,7 +267,7 @@ namespace AudioUnit {
 		AUScheduleParameterBlock ScheduleParameterBlock { get; }
 
 		// TODO: https://github.com/dotnet/macios/issues/12489
-		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
+		// [TV (15,0), iOS (15,0)]
 		// [NullAllowed]
 		// [Export ("scheduleMIDIEventListBlock")]
 		// AUMidiEventListBlock ScheduleMidiEventListBlock { get; }
@@ -288,30 +284,28 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("MIDIOutputNames", ArgumentSemantic.Copy)]
 		string [] MidiOutputNames { get; }
 
 		// TODO: https://github.com/dotnet/macios/issues/12489
-		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
+		// [TV (15,0), iOS (15,0)]
 		// [NullAllowed]
 		// [Export ("MIDIOutputEventListBlock", ArgumentSemantic.Copy)]
 		// AUMidiEventListBlock MidiOutputEventListBlock { get; set; }
 
 		// TODO: https://github.com/dotnet/macios/issues/12489
-		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
+		// [TV (15,0), iOS (15,0)]
 		// [Export ("AudioUnitMIDIProtocol")]
 		// MIDIProtocolID AudioUnitMidiProtocol { get; }
 
 		// TODO: https://github.com/dotnet/macios/issues/12489
-		// [TV (15,0), iOS (15,0), MacCatalyst (15,0)]
+		// [TV (15,0), iOS (15,0)]
 		// [Export ("hostMIDIProtocol", ArgumentSemantic.Assign)]
 		// MIDIProtocolID HostMIDIProtocol { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("providesUserInterface")]
 		bool ProvidesUserInterface { get; }
 
@@ -321,7 +315,6 @@ namespace AudioUnit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("MIDIOutputEventBlock", ArgumentSemantic.Copy)]
 		AUMidiOutputEventBlock MidiOutputEventBlock { get; set; }
 
@@ -356,7 +349,6 @@ namespace AudioUnit {
 
 		AUParameterTree ParameterTree {
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -480,7 +472,6 @@ namespace AudioUnit {
 		/// <summary>Gets a Boolean values that tells whether MPE audio is supported.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("supportsMPE")]
 		bool SupportsMpe { get; }
 
@@ -490,7 +481,6 @@ namespace AudioUnit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("channelMap"), NullAllowed]
 		NSNumber [] ChannelMap { get; set; }
 
@@ -498,7 +488,6 @@ namespace AudioUnit {
 		///         <summary>Requests the view controller for the audio unit and runs <paramref name="completionHandler" /> when finished.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("requestViewControllerWithCompletionHandler:")]
 		[Async (XmlDocs = """
 			<summary>Asynchronously requests the view controller for the audio unit.</summary>
@@ -535,7 +524,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("MIDIOutputBufferSizeHint")]
 		nint MidiOutputBufferSizeHint { get; set; }
 
@@ -545,7 +533,6 @@ namespace AudioUnit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("profileStateForCable:channel:")]
 		MidiCIProfileState GetProfileState (byte cable, byte channel);
 
@@ -553,7 +540,6 @@ namespace AudioUnit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("profileChangedBlock", ArgumentSemantic.Assign)]
 		AUMidiCIProfileChangedCallback ProfileChangedCallback { get; set; }
 
@@ -565,7 +551,6 @@ namespace AudioUnit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("disableProfile:cable:onChannel:error:")]
 		bool Disable (MidiCIProfile profile, byte cable, byte channel, [NullAllowed] out NSError outError);
 
@@ -577,37 +562,30 @@ namespace AudioUnit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("enableProfile:cable:onChannel:error:")]
 		bool Enable (MidiCIProfile profile, byte cable, byte channel, [NullAllowed] out NSError outError);
 
-		[MacCatalyst (13, 1)]
 		[Export ("userPresets", ArgumentSemantic.Copy)]
 		AUAudioUnitPreset [] UserPresets { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("saveUserPreset:error:")]
 		bool SaveUserPreset (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[MacCatalyst (13, 1)]
 		[Export ("deleteUserPreset:error:")]
 		bool DeleteUserPreset (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[MacCatalyst (13, 1)]
 		[Export ("presetStateFor:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetPresetState (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[MacCatalyst (13, 1)]
 		[Export ("supportsUserPresets")]
 		bool SupportsUserPresets { get; }
 
-		[Introduced (PlatformName.MacCatalyst, 13, 0)] // needed since it's not in iOS
 		[NoTV, NoiOS]
 		[Export ("isLoadedInProcess")]
 		bool IsLoadedInProcess { get; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("migrateFromPlugin")]
 		NSData [] MigrateFromPlugin { get; }
 	}
@@ -615,7 +593,6 @@ namespace AudioUnit {
 	// kept separate from AUAudioUnit, quote:
 	// These methods will fail if the audio unit is not an input/output audio unit.
 	/// <summary>Defines the interface of a host to an audio unit.</summary>
-	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AUAudioUnit))]
 	interface AUAudioUnit_AUAudioInputOutputUnit {
@@ -737,7 +714,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("running")]
 		bool IsRunning ();
 	}
@@ -745,7 +721,6 @@ namespace AudioUnit {
 	/// <summary>An input or output connection to an audio unit.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUAudioUnitBus_ClassReference/index.html">Apple documentation for <c>AUAudioUnitBus</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitBus {
 		/// <param name="format">A value that provides a detailed description of the channels and formats of audio data.</param>
@@ -842,7 +817,6 @@ namespace AudioUnit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("shouldAllocateBuffer")]
 		bool ShouldAllocateBuffer { get; set; }
 	}
@@ -850,7 +824,6 @@ namespace AudioUnit {
 	/// <summary>A container that holds <see cref="AUAudioUnitBus" /> objects for an audio unit.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUAudioUnitBusArray_ClassReference/index.html">Apple documentation for <c>AUAudioUnitBusArray</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AUAudioUnitBusArray : INSFastEnumeration {
@@ -944,7 +917,6 @@ namespace AudioUnit {
 	/// <summary>A name and identifier for a custom parameter preset.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUAudioUnitPreset_ClassReference/index.html">Apple documentation for <c>AUAudioUnitPreset</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUAudioUnitPreset : NSSecureCoding {
 		/// <summary>Gets or sets a unique identifier for the preset.</summary>
@@ -963,7 +935,6 @@ namespace AudioUnit {
 	/// <summary>An audio unit parameter.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUParameter_ClassReference/index.html">Apple documentation for <c>AUParameter</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterNode))]
 	interface AUParameter : NSSecureCoding {
 		/// <summary>Gets the parameter's minimum value.</summary>
@@ -1079,7 +1050,6 @@ namespace AudioUnit {
 		[Export ("valueFromString:")]
 		float GetValue (string str);
 
-		[MacCatalyst (13, 1)]
 		[Internal]
 		[Export ("setValue:originator:atHostTime:eventType:")]
 		void SetValue (float value, IntPtr originator, ulong hostTime, AUParameterAutomationEventType eventType);
@@ -1090,18 +1060,15 @@ namespace AudioUnit {
 		///         <param name="eventType">To be added.</param>
 		///         <summary>Sets the parameter's value to <paramref name="value" />, with the specified <paramref name="hostTime" /> and <paramref name="eventType" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (value, originator.ObserverToken, hostTime, eventType)")]
 		void SetValue (float value, AUParameterObserverToken originator, ulong hostTime, AUParameterAutomationEventType eventType);
 	}
 
-	[MacCatalyst (13, 1)]
 	delegate void AUParameterAutomationObserver (ulong address, float value);
 
 	/// <summary>A node which represents a parameter or parameter group in an <see cref="AUParameterTree" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUParameterNode_ClassReference/index.html">Apple documentation for <c>AUParameterNode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AUParameterNode {
 		/// <summary>Gets the permanent unique identifier for the node.</summary>
@@ -1201,7 +1168,6 @@ namespace AudioUnit {
 		[Export ("implementorDisplayNameWithLengthCallback", ArgumentSemantic.Copy)]
 		AUImplementorDisplayNameWithLengthCallback ImplementorDisplayNameWithLengthCallback { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Internal]
 		[Export ("tokenByAddingParameterAutomationObserver:")]
 		IntPtr _GetToken (AUParameterAutomationObserver observer);
@@ -1210,14 +1176,12 @@ namespace AudioUnit {
 		///         <summary>Adds a parameter automation observer for the parameter and returns a token that developers can use to identify it.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("new AUParameterObserverToken (_GetToken (observer))")]
 		AUParameterObserverToken GetToken (AUParameterAutomationObserver observer);
 	}
 
 	/// <summary>A group of <see cref="AUParameter" /> objects for an audio unit.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUParameterGroup_ClassReference/index.html">Apple documentation for <c>AUParameterGroup</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterNode))]
 	interface AUParameterGroup : NSSecureCoding {
 		/// <summary>Gets an array of the child nodes in the parameter group.</summary>
@@ -1236,7 +1200,6 @@ namespace AudioUnit {
 	/// <summary>A tree that contains all of the audio unit parameters for an audio unit.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AudioUnit/Reference/AUParameterTree_ClassReference/index.html">Apple documentation for <c>AUParameterTree</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AUParameterGroup))]
 	interface AUParameterTree : NSSecureCoding {
 		/// <param name="address">The address of the parameter to get.</param>

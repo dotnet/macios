@@ -202,7 +202,6 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
 		Document = 100,
 		Part,
@@ -294,7 +293,6 @@ namespace CoreGraphics {
 	///   <para>Allowing high-quality printing also grants low-quality printing, content copying grants accessibility extraction, and commenting grants form-field entry.</para>
 	///   <para>Existing documents may not follow these relationships, so check the narrowest permission that applies when reading permissions.</para>
 	/// </remarks>
-	[MacCatalyst (13, 1)]
 	public enum CGPDFAccessPermissions : uint {
 		/// <summary>Allows printing at up to 150 DPI.</summary>
 		AllowsLowQualityPrinting = (1 << 0),
@@ -317,7 +315,6 @@ namespace CoreGraphics {
 	// uint32_t enum -> CGColorConversionInfo.h
 	/// <summary>Specifies how a color space participates in a multi-step color conversion.</summary>
 	/// <remarks>Use this value as the <see cref="CGColorConversionInfoTriple.Transform"/> in a color conversion sequence.</remarks>
-	[MacCatalyst (13, 1)]
 	public enum CGColorConversionInfoTransformType : uint {
 		/// <summary>Marks the source color space in a conversion sequence.</summary>
 		FromSpace = 0,

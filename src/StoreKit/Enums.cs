@@ -8,7 +8,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKPaymentTransactionState : long {
 		/// <summary>Transaction is being processed by the AppStore.</summary>
@@ -20,7 +19,6 @@ namespace StoreKit {
 		/// <summary>The transaction has restored the original content purchased by the user.</summary>
 		Restored,
 		/// <summary>The transaction is in a deferred state, waiting for an external action such as parental approval.</summary>
-		[MacCatalyst (13, 1)]
 		Deferred,
 	}
 
@@ -81,7 +79,6 @@ namespace StoreKit {
 	// typedef NSInteger SKDownloadState;
 	// StoreKit.framework/Headers/SKDownload.h
 	/// <summary>An enumeration whose values specify the state of an <see cref="SKDownload" /> object. Used with the <see cref="SKDownload.DownloadState" /> property.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKDownloadState : long {
 		/// <summary>The download is waiting to start.</summary>
@@ -103,7 +100,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKCloudServiceAuthorizationStatus : long {
 		/// <summary>Indicates that the authorization state cannot be determined.</summary>
@@ -121,7 +117,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKCloudServiceCapability : ulong {
 		/// <summary>The device has no music library capabilities.</summary>
@@ -129,7 +124,6 @@ namespace StoreKit {
 		/// <summary>Indicates that the device can play tracks in the Apple Music catalog.</summary>
 		MusicCatalogPlayback = 1 << 0,
 		/// <summary>A constant that indicates that a device allows subscriptions to the Apple Music catalog.</summary>
-		[MacCatalyst (13, 1)]
 		MusicCatalogSubscriptionEligible = 1 << 1,
 		/// <summary>Indicates that the device can add tracks to the user's cloud library.</summary>
 		AddToCloudMusicLibrary = 1 << 8,
@@ -140,7 +134,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKProductStorePromotionVisibility : long {
 		/// <summary>Specifies the default value that is in iTunes Connect.</summary>
@@ -156,7 +149,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKProductPeriodUnit : ulong {
 		/// <summary>The subscription is defined in terms of days.</summary>
@@ -174,7 +166,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SKProductDiscountPaymentMode : ulong {
 		/// <summary>The discount is billed to the user.</summary>
@@ -186,14 +177,13 @@ namespace StoreKit {
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum SKOverlayPosition : long {
 		SKOverlayPositionBottom = 0,
 		Raised = 1,
 	}
 
-	[NoMac, iOS (16, 1), MacCatalyst (16, 1), NoTV]
+	[NoMac, iOS (16, 1), NoTV]
 	public enum SKAdNetworkCoarseConversionValue {
 		[Field ("SKAdNetworkCoarseConversionValueHigh")]
 		High,

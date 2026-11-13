@@ -609,7 +609,40 @@ namespace GeneratorTests {
 		[Test]
 		public void PropertyRedefinition ()
 		{
-			BuildFile (Profile.iOS, "property-redefination-ios.cs");
+			var bgen = BuildFile (Profile.iOS, "property-redefination-ios.cs");
+			var parentProperty = bgen.ApiAssembly.MainModule.GetType ("Test", "NSText").Properties.Single (v => v.Name == "SelectedRange");
+			Assert.That (parentProperty.GetMethod, Is.Not.Null, "Inherited getter");
+			Assert.That (parentProperty.SetMethod, Is.Not.Null, "Inherited setter");
+			Assert.That (bgen.ApiAssembly.MainModule.GetType ("Test", "NSTextView").Properties.Select (v => v.Name), Does.Not.Contain ("SelectedRange"), "Do not hide the inherited setter");
+		}
+
+		[Test]
+		public void RedefinedPropertyFromBaseClass ()
+		{
+			var bgen = BuildFile (Profile.iOS, "redefined-property.cs");
+			var readOnly = bgen.ApiAssembly.MainModule.GetType ("Test", "MyObject").Properties.Single (v => v.Name == "SupportedInterfaceOrientations");
+			Assert.That (readOnly.PropertyType.FullName, Is.EqualTo ("UIKit.UIInterfaceOrientationMask"), "Read-only property type");
+			Assert.That (readOnly.GetMethod, Is.Not.Null, "Getter");
+			Assert.That (readOnly.SetMethod, Is.Null, "No setter");
+
+			var writeOnly = bgen.ApiAssembly.MainModule.GetType ("Test", "MyWriteOnlyObject").Properties.Single (v => v.Name == "SupportedInterfaceOrientations");
+			Assert.That (writeOnly.PropertyType.FullName, Is.EqualTo ("UIKit.UIInterfaceOrientationMask"), "Write-only property type");
+			Assert.That (writeOnly.GetMethod, Is.Null, "No getter");
+			Assert.That (writeOnly.SetMethod, Is.Not.Null, "Setter");
+		}
+
+		[Test]
+		public void CategoryImplementingProtocol ()
+		{
+			var bgen = BuildFile (Profile.iOS, "category-implementing-protocol.cs");
+			foreach (var (typeName, methodName) in new [] { ("MyCategory", "CategoryMethod"), ("MyProtocolCategory", "ProtocolMethod") }) {
+				var type = bgen.ApiAssembly.MainModule.GetType ("Test", typeName);
+				Assert.That (type.Interfaces, Is.Empty, $"{typeName} interfaces");
+				var method = type.Methods.Single (v => v.Name == methodName);
+				Assert.That (method.IsStatic, Is.True, $"{typeName}.{methodName} is static");
+				Assert.That (method.Parameters [0].ParameterType.FullName, Is.EqualTo ("Test.MyNavigationController"), $"{typeName}.{methodName} receiver");
+				Assert.That (method.CustomAttributes.Any (v => v.AttributeType.Name == "ExtensionAttribute"), Is.True, $"{typeName}.{methodName} is an extension method");
+			}
 		}
 
 		[Test]

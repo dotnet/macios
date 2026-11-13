@@ -58003,7 +58003,6 @@ T:ModelIO.MDLNoiseTextureType
 T:ModelIO.MDLObjectHandler
 T:ModelIO.MDLPackedJointAnimation
 T:ModelIO.MDLPathAssetResolver
-T:ModelIO.MDLProbePlacement
 T:ModelIO.MDLRelativeAssetResolver
 T:ModelIO.MDLSkeleton
 T:ModelIO.MDLTransformMatrixOp

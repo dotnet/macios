@@ -383,11 +383,12 @@ namespace ModelIO {
 		DoubleSided,
 	}
 
+	/// <summary>Specifies the heuristic used to place light probes in a scene.</summary>
 	[Native]
 	public enum MDLProbePlacement : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Places light probes on a uniform grid.</summary>
 		UniformGrid = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Places light probes in areas with the greatest change in irradiance.</summary>
 		IrradianceDistribution,
 	}
 

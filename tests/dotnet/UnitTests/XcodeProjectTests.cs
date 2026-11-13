@@ -106,6 +106,64 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[Category ("RemoteWindows")]
+		public void BuildBindingFromWindows ()
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+
+			var testDir = Cache.CreateTemporaryDirectory (TestName);
+			var proj = Path.Combine (testDir, $"{TestName}.csproj");
+			DotNet.AssertNew (testDir, "iosbinding");
+
+			var xcodeProjName = "TemplateFx";
+			var xcodeProjDir = Path.Combine (testDir, "Xcode project");
+			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, xcodeProjName), xcodeProjDir);
+			AddXcodeProjectItem (proj, Path.Combine ("Xcode project", $"{xcodeProjName}.xcodeproj"),
+				new Dictionary<string, string> {
+					{ "SchemeName", xcodeProjName },
+				});
+
+			var properties = GetDefaultProperties (includeRemoteProperties: true);
+			properties ["CompressBindingResourcePackage"] = "true";
+			var rv = DotNet.AssertBuild (proj, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_BuildXcodeProjects", "Initial Xcode build");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+			var resourcePackage = Path.Combine (testDir, "bin", "Debug", ApplePlatform.iOS.ToFramework (), $"{TestName}.resources.zip");
+			using (var archive = System.IO.Compression.ZipFile.OpenRead (resourcePackage)) {
+				var binary = archive.GetEntry ($"{xcodeProjName}ios.xcframework/ios-arm64/{xcodeProjName}.framework/{xcodeProjName}");
+				Assert.That (binary, Is.Not.Null, "Framework binary copied back to Windows");
+				Assert.That (binary?.Length, Is.GreaterThan (0), "Framework binary must not be an empty placeholder");
+			}
+
+			rv = DotNet.AssertBuild (proj, properties);
+			AssertTargetNotExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_BuildXcodeProjects", "Unchanged Xcode project");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			File.AppendAllText (Path.Combine (testDir, "ApiDefinition.cs"), "\n");
+			rv = DotNet.AssertBuild (proj, properties);
+			var bindingTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (bindingTargets, "_BuildXcodeProjects", "Changed binding source");
+			AssertTargetExecuted (bindingTargets, "_CreateBindingResourcePackage", "Changed binding source resources");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			var source = Directory.GetFiles (xcodeProjDir, "*.swift", SearchOption.AllDirectories).First ();
+			File.AppendAllText (source, "\n");
+			rv = DotNet.AssertBuild (proj, properties);
+			var targets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (targets, "_BuildXcodeProjects", "Changed Xcode source");
+			AssertTargetExecuted (targets, "_CreateBindingResourcePackage", "Changed binding resources");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			rv = DotNet.AssertBuild (proj, properties, target: "Clean");
+			AssertTargetExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_CleanXcodeProjects", "Clean Xcode project");
+			Assert.That (resourcePackage, Does.Not.Exist, "Clean binding resources");
+
+			DotNet.AssertBuild (proj, properties);
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]

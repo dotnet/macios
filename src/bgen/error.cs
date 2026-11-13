@@ -194,11 +194,11 @@ public static class ErrorHelper {
 		if (warning_levels is null)
 			return WarningLevel.Warning;
 
-		// code -1: all codes
-		if (warning_levels.TryGetValue (-1, out level))
+		if (warning_levels.TryGetValue (code, out level))
 			return level;
 
-		if (warning_levels.TryGetValue (code, out level))
+		// code -1: all codes
+		if (warning_levels.TryGetValue (-1, out level))
 			return level;
 
 		return WarningLevel.Warning;

@@ -353,6 +353,29 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The nullable binding '\*' uses the non-nullable [BindAs] type '\*'. Use a nullable type in [BindAs] to preserve null values.
+
+A property, parameter, or return value of type `NSNumber` or `NSValue` allows
+null, but its `[BindAs]` attribute specifies a non-nullable value type. The
+generated binding cannot represent a native null value using that type.
+
+Use a nullable value type in `[BindAs]`, for example:
+
+```csharp
+[NullAllowed]
+[BindAs (typeof (int?))]
+[Export ("value")]
+NSNumber Value { get; set; }
+```
+
+If the native value cannot be null, remove the incorrect nullability annotation
+instead. Arrays and other reference types used in `[BindAs]` do not need a
+nullable value type. String-backed smart enums are also excluded because enum
+constants can represent native null values.
+
+This warning is suppressed when generating the built-in platform bindings to
+preserve compatibility with existing non-nullable public APIs.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

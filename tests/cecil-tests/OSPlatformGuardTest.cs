@@ -10,9 +10,9 @@ using Xamarin;
 using Xamarin.Utils;
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public partial class OSPlatformGuardTest {
-		[Test]
+		[TestMethod]
 		public void RedundantGuards ()
 		{
 			var failures = new Dictionary<string, string> ();

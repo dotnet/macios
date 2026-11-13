@@ -5,12 +5,13 @@ using System.Diagnostics.CodeAnalysis;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Xamarin.Tests;
 using Xamarin.Utils;
 
 namespace Cecil.Tests {
+	[TestClass]
 	public partial class ConstructorTest {
 		static bool TryFindBaseConstructorCalled (MethodDefinition ctor, [NotNullWhen (true)] out MethodReference? ctorCalled, [NotNullWhen (false)] out string? failureReason)
 		{
@@ -286,11 +287,11 @@ namespace Cecil.Tests {
 			return method.IsPublic;
 		}
 
-		[Test]
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.MacOSX)]
+		[TestMethod]
+		[DataRow (ApplePlatform.iOS)]
+		[DataRow (ApplePlatform.TVOS)]
+		[DataRow (ApplePlatform.MacCatalyst)]
+		[DataRow (ApplePlatform.MacOSX)]
 		public void INativeObjectIntPtrConstructorDoesNotOwnHandle (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -404,7 +405,7 @@ namespace Cecil.Tests {
 					}
 				}
 			}
-			Assert.That (failures, Is.Empty, "No failures");
+			Assert.IsEmpty (failures, string.Join ("\n", failures));
 		}
 
 		bool IsPreservedByDynamicDependencyAttributeOnStaticCctor (MethodDefinition ctor)
@@ -462,11 +463,11 @@ namespace Cecil.Tests {
 			return false;
 		}
 
-		[Test]
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.MacOSX)]
+		[TestMethod]
+		[DataRow (ApplePlatform.iOS)]
+		[DataRow (ApplePlatform.TVOS)]
+		[DataRow (ApplePlatform.MacCatalyst)]
+		[DataRow (ApplePlatform.MacOSX)]
 		public void NativeObjectIntPtrBoolConstructorIsPreserved (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -512,10 +513,10 @@ namespace Cecil.Tests {
 					}
 				}
 			}
-			Assert.That (failures, Is.Empty, "No failures");
+			Assert.IsEmpty (failures, string.Join ("\n", failures));
 		}
 
-		[Test]
+		[TestMethod]
 		public void NonDefaultCtorDoesNotCallBaseDefaultCtor ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -554,7 +555,7 @@ namespace Cecil.Tests {
 				"Non-default ctors that call the base class' default ctor.", (v) => $"{v.Location}: {v.Message}");
 		}
 
-		[Test]
+		[TestMethod]
 		public void NoConstructorsWithOutErrorArguments ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();

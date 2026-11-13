@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -16,8 +16,9 @@ using Xamarin.Tests;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class AttributeTest {
+		[TestMethod]
 		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 availability attributes on a method/property
 		// must have one matching every platform listed on the availabilities of the class
@@ -38,9 +39,10 @@ namespace Cecil.Tests {
 		//
 		// This test should find Extension, note that it has an ios attribute,
 		// and insist that some maccatalyst must also be set.
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void ChildElementsListAvailabilityForAllPlatformsOnParent (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void ChildElementsListAvailabilityForAllPlatformsOnParent (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 
 			HashSet<string> found = new HashSet<string> ();
@@ -53,7 +55,7 @@ namespace Cecil.Tests {
 			foreach (var field in assembly.EnumerateFields (a => HasAnyAvailabilityAttribute (a))) {
 				CheckAllPlatformsOnParent (field, field.FullName, field.DeclaringType, found);
 			}
-			Assert.That (found, Is.Empty, $"{found.Count} issues found");
+			Assert.IsEmpty (found, $"{found.Count} issues found:\n{string.Join ("\n", found)}");
 		}
 
 		bool IgnoreAllPlatformsOnParent (string fullName)
@@ -69,6 +71,7 @@ namespace Cecil.Tests {
 			}
 		}
 
+		[TestMethod]
 		// Look for classes/struct that have double attributes, either because of partial classes or binding errors
 		// Example:
 		// TestType.cs
@@ -82,9 +85,10 @@ namespace Cecil.Tests {
 		// Example #2:
 		// [Watch (5,0), NoTV, NoMac, iOS (12,0), NoTV]
 		// interface Type { }
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void DoubleAttributedElements (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void DoubleAttributedElements (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			var doubleAttributed = new List<string> ();
 			foreach (var type in assembly.EnumerateTypes (a => HasAnyAvailabilityAttribute (a))) {
@@ -114,7 +118,7 @@ namespace Cecil.Tests {
 					}
 				}
 			}
-			Assert.That (doubleAttributed, Is.Empty, $"{doubleAttributed.Count} issues found");
+			Assert.IsEmpty (doubleAttributed, $"{doubleAttributed.Count} issues found:\n{string.Join ("\n", doubleAttributed)}");
 		}
 
 		void CheckAllPlatformsOnParent (ICustomAttributeProvider item, string fullName, TypeDefinition parent, HashSet<string> found)
@@ -165,7 +169,7 @@ namespace Cecil.Tests {
 		// comparing reality (what types/members actually exist) with the attributes
 		// We can not do this against a single assembly at a time, as the attributes saying "this is supported on mac" aren't 
 		// in the mac assembly, that's the bug. 
-		[Test]
+		[TestMethod]
 		public void FindSupportedOnElementsThatDoNotExistInThatAssembly ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
@@ -450,6 +454,7 @@ namespace Cecil.Tests {
 			}
 		}
 
+		[TestMethod]
 		// https://github.com/dotnet/macios/issues/10170
 		// Every binding class that has net6 any availability attributes on a method/property
 		// must have an introduced for the current platform.
@@ -467,9 +472,10 @@ namespace Cecil.Tests {
 		// UnsupportedOSPlatform with no version.
 		//
 		// When run against mac, this fails as Extension does not include a mac supported of any kind attribute
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void AllAttributedItemsMustIncludeCurrentPlatform (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void AllAttributedItemsMustIncludeCurrentPlatform (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 
 			string platformName = AssemblyToAttributeName (assembly);
@@ -487,7 +493,7 @@ namespace Cecil.Tests {
 			foreach (var field in assembly.EnumerateFields (a => HasAnyAvailabilityAttribute (a))) {
 				CheckCurrentPlatformIncludedIfAny (field, platformName, field.FullName, field.DeclaringType, found);
 			}
-			Assert.That (found, Is.Empty, $"{found.Count} issues found");
+			Assert.IsEmpty (found, $"{found.Count} issues found:\n{string.Join ("\n", found)}");
 		}
 
 		void CheckCurrentPlatformIncludedIfAny (ICustomAttributeProvider item, string platformName, string fullName, TypeDefinition parent, HashSet<string> found)
@@ -618,9 +624,11 @@ namespace Cecil.Tests {
 			return true;
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void ModelMustBeProtocol (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void ModelMustBeProtocol (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			// Verify that all types with a [Model] attribute must also have a [Protocol] attribute.
 			// Exception: If the type in question has a [Register] attribute with IsWrapper = false, then that's OK.
 			var failures = new HashSet<string> ();
@@ -650,9 +658,9 @@ namespace Cecil.Tests {
 				failures.Add ($"The type {type.FullName} has a [Model] attribute, but no [Protocol] attribute.");
 			}
 
-			Assert.That (failures, Is.Empty, "Failures");
-			Assert.That (typesWithModelAttribute, Is.GreaterThan (0), "No types with the [Model] attribute?");
-			Assert.That (typesWithProtocolAttribute, Is.GreaterThan (0), "No types with the [Protocol] attribute?");
+			Assert.IsEmpty (failures, string.Join ("\n", failures));
+			Assert.IsGreaterThan (0, typesWithModelAttribute, "No types with the [Model] attribute?");
+			Assert.IsGreaterThan (0, typesWithProtocolAttribute, "No types with the [Protocol] attribute?");
 
 			static bool GetIsWrapper (CustomAttribute attrib)
 			{

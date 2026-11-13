@@ -20,6 +20,53 @@ namespace Xamarin.MacDev.Tasks {
 	public class ComputeCodesignItemsTaskTests : TestBase {
 
 		[Test]
+		public void HardenedRuntime (
+			[Values (ApplePlatform.MacOSX, ApplePlatform.MacCatalyst, ApplePlatform.iOS, ApplePlatform.TVOS)] ApplePlatform platform,
+			[Values] bool hardenedRuntime,
+			[Values ("-", "Apple Development: Test")] string signingKey,
+			[Values ("", "libTest.dylib", "Frameworks/Test.framework", "Resources/Test.metallib", "XPCServices/Test.xpc", "PlugIns/Test.appex/Contents/libTest.dylib", "XPCServices/Test.xpc/Contents/libTest.dylib")] string nativeCode,
+			[Values (null, false, true)] bool? disableLibraryValidation)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var bundlePath = Path.Combine (tmpdir, "Bundle.app");
+			Directory.CreateDirectory (bundlePath);
+			var desktop = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+			if (nativeCode.Length > 0) {
+				var path = Path.Combine (bundlePath, desktop ? "Contents" : "", nativeCode);
+				if (nativeCode.EndsWith (".dylib", StringComparison.Ordinal) || nativeCode.EndsWith (".metallib", StringComparison.Ordinal)) {
+					Directory.CreateDirectory (Path.GetDirectoryName (path) ?? throw new InvalidOperationException ("Native library has no parent directory"));
+					File.WriteAllText (path, "");
+				} else {
+					Directory.CreateDirectory (path);
+				}
+			}
+			var bundle = new TaskItem (bundlePath);
+			bundle.SetMetadata ("CodesignSigningKey", signingKey);
+			bundle.SetMetadata ("CodesignUseHardenedRuntime", hardenedRuntime.ToString ());
+			if (disableLibraryValidation.HasValue) {
+				var entitlementsPath = Path.Combine (tmpdir, "Entitlements.plist");
+				new PDictionary {
+					{ "com.apple.security.cs.disable-library-validation", new PBoolean (disableLibraryValidation.Value) },
+				}.Save (entitlementsPath);
+				bundle.SetMetadata ("CodesignEntitlements", entitlementsPath);
+			}
+			var task = CreateTask<ComputeCodesignItems> ();
+			task.AppBundleDir = bundlePath;
+			task.CodesignBundle = new [] { bundle };
+			task.CodesignStampPath = Path.Combine (tmpdir, "codesign");
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+
+			var expectError = desktop && hardenedRuntime && signingKey == "-" &&
+				(nativeCode == "libTest.dylib" || nativeCode == "Frameworks/Test.framework") &&
+				disableLibraryValidation != true;
+			ExecuteTask (task, expectError ? 1 : 0);
+			if (expectError) {
+				Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Contain ("Set 'CodesignKey' to a valid Apple signing identity."), "Actionable diagnostic");
+				Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Contain ("same certificate-derived Team ID"), "Library validation explanation");
+			}
+		}
+
+		[Test]
 		public void StampPaths (
 			[Values (ApplePlatform.iOS, ApplePlatform.TVOS, ApplePlatform.MacOSX, ApplePlatform.MacCatalyst)] ApplePlatform platform,
 			[Values (".", "bin/Debug", "../out", "../../out", "../../../out")] string outputPath,

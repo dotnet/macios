@@ -76,6 +76,83 @@ namespace GeneratorTests {
 			bgen.AssertError (86, "A target framework (--target-framework) must be specified.");
 		}
 
+		[TestCase ("iOS (14, 0)", "NoiOS", "iOS")]
+		[TestCase ("TV (14, 0)", "NoTV", "TvOS")]
+		[TestCase ("Mac (14, 0)", "NoMac", "MacOSX")]
+		[TestCase ("MacCatalyst (14, 0)", "NoMacCatalyst", "MacCatalyst")]
+		[TestCase ("Watch (7, 0)", "NoWatch", "WatchOS")]
+		[TestCase ("Introduced (PlatformName.iOS, 14, 0)", "Unavailable (PlatformName.iOS)", "iOS")]
+		[TestCase ("Introduced (PlatformName.TvOS, 14, 0)", "Unavailable (PlatformName.TvOS)", "TvOS")]
+		[TestCase ("Introduced (PlatformName.MacOSX, 14, 0)", "Unavailable (PlatformName.MacOSX)", "MacOSX")]
+		[TestCase ("Introduced (PlatformName.MacCatalyst, 14, 0)", "Unavailable (PlatformName.MacCatalyst)", "MacCatalyst")]
+		[TestCase ("Introduced (PlatformName.WatchOS, 7, 0)", "Unavailable (PlatformName.WatchOS)", "WatchOS")]
+		[TestCase ("iOS (14, 0)", "Unavailable (PlatformName.iOS)", "iOS")]
+		[TestCase ("Introduced (PlatformName.TvOS, 14, 0)", "NoTV", "TvOS")]
+		[TestCase ("SupportedOSPlatform (\"ios\")", "UnsupportedOSPlatform (\"ios\")", "iOS")]
+		[TestCase ("SupportedOSPlatform (\"ios14.0\")", "UnsupportedOSPlatform (\"ios\")", "iOS")]
+		[TestCase ("SupportedOSPlatform (\"tvos14.0\")", "UnsupportedOSPlatform (\"tvos\")", "TvOS")]
+		[TestCase ("SupportedOSPlatform (\"macos14.0\")", "UnsupportedOSPlatform (\"macos\")", "MacOSX")]
+		[TestCase ("SupportedOSPlatform (\"maccatalyst14.0\")", "UnsupportedOSPlatform (\"maccatalyst\")", "MacCatalyst")]
+		[TestCase ("SupportedOSPlatform (\"watchos7.0\")", "UnsupportedOSPlatform (\"watchos\")", "WatchOS")]
+		public void ConflictingAvailability (string introduced, string unavailable, string platform)
+		{
+			foreach (var attributes in new [] { $"[{introduced}] [{unavailable}]", $"[{unavailable}] [{introduced}]" })
+				AssertConflictingAvailability (attributes, "ATTRIBUTES [Native] public enum Conflict : long { Value }", platform, "Conflict");
+		}
+
+		[TestCase ("ATTRIBUTES [BaseType (typeof (NSObject))] interface Conflict {}", "Conflict")]
+		[TestCase ("[BaseType (typeof (NSObject))] interface Conflict { ATTRIBUTES [Export (\"method\")] void Method (); }", "Conflict.Method")]
+		[TestCase ("[BaseType (typeof (NSObject))] interface Conflict { ATTRIBUTES [Export (\"value\")] int Value { get; set; } }", "Conflict.Value")]
+		[TestCase ("[BaseType (typeof (NSObject))] interface Conflict { [Export (\"value\")] int Value { ATTRIBUTES get; set; } }", "Conflict.get_Value")]
+		[TestCase ("[BaseType (typeof (NSObject))] interface Conflict { [Export (\"value\")] int Value { get; ATTRIBUTES set; } }", "Conflict.set_Value")]
+		[TestCase ("[Native] public enum Conflict : long { ATTRIBUTES Value }", "Conflict.Value")]
+		public void ConflictingAvailabilityOnMembers (string declaration, string member)
+		{
+			AssertConflictingAvailability ("[NoTV] [TV (14, 0)]", declaration, "TvOS", member);
+		}
+
+		static void AssertConflictingAvailability (string attributes, string declaration, string platform, string member)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				ProcessEnums = true,
+			};
+			bgen.CreateTemporaryBinding ("using Foundation; using ObjCRuntime; using System.Runtime.Versioning;\nnamespace NS { " + declaration.Replace ("ATTRIBUTES", attributes) + " }");
+			bgen.AssertExecuteError ("conflicting availability");
+			bgen.AssertError (1130, $"The availability attributes on 'NS.{member}' are contradictory: it is both introduced and unavailable on '{platform}'. Remove one of the conflicting attributes.");
+		}
+
+		[TestCase ("[iOS (14, 0)] [NoTV]")]
+		[TestCase ("[NoiOS] [TV (14, 0)]")]
+		[TestCase ("[SupportedOSPlatform (\"ios13.0\")] [UnsupportedOSPlatform (\"ios14.0\")]")]
+		[TestCase ("[UnsupportedOSPlatform (\"ios14.0\")] [SupportedOSPlatform (\"ios15.0\")]")]
+		[TestCase ("[iOS (14, 0)] [Deprecated (PlatformName.iOS, 15, 0)] [Obsoleted (PlatformName.iOS, 16, 0)]")]
+		public void NonConflictingAvailability (string attributes)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				ProcessEnums = true,
+			};
+			bgen.CreateTemporaryBinding ($"using ObjCRuntime; using System.Runtime.Versioning;\nnamespace NS {{ {attributes} [Native] public enum Valid : long {{ Value }} }}");
+			bgen.AssertExecute ("non-conflicting availability");
+			bgen.AssertNoWarnings ();
+		}
+
+		[TestCase ("[TV (14, 0)]", "[NoTV]")]
+		[TestCase ("[NoTV]", "[TV (14, 0)]")]
+		public void NonConflictingInheritedAvailability (string typeAttributes, string memberAttributes)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+			};
+			bgen.CreateTemporaryBinding ($"using Foundation; using ObjCRuntime;\nnamespace NS {{ {typeAttributes} [BaseType (typeof (NSObject))] interface Valid {{ {memberAttributes} [Export (\"method\")] void Method (); }} }}");
+			bgen.AssertExecute ("inherited availability");
+			bgen.AssertNoWarnings ();
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void InvalidSelectorDoesNotExitProcess (Profile profile)

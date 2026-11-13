@@ -11,7 +11,6 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
@@ -488,17 +487,19 @@ namespace Security {
 			// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
 			int i = identity is null ? 0 : 1;
-			int n = certificates is null ? 0 : certificates.Count ();
+			var certificateList = certificates is null ? null : new List<SecCertificate> (certificates);
+			int n = certificateList?.Count ?? 0;
 			var ptrs = new NativeHandle [n + i];
 			if (i == 1)
 				ptrs [0] = identity!.Handle;
-			if (certificates is not null) {
-				foreach (var certificate in certificates)
+			if (certificateList is not null) {
+				foreach (var certificate in certificateList)
 					ptrs [i++] = certificate.Handle;
 			}
 			NSArray result = NSArray.FromIntPtrs (ptrs);
 			GC.KeepAlive (identity);
 			GC.KeepAlive (certificates);
+			GC.KeepAlive (certificateList);
 			return result;
 #pragma warning restore RBI0014
 		}

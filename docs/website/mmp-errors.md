@@ -654,6 +654,14 @@ If this is an API exposed by Xamarin, please file a new issue on
 [GitHub](https://github.com/dotnet/macios/issues/new), if it's a
 third-party binding, please contact the vendor.
 
+### MM4199: The NSCell subclass '{type}' does not have a constructor that takes a single ObjCRuntime.NativeHandle argument.
+
+See [MT4199](mtouch-errors.md#mt4199-the-nscell-subclass-type-does-not-have-a-constructor-that-takes-a-single-objcruntimenativehandle-argument).
+
+### MM4200: The NSCell subclass '{type}' does not implement Copy (NSZone).
+
+See [MT4200](mtouch-errors.md#mt4200-the-nscell-subclass-type-does-not-implement-copy-nszone).
+
 ## MM5xxx: GCC and toolchain
 
 ### MM51xx: compilation

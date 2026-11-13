@@ -2348,21 +2348,47 @@ namespace Xamarin.Tests {
 		}
 
 
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacOSX)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		public void BuildTrimmedExtensionProject (ApplePlatform platform)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		public void BuildTrimmedExtensionProject (ApplePlatform platform, string runtimeIdentifier, bool additionalRoot)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			var project_path = GetProjectPath ("ExtensionProject", platform: platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+			var project_path = GetProjectPath ("ExtensionProject", runtimeIdentifier, platform, out var appPath);
+			var extensionPath = Path.ChangeExtension (appPath, ".appex");
 
 			Clean (project_path);
 
-			var properties = GetDefaultProperties ();
+			var properties = GetDefaultProperties (runtimeIdentifier);
 			properties ["MtouchLink"] = "Full";
 			properties ["LinkMode"] = "Full";
+			if (additionalRoot)
+				properties ["TestTrimmerRootAssembly"] = "System.Runtime";
 			DotNet.AssertBuild (project_path, properties);
+
+			var assemblyDirectory = Path.Combine (extensionPath, GetRelativeAssemblyDirectory (platform));
+			Assert.That (Path.Combine (assemblyDirectory, Configuration.GetBaseLibraryName (platform)), Does.Exist, "Platform assembly");
+			var extensionAssemblyPath = Path.Combine (assemblyDirectory, "ExtensionProject.dll");
+			Assert.That (extensionAssemblyPath, Does.Exist, "Extension assembly");
+			using var extensionAssembly = AssemblyDefinition.ReadAssembly (extensionAssemblyPath);
+			var entryPointType = platform switch {
+				ApplePlatform.TVOS => "MyTVServicesExtension.ServiceProvider",
+				ApplePlatform.MacOSX => "ShareExtensionTest.ShareViewController",
+				_ => "MyShareExtension.ShareViewController",
+			};
+			Assert.That (extensionAssembly.MainModule.GetType (entryPointType), Is.Not.Null, "Extension entry point");
+
+			var executable = GetNativeExecutable (platform, extensionPath);
+			// A missing extension root can also cause every platform framework to be linked.
+			Assert.That (GetLinkedWithFrameworks (executable), Has.None.Contains ("CoreBluetooth.framework"), "Unused Bluetooth framework");
 		}
 
 		[Category ("Multiplatform")]

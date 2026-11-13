@@ -16,4 +16,18 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 	</ItemGroup>
+
+	<Target Name="PrepareSpacedNativeReference" BeforeTargets="_SanitizeNativeReferences">
+		<PropertyGroup>
+			<SpacedNativeLibName>$(NativeLibName)</SpacedNativeLibName>
+			<SpacedNativeLibName Condition="'$(_PlatformName)' == 'iOS' And '$(_SdkIsSimulator)' != 'true'">ios</SpacedNativeLibName>
+			<SpacedNativeLibName Condition="'$(_PlatformName)' == 'tvOS' And '$(_SdkIsSimulator)' != 'true'">tvos</SpacedNativeLibName>
+			<SpacedNativeReferencePath>$(IntermediateOutputPath)Native References/libtest 2.a</SpacedNativeReferencePath>
+		</PropertyGroup>
+		<Copy SourceFiles="$(RootTestsDirectory)/test-libraries/.libs/$(SpacedNativeLibName)/libtest2.a" DestinationFiles="$(SpacedNativeReferencePath)" SkipUnchangedFiles="true" />
+		<ItemGroup>
+			<NativeReference Include="$(SpacedNativeReferencePath)" Kind="Static" />
+			<FileWrites Include="$(SpacedNativeReferencePath)" />
+		</ItemGroup>
+	</Target>
 </Project>

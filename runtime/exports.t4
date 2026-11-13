@@ -8,111 +8,56 @@
 	var exports = new [] {
 		#region metadata/class.h
 
-		new Export ("MonoClass *", "mono_class_from_name",
-			"MonoImage *",  "image",
-			"const char *", "name_space",
-			"const char *", "name"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoMethod *", "mono_class_get_method_from_name",
-			"MonoClass *", "klass",
-			"const char *", "name",
-			"int", "param_count"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("mono_bool", "mono_class_is_assignable_from",
-			"MonoClass *", "klass",
-			"MonoClass *", "oklass"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
 		new Export ("MonoClass *", "mono_class_from_mono_type",
 			"MonoType *", "type"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("mono_bool", "mono_class_is_delegate",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoClass *", "mono_class_get_element_class",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("const char *", "mono_class_get_namespace",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("const char *", "mono_class_get_name",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("mono_bool", "mono_class_is_subclass_of",
-			"MonoClass *", "klass",
-			"MonoClass *", "klassc",
-			"mono_bool", "check_interfaces"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		new Export ("mono_bool", "mono_class_is_valuetype",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("mono_bool", "mono_class_is_enum",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoType *", "mono_class_enum_basetype",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("int32_t", "mono_class_value_size",
 			"MonoClass *", "klass",
 			"uint32_t *", "align"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoType *", "mono_class_get_type",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 		#endregion
 
 		#region metadata/class-internals.h
-		new Export (true, "gboolean", "mono_class_is_nullable",
+		new Export ("gboolean", "mono_class_is_nullable",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
-		new Export (true, "MonoClass *", "mono_class_get_nullable_param",
+		new Export ("MonoClass *", "mono_class_get_nullable_param",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 		#endregion
 
 		#region metadata/debug-helpers.h
@@ -120,9 +65,7 @@
 		new Export ("char *", "mono_method_full_name",
 			"MonoMethod *", "method",
 			"mono_bool", "signature"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		#endregion
 
@@ -133,308 +76,89 @@
 			"void *",        "obj",
 			"void **",       "params",
 			"MonoObject **", "exc"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("GCHandle", "mono_gchandle_new_v2",
-			"MonoObject *", "obj",
-			"mono_bool", "pinned"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoObject *", "mono_gchandle_get_target_v2",
-			"GCHandle", "gchandle"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_gchandle_free_v2",
-			"GCHandle", "gchandle"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("GCHandle", "mono_gchandle_new_weakref_v2",
-			"MonoObject *", "obj",
-			"mono_bool", "track_resurrection"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_raise_exception",
-			"MonoException *", "ex"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_unhandled_exception",
-			"MonoObject *", "ex"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("char*", "mono_array_addr_with_size",
-			"MonoArray *", "array",
-			"int", "size",
-			"uintptr_t", "idx"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		new Export ("MonoString *", "mono_string_new",
 			"MonoDomain *", "domain",
 			"const char *", "text"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoArray *", "mono_array_new",
 			"MonoDomain *", "domain",
 			"MonoClass *", "eclass",
 			"uintptr_t", "n"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("void *", "mono_object_unbox",
 			"MonoObject *", "obj"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("char *", "mono_string_to_utf8",
 			"MonoString *", "string_obj"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("uintptr_t", "mono_array_length",
 			"MonoArray *", "array"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoObject *", "mono_object_isinst",
 			"MonoObject *", "obj",
 			"MonoClass *", "klass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoClass *", "mono_object_get_class",
 			"MonoObject *", "obj"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoObject *", "mono_value_box",
 			"MonoDomain *", "domain",
 			"MonoClass *", "klass",
 			"void *", "val"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("void", "mono_gc_wbarrier_set_arrayref",
-			"MonoArray *", "arr",
-			"void *", "slot_ptr",
-			"MonoObject *", "value"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region metadata/profiler.h
-
-		new Export ("void", "mono_profiler_install",
-			"MonoProfiler *", "prof",
-			"MonoProfileFunc", "shutdown_callback"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_profiler_install_gc",
-			"MonoProfileGCFunc", "callback",
-			"MonoProfileGCResizeFunc", "heap_resize_callback"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_profiler_load",
-			"const char *", "desc"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		#endregion
 
 		#region metadata/threads.h
 
-		new Export ("mono_bool", "mono_thread_is_foreign",
-			"MonoThread *", "thread"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoThread * ", "mono_thread_current") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoThread *", "mono_thread_attach",
-			"MonoDomain *", "domain"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("mono_bool", "mono_thread_detach_if_exiting") {
-			HasCoreCLRBridgeFunction = true,
-		},
+		new Export ("mono_bool", "mono_thread_detach_if_exiting"),
 
 		#endregion
 
 		#region metadata/object-internals.h
 
-		new Export (true, "void", "mono_runtime_set_pending_exception",
+		new Export ("void", "mono_runtime_set_pending_exception",
 			"MonoException *", "exc",
 			"mono_bool", "overwrite"
-		)
-		{
-			AlternativeExpression = "return mono_raise_exception (exc);",
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		#endregion
 
 		#region metadata/assembly.h
 
-		new Export ("void", "mono_set_assemblies_path",
-			"const char *", "path"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
 		new Export ("MonoAssembly *", "mono_assembly_open",
 			"const char *",          "filename",
 			"MonoImageOpenStatus *", "status"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("MonoImage *", "mono_assembly_get_image",
-			"MonoAssembly *", "assembly"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoAssemblyName *", "mono_assembly_name_new",
-			"const char *", "name"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_assembly_name_free",
-			"MonoAssemblyName *", "aname"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoAssembly *", "mono_assembly_loaded",
-			"MonoAssemblyName *", "aname"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_register_machine_config",
-			"const char *", "config_xml"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_set_dirs",
-			"const char *", "assembly_dir",
-			"const char *", "config_dir"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("const char *", "mono_assembly_name_get_name",
-			"MonoAssemblyName *", "aname"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("const char *", "mono_assembly_name_get_culture",
-			"MonoAssemblyName *", "aname"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_install_assembly_preload_hook",
-			"MonoAssemblyPreLoadFunc", "func",
-			"void *", "user_data"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoAssemblyName *", "mono_assembly_get_name",
-			"MonoAssembly *", "assembly"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		#endregion
 
 		#region metadata/loader.h
 
-		new Export ("void", "mono_add_internal_call",
-			"const char *", "name",
-			"const void *", "method"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
 		new Export ("MonoMethodSignature *", "mono_method_signature",
 			"MonoMethod *", "method"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoClass *", "mono_method_get_class",
 			"MonoMethod *", "method"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		#endregion
 
 		#region metadata/appdomain.h
 
-		new Export ("MonoDomain *", "mono_domain_get") {
-			HasCoreCLRBridgeFunction = true,
-		},
+		new Export ("MonoDomain *", "mono_domain_get"),
 
-		new Export ("MonoClass *", "mono_get_intptr_class") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoClass *", "mono_get_string_class") {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("MonoImage *", "mono_get_corlib") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoClass *", "mono_get_array_class") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoDomain *", "mono_get_root_domain") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		new Export ("MonoClass *", "mono_get_string_class"),
 
 		#endregion
 
@@ -443,30 +167,22 @@
 		new Export ("MonoReflectionAssembly *", "mono_assembly_get_object",
 			"MonoDomain *", "domain",
 			"MonoAssembly *", "assembly"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoReflectionMethod *", "mono_method_get_object",
 			"MonoDomain *", "domain",
 			"MonoMethod *", "method",
 			"MonoClass *", "refclass"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoReflectionType *", "mono_type_get_object",
 			"MonoDomain *", "domain",
 			"MonoType *", "type"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoType *", "mono_reflection_type_get_type",
 			"MonoReflectionType *", "reftype"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 		#endregion
 
 		#region metadata/metadata.h
@@ -474,45 +190,15 @@
 		new Export ("MonoType *", "mono_signature_get_params",
 			"MonoMethodSignature *", "sig",
 			"void **", "iter"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("mono_bool", "mono_type_is_byref", 
 			"MonoType *", "type"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("MonoType *", "mono_signature_get_return_type",
 			"MonoMethodSignature *", "sig"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		#endregion
-
-		#region metadata/mono-debug.h
-
-		new Export ("void", "mono_debug_init",
-			"MonoDebugFormat", "format"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("mono_bool", "mono_is_debugger_attached") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region metadata/mono-config.h
-
-		new Export ("void", "mono_config_parse_memory",
-			"const char *", "buffer"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		#endregion
 
@@ -522,68 +208,24 @@
 			"GHashFunc", "hash_func",
 			"GEqualFunc", "key_equal_func",
 			"MonoGHashGCType", "type"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("gpointer", "mono_g_hash_table_lookup",
 			"MonoGHashTable *", "hash",
 			"gconstpointer", "key"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		new Export ("void", "mono_g_hash_table_insert",
 			"MonoGHashTable *", "hash",
 			"gpointer", "k",
 			"gpointer", "v"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		#endregion
 
 		#region metadata/exception.h
 
-		new Export ("MonoException *", "mono_exception_from_name_msg",
-			"MonoImage *", "image",
-			"const char *", "name_space",
-			"const char *", "name",
-			"const char *", "msg"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoException *", "mono_get_exception_out_of_memory") {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		#endregion
-
-		#region metadata/gc-internal.h
-
-		new Export ("void", "mono_gc_register_finalizer_callbacks",
-			"MonoGCFinalizerCallbacks *", "callbacks"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-		
-		#endregion
-
-		#region metadata/sgen-toggleref.h
-
-		new Export ("void", "mono_gc_toggleref_add",
-			"MonoObject *", "object",
-			"mono_bool", "strong_ref"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_gc_toggleref_register_callback",
-			"MonoToggleRefCallback", "process_toggleref"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		new Export ("MonoException *", "mono_get_exception_out_of_memory"),
 
 		#endregion
 
@@ -591,227 +233,21 @@
 
 		new Export ("void", "mono_free",
 			"void *", "ptr"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
+		),
 
 		#endregion
 
 		#region mini/jit.h
-
-		new Export ("char *", "mono_get_runtime_build_info") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoDomain *", "mono_jit_init",
-			"const char *", "file"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("MonoDomain *", "mono_jit_cleanup",
-			"MonoDomain *", "domain"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
 
 		new Export ("int", "mono_jit_exec",
 			"MonoDomain *", "domain",
 			"MonoAssembly *", "assembly",
 			"int", "argc",
 			"const char**", "argv"
-		) {
-			HasCoreCLRBridgeFunction = true,
-		},
-
-		new Export ("void", "mono_jit_set_aot_mode",
-			"MonoAotMode", "mode"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_set_signal_chaining",
-			"mono_bool", "chain_signals"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_set_crash_chaining",
-			"mono_bool", "chain_signals"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_jit_set_trace_options",
-			"const char *", "option"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
+		),
 
 		#endregion
 
-		#region mini/mini.h
-
-		new Export ("void*", "mono_jit_thread_attach",
-			"MonoDomain *", "domain"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_install_unhandled_exception_hook",
-			"MonoUnhandledExceptionFunc", "func",
-			"gpointer", "user_data"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("int", "mono_main",
-			"int",     "argc",
-			"char **", "argv"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_install_load_aot_data_hook",
-			"MonoLoadAotDataFunc", "load_func",
-			"MonoFreeAotDataFunc", "free_func",
-			"gpointer", "user_data"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "gboolean", "mini_parse_debug_option",
-			"const char *", "option"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region utils/logger.h
-
-		new Export ("void", "mono_trace_set_log_handler",
-			"MonoLogCallback", "callback",
-			"void *", "user_data"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_trace_set_print_handler",
-			"MonoPrintCallback", "callback"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_trace_set_printerr_handler",
-			"MonoPrintCallback", "callback"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region utils/mono-threads-api.h
-
-		new Export (true, "void*", "mono_threads_enter_gc_unsafe_region",
-			"void **", "stackdata"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_threads_exit_gc_unsafe_region",
-			"void *", "cookie",
-			"void **", "stackdata"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void*", "mono_threads_enter_gc_safe_region",
-			"void **", "stackdata"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_threads_exit_gc_safe_region",
-			"void *", "cookie",
-			"void **", "stackdata"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_threads_assert_gc_safe_region") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_threads_assert_gc_unsafe_region") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export (true, "void", "mono_threads_assert_gc_starting_region") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-	
-		#endregion
-
-		#region utils/mono-threads.h
-		new Export (true, "void*", "mono_thread_info_current_unchecked") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-		#endregion
-
-		#region metadata/marshal.h
-
-		new Export (true, "void", "mono_install_ftnptr_eh_callback",
-			"MonoFtnPtrEHCallback", "callback"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region mini/debugger-agent.h
-
-		new Export ("void", "mono_debugger_agent_parse_options",
-			"const char *", "options"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("gboolean", "mono_debugger_agent_transport_handshake") {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_debugger_agent_register_transport",
-			"DebuggerTransport *", "trans"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		new Export ("void", "mono_debugger_agent_unhandled_exception",
-			"MonoException *", "e"
-		) {
-			XamarinRuntime = RuntimeMode.MonoVM,
-		},
-
-		#endregion
-
-		#region mini/mono-private-unstable.
-
-		new Export ("int", "monovm_initialize",
-			"int", "propertyCount",
-			"const char **", "propertyKeys",
-			"const char **", "propertyValues"
-		) {
-		},
-
-		new Export ("int", "monovm_runtimeconfig_initialize",
-			"MonovmRuntimeConfigArguments *", "arg",
-			"MonovmRuntimeConfigArgumentsCleanup", "cleanup_fn",
-			"void *", "user_data"
-		) {
-		},
-
-		#endregion
 	};
 #><#+
 	class Arg
@@ -820,54 +256,16 @@
 		public string Name;
 	}
 
-	enum RuntimeMode {
-		Both = 0,
-		MonoVM = 1,
-		CoreCLR = 2,
-	}
-
 	class Export
 	{
 		public string ReturnType;
 		public string EntryPoint;
-		public string AlternativeExpression;
 		public List<Arg> Arguments;
-		public bool Optional;
-		public RuntimeMode XamarinRuntime;
-		public bool HasCoreCLRBridgeFunction;
 
 		public Export (string returnType, string entryPoint, params string [] arguments)
-			: this (false, returnType, entryPoint, arguments)
-		{
-		}
-
-		public string RuntimeIf {
-			get {
-				switch (XamarinRuntime) {
-				case RuntimeMode.CoreCLR:
-					return "#if defined (CORECLR_RUNTIME)\n";
-				case RuntimeMode.MonoVM:
-					return "#if !defined (CORECLR_RUNTIME)\n";
-				}
-				return string.Empty;
-			}
-		}
-
-		public string RuntimeEndIf {
-			get {
-				switch (XamarinRuntime) {
-				case RuntimeMode.CoreCLR:
-				case RuntimeMode.MonoVM:
-					return "#endif\n";
-				}
-				return string.Empty;
-			}
-		}
-		public Export (bool optional, string returnType, string entryPoint, params string [] arguments)
 		{
 			ReturnType = returnType;
 			EntryPoint = entryPoint;
-			Optional = optional;
 
 			if (arguments == null || arguments.Length == 0)
 				return;
@@ -884,7 +282,7 @@
 				});
 		}
 
-		string FormatArgs (string empty, bool nameOnly)
+		string FormatArgs (string empty)
 		{
 			if (Arguments == null || Arguments.Count == 0)
 				return empty;
@@ -892,11 +290,8 @@
 			var builder = new StringBuilder ();
 
 			foreach (var arg in Arguments) {
-				if (!nameOnly) {
-					builder.Append (arg.Type);
-					builder.Append (' ');
-				}
-			
+				builder.Append (arg.Type);
+				builder.Append (' ');
 				builder.Append (arg.Name);
 				builder.Append (", ");
 			}
@@ -907,11 +302,7 @@
 		}
 
 		public string ArgumentSignature {
-			get { return FormatArgs ("void", nameOnly: false); }
-		}
-
-		public string ArgumentNames {
-			get { return FormatArgs (String.Empty, nameOnly: true); }
+			get { return FormatArgs ("void"); }
 		}
 	}
 #>

@@ -116,7 +116,6 @@ extern bool xamarin_disable_omit_fp;
 extern bool xamarin_mac_hybrid_aot;
 extern bool xamarin_mac_modern;
 #endif
-extern bool xamarin_init_mono_debug;
 extern int xamarin_log_level;
 extern const char *xamarin_executable_name;
 #if MONOMAC || TARGET_OS_MACCATALYST

@@ -366,9 +366,9 @@ namespace ModelIO {
 	/// <summary>Enumerates camera projections.</summary>
 	[Native]
 	public enum MDLCameraProjection : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies a perspective projection, in which objects appear smaller as they move farther from the camera.</summary>
 		Perspective = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies an orthographic projection, in which an object's apparent size does not vary with its distance from the camera.</summary>
 		Orthographic = 1,
 	}
 

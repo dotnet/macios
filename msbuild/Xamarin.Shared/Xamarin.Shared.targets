@@ -3880,13 +3880,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
-			InputAssemblies="@(_AssembliesToPostProcess)"
 			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
+			InputAssemblies="@(_AssembliesToPostProcess)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
-			PreTrimAssemblies="@(_AssembliesToPrepare)"
+			PreTrimAssemblies="@(_RestoredPreparedAssemblies)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

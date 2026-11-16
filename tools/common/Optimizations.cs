@@ -29,6 +29,7 @@ namespace Xamarin.Bundler {
 			"experimental-xforms-product-type",
 			"force-rejected-types-removal",
 			"redirect-class-handles",
+			"specialize-generic-registrations",
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
@@ -50,6 +51,7 @@ namespace Xamarin.Bundler {
 			/* Opt.ExperimentalFormsProductType       */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.ForceRejectedTypesRemoval          */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RedirectClassHandles               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.SpecializeGenericRegistrations     */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 		};
 
 		enum Opt {
@@ -71,6 +73,7 @@ namespace Xamarin.Bundler {
 			ExperimentalFormsProductType,
 			ForceRejectedTypesRemoval,
 			RedirectClassHandles,
+			SpecializeGenericRegistrations,
 		}
 
 		bool? [] values;
@@ -157,6 +160,11 @@ namespace Xamarin.Bundler {
 			set { values [(int) Opt.RedirectClassHandles] = value; }
 		}
 
+		public bool? SpecializeGenericRegistrations {
+			get { return values [(int) Opt.SpecializeGenericRegistrations]; }
+			set { values [(int) Opt.SpecializeGenericRegistrations] = value; }
+		}
+
 		public Optimizations ()
 		{
 			values = new bool? [opt_names.Length];
@@ -207,6 +215,7 @@ namespace Xamarin.Bundler {
 				case Opt.RegisterProtocols:
 				case Opt.RemoveDynamicRegistrar:
 				case Opt.RedirectClassHandles:
+				case Opt.SpecializeGenericRegistrations:
 					if (!app.IsAnyStaticRegistrar) {
 						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
@@ -305,6 +314,9 @@ namespace Xamarin.Bundler {
 			// by default we remove rarely used custom attributes
 			if (!CustomAttributesRemoval.HasValue)
 				CustomAttributesRemoval = true;
+
+			if (!SpecializeGenericRegistrations.HasValue)
+				SpecializeGenericRegistrations = false;
 		}
 
 		public void Parse (ApplePlatform platform, string options, List<ProductException> messages)

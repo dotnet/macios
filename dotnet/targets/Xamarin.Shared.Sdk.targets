@@ -1101,6 +1101,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.CollectAssembliesStep" />
 			<!-- CoreTypeMapStep is used by other steps, so it can't be disabled (if PrepareAssemblies=true) until support for those other steps has been added to assembly-preparer -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.CoreTypeMapStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.SpecializeGenericRegistrationsStep" Condition="'$(PrepareAssemblies)' != 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.ProcessExportedFields" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.PreserveProtocolsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsStep" Condition="'$(PrepareAssemblies)' != 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' == 'true'" />

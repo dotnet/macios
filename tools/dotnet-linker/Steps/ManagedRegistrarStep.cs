@@ -852,7 +852,7 @@ namespace Xamarin.Linker {
 		// short-circuits when the outermost element already belongs to the target module, leaving
 		// nested types (e.g. the generic arguments of a generic instance) pointing at the original
 		// module, which makes writing the module fail.
-		static TypeReference ImportTypeReference (ModuleDefinition module, TypeReference type)
+		internal static TypeReference ImportTypeReference (ModuleDefinition module, TypeReference type)
 		{
 			switch (type) {
 			case GenericParameter:

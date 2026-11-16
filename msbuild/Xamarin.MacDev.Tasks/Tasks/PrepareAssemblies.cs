@@ -44,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool PostProcessing { get; set; }
 
-		// The original assemblies from before preparation and trimming, used during post-processing to read
+		// The prepared assemblies from before trimming, used during post-processing to read
 		// selected registrar attributes removed during trimming.
 		public ITaskItem [] PreTrimAssemblies { get; set; } = [];
 

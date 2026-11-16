@@ -433,6 +433,31 @@ Example:
 
 Applicable to all platforms.
 
+## SwiftSource
+
+The item group `SwiftSource` contains Swift source files that are compiled
+(with `swiftc`) into a single Swift module, which is linked into the app's
+native executable.
+
+```xml
+<ItemGroup>
+    <SwiftSource Include="MyCode.swift" />
+</ItemGroup>
+```
+
+Swift code can call into Objective-C classes declared in a bridging header
+(see [SwiftBridgingHeader](build-properties.md#swiftbridgingheader)), and C#
+code can call Swift code exported with `@_cdecl` using `[DllImport ("__Internal")]`.
+
+The Swift files are compiled with Swift 5 language mode.
+
+See also:
+
+* [SwiftBridgingHeader](build-properties.md#swiftbridgingheader)
+* [SwiftModuleName](build-properties.md#swiftmodulename)
+
+Applicable to all platforms.
+
 ## XcodeProject
 
 `<XcodeProject>` can be used to build and consume the outputs

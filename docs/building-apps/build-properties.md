@@ -55,6 +55,48 @@ The valid set of arguments depend on the platform.
 
 Typically these shouldn't be used unless specified by a Microsoft engineer.
 
+## AppExtensionMainFunction
+
+The name of a native function the app extension calls once .NET has been initialized.
+
+By default app extensions call `NSExtensionMain` (or `TVExtensionMain` for some tvOS extensions), but some extensions,
+such as [ExtensionKit](https://developer.apple.com/documentation/extensionkit) extensions, must be started in a different way.
+This property can be used to start such extensions. For example, an
+ExtensionKit extension implemented in Swift (see [SwiftSource](build-items.md#swiftsource)) can be started like this:
+
+```swift
+import ExtensionFoundation
+
+struct MyExtension: AppExtension {
+    // ...
+}
+
+@_cdecl("my_extension_main")
+func myExtensionMain(_ argc: Int32, _ argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?) -> Int32 {
+    do {
+        try MainActor.assumeIsolated {
+            try MyExtension.main()
+        }
+    } catch {
+        return 1
+    }
+    return 0
+}
+```
+
+```xml
+<PropertyGroup>
+    <AppExtensionMainFunction>my_extension_main</AppExtensionMainFunction>
+</PropertyGroup>
+```
+
+The function must have the same signature as a C `main` function: `int my_extension_main (int argc, char **argv)`.
+
+FSKit extensions (where `EXAppExtensionAttributes/EXExtensionPointIdentifier` in the
+Info.plist is `com.apple.fskit.fsmodule`) are started automatically: the build
+finds the class that subclasses `FSUnaryFileSystem`, and generates the Swift code
+needed to start the extension. Set this property to start the extension yourself instead.
+
 ## AppIcon
 
 The `AppIcon` item group can be used to specify an app icon for the app.
@@ -1775,6 +1817,28 @@ It's also possible to use a platform-specific property:
 * [tvOSMinimumVersion](#tvosminimumversion)
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
+
+## SwiftBridgingHeader
+
+The path to an Objective-C header file to import into the Swift code in the
+[SwiftSource](build-items.md#swiftsource) item group (this is passed as
+`-import-objc-header` to `swiftc`).
+
+This makes it possible for Swift code to use Objective-C classes that are
+implemented in C# (and exported to Objective-C using the `[Register]` attribute).
+
+> [!NOTE]
+> Referencing an Objective-C class implemented in C# from Swift requires the
+> class to exist when the native executable is linked, which means a static
+> registrar must be used (`static`, `managed-static` or `trimmable-static`).
+
+## SwiftModuleName
+
+The name of the Swift module the code in the [SwiftSource](build-items.md#swiftsource)
+item group is compiled into.
+
+Default: the [AssemblyName](/dotnet/core/project-sdk/msbuild-props) with any
+characters that aren't valid in a Swift identifier replaced by underscores.
 
 ## TextureAtlasPath
 

@@ -1049,6 +1049,8 @@ namespace Xamarin.Linker {
 			var log = context.Configuration.Logger;
 			foreach (var ex in list) {
 				if (ex is ProductException pe) {
+					if (pe.GetWarningLevel (context.Configuration.Application) == ErrorHelper.WarningLevel.Disable)
+						continue;
 					if (pe.IsError (context.Configuration.Application)) {
 						log.LogError (pe);
 					} else {

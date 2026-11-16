@@ -1498,15 +1498,17 @@ namespace Registrar {
 		Exception CreateExceptionImpl (int code, bool error, ObjCMember? member, string message, params object? [] args)
 		{
 			var method = member as ObjCMethod;
-			if (method is not null)
+			if (method?.Method is not null)
 				return CreateExceptionImpl (code, error, method.Method, message, args);
 			var property = member as ObjCProperty;
-			if (property is not null)
+			if (property?.Property is not null)
 				return CreateExceptionImpl (code, error, property.Property, message, args);
+			if (member?.DeclaringType?.Type is not null)
+				return CreateExceptionImpl (code, error, member.DeclaringType.Type, message, args);
 			return CreateExceptionImpl (code, error, message, args);
 		}
 
-		Exception CreateWarning (int code, ObjCMember? member, string message, params object? [] args)
+		protected Exception CreateWarning (int code, ObjCMember? member, string message, params object? [] args)
 		{
 			return CreateExceptionImpl (code, false, member, message, args);
 		}
@@ -2784,7 +2786,7 @@ namespace Registrar {
 					VerifyGenericArguments (type, member);
 
 				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type)) {
-					ReportWarning (4179, Errors.MT4179, type.FullName, member?.FullName);
+					ReportWarning (4179, member, Errors.MT4179, type.FullName, member?.FullName);
 				}
 				if (IsNSObject (type) && forProperty) {
 					return "@\"" + GetExportedTypeName (type) + "\"";
@@ -2874,7 +2876,7 @@ namespace Registrar {
 			R.NSLog (String.Format (message, args));
 		}
 
-		protected virtual void ReportWarning (int code, string message, params object? [] args)
+		protected virtual void ReportWarning (int code, ObjCMember? member, string message, params object? [] args)
 		{
 			// Using Console.WriteLine here is error prone, since if we get an early error
 			// we'll end up crashing/infinite recursion since Console.WriteLine is redirected

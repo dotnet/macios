@@ -165,6 +165,22 @@ namespace Xamarin.Linker {
 			// Report back any exceptions that occurred during the processing.
 			exceptions = this.exceptions;
 
+			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && !App.IsPostProcessingAssemblies) {
+				// User assemblies may also contain hand-written named entry points, without any registrar callbacks.
+				var userAssemblies = Configuration.GetNonDeletedAssemblies (this)
+					.Where (v => !Configuration.Profile.IsSdkAssembly (v) && !Configuration.Profile.IsProductAssembly (v))
+					.Select (v => v.Name.Name);
+				var assemblies = Configuration.AssemblyTrampolineInfos.Values
+					.SelectMany (v => v)
+					.Select (v => v.Trampoline.Module.Assembly.Name.Name)
+					.Concat (userAssemblies)
+					.Distinct ()
+					.OrderBy (v => v, StringComparer.Ordinal)
+					.Select (v => new MSBuildItem (v + ".dll"))
+					.ToList ();
+				Configuration.WriteOutputForMSBuild ("_RegistrarUnmanagedEntryPointsAssembly", assemblies);
+			}
+
 			if (App.PrepareAssemblies && !App.InCustomTrimmerStep) {
 				var ucoMapPath = Configuration.UnmanagedCallersOnlyMapPath;
 				using (var writer = new StreamWriter (ucoMapPath, false)) {

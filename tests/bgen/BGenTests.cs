@@ -636,6 +636,49 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "generic-type-nsobject.cs");
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void GenericBlocks (Profile profile)
+		{
+			var bgen = BuildFile (profile, "generic-blocks.cs");
+			var trampolines = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines");
+			var genericBridges = trampolines.NestedTypes.Where (v => v.HasGenericParameters && v.Name.StartsWith ("SD", StringComparison.Ordinal)).ToArray ();
+			Assert.That (genericBridges, Is.Not.Empty, "Generic managed bridges");
+			foreach (var type in trampolines.NestedTypes) {
+				foreach (var method in type.Methods.Where (v => v.CustomAttributes.Any (a => a.AttributeType.Name == "UnmanagedCallersOnlyAttribute"))) {
+					Assert.That (type.HasGenericParameters, Is.False, method.FullName);
+					Assert.That (method.HasGenericParameters, Is.False, method.FullName);
+				}
+			}
+			foreach (var type in genericBridges) {
+				foreach (var parameter in type.GenericParameters)
+					Assert.That (parameter.Constraints.Select (v => v.ConstraintType.FullName), Does.Contain ("Foundation.NSObject"), parameter.FullName);
+				Assert.That (type.Methods.Single (v => v.Name == "CreateContext").IsStatic, Is.True, type.FullName);
+				Assert.That (type.Fields.Select (v => v.Name), Does.Contain ("TrampolineType"), type.FullName);
+				var initializer = type.Methods.Single (v => v.IsConstructor && v.IsStatic);
+				Assert.That (initializer.CustomAttributes.Where (v => v.AttributeType.Name == "DynamicDependencyAttribute").Select (v => v.ConstructorArguments [0].Value),
+					Is.EquivalentTo (new [] { "CreateContext", "TrampolineType", "Invoke" }), type.FullName);
+			}
+			foreach (var type in bgen.ApiAssembly.MainModule.Types.Where (v => v.HasGenericParameters)) {
+				foreach (var method in type.Methods) {
+					foreach (var attribute in method.MethodReturnType.CustomAttributes.Where (v => v.AttributeType.Name == "DelegateProxyAttribute")) {
+						var proxy = ((TypeReference) attribute.ConstructorArguments [0].Value).Resolve ();
+						Assert.That (proxy.HasGenericParameters, Is.True, method.FullName);
+						Assert.That (proxy.Methods.Select (v => v.Name), Does.Contain ("CreateBlock"), method.FullName);
+					}
+					foreach (var parameter in method.Parameters) {
+						foreach (var attribute in parameter.CustomAttributes.Where (v => v.AttributeType.Name == "BlockProxyAttribute")) {
+							var proxy = ((TypeReference) attribute.ConstructorArguments [0].Value).Resolve ();
+							Assert.That (proxy.HasGenericParameters, Is.True, method.FullName);
+							Assert.That (proxy.Methods.Select (v => v.Name), Does.Contain ("Create"), method.FullName);
+						}
+					}
+				}
+			}
+		}
+
 		[Test]
 		public void BindAsTests ()
 		{

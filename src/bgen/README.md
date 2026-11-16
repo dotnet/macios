@@ -1,3 +1,22 @@
+## Generic block trampolines
+
+Blocks in generic bindings can use type parameters constrained to `NSObject`,
+including custom generic delegates, nested generic object types, and block
+parameters. The generator preserves the type parameters and constraints in
+managed invokers, but keeps native delegate types and `UnmanagedCallersOnly`
+entry points non-generic.
+
+Generic callbacks use the existing `Tuple<Delegate, Delegate>` block context:
+the first delegate performs the typed conversion, and the second is the original
+callback. Keeping the original callback lets block getters return the same
+delegate that was passed to a setter.
+
+Proxy attributes reference open generic helper types. Registrars close these
+helpers by matching the factory's delegate signature against the exported
+parameter or return type, including type parameters inside nested generic types.
+The dynamic registrar uses the same context factory as direct binding calls;
+the managed static registrar calls the closed block factories directly.
+
 ## Debugging
 
 

@@ -299,7 +299,7 @@ public class TypeManager {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
 		} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 				 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-				 string.IsNullOrEmpty (type.FullName)) {
+				 type.IsGenericParameter || string.IsNullOrEmpty (type.Namespace)) {
 			tname = type.Name;
 		} else {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
@@ -378,7 +378,7 @@ public class TypeManager {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
 		else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 				 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-				 string.IsNullOrEmpty (type.FullName))
+				 type.IsGenericParameter || string.IsNullOrEmpty (type.Namespace))
 			tname = type.Name;
 		else
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
@@ -475,7 +475,7 @@ public class TypeManager {
 					vtname = $"global::{type.Namespace}.{vtParentClass}{type.Name}";
 				} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 						 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-						 string.IsNullOrEmpty (type.FullName)) {
+						 type.IsGenericParameter || string.IsNullOrEmpty (type.Namespace)) {
 					vtname = type.Name;
 				} else {
 					vtname = $"global::{type.Namespace}.{vtParentClass}{type.Name}";
@@ -490,7 +490,7 @@ public class TypeManager {
 				vname = $"global::{type.Namespace}.{vParentClass}{type.Name}";
 			} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 					 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-					 string.IsNullOrEmpty (type.FullName)) {
+					 type.IsGenericParameter || string.IsNullOrEmpty (type.Namespace)) {
 				vname = type.Name;
 			} else {
 				vname = $"global::{type.Namespace}.{vParentClass}{type.Name}";
@@ -526,7 +526,7 @@ public class TypeManager {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
 		} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 				 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-				 string.IsNullOrEmpty (type.FullName)) {
+				 type.IsGenericParameter || string.IsNullOrEmpty (type.Namespace)) {
 			tname = type.Name;
 		} else {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
@@ -549,6 +549,9 @@ public class TypeManager {
 		var nullable = string.Empty;
 		if (provider is not null && !t.IsValueType && AttributeManager.HasAttribute<NullAllowedAttribute> (provider))
 			nullable = "?";
+
+		if (t.IsGenericParameter)
+			return t.Name + nullable;
 
 		if (!t.IsEnum) {
 			switch (Type.GetTypeCode (t)) {

@@ -11,6 +11,50 @@ using Xamarin.Linker;
 namespace AssemblyPreparerTests;
 
 public class ManagedRegistrarStepTests : BaseClass {
+	[TestCase (RegistrarMode.ManagedStatic)]
+	[TestCase (RegistrarMode.TrimmableStatic)]
+	public void GenericBlockFactories (RegistrarMode registrar)
+	{
+		var code = @"
+		using System;
+		using Foundation;
+		using UIKit;
+
+		public class MyHandlers : UICollectionViewDiffableDataSourceSectionSnapshotHandlers<NSString> {
+			public override Func<NSString, bool> ShouldExpandItemHandler { get; set; }
+			public override Func<NSString, NSDiffableDataSourceSectionSnapshot<NSString>, NSDiffableDataSourceSectionSnapshot<NSString>> SnapshotForExpandingParentItemHandler { get; set; }
+		}
+
+		public class MyReorderingHandlers : UICollectionViewDiffableDataSourceReorderingHandlers<NSNumber, NSString> {
+			public override Func<NSString, bool> CanReorderItemHandler { get; set; }
+			public override Action<NSDiffableDataSourceTransaction<NSNumber, NSString>> WillReorderHandler { get; set; }
+		}
+		";
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out _);
+		var context = preparer.Configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+		new ManagedRegistrarStep ().Process (context);
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		var calls = assembly.MainModule.Types.SelectMany (v => v.NestedTypes)
+			.SelectMany (v => v.Methods).Where (v => v.HasBody)
+			.SelectMany (v => v.Body.Instructions)
+			.Where (v => v.OpCode == OpCodes.Call)
+			.Select (v => v.Operand).OfType<MethodReference> ()
+			.Where (v => v.DeclaringType.DeclaringType?.FullName == "ObjCRuntime.Trampolines")
+			.ToArray ();
+		foreach (var factoryName in new [] { "Create", "CreateBlock" }) {
+			var factories = calls.Where (v => v.Name == factoryName).ToArray ();
+			Assert.That (factories, Has.Length.EqualTo (4), factoryName);
+			foreach (var factory in factories) {
+				Assert.That (factory.DeclaringType, Is.TypeOf<GenericInstanceType> (), factory.FullName);
+				var declaringType = (GenericInstanceType) factory.DeclaringType;
+				var expected = declaringType.GenericArguments.Count == 2 ? new [] { "Foundation.NSNumber", "Foundation.NSString" } : new [] { "Foundation.NSString" };
+				Assert.That (declaringType.GenericArguments.Select (v => v.FullName), Is.EqualTo (expected), factory.FullName);
+			}
+			Assert.That (factories.Count (v => ((GenericInstanceType) v.DeclaringType).GenericArguments.Count == 2), Is.EqualTo (1), $"{factoryName}: nested generic arguments");
+		}
+	}
+
 	[Test]
 	public void FactoryMethodsNotAddedToReloadableAssemblies ()
 	{

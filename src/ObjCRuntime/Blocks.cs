@@ -637,12 +637,22 @@ namespace ObjCRuntime {
 			if (delegateProxyType is null)
 				throw ErrorHelper.CreateError (8012, $"Invalid DelegateProxyAttribute for the return value for the method {GetMethodName (baseMethod)}: DelegateType is null. {Constants.PleaseFileBugReport}");
 
+			object context = managedDelegate;
+			if (delegateProxyType.IsGenericTypeDefinition) {
+				delegateProxyType = Runtime.CloseGenericBlockProxy (delegateProxyType, managedDelegate.GetType (), "CreateContext", false);
+				var createContext = delegateProxyType.GetMethod ("CreateContext", BindingFlags.NonPublic | BindingFlags.Static);
+				var trampolineType = delegateProxyType.GetField ("TrampolineType", BindingFlags.NonPublic | BindingFlags.Static);
+				if (createContext is null || trampolineType is null)
+					throw ErrorHelper.CreateError (8060, Errors.MX8060, GetTypeName (baseMethod.DeclaringType), baseMethod.Name);
+				context = createContext.Invoke (null, new object [] { managedDelegate }) ?? throw ErrorHelper.CreateError (8060, Errors.MX8060, GetTypeName (baseMethod.DeclaringType), baseMethod.Name);
+				delegateProxyType = trampolineType.GetValue (null) as Type ?? throw ErrorHelper.CreateError (8060, Errors.MX8060, GetTypeName (baseMethod.DeclaringType), baseMethod.Name);
+			}
 			var delegateInvokeMethod = delegateProxyType.GetMethod ("Invoke", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateInvokeMethod is null)
 				throw ErrorHelper.CreateError (8060, Errors.MX8060 /* Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. {Constants.PleaseFileBugReport} */, GetTypeName (baseMethod.DeclaringType), baseMethod.Name);
 
 			if (delegateInvokeMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
-				return GetBlockForFunctionPointer (delegateInvokeMethod, managedDelegate, signature);
+				return GetBlockForFunctionPointer (delegateInvokeMethod, context, signature);
 
 			var delegateProxyField = delegateProxyType.GetField ("Handler", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateProxyField is null)

@@ -28,6 +28,10 @@ public class TrampolineInfo {
 	public string? UserDelegateTypeAttribute;
 	public string FunctionPointerSignature;
 	public Type Type;
+	public string GenericArguments = "";
+	public string GenericConstraints = "";
+	public string OpenGenericArguments = "";
+	public string NativeArguments = "";
 
 	public TrampolineInfo (string userDelegate, string delegateName, string pars,
 		string convert, string invoke, string returnType, string delegateReturnType, string returnFormat,
@@ -50,16 +54,20 @@ public class TrampolineInfo {
 	// Name for the static class generated that contains the Objective-C to C# block bridge
 	public string StaticName {
 		get {
-			return "S" + DelegateName;
+			return "S" + DelegateName + GenericArguments;
 		}
 	}
 
 	// Name for the class generated that allows C# to invoke an Objective-C block
 	public string NativeInvokerName {
 		get {
-			return "NI" + DelegateName;
+			return NativeInvokerTypeName + GenericArguments;
 		}
 	}
+
+	public string NativeInvokerTypeName => "NI" + DelegateName;
+	public string NativeInvokerAttributeName => NativeInvokerTypeName + OpenGenericArguments;
+	public string StaticAttributeName => "S" + DelegateName + OpenGenericArguments;
 }
 
 class TrampolineParameterInfo {

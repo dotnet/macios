@@ -235,19 +235,19 @@ namespace Xamarin {
 			sb.AppendLine ("struct XamarinFSKitExtension: UnaryFileSystemExtension {");
 			sb.AppendLine ("\tvar fileSystem: FSUnaryFileSystem & FSUnaryFileSystemOperations {");
 			// Look up the class at runtime, because it might not exist at build time (if it's registered by the dynamic registrar).
-			sb.AppendLine ($"\t\tlet type = NSClassFromString (\"{objcClassName}\") as! NSObject.Type");
-			sb.AppendLine ("\t\treturn type.init () as! FSUnaryFileSystem & FSUnaryFileSystemOperations");
+			sb.AppendLine ($"\t\tlet type = NSClassFromString(\"{objcClassName}\") as! NSObject.Type");
+			sb.AppendLine ("\t\treturn type.init() as! FSUnaryFileSystem & FSUnaryFileSystemOperations");
 			sb.AppendLine ("\t}");
 			sb.AppendLine ("}");
 			sb.AppendLine ();
-			sb.AppendLine ($"@_cdecl (\"{app.AppExtensionMainFunction}\")");
-			sb.AppendLine ("func xamarinFSKitExtensionMain (_ argc: Int32, _ argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?) -> Int32 {");
+			sb.AppendLine ($"@_cdecl(\"{app.AppExtensionMainFunction}\")");
+			sb.AppendLine ("func xamarinFSKitExtensionMain(_ argc: Int32, _ argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?) -> Int32 {");
 			sb.AppendLine ("\tdo {");
 			sb.AppendLine ("\t\ttry MainActor.assumeIsolated {");
-			sb.AppendLine ("\t\t\ttry XamarinFSKitExtension.main ()");
+			sb.AppendLine ("\t\t\ttry XamarinFSKitExtension.main()");
 			sb.AppendLine ("\t\t}");
 			sb.AppendLine ("\t} catch {");
-			sb.AppendLine ("\t\tNSLog (\"%@\", \"Failed to start the FSKit extension: \\(error)\" as NSString)");
+			sb.AppendLine ("\t\tNSLog(\"%@\", \"Failed to start the FSKit extension: \\(error)\" as NSString)");
 			sb.AppendLine ("\t\treturn 1");
 			sb.AppendLine ("\t}");
 			sb.AppendLine ("\treturn 0");

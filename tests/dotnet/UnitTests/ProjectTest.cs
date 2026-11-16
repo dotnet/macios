@@ -985,6 +985,28 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void AppWithSwiftSource (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "AppWithSwiftSource";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			DotNet.AssertBuild (project_path, properties);
+
+			if (CanExecute (platform, runtimeIdentifiers)) {
+				var appExecutable = GetNativeExecutable (platform, appPath);
+				ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+			}
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void AbsoluteOutputPath (ApplePlatform platform, string runtimeIdentifiers)
 		{

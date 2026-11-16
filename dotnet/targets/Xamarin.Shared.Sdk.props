@@ -51,7 +51,7 @@
 			at evaluation time, because the static _PostprocessAssembliesAfterIlc gate checks the registrar at
 			evaluation time. The CoreCLR default is set later in SelectRegistrar, once the exact link mode is known.
 		-->
-		<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">trimmable-static</Registrar>
+		<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">trimmable-static</Registrar>
 
 		<!--
 			Enable the PrepareAssemblies flow by default for CoreCLR and NativeAOT on .NET 11+. This runs our

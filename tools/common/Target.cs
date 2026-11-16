@@ -314,18 +314,8 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("};");
 			}
 
-			var extensionMainFunction = app.IsExtension ? app.AppExtensionMainFunction : null;
-			if (!string.IsNullOrEmpty (extensionMainFunction)) {
-				sw.WriteLine ();
-				sw.WriteLine ("extern \"C\" int {0} (int argc, char **argv);", extensionMainFunction);
-				sw.WriteLine ();
-			}
-
 			sw.WriteLine ("void xamarin_setup_impl ()");
 			sw.WriteLine ("{");
-
-			if (!string.IsNullOrEmpty (extensionMainFunction))
-				sw.WriteLine ("\txamarin_extension_main = {0};", extensionMainFunction);
 
 			if (app.GenerateTrustedPlatformAssemblies && trusted_platform_assembly_names.Length > 0) {
 				sw.WriteLine ("\txamarin_trusted_platform_assembly_names = xamarin_trusted_platform_assembly_names_array;");

@@ -148,8 +148,6 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 
 		public bool IsExtension;
-		// The native function an app extension calls (instead of NSExtensionMain/TVExtensionMain) once .NET has been initialized.
-		public string? AppExtensionMainFunction;
 		// The EXAppExtensionAttributes/EXExtensionPointIdentifier value from the Info.plist (for ExtensionKit extensions).
 		public string? AppExtensionPointIdentifier;
 		public TargetFramework TargetFramework { get; set; }

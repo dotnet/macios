@@ -881,7 +881,6 @@
 				AssemblyName=$(AssemblyName).dll
 				@(_AotArguments -> 'AOTArgument=%(Identity)')
 				AOTCompiler=$(_XamarinAOTCompiler)
-				AppExtensionMainFunction=$(AppExtensionMainFunction)
 				AppExtensionPointIdentifier=$(_EXExtensionPointIdentifier)
 				AOTOutputDirectory=$(_AOTOutputDirectory)
 				DedupAssembly=$(_DedupAssembly)

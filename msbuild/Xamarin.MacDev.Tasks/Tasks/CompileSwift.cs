@@ -103,6 +103,10 @@ namespace Xamarin.MacDev.Tasks {
 				"-sdk", SdkRoot,
 				"-target", target,
 			};
+			// The app's executable already has a 'main' function (which initializes .NET), so rename the function Swift
+			// creates for '@main'. ExtensionKit extensions (where 'main' calls NSExtensionMain) still find and call the
+			// renamed function, because it's referenced from the '__swift5_entry' section.
+			arguments.AddRange (["-Xfrontend", "-entry-point-function-name", "-Xfrontend", "xamarin_swift_main"]);
 			if (IsAppExtension)
 				arguments.Add ("-application-extension");
 			if (!string.IsNullOrEmpty (BridgingHeader)) {

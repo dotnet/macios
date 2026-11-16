@@ -451,6 +451,28 @@ code can call Swift code exported with `@_cdecl` using `[DllImport ("__Internal"
 
 The Swift files are compiled with Swift 5 language mode.
 
+The app's native executable already has a `main` function (which initializes
+.NET), so a Swift `@main` entry point doesn't replace it. However, an app
+extension calls `NSExtensionMain` once .NET has been initialized, and for
+[ExtensionKit](https://developer.apple.com/documentation/extensionkit)
+extensions `NSExtensionMain` calls the Swift `@main` entry point. This means an
+ExtensionKit extension can be started by adding a Swift file like this to the
+`SwiftSource` item group:
+
+```swift
+import ExtensionFoundation
+
+@main
+struct MyExtension: AppExtension {
+    // ...
+}
+```
+
+FSKit extensions (where `EXAppExtensionAttributes/EXExtensionPointIdentifier`
+in the Info.plist is `com.apple.fskit.fsmodule`) don't need any Swift code: the
+build finds the class that subclasses `FSUnaryFileSystem`, and generates the
+Swift code needed to start the extension.
+
 See also:
 
 * [SwiftBridgingHeader](build-properties.md#swiftbridgingheader)

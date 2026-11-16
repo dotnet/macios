@@ -145,7 +145,13 @@ namespace Xamarin.Linker.Steps {
 				throw ErrorHelper.CreateError (99, $"Unable to add dynamic dependency attribute to {provider.GetType ().FullName}");
 
 			var moduleConstructor = GetOrCreateModuleConstructor (member.GetModule (), out var modified);
-			var signature = DocumentationComments.GetSignature (member);
+			string signature;
+			if (member is MethodDefinition method) {
+				signature = abr.GetDynamicDependencySignature (method, out var helperAdded);
+				modified |= helperAdded;
+			} else {
+				signature = DocumentationComments.GetSignature (member);
+			}
 			var attrib = abr.CreateDynamicDependencyAttribute (signature, member.DeclaringType);
 			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
 			return modified;

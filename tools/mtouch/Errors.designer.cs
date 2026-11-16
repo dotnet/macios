@@ -3633,6 +3633,33 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The app extension main function &apos;{0}&apos; isn&apos;t a valid C function name..
+        /// </summary>
+        public static string MX2324 {
+            get {
+                return ResourceManager.GetString("MX2324", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t find the file system class for the FSKit extension. Add a class that subclasses &apos;FSKit.FSUnaryFileSystem&apos; and implements &apos;FSKit.IFSUnaryFileSystemOperations&apos;..
+        /// </summary>
+        public static string MX2325 {
+            get {
+                return ResourceManager.GetString("MX2325", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found more than one file system class for the FSKit extension: {0}. Only one class can subclass &apos;FSKit.FSUnaryFileSystem&apos; (make the others abstract), or set the &apos;AppExtensionMainFunction&apos; property to start the extension yourself..
+        /// </summary>
+        public static string MX2326 {
+            get {
+                return ResourceManager.GetString("MX2326", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {

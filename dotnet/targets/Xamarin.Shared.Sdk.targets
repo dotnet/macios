@@ -18,6 +18,7 @@
 	</PropertyGroup>
 
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileSwift" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectPostILTrimInformation" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
@@ -880,6 +881,8 @@
 				AssemblyName=$(AssemblyName).dll
 				@(_AotArguments -> 'AOTArgument=%(Identity)')
 				AOTCompiler=$(_XamarinAOTCompiler)
+				AppExtensionMainFunction=$(AppExtensionMainFunction)
+				AppExtensionPointIdentifier=$(_EXExtensionPointIdentifier)
 				AOTOutputDirectory=$(_AOTOutputDirectory)
 				DedupAssembly=$(_DedupAssembly)
 				AppBundleManifestPath=$(_AppBundleManifestPath)
@@ -1335,6 +1338,7 @@
 	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish;$(_LoadLinkerOutputExtraDependsOn)" Condition="'$(IsMacEnabled)' == 'true'">
 		<ItemGroup>
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_GeneratedSwiftSource.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" />
@@ -1360,6 +1364,7 @@
 
 		<ItemGroup>
 			<_MainFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainFile.items'" />
+			<_GeneratedSwiftSource Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_GeneratedSwiftSource.items'" />
 			<_MainLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkWith.items'" />
 			<_LinkerFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_LinkerFrameworks.items'" />
 			<_BindingLibraryLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryLinkWith.items'" />
@@ -2087,6 +2092,44 @@
 			<_NativeExecutableObjectFiles Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' == '.o'" />
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
+
+		<!-- All the Swift code is compiled into a single object file -->
+		<ItemGroup>
+			<_SwiftSource Include="@(SwiftSource);@(_GeneratedSwiftSource)" />
+		</ItemGroup>
+		<PropertyGroup Condition="'@(_SwiftSource)' != ''">
+			<SwiftModuleName Condition="'$(SwiftModuleName)' == ''">$([System.Text.RegularExpressions.Regex]::Replace('$(AssemblyName)', '[^A-Za-z0-9_]', '_'))</SwiftModuleName>
+			<_SwiftObjectFile>$(_IntermediateNativeLibraryDir)swift-sources.o</_SwiftObjectFile>
+		</PropertyGroup>
+		<ItemGroup Condition="'@(_SwiftSource)' != ''">
+			<_NativeExecutableObjectFiles Include="$(_SwiftObjectFile)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_CompileSwiftSources"
+		DependsOnTargets="_ComputeNativeExecutableInputs;_DetectSdkLocations;_ComputeTargetArchitectures"
+		Inputs="@(_SwiftSource);$(SwiftBridgingHeader)"
+		Outputs="$(_SwiftObjectFile)"
+		>
+		<CompileSwift
+			SessionId="$(BuildSessionId)"
+			Condition="'@(_SwiftSource)' != ''"
+			BridgingHeader="$(SwiftBridgingHeader)"
+			IsAppExtension="$(IsAppExtension)"
+			MinimumOSVersion="$(_MinimumOSVersion)"
+			ModuleName="$(SwiftModuleName)"
+			OutputFile="$(_SwiftObjectFile)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkRoot="$(_SdkRoot)"
+			Sources="@(_SwiftSource)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		/>
+
+		<ItemGroup>
+			<FileWrites Include="$(_SwiftObjectFile)" Condition="'$(_SwiftObjectFile)' != ''" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_ComputeTrimmedAssemblies"
@@ -2245,6 +2288,7 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
+			_CompileSwiftSources;
 			_CompilePostTrimmingFiles;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;

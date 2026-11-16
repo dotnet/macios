@@ -770,6 +770,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="CFBundleShortVersionString" PropertyName="_CFBundleShortVersionString" />
 			<Output TaskParameter="CFBundleVersion" PropertyName="_CFBundleVersion" />
 			<Output TaskParameter="CLKComplicationGroup" PropertyName="_CLKComplicationGroup" />
+			<Output TaskParameter="EXExtensionPointIdentifier" PropertyName="_EXExtensionPointIdentifier" />
 			<Output TaskParameter="MinimumOSVersion" PropertyName="_MinimumOSVersion" />
 			<Output TaskParameter="NSExtensionPointIdentifier" PropertyName="_NSExtensionPointIdentifier" />
 			<Output TaskParameter="UIDeviceFamily" PropertyName="_UIDeviceFamily" />

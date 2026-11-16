@@ -217,6 +217,14 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => Application.AreAnyAssembliesTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.AreAnyAssembliesTrimmed ? "true" : "false")}"))
 				)},
+				{ "AppExtensionMainFunction", (
+					new LoadValue ((key, value) => Application.AppExtensionMainFunction = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, Application.AppExtensionMainFunction, storage))
+				)},
+				{ "AppExtensionPointIdentifier", (
+					new LoadValue ((key, value) => Application.AppExtensionPointIdentifier = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, Application.AppExtensionPointIdentifier, storage))
+				)},
 				{ "AssemblyName", (
 					// This is the _AssemblyName MSBuild property for the main project (which is also the root/entry assembly)
 					new LoadValue ((key, value) => Application.RootAssemblies.Add (value)),

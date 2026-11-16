@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Mono.Cecil.Cil;
 using Mono.Cecil.Rocks;
 
 namespace AssemblyPreparerTests;
@@ -148,6 +149,61 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		Assert.That (myClass.Methods.Count (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal)), Is.EqualTo (2), "Helper count");
 	}
 
+	[Test]
+	public void HelperNameDoesNotCollideWithUserMethod ()
+	{
+		var code = @"
+		using Foundation;
+
+		interface IMyInterface<T> { void Run (); }
+
+		[Preserve (AllMembers = true)]
+		class MyClass : IMyInterface<string> {
+			int __linker_preserve_explicit_interface_implementation_0;
+			static void __linker_preserve_explicit_interface_implementation_1 () {}
+			static void __linker_preserve_explicit_interface_implementation_2 () {}
+			void IMyInterface<string>.Run () {}
+		}
+		";
+
+		AssertPrepare (ApplePlatform.MacOSX, true, code, out var assemblyDefinition);
+
+		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
+		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
+		Assert.Multiple (() => {
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_0"), Is.EqualTo (0), "Field name reused");
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_1"), Is.EqualTo (1), "User method count 1");
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_2"), Is.EqualTo (1), "User method count 2");
+			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_1"), "User method preserved 1");
+			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_2"), "User method preserved 2");
+			Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Run" }), "Rooted explicit method");
+		});
+	}
+
+	[Test]
+	public void HelperNameDoesNotCollideWithAbstractUserMethod ()
+	{
+		var code = @"
+		using Foundation;
+
+		interface IMyInterface<T> { void Run (); }
+
+		[Preserve (AllMembers = true)]
+		abstract class MyClass : IMyInterface<string> {
+			public abstract void __linker_preserve_explicit_interface_implementation_0 ();
+			void IMyInterface<string>.Run () {}
+		}
+		";
+
+		AssertPrepare (ApplePlatform.MacOSX, true, code, out var assemblyDefinition);
+
+		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
+		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
+		Assert.That (myClass.Methods.Single (v => v.Name == "__linker_preserve_explicit_interface_implementation_0").IsAbstract, Is.True, "User method is still abstract");
+		Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_0"), "User method preserved");
+		Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Run" }), "Rooted explicit method");
+	}
+
 	static string [] GetModuleConstructorSignatures (AssemblyDefinition assemblyDefinition, string typeName)
 	{
 		var moduleConstructor = assemblyDefinition.MainModule.Types.Single (v => v.Name == "<Module>").GetStaticConstructor ();
@@ -170,6 +226,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	{
 		return type.Methods
 			.Where (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal))
+			.Where (v => v.HasBody && v.Body.Instructions [0].OpCode == OpCodes.Ldtoken)
 			.Where (v => signatures.Contains (v.HasGenericParameters ? v.Name + "``" + v.GenericParameters.Count : v.Name))
 			.Select (v => ((MethodReference) v.Body.Instructions [0].Operand).Name)
 			.ToArray ();

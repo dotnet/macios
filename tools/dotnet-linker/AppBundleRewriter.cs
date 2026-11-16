@@ -1544,6 +1544,11 @@ namespace Xamarin.Linker {
 
 		const string ExplicitInterfaceImplementationRootPrefix = "__linker_preserve_explicit_interface_implementation_";
 
+		// Maps explicit interface implementations to the helper methods we generated for them. User code may declare
+		// methods whose names start with the helper prefix, so don't identify helpers by name.
+		readonly Dictionary<MethodDefinition, MethodDefinition> explicitInterfaceImplementationRoots = new ();
+		readonly HashSet<MethodDefinition> generatedExplicitInterfaceImplementationRoots = new ();
+
 		/// <summary>
 		/// Returns true if the method is an explicit interface implementation (for example <c>void IFoo.Bar ()</c>).
 		/// </summary>
@@ -1592,18 +1597,22 @@ namespace Xamarin.Linker {
 		{
 			modified = false;
 
-			var type = method.DeclaringType;
-			var helperCount = 0;
-			foreach (var m in type.Methods) {
-				if (!m.Name.StartsWith (ExplicitInterfaceImplementationRootPrefix, StringComparison.Ordinal))
-					continue;
-				if (m.Body.Instructions [0].Operand == method)
-					return m;
-				helperCount++;
-			}
+			if (explicitInterfaceImplementationRoots.TryGetValue (method, out var existing))
+				return existing;
 
-			var helper = new MethodDefinition (ExplicitInterfaceImplementationRootPrefix + helperCount, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
+			// Pick a name that isn't used by any other member in the type, including user members, because the
+			// DynamicDependency signature for the helper is just its name (which would match any member with that name).
+			var type = method.DeclaringType;
+			var helperIndex = 0;
+			string helperName;
+			do {
+				helperName = ExplicitInterfaceImplementationRootPrefix + helperIndex++;
+			} while (IsMemberNameUsed (type, helperName));
+
+			var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
 			type.Methods.Add (helper);
+			explicitInterfaceImplementationRoots [method] = helper;
+			generatedExplicitInterfaceImplementationRoots.Add (helper);
 			modified = true;
 
 			var il = helper.Body.GetILProcessor ();
@@ -1646,6 +1655,15 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ret);
 
 			return helper;
+		}
+
+		static bool IsMemberNameUsed (TypeDefinition type, string name)
+		{
+			return type.Methods.Any (v => v.Name == name)
+				|| type.Fields.Any (v => v.Name == name)
+				|| type.Properties.Any (v => v.Name == name)
+				|| type.Events.Any (v => v.Name == name)
+				|| type.NestedTypes.Any (v => v.Name == name);
 		}
 
 		// Replace any references to a method's generic parameters with the corresponding generic parameters of the given method.
@@ -1759,7 +1777,7 @@ namespace Xamarin.Linker {
 			foreach (var method in type.Methods.ToArray ()) {
 				if (method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
 					continue;
-				if (method.Name.StartsWith (ExplicitInterfaceImplementationRootPrefix, StringComparison.Ordinal))
+				if (generatedExplicitInterfaceImplementationRoots.Contains (method))
 					continue;
 				if (IsExplicitInterfaceImplementation (method)) {
 					signatures.Add (GetDynamicDependencySignature (method, out var helperAdded));

@@ -47,6 +47,8 @@ stages:
 
     - bash: |
         set -ex
-        make -j$(nproc)
+        # Compiling a platform assembly needs several GB of memory (more with the analyzers),
+        # so don't compile more than one at a time on these small agents.
+        make -j$(nproc) SERIALIZE_CSC=1
       displayName: 'Build on Linux'
       workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)

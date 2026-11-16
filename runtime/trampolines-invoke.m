@@ -12,11 +12,7 @@
 #include "delegates.h"
 #include "product.h"
 
-#if defined(CORECLR_RUNTIME)
 #define ADD_TO_MONOOBJECT_RELEASE_LIST(item) release_list = s_list_prepend (release_list, item)
-#else
-#define ADD_TO_MONOOBJECT_RELEASE_LIST(item)
-#endif
 
 static GCHandle
 xamarin_get_exception_for_method (int code, GCHandle inner_exception_gchandle, const char *reason, SEL sel, id self)
@@ -761,7 +757,6 @@ exception_handling:
 		s_list_free (free_list);
 	}
 
-#if defined (CORECLR_RUNTIME)
 	if (release_list) {
 		SList *list = release_list;
 		while (list) {
@@ -770,7 +765,6 @@ exception_handling:
 		}
 		s_list_free (release_list);
 	}
-#endif
 
 	if (arg_copy != NULL) {
 		free (arg_copy);

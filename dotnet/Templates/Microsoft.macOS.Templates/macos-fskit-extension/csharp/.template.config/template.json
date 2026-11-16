@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Microsoft",
+  "classifications": [
+    "macOS"
+  ],
+  "groupIdentity": "Microsoft.macOS.macOSFSKitExtension",
+  "identity": "Microsoft.macOS.macOSFSKitExtension.CSharp",
+  "name": "macOS File System Extension",
+  "description": "A project for creating an FSKit file system extension for a .NET macOS application",
+  "shortName": "macos-fskit-extension",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "macOSFSKitExtension1",
+  "sources": [
+    {
+      "source": "./",
+      "target": "./"
+    }
+  ],
+  "preferNameDirectory": true,
+  "primaryOutputs": [
+    {
+      "path": "macOSFSKitExtension1.csproj"
+    }
+  ],
+  "postActions": [
+    {
+      "id": "addProjectReference",
+      "actionId": "AC1156F7-BB77-4DB8-B28F-24EEBCCA1E5C",
+      "description": "Add project reference in main app's project file",
+      "sourceName": "macOSFSKitExtension1.csproj",
+      "applyFileRenamesToManualInstructions": true,
+      "manualInstructions": [
+        {
+          "text": "The final step is to add a reference to this newly created project in the main app's project file, like this:\n\n\t<ItemGroup>\n\t\t<ProjectReference Include=\"macOSFSKitExtension1.csproj\">\n\t\t\t<IsAppExtension>true</IsAppExtension>\n\t\t</ProjectReference>\n\t</ItemGroup>\n"
+        }
+      ]
+    }
+  ],
+  "symbols": {
+    "bundleId": {
+      "type": "parameter",
+      "displayName": "Bundle ID",
+      "description": "The bundle identifier (CFBundleIdentifier from the Info.plist, or ApplicationId from the project file) for the parent macOS project",
+      "datatype": "string",
+      "replaces": "com.companyname.macOSApp1"
+    },
+    "minOSVersion": {
+      "type": "parameter",
+      "displayName": "Minimum OS version",
+      "description": "Overrides SupportedOSPlatformVersion in the project file",
+      "replaces": "minOSVersion",
+      "datatype": "string",
+      "defaultValue": "15.4"
+    },
+    "fileSystemClassName": {
+      "type": "parameter",
+      "displayName": "File system class name",
+      "description": "The name of the class that implements the file system",
+      "replaces": "FileSystemClass",
+      "datatype": "string",
+      "defaultValue": "FileSystem"
+    },
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net12.0-macos",
+          "description": "Target net12.0-macos"
+        }
+      ],
+      "replaces": "TFM",
+      "defaultValue": "net12.0-macos"
+    }
+  },
+  "defaultName": "macOSFSKitExtension1"
+}

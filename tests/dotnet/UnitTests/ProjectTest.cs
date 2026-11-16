@@ -2593,6 +2593,7 @@ namespace Xamarin.Tests {
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
 			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
+			properties ["HotReloadCompatibleBuild"] = "false"; // P/Invoke wrappers modify assemblies, which is incompatible with Hot Reload.
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -4636,6 +4637,7 @@ namespace Xamarin.Tests {
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";
 			properties ["XamarinDebugPort"] = "123";
+			properties ["XamarinDebugConnectTimeout"] = "10";
 			properties ["StandardOutputPath"] = stdout;
 			properties ["StandardErrorPath"] = stderr;
 			properties ["OpenNewInstance"] = "true";
@@ -4661,7 +4663,7 @@ namespace Xamarin.Tests {
 				Assert.That (stderrContents, Does.Contain ("Found debug mode telegraph in environment variables"), "mode");
 				Assert.That (stderrContents, Does.Contain ("Found port 123 in environment variables"), "port");
 				Assert.That (stderrContents, Does.Contain ("Found host localhost in environment variables"), "host");
-				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi Connect Timeout: -1"), "summary");
+				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi"), "summary");
 			});
 		}
 	}

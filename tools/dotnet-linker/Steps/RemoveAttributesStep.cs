@@ -28,16 +28,28 @@ namespace Xamarin.Linker.Steps {
 
 		protected override void ProcessAttribute (ICustomAttributeProvider provider, CustomAttribute attribute, out bool remove)
 		{
-			remove = IsRemovedAttribute (attribute);
+			remove = IsRemovedAttribute (provider, attribute);
 
 			if (remove)
 				LinkContext.StoreCustomAttribute (provider, attribute);
 		}
 
-		bool IsRemovedAttribute (CustomAttribute attribute)
+		bool IsRemovedAttribute (ICustomAttributeProvider provider, CustomAttribute attribute)
 		{
 			// this avoids calling FullName (which allocates a string)
 			var attr_type = attribute.Constructor.DeclaringType;
+			if (!LinkContext.App.IsPostProcessingAssemblies) {
+				return attr_type.Namespace == Namespaces.Foundation
+					&& attr_type.Name == "RegisterAttribute"
+					&& LinkContext.App.Optimizations.RemoveRegisterAttributes == true
+					&& LinkContext.App.CanTrimRegistrarAttributes
+					&& LinkContext.App.Registrar == Xamarin.Bundler.RegistrarMode.TrimmableStatic
+					&& !LinkContext.App.DynamicRegistrationSupported
+					&& provider is TypeDefinition type
+					&& LinkContext.IsDirectBindingValue?.TryGetValue (type, out var isDirectBinding) == true
+					&& isDirectBinding == true;
+			}
+
 			if (attr_type.Name == "PreserveAttribute")
 				return true;
 

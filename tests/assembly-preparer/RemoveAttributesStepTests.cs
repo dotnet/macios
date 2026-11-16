@@ -7,7 +7,7 @@ using Xamarin.Linker;
 
 namespace AssemblyPreparerTests;
 
-public class RemoveRegisterAttributesStepTests : BaseClass {
+public class RemoveAttributesStepTests : BaseClass {
 	const string Code = """
 		using Foundation;
 
@@ -40,13 +40,19 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 	[TestCase (true, RegistrarMode.ManagedStatic, "link", false, false)]
 	[TestCase (true, RegistrarMode.TrimmableStatic, "copy", false, false)]
 	[TestCase (true, RegistrarMode.TrimmableStatic, "link", true, false)]
-	public void Preparation (bool eligible, RegistrarMode registrar, string trimMode, bool dynamicRegistrationSupported, bool expectedRemoval)
+	[TestCase (true, RegistrarMode.TrimmableStatic, "link", false, false, "-remove-register-attributes")]
+	[TestCase (false, RegistrarMode.TrimmableStatic, "link", false, false, "+remove-register-attributes")]
+	[TestCase (true, RegistrarMode.TrimmableStatic, "link", false, false, "-remove-register-attributes", XamarinRuntime.NativeAOT)]
+	[TestCase (true, RegistrarMode.TrimmableStatic, "link", false, true, "+remove-register-attributes", XamarinRuntime.NativeAOT)]
+	public void Preparation (bool eligible, RegistrarMode registrar, string trimMode, bool dynamicRegistrationSupported, bool expectedRemoval, string? optimization = null, XamarinRuntime runtime = XamarinRuntime.MonoVM)
 	{
 		var directory = Xamarin.Cache.CreateTemporaryDirectory ();
 		var config = $"""
 			AssemblyName=Microsoft.iOS.dll
 			CanTrimRegistrarAttributes={eligible}
 			DynamicRegistrationSupported={dynamicRegistrationSupported}
+			XamarinRuntime={runtime}
+			{(optimization is null ? "" : $"Optimize={optimization}")}
 			TypeMapAssemblyName=_TypeMap
 			TypeMapOutputDirectory={Path.Combine (directory, "typemaps")}
 			""";
@@ -83,7 +89,6 @@ public class RemoveRegisterAttributesStepTests : BaseClass {
 			CanTrimRegistrarAttributes=true
 			DynamicRegistrationSupported=false
 			Registrar=trimmable-static
-			PrepareAssemblies=true
 			CacheDirectory={directory}
 			XamarinRuntime={runtime}
 			TypeMapAssemblyName=_TypeMap

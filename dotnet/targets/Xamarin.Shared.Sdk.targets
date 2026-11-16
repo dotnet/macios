@@ -783,7 +783,7 @@
 	<Target Name="_ComputeLinkerInputs" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
 		<PropertyGroup>
 			<_CanTrimRegistrarAttributes>false</_CanTrimRegistrarAttributes>
-			<_CanTrimRegistrarAttributes Condition="'$(PrepareAssemblies)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(Registrar)' == 'trimmable-static'">true</_CanTrimRegistrarAttributes>
+			<_CanTrimRegistrarAttributes Condition="'$(Registrar)' == 'trimmable-static'">true</_CanTrimRegistrarAttributes>
 		</PropertyGroup>
 
 		<!-- Validate the linker mode -->

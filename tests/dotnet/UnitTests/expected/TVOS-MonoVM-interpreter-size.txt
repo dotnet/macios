@@ -1,7 +1,7 @@
-AppBundleSize: 3,651,604 bytes (3,566.0 KB = 3.5 MB)
+AppBundleSize: 3,651,575 bytes (3,566.0 KB = 3.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Info.plist:
-    1,153 bytes (1.1 KB = 0.0 MB)
+    1,124 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll:
     153,088 bytes (149.5 KB = 0.1 MB)
 PkgInfo:

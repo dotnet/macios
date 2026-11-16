@@ -2106,9 +2106,36 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_CompileSwiftSources"
+	<!-- Write the list of Swift source files and the compiler settings to a file, so that we recompile if any of them change -->
+	<Target Name="_ComputeSwiftSourceInputs"
 		DependsOnTargets="_ComputeNativeExecutableInputs;_DetectSdkLocations;_ComputeTargetArchitectures"
-		Inputs="@(_SwiftSource);$(SwiftBridgingHeader)"
+		>
+		<PropertyGroup Condition="'$(_SwiftObjectFile)' != ''">
+			<_SwiftSourceInputsFile>$(_IntermediateNativeLibraryDir)swift-sources.inputs</_SwiftSourceInputsFile>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_SwiftObjectFile)' != ''">
+			<_SwiftSourceInputsLine Include="@(_SwiftSource->'Source=%(FullPath)')" />
+			<_SwiftSourceInputsLine Include="BridgingHeader=$(SwiftBridgingHeader)" />
+			<_SwiftSourceInputsLine Include="MinimumOSVersion=$(_MinimumOSVersion)" />
+			<_SwiftSourceInputsLine Include="ModuleName=$(SwiftModuleName)" />
+			<_SwiftSourceInputsLine Include="SdkRoot=$(_SdkRoot)" />
+			<_SwiftSourceInputsLine Include="TargetArchitectures=$(TargetArchitectures)" />
+		</ItemGroup>
+		<WriteLinesToFile
+			Condition="'$(_SwiftObjectFile)' != ''"
+			File="$(_SwiftSourceInputsFile)"
+			Lines="@(_SwiftSourceInputsLine)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup Condition="'$(_SwiftObjectFile)' != ''">
+			<FileWrites Include="$(_SwiftSourceInputsFile)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_CompileSwiftSources"
+		DependsOnTargets="_ComputeSwiftSourceInputs"
+		Inputs="@(_SwiftSource);$(SwiftBridgingHeader);$(_SwiftSourceInputsFile)"
 		Outputs="$(_SwiftObjectFile)"
 		>
 		<CompileSwift

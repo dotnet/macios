@@ -232,6 +232,7 @@ namespace Xamarin {
 			sb.AppendLine ("import Foundation");
 			sb.AppendLine ("import FSKit");
 			sb.AppendLine ();
+			sb.AppendLine ("@available(macOS 15.4, *)");
 			sb.AppendLine ("struct XamarinFSKitExtension: UnaryFileSystemExtension {");
 			sb.AppendLine ("\tvar fileSystem: FSUnaryFileSystem & FSUnaryFileSystemOperations {");
 			// Look up the class at runtime, because it might not exist at build time (if it's registered by the dynamic registrar).
@@ -242,6 +243,10 @@ namespace Xamarin {
 			sb.AppendLine ();
 			sb.AppendLine ($"@_cdecl(\"{app.AppExtensionMainFunction}\")");
 			sb.AppendLine ("func xamarinFSKitExtensionMain(_ argc: Int32, _ argv: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?) -> Int32 {");
+			sb.AppendLine ("\tguard #available(macOS 15.4, *) else {");
+			sb.AppendLine ("\t\tNSLog(\"%@\", \"FSKit extensions require macOS 15.4 or later.\" as NSString)");
+			sb.AppendLine ("\t\treturn 1");
+			sb.AppendLine ("\t}");
 			sb.AppendLine ("\tdo {");
 			sb.AppendLine ("\t\ttry MainActor.assumeIsolated {");
 			sb.AppendLine ("\t\t\ttry XamarinFSKitExtension.main()");

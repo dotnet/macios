@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
@@ -42,6 +43,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public string TargetArchitectures { get; set; } = "";
+		#endregion
+
+		#region Outputs
+		// This is an output so that an (empty) placeholder file is created on Windows for remote builds,
+		// otherwise the target that compiles the Swift code (and the native link) would always run.
+		[Output]
+		public ITaskItem? CompiledOutputFile { get; set; }
 		#endregion
 
 		public override bool Execute ()
@@ -107,6 +115,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteAsync ("xcrun", arguments).Wait ();
 
+			CompiledOutputFile = new TaskItem (OutputFile);
+
 			return !Log.HasLoggedErrors;
 		}
 
@@ -117,7 +127,7 @@ namespace Xamarin.MacDev.Tasks {
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
 			if (!string.IsNullOrEmpty (BridgingHeader))
-				yield return new Microsoft.Build.Utilities.TaskItem (BridgingHeader);
+				yield return new TaskItem (BridgingHeader);
 		}
 
 		public void Cancel ()

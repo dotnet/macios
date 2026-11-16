@@ -1245,6 +1245,15 @@ namespace Registrar {
 
 		protected override TypeReference []? GetLinkedAwayInterfaces (TypeReference type)
 		{
+#if ASSEMBLY_PREPARER
+			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+				// The separate postprocessor has no linker annotations for removed interface implementations.
+				var preTrimType = GetPreTrimAttributeProvider (type.Resolve ()) as TypeDefinition;
+				if (preTrimType?.HasInterfaces == true)
+					return preTrimType.Interfaces.Select (v => v.InterfaceType.Resolve ()).ToArray ();
+			}
+#endif
+
 			if (LinkContext is null)
 				return null;
 

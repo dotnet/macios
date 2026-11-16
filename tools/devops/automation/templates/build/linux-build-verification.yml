@@ -31,7 +31,7 @@ stages:
   - job: linux_build
     displayName: 'Build on Linux'
     pool: ${{ parameters.pool }}
-    timeoutInMinutes: 60
+    timeoutInMinutes: 120
     steps:
     - template: ../common/checkout.yml
       parameters:

@@ -12,6 +12,44 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void NativeAotWithoutAppleApiUsage (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GenerateProject (platform, nameof (NativeAotWithoutAppleApiUsage), runtimeIdentifier, out _);
+			var mainPath = Path.Combine (Path.GetDirectoryName (projectPath)!, "Main.cs");
+			File.WriteAllText (mainPath, """
+				class MainClass {
+					static void Main ()
+					{
+						System.Console.WriteLine ("Hello World!");
+					}
+				}
+				""");
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			DotNet.AssertBuild (projectPath, properties);
+
+			File.WriteAllText (mainPath, """
+				class MainClass {
+					static void Main ()
+					{
+						System.Console.WriteLine ("Hello World!");
+						System.GC.KeepAlive (typeof (Foundation.NSObject));
+					}
+				}
+				""");
+			DotNet.AssertBuild (projectPath, properties);
+		}
+
 		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
 		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
 		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)

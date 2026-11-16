@@ -11,6 +11,28 @@ using Xamarin.Linker;
 namespace AssemblyPreparerTests;
 
 public class ManagedRegistrarStepTests : BaseClass {
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void MissingPlatformAssembly (ApplePlatform platform)
+	{
+		using var preparer = CreatePreparer (platform, true, p => p.Registrar = RegistrarMode.ManagedStatic, "public class C {}", out _);
+		var configuration = preparer.Configuration;
+		var context = configuration.DerivedLinkContext;
+		new LoadAssembliesStep ().Process (context);
+
+		Assert.That (configuration.Assemblies.RemoveAll (v => v.Name.Name == configuration.PlatformAssembly), Is.EqualTo (1), "Removed platform assembly");
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		context.Annotations.SetCustomAnnotation ("ManagedRegistrarStep", assembly, new AssemblyTrampolineInfo ());
+		new ManagedRegistrarLookupTablesStep ().Process (context);
+
+		var logger = (TestLogger) configuration.Logger;
+		var exception = logger.Errors.Single (v => v.Code == 2113);
+		Assert.That (exception.Message, Is.EqualTo ($"The platform assembly '{Configuration.GetBaseLibraryName (platform)}' could not be found. This can happen when the app does not use any Apple APIs and the assembly is removed by trimming. Add a reference to an Apple API in the app, for example: System.GC.KeepAlive (typeof (Foundation.NSObject));"), "Missing platform assembly diagnostic");
+		Assert.That (logger.Errors.Select (v => v.Code), Does.Not.Contain (99), "Internal error");
+	}
+
 	[Test]
 	public void FactoryMethodsNotAddedToReloadableAssemblies ()
 	{

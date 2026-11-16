@@ -1872,8 +1872,6 @@ F:CoreGraphics.CGToneMapping.ImageSpecificLumaScaling
 F:CoreGraphics.CGToneMapping.IturRecommended
 F:CoreGraphics.CGToneMapping.None
 F:CoreGraphics.CGToneMapping.ReferenceWhiteBased
-F:CoreGraphics.CGWindowImageOption.BestResolution
-F:CoreGraphics.CGWindowImageOption.NominalResolution
 F:CoreGraphics.NMatrix2.M11
 F:CoreGraphics.NMatrix2.M12
 F:CoreGraphics.NMatrix2.M21
@@ -58165,7 +58163,6 @@ T:ObjCRuntime.NativeHandle
 T:ObjCRuntime.NativeNameAttribute
 T:ObjCRuntime.NativeObjectExtensions
 T:ObjCRuntime.NMath
-T:ObjCRuntime.Runtime.ClassHandles
 T:OSLog.OSLogEntry
 T:OSLog.OSLogEntryActivity
 T:OSLog.OSLogEntryBoundary

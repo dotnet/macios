@@ -6,11 +6,11 @@ using Mono.Cecil.Rocks;
 namespace AssemblyPreparerTests;
 
 public class MarkNSObjectsTests : BaseClass {
-	[TestCase (ApplePlatform.MacCatalyst, true)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void StaticRegistrarPreservesUserMembers (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void StaticRegistrarPreservesUserMembers (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -30,7 +30,7 @@ public class MarkNSObjectsTests : BaseClass {
 		}
 		";
 
-		var modified = AssertPrepare (platform, isCoreCLR, RegistrarMode.Static, code, out var assembly);
+		var modified = AssertPrepare (platform, RegistrarMode.Static, code, out var assembly);
 		using (assembly) {
 			Assert.That (modified, Is.True, "User assembly saved");
 			var moduleConstructor = assembly.MainModule.Types.Single (v => v.Name == "<Module>").GetStaticConstructor ();

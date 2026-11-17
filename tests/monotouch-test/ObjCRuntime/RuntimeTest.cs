@@ -771,20 +771,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			} catch (RuntimeException re) {
 				Assert.That (re.Code, Is.EqualTo (8029), "Code");
-				string expectedExceptionMessage;
-				if (TestRuntime.IsCoreCLR) {
-					expectedExceptionMessage = @"Unable to marshal the array parameter #1 whose managed type is 'System.Int32[]' to managed.
+				var expectedExceptionMessage = @"Unable to marshal the array parameter #1 whose managed type is 'System.Int32[]' to managed.
 Additional information:
 	Selector: setIntArray:
 	Method: System.Void MonoTouchFixtures.ObjCRuntime.RuntimeTest+Dummy.SetIntArray (System.Int32[])
 ";
-				} else {
-					expectedExceptionMessage = @"Unable to marshal the array parameter #1 whose managed type is 'System.Int32[]' to managed.
-Additional information:
-	Selector: setIntArray:
-	Method: MonoTouchFixtures.ObjCRuntime.RuntimeTest/Dummy:SetIntArray (int[])
-";
-				}
 				Assert.That (re.Message, Is.EqualTo (expectedExceptionMessage), "Message");
 				var inner = (RuntimeException)re.InnerException;
 				Assert.That (inner.Code, Is.EqualTo (8031), "Inner Code");
@@ -800,20 +791,11 @@ Additional information:
 				Assert.Fail ("An exception should have been thrown");
 			} catch (RuntimeException re) {
 				Assert.That (re.Code, Is.EqualTo (8033), "Code");
-				string expectedExceptionMessage;
-				if (TestRuntime.IsCoreCLR) {
-					expectedExceptionMessage = @"Unable to marshal the return value of type 'System.Int32[]' to Objective-C.
+				var expectedExceptionMessage = @"Unable to marshal the return value of type 'System.Int32[]' to Objective-C.
 Additional information:
 	Selector: intArray
 	Method: System.Int32[] MonoTouchFixtures.ObjCRuntime.RuntimeTest+Dummy.GetIntArray ()
 ";
-				} else {
-					expectedExceptionMessage = @"Unable to marshal the return value of type 'System.Int32[]' to Objective-C.
-Additional information:
-	Selector: intArray
-	Method: MonoTouchFixtures.ObjCRuntime.RuntimeTest/Dummy:GetIntArray ()
-";
-				}
 				Assert.That (re.Message, Is.EqualTo (expectedExceptionMessage), "Message");
 				var inner = (RuntimeException) re.InnerException;
 				Assert.That (inner.Code, Is.EqualTo (8032), "Inner Code");

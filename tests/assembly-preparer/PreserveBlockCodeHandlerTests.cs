@@ -7,11 +7,11 @@ namespace AssemblyPreparerTests;
 
 public class PreserveBlockCodeHandlerTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void MarkedTest (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void MarkedTest (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -31,7 +31,7 @@ public class PreserveBlockCodeHandlerTests : BaseClass {
 			}
 		}";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "Trampolines").NestedTypes.Single (v => v.Name == "SDInnerBlock");
 		var cctor = type.GetStaticConstructor ();

@@ -8,11 +8,11 @@ namespace AssemblyPreparerTests;
 
 public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void OptimizeProtocolInterfaceStaticConstructor (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void OptimizeProtocolInterfaceStaticConstructor (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -30,7 +30,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		class MyClass : NSObject, IMyProtocol {
 		}";
 
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
+		AssertPrepareCode (platform, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.RegisterProtocols = true;
 		}, code, out var outputPath);
@@ -64,7 +64,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		class MyClass : NSObject, IMyProtocol {
 		}";
 
-		AssertPrepareCode (ApplePlatform.MacOSX, true, preparer => {
+		AssertPrepareCode (ApplePlatform.MacOSX, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.RegisterProtocols = true;
 		}, code, out var outputPath, testAssemblyTrimMode: trimMode);
@@ -75,11 +75,11 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void KeepProtocolStaticConstructorWhenOptimizationDisabled (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void KeepProtocolStaticConstructorWhenOptimizationDisabled (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -97,7 +97,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 		class MyClass : NSObject, IMyProtocol {
 		}";
 
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
+		AssertPrepareCode (platform, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.RegisterProtocols = false;
 		}, code, out var outputPath);
@@ -111,11 +111,11 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void NoOptimizationWithoutBindingAttributes (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void NoOptimizationWithoutBindingAttributes (ApplePlatform platform)
 	{
 		// The method deliberately has no [BindingImpl (BindingImplOptions.Optimizable)] attribute, so
 		// the optimizer must leave it untouched: the IsDirectBinding condition must not be inlined
@@ -135,7 +135,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 			}
 		}";
 
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
+		AssertPrepareCode (platform, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.DeadCodeElimination = true;
 			preparer.Optimizations.InlineIsDirectBinding = true;
@@ -151,11 +151,11 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	}
 
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void DeadCodeElimination (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void DeadCodeElimination (ApplePlatform platform)
 	{
 		// MyClass is a user type, so IsDirectBinding is inlined to a constant (false), after which the
 		// unreachable 'return 2' branch is eliminated (the method is optimizable via [BindingImpl]).
@@ -175,7 +175,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 			}
 		}";
 
-		AssertPrepareCode (platform, isCoreCLR, preparer => {
+		AssertPrepareCode (platform, preparer => {
 			preparer.Registrar = RegistrarMode.Dynamic;
 			preparer.Optimizations.DeadCodeElimination = true;
 			preparer.Optimizations.InlineIsDirectBinding = true;

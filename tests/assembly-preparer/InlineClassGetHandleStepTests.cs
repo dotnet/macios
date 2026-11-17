@@ -4,11 +4,11 @@
 namespace AssemblyPreparerTests;
 
 public class InlineClassGetHandleStepTests : BaseClass {
-	[TestCase (ApplePlatform.MacCatalyst, true)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void StaticRegistrarIncludesSwiftStubMetadata (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void StaticRegistrarIncludesSwiftStubMetadata (ApplePlatform platform)
 	{
 		var code = @"
 		using Foundation;
@@ -21,7 +21,7 @@ public class InlineClassGetHandleStepTests : BaseClass {
 		";
 
 		var typeMapPath = Path.Combine (Xamarin.Cache.CreateTemporaryDirectory (), "type-map.txt");
-		AssertPrepare (platform, isCoreCLR, RegistrarMode.Static, code, out var assembly,
+		AssertPrepare (platform, RegistrarMode.Static, code, out var assembly,
 			extraConfig: $"InlineClassGetHandle=strict\nTypeMapFilePath={typeMapPath}");
 		using (assembly) {
 			Assert.That (File.ReadAllText (typeMapPath), Does.Match (@"(?m)^Class=SwiftStub\|.*\|IsWrapper=True\|IsStubClass=True\r?$"), "Swift stub metadata for native code generation");

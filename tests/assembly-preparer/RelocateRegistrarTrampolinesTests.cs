@@ -11,10 +11,10 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 	// (_Test.TypeMap.dll) instead of the user (Test) assembly, so that the user assembly isn't
 	// modified with registrar artifacts.
 	[Test]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void TrampolinesAreRelocated (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void TrampolinesAreRelocated (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -39,7 +39,7 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 		}
 		";
 
-		AssertPrepareHotReloadTrimmableStatic (platform, isCoreCLR, code, out var userAssemblyWasSaved, out var userAssembly, out var companionAssembly);
+		AssertPrepareHotReloadTrimmableStatic (platform, code, out var userAssemblyWasSaved, out var userAssembly, out var companionAssembly);
 
 		// The whole point of relocating the trampolines is to keep the user assembly
 		// byte-unmodified, so the assembly-preparer must not re-save it.
@@ -82,10 +82,10 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 	// user assembly; instead they must now be dispatched via a generic helper + reflection emitted
 	// entirely into the companion.
 	[Test]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void GenericTrampolinesAreRelocated (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void GenericTrampolinesAreRelocated (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -112,7 +112,7 @@ public class RelocateRegistrarTrampolinesTests : BaseClass {
 		}
 		";
 
-		AssertPrepareHotReloadTrimmableStatic (platform, isCoreCLR, code, out var userAssemblyWasSaved, out var userAssembly, out var companionAssembly);
+		AssertPrepareHotReloadTrimmableStatic (platform, code, out var userAssemblyWasSaved, out var userAssembly, out var companionAssembly);
 
 		// The whole point of relocating the trampolines is to keep the user assembly
 		// byte-unmodified, so the assembly-preparer must not re-save it.

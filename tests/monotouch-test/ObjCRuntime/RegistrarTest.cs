@@ -1317,42 +1317,30 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void ThrowsICEIfDebug (TestDelegate code, string message, bool execute_release_mode = true)
 		{
-			if (TestRuntime.IsCoreCLR ||
-				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic ||
-				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.TrimmableStatic) {
-				if (execute_release_mode) {
-					// In CoreCLR will either throw an ArgumentException:
-					//     <System.ArgumentException: Object of type 'Foundation.NSObject' cannot be converted to type 'Foundation.NSSet'.
-					// or a RuntimeException:
-					//     <ObjCRuntime.RuntimeException: Failed to marshal the value at index 0.
-					// or an InvalidCastException
-					//    System.InvalidCastException: Unable to cast object of type 'Foundation.NSObject' to type 'Foundation.NSSet'.
-					var noException = false;
-					try {
-						code ();
-						noException = true;
-					} catch (ArgumentException) {
-						// OK
-					} catch (RuntimeException) {
-						// OK
-					} catch (InvalidCastException) {
-						// OK
-					} catch (Exception e) {
-						Assert.Fail ($"Unexpectedly failed with exception of type {e.GetType ()} - expected either ArgumentException or RuntimeException: {message}");
-					}
-					if (noException)
-						Assert.Fail ($"Unexpectedly no exception occured: {message}");
-				}
+			if (!execute_release_mode)
 				return;
-			}
 
-			// The type checks have been disabled for now.
-			//#if DEBUG
-			//			Assert.Throws<InvalidCastException> (code, message);
-			//#else
-			if (execute_release_mode)
-				Assert.DoesNotThrow (code, message);
-			//#endif
+			// In CoreCLR will either throw an ArgumentException:
+			//     <System.ArgumentException: Object of type 'Foundation.NSObject' cannot be converted to type 'Foundation.NSSet'.
+			// or a RuntimeException:
+			//     <ObjCRuntime.RuntimeException: Failed to marshal the value at index 0.
+			// or an InvalidCastException
+			//    System.InvalidCastException: Unable to cast object of type 'Foundation.NSObject' to type 'Foundation.NSSet'.
+			var noException = false;
+			try {
+				code ();
+				noException = true;
+			} catch (ArgumentException) {
+				// OK
+			} catch (RuntimeException) {
+				// OK
+			} catch (InvalidCastException) {
+				// OK
+			} catch (Exception e) {
+				Assert.Fail ($"Unexpectedly failed with exception of type {e.GetType ()} - expected either ArgumentException or RuntimeException: {message}");
+			}
+			if (noException)
+				Assert.Fail ($"Unexpectedly no exception occured: {message}");
 		}
 
 		[Test]

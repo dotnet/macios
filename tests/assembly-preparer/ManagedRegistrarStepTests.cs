@@ -33,7 +33,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.Static,
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.Static,
 			code, out _);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
@@ -75,7 +75,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.Static,
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.Static,
 			code, out _);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
@@ -121,7 +121,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Static,
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, p => p.Registrar = RegistrarMode.Static,
 			code, out _);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
@@ -175,7 +175,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => {
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, p => {
 			p.Registrar = RegistrarMode.Static;
 			p.Optimizations.StaticBlockToDelegateLookup = true;
 			p.Optimizations.OptimizeBlockLiteralSetupBlock = true;
@@ -242,7 +242,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
 		new ManagedRegistrarStep ().Process (context);
@@ -290,7 +290,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		string projectDir;
 		string userAssemblyPath;
 
-		using (var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic,
+		using (var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.TrimmableStatic,
 			Code (1), out var testInfo, extraConfig: config, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy")) {
 			infos = preparer.Assemblies.Select (v => new AssemblyPreparerInfo (v.InputPath, v.OutputPath, v.OriginalInputPath, v.IsTrimmable, v.TrimMode)).ToArray ();
 			projectDir = Path.GetFullPath (Path.Combine (preparer.IntermediateOutputPath, ".."));
@@ -360,7 +360,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic,
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.TrimmableStatic,
 			code, out _, extraConfig: config, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
 		AssertPrepare (preparer);
 
@@ -415,7 +415,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = RegistrarMode.TrimmableStatic,
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Registrar = RegistrarMode.TrimmableStatic,
 			code, out _, extraConfig: config, hotReloadCompatibleBuild: true, testAssemblyTrimMode: "copy");
 		AssertPrepare (preparer);
 
@@ -448,7 +448,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		}
 		";
 
-		using var preparer = CreatePreparer (ApplePlatform.MacCatalyst, true, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _);
+		using var preparer = CreatePreparer (ApplePlatform.MacCatalyst, p => p.Registrar = RegistrarMode.TrimmableStatic, code, out _);
 		var context = preparer.Configuration.DerivedLinkContext;
 		new LoadAssembliesStep ().Process (context);
 		new ManagedRegistrarStep ().Process (context);
@@ -499,7 +499,7 @@ public class ManagedRegistrarStepTests : BaseClass {
 		";
 
 		// The runtime is configured independently of the reference assembly set used to compile the test code.
-		AssertPrepare (ApplePlatform.iOS, false, RegistrarMode.ManagedStatic, code, out var assemblyDefinition, extraConfig: $"XamarinRuntime={runtime}");
+		AssertPrepare (ApplePlatform.iOS, RegistrarMode.ManagedStatic, code, out var assemblyDefinition, extraConfig: $"XamarinRuntime={runtime}");
 
 		var type = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var callbackType = type.NestedTypes.Single (v => v.Name == "__Registrar_Callbacks__");

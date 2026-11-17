@@ -54,13 +54,13 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIQRCodeErrorCorrectionLevel : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 20% of the symbol data is dedicated to error correction.</summary>
 		L = 76,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 37% of the symbol data is dedicated to error correction.</summary>
 		M = 77,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 55% of the symbol data is dedicated to error correction.</summary>
 		Q = 81,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 65% of the symbol data is dedicated to error correction.</summary>
 		H = 72,
 	}
 

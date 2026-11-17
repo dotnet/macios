@@ -209,9 +209,7 @@ namespace Xamarin.Bundler {
 		void GenerateMainImpl (StringWriter sw, Abi abi)
 		{
 			var app = App;
-			var assemblies = Assemblies;
 			var assembly_name = App.AssemblyName;
-			var register_assemblies = new StringBuilder ();
 			var assembly_location = new StringBuilder ();
 			var assembly_location_count = 0;
 
@@ -229,7 +227,6 @@ namespace Xamarin.Bundler {
 
 			sw.WriteLine ("void xamarin_register_assemblies_impl ()");
 			sw.WriteLine ("{");
-			sw.WriteLine (register_assemblies);
 			sw.WriteLine ("}");
 			sw.WriteLine ();
 

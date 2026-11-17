@@ -10,6 +10,12 @@ schedules:
     include:
     - main
 
+parameters:
+- name: CodeQLSourceBranch
+  displayName: Branch to run CodeQL on (only change this to test changes to this pipeline)
+  type: string
+  default: refs/heads/main
+
 stages:
 - stage: build_nightly
   displayName: CodeQL
@@ -36,8 +42,14 @@ stages:
       fetchTags: false
       submodules: recursive
 
+    # CodeQL only runs on the branch in the CodeQLSourceBranch parameter (main by default). Nothing else
+    # stops it from running on other branches: CodeQL 3000 only warns that this can file duplicate bugs,
+    # and the 1ES templates treat every branch of a GitHub repository as its default branch, because
+    # they can't look up the default branch. See https://dev.azure.com/mseng/1ES/_workitems/edit/2479329
     - task: CodeQL3000Init@0
       displayName: CodeQL 3000 Init
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], '${{ parameters.CodeQLSourceBranch }}'))
 
     - task: CodeQL3000Finalize@0
       displayName: CodeQL 3000 Finalize
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], '${{ parameters.CodeQLSourceBranch }}'))

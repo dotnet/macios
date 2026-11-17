@@ -106,6 +106,8 @@ Scheduled security analysis pipeline.
 
 **Purpose:** Run CodeQL security analysis without blocking builds
 
+**Branch:** CodeQL only runs on the branch in the `CodeQLSourceBranch` parameter (`refs/heads/main` by default). Set it when queueing the pipeline on another branch to test changes to the pipeline; keep such runs to a minimum, because CodeQL can file duplicate bugs when it analyzes more than one branch.
+
 **How:** CodeQL reads the source code on a Linux agent, without building it (build mode `none`). It can't trace a build on our Macs: on Apple silicon it runs the traced build as x86_64 (using Rosetta 2), and the Xcode we use is arm64 only.
 
 **Languages:** C#, C/C++, PowerShell, Python, JavaScript and GitHub Actions workflows. Swift isn't analyzed, because CodeQL needs a traced build for it. CodeQL doesn't support Objective-C.

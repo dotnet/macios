@@ -71,24 +71,25 @@ namespace CoreAnimation {
 
 	// untyped enum -> CALayer.h (only on OSX headers)
 	// note: autoresizingMask is an `unsigned int` @property
+	/// <summary>Specifies how a layer adjusts its frame when its superlayer's bounds change.</summary>
 	[Flags]
 	[NoiOS]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAAutoresizingMask : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not automatically resize the layer or adjust its margins.</summary>
 		NotSizable = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the minimum x-coordinate margin to resize.</summary>
 		MinXMargin = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the layer's width to resize.</summary>
 		WidthSizable = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the maximum x-coordinate margin to resize.</summary>
 		MaxXMargin = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the minimum y-coordinate margin to resize.</summary>
 		MinYMargin = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the layer's height to resize.</summary>
 		HeightSizable = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the maximum y-coordinate margin to resize.</summary>
 		MaxYMargin = 1 << 5,
 	}
 

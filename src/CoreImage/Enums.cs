@@ -82,14 +82,15 @@ namespace CoreImage {
 		V200 = 200,
 	}
 
+	/// <summary>Specifies how a <see cref="CIRenderDestination" /> stores alpha values.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The destination has no alpha channel.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Color components are multiplied by the alpha component.</summary>
 		Premultiplied = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Color components are not multiplied by the alpha component.</summary>
 		Unpremultiplied = 2,
 	}
 }

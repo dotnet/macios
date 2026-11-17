@@ -55527,7 +55527,6 @@ T:CoreImage.CIRawDecoderVersion
 T:CoreImage.CIRawFilter
 T:CoreImage.CIReductionFilter
 T:CoreImage.CIRenderDestination
-T:CoreImage.CIRenderDestinationAlphaMode
 T:CoreImage.CIRenderTask
 T:CoreImage.CIRoundedQRCodeGenerator
 T:CoreImage.CIRoundedRectangleGenerator

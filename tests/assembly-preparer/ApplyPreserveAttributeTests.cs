@@ -56,6 +56,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		var code = @"
 		using System;
 		using System.Collections.Generic;
+		using System.Diagnostics.CodeAnalysis;
 		using Foundation;
 
 		interface IContract<TKey, TValue> {
@@ -63,6 +64,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			void Run (TKey key, TValue value);
 			T Create<T> () where T : class, IComparable<T>, new ();
 			void Pair<T, U> (T t, U u) where T : U where U : IList<TKey>;
+			void Annotated<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicMethods)] T> ();
 		}
 
 		[Preserve (AllMembers = true)]
@@ -71,6 +73,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			void IContract<Dictionary<string, List<TOwner>>, long>.Run (Dictionary<string, List<TOwner>> key, long value) {}
 			T IContract<Dictionary<string, List<TOwner>>, long>.Create<T> () => new T ();
 			void IContract<Dictionary<string, List<TOwner>>, long>.Pair<T, U> (T t, U u) {}
+			void IContract<Dictionary<string, List<TOwner>>, long>.Annotated<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicMethods)] T> () {}
 			public void Regular () {}
 		}
 		";
@@ -80,7 +83,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		var owner = assemblyDefinition.MainModule.Types.Single (v => v.Name == "Owner`1");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "Owner`1");
 		var helpers = owner.Methods.Where (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal)).ToArray ();
-		Assert.That (helpers.Length, Is.EqualTo (4), "Helper count");
+		Assert.That (helpers.Length, Is.EqualTo (5), "Helper count");
 		Assert.That (signatures, Does.Contain ("Regular"), "Regular method");
 		Assert.That (signatures, Has.None.Contains ("IContract"), "Explicit interface member signatures");
 
@@ -104,6 +107,11 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		var pair = helpers.Single (v => ((MethodReference) v.Body.Instructions [0].Operand).Name.EndsWith (".Pair", StringComparison.Ordinal));
 		Assert.That (pair.GenericParameters [0].Constraints.Single ().ConstraintType, Is.SameAs (pair.GenericParameters [1]), "T : U constraint");
 		Assert.That (pair.GenericParameters [1].Constraints.Single ().ConstraintType.FullName, Is.EqualTo ("System.Collections.Generic.IList`1<System.Collections.Generic.Dictionary`2<System.String,System.Collections.Generic.List`1<TOwner>>>"), "U constraint");
+
+		var annotated = helpers.Single (v => ((MethodReference) v.Body.Instructions [0].Operand).Name.EndsWith (".Annotated", StringComparison.Ordinal));
+		var annotatedAttribute = annotated.GenericParameters [0].CustomAttributes.Single ();
+		Assert.That (annotatedAttribute.AttributeType.FullName, Is.EqualTo ("System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute"), "Annotated attribute");
+		Assert.That (annotatedAttribute.ConstructorArguments [0].Value, Is.EqualTo (8 /* PublicMethods */), "Annotated attribute value");
 
 		Assert.That (signatures, Does.Contain (create.Name + "``1"), "Create helper signature");
 		Assert.That (signatures, Does.Contain (pair.Name + "``2"), "Pair helper signature");
@@ -192,7 +200,11 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	}
 
 	[Test]
-	public void ExplicitInterfaceHelpersInReferencedAssembliesAreSaved ()
+	[TestCase (false, "link")]
+	[TestCase (false, "copy")]
+	[TestCase (true, "copy")]
+	[TestCase (true, "")]
+	public void ExplicitInterfaceHelpersInReferencedAssembliesAreSaved (bool hotReloadCompatibleBuild, string trimMode)
 	{
 		var code = @"
 		[assembly: Foundation.Preserve (typeof (Referenced.Target), AllMembers = true)]
@@ -231,13 +243,22 @@ public class ApplyPreserveAttributeTests : BaseClass {
 				}
 			")),
 		};
-		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles);
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles, hotReloadCompatibleBuild: hotReloadCompatibleBuild);
 		var testOutputDirectory = Path.GetDirectoryName (testInfo.InputPath)!;
 		var targetInputPath = Path.Combine (testOutputDirectory, targetFramework, "Target.dll");
 		var targetOutputPath = Path.Combine (testOutputDirectory, "out", "Target.dll");
-		preparer.Assemblies.Add (new AssemblyPreparerInfo (targetInputPath, targetOutputPath, true, "link"));
+		// In a Hot Reload compatible build an untrimmed referenced assembly can be reloaded, so it must not be modified.
+		// IsTrimmable=false with no explicit trim mode selects CopyUsed.
+		var targetInfo = new AssemblyPreparerInfo (targetInputPath, targetOutputPath, trimMode != "", trimMode);
+		preparer.Assemblies.Add (targetInfo);
 
 		AssertPrepare (preparer);
+		Assert.That (((TestLogger) preparer.Configuration.Logger).Errors, Is.Empty, "Preparation errors");
+
+		if (hotReloadCompatibleBuild) {
+			Assert.That (File.Exists (targetOutputPath), Is.False, "Reloadable referenced assembly was not rewritten");
+			return;
+		}
 
 		Assert.That (File.Exists (targetOutputPath), Is.True, "Referenced assembly was rewritten");
 		using var target = AssemblyDefinition.ReadAssembly (targetOutputPath);

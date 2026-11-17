@@ -1491,7 +1491,7 @@ namespace Xamarin.Linker {
 				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it isn't part of the current link context.");
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
-			if (configuration.HotReloadModifiedAssemblySafetyNet && configuration.HotReloadCompatibleBuild && (action is AssemblyAction.Copy or AssemblyAction.CopyUsed) && assembly != PlatformAssembly) {
+			if (configuration.HotReloadModifiedAssemblySafetyNet && IsReloadableAssembly (assembly)) {
 				configuration.Logger.LogError (ErrorHelper.CreateError (99, $"The assembly '{assembly.Name.Name}' is reloadable, but was modified during a Hot Reload compatible build."));
 				return;
 			}
@@ -1509,6 +1509,15 @@ namespace Xamarin.Linker {
 #endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
+		}
+
+		// Returns true if the assembly can be hot reloaded, in which case it must not be modified.
+		bool IsReloadableAssembly (AssemblyDefinition assembly)
+		{
+			if (!configuration.HotReloadCompatibleBuild || assembly == PlatformAssembly)
+				return false;
+			var action = configuration.Context.Annotations.GetAction (assembly);
+			return action is AssemblyAction.Copy or AssemblyAction.CopyUsed;
 		}
 
 		public void ClearCurrentAssembly ()
@@ -1540,6 +1549,8 @@ namespace Xamarin.Linker {
 				return false;
 
 			var signature = GetDynamicDependencySignature (dependsOn, out var modified);
+			if (signature is null)
+				return false;
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
 				var attribute = CreateDynamicDependencyAttribute (signature);
 				return AddAttributeOnlyOnce (addToMethod, attribute) | modified;
@@ -1577,12 +1588,19 @@ namespace Xamarin.Linker {
 		///     (https://github.com/dotnet/runtime/pull/137387). Instead create a helper method that references
 		///     the method with 'ldtoken', and return the signature for the helper method.
 		///   </para>
+		///   <para>
+		///     Returns null for explicit interface implementations in assemblies that can be hot reloaded, because
+		///     those assemblies must not be modified. They aren't trimmed either, so there's nothing to preserve.
+		///   </para>
 		/// </remarks>
-		public string GetDynamicDependencySignature (MethodDefinition method, out bool modified)
+		public string? GetDynamicDependencySignature (MethodDefinition method, out bool modified)
 		{
 			modified = false;
 			if (!IsExplicitInterfaceImplementation (method))
 				return DocumentationComments.GetSignature (method);
+
+			if (IsReloadableAssembly (method.Module.Assembly))
+				return null;
 
 			var helper = GetOrCreateExplicitInterfaceImplementationRoot (method, out modified);
 			if (helper.HasGenericParameters)
@@ -1634,8 +1652,13 @@ namespace Xamarin.Linker {
 				foreach (var gp in method.GenericParameters)
 					helper.GenericParameters.Add (new GenericParameter (gp.Name, helper) { Attributes = gp.Attributes });
 				foreach (var gp in method.GenericParameters) {
+					var helperParameter = helper.GenericParameters [gp.Position];
 					foreach (var constraint in gp.Constraints)
-						helper.GenericParameters [gp.Position].Constraints.Add (new GenericParameterConstraint (RebindMethodGenericParameters (constraint.ConstraintType, helper)));
+						helperParameter.Constraints.Add (new GenericParameterConstraint (RebindMethodGenericParameters (constraint.ConstraintType, helper)));
+					// Copy attributes such as [DynamicallyAccessedMembers] too, otherwise the trimmer warns
+					// about the instantiation below (IL2091).
+					foreach (var attribute in gp.CustomAttributes)
+						helperParameter.CustomAttributes.Add (new CustomAttribute (attribute.Constructor, attribute.GetBlob ()));
 				}
 
 				// We need a reference to the method on the open generic type (instantiated with its own generic
@@ -1791,7 +1814,9 @@ namespace Xamarin.Linker {
 				if (generatedExplicitInterfaceImplementationRoots.Contains (method))
 					continue;
 				if (IsExplicitInterfaceImplementation (method)) {
-					signatures.Add (GetDynamicDependencySignature (method, out var helperAdded));
+					var signature = GetDynamicDependencySignature (method, out var helperAdded);
+					if (signature is not null)
+						signatures.Add (signature);
 					modified |= helperAdded;
 				} else {
 					signatures.Add (DocumentationComments.GetNameSignature (method));
@@ -1817,7 +1842,8 @@ namespace Xamarin.Linker {
 				}
 			}
 
-			if (signatures.Count == 0) {
+			// Assemblies that can be hot reloaded aren't trimmed (and must not be modified), so there's no need for a placeholder member.
+			if (signatures.Count == 0 && !IsReloadableAssembly (type.Module.Assembly)) {
 				// The type has no declared members, so add a placeholder member and preserve that,
 				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
 				var placeholderName = "__linker_preserve__";
@@ -1866,7 +1892,9 @@ namespace Xamarin.Linker {
 				signatures.Add (DocumentationComments.GetNameSignature (accessor));
 				return false;
 			}
-			signatures.Add (GetDynamicDependencySignature (accessor, out var modified));
+			var signature = GetDynamicDependencySignature (accessor, out var modified);
+			if (signature is not null)
+				signatures.Add (signature);
 			return modified;
 		}
 
@@ -1879,6 +1907,8 @@ namespace Xamarin.Linker {
 		{
 			CustomAttribute attrib;
 			var signature = GetDynamicDependencySignature (forMethod, out var modified);
+			if (signature is null)
+				return modified;
 
 			if (onType == forMethod.DeclaringType) {
 				attrib = CreateDynamicDependencyAttribute (signature);

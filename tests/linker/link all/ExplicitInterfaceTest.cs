@@ -32,7 +32,7 @@ namespace LinkAll.ExplicitInterfaces {
 		void ByRef (ref int value, out string text);
 		string Value { get; set; }
 		event Action Changed;
-		string Plain<T> ();
+		string Plain<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicMethods)] T> ();
 		string Reference<T> () where T : class;
 		string Construct<T> () where T : new();
 		string Marker<T> () where T : IMarker;
@@ -60,7 +60,7 @@ namespace LinkAll.ExplicitInterfaces {
 			add => eventCount++;
 			remove => eventCount--;
 		}
-		string IContract<Dictionary<string, List<int>>, long>.Plain<T> () => "plain:" + typeof (T).Name;
+		string IContract<Dictionary<string, List<int>>, long>.Plain<[DynamicallyAccessedMembers (DynamicallyAccessedMemberTypes.PublicMethods)] T> () => "plain:" + typeof (T).Name;
 		string IContract<Dictionary<string, List<int>>, long>.Reference<T> () => "reference:" + typeof (T).Name;
 		string IContract<Dictionary<string, List<int>>, long>.Construct<T> () => "construct:" + new T ()!.GetType ().Name;
 		string IContract<Dictionary<string, List<int>>, long>.Marker<T> () => "marker:" + typeof (T).Name;

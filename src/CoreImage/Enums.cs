@@ -82,15 +82,15 @@ namespace CoreImage {
 		V200 = 200,
 	}
 
-	/// <summary>Specifies how a <see cref="CIRenderDestination" /> stores alpha values.</summary>
+	/// <summary>Specifies the alpha compositing mode for a <see cref="CIRenderDestination" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
-		/// <summary>The destination has no alpha channel.</summary>
+		/// <summary>Designates a destination with no alpha compositing.</summary>
 		None = 0,
-		/// <summary>Color components are multiplied by the alpha component.</summary>
+		/// <summary>Designates a destination that expects premultiplied alpha values.</summary>
 		Premultiplied = 1,
-		/// <summary>Color components are not multiplied by the alpha component.</summary>
+		/// <summary>Designates a destination that expects non-premultiplied alpha values.</summary>
 		Unpremultiplied = 2,
 	}
 }

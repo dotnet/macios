@@ -295,7 +295,8 @@ namespace MonoTouchFixtures.Security {
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_root_r1));
-			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
+			// Test chain validation without depending on the system's changing Certificate Transparency log list.
+			using (var policy = SecPolicy.CreateBasicX509Policy ())
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_FullChain (trust, policy, certs);
 			}
@@ -306,14 +307,18 @@ namespace MonoTouchFixtures.Security {
 			// that certificate is valid between Aug 25th, 2025 and Nov 17th, 2025, so we validate with a date in that range
 			trust.SetVerifyDate (new DateTime (2025, 10, 1, 0, 0, 0, DateTimeKind.Utc));
 
-			SecTrustResult trust_result = SecTrustResult.Unspecified;
-			var allow_recoverable_trust_failure = TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 26, 4);
 			var result = Evaluate (trust, out var trustError, true);
-			if (allow_recoverable_trust_failure) {
-				Assert.That (result, Is.EqualTo (SecTrustResult.Unspecified).Or.EqualTo (SecTrustResult.RecoverableTrustFailure), $"Evaluate: {trustError}");
-			} else {
-				Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
+			if (result != SecTrustResult.Unspecified) {
+				using var trustDetails = trust.GetResult ();
+				TestContext.Out.WriteLine ($"Initial full-chain evaluation: {result}");
+				TestContext.Out.WriteLine ($"OS: {NSProcessInfo.ProcessInfo.OperatingSystemVersionString}");
+				TestContext.Out.WriteLine ($"Architecture: {RuntimeInformation.ProcessArchitecture}");
+				TestContext.Out.WriteLine ($"Runtime: {RuntimeInformation.FrameworkDescription}");
+				TestContext.Out.WriteLine ($"Verify time (CFAbsoluteTime): {trust.GetVerifyTime ():R}; network fetch allowed: {trust.NetworkFetchAllowed}");
+				TestContext.Out.WriteLine ($"Error domain: {trustError?.Domain}; code: {trustError?.Code}; user info: {trustError?.UserInfo}");
+				TestContext.Out.WriteLine ($"Trust details: {trustDetails}");
 			}
+			Assert.That (result, Is.EqualTo (SecTrustResult.Unspecified), $"Evaluate: {trustError}");
 
 			// Evalute must be called prior to Count (Apple documentation)
 			Assert.That (trust.Count, Is.EqualTo (3), "Count");
@@ -340,17 +345,8 @@ namespace MonoTouchFixtures.Security {
 			// since we modified the `trust` instance it's result was invalidated (marked as unspecified on iOS 11)
 			Assert.That (trust.GetTrustResult (), Is.EqualTo (SecTrustResult.Unspecified), "GetTrustResult-2");
 
-			if (result == SecTrustResult.Unspecified) {
-				Assert.That (trust.Evaluate (out var error), Is.True, $"Evaluate: {error}");
-				Assert.That (error, Is.Null, "error");
-			} else if (result == SecTrustResult.RecoverableTrustFailure) {
-				if (trust.Evaluate (out var error))
-					Assert.That (error, Is.Null, "error");
-				else
-					Assert.That (error, Is.Not.Null, "error");
-			} else {
-				Assert.Fail ($"Unexpected trust result: {result}");
-			}
+			Assert.That (trust.Evaluate (out var error), Is.True, $"Evaluate: {error}");
+			Assert.That (error, Is.Null, "error");
 		}
 
 		[Test]
@@ -382,7 +378,7 @@ namespace MonoTouchFixtures.Security {
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_ca_1c3));
 			certs.Add (X509CertificateLoader.LoadCertificate (CertificateTest.gts_root_r1));
-			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.google.com"))
+			using (var policy = SecPolicy.CreateBasicX509Policy ())
 			using (var trust = new SecTrust (certs, policy)) {
 				Trust_FullChain (trust, policy, certs);
 			}

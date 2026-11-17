@@ -2111,37 +2111,45 @@
 	<!-- Write the list of Swift source files and the compiler settings to a file, so that we recompile if any of them change -->
 	<Target Name="_ComputeSwiftSourceInputs"
 		DependsOnTargets="_ComputeNativeExecutableInputs;_DetectSdkLocations;_ComputeTargetArchitectures"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		>
-		<PropertyGroup Condition="'@(_SwiftSource)' != ''">
+		<PropertyGroup Condition="@(_SwiftSource->Count()) &gt; 0">
 			<_SwiftSourceInputsFile>$(_SwiftObjectDirectory)swift-sources.inputs</_SwiftSourceInputsFile>
 		</PropertyGroup>
-		<ItemGroup Condition="'@(_SwiftSource)' != ''">
+		<ItemGroup Condition="@(_SwiftSource->Count()) &gt; 0">
 			<_SwiftSourceInputsLine Include="@(_SwiftSource->'Source=%(FullPath)|%(ModuleName)|%(BridgingHeader)|%(AdditionalArguments)')" />
 			<_SwiftSourceInputsLine Include="MinimumOSVersion=$(_MinimumOSVersion)" />
 			<_SwiftSourceInputsLine Include="SdkRoot=$(_SdkRoot)" />
 			<_SwiftSourceInputsLine Include="TargetArchitectures=$(TargetArchitectures)" />
 			<_SwiftBridgingHeader Include="@(_SwiftSource->'%(BridgingHeader)'->Distinct())" />
+			<!-- The CompileSwift task writes the files each Swift module depends on (for instance headers included from the bridging header) to a file -->
+			<_SwiftDependencyListFile Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).dependencies')" />
+			<_ExistingSwiftDependencyListFile Include="@(_SwiftDependencyListFile)" Condition="Exists('%(Identity)')" />
 		</ItemGroup>
+		<ReadLinesFromFile File="%(_ExistingSwiftDependencyListFile.Identity)" Condition="@(_ExistingSwiftDependencyListFile->Count()) &gt; 0">
+			<Output TaskParameter="Lines" ItemName="_SwiftSourceDependency" />
+		</ReadLinesFromFile>
 		<WriteLinesToFile
-			Condition="'@(_SwiftSource)' != ''"
+			Condition="@(_SwiftSource->Count()) &gt; 0"
 			File="$(_SwiftSourceInputsFile)"
 			Lines="@(_SwiftSourceInputsLine)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
-		<ItemGroup Condition="'@(_SwiftSource)' != ''">
+		<ItemGroup Condition="@(_SwiftSource->Count()) &gt; 0">
 			<FileWrites Include="$(_SwiftSourceInputsFile)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_CompileSwiftSources"
 		DependsOnTargets="_ComputeSwiftSourceInputs"
-		Inputs="@(_SwiftSource);@(_SwiftBridgingHeader);$(_SwiftSourceInputsFile)"
+		Condition="'$(IsMacEnabled)' == 'true'"
+		Inputs="@(_SwiftSource);@(_SwiftBridgingHeader);@(_SwiftSourceDependency);$(_SwiftSourceInputsFile)"
 		Outputs="@(_SwiftObjectFile)"
 		>
 		<CompileSwift
 			SessionId="$(BuildSessionId)"
-			Condition="'@(_SwiftSource)' != ''"
+			Condition="@(_SwiftSource->Count()) &gt; 0"
 			IsAppExtension="$(IsAppExtension)"
 			MinimumOSVersion="$(_MinimumOSVersion)"
 			OutputDirectory="$(_SwiftObjectDirectory)"
@@ -2155,6 +2163,9 @@
 
 		<ItemGroup>
 			<FileWrites Include="@(_SwiftObjectFile)" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).d')" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).dependencies')" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).output-file-map.json')" />
 		</ItemGroup>
 	</Target>
 
@@ -2373,6 +2384,8 @@
 		<ItemGroup Condition="'$(LinkWithSwiftSystemLibraries)' == 'true'">
 			<_MainLinkerFlags Include="-L$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(_SwiftTargetPlatform)/" />
 			<_MainLinkerFlags Include="-L$(_SdkRoot)/usr/lib/swift/" />
+			<!-- Swift overlays for iOS frameworks (such as UIKit) on Mac Catalyst -->
+			<_MainLinkerFlags Include="-L$(_SdkRoot)/System/iOSSupport/usr/lib/swift/" Condition="'$(_PlatformName)' == 'MacCatalyst'" />
 		</ItemGroup>
 	</Target>
 

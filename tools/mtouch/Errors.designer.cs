@@ -3651,6 +3651,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The file system class &apos;{0}&apos; for the FSKit extension must implement &apos;FSKit.IFSUnaryFileSystemOperations&apos;..
+        /// </summary>
+        public static string MX2327 {
+            get {
+                return ResourceManager.GetString("MX2327", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {

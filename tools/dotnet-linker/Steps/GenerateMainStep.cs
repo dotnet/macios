@@ -193,7 +193,10 @@ namespace Xamarin {
 			if (fileSystemClasses.Count > 1)
 				throw ErrorHelper.CreateError (2326, Errors.MX2326, string.Join (", ", fileSystemClasses.Select (v => v.Type.FullName).OrderBy (v => v)));
 
-			var objcClassName = fileSystemClasses [0].ObjCClassName;
+			var fileSystemClass = fileSystemClasses [0];
+			if (!ImplementsFileSystemOperations (fileSystemClass.Type))
+				throw ErrorHelper.CreateError (2327, Errors.MX2327, fileSystemClass.Type.FullName);
+			var objcClassName = fileSystemClass.ObjCClassName;
 			var moduleName = "XamarinFSKitExtension";
 			var directory = Configuration.CacheDirectory;
 			var swiftPath = Path.Combine (directory, "fskit-extension.swift");
@@ -292,6 +295,16 @@ namespace Xamarin {
 				}
 			}
 			return rv;
+		}
+
+		static bool ImplementsFileSystemOperations (TypeDefinition? type)
+		{
+			while (type is not null) {
+				if (type.HasInterfaces && type.Interfaces.Any (v => v.InterfaceType.Is ("FSKit", "IFSUnaryFileSystemOperations")))
+					return true;
+				type = type.BaseType?.Resolve ();
+			}
+			return false;
 		}
 
 		static IEnumerable<TypeDefinition> GetAllTypes (IEnumerable<TypeDefinition> types)

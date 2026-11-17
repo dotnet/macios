@@ -36,7 +36,7 @@ namespace EventKit {
 	/// <summary>The base-class for persistent Event Kit classes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKObjectClassRef/index.html">Apple documentation for <c>EKObject</c></related>
-	[MacCatalyst (13, 1), NoTV]
+	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[Abstract]
 	interface EKObject {
@@ -69,7 +69,6 @@ namespace EventKit {
 		[Export ("UUID")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'CalendarItemIdentifier' instead.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CalendarItemIdentifier' instead.")]
 		string UUID { get; }
 
@@ -161,7 +160,6 @@ namespace EventKit {
 		[Export ("calendars")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'GetCalendars (EKEntityType)' instead.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetCalendars (EKEntityType)' instead.")]
 		NSSet Calendars { get; }
 
@@ -171,7 +169,7 @@ namespace EventKit {
 		[Export ("calendarsForEntityType:")]
 		NSSet GetCalendars (EKEntityType entityType);
 
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("isDelegate", ArgumentSemantic.Assign)]
 		bool IsDelegate { get; }
 	}
@@ -195,7 +193,6 @@ namespace EventKit {
 		[Export ("locationWithTitle:"), Static]
 		EKStructuredLocation FromTitle (string title);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("locationWithMapItem:")]
 		EKStructuredLocation FromMapItem (MKMapItem mapItem);
@@ -279,7 +276,6 @@ namespace EventKit {
 		[Export ("color", ArgumentSemantic.Copy)]
 		NSColor Color { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("CGColor")]
 		CGColor CGColor { get; set; }
 
@@ -363,11 +359,9 @@ namespace EventKit {
 		[Export ("status")]
 		EKEventStatus Status { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("structuredLocation", ArgumentSemantic.Copy)]
 		EKStructuredLocation StructuredLocation { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("occurrenceDate")]
 		NSDate OccurrenceDate { get; }
 
@@ -381,12 +375,10 @@ namespace EventKit {
 
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Replaced by 'BirthdayContactIdentifier'.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Replaced by 'BirthdayContactIdentifier'.")]
 		[Export ("birthdayPersonID")]
 		nint BirthdayPersonID { get; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("birthdayContactIdentifier")]
 		string BirthdayContactIdentifier { get; }
 	}
@@ -415,7 +407,6 @@ namespace EventKit {
 
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 9, 0, message: "Replaced by 'ContactPredicate'.")]
-		[MacCatalyst (14, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Replaced by 'ContactPredicate'.")]
 		[return: NullAllowed]
 		[Export ("ABRecordWithAddressBook:")]
@@ -424,11 +415,9 @@ namespace EventKit {
 		/// <summary>Gets a Boolean value that tells whether the participant is the account owner.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isCurrentUser")]
 		bool IsCurrentUser { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("contactPredicate")]
 		NSPredicate ContactPredicate { get; }
 	}
@@ -547,7 +536,7 @@ namespace EventKit {
 	/// <include file="../docs/api/EventKit/EKEventStore.xml" path="/Documentation/Docs[@DocId='T:EventKit.EKEventStore']/*" />
 	[BaseType (typeof (NSObject))]
 	interface EKEventStore {
-		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoTV]
 		[Export ("initWithSources:")]
 		NativeHandle Constructor (EKSource [] sources);
 
@@ -557,18 +546,15 @@ namespace EventKit {
 		[NoMac]
 		[Export ("calendars")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'GetCalendars' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'GetCalendars' instead.")]
 		EKCalendar [] Calendars { get; }
 
 		[Export ("defaultCalendarForNewEvents"), NullAllowed]
 		EKCalendar DefaultCalendarForNewEvents { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("saveEvent:span:error:")]
 		bool SaveEvent (EKEvent theEvent, EKSpan span, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeEvent:span:error:")]
 		bool RemoveEvents (EKEvent theEvent, EKSpan span, out NSError error);
 
@@ -600,30 +586,24 @@ namespace EventKit {
 		[Export ("calendarWithIdentifier:")]
 		EKCalendar GetCalendar (string identifier);
 
-		[MacCatalyst (13, 1)]
 		[Export ("saveCalendar:commit:error:")]
 		bool SaveCalendar (EKCalendar calendar, bool commit, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeCalendar:commit:error:")]
 		bool RemoveCalendar (EKCalendar calendar, bool commit, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("saveEvent:span:commit:error:")]
 		bool SaveEvent (EKEvent ekEvent, EKSpan span, bool commit, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeEvent:span:commit:error:")]
 		bool RemoveEvent (EKEvent ekEvent, EKSpan span, bool commit, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("commit:")]
 		bool Commit (out NSError error);
 
 		[Export ("reset")]
 		void Reset ();
 
-		[MacCatalyst (13, 1)]
 		[Export ("refreshSourcesIfNecessary")]
 		void RefreshSourcesIfNecessary ();
 
@@ -671,11 +651,9 @@ namespace EventKit {
 		[Export ("predicateForRemindersInCalendars:")]
 		NSPredicate PredicateForReminders ([NullAllowed] EKCalendar [] calendars);
 
-		[MacCatalyst (13, 1)]
 		[Export ("removeReminder:commit:error:")]
 		bool RemoveReminder (EKReminder reminder, bool commit, out NSError error);
 
-		[MacCatalyst (13, 1)]
 		[Export ("saveReminder:commit:error:")]
 		bool SaveReminder (EKReminder reminder, bool commit, out NSError error);
 
@@ -686,11 +664,9 @@ namespace EventKit {
 		[Export ("initWithAccessToEntityTypes:")]
 		NativeHandle Constructor (EKEntityMask accessToEntityTypes);
 
-		[MacCatalyst (13, 1)]
 		[Export ("delegateSources")]
 		EKSource [] DelegateSources { get; }
 
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
 		[Deprecated (PlatformName.MacCatalyst, 17, 0, message: "Use RequestFullAccessToEvents, RequestWriteOnlyAccessToEvents, or RequestFullAccessToReminders.")]
@@ -707,22 +683,21 @@ namespace EventKit {
 			""")]
 		void RequestAccess (EKEntityType entityType, Action<bool, NSError> completionHandler);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requestFullAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestFullAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requestWriteOnlyAccessToEventsWithCompletion:")]
 		[Async]
 		void RequestWriteOnlyAccessToEvents (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("requestFullAccessToRemindersWithCompletion:")]
 		[Async]
 		void RequestFullAccessToReminders (EKEventStoreRequestAccessCompletionHandler completion);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("authorizationStatusForEntityType:")]
 		EKAuthorizationStatus GetAuthorizationStatus (EKEntityType entityType);
@@ -760,7 +735,6 @@ namespace EventKit {
 		NSDate CompletionDate { get; set; }
 
 		[Export ("priority")]
-		[MacCatalyst (13, 1)]
 		nint Priority { get; set; }
 		// note: changed to NUInteger in Xcode 7 SDK
 
@@ -769,7 +743,7 @@ namespace EventKit {
 		EKReminder Create (EKEventStore eventStore);
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceDescriptor {
@@ -790,7 +764,7 @@ namespace EventKit {
 	delegate void VirtualConferenceRoomTypeHandler ([NullAllowed] NSArray<EKVirtualConferenceRoomTypeDescriptor> virtualConferenceRoomTypeDescriptor, [NullAllowed] NSError error);
 	delegate void VirtualConferenceHandler ([NullAllowed] EKVirtualConferenceDescriptor virtualConferenceDescriptor, [NullAllowed] NSError error);
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	interface EKVirtualConferenceProvider : NSExtensionRequestHandling {
 		[Async]
@@ -802,7 +776,7 @@ namespace EventKit {
 		void FetchVirtualConference (string identifier, VirtualConferenceHandler handler);
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceRoomTypeDescriptor {
@@ -817,7 +791,7 @@ namespace EventKit {
 		string Identifier { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[BaseType (typeof (NSObject), Name = "EKVirtualConferenceURLDescriptor")]
 	[DisableDefaultCtor]
 	interface EKVirtualConferenceUrlDescriptor {

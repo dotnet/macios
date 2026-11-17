@@ -36,7 +36,6 @@ namespace SafariServices {
 	///       <para>This class has one read-only property, <see cref="SafariServices.SFContentBlockerState.Enabled" />, which tells whether or not the associated content blocker extension is enabled.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SafariServices/SFContentBlockerState">Apple documentation for <c>SFContentBlockerState</c></related>
-	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[BaseType (typeof (NSObject))]
 	interface SFContentBlockerState {
 		/// <summary>Gets a value that tells whether or not the associated content blocker extension is enabled.</summary>
@@ -49,7 +48,6 @@ namespace SafariServices {
 	/// <summary>Coordinates with Safari to load extension blocking rules.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SafariServices/SFContentBlockerManager">Apple documentation for <c>SFContentBlockerManager</c></related>
-	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface SFContentBlockerManager {
@@ -83,7 +81,6 @@ namespace SafariServices {
 		///         <param name="completionHandler">To be added.</param>
 		///         <summary>Passes the state of the specified content blocker to the provided <paramref name="completionHandler" />.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 4)]
 		[Static]
 		[Async (XmlDocs = """
 			<param name="identifier">To be added.</param>
@@ -104,7 +101,6 @@ namespace SafariServices {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SafariServices/SSReadingList">Apple documentation for <c>SSReadingList</c></related>
 	[NoMac]
-	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // NSGenericException Misuse of SSReadingList interface. Use class method defaultReadingList.
 	partial interface SSReadingList {
@@ -152,7 +148,6 @@ namespace SafariServices {
 	///     
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller">Apple documentation for <c>SFSafariViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
 	[DisableDefaultCtor] // NSGenericException Reason: Misuse of SFSafariViewController interface. Use initWithURL:entersReaderIfAvailable:
 	interface SFSafariViewController {
@@ -174,7 +169,6 @@ namespace SafariServices {
 		/// <param name="configuration">To be added.</param>
 		/// <summary>Creates a new browsing interface with the provided URL and configuration.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithURL:configuration:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSUrl url, SFSafariViewControllerConfiguration configuration);
@@ -218,12 +212,10 @@ namespace SafariServices {
 
 		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("preferredBarTintColor", ArgumentSemantic.Assign)]
 		UIColor PreferredBarTintColor { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Deprecated (PlatformName.iOS, 26, 0, message: "Interferes with system-provided background effects")]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Interferes with system-provided background effects")]
@@ -233,18 +225,16 @@ namespace SafariServices {
 		/// <summary>Gets the configuration that was used when creating this view controller.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("configuration", ArgumentSemantic.Copy)]
 		SFSafariViewControllerConfiguration Configuration { get; }
 
 		/// <summary>Gets or sets a value that controls the style of the dismiss button.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dismissButtonStyle", ArgumentSemantic.Assign)]
 		SFSafariViewControllerDismissButtonStyle DismissButtonStyle { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Static]
 		[Export ("prewarmConnectionsToURLs:")]
 		SFSafariViewControllerPrewarmingToken PrewarmConnections (NSUrl [] urls);
@@ -256,7 +246,6 @@ namespace SafariServices {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/SafariServices/SFSafariViewControllerDelegate">Apple documentation for <c>SFSafariViewControllerDelegate</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -295,7 +284,6 @@ namespace SafariServices {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:excludedActivityTypesForURL:title:")]
 		string [] GetExcludedActivityTypes (SFSafariViewController controller, NSUrl url, [NullAllowed] string title);
 
@@ -303,19 +291,16 @@ namespace SafariServices {
 		///         <param name="url">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("safariViewController:initialLoadDidRedirectToURL:")]
 		void InitialLoadDidRedirectToUrl (SFSafariViewController controller, NSUrl url);
 
 		[iOS (14, 0)]
-		[MacCatalyst (14, 0)]
 		[Export ("safariViewControllerWillOpenInBrowser:")]
 		void WillOpenInBrowser (SFSafariViewController controller);
 	}
 
 	/// <summary>Configuration options for Safari view controllers.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface SFSafariViewControllerConfiguration : NSCopying {
 		/// <summary>Gets or sets a Boolean value that controls whether the view controller will enter Reader mode if it is available.</summary>
@@ -331,12 +316,12 @@ namespace SafariServices {
 		bool BarCollapsingEnabled { get; set; }
 
 		[NullAllowed]
-		[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
+		[iOS (15, 0), NoMac, NoTV]
 		[Export ("activityButton", ArgumentSemantic.Copy)]
 		SFSafariViewControllerActivityButton ActivityButton { get; set; }
 
 		[NullAllowed]
-		[NoTV, iOS (15, 2), MacCatalyst (15, 2), NoMac]
+		[NoTV, iOS (15, 2), NoMac]
 		[Export ("eventAttribution", ArgumentSemantic.Copy)]
 		UIEventAttribution EventAttribution { get; set; }
 	}
@@ -346,7 +331,6 @@ namespace SafariServices {
 	///     
 	///     <summary>Delegate for handling the result of a user action in a <see cref="SafariServices.SFAuthenticationSession" />.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	delegate void SFAuthenticationCompletionHandler ([NullAllowed] NSUrl callbackUrl, [NullAllowed] NSError error);
 
 	/// <summary>A one-time web service login, shared between Safari, an app, and other associated apps.</summary>
@@ -354,7 +338,6 @@ namespace SafariServices {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'ASWebAuthenticationSession' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ASWebAuthenticationSession' instead.")]
 	interface SFAuthenticationSession {
 		/// <param name="url">To be added.</param>
@@ -803,7 +786,7 @@ namespace SafariServices {
 	}
 
 	[Static]
-	[iOS (15, 0), MacCatalyst (15, 0), NoTV]
+	[iOS (15, 0), NoTV]
 	[DisableDefaultCtor]
 	interface SFExtension {
 		[Field ("SFExtensionMessageKey")]
@@ -814,7 +797,7 @@ namespace SafariServices {
 		NSString ProfileKey { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
+	[iOS (15, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerActivityButton : NSCopying, NSSecureCoding {
@@ -829,7 +812,7 @@ namespace SafariServices {
 		string ExtensionIdentifier { get; }
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
+	[iOS (15, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerPrewarmingToken /* Privately conforms to NSCoding and NSSecureCoding */
@@ -838,7 +821,7 @@ namespace SafariServices {
 		void Invalidate ();
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0), NoMac, NoTV]
+	[iOS (16, 0), NoMac, NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSafariViewControllerDataStore {

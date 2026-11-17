@@ -18,7 +18,6 @@ using UIKit;
 namespace IntentsUI {
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INUIHostedViewContext : ulong {
 		/// <summary>To be added.</summary>
@@ -41,7 +40,6 @@ namespace IntentsUI {
 	}
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INUIAddVoiceShortcutButtonStyle : ulong {
 		/// <summary>To be added.</summary>
@@ -52,18 +50,14 @@ namespace IntentsUI {
 		Black,
 		/// <summary>To be added.</summary>
 		BlackOutline,
-		[MacCatalyst (13, 1)]
 		Automatic,
-		[MacCatalyst (13, 1)]
 		AutomaticOutLine,
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	delegate void INUIHostedViewControllingConfigureViewHandler (bool success, NSSet<INParameter> configuredParameters, CGSize desiredSize);
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface INUIHostedViewControlling {
 		/// <param name="interaction">To be added.</param>
@@ -81,14 +75,12 @@ namespace IntentsUI {
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("configureViewForParameters:ofInteraction:interactiveBehavior:context:completion:")]
 		void ConfigureView (NSSet<INParameter> parameters, INInteraction interaction, INUIInteractiveBehavior interactiveBehavior, INUIHostedViewContext context, INUIHostedViewControllingConfigureViewHandler completionHandler);
 	}
 
 	/// <summary>Interface for presenting custom map and Siri content.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_INUIHostedViewControlling {
@@ -108,13 +100,11 @@ namespace IntentsUI {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("interfaceParametersDescription")]
 		string GetInterfaceParametersDescription ();
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface INUIHostedViewSiriProviding {
 
@@ -128,7 +118,6 @@ namespace IntentsUI {
 		bool DisplaysPaymentTransaction { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 #if MONOMAC
 	[BaseType (typeof (NSViewController))]
 #else
@@ -151,14 +140,12 @@ namespace IntentsUI {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[MacCatalyst (13, 4)]
 		[Export ("initWithShortcut:")]
 		NativeHandle Constructor (INShortcut shortcut);
 	}
 
 	interface IINUIAddVoiceShortcutViewControllerDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface INUIAddVoiceShortcutViewControllerDelegate {
@@ -180,7 +167,6 @@ namespace IntentsUI {
 		void DidCancel (INUIAddVoiceShortcutViewController controller);
 	}
 
-	[MacCatalyst (13, 1)]
 #if MONOMAC
 	[BaseType (typeof (NSViewController))]
 #else
@@ -203,14 +189,12 @@ namespace IntentsUI {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[MacCatalyst (13, 4)]
 		[Export ("initWithVoiceShortcut:")]
 		NativeHandle Constructor (INVoiceShortcut voiceShortcut);
 	}
 
 	interface IINUIEditVoiceShortcutViewControllerDelegate { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface INUIEditVoiceShortcutViewControllerDelegate {
@@ -242,7 +226,6 @@ namespace IntentsUI {
 
 	/// <summary>A button that is used to add a Siri shortcut.</summary>
 	[NoTV]
-	[MacCatalyst (13, 1)]
 #if MONOMAC
 	[BaseType (typeof (NSButton))]
 #else
@@ -251,7 +234,6 @@ namespace IntentsUI {
 	[DisableDefaultCtor]
 	interface INUIAddVoiceShortcutButton {
 
-		[MacCatalyst (13, 4)]
 		[Export ("initWithStyle:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (INUIAddVoiceShortcutButtonStyle style);
@@ -272,11 +254,9 @@ namespace IntentsUI {
 		[NullAllowed, Export ("shortcut", ArgumentSemantic.Strong)]
 		INShortcut Shortcut { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius", ArgumentSemantic.Assign)]
 		nfloat CornerRadius { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("setStyle:")]
 		void SetStyle (INUIAddVoiceShortcutButtonStyle style);
 	}
@@ -284,7 +264,6 @@ namespace IntentsUI {
 	interface IINUIAddVoiceShortcutButtonDelegate { }
 
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface INUIAddVoiceShortcutButtonDelegate {

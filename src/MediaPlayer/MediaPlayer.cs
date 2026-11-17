@@ -17,7 +17,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMoviePlaybackState : long {
@@ -40,7 +39,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieLoadState : long {
@@ -59,7 +57,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieRepeatMode : long {
@@ -74,7 +71,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieControlStyle : long {
@@ -93,7 +89,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieFinishReason : long {
@@ -110,7 +105,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native ("MPMovieMediaTypeMask")]
 	[Flags]
@@ -128,7 +122,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieSourceType : long {
@@ -145,7 +138,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieTimeOption : long {
@@ -158,7 +150,6 @@ namespace MediaPlayer {
 	// NSUInteger -> MPMediaItem.h
 	/// <summary>An enumeration whose values specify various types of media.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum MPMediaType : ulong {
@@ -174,25 +165,18 @@ namespace MediaPlayer {
 		AnyAudio = 0x00ff,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Movie = 1 << 8,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		TVShow = 1 << 9,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		VideoPodcast = 1 << 10,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		MusicVideo = 1 << 11,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		VideoITunesU = 1 << 12,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		HomeVideo = 1 << 13,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		TypeAnyVideo = 0xff00,
 		/// <summary>To be added.</summary>
 		Any = 0xFFFFFFFFFFFFFFFF,
@@ -202,7 +186,6 @@ namespace MediaPlayer {
 	/// <summary>An enumeration whose values specify various types of playlist.</summary>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum MPMediaPlaylistAttribute : long {
@@ -220,7 +203,6 @@ namespace MediaPlayer {
 	/// <summary>An enumeration whose values specify various ways in which media can be logically grouped.</summary>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMediaGrouping : long {
 		/// <summary>To be added.</summary>
@@ -245,7 +227,6 @@ namespace MediaPlayer {
 	/// <summary>An enumeration whose values specifies a comparison-type to be used with a <see cref="MediaPlayer.MPMediaPredicate" />.</summary>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMediaPredicateComparison : long {
 		/// <summary>To be added.</summary>
@@ -259,7 +240,6 @@ namespace MediaPlayer {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum MPMovieScalingMode : long {
@@ -277,7 +257,6 @@ namespace MediaPlayer {
 	/// <summary>Application developers should not use this deprecated class, but instead use <see cref="MediaPlayer.MPMovieControlStyle" />.</summary>
 	/// <remarks>To be added.</remarks>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	public enum MPMovieControlMode {
 		/// <summary>To be added.</summary>
 		Default,
@@ -292,7 +271,6 @@ namespace MediaPlayer {
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMusicPlaybackState : long {
 		/// <summary>To be added.</summary>
@@ -314,7 +292,6 @@ namespace MediaPlayer {
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMusicRepeatMode : long {
 		/// <summary>To be added.</summary>
@@ -332,7 +309,6 @@ namespace MediaPlayer {
 	/// <remarks>To be added.</remarks>
 	[NoMac]
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMusicShuffleMode : long {
 		/// <summary>To be added.</summary>
@@ -358,7 +334,6 @@ namespace MediaPlayer {
 #endif
 	public delegate void MPMediaItemEnumerator (string property, NSObject value, ref bool stop);
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPShuffleType : long {
 		/// <summary>To be added.</summary>
@@ -369,7 +344,6 @@ namespace MediaPlayer {
 		Collections,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRepeatType : long {
 		/// <summary>To be added.</summary>
@@ -380,7 +354,6 @@ namespace MediaPlayer {
 		All,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPChangeLanguageOptionSetting : long {
 		/// <summary>To be added.</summary>
@@ -394,7 +367,6 @@ namespace MediaPlayer {
 	// NSInteger -> MPRemoteCommand.h
 	/// <summary>Enumerates values that indicate whether a command succeeded, failed, or cannot play the kind of media requested.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPRemoteCommandHandlerStatus : long {
 		/// <summary>Indicates that the command succeeded.</summary>
@@ -402,10 +374,8 @@ namespace MediaPlayer {
 		/// <summary>Indicates that there was no such content to play.</summary>
 		NoSuchContent = 100,
 		/// <summary>Indicates that no item was playing, so the command could not be meaningfuly received.</summary>
-		[MacCatalyst (13, 1)]
 		NoActionableNowPlayingItem = 110,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		DeviceNotFound = 120,
 		/// <summary>Indicates that the command failed.</summary>
 		CommandFailed = 200,
@@ -414,7 +384,6 @@ namespace MediaPlayer {
 	// NSUInteger -> MPRemoteCommandEvent.h
 	/// <summary>Enumerates values that indicate whether the command began or ended a seek operation.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPSeekCommandEventType : ulong {
 		/// <summary>To be added.</summary>
@@ -423,7 +392,6 @@ namespace MediaPlayer {
 		EndSeeking,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingInfoLanguageOptionType : ulong {
 		/// <summary>To be added.</summary>
@@ -434,7 +402,6 @@ namespace MediaPlayer {
 
 	/// <summary>Enumerates error codes in the Media Player domain.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[ErrorDomain ("MPErrorDomain")]
 	public enum MPErrorCode : long {
@@ -459,7 +426,6 @@ namespace MediaPlayer {
 	/// <summary>Enumerates the status of the application's permission to access the media library.</summary>
 	[NoMac]
 	[NoTV]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPMediaLibraryAuthorizationStatus : long {
 		/// <summary>The user has not interacted with the permissions dialog.</summary>
@@ -472,7 +438,6 @@ namespace MediaPlayer {
 		Authorized,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingInfoMediaType : ulong {
 		/// <summary>To be added.</summary>
@@ -483,7 +448,6 @@ namespace MediaPlayer {
 		Video,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum MPNowPlayingPlaybackState : ulong {
 		/// <summary>To be added.</summary>

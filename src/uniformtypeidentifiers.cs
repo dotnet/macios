@@ -2,7 +2,6 @@ using System.ComponentModel;
 
 namespace UniformTypeIdentifiers {
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (14, 0), iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -126,17 +125,16 @@ namespace UniformTypeIdentifiers {
 		// extension methods used in ShazamKit
 
 		[Static]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("SHCustomCatalogContentType", ArgumentSemantic.Strong)]
 		UTType SHCustomCatalogContentType { get; }
 
 		[Static]
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0)]
 		[Export ("SHSignatureContentType", ArgumentSemantic.Strong)]
 		UTType SHSignatureContentType { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (14, 0), iOS (14, 0)]
 	enum UTTagClass {
 		[Field ("UTTagClassFilenameExtension")]
@@ -147,7 +145,6 @@ namespace UniformTypeIdentifiers {
 	}
 
 	// split from UTType for clarity between members (selectors) and constants (fields)
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (14, 0), iOS (14, 0)]
 	[Static]
 	interface UTTypes {
@@ -294,7 +291,7 @@ namespace UniformTypeIdentifiers {
 		[Field ("UTTypePHPScript")]
 		UTType PhpScript { get; }
 
-		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 0), iOS (15, 0)]
 		[Field ("UTTypeMakefile")]
 		UTType Makefile { get; }
 
@@ -570,7 +567,7 @@ namespace UniformTypeIdentifiers {
 		[Field ("UTTypeLog")]
 		UTType Log { get; }
 
-		[TV (17, 0), MacCatalyst (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("UTTypeAHAP")]
 		UTType Ahap { get; }
 
@@ -587,7 +584,6 @@ namespace UniformTypeIdentifiers {
 		UTType JpegXl { get; }
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (14, 0), iOS (14, 0)]
 	[Category]
 	[BaseType (typeof (NSString))]
@@ -600,7 +596,6 @@ namespace UniformTypeIdentifiers {
 		NSString AppendPathExtension (UTType contentType);
 	}
 
-	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[TV (14, 0), iOS (14, 0)]
 	[Category]
 	[BaseType (typeof (NSUrl))]

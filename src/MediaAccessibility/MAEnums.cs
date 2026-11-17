@@ -14,7 +14,6 @@ namespace MediaAccessibility {
 
 	/// <summary>Enumerates values that indicate whether to use the system's or the user's caption appearance settings.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceDomain : long {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -27,7 +26,6 @@ namespace MediaAccessibility {
 
 	/// <summary>Enumerates values that indicate whether to display captions only for translation, always, or only if an audio track language differs from the system.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceDisplayType : long {
 		/// <summary>To be added.</summary>
 		ForcedOnly = 0,
@@ -39,7 +37,6 @@ namespace MediaAccessibility {
 
 	/// <summary>Enumerates values that indicate whether to override a setting with the value that is supplied by the media, if present.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceBehavior : long {
 		/// <summary>To be added.</summary>
 		UseValue = 0,
@@ -49,7 +46,6 @@ namespace MediaAccessibility {
 
 	/// <summary>Enumerated values that control the font for the captions.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceFontStyle : long {
 		/// <summary>To be added.</summary>
 		Default = 0,
@@ -71,7 +67,6 @@ namespace MediaAccessibility {
 
 	/// <summary>Enumerates values that indicate whether to raise caption text, use drop shadows on them, or etc.</summary>
 	[Native]
-	[MacCatalyst (13, 1)]
 	public enum MACaptionAppearanceTextEdgeStyle : long {
 		/// <summary>To be added.</summary>
 		Undefined = 0,

@@ -5,7 +5,6 @@ namespace MediaAccessibility {
 	/// <summary>Class that contains static methods and fields for accessing and controlling information about the appearance and language of accessibility features on the device.</summary>
 	[Static]
 	interface MACaptionAppearance {
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("kMACaptionAppearanceSettingsChangedNotification")]
 		NSString SettingsChangedNotification { get; }
@@ -14,7 +13,6 @@ namespace MediaAccessibility {
 	/// <summary>Defines the constant associated with <c>kMAudibleMediaSettingsChangedNotification</c> and accessibility preferred characteristics.</summary>
 	[Static]
 	interface MAAudibleMedia {
-		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("kMAAudibleMediaSettingsChangedNotification")]
 		NSString SettingsChangedNotification { get; }
@@ -25,34 +23,31 @@ namespace MediaAccessibility {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicDescribesMusicAndSoundForAccessibility")]
 		NSString DescribesMusicAndSoundForAccessibility { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicDescribesVideoForAccessibility")]
 		NSString DescribesVideoForAccessibility { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("MAMediaCharacteristicTranscribesSpokenDialogForAccessibility")]
 		NSString TranscribesSpokenDialogForAccessibility { get; }
 	}
 
 	[Static]
 	interface MAVideoAccommodations {
-		[TV (16, 4), iOS (16, 4), MacCatalyst (16, 4)]
+		[TV (16, 4), iOS (16, 4)]
 		[Notification]
 		[Field ("kMADimFlashingLightsChangedNotification")]
 		NSString DimFlashingLightsChangedNotification { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MAFlashingLightsProcessorResult {
 		[Export ("surfaceProcessed")]
@@ -65,7 +60,7 @@ namespace MediaAccessibility {
 		float IntensityLevel { get; }
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MAFlashingLightsProcessor {
 		[Export ("canProcessSurface:")]

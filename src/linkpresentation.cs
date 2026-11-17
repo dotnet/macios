@@ -20,7 +20,6 @@ namespace LinkPresentation {
 
 	[ErrorDomain ("LPErrorDomain")]
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum LPErrorCode : long {
 		Unknown = 1,
@@ -31,7 +30,6 @@ namespace LinkPresentation {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface LPLinkMetadata : NSCopying, NSSecureCoding {
 
@@ -58,7 +56,6 @@ namespace LinkPresentation {
 	}
 
 	[TV (14, 0)]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	interface LPLinkView {
 
@@ -77,7 +74,6 @@ namespace LinkPresentation {
 	}
 
 	[TV (18, 0)]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface LPMetadataProvider {
 
@@ -86,7 +82,7 @@ namespace LinkPresentation {
 		void StartFetchingMetadata (NSUrl url, Action<LPLinkMetadata, NSError> completionHandler);
 
 		[Async]
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("startFetchingMetadataForRequest:completionHandler:")]
 		void StartFetchingMetadata (NSUrlRequest request, Action<LPLinkMetadata, NSError> completionHandler);
 

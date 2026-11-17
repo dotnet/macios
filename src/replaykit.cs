@@ -25,7 +25,6 @@ namespace ReplayKit {
 	/// <summary>A view controller for previewing and editing a ReplayKit recording.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPPreviewViewController">Apple documentation for <c>RPPreviewViewController</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCRecordingEditor' instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCRecordingEditor' instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCRecordingEditor' instead.")]
@@ -62,7 +61,6 @@ namespace ReplayKit {
 	/// <summary>The view controller protocol for previewing and editing a ReplayKit recording.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ReplayKit/Reference/RPPreviewViewControllerDelegate_Ref/index.html">Apple documentation for <c>RPPreviewViewControllerDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPPreviewViewControllerDelegate {
@@ -78,7 +76,6 @@ namespace ReplayKit {
 		/// <summary>Method that is called when the previewer is ready to be dismissed.</summary>
 		/// <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("previewController:didFinishWithActivityTypes:")]
 		void DidFinish (RPPreviewViewController previewController, NSSet<NSString> activityTypes);
 	}
@@ -86,7 +83,6 @@ namespace ReplayKit {
 	/// <summary>Enables the user to record visual and audio output of applications, with simultaneous recorded audio (screencasts).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ReplayKit/Reference/RPScreenRecorder_Ref/index.html">Apple documentation for <c>RPScreenRecorder</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
@@ -103,7 +99,6 @@ namespace ReplayKit {
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'StartRecording (Action<NSError>)' instead.")]
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'StartRecording (Action<NSError>)' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'StartRecording (Action<NSError>)' instead.")]
 		[Async (XmlDocs = """
 			<param name="microphoneEnabled">To be added.</param>
@@ -114,7 +109,6 @@ namespace ReplayKit {
 		[Export ("startRecordingWithMicrophoneEnabled:handler:")]
 		void StartRecording (bool microphoneEnabled, [NullAllowed] Action<NSError> handler);
 
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
@@ -175,7 +169,6 @@ namespace ReplayKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use ScreenCaptureKit instead.")]
@@ -183,7 +176,6 @@ namespace ReplayKit {
 		bool MicrophoneEnabled {
 			[Bind ("isMicrophoneEnabled")]
 			get;
-			[MacCatalyst (13, 1)]
 			set;
 		}
 
@@ -201,7 +193,6 @@ namespace ReplayKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use ScreenCaptureKit instead.")]
@@ -209,7 +200,6 @@ namespace ReplayKit {
 		bool CameraEnabled { [Bind ("isCameraEnabled")] get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use ScreenCaptureKit instead.")]
@@ -217,14 +207,12 @@ namespace ReplayKit {
 		UIView CameraPreviewView { get; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use ScreenCaptureKit instead.")]
 		[Export ("cameraPosition", ArgumentSemantic.Assign)]
 		RPCameraPosition CameraPosition { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'ISCStreamOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'ISCStreamOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'ISCStreamOutput' instead.")]
@@ -238,7 +226,6 @@ namespace ReplayKit {
 		[Export ("startCaptureWithHandler:completionHandler:")]
 		void StartCapture ([NullAllowed] Action<CMSampleBuffer, RPSampleBufferType, NSError> captureHandler, [NullAllowed] Action<NSError> completionHandler);
 
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream.StopCapture' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream.StopCapture' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream.StopCapture' instead.")]
@@ -254,7 +241,6 @@ namespace ReplayKit {
 		[Export ("stopCaptureWithHandler:")]
 		void StopCapture ([NullAllowed] Action<NSError> handler);
 
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[TV (14, 0), iOS (14, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
@@ -265,7 +251,7 @@ namespace ReplayKit {
 		void StopRecording (NSUrl url, [NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
@@ -274,7 +260,7 @@ namespace ReplayKit {
 		void ExportClip (NSUrl url, double duration, [NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
@@ -283,7 +269,7 @@ namespace ReplayKit {
 		void StartClipBuffering ([NullAllowed] Action<NSError> completionHandler);
 
 		[Async]
-		[TV (15, 4), iOS (15, 0), MacCatalyst (15, 0)]
+		[TV (15, 4), iOS (15, 0)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'SCClipBufferingOutput' instead.")]
@@ -297,7 +283,6 @@ namespace ReplayKit {
 	/// <summary>Protocol for enabling the user to record visual and audio output of applications, with simultaneous recorded audio (screencasts)..</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ReplayKit/Reference/RPScreenRecorderDelegate_Ref/index.html">Apple documentation for <c>RPScreenRecorderDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPScreenRecorderDelegate {
@@ -313,7 +298,6 @@ namespace ReplayKit {
 		[Deprecated (PlatformName.TvOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'DidStopRecording(RPScreenRecorder,RPPreviewViewController,NSError)' instead.")]
 		[Export ("screenRecorder:didStopRecordingWithError:previewViewController:")]
 		void DidStopRecording (RPScreenRecorder screenRecorder, NSError error, [NullAllowed] RPPreviewViewController previewViewController);
@@ -329,7 +313,6 @@ namespace ReplayKit {
 		///         </param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "Use 'SCStream' with 'SCRecordingOutput' instead.")]
@@ -352,7 +335,6 @@ namespace ReplayKit {
 	///     <remarks>The view controller displays the currently installed broadcast services.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastActivityViewController">Apple documentation for <c>RPBroadcastActivityViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "No longer supported.")]
@@ -390,7 +372,6 @@ namespace ReplayKit {
 		IRPBroadcastActivityViewControllerDelegate Delegate { get; set; }
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Async (XmlDocs = """
 			<param name="preferredExtension">To be added.</param>
@@ -408,7 +389,6 @@ namespace ReplayKit {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastActivityViewControllerDelegate">Apple documentation for <c>RPBroadcastActivityViewControllerDelegate</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastActivityViewControllerDelegate {
@@ -431,7 +411,6 @@ namespace ReplayKit {
 	/// <summary>Manages an audio or video broadcast stream.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastController">Apple documentation for <c>RPBroadcastController</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "No longer supported.")]
@@ -462,7 +441,6 @@ namespace ReplayKit {
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.iOS, 11, 0)]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		[Export ("broadcastExtensionBundleID")]
 		[NullAllowed]
@@ -499,7 +477,6 @@ namespace ReplayKit {
 	/// <summary>Delegate object that responds to changes in a broadcast.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastControllerDelegate">Apple documentation for <c>RPBroadcastControllerDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastControllerDelegate {
@@ -524,7 +501,6 @@ namespace ReplayKit {
 		/// <param name="broadcastUrl">To be added.</param>
 		/// <summary>Method that is called when the broadcast URL is updated.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.iOS, 27, 0, message: "No longer supported.")]
 		[Deprecated (PlatformName.TvOS, 27, 0, message: "No longer supported.")]
 		[Deprecated (PlatformName.MacOSX, 27, 0, message: "No longer supported.")]
@@ -537,7 +513,6 @@ namespace ReplayKit {
 	[Deprecated (PlatformName.TvOS, 11, 0)]
 	[Deprecated (PlatformName.iOS, 11, 0)]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface RPBroadcastConfiguration : NSCoding, NSSecureCoding {
@@ -554,7 +529,6 @@ namespace ReplayKit {
 	///     <summary>Delegate that specifies the signature of the completion handler in calls to the <see cref="ReplayKit.NSExtensionContext_RPBroadcastExtension.LoadBroadcastingApplicationInfo(Foundation.NSExtensionContext,ReplayKit.LoadBroadcastingHandler)" /> method.</summary>
 	delegate void LoadBroadcastingHandler (string bundleID, string displayName, [NullAllowed] UIImage appIcon);
 
-	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (NSExtensionContext))]
 	interface NSExtensionContext_RPBroadcastExtension {
@@ -575,7 +549,6 @@ namespace ReplayKit {
 		[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'CompleteRequest(NSUrl,NSDictionary<NSString,INSCoding>)' instead.")]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'CompleteRequest(NSUrl,NSDictionary<NSString,INSCoding>)' instead.")]
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CompleteRequest(NSUrl,NSDictionary<NSString,INSCoding>)' instead.")]
 		[Export ("completeRequestWithBroadcastURL:broadcastConfiguration:setupInfo:")]
 		void CompleteRequest (NSUrl broadcastURL, RPBroadcastConfiguration broadcastConfiguration, [NullAllowed] NSDictionary<NSString, INSCoding> setupInfo);
@@ -587,7 +560,6 @@ namespace ReplayKit {
 		///         </param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("completeRequestWithBroadcastURL:setupInfo:")]
 		void CompleteRequest (NSUrl broadcastURL, [NullAllowed] NSDictionary<NSString, INSCoding> setupInfo);
 	}
@@ -595,7 +567,6 @@ namespace ReplayKit {
 	/// <summary>Base class for managing Replay Kit broadcasts.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastHandler">Apple documentation for <c>RPBroadcastHandler</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "No longer supported.")]
@@ -613,7 +584,6 @@ namespace ReplayKit {
 	[NoMac]
 	[Deprecated (PlatformName.TvOS, 11, 0, message: "Use 'RPBroadcastSampleHandler' instead.")]
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'RPBroadcastSampleHandler' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RPBroadcastSampleHandler' instead.")]
 	[BaseType (typeof (RPBroadcastHandler))]
 	interface RPBroadcastMP4ClipHandler {
@@ -627,7 +597,6 @@ namespace ReplayKit {
 	/// <summary>Processes ReplayKit buffer objects as they arrive.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/ReplayKit/RPBroadcastSampleHandler">Apple documentation for <c>RPBroadcastSampleHandler</c></related>
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.TvOS, 27, 0, message: "No longer supported.")]
 	[Deprecated (PlatformName.MacOSX, 27, 0, message: "No longer supported.")]
@@ -638,7 +607,6 @@ namespace ReplayKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("RPVideoSampleOrientationKey")]
 		NSString VideoSampleOrientationKey { get; }
 
@@ -646,7 +614,6 @@ namespace ReplayKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Field ("RPApplicationInfoBundleIdentifierKey")]
 		NSString ApplicationInfoBundleIdentifierKey { get; }
 
@@ -663,21 +630,18 @@ namespace ReplayKit {
 		void BroadcastFinished ();
 
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		[Export ("broadcastAnnotatedWithApplicationInfo:")]
 		void BroadcastAnnotated (NSDictionary applicationInfo);
 
 		[Export ("processSampleBuffer:withType:")]
 		void ProcessSampleBuffer (CMSampleBuffer sampleBuffer, RPSampleBufferType sampleBufferType);
 
-		[MacCatalyst (13, 1)]
 		[Export ("finishBroadcastWithError:")]
 		void FinishBroadcast (NSError error);
 	}
 
 	[NoTV]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.iOS, 27, 0, message: "Use 'SCContentSharingPicker' instead.")]
 	[Deprecated (PlatformName.MacCatalyst, 27, 0, message: "Use 'SCContentSharingPicker' instead.")]
 	[BaseType (typeof (UIView))]

@@ -26,7 +26,6 @@ namespace Social {
 	// NSInteger -> SLComposeViewController.h
 	/// <summary>An enumeration whose values specify whether composition in a <see cref="Social.SLComposeViewController" /> was completed or cancelled.</summary>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SLComposeViewControllerResult : long {
 		/// <summary>The user cancelled composition.</summary>

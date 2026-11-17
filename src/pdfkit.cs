@@ -59,7 +59,6 @@ using System.ComponentModel;
 
 namespace PdfKit {
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationKey {
 
@@ -232,7 +231,6 @@ namespace PdfKit {
 		WidgetValue,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationSubtype {
 
@@ -289,7 +287,6 @@ namespace PdfKit {
 		Widget,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationWidgetSubtype {
 
@@ -310,7 +307,6 @@ namespace PdfKit {
 		Text,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationLineEndingStyle {
 
@@ -339,7 +335,6 @@ namespace PdfKit {
 		ClosedArrow,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationTextIconType {
 
@@ -372,7 +367,6 @@ namespace PdfKit {
 		Insert,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	enum PdfAnnotationHighlightingMode {
 
@@ -394,7 +388,7 @@ namespace PdfKit {
 	}
 
 	[Native]
-	[iOS (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0)]
 	[TV (18, 2)]
 	public enum PdfAccessPermissions : ulong {
 		LowQualityPrinting = (1uL << 0),
@@ -416,7 +410,6 @@ namespace PdfKit {
 		Line,
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[Static]
 	interface PdfAppearanceCharacteristicsKeys {
@@ -458,7 +451,6 @@ namespace PdfKit {
 		NSString DownCaptionKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[Static]
 	interface PdfBorderKeys {
@@ -482,7 +474,6 @@ namespace PdfKit {
 		NSString DashPatternKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[Internal]
 	[Static]
@@ -513,7 +504,7 @@ namespace PdfKit {
 		NSString KeywordsKey { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[TV (18, 2)]
 	[StrongDictionary ("PdfPageImageInitializationOptionKeys")]
 	interface PdfPageImageInitializationOption {
@@ -523,7 +514,7 @@ namespace PdfKit {
 		double CompressionQuality { get; set; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[TV (18, 2)]
 	[Static]
 	interface PdfPageImageInitializationOptionKeys {
@@ -540,7 +531,6 @@ namespace PdfKit {
 		NSString CompressionQualityKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[StrongDictionary ("PdfDocumentAttributeKeys")]
 	interface PdfDocumentAttributes {
@@ -579,7 +569,6 @@ namespace PdfKit {
 		string [] Keywords { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[Internal]
 	[Static]
@@ -591,28 +580,27 @@ namespace PdfKit {
 		[Field ("PDFDocumentUserPasswordOption", "+PDFKit")]
 		NSString UserPasswordKey { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("PDFDocumentAccessPermissionsOption", "+PDFKit")]
 		NSString AccessPermissionsKey { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Field ("PDFDocumentBurnInAnnotationsOption", "+PDFKit")]
 		NSString BurnInAnnotationsKey { get; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Field ("PDFDocumentSaveTextFromOCROption", "+PDFKit")]
 		NSString SaveTextFromOcrKey { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Field ("PDFDocumentSaveImagesAsJPEGOption", "+PDFKit")]
 		NSString SaveImagesAsJpegKey { get; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		[Field ("PDFDocumentOptimizeImagesForScreenOption", "+PDFKit")]
 		NSString OptimizeImagesForScreenKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[StrongDictionary ("PdfDocumentWriteOptionKeys")]
 	interface PdfDocumentWriteOptions {
@@ -626,23 +614,22 @@ namespace PdfKit {
 		///         <remarks>To be added.</remarks>
 		string UserPassword { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		string AccessPermissions { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		bool BurnInAnnotations { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		bool SaveTextFromOcr { get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		bool SaveImagesAsJpeg { get; set; }
 
-		[iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4)]
 		bool OptimizeImagesForScreen { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFAppearanceCharacteristics")]
 	interface PdfAppearanceCharacteristics : NSCopying {
@@ -712,7 +699,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Base class for actions that can be performed on a PDF.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFAction")]
 	[Abstract]
@@ -729,7 +715,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>An action that contains data for going to a location within a PDF.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (PdfAction), Name = "PDFActionGoTo")]
 	interface PdfActionGoTo {
@@ -749,7 +734,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>An named PDF action.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (PdfAction), Name = "PDFActionNamed")]
 	interface PdfActionNamed {
@@ -769,7 +753,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>An action that contains data for going to a location in another document.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (PdfAction), Name = "PDFActionRemoteGoTo")]
 	interface PdfActionRemoteGoTo {
@@ -803,7 +786,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>An action that resets a form in a PDF.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (PdfAction), Name = "PDFActionResetForm")]
@@ -833,7 +815,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A PDF action for visiting a URL.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (PdfAction), Name = "PDFActionURL")]
 	interface PdfActionUrl {
@@ -853,7 +834,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>Notes, highlights, or other additions to a PDF file.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFAnnotation")]
 	interface PdfAnnotation : NSCoding, NSCopying {
@@ -866,7 +846,6 @@ namespace PdfKit {
 		///         </param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBounds:forType:withProperties:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (CGRect bounds, NSString annotationType, [NullAllowed] NSDictionary properties);
@@ -876,7 +855,6 @@ namespace PdfKit {
 		/// <param name="properties">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("this (bounds, annotationType.GetConstant ()!, properties)")]
 		NativeHandle Constructor (CGRect bounds, PdfAnnotationKey annotationType, [NullAllowed] NSDictionary properties);
 
@@ -1022,14 +1000,12 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("action", ArgumentSemantic.Strong), NullAllowed]
 		PdfAction Action { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("highlighted")]
 		bool Highlighted { [Bind ("isHighlighted")] get; set; }
 
@@ -1037,17 +1013,14 @@ namespace PdfKit {
 		///         <param name="context">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("drawWithBox:inContext:")]
 		void Draw (PdfDisplayBox box, CGContext context);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("setValue:forAnnotationKey:")]
 		bool _SetValue (IntPtr value, NSString key);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("valueForAnnotationKey:")]
 		[return: NullAllowed]
 		IntPtr _GetValue (NSString key);
@@ -1058,7 +1031,6 @@ namespace PdfKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Protected]
-		[MacCatalyst (13, 1)]
 		[Export ("setBoolean:forAnnotationKey:")]
 		bool SetValue (bool boolean, NSString key);
 
@@ -1067,7 +1039,6 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (boolean, key.GetConstant ()!)")]
 		bool SetValue (bool boolean, PdfAnnotationKey key);
 
@@ -1077,7 +1048,6 @@ namespace PdfKit {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Protected]
-		[MacCatalyst (13, 1)]
 		[Export ("setRect:forAnnotationKey:")]
 		bool SetValue (CGRect rect, NSString key);
 
@@ -1086,14 +1056,12 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("SetValue (rect, key.GetConstant ()!)")]
 		bool SetValue (CGRect rect, PdfAnnotationKey key);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("annotationKeyValues", ArgumentSemantic.Copy)]
 		NSDictionary AnnotationKeyValues { get; }
 
@@ -1101,14 +1069,12 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Protected]
-		[MacCatalyst (13, 1)]
 		[Export ("removeValueForAnnotationKey:")]
 		void RemoveValue (NSString key);
 
 		/// <param name="key">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("RemoveValue (key.GetConstant ()!)")]
 		void RemoveValue (PdfAnnotationKey key);
 
@@ -1120,7 +1086,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("font", ArgumentSemantic.Copy)]
 		NSFont Font { get; set; }
 
@@ -1130,7 +1095,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fontColor", ArgumentSemantic.Copy)]
 		NSColor FontColor { get; set; }
 
@@ -1140,42 +1104,36 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("interiorColor", ArgumentSemantic.Copy)]
 		NSColor InteriorColor { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("alignment", ArgumentSemantic.Assign)]
 		NSTextAlignment Alignment { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("startPoint", ArgumentSemantic.Assign)]
 		CGPoint StartPoint { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("endPoint", ArgumentSemantic.Assign)]
 		CGPoint EndPoint { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("startLineStyle", ArgumentSemantic.Assign)]
 		PdfLineStyle StartLineStyle { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("endLineStyle", ArgumentSemantic.Assign)]
 		PdfLineStyle EndLineStyle { get; set; }
 
@@ -1183,7 +1141,6 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("lineStyleFromName:")]
 		PdfLineStyle GetLineStyle (string fromName);
@@ -1192,7 +1149,6 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nameForLineStyle:")]
 		string GetName (PdfLineStyle style);
@@ -1200,61 +1156,52 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("iconType", ArgumentSemantic.Assign)]
 		PdfTextAnnotationIconType IconType { get; set; }
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("quadrilateralPoints", ArgumentSemantic.Copy)]
 		IntPtr _QuadrilateralPoints { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("markupType", ArgumentSemantic.Assign)]
 		PdfMarkupType MarkupType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("widgetFieldType")]
 		string WidgetFieldType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("widgetControlType", ArgumentSemantic.Assign)]
 		PdfWidgetControlType WidgetControlType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("multiline")]
 		bool Multiline { [Bind ("isMultiline")] get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isPasswordField")]
 		bool IsPasswordField { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("comb")]
 		bool Comb { [Bind ("hasComb")] get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("maximumLength")]
 		nint MaximumLength { get; set; }
 
@@ -1264,7 +1211,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("widgetStringValue")]
 		string WidgetStringValue { get; set; }
 
@@ -1274,35 +1220,30 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("widgetDefaultStringValue")]
 		string WidgetDefaultStringValue { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsToggleToOff")]
 		bool AllowsToggleToOff { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("radiosInUnison")]
 		bool RadiosInUnison { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("readOnly")]
 		bool ReadOnly { [Bind ("isReadOnly")] get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("listChoice")]
 		bool ListChoice { [Bind ("isListChoice")] get; set; }
 
@@ -1312,7 +1253,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("choices", ArgumentSemantic.Copy)]
 		string [] Choices { get; set; }
 
@@ -1322,28 +1262,24 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("values", ArgumentSemantic.Copy)]
 		string [] Values { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("buttonWidgetState", ArgumentSemantic.Assign)]
 		PdfWidgetCellState ButtonWidgetState { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("buttonWidgetStateString")]
 		string ButtonWidgetStateString { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("open")]
 		bool Open { [Bind ("isOpen")] get; set; }
 
@@ -1353,21 +1289,18 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("paths")]
 		NSBezierPath [] Paths { get; }
 
 		/// <param name="path">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("addBezierPath:")]
 		void AddBezierPath (NSBezierPath path);
 
 		/// <param name="path">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("removeBezierPath:")]
 		void RemoveBezierPath (NSBezierPath path);
 
@@ -1377,7 +1310,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("destination", ArgumentSemantic.Strong)]
 		PdfDestination Destination { get; set; }
 
@@ -1387,7 +1319,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("URL", ArgumentSemantic.Copy)]
 		NSUrl Url { get; set; }
 
@@ -1397,7 +1328,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fieldName")]
 		string FieldName { get; set; }
 
@@ -1407,7 +1337,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("caption")]
 		string Caption { get; set; }
 
@@ -1417,7 +1346,6 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Copy)]
 		NSColor BackgroundColor { get; set; }
 
@@ -1427,11 +1355,10 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("stampName")]
 		string StampName { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[Export ("activatableTextField")]
 		bool ActivatableTextField { [Bind ("isActivatableTextField")] get; }
 	}
@@ -1811,7 +1738,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A border that may be drawn within the rectangle of an annotation.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFBorder")]
 	interface PdfBorder : NSCoding, NSCopying {
@@ -1839,7 +1765,6 @@ namespace PdfKit {
 		/// <summary>Gets or sets a weak reference to the border properties dictionary.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("borderKeyValues", ArgumentSemantic.Copy)]
 		NSDictionary WeakBorderKeyValues { get; }
 
@@ -1851,7 +1776,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A destination for a go-to PDF action.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFDestination")]
 	interface PdfDestination : NSCopying {
@@ -1859,7 +1783,6 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("kPDFDestinationUnspecifiedValue")]
 		nfloat UnspecifiedValue { get; }
 
@@ -1901,7 +1824,6 @@ namespace PdfKit {
 
 	//Add attributes for delegates/events
 	/// <summary>Class for working with PDF documents.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "PDFDocument", Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (PdfDocumentDelegate) })]
@@ -1947,11 +1869,11 @@ namespace PdfKit {
 		[Notification]
 		NSString DidEndPageWriteNotification { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("PDFDocumentFoundSelectionKey")]
 		NSString FoundSelectionKey { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("PDFDocumentPageIndexKey")]
 		NSString PageIndexKey { get; }
 
@@ -1998,7 +1920,7 @@ namespace PdfKit {
 		[NullAllowed]
 		NSDictionary DocumentAttributes { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("accessPermissions")]
 		PdfAccessPermissions AccessPermissions { get; }
 
@@ -2060,35 +1982,30 @@ namespace PdfKit {
 		/// <summary>Gets a Boolean value that tells whether the document allows changes.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsDocumentChanges")]
 		bool AllowsDocumentChanges { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the document allows document assembly.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsDocumentAssembly")]
 		bool AllowsDocumentAssembly { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the document allows content accessibility.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsContentAccessibility")]
 		bool AllowsContentAccessibility { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the document allows comments.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsCommenting")]
 		bool AllowsCommenting { get; }
 
 		/// <summary>Gets a Boolean value that tells whether the document allows form field entry.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("allowsFormFieldEntry")]
 		bool AllowsFormFieldEntry { get; }
 
@@ -2160,7 +2077,6 @@ namespace PdfKit {
 		///         <summary>Writes the document to the specified path with the specified options.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Write (path, options.GetDictionary ()!)")]
 		bool Write (string path, PdfDocumentWriteOptions options);
 
@@ -2184,7 +2100,6 @@ namespace PdfKit {
 		///         <summary>Writes the document to the specified URL with the specified options.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Wrap ("Write (url, options.GetDictionary ()!)")]
 		bool Write (NSUrl url, PdfDocumentWriteOptions options);
 
@@ -2357,7 +2272,6 @@ namespace PdfKit {
 	interface IPdfDocumentDelegate { }
 
 	/// <summary>Delegate object for the <see cref="PdfKit.PdfDocument" /> class, presenting methods relating to search process and results.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFDocumentDelegate")]
 #if IOS
@@ -2410,7 +2324,6 @@ namespace PdfKit {
 			<value>To be added.</value>
 			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
-		[MacCatalyst (13, 1)]
 		[DelegateName ("ClassForAnnotationTypeDelegate"), DefaultValue (null)]
 		[Export ("classForAnnotationType:")]
 		Class GetClassForAnnotationType (string annotationType);
@@ -2460,7 +2373,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A node in a logical outline of a PDF document.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "PDFOutline")]
@@ -2549,13 +2461,11 @@ namespace PdfKit {
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("action"), NullAllowed]
 		PdfAction Action { get; set; }
 	}
 
 	/// <summary>Class for working with and rendering PDF pages.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject), Name = "PDFPage")]
@@ -2575,12 +2485,12 @@ namespace PdfKit {
 		NativeHandle Constructor (NSImage image);
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[DesignatedInitializer]
 		[Export ("initWithImage:options:")]
 		NativeHandle Constructor (NSImage image, NSDictionary options);
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Wrap ("this (image, options.GetDictionary ()!)")]
 		NativeHandle Constructor (NSImage image, PdfPageImageInitializationOption options);
 
@@ -2670,7 +2580,6 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("transformForBox:")]
 		CGAffineTransform GetTransform (PdfDisplayBox box);
 
@@ -2688,7 +2597,6 @@ namespace PdfKit {
 		///         <param name="context">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("drawWithBox:toContext:")]
 		void Draw (PdfDisplayBox box, CGContext context);
 
@@ -2696,14 +2604,12 @@ namespace PdfKit {
 		///         <param name="box">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("transformContext:forBox:")]
 		void TransformContext (CGContext context, PdfDisplayBox box);
 
 		/// <summary>Get a thumbnail for this page of the specified <paramref name="size" />.</summary>
 		/// <param name="size">The size of the returned thumbnail.</param>
 		/// <param name="box">The box type where the thumbnail will be rendered.</param>
-		[MacCatalyst (13, 1)]
 		[Export ("thumbnailOfSize:forBox:")]
 		NSImage GetThumbnail (CGSize size, PdfDisplayBox box);
 
@@ -2803,7 +2709,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A text selection in a PDF document.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFSelection")]
 	[DisableDefaultCtor] // An uncaught exception was raised: init: not a valid initializer for PDFSelection
@@ -2903,7 +2808,6 @@ namespace PdfKit {
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("extendSelectionForLineBoundaries")]
 		void ExtendSelectionForLineBoundaries ();
 
@@ -2924,7 +2828,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A list of thumbnail images for each page of a document.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSView), Name = "PDFThumbnailView")]
 	interface PdfThumbnailView : NSCoding {
@@ -2962,7 +2865,6 @@ namespace PdfKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("layoutMode")]
 		PdfThumbnailLayoutMode LayoutMode { get; set; }
 
@@ -2970,7 +2872,6 @@ namespace PdfKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("contentInset")]
 		NSEdgeInsets ContentInset { get; set; }
 
@@ -3029,7 +2930,6 @@ namespace PdfKit {
 	}
 
 	/// <summary>A viewer for PDF files.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSView), Name = "PDFView", Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (PdfViewDelegate) })]
 #if TVOS
@@ -3183,7 +3083,6 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("displayDirection")]
 		PdfDisplayDirection DisplayDirection { get; set; }
 
@@ -3196,7 +3095,6 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("pageBreakMargins")]
 		NSEdgeInsets PageBreakMargins { get; set; }
 
@@ -3215,7 +3113,6 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("displaysRTL")]
 		bool DisplaysRtl { get; set; }
 
@@ -3264,7 +3161,6 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("pageShadowsEnabled")]
 		bool PageShadowsEnabled { get; [Bind ("enablePageShadows:")] set; }
 
@@ -3276,7 +3172,6 @@ namespace PdfKit {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("usePageViewController:withViewOptions:")]
 		void UsePageViewController (bool enable, [NullAllowed] NSDictionary viewOptions);
 
@@ -3284,7 +3179,6 @@ namespace PdfKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("isUsingPageViewController")]
 		bool IsUsingPageViewController { get; }
 
@@ -3317,14 +3211,12 @@ namespace PdfKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("minScaleFactor")]
 		nfloat MinScaleFactor { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("maxScaleFactor")]
 		nfloat MaxScaleFactor { get; set; }
 
@@ -3361,7 +3253,6 @@ namespace PdfKit {
 		/// <summary>Gets the scale factor that would fit the current PDF page(s) in the view.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("scaleFactorForSizeToFit")]
 		nfloat ScaleFactorForSizeToFit { get; }
 
@@ -3376,7 +3267,6 @@ namespace PdfKit {
 		///         <summary>Returns the area of interest for the specified point.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("areaOfInterestForPoint:")]
 		PdfAreaOfInterest GetAreaOfInterest (CGPoint point);
 
@@ -3460,7 +3350,6 @@ namespace PdfKit {
 		///         <param name="context">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("drawPage:toContext:")]
 		void DrawPage (PdfPage page, CGContext context);
 
@@ -3468,7 +3357,6 @@ namespace PdfKit {
 		///         <param name="context">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("drawPagePost:toContext:")]
 		void DrawPagePost (PdfPage page, CGContext context);
 
@@ -3663,19 +3551,19 @@ namespace PdfKit {
 		[Export ("acceptsDraggedFiles")]
 		bool AcceptsDraggedFiles { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[NullAllowed, Export ("pageOverlayViewProvider", ArgumentSemantic.Weak)]
 		IPdfPageOverlayViewProvider PageOverlayViewProvider { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Export ("inMarkupMode")]
 		bool InMarkupMode { [Bind ("isInMarkupMode")] get; set; }
 
-		[iOS (16, 0), NoMac, MacCatalyst (16, 0), NoTV]
+		[iOS (16, 0), NoMac, NoTV]
 		[Export ("findInteraction")]
 		UIFindInteraction FindInteraction { get; }
 
-		[iOS (16, 0), NoMac, MacCatalyst (16, 0)]
+		[iOS (16, 0), NoMac]
 		[Export ("findInteractionEnabled")]
 		bool FindInteractionEnabled { [Bind ("isFindInteractionEnabled")] get; set; }
 	}
@@ -3693,7 +3581,6 @@ namespace PdfKit {
 	//Verify delegate methods.  There are default actions (not just return null ) that should occur
 	//if the delegate does not implement the method.
 	/// <summary>Delegate object for <see cref="PdfKit.PdfView" /> objects, allowing the developer to respond to navigation, printing, and linking events.</summary>
-	[MacCatalyst (13, 1)]
 	[TV (18, 2)]
 	[BaseType (typeof (NSObject), Name = "PDFViewDelegate")]
 #if IOS || TV
@@ -3789,16 +3676,15 @@ namespace PdfKit {
 		void OpenPdf (PdfView sender, PdfActionRemoteGoTo action);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("PDFViewParentViewController")]
 		UIViewController ParentViewController { get; }
 	}
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[TV (18, 2)]
 	interface IPdfPageOverlayViewProvider { }
 
-	[iOS (16, 0), MacCatalyst (16, 0)]
+	[iOS (16, 0)]
 	[TV (18, 2)]
 	[Protocol (Name = "PDFPageOverlayViewProvider")]
 	interface PdfPageOverlayViewProvider {

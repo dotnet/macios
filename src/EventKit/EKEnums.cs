@@ -183,7 +183,6 @@ namespace EventKit {
 	}
 
 	/// <summary>Enumerates the days of the week.</summary>
-	[MacCatalyst (13, 1)]
 	[Native] // NSInteger (size change from previously untyped enum)
 	public enum EKWeekday : long {
 		/// <summary>Not set.</summary>

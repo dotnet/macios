@@ -427,6 +427,16 @@ namespace Xamarin.Tests {
 				Assert.That (t.Attributes, Is.EqualTo (attributes.Value), $"Incorrect attributes for type {fullname}.");
 		}
 
+		public void AssertNoType (string fullname, string? message = null)
+		{
+			var assembly = LoadAssembly ();
+
+			var allTypes = assembly.MainModule.GetTypes ().ToArray ();
+			var t = allTypes.FirstOrDefault ((v) => v.FullName == fullname);
+			if (t is not null)
+				Assert.Fail ($"Unexpectedly found type '{fullname}' in the generated assembly. {message}");
+		}
+
 		public void AssertMethod (string typename, string method, params string [] parameterTypes)
 		{
 			AssertMethod (typename, method, null, null, parameterTypes);

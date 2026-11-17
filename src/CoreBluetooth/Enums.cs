@@ -12,7 +12,6 @@
 
 namespace CoreBluetooth {
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerState : long {
 		/// <summary>To be added.</summary>
@@ -32,7 +31,6 @@ namespace CoreBluetooth {
 	// NSInteger -> CBCentralManager.h
 	/// <summary>Enumerates possible states of a <see cref="CoreBluetooth.CBCentralManager" />.</summary>
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CBManagerState' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
 	public enum CBCentralManagerState : long {
@@ -53,7 +51,6 @@ namespace CoreBluetooth {
 	// NSInteger -> CBPeripheralManager.h
 	/// <summary>Enumerates the possible states of the <see cref="CoreBluetooth.CBPeripheralManager" />.</summary>
 	[Deprecated (PlatformName.iOS, 10, 0, message: "Use 'CBManagerState' instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'CBManagerState' instead.")]
 	[Native]
 	public enum CBPeripheralManagerState : long {
@@ -73,7 +70,6 @@ namespace CoreBluetooth {
 
 	// NSInteger -> CBPeripheralManager.h
 	/// <summary>Enumerates the possible connection states of a <see cref="CoreBluetooth.CBPeripheral" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBPeripheralState : long {
 		/// <summary>Indicates that the peripheral is not connected.</summary>
@@ -83,13 +79,11 @@ namespace CoreBluetooth {
 		/// <summary>Indicates that the peripheral is connected.</summary>
 		Connected,
 		/// <summary>Indicates that the peripheral is disconnecting.</summary>
-		[MacCatalyst (13, 1)]
 		Disconnecting,
 	}
 
 	// NSUInteger -> CBCharacteristic.h
 	/// <summary>The possible properties of a characteristic. A characteristic may have multiple properties.</summary>
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum CBCharacteristicProperties : ulong {
@@ -110,15 +104,12 @@ namespace CoreBluetooth {
 		/// <summary>To be added.</summary>
 		ExtendedProperties = 128,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		IndicateEncryptionRequired = 0x200,
 	}
 
 	/// <summary>Errors possible during Bluetooth LE transactions.</summary>
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("CBErrorDomain")]
 	[Native] // NSInteger -> CBError.h
 	public enum CBError : long {
@@ -164,7 +155,6 @@ namespace CoreBluetooth {
 	}
 
 	/// <summary>Errors returned by a GATT server.</summary>
-	[MacCatalyst (13, 1)]
 	[ErrorDomain ("CBATTErrorDomain")]
 	[Native] // NSInteger -> CBError.h
 	public enum CBATTError : long {
@@ -208,7 +198,6 @@ namespace CoreBluetooth {
 
 	// NSInteger -> CBPeripheral.h
 	/// <summary>Enumerates the possible types of writes to a characteristic's value.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCharacteristicWriteType : long {
 		/// <summary>To be added.</summary>
@@ -227,7 +216,6 @@ namespace CoreBluetooth {
 
 	// NSUInteger -> CBCharacteristic.h
 	/// <summary>Enumerates the read, write, and encryption permissions for a characteristic's values.</summary>
-	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]
 	public enum CBAttributePermissions : ulong {
@@ -243,7 +231,6 @@ namespace CoreBluetooth {
 
 	// NSInteger -> CBPeripheralManager.h
 	/// <summary>The connection latency of the <see cref="CoreBluetooth.CBPeripheralManager" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBPeripheralManagerConnectionLatency : long {
 		/// <summary>To be added.</summary>
@@ -254,7 +241,6 @@ namespace CoreBluetooth {
 		High,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBConnectionEvent : long {
 		Disconnected = 0,
@@ -262,7 +248,6 @@ namespace CoreBluetooth {
 	}
 
 	[Flags, NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
 		ExtendedScanAndConnect = 1uL << 0,
@@ -271,7 +256,6 @@ namespace CoreBluetooth {
 		ChannelSounding = 1uL << 10,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerAuthorization : long {
 		NotDetermined = 0,

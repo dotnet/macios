@@ -8,7 +8,7 @@ namespace NS {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	public interface ISomething {
-		[Introduced (PlatformName.MacCatalyst, 13, 0)] // needed since it's not in iOS
+		[Introduced (PlatformName.MacCatalyst, 13, 0)]
 		[Introduced (PlatformName.MacOSX, 10, 15)]
 		[NoTV, NoiOS]
 		[Export ("isLoadedInProcess")]

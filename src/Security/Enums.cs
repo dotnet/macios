@@ -784,23 +784,19 @@ namespace Security {
 
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		OAEP = 2,
 
 		/// <summary>To be added.</summary>
-		[MacCatalyst (13, 1)]
 		Raw = 0x4000,
 
 		/// <summary>To be added.</summary>
 		[Obsolete ("Don't use hash algorithm.")]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		PKCS1MD2 = 0x8000,
 
 		/// <summary>To be added.</summary>
 		[Obsolete ("Don't use hash algorithm.")]
 		[NoTV]
-		[MacCatalyst (13, 1)]
 		PKCS1MD5 = 0x8001,
 
 		/// <summary>To be added.</summary>
@@ -808,19 +804,15 @@ namespace Security {
 
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		PKCS1SHA224 = 0x8003,
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		PKCS1SHA256 = 0x8004,
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		PKCS1SHA384 = 0x8005,
 		/// <summary>To be added.</summary>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		PKCS1SHA512 = 0x8006,
 	}
 
@@ -855,7 +847,6 @@ namespace Security {
 
 	// convenience enum mapping to kSecUseAuthenticationUI* fields
 	/// <summary>Enumeration whose values represent valid options for <see cref="Security.SecRecord.AuthenticationUI" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum SecAuthenticationUI {
 		/// <summary>To be added.</summary>
 		NotSet = -1,
@@ -884,7 +875,6 @@ namespace Security {
 #if !__MACOS__
 	/// <summary>Enumeration defining valid options for <see cref="SecRecord.TokenID" />.</summary>
 #endif
-	[MacCatalyst (13, 1)]
 	public enum SecTokenID {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -894,7 +884,6 @@ namespace Security {
 		SecureEnclave,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SecKeyOperationType : long {
 		/// <summary>To be added.</summary>

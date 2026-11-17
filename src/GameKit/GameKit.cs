@@ -20,7 +20,6 @@ namespace GameKit {
 	[NoMac]
 	[NoTV]
 	[Deprecated (PlatformName.iOS, 7, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[Native]
 	public enum GKPeerPickerConnectionType : ulong {
@@ -36,7 +35,6 @@ namespace GameKit {
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 7, 0)]
 	[Deprecated (PlatformName.TvOS, 9, 0)]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 	[ErrorDomain ("GKVoiceChatServiceErrorDomain")]
 	public enum GKVoiceChatServiceError {
@@ -235,7 +233,6 @@ namespace GameKit {
 		FriendRequestNotAvailable = 103,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKConnectionState : long {
 		/// <summary>To be added.</summary>
@@ -244,7 +241,6 @@ namespace GameKit {
 		Connected,
 	}
 
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKTransportType : long {
 		/// <summary>To be added.</summary>
@@ -421,7 +417,6 @@ namespace GameKit {
 	// NSInteger -> GKChallenge.h
 	/// <summary>An enumeration whose values specify the states of a <see cref="GameKit.GKChallenge" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKChallengeState : long {
 		/// <summary>To be added.</summary>
@@ -437,7 +432,6 @@ namespace GameKit {
 	// NSInteger -> GKGameCenterViewController.h
 	/// <summary>An enumeration whose values specify the current <see cref="GameKit.GKGameCenterViewController.ViewState" /> of a <see cref="GameKit.GKGameCenterViewController" />.</summary>
 	/// <remarks>To be added.</remarks>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum GKGameCenterViewControllerState : long {
 		/// <summary>To be added.</summary>
@@ -450,14 +444,11 @@ namespace GameKit {
 		Challenges,
 		[iOS (14, 0)]
 		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		LocalPlayerProfile = 3,
 		[iOS (14, 0)]
 		[TV (14, 0)]
-		[MacCatalyst (14, 0)]
 		Dashboard = 4,
 		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
 		[TV (15, 0)]
 		LocalPlayerFriendsList = 5,
 	}
@@ -534,7 +525,6 @@ namespace GameKit {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKAccessPointLocation : long {
 		TopLeading,
@@ -545,7 +535,6 @@ namespace GameKit {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKLeaderboardType : long {
 		Classic,
@@ -554,7 +543,6 @@ namespace GameKit {
 
 	[TV (14, 0)]
 	[iOS (14, 0)]
-	[MacCatalyst (14, 0)]
 	[Native]
 	public enum GKMatchmakingMode : long {
 		Default = 0,
@@ -562,13 +550,11 @@ namespace GameKit {
 		AutomatchOnly = 2,
 		[TV (15, 0)]
 		[iOS (15, 0)]
-		[MacCatalyst (15, 0)]
 		InviteOnly = 3,
 	}
 
 	[TV (14, 5)]
 	[iOS (14, 5)]
-	[MacCatalyst (14, 5)]
 	[Native]
 	public enum GKFriendsAuthorizationStatus : long {
 		NotDetermined = 0,

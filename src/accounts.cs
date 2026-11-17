@@ -36,7 +36,6 @@ namespace Accounts {
 		NativeHandle Constructor (ACAccountType type);
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("userFullName")]
 		string UserFullName { get; }
 	}
@@ -102,7 +101,6 @@ namespace Accounts {
 		[NoMac] // marked as unavailable in xcode10 beta 2
 		[Export ("requestAccessToAccountsWithType:withCompletionHandler:")]
 		[Deprecated (PlatformName.iOS, 6, 0, message: "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'RequestAccess (ACAccountType, AccountStoreOptions, ACRequestCompletionHandler)' instead.")]
 		[Async (XmlDocs = """
 			<param name="accountType">The type of account for which access is being requested.</param>
@@ -245,7 +243,6 @@ namespace Accounts {
 		///         <remarks>To be added.</remarks>
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
 		[Field ("ACAccountTypeIdentifierTencentWeibo")]
 		NSString TencentWeibo { get; }
@@ -321,7 +318,6 @@ namespace Accounts {
 	/// <summary>Key to use when accessing Tencent Weibo accounts. Used with <see cref="Accounts.ACAccountStore.RequestAccess (Accounts.ACAccountType,Accounts.AccountStoreOptions,Accounts.ACRequestCompletionHandler)" />.</summary>
 	[Deprecated (PlatformName.iOS, 11, 0, message: "Use Tencent Weibo SDK instead.")]
 	[Deprecated (PlatformName.MacOSX, 10, 13, message: "Use Tencent Weibo SDK instead.")]
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use Tencent Weibo SDK instead.")]
 	[Static]
 	interface ACTencentWeiboKey {

@@ -10,7 +10,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that represents a convolution.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageConvolution_ClassReference/index.html">Apple documentation for <c>MPSImageConvolution</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageConvolution {
@@ -53,7 +52,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -62,7 +60,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>An optimized Laplacian filter.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImageLaplacian">Apple documentation for <c>MPSImageLaplacian</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageLaplacian {
@@ -90,7 +87,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -99,7 +95,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that blurs by transforming each pixel of the source image to the average of itself and its neighbors.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageBox_ClassReference/index.html">Apple documentation for <c>MPSImageBox</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageBox {
@@ -111,7 +106,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -143,7 +137,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that blurs an image with a tent function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageTent_ClassReference/index.html">Apple documentation for <c>MPSImageTent</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageBox))]
 	[DisableDefaultCtor]
 	interface MPSImageTent {
@@ -163,7 +156,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that applies a fast Gaussian blur to an image.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageGaussianBlur_ClassReference/index.html">Apple documentation for <c>MPSImageGaussianBlur</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageGaussianBlur {
@@ -175,7 +167,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -200,7 +191,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that detects edges by using a Sobel filter.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageSobel_ClassReference/index.html">Apple documentation for <c>MPSImageSobel</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageSobel {
@@ -213,7 +203,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -236,7 +225,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Base class for image pyramids.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImagePyramid">Apple documentation for <c>MPSImagePyramid</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImagePyramid {
@@ -248,7 +236,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -286,7 +273,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Represents a Gaussian image pyramid.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImageGaussianPyramid">Apple documentation for <c>MPSImageGaussianPyramid</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImagePyramid))]
 	[DisableDefaultCtor]
 	interface MPSImageGaussianPyramid {
@@ -306,7 +292,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -317,7 +302,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Calculates a histogram of image data.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageHistogram_ClassReference/index.html">Apple documentation for <c>MPSImageHistogram</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageHistogram {
@@ -329,7 +313,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -387,7 +370,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("minPixelThresholdValue", ArgumentSemantic.Assign)]
 		Vector4 MinPixelThresholdValue {
 			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
@@ -400,7 +382,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSUnaryImageKernel" /> that equalizes the histogram of an image.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageHistogramEqualization_ClassReference/index.html">Apple documentation for <c>MPSImageHistogramEqualization</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageHistogramEqualization {
@@ -439,7 +420,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -448,7 +428,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Transforms an image so that its histogram matches a desired histogram.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageHistogramSpecification_ClassReference/index.html">Apple documentation for <c>MPSImageHistogramSpecification</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageHistogramSpecification {
@@ -489,7 +468,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -502,7 +480,6 @@ namespace MetalPerformanceShaders {
 	///       <para>The region of consideration is given by the filter offset and the position in the result image. That is, each pixel of the destination image is the sum of the pixels in a rectangular region bounded by the coordinates of the target pixel and the filter offset.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageIntegral_ClassReference/index.html">Apple documentation for <c>MPSImageIntegral</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageIntegral {
@@ -523,7 +500,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -534,7 +510,6 @@ namespace MetalPerformanceShaders {
 	///       <para>The region of consideration is given by the filter offset and the position in the result image. That is, each pixel of the destination image is the sum of the pixels in a rectangular region bounded by the coordinates of the target pixel and the filter offset.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageIntegralOfSquares_ClassReference/index.html">Apple documentation for <c>MPSImageIntegralOfSquares</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageIntegralOfSquares {
@@ -555,7 +530,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -566,7 +540,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Represents a shader transformation produces one texture from another.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSUnaryImageKernel_ClassReference/index.html">Apple documentation for <c>MPSUnaryImageKernel</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSUnaryImageKernel {
@@ -616,7 +589,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImage">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSImage destinationImage);
 
@@ -644,7 +616,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -653,7 +624,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A image kernel that combines two textures into one texture result.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSBinaryImageKernel_ClassReference/index.html">Apple documentation for <c>MPSBinaryImageKernel</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSBinaryImageKernel {
@@ -665,7 +635,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -745,7 +714,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImage">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, MPSImage destinationImage);
 
@@ -778,7 +746,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that finds the median value of each channel for pixels in the region around each source image pixel.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageMedian_ClassReference/index.html">Apple documentation for <c>MPSImageMedian</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageMedian {
@@ -820,7 +787,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -833,7 +799,6 @@ namespace MetalPerformanceShaders {
 	///       <para>Pixels inside the window that is considered but that are outside the bounds of the source image are clamped to the value at the edge of the image.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageAreaMax_ClassReference/index.html">Apple documentation for <c>MPSImageAreaMax</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageAreaMax {
@@ -866,7 +831,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -880,7 +844,6 @@ namespace MetalPerformanceShaders {
 	///       <para>Developers should note that this filter kernel inherits from <see cref="MetalPerformanceShaders.MPSImageAreaMax" />.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageAreaMin_ClassReference/index.html">Apple documentation for <c>MPSImageAreaMin</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageAreaMax))]
 	[DisableDefaultCtor]
 	interface MPSImageAreaMin {
@@ -899,7 +862,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Finds the maximum value in a region, offset by a corresponding value in a mask.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageDilate_ClassReference/index.html">Apple documentation for <c>MPSImageDilate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageDilate {
@@ -930,7 +892,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -939,7 +900,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Finds the minimum value in a region, offset by a corresponding value in a mask.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageErode_ClassReference/index.html">Apple documentation for <c>MPSImageErode</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageDilate))]
 	[DisableDefaultCtor]
 	interface MPSImageErode {
@@ -955,7 +915,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -966,7 +925,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that performs a scaling operation with Lanczos resampling.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageLanczosScale_ClassReference/index.html">Apple documentation for <c>MPSImageLanczosScale</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageScale))]
 	[DisableDefaultCtor]
 	interface MPSImageLanczosScale {
@@ -988,7 +946,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -999,7 +956,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that changes all pixels above a threshold luminance to a specified maximum single-channel value, and completely darkens the rest.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageThresholdBinary_ClassReference/index.html">Apple documentation for <c>MPSImageThresholdBinary</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageThresholdBinary {
@@ -1034,7 +990,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1043,7 +998,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that changes all pixels above a threshold luminance to 0, and brightens the rest to a specified maximum single-channel value.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageThresholdBinaryInverse_ClassReference/index.html">Apple documentation for <c>MPSImageThresholdBinaryInverse</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageThresholdBinaryInverse {
@@ -1078,7 +1032,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1087,7 +1040,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that clamps brightness values to a threshold value.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageThresholdTruncate_ClassReference/index.html">Apple documentation for <c>MPSImageThresholdTruncate</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageThresholdTruncate {
@@ -1116,7 +1068,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1125,7 +1076,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that darkens all pixels dimmer than or equal in brightness to a threshold luminance to 0, and leaves the rest unchanged.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageThresholdToZero_ClassReference/index.html">Apple documentation for <c>MPSImageThresholdToZero</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageThresholdToZero {
@@ -1154,7 +1104,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1163,7 +1112,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that leaves all pixels dimmer than or equal in brightness to a threshold luminance unchangedt, and darkens the rest to 0.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageThresholdToZeroInverse_ClassReference/index.html">Apple documentation for <c>MPSImageThresholdToZeroInverse</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageThresholdToZeroInverse {
@@ -1192,7 +1140,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1201,7 +1148,6 @@ namespace MetalPerformanceShaders {
 	// MPSKernel.h
 
 	/// <include file="../docs/api/MetalPerformanceShaders/MPSKernel.xml" path="/Documentation/Docs[@DocId='T:MetalPerformanceShaders.MPSKernel']/*" />
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSKernel : NSCopying, NSSecureCoding {
@@ -1217,7 +1163,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1280,7 +1225,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Filter that transposes an image.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageTranspose_ClassReference/index.html">Apple documentation for <c>MPSImageTranspose</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageTranspose {
@@ -1302,7 +1246,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1313,7 +1256,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The base class for layers in a convolutional neural network.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNKernel">Apple documentation for <c>MPSCNNKernel</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel), Name = "MPSCNNKernel")]
 	[Abstract]
 	[DisableDefaultCtor]
@@ -1348,14 +1290,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("sourceFeatureChannelMaxCount")]
 		nuint SourceFeatureChannelMaxCount { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("sourceFeatureChannelOffset")]
 		nuint SourceFeatureChannelOffset { get; set; }
 
@@ -1379,7 +1319,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImage">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationState:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, MPSState destinationState, MPSImage destinationImage);
 
@@ -1388,7 +1327,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImages">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, NSArray<MPSImage> destinationImages);
 
@@ -1398,7 +1336,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImages">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationStates:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> destinationStates, NSArray<MPSImage> destinationImages);
 
@@ -1418,7 +1355,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1426,28 +1362,24 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isBackwards")]
 		bool IsBackwards { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isStateModified")]
 		bool IsStateModified { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("padding", ArgumentSemantic.Retain)]
 		IMPSNNPadding Padding { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("destinationImageAllocator", ArgumentSemantic.Retain)]
 		IMPSImageAllocator DestinationImageAllocator { get; set; }
 
@@ -1456,7 +1388,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage);
 
@@ -1467,7 +1398,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationState:destinationStateIsTemporary:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] out MPSState outState, bool isTemporary);
 
@@ -1476,7 +1406,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages);
 
@@ -1487,7 +1416,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationStates:destinationStateIsTemporary:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, [NullAllowed] out NSArray<MPSState> outStates, bool isTemporary);
 
@@ -1497,7 +1425,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -1508,7 +1435,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetResultStateBatch (NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
@@ -1520,7 +1446,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -1532,7 +1457,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
@@ -1540,14 +1464,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isResultStateReusedAcrossBatch")]
 		bool IsResultStateReusedAcrossBatch { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("appendBatchBarrier")]
 		bool AppendBatchBarrier { get; }
 
@@ -1556,57 +1478,48 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsX")]
 		nuint StrideInPixelsX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsY")]
 		nuint StrideInPixelsY { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateX")]
 		nuint DilationRateX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateY")]
 		nuint DilationRateY { get; }
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodingStorageSizeForSourceImage:sourceStates:destinationImage:")]
 		nuint GetEncodingStorageSize (MPSImage sourceImage, [NullAllowed] MPSState [] sourceStates, [NullAllowed] MPSImage destinationImage);
 
-		[MacCatalyst (13, 0)]
 		[Export ("batchEncodingStorageSizeForSourceImage:sourceStates:destinationImage:")]
 		nuint GetBatchEncodingStorageSize (MPSImage [] sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] MPSImage [] destinationImage);
 	}
@@ -1614,7 +1527,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The base class for activation functions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuron">Apple documentation for <c>MPSCNNNeuron</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNNeuron")]
 	[Abstract] // You must use one of the sub-classes of MPSCNNNeuron
 	[DisableDefaultCtor]
@@ -1636,7 +1548,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
 		[Export ("initWithCoder:device:")]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -1644,35 +1555,30 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("a")]
 		float A { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("b")]
 		float B { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("c")]
 		float C { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("data", ArgumentSemantic.Retain)]
 		NSData Data { get; }
 
@@ -1680,7 +1586,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1689,7 +1594,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The linear activation function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuronLinear">Apple documentation for <c>MPSCNNNeuronLinear</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronLinear")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronLinear {
@@ -1722,7 +1626,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1731,7 +1634,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The rectified linear unit activation function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuronReLU">Apple documentation for <c>MPSCNNNeuronReLU</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronReLU")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronReLU {
@@ -1757,7 +1659,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1766,7 +1667,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The sigmoid activation function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuronSigmoid">Apple documentation for <c>MPSCNNNeuronSigmoid</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronSigmoid")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronSigmoid {
@@ -1785,7 +1685,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1794,7 +1693,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The hyperbolic tangent activation function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuronTanH">Apple documentation for <c>MPSCNNNeuronTanH</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronTanH")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronTanH {
@@ -1829,7 +1727,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1838,7 +1735,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The absolute-value activation function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNNeuronAbsolute">Apple documentation for <c>MPSCNNNeuronAbsolute</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronAbsolute")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronAbsolute {
@@ -1858,7 +1754,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -1867,7 +1762,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Describes a convolution kernel.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNConvolutionDescriptor">Apple documentation for <c>MPSCNNConvolutionDescriptor</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSCNNConvolutionDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionDescriptor : NSCopying, NSSecureCoding {
@@ -1947,7 +1841,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("supportsSecureCoding")]
 		bool SupportsSecureCoding { get; }
@@ -1959,12 +1852,10 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("cnnConvolutionDescriptorWithKernelWidth:kernelHeight:inputFeatureChannels:outputFeatureChannels:")]
 		MPSCnnConvolutionDescriptor CreateCnnConvolutionDescriptor (nuint kernelWidth, nuint kernelHeight, nuint inputFeatureChannels, nuint outputFeatureChannels);
 
-		[MacCatalyst (13, 1)]
 		[Internal, Export ("setBatchNormalizationParametersForInferenceWithMean:variance:gamma:beta:epsilon:")]
 		void SetBatchNormalizationParameters (IntPtr /* float* */ mean, IntPtr /* float* */ variance, [NullAllowed] IntPtr /* float* */ gamma, [NullAllowed] IntPtr /* float* */ beta, float epsilon);
 
@@ -1976,7 +1867,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Export ("setNeuronType:parameterA:parameterB:")]
 		void SetNeuronType (MPSCnnNeuronType neuronType, float parameterA, float parameterB);
@@ -1987,7 +1877,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
@@ -1998,7 +1887,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
@@ -2009,7 +1897,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
@@ -2020,7 +1907,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.iOS, 11, 3, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 13, 4, message: "Use 'FusedNeuronDescriptor' property instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property instead.")]
 		[Export ("setNeuronToPReLUWithParametersA:")]
 		void SetNeuronToPReLU (NSData A);
@@ -2028,27 +1914,23 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateX")]
 		nuint DilationRateX { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateY")]
 		nuint DilationRateY { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("fusedNeuronDescriptor", ArgumentSemantic.Retain)]
 		MPSNNNeuronDescriptor FusedNeuronDescriptor { get; set; }
 	}
 
 	/// <summary>Developers should not use this deprecated class.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum MPSCnnConvolutionFlags : ulong {
@@ -2059,7 +1941,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that convolves its inputs, producing a feature map for each of its constituent filters.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNConvolution">Apple documentation for <c>MPSCNNConvolution</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNConvolution")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolution {
@@ -2113,7 +1994,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dataSource", ArgumentSemantic.Retain)]
 		IMPSCnnConvolutionDataSource DataSource { get; }
 
@@ -2139,7 +2019,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="weights">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:weights:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, IMPSCnnConvolutionDataSource weights);
@@ -2152,7 +2031,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -2160,28 +2038,24 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateX")]
 		nuint DilationRateX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("dilationRateY")]
 		nuint DilationRateY { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("channelMultiplier")]
 		nuint ChannelMultiplier { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("accumulatorPrecisionOption", ArgumentSemantic.Assign)]
 		MPSNNConvolutionAccumulatorPrecisionOption AccumulatorPrecisionOption { get; set; }
 
@@ -2191,7 +2065,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Export ("neuronType")]
 		MPSCnnNeuronType NeuronType { get; }
@@ -2202,7 +2075,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Export ("neuronParameterA")]
 		float NeuronParameterA { get; }
@@ -2213,7 +2085,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Export ("neuronParameterB")]
 		float NeuronParameterB { get; }
@@ -2224,7 +2095,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'FusedNeuronDescriptor' property of convolution descriptor instead.")]
 		[Export ("neuronParameterC")]
 		float NeuronParameterC { get; }
@@ -2232,14 +2102,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("subPixelScaleFactor")]
 		nuint SubPixelScaleFactor { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("fusedNeuronDescriptor")]
 		MPSNNNeuronDescriptor FusedNeuronDescriptor { get; }
 
@@ -2249,7 +2117,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState GetResultState (MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -2260,7 +2127,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForSourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState [] GetResultStateBatch (NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
@@ -2272,7 +2138,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -2284,14 +2149,12 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:sourceImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionGradientState [] GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
@@ -2301,7 +2164,6 @@ namespace MetalPerformanceShaders {
 		[Deprecated (PlatformName.TvOS, 12, 0, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
 		[Deprecated (PlatformName.iOS, 12, 0, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Please use 'ReloadWeightsAndBiasesFromDataSource' instead.")]
 		[Export ("reloadWeightsAndBiasesWithDataSource:")]
 		void ReloadWeightsAndBiases (IMPSCnnConvolutionDataSource dataSource);
@@ -2310,7 +2172,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="state">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesWithCommandBuffer:state:")]
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 
@@ -2319,7 +2180,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("exportWeightsAndBiasesWithCommandBuffer:resultStateCanBeTemporary:")]
 		MPSCnnConvolutionWeightsAndBiasesState ExportWeightsAndBiases (IMTLCommandBuffer commandBuffer, bool resultStateCanBeTemporary);
 	}
@@ -2327,7 +2187,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A fully connected layer.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNFullyConnected">Apple documentation for <c>MPSCNNFullyConnected</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolution), Name = "MPSCNNFullyConnected")]
 	[DisableDefaultCtor]
 	interface MPSCnnFullyConnected {
@@ -2347,7 +2206,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -2356,7 +2214,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="weights">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:weights:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, IMPSCnnConvolutionDataSource weights);
@@ -2365,7 +2222,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A subclass of <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that sub-samples its input.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNPooling">Apple documentation for <c>MPSCNNPooling</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNPooling")]
 	[DisableDefaultCtor]
 	interface MPSCnnPooling {
@@ -2427,7 +2283,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -2436,7 +2291,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnPooling" /> subclass that performs max-pooling.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNPoolingMax">Apple documentation for <c>MPSCNNPoolingMax</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPooling), Name = "MPSCNNPoolingMax")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingMax {
@@ -2462,7 +2316,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -2471,7 +2324,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>An average pooling filter.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNPoolingAverage">Apple documentation for <c>MPSCNNPoolingAverage</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPooling), Name = "MPSCNNPoolingAverage")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingAverage {
@@ -2497,7 +2349,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -2505,14 +2356,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("zeroPadSizeX")]
 		nuint ZeroPadSizeX { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("zeroPadSizeY")]
 		nuint ZeroPadSizeY { get; set; }
 	}
@@ -2520,7 +2369,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that performs spatial normalization.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNSpatialNormalization">Apple documentation for <c>MPSCNNSpatialNormalization</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNSpatialNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalization {
@@ -2576,13 +2424,11 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNSpatialNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalizationGradient {
@@ -2626,7 +2472,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A local contrast <see cref="MetalPerformanceShaders.MPSCnnKernel" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNLocalContrastNormalization">Apple documentation for <c>MPSCNNLocalContrastNormalization</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNLocalContrastNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnLocalContrastNormalization {
@@ -2700,13 +2545,11 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNLocalContrastNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnLocalContrastNormalizationGradient {
@@ -2768,7 +2611,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that normalizes across feature channels.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNCrossChannelNormalization">Apple documentation for <c>MPSCNNCrossChannelNormalization</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNCrossChannelNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnCrossChannelNormalization {
@@ -2815,13 +2657,11 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNCrossChannelNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnCrossChannelNormalizationGradient {
@@ -2870,7 +2710,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> commonly used in categorization tasks.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNSoftMax">Apple documentation for <c>MPSCNNSoftMax</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNSoftMax")]
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMax {
@@ -2885,7 +2724,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNSoftMaxGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMaxGradient {
@@ -2909,7 +2747,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>The logarithmic softmax loss function.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSCNNLogSoftMax">Apple documentation for <c>MPSCNNLogSoftMax</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNLogSoftMax")]
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMax {
@@ -2924,7 +2761,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNLogSoftMaxGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMaxGradient {
@@ -2950,7 +2786,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Contains the attributes for a new or existing <see cref="MetalPerformanceShaders.MPSImage" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImageDescriptor">Apple documentation for <c>MPSImageDescriptor</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSImageDescriptor : NSCopying {
@@ -3035,7 +2870,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Enumerates an image's underlying texture's purgeable state.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum MPSPurgeableState : ulong {
@@ -3054,7 +2888,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>An image that may contain more than 4 channels. (For example, an image in a layer of a convolutional neural network.)</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImage">Apple documentation for <c>MPSImage</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSImage {
@@ -3062,7 +2895,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("defaultAllocator")]
 		IMPSImageAllocator DefaultAllocator { get; }
@@ -3121,7 +2953,6 @@ namespace MetalPerformanceShaders {
 		[Export ("usage")]
 		MTLTextureUsage Usage { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("featureChannelFormat")]
 		MPSImageFeatureChannelFormat FeatureChannelFormat { get; }
 
@@ -3149,7 +2980,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("parent", ArgumentSemantic.Retain)]
 		MPSImage Parent { get; }
 
@@ -3166,7 +2996,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithParentImage:sliceRange:featureChannels:")]
 		NativeHandle Constructor (MPSImage parent, NSRange sliceRange, nuint featureChannels);
 
@@ -3180,7 +3009,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("batchRepresentation")]
 		NSArray<MPSImage> BatchRepresentation { get; }
 
@@ -3188,7 +3016,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("batchRepresentationWithSubRange:")]
 		NSArray<MPSImage> GetBatchRepresentation (NSRange subRange);
 
@@ -3196,14 +3023,12 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("subImageWithFeatureChannelRange:")]
 		MPSImage GetSubImage (NSRange featureChannelRange);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
@@ -3214,38 +3039,30 @@ namespace MetalPerformanceShaders {
 		[Export ("setPurgeableState:")]
 		MPSPurgeableState SetPurgeableState (MPSPurgeableState state);
 
-		[MacCatalyst (13, 1)]
 		[Export ("readBytes:dataLayout:bytesPerRow:region:featureChannelInfo:imageIndex:")]
 		void ReadBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerRow, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeBytes:dataLayout:bytesPerRow:region:featureChannelInfo:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerRow, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeBytes:dataLayout:bytesPerColumn:bytesPerRow:bytesPerImage:region:featureChannelInfo:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerColumn, nuint bytesPerRow, nuint bytesPerImage, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("readBytes:dataLayout:bytesPerRow:bytesPerImage:region:featureChannelInfo:imageIndex:")]
 		void ReadBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerRow, nuint bytesPerImage, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeBytes:dataLayout:bytesPerRow:bytesPerImage:region:featureChannelInfo:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint bytesPerRow, nuint bytesPerImage, MTLRegion region, MPSImageReadWriteParams featureChannelInfo, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("readBytes:dataLayout:imageIndex:")]
 		void ReadBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint imageIndex);
 
-		[MacCatalyst (13, 1)]
 		[Export ("writeBytes:dataLayout:imageIndex:")]
 		void WriteBytes (IntPtr /* void* */ dataBytes, MPSDataLayout dataLayout, nuint imageIndex);
 
 		/// <param name="commandBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 	}
@@ -3253,7 +3070,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Discardable image data.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSTemporaryImage">Apple documentation for <c>MPSTemporaryImage</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImage))]
 	[DisableDefaultCtor]
 	interface MPSTemporaryImage {
@@ -3261,7 +3077,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[New]
 		[Export ("defaultAllocator")]
@@ -3273,7 +3088,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[DesignatedInitializer]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithParentImage:sliceRange:featureChannels:")]
 		NativeHandle Constructor (MPSImage parent, NSRange sliceRange, nuint featureChannels);
 
@@ -3301,7 +3115,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryImageWithCommandBuffer:textureDescriptor:featureChannels:")]
 		MPSTemporaryImage GetTemporaryImage (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor textureDescriptor, nuint featureChannels);
@@ -3321,7 +3134,6 @@ namespace MetalPerformanceShaders {
 		nuint ReadCount { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPSPredicate {
 		[Export ("predicateBuffer", ArgumentSemantic.Retain)]
@@ -3357,7 +3169,6 @@ namespace MetalPerformanceShaders {
 		void RetireHeap (IMTLHeap heap, double seconds);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSCommandBuffer : MTLCommandBuffer {
@@ -3398,7 +3209,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>An image that can convert its color space, alpha, or pixel format.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSImageConversion">Apple documentation for <c>MPSImageConversion</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageConversion {
@@ -3428,7 +3238,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -3439,7 +3248,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Describes the size, data type, and stride of a row-major matrix.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSMatrixDescriptor">Apple documentation for <c>MPSMatrixDescriptor</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSMatrixDescriptor {
@@ -3487,14 +3295,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("matrices")]
 		nuint Matrices { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("matrixBytes")]
 		nuint MatrixBytes { get; }
 
@@ -3505,7 +3311,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("matrixDescriptorWithRows:columns:rowBytes:dataType:")]
 		MPSMatrixDescriptor GetMatrixDescriptor (nuint rows, nuint columns, nuint rowBytes, MPSDataType dataType);
@@ -3519,7 +3324,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("matrixDescriptorWithRows:columns:matrices:rowBytes:matrixBytes:dataType:")]
 		MPSMatrixDescriptor GetMatrixDescriptor (nuint rows, nuint columns, nuint matrices, nuint rowBytes, nuint matrixBytes, MPSDataType dataType);
@@ -3529,7 +3333,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("rowBytesForColumns:dataType:")]
 		nuint GetRowBytesForColumns (nuint columns, MPSDataType dataType);
@@ -3538,7 +3341,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>A matrix that represents the kernel of a linear transformation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSMatrix">Apple documentation for <c>MPSMatrix</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // init NS_UNAVAILABLE;
 	interface MPSMatrix {
@@ -3586,7 +3388,6 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithBuffer:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, MPSMatrixDescriptor descriptor);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBuffer:offset:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, nuint offset, MPSMatrixDescriptor descriptor);
 
@@ -3594,40 +3395,34 @@ namespace MetalPerformanceShaders {
 		/// <param name="descriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:descriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSMatrixDescriptor descriptor);
 
 		/// <param name="commandBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("matrices")]
 		nuint Matrices { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("matrixBytes")]
 		nuint MatrixBytes { get; }
 
 		[iOS (13, 1)]
-		[MacCatalyst (13, 1)]
 		[Export ("offset")]
 		nuint Offset { get; }
 	}
@@ -3637,7 +3432,6 @@ namespace MetalPerformanceShaders {
 	/// <summary>Represents a weighted matrix multiplication operation, followed by a weighted addition operation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/MetalPerformanceShaders/MPSMatrixMultiplication">Apple documentation for <c>MPSMatrixMultiplication</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixMultiplication {
@@ -3647,7 +3441,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="interiorColumns">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:resultRows:resultColumns:interiorColumns:")]
 		NativeHandle Constructor (IMTLDevice device, nuint resultRows, nuint resultColumns, nuint interiorColumns);
 
@@ -3702,7 +3495,6 @@ namespace MetalPerformanceShaders {
 		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
 		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
 		///         </remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithCoder:device:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
@@ -3710,19 +3502,16 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("batchStart")]
 		nuint BatchStart { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("batchSize")]
 		nuint BatchSize { get; set; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMatrixMultiplication {
@@ -3734,7 +3523,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Temporary storage used by convolutional neural nets.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSState {
@@ -3744,7 +3532,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:bufferSize:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer, nuint bufferSize);
@@ -3754,7 +3541,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:textureDescriptor:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MTLTextureDescriptor descriptor);
@@ -3763,7 +3549,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer);
@@ -3772,7 +3557,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="bufferSize">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:bufferSize:")]
 		NativeHandle Constructor (IMTLDevice device, nuint bufferSize);
 
@@ -3780,14 +3564,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="descriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:textureDescriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MTLTextureDescriptor descriptor);
 
 		/// <param name="resource">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithResource:")]
 		NativeHandle Constructor ([NullAllowed] IMTLResource resource);
 
@@ -3795,7 +3577,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="resourceList">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:resourceList:")]
 		NativeHandle Constructor (IMTLDevice device, MPSStateResourceList resourceList);
 
@@ -3804,7 +3585,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("temporaryStateWithCommandBuffer:resourceList:")]
 		MPSState CreateTemporaryState (IMTLCommandBuffer commandBuffer, MPSStateResourceList resourceList);
@@ -3812,14 +3592,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="resources">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithResources:")]
 		NativeHandle Constructor ([NullAllowed] IMTLResource [] resources);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceCount")]
 		nuint ResourceCount { get; }
 
@@ -3828,7 +3606,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceAtIndex:allocateMemory:")]
 		[return: NullAllowed]
 		IMTLResource GetResource (nuint index, bool allocateMemory);
@@ -3858,7 +3635,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("bufferSizeAtIndex:")]
 		nuint GetBufferSize (nuint index);
 
@@ -3866,7 +3642,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("textureInfoAtIndex:")]
 		MPSStateTextureInfo GetTextureInfo (nuint index);
 
@@ -3874,21 +3649,18 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceTypeAtIndex:")]
 		MPSStateResourceType GetResourceType (nuint index);
 
 		/// <param name="commandBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
@@ -3899,7 +3671,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:forKernel:suggestedDescriptor:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates, MPSKernel kernel, MPSImageDescriptor inDescriptor);
 
@@ -3916,7 +3687,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A matrix allocated in GPU private memory.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrix))]
 	[DisableDefaultCtor]
 	interface MPSTemporaryMatrix {
@@ -3945,7 +3715,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A one-dimensional array.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSVector {
@@ -3992,7 +3761,6 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithBuffer:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, MPSVectorDescriptor descriptor);
 
-		[MacCatalyst (13, 1)]
 		[Export ("initWithBuffer:offset:descriptor:")]
 		NativeHandle Constructor (IMTLBuffer buffer, nuint offset, MPSVectorDescriptor descriptor);
 
@@ -4000,32 +3768,27 @@ namespace MetalPerformanceShaders {
 		/// <param name="descriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:descriptor:")]
 		NativeHandle Constructor (IMTLDevice device, MPSVectorDescriptor descriptor);
 
 		/// <param name="commandBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeOnCommandBuffer:")]
 		void Synchronize (IMTLCommandBuffer commandBuffer);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resourceSize")]
 		nuint ResourceSize { get; }
 
 		[iOS (13, 1)]
-		[MacCatalyst (13, 1)]
 		[Export ("offset")]
 		nuint Offset { get; }
 	}
 
 	/// <summary>Describes the length and data type of a <see cref="MetalPerformanceShaders.MPSVector" />.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSVectorDescriptor {
@@ -4084,7 +3847,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A kernel that performs a mapping from one matrix to another.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixUnaryKernel {
@@ -4134,7 +3896,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A kernel that operates on two matrices to create a new matrix.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixBinaryKernel {
@@ -4190,7 +3951,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Performs matrix multiplication.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixVectorMultiplication {
@@ -4244,7 +4004,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSMatrixBinaryKernel" /> that solves a linear system of equations via a triangular coefficient matrix.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixSolveTriangular {
@@ -4291,7 +4050,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixSolveLU {
@@ -4336,7 +4094,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSMatrixBinaryKernel" /> that solves a linear system of equations via Cholesky factorization.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixSolveCholesky {
@@ -4380,7 +4137,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSMatrixUnaryKernel" /> that computes LU factorization using partial pivoting.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixDecompositionLU {
@@ -4427,7 +4183,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSMatrixUnaryKernel" /> that computes the Cholesky factorization.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor] // According to docs needs a Metal Device so initWithDevice: makes more sense.
 	interface MPSMatrixDecompositionCholesky {
@@ -4473,7 +4228,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Describes multiple matrix copy operations.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSMatrixCopyDescriptor {
@@ -4519,7 +4273,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Performs multiple matrix copy operations.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSMatrixCopy {
@@ -4579,7 +4332,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="columnPermuteOffset">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:copyDescriptor:rowPermuteIndices:rowPermuteOffset:columnPermuteIndices:columnPermuteOffset:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSMatrixCopyDescriptor copyDescriptor, [NullAllowed] MPSVector rowPermuteIndices, nuint rowPermuteOffset, [NullAllowed] MPSVector columnPermuteIndices, nuint columnPermuteOffset);
 
@@ -4596,7 +4348,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPSMatrixRandomDistributionDescriptor : NSCopying {
 		[Export ("distributionType", ArgumentSemantic.Assign)]
@@ -4622,19 +4373,18 @@ namespace MetalPerformanceShaders {
 		[Export ("defaultDistributionDescriptor")]
 		MPSMatrixRandomDistributionDescriptor CreateDefault ();
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Static]
 		[Export ("normalDistributionDescriptorWithMean:standardDeviation:")]
 		MPSMatrixRandomDistributionDescriptor CreateNormal (float mean, float standardDeviation);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Static]
 		[Export ("normalDistributionDescriptorWithMean:standardDeviation:minimum:maximum:")]
 		MPSMatrixRandomDistributionDescriptor CreateNormal (float mean, float standardDeviation, float minimum, float maximum);
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	interface MPSMatrixRandom {
 		[Export ("destinationDataType")]
@@ -4657,7 +4407,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixRandom), Name = "MPSMatrixRandomMTGP32")]
 	interface MPSMatrixRandomMtgp32 {
 		[Export ("initWithDevice:")]
@@ -4679,7 +4428,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixRandom))]
 	interface MPSMatrixRandomPhilox {
 		[Export ("initWithDevice:")]
@@ -4699,7 +4447,6 @@ namespace MetalPerformanceShaders {
 
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSKernel" /> that copies image data into a <see cref="MetalPerformanceShaders.MPSMatrix" /> object.</summary>
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MPSKernel))]
 	interface MPSImageCopyToMatrix {
@@ -4754,12 +4501,10 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationMatrix">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationMatrix:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, MPSMatrix destinationMatrix);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSImageFindKeypoints {
@@ -4804,7 +4549,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Base class for <see cref="MetalPerformanceShaders.MPSBinaryImageKernel" /> classes that perform arithmetic on images.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSBinaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageArithmetic {
@@ -4842,7 +4586,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("minimumValue")]
 		float MinimumValue { get; set; }
 
@@ -4850,7 +4593,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("maximumValue")]
 		float MaximumValue { get; set; }
 
@@ -4869,7 +4611,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSImageArithmetic" /> kernel that performs element-wise addition of two images.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageArithmetic))]
 	[DisableDefaultCtor]
 	interface MPSImageAdd {
@@ -4882,7 +4623,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSImageArithmetic" /> kernel that performs element-wise subtraction of two images.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageArithmetic))]
 	[DisableDefaultCtor]
 	interface MPSImageSubtract {
@@ -4895,7 +4635,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSImageArithmetic" /> kernel that performs element-wise multiplication of two images.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageArithmetic))]
 	[DisableDefaultCtor]
 	interface MPSImageMultiply {
@@ -4908,7 +4647,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSImageArithmetic" /> kernel that performs element-wise division of two images.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageArithmetic))]
 	[DisableDefaultCtor]
 	interface MPSImageDivide {
@@ -4921,7 +4659,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSUnaryImageKernel" /> that can resize and change aspect ratio of an image.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageScale {
@@ -4957,7 +4694,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSImageScale" /> subclass that uses bilinear sampling to scale the image.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageScale))]
 	[DisableDefaultCtor]
 	interface MPSImageBilinearScale {
@@ -4982,7 +4718,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSUnaryImageKernel" /> that calculates the minimum and maximum pixel values for a region.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMinAndMax {
@@ -5013,7 +4748,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSUnaryImageKernel" /> that calculates the mean and variance of pixel values for a region.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMeanAndVariance {
@@ -5044,7 +4778,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSUnaryImageKernel" /> that calculates the mean of pixel values for a region.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageStatisticsMean {
@@ -5075,7 +4808,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Predefined common padding policies.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNDefaultPadding : MPSNNPadding {
@@ -5091,21 +4823,18 @@ namespace MetalPerformanceShaders {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
-		[MacCatalyst (13, 1)]
 		[Export ("paddingForTensorflowAveragePooling")]
 		MPSNNDefaultPadding CreatePaddingForTensorflowAveragePooling ();
 
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("paddingForTensorflowAveragePoolingValidOnly")]
 		MPSNNDefaultPadding CreatePaddingForTensorflowAveragePoolingValidOnly ();
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSKernel" /> that has binary weights.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel), Name = "MPSCNNBinaryKernel")]
 	[DisableDefaultCtor]
 	interface MPSCnnBinaryKernel {
@@ -5143,28 +4872,24 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primarySourceFeatureChannelOffset")]
 		nuint PrimarySourceFeatureChannelOffset { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondarySourceFeatureChannelOffset")]
 		nuint SecondarySourceFeatureChannelOffset { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primarySourceFeatureChannelMaxCount")]
 		nuint PrimarySourceFeatureChannelMaxCount { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondarySourceFeatureChannelMaxCount")]
 		nuint SecondarySourceFeatureChannelMaxCount { get; set; }
 
@@ -5183,28 +4908,24 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryKernelWidth")]
 		nuint PrimaryKernelWidth { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryKernelHeight")]
 		nuint PrimaryKernelHeight { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryKernelWidth")]
 		nuint SecondaryKernelWidth { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryKernelHeight")]
 		nuint SecondaryKernelHeight { get; }
 
@@ -5212,56 +4933,48 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryStrideInPixelsX")]
 		nuint PrimaryStrideInPixelsX { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryStrideInPixelsY")]
 		nuint PrimaryStrideInPixelsY { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryStrideInPixelsX")]
 		nuint SecondaryStrideInPixelsX { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryStrideInPixelsY")]
 		nuint SecondaryStrideInPixelsY { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryDilationRateX")]
 		nuint PrimaryDilationRateX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("primaryDilationRateY")]
 		nuint PrimaryDilationRateY { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryDilationRateX")]
 		nuint SecondaryDilationRateX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("secondaryDilationRateY")]
 		nuint SecondaryDilationRateY { get; }
 
@@ -5274,7 +4987,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isStateModified")]
 		bool IsStateModified { get; }
 
@@ -5317,7 +5029,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImages">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, NSArray<MPSImage> destinationImages);
 
@@ -5336,7 +5047,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImage, NSArray<MPSImage> secondaryImage);
 
@@ -5348,7 +5058,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:primaryImage:secondaryImage:destinationState:destinationStateIsTemporary:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] out MPSState outState, bool isTemporary);
 
@@ -5360,7 +5069,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:primaryImages:secondaryImages:destinationStates:destinationStateIsTemporary:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, [NullAllowed] out MPSState [] outState, bool isTemporary);
 
@@ -5371,7 +5079,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetResultState (MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -5383,7 +5090,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultStateBatchForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetResultStateBatch (NSArray<MPSImage> primaryImage, NSArray<MPSImage> secondaryImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
@@ -5396,7 +5102,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateForCommandBuffer:primaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		MPSState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
@@ -5409,7 +5114,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("temporaryResultStateBatchForCommandBuffer:primaryImage:secondaryImage:sourceStates:destinationImage:")]
 		[return: NullAllowed]
 		NSArray<MPSState> GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImage, NSArray<MPSImage> secondaryImage, [NullAllowed] NSArray<MPSState> [] sourceStates, NSArray<MPSImage> destinationImage);
@@ -5417,14 +5121,12 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("isResultStateReusedAcrossBatch")]
 		bool IsResultStateReusedAcrossBatch { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("appendBatchBarrier")]
 		bool AppendBatchBarrier { get; }
 
@@ -5433,21 +5135,17 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("destinationImageDescriptorForSourceImages:sourceStates:")]
 		MPSImageDescriptor GetDestinationImageDescriptor (NSArray<MPSImage> sourceImages, [NullAllowed] NSArray<MPSState> sourceStates);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodingStorageSizeForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		nuint GetEncodingStorageSize (MPSImage primaryImage, MPSImage secondaryImage, [NullAllowed] MPSState [] sourceStates, [NullAllowed] MPSImage destinationImage);
 
-		[MacCatalyst (13, 0)]
 		[Export ("batchEncodingStorageSizeForPrimaryImage:secondaryImage:sourceStates:destinationImage:")]
 		nuint GetBatchEncodingStorageSize (MPSImage [] primaryImage, MPSImage [] secondaryImage, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] MPSImage [] destinationImage);
 	}
 
 	/// <summary>The parametric rectified linear unit activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronPReLU")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronPReLU {
@@ -5459,7 +5157,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
@@ -5479,7 +5176,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>The hard sigmoid activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronHardSigmoid")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronHardSigmoid {
@@ -5512,14 +5208,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
 	/// <summary>The softplus activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronSoftPlus")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronSoftPlus {
@@ -5551,14 +5245,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
 	/// <summary>The softsign activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronSoftSign")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronSoftSign {
@@ -5577,14 +5269,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
 	/// <summary>The exponential linear unit activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronELU")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronElu {
@@ -5609,14 +5299,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
 	/// <summary>The ReLUN activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronReLUN")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronReLun {
@@ -5648,13 +5336,11 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronPower")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronPower {
@@ -5676,13 +5362,11 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronExponential")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronExponential {
@@ -5704,13 +5388,11 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuron), Name = "MPSCNNNeuronLogarithm")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronLogarithm {
@@ -5732,14 +5414,12 @@ namespace MetalPerformanceShaders {
 		/// <param name="neuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:neuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNNeuronDescriptor neuronDescriptor);
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnConvolutionDescriptor" /> that describes subpixel upsampling and reshaping.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionDescriptor), Name = "MPSCNNSubPixelConvolutionDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnSubPixelConvolutionDescriptor {
@@ -5751,7 +5431,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnConvolutionDescriptor" /> that describes depthwise convolution.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionDescriptor), Name = "MPSCNNDepthWiseConvolutionDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnDepthWiseConvolutionDescriptor {
@@ -5763,7 +5442,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that transposes its input.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNConvolutionTranspose")]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSCnnConvolutionTranspose {
@@ -5800,7 +5478,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("accumulatorPrecisionOption", ArgumentSemantic.Assign)]
 		MPSNNConvolutionAccumulatorPrecisionOption AccumulatorPrecisionOption { get; set; }
 
@@ -5830,7 +5507,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:")]
 		MPSImage EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState);
 
@@ -5840,7 +5516,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientState);
 
@@ -5850,7 +5525,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImage">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:destinationImage:")]
 		void EncodeToCommandBuffer (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState, MPSImage destinationImage);
 
@@ -5860,14 +5534,12 @@ namespace MetalPerformanceShaders {
 		///         <param name="destinationImage">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:destinationImages:")]
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientState, NSArray<MPSImage> destinationImage);
 
 		[Wrap ("WeakDataSource")]
 		IMPSCnnConvolutionDataSource DataSource { get; }
 
-		[MacCatalyst (13, 0)]
 		[Export ("dataSource", ArgumentSemantic.Retain)]
 		NSObject WeakDataSource { get; }
 
@@ -5887,29 +5559,23 @@ namespace MetalPerformanceShaders {
 		[return: NullAllowed]
 		MPSCnnConvolutionTransposeGradientState [] GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImage, [NullAllowed] NSArray<MPSCnnConvolutionGradientState> [] sourceStates, MPSImage [] destinationImage);
 
-		[MacCatalyst (13, 0)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
-		[MacCatalyst (13, 0)]
 		[Export ("reloadWeightsAndBiasesWithCommandBuffer:state:")]
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 
-		[MacCatalyst (13, 0)]
 		[Export ("exportWeightsAndBiasesWithCommandBuffer:resultStateCanBeTemporary:")]
 		MPSCnnConvolutionWeightsAndBiasesState ExportWeightsAndBiases (IMTLCommandBuffer commandBuffer, bool resultStateCanBeTemporary);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:sourceImage:convolutionGradientState:destinationState:destinationStateIsTemporary:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSCnnConvolutionGradientState convolutionGradientState, [NullAllowed] out MPSCnnConvolutionTransposeGradientState outState, bool isTemporary);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:convolutionGradientStates:destinationStates:destinationStateIsTemporary:")]
 		MPSImage [] EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, [NullAllowed] MPSCnnConvolutionGradientState [] convolutionGradientStates, [NullAllowed] out MPSCnnConvolutionTransposeGradientState [] outStates, bool isTemporary);
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that has binary weights and convolves its input.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNBinaryConvolution")]
 	[DisableDefaultCtor]
 	interface MPSCnnBinaryConvolution {
@@ -5952,7 +5618,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnBinaryConvolution" /> that is a fully-connected convolution layer that uses binary weights.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnBinaryConvolution), Name = "MPSCNNBinaryFullyConnected")]
 	[DisableDefaultCtor]
 	interface MPSCnnBinaryFullyConnected {
@@ -5983,7 +5648,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>An L2-norm pooling filter.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPooling), Name = "MPSCNNPoolingL2Norm")]
 	[DisableDefaultCtor] // failed assertion.
 	interface MPSCnnPoolingL2Norm {
@@ -6012,7 +5676,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A dilated max <see cref="MetalPerformanceShaders.MPSCnnPooling" /> filter.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPooling), Name = "MPSCNNDilatedPoolingMax")]
 	[DisableDefaultCtor] // failed assertion.
 	interface MPSCnnDilatedPoolingMax {
@@ -6054,7 +5717,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNPoolingGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingGradient {
@@ -6093,7 +5755,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradient), Name = "MPSCNNPoolingAverageGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingAverageGradient {
@@ -6130,7 +5791,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradient), Name = "MPSCNNPoolingMaxGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingMaxGradient {
@@ -6155,7 +5815,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradient), Name = "MPSCNNPoolingL2NormGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingL2NormGradient {
@@ -6180,7 +5839,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradient), Name = "MPSCNNDilatedPoolingMaxGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnDilatedPoolingMaxGradient {
@@ -6208,7 +5866,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnKernel" /> that upsamples an image.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNUpsampling")]
 	[DisableDefaultCtor] // failed assertion
 	interface MPSCnnUpsampling {
@@ -6227,7 +5884,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("alignCorners")]
 		bool AlignCorners { get; }
 
@@ -6246,7 +5902,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnUpsampling" /> filter that performs nearest spatial upsampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnUpsampling), Name = "MPSCNNUpsamplingNearest")]
 	[DisableDefaultCtor] // failed assertion.
 	interface MPSCnnUpsamplingNearest {
@@ -6261,7 +5916,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnUpsampling" /> filter that performs bilinear spatial upsampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnUpsampling), Name = "MPSCNNUpsamplingBilinear")]
 	[DisableDefaultCtor] // failed assertion.
 	interface MPSCnnUpsamplingBilinear {
@@ -6279,13 +5933,11 @@ namespace MetalPerformanceShaders {
 		/// <param name="alignCorners">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:integerScaleFactorX:integerScaleFactorY:alignCorners:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, nuint integerScaleFactorX, nuint integerScaleFactorY, bool alignCorners);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNUpsamplingGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingGradient {
@@ -6318,7 +5970,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnUpsamplingGradient), Name = "MPSCNNUpsamplingNearestGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingNearestGradient {
@@ -6333,7 +5984,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, nuint integerScaleFactorX, nuint integerScaleFactorY);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnUpsamplingGradient), Name = "MPSCNNUpsamplingBilinearGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingBilinearGradient {
@@ -6349,7 +5999,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A structural description of a recurrent neural net layer.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSRNNDescriptor")]
 	interface MPSRnnDescriptor {
 		/// <summary>To be added.</summary>
@@ -6384,7 +6033,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Describes the internal gate in a recurrent neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor), Name = "MPSRNNSingleGateDescriptor")]
 	interface MPSRnnSingleGateDescriptor {
 		/// <summary>To be added.</summary>
@@ -6416,7 +6064,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Describes a gated recurrent unit layer in a neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor))]
 	interface MPSGRUDescriptor {
 		/// <summary>To be added.</summary>
@@ -6505,7 +6152,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Describes a Long-Short Term Memory layer in neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSRnnDescriptor))]
 	interface MPSLSTMDescriptor {
 		/// <summary>To be added.</summary>
@@ -6643,7 +6289,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("cellToOutputNeuronParamC")]
 		float CellToOutputNeuronParamC { get; set; }
 
@@ -6658,7 +6303,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>The image containing the state in an image-baed recurrent neural net as it iterates through its sequence.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSRNNRecurrentImageState")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSRnnRecurrentImageState {
@@ -6680,7 +6324,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A recurrent neural net layer specifically for image data.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSRNNImageInferenceLayer")]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSRnnImageInferenceLayer {
@@ -6793,7 +6436,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>The matrix containing the state as a recurrent neural net iterates through its sequence.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSRNNRecurrentMatrixState")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSRnnRecurrentMatrixState {
@@ -6815,7 +6457,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A recurrent neural net layer.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel), Name = "MPSRNNMatrixInferenceLayer")]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSRnnMatrixInferenceLayer {
@@ -6896,7 +6537,6 @@ namespace MetalPerformanceShaders {
 		///         <param name="recurrentOutputStates">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeSequenceToCommandBuffer:sourceMatrices:sourceOffsets:destinationMatrices:destinationOffsets:recurrentInputState:recurrentOutputStates:")]
 		void EncodeSequence (IMTLCommandBuffer commandBuffer, MPSMatrix [] sourceMatrices, [NullAllowed] IntPtr sourceOffsets, MPSMatrix [] destinationMatrices, [NullAllowed] IntPtr destinationOffsets, [NullAllowed] MPSRnnRecurrentMatrixState recurrentInputState, [NullAllowed] NSMutableArray<MPSRnnRecurrentMatrixState> recurrentOutputStates);
 
@@ -6941,7 +6581,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A placeholder node for an image in a neural network graph.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNImageNode {
@@ -7007,20 +6646,17 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeResource")]
 		bool SynchronizeResource { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("stopGradient")]
 		bool StopGradient { get; set; }
 	}
 
 	/// <summary>A state object in a neural network graph.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNStateNode {
@@ -7042,16 +6678,13 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("synchronizeResource")]
 		bool SynchronizeResource { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	delegate void MPSGradientNodeHandler (MPSNNFilterNode gradientNode, MPSNNFilterNode inferenceNode, MPSNNImageNode inferenceSource, MPSNNImageNode gradientSource);
 
 	/// <summary>A placeholder node in a neural network graph for an image filtering stage.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNFilterNode {
@@ -7098,7 +6731,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientFilterWithSource:")]
 		MPSNNGradientFilterNode GetFilter (MPSNNImageNode gradientImageSource);
 
@@ -7106,7 +6738,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientFilterWithSources:")]
 		MPSNNGradientFilterNode GetFilter (MPSNNImageNode [] gradientImagesSources);
 
@@ -7114,7 +6745,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSources:")]
 		MPSNNGradientFilterNode [] GetFilters (MPSNNImageNode [] gradientImagesSources);
 
@@ -7122,7 +6752,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSource:")]
 		MPSNNGradientFilterNode [] GetFilters (MPSNNImageNode gradientImageSource);
 
@@ -7131,20 +6760,17 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("trainingGraphWithSourceGradient:nodeHandler:")]
 		[return: NullAllowed]
 		MPSNNFilterNode [] GetTrainingGraph ([NullAllowed] MPSNNImageNode gradientImageSource, [NullAllowed] MPSGradientNodeHandler nodeHandler);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNGradientFilterNode {
 	}
 
 	/// <summary>Subclass of <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that is the base class for convolution representation nodes.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNConvolutionNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnConvolutionNode : MPSNNTrainableNode {
@@ -7152,7 +6778,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("accumulatorPrecision", ArgumentSemantic.Assign)]
 		MPSNNConvolutionAccumulatorPrecisionOption AccumulatorPrecision { get; set; }
 
@@ -7175,13 +6800,11 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("convolutionGradientState")]
 		MPSCnnConvolutionGradientStateNode ConvolutionGradientState { get; }
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnConvolutionNode" /> that represents a fully connected layer.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNFullyConnectedNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnFullyConnectedNode {
@@ -7203,7 +6826,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnConvolutionNode" /> that represents a binary convolution kernel.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNBinaryConvolutionNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnBinaryConvolutionNode {
@@ -7230,19 +6852,16 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float scaleValue, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:")]
 		MPSCnnBinaryConvolutionNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, [NullAllowed] IntPtr outputBiasTerms, [NullAllowed] IntPtr outputScaleTerms, [NullAllowed] IntPtr inputBiasTerms, [NullAllowed] IntPtr inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:")]
 		IntPtr _InitWithSource (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, [NullAllowed] IntPtr outputBiasTerms, [NullAllowed] IntPtr outputScaleTerms, [NullAllowed] IntPtr inputBiasTerms, [NullAllowed] IntPtr inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnBinaryConvolutionNode" /> that represents a fully-connected convolution layer that uses binary weights.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnBinaryConvolutionNode), Name = "MPSCNNBinaryFullyConnectedNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnBinaryFullyConnectedNode {
@@ -7269,19 +6888,16 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, float scaleValue, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:")]
 		MPSCnnBinaryFullyConnectedNode Create (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, [NullAllowed] IntPtr outputBiasTerms, [NullAllowed] IntPtr outputScaleTerms, [NullAllowed] IntPtr inputBiasTerms, [NullAllowed] IntPtr inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 
 		[Internal]
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSource:weights:outputBiasTerms:outputScaleTerms:inputBiasTerms:inputScaleTerms:type:flags:")]
 		IntPtr _InitWithSource (MPSNNImageNode sourceNode, IMPSCnnConvolutionDataSource weights, [NullAllowed] IntPtr outputBiasTerms, [NullAllowed] IntPtr outputScaleTerms, [NullAllowed] IntPtr inputBiasTerms, [NullAllowed] IntPtr inputScaleTerms, MPSCnnBinaryConvolutionType type, MPSCnnBinaryConvolutionFlags flags);
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnConvolutionNode" /> that represents a transpose kernel.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionNode), Name = "MPSCNNConvolutionTransposeNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnConvolutionTransposeNode {
@@ -7291,7 +6907,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:convolutionGradientState:weights:")]
 		MPSCnnConvolutionTransposeNode Create (MPSNNImageNode sourceNode, [NullAllowed] MPSCnnConvolutionGradientStateNode convolutionGradientState, IMPSCnnConvolutionDataSource weights);
@@ -7301,12 +6916,10 @@ namespace MetalPerformanceShaders {
 		/// <param name="weights">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSource:convolutionGradientState:weights:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, [NullAllowed] MPSCnnConvolutionGradientStateNode convolutionGradientState, IMPSCnnConvolutionDataSource weights);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNConvolutionGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionGradientNode : MPSNNTrainableNode {
@@ -7333,7 +6946,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>The base class for representations of activation functions.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNNeuronNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronNode {
@@ -7343,7 +6955,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:descriptor:")]
 		MPSCnnNeuronNode Create (MPSNNImageNode sourceNode, MPSNNNeuronDescriptor descriptor);
@@ -7363,12 +6974,10 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("c")]
 		float C { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronPowerNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronPowerNode {
@@ -7408,7 +7017,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronExponentialNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronExponentialNode {
@@ -7448,7 +7056,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronLogarithmNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronLogarithmNode {
@@ -7488,7 +7095,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNNeuronGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGradientNode {
@@ -7520,7 +7126,6 @@ namespace MetalPerformanceShaders {
 		MPSNNNeuronDescriptor Descriptor { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNUnaryReductionNode {
@@ -7546,7 +7151,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMinNode {
@@ -7567,7 +7171,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMinNode {
@@ -7588,7 +7191,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMinNode {
@@ -7609,7 +7211,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsArgumentMinNode {
@@ -7630,7 +7231,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMaxNode {
@@ -7651,7 +7251,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMaxNode {
@@ -7672,7 +7271,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMaxNode {
@@ -7693,7 +7291,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsArgumentMaxNode {
@@ -7714,7 +7311,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowMeanNode {
@@ -7735,7 +7331,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnMeanNode {
@@ -7756,7 +7351,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsMeanNode {
@@ -7777,7 +7371,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionSpatialMeanNode {
@@ -7798,7 +7391,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionRowSumNode {
@@ -7819,7 +7411,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionColumnSumNode {
@@ -7840,7 +7431,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNUnaryReductionNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionFeatureChannelsSumNode {
@@ -7868,7 +7458,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the absolute-value activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronAbsoluteNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronAbsoluteNode {
@@ -7888,7 +7477,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the exponential linear unit activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronELUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronEluNode {
@@ -7924,7 +7512,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the ReLUN activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronReLUNNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronReLunNode {
@@ -7962,7 +7549,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the linear activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronLinearNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronLinearNode {
@@ -8004,7 +7590,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the rectified linear unit activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronReLUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronReLUNode {
@@ -8040,7 +7625,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the sigmoid activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSigmoidNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSigmoidNode {
@@ -8060,7 +7644,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the hard sigmoid activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronHardSigmoidNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronHardSigmoidNode {
@@ -8098,7 +7681,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the softplus activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSoftPlusNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSoftPlusNode {
@@ -8136,7 +7718,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the softsign activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronSoftSignNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronSoftSignNode {
@@ -8156,7 +7737,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents a tanh activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronTanHNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronTanHNode {
@@ -8194,7 +7774,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNeuronNode" /> that represents the parametric rectified linear unit activation function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronPReLUNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNeuronPReLUNode {
@@ -8216,7 +7795,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that represents a pooling kernel in a convolutional neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNPoolingNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnPoolingNode {
@@ -8224,28 +7802,24 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("kernelWidth")]
 		nuint KernelWidth { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("kernelHeight")]
 		nuint KernelHeight { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsX")]
 		nuint StrideInPixelsX { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("strideInPixelsY")]
 		nuint StrideInPixelsY { get; }
 
@@ -8294,7 +7868,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode, nuint size);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNPoolingGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingGradientNode {
@@ -8352,7 +7925,6 @@ namespace MetalPerformanceShaders {
 		nuint StrideInPixelsY { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradientNode), Name = "MPSCNNPoolingMaxGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingMaxGradientNode {
@@ -8387,7 +7959,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, nuint kernelWidth, nuint kernelHeight, nuint strideInPixelsX, nuint strideInPixelsY, [NullAllowed] IMPSNNPadding paddingPolicy);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradientNode), Name = "MPSCNNPoolingAverageGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingAverageGradientNode {
@@ -8422,7 +7993,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, nuint kernelWidth, nuint kernelHeight, nuint strideInPixelsX, nuint strideInPixelsY, [NullAllowed] IMPSNNPadding paddingPolicy);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradientNode), Name = "MPSCNNPoolingL2NormGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnPoolingL2NormGradientNode {
@@ -8457,7 +8027,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, nuint kernelWidth, nuint kernelHeight, nuint strideInPixelsX, nuint strideInPixelsY, [NullAllowed] IMPSNNPadding paddingPolicy);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingGradientNode), Name = "MPSCNNDilatedPoolingMaxGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnDilatedPoolingMaxGradientNode {
@@ -8505,7 +8074,6 @@ namespace MetalPerformanceShaders {
 		nuint DilationRateY { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNSpatialNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnSpatialNormalizationGradientNode {
@@ -8561,7 +8129,6 @@ namespace MetalPerformanceShaders {
 		float Delta { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNLocalContrastNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnLocalContrastNormalizationGradientNode {
@@ -8637,7 +8204,6 @@ namespace MetalPerformanceShaders {
 		nuint KernelHeight { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNCrossChannelNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnCrossChannelNormalizationGradientNode {
@@ -8669,7 +8235,6 @@ namespace MetalPerformanceShaders {
 		nuint KernelSize { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNInstanceNormalizationNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationNode : MPSNNTrainableNode {
@@ -8691,7 +8256,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, IMPSCnnInstanceNormalizationDataSource dataSource);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNInstanceNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationGradientNode : MPSNNTrainableNode {
@@ -8715,7 +8279,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNBatchNormalizationNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalizationNode : MPSNNTrainableNode {
@@ -8743,7 +8306,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, IMPSCnnBatchNormalizationDataSource dataSource);
 	}
 
-	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNBatchNormalizationGradientNode")]
 	interface MPSCnnBatchNormalizationGradientNode : MPSNNTrainableNode {
@@ -8768,7 +8330,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that represents a dilated max pooling filter.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNDilatedPoolingMaxNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnDilatedPoolingMaxNode {
@@ -8834,7 +8395,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Abstract base class for normalization <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> subclasses.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnNormalizationNode {
@@ -8873,7 +8433,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNormalizationNode" /> that represents a spatial normalization kernel.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNormalizationNode), Name = "MPSCNNSpatialNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnSpatialNormalizationNode {
@@ -8915,7 +8474,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNormalizationNode" /> representing a local contrast normalization kernel.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNormalizationNode), Name = "MPSCNNLocalContrastNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnLocalContrastNormalizationNode {
@@ -8975,7 +8533,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnNormalizationNode" /> that represents a cross-channel normalization kernel.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnNormalizationNode), Name = "MPSCNNCrossChannelNormalizationNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnCrossChannelNormalizationNode {
@@ -9011,7 +8568,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Abstract neural network graph node for image resampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNScaleNode {
@@ -9057,7 +8613,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Abstract base class of arithmetic nodes.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNBinaryArithmeticNode {
@@ -9094,7 +8649,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientClass")]
 		Class GradientClass { get; }
 
@@ -9102,7 +8656,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("gradientFiltersWithSources:")]
 		MPSNNGradientFilterNode [] GetGradientFilters (MPSNNImageNode [] gradientImages);
 
@@ -9173,7 +8726,6 @@ namespace MetalPerformanceShaders {
 		float MaximumValue { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryArithmeticNode))]
 	[DisableDefaultCtor]
 	interface MPSNNComparisonNode {
@@ -9185,7 +8737,6 @@ namespace MetalPerformanceShaders {
 		MPSNNComparisonType ComparisonType { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNArithmeticGradientNode {
@@ -9273,7 +8824,6 @@ namespace MetalPerformanceShaders {
 		bool IsSecondarySourceFilter { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNArithmeticGradientNode))]
 	[DisableDefaultCtor]
 	interface MPSNNAdditionGradientNode {
@@ -9308,7 +8858,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode [] gradientImages, MPSNNFilterNode filter, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNArithmeticGradientNode))]
 	[DisableDefaultCtor]
 	interface MPSNNSubtractionGradientNode {
@@ -9343,7 +8892,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode [] gradientImages, MPSNNFilterNode filter, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNArithmeticGradientNode))]
 	[DisableDefaultCtor]
 	interface MPSNNMultiplicationGradientNode {
@@ -9378,7 +8926,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode [] gradientImages, MPSNNFilterNode filter, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNDropoutNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnDropoutNode {
@@ -9453,7 +9000,6 @@ namespace MetalPerformanceShaders {
 		MTLSize MaskStrideInPixels { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNDropoutGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnDropoutGradientNode {
@@ -9501,14 +9047,12 @@ namespace MetalPerformanceShaders {
 		MTLSize MaskStrideInPixels { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNStateNode))]
 	[DisableDefaultCtor]
 	interface MPSNNLabelsNode {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNLossNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnLossNode {
@@ -9536,7 +9080,6 @@ namespace MetalPerformanceShaders {
 		MPSNNLabelsNode InputLabels { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNYOLOLossNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLossNode {
@@ -9546,7 +9089,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:lossDescriptor:")]
 		MPSCnnYoloLossNode Create (MPSNNImageNode source, MPSCnnYoloLossDescriptor descriptor);
@@ -9566,7 +9108,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Concatenates the results of two kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNConcatenationNode {
@@ -9585,7 +9126,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode [] sourceNodes);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNConcatenationGradientNode {
@@ -9609,7 +9149,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode gradientSourceNode, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReshapeNode {
@@ -9635,7 +9174,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, nuint resultWidth, nuint resultHeight, nuint resultFeatureChannels);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReshapeGradientNode {
@@ -9659,7 +9197,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNReductionSpatialMeanGradientNode {
@@ -9683,7 +9220,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNPadNode {
@@ -9715,7 +9251,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, MPSImageCoordinate paddingSizeBefore, MPSImageCoordinate paddingSizeAfter, MPSImageEdgeMode edgeMode);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	[DisableDefaultCtor]
 	interface MPSNNPadGradientNode {
@@ -9739,7 +9274,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNSoftMaxGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMaxGradientNode {
@@ -9763,7 +9297,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNLogSoftMaxGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMaxGradientNode {
@@ -9788,7 +9321,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that represents a softmax filter.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNSoftMaxNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnSoftMaxNode {
@@ -9808,7 +9340,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that represents the logarithmic softmax loss function.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNLogSoftMaxNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnLogSoftMaxNode {
@@ -9828,7 +9359,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that performs nearest spatial upsampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNUpsamplingNearestNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingNearestNode {
@@ -9864,7 +9394,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that performs bilinear spatial upsampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNUpsamplingBilinearNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingBilinearNode {
@@ -9885,7 +9414,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("nodeWithSource:integerScaleFactorX:integerScaleFactorY:alignCorners:")]
 		MPSCnnUpsamplingBilinearNode Create (MPSNNImageNode sourceNode, nuint integerScaleFactorX, nuint integerScaleFactorY, bool alignCorners);
@@ -9904,7 +9432,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="alignCorners">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithSource:integerScaleFactorX:integerScaleFactorY:alignCorners:")]
 		NativeHandle Constructor (MPSNNImageNode sourceNode, nuint integerScaleFactorX, nuint integerScaleFactorY, bool alignCorners);
 
@@ -9923,12 +9450,10 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("alignCorners")]
 		bool AlignCorners { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNUpsamplingNearestGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingNearestGradientNode {
@@ -9968,7 +9493,6 @@ namespace MetalPerformanceShaders {
 		double ScaleFactorY { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNUpsamplingBilinearGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnUpsamplingBilinearGradientNode {
@@ -10018,7 +9542,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	interface MPSNNForwardLossNode {
 		[Export ("lossType")]
@@ -10078,13 +9601,12 @@ namespace MetalPerformanceShaders {
 		[Export ("gradientFiltersWithSource:")]
 		MPSNNLossGradientNode [] GetFilters (MPSNNImageNode sourceGradient);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientFilterNode))]
 	interface MPSNNLossGradientNode {
 		[Export ("lossType")]
@@ -10135,13 +9657,12 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithSources:gradientState:lossDescriptor:isLabelsGradientFilter:")]
 		NativeHandle Constructor (MPSNNImageNode [] sourceNodes, [NullAllowed] MPSNNGradientStateNode gradientState, MPSCnnLossDescriptor descriptor, bool isLabelsGradientFilter);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNFilterNode))]
 	interface MPSNNInitialGradientNode {
 		[Static]
@@ -10153,7 +9674,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>An optimized neural network graph.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // There is a DesignatedInitializer, file a bug if needed.
 	interface MPSNNGraph : NSCopying, NSSecureCoding {
@@ -10163,7 +9683,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="resultIsNeeded">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:resultImage:resultImageIsNeeded:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MPSNNImageNode resultImage, bool resultIsNeeded);
@@ -10174,7 +9693,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphWithDevice:resultImage:resultImageIsNeeded:")]
 		[return: NullAllowed]
@@ -10191,13 +9709,11 @@ namespace MetalPerformanceShaders {
 		[Export ("initWithDevice:resultImage:")]
 		NativeHandle Constructor (IMTLDevice device, MPSNNImageNode resultImage);
 
-		[MacCatalyst (13, 0)]
 		[Export ("initWithDevice:resultImages:resultsAreNeeded:")]
 		// [DesignatedInitializer]
 		[Internal]
 		NativeHandle _InitWithDevice (IMTLDevice device, MPSNNImageNode [] resultImages, IntPtr areResultsNeeded);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("graphWithDevice:resultImages:resultsAreNeeded:")]
 		[return: NullAllowed]
@@ -10272,20 +9788,17 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("format", ArgumentSemantic.Assign)]
 		MPSImageFeatureChannelFormat Format { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("resultImageIsNeeded")]
 		bool ResultImageIsNeeded { get; }
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadFromDataSources")]
 		void ReloadFromDataSources ();
 
@@ -10318,7 +9831,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:sourceStates:intermediateImages:destinationStates:")]
 		[return: NullAllowed]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> [] sourceImages, [NullAllowed] NSArray<MPSState> [] sourceStates, [NullAllowed] NSMutableArray<NSArray<MPSImage>> intermediateImages, [NullAllowed] NSMutableArray<NSArray<MPSState>> destinationStates);
@@ -10371,7 +9883,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("readCountForSourceImageAtIndex:")]
 		nuint GetReadCountForSourceImage (nuint index);
 
@@ -10379,7 +9890,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("readCountForSourceStateAtIndex:")]
 		nuint GetReadCountForSourceState (nuint index);
 	}
@@ -10387,7 +9897,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSHandle { }
 
 	/// <summary>Interface describing a Metal Performance Shaders-specific identifier.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSHandle : NSCoding {
 		/// <summary>To be added.</summary>
@@ -10401,7 +9910,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSCnnConvolutionDataSource { }
 
 	/// <summary>Base class for classes that provide weights and bias terms to convolution filters.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "MPSCNNConvolutionDataSource")]
 	interface MPSCnnConvolutionDataSource : NSCopying {
@@ -10471,7 +9979,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("weightsQuantizationType")]
 		MPSCnnWeightsQuantizationType GetWeightsQuantizationType ();
 
@@ -10481,7 +9988,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("updateWithCommandBuffer:gradientState:sourceState:")]
 		[return: NullAllowed]
 		MPSCnnConvolutionWeightsAndBiasesState Update (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState gradientState, MPSCnnConvolutionWeightsAndBiasesState sourceState);
@@ -10491,7 +9997,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("updateWithGradientState:sourceState:")]
 		bool Update (MPSCnnConvolutionGradientState gradientState, MPSCnnConvolutionWeightsAndBiasesState sourceState);
 
@@ -10500,16 +10005,14 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		IMPSCnnConvolutionDataSource Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 
-		[MacCatalyst (13, 0)]
 		[Export ("weightsLayout")]
 		MPSCnnConvolutionWeightsLayout WeightsLayout { get; }
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("kernelWeightsDataType")]
 		MPSDataType KernelWeightsDataType { get; }
 	}
@@ -10517,7 +10020,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSNNPadding { }
 
 	/// <summary>Interface describing how kernels should pad their inputs.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSNNPadding : NSSecureCoding {
 		/// <summary>To be added.</summary>
@@ -10546,7 +10048,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("inverse")]
 		[return: NullAllowed]
 		IMPSNNPadding GetInverse ();
@@ -10555,7 +10056,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSImageSizeEncodingState { }
 
 	/// <summary>Interface defining methods relating to when image size is stored elsewhere in the graph.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageSizeEncodingState {
 		/// <summary>To be added.</summary>
@@ -10576,7 +10076,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSImageAllocator { }
 
 	/// <summary>Interface defining a factory that generates a <see cref="MPSImage" /> from a <see cref="IMTLCommandBuffer" />, a <see cref="MPSImageDescriptor" />, and a <see cref="MPSKernel" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageAllocator : NSSecureCoding {
 		/// <param name="cmdBuf">To be added.</param>
@@ -10596,13 +10095,11 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("imageBatchForCommandBuffer:imageDescriptor:kernel:count:")]
 		NSArray<MPSImage> GetImageBatch (IMTLCommandBuffer commandBuffer, MPSImageDescriptor descriptor, MPSKernel kernel, nuint count);
 	}
 
 #if !XAMCORE_5_0
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNStateNode), Name = "MPSCNNConvolutionStateNode")]
 	[DisableDefaultCtor]
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -10610,25 +10107,21 @@ namespace MetalPerformanceShaders {
 	}
 #endif // !XAMCORE_5_0
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNStateNode))]
 	[DisableDefaultCtor]
 	interface MPSNNGradientStateNode {
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientStateNode), Name = "MPSCNNConvolutionGradientStateNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionGradientStateNode {
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNStateNode))]
 	[DisableDefaultCtor]
 	interface MPSNNBinaryGradientStateNode {
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryGradientStateNode))]
 	[DisableDefaultCtor]
 	interface MPSNNArithmeticGradientStateNode {
@@ -10637,7 +10130,6 @@ namespace MetalPerformanceShaders {
 	interface IMPSImageTransformProvider { }
 
 	/// <summary>Interface defining image resampling methods.</summary>
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSImageTransformProvider : NSCoding {
 		/// <param name="image">To be added.</param>
@@ -10650,7 +10142,6 @@ namespace MetalPerformanceShaders {
 		MPSScaleTransform GetTransform (MPSImage image, [NullAllowed] IMPSHandle handle);
 	}
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSDeviceProvider {
 		/// <summary>To be added.</summary>
@@ -10662,7 +10153,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that returns the average value of its input region.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingNode), Name = "MPSCNNPoolingAverageNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnPoolingAverageNode {
@@ -10693,7 +10183,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Representation of an L2-norm pooling filter.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingNode), Name = "MPSCNNPoolingL2NormNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnPoolingL2NormNode {
@@ -10724,7 +10213,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSCnnPoolingNode" /> that represents a max-pooling kernel in a convolutional neural net.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnPoolingNode), Name = "MPSCNNPoolingMaxNode")]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSCnnPoolingMaxNode {
@@ -10755,7 +10243,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Adds the results of two kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryArithmeticNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNAdditionNode {
@@ -10774,7 +10261,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that performs bilinear sampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNScaleNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNBilinearScaleNode {
@@ -10798,7 +10284,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Divides the results of two kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryArithmeticNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNDivisionNode {
@@ -10817,7 +10302,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>A <see cref="MetalPerformanceShaders.MPSNNFilterNode" /> that performs Lanczos resampling.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNScaleNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNLanczosScaleNode {
@@ -10841,7 +10325,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Multiplies the results of two kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryArithmeticNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNMultiplicationNode {
@@ -10860,7 +10343,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	/// <summary>Subtracts the results of two kernels.</summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryArithmeticNode))]
 	[DisableDefaultCtor] // 'init' is unavailable
 	interface MPSNNSubtractionNode {
@@ -10880,7 +10362,6 @@ namespace MetalPerformanceShaders {
 
 	/// <summary>A one-dimensional array allocated in GPU private memory.
 	/// </summary>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSVector))]
 	[DisableDefaultCtor]
 	interface MPSTemporaryVector {
@@ -10909,7 +10390,6 @@ namespace MetalPerformanceShaders {
 		nuint ReadCount { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixSum {
@@ -11020,7 +10500,6 @@ namespace MetalPerformanceShaders {
 		MTLOrigin ResultMatrixOrigin { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixSoftMax {
@@ -11081,7 +10560,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixSoftMax Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixNeuron {
@@ -11191,7 +10669,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixNeuron Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixNeuronGradient {
@@ -11289,7 +10766,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixNeuronGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixFullyConnectedGradient {
@@ -11362,7 +10838,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixFullyConnectedGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixSoftMax))]
 	[DisableDefaultCtor]
 	interface MPSMatrixLogSoftMax {
@@ -11387,7 +10862,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixFullyConnected {
@@ -11498,7 +10972,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixFullyConnected Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixFindTopK {
@@ -11573,7 +11046,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixFindTopK Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface MPSStateResourceList {
 
@@ -11603,7 +11075,6 @@ namespace MetalPerformanceShaders {
 		void Append (nuint bufferSize);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSKeyedUnarchiver))]
 	[DisableDefaultCtor]
 	interface MPSKeyedUnarchiver : MPSDeviceProvider {
@@ -11615,7 +11086,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClasses:fromData:device:error:")]
 		[return: NullAllowed]
@@ -11628,7 +11098,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("unarchivedObjectOfClass:fromData:device:error:")]
 		[return: NullAllowed]
@@ -11639,12 +11108,10 @@ namespace MetalPerformanceShaders {
 		/// <param name="error">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initForReadingFromData:device:error:")]
 		NativeHandle Constructor (NSData data, IMTLDevice device, [NullAllowed] out NSError error);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayDescriptor {
@@ -11715,7 +11182,6 @@ namespace MetalPerformanceShaders {
 		MPSNDArray AllocateArray (IMTLCommandBuffer cmdBuf, MPSNDArrayDescriptor descriptor, MPSKernel kernel);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNDArray {
@@ -11809,7 +11275,6 @@ namespace MetalPerformanceShaders {
 	}
 
 	[DisableDefaultCtor]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNDArray))]
 	interface MPSTemporaryNDArray {
 		[Static]
@@ -11824,7 +11289,6 @@ namespace MetalPerformanceShaders {
 		nuint ReadCount { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImagePyramid))]
 	[DisableDefaultCtor]
 	interface MPSImageLaplacianPyramid {
@@ -11857,7 +11321,6 @@ namespace MetalPerformanceShaders {
 		float LaplacianScale { [Bind ("getLaplacianScale")] get; [Bind ("setLaplacianScale:")] set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageLaplacianPyramid))]
 	[DisableDefaultCtor]
 	interface MPSImageLaplacianPyramidSubtract {
@@ -11878,7 +11341,6 @@ namespace MetalPerformanceShaders {
 	}
 
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageLaplacianPyramid))]
 	[DisableDefaultCtor]
 	interface MPSImageLaplacianPyramidAdd {
@@ -11898,7 +11360,6 @@ namespace MetalPerformanceShaders {
 		IntPtr InitWithDevice (IMTLDevice device, nuint kernelWidth, nuint kernelHeight, /* float* */ IntPtr kernelWeights);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixCopyToImage {
@@ -11954,7 +11415,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix sourceMatrix, NSArray<MPSImage> destinationImages);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageEuclideanDistanceTransform {
@@ -11974,12 +11434,11 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("searchLimitRadius")]
 		float SearchLimitRadius { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageGuidedFilter {
@@ -12043,16 +11502,15 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeReconstructionToCommandBuffer:guidanceTexture:coefficientsTexture:destinationTexture:")]
 		void EncodeReconstruction (IMTLCommandBuffer commandBuffer, IMTLTexture guidanceTexture, IMTLTexture coefficientsTexture, IMTLTexture destinationTexture);
 
-		[TV (13, 2), MacCatalyst (13, 2), iOS (13, 2)]
+		[TV (13, 2), iOS (13, 2)]
 		[Export ("encodeRegressionToCommandBuffer:sourceTexture:guidanceTexture:weightsTexture:destinationCoefficientsTextureA:destinationCoefficientsTextureB:")]
 		void EncodeRegression (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, IMTLTexture guidanceTexture, [NullAllowed] IMTLTexture weightsTexture, IMTLTexture destinationCoefficientsTextureA, IMTLTexture destinationCoefficientsTextureB);
 
-		[TV (13, 2), MacCatalyst (13, 2), iOS (13, 2)]
+		[TV (13, 2), iOS (13, 2)]
 		[Export ("encodeReconstructionToCommandBuffer:guidanceTexture:coefficientsTextureA:coefficientsTextureB:destinationTexture:")]
 		void EncodeReconstruction (IMTLCommandBuffer commandBuffer, IMTLTexture guidanceTexture, IMTLTexture coefficientsTextureA, IMTLTexture coefficientsTextureB, IMTLTexture destinationTexture);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageNormalizedHistogram {
@@ -12110,7 +11568,6 @@ namespace MetalPerformanceShaders {
 		nuint GetHistogramSize (MTLPixelFormat sourceFormat);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor] // Only subclasses are meant to be used
 	interface MPSImageReduceUnary {
@@ -12122,7 +11579,6 @@ namespace MetalPerformanceShaders {
 		MTLRegion ClipRectSource { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceRowMin {
@@ -12135,7 +11591,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceColumnMin {
@@ -12148,7 +11603,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceRowMax {
@@ -12161,7 +11615,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceColumnMax {
@@ -12174,7 +11627,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceRowMean {
@@ -12187,7 +11639,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceColumnMean {
@@ -12200,7 +11651,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceRowSum {
@@ -12213,7 +11663,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSImageReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSImageReduceColumnSum {
@@ -12226,7 +11675,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixSoftMaxGradient {
@@ -12278,7 +11726,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixSoftMaxGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixSoftMaxGradient))]
 	[DisableDefaultCtor]
 	interface MPSMatrixLogSoftMaxGradient {
@@ -12299,7 +11746,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 0, "Use Metal ray tracing instead.")]
@@ -12427,7 +11873,6 @@ namespace MetalPerformanceShaders {
 		void EncodeIntersection (IMTLCommandBuffer commandBuffer, MPSIntersectionType intersectionType, IMTLBuffer rayBuffer, nuint rayBufferOffset, IMTLBuffer intersectionBuffer, nuint intersectionBufferOffset, IMTLBuffer rayCountBuffer, nuint rayCountBufferOffset, MPSAccelerationStructure accelerationStructure);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 0, "Use Metal ray tracing instead.")]
@@ -12449,7 +11894,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSAccelerationStructure))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 0, "Use Metal ray tracing instead.")]
@@ -12545,7 +11989,6 @@ namespace MetalPerformanceShaders {
 
 	delegate void MPSAccelerationStructureCompletionHandler ([NullAllowed] MPSAccelerationStructure structure);
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 0, "Use Metal ray tracing instead.")]
@@ -12654,7 +12097,6 @@ namespace MetalPerformanceShaders {
 		void Encode (NSCoder coder);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSAccelerationStructure))]
 	[DisableDefaultCtor]
 	[Deprecated (PlatformName.MacOSX, 14, 0, "Use Metal ray tracing instead.")]
@@ -12748,7 +12190,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, MPSAccelerationStructureGroup group);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNBatchNormalizationState")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalizationState {
@@ -12801,7 +12242,6 @@ namespace MetalPerformanceShaders {
 		IMTLBuffer GradientForBeta { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSCNNNormalizationMeanAndVarianceState")]
 	[DisableDefaultCtor]
 	interface MPSCnnNormalizationMeanAndVarianceState {
@@ -12837,7 +12277,6 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSCnnBatchNormalizationDataSource { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "MPSCNNBatchNormalizationDataSource")]
 	interface MPSCnnBatchNormalizationDataSource : NSCopying {
@@ -12911,7 +12350,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("updateMeanAndVarianceWithCommandBuffer:batchNormalizationState:")]
 		[return: NullAllowed]
 		MPSCnnNormalizationMeanAndVarianceState UpdateMeanAndVariance (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState);
@@ -12927,7 +12365,6 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("updateMeanAndVarianceWithBatchNormalizationState:")]
 		bool UpdateMeanAndVariance (MPSCnnBatchNormalizationState batchNormalizationState);
 
@@ -12961,13 +12398,11 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		IMPSCnnBatchNormalizationDataSource Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNBatchNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalization {
@@ -13002,7 +12437,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="fusedNeuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:dataSource:fusedNeuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, IMPSCnnBatchNormalizationDataSource dataSource, [NullAllowed] MPSNNNeuronDescriptor fusedNeuronDescriptor);
@@ -13062,13 +12496,11 @@ namespace MetalPerformanceShaders {
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadGammaAndBetaFromDataSource")]
 		void ReloadGammaAndBetaFromDataSource ();
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadMeanAndVarianceFromDataSource")]
 		void ReloadMeanAndVarianceFromDataSource ();
 
@@ -13083,12 +12515,10 @@ namespace MetalPerformanceShaders {
 		///         <param name="meanAndVarianceState">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadMeanAndVarianceWithCommandBuffer:meanAndVarianceState:")]
 		void ReloadMeanAndVariance (IMTLCommandBuffer commandBuffer, MPSCnnNormalizationMeanAndVarianceState meanAndVarianceState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNBatchNormalizationStatistics")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalizationStatistics {
@@ -13117,7 +12547,6 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNBatchNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalizationGradient {
@@ -13126,7 +12555,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="fusedNeuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:fusedNeuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, [NullAllowed] MPSNNNeuronDescriptor fusedNeuronDescriptor);
@@ -13180,7 +12608,6 @@ namespace MetalPerformanceShaders {
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNBatchNormalizationStatisticsGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnBatchNormalizationStatisticsGradient {
@@ -13189,7 +12616,6 @@ namespace MetalPerformanceShaders {
 		/// <param name="fusedNeuronDescriptor">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("initWithDevice:fusedNeuronDescriptor:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, [NullAllowed] MPSNNNeuronDescriptor fusedNeuronDescriptor);
@@ -13212,7 +12638,6 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, MPSCnnBatchNormalizationState batchNormalizationState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNConvolutionGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionGradientState : MPSImageSizeEncodingState {
@@ -13235,12 +12660,10 @@ namespace MetalPerformanceShaders {
 		[Export ("convolution", ArgumentSemantic.Retain)]
 		MPSCnnConvolution Convolution { get; }
 
-		[MacCatalyst (13, 0)]
 		[Export ("gradientForWeightsLayout")]
 		MPSCnnConvolutionWeightsLayout GradientForWeightsLayout { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSCNNConvolutionWeightsAndBiasesState")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionWeightsAndBiasesState {
@@ -13286,12 +12709,10 @@ namespace MetalPerformanceShaders {
 		[Export ("biasesOffset")]
 		nuint BiasesOffset { get; }
 
-		[MacCatalyst (13, 0)]
 		[Export ("initWithWeights:weightsOffset:biases:biasesOffset:cnnConvolutionDescriptor:")]
 		NativeHandle Constructor (IMTLBuffer weights, nuint weightsOffset, [NullAllowed] IMTLBuffer biases, nuint biasesOffset, MPSCnnConvolutionDescriptor descriptor);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNConvolutionGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionGradient {
@@ -13317,7 +12738,6 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("channelMultiplier")]
 		nuint ChannelMultiplier { get; }
 
@@ -13357,7 +12777,6 @@ namespace MetalPerformanceShaders {
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadWeightsAndBiasesFromDataSource")]
 		void ReloadWeightsAndBiasesFromDataSource ();
 
@@ -13369,7 +12788,6 @@ namespace MetalPerformanceShaders {
 		void ReloadWeightsAndBiases (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnConvolutionGradient), Name = "MPSCNNFullyConnectedGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnFullyConnectedGradient {
@@ -13391,7 +12809,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNDropoutGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnDropoutGradientState {
@@ -13403,7 +12820,6 @@ namespace MetalPerformanceShaders {
 		NSData MaskData { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNDropout")]
 	[DisableDefaultCtor]
 	interface MPSCnnDropout {
@@ -13461,7 +12877,6 @@ namespace MetalPerformanceShaders {
 		MPSCnnDropoutGradientState [] GetTemporaryResultStateBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImage, [NullAllowed] NSArray<MPSState> [] sourceStates, MPSImage [] destinationImage);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNDropoutGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnDropoutGradient {
@@ -13503,7 +12918,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, float keepProbability, nuint seed, MTLSize maskStrideInPixels);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNInstanceNormalizationGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationGradientState {
@@ -13541,7 +12955,6 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSCnnInstanceNormalizationDataSource { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject), Name = "MPSCNNInstanceNormalizationDataSource")]
 	interface MPSCnnInstanceNormalizationDataSource : NSCopying {
@@ -13618,21 +13031,17 @@ namespace MetalPerformanceShaders {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("copyWithZone:device:")]
 		[return: Release]
 		IMPSCnnInstanceNormalizationDataSource Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 
-		[MacCatalyst (13, 0)]
 		[Export ("load")]
 		bool Load ();
 
-		[MacCatalyst (13, 0)]
 		[Export ("purge")]
 		void Purge ();
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNInstanceNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalization {
@@ -13677,7 +13086,6 @@ namespace MetalPerformanceShaders {
 
 		/// <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("reloadGammaAndBetaFromDataSource")]
 		void ReloadGammaAndBetaFromDataSource ();
 
@@ -13710,7 +13118,6 @@ namespace MetalPerformanceShaders {
 		MPSCnnInstanceNormalizationGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] NSArray<MPSState> sourceStates, MPSImage destinationImage);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNInstanceNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnInstanceNormalizationGradient {
@@ -13731,7 +13138,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSCNNGradientKernel")]
 	[DisableDefaultCtor]
 	interface MPSCnnGradientKernel {
@@ -13804,7 +13210,6 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceGradients, NSArray<MPSImage> sourceImages, NSArray<MPSState> gradientStates, NSArray<MPSImage> destinationGradients);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSCNNLossDataDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnLossDataDescriptor : NSCopying {
@@ -13845,7 +13250,6 @@ namespace MetalPerformanceShaders {
 		MPSCnnLossDataDescriptor Create (NSData data, MPSDataLayout layout, MTLSize size);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSCNNLossLabels")]
 	[DisableDefaultCtor]
 	interface MPSCnnLossLabels {
@@ -13876,24 +13280,20 @@ namespace MetalPerformanceShaders {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("labelsImage")]
 		MPSImage LabelsImage { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("weightsImage")]
 		MPSImage WeightsImage { get; }
 
-		[MacCatalyst (13, 0)]
 		[Export ("initWithDevice:lossImageSize:labelsImage:weightsImage:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (IMTLDevice device, MTLSize lossImageSize, MPSImage labelsImage, [NullAllowed] MPSImage weightsImage);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSCNNLossDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnLossDescriptor : NSCopying {
@@ -13949,12 +13349,11 @@ namespace MetalPerformanceShaders {
 		[Export ("cnnLossDescriptorWithType:reductionType:")]
 		MPSCnnLossDescriptor Create (MPSCnnLossType lossType, MPSCnnReductionType reductionType);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNLoss")]
 	[DisableDefaultCtor]
 	interface MPSCnnLoss {
@@ -14053,12 +13452,11 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "MPSCNNYOLOLossDescriptor")]
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLossDescriptor : NSCopying {
@@ -14167,12 +13565,11 @@ namespace MetalPerformanceShaders {
 		[Export ("cnnLossDescriptorWithXYLossType:WHLossType:confidenceLossType:classesLossType:reductionType:anchorBoxes:numberOfAnchorBoxes:")]
 		MPSCnnYoloLossDescriptor Create (MPSCnnLossType xyLossType, MPSCnnLossType whLossType, MPSCnnLossType confidenceLossType, MPSCnnLossType classesLossType, MPSCnnReductionType reductionType, NSData anchorBoxes, nuint numberOfAnchorBoxes);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNYOLOLoss")]
 	[DisableDefaultCtor]
 	interface MPSCnnYoloLoss {
@@ -14313,19 +13710,17 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeBatchToCommandBuffer:sourceImages:labels:")]
 		NSArray<MPSImage> EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> sourceImage, NSArray<MPSCnnLossLabels> labels);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNBinaryGradientState), Name = "MPSCNNArithmeticGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnArithmeticGradientState {
 
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSCNNArithmetic")]
 	[DisableDefaultCtor]
 	interface MPSCnnArithmetic {
@@ -14402,7 +13797,6 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, NSArray<MPSImage> primaryImages, NSArray<MPSImage> secondaryImages, MPSCnnArithmeticGradientState [] destinationStates, NSArray<MPSImage> destinationImages);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmetic), Name = "MPSCNNAdd")]
 	[DisableDefaultCtor]
 	interface MPSCnnAdd {
@@ -14415,7 +13809,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmetic), Name = "MPSCNNSubtract")]
 	[DisableDefaultCtor]
 	interface MPSCnnSubtract {
@@ -14428,7 +13821,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmetic), Name = "MPSCNNMultiply")]
 	[DisableDefaultCtor]
 	interface MPSCnnMultiply {
@@ -14441,7 +13833,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmetic), Name = "MPSCNNDivide")]
 	[DisableDefaultCtor]
 	interface MPSCnnDivide {
@@ -14454,7 +13845,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmetic))]
 	[DisableDefaultCtor]
 	interface MPSNNCompare {
@@ -14479,7 +13869,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNArithmeticGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnArithmeticGradient {
@@ -14536,7 +13925,6 @@ namespace MetalPerformanceShaders {
 		bool IsSecondarySourceFilter { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmeticGradient), Name = "MPSCNNAddGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnAddGradient {
@@ -14550,7 +13938,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmeticGradient), Name = "MPSCNNSubtractGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnSubtractGradient {
@@ -14564,7 +13951,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnArithmeticGradient), Name = "MPSCNNMultiplyGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnMultiplyGradient {
@@ -14578,7 +13964,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, bool isSecondarySourceFilter);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNNeuronDescriptor : NSCopying, NSSecureCoding {
@@ -14661,7 +14046,6 @@ namespace MetalPerformanceShaders {
 		MPSNNNeuronDescriptor Create (NSData data, bool noCopy);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNNeuronGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGradient {
@@ -14713,7 +14097,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSCNNNormalizationGammaAndBetaState")]
 	[DisableDefaultCtor]
 	interface MPSCnnNormalizationGammaAndBetaState {
@@ -14747,7 +14130,6 @@ namespace MetalPerformanceShaders {
 		MPSCnnNormalizationGammaAndBetaState GetTemporaryState (IMTLCommandBuffer commandBuffer, nuint numberOfFeatureChannels);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixBatchNormalization {
@@ -14846,7 +14228,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixBatchNormalization Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSMatrixBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSMatrixBatchNormalizationGradient {
@@ -14942,7 +14323,6 @@ namespace MetalPerformanceShaders {
 		MPSMatrixBatchNormalizationGradient Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState))]
 	[DisableDefaultCtor]
 	interface MPSNNGradientState {
@@ -15020,7 +14400,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor ([NullAllowed] IMTLResource [] resources);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState))]
 	[DisableDefaultCtor]
 	interface MPSNNBinaryGradientState {
@@ -15100,7 +14479,6 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSNNTrainableNode { }
 
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface MPSNNTrainableNode {
 		/// <summary>To be added.</summary>
@@ -15111,7 +14489,6 @@ namespace MetalPerformanceShaders {
 		MPSNNTrainingStyle TrainingStyle { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerDescriptor {
@@ -15205,7 +14582,6 @@ namespace MetalPerformanceShaders {
 		MPSNNOptimizerDescriptor Create (float learningRate, float gradientRescale, bool applyGradientClipping, float gradientClipMax, float gradientClipMin, MPSNNRegularizationType regularizationType, float regularizationScale);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNOptimizer.
 	interface MPSNNOptimizer {
@@ -15259,7 +14635,6 @@ namespace MetalPerformanceShaders {
 		void SetLearningRate (float newLearningRate);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNOptimizer))]
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerStochasticGradientDescent {
@@ -15276,7 +14651,7 @@ namespace MetalPerformanceShaders {
 		[Export ("useNestrovMomentum")]
 		bool UseNestrovMomentum { get; }
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("useNesterovMomentum")]
 		bool UseNesterovMomentum { get; }
 
@@ -15292,7 +14667,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle _InitWithNestrovMomentum (IMTLDevice device, float momentumScale, bool useNestrovMomentum, MPSNNOptimizerDescriptor optimizerDescriptor);
 
 		[Internal]
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("initWithDevice:momentumScale:useNesterovMomentum:optimizerDescriptor:")]
 		NativeHandle _InitWithNesterovMomentum (IMTLDevice device, float momentumScale, bool useNesterovMomentum, MPSNNOptimizerDescriptor optimizerDescriptor);
 
@@ -15335,12 +14710,10 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, [NullAllowed] MPSMatrix inputMomentumMatrix, MPSMatrix resultValuesMatrix);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNOptimizer), Name = "MPSNNOptimizerRMSProp")]
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerRmsProp {
@@ -15412,12 +14785,10 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputSumOfSquaresVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputSumOfSquaresVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputSumOfSquaresMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputSumOfSquaresMatrix, MPSMatrix resultValuesMatrix);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNOptimizer))]
 	[DisableDefaultCtor]
 	interface MPSNNOptimizerAdam {
@@ -15507,32 +14878,25 @@ namespace MetalPerformanceShaders {
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:inputVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, [NullAllowed] NSArray<MPSVector> inputMomentumVectors, [NullAllowed] NSArray<MPSVector> inputVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:inputVelocityMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputMomentumMatrix, MPSMatrix inputVelocityMatrix, MPSMatrix resultValuesMatrix);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientVector:inputValuesVector:inputMomentumVector:inputVelocityVector:maximumVelocityVector:resultValuesVector:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSVector inputGradientVector, MPSVector inputValuesVector, MPSVector inputMomentumVector, MPSVector inputVelocityVector, [NullAllowed] MPSVector maximumVelocityVector, MPSVector resultValuesVector);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:inputGradientMatrix:inputValuesMatrix:inputMomentumMatrix:inputVelocityMatrix:maximumVelocityMatrix:resultValuesMatrix:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSMatrix inputGradientMatrix, MPSMatrix inputValuesMatrix, MPSMatrix inputMomentumMatrix, MPSMatrix inputVelocityMatrix, [NullAllowed] MPSMatrix maximumVelocityMatrix, MPSMatrix resultValuesMatrix);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:convolutionGradientState:convolutionSourceState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionGradientState convolutionGradientState, MPSCnnConvolutionWeightsAndBiasesState convolutionSourceState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnConvolutionWeightsAndBiasesState resultState);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:batchNormalizationState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 
-		[MacCatalyst (13, 0)]
 		[Export ("encodeToCommandBuffer:batchNormalizationGradientState:batchNormalizationSourceState:inputMomentumVectors:inputVelocityVectors:maximumVelocityVectors:resultState:")]
 		void Encode (IMTLCommandBuffer commandBuffer, MPSCnnBatchNormalizationState batchNormalizationGradientState, MPSCnnBatchNormalizationState batchNormalizationSourceState, MPSVector [] inputMomentumVectors, MPSVector [] inputVelocityVectors, [NullAllowed] MPSVector [] maximumVelocityVectors, MPSCnnNormalizationGammaAndBetaState resultState);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNReduceUnary.
 	interface MPSNNReduceUnary {
@@ -15544,7 +14908,6 @@ namespace MetalPerformanceShaders {
 		MTLRegion ClipRectSource { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceRowMin {
@@ -15561,7 +14924,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceColumnMin {
@@ -15578,7 +14940,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsMin {
@@ -15595,7 +14956,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsArgumentMin {
@@ -15612,7 +14972,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceRowMax {
@@ -15629,7 +14988,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceColumnMax {
@@ -15646,7 +15004,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsMax {
@@ -15663,7 +15020,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsArgumentMax {
@@ -15680,7 +15036,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceRowMean {
@@ -15697,7 +15052,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceColumnMean {
@@ -15714,7 +15068,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsMean {
@@ -15731,7 +15084,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceRowSum {
@@ -15748,7 +15100,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceColumnSum {
@@ -15765,7 +15116,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceUnary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsSum {
@@ -15788,7 +15138,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnBinaryKernel))]
 	[DisableDefaultCtor] // You must use one of the sub-classes of MPSNNReduceBinary.
 	interface MPSNNReduceBinary {
@@ -15806,7 +15155,6 @@ namespace MetalPerformanceShaders {
 		MTLRegion SecondarySourceClipRect { get; set; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceBinary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsAndWeightsMean {
@@ -15823,7 +15171,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSNNReduceBinary))]
 	[DisableDefaultCtor]
 	interface MPSNNReduceFeatureChannelsAndWeightsSum {
@@ -15853,7 +15200,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNReshape {
@@ -15873,24 +15219,23 @@ namespace MetalPerformanceShaders {
 		[DesignatedInitializer]
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("encodeToCommandBuffer:sourceImage:reshapedWidth:reshapedHeight:reshapedFeatureChannels:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, nuint reshapedWidth, nuint reshapedHeight, nuint reshapedFeatureChannels);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("encodeToCommandBuffer:sourceImage:destinationState:destinationStateIsTemporary:reshapedWidth:reshapedHeight:reshapedFeatureChannels:")]
 		MPSImage Encode (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] out MPSState outState, bool isTemporary, nuint reshapedWidth, nuint reshapedHeight, nuint reshapedFeatureChannels);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:reshapedWidth:reshapedHeight:reshapedFeatureChannels:")]
 		MPSImage [] EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, nuint reshapedWidth, nuint reshapedHeight, nuint reshapedFeatureChannels);
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("encodeBatchToCommandBuffer:sourceImages:destinationStates:destinationStateIsTemporary:reshapedWidth:reshapedHeight:reshapedFeatureChannels:")]
 		MPSImage [] EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, [NullAllowed] out MPSState [] outStates, bool isTemporary, nuint reshapedWidth, nuint reshapedHeight, nuint reshapedFeatureChannels);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNReshapeGradient {
@@ -15911,7 +15256,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNPad {
@@ -15967,7 +15311,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNPadGradient {
@@ -15988,7 +15331,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNResizeBilinear {
@@ -16030,7 +15372,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNCropAndResizeBilinear {
@@ -16072,7 +15413,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSCnnKernel))]
 	[DisableDefaultCtor]
 	interface MPSNNSlice {
@@ -16093,7 +15433,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder decoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSState), Name = "MPSRNNMatrixTrainingState")]
 	[DisableDefaultCtor]
 	interface MPSRnnMatrixTrainingState {
@@ -16171,7 +15510,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor ([NullAllowed] IMTLResource [] resources);
 	}
 
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (MPSKernel), Name = "MPSRNNMatrixTrainingLayer")]
 	[DisableDefaultCtor]
 	interface MPSRnnMatrixTrainingLayer {
@@ -16324,7 +15662,6 @@ namespace MetalPerformanceShaders {
 		MPSRnnMatrixTrainingLayer Copy ([NullAllowed] NSZone zone, [NullAllowed] IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryBase {
@@ -16389,7 +15726,6 @@ namespace MetalPerformanceShaders {
 		MPSNDArrayDescriptor GetDestinationArray (MPSNDArray [] sources, [NullAllowed] MPSState state);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryBase))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryKernel {
@@ -16429,7 +15765,6 @@ namespace MetalPerformanceShaders {
 		void EncodeWithMtl4CommandEncoder (IMTL4ComputeCommandEncoder encoder, MPSNDArray [] sourceArrays, MPSNDArray destinationArray);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayUnaryKernel {
@@ -16638,13 +15973,11 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device, MPSNDArrayAffineQuantizationDescriptor quantizationDescriptor);
 	}
 
-	[MacCatalyst (13, 1)]
 	[NativeName ("MPSCNNConvolutionWeightsLayout")]
 	public enum MPSCnnConvolutionWeightsLayout : uint {
 		Ohwi = 0,
 	}
 
-	[MacCatalyst (13, 0)]
 	[Native]
 	public enum MPSTemporalWeighting : ulong {
 		Average = 0,
@@ -16653,7 +15986,6 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSCnnGroupNormalizationDataSource { }
 
-	[MacCatalyst (13, 0)]
 	[Protocol (Name = "MPSCNNGroupNormalizationDataSource", BackwardsCompatibleCodeGeneration = false)]
 	interface MPSCnnGroupNormalizationDataSource : NSCopying {
 		[Abstract]
@@ -16716,7 +16048,6 @@ namespace MetalPerformanceShaders {
 
 	interface IMPSSvgfTextureAllocator { }
 
-	[MacCatalyst (13, 0)]
 	[Protocol (Name = "MPSSVGFTextureAllocator", BackwardsCompatibleCodeGeneration = false)]
 	interface MPSSvgfTextureAllocator {
 		[Abstract]
@@ -16741,7 +16072,6 @@ namespace MetalPerformanceShaders {
 		MantissaShift = 10,
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNConvolutionTransposeGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradient {
@@ -16778,7 +16108,6 @@ namespace MetalPerformanceShaders {
 		void ReloadWeightsAndBiasesWithCommandBuffer (IMTLCommandBuffer commandBuffer, MPSCnnConvolutionWeightsAndBiasesState state);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientNode), Name = "MPSCNNConvolutionTransposeGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCNNConvolutionTransposeGradientNode {
@@ -16790,7 +16119,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSCnnConvolutionTransposeGradientStateNode gradientState, [NullAllowed] IMPSCnnConvolutionDataSource weights);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientState), Name = "MPSCNNConvolutionTransposeGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradientState {
@@ -16798,14 +16126,12 @@ namespace MetalPerformanceShaders {
 		MPSCnnConvolutionTranspose ConvolutionTranspose { get; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientStateNode), Name = "MPSCNNConvolutionTransposeGradientStateNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnConvolutionTransposeGradientStateNode {
 	}
 
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnConvolutionGradientNode), Name = "MPSCNNFullyConnectedGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnFullyConnectedGradientNode {
@@ -16817,7 +16143,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSCnnConvolutionGradientStateNode gradientState, [NullAllowed] IMPSCnnConvolutionDataSource weights);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSCNNGroupNormalization")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalization {
@@ -16853,13 +16178,11 @@ namespace MetalPerformanceShaders {
 		MPSCnnGroupNormalizationGradientState GetTemporaryResultState (IMTLCommandBuffer commandBuffer, MPSImage sourceImage, [NullAllowed] MPSState [] sourceStates, MPSImage destinationImage);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSCNNGroupNormalizationGradient")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradient {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSCNNGroupNormalizationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradientNode : MPSNNTrainableNode {
@@ -16871,7 +16194,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientState), Name = "MPSCNNGroupNormalizationGradientState")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationGradientState {
@@ -16891,7 +16213,6 @@ namespace MetalPerformanceShaders {
 		IMTLBuffer GradientForBeta { get; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSCNNGroupNormalizationNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnGroupNormalizationNode : MPSNNTrainableNode {
@@ -16903,7 +16224,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode source, IMPSCnnGroupNormalizationDataSource dataSource);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel), Name = "MPSCNNMultiaryKernel")]
 	[DisableDefaultCtor]
 	interface MPSCnnMultiaryKernel {
@@ -17040,7 +16360,6 @@ namespace MetalPerformanceShaders {
 		MPSImageDescriptor GetDestinationImageDescriptor (MPSImage [] sourceImages, [NullAllowed] MPSState [] sourceStates);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnNeuronNode), Name = "MPSCNNNeuronGeLUNode")]
 	[DisableDefaultCtor]
 	interface MPSCnnNeuronGeLUNode {
@@ -17052,7 +16371,7 @@ namespace MetalPerformanceShaders {
 		MPSCnnNeuronGeLUNode Create (MPSNNImageNode sourceNode);
 	}
 
-	[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+	[TV (14, 0), iOS (14, 0)]
 	[BaseType (typeof (MPSUnaryImageKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageCanny {
@@ -17086,7 +16405,7 @@ namespace MetalPerformanceShaders {
 		bool UseFastMode { get; set; }
 	}
 
-	[TV (13, 4), MacCatalyst (13, 4), iOS (13, 4)]
+	[TV (13, 4), iOS (13, 4)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSImageEDLines {
@@ -17126,7 +16445,6 @@ namespace MetalPerformanceShaders {
 		float MergeLocalityThreshold { get; set; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinaryKernel {
@@ -17221,7 +16539,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, [NullAllowed] MPSState outGradientState, MPSNDArray destination);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinaryPrimaryGradientKernel {
@@ -17240,7 +16557,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayBinarySecondaryGradientKernel {
@@ -17259,7 +16575,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray primarySourceArray, MPSNDArray secondarySourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayBinaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGather {
@@ -17267,25 +16582,21 @@ namespace MetalPerformanceShaders {
 		nuint Axis { get; set; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayBinaryPrimaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGatherGradient {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayGradientState))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGatherGradientState {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSState))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayGradientState {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryBase))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayMultiaryGradientKernel {
@@ -17304,7 +16615,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray [] sources, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayUnaryKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayStridedSlice {
@@ -17312,13 +16622,11 @@ namespace MetalPerformanceShaders {
 		MPSNDArrayOffsets Strides { get; set; }
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayUnaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayStridedSliceGradient {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNDArrayMultiaryGradientKernel))]
 	[DisableDefaultCtor]
 	interface MPSNDArrayUnaryGradientKernel {
@@ -17337,7 +16645,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer cmdBuf, MPSNDArray sourceArray, MPSNDArray gradient, MPSState state, MPSNDArray destination);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNForwardLoss")]
 	[DisableDefaultCtor]
 	interface MPSnnForwardLoss {
@@ -17347,7 +16654,7 @@ namespace MetalPerformanceShaders {
 		[Export ("reductionType")]
 		MPSCnnReductionType ReductionType { get; }
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 
@@ -17381,7 +16688,6 @@ namespace MetalPerformanceShaders {
 		MPSImage [] Encode (IMTLCommandBuffer commandBuffer, MPSImage [] sourceImages, MPSImage [] labels, [NullAllowed] MPSImage [] weights, [NullAllowed] out MPSState [] outStates, bool isTemporary);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNFilterNode), Name = "MPSNNGramMatrixCalculationNode")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculationNode {
@@ -17406,7 +16712,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceNode, float alpha);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNGramMatrixCalculation")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculation {
@@ -17425,7 +16730,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnGradientKernel), Name = "MPSNNGramMatrixCalculationGradient")]
 	[DisableDefaultCtor]
 	interface MPSNNGramMatrixCalculationGradient {
@@ -17444,7 +16748,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNGradientFilterNode), Name = "MPSNNGramMatrixCalculationGradientNode")]
 	[DisableDefaultCtor]
 	interface MPSnnGramMatrixCalculationGradientNode {
@@ -17466,7 +16769,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (MPSNNImageNode sourceGradient, MPSNNImageNode sourceImage, MPSNNGradientStateNode gradientState, float alpha);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSNNGridSample")]
 	[DisableDefaultCtor]
 	interface MPSnnGridSample {
@@ -17482,7 +16784,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnKernel), Name = "MPSNNInitialGradient")]
 	[DisableDefaultCtor]
 	interface MPSnnInitialGradient {
@@ -17490,7 +16791,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNReduceBinary), Name = "MPSNNLocalCorrelation")]
 	[DisableDefaultCtor]
 	interface MPSnnLocalCorrelation {
@@ -17518,7 +16818,6 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSCnnBinaryKernel), Name = "MPSNNLossGradient")]
 	[DisableDefaultCtor]
 	interface MPSnnLossGradient {
@@ -17528,7 +16827,7 @@ namespace MetalPerformanceShaders {
 		[Export ("reductionType")]
 		MPSCnnReductionType ReductionType { get; }
 
-		[TV (14, 0), MacCatalyst (14, 0), iOS (14, 0)]
+		[TV (14, 0), iOS (14, 0)]
 		[Export ("reduceAcrossBatch")]
 		bool ReduceAcrossBatch { get; }
 
@@ -17565,19 +16864,16 @@ namespace MetalPerformanceShaders {
 		void EncodeBatch (IMTLCommandBuffer commandBuffer, MPSImage [] sourceGradients, MPSImage [] sourceImages, MPSImage [] labels, [NullAllowed] MPSImage [] weights, [NullAllowed] MPSState [] sourceStates, MPSImage [] destinationGradients);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSState), Name = "MPSNNMultiaryGradientState")]
 	[DisableDefaultCtor]
 	interface MPSnnMultiaryGradientState {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSNNStateNode), Name = "MPSNNMultiaryGradientStateNode")]
 	[DisableDefaultCtor]
 	interface MPSnnMultiaryGradientStateNode {
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel), Name = "MPSSVGF")]
 	[DisableDefaultCtor]
 	interface MPSSvgf : NSSecureCoding, NSCopying {
@@ -17660,7 +16956,6 @@ namespace MetalPerformanceShaders {
 		void EncodeBilateralFilter (IMTLCommandBuffer commandBuffer, nuint stepDistance, IMTLTexture sourceTexture, IMTLTexture destinationTexture, [NullAllowed] IMTLTexture sourceTexture2, [NullAllowed] IMTLTexture destinationTexture2, IMTLTexture depthNormalTexture);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (NSObject), Name = "MPSSVGFDefaultTextureAllocator")]
 	[DisableDefaultCtor]
 	interface MPSSvgfDefaultTextureAllocator : MPSSvgfTextureAllocator {
@@ -17681,7 +16976,6 @@ namespace MetalPerformanceShaders {
 		void Reset ();
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (NSObject), Name = "MPSSVGFDenoiser")]
 	[DisableDefaultCtor]
 	interface MPSSvfgDenoiser {
@@ -17713,7 +17007,6 @@ namespace MetalPerformanceShaders {
 		void Encode (IMTLCommandBuffer commandBuffer, IMTLTexture sourceTexture, out IMTLTexture destinationTexture, [NullAllowed] IMTLTexture sourceTexture2, out IMTLTexture destinationTexture2, [NullAllowed] IMTLTexture motionVectorTexture, IMTLTexture depthNormalTexture, [NullAllowed] IMTLTexture previousDepthNormalTexture);
 	}
 
-	[MacCatalyst (13, 0)]
 	[BaseType (typeof (MPSKernel))]
 	[DisableDefaultCtor]
 	interface MPSTemporalAA : NSSecureCoding, NSCopying {

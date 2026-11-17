@@ -246,7 +246,7 @@ namespace CoreMedia {
 		AppleLog2,
 	}
 
-	[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+	[iOS (17, 0), TV (17, 0)]
 	enum CMFormatDescriptionHeroEye {
 		[Field ("kCMFormatDescriptionHeroEye_Left")]
 		Left,
@@ -419,7 +419,7 @@ namespace CoreMedia {
 		[Field ("kCMFormatDescriptionExtensionKey_MetadataKeyTable")]
 		NSString MetadataKeyTable { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_ContentColorVolume")]
 		NSString ContentColorVolume { get; }
 
@@ -451,27 +451,27 @@ namespace CoreMedia {
 		[Field ("kCMFormatDescriptionExtension_LogTransferFunction")]
 		NSString LogTransferFunction { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HeroEye")]
 		NSString HeroEye { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_StereoCameraBaseline")]
 		NSString StereoCameraBaseline { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HorizontalDisparityAdjustment")]
 		NSString HorizontalDisparityAdjustment { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasLeftStereoEyeView")]
 		NSString HasLeftStereoEyeView { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasRightStereoEyeView")]
 		NSString HasRightStereoEyeView { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		[Field ("kCMFormatDescriptionExtension_HasAdditionalViews")]
 		NSString HasAdditionalViews { get; }
 
@@ -552,7 +552,7 @@ namespace CoreMedia {
 
 		CMMetadataFormatDescription MetadataKeyTable { get; }
 
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0)]
 		NSData ContentColorVolume { get; set; }
 
 		// not strongly typed to CMFormatDescriptionTransferFunction_ because other values are allowed as well
@@ -577,22 +577,22 @@ namespace CoreMedia {
 		// not strongly typed to CMFormatDescriptionLogTransferFunction because other values are allowed as well
 		NSString LogTransferFunction { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		CMFormatDescriptionHeroEye HeroEye { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		uint StereoCameraBaseline { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		int HorizontalDisparityAdjustment { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		bool HasLeftStereoEyeView { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		bool HasRightStereoEyeView { get; set; }
 
-		[iOS (17, 0), NoTV, MacCatalyst (17, 0)]
+		[iOS (17, 0), NoTV]
 		bool HasAdditionalViews { get; set; }
 
 		[iOS (18, 0), NoTV, Mac (15, 0), MacCatalyst (18, 0)]
@@ -714,7 +714,6 @@ namespace CoreMedia {
 	/// <summary>Class that manages the repetitive allocation and deallocation of large blocks of memory.</summary>
 	///     
 	///     <!-- TODO: No Apple documentation on this as of 2013-05-01 -->
-	[MacCatalyst (13, 1)]
 	[Partial]
 	interface CMMemoryPool {
 
@@ -771,7 +770,6 @@ namespace CoreMedia {
 
 	[Static]
 	[Internal]
-	[MacCatalyst (13, 1)]
 	interface CMTextMarkupAttributesKeys {
 		[Internal]
 		[Field ("kCMTextMarkupAttribute_ForegroundColorARGB")]
@@ -808,7 +806,6 @@ namespace CoreMedia {
 
 	[Static]
 	[Internal]
-	[MacCatalyst (13, 1)]
 	interface CMSampleAttachmentKey {
 		[Field ("kCMSampleAttachmentKey_NotSync")]
 		NSString NotSync { get; }
@@ -886,65 +883,51 @@ namespace CoreMedia {
 		NSString GradualDecoderRefreshKey { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_DroppedFrameReason")]
 		NSString DroppedFrameReason { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_StillImageLensStabilizationInfo")]
 		NSString StillImageLensStabilizationInfo { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferLensStabilizationInfo_Active")]
 		NSString BufferLensStabilizationInfo_Active { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferLensStabilizationInfo_OutOfRange")]
 		NSString BufferLensStabilizationInfo_OutOfRange { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferLensStabilizationInfo_Unavailable")]
 		NSString BufferLensStabilizationInfo_Unavailable { get; }
 
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferLensStabilizationInfo_Off")]
 		NSString BufferLensStabilizationInfo_Off { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCTemporalLevelInfo")]
 		NSString HevcTemporalLevelInfoKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCTemporalSubLayerAccess")]
 		NSString HevcTemporalSubLayerAccessKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCStepwiseTemporalSubLayerAccess")]
 		NSString HevcStepwiseTemporalSubLayerAccessKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_HEVCSyncSampleNALUnitType")]
 		NSString HevcSyncSampleNalUnitTypeKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix")]
 		NSString CameraIntrinsicMatrixKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleAttachmentKey_AudioIndependentSampleDecoderRefreshCount")]
 		NSString AudioIndependentSampleDecoderRefreshCountKey { get; }
 
-		[MacCatalyst (13, 1)]
 		[Field ("kCMSampleBufferAttachmentKey_ForceKeyFrame")]
 		NSString ForceKeyFrameKey { get; }
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		// Declared available at iOS/tvOS 16.0 but only added to the simulator runtimes in a later release.
 		[SupportedSimulator ("ios16.1")]
 		[SupportedSimulator ("tvos16.1")]
@@ -957,7 +940,6 @@ namespace CoreMedia {
 	}
 
 	/// <summary>The keys for <see cref="CoreMedia.CMSampleBuffer" /> attachments.</summary>
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CMSampleAttachmentKey")]
 	interface CMSampleBufferAttachmentSettings {
 
@@ -1001,42 +983,34 @@ namespace CoreMedia {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[StrongDictionary]
 		CMHevcTemporalLevelInfoSettings HevcTemporalLevelInfo { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		bool HevcTemporalSubLayerAccess { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		bool HevcStepwiseTemporalSubLayerAccess { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		int HevcSyncSampleNalUnitType { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		NSData CameraIntrinsicMatrix { get; set; }
 
-		[MacCatalyst (13, 1)]
 		nint AudioIndependentSampleDecoderRefreshCount { get; set; }
 
-		[MacCatalyst (13, 1)]
 		bool ForceKeyFrame { get; set; }
 
 		[TV (16, 0), iOS (16, 0)]
-		[MacCatalyst (16, 0)]
 		NSData Hdr10PlusPerFrameData { get; set; } // it is a CFData, but that is a toll-free bridged
 
 		[NoTV, NoiOS, NoMacCatalyst, Mac (15, 0)]
@@ -1044,7 +1018,6 @@ namespace CoreMedia {
 	}
 
 	[Internal]
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface CMHevcTemporalLevelInfoKeys {
 
@@ -1070,7 +1043,6 @@ namespace CoreMedia {
 		NSString LevelIndexKey { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	[StrongDictionary ("CMHevcTemporalLevelInfoKeys")]
 	interface CMHevcTemporalLevelInfoSettings {
 
@@ -1146,7 +1118,7 @@ namespace CoreMedia {
 	}
 
 	[Flags]
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMStereoViewComponents : ulong {
 		None = 0x0,
 		LeftEye = 1uL << 0,
@@ -1154,14 +1126,14 @@ namespace CoreMedia {
 	}
 
 	[Flags]
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMStereoViewInterpretationOptions : ulong {
 		Default = 0,
 		StereoOrderReversed = 1uL << 0,
 		AdditionalViews = 1uL << 1,
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTagCollectionError {
 		Success = 0,
 		ParamErr = -15740,
@@ -1176,7 +1148,7 @@ namespace CoreMedia {
 		NotYetImplemented = -15749,
 	}
 
-	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTaggedBufferGroupError {
 		Success = 0,
 		ParamErr = -15780,
@@ -1184,14 +1156,14 @@ namespace CoreMedia {
 		InternalError = -15782,
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTagError {
 		Success = 0,
 		ParamErr = -15730,
 		AllocationFailed = -15731,
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTagCategory : uint {
 		Undefined = 0,
 		MediaType = ('m' << 24) + ('d' << 16) + ('i' << 8) + 'a', // 'mdia'
@@ -1206,7 +1178,7 @@ namespace CoreMedia {
 		StereoViewInterpretation = ('e' << 24) + ('y' << 16) + ('i' << 8) + 'p', // 'eyip'
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTagDataType : uint {
 		Invalid = 0,
 		SInt64 = 2,
@@ -1218,14 +1190,14 @@ namespace CoreMedia {
 	[Internal]
 	[Partial]
 	interface CMTagCollectionConstants {
-		[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+		[TV (17, 0), iOS (17, 0)]
 		[Field ("kCMTagCollectionTagsArrayKey")]
 		NSString ArrayKey { get; }
 	}
 
 	[Internal]
 	[Partial]
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	interface CMTagConstants {
 		[Field ("kCMTagInvalid")]
 		CMTag Invalid { get; }
@@ -1293,7 +1265,7 @@ namespace CoreMedia {
 		CMTag ProjectionTypeParametricImmersive { get; }
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMProjectionType : ulong {
 		Rectangular = ('r' << 24) + ('e' << 16) + ('c' << 8) + 't', // 'rect',
 		Equirectangular = ('e' << 24) + ('q' << 16) + ('u' << 8) + 'i', // 'equi',
@@ -1302,14 +1274,14 @@ namespace CoreMedia {
 		ParametricImmersive = ('p' << 24) + ('r' << 16) + ('i' << 8) + 'm',// 'prim'
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMPackingType : ulong {
 		None = ('n' << 24) + ('o' << 16) + ('n' << 8) + 'e', // 'none',
 		SideBySide = ('s' << 24) + ('i' << 16) + ('d' << 8) + 'e', // 'side',
 		OverUnder = ('o' << 24) + ('v' << 16) + ('e' << 8) + 'r', // 'over',
 	}
 
-	[MacCatalyst (17, 0), TV (17, 0), iOS (17, 0)]
+	[TV (17, 0), iOS (17, 0)]
 	public enum CMTaggedBufferGroupFormatType {
 		TaggedBufferGroup = ('t' << 24) + ('b' << 16) + ('g' << 8) + 'r', // 'tbgr',
 	}

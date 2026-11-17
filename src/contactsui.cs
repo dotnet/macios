@@ -26,7 +26,6 @@ namespace ContactsUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ContactsUI/Reference/CNContactPickerViewController_Class/index.html">Apple documentation for <c>CNContactPickerViewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]
 	interface CNContactPickerViewController {
 		/// <param name="nibName">
@@ -101,7 +100,6 @@ namespace ContactsUI {
 	/// <summary>Delegate object that provides methods relating to picking a contact.</summary>
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
-	[MacCatalyst (13, 1)]
 	interface CNContactPickerDelegate {
 #if MONOMAC
 		/// <param name="picker">To be added.</param>
@@ -177,7 +175,6 @@ namespace ContactsUI {
 
 	/// <summary>A standard <see cref="XViewController" /> that allows the user to view or edit a <see cref="Contacts.CNContact" />.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ContactsUI/Reference/CNContactViewController_Class/index.html">Apple documentation for <c>CNContactViewController</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (XViewController))]
 	interface CNContactViewController {
 		/// <param name="nibName">
@@ -225,7 +222,6 @@ namespace ContactsUI {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("viewControllerForContact:")]
 		CNContactViewController FromContact (CNContact contact);
@@ -235,7 +231,6 @@ namespace ContactsUI {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("viewControllerForUnknownContact:")]
 		CNContactViewController FromUnknownContact (CNContact contact);
@@ -248,7 +243,6 @@ namespace ContactsUI {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("viewControllerForNewContact:")]
 		CNContactViewController FromNewContact ([NullAllowed] CNContact contact);
@@ -260,7 +254,6 @@ namespace ContactsUI {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // TODO: Maybe we can Strongify this puppy
 		[Export ("displayedPropertyKeys")]
 		NSString [] DisplayedPropertyKeys { get; set; }
@@ -273,7 +266,6 @@ namespace ContactsUI {
 		///           <para>This is the strongly typed version of the object, developers should use the WeakDelegate property instead if they want to merely assign a class derived from NSObject that has been decorated with [Export] attributes.</para>
 		///         </remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("delegate", ArgumentSemantic.Weak)]
 		[NullAllowed]
 		ICNContactViewControllerDelegate Delegate { get; set; }
@@ -285,7 +277,6 @@ namespace ContactsUI {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("contactStore", ArgumentSemantic.Strong)]
 		CNContactStore ContactStore { get; set; }
@@ -297,7 +288,6 @@ namespace ContactsUI {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("parentGroup", ArgumentSemantic.Strong)]
 		CNGroup ParentGroup { get; set; }
@@ -309,7 +299,6 @@ namespace ContactsUI {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("parentContainer", ArgumentSemantic.Strong)]
 		CNContainer ParentContainer { get; set; }
@@ -323,7 +312,6 @@ namespace ContactsUI {
 		///           <para>There is not a "Display Name" property that is checked. Rather, the <see cref="Contacts.CNContact" /> must have a <see langword="null" /><see cref="Contacts.CNContact.GivenName" /> and <see cref="Contacts.CNContact.FamilyName" />.</para>
 		///         </remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("alternateName")]
 		string AlternateName { get; set; }
@@ -335,7 +323,6 @@ namespace ContactsUI {
 		///         </value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[NullAllowed]
 		[Export ("message")]
 		string Message { get; set; }
@@ -344,7 +331,6 @@ namespace ContactsUI {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("allowsEditing", ArgumentSemantic.Assign)]
 		bool AllowsEditing { get; set; }
 
@@ -352,7 +338,6 @@ namespace ContactsUI {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("allowsActions", ArgumentSemantic.Assign)]
 		bool AllowsActions { get; set; }
 
@@ -360,7 +345,6 @@ namespace ContactsUI {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("shouldShowLinkedContacts", ArgumentSemantic.Assign)]
 		bool ShouldShowLinkedContacts { get; set; }
 
@@ -372,7 +356,6 @@ namespace ContactsUI {
 		///         <summary>Highlights the property identified by <paramref name="key" />. If <paramref name="key" /> is multivalued, <paramref name="identifier" /> specifies which to highlight. (See <see cref="Contacts.CNContactKey" /> for values for <paramref name="key" />.)</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
-		[MacCatalyst (13, 1)]
 		[Export ("highlightPropertyWithKey:identifier:")] //TODO: Maybe we can mNullallowedake a strongly type version
 		void HighlightProperty (NSString key, [NullAllowed] string identifier);
 	}
@@ -383,7 +366,6 @@ namespace ContactsUI {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/ContactsUI/Reference/CNContactViewControllerDelegate_Protocol/index.html">Apple documentation for <c>CNContactViewControllerDelegate</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CNContactViewControllerDelegate {

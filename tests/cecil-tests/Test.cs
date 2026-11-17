@@ -205,8 +205,7 @@ namespace Cecil.Tests {
 		}
 
 		// UnavailableAttribute and it's subclasses
-		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4)
-		// MacCatalyst (5) does not have an attribute right now (but [Unavailable] is possible on the PlatformName)
+		// NoMacAttribute (1), NoiOSAttribute (2), NoTVAttribute (4), NoMacCatalystAttribute (5)
 		bool IsUnavailable (ICustomAttributeProvider cap, PlatformName platform)
 		{
 			if (!cap.HasCustomAttributes)
@@ -216,16 +215,19 @@ namespace Cecil.Tests {
 			foreach (var ca in cap.CustomAttributes) {
 				switch (ca.AttributeType.FullName) {
 				case "ObjCRuntime.UnavailableAttribute":
-					unavailable = platform == (PlatformName) (byte) ca.ConstructorArguments [0].Value;
+					unavailable |= platform == (PlatformName) (byte) ca.ConstructorArguments [0].Value;
 					break;
 				case "ObjCRuntime.NoMacAttribute":
-					unavailable = platform == PlatformName.MacOSX;
+					unavailable |= platform == PlatformName.MacOSX;
 					break;
 				case "ObjCRuntime.NoiOSAttribute":
-					unavailable = platform == PlatformName.iOS;
+					unavailable |= platform == PlatformName.iOS;
 					break;
 				case "ObjCRuntime.NoTVAttribute":
-					unavailable = platform == PlatformName.TvOS;
+					unavailable |= platform == PlatformName.TvOS;
+					break;
+				case "ObjCRuntime.NoMacCatalystAttribute":
+					unavailable |= platform == PlatformName.MacCatalyst;
 					break;
 				case "System.ObsoleteAttribute":
 					// we have to live with past mistakes, don't report errors on [Obsolete] members

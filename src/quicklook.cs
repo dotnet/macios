@@ -44,7 +44,6 @@ namespace QuickLook {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewController_Class/index.html">Apple documentation for <c>QLPreviewController</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (QLPreviewControllerDelegate) })]
 	interface QLPreviewController {
 		/// <param name="nibName">
@@ -113,7 +112,6 @@ namespace QuickLook {
 	[Model]
 	[Protocol]
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	interface QLPreviewControllerDataSource {
 		/// <param name="controller">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -134,7 +132,6 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum QLPreviewItemEditingMode : long {
 		Disabled = 0,
@@ -148,7 +145,6 @@ namespace QuickLook {
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkingInternet/Reference/QLPreviewControllerDelegate_Protocol/index.html">Apple documentation for <c>QLPreviewControllerDelegate</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -229,20 +225,16 @@ namespace QuickLook {
 			<value>To be added.</value>
 			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
-		[MacCatalyst (13, 1)]
 		[Export ("previewController:transitionViewForPreviewItem:"), DelegateName ("QLTransitionView"), DefaultValue (null)]
 		[return: NullAllowed]
 		UIView TransitionViewForPreviewItem (QLPreviewController controller, IQLPreviewItem item);
 
-		[MacCatalyst (13, 1)]
 		[Export ("previewController:editingModeForPreviewItem:"), DelegateName ("QLEditingMode"), DefaultValue ("QLPreviewItemEditingMode.Disabled")]
 		QLPreviewItemEditingMode GetEditingMode (QLPreviewController controller, IQLPreviewItem previewItem);
 
-		[MacCatalyst (13, 1)]
 		[Export ("previewController:didUpdateContentsOfPreviewItem:"), EventArgs ("QLPreviewControllerDelegateDidUpdate")]
 		void DidUpdateContents (QLPreviewController controller, IQLPreviewItem previewItem);
 
-		[MacCatalyst (13, 1)]
 		[Export ("previewController:didSaveEditedCopyOfPreviewItem:atURL:"), EventArgs ("QLPreviewControllerDelegateDidSave")]
 		void DidSaveEditedCopy (QLPreviewController controller, IQLPreviewItem previewItem, NSUrl modifiedContentsUrl);
 
@@ -255,7 +247,6 @@ namespace QuickLook {
 	///     
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/quicklook/qlpreviewitem">Apple documentation for <c>QLPreviewItem</c></related>
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -279,7 +270,7 @@ namespace QuickLook {
 	delegate CGPDFDocument QLPreviewReplyUIDocumentCreationHandler (QLPreviewReply reply, out NSError error);
 
 	[NoMac]
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewReply {
 		[Export ("stringEncoding")]
@@ -306,7 +297,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface QLPreviewReplyAttachment {
@@ -321,7 +312,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface QLFilePreviewRequest {
@@ -330,7 +321,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, iOS (15, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewProvider : NSExtensionRequestHandling {
@@ -338,7 +329,7 @@ namespace QuickLook {
 
 	[NoTV]
 	[NoMac] // availability not mentioned in the header files
-	[iOS (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	interface QLPreviewSceneOptions {
 		[Export ("initialPreviewIndex")]
@@ -346,7 +337,7 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[iOS (15, 0), MacCatalyst (15, 0)]
+	[iOS (15, 0)]
 	[BaseType (typeof (UIWindowSceneActivationConfiguration))]
 	interface QLPreviewSceneActivationConfiguration {
 		[Export ("initWithItemsAtURLs:options:")]
@@ -360,7 +351,6 @@ namespace QuickLook {
 	}
 
 	[NoMac]
-	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface QLPreviewingController {
 		/// <param name="identifier">To be added.</param>
@@ -378,7 +368,7 @@ namespace QuickLook {
 		[Export ("preparePreviewOfFileAtURL:completionHandler:")]
 		void PreparePreviewOfFile (NSUrl url, Action<NSError> handler);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("providePreviewForFileRequest:completionHandler:")]
 		void ProvidePreview (QLFilePreviewRequest request, Action<QLPreviewReply, NSError> handler);
 	}

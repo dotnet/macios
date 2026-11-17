@@ -301,7 +301,6 @@ namespace AppKit {
 	}
 
 	/// <summary>Specifies one of the four edges of a rectangle.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectEdge : ulong {
 		/// <summary>The minimum edge on the x-axis (the left edge).</summary>
@@ -2725,7 +2724,6 @@ namespace AppKit {
 	}
 
 	/// <summary>Specifies how a toolbar displays its items.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarDisplayMode : ulong {
 		/// <summary>Uses the toolbar's default display mode.</summary>
@@ -2739,7 +2737,6 @@ namespace AppKit {
 	}
 
 	/// <summary>Specifies the size of toolbar items.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSToolbarSizeMode : ulong {
 		/// <summary>Uses the toolbar's default item size.</summary>
@@ -3149,7 +3146,6 @@ namespace AppKit {
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This enum doesn't exist on this platform.")]
 #if __MACCATALYST__
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -3167,7 +3163,6 @@ namespace AppKit {
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This enum doesn't exist on this platform.")]
 #if __MACCATALYST__
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -3189,7 +3184,6 @@ namespace AppKit {
 #if XAMCORE_5_0
 	[NoMacCatalyst]
 #else
-	[MacCatalyst (13, 1)]
 	[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "This enum doesn't exist on this platform.")]
 #if __MACCATALYST__
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -3223,7 +3217,6 @@ namespace AppKit {
 	}
 
 	/// <summary>Specifies the category of an element in a collection view layout.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionElementCategory : long {
 		/// <summary>A collection view item.</summary>
@@ -3253,7 +3246,6 @@ namespace AppKit {
 	}
 
 	/// <summary>Specifies the scrolling direction of a collection view layout.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSCollectionViewScrollDirection : long {
 		/// <summary>The collection view scrolls vertically.</summary>
@@ -3590,7 +3582,6 @@ namespace AppKit {
 
 	// FileType 4cc values to use with NSFileTypeForHFSTypeCode.
 	/// <summary>Specifies a legacy four-character HFS file type code identifying one of the classic Mac OS Finder icons, for use with <see cref="M:AppKit.NSWorkspace.IconForFileType(AppKit.HfsTypeCode)" />.</summary>
-	[MacCatalyst (15, 0)]
 	public enum HfsTypeCode : uint {
 		/* Generic Finder icons */
 		/// <summary>The four-character code (FourCC) 'CLIP', identifying the clipboard icon.</summary>

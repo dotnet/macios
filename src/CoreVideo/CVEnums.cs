@@ -33,7 +33,6 @@ namespace CoreVideo {
 
 	// uint32_t -> CVBuffer.h
 	/// <summary>An enumeration whose values specify whether a buffer attachment should or should not propagate.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CVAttachmentMode : uint {
 		/// <summary>To be added.</summary>
 		ShouldNotPropagate = 0,
@@ -43,7 +42,6 @@ namespace CoreVideo {
 
 	/// <summary>An enumeration that flags whether a <see cref="CoreVideo.CVPixelBuffer" /> is read-only or not.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	[NativeName ("CVPixelBufferLockFlags")]
 	public enum CVPixelBufferLock : ulong {
 		/// <summary>To be added.</summary>
@@ -54,7 +52,6 @@ namespace CoreVideo {
 
 	// int32_t -> CVReturn.h
 	/// <summary>Possible status codes for CoreVideo functions.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CVReturn : int {
 		/// <summary>The method executed successfully.</summary>
 		Success = 0,
@@ -101,7 +98,6 @@ namespace CoreVideo {
 
 	// uint64_t -> CVBase.h
 	/// <summary>A flagging enumeration. Currently only contains a <c>None</c> value of 0.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CVOptionFlags : long {
 		/// <summary>No options are specified.</summary>
 		None = 0,
@@ -109,7 +105,6 @@ namespace CoreVideo {
 
 	/// <summary>An enumeration that can flag whether a <see cref="CoreVideo.CVTime" /> is unknown.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum CVTimeFlags : int {
 		/// <summary>The time value is indefinite.</summary>
 		IsIndefinite = 1 << 0,
@@ -117,7 +112,6 @@ namespace CoreVideo {
 
 	/// <summary>An enumeration whose values can flag validity of a timestamp or field in a <see cref="CoreVideo.CVTimeStamp" />.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum CVTimeStampFlags : ulong {
 		/// <summary>To be added.</summary>
 		VideoTimeValid = (1 << 0),
@@ -141,7 +135,6 @@ namespace CoreVideo {
 
 	/// <summary>An enumeration whose values specify the SMPTE time state.</summary>
 	[Flags]
-	[MacCatalyst (13, 1)]
 	public enum CVSMPTETimeFlags : uint {
 		/// <summary>The full time is valid.</summary>
 		Valid = (1 << 0),
@@ -150,7 +143,6 @@ namespace CoreVideo {
 	}
 
 	/// <summary>An enumeration whose values specify SMPTE timecode types.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CVSMPTETimeType : uint {
 		/// <summary>To be added.</summary>
 		Type24 = 0,
@@ -172,13 +164,11 @@ namespace CoreVideo {
 
 	// CVOptionFlags (uint64_t) -> CVPixelBufferPool.h
 	/// <summary>Defines an option for <see cref="CoreVideo.CVPixelBufferPool.Flush(CoreVideo.CVPixelBufferPoolFlushFlags)" />.</summary>
-	[MacCatalyst (13, 1)]
 	public enum CVPixelBufferPoolFlushFlags : ulong {
 		/// <summary>Releases all unused buffers from the pool.</summary>
 		FlushExcessBuffers = 1,
 	}
 
-	[MacCatalyst (13, 1)]
 	public enum CVImageBufferAlphaChannelMode {
 		[Field ("kCVImageBufferAlphaChannelMode_StraightAlpha")]
 		Straight,

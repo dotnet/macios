@@ -201,14 +201,14 @@ namespace CarPlay {
 		Confirm,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum CPAssistantCellPosition : long {
 		Top = 0,
 		Bottom,
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[Native]
 	public enum CPAssistantCellVisibility : long {
 		Off = 0,
@@ -216,14 +216,14 @@ namespace CarPlay {
 		Always,
 	}
 
-	[iOS (15, 0), MacCatalyst (15, 0), NoMac, NoTV]
+	[iOS (15, 0), NoMac, NoTV]
 	[Native]
 	public enum CPAssistantCellActionType : long {
 		PlayMedia = 0,
 		StartCall,
 	}
 
-	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4)]
 	[Native]
 	public enum CPInstrumentClusterSetting : ulong {
 		Unspecified,
@@ -476,15 +476,15 @@ namespace CarPlay {
 		[Export ("title")]
 		string Title { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("updateGridButtons:")]
 		void UpdateGridButtons (CPGridButton [] gridButtons);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("updateTitle:")]
 		void UpdateTitle (string title);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("CPGridTemplateMaximumItems")]
 		nuint MaximumItems { get; }
 
@@ -810,7 +810,7 @@ namespace CarPlay {
 		[Export ("initWithItems:")]
 		NativeHandle Constructor (ICPListTemplateItem [] items);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("initWithItems:header:headerSubtitle:headerImage:headerButton:sectionIndexTitle:")]
 		NativeHandle Constructor (ICPListTemplateItem [] items, string header, [NullAllowed] string headerSubtitle, [NullAllowed] UIImage headerImage, [NullAllowed] CPButton headerButton, [NullAllowed] string sectionIndexTitle);
 
@@ -844,22 +844,22 @@ namespace CarPlay {
 		[Export ("itemAtIndex:")]
 		ICPListTemplateItem GetItem (nuint index);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[NullAllowed]
 		[Export ("headerSubtitle")]
 		string HeaderSubtitle { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[NullAllowed]
 		[Export ("headerImage", ArgumentSemantic.Copy)]
 		UIImage HeaderImage { get; set; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[NullAllowed]
 		[Export ("headerButton", ArgumentSemantic.Copy)]
 		CPButton HeaderButton { get; }
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Field ("CPMaximumListSectionImageSize")]
 		CGSize MaximumImageSize { get; }
 	}
@@ -874,7 +874,7 @@ namespace CarPlay {
 		[Export ("initWithTitle:sections:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections);
 
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("initWithTitle:sections:assistantCellConfiguration:")]
 		NativeHandle Constructor ([NullAllowed] string title, CPListSection [] sections, [NullAllowed] CPAssistantCellConfiguration assistantCellConfiguration);
 
@@ -945,7 +945,7 @@ namespace CarPlay {
 		string [] EmptyViewSubtitleVariants { get; set; }
 
 		[NullAllowed]
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("assistantCellConfiguration", ArgumentSemantic.Strong)]
 		CPAssistantCellConfiguration AssistantCellConfiguration { get; set; }
 
@@ -1007,7 +1007,7 @@ namespace CarPlay {
 		CPImageSet SymbolSet { get; set; }
 
 		[NullAllowed]
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("cardBackgroundColor", ArgumentSemantic.Strong)]
 		UIColor CardBackgroundColor { get; set; }
 
@@ -1607,7 +1607,7 @@ namespace CarPlay {
 		[Export ("pauseTripForReason:description:")]
 		void PauseTrip (CPTripPauseReason reason, [NullAllowed] string description);
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("pauseTripForReason:description:turnCardColor:")]
 		void PauseTrip (CPTripPauseReason reason, [NullAllowed] string description, [NullAllowed] UIColor turnCardColor);
 
@@ -2006,7 +2006,7 @@ namespace CarPlay {
 		[Export ("templateApplicationScene:didDisconnectInterfaceController:")]
 		void DidDisconnect (CPTemplateApplicationScene templateApplicationScene, CPInterfaceController interfaceController);
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("contentStyleDidChange:")]
 		void ContentStyleDidChange (UIUserInterfaceStyle contentStyle);
 	}
@@ -2030,7 +2030,7 @@ namespace CarPlay {
 		[Export ("carWindow", ArgumentSemantic.Strong)]
 		CPWindow CarWindow { get; }
 
-		[iOS (15, 4), MacCatalyst (15, 4)]
+		[iOS (15, 4)]
 		[Export ("contentStyle")]
 		UIUserInterfaceStyle ContentStyle { get; }
 
@@ -2933,7 +2933,7 @@ namespace CarPlay {
 		NSObject UserInfo { get; set; }
 
 		[Abstract]
-		[iOS (15, 0), MacCatalyst (15, 0)]
+		[iOS (15, 0)]
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 	}
@@ -2965,7 +2965,7 @@ namespace CarPlay {
 		NSNumber MaximumRating { get; }
 	}
 
-	[NoTV, NoMac, iOS (15, 0), MacCatalyst (15, 0)]
+	[NoTV, NoMac, iOS (15, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPAssistantCellConfiguration : NSSecureCoding {
@@ -2982,7 +2982,7 @@ namespace CarPlay {
 		CPAssistantCellActionType AssistantAction { get; }
 	}
 
-	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface CPInstrumentClusterController {
@@ -3012,7 +3012,7 @@ namespace CarPlay {
 
 	interface ICPInstrumentClusterControllerDelegate { }
 
-	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CPInstrumentClusterControllerDelegate {
@@ -3040,7 +3040,7 @@ namespace CarPlay {
 
 	interface ICPTemplateApplicationInstrumentClusterSceneDelegate { }
 
-	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CPTemplateApplicationInstrumentClusterSceneDelegate : UISceneDelegate {
@@ -3055,7 +3055,7 @@ namespace CarPlay {
 		void ContentStyleDidChange (UIUserInterfaceStyle contentStyle);
 	}
 
-	[NoTV, NoMac, iOS (15, 4), MacCatalyst (15, 4)]
+	[NoTV, NoMac, iOS (15, 4)]
 	[BaseType (typeof (UIScene))]
 	[DisableDefaultCtor]
 	interface CPTemplateApplicationInstrumentClusterScene {

@@ -16,7 +16,6 @@ namespace JavaScriptCore {
 #if !MONOMAC
 	/// <include file="../docs/api/JavaScriptCore/JSContext.xml" path="/Documentation/Docs[@DocId='T:JavaScriptCore.JSContext']/*" />
 #endif
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface JSContext {
@@ -27,16 +26,14 @@ namespace JavaScriptCore {
 		[Export ("initWithVirtualMachine:")]
 		NativeHandle Constructor (JSVirtualMachine virtualMachine);
 
-		[MacCatalyst (13, 1)]
 		[NullAllowed] // by default this property is null
 		[Export ("name")]
 		string Name { get; set; }
 
-		[iOS (16, 4), TV (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), TV (16, 4)]
 		[Export ("inspectable")]
 		bool Inspectable { [Bind ("isInspectable")] get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("evaluateScript:withSourceURL:")]
 		JSValue EvaluateScript (string script, NSUrl sourceUrl);
 
@@ -55,7 +52,6 @@ namespace JavaScriptCore {
 		[Static, Export ("currentArguments")]
 		JSValue [] CurrentArguments { get; }
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("currentCallee")]
 		JSValue CurrentCallee { get; }
 
@@ -90,13 +86,11 @@ namespace JavaScriptCore {
 		IntPtr JSGlobalContextRefPtr { get; }
 	}
 
-	[MacCatalyst (13, 1)]
 	delegate void JSPromiseCreationExecutor ([NullAllowed] JSValue resolve, [NullAllowed] JSValue rejected);
 
 	/// <summary>Holds a JavaScript value and provides type-testing and conversion functions.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSValue">Apple documentation for <c>JSValue</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // invalid (null) Handle is returned
 	partial interface JSValue {
@@ -133,22 +127,18 @@ namespace JavaScriptCore {
 		[Static, Export ("valueWithUndefinedInContext:")]
 		JSValue Undefined (JSContext context);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithNewPromiseInContext:fromExecutor:")]
 		JSValue CreatePromise (JSContext context, JSPromiseCreationExecutor callback);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithNewPromiseResolvedWithResult:inContext:")]
 		JSValue CreateResolvedPromise (NSObject result, JSContext context);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithNewPromiseRejectedWithReason:inContext:")]
 		JSValue CreateRejectedPromise (NSObject reason, JSContext context);
 
-		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("valueWithNewSymbolFromDescription:inContext:")]
 		JSValue CreateSymbol (string description, JSContext context);
@@ -241,11 +231,9 @@ namespace JavaScriptCore {
 		[Export ("isObject")]
 		bool IsObject { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("isArray")]
 		bool IsArray { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("isDate")]
 		bool IsDate { get; }
 
@@ -324,7 +312,6 @@ namespace JavaScriptCore {
 		[Export ("JSValueRef")]
 		IntPtr JSValueRefPtr { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("isSymbol")]
 		bool IsSymbol { get; }
 
@@ -376,14 +363,12 @@ namespace JavaScriptCore {
 	/// <summary>Class that maintains a binding between a JavaScript and Objective-C value.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSManagedValue">Apple documentation for <c>JSManagedValue</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface JSManagedValue {
 		[Static, Export ("managedValueWithValue:")]
 		JSManagedValue Get (JSValue value);
 
-		[MacCatalyst (13, 1)]
 		[Static, Export ("managedValueWithValue:andOwner:")]
 		JSManagedValue Get (JSValue value, NSObject owner);
 
@@ -400,7 +385,6 @@ namespace JavaScriptCore {
 	///       <para>The <see cref="JavaScriptCore.JSVirtualMachine" /> is the unit of locking granularity for multithreaded JavaScript.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSVirtualMachine">Apple documentation for <c>JSVirtualMachine</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	partial interface JSVirtualMachine {
@@ -416,7 +400,6 @@ namespace JavaScriptCore {
 	}
 
 	/// <summary>Contains keys that index property descriptors.</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface JSPropertyDescriptorKeys {
 
@@ -466,7 +449,6 @@ namespace JavaScriptCore {
 	/// <summary>Protocol for exporting Objective-C classes as JavaScript classes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/JavaScriptCore/JSExport">Apple documentation for <c>JSExport</c></related>
-	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface JSExport {

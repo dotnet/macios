@@ -16,7 +16,6 @@ namespace CoreTelephony {
 	}
 
 	/// <summary>Enumerates data restrictions for <see cref="CoreTelephony.CTCellularData.RestrictedState" />.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularDataRestrictedState : ulong {
 		/// <summary>The cellular data restriction state is unknown.</summary>
@@ -28,7 +27,6 @@ namespace CoreTelephony {
 	}
 
 	/// <summary>Enumerates the results of adding a cellular plan.</summary>
-	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CTCellularPlanProvisioningAddPlanResult : long {
 		/// <summary>The result is unknown.</summary>

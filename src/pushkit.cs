@@ -4,7 +4,6 @@ namespace PushKit {
 	/// <summary>Holds the <see cref="PushKit.PKPushCredentials.Token" /> that holds the user's credentials.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushCredentials_Class/index.html">Apple documentation for <c>PKPushCredentials</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushCredentials {
@@ -18,7 +17,6 @@ namespace PushKit {
 	/// <summary>Contains a dictionary of data for a push operation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushPayload_Class/index.html">Apple documentation for <c>PKPushPayload</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushPayload {
@@ -32,7 +30,6 @@ namespace PushKit {
 	/// <summary>Allows the developer to register for remote pushes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushRegistry_Class/index.html">Apple documentation for <c>PKPushRegistry</c></related>
-	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PKPushRegistry {
@@ -64,7 +61,6 @@ namespace PushKit {
 	}
 
 	/// <summary>Holds the transports available for Push Kit (currently only Voice Over IP).</summary>
-	[MacCatalyst (13, 1)]
 	[Static]
 	interface PKPushType {
 
@@ -72,7 +68,6 @@ namespace PushKit {
 		///         <value>
 		///         </value>
 		///         <remarks>To be added.</remarks>
-		[Introduced (PlatformName.MacCatalyst, 14, 0)]
 		[NoMac]
 		[Field ("PKPushTypeVoIP")]
 		NSString Voip { get; }
@@ -90,7 +85,6 @@ namespace PushKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Field ("PKPushTypeFileProvider")]
 		NSString FileProvider { get; }
 	}
@@ -110,7 +104,6 @@ namespace PushKit {
 	/// <summary>Completion handler for registering a push operation.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/PushKit/Reference/PKPushRegistryDelegate_Protocol/index.html">Apple documentation for <c>PKPushRegistryDelegate</c></related>
-	[MacCatalyst (13, 1)]
 	[Model]
 	[Protocol]
 	[BaseType (typeof (NSObject))]
@@ -142,7 +135,6 @@ namespace PushKit {
 		/// <param name="completion">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
-		[MacCatalyst (13, 1)]
 		[Export ("pushRegistry:didReceiveIncomingPushWithPayload:forType:withCompletionHandler:")]
 		void DidReceiveIncomingPush (PKPushRegistry registry, PKPushPayload payload, string type, Action completion);
 

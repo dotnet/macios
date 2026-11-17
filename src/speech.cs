@@ -18,7 +18,7 @@ namespace Speech {
 
 	/// <summary>Enumerates the states of a <see cref="Speech.SFSpeechRecognitionTask" />.</summary>
 	[Native]
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	public enum SFSpeechRecognitionTaskState : long {
 		/// <summary>The recognition task is beginning.</summary>
 		Starting = 0,
@@ -33,7 +33,7 @@ namespace Speech {
 	}
 
 	[Native]
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	public enum SFSpeechRecognitionTaskHint : long {
 		/// <summary>No hint exists.</summary>
 		Unspecified = 0,
@@ -47,7 +47,7 @@ namespace Speech {
 
 	/// <include file="../docs/api/Speech/SFSpeechRecognizerAuthorizationStatus.xml" path="/Documentation/Docs[@DocId='T:Speech.SFSpeechRecognizerAuthorizationStatus']/*" />
 	[Native]
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	public enum SFSpeechRecognizerAuthorizationStatus : long {
 		/// <summary>Permission has not been presented.</summary>
 		NotDetermined,
@@ -59,7 +59,7 @@ namespace Speech {
 		Authorized,
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), TV (18, 0)]
 	[Native]
 	[ErrorDomain ("SFSpeechErrorDomain")]
 	public enum SFSpeechErrorCode : long {
@@ -81,7 +81,7 @@ namespace Speech {
 	/// <summary>Abstract base class for speech recognition requests (see <see cref="Speech.SFSpeechAudioBufferRecognitionRequest" /> and <see cref="Speech.SFSpeechUrlRecognitionRequest" />).</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionRequest">Apple documentation for <c>SFSpeechRecognitionRequest</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[DisableDefaultCtor]
 	[Abstract] // no docs (yet) but it has no means (init*) to create it, unlike its subclasses
 	[BaseType (typeof (NSObject))]
@@ -102,15 +102,14 @@ namespace Speech {
 		[NullAllowed, Export ("interactionIdentifier")]
 		string InteractionIdentifier { get; set; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("requiresOnDeviceRecognition")]
 		bool RequiresOnDeviceRecognition { get; set; }
 
-		[iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0)]
 		[Export ("addsPunctuation")]
 		bool AddsPunctuation { get; set; }
 
-		[iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0)]
 		[NullAllowed, Export ("customizedLanguageModel", ArgumentSemantic.Copy)]
 		SFSpeechLanguageModelConfiguration CustomizedLanguageModel { get; set; }
 	}
@@ -118,7 +117,7 @@ namespace Speech {
 	/// <summary>A <see cref="Speech.SFSpeechRecognitionRequest" /> whose audio source is specified in a URL</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechURLRecognitionRequest">Apple documentation for <c>SFSpeechURLRecognitionRequest</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (SFSpeechRecognitionRequest), Name = "SFSpeechURLRecognitionRequest")]
 	[DisableDefaultCtor]
 	interface SFSpeechUrlRecognitionRequest {
@@ -134,7 +133,7 @@ namespace Speech {
 	/// <summary>An <see cref="Speech.SFSpeechRecognitionRequest" /> that takes its input from an audio buffer.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechAudioBufferRecognitionRequest">Apple documentation for <c>SFSpeechAudioBufferRecognitionRequest</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (SFSpeechRecognitionRequest))]
 	interface SFSpeechAudioBufferRecognitionRequest {
 
@@ -157,7 +156,7 @@ namespace Speech {
 	///         <see cref="Speech.SFSpeechRecognitionResult" />contain a <see cref="Speech.SFTranscription" /> in<see cref="Speech.SFSpeechRecognitionResult.BestTranscription" /> that is the highest-confidence transcription. Additionally, the <see cref="Speech.SFSpeechRecognitionResult.Transcriptions" /> may contain additional <see cref="Speech.SFTranscription" /> objects that the developer may search for more domain-appropriate results.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionResult">Apple documentation for <c>SFSpeechRecognitionResult</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognitionResult : NSCopying, NSSecureCoding {
 
@@ -174,7 +173,6 @@ namespace Speech {
 		bool Final { [Bind ("isFinal")] get; }
 
 		[iOS (14, 5)]
-		[MacCatalyst (14, 5)]
 		[NullAllowed, Export ("speechRecognitionMetadata")]
 		SFSpeechRecognitionMetadata SpeechRecognitionMetadata { get; }
 	}
@@ -182,7 +180,7 @@ namespace Speech {
 	/// <summary>Object that holds state and provides control of an asynchronous speech recognition task.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionTask">Apple documentation for <c>SFSpeechRecognitionTask</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognitionTask {
 
@@ -216,7 +214,7 @@ namespace Speech {
 	/// <summary>Delegate object whose members are called in reaction to speech-recognition events.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognitionTaskDelegate">Apple documentation for <c>SFSpeechRecognitionTaskDelegate</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognitionTaskDelegate {
@@ -271,7 +269,7 @@ namespace Speech {
 	/// <summary>Delegate object for <see cref="Speech.SFSpeechRecognizer" />.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFSpeechRecognizerDelegate">Apple documentation for <c>SFSpeechRecognizerDelegate</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognizerDelegate {
@@ -286,7 +284,7 @@ namespace Speech {
 	}
 
 	/// <include file="../docs/api/Speech/SFSpeechRecognizer.xml" path="/Documentation/Docs[@DocId='T:Speech.SFSpeechRecognizer']/*" />
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechRecognizer {
 
@@ -317,7 +315,6 @@ namespace Speech {
 		[Export ("locale", ArgumentSemantic.Copy)]
 		NSLocale Locale { get; }
 
-		[MacCatalyst (13, 1)]
 		[Export ("supportsOnDeviceRecognition")]
 		bool SupportsOnDeviceRecognition { get; set; }
 
@@ -339,7 +336,6 @@ namespace Speech {
 	}
 
 	[iOS (14, 5), TV (18, 0)]
-	[MacCatalyst (14, 5)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSpeechRecognitionMetadata : NSCopying, NSSecureCoding {
@@ -363,7 +359,7 @@ namespace Speech {
 	/// <summary>A conversion of speech into text.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFTranscription">Apple documentation for <c>SFTranscription</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFTranscription : NSCopying, NSSecureCoding {
 
@@ -375,7 +371,6 @@ namespace Speech {
 
 		[Export ("speakingRate")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 5)]
 		[Deprecated (PlatformName.TvOS, 14, 5)]
 		[Advice ("Use 'SpeakingRate' from 'SFSpeechRecognitionMetadata' instead.")]
@@ -383,7 +378,6 @@ namespace Speech {
 
 		[Export ("averagePauseDuration")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 5)]
 		[Deprecated (PlatformName.TvOS, 14, 5)]
 		[Advice ("Use 'AveragePauseDuration' from 'SFSpeechRecognitionMetadata' instead.")]
@@ -391,7 +385,7 @@ namespace Speech {
 	}
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/Speech/SFTranscriptionSegment">Apple documentation for <c>SFTranscriptionSegment</c></related>
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFTranscriptionSegment : NSCopying, NSSecureCoding {
 
@@ -415,14 +409,13 @@ namespace Speech {
 
 		[NullAllowed, Export ("voiceAnalytics")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
-		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 5)]
 		[Deprecated (PlatformName.TvOS, 14, 5)]
 		[Advice ("Use 'VoiceAnalytics' from 'SFSpeechRecognitionMetadata' instead.")]
 		SFVoiceAnalytics VoiceAnalytics { get; }
 	}
 
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFAcousticFeature : NSCopying, NSSecureCoding {
@@ -434,7 +427,7 @@ namespace Speech {
 		double FrameDuration { get; }
 	}
 
-	[MacCatalyst (13, 1), TV (18, 0)]
+	[TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFVoiceAnalytics : NSCopying, NSSecureCoding {
@@ -452,7 +445,7 @@ namespace Speech {
 		SFAcousticFeature Voicing { get; }
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechLanguageModelConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithLanguageModel:")]
@@ -477,7 +470,7 @@ namespace Speech {
 		NativeHandle Constructor (NSUrl languageModel, [NullAllowed] NSUrl vocabulary, [NullAllowed][BindAs (typeof (float?))] NSNumber weight);
 	}
 
-	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSpeechLanguageModel {

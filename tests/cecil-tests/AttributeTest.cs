@@ -245,50 +245,8 @@ namespace Cecil.Tests {
 		static HashSet<string> IgnoreElementsThatDoNotExistInThatAssembly {
 			get {
 				return new HashSet<string> {
-					// This is from the NSItemProviderWriting protocol: NSUserActivity does not implement NSItemProviderWriting on tvOS and macOS.
-					"Foundation.NSUserActivity.GetItemProviderVisibilityForTypeIdentifier (System.String)",
-					"Foundation.NSUserActivity.LoadData (System.String, System.Action`2<Foundation.NSData, Foundation.NSError>)",
-					"Foundation.NSUserActivity.LoadDataAsync (System.String)",
-					"Foundation.NSUserActivity.LoadDataAsync (System.String, Foundation.NSProgress&)",
-					"Foundation.NSUserActivity.WritableTypeIdentifiers",
-					"Foundation.NSUserActivity.WritableTypeIdentifiersForItemProvider",
-					"Foundation.NSUserActivity.get_WritableTypeIdentifiers ()",
-					"Foundation.NSUserActivity.get_WritableTypeIdentifiersForItemProvider ()",
-
-					// This is from the NSItemProviderReading protocol: NSUserActivity does not implement NSItemProviderReading on tvOS and macOS.
-					"Foundation.NSUserActivity.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
-					"Foundation.NSUserActivity.ReadableTypeIdentifiers",
-					"Foundation.NSUserActivity.get_ReadableTypeIdentifiers ()",
-
-					// This is from the NSItemProviderWriting protocol: MKMapItem does not implement NSItemProviderWriting on tvOS and macOS.
-					"MapKit.MKMapItem.GetItemProviderVisibilityForTypeIdentifier (System.String)",
-					"MapKit.MKMapItem.LoadData (System.String, System.Action`2<Foundation.NSData, Foundation.NSError>)",
-					"MapKit.MKMapItem.LoadDataAsync (System.String)",
-					"MapKit.MKMapItem.LoadDataAsync (System.String, Foundation.NSProgress&)",
-					"MapKit.MKMapItem.WritableTypeIdentifiers",
-					"MapKit.MKMapItem.WritableTypeIdentifiersForItemProvider",
-					"MapKit.MKMapItem.get_WritableTypeIdentifiers ()",
-					"MapKit.MKMapItem.get_WritableTypeIdentifiersForItemProvider ()",
-
-					// This is from the NSItemProviderReading protocol: MKMapItem does not implement NSItemProviderReading on tvOS and macOS.
-					"MapKit.MKMapItem.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
-					"MapKit.MKMapItem.ReadableTypeIdentifiers",
-					"MapKit.MKMapItem.get_ReadableTypeIdentifiers ()",
-
-					// This is from the NSItemProviderReading protocol: PHLivePhoto does not implement NSItemProviderReading on tvOS and macOS.
-					"Photos.PHLivePhoto.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
-					"Photos.PHLivePhoto.ReadableTypeIdentifiers",
-					"Photos.PHLivePhoto.get_ReadableTypeIdentifiers ()",
-
-
-					// This is from the NSSecureCoding protocol: SKView only implements NSSecureCoding on macOS.
-					"SpriteKit.SKView.EncodeTo (Foundation.NSCoder)",
-
 					// These methods have different optional/required semantics between platforms.
 					"PassKit.PKPaymentAuthorizationControllerDelegate_Extensions.GetPresentationWindow (PassKit.IPKPaymentAuthorizationControllerDelegate, PassKit.PKPaymentAuthorizationController)",
-
-					// HKSeriesBuilder doesn't implement the ISNCopying protocol on all platforms (and shouldn't on any according to the headers, so removed for XAMCORE_5_0).
-					"HealthKit.HKSeriesBuilder.EncodeTo (Foundation.NSCoder)",
 
 					// The signature is slightly different between platforms for this member, this is expected
 					"SceneKit.SCNRenderer.FromContext (OpenGLES.EAGLContext, Foundation.NSDictionary)",
@@ -297,26 +255,9 @@ namespace Cecil.Tests {
 					// For historical reasons, MPMediaItem and MPMediaEntity are wildly different between platforms (https://github.com/dotnet/macios/issues/17291).
 					"MediaPlayer.MPMediaEntity",
 					"MediaPlayer.MPMediaEntity.EncodeTo (Foundation.NSCoder)",
-					"MediaPlayer.MPMediaEntity.get_PropertyPersistentID ()",
-					"MediaPlayer.MPMediaEntity.GetObject (Foundation.NSObject)",
-					"MediaPlayer.MPMediaEntity.PropertyPersistentID",
-					"MediaPlayer.MPMediaItem.get_PropertyPersistentID ()",
-					"MediaPlayer.MPMediaItem.GetObject (Foundation.NSObject)",
-					"MediaPlayer.MPMediaItem.PropertyPersistentID",
 
 					// The generator only creates NIErrorCodeExtensions where NIErrorDomain is available.
 					"NearbyInteraction.NIErrorCodeExtensions",
-
-					// Despite what headers say, NSAttributedString only implements NSItemProviderReading and NSItemProviderWriting on iOS (headers say tvOS as well).
-					// Ref: https://github.com/dotnet/macios/pull/17306
-					"Foundation.NSAttributedString.GetItemProviderVisibilityForTypeIdentifier (System.String)",
-					"Foundation.NSAttributedString.GetObject (Foundation.NSData, System.String, Foundation.NSError&)",
-					"Foundation.NSAttributedString.LoadData (System.String, System.Action`2<Foundation.NSData, Foundation.NSError>)",
-					"Foundation.NSAttributedString.LoadDataAsync (System.String)",
-					"Foundation.NSAttributedString.LoadDataAsync (System.String, Foundation.NSProgress&)",
-					"Foundation.NSAttributedString.ReadableTypeIdentifiers",
-					"Foundation.NSAttributedString.WritableTypeIdentifiers",
-					"Foundation.NSAttributedString.WritableTypeIdentifiersForItemProvider",
 
 					// Same method, but different arguments due to platform differences. We should treat this as the same method, so ignore this failure.
 					"StoreKit.AppStore.RequestReview (XKit.XWindowScene)", // iOS, MacCatalyst

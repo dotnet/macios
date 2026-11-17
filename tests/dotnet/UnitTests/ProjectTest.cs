@@ -2287,7 +2287,8 @@ namespace Xamarin.Tests {
 				properties ["_IsPublishing"] = "true";
 			}
 
-			DotNet.AssertBuild (consumingProjectDir, properties);
+			var rv = DotNet.AssertBuild (consumingProjectDir, properties);
+			rv.AssertNoWarnings (v => v.Message?.Contains ("Code signing has been requested multiple times") == true);
 
 			var extensionPath = Path.Combine (appPath, GetPlugInsRelativePath (platform), "ExtensionProject.appex");
 			Assert.That (Directory.Exists (extensionPath), $"App extension directory does not exist: {extensionPath}");

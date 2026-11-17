@@ -122,11 +122,17 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			void Chosen ();
 			void Conditional ();
 			void NotChosen ();
+			event EventHandler Event;
 		}
 
 		class MyClass : IMyInterface<string> {
 			[Preserve]
 			void IMyInterface<string>.Chosen () {}
+			[Preserve]
+			event EventHandler IMyInterface<string>.Event {
+				add {}
+				remove {}
+			}
 			[Preserve (Conditional = true)]
 			void IMyInterface<string>.Conditional () {}
 			void IMyInterface<string>.NotChosen () {}
@@ -137,7 +143,11 @@ public class ApplyPreserveAttributeTests : BaseClass {
 
 		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
-		Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Chosen" }), "Unconditional");
+		Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EquivalentTo (new [] {
+			"IMyInterface<System.String>.Chosen",
+			"IMyInterface<System.String>.add_Event",
+			"IMyInterface<System.String>.remove_Event",
+		}), "Unconditional");
 
 		var cctorSignatures = myClass.GetStaticConstructor ().CustomAttributes
 			.Where (v => v.AttributeType.Name == "DynamicDependencyAttribute")
@@ -146,7 +156,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			.ToArray ();
 		Assert.That (GetExplicitInterfaceImplementationRoots (myClass, cctorSignatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Conditional" }), "Conditional");
 
-		Assert.That (myClass.Methods.Count (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal)), Is.EqualTo (2), "Helper count");
+		Assert.That (myClass.Methods.Count (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal)), Is.EqualTo (4), "Helper count");
 	}
 
 	[Test]
@@ -194,11 +204,12 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			<Compile Remove=""Target.cs"" />
 		</ItemGroup>
 		";
+		var targetFramework = Configuration.DotNetTfm;
 		var extraFiles = new [] {
-			("Target.csproj", System.Text.Encoding.UTF8.GetBytes (@"
+			("Target.csproj", System.Text.Encoding.UTF8.GetBytes ($@"
 				<Project Sdk=""Microsoft.NET.Sdk"">
 					<PropertyGroup>
-						<TargetFramework>net12.0</TargetFramework>
+						<TargetFramework>{targetFramework}</TargetFramework>
 					</PropertyGroup>
 					<ItemGroup>
 						<Compile Remove=""Test.cs"" />
@@ -222,7 +233,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		};
 		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles);
 		var testOutputDirectory = Path.GetDirectoryName (testInfo.InputPath)!;
-		var targetInputPath = Path.Combine (testOutputDirectory, "net12.0", "Target.dll");
+		var targetInputPath = Path.Combine (testOutputDirectory, targetFramework, "Target.dll");
 		var targetOutputPath = Path.Combine (testOutputDirectory, "out", "Target.dll");
 		preparer.Assemblies.Add (new AssemblyPreparerInfo (targetInputPath, targetOutputPath, true, "link"));
 

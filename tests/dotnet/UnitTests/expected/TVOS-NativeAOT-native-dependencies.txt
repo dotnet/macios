@@ -4,6 +4,7 @@ SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CryptoKit.framework/Cr
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Foundation.framework/Foundation
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Network.framework/Network
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Security.framework/Security
+SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/StoreKit.framework/StoreKit
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/UIKit.framework/UIKit
 SizeTestApp [ARM64]: LoadDylib /usr/lib/libSystem.B.dylib
 SizeTestApp [ARM64]: LoadDylib /usr/lib/libc++.1.dylib

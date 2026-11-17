@@ -1009,7 +1009,7 @@ public class Frameworks : Dictionary<string, Framework> {
 	/// and explicit LinkWith/NativeReference dependencies remain included as before; product assembly
 	/// frameworks are selected using surviving Objective-C class and category lookups, and P/Invokes.
 	/// </summary>
-	public static void GatherNativeAOT (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
+	public static void GatherNativeAOT (Application app, IEnumerable<AssemblyDefinition> assemblies, IEnumerable<Symbol> requiredSymbols, HashSet<string> frameworks, HashSet<string> weak_frameworks)
 	{
 		var namespaces = new HashSet<string> ();
 		var allAssemblies = assemblies.ToArray ();
@@ -1020,9 +1020,23 @@ public class Frameworks : Dictionary<string, Framework> {
 		const string dlfcnPrefix = "xamarin_Dlfcn_";
 		const string dlfcnSuffix = "_Native";
 		var survivingDlfcnSymbols = new HashSet<string> ();
+		var requiredClasses = new HashSet<string> ();
 		foreach (var symbol in symbols) {
 			if (symbol.StartsWith (dlfcnPrefix, StringComparison.Ordinal) && symbol.EndsWith (dlfcnSuffix, StringComparison.Ordinal))
 				survivingDlfcnSymbols.Add (symbol.Substring (dlfcnPrefix.Length, symbol.Length - dlfcnPrefix.Length - dlfcnSuffix.Length));
+		}
+		foreach (var symbol in requiredSymbols) {
+			if (symbol.Ignore || symbol.Mode == SymbolMode.Ignore)
+				continue;
+			switch (symbol.Type) {
+			case SymbolType.ObjectiveCClass:
+				if (symbol.ObjectiveCName is not null)
+					requiredClasses.Add (symbol.ObjectiveCName);
+				break;
+			case SymbolType.Field:
+				survivingDlfcnSymbols.Add (symbol.Name);
+				break;
+			}
 		}
 
 		var survivingModules = new HashSet<string> ();
@@ -1041,7 +1055,8 @@ public class Frameworks : Dictionary<string, Framework> {
 			foreach (var type in GetAllTypes (assembly)) {
 				if (app.StaticRegistrar.TryFindType (type, out var objcType)) {
 					registrarTypes.Add (objcType);
-					if (referencedClasses.Contains (objcType.ExportedName) && TryGetFramework (app, type, out string? classFramework))
+					if ((referencedClasses.Contains (objcType.ExportedName) || requiredClasses.Contains (objcType.ExportedName)) &&
+						TryGetFramework (app, type, out string? classFramework))
 						namespaces.Add (classFramework);
 				}
 
@@ -1053,6 +1068,14 @@ public class Frameworks : Dictionary<string, Framework> {
 					var entryPoint = pinvoke.EntryPoint ?? method.Name;
 					if (!IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols))
 						continue;
+
+					const string categoryFrameworkPrefix = "xamarin_CategoryFramework_";
+					if (entryPoint.StartsWith (categoryFrameworkPrefix, StringComparison.Ordinal) &&
+						entryPoint.EndsWith ("_Native", StringComparison.Ordinal)) {
+						var categoryFramework = entryPoint.Substring (categoryFrameworkPrefix.Length, entryPoint.Length - categoryFrameworkPrefix.Length - "_Native".Length);
+						if (!string.IsNullOrEmpty (categoryFramework))
+							namespaces.Add (categoryFramework);
+					}
 
 					survivingModules.Add (moduleName);
 					var framework = GetFrameworkFromLibraryName (app.Platform, moduleName);

@@ -38,7 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			var unresolvedSymbols = File.Exists (UnresolvedSymbolsFile) ? File.ReadAllLines (UnresolvedSymbolsFile) : [];
-			CollectPostILTrimInformation.WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, CollectPostILTrimInformation.FilterToDlfcnSymbols (unresolvedSymbols));
+			CollectPostILTrimInformation.WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, CollectPostILTrimInformation.FilterToSurvivingNativeSymbols (unresolvedSymbols));
 			CollectPostILTrimInformation.WriteSymbolsToFile (this, SurvivingClassesFile, CollectPostILTrimInformation.FilterToClassSymbols (unresolvedSymbols));
 			return !Log.HasLoggedErrors;
 		}

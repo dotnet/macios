@@ -40,7 +40,7 @@ namespace Xamarin {
 		{
 			var app = Configuration.Application;
 			if (app.XamarinRuntime == Xamarin.Bundler.XamarinRuntime.NativeAOT && app.NativeAOTSurvivingPInvokeSymbols is not null)
-				global::Frameworks.GatherNativeAOT (app, Configuration.Assemblies, Frameworks, WeakFrameworks);
+				global::Frameworks.GatherNativeAOT (app, Configuration.Assemblies, Configuration.DerivedLinkContext.RequiredSymbols, Frameworks, WeakFrameworks);
 
 			Configuration.Application.ComputeLinkerFlags ();
 

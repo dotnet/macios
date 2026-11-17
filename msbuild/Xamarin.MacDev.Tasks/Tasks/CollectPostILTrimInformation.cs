@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, FilterToDlfcnSymbols (survivingSymbols));
+			WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, FilterToSurvivingNativeSymbols (survivingSymbols));
 			WriteSymbolsToFile (this, SurvivingClassesFile, FilterToClassSymbols (survivingSymbols));
 		}
 
@@ -105,6 +105,13 @@ namespace Xamarin.MacDev.Tasks {
 		public static IEnumerable<string> FilterToDlfcnSymbols (IEnumerable<string> symbols)
 		{
 			return FilterTo (symbols, "_xamarin_Dlfcn_", "_Native");
+		}
+
+		public static IEnumerable<string> FilterToSurvivingNativeSymbols (IEnumerable<string> symbols)
+		{
+			return FilterToDlfcnSymbols (symbols).Concat (
+				FilterTo (symbols, "_xamarin_CategoryFramework_", "_Native")
+					.Select (framework => $"xamarin_CategoryFramework_{framework}_Native"));
 		}
 
 		// Category lookups are returned as "{framework}/{class}". '/' can't be part of an Objective-C class name.

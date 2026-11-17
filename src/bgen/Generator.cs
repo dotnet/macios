@@ -6133,6 +6133,8 @@ public partial class Generator : IMemberGatherer {
 				print ("[Model]");
 			}
 
+			if (is_category_class)
+				print ("[global::ObjCRuntime.Category (typeof ({0}))]", TypeManager.FormatType (type, bta!.BaseType));
 			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true, objectiveCFramework: true);
 
 			if (type.IsEnum) {

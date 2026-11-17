@@ -268,7 +268,8 @@ namespace Xamarin.Linker.Steps {
 						// Same goes for inlined Class.GetHandle calls.
 						if (Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled &&
 							(pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.PInvokePrefix, StringComparison.Ordinal) ||
-							pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.CategoryPInvokePrefix, StringComparison.Ordinal)))
+							pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.CategoryPInvokePrefix, StringComparison.Ordinal) ||
+							pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.CategoryFrameworkPInvokePrefix, StringComparison.Ordinal)))
 							break;
 					}
 					DerivedLinkContext.App.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);

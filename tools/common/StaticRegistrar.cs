@@ -1491,8 +1491,11 @@ namespace Registrar {
 		public override CategoryAttribute? GetCategoryAttribute (TypeReference type)
 		{
 			string? name = null;
+			var resolvedType = type.Resolve ();
+			if (resolvedType is null || (resolvedType.IsAbstract && resolvedType.IsSealed))
+				return null;
 
-			if (!TryGetAttribute (type.Resolve (), ObjCRuntime, StringConstants.CategoryAttribute, out var attrib))
+			if (!TryGetAttribute (resolvedType, ObjCRuntime, StringConstants.CategoryAttribute, out var attrib))
 				return null;
 
 			if (!attrib.HasConstructorArguments)

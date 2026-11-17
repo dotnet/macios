@@ -431,6 +431,8 @@ namespace Registrar {
 
 		public override CategoryAttribute? GetCategoryAttribute (Type type)
 		{
+			if (type.IsAbstract && type.IsSealed)
+				return null;
 			return SharedDynamic.GetOneAttribute<CategoryAttribute> (type);
 		}
 

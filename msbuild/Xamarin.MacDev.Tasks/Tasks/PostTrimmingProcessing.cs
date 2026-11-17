@@ -86,6 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Directory.CreateDirectory (OutputDirectory);
 			GenerateInlinedDlfcnNativeCode (nativeSourceFiles);
+			GenerateCategoryFrameworkNativeCode (nativeSourceFiles);
 			GenerateInlinedClassGetHandleNativeCode (nativeSourceFiles);
 
 			NativeSourceFiles = nativeSourceFiles.Select (path => {
@@ -241,7 +242,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		void GenerateInlinedDlfcnNativeCode (List<string> items)
 		{
-			var survivingSymbols = FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles), filterObjectiveCClasses: false);
+			var survivingSymbols = new HashSet<string> (FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles), filterObjectiveCClasses: false)
+				.Where (v => !v.StartsWith ("xamarin_CategoryFramework_", StringComparison.Ordinal)), StringComparer.Ordinal);
 
 			if (survivingSymbols.Count == 0) {
 				Log.LogMessage (MessageImportance.Low, "There were no surviving symbols that require inlined dlfcn native code.");
@@ -285,6 +287,28 @@ namespace Xamarin.MacDev.Tasks {
 			var outputPath = Path.Combine (OutputDirectory, "inlined-dlfcn.c");
 			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
 
+			items.Add (outputPath);
+		}
+
+		void GenerateCategoryFrameworkNativeCode (List<string> items)
+		{
+			const string prefix = "xamarin_CategoryFramework_";
+			const string suffix = "_Native";
+			var frameworks = ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles)
+				.Where (v => v.StartsWith (prefix, StringComparison.Ordinal) && v.EndsWith (suffix, StringComparison.Ordinal))
+				.Select (v => v.Substring (prefix.Length, v.Length - prefix.Length - suffix.Length))
+				.Where (v => v.Length > 0)
+				.OrderBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (frameworks.Length == 0)
+				return;
+
+			var sb = new StringBuilder ();
+			foreach (var framework in frameworks)
+				sb.AppendLine ($"void* xamarin_CategoryFramework_{framework}_Native () {{ return (void*) 0; }}");
+
+			var outputPath = Path.Combine (OutputDirectory, "category-frameworks.c");
+			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
 			items.Add (outputPath);
 		}
 	}

@@ -37,6 +37,30 @@ namespace Xamarin.Tests {
 			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-DllImportSearchPaths", false, dict);
 		}
 
+		[Test]
+		public void NativeAOT_ReferenceNativeSymbol ()
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NativeAOTReferenceNativeSymbol", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-ReferenceNativeSymbol", false, dict);
+		}
+
+		[Test]
+		public void NativeAOT_CategoryFramework ()
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "AdditionalDefineConstants", "NATIVEAOT_CATEGORY_FRAMEWORKS" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-CategoryFramework", false, dict);
+		}
+
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]

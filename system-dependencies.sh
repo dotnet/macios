@@ -629,11 +629,11 @@ function install_specific_xcode () {
 		curl --fail --location --retry 5 --retry-all-errors "$XCODE_URL" > "$XCODE_ARCHIVE"
 	fi
 
-	if [[ "$XCODE_ARCHIVE" == *.xip ]]; then
+	if [[ "$XCODE_ARCHIVE" == *.xip || "$XCODE_ARCHIVE" == *.aea ]]; then
 		INSTALLER_ARGS+=(--archive "$XCODE_ARCHIVE")
 		"$PWD/tools/devops/automation/scripts/bash/install-xcode.sh" "${INSTALLER_ARGS[@]}"
 	elif [[ "$XCODE_ARCHIVE" == *.dmg ]]; then
-		fail "DMG-based Xcode provisioning is no longer supported. Provide an Apple-signed XIP archive."
+		fail "DMG-based Xcode provisioning is no longer supported. Provide an Apple-signed XIP or AEA archive."
 		return
 	else
 		fail "Don't know how to install $XCODE_ARCHIVE"

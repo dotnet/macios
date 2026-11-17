@@ -12,20 +12,21 @@
 
 namespace CoreBluetooth {
 
+	/// <summary>Represents the current state of a <see cref="CBManager" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The state is unknown; an update is imminent.</summary>
 		Unknown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection to the system Bluetooth service was momentarily lost; an update is imminent.</summary>
 		Resetting,
-		/// <summary>To be added.</summary>
+		/// <summary>The platform does not support the Bluetooth Low Energy central or client role.</summary>
 		Unsupported,
-		/// <summary>To be added.</summary>
+		/// <summary>The app is not authorized to use the Bluetooth Low Energy role.</summary>
 		Unauthorized,
-		/// <summary>To be added.</summary>
+		/// <summary>Bluetooth is powered off.</summary>
 		PoweredOff,
-		/// <summary>To be added.</summary>
+		/// <summary>Bluetooth is powered on and available to use.</summary>
 		PoweredOn,
 	}
 

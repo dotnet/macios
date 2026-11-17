@@ -55357,7 +55357,6 @@ T:CoreBluetooth.CBConnectionEventMatchingOptions
 T:CoreBluetooth.CBConnectPeripheralOptions
 T:CoreBluetooth.CBL2CapChannel
 T:CoreBluetooth.CBManagerAuthorization
-T:CoreBluetooth.CBManagerState
 T:CoreBluetooth.RestoredState
 T:CoreData.NSBatchInsertRequest
 T:CoreData.NSBatchInsertRequestDictionaryHandler

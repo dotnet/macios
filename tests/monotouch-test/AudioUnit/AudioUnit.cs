@@ -27,6 +27,7 @@ namespace Xamarin.Mac.Tests {
 		public void GetCurrentDevice_Test ()
 		{
 			TestRuntime.AssertNotVirtualMachine ();
+			TestRuntime.RequestMicrophonePermission ();
 
 			theUnit unit = GetAudioUnitForTest ();
 

@@ -10,7 +10,7 @@ namespace MySimpleApp {
 		{
 			GC.KeepAlive (typeof (NSObject)); // prevent linking away the platform assembly
 
-#if USE_SWIFT_REVIEW || USE_SWIFT_WIDGETKIT
+#if USE_SWIFT_REVIEW
 #if __MACOS__
 			GC.KeepAlive ((Action<AppKit.NSViewController>) StoreKit.AppStore.RequestReview);
 #else

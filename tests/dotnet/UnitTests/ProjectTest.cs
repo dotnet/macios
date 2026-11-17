@@ -4450,13 +4450,20 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
-		public void SwiftBridgeTrimming (ApplePlatform platform, string runtimeIdentifiers, bool useWidgetKit)
+		static IEnumerable<TestCaseData> GetSwiftBridgeTrimmingTestCases ()
+		{
+			foreach (var defines in new [] { "USE_SWIFT_REVIEW", "USE_SWIFT_WIDGETKIT", "USE_SWIFT_REVIEW;USE_SWIFT_WIDGETKIT" }) {
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "", "Full");
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, false, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, true, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", defines, false, "static", "Full");
+			}
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_WIDGETKIT", false, "static", "None");
+		}
+
+		[TestCaseSource (nameof (GetSwiftBridgeTrimmingTestCases))]
+		public void SwiftBridgeTrimming (ApplePlatform platform, string runtimeIdentifiers, string defines, bool publishAot, string libXamarinLinkMode, string linkMode)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -4464,12 +4471,18 @@ namespace Xamarin.Tests {
 			var projectPath = GetProjectPath ("ApiTestApp", runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["MtouchLink"] = "Full";
-			properties ["LinkMode"] = "Full";
+			properties ["MtouchLink"] = linkMode;
+			properties ["LinkMode"] = linkMode;
 			properties ["UseMonoRuntime"] = "false";
-			properties ["_LibXamarinLinkMode"] = "static";
+			if (libXamarinLinkMode.Length > 0)
+				properties ["_LibXamarinLinkMode"] = libXamarinLinkMode;
+			properties ["RequireLinkWithAttributeForObjectiveCClassSearch"] = "true";
 			properties ["NoSymbolStrip"] = "true";
-			properties ["AdditionalDefineConstants"] = useWidgetKit ? "USE_SWIFT_WIDGETKIT" : "USE_SWIFT_REVIEW";
+			properties ["AdditionalDefineConstants"] = defines;
+			if (publishAot) {
+				properties ["PublishAot"] = "true";
+				properties ["_IsPublishing"] = "true";
+			}
 			DotNet.AssertBuild (projectPath, properties);
 
 			if (Configuration.IsBuildingRemotely)
@@ -4477,13 +4490,23 @@ namespace Xamarin.Tests {
 
 			var executable = GetNativeExecutable (platform, appPath);
 			var symbols = Configuration.GetNativeSymbols (executable);
-			Assert.That (symbols, Does.Contain ("_OBJC_CLASS_$_XamarinStoreKitSwiftFunctions"), "The StoreKit bridge must remain linked.");
+			var useWidgetKit = defines.Contains ("USE_SWIFT_WIDGETKIT");
+			// NativeAOT collects bridge roots before ILC trimming; see https://github.com/dotnet/macios/issues/26850.
+			var expectAllBridges = publishAot || linkMode == "None";
+			var expectStoreKit = expectAllBridges || defines.Contains ("USE_SWIFT_REVIEW");
+			var expectWidgetKit = expectAllBridges || useWidgetKit;
+			if (libXamarinLinkMode.Length == 0) {
+				var dylib = Path.Combine (appPath, "libxamarin-dotnet-coreclr-debug.dylib");
+				Assert.That (File.Exists (dylib), Is.True, "The default simulator configuration must use the runtime dylib.");
+				Assert.That (GetLinkedWithFrameworks (dylib).Any (v => v.Contains ("/WidgetKit.framework/")), Is.False, "The runtime dylib must not depend on WidgetKit.");
+			} else {
+				Assert.That (symbols, expectStoreKit ? Does.Contain ("_OBJC_CLASS_$_XamarinStoreKitSwiftFunctions") : Does.Not.Contain ("_OBJC_CLASS_$_XamarinStoreKitSwiftFunctions"), "StoreKit bridge");
+			}
+			Assert.That (symbols, expectWidgetKit ? Does.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions") : Does.Not.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions"), "WidgetKit bridge");
 			if (useWidgetKit) {
-				Assert.That (symbols, Does.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions"), "The used WidgetKit bridge must remain linked.");
 				if (CanExecute (platform, runtimeIdentifiers))
 					ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifiers);
-			} else {
-				Assert.That (symbols, Does.Not.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions"), "The unused WidgetKit bridge must be stripped independently of StoreKit.");
+			} else if (!expectWidgetKit) {
 				Assert.That (GetLinkedWithFrameworks (executable).Any (v => v.Contains ("/WidgetKit.framework/")), Is.False, "Unused WidgetKit must not add a native framework dependency.");
 			}
 		}

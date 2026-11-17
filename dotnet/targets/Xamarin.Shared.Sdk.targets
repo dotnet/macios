@@ -2095,6 +2095,8 @@
 		<!-- Swift code is compiled into one object file per Swift module (the 'ModuleName' metadata) -->
 		<PropertyGroup>
 			<_SwiftDefaultModuleName>$([System.Text.RegularExpressions.Regex]::Replace('$(AssemblyName)', '[^A-Za-z0-9_]', '_'))</_SwiftDefaultModuleName>
+			<!-- Swift identifiers can't start with a digit -->
+			<_SwiftDefaultModuleName>$([System.Text.RegularExpressions.Regex]::Replace('$(_SwiftDefaultModuleName)', '^([0-9])', '_$1'))</_SwiftDefaultModuleName>
 			<_SwiftObjectDirectory>$(_IntermediateNativeLibraryDir)swift/</_SwiftObjectDirectory>
 		</PropertyGroup>
 		<ItemGroup>
@@ -2125,6 +2127,9 @@
 			<!-- The CompileSwift task writes the files each Swift module depends on (for instance headers included from the bridging header) to a file -->
 			<_SwiftDependencyListFile Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).dependencies')" />
 			<_ExistingSwiftDependencyListFile Include="@(_SwiftDependencyListFile)" Condition="Exists('%(Identity)')" />
+			<!-- When building remotely the dependency lists are written on the Mac, so we can't know if any of the
+			     dependencies changed. Add an input that doesn't exist, so that we always compile the Swift code. -->
+			<_SwiftSourceDependency Include="$(_SwiftObjectDirectory)always-compile-when-building-remotely" Condition="'$(BuildSessionId)' != ''" />
 		</ItemGroup>
 		<ReadLinesFromFile File="%(_ExistingSwiftDependencyListFile.Identity)" Condition="@(_ExistingSwiftDependencyListFile->Count()) &gt; 0">
 			<Output TaskParameter="Lines" ItemName="_SwiftSourceDependency" />

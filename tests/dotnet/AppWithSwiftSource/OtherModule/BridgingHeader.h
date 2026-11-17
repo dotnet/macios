@@ -1,4 +1,1 @@
-static inline int bridged_one (void)
-{
-	return 1;
-}
+#include "Values.h"

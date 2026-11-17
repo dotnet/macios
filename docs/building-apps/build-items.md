@@ -464,6 +464,9 @@ The following metadata is supported:
 All the files in a Swift module must have the same `BridgingHeader` and
 `AdditionalArguments` values.
 
+When building remotely from Windows, only the bridging header itself is copied
+to the Mac, not any other headers it includes.
+
 Example:
 
 ```xml

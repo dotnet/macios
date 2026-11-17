@@ -277,6 +277,41 @@ namespace Xamarin.Tests {
 			Assert.That (File.ReadAllText (projectPath), Does.Contain ($"<TargetFramework>{targetFramework}</TargetFramework>"), "The generated project must target the selected framework.");
 		}
 
+		[TestCase ("ios", "F#", "fsproj")]
+		[TestCase ("ios-notification-service-extension", "C#", "csproj")]
+		public void CreateProjectTemplateWithParameters (string template, string language, string extension)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+
+			var outputDir = Path.Combine (Cache.CreateTemporaryDirectory (), template);
+			var arguments = new List<string> { "--framework", "net11.0-ios", "--minOSVersion", "16.0" };
+			if (template == "ios-notification-service-extension")
+				arguments.AddRange (["--extensionClassName", "CustomNotificationService"]);
+			DotNet.AssertNew (outputDir, template, language: language, extraArguments: arguments.ToArray ());
+
+			var project = File.ReadAllText (Path.Combine (outputDir, $"{template}.{extension}"));
+			Assert.That (project, Does.Contain ("<TargetFramework>net11.0-ios</TargetFramework>"), "TargetFramework");
+			Assert.That (project, Does.Contain ("<SupportedOSPlatformVersion>16.0</SupportedOSPlatformVersion>"), "SupportedOSPlatformVersion");
+			if (template == "ios-notification-service-extension") {
+				var source = File.ReadAllText (Path.Combine (outputDir, "NotificationServiceClass.cs"));
+				Assert.That (source, Does.Contain ("class CustomNotificationService"), "Extension class name");
+			}
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-controller")]
+		[TestCase (ApplePlatform.TVOS, "tvos-controller")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-controller")]
+		[TestCase (ApplePlatform.MacOSX, "macos-controller")]
+		public void CreateItemTemplateWithNamespace (ApplePlatform platform, string template)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var outputDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (outputDir, template, name: "CustomController", extraArguments: ["--namespace", "CustomNamespace"]);
+			var source = File.ReadAllText (Path.Combine (outputDir, "CustomController.cs"));
+			Assert.That (source, Does.Contain ("namespace CustomNamespace"), "Namespace");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, TemplateLanguage.CSharp)]
 		[TestCase (ApplePlatform.iOS, TemplateLanguage.FSharp)]

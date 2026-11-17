@@ -198,7 +198,7 @@ namespace Xamarin.Linker.Steps {
 		// * when inlining is disabled globally, or
 		// * in a Hot Reload compatible build, for reloadable assemblies (AssemblyAction != Link), which
 		//   InlineDlfcnMethodsStep intentionally leaves byte-unmodified.
-		// In prepare-assemblies mode InlineDlfcnMethodsStep runs in a separate process (the "prepare" pass)
+		// InlineDlfcnMethodsStep runs in a separate process (the "prepare" pass)
 		// whose collected symbols are discarded before the "post-process" pass runs GenerateReferencesStep,
 		// so collecting here (in the post-process pass) is what actually keeps the symbol alive.
 		bool ShouldCollectFieldSymbols (MethodDefinition method)
@@ -247,7 +247,8 @@ namespace Xamarin.Linker.Steps {
 					Select (v => Path.GetFileNameWithoutExtension (v)).
 					Select (v => v.StartsWith ("lib", StringComparison.OrdinalIgnoreCase) ? v.Substring (3) : v);
 				var monoLibraryVariations = new HashSet<string> (monoLibraryVariationsEnumerable);
-				monoLibraryVariations.Add ("System.Globalization.Native"); // System.Private.CoreLib has P/Invokes pointing to libSystem.Globalization.Native, but they're actually in libmonosgen-2.0
+				if (app.XamarinRuntime == XamarinRuntime.MonoVM)
+					monoLibraryVariations.Add ("System.Globalization.Native"); // System.Private.CoreLib has P/Invokes pointing to libSystem.Globalization.Native, but they're actually in libmonosgen-2.0
 				monoLibraryVariations.UnionWith (monoLibraryVariations.Select (v => "lib" + v).ToArray ());
 				monoLibraryVariations.UnionWith (monoLibraryVariations.Select (v => v + ".dylib").ToArray ());
 				// If the P/Invoke points to any of those libraries, then we add it as a P/Invoke symbol.

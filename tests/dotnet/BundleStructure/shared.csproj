@@ -261,21 +261,21 @@
 		<!-- BundleResource items -->
 
 		<!-- BundleResource without any metadata: bundled -->
-		<BundleResource Include="../BundleResourceA.txt" />
+		<BundleResource Include="../BundleResourceA.txt" LogicalName="BundleResourceA.txt" />
 		<!-- Content with CopyToOutputDirectory: bundled -->
-		<BundleResource Include="../BundleResourceB.txt">
+		<BundleResource Include="../BundleResourceB.txt" LogicalName="BundleResourceB.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</BundleResource>
 		<!-- Content with CopyToPublishDirectory: bundled -->
-		<BundleResource Include="../BundleResourceC.txt">
+		<BundleResource Include="../BundleResourceC.txt" LogicalName="BundleResourceC.txt">
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</BundleResource>
 		<!-- BundleResource with CopyToPublishDirectory=Never: still bundled -->
-		<BundleResource Include="../BundleResourceD.txt">
+		<BundleResource Include="../BundleResourceD.txt" LogicalName="BundleResourceD.txt">
 			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
 		</BundleResource>
 		<!-- BundleResource with CopyToOutputDirectory=Never: still bundled -->
-		<BundleResource Include="../BundleResourceE.txt">
+		<BundleResource Include="../BundleResourceE.txt" LogicalName="BundleResourceE.txt">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</BundleResource>
 		<!-- BundleResource with CopyToOutputDirectory and PublishFolderType=None: not bundled -->
@@ -355,8 +355,8 @@
 	</PropertyGroup>
 	<Target Name="AddBundleResources">
 		<ItemGroup>
-			<Content Include="../ContentI.txt" />
-			<BundleResource Include="../BundleResourceI.txt" />
+			<Content Include="../ContentI.txt" LogicalName="ContentI.txt" />
+			<BundleResource Include="../BundleResourceI.txt" LogicalName="BundleResourceI.txt" />
 		</ItemGroup>
 	</Target>
 </Project>

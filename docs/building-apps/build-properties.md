@@ -610,9 +610,10 @@ Code signing is enabled by default for all platforms; this can be overridden wit
 
 ## EnableCrashReport
 
-Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
-environment variable is set to `1` at startup, which makes the .NET runtime's
-in-process crash reporter write a JSON crash report when the app crashes.
+Enables in-process crash reports for apps targeting .NET 11 or later. When enabled,
+the `DOTNET_EnableCrashReport` environment variable is set to `1` at startup,
+which makes the .NET runtime's in-process crash reporter write a JSON crash report
+when the app crashes.
 
 This setting is disabled by default, but it can be enabled like this:
 
@@ -624,7 +625,7 @@ This setting is disabled by default, but it can be enabled like this:
 
 The crash reports are written to a subdirectory of the app's caches directory.
 
-See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+See also: [Collect crash dumps](/dotnet/core/diagnostics/collect-dumps-crash).
 
 ## EnableDefaultCodesignEntitlements
 
@@ -1456,7 +1457,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
 
-Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
 
 Default: `true` (when `PublishReadyToRun` is `true`).
 
@@ -1930,6 +1931,35 @@ Valid values for this property:
 The validation process may not validate every entitlement, nor is it guaranteed to not be overeager.
 
 If the validation fails for entitlements that actually work, please file a new issue.
+
+## ValidateSceneManifest
+
+Choose whether to check for a `UIApplicationSceneManifest` dictionary in the
+merged app manifest when building iOS and Mac Catalyst apps against SDK 27.0 or
+later. The default is `true`. App extensions, frameworks, libraries, macOS, and
+tvOS are not checked.
+
+Apps using the legacy UIKit lifecycle crash at launch on iOS or macOS 27.0 or
+later when built against the 27.0 SDK or later, even if their minimum deployment
+target is an older OS version. See https://aka.ms/uiscene for migration instructions.
+
+This check only inspects the manifest; it does not verify scene delegates or
+custom lifecycle handlers. Scene manifests supplied by partial manifests are
+included in the check. An empty dictionary is accepted for apps that configure
+scenes dynamically in their app delegate.
+
+If the check incorrectly rejects an app (for example, one that configures scenes
+entirely in code), it can be disabled in the project file:
+
+```xml
+<PropertyGroup>
+  <ValidateSceneManifest>false</ValidateSceneManifest>
+</PropertyGroup>
+```
+
+Disabling this build-time check does not disable the operating system's scene
+lifecycle requirement. Verify that the app launches and behaves correctly on
+OS 27.0 or later before distributing it.
 
 ## ValidateXcodeVersion
 

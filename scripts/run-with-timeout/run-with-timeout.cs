@@ -41,12 +41,13 @@ for (var attempt = 0; attempt < maxLaunchAttempts; attempt++) {
 
 	try {
 		p.StartInfo.FileName = commands [0];
-		p.StartInfo.Arguments = string.Join (" ", commands.Skip (1));
+		foreach (var arg in commands.Skip (1))
+			p.StartInfo.ArgumentList.Add (arg);
 		p.StartInfo.UseShellExecute = false;
 		p.StartInfo.EnvironmentVariables ["LAUNCH_SENTINEL_FILE"] = launchTimeoutFile;
 
 		Console.WriteLine ($"Launching (attempt #{attempt + 1}):");
-		Console.WriteLine ($"    {p.StartInfo.FileName} {p.StartInfo.Arguments}");
+		Console.WriteLine ($"    {p.StartInfo.FileName} {string.Join (" ", p.StartInfo.ArgumentList)}");
 
 		p.Start ();
 

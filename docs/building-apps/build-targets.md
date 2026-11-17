@@ -57,6 +57,10 @@ dotnet build -t:DeployToDevice project.csproj -p:Device=<udid>
 The .NET SDK calls this target during `dotnet run`, including when the
 `--no-build` option is specified.
 
+Hot Reload startup hooks are copied to a physical device when computing launch
+arguments, after deployment. Calling `DeployToDevice` alone does not prepare
+the startup hooks or the Hot Reload launch environment.
+
 Added in .NET 11.
 
 ## GetApplicationArtifacts

@@ -82,6 +82,12 @@ steps:
     displayName: Download artifacts
     inputs:
       allowFailedBuilds: true
+      patterns: |
+        ${{ parameters.uploadPrefix }}Build.props/**
+        ${{ parameters.uploadPrefix }}package-test-libraries/**
+        ${{ parameters.uploadPrefix }}build-configuration/**
+        ${{ parameters.uploadPrefix }}not-signed-package/**
+        ${{ parameters.uploadPrefix }}WorkloadRollback/**
       path: $(Build.SourcesDirectory)/artifacts
 
 - pwsh: |

@@ -28,6 +28,8 @@ namespace Linker.Shared {
 		public void SetupBlock_CustomDelegate ()
 		{
 			IgnoreIfNotLinkAll ();
+			if (TestRuntime.IsILLinkSkipped)
+				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
 
 			int counter = 0;
 			var action = new Action (() => counter++);
@@ -65,6 +67,8 @@ namespace Linker.Shared {
 		public void SetupBlockPerfTest ()
 		{
 			IgnoreIfNotLinkAll ();
+			if (TestRuntime.IsILLinkSkipped)
+				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
 
 			// If you ran this test locally and it failed, run it again. If it fails multiple times, file a bug.
 			TestRuntime.IgnoreInCI ("This test randomly fails, so ignore it when doing CI (https://github.com/xamarin/maccore/issues/649)");
@@ -122,6 +126,8 @@ namespace Linker.Shared {
 		public void SetupBlockCodeTest ()
 		{
 			IgnoreIfNotLinkAll ();
+			if (TestRuntime.IsILLinkSkipped)
+				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
 
 			int counter = 0;
 			var action = new Action (() => counter++);
@@ -515,7 +521,7 @@ namespace Linker.Shared {
 			// and it evaluates the field as a constant when removing branches that depend on it
 			// (which is how the generated code uses the field). A plain read of the field is not
 			// rewritten - the field still holds the correct value at runtime.
-#if DEBUG // Release builds will strip IL, so any IL checking has to be done in debug builds.
+#if DEBUG && !NATIVEAOT // Release builds will strip IL, so any IL checking has to be done in debug builds.
 			MethodInfo method;
 			IEnumerable<ILInstruction> instructions;
 

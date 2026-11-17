@@ -64,6 +64,9 @@ namespace LinkAllTests {
 			}
 		}
 
+#if NATIVEAOT
+		[Preserve (AllMembers = true)]
+#endif
 		public class SerializeMe {
 
 			[XmlAttribute]

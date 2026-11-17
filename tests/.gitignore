@@ -28,4 +28,5 @@ logs
 x86
 *.7z
 TestSummary.md
+.devskim/
 

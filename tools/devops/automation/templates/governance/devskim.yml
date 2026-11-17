@@ -37,11 +37,9 @@ stages:
 
     - bash: |
         set -euo pipefail
-        dotnet tool install Microsoft.CST.DevSkim.CLI \
-          --version 1.0.100 \
-          --tool-path "$(Agent.TempDirectory)/devskim-tool" \
-          --configfile "$(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)/NuGet.config" \
-          2>&1 | tee "$REPORTS/install.log"
+        python3 "$(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_devskim.py" \
+          --install-only --tool-directory "$(Agent.TempDirectory)/devskim-tool" \
+          --output-directory "$REPORTS"
       displayName: Install pinned DevSkim
       workingDirectory: $(Agent.TempDirectory)
       env:
@@ -55,23 +53,8 @@ stages:
 
     - bash: |
         set -euo pipefail
-        mkdir -p "$REPORTS"
-        reports=()
-        for source in runtime src tools msbuild external dotnet scripts builds eng; do
-          reports+=("$REPORTS/$source.sarif")
-          "$(Agent.TempDirectory)/devskim-tool/devskim" analyze \
-            --source-code "$PWD/$source" \
-            --base-path "$PWD" \
-            --output-file "$REPORTS/$source.sarif" \
-            --file-format sarif \
-            --severity Critical,Important,Moderate,BestPractice,ManualReview \
-            --confidence High,Medium,Low \
-            --disable-supression \
-            --disable-parallel \
-            --options-json "$PWD/tools/devops/governance/devskim-options.json" \
-            2>&1 | tee "$REPORTS/$source.log"
-        done
-        python3 tools/devops/automation/scripts/check_devskim.py "${reports[@]}"
+        python3 tools/devops/automation/scripts/run_devskim.py \
+          --tool-directory "$(Agent.TempDirectory)/devskim-tool" --output-directory "$REPORTS"
       displayName: Run DevSkim and fail on banned APIs
       workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
       env:
@@ -79,12 +62,8 @@ stages:
 
     - bash: |
         set -euo pipefail
-        reports=()
-        for source in runtime src tools msbuild external dotnet scripts builds eng; do
-          reports+=("$REPORTS/$source.sarif")
-        done
-        python3 tools/devops/automation/scripts/report_devskim.py \
-          --output-directory "$REPORTS" --scan-status "$AGENT_JOBSTATUS" "${reports[@]}"
+        python3 tools/devops/automation/scripts/run_devskim.py --report-only \
+          --output-directory "$REPORTS" --scan-status "$AGENT_JOBSTATUS"
       displayName: Create DevSkim HTML report
       condition: succeededOrFailed()
       workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
@@ -137,7 +116,7 @@ stages:
         python "$env:PIPELINE_WORKSPACE/s/$env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/comment_devskim.py" `
           "$env:PIPELINE_WORKSPACE/devskim-report/summary.json"
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-      displayName: Comment on PR only for DevSkim failures
-      condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+      displayName: Publish gist and comment on PR or commit only for DevSkim failures
+      condition: succeededOrFailed()
       env:
         GITHUB_TOKEN: $(GitHub.Token)

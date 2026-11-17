@@ -130,7 +130,8 @@ in the `Globs` array passed to DevSkim's `--options-json` option. Add directory
 patterns there to keep CI and local scans consistent. For example,
 `**/tools/sharpie/clang/include/**` excludes the imported Clang headers that we
 do not control; the leading `**/` matches the checkout's absolute path prefix.
-Git metadata is also excluded. These are source-scan exclusions, not hidden
+Git metadata and downloaded SDKs in `builds/downloads` are also excluded.
+These are source-scan exclusions, not hidden
 findings or rule suppressions: changing them requires a new scan and does not
 remove findings from previously generated SARIF or HTML reports.
 
@@ -156,10 +157,14 @@ are shown as incomplete coverage, not as a passing scan.
 A separate Windows publishing job downloads the `devskim` artifact and uploads
 it using the existing Artifact Services Drop task. The report is available at
 `https://vsdrop.corp.microsoft.com/file/v1/<repository>/devskim/<build-number>/<build-id>-<publish-job-attempt>/;/index.html`.
-After a successful upload, PR builds post a link only when there are banned-API
-findings or scan errors. Clean scans (including scans with only non-blocking
-findings) do not post a comment; branch builds never post PR comments.
-Upload and comment failures fail the publishing job rather than being ignored.
+When there are banned-API findings or scan errors, the publishing job creates a secret
+GitHub gist containing `report.md`, with findings, source links, excerpts, and rule
+guidance. It posts the gist link on the PR, or on the scanned commit for a branch
+build. Secret gists are unlisted, not private; anyone with the link can read them.
+The comment also links to the HTML report when the VSDrops upload succeeds.
+Clean scans create neither a gist nor a comment. If the VSDrops upload fails, the
+gist and comment are still posted. Upload, gist, and comment errors still fail
+the publishing job.
 
 **Findings require security-owner triage.** The integration does not add
 baselines, exclusions for individual APIs, or suppressions. Native-runtime
@@ -172,30 +177,26 @@ fail the stage until remediated or a narrowly scoped exception is explicitly
 approved by the responsible security team; running the tool alone does not
 establish compliance with Microsoft.Security.SystemsADM.10082.
 
-To reproduce locally, initialize submodules, install the pinned tool outside the
-repository (to avoid its `global.json` SDK requirement), and scan each source tree:
+To run the same scan locally, initialize submodules and run:
 
 ```bash
 git submodule update --init --recursive
-repository="$PWD"
-# Install outside the repository with a .NET 10 SDK:
-(cd /tmp && dotnet tool install Microsoft.CST.DevSkim.CLI --version 1.0.100 \
-  --tool-path /tmp/macios-devskim \
-  --configfile "$repository/NuGet.config")
-# Run from the repository root; keep reports outside the scanned trees:
-mkdir -p /tmp/macios-devskim-reports
-reports=()
-for source in runtime src tools msbuild external dotnet scripts builds eng; do
-  reports+=("/tmp/macios-devskim-reports/$source.sarif")
-  /tmp/macios-devskim/devskim analyze --source-code "$PWD/$source" --base-path "$PWD" \
-    --output-file "/tmp/macios-devskim-reports/$source.sarif" --file-format sarif \
-    --severity Critical,Important,Moderate,BestPractice,ManualReview \
-    --confidence High,Medium,Low --disable-supression --disable-parallel \
-    --options-json "$PWD/tools/devops/governance/devskim-options.json" || exit
-done
-python3 tools/devops/automation/scripts/check_devskim.py "${reports[@]}"
-python3 tools/devops/automation/scripts/report_devskim.py \
-  --output-directory /tmp/macios-devskim-reports "${reports[@]}"
+make -C tests devskim
+open tests/.devskim/reports/index.html # macOS default browser
+```
+
+The target needs Python 3.9+ and the repository's .NET SDK. It does not need a
+product build. It installs the pinned DevSkim version from a temporary directory,
+using the root `NuGet.config`, so the repository's `global.json` does not affect
+installation. DevSkim can run on .NET 10 or a newer runtime.
+The tool and reports are stored in `tests/.devskim/`, which Git ignores and which
+is outside the scanned source directories. CI runs the same
+`scripts/run_devskim.py` script, with the same source directories, options, and
+pass/fail rules. The target fails if it finds banned APIs or scan errors.
+It writes HTML, Markdown, JSON, and SARIF reports, plus logs.
+Local runs never publish reports or post comments. To test the runner script, run:
+
+```bash
 python3 -m unittest discover -s tools/devops/automation/scripts -p 'test_devskim*.py'
 ```
 

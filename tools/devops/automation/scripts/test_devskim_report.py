@@ -8,6 +8,7 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.error import HTTPError
 from unittest.mock import patch
 
 import comment_devskim
@@ -146,9 +147,47 @@ class DevSkimReportTests(unittest.TestCase):
                 self.assertEqual(0, report_devskim.main(["--output-directory", directory, str(path)]))
             self.assertFalse(json.loads((Path(directory) / "summary.json").read_text())["has_failures"])
             self.assertIn('href="install.log"', (Path(directory) / "index.html").read_text())
+            self.assertIn("Other findings (non-blocking)", (Path(directory) / "report.md").read_text())
+
+    def test_markdown_preserves_details_without_rendering_html(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = finding()
+            result["message"] = {"text": "Banned | API"}
+            result["locations"] = [{
+                "physicalLocation": {
+                    "artifactLocation": {"uri": "runtime/probe.c"},
+                    "region": {"startLine": 3, "snippet": {"text": "printf(\"<script>\");"}},
+                },
+            }]
+            path = self.create_report(directory, [result])
+            findings, summary = report_devskim.collect_reports([path], "Failed")
+            rendered = report_devskim.render_markdown(findings, summary)
+            self.assertIn("runtime/probe.c:3", rendered)
+            self.assertIn("Banned &#124; API", rendered)
+            self.assertIn("printf(&quot;&lt;script&gt;&quot;);", rendered)
+            self.assertNotIn("<script>", rendered)
 
 
 class DevSkimCommentTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.summary = Path(self.directory.name) / "summary.json"
+        self.summary.write_text(json.dumps({"has_failures": True, "banned_count": 145, "error_count": 0}),
+                                encoding="utf-8")
+        self.summary.with_name("report.md").write_text("# Detailed report", encoding="utf-8")
+        self.env = {
+            "BUILD_REPOSITORY_NAME": "dotnet/macios",
+            "SYSTEM_PULLREQUEST_PULLREQUESTNUMBER": "26957",
+            "BUILD_BUILDNUMBER": "20261029.1",
+            "BUILD_BUILDID": "123",
+            "SYSTEM_JOBATTEMPT": "2",
+            "SYSTEM_COLLECTIONURI": "https://devdiv.visualstudio.com/",
+            "SYSTEM_TEAMPROJECT": "DevDiv",
+            "GITHUB_TOKEN": "placeholder-token",
+            "AGENT_JOBSTATUS": "Succeeded",
+        }
+
     def test_clean_run_never_posts_or_requires_credentials(self):
         with tempfile.TemporaryDirectory() as directory:
             summary = Path(directory) / "summary.json"
@@ -158,33 +197,54 @@ class DevSkimCommentTests(unittest.TestCase):
                     self.assertEqual(0, comment_devskim.main([str(summary)]))
                 post.assert_not_called()
 
-    def test_failure_posts_link_matching_drop_path(self):
-        with tempfile.TemporaryDirectory() as directory:
-            summary = Path(directory) / "summary.json"
-            summary.write_text(json.dumps({"has_failures": True, "banned_count": 145, "error_count": 0}),
-                               encoding="utf-8")
-            env = {
-                "BUILD_REPOSITORY_NAME": "dotnet/macios",
-                "SYSTEM_PULLREQUEST_PULLREQUESTNUMBER": "26957",
-                "BUILD_BUILDNUMBER": "20261029.1",
-                "BUILD_BUILDID": "123",
-                "SYSTEM_JOBATTEMPT": "2",
-                "SYSTEM_COLLECTIONURI": "https://devdiv.visualstudio.com/",
-                "SYSTEM_TEAMPROJECT": "DevDiv",
-                "GITHUB_TOKEN": "placeholder-token",
-            }
-            with patch.dict(os.environ, env, clear=True), patch.object(comment_devskim, "urlopen") as post:
-                post.return_value.__enter__.return_value = io.StringIO('{"html_url": "https://github.com/comment"}')
-                with contextlib.redirect_stdout(io.StringIO()):
-                    self.assertEqual(0, comment_devskim.main([str(summary)]))
-                request = post.call_args[0][0]
-                self.assertEqual("https://api.github.com/repos/dotnet/macios/issues/26957/comments",
-                                 request.full_url)
-                self.assertEqual("POST", request.method)
-                body = json.loads(request.data)["body"]
-                self.assertIn("145 banned-API", body)
-                self.assertIn("/macios/devskim/20261029.1/123-2/;/index.html", body)
-                self.assertIn("Copilot", body)
+    def test_failure_creates_secret_gist_then_posts_pr_link(self):
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as post:
+            response = post.return_value.__enter__
+            response.side_effect = [
+                io.StringIO('{"html_url": "https://gist.github.com/example"}'),
+                io.StringIO('{"html_url": "https://github.com/comment"}'),
+            ]
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0, comment_devskim.main([str(self.summary)]))
+            gist_request, comment_request = [call.args[0] for call in post.call_args_list]
+            self.assertEqual("https://api.github.com/gists", gist_request.full_url)
+            gist = json.loads(gist_request.data)
+            self.assertFalse(gist["public"])
+            self.assertEqual("# Detailed report", gist["files"]["devskim-report.md"]["content"])
+            self.assertEqual("https://api.github.com/repos/dotnet/macios/issues/26957/comments",
+                             comment_request.full_url)
+            body = json.loads(comment_request.data)["body"]
+            self.assertIn("145 banned-API", body)
+            self.assertIn("https://gist.github.com/example", body)
+            self.assertIn("/macios/devskim/20261029.1/123-2/;/index.html", body)
+            self.assertIn("Copilot", body)
+
+    def test_branch_failure_comments_on_commit_even_when_drop_upload_failed(self):
+        del self.env["SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"]
+        self.env.update(BUILD_SOURCEVERSION="a" * 40, AGENT_JOBSTATUS="Failed")
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "post_json") as post:
+            post.return_value = {"html_url": "https://gist.github.com/example"}
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0, comment_devskim.main([str(self.summary)]))
+            endpoint, payload = post.call_args.args
+            self.assertEqual("repos/dotnet/macios/commits/" + "a" * 40 + "/comments", endpoint)
+            self.assertNotIn("vsdrop", payload["body"])
+            self.assertIn("https://gist.github.com/example", payload["body"])
+
+    def test_gist_failure_is_not_ignored_and_does_not_post_comment(self):
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as post:
+            post.side_effect = HTTPError("https://api.github.com/gists", 403, "Forbidden", {}, None)
+            with self.assertRaises(HTTPError):
+                comment_devskim.main([str(self.summary)])
+            self.assertEqual(1, post.call_count)
+
+    def test_pr_build_without_number_does_not_fall_back_to_merge_commit(self):
+        del self.env["SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"]
+        self.env.update(BUILD_REASON="PullRequest", BUILD_SOURCEVERSION="a" * 40)
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as post:
+            with self.assertRaisesRegex(ValueError, "PR number"):
+                comment_devskim.main([str(self.summary)])
+            post.assert_not_called()
 
     def test_comment_includes_scan_errors(self):
         body = comment_devskim.comment_body({"has_failures": True, "banned_count": 0, "error_count": 9},

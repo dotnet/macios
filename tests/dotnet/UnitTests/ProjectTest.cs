@@ -502,32 +502,49 @@ namespace Xamarin.Tests {
 			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, true)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", false, false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, false)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true, true)]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false, false)]
-		public void NativeAotEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers, bool prepareAssemblies, bool postProcessAssemblies)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "trimmable-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "managed-static")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "trimmable-static")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "managed-static")]
+		public void NativeAotEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers, string registrar)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			var project = "EmbeddedFrameworkInBindingProjectApp";
-			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
-			// The binding output is shared by device and simulator builds, but embeds different native frameworks.
-			Clean (bindingProjectPath);
+			// Model an existing legacy binding without invoking the unsupported .NET 12 binding-embedding target.
+			var bindingDirectory = Cache.CreateTemporaryDirectory ();
+			var bindingProjectPath = Path.Combine (bindingDirectory, "BindingWithEmbeddedFramework.csproj");
+			var nativePlatform = platform == ApplePlatform.iOS ? "ios" : "macos";
+			var frameworkArchive = Path.Combine (Configuration.SourceRoot, "tests", "test-libraries", ".libs", nativePlatform, "XTest.framework.zip");
+			File.Copy (frameworkArchive, Path.Combine (bindingDirectory, "XTest.framework.zip"));
+			File.Copy (Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "BindingWithEmbeddedFramework", "StructsAndEnums.cs"), Path.Combine (bindingDirectory, "CFunctions.cs"));
+			File.WriteAllText (Path.Combine (bindingDirectory, "LinkWith.cs"), """
+				[assembly: ObjCRuntime.LinkWith ("XTest.framework", SmartLink = true)]
+				""");
+			File.WriteAllText (bindingProjectPath, $"""
+				<Project Sdk="Microsoft.NET.Sdk">
+					<PropertyGroup>
+						<TargetFramework>{platform.ToFramework ()}</TargetFramework>
+					</PropertyGroup>
+					<ItemGroup>
+						<EmbeddedResource Include="XTest.framework.zip" LogicalName="XTest.framework" />
+					</ItemGroup>
+				</Project>
+				""");
+			var bindingProperties = GetDefaultProperties ();
+			bindingProperties ["Configuration"] = "Release";
+			DotNet.AssertBuild (bindingProjectPath, bindingProperties);
+			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
 			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = "Release";
 			properties ["PublishAot"] = "true";
 			properties ["_IsPublishing"] = "true";
-			properties ["PrepareAssemblies"] = prepareAssemblies.ToString ();
-			properties ["PostProcessAssemblies"] = postProcessAssemblies.ToString ();
-			if (platform == ApplePlatform.iOS)
-				properties ["NativeLibName"] = "ios";
+			properties ["PrebuiltBindingPath"] = bindingPath;
+			properties ["Registrar"] = registrar;
 			DotNet.AssertBuild (projectPath, properties);
 
-			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
 			using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
 			var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
 			var embeddedFramework = resource.GetResourceData ();
@@ -536,23 +553,19 @@ namespace Xamarin.Tests {
 			Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
 
 			var substitutionsPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "nativeaot-resource-substitutions.xml");
-			if (prepareAssemblies) {
-				var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
-				Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
-					.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
+			var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
+			Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
+				.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
 
-				var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
-				var result = DotNet.AssertBuild (projectPath, properties);
-				AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
-				Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
+			var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
+			var result = DotNet.AssertBuild (projectPath, properties);
+			AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
+			Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
 
-				File.Delete (substitutionsPath);
-				result = DotNet.AssertBuild (projectPath, properties);
-				AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
-				Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
-			} else {
-				Assert.That (substitutionsPath, Does.Not.Exist, "ILLink removes native resources without a substitution file");
-			}
+			File.Delete (substitutionsPath);
+			result = DotNet.AssertBuild (projectPath, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
+			Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
 		}
 
 		[Test]

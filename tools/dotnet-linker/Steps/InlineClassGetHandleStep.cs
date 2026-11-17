@@ -40,6 +40,9 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 
 	public const string PInvokePrefix = "xamarin_Class_GetHandle_";
 	public const string PInvokeSuffix = "_Native";
+	// Category bindings use a separate entry point that also identifies the category's framework. This
+	// lets NativeAOT builds link the framework that provides the category, not just the extended class.
+	public const string CategoryPInvokePrefix = "xamarin_Category_GetHandle_";
 
 	protected override bool ConditionToProcess ()
 	{
@@ -112,8 +115,15 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 	{
 		// [DllImport ("__Internal")]
 		// static extern IntPtr xamarin_Class_GetClassHandle_{objectiveCClassName}_Native ();
+		// or, for category bindings:
+		// static extern IntPtr xamarin_Category_GetHandle_{categoryFramework}_{objectiveCClassName}_Native ();
 
-		return abr.CreateInternalPInvoke (callingMethod.Module, "ObjCRuntime", "Class", $"{PInvokePrefix}{objectiveCClassName}{PInvokeSuffix}", out _);
+		var entryPoint = $"{PInvokePrefix}{objectiveCClassName}{PInvokeSuffix}";
+		if (App.StaticRegistrar.GetCategoryAttribute (callingMethod.DeclaringType) is not null &&
+			Frameworks.TryGetFramework (App, callingMethod.DeclaringType, out Framework? categoryFramework))
+			entryPoint = $"{CategoryPInvokePrefix}{categoryFramework.Namespace}_{objectiveCClassName}{PInvokeSuffix}";
+
+		return abr.CreateInternalPInvoke (callingMethod.Module, "ObjCRuntime", "Class", entryPoint, out _);
 	}
 
 	protected override bool ProcessMethod (MethodDefinition method)

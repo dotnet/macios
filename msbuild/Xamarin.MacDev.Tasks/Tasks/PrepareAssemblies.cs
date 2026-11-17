@@ -128,8 +128,15 @@ namespace Xamarin.MacDev.Tasks {
 						// A class whose trampolines were all trimmed away by ILC must still be registered if
 						// managed code that survived ILC looks up its class handle, because the generated
 						// inlined Class.GetHandle native code references the Objective-C class.
-						var referencedClasses = new HashSet<string> (CollectPostILTrimInformation.FilterToClassSymbols (unresolvedSymbols));
+						var referencedClasses = new HashSet<string> ();
+						var categoryFrameworks = new HashSet<string> ();
+						foreach (var classSymbol in CollectPostILTrimInformation.FilterToClassSymbols (unresolvedSymbols)) {
+							referencedClasses.Add (CollectPostILTrimInformation.GetClassName (classSymbol));
+							if (CollectPostILTrimInformation.TryGetCategoryFramework (classSymbol, out var categoryFramework))
+								categoryFrameworks.Add (categoryFramework);
+						}
 						preparer.Configuration.Application.ClassesReferencedByInlinedClassGetHandle = referencedClasses;
+						preparer.Configuration.Application.NativeAOTCategoryFrameworks = categoryFrameworks;
 					}
 					rv = preparer.PostProcess (out exceptions);
 				} else {

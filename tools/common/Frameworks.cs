@@ -1007,7 +1007,7 @@ public class Frameworks : Dictionary<string, Framework> {
 	/// <summary>
 	/// Gathers framework dependencies from NativeAOT symbols that survived ILC. Binding assemblies
 	/// and explicit LinkWith/NativeReference dependencies remain included as before; product assembly
-	/// frameworks are selected using surviving Objective-C class lookups and P/Invokes.
+	/// frameworks are selected using surviving Objective-C class and category lookups, and P/Invokes.
 	/// </summary>
 	public static void GatherNativeAOT (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
 	{
@@ -1090,6 +1090,9 @@ public class Frameworks : Dictionary<string, Framework> {
 			if (TryGetFramework (app, type.Type.Resolve (), out string? classFramework))
 				namespaces.Add (classFramework);
 		}
+
+		if (app.NativeAOTCategoryFrameworks is not null)
+			namespaces.UnionWith (app.NativeAOTCategoryFrameworks);
 
 		app.NativeAOTSurvivingPInvokeModules = survivingModules;
 

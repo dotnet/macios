@@ -120,6 +120,8 @@ namespace Xamarin.Bundler {
 		// These are used to determine which frameworks are required after ILC has trimmed the app.
 		public HashSet<string>? NativeAOTSurvivingPInvokeSymbols;
 		public HashSet<string>? NativeAOTSurvivingPInvokeModules;
+		// The frameworks of category bindings whose inlined Class.GetHandle lookup survived NativeAOT compilation.
+		public HashSet<string>? NativeAOTCategoryFrameworks;
 
 		// Returns true if managed code that survived ILC looks up the class handle for the given
 		// Objective-C class name using the inlined Class.GetHandle optimization.

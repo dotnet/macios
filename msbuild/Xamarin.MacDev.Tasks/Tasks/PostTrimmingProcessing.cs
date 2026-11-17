@@ -122,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 				var symbolType = rns.GetMetadata ("SymbolType").ToLowerInvariant ();
 				switch (symbolType) {
 				case "objectivecclass":
-					if (filterObjectiveCClasses && rv.Remove (nativeSymbol)) {
+					if (filterObjectiveCClasses && rv.RemoveWhere (v => CollectPostILTrimInformation.GetClassName (v) == nativeSymbol) > 0) {
 						Log.LogMessage (MessageImportance.Low, "Ignoring Objective-C class '{0}'", nativeSymbol);
 					}
 					break;
@@ -208,7 +208,8 @@ namespace Xamarin.MacDev.Tasks {
 			var sb = new StringBuilder ();
 			sb.AppendLine ($"#include <objc/runtime.h>");
 			sb.AppendLine ($"#include <Foundation/Foundation.h>");
-			foreach (var objectiveCClassName in classes) {
+			foreach (var classGroup in classes.GroupBy (CollectPostILTrimInformation.GetClassName).OrderBy (v => v.Key, StringComparer.Ordinal)) {
+				var objectiveCClassName = classGroup.Key;
 				// We don't want to import every header under the sun to find the @interface definitions for each class, so we generate
 				// a forward declaration for each class. To avoid potential issues with missing classes at runtime, we mark each declaration with __attribute__((weak_import)).
 				// The only exception is that we need to #include Foundation, which means we can't create declarations for Foundation classes.
@@ -222,8 +223,13 @@ namespace Xamarin.MacDev.Tasks {
 						sb.AppendLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
 					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // is stub: {info.IsStubClass}");
 				}
-				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native ();");
-				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ return [{objectiveCClassName} class]; }}");
+				foreach (var classSymbol in classGroup.OrderBy (v => v, StringComparer.Ordinal)) {
+					var functionName = CollectPostILTrimInformation.TryGetCategoryFramework (classSymbol, out var categoryFramework)
+						? $"xamarin_Category_GetHandle_{categoryFramework}_{objectiveCClassName}_Native"
+						: $"xamarin_Class_GetHandle_{objectiveCClassName}_Native";
+					sb.AppendLine ($"Class {functionName} ();");
+					sb.AppendLine ($"Class {functionName} () {{ return [{objectiveCClassName} class]; }}");
+				}
 				sb.AppendLine ();
 			}
 

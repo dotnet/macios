@@ -185,7 +185,8 @@ class DevSkimCommentTests(unittest.TestCase):
             "SYSTEM_COLLECTIONURI": "https://devdiv.visualstudio.com/",
             "SYSTEM_TEAMPROJECT": "DevDiv",
             "GITHUB_TOKEN": "placeholder-token",
-            "AGENT_JOBSTATUS": "Succeeded",
+            "DEVSKIM_DROP_UPLOADED": "True",
+            "DEVSKIM_REPORT_URL": "https://vsdrop.corp.microsoft.com/file/v1/macios/devskim/20261029.1/123-2/;/index.html",
         }
 
     def test_clean_run_never_posts_or_requires_credentials(self):
@@ -221,7 +222,7 @@ class DevSkimCommentTests(unittest.TestCase):
 
     def test_branch_failure_comments_on_commit_even_when_drop_upload_failed(self):
         del self.env["SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"]
-        self.env.update(BUILD_SOURCEVERSION="a" * 40, AGENT_JOBSTATUS="Failed")
+        self.env.update(BUILD_SOURCEVERSION="a" * 40, DEVSKIM_DROP_UPLOADED="False")
         with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "post_json") as post:
             post.return_value = {"html_url": "https://gist.github.com/example"}
             with contextlib.redirect_stdout(io.StringIO()):

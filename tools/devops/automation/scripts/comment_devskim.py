@@ -58,12 +58,9 @@ def main(argv=None):
         if not re.fullmatch(r"[a-fA-F0-9]{40}", revision):
             raise ValueError("Expected a Git commit SHA")
         endpoint = f"repos/{repository}/commits/{revision}/comments"
-    title = repository.split("/")[1]
-    build_number = quote(os.environ["BUILD_BUILDNUMBER"], safe="")
     build_id = quote(os.environ["BUILD_BUILDID"], safe="")
-    attempt = quote(os.environ["SYSTEM_JOBATTEMPT"], safe="")
-    report_url = (f"https://vsdrop.corp.microsoft.com/file/v1/{quote(title, safe='')}/devskim/"
-                  f"{build_number}/{build_id}-{attempt}/;/index.html")
+    report_url = (os.environ["DEVSKIM_REPORT_URL"]
+                  if os.environ.get("DEVSKIM_DROP_UPLOADED", "").lower() == "true" else "")
     build_url = (f'{os.environ["SYSTEM_COLLECTIONURI"]}{quote(os.environ["SYSTEM_TEAMPROJECT"], safe="")}'
                  f"/_build/results?buildId={build_id}")
     gist = post_json("gists", {
@@ -74,8 +71,6 @@ def main(argv=None):
         }},
     })
     print(f'Published DevSkim results: {gist["html_url"]}')
-    if os.environ.get("AGENT_JOBSTATUS") != "Succeeded":
-        report_url = ""
     comment = post_json(endpoint, {"body": comment_body(summary, gist["html_url"], build_url, report_url)})
     print(f'Posted DevSkim report comment: {comment["html_url"]}')
     return 0

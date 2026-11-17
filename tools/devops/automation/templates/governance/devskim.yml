@@ -89,6 +89,15 @@ stages:
       os: windows
     workspace:
       clean: all
+    templateContext:
+      outputs:
+      - output: artifactsDrop
+        displayName: Publish DevSkim HTML report to VSDrops
+        dropServiceURI: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+        dropMetadataContainerName: DropMetadata-DevSkim-$(System.JobAttempt)
+        buildNumber: $(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)
+        sourcePath: $(Pipeline.Workspace)/devskim-report
+        toLowerCase: false
     steps:
     - checkout: self
       path: s/$(BUILD_REPOSITORY_TITLE)
@@ -101,16 +110,37 @@ stages:
         artifactName: devskim
         targetPath: $(Pipeline.Workspace)/devskim-report
 
-    - task: artifactDropTask@1
-      displayName: Publish DevSkim HTML report to VSDrops
+    - pwsh: |
+        $url = "https://vsdrop.corp.microsoft.com/file/v1/$(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)/;/index.html"
+        Write-Host "##vso[task.setvariable variable=url;isOutput=true]$url"
+      name: report_link
+      displayName: Record DevSkim HTML report link
+
+  - job: comment_devskim
+    displayName: Publish DevSkim failure gist and comment
+    dependsOn: publish_devskim
+    condition: succeededOrFailed()
+    timeoutInMinutes: 15
+    variables:
+      DevSkimDropUploaded: $[ eq(dependencies.publish_devskim.result, 'Succeeded') ]
+      DevSkimReportUrl: $[ dependencies.publish_devskim.outputs['report_link.url'] ]
+    pool:
+      name: AzurePipelines-EO
+      image: 1ESPT-Windows2022
+      os: windows
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      path: s/$(BUILD_REPOSITORY_TITLE)
+      clean: true
+      fetchTags: false
+
+    - task: DownloadPipelineArtifact@2
+      displayName: Download DevSkim reports
       inputs:
-        dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
-        dropMetadataContainerName: 'DropMetadata-DevSkim-$(System.JobAttempt)'
-        buildNumber: '$(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)'
-        sourcePath: $(Pipeline.Workspace)/devskim-report
-        detailedLog: true
-        usePat: true
-      timeoutInMinutes: 15
+        artifactName: devskim
+        targetPath: $(Pipeline.Workspace)/devskim-report
 
     - pwsh: |
         python "$env:PIPELINE_WORKSPACE/s/$env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/comment_devskim.py" `
@@ -120,3 +150,5 @@ stages:
       condition: succeededOrFailed()
       env:
         GITHUB_TOKEN: $(GitHub.Token)
+        DEVSKIM_DROP_UPLOADED: $(DevSkimDropUploaded)
+        DEVSKIM_REPORT_URL: $(DevSkimReportUrl)

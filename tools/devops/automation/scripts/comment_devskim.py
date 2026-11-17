@@ -25,13 +25,13 @@ def comment_body(summary, gist_url, build_url, report_url=""):
     )
 
 
-def post_json(endpoint, data):
+def github_json(endpoint, data=None):
     request = Request(
         f"https://api.github.com/{endpoint}",
-        data=json.dumps(data).encode("utf-8"),
+        data=json.dumps(data).encode("utf-8") if data is not None else None,
         headers={"Authorization": f'Bearer {os.environ["GITHUB_TOKEN"]}',
                  "Content-Type": "application/json", "Accept": "application/vnd.github+json"},
-        method="POST",
+        method="POST" if data is not None else "GET",
     )
     with urlopen(request, timeout=60) as response:
         return json.load(response)
@@ -44,6 +44,9 @@ def main(argv=None):
     summary = json.loads(args.summary.read_text(encoding="utf-8"))
     if not summary["has_failures"]:
         print("DevSkim passed; no gist or comment will be posted.")
+        return 0
+    if os.environ.get("BUILD_DEFINITIONNAME") not in ("xamarin-macios-ci", "xamarin-macios-pr"):
+        print("Not an explicitly public pipeline; DevSkim reports remain in pipeline artifacts and VSDrops.")
         return 0
     repository = os.environ["BUILD_REPOSITORY_NAME"]
     if not re.fullmatch(r"[\w.-]+/[\w.-]+", repository):
@@ -58,12 +61,16 @@ def main(argv=None):
         if not re.fullmatch(r"[a-fA-F0-9]{40}", revision):
             raise ValueError("Expected a Git commit SHA")
         endpoint = f"repos/{repository}/commits/{revision}/comments"
+    metadata = github_json(f"repos/{repository}")
+    if not isinstance(metadata, dict) or metadata.get("private") is not False or metadata.get("visibility") != "public":
+        print("Repository is not explicitly public; DevSkim reports remain in pipeline artifacts and VSDrops.")
+        return 0
     build_id = quote(os.environ["BUILD_BUILDID"], safe="")
     report_url = (os.environ["DEVSKIM_REPORT_URL"]
                   if os.environ.get("DEVSKIM_DROP_UPLOADED", "").lower() == "true" else "")
     build_url = (f'{os.environ["SYSTEM_COLLECTIONURI"]}{quote(os.environ["SYSTEM_TEAMPROJECT"], safe="")}'
                  f"/_build/results?buildId={build_id}")
-    gist = post_json("gists", {
+    gist = github_json("gists", {
         "description": f"DevSkim results for {repository}, build {os.environ['BUILD_BUILDNUMBER']}",
         "public": False,
         "files": {"devskim-report.md": {
@@ -71,7 +78,7 @@ def main(argv=None):
         }},
     })
     print(f'Published DevSkim results: {gist["html_url"]}')
-    comment = post_json(endpoint, {"body": comment_body(summary, gist["html_url"], build_url, report_url)})
+    comment = github_json(endpoint, {"body": comment_body(summary, gist["html_url"], build_url, report_url)})
     print(f'Posted DevSkim report comment: {comment["html_url"]}')
     return 0
 

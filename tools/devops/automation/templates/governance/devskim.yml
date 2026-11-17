@@ -25,6 +25,8 @@ stages:
     - bash: |
         set -euo pipefail
         mkdir -p "$REPORTS"
+        echo "##vso[task.setvariable variable=artifact_name;isOutput=true]devskim-$(System.JobAttempt)"
+      name: initialize_devskim
       displayName: Initialize DevSkim diagnostics
       env:
         REPORTS: $(Build.ArtifactStagingDirectory)/devskim
@@ -75,7 +77,7 @@ stages:
         use1ES: true
         displayName: Publish DevSkim reports
         path: $(Build.ArtifactStagingDirectory)/devskim
-        artifact: devskim
+        artifact: $(initialize_devskim.artifact_name)
         condition: always()
 
   - job: publish_devskim
@@ -83,6 +85,8 @@ stages:
     dependsOn: devskim
     condition: succeededOrFailed()
     timeoutInMinutes: 30
+    variables:
+      DevSkimArtifactName: $[ dependencies.devskim.outputs['initialize_devskim.artifact_name'] ]
     pool:
       name: AzurePipelines-EO
       image: 1ESPT-Windows2022
@@ -107,7 +111,7 @@ stages:
     - task: DownloadPipelineArtifact@2
       displayName: Download DevSkim reports
       inputs:
-        artifactName: devskim
+        artifactName: $(DevSkimArtifactName)
         targetPath: $(Pipeline.Workspace)/devskim-report
 
     - pwsh: |
@@ -118,10 +122,13 @@ stages:
 
   - job: comment_devskim
     displayName: Publish DevSkim failure gist and comment
-    dependsOn: publish_devskim
+    dependsOn:
+    - devskim
+    - publish_devskim
     condition: succeededOrFailed()
     timeoutInMinutes: 15
     variables:
+      DevSkimArtifactName: $[ dependencies.devskim.outputs['initialize_devskim.artifact_name'] ]
       DevSkimDropUploaded: $[ eq(dependencies.publish_devskim.result, 'Succeeded') ]
       DevSkimReportUrl: $[ dependencies.publish_devskim.outputs['report_link.url'] ]
     pool:
@@ -139,7 +146,7 @@ stages:
     - task: DownloadPipelineArtifact@2
       displayName: Download DevSkim reports
       inputs:
-        artifactName: devskim
+        artifactName: $(DevSkimArtifactName)
         targetPath: $(Pipeline.Workspace)/devskim-report
 
     - pwsh: |

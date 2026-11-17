@@ -140,11 +140,12 @@ disabled. `scripts/check_devskim.py` fails the job for every result tagged
 `API.DangerousAPI.BannedFunction`, including moderate-severity `DS154189` and
 best-practice/manual-review rules. Other findings remain in the reports for
 triage. Scanner failures, missing/malformed reports, and explicit SARIF execution
-errors also fail the job. The `devskim` pipeline artifact publishes SARIF and
+errors also fail the job. The `devskim-<scan-job-attempt>` pipeline artifact publishes SARIF and
 console logs even when the scan or gate fails; if provisioning fails before the
 scan starts, no SARIF report is available. The diagnostics directory is created
 before provisioning, and tool installation output is retained as `install.log`
-even when installation fails.
+even when installation fails. The scan passes its artifact name to both download
+jobs, so retries use that scan attempt's reports rather than an older artifact.
 
 After the scan (including failed scans), `scripts/report_devskim.py` generates
 `index.html` and `summary.json` alongside the SARIF and logs. The self-contained
@@ -154,13 +155,17 @@ rule guidance. Banned API names from SARIF excerpts are shown directly in the
 finding message, without expanding the guidance. Missing or invalid SARIF reports
 are shown as incomplete coverage, not as a passing scan.
 
-A separate Windows publishing job downloads the `devskim` artifact and uploads
+A separate Windows publishing job downloads the scan attempt's artifact and uploads
 it using the existing Artifact Services Drop task. The report is available at
 `https://vsdrop.corp.microsoft.com/file/v1/<repository>/devskim/<build-number>/<build-id>-<publish-job-attempt>/;/index.html`.
-When there are banned-API findings or scan errors, the publishing job creates a secret
+When there are banned-API findings or scan errors, the comment job creates a secret
 GitHub gist containing `report.md`, with findings, source links, excerpts, and rule
 guidance. It posts the gist link on the PR, or on the scanned commit for a branch
 build. Secret gists are unlisted, not private; anyone with the link can read them.
+GitHub publication is limited to the public `xamarin-macios-ci` and
+`xamarin-macios-pr` pipelines, and only after GitHub confirms the repository is
+public. Private/MSRC builds and unknown pipeline or repository visibility never
+publish gists or comments; their reports stay in pipeline artifacts and VSDrops.
 The comment also links to the HTML report when the VSDrops upload succeeds.
 Clean scans create neither a gist nor a comment. If the VSDrops upload fails, the
 gist and comment are still posted. Upload, gist, and comment errors still fail

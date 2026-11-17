@@ -2,6 +2,7 @@
 # Licensed under the MIT License.
 
 import contextlib
+import copy
 import io
 import json
 import tempfile
@@ -24,6 +25,45 @@ def finding(tags=None, level="warning"):
         "level": level,
         "properties": {"tags": [BANNED_FUNCTION_TAG] if tags is None else tags},
     }
+
+
+def malformed_reports():
+    document = report([finding()])
+    run = document["runs"][0]
+    run["invocations"] = [{"toolExecutionNotifications": []}]
+    run["versionControlProvenance"] = [{}]
+    run["tool"]["driver"]["rules"] = [{"id": "DS154189", "properties": {}, "help": {}}]
+    run["results"][0]["message"] = {}
+    run["results"][0]["locations"] = [{
+        "physicalLocation": {"artifactLocation": {}, "region": {"snippet": {}}},
+    }]
+    fields = [
+        (("invocations",), [None]),
+        (("invocations",), {}),
+        (("invocations", 0, "executionSuccessful"), "true"),
+        (("invocations", 0, "toolExecutionNotifications"), [None]),
+        (("versionControlProvenance",), [None]),
+        (("versionControlProvenance", 0, "repositoryUri"), None),
+        (("tool", "driver", "rules"), [{}]),
+        (("tool", "driver", "rules", 0, "help"), None),
+        (("tool", "driver", "rules", 0, "helpUri"), []),
+        (("tool", "driver", "rules", 0, "properties"), None),
+        (("results", 0, "properties", "DevSkimSeverity"), []),
+        (("results", 0, "message"), None),
+        (("results", 0, "message", "text"), "\ud800"),
+        (("results", 0, "locations"), [None]),
+        (("results", 0, "locations", 0, "physicalLocation"), None),
+        (("results", 0, "locations", 0, "physicalLocation", "artifactLocation", "uri"), []),
+        (("results", 0, "locations", 0, "physicalLocation", "region", "startLine"), "42"),
+        (("results", 0, "locations", 0, "physicalLocation", "region", "snippet", "text"), []),
+    ]
+    for path, value in fields:
+        malformed = copy.deepcopy(document)
+        target = malformed["runs"][0]
+        for key in path[:-1]:
+            target = target[key]
+        target[path[-1]] = value
+        yield path, malformed
 
 
 class DevSkimTests(unittest.TestCase):
@@ -74,6 +114,17 @@ class DevSkimTests(unittest.TestCase):
             document["runs"][0]["invocations"] = [invocation]
             with self.subTest(invocation=invocation), self.assertRaises(ValueError):
                 banned_findings(document)
+
+    def test_malformed_nested_fields_fail_with_report_diagnostics(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "malformed.sarif"
+            for field, document in malformed_reports():
+                with self.subTest(field=field), self.assertRaises(ValueError):
+                    banned_findings(document)
+                path.write_text(json.dumps(document), encoding="utf-8")
+                with self.subTest(field=field), contextlib.redirect_stderr(io.StringIO()) as errors:
+                    self.assertEqual(2, main([str(path)]))
+                self.assertIn("DevSkim report error", errors.getvalue())
 
     def test_exit_codes_and_diagnostics(self):
         with tempfile.TemporaryDirectory() as directory:

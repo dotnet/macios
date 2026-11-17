@@ -34,50 +34,57 @@ def source_url(run, uri, line):
     return f"{repository}/blob/{revision}/{quote(path, safe='/')}#L{line}"
 
 
+def read_report(path):
+    document = json.loads(path.read_text(encoding="utf-8"))
+    banned_findings(document)
+    findings = []
+    for run in document["runs"]:
+        rules = {rule["id"]: rule for rule in run["tool"]["driver"].get("rules", [])}
+        for result in run["results"]:
+            rule = rules.get(result["ruleId"], {})
+            properties = result["properties"]
+            location = (result.get("locations") or [{}])[0].get("physicalLocation", {})
+            region = location.get("region", {})
+            uri = location.get("artifactLocation", {}).get("uri", path.name)
+            line = region.get("startLine", 1)
+            banned = BANNED_FUNCTION_TAG in properties["tags"]
+            message = result.get("message", {}).get("text", result["ruleId"])
+            snippet = region.get("snippet", {}).get("text", "")
+            if banned:
+                api = re.match(r"\s*([A-Za-z_]\w*)\s*(?:\(|$)", snippet)
+                if api and not re.search(rf"\b{re.escape(api[1])}\b", message):
+                    message += f": {api[1]}"
+            findings.append({
+                "banned": banned,
+                "rule": result["ruleId"],
+                "severity": properties.get("DevSkimSeverity",
+                                           rule.get("properties", {}).get("DevSkimSeverity",
+                                                                         result.get("level", "warning"))),
+                "confidence": properties.get("DevSkimConfidence",
+                                             rule.get("properties", {}).get("DevSkimConfidence", "")),
+                "file": uri,
+                "line": line,
+                "url": source_url(run, uri, line),
+                "message": message,
+                "snippet": snippet,
+                "guidance": rule.get("help", {}).get("text", ""),
+                "help_url": web_url(rule.get("helpUri", "")),
+            })
+    return findings
+
+
 def collect_reports(paths, scan_status):
     findings = []
     errors = []
     sources = []
     for path in paths:
         try:
-            document = json.loads(path.read_text(encoding="utf-8"))
-            banned_findings(document)
+            report_findings = read_report(path)
         except (OSError, ValueError) as error:
             errors.append(f"{path.name}: {error}")
             continue
+        findings.extend(report_findings)
         sources.append(path.name)
-        for run in document["runs"]:
-            rules = {rule["id"]: rule for rule in run["tool"]["driver"].get("rules", [])}
-            for result in run["results"]:
-                rule = rules.get(result["ruleId"], {})
-                properties = result["properties"]
-                location = (result.get("locations") or [{}])[0].get("physicalLocation", {})
-                region = location.get("region", {})
-                uri = location.get("artifactLocation", {}).get("uri", path.name)
-                line = region.get("startLine", 1)
-                banned = BANNED_FUNCTION_TAG in properties["tags"]
-                message = result.get("message", {}).get("text", result["ruleId"])
-                snippet = region.get("snippet", {}).get("text", "")
-                if banned:
-                    api = re.match(r"\s*([A-Za-z_]\w*)\s*(?:\(|$)", snippet)
-                    if api and not re.search(rf"\b{re.escape(api[1])}\b", message):
-                        message += f": {api[1]}"
-                findings.append({
-                    "banned": banned,
-                    "rule": result["ruleId"],
-                    "severity": properties.get("DevSkimSeverity",
-                                               rule.get("properties", {}).get("DevSkimSeverity",
-                                                                             result.get("level", "warning"))),
-                    "confidence": properties.get("DevSkimConfidence",
-                                                 rule.get("properties", {}).get("DevSkimConfidence", "")),
-                    "file": uri,
-                    "line": line,
-                    "url": source_url(run, uri, line),
-                    "message": message,
-                    "snippet": snippet,
-                    "guidance": rule.get("help", {}).get("text", ""),
-                    "help_url": web_url(rule.get("helpUri", "")),
-                })
     banned_count = sum(finding["banned"] for finding in findings)
     if scan_status != "Succeeded" and not errors and not banned_count:
         errors.append(f"The scan job status was {scan_status}. Inspect the pipeline and scanner logs.")

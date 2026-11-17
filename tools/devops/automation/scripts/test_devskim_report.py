@@ -13,7 +13,7 @@ from unittest.mock import patch
 
 import comment_devskim
 import report_devskim
-from test_devskim import finding, report
+from test_devskim import finding, malformed_reports, report
 
 
 class DevSkimReportTests(unittest.TestCase):
@@ -139,6 +139,39 @@ class DevSkimReportTests(unittest.TestCase):
             self.assertTrue(summary["has_failures"])
             self.assertEqual(1, summary["error_count"])
 
+    def test_malformed_report_keeps_valid_reports_and_writes_all_failure_outputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            valid = self.create_report(directory, [finding()])
+            malformed = Path(directory) / "malformed.sarif"
+            for field, document in malformed_reports():
+                malformed.write_text(json.dumps(document), encoding="utf-8")
+                with self.subTest(field=field), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(0, report_devskim.main([
+                        "--output-directory", directory, str(malformed), str(valid),
+                    ]))
+                    summary = json.loads((Path(directory) / "summary.json").read_text())
+                    self.assertEqual(1, summary["error_count"])
+                    self.assertEqual(1, summary["banned_count"])
+                    self.assertEqual(["runtime.sarif"], summary["sources"])
+                    self.assertTrue(summary["has_failures"])
+                    self.assertIn("malformed.sarif", summary["errors"][0])
+                    self.assertIn("Scan errors", (Path(directory) / "report.md").read_text())
+                    self.assertIn("incomplete coverage", (Path(directory) / "index.html").read_text())
+
+    def test_invalid_url_discards_only_its_report_without_partial_findings(self):
+        with tempfile.TemporaryDirectory() as directory:
+            valid = self.create_report(directory, [finding()])
+            malformed = Path(directory) / "invalid-url.sarif"
+            invalid = finding()
+            invalid["locations"] = [{
+                "physicalLocation": {"artifactLocation": {"uri": "https://[invalid"}},
+            }]
+            malformed.write_text(json.dumps(report([finding(), invalid])), encoding="utf-8")
+            findings, summary = report_devskim.collect_reports([malformed, valid], "Succeeded")
+            self.assertEqual(1, len(findings))
+            self.assertEqual(1, summary["error_count"])
+            self.assertEqual(["runtime.sarif"], summary["sources"])
+
     def test_generates_html_and_machine_readable_summary(self):
         with tempfile.TemporaryDirectory() as directory:
             path = self.create_report(directory, [])
@@ -177,6 +210,7 @@ class DevSkimCommentTests(unittest.TestCase):
                                 encoding="utf-8")
         self.summary.with_name("report.md").write_text("# Detailed report", encoding="utf-8")
         self.env = {
+            "BUILD_DEFINITIONNAME": "xamarin-macios-pr",
             "BUILD_REPOSITORY_NAME": "dotnet/macios",
             "SYSTEM_PULLREQUEST_PULLREQUESTNUMBER": "26957",
             "BUILD_BUILDNUMBER": "20261029.1",
@@ -202,12 +236,15 @@ class DevSkimCommentTests(unittest.TestCase):
         with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as post:
             response = post.return_value.__enter__
             response.side_effect = [
+                io.StringIO('{"private": false, "visibility": "public"}'),
                 io.StringIO('{"html_url": "https://gist.github.com/example"}'),
                 io.StringIO('{"html_url": "https://github.com/comment"}'),
             ]
             with contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(0, comment_devskim.main([str(self.summary)]))
-            gist_request, comment_request = [call.args[0] for call in post.call_args_list]
+            metadata_request, gist_request, comment_request = [call.args[0] for call in post.call_args_list]
+            self.assertEqual("GET", metadata_request.method)
+            self.assertEqual("https://api.github.com/repos/dotnet/macios", metadata_request.full_url)
             self.assertEqual("https://api.github.com/gists", gist_request.full_url)
             gist = json.loads(gist_request.data)
             self.assertFalse(gist["public"])
@@ -222,9 +259,12 @@ class DevSkimCommentTests(unittest.TestCase):
 
     def test_branch_failure_comments_on_commit_even_when_drop_upload_failed(self):
         del self.env["SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"]
-        self.env.update(BUILD_SOURCEVERSION="a" * 40, DEVSKIM_DROP_UPLOADED="False")
-        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "post_json") as post:
-            post.return_value = {"html_url": "https://gist.github.com/example"}
+        self.env.update(BUILD_SOURCEVERSION="a" * 40, DEVSKIM_DROP_UPLOADED="False",
+                        BUILD_DEFINITIONNAME="xamarin-macios-ci")
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "github_json") as post:
+            post.side_effect = [{"private": False, "visibility": "public"},
+                                {"html_url": "https://gist.github.com/example"},
+                                {"html_url": "https://github.com/comment"}]
             with contextlib.redirect_stdout(io.StringIO()):
                 self.assertEqual(0, comment_devskim.main([str(self.summary)]))
             endpoint, payload = post.call_args.args
@@ -234,10 +274,41 @@ class DevSkimCommentTests(unittest.TestCase):
 
     def test_gist_failure_is_not_ignored_and_does_not_post_comment(self):
         with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as post:
-            post.side_effect = HTTPError("https://api.github.com/gists", 403, "Forbidden", {}, None)
+            metadata = post.return_value
+            metadata.__enter__.return_value = io.StringIO('{"private": false, "visibility": "public"}')
+            post.side_effect = [metadata, HTTPError("https://api.github.com/gists", 403, "Forbidden", {}, None)]
             with self.assertRaises(HTTPError):
                 comment_devskim.main([str(self.summary)])
-            self.assertEqual(1, post.call_count)
+            self.assertEqual(2, post.call_count)
+
+    def test_private_and_unknown_pipelines_never_read_or_publish_details(self):
+        self.summary.with_name("report.md").unlink()
+        for name in ("xamarin-macios-private", "xamarin-macios-msrc", "", "another-pipeline"):
+            env = {**self.env, "BUILD_DEFINITIONNAME": name}
+            with self.subTest(name=name), patch.dict(os.environ, env, clear=True), \
+                    patch.object(comment_devskim, "urlopen") as request, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(0, comment_devskim.main([str(self.summary)]))
+                request.assert_not_called()
+
+    def test_private_or_unknown_repository_visibility_never_posts(self):
+        self.summary.with_name("report.md").unlink()
+        for metadata in ({"private": True, "visibility": "private"}, {"private": False}, {},
+                         {"private": False, "visibility": "internal"}):
+            with self.subTest(metadata=metadata), patch.dict(os.environ, self.env, clear=True), \
+                    patch.object(comment_devskim, "urlopen") as request, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                request.return_value.__enter__.return_value = io.StringIO(json.dumps(metadata))
+                self.assertEqual(0, comment_devskim.main([str(self.summary)]))
+                self.assertEqual(1, request.call_count)
+                self.assertEqual("GET", request.call_args.args[0].method)
+
+    def test_visibility_lookup_failure_never_publishes_details(self):
+        with patch.dict(os.environ, self.env, clear=True), patch.object(comment_devskim, "urlopen") as request:
+            request.side_effect = HTTPError("https://api.github.com/repos/dotnet/macios", 403, "Forbidden", {}, None)
+            with self.assertRaises(HTTPError):
+                comment_devskim.main([str(self.summary)])
+            self.assertEqual(1, request.call_count)
 
     def test_pr_build_without_number_does_not_fall_back_to_merge_commit(self):
         del self.env["SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"]

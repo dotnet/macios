@@ -232,13 +232,13 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBAttributePermissions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows read access to the attribute.</summary>
 		Readable = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows write access to the attribute.</summary>
 		Writeable = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a trusted device to read the attribute.</summary>
 		ReadEncryptionRequired = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a trusted device to write the attribute.</summary>
 		WriteEncryptionRequired = 1 << 3,
 	}
 

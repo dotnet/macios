@@ -18,7 +18,7 @@ Usage:
   $0 verify [--quiet]
   $0 verify-package --package-directory <directory>
   $0 reconcile [--no-sudo]
-  $0 install [--package-directory <directory> | --archive <xip>] [--no-sudo]
+  $0 install [--package-directory <directory> | --archive <xip or aea>] [--no-sudo]
 EOF
 }
 
@@ -434,21 +434,170 @@ resolve_xcode_target ()
 	set_xcode_target "$discovered"
 }
 
-validate_xip_signature ()
+# Apple distributes Xcode either as a .xip or, starting with Xcode 27.3, as an Apple Encrypted
+# Archive (.aea). Xcode 27.3 is the last release that also ships as a .xip.
+archive_format ()
+{
+	case "$1" in
+	*.xip)
+		echo xip
+		;;
+	*.aea)
+		echo aea
+		;;
+	*)
+		error "Unsupported Xcode archive '$1'; expected a .xip or an .aea archive."
+		return 1
+		;;
+	esac
+}
+
+validate_archive_signature ()
 {
 	local archive=$1
-	local signature
+	local format
 
 	if [[ ! -f "$archive" || -L "$archive" ]]; then
 		error "The Xcode archive is not a regular file: '$archive'."
 		return 1
 	fi
+	format=$(archive_format "$archive") || return 1
+	case "$format" in
+	xip)
+		validate_xip_signature "$archive"
+		;;
+	aea)
+		validate_aea_signature "$archive"
+		;;
+	esac
+}
+
+validate_xip_signature ()
+{
+	local archive=$1
+	local signature
+
 	if ! signature=$(/usr/sbin/pkgutil --check-signature "$archive" 2>&1); then
 		error "Apple package signature validation failed for '$archive'."
 		return 1
 	fi
 	if ! grep -q '^[[:space:]]*Status: signed Apple Software$' <<< "$signature"; then
 		error "The Xcode archive is not signed as Apple Software: '$archive'."
+		return 1
+	fi
+}
+
+# The SHA-256 fingerprint of "Apple Root CA - G3", which the certificate chain inside Apple's
+# Xcode .aea archives leads to.
+APPLE_ROOT_CA_G3_SHA256=63343ABFB89A6A03EBB57E9B3F5FA7BE7C4F5C756F3017B3A8C488C3653E9179
+
+# Print the hex-encoded X9.63 public key that signed an Xcode .aea archive, once the
+# certificate chain the archive carries for that key has been verified to come from Apple.
+#
+# Apple signs these archives with profile 0 (signed, not encrypted) and stores the PEM
+# certificate chain, leaf first, as the only key/value entry of the archive's authentication
+# data. An entry is a little-endian 32-bit size that counts the whole entry, followed by the
+# NUL-terminated key and the value. 'od' decodes integers in host byte order, which is little
+# endian on every Mac. '/usr/bin/aea' can't verify the chain itself: it rejects Apple's leaf
+# certificate as not standards compliant.
+aea_signing_public_key ()
+(
+	local archive=$1
+	local key=com.apple.ias.signature.certificate-chain
+	local profile auth_data_size entry_size value_offset
+	local work certificate issued root_fingerprint public_key
+	local spki_prefix=3059301306072a8648ce3d020106082a8648ce3d03010703420004
+	local -a certificates=()
+	local -a verify_arguments=()
+
+	if [[ "$(head -c 4 "$archive")" != "AEA1" ]]; then
+		error "The Xcode archive is not an Apple Encrypted Archive: '$archive'."
+		exit 1
+	fi
+	read -r profile auth_data_size entry_size < <(head -c 16 "$archive" | od -An -v -t u4 -j 4)
+	if [[ "$profile" != "0" ]]; then
+		error "The Xcode archive uses AEA profile '$profile'; expected a signed, unencrypted archive (profile 0): '$archive'."
+		exit 1
+	fi
+	value_offset=$(( 16 + ${#key} + 1 ))
+	if [[ ! "$auth_data_size" =~ ^[0-9]+$ || "$entry_size" != "$auth_data_size" ]] || (( auth_data_size <= value_offset - 12 || auth_data_size > 65536 )); then
+		error "The Xcode archive does not carry exactly one signing certificate chain: '$archive'."
+		exit 1
+	fi
+	if [[ "$(head -c "$value_offset" "$archive" | tail -c +17 | od -An -v -t x1 | tr -d ' \n')" != "$(printf '%s\0' "$key" | od -An -v -t x1 | tr -d ' \n')" ]]; then
+		error "The Xcode archive does not carry a '$key' entry: '$archive'."
+		exit 1
+	fi
+
+	work=$(/usr/bin/mktemp -d "${TMPDIR:-/tmp}/xcode-aea.XXXXXX")
+	# shellcheck disable=SC2064
+	trap "rm -rf -- '$work'" EXIT
+
+	head -c $(( 12 + auth_data_size )) "$archive" | tail -c +$(( value_offset + 1 )) |
+		awk -v dir="$work" '
+			/^-----BEGIN CERTIFICATE-----$/ { count++; file = sprintf("%s/certificate%d.pem", dir, count) }
+			file != "" { print > file }
+			/^-----END CERTIFICATE-----$/ { file = "" }
+		'
+	for certificate in "$work"/certificate*.pem; do
+		if [[ -f "$certificate" ]]; then
+			certificates+=("$certificate")
+			verify_arguments+=(-c "$certificate")
+		fi
+	done
+	if [[ ${#certificates[@]} -lt 2 ]] || [[ ${#certificates[@]} -gt 9 ]]; then
+		error "The Xcode archive does not carry a usable signing certificate chain: '$archive'."
+		exit 1
+	fi
+
+	if ! /usr/bin/security find-certificate -c "Apple Root CA - G3" -p /System/Library/Keychains/SystemRootCertificates.keychain > "$work/root.pem" 2>/dev/null; then
+		error "Could not find 'Apple Root CA - G3' among the system root certificates."
+		exit 1
+	fi
+	root_fingerprint=$(/usr/bin/openssl x509 -in "$work/root.pem" -noout -fingerprint -sha256 2>/dev/null | sed 's/^.*=//' | tr -d ':' | tr '[:lower:]' '[:upper:]')
+	if [[ "$root_fingerprint" != "$APPLE_ROOT_CA_G3_SHA256" ]]; then
+		error "The system's 'Apple Root CA - G3' has an unexpected fingerprint: '$root_fingerprint'."
+		exit 1
+	fi
+
+	if ! /usr/bin/openssl x509 -in "${certificates[0]}" -noout -subject -nameopt multiline 2>/dev/null | grep -q -x '[[:space:]]*organizationName[[:space:]]*= Apple Inc[.]'; then
+		error "The Xcode archive was not signed by Apple Inc.: '$archive'."
+		exit 1
+	fi
+
+	# The archive has no secure timestamp, so evaluate the chain at the moment the signing
+	# certificate was issued. Otherwise a pinned, immutable package would stop installing
+	# as soon as Apple's short-lived signing certificate expires.
+	issued=$(/usr/bin/openssl x509 -in "${certificates[0]}" -noout -startdate 2>/dev/null | sed 's/^notBefore=//')
+	if ! issued=$(LC_ALL=C /bin/date -u -j -f '%b %e %T %Y %Z' "$issued" '+%Y-%m-%d-%H:%M:%S' 2>/dev/null); then
+		error "Could not read when the Xcode archive's signing certificate was issued: '$archive'."
+		exit 1
+	fi
+	# Only the pinned root is an anchor (-r), nothing is taken from the keychains (-N) and
+	# nothing is fetched from the network (-L).
+	if ! /usr/bin/security verify-cert "${verify_arguments[@]}" -r "$work/root.pem" -p basic -N -L -q -d "$issued" >/dev/null 2>&1; then
+		error "The Xcode archive's signing certificate chain does not lead to Apple Root CA - G3: '$archive'."
+		exit 1
+	fi
+
+	public_key=$(/usr/bin/openssl x509 -in "${certificates[0]}" -noout -pubkey 2>/dev/null | /usr/bin/openssl pkey -pubin -outform DER 2>/dev/null | od -An -v -t x1 | tr -d ' \n')
+	if [[ "$public_key" != "$spki_prefix"* || ${#public_key} -ne $(( ${#spki_prefix} + 128 )) ]]; then
+		error "The Xcode archive's signing key is not an uncompressed P-256 public key: '$archive'."
+		exit 1
+	fi
+	echo "04${public_key#"$spki_prefix"}"
+)
+
+# 'aea decrypt' authenticates every block it reads against the signature, so decrypting the
+# whole archive without keeping the output verifies the signature and the archive contents.
+validate_aea_signature ()
+{
+	local archive=$1
+	local signing_key
+
+	signing_key=$(aea_signing_public_key "$archive") || return 1
+	if ! /usr/bin/aea decrypt -i "$archive" -o /dev/null -sign-pub-value "hex:$signing_key" >/dev/null 2>&1; then
+		error "Apple Encrypted Archive signature validation failed for '$archive'."
 		return 1
 	fi
 }
@@ -509,7 +658,17 @@ validate_package ()
 		(.artifacts[0].sizeBytes | type == "number" and . > 0) and
 		(.artifacts[0].expandedSizeBytes | type == "number" and . > 0) and
 		(.artifacts[0].sha256 | type == "string" and test("^[0-9a-f]{64}$")) and
-		(.artifacts[0].appleSignatureStatus == "signed Apple Software")
+		(
+			(
+				((.artifacts[0].archiveFormat // "xip") == "xip") and
+				(.artifacts[0].fileName | endswith(".xip")) and
+				(.artifacts[0].appleSignatureStatus == "signed Apple Software")
+			) or (
+				(.artifacts[0].archiveFormat == "aea") and
+				(.artifacts[0].fileName | endswith(".aea")) and
+				(.artifacts[0].appleSignatureStatus == "verified Apple-signed Xcode application")
+			)
+		)
 	' "$manifest" >/dev/null; then
 		error "The Xcode package manifest does not satisfy schema version 1."
 		return 1
@@ -536,7 +695,7 @@ validate_package ()
 	fi
 
 	artifact_name=$(jq -r '.artifacts[0].fileName' "$manifest")
-	if [[ "$artifact_name" == */* || "$artifact_name" == .* || ! "$artifact_name" =~ ^[A-Za-z0-9._-]+[.]xip$ ]]; then
+	if [[ "$artifact_name" == */* || "$artifact_name" == .* || ! "$artifact_name" =~ ^[A-Za-z0-9._-]+[.](xip|aea)$ ]]; then
 		error "Unsafe Xcode archive name in package manifest: '$artifact_name'."
 		return 1
 	fi
@@ -560,7 +719,7 @@ validate_package ()
 		return 1
 	fi
 
-	validate_xip_signature "$archive"
+	validate_archive_signature "$archive" || return 1
 	echo "$archive"
 }
 
@@ -739,17 +898,19 @@ install_archive ()
 	local expanded_size=${2:-0}
 	local available_bytes required_bytes
 	local staging_root payload_root expanded_app
+	local format signing_key
 	local backup=
 	local target_installed=
 	local target_displaced=
 	local install_committed=
 
-	# 'xip --expand' below runs from inside the staging directory.
+	# The archive is expanded from inside the staging directory.
 	if [[ "$archive" != /* ]]; then
 		archive="$PWD/$archive"
 	fi
 
-	validate_xip_signature "$archive"
+	validate_archive_signature "$archive"
+	format=$(archive_format "$archive")
 
 	if [[ "$expanded_size" -gt 0 ]]; then
 		available_bytes=$(( $(df -Pk "$XCODE_INSTALL_PARENT" | awk 'NR == 2 { print $4 }') * 1024 ))
@@ -788,15 +949,38 @@ install_archive ()
 	}
 	trap cleanup EXIT
 
-	# 'xip --expand' writes into the current directory, so it runs from the staging
-	# directory. It is a plain binary rather than an xcrun shim, so it keeps working while
-	# 'xcode-select' still points at the Xcode we are about to replace.
+	# Both 'xip --expand' and 'archiveutil extractXcodeAEA' write into the current directory,
+	# so they run from the staging directory. Like 'aea' and 'aa', they are plain binaries
+	# rather than xcrun shims, so they keep working while 'xcode-select' still points at the
+	# Xcode we are about to replace.
 	mkdir -p "$payload_root"
 	log "Expanding '$(basename "$archive")' on the /Applications volume."
-	(
-		cd "$payload_root"
-		/usr/bin/xip --expand "$archive"
-	)
+	case "$format" in
+	xip)
+		(
+			cd "$payload_root"
+			/usr/bin/xip --expand "$archive"
+		)
+		;;
+	aea)
+		# 'archiveutil extractXcodeAEA' is what Apple documents for these archives, but not
+		# every macOS version ships it and it hands the work to a system service. Without it,
+		# decrypt the archive with the signing key verified above and extract the Apple
+		# Archive inside. Both refuse to produce anything whose signature doesn't verify.
+		if [[ -x /usr/bin/archiveutil ]] && (
+			cd "$payload_root" &&
+				/usr/bin/archiveutil extractXcodeAEA "$archive"
+		); then
+			:
+		else
+			log "Extracting '$(basename "$archive")' with 'aea' and 'aa' instead of 'archiveutil'."
+			rm -rf -- "$payload_root"
+			mkdir -p "$payload_root"
+			signing_key=$(aea_signing_public_key "$archive")
+			/usr/bin/aea decrypt -i "$archive" -sign-pub-value "hex:$signing_key" | /usr/bin/aa extract -d "$payload_root"
+		fi
+		;;
+	esac
 
 	if [[ $(find "$payload_root" -mindepth 1 -maxdepth 1 | wc -l | tr -d ' ') != "1" ]] ||
 		[[ $(find "$payload_root" -mindepth 1 -maxdepth 1 -type d -name '*.app' | wc -l | tr -d ' ') != "1" ]]; then

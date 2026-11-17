@@ -73,6 +73,13 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSContainerIdentifier {
+		// Inherited from FSEntityIdentifier, but C# constructors aren't inherited.
+		[Export ("initWithUUID:")]
+		NativeHandle Constructor (NSUuid uuid);
+
+		[Export ("initWithUUID:qualifier:")]
+		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
+
 		[Export ("volumeIdentifier")]
 		FSVolumeIdentifier VolumeIdentifier { get; }
 	}
@@ -584,6 +591,12 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSVolumeIdentifier {
+		// Inherited from FSEntityIdentifier, but C# constructors aren't inherited.
+		[Export ("initWithUUID:")]
+		NativeHandle Constructor (NSUuid uuid);
+
+		[Export ("initWithUUID:qualifier:")]
+		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
 	}
 
 #if !STABLE_FSKIT

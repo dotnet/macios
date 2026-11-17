@@ -46,7 +46,7 @@ namespace Linker.Sealer {
 		{
 			// this can not be optimized into a sealed type
 			Assert.That (typeof (Unsealable).IsSealed, Is.False, "Unsealed");
-#if DEBUG || __MACOS__
+#if DEBUG || __MACOS__ || (NATIVEAOT && NET11_0_OR_GREATER)
 			// this is not a sealed type (in the source)
 			Assert.That (typeof (Sealable).IsSealed, Is.False, "Sealable");
 			Assert.That (typeof (Base).IsSealed, Is.False, "Base");
@@ -71,7 +71,7 @@ namespace Linker.Sealer {
 			var a = t.GetMethod ("A")!;
 			var b = t.GetMethod ("B")!;
 			var c = t.GetMethod ("C")!;
-#if DEBUG || __MACOS__
+#if DEBUG || __MACOS__ || (NATIVEAOT && NET11_0_OR_GREATER)
 			// this is not a sealed (C#) method (in the source)
 			Assert.That (a.IsFinal, Is.False, "A");
 			Assert.That (b.IsFinal, Is.False, "B");
@@ -91,7 +91,7 @@ namespace Linker.Sealer {
 			var a = t.GetMethod ("A")!;
 			var b = t.GetMethod ("B")!;
 			var c = t.GetMethod ("C")!;
-#if DEBUG || __MACOS__
+#if DEBUG || __MACOS__ || (NATIVEAOT && NET11_0_OR_GREATER)
 			// both methods are virtual (both in C# and IL)
 			Assert.That (a.IsVirtual, Is.True, "A");
 			Assert.That (b.IsVirtual, Is.True, "B");

@@ -94,26 +94,26 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBCharacteristicProperties : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Permits broadcasts of the characteristic value using a characteristic configuration descriptor. Not allowed for local characteristics.</summary>
 		Broadcast = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits reads of the characteristic value.</summary>
 		Read = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits writes of the characteristic value without a response.</summary>
 		WriteWithoutResponse = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits writes of the characteristic value.</summary>
 		Write = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits notifications of the characteristic value without a response.</summary>
 		Notify = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits indications of the characteristic value.</summary>
 		Indicate = 32,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits signed writes of the characteristic value.</summary>
 		AuthenticatedSignedWrites = 64,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that additional characteristic properties are defined in the extended properties descriptor. Not allowed for local characteristics.</summary>
 		ExtendedProperties = 128,
-		/// <summary>To be added.</summary>
+		/// <summary>Only trusted devices can enable notifications of the characteristic value.</summary>
 		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
-		/// <summary>To be added.</summary>
+		/// <summary>Only trusted devices can enable indications of the characteristic value.</summary>
 		[MacCatalyst (13, 1)]
 		IndicateEncryptionRequired = 0x200,
 	}

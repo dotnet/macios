@@ -55329,7 +55329,6 @@ T:CoreAnimation.CAConstraintAttribute
 T:CoreAnimation.CAConstraintLayoutManager
 T:CoreAnimation.CAContentsFormat
 T:CoreAnimation.CACornerCurve
-T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
 T:CoreAnimation.CAFrameRateRange

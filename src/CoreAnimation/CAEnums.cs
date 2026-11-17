@@ -54,17 +54,18 @@ namespace CoreAnimation {
 		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
+	/// <summary>Specifies which corners of a <see cref="CALayer" /> are rounded.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum CACornerMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the minimum x- and minimum y-coordinates.</summary>
 		MinXMinYCorner = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the maximum x- and minimum y-coordinates.</summary>
 		MaxXMinYCorner = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the minimum x- and maximum y-coordinates.</summary>
 		MinXMaxYCorner = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the maximum x- and maximum y-coordinates.</summary>
 		MaxXMaxYCorner = 1 << 3,
 	}
 

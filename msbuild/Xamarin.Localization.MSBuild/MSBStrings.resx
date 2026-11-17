@@ -1821,6 +1821,21 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when listing the physical devices with 'devicectl' fails, times out, or devicectl can't be run.
 {0} - The reason for the failure, as reported by devicectl or by the device discovery. Do not translate 'devicectl'.</comment>
     </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The Swift source files in the module '{0}' must all have the same '{1}' metadata, but found different values: '{2}' and '{3}'.</value>
+        <comment>Shown when SwiftSource items in the same Swift module have conflicting metadata.
+{0} - The name of the Swift module.
+{1} - The name of the metadata (for instance 'BridgingHeader').
+{2} - One of the values.
+{3} - Another value.</comment>
+    </data>
+    <data name="E7202" xml:space="preserve">
+        <value>Unable to parse the additional Swift compiler arguments '{0}' for the Swift module '{1}': {2}</value>
+        <comment>Shown when the 'AdditionalArguments' metadata on SwiftSource items can't be parsed.
+{0} - The arguments.
+{1} - The name of the Swift module.
+{2} - The reason the arguments couldn't be parsed.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

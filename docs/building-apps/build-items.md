@@ -436,8 +436,7 @@ Applicable to all platforms.
 ## SwiftSource
 
 The item group `SwiftSource` contains Swift source files that are compiled
-(with `swiftc`) into a single Swift module, which is linked into the app's
-native executable.
+(with `swiftc`) and linked into the app's native executable.
 
 ```xml
 <ItemGroup>
@@ -445,11 +444,38 @@ native executable.
 </ItemGroup>
 ```
 
-Swift code can call into Objective-C classes declared in a bridging header
-(see [SwiftBridgingHeader](build-properties.md#swiftbridgingheader)), and C#
-code can call Swift code exported with `@_cdecl` using `[DllImport ("__Internal")]`.
+C# code can call Swift code exported with `@_cdecl` using `[DllImport ("__Internal")]`.
 
 The Swift files are compiled with Swift 5 language mode.
+
+The following metadata is supported:
+
+* `ModuleName`: the name of the Swift module the file is compiled into. All
+  files with the same module name are compiled together, into the same module.
+  Default: the [AssemblyName](/dotnet/core/project-sdk/msbuild-props) with any
+  characters that aren't valid in a Swift identifier replaced by underscores.
+* `BridgingHeader`: the path to an Objective-C header file to import into the
+  Swift module (this is passed as `-import-objc-header` to `swiftc`). This
+  makes it possible for Swift code to use Objective-C classes, including classes
+  implemented in C# (and exported to Objective-C using the `[Register]` attribute).
+* `AdditionalArguments`: any additional arguments to pass to `swiftc` when
+  compiling the Swift module.
+
+All the files in a Swift module must have the same `BridgingHeader` and
+`AdditionalArguments` values.
+
+Example:
+
+```xml
+<ItemGroup>
+    <SwiftSource Include="Swift/*.swift" ModuleName="MySwiftCode" BridgingHeader="Swift/BridgingHeader.h" AdditionalArguments="-D MY_DEFINE" />
+</ItemGroup>
+```
+
+> [!NOTE]
+> Referencing an Objective-C class implemented in C# from Swift requires the
+> class to exist when the native executable is linked, which means a static
+> registrar must be used (`static`, `managed-static` or `trimmable-static`).
 
 The app's native executable already has a `main` function (which initializes
 .NET), so a Swift `@main` entry point doesn't replace it. However, an app
@@ -472,11 +498,6 @@ FSKit extensions (where `EXAppExtensionAttributes/EXExtensionPointIdentifier`
 in the Info.plist is `com.apple.fskit.fsmodule`) don't need any Swift code: the
 build finds the class that subclasses `FSUnaryFileSystem`, and generates the
 Swift code needed to start the extension.
-
-See also:
-
-* [SwiftBridgingHeader](build-properties.md#swiftbridgingheader)
-* [SwiftModuleName](build-properties.md#swiftmodulename)
 
 Applicable to all platforms.
 

@@ -13,5 +13,6 @@
 	<ItemGroup>
 		<Compile Include="../*.cs" />
 		<SwiftSource Include="../*.swift" />
+		<SwiftSource Include="../OtherModule/*.swift" ModuleName="OtherModule" BridgingHeader="../OtherModule/BridgingHeader.h" AdditionalArguments="-D APP_WITH_SWIFT_SOURCE_DEFINE" />
 	</ItemGroup>
 </Project>

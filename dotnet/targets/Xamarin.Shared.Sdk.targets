@@ -2092,16 +2092,19 @@
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
 
-		<!-- All the Swift code is compiled into a single object file -->
+		<!-- Swift code is compiled into one object file per Swift module (the 'ModuleName' metadata) -->
+		<PropertyGroup>
+			<_SwiftDefaultModuleName>$([System.Text.RegularExpressions.Regex]::Replace('$(AssemblyName)', '[^A-Za-z0-9_]', '_'))</_SwiftDefaultModuleName>
+			<_SwiftObjectDirectory>$(_IntermediateNativeLibraryDir)swift/</_SwiftObjectDirectory>
+		</PropertyGroup>
 		<ItemGroup>
 			<_SwiftSource Include="@(SwiftSource);@(_GeneratedSwiftSource)" />
-		</ItemGroup>
-		<PropertyGroup Condition="'@(_SwiftSource)' != ''">
-			<SwiftModuleName Condition="'$(SwiftModuleName)' == ''">$([System.Text.RegularExpressions.Regex]::Replace('$(AssemblyName)', '[^A-Za-z0-9_]', '_'))</SwiftModuleName>
-			<_SwiftObjectFile>$(_IntermediateNativeLibraryDir)swift-sources.o</_SwiftObjectFile>
-		</PropertyGroup>
-		<ItemGroup Condition="'@(_SwiftSource)' != ''">
-			<_NativeExecutableObjectFiles Include="$(_SwiftObjectFile)" />
+			<_SwiftSource Condition="'%(_SwiftSource.ModuleName)' == ''">
+				<ModuleName>$(_SwiftDefaultModuleName)</ModuleName>
+			</_SwiftSource>
+			<_SwiftModuleName Include="@(_SwiftSource->'%(ModuleName)'->Distinct())" />
+			<_SwiftObjectFile Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).o')" />
+			<_NativeExecutableObjectFiles Include="@(_SwiftObjectFile)" />
 		</ItemGroup>
 	</Target>
 
@@ -2109,42 +2112,39 @@
 	<Target Name="_ComputeSwiftSourceInputs"
 		DependsOnTargets="_ComputeNativeExecutableInputs;_DetectSdkLocations;_ComputeTargetArchitectures"
 		>
-		<PropertyGroup Condition="'$(_SwiftObjectFile)' != ''">
-			<_SwiftSourceInputsFile>$(_IntermediateNativeLibraryDir)swift-sources.inputs</_SwiftSourceInputsFile>
+		<PropertyGroup Condition="'@(_SwiftSource)' != ''">
+			<_SwiftSourceInputsFile>$(_SwiftObjectDirectory)swift-sources.inputs</_SwiftSourceInputsFile>
 		</PropertyGroup>
-		<ItemGroup Condition="'$(_SwiftObjectFile)' != ''">
-			<_SwiftSourceInputsLine Include="@(_SwiftSource->'Source=%(FullPath)')" />
-			<_SwiftSourceInputsLine Include="BridgingHeader=$(SwiftBridgingHeader)" />
+		<ItemGroup Condition="'@(_SwiftSource)' != ''">
+			<_SwiftSourceInputsLine Include="@(_SwiftSource->'Source=%(FullPath)|%(ModuleName)|%(BridgingHeader)|%(AdditionalArguments)')" />
 			<_SwiftSourceInputsLine Include="MinimumOSVersion=$(_MinimumOSVersion)" />
-			<_SwiftSourceInputsLine Include="ModuleName=$(SwiftModuleName)" />
 			<_SwiftSourceInputsLine Include="SdkRoot=$(_SdkRoot)" />
 			<_SwiftSourceInputsLine Include="TargetArchitectures=$(TargetArchitectures)" />
+			<_SwiftBridgingHeader Include="@(_SwiftSource->'%(BridgingHeader)'->Distinct())" />
 		</ItemGroup>
 		<WriteLinesToFile
-			Condition="'$(_SwiftObjectFile)' != ''"
+			Condition="'@(_SwiftSource)' != ''"
 			File="$(_SwiftSourceInputsFile)"
 			Lines="@(_SwiftSourceInputsLine)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
-		<ItemGroup Condition="'$(_SwiftObjectFile)' != ''">
+		<ItemGroup Condition="'@(_SwiftSource)' != ''">
 			<FileWrites Include="$(_SwiftSourceInputsFile)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_CompileSwiftSources"
 		DependsOnTargets="_ComputeSwiftSourceInputs"
-		Inputs="@(_SwiftSource);$(SwiftBridgingHeader);$(_SwiftSourceInputsFile)"
-		Outputs="$(_SwiftObjectFile)"
+		Inputs="@(_SwiftSource);@(_SwiftBridgingHeader);$(_SwiftSourceInputsFile)"
+		Outputs="@(_SwiftObjectFile)"
 		>
 		<CompileSwift
 			SessionId="$(BuildSessionId)"
 			Condition="'@(_SwiftSource)' != ''"
-			BridgingHeader="$(SwiftBridgingHeader)"
 			IsAppExtension="$(IsAppExtension)"
 			MinimumOSVersion="$(_MinimumOSVersion)"
-			ModuleName="$(SwiftModuleName)"
-			OutputFile="$(_SwiftObjectFile)"
+			OutputDirectory="$(_SwiftObjectDirectory)"
 			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkRoot="$(_SdkRoot)"
@@ -2154,7 +2154,7 @@
 		/>
 
 		<ItemGroup>
-			<FileWrites Include="$(_SwiftObjectFile)" Condition="'$(_SwiftObjectFile)' != ''" />
+			<FileWrites Include="@(_SwiftObjectFile)" />
 		</ItemGroup>
 	</Target>
 

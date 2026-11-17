@@ -16,21 +16,19 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	// Compiles Swift source files into a single object file, which can be linked into the app's executable.
+	// Compiles Swift source files into object files (one per Swift module), which can be linked into the app's executable.
+	// Source files are grouped into modules using the 'ModuleName' metadata, and all the source files in a module
+	// must have the same 'BridgingHeader' and 'AdditionalArguments' metadata.
 	public class CompileSwift : XamarinTask, ICancelableTask, ITaskCallback {
 		#region Inputs
-		public string BridgingHeader { get; set; } = "";
-
 		public bool IsAppExtension { get; set; }
 
 		[Required]
 		public string MinimumOSVersion { get; set; } = "";
 
+		// The object file for each module is named '<OutputDirectory>/<ModuleName>.o'.
 		[Required]
-		public string ModuleName { get; set; } = "";
-
-		[Required]
-		public string OutputFile { get; set; } = "";
+		public string OutputDirectory { get; set; } = "";
 
 		[Required]
 		public bool SdkIsSimulator { get; set; }
@@ -46,10 +44,10 @@ namespace Xamarin.MacDev.Tasks {
 		#endregion
 
 		#region Outputs
-		// This is an output so that an (empty) placeholder file is created on Windows for remote builds,
+		// This is an output so that (empty) placeholder files are created on Windows for remote builds,
 		// otherwise the target that compiles the Swift code (and the native link) would always run.
 		[Output]
-		public ITaskItem? CompiledOutputFile { get; set; }
+		public ITaskItem [] CompiledOutputFiles { get; set; } = [];
 		#endregion
 
 		public override bool Execute ()
@@ -87,41 +85,69 @@ namespace Xamarin.MacDev.Tasks {
 				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
 			}
 
-			var outputFile = Path.GetFullPath (OutputFile);
-			var outputDirectory = Path.GetDirectoryName (outputFile);
-			if (!string.IsNullOrEmpty (outputDirectory))
-				Directory.CreateDirectory (outputDirectory);
+			var outputDirectory = Path.GetFullPath (OutputDirectory);
+			Directory.CreateDirectory (outputDirectory);
 
-			var arguments = new List<string> {
-				"swiftc",
-				"-c",
-				"-g",
-				"-parse-as-library",
-				"-whole-module-optimization",
-				"-swift-version", "5",
-				"-module-name", ModuleName,
-				"-sdk", SdkRoot,
-				"-target", target,
-			};
-			// The app's executable already has a 'main' function (which initializes .NET), so rename the function Swift
-			// creates for '@main'. ExtensionKit extensions (where 'main' calls NSExtensionMain) still find and call the
-			// renamed function, because it's referenced from the '__swift5_entry' section.
-			arguments.AddRange (["-Xfrontend", "-entry-point-function-name", "-Xfrontend", "xamarin_swift_main"]);
-			if (IsAppExtension)
-				arguments.Add ("-application-extension");
-			if (!string.IsNullOrEmpty (BridgingHeader)) {
-				arguments.Add ("-import-objc-header");
-				arguments.Add (Path.GetFullPath (BridgingHeader));
+			var modules = Sources.GroupBy (v => v.GetMetadata ("ModuleName")).ToArray ();
+			var processes = new List<System.Threading.Tasks.Task<Execution>> ();
+			var outputFiles = new List<ITaskItem> ();
+			foreach (var module in modules) {
+				var moduleName = module.Key;
+				if (!TryGetSameMetadata (moduleName, module, "BridgingHeader", out var bridgingHeader))
+					continue;
+				if (!TryGetSameMetadata (moduleName, module, "AdditionalArguments", out var additionalArguments))
+					continue;
+				if (!StringUtils.TryParseArguments (additionalArguments, out var parsedAdditionalArguments, out var ex)) {
+					Log.LogError (7202, null, MSBStrings.E7202, additionalArguments, moduleName, ex.Message);
+					continue;
+				}
+
+				var outputFile = Path.Combine (OutputDirectory, moduleName + ".o");
+				var arguments = new List<string> {
+					"swiftc",
+					"-c",
+					"-g",
+					"-parse-as-library",
+					"-whole-module-optimization",
+					"-swift-version", "5",
+					"-module-name", moduleName,
+					"-sdk", SdkRoot,
+					"-target", target,
+				};
+				// The app's executable already has a 'main' function (which initializes .NET), so rename the function Swift
+				// creates for '@main' (if there's no '@main' this has no effect). ExtensionKit extensions (where 'main' calls
+				// NSExtensionMain) still find and call the renamed function, because it's referenced from the '__swift5_entry' section.
+				arguments.AddRange (["-Xfrontend", "-entry-point-function-name", "-Xfrontend", "xamarin_swift_main"]);
+				if (IsAppExtension)
+					arguments.Add ("-application-extension");
+				if (!string.IsNullOrEmpty (bridgingHeader)) {
+					arguments.Add ("-import-objc-header");
+					arguments.Add (Path.GetFullPath (bridgingHeader));
+				}
+				arguments.AddRange (parsedAdditionalArguments);
+				arguments.Add ("-o");
+				arguments.Add (Path.GetFullPath (outputFile));
+				arguments.AddRange (module.Select (v => Path.GetFullPath (v.ItemSpec)));
+
+				processes.Add (ExecuteAsync ("xcrun", arguments));
+				outputFiles.Add (new TaskItem (outputFile));
 			}
-			arguments.Add ("-o");
-			arguments.Add (outputFile);
-			arguments.AddRange (Sources.Select (v => Path.GetFullPath (v.ItemSpec)));
 
-			ExecuteAsync ("xcrun", arguments).Wait ();
+			System.Threading.Tasks.Task.WaitAll (processes.ToArray ());
 
-			CompiledOutputFile = new TaskItem (OutputFile);
+			CompiledOutputFiles = outputFiles.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		bool TryGetSameMetadata (string moduleName, IEnumerable<ITaskItem> items, string metadataName, out string value)
+		{
+			var values = items.Select (v => v.GetMetadata (metadataName)).Distinct ().ToArray ();
+			value = values [0];
+			if (values.Length == 1)
+				return true;
+			Log.LogError (7201, null, MSBStrings.E7201, moduleName, metadataName, values [0], values [1]);
+			return false;
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
@@ -130,8 +156,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied ()
 		{
-			if (!string.IsNullOrEmpty (BridgingHeader))
-				yield return new TaskItem (BridgingHeader);
+			foreach (var header in Sources.Select (v => v.GetMetadata ("BridgingHeader")).Where (v => !string.IsNullOrEmpty (v)).Distinct ())
+				yield return new TaskItem (header);
 		}
 
 		public void Cancel ()

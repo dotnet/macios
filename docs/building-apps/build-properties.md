@@ -1776,28 +1776,6 @@ It's also possible to use a platform-specific property:
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
 
-## SwiftBridgingHeader
-
-The path to an Objective-C header file to import into the Swift code in the
-[SwiftSource](build-items.md#swiftsource) item group (this is passed as
-`-import-objc-header` to `swiftc`).
-
-This makes it possible for Swift code to use Objective-C classes that are
-implemented in C# (and exported to Objective-C using the `[Register]` attribute).
-
-> [!NOTE]
-> Referencing an Objective-C class implemented in C# from Swift requires the
-> class to exist when the native executable is linked, which means a static
-> registrar must be used (`static`, `managed-static` or `trimmable-static`).
-
-## SwiftModuleName
-
-The name of the Swift module the code in the [SwiftSource](build-items.md#swiftsource)
-item group is compiled into.
-
-Default: the [AssemblyName](/dotnet/core/project-sdk/msbuild-props) with any
-characters that aren't valid in a Swift identifier replaced by underscores.
-
 ## TextureAtlasPath
 
 The full path to the `TextureAtlas` tool.

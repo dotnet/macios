@@ -1487,16 +1487,26 @@ namespace Xamarin.Linker {
 
 		void SaveAssembly (AssemblyDefinition assembly)
 		{
-			if (assembly != CurrentAssembly && assembly != PlatformAssembly)
-				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it's not the current assembly ({CurrentAssembly.Name}) or the platform assembly ({PlatformAssembly.Name}).");
+			if (assembly != CurrentAssembly && assembly != PlatformAssembly && !configuration.Assemblies.Contains (assembly))
+				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it isn't part of the current link context.");
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
-			if (configuration.HotReloadModifiedAssemblySafetyNet && configuration.HotReloadCompatibleBuild && action == AssemblyAction.Copy && assembly != PlatformAssembly) {
+			if (configuration.HotReloadModifiedAssemblySafetyNet && configuration.HotReloadCompatibleBuild && (action is AssemblyAction.Copy or AssemblyAction.CopyUsed) && assembly != PlatformAssembly) {
 				configuration.Logger.LogError (ErrorHelper.CreateError (99, $"The assembly '{assembly.Name.Name}' is reloadable, but was modified during a Hot Reload compatible build."));
 				return;
 			}
 			AssemblySaved?.Invoke (assembly);
-			if (action == AssemblyAction.Copy) {
+			if (action is AssemblyAction.Copy or AssemblyAction.CopyUsed) {
+#if !ASSEMBLY_PREPARER
+				// Preserve TypeForwardedTo which would the linker sweep otherwise
+				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
+				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
+				if (assembly.MainModule.HasExportedTypes) {
+					foreach (var type in assembly.MainModule.ExportedTypes) {
+						annotations.Mark (type);
+					}
+				}
+#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1611,6 +1621,7 @@ namespace Xamarin.Linker {
 
 			var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
 			type.Methods.Add (helper);
+			SaveAssembly (type.Module.Assembly);
 			explicitInterfaceImplementationRoots [method] = helper;
 			generatedExplicitInterfaceImplementationRoots.Add (helper);
 			modified = true;

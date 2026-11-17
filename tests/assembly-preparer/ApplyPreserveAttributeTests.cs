@@ -158,10 +158,10 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		interface IMyInterface<T> { void Run (); }
 
 		[Preserve (AllMembers = true)]
-		class MyClass : IMyInterface<string> {
+		abstract class MyClass : IMyInterface<string> {
 			int __linker_preserve_explicit_interface_implementation_0;
 			static void __linker_preserve_explicit_interface_implementation_1 () {}
-			static void __linker_preserve_explicit_interface_implementation_2 () {}
+			public abstract void __linker_preserve_explicit_interface_implementation_2 ();
 			void IMyInterface<string>.Run () {}
 		}
 		";
@@ -174,6 +174,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_0"), Is.EqualTo (0), "Field name reused");
 			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_1"), Is.EqualTo (1), "User method count 1");
 			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_2"), Is.EqualTo (1), "User method count 2");
+			Assert.That (myClass.Methods.Single (v => v.Name == "__linker_preserve_explicit_interface_implementation_2").IsAbstract, Is.True, "User method is still abstract");
 			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_1"), "User method preserved 1");
 			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_2"), "User method preserved 2");
 			Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Run" }), "Rooted explicit method");
@@ -181,27 +182,56 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	}
 
 	[Test]
-	public void HelperNameDoesNotCollideWithAbstractUserMethod ()
+	public void ExplicitInterfaceHelpersInReferencedAssembliesAreSaved ()
 	{
 		var code = @"
-		using Foundation;
-
-		interface IMyInterface<T> { void Run (); }
-
-		[Preserve (AllMembers = true)]
-		abstract class MyClass : IMyInterface<string> {
-			public abstract void __linker_preserve_explicit_interface_implementation_0 ();
-			void IMyInterface<string>.Run () {}
-		}
+		[assembly: Foundation.Preserve (typeof (Referenced.Target), AllMembers = true)]
+		public class Test {}
 		";
+		var extraCsproj = @"
+		<ItemGroup>
+			<ProjectReference Include=""Target.csproj"" />
+			<Compile Remove=""Target.cs"" />
+		</ItemGroup>
+		";
+		var extraFiles = new [] {
+			("Target.csproj", System.Text.Encoding.UTF8.GetBytes (@"
+				<Project Sdk=""Microsoft.NET.Sdk"">
+					<PropertyGroup>
+						<TargetFramework>net12.0</TargetFramework>
+					</PropertyGroup>
+					<ItemGroup>
+						<Compile Remove=""Test.cs"" />
+					</ItemGroup>
+				</Project>
+			")),
+			("Directory.Build.props", System.Text.Encoding.UTF8.GetBytes (@"
+				<Project>
+					<PropertyGroup Condition=""'$(MSBuildProjectName)' == 'Target'"">
+						<BaseIntermediateOutputPath>$(MSBuildProjectDirectory)/obj-target/</BaseIntermediateOutputPath>
+					</PropertyGroup>
+				</Project>
+			")),
+			("Target.cs", System.Text.Encoding.UTF8.GetBytes (@"
+				namespace Referenced;
+				public interface IContract<T> { void Run (); }
+				public class Target : IContract<string> {
+					void IContract<string>.Run () {}
+				}
+			")),
+		};
+		using var preparer = CreatePreparer (ApplePlatform.MacOSX, true, p => p.Registrar = RegistrarMode.Dynamic, code, out var testInfo, extraCsproj: extraCsproj, extraFiles: extraFiles);
+		var testOutputDirectory = Path.GetDirectoryName (testInfo.InputPath)!;
+		var targetInputPath = Path.Combine (testOutputDirectory, "net12.0", "Target.dll");
+		var targetOutputPath = Path.Combine (testOutputDirectory, "out", "Target.dll");
+		preparer.Assemblies.Add (new AssemblyPreparerInfo (targetInputPath, targetOutputPath, true, "link"));
 
-		AssertPrepare (ApplePlatform.MacOSX, true, code, out var assemblyDefinition);
+		AssertPrepare (preparer);
 
-		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
-		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
-		Assert.That (myClass.Methods.Single (v => v.Name == "__linker_preserve_explicit_interface_implementation_0").IsAbstract, Is.True, "User method is still abstract");
-		Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_0"), "User method preserved");
-		Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Run" }), "Rooted explicit method");
+		Assert.That (File.Exists (targetOutputPath), Is.True, "Referenced assembly was rewritten");
+		using var target = AssemblyDefinition.ReadAssembly (targetOutputPath);
+		var type = target.MainModule.Types.Single (v => v.FullName == "Referenced.Target");
+		Assert.That (type.Methods.Any (v => v.Name.StartsWith ("__linker_preserve_explicit_interface_implementation_", StringComparison.Ordinal)), Is.True, "Generated helper is present in the rewritten referenced assembly");
 	}
 
 	static string [] GetModuleConstructorSignatures (AssemblyDefinition assemblyDefinition, string typeName)

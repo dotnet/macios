@@ -212,9 +212,9 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCharacteristicWriteType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Writes the characteristic value and receives a response with the result of the write.</summary>
 		WithResponse,
-		/// <summary>To be added.</summary>
+		/// <summary>Writes the characteristic value without a response; delivery is best-effort and may not be guaranteed.</summary>
 		WithoutResponse,
 	}
 

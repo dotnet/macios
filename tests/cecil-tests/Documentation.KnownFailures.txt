@@ -55324,7 +55324,6 @@ T:Contacts.CNFetchRequest
 T:Contacts.CNFetchResult`1
 T:ContactsUI.CNContactPicker
 T:CoreAnimation.CAConstraint
-T:CoreAnimation.CAConstraintAttribute
 T:CoreAnimation.CAConstraintLayoutManager
 T:CoreAnimation.CAContentsFormat
 T:CoreAnimation.CACornerCurve

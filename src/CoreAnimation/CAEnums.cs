@@ -94,25 +94,26 @@ namespace CoreAnimation {
 	}
 
 	// typedef int -> CAConstraintLayoutManager.h
+	/// <summary>Specifies the geometric attribute of a layer used in a <see cref="CAConstraint" />.</summary>
 	[NoiOS]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAConstraintAttribute {
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the minimum x-coordinate of a layer's frame.</summary>
 		MinX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the midpoint of a layer's frame along the x-axis.</summary>
 		MidX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the maximum x-coordinate of a layer's frame.</summary>
 		MaxX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the width of a layer's frame.</summary>
 		Width,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the minimum y-coordinate of a layer's frame.</summary>
 		MinY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the midpoint of a layer's frame along the y-axis.</summary>
 		MidY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the maximum y-coordinate of a layer's frame.</summary>
 		MaxY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the height of a layer's frame.</summary>
 		Height,
 	};
 }

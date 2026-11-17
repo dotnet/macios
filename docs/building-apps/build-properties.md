@@ -1287,7 +1287,7 @@ See also [MacOSXSdkVersion](#macosxsdkversion).
 
 ## MtouchUseLlvm
 
-A boolean property that specifies whether AOT compilation should be done using LLVM.
+A boolean property that previously selected LLVM for Mono AOT compilation.
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 

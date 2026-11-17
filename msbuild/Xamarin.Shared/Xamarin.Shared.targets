@@ -158,14 +158,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<_ReferencesWithNativeReferencesToExpand Include="@(ReferencePath)" Condition="Exists('%(RelativeDir)%(Filename).resources.zip') Or Exists('%(RelativeDir)%(Filename).resources')" />
 			<_NativeReferencesToExpand Include="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)" />
+			<_NativeReferencesToValidate Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework'" />
 		</ItemGroup>
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0))"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToValidate->Count()) &gt; 0))"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
 			NativeReferences="@(_NativeReferencesToExpand)"
+			NativeReferencesToValidate="@(_NativeReferencesToValidate)"
 			References="@(_ReferencesWithNativeReferencesToExpand)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -683,6 +685,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
 			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
 			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+			<_CompileAppManifestInputLine Include="ValidateSceneManifest=$(ValidateSceneManifest)" />
 			<!-- @(_CompileAppManifestInputFile) contains additional files to use as Inputs -->
 			<_CompileAppManifestInputFile Include="$(_CompileAppManifestInputFile)" />
 			<_CompileAppManifestInputFile Include="@(_FontFilesToRegister)" />
@@ -736,6 +739,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			TargetArchitectures="$(TargetArchitectures)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			Validate="$(_CreateAppManifest)"
+			ValidateSceneManifest="$(ValidateSceneManifest)"
 			>
 		</CompileAppManifest>
 	</Target>
@@ -3735,11 +3739,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_AddAppleApplicationArtifactMetadata"
-		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And Exists('$(_AppBundleManifestPath)')">
 		<ReadAppManifest
-			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
 			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
@@ -3762,11 +3766,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
-
-	<PropertyGroup>
-		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
-		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
-	</PropertyGroup>
 
 	<PropertyGroup>
 		<_PrepareAssembliesForPreparationDependsOn>
@@ -3802,7 +3801,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PrepareAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
 		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
@@ -3828,7 +3827,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		DependsOnTargets="_ExecutePrepareAssemblies"
 		>
 		<ReadItemsFromFile File="$(_PreparedAssembliesItemsPath)">
@@ -3870,7 +3869,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PostprocessAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
@@ -3899,7 +3898,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		AfterTargets="ILLink"
 		BeforeTargets="NativeCompile;CreateReadyToRunImages"
 		DependsOnTargets="_ExecutePostprocessAssemblies"

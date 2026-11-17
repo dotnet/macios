@@ -4,11 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace CoreGraphics {
 	static class NativeDrawingMethods {
-#if MONOMAC
-		internal const string CG = Constants.ApplicationServicesCoreGraphicsLibrary;
-#else
 		internal const string CG = Constants.CoreGraphicsLibrary;
-#endif
 		[DllImport (CG)]
 		internal unsafe extern static byte CGRectMakeWithDictionaryRepresentation (IntPtr dict, CGRect* rect);
 		[DllImport (CG)]

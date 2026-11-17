@@ -909,7 +909,6 @@ install_archive ()
 		archive="$PWD/$archive"
 	fi
 
-	validate_archive_signature "$archive"
 	format=$(archive_format "$archive")
 
 	if [[ "$expanded_size" -gt 0 ]]; then
@@ -1064,6 +1063,7 @@ install)
 		exit 1
 	else
 		EXPANDED_SIZE=0
+		validate_archive_signature "$ARCHIVE"
 	fi
 	install_archive "$ARCHIVE" "$EXPANDED_SIZE"
 	;;

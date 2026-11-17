@@ -20,7 +20,7 @@ namespace CoreBluetooth {
 		Unknown = 0,
 		/// <summary>The connection to the system Bluetooth service was momentarily lost; an update is imminent.</summary>
 		Resetting,
-		/// <summary>The platform does not support the Bluetooth Low Energy central or client role.</summary>
+		/// <summary>The platform does not support the Bluetooth Low Energy role of the manager.</summary>
 		Unsupported,
 		/// <summary>The app is not authorized to use the Bluetooth Low Energy role.</summary>
 		Unauthorized,

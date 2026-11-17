@@ -11,6 +11,14 @@
 
 errno_t responsibility_spawnattrs_setdisclaim (posix_spawnattr_t *attrs, bool disclaim);
 
+#if 0
+// Temporary banned-API finding to verify the CI gist and failure comment.
+static void devskim_reporting_smoke_test (void)
+{
+	printf ("DevSkim failure-report smoke test\n");
+}
+#endif
+
 int main (int argc, char** argv, char** envp)
 {
 	if (argc < 2) {

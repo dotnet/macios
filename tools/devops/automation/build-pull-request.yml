@@ -98,6 +98,14 @@ extends:
         - repository: self
         exclude:
         - repository: yaml-templates
+      # CodeQL never analyzes pull requests (CodeQL 3000 refuses to run on them), so don't spend time on it. The
+      # 1ES templates would add its tasks to every job anyway: for a GitHub repository they can't look up the
+      # default branch (the request fails with a 404), so they treat the branch being built as the default one.
+      # See https://dev.azure.com/mseng/1ES/_workitems/edit/2479329
+      codeql:
+        compiled:
+          enabled: false
+          justificationForDisabling: CodeQL doesn't analyze pull requests
     stages:
     - template: templates/main-stage.yml
       parameters:

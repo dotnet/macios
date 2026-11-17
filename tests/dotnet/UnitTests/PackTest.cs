@@ -5,6 +5,19 @@ using System.IO.Compression;
 namespace Xamarin.Tests {
 	public class PackTest : TestBaseClass {
 
+		bool PackBindingProject (string projectPath, Dictionary<string, string> properties, bool noBindingEmbedding)
+		{
+			if (noBindingEmbedding) {
+				DotNet.AssertPack (projectPath, properties, msbuildParallelism: false);
+				return true;
+			}
+
+			var rv = DotNet.AssertPackFailure (projectPath, properties, msbuildParallelism: false);
+			AssertErrorMessages (BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray (),
+				"Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.");
+			return false;
+		}
+
 		// Create a temporary directory for OutputPath
 		// Uses a path relative to the current directory on Windows (as opposed to an absolute path),
 		// because otherwise we run into limitations in our build where building with an absolute
@@ -60,10 +73,7 @@ namespace Xamarin.Tests {
 			properties ["OutputPath"] = outputPath + Path.DirectorySeparatorChar;
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 
-			var rv = DotNet.AssertPackFailure (project_path, properties, msbuildParallelism: false);
-			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			Assert.That (errors.Length, Is.EqualTo (1), "Error count");
-			Assert.That (errors [0].Message, Is.EqualTo ($"Creating a NuGet package is not supported for projects that have ObjcBindingNativeLibrary items. Migrate to use NativeReference items instead."), "Error message");
+			PackBindingProject (project_path, properties, noBindingEmbedding: false);
 		}
 
 		[Test]
@@ -89,7 +99,8 @@ namespace Xamarin.Tests {
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
 
-			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
+			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
+				return;
 
 			var nupkg = Path.Combine (outputPath, project + ".1.0.0.nupkg");
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
@@ -146,7 +157,8 @@ namespace Xamarin.Tests {
 			properties ["IntermediateOutputPath"] = intermediateOutputPath + Path.DirectorySeparatorChar;
 			properties ["NoBindingEmbedding"] = noBindingEmbedding ? "true" : "false";
 
-			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
+			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
+				return;
 
 			var nupkg = Path.Combine (outputPath, project + ".1.0.0.nupkg");
 			Assert.That (nupkg, Does.Exist, "nupkg existence");
@@ -263,7 +275,8 @@ namespace Xamarin.Tests {
 			if (compressedXcframework)
 				properties ["UseZippedXcframework"] = "true";
 
-			DotNet.AssertPack (project_path, properties, msbuildParallelism: false);
+			if (!PackBindingProject (project_path, properties, noBindingEmbedding))
+				return;
 
 			string nupkg;
 			if (Configuration.IsBuildingRemotely) {

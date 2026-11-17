@@ -393,6 +393,11 @@ namespace AVFoundation {
 		[Field ("AVMediaCharacteristicMachineGenerated")]
 		MachineGenerated = 24,
 
+		/// <summary>Indicates media that provides sign language interpretation for accessibility.</summary>
+		[iOS (27, 2), TV (27, 2), Mac (27, 2), MacCatalyst (27, 2)]
+		[Field ("AVMediaCharacteristicSignLanguageInterpretationForAccessibility")]
+		SignLanguageInterpretationForAccessibility = 25,
+
 	}
 
 	[MacCatalyst (13, 1)]
@@ -18320,6 +18325,16 @@ namespace AVFoundation {
 		[NoTV, NoMacCatalyst, NoiOS]
 		[Field ("AVCaptureDeviceTypeDeskViewCamera")]
 		DeskViewCamera,
+
+		/// <summary>A built-in outer ultra-wide camera discoverable through a device discovery session.</summary>
+		[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+		[Field ("AVCaptureDeviceTypeBuiltInOuterUltraWideCamera")]
+		BuiltInOuterUltraWideCamera,
+
+		/// <summary>A built-in inner ultra-wide camera discoverable through a device discovery session.</summary>
+		[NoTV, NoMac, NoMacCatalyst, iOS (27, 1)]
+		[Field ("AVCaptureDeviceTypeBuiltInInnerUltraWideCamera")]
+		BuiltInInnerUltraWideCamera,
 	}
 
 	[TV (17, 0)] // matches API that uses it.
@@ -24857,6 +24872,8 @@ namespace AVFoundation {
 		bool MultipleRoutesDetected { get; }
 
 		[MacCatalyst (16, 0), NoTV, NoMac, iOS (16, 0)]
+		[Deprecated (PlatformName.iOS, 27, 2, message: "Use 'AVSystemRouting' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 27, 2, message: "Use 'AVSystemRouting' instead.")]
 		[Export ("detectsCustomRoutes")]
 		bool DetectsCustomRoutes { get; set; }
 	}

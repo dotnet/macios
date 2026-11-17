@@ -201,7 +201,8 @@ namespace Foundation {
 			// Don't dispose the task: NSURLSession may still invoke delegate callbacks, and other callbacks may still reference the managed wrapper.
 		}
 
-		/// <inheritdoc />
+		/// <summary>Cancels pending requests and releases the resources used by this handler.</summary>
+		/// <param name="disposing"><see langword="true" /> to release managed and unmanaged resources; <see langword="false" /> to release only unmanaged resources.</param>
 		protected override void Dispose (bool disposing)
 		{
 			var requests = new List<KeyValuePair<NSUrlSessionTask, InflightData>> ();
@@ -843,20 +844,11 @@ namespace Foundation {
 			{
 				var certificates = new X509Certificate2 [secTrust.Count];
 
-				if (SystemVersion.IsAtLeastXcode13) {
-					var originalChain = secTrust.GetCertificateChain ();
-					if (originalChain is null)
-						return Array.Empty<X509Certificate2> ();
-					for (int i = 0; i < originalChain.Length; i++)
-						certificates [i] = originalChain [i].ToX509Certificate2 ();
-				} else {
-					for (int i = 0; i < secTrust.Count; i++) {
-						// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1422 here
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'SecTrust.this[nint]' is obsoleted on: 'ios' 15.0 and later
-						certificates [i] = secTrust [i].ToX509Certificate2 ();
-#pragma warning restore CA1422
-					}
-				}
+				var originalChain = secTrust.GetCertificateChain ();
+				if (originalChain is null)
+					return [];
+				for (int i = 0; i < originalChain.Length; i++)
+					certificates [i] = originalChain [i].ToX509Certificate2 ();
 
 				return certificates;
 			}

@@ -361,7 +361,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\txamarin_libmono_native_link_mode = XamarinNativeLinkMode{app.LibMonoNativeLinkMode};");
 			sw.WriteLine ($"\txamarin_runtime_libraries = xamarin_runtime_libraries_array;");
 
-			sw.WriteLine ("\txamarin_init_mono_debug = {0};", app.PackageManagedDebugSymbols ? "TRUE" : "FALSE");
 			sw.WriteLine ("\txamarin_executable_name = \"{0}\";", assembly_name);
 			if (app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tmono_use_llvm = {0};", enable_llvm ? "TRUE" : "FALSE");

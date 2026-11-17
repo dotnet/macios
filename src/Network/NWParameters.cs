@@ -417,6 +417,7 @@ namespace Network {
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineIterateProhibitedHandler;
 				using var block = new BlockLiteral (trampoline, iterationCallback, typeof (NWParameters), nameof (TrampolineIterateProhibitedHandler));
 				nw_parameters_iterate_prohibited_interfaces (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -442,6 +443,7 @@ namespace Network {
 				delegate* unmanaged<IntPtr, NWInterfaceType, byte> trampoline = &TrampolineIterateProhibitedTypeHandler;
 				using var block = new BlockLiteral (trampoline, callback, typeof (NWParameters), nameof (TrampolineIterateProhibitedTypeHandler));
 				nw_parameters_iterate_prohibited_interface_types (GetCheckedHandle (), &block);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -568,22 +570,22 @@ namespace Network {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
-		static extern void nw_parameters_set_attribution (OS_nw_parameters parameters, NWParametersAttribution attribution);
+		static extern void nw_parameters_set_attribution (OS_nw_parameters parameters, byte attribution);
 
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
-		static extern NWParametersAttribution nw_parameters_get_attribution (OS_nw_parameters parameters);
+		static extern byte nw_parameters_get_attribution (OS_nw_parameters parameters);
 
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWParametersAttribution Attribution {
-			get => nw_parameters_get_attribution (GetCheckedHandle ());
-			set => nw_parameters_set_attribution (GetCheckedHandle (), value);
+			get => (NWParametersAttribution) nw_parameters_get_attribution (GetCheckedHandle ());
+			set => nw_parameters_set_attribution (GetCheckedHandle (), (byte) value);
 		}
 
 		[SupportedOSPlatform ("tvos")]

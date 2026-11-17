@@ -38,6 +38,7 @@ namespace CoreText {
 	/// <summary>An enumeration whose values specify valid options for line truncation.</summary>
 	///     <remarks>To be added.</remarks>
 	///     <altmember cref="CoreText.CTLine.GetTruncatedLine" />
+	[NativeName ("CTLineTruncationType")]
 	public enum CTLineTruncation : uint {
 		/// <summary>To be added.</summary>
 		Start = 0,
@@ -338,6 +339,7 @@ namespace CoreText {
 				delegate* unmanaged<IntPtr, double, nint, byte, byte*, void> trampoline = &TrampolineEnumerate;
 				using var block = new BlockLiteral (trampoline, enumerator, typeof (CTLine), nameof (TrampolineEnumerate));
 				CTLineEnumerateCaretOffsets (Handle, &block);
+				GC.KeepAlive (this);
 			}
 		}
 		#endregion

@@ -728,6 +728,30 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void WrappedProtocol (Profile profile)
+		{
+			var bgen = BuildFile (profile, bgen => bgen.NoWarn = "1110", "wrapped-protocol.cs");
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "WrappedProtocol", "DelegateOwner.g.cs");
+			var contents = File.ReadAllText (generatedFile);
+			Assert.That (contents, Does.Contain ("var wrapped = WeakDelegate;"), "Read through the weak property");
+			Assert.That (contents, Does.Contain ("Runtime.GetINativeObject<INSUserActivityDelegate> (wrapped.GetHandle (), false)"), "Imported protocol wrapper");
+			Assert.That (contents, Does.Contain ("Runtime.GetINativeObject<ILocalDelegate> (wrapped.GetHandle (), false)"), "Local protocol wrapper");
+			Assert.That (contents, Does.Contain ("rvalue = Runtime.GetNSObject (value.GetHandle ());"), "Convert protocol wrappers to NSObject");
+			Assert.That (contents, Does.Contain ("WeakDelegate = rvalue;"), "Write through the weak property");
+			Assert.That (contents, Does.Contain ("WeakSharedDelegate = rvalue;"), "Static wrapper");
+			Assert.That (contents, Does.Contain ("return (WeakDelegate as NSObject)!;"), "Non-protocol wrappers are unchanged");
+			Assert.That (contents, Does.Contain ("return (WeakDelegate as LocalDelegate)!;"), "Local model wrappers preserve cast-only getters");
+			Assert.That (contents, Does.Contain ("return (WeakDelegate as NSUserActivityDelegate)!;"), "Imported model wrappers preserve cast-only getters");
+			Assert.That (contents, Does.Not.Contain ("Runtime.GetINativeObject<LocalDelegate>"), "No local model fallback");
+			Assert.That (contents, Does.Not.Contain ("Runtime.GetINativeObject<NSUserActivityDelegate>"), "No imported model fallback");
+			Assert.That (contents, Does.Not.Contain ("does not derive from NSObject"), "Protocol wrappers are accepted");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void NoAsyncInternalWrapper (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
@@ -790,6 +814,67 @@ namespace GeneratorTests {
 
 			bgen.AssertApiLoadsField ("SmartEnumWithFramework.FooEnumTestExtensions", "get_First", "ObjCRuntime.Libraries/CoreImage", "Handle", "First getter");
 			bgen.AssertApiLoadsField ("SmartEnumWithFramework.FooEnumTestExtensions", "get_Second", "ObjCRuntime.Libraries/CoreImage", "Handle", "Second getter");
+		}
+
+		[Test]
+		public void SmartEnumWithLibraryPaths (
+			[Values (Profile.iOS, Profile.tvOS, Profile.MacCatalyst, Profile.macOSMobile)] Profile profile,
+			[Values (false, true)] bool valueType)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = profile,
+				ProcessEnums = true,
+			};
+			bgen.CreateTemporaryBinding ($$"""
+				using Foundation;
+				using ObjCRuntime;
+
+				namespace SmartEnumWithLibraryPaths {
+					{{(valueType ? "[BackingFieldType (typeof (int))]" : "")}}
+					enum TestEnum {
+						[DefaultEnumValue]
+						[Field (null)]
+						Null,
+
+						[Field ("Internal", "__Internal")]
+						Internal,
+
+						[Field ("FoundationPath", Constants.FoundationLibrary)]
+						FoundationPath,
+
+						[Field ("CoreFoundationName", "CoreFoundation")]
+						CoreFoundationName,
+
+						[Field ("CustomPath", "/tmp/libCustom.dylib")]
+						CustomPath,
+
+						[Field ("RemappedCoreImage", "+CoreImage")]
+						RemappedCoreImage,
+					}
+				}
+				""");
+			bgen.AssertExecute ("build");
+			bgen.AssertNoWarnings ();
+
+			var coreImageLibrary = profile == Profile.macOSMobile ? "Quartz" : "CoreImage";
+			var expectedLibraries = new [] {
+				(Symbol: "Internal", Library: "__Internal", Path: "__Internal"),
+				(Symbol: "FoundationPath", Library: "Foundation", Path: "/System/Library/Frameworks/Foundation.framework/Foundation"),
+				(Symbol: "CoreFoundationName", Library: "CoreFoundation", Path: "CoreFoundation"),
+				(Symbol: "CustomPath", Library: "libCustomdylib", Path: "/tmp/libCustom.dylib"),
+				(Symbol: "RemappedCoreImage", Library: coreImageLibrary, Path: coreImageLibrary),
+			};
+			var extensions = bgen.ApiAssembly.MainModule.GetType ("SmartEnumWithLibraryPaths", "TestEnumExtensions");
+			foreach (var expected in expectedLibraries) {
+				bgen.AssertApiLoadsField (extensions.FullName, $"get_{expected.Symbol}", $"ObjCRuntime.Libraries/{expected.Library}", "Handle", expected.Symbol);
+				var property = extensions.Properties.Single (v => v.Name == expected.Symbol);
+				var field = property.CustomAttributes.Single (v => v.AttributeType.Name == "FieldAttribute");
+				Assert.That (field.ConstructorArguments [1].Value, Is.EqualTo (expected.Path), $"{expected.Symbol} library path");
+			}
+			var customLibrary = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Libraries").NestedTypes.Single (v => v.Name == "libCustomdylib");
+			var initializer = customLibrary.Methods.Single (v => v.Name == ".cctor");
+			Assert.That (initializer.Body.Instructions.Where (v => v.OpCode == OpCodes.Ldstr).Select (v => v.Operand), Does.Contain ("/tmp/libCustom.dylib"), "Custom library load path");
 		}
 
 		[Test]

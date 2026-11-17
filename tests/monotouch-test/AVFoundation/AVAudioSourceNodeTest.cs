@@ -66,6 +66,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		void SourceNodeCallbackTest (TaskCompletionSource<bool> callbackEvent, Func<AVAudioSourceNode> createSourceNode)
 		{
 			TestRuntime.AssertNotVirtualMachine ();
+			TestRuntime.RequestMicrophonePermission ();
 
 #if __MACOS__
 			var defaultCaptureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Audio);

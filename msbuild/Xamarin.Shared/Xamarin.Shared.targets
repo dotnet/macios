@@ -2284,6 +2284,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<ItemsFile>$(_StampDirectory)%(FileName).items</ItemsFile>
 			</_UnpackLibraryResourceItems>
 		</ItemGroup>
+		<PropertyGroup>
+			<!-- Shared resource caches must be regenerated from all references, not a partially built input list. -->
+			<_UnpackLibraryResourcesOutputs>@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')</_UnpackLibraryResourcesOutputs>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_BeforeUnpackLibraryResources"
@@ -2330,7 +2334,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_UnpackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_IsMultiRidBuild)' != 'true'" DependsOnTargets="$(_UnpackLibraryResourcesDependsOn)"
 		Inputs="@(_UnpackLibraryResourceItems)"
-		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')">
+		Outputs="$(_UnpackLibraryResourcesOutputs)">
 
 		<MakeDir Directories="$(_StampDirectory)" />
 

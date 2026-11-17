@@ -31,7 +31,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ACTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolUpload" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolValidate" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.AOTCompile" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Archive" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.BGen" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Codesign" AssemblyFile="$(_TaskAssemblyName)" />
@@ -2451,7 +2450,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 
 		<ParseBundlerArguments
-			Aot="@(_AotArguments)"
 			ExtraArgs="$(AppBundleExtraOptions)"
 			MarshalManagedExceptionMode="$(MarshalManagedExceptionMode)"
 			MarshalObjectiveCExceptionMode="$(MarshalObjectiveCExceptionMode)"
@@ -2461,7 +2459,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Registrar="$(Registrar)"
 			BundlerVerbosity="$(_BundlerVerbosity)"
 			>
-			<Output TaskParameter="Aot" ItemName="_AotArguments" />
 			<Output TaskParameter="CustomBundleName" PropertyName="_CustomBundleName" />
 			<Output TaskParameter="CustomLinkFlags" ItemName="_CustomLinkFlags" />
 			<Output TaskParameter="DlSym" ItemName="_BundlerDlsym" />

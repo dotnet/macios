@@ -106,6 +106,12 @@ Scheduled security analysis pipeline.
 
 **Purpose:** Run CodeQL security analysis without blocking builds
 
+**How:** CodeQL reads the source code on a Linux agent, without building it (build mode `none`). It can't trace a build on our Macs: on Apple silicon it runs the traced build as x86_64 (using Rosetta 2), and the Xcode we use is arm64 only.
+
+**Languages:** C#, C/C++, PowerShell, Python, JavaScript and GitHub Actions workflows. Swift isn't analyzed, because CodeQL needs a traced build for it. CodeQL doesn't support Objective-C.
+
+**Note:** CodeQL scans each repository, branch and language at most every 72 hours. Between scans the pipeline does nothing and still succeeds, so look at the table in the log of the `CodeQL 3000 Finalize` step to see what was uploaded.
+
 ## Core Templates
 
 ### Main Stage Template (`templates/main-stage.yml`)
@@ -561,7 +567,7 @@ run-post-ci-build-vs-insertion.yml ───────────────
                                                                              │
 run-nightly-codeql.yml ──────────────────────────────────────────────────────┘
 │
-└─► templates/build/build.yml (with disableCodeQL: false)
+└─► CodeQL3000Init@0 + CodeQL3000Finalize@0 (no templates, nothing is built)
 ```
 
 ### PR Build YAML Structure

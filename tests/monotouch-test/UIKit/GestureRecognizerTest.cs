@@ -117,7 +117,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void ScreenEdgePanGenericCallbackTest ()
 		{
 			var didRun = false;
-			var callbackEvent = new AutoResetEvent (false);
+			using var callbackEvent = new AutoResetEvent (false);
 			Action<UIScreenEdgePanGestureRecognizer> callback = (UIScreenEdgePanGestureRecognizer _) => {
 				didRun = true;
 				callbackEvent.Set ();

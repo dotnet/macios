@@ -20,7 +20,6 @@ public class RegistrarTests : BaseClass {
 		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
 		var config = $@"
 		AssemblyName=Microsoft.{platform.AsString ()}.dll
-		PrepareAssemblies=true
 		CacheDirectory={tempDir}
 		TypeMapAssemblyName=_TypeMap
 		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}

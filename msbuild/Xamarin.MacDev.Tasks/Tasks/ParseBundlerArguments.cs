@@ -14,6 +14,8 @@ namespace Xamarin.MacDev.Tasks {
 	public class ParseBundlerArguments : XamarinTask {
 		public string ExtraArgs { get; set; } = "";
 
+		public string? EnableAssemblyILStripping { get; set; }
+
 		[Output]
 		public ITaskItem [] DlSym { get; set; } = [];
 
@@ -53,10 +55,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public string? RequirePInvokeWrappers { get; set; }
 
-		// This is input too
-		[Output]
-		public string? NoStrip { get; set; }
-
 		[Output]
 		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
@@ -74,6 +72,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (string.Equals (EnableAssemblyILStripping, "true", StringComparison.OrdinalIgnoreCase))
+				Log.LogError (MSBStrings.E7202 /* EnableAssemblyILStripping=true is not supported because assembly IL stripping has been removed. */);
+
 			if (string.IsNullOrEmpty (NoSymbolStrip))
 				NoSymbolStrip = "false";
 
@@ -204,8 +205,8 @@ namespace Xamarin.MacDev.Tasks {
 						xml.Add (value);
 						break;
 					case "nostrip":
-						// Output is EnableAssemblyILStripping so we enable if --nostrip=false and disable if true
-						NoStrip = ParseBool (value) ? "false" : "true";
+						if (!ParseBool (value))
+							Log.LogError (MSBStrings.E7203 /* --nostrip:false is not supported because assembly IL stripping has been removed. */);
 						break;
 					case "gcc_flags": // mtouch uses gcc_flags
 					case "link_flags": // mmp uses link_flags

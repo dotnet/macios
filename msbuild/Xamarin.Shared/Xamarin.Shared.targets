@@ -2457,6 +2457,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ParseBundlerArguments
 			ExtraArgs="$(AppBundleExtraOptions)"
+			EnableAssemblyILStripping="$(EnableAssemblyILStripping)"
 			MarshalManagedExceptionMode="$(MarshalManagedExceptionMode)"
 			MarshalObjectiveCExceptionMode="$(MarshalObjectiveCExceptionMode)"
 			NoSymbolStrip="$(NoSymbolStrip)"
@@ -2483,7 +2484,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="WarnAsError" PropertyName="_BundlerWarnAsError" />
 			<Output TaskParameter="Warn" PropertyName="_BundlerWarn" />
 			<Output TaskParameter="XmlDefinitions" ItemName="_BundlerXmlDefinitions" />
-			<Output TaskParameter="NoStrip" PropertyName="EnableAssemblyILStripping" />
 		</ParseBundlerArguments>
 
 		<PropertyGroup>

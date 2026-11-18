@@ -29,7 +29,6 @@
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="$(MicrosoftBuildTasksCorePackageVersion)" IncludeAssets="$(IncludeMSBuildAssets)" Aliases="Microsoft_Build_Tasks_Core" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" IncludeAssets="$(IncludeMSBuildAssets)" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="$(MicrosoftNETILLinkTasksPackageVersion)" />
-    <PackageReference Include="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)" GeneratePathProperty="true"/>
     <PackageReference Include="Xamarin.Messaging.Build.Client" Version="$(MessagingVersion)" />
     <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 -->
     <PackageReference Include="System.Drawing.Common" Version="$(SystemDrawingCommonPackageVersion)" />
@@ -42,10 +41,6 @@
     <!-- We need the net472 implementation, otherwise the Build agent needs to be a net5.0 app -->
     <Reference Include="ILLink.Tasks">
       <HintPath>$(PkgMicrosoft_NET_ILLink_Tasks)\tools\netframework\ILLink.Tasks.dll</HintPath>
-    </Reference>
-    <Reference Include="ILStrip">
-      <!-- We need the net472 impl, otherwise the Build agent needs to be a net5.0 app -->
-      <HintPath>$(PkgMicrosoft_NET_Runtime_MonoTargets_Sdk)\tasks\netframework\MonoTargetsTasks.dll</HintPath>
     </Reference>
   </ItemGroup>
 

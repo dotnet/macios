@@ -96,6 +96,8 @@ DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a libxamarin-widgetkit.a
 DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet-coreclr.a libxamarin-widgetkit.a
 
 define DotNetLibTemplate
+.libs/$(2)/swift-widgetkit-functions.o: swift-widgetkit-functions.swift $(TOP)/Make.config
+
 .libs/$(2)/libxamarin-widgetkit.a: .libs/$(2)/swift-widgetkit-functions.o
 	$$(Q) rm -f $$@
 	$$(call Q_2,AR,    [$1]) $(AR) Scru $$@ $$^

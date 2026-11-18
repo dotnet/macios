@@ -596,7 +596,7 @@ validate_aea_signature ()
 	local signing_key
 
 	signing_key=$(aea_signing_public_key "$archive") || return 1
-	if ! /usr/bin/aea decrypt -i "$archive" -o /dev/null -sign-pub-value "hex:$signing_key" >/dev/null 2>&1; then
+	if ! /usr/bin/aea decrypt -i "$archive" -o /dev/null -sign-pub-value "hex:$signing_key" >/dev/null; then
 		error "Apple Encrypted Archive signature validation failed for '$archive'."
 		return 1
 	fi
@@ -898,7 +898,7 @@ install_archive ()
 	local expanded_size=${2:-0}
 	local available_bytes required_bytes
 	local staging_root payload_root expanded_app
-	local format signing_key
+	local format
 	local backup=
 	local target_installed=
 	local target_displaced=
@@ -949,9 +949,9 @@ install_archive ()
 	trap cleanup EXIT
 
 	# Both 'xip --expand' and 'archiveutil extractXcodeAEA' write into the current directory,
-	# so they run from the staging directory. Like 'aea' and 'aa', they are plain binaries
-	# rather than xcrun shims, so they keep working while 'xcode-select' still points at the
-	# Xcode we are about to replace.
+	# so they run from the staging directory. They are plain binaries rather than xcrun
+	# shims, so they keep working while 'xcode-select' still points at the Xcode we are
+	# about to replace.
 	mkdir -p "$payload_root"
 	log "Expanding '$(basename "$archive")' on the /Applications volume."
 	case "$format" in
@@ -962,22 +962,10 @@ install_archive ()
 		)
 		;;
 	aea)
-		# 'archiveutil extractXcodeAEA' is what Apple documents for these archives, but not
-		# every macOS version ships it and it hands the work to a system service. Without it,
-		# decrypt the archive with the signing key verified above and extract the Apple
-		# Archive inside. Both refuse to produce anything whose signature doesn't verify.
-		if [[ -x /usr/bin/archiveutil ]] && (
-			cd "$payload_root" &&
-				/usr/bin/archiveutil extractXcodeAEA "$archive"
-		); then
-			:
-		else
-			log "Extracting '$(basename "$archive")' with 'aea' and 'aa' instead of 'archiveutil'."
-			rm -rf -- "$payload_root"
-			mkdir -p "$payload_root"
-			signing_key=$(aea_signing_public_key "$archive")
-			/usr/bin/aea decrypt -i "$archive" -sign-pub-value "hex:$signing_key" | /usr/bin/aa extract -d "$payload_root"
-		fi
+		(
+			cd "$payload_root"
+			/usr/bin/archiveutil extractXcodeAEA "$archive"
+		)
 		;;
 	esac
 

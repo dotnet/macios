@@ -39,7 +39,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (Option)) {
 				if (!Enum.TryParse (Option, out option)) {
-					Log.LogError (MSBStrings.E0050, Option);
+					Log.LogError (50, null, MSBStrings.E0050, Option); // Unknown search option: {0}
 					return false;
 				}
 			} else {

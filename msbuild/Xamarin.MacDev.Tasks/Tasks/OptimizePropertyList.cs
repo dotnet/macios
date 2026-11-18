@@ -24,7 +24,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var plist = PObject.FromFile (input);
 			if (plist is null) {
-				Log.LogError (null, null, null, input, 0, 0, 0, 0, "Could not parse the property list '{0}'.", input);
+				Log.LogError (7215, input, MSBStrings.E7215, input); // Could not parse the property list '{0}'.
 				return false;
 			}
 

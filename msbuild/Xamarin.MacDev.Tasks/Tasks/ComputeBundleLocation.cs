@@ -275,17 +275,17 @@ namespace Xamarin.MacDev.Tasks {
 
 			var metadata = item.GetMetadata ("CopyToOutputDirectory");
 			if (!string.IsNullOrEmpty (metadata)) {
-				Log.LogWarning (MSBStrings.E7090 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. If the file is not supposed to be copied to the app bundle, remove the '{2}' metadata on the item. */, publishFolderType, item.ItemSpec, "CopyToOutputDirectory");
+				Log.LogWarning (7090, null, MSBStrings.E7090 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. If the file is not supposed to be copied to the app bundle, remove the '{2}' metadata on the item. */, publishFolderType, item.ItemSpec, "CopyToOutputDirectory");
 				return;
 			}
 
 			metadata = item.GetMetadata ("CopyToPublishDirectory");
 			if (!string.IsNullOrEmpty (metadata)) {
-				Log.LogWarning (MSBStrings.E7090 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. If the file is not supposed to be copied to the app bundle, remove the '{2}' metadata on the item. */, publishFolderType, item.ItemSpec, "CopyToPublishDirectory");
+				Log.LogWarning (7090, null, MSBStrings.E7090 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. If the file is not supposed to be copied to the app bundle, remove the '{2}' metadata on the item. */, publishFolderType, item.ItemSpec, "CopyToPublishDirectory");
 				return;
 			}
 
-			Log.LogWarning (MSBStrings.E7088 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. */, publishFolderType, item.ItemSpec);
+			Log.LogWarning (7088, null, MSBStrings.E7088 /* The 'PublishFolderType' metadata value '{0}' on the item '{1}' is not recognized. The file will not be copied to the app bundle. */, publishFolderType, item.ItemSpec);
 		}
 
 		// 'item' is not supposed to have a PublishFolderType set
@@ -375,7 +375,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// no other files are copied
 
-			Log.LogWarning (MSBStrings.E7089 /* The file '{0}' does not specify a 'PublishFolderType' metadata, and a default value could not be calculated. The file will not be copied to the app bundle. */, item.ItemSpec);
+			Log.LogWarning (7089, null, MSBStrings.E7089 /* The file '{0}' does not specify a 'PublishFolderType' metadata, and a default value could not be calculated. The file will not be copied to the app bundle. */, item.ItemSpec);
 
 			return PublishFolderType.None;
 		}

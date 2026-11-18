@@ -47,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 			var profile = MobileProvisionIndex.GetMobileProvision (GetMobileProvisionPlatform (), ProvisioningProfile);
 
 			if (profile is null) {
-				Log.LogError (MSBStrings.E0049, ProvisioningProfile);
+				Log.LogError (49, null, MSBStrings.E0049, ProvisioningProfile); // Could not locate the provisioning profile with a Name or UUID of {0}.
 				return false;
 			}
 

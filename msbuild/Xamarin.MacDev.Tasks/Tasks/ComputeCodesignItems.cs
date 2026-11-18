@@ -166,15 +166,15 @@ namespace Xamarin.MacDev.Tasks {
 				for (var i = 1; i < all.Length; i++) {
 					var nextMetadata = all [i].CloneCustomMetadataToDictionary ();
 					if (nextMetadata.Count != firstMetadata.Count) {
-						Log.LogWarning (MSBStrings.W7095, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata for one are: '{1}', while the metadata for the other are: '{2}' */ group.Key, string.Join (", ", firstMetadata.Keys.OrderBy (v => v)), string.Join (", ", nextMetadata.Keys.OrderBy (v => v)));
+						Log.LogWarning (7095, null, MSBStrings.W7095, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata for one are: '{1}', while the metadata for the other are: '{2}' */ group.Key, string.Join (", ", firstMetadata.Keys.OrderBy (v => v)), string.Join (", ", nextMetadata.Keys.OrderBy (v => v)));
 					} else {
 						foreach (var kvp in firstMetadata) {
 							if (!nextMetadata.TryGetValue (kvp.Key, out var nextValue)) {
-								Log.LogWarning (MSBStrings.W7096, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}={2}' has been set for one item, but not the other. */ group.Key, kvp.Key, kvp.Value);
+								Log.LogWarning (7096, null, MSBStrings.W7096, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}={2}' has been set for one item, but not the other. */ group.Key, kvp.Key, kvp.Value);
 								continue;
 							}
 							if (nextValue != kvp.Value) {
-								Log.LogWarning (MSBStrings.W7097, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}' has different values for each item (once it's '{2}', another time it's '{3}'). */ group.Key, kvp.Key, kvp.Value, nextValue);
+								Log.LogWarning (7097, null, MSBStrings.W7097, /* Code signing has been requested multiple times for '{0}', with different metadata. The metadata '{1}' has different values for each item (once it's '{2}', another time it's '{3}'). */ group.Key, kvp.Key, kvp.Value, nextValue);
 								continue;
 							}
 						}

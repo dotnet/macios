@@ -193,12 +193,12 @@ namespace Xamarin.MacDev.Tasks {
 				string output;
 
 				if (!File.Exists (item.ItemSpec)) {
-					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0158, item.ItemSpec);
+					Log.LogError (158, item.ItemSpec, MSBStrings.E0158, item.ItemSpec); // The file '{0}' does not exist.
 					continue;
 				}
 
 				if (unique.TryGetValue (bundleName, out var duplicate)) {
-					Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0159, item.ItemSpec, duplicate.ItemSpec);
+					Log.LogError (159, item.ItemSpec, MSBStrings.E0159, item.ItemSpec, duplicate.ItemSpec); // The file '{0}' conflicts with '{1}'.
 					continue;
 				}
 
@@ -237,9 +237,11 @@ namespace Xamarin.MacDev.Tasks {
 
 					LogWarningsAndErrors (dict, item);
 				} catch (Exception ex) {
-					Log.LogError (MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message);
+					Log.LogError (94, null, MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message); // Failed to load {0} log file `{1}`: {2}
 					if (File.Exists (manifest.ItemSpec))
+#pragma warning disable RS0030 // Forward ibtool's diagnostic log without assigning an SDK code.
 						Log.LogError ("ibtool log: {0}", File.ReadAllText (manifest.ItemSpec));
+#pragma warning restore RS0030
 					continue;
 				}
 

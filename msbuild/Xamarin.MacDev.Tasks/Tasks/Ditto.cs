@@ -81,7 +81,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var src = Source!.ItemSpec;
 			if (!File.Exists (src) && !Directory.Exists (src)) {
-				Log.LogError (MSBStrings.E7131 /* The source '{0}' does not exist. */, src);
+				Log.LogError (7131, null, MSBStrings.E7131 /* The source '{0}' does not exist. */, src);
 				return false;
 			}
 
@@ -97,7 +97,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (StringUtils.TryParseArguments (AdditionalArguments, out var additionalArgs, out var ex)) {
 					args.AddRange (additionalArgs);
 				} else {
-					Log.LogError (MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, AdditionalArguments);
+					Log.LogError (7132, null, MSBStrings.E7132 /* Unable to parse the 'AdditionalArguments' value: {0} */, AdditionalArguments);
 					return false;
 				}
 			}

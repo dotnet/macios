@@ -119,7 +119,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 		if (Verbose) {
 			foreach (var dd in DiscardedDevices)
-				Log.LogWarning ("Discarded '{0}' because: {1}", dd.ItemSpec, dd.GetMetadata ("DiscardedReason"));
+				Log.LogWarning (7218, null, MSBStrings.W7218, dd.ItemSpec, dd.GetMetadata ("DiscardedReason")); // Discarded '{0}' because: {1}
 		}
 
 		return true;
@@ -170,7 +170,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		// The service only logs a failed discovery at info level, so report the failures that left us without a device list.
 		// Unusable output (InvalidOutput) isn't reported as an error.
 		if (result.Status is PhysicalDeviceDiscoveryStatus.ExecutionFailed or PhysicalDeviceDiscoveryStatus.ToolUnavailable or PhysicalDeviceDiscoveryStatus.TimedOut)
-			Log.LogError (MSBStrings.E7200, result.ErrorMessage);
+			Log.LogError (7200, null, MSBStrings.E7200, result.ErrorMessage); // Failed to list physical devices with devicectl: {0}
 
 		foreach (var device in result.Devices) {
 			var udid = device.Udid;

@@ -85,14 +85,14 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (DestinationFiles is not null && DestinationFolder is not null) {
-				Log.LogError (MSBStrings.E0166);
+				Log.LogError (166, null, MSBStrings.E0166); // You must specify a DestinationFolder or the DestinationFiles, but not both.
 				return false;
 			}
 
 			try {
 				if (DestinationFiles is not null) {
 					if (DestinationFiles.Length != SourceFiles.Length) {
-						Log.LogError (MSBStrings.E0167);
+						Log.LogError (167, null, MSBStrings.E0167); // The number of DestinationFiles must match the number of SourceFiles.
 						return false;
 					}
 
@@ -119,11 +119,11 @@ namespace Xamarin.MacDev.Tasks {
 							CopyFile (source, target, Path.Combine (DestinationFolder.ItemSpec, Path.GetFileName (item.ItemSpec)));
 					}
 				} else {
-					Log.LogError (MSBStrings.E0166);
+					Log.LogError (166, null, MSBStrings.E0166); // You must specify a DestinationFolder or the DestinationFiles, but not both.
 					return false;
 				}
 			} catch (Exception ex) {
-				Log.LogError (ex.ToString ());
+				Log.LogError (7228, null, MSBStrings.E7228, ex.ToString ()); // Could not copy files: {0}
 			}
 
 			CopiedFiles = copied.ToArray ();

@@ -39,7 +39,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (ITunesMetadata is not null) {
 				if (ITunesMetadata.Length > 1) {
-					Log.LogError (MSBStrings.E0023);
+					Log.LogError (23, null, MSBStrings.E0023); // Cannot have more than 1 iTunesMetadata.plist.
 					return false;
 				}
 
@@ -48,7 +48,7 @@ namespace Xamarin.MacDev.Tasks {
 				try {
 					metadata = PDictionary.OpenFile (path);
 				} catch (Exception ex) {
-					Log.LogError (null, null, null, path, 0, 0, 0, 0, MSBStrings.E0010, path, ex.Message);
+					Log.LogError (10, path, MSBStrings.E0010, path, ex.Message); // Error loading '{0}': {1}
 					return false;
 				}
 			} else {

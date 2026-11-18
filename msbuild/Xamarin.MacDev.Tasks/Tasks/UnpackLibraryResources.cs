@@ -131,7 +131,7 @@ namespace Xamarin.MacDev.Tasks {
 							sceneKitAssets.Add (item);
 							break;
 						default:
-							Log.LogError (MSBStrings.E7135 /* Unknown resource type: {1}. */, resourceType);
+							Log.LogError (7135, null, MSBStrings.E7135 /* Unknown resource type: {1}. */, resourceType);
 							break;
 						}
 					}
@@ -354,7 +354,7 @@ namespace Xamarin.MacDev.Tasks {
 					var extractionDirectory = Path.Combine (intermediatePath, itemType);
 					var path = Path.Combine (extractionDirectory, rpath);
 					if (!PathUtils.IsPathContained (extractionDirectory, path)) {
-						Log.LogError (MSBStrings.E7183 /* The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'. */, resourceName, assembly, path, extractionDirectory);
+						Log.LogError (7183, null, MSBStrings.E7183 /* The resource '{0}' in assembly '{1}' would extract to '{2}' which is outside of the target directory '{3}'. */, resourceName, assembly, path, extractionDirectory);
 						continue;
 					}
 					var file = new FileInfo (path);

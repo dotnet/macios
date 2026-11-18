@@ -214,6 +214,12 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (task, expectedErrorCount: 1);
 
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (expectedError));
+			var expectedCode = type switch {
+				"Remove" => "MT7190",
+				"Boolean" => "MT7191",
+				_ => "MT7189",
+			};
+			Assert.That (Engine.Logger.ErrorEvents [0].Code, Is.EqualTo (expectedCode), "Code");
 		}
 
 		[Test]

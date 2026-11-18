@@ -120,7 +120,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				var args = info.GetMetadata ("Arguments");
 				if (!StringUtils.TryParseArguments (args, out var parsed_args, out var ex)) {
-					Log.LogError ("Could not parse the arguments '{0}': {1}", args, ex.Message);
+					Log.LogError (7208, null, MSBStrings.E7208, args, ex.Message); // Could not parse the arguments '{0}': {1}
 					return false;
 				}
 				arguments.AddRange (parsed_args);

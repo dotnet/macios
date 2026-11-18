@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 				// never create directories or write files outside the intended intermediate output
 				// directory, even if the path contains traversal segments, is absolute, or uses symlinks.
 				if (!PathUtils.IsPathContained (IntermediateNativeLibraryDir, target)) {
-					Log.LogError (MSBStrings.E7181 /* The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'. */, target, IntermediateNativeLibraryDir);
+					Log.LogError (7181, null, MSBStrings.E7181 /* The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'. */, target, IntermediateNativeLibraryDir);
 					continue;
 				}
 

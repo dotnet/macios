@@ -34,13 +34,13 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (!Directory.Exists (WorkingDirectory)) {
-				Log.LogError (MSBStrings.E7146 /* Unable to analyze file changes in '{0}'. Directory not found. */, WorkingDirectory);
+				Log.LogError (7146, null, MSBStrings.E7146 /* Unable to analyze file changes in '{0}'. Directory not found. */, WorkingDirectory);
 
 				return false;
 			}
 
 			if (!File.Exists (ReportFile!.ItemSpec)) {
-				Log.LogError (MSBStrings.E7147 /* Unable to analyze file changes in '{0}'. The report file '{1}' does not exist. */, WorkingDirectory, ReportFile.ItemSpec);
+				Log.LogError (7147, null, MSBStrings.E7147 /* Unable to analyze file changes in '{0}'. The report file '{1}' does not exist. */, WorkingDirectory, ReportFile.ItemSpec);
 
 				return false;
 			}
@@ -86,7 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E7148 /* Unable to analyze file changes in '{0}'. An unexpected error occurred. */, WorkingDirectory);
+				Log.LogError (7148, null, MSBStrings.E7148 /* Unable to analyze file changes in '{0}'. An unexpected error occurred. */, WorkingDirectory);
 				Log.LogErrorFromException (ex);
 
 				return false;

@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 				var buildClient = connection.GetClient (SessionId) as BuildClient;
 
 				if (!connection.IsConnected || buildClient is null) {
-					Log.LogWarning (MSBStrings.E0179, nameof (ResolveUniversalTypeIdentifiers));
+					Log.LogWarning (179, null, MSBStrings.E0179, nameof (ResolveUniversalTypeIdentifiers)); // There is no available connection to the Mac. Task '{0}' will not be executed
 
 					return true;
 				}
@@ -50,7 +50,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 
 					if (dataset is null) {
-						Log.LogError (MSBStrings.E0180, Path.GetDirectoryName (filePath));
+						Log.LogError (180, null, MSBStrings.E0180, Path.GetDirectoryName (filePath)); // Could not deserialize DataSet {0}
 						continue;
 					}
 
@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 						var file = ImageAssets.FirstOrDefault (x => Path.GetFileName (x.ItemSpec) == data.Filename);
 
 						if (file is null) {
-							Log.LogWarning (MSBStrings.E0181, data.Filename);
+							Log.LogWarning (181, null, MSBStrings.E0181, data.Filename); // The file {0} does not have ImageAsset as build action.
 
 							continue;
 						}
@@ -79,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 							.Result;
 
 						if (string.IsNullOrEmpty (response.UniversalTypeIdentifier))
-							Log.LogError (string.Format (MSBStrings.E0182, data.Filename, Path.GetDirectoryName (filePath)));
+							Log.LogError (182, null, MSBStrings.E0182, data.Filename, Path.GetDirectoryName (filePath)); // Could not resolve UTI for {0} in catalog {1}
 
 						data.UniversalTypeIdentifier = response.UniversalTypeIdentifier;
 					}

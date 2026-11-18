@@ -256,7 +256,7 @@ namespace Xamarin.MacDev.Tasks {
 				return;
 			}
 
-			Log.LogWarning (MSBStrings.W7109 /* Unable to process the item '{0}' as a native reference: unknown type.* */, item.ItemSpec);
+			Log.LogWarning (7109, null, MSBStrings.W7109 /* Unable to process the item '{0}' as a native reference: unknown type.* */, item.ItemSpec);
 		}
 
 		/// <summary>
@@ -301,7 +301,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			plist = (PDictionary?) PDictionary.FromStream (stream);
 			if (plist is null) {
-				log.LogError (MSBStrings.E7110 /* Could not load Info.plist '{0}' from the xcframework '{1}'.. */, manifestPath, resourcePath);
+				log.LogError (7110, null, MSBStrings.E7110 /* Could not load Info.plist '{0}' from the xcframework '{1}'.. */, manifestPath, resourcePath);
 				return false;
 			}
 
@@ -374,14 +374,14 @@ namespace Xamarin.MacDev.Tasks {
 				// A native reference without a (usable) name can't be processed; skip it instead of falling
 				// through and accidentally treating the managed reference itself as a native reference.
 				if (string.IsNullOrEmpty (name)) {
-					Log.LogWarning (MSBStrings.W7182 /* Ignoring a native reference with no name in the binding resource package '{0}'. */, r.ItemSpec);
+					Log.LogWarning (7182, null, MSBStrings.W7182 /* Ignoring a native reference with no name in the binding resource package '{0}'. */, r.ItemSpec);
 					continue;
 				}
 				// The 'Name' is combined with the binding resource package's directory to locate (and
 				// potentially extract) the native reference, so make sure it can't be used to escape the
 				// binding resource package using an absolute path or '..' traversal segments.
 				if (IsUnsafeRelativePath (name)) {
-					Log.LogError (MSBStrings.E7180 /* The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments. */, name, r.ItemSpec);
+					Log.LogError (7180, null, MSBStrings.E7180 /* The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments. */, name, r.ItemSpec);
 					continue;
 				}
 				WarnIfIncorrectFrameworkExtension (Log, Path.Combine (resources, name));
@@ -423,7 +423,7 @@ namespace Xamarin.MacDev.Tasks {
 					t.SetMetadata ("Kind", "Static");
 					t.SetMetadata ("PublishFolderType", "StaticLibrary");
 				} else {
-					Log.LogWarning (MSBStrings.W7105 /* Unexpected extension '{0}' for native reference '{1}' in binding resource package '{2}'. */, Path.GetExtension (name), name, r.ItemSpec);
+					Log.LogWarning (7105, null, MSBStrings.W7105 /* Unexpected extension '{0}' for native reference '{1}' in binding resource package '{2}'. */, Path.GetExtension (name), name, r.ItemSpec);
 					t = r;
 				}
 
@@ -441,7 +441,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (attribute.NodeType != XmlNodeType.Element)
 						continue;
 					if (blockedManifestMetadata.Contains (attribute.Name)) {
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+						Log.LogWarning (7179, null, MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
 						continue;
 					}
 					try {
@@ -449,7 +449,7 @@ namespace Xamarin.MacDev.Tasks {
 					} catch (ArgumentException) {
 						// Reserved MSBuild metadata names (e.g. 'FullPath') can't be set and shouldn't appear
 						// in a manifest; ignore (and warn about) them rather than failing the build.
-						Log.LogWarning (MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
+						Log.LogWarning (7179, null, MSBStrings.W7179 /* Ignoring the metadata '{0}' for the native reference '{1}' in the binding resource package '{2}': this metadata is computed by the build and can't be set in a binding resource package manifest. */, attribute.Name, name, r.ItemSpec);
 					}
 				}
 
@@ -532,7 +532,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception e) {
-				log.LogError (MSBStrings.E0174 /* Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2} */, xcframework, resourcePath, e.Message);
+				log.LogError (174, null, MSBStrings.E0174 /* Failed to resolve the xcframework {0} in {1} due to an unexpected error: {2} */, xcframework, resourcePath, e.Message);
 				log.LogErrorsFromException (e); // report the original exception too.
 			}
 
@@ -580,15 +580,15 @@ namespace Xamarin.MacDev.Tasks {
 			// plist structure https://github.com/spouliot/xcframework#infoplist
 			var bundle_package_type = (PString?) plist ["CFBundlePackageType"];
 			if (bundle_package_type?.Value != "XFWK") {
-				log.LogError (MSBStrings.E0174a /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'. */, xcframeworkPath, bundle_package_type?.Value);
+				log.LogError (174, null, MSBStrings.E0174a /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected the value for 'CFBundlePackageType' to be 'XFWK' in the xcframework's Info.plist, but it's '{1}'. */, xcframeworkPath, bundle_package_type?.Value);
 				return false;
 			}
 			var available_libraries = plist.GetArray ("AvailableLibraries");
 			if (available_libraries is null) {
-				log.LogError (MSBStrings.E0174b /* The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist. */, xcframeworkPath);
+				log.LogError (174, null, MSBStrings.E0174b /* The xcframework {0} has an incorrect or unknown format and cannot be processed: there's no 'AvailableLibraries' entry in the xcframework's Info.plist. */, xcframeworkPath);
 				return false;
 			} else if (available_libraries.Count == 0) {
-				log.LogError (MSBStrings.E0174c /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries. */, xcframeworkPath);
+				log.LogError (174, null, MSBStrings.E0174c /* The xcframework {0} has an incorrect or unknown format and cannot be processed: expected some 'AvailableLibraries' entries in the xcframework's Info.plist, but found 0 entries. */, xcframeworkPath);
 				return false;
 			}
 
@@ -612,7 +612,7 @@ namespace Xamarin.MacDev.Tasks {
 							break;
 					}
 					if (!found) {
-						log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
+						log.LogError (175, null, MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 						return false;
 					}
 				}
@@ -624,7 +624,7 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
+			log.LogError (175, null, MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
 			return false;
 		}
 

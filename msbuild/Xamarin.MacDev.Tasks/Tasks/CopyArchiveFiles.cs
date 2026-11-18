@@ -24,7 +24,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (Path.GetExtension (ArchivePath) != ".xcarchive") {
-				Log.LogError (MSBStrings.E0186, ArchivePath);
+				Log.LogError (186, null, MSBStrings.E0186, ArchivePath); // The provided Archive Path is not from a valid archive file (.xcarchive). Archive Path: '{0}'
 
 				return false;
 			}
@@ -32,7 +32,7 @@ namespace Xamarin.MacDev.Tasks {
 			var client = GetBuildClientAsync ().Result;
 
 			if (!client.IsConnected) {
-				Log.LogError (MSBStrings.E0177, ArchivePath);
+				Log.LogError (177, null, MSBStrings.E0177, ArchivePath); // Can't get an ISshCommands instance. Please check that a valid connection to the Mac is established.
 
 				return false;
 			}
@@ -40,7 +40,7 @@ namespace Xamarin.MacDev.Tasks {
 			var sshCommands = client.MessagingService.Ssh.Commands;
 
 			if (sshCommands is null) {
-				Log.LogError (MSBStrings.E0177, ArchivePath);
+				Log.LogError (177, null, MSBStrings.E0177, ArchivePath); // Can't get an ISshCommands instance. Please check that a valid connection to the Mac is established.
 
 				return false;
 			}
@@ -50,7 +50,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return true;
 			} catch (Exception ex) {
-				Log.LogError (MSBStrings.E0178, ArchivePath, TargetPath, ex.Message);
+				Log.LogError (178, null, MSBStrings.E0178, ArchivePath, TargetPath, ex.Message); // An error occurred while trying to copy Archive '{0}' to '{1}'. Details: {2}
 
 				return false;
 			}

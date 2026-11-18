@@ -1,0 +1,5 @@
+// SDK diagnostics must use LoggingExtensions so that MSBuild receives a diagnostic code.
+M:Microsoft.Build.Utilities.TaskLoggingHelper.LogWarning(System.String,System.Object[]);Use LoggingExtensions.LogWarning with a numeric diagnostic code.
+M:Microsoft.Build.Utilities.TaskLoggingHelper.LogError(System.String,System.Object[]);Use LoggingExtensions.LogError with a numeric diagnostic code.
+M:Microsoft.Build.Utilities.TaskLoggingHelper.LogWarning(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Object[]);Use LoggingExtensions.LogWarning with a numeric diagnostic code. Only the logging helpers and external diagnostic forwarding may suppress this rule.
+M:Microsoft.Build.Utilities.TaskLoggingHelper.LogError(System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Object[]);Use LoggingExtensions.LogError with a numeric diagnostic code. Only the logging helpers and external diagnostic forwarding may suppress this rule.

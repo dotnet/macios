@@ -18,8 +18,11 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary dictionary,
 			IEnumerable<ITaskItem>? items,
 			Func<PString, string, PString> transformString,
+			int invalidRemoveValueCode,
 			string invalidRemoveValueMessage,
+			int invalidBooleanValueCode,
 			string invalidBooleanValueMessage,
+			int unknownTypeCode,
 			string unknownTypeMessage)
 		{
 			if (items is null)
@@ -33,12 +36,12 @@ namespace Xamarin.MacDev.Tasks {
 				switch (type.ToLowerInvariant ()) {
 				case "remove":
 					if (!string.IsNullOrEmpty (value))
-						log.LogError (invalidRemoveValueMessage, value, key, type);
+						log.LogError (invalidRemoveValueCode, null, invalidRemoveValueMessage, value, key, type);
 					dictionary.Remove (key);
 					break;
 				case "boolean":
 					if (!TryParseBooleanStrict (value, out var booleanValue)) {
-						log.LogError (invalidBooleanValueMessage, value, key, type);
+						log.LogError (invalidBooleanValueCode, null, invalidBooleanValueMessage, value, key, type);
 						continue;
 					}
 					dictionary [key] = new PBoolean (booleanValue);
@@ -56,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 					dictionary [key] = array;
 					break;
 				default:
-					log.LogError (unknownTypeMessage, type, key);
+					log.LogError (unknownTypeCode, null, unknownTypeMessage, type, key);
 					break;
 				}
 			}

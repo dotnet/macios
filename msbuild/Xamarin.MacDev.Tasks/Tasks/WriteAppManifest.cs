@@ -39,7 +39,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				plist = PDictionary.OpenFile (firstManifest);
 			} catch (Exception ex) {
-				Log.LogError (null, null, null, firstManifest, 0, 0, 0, 0, MSBStrings.E0010, ex.Message);
+				Log.LogError (10, firstManifest, MSBStrings.E0010, firstManifest, ex.Message); // Error loading '{0}': {1}
 				return false;
 			}
 

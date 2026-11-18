@@ -152,7 +152,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!StringUtils.TryParseArguments (additionalArgumentsValue, out var additionalArguments, out var _)) {
 				var propertyName = AdditionalArgumentsPropertyName ?? nameof (AdditionalArguments);
-				Log.LogError (MSBStrings.E7192 /* Unable to parse the '{0}' value: {1} */, propertyName, additionalArgumentsValue);
+				Log.LogError (7192, null, MSBStrings.E7192 /* Unable to parse the '{0}' value: {1} */, propertyName, additionalArgumentsValue);
 				return false;
 			}
 
@@ -213,7 +213,7 @@ namespace Xamarin.MacDev.Tasks {
 			var cacheKey = $"{simPlatform}:{SdkDevPath}";
 			if (simulatorRuntimeCache.TryGetValue (cacheKey, out var cachedResult)) {
 				if (!cachedResult)
-					Log.LogError (MSBStrings.E7175, simPlatform);
+					Log.LogError (7175, null, MSBStrings.E7175, simPlatform); // The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).
 				return;
 			}
 
@@ -231,7 +231,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
 
 				if (rv.ExitCode != 0) {
-					Log.LogWarning (MSBStrings.W7176, simPlatform);
+					Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 					return;
 				}
 
@@ -243,19 +243,19 @@ namespace Xamarin.MacDev.Tasks {
 
 				simulatorRuntimeCache [cacheKey] = hasRuntime;
 				if (!hasRuntime)
-					Log.LogError (MSBStrings.E7175, simPlatform);
+					Log.LogError (7175, null, MSBStrings.E7175, simPlatform); // The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).
 			} catch (OperationCanceledException) when (cancellationTokenSource.IsCancellationRequested) {
 				// User cancelled - don't emit diagnostics
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException && cancellationTokenSource.IsCancellationRequested) {
 				// User cancelled - don't emit diagnostics
 			} catch (OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 			} catch (Exception ex) {
-				Log.LogWarning (MSBStrings.W7176, simPlatform);
+				Log.LogWarning (7176, null, MSBStrings.W7176, simPlatform); // Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.
 				Log.LogMessage (MessageImportance.Low, "Exception while checking simulator runtime: {0}", ex.Message);
 			} finally {
 				File.Delete (jsonOutputFile);
@@ -314,8 +314,10 @@ namespace Xamarin.MacDev.Tasks {
 				// diagnose the issue and then delete the manifest log file so that rebuilding tries
 				// again (in case of ibtool's infamous spurious errors).
 				var errors = rv.Output.StandardError;
+#pragma warning disable RS0030 // Forward the Xcode tool's standard error with its input file location.
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, items [0].ItemSpec, 0, 0, 0, 0, "{0}", errors);
+#pragma warning restore RS0030
 
 				// Note: If the log file exists and is parseable, log those warnings/errors as well...
 				if (File.Exists (manifest.ItemSpec)) {
@@ -324,7 +326,7 @@ namespace Xamarin.MacDev.Tasks {
 
 						LogWarningsAndErrors (plist, items [0]);
 					} catch (Exception ex) {
-						Log.LogError (MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message);
+						Log.LogError (94, null, MSBStrings.E0094, ToolName, manifest.ItemSpec, ex.Message); // Failed to load {0} log file `{1}`: {2}
 					}
 
 					File.Delete (manifest.ItemSpec);
@@ -353,14 +355,18 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.document.warnings", ToolName), out array)) {
 				foreach (var item in array.OfType<PDictionary> ()) {
 					if (item.TryGetValue ("message", out message))
+#pragma warning disable RS0030 // Preserve the Xcode tool's diagnostic text, subcategory and source location.
 						Log.LogWarning (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 				}
 			}
 
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.document.errors", ToolName), out array)) {
 				foreach (var item in array.OfType<PDictionary> ()) {
 					if (item.TryGetValue ("message", out message))
+#pragma warning disable RS0030 // Preserve the Xcode tool's diagnostic text, subcategory and source location.
 						Log.LogError (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 				}
 			}
 
@@ -380,7 +386,9 @@ namespace Xamarin.MacDev.Tasks {
 					array = valuePair.Value as PArray;
 					foreach (var item in array?.OfType<PDictionary> () ?? Array.Empty<PDictionary> ()) {
 						if (item.TryGetValue ("message", out message))
+#pragma warning disable RS0030 // Preserve the Xcode tool's diagnostic text, subcategory and source location.
 							Log.LogWarning (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 					}
 				}
 			}
@@ -390,7 +398,9 @@ namespace Xamarin.MacDev.Tasks {
 					array = valuePair.Value as PArray;
 					foreach (var item in array?.OfType<PDictionary> () ?? Array.Empty<PDictionary> ()) {
 						if (item.TryGetValue ("message", out message))
+#pragma warning disable RS0030 // Preserve the Xcode tool's diagnostic text, subcategory and source location.
 							Log.LogError (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 					}
 				}
 			}
@@ -398,11 +408,13 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.errors", ToolName), out array)) {
 				foreach (var item in array.OfType<PDictionary> ()) {
 					if (item.TryGetValue ("description", out message)) {
+#pragma warning disable RS0030 // Preserve the Xcode tool's diagnostic text, subcategory and source location.
 						Log.LogError (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
+#pragma warning restore RS0030
 						if (IsSimulatorRuntimeVersionError (message.Value)) {
 							var simPlatform = GetSimulatorPlatformName ();
 							if (simPlatform is not null)
-								Log.LogError (MSBStrings.E7177, simPlatform);
+								Log.LogError (7177, null, MSBStrings.E7177, simPlatform); // The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).
 						}
 					}
 				}

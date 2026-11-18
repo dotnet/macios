@@ -91,7 +91,7 @@ namespace Xamarin.MacDev {
 			var localDefiningProjectFullPath = item.GetMetadata ("LocalDefiningProjectFullPath").Replace ('\\', '/');
 
 			if (string.IsNullOrEmpty (localMSBuildProjectFullPath)) {
-				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalMSBuildProjectFullPath");
+				task.Log.LogError (7133, item.ItemSpec, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalMSBuildProjectFullPath");
 				return "placeholder";
 			}
 
@@ -127,7 +127,7 @@ namespace Xamarin.MacDev {
 			// macOS version when building on macOS.
 
 			if (!resolveRelativeToProject && string.IsNullOrEmpty (localDefiningProjectFullPath)) {
-				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalDefiningProjectFullPath");
+				task.Log.LogError (7133, item.ItemSpec, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalDefiningProjectFullPath");
 				return "placeholder";
 			}
 

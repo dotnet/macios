@@ -247,16 +247,16 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		var testOutputDirectory = Path.GetDirectoryName (testInfo.InputPath)!;
 		var targetInputPath = Path.Combine (testOutputDirectory, targetFramework, "Target.dll");
 		var targetOutputPath = Path.Combine (testOutputDirectory, "out", "Target.dll");
-		// In a Hot Reload compatible build an untrimmed referenced assembly can be reloaded, so it must not be modified.
-		// IsTrimmable=false with no explicit trim mode selects CopyUsed.
+		// An untrimmed referenced assembly keeps all its members, so it must not be modified (in a Hot Reload compatible
+		// build it can be reloaded, and modifying it is an error). IsTrimmable=false with no explicit trim mode selects CopyUsed.
 		var targetInfo = new AssemblyPreparerInfo (targetInputPath, targetOutputPath, trimMode != "", trimMode);
 		preparer.Assemblies.Add (targetInfo);
 
 		AssertPrepare (preparer);
 		Assert.That (((TestLogger) preparer.Configuration.Logger).Errors, Is.Empty, "Preparation errors");
 
-		if (hotReloadCompatibleBuild) {
-			Assert.That (File.Exists (targetOutputPath), Is.False, "Reloadable referenced assembly was not rewritten");
+		if (trimMode != "link") {
+			Assert.That (File.Exists (targetOutputPath), Is.False, "Untrimmed referenced assembly was not rewritten");
 			return;
 		}
 

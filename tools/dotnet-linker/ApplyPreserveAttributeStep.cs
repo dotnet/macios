@@ -92,6 +92,11 @@ namespace Xamarin.Linker.Steps {
 				return false;
 			}
 
+			// An assembly-level [Preserve (typeof (T))] can point to a type in another assembly. If that assembly isn't
+			// trimmed, everything in it is kept anyway, so there's nothing to do (and we must not modify it).
+			if (!abr.IsAssemblyTrimmed (type))
+				return false;
+
 			return AddDynamicDependencyAttribute (type, allMembers);
 		}
 

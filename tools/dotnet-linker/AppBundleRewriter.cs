@@ -1536,7 +1536,7 @@ namespace Xamarin.Linker {
 
 		// We only need to add dependency attributes if the target dependency is in a trimmed assembly,
 		// otherwise the target dependency won't be trimmed away.
-		bool IsAssemblyTrimmed (IMemberDefinition member)
+		public bool IsAssemblyTrimmed (IMemberDefinition member)
 		{
 			var assembly = member is TypeDefinition td ? td.Module.Assembly : member.DeclaringType.Module.Assembly;
 			var action = configuration.Context.Annotations.GetAction (assembly);
@@ -1569,6 +1569,8 @@ namespace Xamarin.Linker {
 		// methods whose names start with the helper prefix, so don't identify helpers by name.
 		readonly Dictionary<MethodDefinition, MethodDefinition> explicitInterfaceImplementationRoots = new ();
 		readonly HashSet<MethodDefinition> generatedExplicitInterfaceImplementationRoots = new ();
+		// The next helper suffix to try for each type, so that we don't scan the same names repeatedly.
+		readonly Dictionary<TypeDefinition, int> nextExplicitInterfaceImplementationRootIndex = new ();
 
 		/// <summary>
 		/// Returns true if the method is an explicit interface implementation (for example <c>void IFoo.Bar ()</c>).
@@ -1589,8 +1591,8 @@ namespace Xamarin.Linker {
 		///     the method with 'ldtoken', and return the signature for the helper method.
 		///   </para>
 		///   <para>
-		///     Returns null for explicit interface implementations in assemblies that can be hot reloaded, because
-		///     those assemblies must not be modified. They aren't trimmed either, so there's nothing to preserve.
+		///     Returns null for explicit interface implementations in assemblies that aren't trimmed, because there's
+		///     nothing to preserve, and those assemblies must not be modified (for instance in Hot Reload builds).
 		///   </para>
 		/// </remarks>
 		public string? GetDynamicDependencySignature (MethodDefinition method, out bool modified)
@@ -1599,7 +1601,7 @@ namespace Xamarin.Linker {
 			if (!IsExplicitInterfaceImplementation (method))
 				return DocumentationComments.GetSignature (method);
 
-			if (IsReloadableAssembly (method.Module.Assembly))
+			if (!IsAssemblyTrimmed (method))
 				return null;
 
 			var helper = GetOrCreateExplicitInterfaceImplementationRoot (method, out modified);
@@ -1631,11 +1633,12 @@ namespace Xamarin.Linker {
 			// Pick a name that isn't used by any other member in the type, including user members, because the
 			// DynamicDependency signature for the helper is just its name (which would match any member with that name).
 			var type = method.DeclaringType;
-			var helperIndex = 0;
+			nextExplicitInterfaceImplementationRootIndex.TryGetValue (type, out var helperIndex);
 			string helperName;
 			do {
 				helperName = ExplicitInterfaceImplementationRootPrefix + helperIndex++;
 			} while (IsMemberNameUsed (type, helperName));
+			nextExplicitInterfaceImplementationRootIndex [type] = helperIndex;
 
 			var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
 			type.Methods.Add (helper);
@@ -1842,8 +1845,8 @@ namespace Xamarin.Linker {
 				}
 			}
 
-			// Assemblies that can be hot reloaded aren't trimmed (and must not be modified), so there's no need for a placeholder member.
-			if (signatures.Count == 0 && !IsReloadableAssembly (type.Module.Assembly)) {
+			// Assemblies that aren't trimmed keep the type anyway, so there's no need for a placeholder member.
+			if (signatures.Count == 0 && IsAssemblyTrimmed (type)) {
 				// The type has no declared members, so add a placeholder member and preserve that,
 				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
 				var placeholderName = "__linker_preserve__";

@@ -17,8 +17,6 @@
     <CopyLocalLockFileAssemblies Condition="'$(TargetFramework)' == 'net$(BundledNETCoreAppTargetFrameworkVersion)'">true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <Import Project="..\..\eng\Versions.props" />
-
   <ItemGroup>
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />

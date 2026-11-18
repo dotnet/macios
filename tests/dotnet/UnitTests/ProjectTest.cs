@@ -516,7 +516,10 @@ namespace Xamarin.Tests {
 			var bindingProjectPath = Path.Combine (bindingDirectory, "BindingWithEmbeddedFramework.csproj");
 			var nativePlatform = platform == ApplePlatform.iOS ? "ios" : "macos";
 			var frameworkDirectory = Path.Combine (Configuration.SourceRoot, "tests", "test-libraries", ".libs", nativePlatform, "XTest.framework");
-			System.IO.Compression.ZipFile.CreateFromDirectory (frameworkDirectory, Path.Combine (bindingDirectory, "XTest.framework.zip"));
+			var zipResult = ExecutionHelper.Execute ("/usr/bin/zip",
+				new [] { "-r", "-y", Path.Combine (bindingDirectory, "XTest.framework.zip"), "." },
+				out StringBuilder zipOutput, frameworkDirectory);
+			Assert.That (zipResult, Is.EqualTo (0), $"Creating the embedded framework archive: {zipOutput}");
 			File.Copy (Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "BindingWithEmbeddedFramework", "StructsAndEnums.cs"), Path.Combine (bindingDirectory, "CFunctions.cs"));
 			File.WriteAllText (Path.Combine (bindingDirectory, "LinkWith.cs"), """
 				[assembly: ObjCRuntime.LinkWith ("XTest.framework", SmartLink = true)]

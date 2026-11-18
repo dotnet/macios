@@ -12,7 +12,6 @@ using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
 	public class IBTool : XcodeCompilerToolTask {
-		static readonly string [] WatchAppExtensions = { "-glance.plist", "-notification.plist" };
 
 		#region Inputs
 
@@ -23,8 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] InterfaceDefinitions { get; set; } = Array.Empty<ITaskItem> ();
 
-		public bool IsWatchApp { get; set; }
-		public bool IsWatch2App { get; set; }
 
 		public bool IsAppExtension { get; set; }
 
@@ -137,20 +134,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		IEnumerable<ITaskItem> GetCompilationOutput (ITaskItem expected)
 		{
-			if (IsWatchApp) {
-				var logicalName = expected.GetMetadata ("LogicalName");
-
-				foreach (var extension in WatchAppExtensions) {
-					var path = GetPathWithoutExtension (expected.ItemSpec) + extension;
-					if (File.Exists (path)) {
-						var item = new TaskItem (path);
-						expected.CopyMetadataTo (item);
-						item.SetMetadata ("LogicalName", GetPathWithoutExtension (logicalName) + extension);
-						yield return item;
-					}
-				}
-			}
-
 			yield return expected;
 		}
 
@@ -345,13 +328,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					yield return item;
 				} else {
-					if (IsWatchApp && string.IsNullOrEmpty (nibDir)) {
-						// Note: ignore top-level *.storyboardc directories when compiling Watch apps
-						// See https://bugzilla.xamarin.com/show_bug.cgi?id=33853 for details
-						item.SetMetadata ("LogicalName", string.Empty);
-					} else {
-						item.SetMetadata ("LogicalName", logicalName);
-					}
+					item.SetMetadata ("LogicalName", logicalName);
 
 					foreach (var file in RecursivelyEnumerateFiles (item))
 						yield return file;
@@ -365,12 +342,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var baseLogicalName = compiledItem.GetMetadata ("LogicalName");
 			var baseDir = compiledItem.ItemSpec;
-
-			// Note: Watch App storyboards will be compiled to something like Interface.storyboardc/Interface.plist, but
-			// Interface.plist needs to be moved up 1 level (e.g. drop the "Interface.storyboardc").
-			// See https://bugzilla.xamarin.com/show_bug.cgi?id=33853 for details
-			if (IsWatchApp && baseLogicalName.EndsWith (".storyboardc", StringComparison.Ordinal))
-				baseLogicalName = Path.GetDirectoryName (baseLogicalName);
 
 			foreach (var path in Directory.EnumerateFiles (baseDir, "*.*", SearchOption.AllDirectories)) {
 				var rpath = PathUtils.AbsoluteToRelative (baseDir, Path.GetFullPath (path));

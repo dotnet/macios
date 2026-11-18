@@ -164,6 +164,11 @@ namespace Xamarin.MacDev {
 				if (entry is null) {
 					entry = GetCanonicalizedEntry (archive, resource + zipDirectorySeparator);
 					if (entry is null) {
+						if (archive.Entries.Any (v => CanonicalizeZipEntryPath (v.FullName).StartsWith (resource + zipDirectorySeparator, StringComparison.Ordinal))) {
+							args.Add (resource + zipDirectorySeparator + "*");
+							var result = task.ExecuteAsync ("unzip", args, cancellationToken: cancellationToken).Result;
+							return result.ExitCode == 0;
+						}
 						log.LogError (MSBStrings.E7112 /* Could not find the file or directory '{0}' in the zip file '{1}'. */, resource, zip);
 						return false;
 					}
@@ -389,7 +394,7 @@ namespace Xamarin.MacDev {
 			log.LogMessage (MessageImportance.Low, $"Compressed {path} into the zip file as {zipName}");
 		}
 
-		static int GetExternalAttributes (ZipArchiveEntry self)
+		internal static int GetExternalAttributes (ZipArchiveEntry self)
 		{
 			// The ZipArchiveEntry.ExternalAttributes property is available in .NET 4.7.2 (which we need to target for builds on Windows) and .NET 5+, but not netstandard2.0 (which is the latest netstandard .NET 4.7.2 supports).
 			// Since the property will always be available at runtime, just call it using reflection.
@@ -403,4 +408,3 @@ namespace Xamarin.MacDev {
 
 	}
 }
-

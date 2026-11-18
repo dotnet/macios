@@ -6,6 +6,8 @@ using NUnit.Framework;
 
 using Microsoft.Build.Logging.StructuredLogger;
 
+using Xamarin.MacDev;
+
 namespace Xamarin.Tests {
 	public class XcodeProjectTests : TestBaseClass {
 
@@ -103,6 +105,140 @@ namespace Xamarin.Tests {
 				expectedXcodeFxOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ()}.xcframework");
 			}
 			Assert.That (expectedXcodeFxOutput, createNativeReference ? Does.Exist : Does.Not.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' to exist when CreateNativeReference=true.");
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		public void BuildBindingFromWindows ()
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+
+			var testDir = Cache.CreateTemporaryDirectory (TestName);
+			var proj = Path.Combine (testDir, $"{TestName}.csproj");
+			DotNet.AssertNew (testDir, "iosbinding");
+
+			var xcodeProjName = "TemplateFx";
+			var xcodeProjDir = Path.Combine (testDir, "Xcode project");
+			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, xcodeProjName), xcodeProjDir);
+			AddXcodeProjectItem (proj, Path.Combine ("Xcode project", $"{xcodeProjName}.xcodeproj"),
+				new Dictionary<string, string> {
+					{ "SchemeName", xcodeProjName },
+				});
+
+			var properties = GetDefaultProperties (includeRemoteProperties: true);
+			properties ["CompressBindingResourcePackage"] = "true";
+			var rv = DotNet.AssertBuild (proj, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_BuildXcodeProjects", "Initial Xcode build");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+			var resourcePackage = Path.Combine (testDir, "bin", "Debug", ApplePlatform.iOS.ToFramework (), $"{TestName}.resources.zip");
+			using (var archive = System.IO.Compression.ZipFile.OpenRead (resourcePackage)) {
+				var binary = archive.GetEntry ($"{xcodeProjName}ios.xcframework/ios-arm64/{xcodeProjName}.framework/{xcodeProjName}");
+				Assert.That (binary, Is.Not.Null, "Framework binary copied back to Windows");
+				Assert.That (binary?.Length, Is.GreaterThan (0), "Framework binary must not be an empty placeholder");
+			}
+
+			rv = DotNet.AssertBuild (proj, properties);
+			AssertTargetNotExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_BuildXcodeProjects", "Unchanged Xcode project");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			File.AppendAllText (Path.Combine (testDir, "ApiDefinition.cs"), "\n");
+			rv = DotNet.AssertBuild (proj, properties);
+			var bindingTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (bindingTargets, "_BuildXcodeProjects", "Changed binding source");
+			AssertTargetExecuted (bindingTargets, "_CreateBindingResourcePackage", "Changed binding source resources");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			var source = Directory.GetFiles (xcodeProjDir, "*.swift", SearchOption.AllDirectories).First ();
+			File.AppendAllText (source, "\n");
+			rv = DotNet.AssertBuild (proj, properties);
+			var targets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (targets, "_BuildXcodeProjects", "Changed Xcode source");
+			AssertTargetExecuted (targets, "_CreateBindingResourcePackage", "Changed binding resources");
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+
+			rv = DotNet.AssertBuild (proj, properties, target: "Clean");
+			AssertTargetExecuted (BinLog.GetAllTargets (rv.BinLogPath), "_CleanXcodeProjects", "Clean Xcode project");
+			Assert.That (resourcePackage, Does.Not.Exist, "Clean binding resources");
+
+			DotNet.AssertBuild (proj, properties);
+			AssertXcFrameworkOutput (ApplePlatform.iOS, testDir, xcodeProjName);
+		}
+
+		[Test]
+		public void BuildNativeWatchApp ()
+		{
+			Configuration.IgnoreIfNotOnMacOS ();
+			BuildNativeWatchApp (false);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		public void BuildNativeWatchAppFromWindows ()
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			BuildNativeWatchApp (true);
+		}
+
+		void BuildNativeWatchApp (bool windows)
+		{
+			var platform = ApplePlatform.iOS;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			const string rid = "iossimulator-arm64";
+			var testDir = Cache.CreateTemporaryDirectory (TestName);
+			var project = Path.Combine (testDir, $"{TestName}.csproj");
+			DotNet.AssertNew (testDir, "ios");
+			var manifestPath = Path.Combine (testDir, "Info.plist");
+			var manifest = PDictionary.OpenFile (manifestPath);
+			manifest.Remove ("CFBundleIdentifier");
+			manifest.SetString ("CFBundleVersion", "1");
+			manifest.Save (manifestPath);
+			var nativeProject = testDir;
+			FileHelpers.CopyDirectory (Path.Combine (XCodeTestProjectDir, "WatchApp"), nativeProject);
+			var item = "<ItemGroup><AdditionalWatchOSApp Include=\"WatchApp.xcodeproj\" SchemeName=\"WatchApp\" /></ItemGroup>";
+			File.WriteAllText (project, File.ReadAllText (project).Replace ("</Project>", item + "</Project>"));
+			var properties = GetDefaultProperties (rid, includeRemoteProperties: windows);
+			properties ["ApplicationId"] = "com.xamarin.NativeWatchApp";
+			properties ["CopyAppBundleToWindows"] = "true";
+
+			void AssertWatchApp (bool present)
+			{
+				if (windows) {
+					var zipPath = Path.Combine (GetObjDir (project, platform, rid, "Debug"), "AppBundle.zip");
+					using var archive = System.IO.Compression.ZipFile.OpenRead (zipPath);
+					var binary = archive.Entries.SingleOrDefault (v => v.FullName.EndsWith ("Watch/WatchApp.app/WatchApp", StringComparison.Ordinal));
+					Assert.That (binary, present ? Is.Not.Null : Is.Null, "watch executable copied from Mac");
+					if (present)
+						Assert.That (binary?.Length, Is.GreaterThan (0), "native binary must not be a placeholder");
+				} else {
+					var binary = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), rid, TestName + ".app", "Watch", "WatchApp.app", "WatchApp");
+					Assert.That (File.Exists (binary), Is.EqualTo (present), "embedded watch executable");
+				}
+			}
+
+			var result = DotNet.AssertBuild (project, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_PrepareNativeWatchOSApp", "initial watch build");
+			AssertWatchApp (true);
+			var signaturePath = Path.Combine (GetObjDir (project, platform, rid, "Debug"), "watch-app", "signing", "com.xamarin.NativeWatchApp.watchkitapp.stamp");
+			if (!windows)
+				Assert.That (signaturePath, Does.Exist, "watch signing stamp");
+			var signatureTimestamp = windows ? DateTime.MinValue : File.GetLastWriteTimeUtc (signaturePath);
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			if (!windows)
+				Assert.That (File.GetLastWriteTimeUtc (signaturePath), Is.EqualTo (signatureTimestamp), "unchanged watch app is not signed again");
+			var watchSource = Path.Combine (nativeProject, "WatchApp.swift");
+			File.WriteAllText (watchSource, File.ReadAllText (watchSource).Replace ("Native watch app", "Updated native watch app"));
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			if (!windows)
+				Assert.That (File.GetLastWriteTimeUtc (signaturePath), Is.GreaterThan (signatureTimestamp), "changed watch app is signed again");
+			DotNet.AssertBuild (project, properties, target: "Clean");
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (true);
+			File.WriteAllText (project, File.ReadAllText (project).Replace (item, ""));
+			DotNet.AssertBuild (project, properties);
+			AssertWatchApp (false);
 		}
 
 		[Test]

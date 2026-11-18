@@ -44,6 +44,24 @@ $ dotnet run --device UDID
 
 Added in .NET 11.
 
+## CreateWatchOSAppZip
+
+Builds a native Xcode watch app for device and simulator runtime identifiers and
+creates a reusable ZIP for [AdditionalWatchOSApp](build-items.md#additionalwatchosapp).
+It includes unsigned app bundles, entitlement templates, and available dSYMs.
+This target runs only on a local Mac, not through a paired Mac.
+
+```shell
+dotnet build -t:CreateWatchOSAppZip \
+  -p:WatchOSXcodeProject=../WatchApp/WatchApp.xcodeproj \
+  -p:WatchOSZipPath=output/WatchApp.zip
+```
+
+`WatchOSXcodeScheme` selects the scheme. `WatchOSRuntimeIdentifiers` optionally
+selects a semicolon-separated subset of `ios-arm64` and `iossimulator-arm64`;
+both are built by default. `Configuration` selects the
+Xcode build configuration.
+
 ## DeployToDevice
 
 Deploys an already-built iOS or tvOS app to a device or simulator without

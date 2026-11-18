@@ -3535,6 +3535,96 @@ or bundled correctly. Rename the directory and update the native reference.
 For frameworks inside an archive or binding resource package, correct the
 framework name in the package as well.
 
+<a name="MT7201"></a>
+
+### MT7201: The watchOS app's signing entitlements must be a property-list dictionary.
+
+<a name="MT7202"></a>
+
+### MT7202: The watchOS app must not be inside the directory it is copied to, and its symbolic links must stay inside its bundle.
+
+<a name="MT7203"></a>
+
+### MT7203: The watchOS bundle must have a valid CFBundleIdentifier and CFBundleExecutable.
+
+<a name="MT7204"></a>
+
+### MT7204: The watchOS provisioning profile must have the same distribution type as the iOS app's profile.
+
+<a name="MT7205"></a>
+
+### MT7205: The watchOS app does not support runtime identifier '*'.
+
+Use `ios-arm64` for a device build or `iossimulator-arm64` for a simulator build.
+
+<a name="MT7206"></a>
+
+### MT7206: Specify a watchOS Xcode scheme.
+
+Set `SchemeName` on `AdditionalWatchOSApp`, or set `WatchOSXcodeScheme` when
+calling `CreateWatchOSAppZip`, if Xcode does not list exactly one scheme.
+
+<a name="MT7207"></a>
+
+### MT7207: Expected exactly one native watchOS app.
+
+Specify one `AdditionalWatchOSApp` item and a scheme that builds one watchOS app.
+
+<a name="MT7208"></a>
+
+### MT7208: CreateWatchOSAppZip must run locally on macOS.
+
+<a name="MT7209"></a>
+
+### MT7209: Could not prepare watchOS app '*'.
+
+The message includes the reason for the failure.
+
+<a name="MT7210"></a>
+
+### MT7210: The watchOS ZIP has an invalid or unsafe layout, or does not contain the requested runtime identifier.
+
+Use `CreateWatchOSAppZip` to create the package. See the
+[native watchOS ZIP format](../native-watchos-apps-design.md#zip-format).
+
+<a name="MT7211"></a>
+
+### MT7211: WKCompanionAppBundleIdentifier must match the containing iOS app's bundle identifier.
+
+<a name="MT7212"></a>
+
+### MT7212: WatchOSAppSigning specifies a bundle identifier that is not present in the watchOS app.
+
+<a name="MT7213"></a>
+
+### MT7213: A bundle identifier occurs more than once in WatchOSAppSigning.
+
+<a name="MT7214"></a>
+
+### MT7214: The executable is missing or is not a compatible watchOS binary.
+
+<a name="MT7215"></a>
+
+### MT7215: AdditionalWatchOSApp requires an iOS app project with a single RuntimeIdentifier.
+
+Libraries, app extensions, and builds with multiple runtime identifiers are not supported.
+
+<a name="MT7216"></a>
+
+### MT7216: A prebuilt watchOS .app directory can only be used on macOS.
+
+Use a ZIP or an Xcode project for a Windows build with a paired Mac.
+
+<a name="MT7217"></a>
+
+### MT7217: CreateWatchOSAppZip requires WatchOSXcodeProject and WatchOSZipPath.
+
+<a name="MT7218"></a>
+
+### MT7218: Managed watchOS projects and private _ResolvedWatchAppReferences inputs are no longer supported.
+
+Use `AdditionalWatchOSApp` to include a native watchOS app.
+
 ## MT8xxx: Runtime error messages
 
 <!--

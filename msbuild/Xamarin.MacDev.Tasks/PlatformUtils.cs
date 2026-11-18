@@ -2,19 +2,15 @@
 
 namespace Xamarin.MacDev.Tasks {
 	public static class PlatformUtils {
-		public static string? GetTargetPlatform (string sdkPlatform, bool isWatchApp)
+		public static string? GetTargetPlatform (string sdkPlatform)
 		{
 			switch (sdkPlatform) {
 			case "iPhoneSimulator":
-				return isWatchApp ? "watchsimulator" : "iphonesimulator";
+				return "iphonesimulator";
 			case "iPhoneOS":
-				return isWatchApp ? "watchos" : "iphoneos";
+				return "iphoneos";
 			case "MacOSX":
 				return "macosx";
-			case "WatchSimulator":
-				return "watchsimulator";
-			case "WatchOS":
-				return "watchos";
 			case "AppleTVSimulator":
 				return "appletvsimulator";
 			case "AppleTVOS":

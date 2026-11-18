@@ -1970,6 +1970,29 @@ The default value is to validate; set to `false` to disable.
 > [!NOTE]
 > Using a different than the recommended version is likely to produce problems later on in the build process.
 
+## WatchOSRuntimeIdentifiers
+
+The semicolon-separated host runtime identifiers packaged by
+`CreateWatchOSAppZip`. Defaults to
+`ios-arm64;iossimulator-arm64`. The helper builds the
+corresponding native watchOS variants, not iOS executables.
+
+## WatchOSXcodeProject
+
+The `.xcodeproj` path used by
+[CreateWatchOSAppZip](build-targets.md#createwatchosappzip). Required when
+invoking that target.
+
+## WatchOSXcodeScheme
+
+The Xcode scheme used by `CreateWatchOSAppZip`. It can be omitted if the
+project has exactly one scheme.
+
+## WatchOSZipPath
+
+The output ZIP path used by `CreateWatchOSAppZip`. Required when invoking that
+target.
+
 ## XamMacResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).

@@ -1247,10 +1247,11 @@ namespace Registrar {
 		{
 #if ASSEMBLY_PREPARER
 			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
-				// The separate postprocessor has no linker annotations for removed interface implementations.
+				// Only recover native protocols: trimmed managed protocols no longer have generated declarations.
 				var preTrimType = GetPreTrimAttributeProvider (type.Resolve ()) as TypeDefinition;
 				if (preTrimType?.HasInterfaces == true)
-					return preTrimType.Interfaces.Select (v => v.InterfaceType.Resolve ()).ToArray ();
+					return preTrimType.Interfaces.Select (v => v.InterfaceType.Resolve ())
+						.Where (v => GetProtocolAttributeWrapperType (v) is not null).ToArray ();
 			}
 #endif
 

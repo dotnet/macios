@@ -12,9 +12,14 @@ public class RegistrarTests : BaseClass {
 	public void TrimmedModelProtocolConformance (ApplePlatform platform)
 	{
 		var code = @"
+		using Foundation;
 		using UIKit;
 
-		public class MyClass : UIWindowSceneDelegate {
+		[Protocol (Name = ""MyProtocol"")]
+		public interface IMyProtocol {
+		}
+
+		public class MyClass : UIWindowSceneDelegate, IMyProtocol {
 		}
 		";
 		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
@@ -46,12 +51,16 @@ public class RegistrarTests : BaseClass {
 		new LoadAssembliesStep ().Process (context);
 		var platformAssembly = context.GetAssemblies ().Single (v => v.Name.Name == $"Microsoft.{platform.AsString ()}");
 		platformAssembly.MainModule.GetType ("UIKit.UIWindowSceneDelegate").Interfaces.Clear ();
+		var userAssembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
+		userAssembly.MainModule.GetType ("MyClass").Interfaces.Clear ();
+		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyProtocol"));
 		new ManagedRegistrarStep ().Process (context);
 		new RegistrarStep ().Process (context);
 
 		Assert.That (logger.Errors, Is.Empty, "Postprocessing errors");
 		var declaration = File.ReadLines (Path.Combine (tempDir, "registrar.h")).Single (v => v.StartsWith ("@interface MyClass :"));
 		Assert.That (declaration, Does.Contain ("UIWindowSceneDelegate"), "Native protocol conformance");
+		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
 	}
 
 	[Test]

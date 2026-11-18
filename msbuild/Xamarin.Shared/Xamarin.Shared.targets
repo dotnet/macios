@@ -31,7 +31,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ACTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolUpload" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolValidate" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.AOTCompile" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Archive" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.BGen" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Codesign" AssemblyFile="$(_TaskAssemblyName)" />
@@ -2285,6 +2284,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<ItemsFile>$(_StampDirectory)%(FileName).items</ItemsFile>
 			</_UnpackLibraryResourceItems>
 		</ItemGroup>
+		<PropertyGroup>
+			<!-- Shared resource caches must be regenerated from all references, not a partially built input list. -->
+			<_UnpackLibraryResourcesOutputs>@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')</_UnpackLibraryResourcesOutputs>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_BeforeUnpackLibraryResources"
@@ -2321,15 +2324,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
-			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(StampFile)')" />
 
 			<_BundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
+			<_UnpackedBundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_UnpackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_IsMultiRidBuild)' != 'true'" DependsOnTargets="$(_UnpackLibraryResourcesDependsOn)"
 		Inputs="@(_UnpackLibraryResourceItems)"
-		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)')">
+		Outputs="$(_UnpackLibraryResourcesOutputs)">
 
 		<MakeDir Directories="$(_StampDirectory)" />
 
@@ -2452,7 +2457,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 
 		<ParseBundlerArguments
-			Aot="@(_AotArguments)"
 			ExtraArgs="$(AppBundleExtraOptions)"
 			MarshalManagedExceptionMode="$(MarshalManagedExceptionMode)"
 			MarshalObjectiveCExceptionMode="$(MarshalObjectiveCExceptionMode)"
@@ -2462,7 +2466,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Registrar="$(Registrar)"
 			BundlerVerbosity="$(_BundlerVerbosity)"
 			>
-			<Output TaskParameter="Aot" ItemName="_AotArguments" />
 			<Output TaskParameter="CustomBundleName" PropertyName="_CustomBundleName" />
 			<Output TaskParameter="CustomLinkFlags" ItemName="_CustomLinkFlags" />
 			<Output TaskParameter="DlSym" ItemName="_BundlerDlsym" />
@@ -3769,11 +3772,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
-		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
-		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<_PrepareAssembliesForPreparationDependsOn>
 			_ComputeAssembliesToPostprocessOnPublish;
 			_ComputeLinkerInputs;
@@ -3807,7 +3805,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PrepareAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
 		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
@@ -3833,7 +3831,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		DependsOnTargets="_ExecutePrepareAssemblies"
 		>
 		<ReadItemsFromFile File="$(_PreparedAssembliesItemsPath)">
@@ -3875,7 +3873,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PostprocessAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
@@ -3904,7 +3902,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		AfterTargets="ILLink"
 		BeforeTargets="NativeCompile;CreateReadyToRunImages"
 		DependsOnTargets="_ExecutePostprocessAssemblies"

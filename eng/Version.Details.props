@@ -22,7 +22,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftmacOSSdknet110_272PackageVersion>27.2.11042</MicrosoftmacOSSdknet110_272PackageVersion>
     <MicrosofttvOSSdknet110_272PackageVersion>27.2.11042</MicrosofttvOSSdknet110_272PackageVersion>
     <!-- dotnet-macios-devtools dependencies -->
-    <XamarinAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26563.1</XamarinAppleToolsMaciOSPackageVersion>
+    <XamarinAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26563.4</XamarinAppleToolsMaciOSPackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26556.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>

@@ -569,6 +569,16 @@ Set this property to `false` to preserve the attributes. Set it to `true` to
 require their removal; the build will fail if it detects that the attributes
 are needed at runtime.
 
+`TrimExportAttributes` does not control removal of `Foundation.RegisterAttribute`.
+When `Registrar=trimmable-static` and dynamic registration is disabled, assembly
+preparation also removes `Foundation.RegisterAttribute` from each binding type
+in a trimmed assembly when that type's `IsDirectBinding` value is known to be
+`true`. Other types keep the attribute. Runtime reflection will not find removed
+attributes. To keep them, add `--optimize=-remove-register-attributes` to
+[`AppBundleExtraOptions`](#appbundleextraoptions). This also works with NativeAOT,
+which does not support dynamic registration. With other runtimes, setting
+`DynamicRegistrationSupported=true` also keeps these attributes.
+
 ## EmbedOnDemandResources
 
 Controls where on-demand resource asset packs are placed, so that the on-demand

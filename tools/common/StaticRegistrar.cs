@@ -690,6 +690,9 @@ namespace Registrar {
 			if (found || !ShouldReadAttributeFromPreTrimAssembly (@namespace, name))
 				yield break;
 
+			if (name == StringConstants.RegisterAttribute && (provider is not TypeDefinition registerType || !IsNSObject (registerType)))
+				yield break;
+
 			var preTrimProvider = GetPreTrimAttributeProvider (provider);
 			if (preTrimProvider is null)
 				yield break;
@@ -711,6 +714,9 @@ namespace Registrar {
 
 			if (name == StringConstants.ProtocolMemberAttribute)
 				return true;
+
+			if (name == StringConstants.RegisterAttribute)
+				return App.CanTrimRegistrarAttributes;
 
 			return name == StringConstants.ExportAttribute && (App.TrimExportAttributes == true || App.Registrar == RegistrarMode.Static);
 		}

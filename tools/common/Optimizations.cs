@@ -29,6 +29,7 @@ namespace Xamarin.Bundler {
 			"experimental-xforms-product-type",
 			"force-rejected-types-removal",
 			"redirect-class-handles",
+			"remove-register-attributes",
 		};
 
 		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
@@ -50,6 +51,7 @@ namespace Xamarin.Bundler {
 			/* Opt.ExperimentalFormsProductType       */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.ForceRejectedTypesRemoval          */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RedirectClassHandles               */ new ApplePlatform [] {                                                                                        },
+			/* Opt.RemoveRegisterAttributes           */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 		};
 
 		enum Opt {
@@ -71,6 +73,7 @@ namespace Xamarin.Bundler {
 			ExperimentalFormsProductType,
 			ForceRejectedTypesRemoval,
 			RedirectClassHandles,
+			RemoveRegisterAttributes,
 		}
 
 		bool? [] values;
@@ -140,6 +143,11 @@ namespace Xamarin.Bundler {
 		public bool? CustomAttributesRemoval {
 			get { return values [(int) Opt.CustomAttributesRemoval]; }
 			set { values [(int) Opt.CustomAttributesRemoval] = value; }
+		}
+
+		public bool? RemoveRegisterAttributes {
+			get { return values [(int) Opt.RemoveRegisterAttributes]; }
+			set { values [(int) Opt.RemoveRegisterAttributes] = value; }
 		}
 
 		public bool? ExperimentalFormsProductType {
@@ -299,6 +307,9 @@ namespace Xamarin.Bundler {
 			// by default we remove rarely used custom attributes
 			if (!CustomAttributesRemoval.HasValue)
 				CustomAttributesRemoval = true;
+
+			if (!RemoveRegisterAttributes.HasValue)
+				RemoveRegisterAttributes = true;
 		}
 
 		public void Parse (ApplePlatform platform, string options, List<ProductException> messages)

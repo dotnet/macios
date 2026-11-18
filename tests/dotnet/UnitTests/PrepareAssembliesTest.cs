@@ -80,7 +80,8 @@ namespace Xamarin.Tests {
 		[TestCase ("managed-static", null, null, false)]
 		[TestCase ("trimmable-static", "false", null, false)]
 		[TestCase ("trimmable-static", null, "true", false)]
-		public void ExportAttributeRemovalEligibility (string registrar, string? trimExportAttributes, string? dynamicRegistrationSupported, bool expectedRemoval)
+		[TestCase ("trimmable-static", null, null, true, "-remove-register-attributes")]
+		public void ExportAttributeRemovalEligibility (string registrar, string? trimExportAttributes, string? dynamicRegistrationSupported, bool expectedRemoval, string? optimization = null)
 		{
 			var platform = ApplePlatform.iOS;
 			var runtimeIdentifiers = "iossimulator-arm64";
@@ -101,6 +102,8 @@ namespace Xamarin.Tests {
 				properties ["TrimExportAttributes"] = trimExportAttributes;
 			if (dynamicRegistrationSupported is not null)
 				properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported;
+			if (optimization is not null)
+				properties ["AppBundleExtraOptions"] = $"--optimize={optimization}";
 
 			var target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish;_ComputeStripAssemblyIL;_StripAssemblyIL";
 			var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), "stripped");
@@ -109,12 +112,24 @@ namespace Xamarin.Tests {
 			var appAssemblyPath = Path.Combine (assemblyDirectory, project + ".dll");
 
 			AssertExportMetadata (platformAssemblyPath, appAssemblyPath, !expectedRemoval);
+			var trimRegisterAttributes = registrar == "trimmable-static" && dynamicRegistrationSupported != "true" && optimization != "-remove-register-attributes";
+			AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, !trimRegisterAttributes);
 
 			if (expectedRemoval) {
 				properties ["DynamicRegistrationSupported"] = "true";
 				DotNet.AssertBuild (projectPath, properties, target: target);
 				AssertExportMetadata (platformAssemblyPath, appAssemblyPath, true);
+				AssertRegisterMetadata (platformAssemblyPath, appAssemblyPath, true);
 			}
+		}
+
+		static void AssertRegisterMetadata (string platformAssemblyPath, string appAssemblyPath, bool expectedDirectWrapper)
+		{
+			using var assembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath);
+			AssertAttribute (assembly.MainModule.GetType ("Foundation.NSBundle"), "RegisterAttribute", expectedDirectWrapper, "direct-binding wrapper registration");
+			AssertAttribute (assembly.MainModule.GetType ("Foundation.NSObject"), "RegisterAttribute", true, "wrapper ancestor registration");
+			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath);
+			AssertAttribute (appAssembly.MainModule.GetType ("ExportAttributeRemovalApp.ExportMetadataApplicationType"), "RegisterAttribute", true, "application subclass registration");
 		}
 
 		static void AssertExportMetadata (string platformAssemblyPath, string appAssemblyPath, bool expected)

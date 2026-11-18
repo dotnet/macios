@@ -689,7 +689,7 @@
 			_ComputeLinkerInputs, because _DynamicRegistrationSupported isn't known until this target has run.
 			See src/TrimAttributes.LinkDescription.xml and tools/assembly-preparer/AssemblyPreparer.cs.
 		-->
-		<ItemGroup Condition="'$(Registrar)' == 'trimmable-static' And '$(_DynamicRegistrationSupported)' == 'false'">
+		<ItemGroup Condition="'$(_CanTrimRegistrarAttributes)' == 'true' And '$(_DynamicRegistrationSupported)' == 'false'">
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.TrimProtocolMemberAttributes" Value="true" Trim="true" />
 		</ItemGroup>
 	</Target>
@@ -781,6 +781,11 @@
 	</Target>
 
 	<Target Name="_ComputeLinkerInputs" DependsOnTargets="_ComputeHotReloadCompatibleBuild">
+		<PropertyGroup>
+			<_CanTrimRegistrarAttributes>false</_CanTrimRegistrarAttributes>
+			<_CanTrimRegistrarAttributes Condition="'$(Registrar)' == 'trimmable-static'">true</_CanTrimRegistrarAttributes>
+		</PropertyGroup>
+
 		<!-- Validate the linker mode -->
 		<Error Text="Invalid link mode: '$(_LinkMode)'. Valid link modes are: 'None', 'SdkOnly' and 'Full'" Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'" />
 
@@ -921,6 +926,7 @@
 				PartialStaticRegistrarLibrary=$(_LibPartialStaticRegistrar)
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
+				CanTrimRegistrarAttributes=$(_CanTrimRegistrarAttributes)
 				PublishReadyToRun=$(PublishReadyToRun)
 				PublishReadyToRunContainerFormat=$(PublishReadyToRunContainerFormat)
 				PublishTrimmed=$(PublishTrimmed)
@@ -1405,13 +1411,14 @@
 		DependsOnTargets="IlcCompile;ComputeFilesToPublish;_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
 		>
 		<PrepareAssemblies
-			InputAssemblies="@(_AssembliesToPostProcess)"
 			DynamicRegistrationSupported="$(_DynamicRegistrationSupported)"
+			InputAssemblies="@(_AssembliesToPostProcess)"
 			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
 			NativeAOTObjectFile="$(NativeObject)"
 			OptionsFile="$(_CustomLinkerOptionsFile)"
 			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
 			Postprocessing="true"
+			PreTrimAssemblies="@(_AssembliesToPrepare)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />

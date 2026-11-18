@@ -87,6 +87,7 @@ namespace Xamarin.Bundler {
 		public List<string> AotArguments = new List<string> ();
 		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
+		public bool CanTrimRegistrarAttributes;
 		public bool? TrimExportAttributes;
 		public HashSet<ExportAttributeRemovalBlocker> TrimExportAttributesBlockers = new HashSet<ExportAttributeRemovalBlocker> ();
 

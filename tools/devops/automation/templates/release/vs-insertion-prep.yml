@@ -68,11 +68,6 @@ stages:
           repositoryAlias: ${{ parameters.repositoryAlias }}
           commit: ${{ parameters.commit }}
 
-      - pwsh: |
-            Write-Host "##vso[task.setvariable variable=DYLD_INSERT_LIBRARIES]"
-        displayName: 'Disable CodeQL'
-        name: disableCodeQLOnArm64
-
   # Check - "xamarin-macios (Prepare Release Convert NuGet to MSI)"
   - template: nuget-msi-convert/job/v5.yml@yaml-templates
     parameters:
@@ -303,10 +298,6 @@ stages:
         isPR: ${{ parameters.isPR }}
         repositoryAlias: ${{ parameters.repositoryAlias }}
         commit: ${{ parameters.commit }}
-
-    - pwsh: |
-        Write-Host "##vso[task.setvariable variable=DYLD_INSERT_LIBRARIES]"
-      displayName: 'Disable CodeQL'
 
     - task: DownloadPipelineArtifact@2
       displayName: 'Download signed NuGets'

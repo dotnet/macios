@@ -152,7 +152,7 @@ stages:
 |----------|---------|
 | `checkout.yml` | Checkout code with GitHub merge handling |
 | `configure.yml` | Parse labels, configure platforms, create matrices |
-| `setup.yml` | Agent cleanup, CodeQL setup, environment prep |
+| `setup.yml` | Agent cleanup, environment prep |
 | `teardown.yml` | Post-build cleanup, certificate removal |
 | `load_configuration.yml` | Load configuration from previous pipeline |
 | `install-qa-provisioning-profiles.yml` | Install Apple provisioning profiles |
@@ -616,7 +616,6 @@ build-pull-request.yml (Entry Point - PR)
                             │
                             ├─► templates/common/setup.yml
                             │   ├─► agent-cleanser/v1.yml@yaml-templates
-                            │   ├─► scripts/disable-codeql-arm64.sh
                             │   ├─► scripts/bash/fix-github-ssh-key.sh
                             │   ├─► scripts/show_bot_info.ps1
                             │   ├─► scripts/bash/clean-bot.sh

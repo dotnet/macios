@@ -25,40 +25,21 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
-		[Test]
-		public void NativeAOT_DllImportSearchPaths ()
+		[TestCase ("iOS-NativeAOT-DllImportSearchPaths", "NATIVEAOT_DLLIMPORT_SEARCH_PATHS", false)]
+		[TestCase ("iOS-NativeAOT-ReferenceNativeSymbol", null, true)]
+		[TestCase ("iOS-NativeAOT-CategoryFramework", "NATIVEAOT_CATEGORY_FRAMEWORKS", false)]
+		public void NativeAOT_LoadDylib (string name, string? additionalDefineConstants, bool referenceNativeSymbol)
 		{
 			var dict = new Dictionary<string, string> () {
 				{ "PublishAot", "true" },
 				{ "_IsPublishing", "true" },
-				{ "AdditionalDefineConstants", "NATIVEAOT_DLLIMPORT_SEARCH_PATHS" },
 				{ "NoDSymUtil", "false" },
 			};
-			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-DllImportSearchPaths", false, dict);
-		}
-
-		[Test]
-		public void NativeAOT_ReferenceNativeSymbol ()
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "PublishAot", "true" },
-				{ "_IsPublishing", "true" },
-				{ "NativeAOTReferenceNativeSymbol", "true" },
-				{ "NoDSymUtil", "false" },
-			};
-			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-ReferenceNativeSymbol", false, dict);
-		}
-
-		[Test]
-		public void NativeAOT_CategoryFramework ()
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "PublishAot", "true" },
-				{ "_IsPublishing", "true" },
-				{ "AdditionalDefineConstants", "NATIVEAOT_CATEGORY_FRAMEWORKS" },
-				{ "NoDSymUtil", "false" },
-			};
-			Run (ApplePlatform.iOS, "ios-arm64", "Release", "iOS-NativeAOT-CategoryFramework", false, dict);
+			if (additionalDefineConstants is not null)
+				dict ["AdditionalDefineConstants"] = additionalDefineConstants;
+			if (referenceNativeSymbol)
+				dict ["NativeAOTReferenceNativeSymbol"] = "true";
+			Run (ApplePlatform.iOS, "ios-arm64", "Release", name, false, dict, assertAppSize: false);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -100,7 +81,7 @@ namespace Xamarin.Tests {
 		// * Total app size changed >10kb
 		// * For those apps where assembly APIs can be compared, any API was added or removed.
 		// * Native library dependencies added, removed, or linked differently.
-		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null)
+		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null, bool assertAppSize = true)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -134,13 +115,14 @@ namespace Xamarin.Tests {
 
 			try {
 				Assert.Multiple (() => {
-					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+					if (assertAppSize) {
+						AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+						AssertExpectedDSyms (platform, appPath);
+					}
 					AssertNativeDependencies (name, appPath, update, expectedDirectory);
 
 					if (supportsAssemblyInspection)
 						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
-
-					AssertExpectedDSyms (platform, appPath);
 				});
 			} catch {
 				// If the test fails on CI, copy the resulting .app bundle to a location that will be uploaded as an

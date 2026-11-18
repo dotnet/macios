@@ -147,11 +147,7 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 			Frameworks.TryGetFramework (App, method.DeclaringType, out Framework? categoryFramework)) {
 			var markerName = $"{CategoryFrameworkPInvokePrefix}{categoryFramework.Namespace}{PInvokeSuffix}";
 			var marker = abr.CreateInternalPInvoke (method.Module, "ObjCRuntime", "Class", markerName, out _);
-			var firstInstruction = method.Body.Instructions [0];
-			var il = method.Body.GetILProcessor ();
-			il.InsertBefore (firstInstruction, Instruction.Create (OpCodes.Call, marker));
-			il.InsertBefore (firstInstruction, Instruction.Create (OpCodes.Pop));
-			modified = true;
+			modified |= abr.AddDynamicDependencyAttribute (method, marker);
 		}
 
 		if (method.DeclaringType.Name == "Class" && method.DeclaringType.Namespace == "ObjCRuntime")

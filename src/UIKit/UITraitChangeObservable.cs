@@ -7,6 +7,7 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -158,6 +159,18 @@ namespace UIKit {
 				return;
 			}
 
+			var handle = registration.GetNonNullHandle (nameof (registration));
+			var nativeToken = UITraitChangeRegistrationToken.Find (handle);
+			if (nativeToken is not null) {
+				nativeToken.Unregister (This);
+				return;
+			}
+
+			UnregisterForTraitChangesCore (This, registration);
+		}
+
+		private static unsafe void UnregisterForTraitChangesCore (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
+		{
 			var handle = registration.GetNonNullHandle (nameof (registration));
 			var selector = Selector.GetHandle ("unregisterForTraitChanges:");
 			var super = GetSuper (This);
@@ -313,6 +326,9 @@ namespace UIKit {
 		}
 
 		private sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
+			// Native wrappers must resolve to their token without extending its lifetime.
+			static readonly Dictionary<NativeHandle, WeakReference<UITraitChangeRegistrationToken>> registrations = new ();
+
 			sealed class RegistrationState {
 				public readonly IUITraitChangeObservable Observable;
 				public readonly IUITraitChangeRegistration Registration;
@@ -340,6 +356,13 @@ namespace UIKit {
 				state = new RegistrationState (observable, registration, target);
 				// All native wrappers must survive collection until main-thread unregistration completes.
 				lifetime = GCHandle.Alloc (state);
+				registrations.Add (registration.Handle, new WeakReference<UITraitChangeRegistrationToken> (this, trackResurrection: true));
+				GC.KeepAlive (registration);
+			}
+
+			internal static UITraitChangeRegistrationToken? Find (NativeHandle handle)
+			{
+				return registrations.TryGetValue (handle, out var reference) && reference.TryGetTarget (out var token) ? token : null;
 			}
 
 			public NSObject Copy (NSZone? zone)
@@ -358,7 +381,10 @@ namespace UIKit {
 
 			public void Dispose ()
 			{
-				Dispose (true);
+				if (state is not null) {
+					state.Observable.UnregisterForTraitChanges (state.Registration);
+					Release ();
+				}
 				GC.SuppressFinalize (this);
 			}
 
@@ -368,19 +394,18 @@ namespace UIKit {
 					return;
 
 				// The public override has already run; continue its base/native path.
-				UnregisterForTraitChangesInternal (observable, state.Registration);
-				Dispose (false);
+				UnregisterForTraitChangesCore (observable, state.Registration);
+				Release ();
 				GC.SuppressFinalize (this);
 			}
 
-			void Dispose (bool disposing)
+			void Release ()
 			{
 				var state = this.state;
 				if (state is null)
 					return;
 
-				if (disposing)
-					state.Observable.UnregisterForTraitChanges (state.Registration);
+				registrations.Remove (state.Registration.Handle);
 				this.state = null;
 				lifetime.Free ();
 				GC.KeepAlive (state.Target);

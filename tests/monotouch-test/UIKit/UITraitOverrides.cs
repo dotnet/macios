@@ -342,6 +342,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			Messaging.void_objc_msgSend_IntPtr (view.Handle, new Selector ("unregisterForTraitChanges:").Handle, actionRegistration.Handle);
 			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Native unregistration override");
+			Assert.That (actionRegistration.Handle, Is.EqualTo (NativeHandle.Zero), "Native unregistration disposed token");
 
 			view.UnregisterForTraitChanges (callbackRegistration);
 			Assert.That (view.UnregistrationCount, Is.EqualTo (2), "Managed unregistration override");
@@ -436,7 +437,7 @@ namespace MonoTouchFixtures.UIKit {
 		}
 
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static IUITraitChangeRegistration CreateTargetRegistration (UIViewController observable, Action callback, out WeakReference target)
+		static IUITraitChangeRegistration CreateTargetRegistration (IUITraitChangeObservable observable, Action callback, out WeakReference target)
 		{
 			var receiver = new TraitChangeTarget (callback);
 			target = new WeakReference (receiver);
@@ -450,6 +451,32 @@ namespace MonoTouchFixtures.UIKit {
 			var controller = new UIViewController ();
 			observable = new WeakReference (controller);
 			return new WeakReference (CreateTargetRegistration (controller, () => { }, out target), trackResurrection: true);
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static IUITraitChangeRegistration CreateNativelyUnregisteredRegistration (out WeakReference observable, out WeakReference target)
+		{
+			var view = new TraitObservableView ();
+			observable = new WeakReference (view);
+			var registration = CreateTargetRegistration (view, () => { }, out target);
+			Messaging.void_objc_msgSend_IntPtr (view.Handle, new Selector ("unregisterForTraitChanges:").Handle, registration.Handle);
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Native unregistration override");
+			return registration;
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_NativeUnregisterReleasesRoots ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var registration = CreateNativelyUnregisteredRegistration (out var observable, out var target);
+			Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Native unregistration disposed token");
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				return !observable.IsAlive && !target.IsAlive;
+			}), Is.True, "Observable and target released while token remains reachable");
+			GC.KeepAlive (registration);
 		}
 
 		[TestCase (false)]

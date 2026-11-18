@@ -339,9 +339,6 @@ void			xamarin_mono_object_release_at_process_exit (MonoObject *mobj);
  */
 MonoAssembly * xamarin_open_assembly (const char *name);
 
-typedef void (*xamarin_register_assemblies_callback) ();
-extern xamarin_register_assemblies_callback xamarin_register_assemblies;
-
 // This has a managed equivalent in NSObject.cs
 struct NSObjectData {
 	id handle;

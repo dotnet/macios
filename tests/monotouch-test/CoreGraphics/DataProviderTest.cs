@@ -66,6 +66,29 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (memory, Is.EqualTo (IntPtr.Zero), "mem freed");
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void CreateWithReleaseCallback (bool useCallback)
+		{
+			var memory = Marshal.AllocHGlobal (1);
+			var callbackCount = 0;
+			try {
+				Marshal.WriteByte (memory, 42);
+				Action<IntPtr> callback = useCallback ? _ => callbackCount++ : null;
+				using (var provider = new CGDataProvider (memory, 1, callback)) {
+					Assert.That (provider.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
+					Marshal.WriteByte (memory, 43);
+					using var data = provider.CopyData ();
+					Assert.That (data [0], Is.EqualTo (43), "Data is not copied");
+					Assert.That (callbackCount, Is.EqualTo (0), "Callback before disposal");
+				}
+				Assert.That (callbackCount, Is.EqualTo (useCallback ? 1 : 0), "Callback after disposal");
+				Assert.That (Marshal.ReadByte (memory), Is.EqualTo (43), "Memory remains accessible");
+			} finally {
+				Marshal.FreeHGlobal (memory);
+			}
+		}
+
 		[Test]
 		public void CreateWithUnownedMemory ()
 		{

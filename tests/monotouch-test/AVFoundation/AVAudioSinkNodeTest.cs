@@ -66,6 +66,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			TestRuntime.AssertNotVirtualMachine ();
 			TestRuntime.IgnoreIfLockedScreen ();
+			TestRuntime.RequestMicrophonePermission ();
 
 #if __MACOS__
 			var defaultCaptureDevice = AVCaptureDevice.GetDefaultDevice (AVMediaTypes.Audio);

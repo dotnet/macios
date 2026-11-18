@@ -14,14 +14,15 @@ namespace PhotosUI {
 	}
 
 #if MONOMAC
+	/// <summary>Specifies how a <see cref="PHLivePhotoView" /> fits its content within its bounds.</summary>
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
 	[Native]
 	public enum PHLivePhotoViewContentMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the Live Photo to fit within the view's bounds while preserving its aspect ratio.</summary>
 		AspectFit,
-		/// <summary>To be added.</summary>
+		/// <summary>Scales the Live Photo to fill the view's bounds while preserving its aspect ratio; some content may be cropped.</summary>
 		AspectFill,
 	}
 #else
@@ -39,31 +40,33 @@ namespace PhotosUI {
 		LiveOff = 1 << 1,
 	}
 #endif
+	/// <summary>Enumerates the project categories supported by a Photos project extension.</summary>
 	[NoiOS]
 	[NoTV]
 	[NoMacCatalyst]
 	public enum PHProjectCategory {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for book projects.</summary>
 		[Field ("PHProjectCategoryBook")]
 		Book,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for calendar projects.</summary>
 		[Field ("PHProjectCategoryCalendar")]
 		Calendar,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for card projects.</summary>
 		[Field ("PHProjectCategoryCard")]
 		Card,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for print projects.</summary>
 		[Field ("PHProjectCategoryPrints")]
 		Prints,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for slideshow projects.</summary>
 		[Field ("PHProjectCategorySlideshow")]
 		Slideshow,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for wall decor projects.</summary>
 		[Field ("PHProjectCategoryWallDecor")]
 		WallDecor,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates support for other project types.</summary>
 		[Field ("PHProjectCategoryOther")]
 		Other,
+		/// <summary>Indicates that a project type description data source provides descriptions for all project types.</summary>
 		[NoMacCatalyst]
 		[Field ("PHProjectCategoryUndefined")]
 		Undefined,

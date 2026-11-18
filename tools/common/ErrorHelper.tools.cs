@@ -38,6 +38,34 @@ namespace Xamarin.Bundler {
 
 		static ConditionalWeakTable<IToolLog, Dictionary<int, WarningLevel>> warning_levels = new ();
 
+		sealed class MSBuildWarningConfiguration {
+			public HashSet<int> NoWarn = new ();
+			public HashSet<int> WarningsAsErrors = new ();
+			public HashSet<int> WarningsNotAsErrors = new ();
+			public bool TreatWarningsAsErrors;
+		}
+
+		static ConditionalWeakTable<IToolLog, MSBuildWarningConfiguration> msbuild_warning_configurations = new ();
+
+		public static void ConfigureMSBuildWarnings (IToolLog log, string prefix, string noWarn, bool treatWarningsAsErrors, string warningsAsErrors, string warningsNotAsErrors)
+		{
+			HashSet<int> ParseCodes (string value)
+			{
+				var codes = new HashSet<int> ();
+				foreach (var entry in value.Split (new char [] { ';', ',', ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)) {
+					if (entry.StartsWith (prefix, StringComparison.OrdinalIgnoreCase) && int.TryParse (entry.Substring (prefix.Length), out var code))
+						codes.Add (code);
+				}
+				return codes;
+			}
+
+			var configuration = msbuild_warning_configurations.GetValue (log, _ => new MSBuildWarningConfiguration ());
+			configuration.NoWarn = ParseCodes (noWarn);
+			configuration.TreatWarningsAsErrors = treatWarningsAsErrors;
+			configuration.WarningsAsErrors = ParseCodes (warningsAsErrors);
+			configuration.WarningsNotAsErrors = ParseCodes (warningsNotAsErrors);
+		}
+
 		public static Dictionary<int, WarningLevel>? GetWarningLevels (IToolLog log)
 		{
 			warning_levels.TryGetValue (log, out var log_warning_levels);
@@ -48,16 +76,25 @@ namespace Xamarin.Bundler {
 		{
 			warningLevel = default;
 
+			var hasWarningLevel = false;
 			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
 				// code -1: all codes
-				if (log_warning_levels.TryGetValue (-1, out warningLevel))
-					return true;
-
-				if (log_warning_levels.TryGetValue (code, out warningLevel))
-					return true;
+				hasWarningLevel = log_warning_levels.TryGetValue (-1, out warningLevel) || log_warning_levels.TryGetValue (code, out warningLevel);
 			}
 
-			return false;
+			if (msbuild_warning_configurations.TryGetValue (log, out var configuration)) {
+				if (configuration.NoWarn.Contains (code)) {
+					warningLevel = WarningLevel.Disable;
+					return true;
+				}
+				var asError = configuration.TreatWarningsAsErrors ? !configuration.WarningsNotAsErrors.Contains (code) : configuration.WarningsAsErrors.Contains (code);
+				if (warningLevel != WarningLevel.Disable && asError) {
+					warningLevel = WarningLevel.Error;
+					return true;
+				}
+			}
+
+			return hasWarningLevel;
 		}
 
 		public static WarningLevel GetWarningLevel (IToolLog log, int code)

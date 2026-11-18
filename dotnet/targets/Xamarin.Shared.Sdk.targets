@@ -18,6 +18,7 @@
 	</PropertyGroup>
 
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileSwift" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectPostILTrimInformation" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
@@ -880,6 +881,7 @@
 				AssemblyName=$(AssemblyName).dll
 				@(_AotArguments -> 'AOTArgument=%(Identity)')
 				AOTCompiler=$(_XamarinAOTCompiler)
+				AppExtensionPointIdentifier=$(_EXExtensionPointIdentifier)
 				AOTOutputDirectory=$(_AOTOutputDirectory)
 				DedupAssembly=$(_DedupAssembly)
 				AppBundleManifestPath=$(_AppBundleManifestPath)
@@ -1335,6 +1337,7 @@
 	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish;$(_LoadLinkerOutputExtraDependsOn)" Condition="'$(IsMacEnabled)' == 'true'">
 		<ItemGroup>
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_GeneratedSwiftSource.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" />
@@ -1360,6 +1363,7 @@
 
 		<ItemGroup>
 			<_MainFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainFile.items'" />
+			<_GeneratedSwiftSource Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_GeneratedSwiftSource.items'" />
 			<_MainLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkWith.items'" />
 			<_LinkerFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_LinkerFrameworks.items'" />
 			<_BindingLibraryLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryLinkWith.items'" />
@@ -2087,6 +2091,87 @@
 			<_NativeExecutableObjectFiles Include="@(_RegistrarFile)" Condition="'%(_RegistrarFile.Extension)' == '.o'" />
 			<_XamarinMainIncludeDirectory Include="$(_XamarinIncludeDirectory)" />
 		</ItemGroup>
+
+		<!-- Swift code is compiled into one object file per Swift module (the 'ModuleName' metadata) -->
+		<PropertyGroup>
+			<_SwiftDefaultModuleName>$([System.Text.RegularExpressions.Regex]::Replace('$(AssemblyName)', '[^A-Za-z0-9_]', '_'))</_SwiftDefaultModuleName>
+			<!-- Swift identifiers can't start with a digit -->
+			<_SwiftDefaultModuleName>$([System.Text.RegularExpressions.Regex]::Replace('$(_SwiftDefaultModuleName)', '^([0-9])', '_$1'))</_SwiftDefaultModuleName>
+			<_SwiftObjectDirectory>$(_IntermediateNativeLibraryDir)swift/</_SwiftObjectDirectory>
+		</PropertyGroup>
+		<ItemGroup>
+			<_SwiftSource Include="@(SwiftSource);@(_GeneratedSwiftSource)" />
+			<_SwiftSource Condition="'%(_SwiftSource.ModuleName)' == ''">
+				<ModuleName>$(_SwiftDefaultModuleName)</ModuleName>
+			</_SwiftSource>
+			<_SwiftModuleName Include="@(_SwiftSource->'%(ModuleName)'->Distinct())" />
+			<_SwiftObjectFile Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).o')" />
+			<_NativeExecutableObjectFiles Include="@(_SwiftObjectFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Write the list of Swift source files and the compiler settings to a file, so that we recompile if any of them change -->
+	<Target Name="_ComputeSwiftSourceInputs"
+		DependsOnTargets="_ComputeNativeExecutableInputs;_DetectSdkLocations;_ComputeTargetArchitectures"
+		Condition="'$(IsMacEnabled)' == 'true'"
+		>
+		<PropertyGroup Condition="@(_SwiftSource->Count()) &gt; 0">
+			<_SwiftSourceInputsFile>$(_SwiftObjectDirectory)swift-sources.inputs</_SwiftSourceInputsFile>
+		</PropertyGroup>
+		<ItemGroup Condition="@(_SwiftSource->Count()) &gt; 0">
+			<_SwiftSourceInputsLine Include="@(_SwiftSource->'Source=%(FullPath)|%(ModuleName)|%(BridgingHeader)|%(AdditionalArguments)')" />
+			<_SwiftSourceInputsLine Include="MinimumOSVersion=$(_MinimumOSVersion)" />
+			<_SwiftSourceInputsLine Include="SdkRoot=$(_SdkRoot)" />
+			<_SwiftSourceInputsLine Include="TargetArchitectures=$(TargetArchitectures)" />
+			<_SwiftBridgingHeader Include="@(_SwiftSource->'%(BridgingHeader)'->Distinct())" />
+			<!-- The CompileSwift task writes the files each Swift module depends on (for instance headers included from the bridging header) to a file -->
+			<_SwiftDependencyListFile Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).dependencies')" />
+			<_ExistingSwiftDependencyListFile Include="@(_SwiftDependencyListFile)" Condition="Exists('%(Identity)')" />
+			<!-- When building remotely the dependency lists are written on the Mac, so we can't know if any of the
+			     dependencies changed. Add an input that doesn't exist, so that we always compile the Swift code. -->
+			<_SwiftSourceDependency Include="$(_SwiftObjectDirectory)always-compile-when-building-remotely" Condition="'$(BuildSessionId)' != ''" />
+		</ItemGroup>
+		<ReadLinesFromFile File="%(_ExistingSwiftDependencyListFile.Identity)" Condition="@(_ExistingSwiftDependencyListFile->Count()) &gt; 0">
+			<Output TaskParameter="Lines" ItemName="_SwiftSourceDependency" />
+		</ReadLinesFromFile>
+		<WriteLinesToFile
+			Condition="@(_SwiftSource->Count()) &gt; 0"
+			File="$(_SwiftSourceInputsFile)"
+			Lines="@(_SwiftSourceInputsLine)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup Condition="@(_SwiftSource->Count()) &gt; 0">
+			<FileWrites Include="$(_SwiftSourceInputsFile)" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_CompileSwiftSources"
+		DependsOnTargets="_ComputeSwiftSourceInputs"
+		Condition="'$(IsMacEnabled)' == 'true'"
+		Inputs="@(_SwiftSource);@(_SwiftBridgingHeader);@(_SwiftSourceDependency);$(_SwiftSourceInputsFile)"
+		Outputs="@(_SwiftObjectFile)"
+		>
+		<CompileSwift
+			SessionId="$(BuildSessionId)"
+			Condition="@(_SwiftSource->Count()) &gt; 0"
+			IsAppExtension="$(IsAppExtension)"
+			MinimumOSVersion="$(_MinimumOSVersion)"
+			OutputDirectory="$(_SwiftObjectDirectory)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkRoot="$(_SdkRoot)"
+			Sources="@(_SwiftSource)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		/>
+
+		<ItemGroup>
+			<FileWrites Include="@(_SwiftObjectFile)" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).d')" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).dependencies')" />
+			<FileWrites Include="@(_SwiftModuleName->'$(_SwiftObjectDirectory)%(Identity).output-file-map.json')" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_ComputeTrimmedAssemblies"
@@ -2245,6 +2330,7 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
+			_CompileSwiftSources;
 			_CompilePostTrimmingFiles;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
@@ -2303,6 +2389,8 @@
 		<ItemGroup Condition="'$(LinkWithSwiftSystemLibraries)' == 'true'">
 			<_MainLinkerFlags Include="-L$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(_SwiftTargetPlatform)/" />
 			<_MainLinkerFlags Include="-L$(_SdkRoot)/usr/lib/swift/" />
+			<!-- Swift overlays for iOS frameworks (such as UIKit) on Mac Catalyst -->
+			<_MainLinkerFlags Include="-L$(_SdkRoot)/System/iOSSupport/usr/lib/swift/" Condition="'$(_PlatformName)' == 'MacCatalyst'" />
 		</ItemGroup>
 	</Target>
 

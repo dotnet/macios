@@ -1,0 +1,15 @@
+{
+  "author": "Microsoft",
+  "name": "macOS File System Extension",
+  "description": "A project for creating an FSKit file system extension for a .NET macOS application",
+  "postActions/addProjectReference/description": "Add project reference in main app's project file",
+  "postActions/addProjectReference/manualInstructions/default/text": "The final step is to add a reference to this newly created project in the main app's project file, like this:\n\n\t<ItemGroup>\n\t\t<ProjectReference Include=\"macOSFSKitExtension1.csproj\">\n\t\t\t<IsAppExtension>true</IsAppExtension>\n\t\t</ProjectReference>\n\t</ItemGroup>\n",
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "The bundle identifier (CFBundleIdentifier from the Info.plist, or ApplicationId from the project file) for the parent macOS project",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
+  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file",
+  "symbols/fileSystemClassName/displayName": "File system class name",
+  "symbols/fileSystemClassName/description": "The name of the class that implements the file system",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net12.0-macos/description": "Target net12.0-macos"
+}

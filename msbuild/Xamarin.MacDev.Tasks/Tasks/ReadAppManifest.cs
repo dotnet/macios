@@ -38,6 +38,9 @@ namespace Xamarin.MacDev.Tasks {
 		public string? CFBundleVersion { get; set; }
 
 		[Output]
+		public string? EXExtensionPointIdentifier { get; set; }
+
+		[Output]
 		public string? MinimumOSVersion { get; set; }
 
 		[Output]
@@ -90,6 +93,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
+			EXExtensionPointIdentifier = plist?.Get<PDictionary> ("EXAppExtensionAttributes")?.Get<PString> ("EXExtensionPointIdentifier")?.Value;
 			NSExtensionPointIdentifier = plist?.GetNSExtensionPointIdentifier ();
 			UIDeviceFamily = plist?.GetUIDeviceFamily ().ToString ();
 			WKWatchKitApp = plist?.GetWKWatchKitApp () == true;

@@ -73,6 +73,18 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSContainerIdentifier {
+		// Inherited from FSEntityIdentifier, but C# constructors aren't inherited.
+		/// <summary>Creates a new container identifier with the specified UUID.</summary>
+		/// <param name="uuid">The UUID for the container identifier.</param>
+		[Export ("initWithUUID:")]
+		NativeHandle Constructor (NSUuid uuid);
+
+		/// <summary>Creates a new container identifier with the specified UUID and qualifier.</summary>
+		/// <param name="uuid">The UUID for the container identifier.</param>
+		/// <param name="qualifier">A value that distinguishes entities sharing the same UUID.</param>
+		[Export ("initWithUUID:qualifier:")]
+		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
+
 		[Export ("volumeIdentifier")]
 		FSVolumeIdentifier VolumeIdentifier { get; }
 	}
@@ -584,6 +596,17 @@ namespace FSKit {
 	[Mac (15, 4)]
 	[BaseType (typeof (FSEntityIdentifier))]
 	interface FSVolumeIdentifier {
+		// Inherited from FSEntityIdentifier, but C# constructors aren't inherited.
+		/// <summary>Creates a new volume identifier with the specified UUID.</summary>
+		/// <param name="uuid">The UUID for the volume identifier.</param>
+		[Export ("initWithUUID:")]
+		NativeHandle Constructor (NSUuid uuid);
+
+		/// <summary>Creates a new volume identifier with the specified UUID and qualifier.</summary>
+		/// <param name="uuid">The UUID for the volume identifier.</param>
+		/// <param name="qualifier">A value that distinguishes entities sharing the same UUID.</param>
+		[Export ("initWithUUID:qualifier:")]
+		NativeHandle Constructor (NSUuid uuid, ulong qualifier);
 	}
 
 #if !STABLE_FSKIT

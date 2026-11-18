@@ -1167,6 +1167,18 @@
 	<!-- 230x: SetupStep -->
 	<!-- 231x: GatherFrameworksStep -->
 	<!-- 232x: GenerateMainStep -->
+	<data name="MX2325" xml:space="preserve">
+		<value>Couldn't find the file system class for the FSKit extension. Add a class that subclasses 'FSKit.FSUnaryFileSystem' and implements 'FSKit.IFSUnaryFileSystemOperations'.</value>
+	</data>
+
+	<data name="MX2326" xml:space="preserve">
+		<value>Found more than one file system class for the FSKit extension: {0}. Only one class can subclass 'FSKit.FSUnaryFileSystem' (make the others abstract).</value>
+	</data>
+
+	<data name="MX2327" xml:space="preserve">
+		<value>The file system class '{0}' for the FSKit extension must implement 'FSKit.IFSUnaryFileSystemOperations'.</value>
+	</data>
+
 	<!-- 233x: CollectAssembliesStep -->
 	<!-- 234x: ExtractBindingLibrariesStep -->
 	<!-- 235x: LoadNonSkippedAssembliesStep -->

@@ -24,10 +24,10 @@
 		<!-- Clear RuntimeIdentifier -->
 		<RuntimeIdentifier />
 		<!-- Check if RuntimeIdentifier was cleared. If it wasn't it was set on the command line, and in that case, try to clear RuntimeIdentifiers instead -->
-		<_RuntimeIdentifiersClashMessage Condition="'$(RuntimeIdentifier)' != ''">RuntimeIdentifier was set on the command line, and will override the value for RuntimeIdentifiers set in the project file.</_RuntimeIdentifiersClashMessage>
+		<_RuntimeIdentifiersClashResourceName Condition="'$(RuntimeIdentifier)' != ''">RuntimeIdentifierOverridesRuntimeIdentifiers</_RuntimeIdentifiersClashResourceName>
 		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' != ''" />
 		<!-- If we couldn't clear RuntimeIdentifiers either, then both were set on the command line. This is an error -->
-		<_RuntimeIdentifiersClashErrorMessage  Condition="'$(RuntimeIdentifier)' != '' And '$(RuntimeIdentifiers)' != ''">Both RuntimeIdentifier and RuntimeIdentifiers were passed on the command line, but only one of them can be set at a time.</_RuntimeIdentifiersClashErrorMessage>
+		<_RuntimeIdentifiersClashErrorResourceName  Condition="'$(RuntimeIdentifier)' != '' And '$(RuntimeIdentifiers)' != ''">RuntimeIdentifiersClash</_RuntimeIdentifiersClashErrorResourceName>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -52,7 +52,16 @@
 				</_RuntimeIdentifierWithTargetArchitecture>
 				<_RuntimeIdentifiersWithoutTargetArchitecture Include="@(_RuntimeIdentifierWithTargetArchitecture)" Condition="'%(_RuntimeIdentifierWithTargetArchitecture.TargetArchitecture)' == ''" />
 		</ItemGroup>
-		<Error Condition="@(_RuntimeIdentifiersWithoutTargetArchitecture->Count()) != 0" Text="Unable to map the following RuntimeIdentifier values to a target architecture: @(_RuntimeIdentifiersWithoutTargetArchitecture)" />
+		<ItemGroup>
+			<_CannotMapRuntimeIdentifierToArchitectureArguments Include="0" Value="@(_RuntimeIdentifiersWithoutTargetArchitecture)" />
+		</ItemGroup>
+		<MacDevMessage
+			Condition="@(_RuntimeIdentifiersWithoutTargetArchitecture-&gt;Count()) != 0"
+			Error="true"
+			FormatArguments="@(_CannotMapRuntimeIdentifierToArchitectureArguments)"
+			FormatArgumentsMetadata="Value"
+			ResourceName="CannotMapRuntimeIdentifierToArchitecture"
+		/>
 		<!-- Map the item group of runtime identifiers into the TargetArchitectures property -->
 		<PropertyGroup>
 			<TargetArchitectures>@(_RuntimeIdentifierWithTargetArchitecture -> '%(TargetArchitecture)', ', ')</TargetArchitectures>

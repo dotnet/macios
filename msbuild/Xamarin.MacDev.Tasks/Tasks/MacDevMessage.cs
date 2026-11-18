@@ -25,13 +25,16 @@ namespace Xamarin.MacDev.Tasks {
 		/// </summary>
 		public ITaskItem [] FormatArguments { get; set; } = Array.Empty<ITaskItem> ();
 
+		// Metadata preserves empty arguments and values that would otherwise be treated as paths.
+		public string FormatArgumentsMetadata { get; set; } = "";
+
 		public bool Error { get; set; }
 		public bool Warning { get; set; }
 
 		public override bool Execute ()
 		{
 			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture) ?? $"Could not find the resource '{ResourceName}'.";
-			var args = FormatArguments.Select (v => v.ItemSpec).ToArray ();
+			var args = FormatArguments.Select (v => string.IsNullOrEmpty (FormatArgumentsMetadata) ? v.ItemSpec : v.GetMetadata (FormatArgumentsMetadata)).ToArray ();
 			var message = string.Format (msg, args);
 			if (Error) {
 				Log.LogError (message);

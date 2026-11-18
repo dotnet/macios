@@ -15,7 +15,11 @@ Copyright (C) 2011 Xamarin Inc. All rights reserved.
 -->
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(MSBuildThisFileDirectory)netstandard2.0\Xamarin.MacDev.Tasks.dll" />
   <Target Name="Build">
-    <Error Text="Support for Classic applications (using monotouch.dll) is obsoleted in Xamarin.iOS 10.0+. Please migrate your project to Unified (Project &gt; Migrate to Xamarin.iOS Unified API)." />
+    <MacDevMessage
+      Error="true"
+      ResourceName="ClassicApplicationsNotSupported"
+    />
   </Target>
 </Project>

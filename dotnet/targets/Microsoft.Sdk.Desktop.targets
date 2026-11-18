@@ -34,7 +34,11 @@
 			<Output TaskParameter="CFBundleIdentifier" PropertyName="_BundleIdentifier" />
 		</ReadAppManifest>
 
-		<Error Message="Could not find the CFBundleIdentifier value in the app's Info.plist." Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''" />
+		<MacDevMessage
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_DotNetWatchVariable)' != '' And '$(_BundleIdentifier)' == ''"
+			Error="true"
+			ResourceName="MissingWatchBundleIdentifier"
+		/>
 
 		<!--
 			'dotnet watch' sets DOTNET_STARTUP_HOOKS to a path outside the app's sandbox,

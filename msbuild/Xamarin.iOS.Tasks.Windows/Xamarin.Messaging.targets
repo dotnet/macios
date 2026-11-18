@@ -93,7 +93,11 @@
 			<ContinueOnDisconnected Condition="'$(ContinueOnDisconnected)' == ''">true</ContinueOnDisconnected>
 		</PropertyGroup>
 
-		<Warning Condition="'$(ServerPort)' != ''" Text="The 'ServerPort' property has been deprecated. Please consider using 'ServerSshPort' or 'ServerTcpPort' instead." />
+		<MacDevMessage
+			Condition="'$(ServerPort)' != ''"
+			ResourceName="ServerPortDeprecated"
+			Warning="true"
+		/>
 
 		<Message Importance="high" Condition="'$(ServerAddress)' != ''" Text="Executing SayHello Task to establish a connection to a Remote Server. 
 			Properties: 

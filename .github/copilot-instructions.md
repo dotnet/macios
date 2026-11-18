@@ -148,6 +148,15 @@ must come from an English `.resx` resource, such as
 This includes logged errors, warnings, informational messages, and exception messages
 shown to users. Do not hard-code these messages in C# or edit generated translations.
 
+Errors and warnings in MSBuild `.targets` and `.props` files that ship in the SDK
+must use `MacDevMessage` with `Error="true"` or `Warning="true"`. Store the message
+in `msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx` and pass placeholder values
+through `FormatArguments`. Use item metadata with `FormatArgumentsMetadata` when
+values can be empty or contain semicolons or path separators. When converting an
+existing diagnostic, keep its condition and severity. Do not use the built-in
+`Error` or `Warning` tasks or put English error or warning text in MSBuild properties.
+This rule does not apply to build tooling used only inside this repository.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building

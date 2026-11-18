@@ -263,7 +263,10 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		Condition = "'$(IsAppDistribution)' != 'true' And '$(UsingAppleNETSdk)' != 'true'"
 		Inputs="@(_CompileToNativeInput);@(_FileNativeReference)"
 		Outputs="$(_NativeExecutable);$(DeviceSpecificOutputPath)bundler.stamp">
-		<Error Text="Support for Xamarin projects has ended. Please migrate your project to .NET" />
+		<MacDevMessage
+			Error="true"
+			ResourceName="XamarinProjectsNotSupported"
+		/>
 	</Target>
 
 	<Target Name="_ValidateAppBundle" Condition="'$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'" DependsOnTargets="_DetectSdkLocations;_ComputeTargetFrameworkMoniker;_GenerateBundleName">
@@ -349,8 +352,16 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 			<Output TaskParameter="TargetOutputs" ItemName="_ResolvedWatchAppReferences" />
 		</MSBuild>
 
-		<Warning Text="Referenced iOS Watch App Project %(_WatchAppReferenceWithConfigurationNonExistent.Identity) not found, ignoring."
-			 Condition="'@(_WatchAppReferenceWithConfigurationNonExistent)' != ''"/>
+		<ItemGroup>
+			<_WatchAppProjectNotFoundArguments Include="@(_WatchAppReferenceWithConfigurationNonExistent->Distinct())" Value="%(Identity)" />
+		</ItemGroup>
+		<MacDevMessage
+			Condition="'%(_WatchAppProjectNotFoundArguments.Identity)' != ''"
+			FormatArguments="@(_WatchAppProjectNotFoundArguments)"
+			FormatArgumentsMetadata="Value"
+			ResourceName="WatchAppProjectNotFound"
+			Warning="true"
+		/>
 
 		<PropertyGroup>
 			<IsWatchExtension Condition="'$(IsAppExtension)' == 'true' And '@(_ResolvedWatchAppReferences)' != ''">True</IsWatchExtension>

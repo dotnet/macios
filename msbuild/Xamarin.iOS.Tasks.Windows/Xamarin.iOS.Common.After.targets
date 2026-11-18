@@ -120,7 +120,11 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	</Target>
 	
 	<Target Name="CopyArchiveFromMac" Condition="'$(_CanArchive)' == 'true' And '$(ArchiveOnBuild)' == 'true'">
-		<Error Condition="'$(IsMacEnabled)' != 'true'" Text="A connection to a Mac is required in order to continue" />
+		<MacDevMessage
+			Condition="'$(IsMacEnabled)' != 'true'"
+			Error="true"
+			ResourceName="MacConnectionRequired"
+		/>
 		<PropertyGroup>
 			<_ArchiveName>$([System.IO.Path]::GetFileName($(ArchiveDir)))</_ArchiveName>
 			<_ArchiveZipWorkingDirOnMac>$(DeviceSpecificIntermediateOutputPath)archives</_ArchiveZipWorkingDirOnMac>
@@ -149,7 +153,11 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	</Target>
 	
 	<Target Name="CopyArchiveToMac" Condition="'$(_CanArchive)' == 'true'">
-		<Error Condition="'$(IsMacEnabled)' != 'true'" Text="A connection to a Mac is required in order to continue" />
+		<MacDevMessage
+			Condition="'$(IsMacEnabled)' != 'true'"
+			Error="true"
+			ResourceName="MacConnectionRequired"
+		/>
 		<PropertyGroup>
 			<_ArchiveName>$([System.IO.Path]::GetFileName($(ArchivePath)))</_ArchiveName>
 		</PropertyGroup>
@@ -452,8 +460,16 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 				Ref: https://github.com/dotnet/macios/issues/18510
 				Ref: https://dev.azure.com/devdiv/DevDiv/_workitems/edit/1847166
 		-->
-		<Error Condition="'$(IsMacEnabled)' == 'true' And $([System.IO.Path]::IsPathRooted('$(OutputPath)'))" Text="An absolute OutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath." />
-		<Error Condition="'$(IsMacEnabled)' == 'true' And $([System.IO.Path]::IsPathRooted('$(IntermediateOutputPath)'))" Text="An absolute IntermediateOutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath." />
+		<MacDevMessage
+			Condition="'$(IsMacEnabled)' == 'true' And $([System.IO.Path]::IsPathRooted('$(OutputPath)'))"
+			Error="true"
+			ResourceName="AbsoluteOutputPathNotSupported"
+		/>
+		<MacDevMessage
+			Condition="'$(IsMacEnabled)' == 'true' And $([System.IO.Path]::IsPathRooted('$(IntermediateOutputPath)'))"
+			Error="true"
+			ResourceName="AbsoluteIntermediateOutputPathNotSupported"
+		/>
 	</Target>
 
 	<PropertyGroup>

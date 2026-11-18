@@ -121,5 +121,24 @@ namespace Xamarin.MacDev.Tasks {
 			var resxPath = Path.Combine (Configuration.RootPath, relativePath);
 			ResxAssertions.AssertEntriesAreUniqueAndSorted (resxPath);
 		}
+
+		[TestCase ("")]
+		[TestCase (@"Assets\Images;Other/Images")]
+		public void MacDevMessageFormatsMetadataArguments (string resourcePrefix)
+		{
+			var count = new TaskItem ("Count");
+			count.SetMetadata ("Value", "4");
+			var prefix = new TaskItem ("Prefix");
+			prefix.SetMetadata ("Value", resourcePrefix);
+			var task = CreateTask<MacDevMessage> ();
+			task.Error = true;
+			task.ResourceName = "TooManyResourcePrefixes";
+			task.FormatArguments = [count, prefix];
+			task.FormatArgumentsMetadata = "Value";
+
+			ExecuteTask (task, 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but 4 were specified: '{resourcePrefix}'. Please reduce the number of resource prefix paths."));
+		}
 	}
 }

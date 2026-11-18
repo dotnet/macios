@@ -1829,4 +1829,190 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>
     </data>
+    <data name="AbsoluteIntermediateOutputPathNotSupported" xml:space="preserve">
+        <value>An absolute IntermediateOutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath.</value>
+    </data>
+    <data name="AbsoluteOutputPathNotSupported" xml:space="preserve">
+        <value>An absolute OutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath.</value>
+    </data>
+    <data name="AotAssembliesRequiresMono" xml:space="preserve">
+        <value>The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file.</value>
+    </data>
+    <data name="AppExtensionProjectNotFound" xml:space="preserve">
+        <value>Referenced {0} App Extension Project {1} not found, ignoring.</value>
+    </data>
+    <data name="ArchiveRequiresCodeSigning" xml:space="preserve">
+        <value>Code signing must be enabled to create an Xcode archive.</value>
+    </data>
+    <data name="BuildBeforeComputingMlaunchArguments" xml:space="preserve">
+        <value>The app must be built before the arguments to launch the app using mlaunch can be computed.</value>
+    </data>
+    <data name="BuildBeforeShowingRunHelp" xml:space="preserve">
+        <value>The app must be built before showing how to launch it.</value>
+    </data>
+    <data name="BundleIdentifierRequired" xml:space="preserve">
+        <value>A bundle identifier is required. Either add an 'ApplicationId' property in the project file, or add a 'CFBundleIdentifier' entry in the project's Info.plist file.</value>
+    </data>
+    <data name="CannotMapRuntimeIdentifierToArchitecture" xml:space="preserve">
+        <value>Unable to map the following RuntimeIdentifier values to a target architecture: {0}</value>
+    </data>
+    <data name="CannotMixRuntimeIdentifierPlatforms" xml:space="preserve">
+        <value>Building for all the runtime identifiers '{0}' at the same time isn't possible, because they represent different platform variations.</value>
+    </data>
+    <data name="CannotPackOldStyleBindingItems" xml:space="preserve">
+        <value>Creating a NuGet package is not supported for projects that have ObjcBindingNativeLibrary items. Migrate to use NativeReference items instead.</value>
+    </data>
+    <data name="CannotPublishSimulator" xml:space="preserve">
+        <value>A runtime identifier for a device architecture must be specified in order to publish this project. '{0}' is a simulator architecture.</value>
+    </data>
+    <data name="CannotPublishSimulators" xml:space="preserve">
+        <value>A runtime identifier for a device architecture must be specified in order to publish this project. '{0}' are simulator architectures.</value>
+    </data>
+    <data name="ClassicApplicationsNotSupported" xml:space="preserve">
+        <value>Support for Classic applications (using monotouch.dll) is obsoleted in Xamarin.iOS 10.0+. Please migrate your project to Unified (Project &gt; Migrate to Xamarin.iOS Unified API).</value>
+    </data>
+    <data name="CommandLineLaunchNotSupportedOnWindows" xml:space="preserve">
+        <value>It's currently not supported to launch an app from the command line on Windows.</value>
+    </data>
+    <data name="EnableSGenConcRequiresMono" xml:space="preserve">
+        <value>The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="FilesInAppBundleRootDirectory" xml:space="preserve">
+        <value>Found files in the root directory of the app bundle. This will likely cause codesign to fail. Files:
+{0}</value>
+    </data>
+    <data name="HotReloadDoesNotSupportRegistrar" xml:space="preserve">
+        <value>Can't use Hot Reload or 'dotnet watch' with the '{0}' registrar, because it modifies user assemblies (which changes their MVID and prevents Hot Reload from applying changes). Set 'Registrar=partial-static' in the project file.</value>
+    </data>
+    <data name="HotReloadDoesNotSupportTrimming" xml:space="preserve">
+        <value>Can't use Hot Reload or 'dotnet watch' if any assemblies are trimmed. Set 'MtouchLink=None' in the project file to disable trimming.</value>
+    </data>
+    <data name="HotReloadRequiresInterpreter" xml:space="preserve">
+        <value>Can't use Hot Reload or 'dotnet watch' unless the interpreter is enabled. Set 'UseInterpreter=true' in the project file to use the interpreter.</value>
+    </data>
+    <data name="InvalidLinkMode" xml:space="preserve">
+        <value>Invalid link mode: '{0}'. Valid link modes are: 'None', 'SdkOnly' and 'Full'</value>
+    </data>
+    <data name="InvalidNativeAotRegistrar" xml:space="preserve">
+        <value>The only valid registrars when using NativeAOT are 'managed-static' or 'trimmable-static' (current value: '{0}'). Please either delete the 'Registrar' property, or change it to be 'managed-static' or 'trimmable-static'.</value>
+    </data>
+    <data name="InvalidRuntimeIdentifier" xml:space="preserve">
+        <value>The RuntimeIdentifier '{0}' is invalid.</value>
+    </data>
+    <data name="InvalidTargetPlatformVersion" xml:space="preserve">
+        <value>{0} is not a valid TargetPlatformVersion for {1}. This warning will become an error in future versions of the {1} workload. Valid versions include:
+{2}</value>
+    </data>
+    <data name="InvalidTargetPlatformVersionWithoutValidVersions" xml:space="preserve">
+        <value>{0} is not a valid TargetPlatformVersion for {1}. This warning will become an error in future versions of the {1} workload. Valid versions include:
+None</value>
+    </data>
+    <data name="InvalidTrimExportAttributes" xml:space="preserve">
+        <value>The 'TrimExportAttributes' property must be either 'true', 'false', or unset.</value>
+    </data>
+    <data name="InvalidWinExeOutputType" xml:space="preserve">
+        <value>WinExe is not a valid output type for {0}</value>
+    </data>
+    <data name="LinkerDisabledWithoutMac" xml:space="preserve">
+        <value>The linker has been disabled because there's no connection to a Mac.</value>
+    </data>
+    <data name="LocalBindingBuildDisabledWithoutMac" xml:space="preserve">
+        <value>The property 'BuildBindingProjectLocally' build is disabled, but there's no connection to a remote Mac.</value>
+    </data>
+    <data name="MacConnectionRequired" xml:space="preserve">
+        <value>A connection to a Mac is required in order to continue</value>
+    </data>
+    <data name="MacOSRequiresCoreClr" xml:space="preserve">
+        <value>Only CoreCLR is supported on macOS. Set 'UseMonoRuntime=false' to use CoreCLR.</value>
+    </data>
+    <data name="MissingWatchBundleIdentifier" xml:space="preserve">
+        <value>Could not find the CFBundleIdentifier value in the app's Info.plist.</value>
+    </data>
+    <data name="MonoUseCompressedInterfaceBitmapRequiresMono" xml:space="preserve">
+        <value>The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="MtouchArchDeprecated" xml:space="preserve">
+        <value>The property 'MtouchArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture.</value>
+    </data>
+    <data name="MtouchEnableSGenConcRequiresMono" xml:space="preserve">
+        <value>The property 'MtouchEnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="MtouchFloatRequiresMono" xml:space="preserve">
+        <value>The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="MtouchInterpreterRequiresMono" xml:space="preserve">
+        <value>The property 'MtouchInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="MtouchUseLlvmRequiresMono" xml:space="preserve">
+        <value>The property 'MtouchUseLlvm' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="NativeAotRequiresFullLinking" xml:space="preserve">
+        <value>All assemblies must be processed by the linker when using NativeAOT. Please don't set neither the '{0}' nor the 'TrimMode' property, so that the build can default to linking all assemblies.</value>
+    </data>
+    <data name="NoBindingEmbeddingDeprecated" xml:space="preserve">
+        <value>Setting 'NoBindingEmbedding' to 'false' is deprecated and will not be supported in .NET 12+. Please remove this property from your project file.</value>
+    </data>
+    <data name="NoBindingEmbeddingNotSupported" xml:space="preserve">
+        <value>Setting 'NoBindingEmbedding' to 'false' is not supported in .NET 12+. Please remove this property from your project file.</value>
+    </data>
+    <data name="PublishReadyToRunCompositeNotSupported" xml:space="preserve">
+        <value>Setting 'PublishReadyToRunComposite' to '{0}' isn't supported for {1} projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely.</value>
+    </data>
+    <data name="PublishSingleFileNotSupported" xml:space="preserve">
+        <value>.NET for {0} does not support publishing to a single file. Please don't set the 'PublishSingleFile' property.</value>
+    </data>
+    <data name="PublishTrimmedNotSupported" xml:space="preserve">
+        <value>{0} projects do not support setting 'PublishTrimmed' to any value (current value: {1}). Use the '{2}' property to configure trimming behavior instead.</value>
+    </data>
+    <data name="PublishTrimmedRequired" xml:space="preserve">
+        <value>{0} projects must build with PublishTrimmed=true. Current value: {1}. Set '{2}=None' instead to disable trimming for all assemblies.</value>
+    </data>
+    <data name="ResolveResourceItemsRelativeToProjectRequired" xml:space="preserve">
+        <value>Setting ResolveResourceItemsRelativeToProject to false is not supported in .NET 13+. Remove this property from your project file.</value>
+    </data>
+    <data name="RunAotCompilationRequiresMono" xml:space="preserve">
+        <value>The property 'RunAotCompilation' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file.</value>
+    </data>
+    <data name="RuntimeConfigurationFilesDisabled" xml:space="preserve">
+        <value>Some features may not work correctly, because the generation of the runtime configure file (*.runtimeconfig.json) has been disabled.</value>
+    </data>
+    <data name="RuntimeIdentifierChangedTooLate" xml:space="preserve">
+        <value>The RuntimeIdentifier was changed too late in the build (it's currently '{0}', but the build was already configured with SdkIsSimulator={1}). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file.</value>
+    </data>
+    <data name="RuntimeIdentifierOverridesRuntimeIdentifiers" xml:space="preserve">
+        <value>RuntimeIdentifier was set on the command line, and will override the value for RuntimeIdentifiers set in the project file.</value>
+    </data>
+    <data name="RuntimeIdentifiersClash" xml:space="preserve">
+        <value>Both RuntimeIdentifier and RuntimeIdentifiers were passed on the command line, but only one of them can be set at a time.</value>
+    </data>
+    <data name="RuntimeIdentifiersNotRecommended" xml:space="preserve">
+        <value>RuntimeIdentifiers is not recommended for {0} projects. Use RuntimeIdentifier instead to build for a single architecture.</value>
+    </data>
+    <data name="RuntimeIdentifiersNotSupported" xml:space="preserve">
+        <value>RuntimeIdentifiers is not supported for {0} projects. Use RuntimeIdentifier instead to build for a single architecture.</value>
+    </data>
+    <data name="ServerGarbageCollectionNotSupported" xml:space="preserve">
+        <value>.NET for {0} does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property.</value>
+    </data>
+    <data name="ServerPortDeprecated" xml:space="preserve">
+        <value>The 'ServerPort' property has been deprecated. Please consider using 'ServerSshPort' or 'ServerTcpPort' instead.</value>
+    </data>
+    <data name="TooManyResourcePrefixes" xml:space="preserve">
+        <value>AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but {0} were specified: '{1}'. Please reduce the number of resource prefix paths.</value>
+    </data>
+    <data name="TrimExportAttributesRequiresTrimmableStaticRegistrar" xml:space="preserve">
+        <value>Export attributes can only be removed when Registrar=trimmable-static.</value>
+    </data>
+    <data name="UseInterpreterRequiresMono" xml:space="preserve">
+        <value>The property 'UseInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR).</value>
+    </data>
+    <data name="WatchAppProjectNotFound" xml:space="preserve">
+        <value>Referenced iOS Watch App Project {0} not found, ignoring.</value>
+    </data>
+    <data name="XamMacArchDeprecated" xml:space="preserve">
+        <value>The property 'XamMacArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture.</value>
+    </data>
+    <data name="XamarinProjectsNotSupported" xml:space="preserve">
+        <value>Support for Xamarin projects has ended. Please migrate your project to .NET</value>
+    </data>
 </root>

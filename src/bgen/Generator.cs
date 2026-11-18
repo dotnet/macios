@@ -6133,8 +6133,6 @@ public partial class Generator : IMemberGatherer {
 				print ("[Model]");
 			}
 
-			if (is_category_class)
-				print ("[global::ObjCRuntime.Category (typeof ({0}))]", TypeManager.FormatType (type, bta!.BaseType));
 			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true, objectiveCFramework: true);
 
 			if (type.IsEnum) {
@@ -6265,6 +6263,9 @@ public partial class Generator : IMemberGatherer {
 				   where_list);
 
 			indent++;
+
+			if (is_category_class)
+				print ("internal const bool __IsBindingCategory = true;");
 
 			if (!is_model && !is_partial) {
 				foreach (var ea in selectors [type].OrderBy (s => s, StringComparer.Ordinal)) {

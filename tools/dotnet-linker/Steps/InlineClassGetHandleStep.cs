@@ -129,8 +129,8 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 
 	static bool IsBindingCategory (TypeDefinition type)
 	{
-		return type.IsAbstract && type.IsSealed && type.HasCustomAttributes &&
-			type.CustomAttributes.Any (v => v.AttributeType.Is ("ObjCRuntime", "CategoryAttribute"));
+		return type.IsAbstract && type.IsSealed && type.Fields.Any (v =>
+			v.Name == "__IsBindingCategory" && v.IsLiteral && v.Constant is true);
 	}
 
 	protected override bool ProcessMethod (MethodDefinition method)

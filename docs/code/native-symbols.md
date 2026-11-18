@@ -92,10 +92,11 @@ assembly-preparer uses ILC's output to find surviving native references:
   different framework (for example, NotificationCenter's category on UIKit's
   `UIVibrancyEffect`). Their inlined lookup uses a separate
   `xamarin_Category_GetHandle_<framework>_<class>_Native` function, so the
-  category's framework is linked only when that lookup survives. Binding
-  categories also carry category metadata in generated code, and used category
-  methods reference a framework marker so instance methods are covered even
-  when their generated class-handle lookup is unused.
+  category's framework is linked only when that lookup survives. Generated
+  binding categories have a marker field that identifies them to the build
+  tools, without registering them as managed categories. Used category methods
+  reference a framework marker so instance methods are covered even when their
+  generated class-handle lookup is unused.
 * Direct P/Invokes appear as unresolved native symbols.
 * Indirect P/Invokes appear as `__pinvoke_` fixup symbols. Their module and
   entry-point names are matched against P/Invoke declarations in the assemblies

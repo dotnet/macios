@@ -1567,15 +1567,16 @@ xamarin_release_managed_ref (id self, bool user_type)
 	//
 	// The race is between the following actions (given a managed object Z):
 	//
-	//   a1) Thread A nulls out the handle for Z
+	//   a1) Thread A nulls out the handle for Z (framework peers), or clears Z's
+	//       HasManagedRef flag (user types)
 	//   a2) Thread A calls release on Z's original handle
 	//   b1) Thread B fetches the handle for Z
 	//   b2) Thread B calls retainCount on Z's handle
 	//
 	// Possible execution orders:
 	//
-	//   1) a1-*: all such orders are safe, because b1 will read NULL and
-	//      b2 won't do anything
+	//   1) a1-*: all such orders are safe, because b1 will read NULL (or see that Z
+	//      no longer has a managed ref) and b2 won't do anything
 	//   2) b1-b2-a1-a2: retainCount before release is safe.
 	//   3) b1-a1-b2-a2: retainCount before release is safe.
 	//   4) b1-a1-a2-b2: unsafe; this tries to call retainCount after
@@ -1598,8 +1599,8 @@ xamarin_release_managed_ref (id self, bool user_type)
 	//     calling toggleref callbacks.
 	//   * Thread B fetches the handle (H) for object Z in a toggleref
 	//     callback.
-	//   * Thread A calls xamarin_release_managed_ref for object Z (and
-	//     also nulls out the handle for Z)
+	//   * Thread A calls xamarin_release_managed_ref for object Z (after nulling out
+	//     the handle for Z, or clearing its HasManagedRef flag)
 	//   * Thread A tries to lock the framework peer lock, and blocks
 	//     (before calling release on H)
 	//   * Thread B successfully calls retainCount on H

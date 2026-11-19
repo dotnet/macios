@@ -321,7 +321,7 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 		rv = 0;
 	}
 
-	LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: %i) => %i (res: %i) isToggleRef: %i\n", __func__, ptr, handle, flags, rv, res, isToggleRef);
+	LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: 0x%x) => %i (res: %i) isToggleRef: %i\n", __func__, ptr, handle, (unsigned) flags, rv, res, isToggleRef);
 
 	return rv;
 }

@@ -92,8 +92,10 @@ namespace Xamarin.MacDev.Tasks {
 			var interfaceDefinitions = new List<ITaskItem> ();
 			var partialAppManifests = new List<ITaskItem> ();
 			var sceneKitAssets = new List<ITaskItem> ();
+			var itemsFiles = new List<ITaskItem> ();
 
 			foreach (var asm in ReferencedLibraries) {
+				var extractedBundleResources = new List<ITaskItem> ();
 				// mscorlib.dll was not coming out with ResolvedFrom == {TargetFrameworkDirectory}
 				// and what we really care is where it comes from, not how it was resolved
 				if (IsFrameworkAssembly (asm)) {
@@ -111,6 +113,7 @@ namespace Xamarin.MacDev.Tasks {
 							break;
 						case ResourceType.BundleResource:
 							bundleResources.Add (item);
+							extractedBundleResources.Add (item);
 							break;
 						case ResourceType.ColladaAsset:
 							colladaAssets.Add (item);
@@ -136,8 +139,16 @@ namespace Xamarin.MacDev.Tasks {
 						}
 					}
 				}
+
+				var itemsFile = asm.GetMetadata ("ItemsFile");
+				if (!string.IsNullOrEmpty (itemsFile)) {
+					itemsFile = itemsFile.Replace ('\\', Path.DirectorySeparatorChar);
+					WriteItemsToFile.Write (this, itemsFile, extractedBundleResources, "_BundleResourceWithLogicalName", true, true);
+					itemsFiles.Add (new TaskItem (itemsFile));
+				}
 			}
 
+			ItemsFiles = itemsFiles.ToArray ();
 			BundleResourcesWithLogicalNames = bundleResources.ToArray ();
 			AtlasTextures = atlasTextures.ToArray ();
 			ColladaAssets = colladaAssets.ToArray ();

@@ -52,17 +52,9 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 			}
 
-			// Sort the list of inputs to compile:
-			// We want to start with the input that takes the longest to compile, because
-			// that will make most efficient use of parallel resources.
-			// 1. The dedup assembly is typically quite big, so do that first.
-			// 2. Sort the rest of the inputs by size, in decreasing order.
+			// Start with the longest compilation to make efficient use of parallel resources.
 			var sortedCompileInfo = CompileInfo
-				// Compute the data we need to sort. We set file length to long.MaxValue if it's a dedup assembly so that it sorts where we want it
-				.Select (item => {
-					var isDedup = Boolean.TryParse (item.GetMetadata ("IsDedupAssembly"), out var isDedupAssembly) && isDedupAssembly;
-					return (Item: item, InputLength: isDedup ? long.MaxValue : new FileInfo (item.ItemSpec).Length);
-				})
+				.Select (item => (Item: item, InputLength: new FileInfo (item.ItemSpec).Length))
 				// Sort
 				.OrderByDescending (x => x.InputLength);
 			foreach (var item in sortedCompileInfo) {

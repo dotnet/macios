@@ -126,6 +126,20 @@ endif
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
+# Use a local Xamarin.Messaging.Remote package for ConfigureMac in the installed SDKs:
+#
+#     make -C msbuild use-local-messaging-remote MESSAGING_REMOTE_PACKAGE=/path/to/Xamarin.Messaging.Remote.<version>.nupkg
+#
+# The target prints the staged package version. To check it, look for
+# "Xamarin.Messaging.Remote/<version>" in Xamarin.iOS.Tasks.Windows/obj/project.assets.json.
+# Use a version that isn't on a configured feed. To go back to the tracked version, run:
+#
+#     rm -f msbuild/.build-stamp && make -C msbuild all install
+ifneq ($(filter iOS,$(DOTNET_PLATFORMS)),)
+use-local-messaging-remote:
+	$(Q) DOTNET="$(DOTNET)" MAKE="$(MAKE)" ./stage-local-messaging-remote.sh "$(MESSAGING_REMOTE_PACKAGE)"
+endif
+
 ifndef NO_XCODE
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows

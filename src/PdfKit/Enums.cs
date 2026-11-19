@@ -253,13 +253,14 @@ namespace PdfKit {
 		High = 2,
 	}
 
+	/// <summary>Specifies the layout direction of PDF thumbnails.</summary>
 	[NoMac]
 	[Native]
 	[TV (18, 2)]
 	public enum PdfThumbnailLayoutMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that thumbnails are arranged vertically.</summary>
 		Vertical = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that thumbnails are arranged horizontally.</summary>
 		Horizontal = 1,
 	}
 

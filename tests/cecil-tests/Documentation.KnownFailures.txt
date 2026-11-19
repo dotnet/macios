@@ -58278,7 +58278,6 @@ T:PdfKit.PdfDocumentWriteOptions
 T:PdfKit.PdfPageImageInitializationOption
 T:PdfKit.PdfPageImageInitializationOptionKeys
 T:PdfKit.PdfSelectionGranularity
-T:PdfKit.PdfThumbnailLayoutMode
 T:PdfKit.PdfViewScale
 T:PdfKit.PdfViewTitle
 T:PdfKit.PdfWidgetCellState

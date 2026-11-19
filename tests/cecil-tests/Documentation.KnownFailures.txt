@@ -55900,7 +55900,6 @@ T:ExecutionPolicy.EPError
 T:ExecutionPolicy.EPExecutionPolicy
 T:ExtensionKit.EXAppExtensionBrowserViewController
 T:ExtensionKit.EXHostViewController
-T:ExternalAccessory.EABluetoothAccessoryPickerError
 T:FileProvider.NSFileProviderContentPolicy
 T:FileProvider.NSFileProviderCreateItemOptions
 T:FileProvider.NSFileProviderCreateOrModifyItemCompletionHandler

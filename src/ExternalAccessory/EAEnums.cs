@@ -50,17 +50,18 @@ namespace ExternalAccessory {
 	}
 
 	// NSInteger -> EAAccessoryManager.h
+	/// <summary>Identifies errors encountered while choosing a Bluetooth accessory.</summary>
 	[MacCatalyst (13, 1)]
 	[Native ("EABluetoothAccessoryPickerErrorCode")]
 	[ErrorDomain ("EABluetoothAccessoryPickerErrorDomain")]
 	public enum EABluetoothAccessoryPickerError : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory is already connected.</summary>
 		AlreadyConnected,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory could not be found.</summary>
 		NotFound,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled the accessory selection.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory selection failed.</summary>
 		Failed,
 	}
 }

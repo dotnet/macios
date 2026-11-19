@@ -159,14 +159,15 @@ namespace PdfKit {
 		DownToFit = 2,
 	}
 
+	/// <summary>Specifies the permissions available for a PDF document.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDocumentPermissions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the document has no permissions.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates user-level permissions for the document.</summary>
 		User = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates owner-level permissions for the document.</summary>
 		Owner = 2,
 	}
 

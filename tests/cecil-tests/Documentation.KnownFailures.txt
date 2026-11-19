@@ -58275,7 +58275,6 @@ T:PdfKit.PdfAppearanceCharacteristicsKeys
 T:PdfKit.PdfBorderKeys
 T:PdfKit.PdfDisplayDirection
 T:PdfKit.PdfDocumentAttributes
-T:PdfKit.PdfDocumentPermissions
 T:PdfKit.PdfDocumentWriteOptions
 T:PdfKit.PdfInterpolationQuality
 T:PdfKit.PdfPageImageInitializationOption

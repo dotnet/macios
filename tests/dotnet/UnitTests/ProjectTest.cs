@@ -2384,6 +2384,7 @@ namespace Xamarin.Tests {
 		}
 
 
+		[Ignore ("Fully trimmed app extension builds fail: https://github.com/dotnet/macios/issues/27342")]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]

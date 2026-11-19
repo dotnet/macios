@@ -143,7 +143,7 @@ steps:
     $sb = [System.Text.StringBuilder]::new()
     $sb.AppendLine("### :warning: AppSizeTest expected files changed :warning:") | Out-Null
     $sb.AppendLine() | Out-Null
-    $sb.AppendLine("The AppSizeTest detected changes in the expected app size files.") | Out-Null
+    $sb.AppendLine("The AppSizeTest detected [changes]($gistUrl) in the expected app size files.") | Out-Null
     $sb.AppendLine() | Out-Null
     $sb.AppendLine("To update the expected files, add a comment with the following command:") | Out-Null
     $sb.AppendLine() | Out-Null

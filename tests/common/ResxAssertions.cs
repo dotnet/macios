@@ -14,13 +14,18 @@ namespace Xamarin.Tests {
 
 	public static class ResxAssertions {
 
-		public static void AssertEntriesAreUniqueAndSorted (string path)
+		public static void AssertEntriesAreUniqueAndSorted (string path, bool sortAlphabetically = false)
 		{
 			var document = XDocument.Load (path);
 			var names = document.Root?.Elements ("data").Select (element => element.Attribute ("name")?.Value ?? "").ToArray () ?? [];
 			var duplicates = names.GroupBy (name => name).Where (group => group.Count () > 1).Select (group => group.Key).ToArray ();
 
 			Assert.That (duplicates, Is.Empty, $"{path} contains duplicate resource names.");
+
+			if (sortAlphabetically) {
+				Assert.That (names, Is.Ordered.Using<string> (StringComparer.Ordinal), $"{path} is not sorted alphabetically by resource name.");
+				return;
+			}
 
 			int? previousNumber = null;
 			string? previousName = null;

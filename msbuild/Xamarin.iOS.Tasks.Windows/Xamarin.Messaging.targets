@@ -93,9 +93,10 @@
 			<ContinueOnDisconnected Condition="'$(ContinueOnDisconnected)' == ''">true</ContinueOnDisconnected>
 		</PropertyGroup>
 
+		<!-- The 'ServerPort' property has been deprecated. Please consider using 'ServerSshPort' or 'ServerTcpPort' instead. -->
 		<MacDevMessage
 			Condition="'$(ServerPort)' != ''"
-			ResourceName="ServerPortDeprecated"
+			ResourceName="W7256"
 			Warning="true"
 		/>
 

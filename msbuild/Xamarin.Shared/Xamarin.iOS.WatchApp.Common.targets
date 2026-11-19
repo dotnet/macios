@@ -17,6 +17,7 @@ Copyright (C) 2015-2016 Xamarin. All rights reserved.
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(MSBuildThisFileDirectory)netstandard2.0\Xamarin.MacDev.Tasks.dll" />
 	<Target Name="Build">
+		<!-- Xamarin.iOS 14+ does not support watchOS 1 apps. Please migrate your project to watchOS 2+. -->
 		<MacDevMessage
 			Error="true"
 			ResourceName="E7069"

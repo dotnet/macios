@@ -263,9 +263,10 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		Condition = "'$(IsAppDistribution)' != 'true' And '$(UsingAppleNETSdk)' != 'true'"
 		Inputs="@(_CompileToNativeInput);@(_FileNativeReference)"
 		Outputs="$(_NativeExecutable);$(DeviceSpecificOutputPath)bundler.stamp">
+		<!-- Support for Xamarin projects has ended. Please migrate your project to .NET -->
 		<MacDevMessage
 			Error="true"
-			ResourceName="XamarinProjectsNotSupported"
+			ResourceName="E7263"
 		/>
 	</Target>
 
@@ -355,11 +356,12 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		<ItemGroup>
 			<_WatchAppProjectNotFoundArguments Include="@(_WatchAppReferenceWithConfigurationNonExistent->Distinct())" Value="%(Identity)" />
 		</ItemGroup>
+		<!-- Referenced iOS Watch App Project {0} not found, ignoring. -->
 		<MacDevMessage
 			Condition="'%(_WatchAppProjectNotFoundArguments.Identity)' != ''"
 			FormatArguments="@(_WatchAppProjectNotFoundArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="WatchAppProjectNotFound"
+			ResourceName="W7261"
 			Warning="true"
 		/>
 

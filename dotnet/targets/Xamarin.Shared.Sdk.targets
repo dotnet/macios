@@ -360,12 +360,13 @@
 			<_PublishTrimmedNotSupportedArguments Include="1" Value="$(PublishTrimmed)" />
 			<_PublishTrimmedNotSupportedArguments Include="2" Value="$(_LinkModeProperty)" />
 		</ItemGroup>
+		<!-- {0} projects do not support setting 'PublishTrimmed' to any value (current value: {1}). Use the '{2}' property to configure trimming behavior instead. -->
 		<MacDevMessage
 			Condition="'$(_PublishTrimmedError)' == 'true'"
 			Error="true"
 			FormatArguments="@(_PublishTrimmedNotSupportedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="PublishTrimmedNotSupported"
+			ResourceName="E7245"
 		/>
 
 		<ItemGroup>
@@ -373,12 +374,13 @@
 			<_PublishTrimmedRequiredArguments Include="1" Value="$(PublishTrimmed)" />
 			<_PublishTrimmedRequiredArguments Include="2" Value="$(_LinkModeProperty)" />
 		</ItemGroup>
+		<!-- {0} projects must build with PublishTrimmed=true. Current value: {1}. Set '{2}=None' instead to disable trimming for all assemblies. -->
 		<MacDevMessage
 			Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true' And '$(_CanSkipTrimmer)' != 'true'"
 			Error="true"
 			FormatArguments="@(_PublishTrimmedRequiredArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="PublishTrimmedRequired"
+			ResourceName="E7246"
 		/>
 
 		<!-- Show a warning if the trimmer was disabled because there's no connection to a Mac -->
@@ -386,14 +388,16 @@
 			<_PreviousPublishTrimmedValue>$(PublishTrimmed)</_PreviousPublishTrimmedValue>
 			<PublishTrimmed />
 		</PropertyGroup>
+		<!-- The linker has been disabled because there's no connection to a Mac. -->
 		<MacDevMessage
 			Condition="'$(_PreviousPublishTrimmedValue)' != ''"
-			ResourceName="LinkerDisabledWithoutMac"
+			ResourceName="W7229"
 			Warning="true"
 		/>
 	</Target>
 
 	<Target Name="_WarnRuntimeIdentifiersClash" Condition="'$(_RuntimeIdentifiersClashResourceName)' != ''">
+		<!-- RuntimeIdentifier was set on the command line, and will override the value for RuntimeIdentifiers set in the project file. -->
 		<MacDevMessage
 			ResourceName="$(_RuntimeIdentifiersClashResourceName)"
 			Warning="true"
@@ -405,26 +409,29 @@
 		<ItemGroup>
 			<_RuntimeIdentifiersNotRecommendedArguments Include="0" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- RuntimeIdentifiers is not recommended for {0} projects. Use RuntimeIdentifier instead to build for a single architecture. -->
 		<MacDevMessage
 			Condition="$([MSBuild]::VersionLessThan('$(TargetFrameworkVersion)', '13.0'))"
 			FormatArguments="@(_RuntimeIdentifiersNotRecommendedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="RuntimeIdentifiersNotRecommended"
+			ResourceName="W7253"
 			Warning="true"
 		/>
 		<ItemGroup>
 			<_RuntimeIdentifiersNotSupportedArguments Include="0" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- RuntimeIdentifiers is not supported for {0} projects. Use RuntimeIdentifier instead to build for a single architecture. -->
 		<MacDevMessage
 			Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '13.0'))"
 			Error="true"
 			FormatArguments="@(_RuntimeIdentifiersNotSupportedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="RuntimeIdentifiersNotSupported"
+			ResourceName="E7254"
 		/>
 	</Target>
 
 	<Target Name="_ErrorRuntimeIdentifiersClash" Condition="'$(_RuntimeIdentifiersClashErrorResourceName)' != ''">
+		<!-- Both RuntimeIdentifier and RuntimeIdentifiers were passed on the command line, but only one of them can be set at a time. -->
 		<MacDevMessage
 			Error="true"
 			ResourceName="$(_RuntimeIdentifiersClashErrorResourceName)"
@@ -484,12 +491,13 @@
 		<ItemGroup>
 			<_CannotMixRuntimeIdentifierPlatformsArguments Include="0" Value="$(RuntimeIdentifiers)" />
 		</ItemGroup>
+		<!-- Building for all the runtime identifiers '{0}' at the same time isn't possible, because they represent different platform variations. -->
 		<MacDevMessage
 			Condition="@(_RuntimeIdentifierDistinctPlatforms-&gt;Count()) &gt; 1"
 			Error="true"
 			FormatArguments="@(_CannotMixRuntimeIdentifierPlatformsArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="CannotMixRuntimeIdentifierPlatforms"
+			ResourceName="E7210"
 		/>
 
 		<PropertyGroup>
@@ -842,44 +850,49 @@
 		<ItemGroup>
 			<_InvalidLinkModeArguments Include="0" Value="$(_LinkMode)" />
 		</ItemGroup>
+		<!-- Invalid link mode: '{0}'. Valid link modes are: 'None', 'SdkOnly' and 'Full' -->
 		<MacDevMessage
 			Condition="'$(_LinkMode)' != 'None' And '$(_LinkMode)' != 'SdkOnly' And '$(_LinkMode)' != 'Full' And '$(_LinkMode)' != 'TrimMode'"
 			Error="true"
 			FormatArguments="@(_InvalidLinkModeArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidLinkMode"
+			ResourceName="E7222"
 		/>
 
 		<ItemGroup>
 			<_InvalidNativeAotRegistrarArguments Include="0" Value="$(Registrar)" />
 		</ItemGroup>
+		<!-- The only valid registrars when using NativeAOT are 'managed-static' or 'trimmable-static' (current value: '{0}'). Please either delete the 'Registrar' property, or change it to be 'managed-static' or 'trimmable-static'. -->
 		<MacDevMessage
 			Condition="'$(_UseNativeAot)' == 'true' And '$(Registrar)' != '' And '$(Registrar)' != 'managed-static' And '$(Registrar)' != 'trimmable-static'"
 			Error="true"
 			FormatArguments="@(_InvalidNativeAotRegistrarArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidNativeAotRegistrar"
+			ResourceName="E7223"
 		/>
 
 		<ItemGroup>
 			<_NativeAotRequiresFullLinkingArguments Include="0" Value="$(_LinkModeProperty)" />
 		</ItemGroup>
+		<!-- All assemblies must be processed by the linker when using NativeAOT. Please don't set neither the '{0}' nor the 'TrimMode' property, so that the build can default to linking all assemblies. -->
 		<MacDevMessage
 			Condition="'$(_UseNativeAot)' == 'true' And '$(_LinkMode)' != 'Full'"
 			FormatArguments="@(_NativeAotRequiresFullLinkingArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="NativeAotRequiresFullLinking"
+			ResourceName="W7240"
 			Warning="true"
 		/>
+		<!-- The 'TrimExportAttributes' property must be either 'true', 'false', or unset. -->
 		<MacDevMessage
 			Condition="'$(TrimExportAttributes)' != '' And '$(TrimExportAttributes)' != 'true' And '$(TrimExportAttributes)' != 'false'"
 			Error="true"
-			ResourceName="InvalidTrimExportAttributes"
+			ResourceName="E7227"
 		/>
+		<!-- Export attributes can only be removed when Registrar=trimmable-static. -->
 		<MacDevMessage
 			Condition="'$(TrimExportAttributes)' == 'true' And '$(Registrar)' != 'trimmable-static'"
 			Error="true"
-			ResourceName="TrimExportAttributesRequiresTrimmableStaticRegistrar"
+			ResourceName="E7258"
 		/>
 
 		<PropertyGroup>
@@ -1084,12 +1097,13 @@
 		</PropertyGroup>
 
 		<!-- Validate that one of our native handlers are selected (if using a native handler), otherwise we end up with crashes (infinite recursion) at runtime. -->
+		<!-- Invalid value for 'MtouchHttpClientHandler' ('{0}', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all). -->
 		<MacDevMessage
-			Error="true"
 			Condition="'$(UseNativeHttpHandler)' == 'true' And '$(_IsNSUrlSessionHandlerFeature)' != 'true' And '$(_IsCFNetworkHandlerFeature)' != 'true'"
-			ResourceName="E7152_InvalidMtouchHttpClientHandler" FormatArguments="$(MtouchHttpClientHandler)">
-			<!-- Invalid value for 'MtouchHttpClientHandler' ('$(MtouchHttpClientHandler)', must be either 'NSUrlSessionHandler' or 'CFNetworkHandler' (or not set at all). -->
-		</MacDevMessage>
+			Error="true"
+			FormatArguments="$(MtouchHttpClientHandler)"
+			ResourceName="E7216"
+		/>
 
 		<ItemGroup>
 			<!-- Configure linker features -->
@@ -1560,28 +1574,32 @@
 	</Target>
 
 	<Target Name="_VerifyValidRuntime">
+		<!-- Only CoreCLR is supported on macOS. Set 'UseMonoRuntime=false' to use CoreCLR. -->
 		<MacDevMessage
 			Condition="'$(_PlatformName)' == 'macOS' And '$(UseMonoRuntime)' != 'false'"
 			Error="true"
-			ResourceName="MacOSRequiresCoreClr"
+			ResourceName="E7232"
 		/>
 	</Target>
 
 	<Target Name="_VerifyValidProperties">
+		<!-- The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler. -->
 		<MacDevMessage
-			Warning="true"
-			ResourceName="UseNativeHttpHandlerHasNoEffectOnMacOS"
 			Condition="'$(_PlatformName)' == 'macOS' And '$(UseNativeHttpHandler)' == 'true'"
+			ResourceName="W7260"
+			Warning="true"
 			/>
+		<!-- The property 'MtouchArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture. -->
 		<MacDevMessage
 			Condition="'$(MtouchArch)' != '' And '$(AllowMtouchArchProperty)' != 'true'"
 			Error="true"
-			ResourceName="MtouchArchDeprecated"
+			ResourceName="E7235"
 		/>
+		<!-- The property 'XamMacArch' is deprecated, please remove it from the project file. Use 'RuntimeIdentifier' or 'RuntimeIdentifiers' instead to specify the target architecture. -->
 		<MacDevMessage
 			Condition="'$(XamMacArch)' != '' And '$(AllowXamMacArchArchProperty)' != 'true'"
 			Error="true"
-			ResourceName="XamMacArchDeprecated"
+			ResourceName="E7262"
 		/>
 
 		<!--
@@ -1589,67 +1607,76 @@
 			no effect (or are directly problematic) when not using the Mono runtime
 			(such as when using CoreCLR or NativeAOT).
 		-->
+		<!-- The property 'RunAotCompilation' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file. -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(RunAotCompilation)' == 'true'"
 			Error="true"
-			ResourceName="RunAotCompilationRequiresMono"
+			ResourceName="E7248"
 		/>
 		<Error
 			Text="The property 'RunAotCompilation' is not supported because Mono AOT compilation has been removed."
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(RunAotCompilation)' == 'true'"
 			/>
+		<!-- The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file. -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
 			Error="true"
-			ResourceName="AotAssembliesRequiresMono"
+			ResourceName="E7203"
 		/>
 		<Error
 			Text="The property 'AotAssemblies' is not supported because Mono AOT compilation has been removed."
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(AotAssemblies)' == 'true'"
 			/>
 		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
+		<!-- The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(EnableSGenConc)' == 'true' And '$(MtouchEnableSGenConc)' != 'true'"
-			ResourceName="EnableSGenConcRequiresMono"
+			ResourceName="W7217"
 			Warning="true"
 		/>
+		<!-- The property 'MtouchEnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchEnableSGenConc)' == 'true'"
-			ResourceName="MtouchEnableSGenConcRequiresMono"
+			ResourceName="W7236"
 			Warning="true"
 		/>
+		<!-- The property 'UseInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(UseInterpreter)' == 'true'"
-			ResourceName="UseInterpreterRequiresMono"
+			ResourceName="W7259"
 			Warning="true"
 		/>
 		<!-- 'UseInterpreter' is a shorthand for 'MtouchInterpreter=all' (see Xamarin.Shared.props), so only warn about 'MtouchInterpreter' if the value didn't come from 'UseInterpreter', to avoid showing two warnings for the same setting. -->
+		<!-- The property 'MtouchInterpreter' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchInterpreter)' != '' And '$(UseInterpreter)' != 'true'"
-			ResourceName="MtouchInterpreterRequiresMono"
+			ResourceName="W7238"
 			Warning="true"
 		/>
+		<!-- The property 'MtouchUseLlvm' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchUseLlvm)' == 'true'"
-			ResourceName="MtouchUseLlvmRequiresMono"
+			ResourceName="W7239"
 			Warning="true"
 		/>
 		<Warning
 			Text="The property 'MtouchUseLlvm' has no effect because Mono AOT compilation has been removed."
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchUseLlvm)' == 'true'"
 			/>
+		<!-- The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
-			ResourceName="MtouchFloatRequiresMono"
+			ResourceName="W7237"
 			Warning="true"
 		/>
 		<Warning
 			Text="The property 'MtouchFloat32' has no effect because Mono AOT compilation has been removed."
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchFloat32)' != ''"
 			/>
+		<!-- The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MonoUseCompressedInterfaceBitmap)' == 'true'"
-			ResourceName="MonoUseCompressedInterfaceBitmapRequiresMono"
+			ResourceName="W7234"
 			Warning="true"
 		/>
 	</Target>
@@ -1785,9 +1812,10 @@
 			>
 		</RuntimeConfigParserTask>
 
+		<!-- Some features may not work correctly, because the generation of the runtime configure file (*.runtimeconfig.json) has been disabled. -->
 		<MacDevMessage
 			Condition="'$(GenerateRuntimeConfigurationFiles)' != 'true'"
-			ResourceName="RuntimeConfigurationFilesDisabled"
+			ResourceName="W7249"
 			Warning="true"
 		/>
 	</Target>
@@ -2869,12 +2897,13 @@
 		<ItemGroup>
 			<_InvalidWinExeOutputTypeArguments Include="0" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- WinExe is not a valid output type for {0} -->
 		<MacDevMessage
 			Condition="'$(OutputType)' == 'WinExe'"
 			Error="true"
 			FormatArguments="@(_InvalidWinExeOutputTypeArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidWinExeOutputType"
+			ResourceName="E7228"
 		/>
 	</Target>
 
@@ -2904,23 +2933,25 @@
 		<ItemGroup>
 			<_InvalidRuntimeIdentifierArguments Include="0" Value="$(RuntimeIdentifier)" />
 		</ItemGroup>
+		<!-- The RuntimeIdentifier '{0}' is invalid. -->
 		<MacDevMessage
 			Condition="'$(_IsValidRuntimeIdentifier)' != 'true'"
 			Error="true"
 			FormatArguments="@(_InvalidRuntimeIdentifierArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidRuntimeIdentifier"
+			ResourceName="E7224"
 		/>
 		<ItemGroup>
 			<_RuntimeIdentifierChangedTooLateArguments Include="0" Value="$(RuntimeIdentifier)" />
 			<_RuntimeIdentifierChangedTooLateArguments Include="1" Value="$(_SdkIsSimulator)" />
 		</ItemGroup>
+		<!-- The RuntimeIdentifier was changed too late in the build (it's currently '{0}', but the build was already configured with SdkIsSimulator={1}). A common reason is a '*.csproj.user' file changing it; if you're building outside of the IDE, delete this file. -->
 		<MacDevMessage
 			Condition="'$(_RuntimeIdentifierIsSimulator)' != '$(_SdkIsSimulator)'"
 			Error="true"
 			FormatArguments="@(_RuntimeIdentifierChangedTooLateArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="RuntimeIdentifierChangedTooLate"
+			ResourceName="E7250"
 		/>
 	</Target>
 
@@ -2930,11 +2961,12 @@
 		<ItemGroup>
 			<_ServerGarbageCollectionNotSupportedArguments Include="0" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- .NET for {0} does not support server garbage collection. Please don't set the 'ServerGarbageCollection' property. -->
 		<MacDevMessage
 			Error="true"
 			FormatArguments="@(_ServerGarbageCollectionNotSupportedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="ServerGarbageCollectionNotSupported"
+			ResourceName="E7255"
 		/>
 	</Target>
 
@@ -2944,11 +2976,12 @@
 		<ItemGroup>
 			<_PublishSingleFileNotSupportedArguments Include="0" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- .NET for {0} does not support publishing to a single file. Please don't set the 'PublishSingleFile' property. -->
 		<MacDevMessage
 			Error="true"
 			FormatArguments="@(_PublishSingleFileNotSupportedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="PublishSingleFileNotSupported"
+			ResourceName="E7244"
 		/>
 	</Target>
 
@@ -2961,11 +2994,12 @@
 			<_RecommendedXcodeVersionMajorMinorOnly>$([System.Version]::Parse('$(RecommendedXcodeVersion)').Major).$([System.Version]::Parse('$(RecommendedXcodeVersion)').Minor)</_RecommendedXcodeVersionMajorMinorOnly>
 			<_IsMatchingXcode Condition="'$(_RecommendedXcodeVersionMajorMinorOnly)' == '$(_XcodeVersionMajorMinorOnly)'">true</_IsMatchingXcode>
 		</PropertyGroup>
+		<!-- This version of .NET for {0} ({1}) requires Xcode {2}. The current version of Xcode is {3}. Either install Xcode {2}, or use a different version of .NET for {0}. See https://aka.ms/xcode-requirement for more information. -->
 		<MacDevMessage
-			Error="true"
-			ResourceName="E0191"
-			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(RecommendedXcodeVersion);$(_XcodeVersion)"
 			Condition="'$(_IsMatchingXcode)' != 'true'"
+			Error="true"
+			FormatArguments="$(_PlatformName);$(_ShortPackageVersion);$(RecommendedXcodeVersion);$(_XcodeVersion)"
+			ResourceName="E0191"
 		/>
 	</Target>
 
@@ -2989,18 +3023,22 @@
 			<_InvalidTargetPlatformVersionArguments Include="1" Value="$(_PlatformName)" />
 			<_InvalidTargetPlatformVersionArguments Include="2" Value="$(_XamarinValidTargetPlatformVersions)" />
 		</ItemGroup>
+		<!-- {0} is not a valid TargetPlatformVersion for {1}. This warning will become an error in future versions of the {1} workload. Valid versions include:
+		{2} -->
 		<MacDevMessage
 			Condition="'$(_XamarinTargetPlatformVersionSupported)' != 'true' And '@(_XamarinApplicableTargetPlatformVersion)' != ''"
 			FormatArguments="@(_InvalidTargetPlatformVersionArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidTargetPlatformVersion"
+			ResourceName="W7225"
 			Warning="true"
 		/>
+		<!-- {0} is not a valid TargetPlatformVersion for {1}. This warning will become an error in future versions of the {1} workload. Valid versions include:
+		None -->
 		<MacDevMessage
 			Condition="'$(_XamarinTargetPlatformVersionSupported)' != 'true' And '@(_XamarinApplicableTargetPlatformVersion)' == ''"
 			FormatArguments="@(_InvalidTargetPlatformVersionArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="InvalidTargetPlatformVersionWithoutValidVersions"
+			ResourceName="W7226"
 			Warning="true"
 		/>
 	</Target>
@@ -3173,26 +3211,29 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			<_IsHotReloadLaunch>true</_IsHotReloadLaunch>
 		</PropertyGroup>
 
+		<!-- Can't use Hot Reload or 'dotnet watch' unless the interpreter is enabled. Set 'UseInterpreter=true' in the project file to use the interpreter. -->
 		<MacDevMessage
 			Condition="'$(_IsHotReloadLaunch)' == 'true' And '$(UseMonoRuntime)' == 'true' And '$(MtouchInterpreter)' == ''"
 			Error="true"
-			ResourceName="HotReloadRequiresInterpreter"
+			ResourceName="E7221"
 		/>
+		<!-- Can't use Hot Reload or 'dotnet watch' if any assemblies are trimmed. Set 'MtouchLink=None' in the project file to disable trimming. -->
 		<MacDevMessage
 			Condition="'$(_IsHotReloadLaunch)' == 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'"
 			Error="true"
-			ResourceName="HotReloadDoesNotSupportTrimming"
+			ResourceName="E7220"
 		/>
 		<!-- Hot reload currently only works with the partial-static (or dynamic) registrar, but we plan on making it work with the trimmable-static registrar too: https://github.com/dotnet/macios/issues/26069 -->
 		<ItemGroup>
 			<_HotReloadDoesNotSupportRegistrarArguments Include="0" Value="$(Registrar)" />
 		</ItemGroup>
+		<!-- Can't use Hot Reload or 'dotnet watch' with the '{0}' registrar, because it modifies user assemblies (which changes their MVID and prevents Hot Reload from applying changes). Set 'Registrar=partial-static' in the project file. -->
 		<MacDevMessage
 			Condition="'$(_IsHotReloadLaunch)' == 'true' And ('$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static')"
 			Error="true"
 			FormatArguments="@(_HotReloadDoesNotSupportRegistrarArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="HotReloadDoesNotSupportRegistrar"
+			ResourceName="E7219"
 		/>
 	</Target>
 

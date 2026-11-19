@@ -256,10 +256,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<PropertyGroup>
 			<_HasOldStyleBindingItems Condition="@(ObjcBindingNativeLibrary->Count()) > 0">true</_HasOldStyleBindingItems>
 		</PropertyGroup>
+		<!-- Creating a NuGet package is not supported for projects that have ObjcBindingNativeLibrary items. Migrate to use NativeReference items instead. -->
 		<MacDevMessage
 			Condition="'$(_HasOldStyleBindingItems)' == 'true'"
 			Error="true"
-			ResourceName="CannotPackOldStyleBindingItems"
+			ResourceName="E7211"
 		/>
 
 		<!-- Figure out where to place the binding resources (see references above for more info) -->
@@ -368,11 +369,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ItemGroup>
 			<_FilesInAppBundleRootDirectoryArguments Include="0" Value="@(_FilesInAppBundleRootDirectory, '%0a')" />
 		</ItemGroup>
+		<!-- Found files in the root directory of the app bundle. This will likely cause codesign to fail. Files:
+		{0} -->
 		<MacDevMessage
 			Condition="'$(EnableAutomaticAppBundleRootDirectoryCleanup)' != 'true' And @(_FilesInAppBundleRootDirectory-&gt;Count()) &gt; 0"
 			FormatArguments="@(_FilesInAppBundleRootDirectoryArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="FilesInAppBundleRootDirectory"
+			ResourceName="W7218"
 			Warning="true"
 		/>
 	</Target>
@@ -466,11 +469,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_TooManyResourcePrefixesArguments Include="0" Value="$(_ResourcePrefixCount)" />
 			<_TooManyResourcePrefixesArguments Include="1" Value="$(_ResourcePrefix)" />
 		</ItemGroup>
+		<!-- AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but {0} were specified: '{1}'. Please reduce the number of resource prefix paths. -->
 		<MacDevMessage
 			Error="true"
 			FormatArguments="@(_TooManyResourcePrefixesArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="TooManyResourcePrefixes"
+			ResourceName="E7257"
 		/>
 	</Target>
 
@@ -489,10 +493,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Content Remove="@(_ProcessedContent)" />
 		</ItemGroup>
 
+		<!-- Setting ResolveResourceItemsRelativeToProject to false is not supported in .NET 13+. Remove this property from your project file. -->
 		<MacDevMessage
 			Condition="'$(_ResolveResourceItemsRelativeToProjectInvalid)' == 'true'"
 			Error="true"
-			ResourceName="ResolveResourceItemsRelativeToProjectRequired"
+			ResourceName="E7247"
 		/>
 
 		<CollectBundleResources
@@ -803,10 +808,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ReadAppManifest>
 
 		<!-- A bundle identifier is required when creating an app bundle. It's not when building a class library -->
+		<!-- A bundle identifier is required. Either add an 'ApplicationId' property in the project file, or add a 'CFBundleIdentifier' entry in the project's Info.plist file. -->
 		<MacDevMessage
 			Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleIdentifier)' == '' And '$(_CanOutputAppBundle)' == 'true'"
 			Error="true"
-			ResourceName="BundleIdentifierRequired"
+			ResourceName="E7208"
 		/>
 	</Target>
 
@@ -2110,10 +2116,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		DependsOnTargets="$(_GenerateBindingsDependsOn)"
 		Condition="'$(IsBindingProject)' == 'true' And '$(_DisableBindingProjectBuild)' != 'true'">
 
+		<!-- The property 'BuildBindingProjectLocally' build is disabled, but there's no connection to a remote Mac. -->
 		<MacDevMessage
 			Condition="'$(IsMacEnabled)' != 'true' And '$(BuildBindingProjectLocally)' != 'true'"
 			Error="true"
-			ResourceName="LocalBindingBuildDisabledWithoutMac"
+			ResourceName="E7230"
 		/>
 
 		<PropertyGroup>
@@ -2990,11 +2997,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppExtensionProjectNotFoundArguments Include="@(_AppExtensionReferenceWithConfigurationNonExistent->Distinct())" Value="$(_PlatformName)" />
 			<_AppExtensionProjectNotFoundArguments Include="@(_AppExtensionReferenceWithConfigurationNonExistent->Distinct())" Value="%(Identity)" />
 		</ItemGroup>
+		<!-- Referenced {0} App Extension Project {1} not found, ignoring. -->
 		<MacDevMessage
 			Condition="'%(_AppExtensionProjectNotFoundArguments.Identity)' != ''"
 			FormatArguments="@(_AppExtensionProjectNotFoundArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="AppExtensionProjectNotFound"
+			ResourceName="W7204"
 			Warning="true"
 		/>
 	</Target>
@@ -3563,10 +3571,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="Archive" Condition="'$(_CanArchive)' == 'true'" DependsOnTargets="$(ArchiveDependsOn)" />
 
 	<Target Name="_CoreArchive" Condition="'$(ArchiveOnBuild)' == 'true'" DependsOnTargets="Codesign">
+		<!-- Code signing must be enabled to create an Xcode archive. -->
 		<MacDevMessage
 			Condition="'$(_CodeSigningKey)' == '' And '$(SdkIsDesktop)' != 'true'"
 			Error="true"
-			ResourceName="ArchiveRequiresCodeSigning"
+			ResourceName="E7205"
 		/>
 
 		<CollectITunesSourceFiles

@@ -36,10 +36,11 @@ namespace Xamarin.MacDev.Tasks {
 			var msg = MSBStrings.ResourceManager.GetString (ResourceName, MSBStrings.Culture) ?? $"Could not find the resource '{ResourceName}'.";
 			var args = FormatArguments.Select (v => string.IsNullOrEmpty (FormatArgumentsMetadata) ? v.ItemSpec : v.GetMetadata (FormatArgumentsMetadata)).ToArray ();
 			var message = string.Format (msg, args);
+			var code = (Error || Warning) ? LoggingExtensions.ErrorPrefix + ResourceName.Substring (1) : "";
 			if (Error) {
-				Log.LogError (message);
+				Log.LogError (null, code, null, null, 0, 0, 0, 0, message);
 			} else if (Warning) {
-				Log.LogWarning (message);
+				Log.LogWarning (null, code, null, null, 0, 0, 0, 0, message);
 			} else {
 				Log.LogMessage (message);
 			}

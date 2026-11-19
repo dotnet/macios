@@ -16,11 +16,12 @@
 			<_PublishReadyToRunCompositeNotSupportedArguments Include="0" Value="$(PublishReadyToRunComposite)" />
 			<_PublishReadyToRunCompositeNotSupportedArguments Include="1" Value="$(_PlatformName)" />
 		</ItemGroup>
+		<!-- Setting 'PublishReadyToRunComposite' to '{0}' isn't supported for {1} projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely. -->
 		<MacDevMessage
 			Error="true"
 			FormatArguments="@(_PublishReadyToRunCompositeNotSupportedArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="PublishReadyToRunCompositeNotSupported"
+			ResourceName="E7243"
 		/>
 	</Target>
 

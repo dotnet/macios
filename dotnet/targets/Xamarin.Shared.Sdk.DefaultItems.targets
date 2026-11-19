@@ -24,10 +24,10 @@
 		<!-- Clear RuntimeIdentifier -->
 		<RuntimeIdentifier />
 		<!-- Check if RuntimeIdentifier was cleared. If it wasn't it was set on the command line, and in that case, try to clear RuntimeIdentifiers instead -->
-		<_RuntimeIdentifiersClashResourceName Condition="'$(RuntimeIdentifier)' != ''">RuntimeIdentifierOverridesRuntimeIdentifiers</_RuntimeIdentifiersClashResourceName>
+		<_RuntimeIdentifiersClashResourceName Condition="'$(RuntimeIdentifier)' != ''">W7251</_RuntimeIdentifiersClashResourceName>
 		<RuntimeIdentifiers Condition="'$(RuntimeIdentifier)' != ''" />
 		<!-- If we couldn't clear RuntimeIdentifiers either, then both were set on the command line. This is an error -->
-		<_RuntimeIdentifiersClashErrorResourceName  Condition="'$(RuntimeIdentifier)' != '' And '$(RuntimeIdentifiers)' != ''">RuntimeIdentifiersClash</_RuntimeIdentifiersClashErrorResourceName>
+		<_RuntimeIdentifiersClashErrorResourceName  Condition="'$(RuntimeIdentifier)' != '' And '$(RuntimeIdentifiers)' != ''">E7252</_RuntimeIdentifiersClashErrorResourceName>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -55,12 +55,13 @@
 		<ItemGroup>
 			<_CannotMapRuntimeIdentifierToArchitectureArguments Include="0" Value="@(_RuntimeIdentifiersWithoutTargetArchitecture)" />
 		</ItemGroup>
+		<!-- Unable to map the following RuntimeIdentifier values to a target architecture: {0} -->
 		<MacDevMessage
 			Condition="@(_RuntimeIdentifiersWithoutTargetArchitecture-&gt;Count()) != 0"
 			Error="true"
 			FormatArguments="@(_CannotMapRuntimeIdentifierToArchitectureArguments)"
 			FormatArgumentsMetadata="Value"
-			ResourceName="CannotMapRuntimeIdentifierToArchitecture"
+			ResourceName="E7209"
 		/>
 		<!-- Map the item group of runtime identifiers into the TargetArchitectures property -->
 		<PropertyGroup>

@@ -122,9 +122,11 @@ This file contains MSBuild targets that support building Xcode framework project
           Visible="%(Visible)" />
     </ItemGroup>
 
-    <MacDevMessage ResourceName="XcodeBuild_CreateNativeRef"
-        FormatArguments="%(_XcodeProjectXcFrameworkOutputs.Identity)"
+    <!-- Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior. -->
+    <MacDevMessage
         Condition=" '@(_XcodeProjectXcFrameworkOutputs->Count())' != '0' "
+        FormatArguments="%(_XcodeProjectXcFrameworkOutputs.Identity)"
+        ResourceName="XcodeBuild_CreateNativeRef"
     />
 
     <Touch Files="$(_BuildXcodeProjectsStamp)" AlwaysCreate="true" />

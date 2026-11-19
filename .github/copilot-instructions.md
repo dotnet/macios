@@ -149,13 +149,25 @@ This includes logged errors, warnings, informational messages, and exception mes
 shown to users. Do not hard-code these messages in C# or edit generated translations.
 
 Errors and warnings in MSBuild `.targets` and `.props` files that ship in the SDK
-must use `MacDevMessage` with `Error="true"` or `Warning="true"`. Store the message
-in `msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx` and pass placeholder values
-through `FormatArguments`. Use item metadata with `FormatArgumentsMetadata` when
-values can be empty or contain semicolons or path separators. When converting an
-existing diagnostic, keep its condition and severity. Do not use the built-in
-`Error` or `Warning` tasks or put English error or warning text in MSBuild properties.
-This rule does not apply to build tooling used only inside this repository.
+must use `MacDevMessage` with `Error="true"` or `Warning="true"`:
+
+* Store the English message in `msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx`.
+  Use `E` followed by four digits for an error resource name, or `W` followed by four
+  digits for a warning. Set `ResourceName` to that name. Reuse an existing code only
+  for the same diagnostic; otherwise, choose an unused number in the 7xxx range.
+  `MacDevMessage` replaces `E` or `W` with the platform's `MT` or `MM` prefix.
+  Suppress a warning by adding its full code (for example, `MT7260`) to `NoWarn`.
+* Keep resource entries sorted alphabetically by their `name` attribute.
+* Put the English message, including any `{0}` placeholders, in an XML comment
+  immediately before the `MacDevMessage` task.
+* Pass placeholder values through `FormatArguments`. Use item metadata with
+  `FormatArgumentsMetadata` when values can be empty or contain semicolons or path
+  separators.
+* When converting an existing diagnostic, keep its condition and severity.
+
+Do not use the built-in `Error` or `Warning` tasks or put English error or warning
+text in MSBuild properties. These rules do not apply to build tooling used only
+inside this repository.
 
 ### MSBuild Targets Pitfalls
 

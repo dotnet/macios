@@ -241,14 +241,15 @@ namespace PdfKit {
 		Horizontal = 1,
 	}
 
+	/// <summary>Specifies the interpolation quality used when rendering images in a PDF.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfInterpolationQuality : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that interpolation is not applied.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that low-quality interpolation is applied.</summary>
 		Low = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that high-quality interpolation is applied.</summary>
 		High = 2,
 	}
 

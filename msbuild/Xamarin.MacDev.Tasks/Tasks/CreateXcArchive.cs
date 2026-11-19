@@ -78,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (!Directory.Exists (ProjectPath)) {
-				Log.LogError (MSBStrings.XcodeBuild_InvalidItem, ProjectPath);
+				Log.LogError (MSBStrings.E7267, ProjectPath);
 				return false;
 			}
 

@@ -56,7 +56,7 @@ namespace Xamarin.MacDev.Tasks {
 					var plist = PDictionary.OpenFile (AppManifestPath);
 					return plist.GetUIDeviceFamily ();
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}

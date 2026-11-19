@@ -110,7 +110,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return "com.apple.application-identifier";
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -135,7 +135,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return macAllowedProvisioningKeys;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -150,7 +150,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return Path.Combine (AppBundleDir, "Contents", "Resources");
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -165,7 +165,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return true;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}

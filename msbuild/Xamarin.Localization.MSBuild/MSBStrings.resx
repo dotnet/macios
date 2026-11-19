@@ -1505,13 +1505,22 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <value>An absolute IntermediateOutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath.</value>
     </data>
 
-    <data name="InvalidFramework" xml:space="preserve">
+    <data name="E7264" xml:space="preserve">
         <value>Invalid framework: {0}</value>
     </data>
     
-    <data name="InvalidPlatform" xml:space="preserve">
+    <data name="E7265" xml:space="preserve">
         <value>Invalid platform: {0}</value>
-    </data>    <data name="M0001" xml:space="preserve">
+    </data>
+    <data name="E7267" xml:space="preserve">
+        <value>The Xcode project item: '{0}' could not be found. Please update the 'Include' value to a path containing a valid '.xcodeproj' file.</value>
+        <comment>
+            The following are literal names and should not be translated: Xcode, 'Include', '.xcodeproj'
+            {0}: An invalid path to an Xcode project file
+        </comment>
+    </data>
+
+    <data name="M0001" xml:space="preserve">
         <value>Started external tool execution #{0}: {1} {2}</value>
     </data>
     
@@ -1650,6 +1659,14 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
 {1} - The total number of input files.</comment>
     </data>
     
+    <data name="M7266" xml:space="preserve">
+        <value>Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior.</value>
+        <comment>
+            The following are literal names and should not be translated: Xcode, '%(CreateNativeReference)', metadata, 'false'
+            {0}: The path to the XCFramework output that will be referenced
+        </comment>
+    </data>
+
      <data name="W0016" xml:space="preserve">
         <value>Can only fake the watchOS 4.3 SDK when building for watchOS.</value>
     </data>
@@ -2000,19 +2017,4 @@ None</value>
         <value>Referenced iOS Watch App Project {0} not found, ignoring.</value>
     </data>
 
-    <data name="XcodeBuild_CreateNativeRef" xml:space="preserve">
-        <value>Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior.</value>
-        <comment>
-            The following are literal names and should not be translated: Xcode, '%(CreateNativeReference)', metadata, 'false'
-            {0}: The path to the XCFramework output that will be referenced
-        </comment>
-    </data>
-
-    <data name="XcodeBuild_InvalidItem" xml:space="preserve">
-        <value>The Xcode project item: '{0}' could not be found. Please update the 'Include' value to a path containing a valid '.xcodeproj' file.</value>
-        <comment>
-            The following are literal names and should not be translated: Xcode, 'Include', '.xcodeproj'
-            {0}: An invalid path to an Xcode project file
-        </comment>
-    </data>
 </root>

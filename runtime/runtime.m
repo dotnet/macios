@@ -1354,9 +1354,10 @@ xamarin_objc_type_size (const char *type)
  * Managed code releases its ref when either of the following conditions occur:
  *  - Dispose is called (manually) on the object.
  *  - The Handle property on the managed object changes.
- *  - The GC frees the object. User-type peers can be implicit toggle refs when their GCHandle is
- *    stored in the native object. The GC then checks the native retain count even when ownership
- *    bypasses the retain trampoline. See NSObject.CreateManagedRef for the conditions and limitations.
+ *  - The GC frees the object. On CoreCLR/NativeAOT, user-type peers can be implicit toggle refs when
+ *    their GCHandle is stored in the native object. The GC then checks the native retain count even
+ *    when ownership bypasses the retain trampoline. See NSObject.CreateManagedRef for the conditions
+ *    and limitations.
  * 
  * Objects are removed from the native<->managed dictionary when either of the following conditions occur:
  *  - The native object is dealloc'ed (refcount reaches 0).

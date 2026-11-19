@@ -606,13 +606,12 @@ namespace Foundation {
 		// then collect the peer while native code still uses the object. Later callbacks can fail, or a
 		// lookup can create a new peer without the old peer's state.
 		//
-		// Implicit toggle-ref tracking helps protect peers that own their native object's GCHandle ivar.
-		// When the GC finds no other references to such a peer, and the peer isn't disposed and still owns
-		// its native reference (HasManagedRef), the GC checks the native retain count. The peer owns one native
-		// reference, so a count above 1 can indicate that native code also owns the object. The GC keeps
-		// the peer alive in that case. The retain/release trampolines are unchanged: they still keep
-		// disposed peers alive while native code holds a -retain'ed reference, which the retain count
-		// check doesn't do.
+		// On CoreCLR/NativeAOT, implicit toggle-ref tracking helps protect peers that own their native
+		// object's GCHandle ivar. When the GC finds no other references to such a peer, and the peer isn't
+		// disposed and still owns its native reference (HasManagedRef), the GC checks the native retain count.
+		// The peer owns one native reference, so a count above 1 can indicate that native code also owns the
+		// object; the GC keeps the peer alive in that case. The unchanged retain/release trampolines still
+		// keep disposed peers alive while native code holds a -retain'ed reference.
 		//
 		// CreateManagedRef and EnsureManagedReference set the flag when they install this peer's GCHandle in
 		// the ivar, or find that the ivar already points to this peer (for instance when constructor chaining

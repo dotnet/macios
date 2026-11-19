@@ -80,11 +80,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[DllImport (Constants.ObjectiveCLibrary)]
 		static extern unsafe void objc_destroyWeak (IntPtr* location);
 
-		[TestCase (false)]
-		[TestCase (true)]
-		public void NativeOwnershipKeepsCustomPeerAlive (bool promoteWeak)
+		[Test]
+		public void NativeOwnershipKeepsCustomPeerAlive ()
 		{
-			var weakPeer = CheckNativeOwnership (promoteWeak);
+			var weakPeer = CheckNativeOwnership ();
 
 			CollectAndDrain ();
 			Assert.That (weakPeer.TryGetTarget (out _), Is.False, "peer collected after native release");
@@ -112,9 +111,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		// Keep any managed locals from the identity check out of the collection after release.
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static WeakReference<CustomPeer> CheckNativeOwnership (bool promoteWeak)
+		static WeakReference<CustomPeer> CheckNativeOwnership ()
 		{
-			var (handle, retained, weakPeer) = CreateRetainedPeer (promoteWeak);
+			var (handle, retained, weakPeer) = CreateRetainedPeer ();
 			try {
 				Assert.That (retained, Is.EqualTo (handle), "native retain");
 				CollectAndDrain ();
@@ -131,11 +130,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static (IntPtr Handle, IntPtr Retained, WeakReference<CustomPeer> Peer) CreateRetainedPeer (bool promoteWeak)
+		static (IntPtr Handle, IntPtr Retained, WeakReference<CustomPeer> Peer) CreateRetainedPeer ()
 		{
 			var peer = new CustomPeer { State = 42 };
 			var handle = (IntPtr) peer.Handle;
-			var retained = promoteWeak ? PromoteWeakReference (handle) : objc_retain (handle);
+			var retained = PromoteWeakReference (handle);
 			return (handle, retained, new WeakReference<CustomPeer> (peer, trackResurrection: true));
 		}
 

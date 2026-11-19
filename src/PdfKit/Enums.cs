@@ -231,12 +231,13 @@ namespace PdfKit {
 		AnyArea = Int64.MaxValue,
 	}
 
+	/// <summary>Specifies the direction in which pages are displayed.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that pages are arranged vertically.</summary>
 		Vertical = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that pages are arranged horizontally.</summary>
 		Horizontal = 1,
 	}
 

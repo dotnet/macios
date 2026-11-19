@@ -58273,7 +58273,6 @@ T:PdfKit.PdfAnnotationWidgetSubtype
 T:PdfKit.PdfAppearanceCharacteristics
 T:PdfKit.PdfAppearanceCharacteristicsKeys
 T:PdfKit.PdfBorderKeys
-T:PdfKit.PdfDisplayDirection
 T:PdfKit.PdfDocumentAttributes
 T:PdfKit.PdfDocumentWriteOptions
 T:PdfKit.PdfInterpolationQuality

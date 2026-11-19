@@ -1,0 +1,3 @@
+!missing-selector! PHAssetChangeRequest::setTimeZone: not bound
+!missing-selector! PHAssetChangeRequest::timeZone not bound
+!missing-selector! PHAssetExtendedMetadata::timeZone not bound

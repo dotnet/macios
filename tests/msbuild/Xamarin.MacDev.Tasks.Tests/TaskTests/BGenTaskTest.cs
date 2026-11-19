@@ -101,6 +101,17 @@ namespace Xamarin.MacDev.Tasks {
 		[TestCase (ApplePlatform.MacCatalyst, true)]
 		public void GeneratesBindingSourcesInProcess (ApplePlatform platform, bool includeAttributes)
 		{
+			GenerateBindingSources (platform, includeAttributes, false);
+		}
+
+		[Test]
+		public void GeneratesBindingSourcesExternally ()
+		{
+			GenerateBindingSources (ApplePlatform.iOS, false, true);
+		}
+
+		void GenerateBindingSources (ApplePlatform platform, bool includeAttributes, bool useExternalProcess)
+		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var temporaryDirectory = Cache.CreateTemporaryDirectory ();
 			var apiDefinition = Path.Combine (temporaryDirectory, "api.cs");
@@ -128,8 +139,9 @@ namespace Xamarin.MacDev.Tasks {
 			var references = Directory.GetFiles (Configuration.DotNetBclDir, "*.dll");
 			var task = CreateTask<BGen> ();
 			InitializeExecutionTask (task);
-			task.BGenToolPath = "/does/not/exist";
+			task.BGenToolPath = useExternalProcess ? Path.Combine (Configuration.GetSdkRoot (targetFramework), "lib", "bgen") : "/does/not/exist";
 			task.BGenToolExe = "bgen.dll";
+			task.UseExternalProcess = useExternalProcess;
 			task.BaseLibDll = Configuration.GetBaseLibrary (platform);
 			task.AttributeAssembly = Configuration.GetBindingAttributePath (targetFramework);
 			task.CompiledApiDefinitionAssembly = new TaskItem (compiledApiDefinition);

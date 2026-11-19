@@ -625,17 +625,15 @@ namespace Xamarin.Bundler {
 			return FileName;
 		}
 
-		public bool IsDedupAssembly { get; set; } = false;
-
 		public bool IsInterpreted {
 			get {
-				return IsDedupAssembly ? false : App.IsInterpreted (Identity);
+				return App.IsInterpreted (Identity);
 			}
 		}
 
 		public bool IsAOTCompiled {
 			get {
-				return IsDedupAssembly ? true : App.IsAOTCompiled (Identity);
+				return App.IsAOTCompiled (Identity);
 			}
 		}
 	}

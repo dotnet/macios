@@ -23,10 +23,7 @@ namespace Xamarin.Linker {
 		string LinkerFile;
 
 		public Abi Abi = Abi.None;
-		public string AOTCompiler = string.Empty;
-		public string AOTOutputDirectory = string.Empty;
 		public string AssemblyPublishDir = string.Empty;
-		public string DedupAssembly = string.Empty;
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
 		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
@@ -227,23 +224,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => AssemblyPublishDir = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, AssemblyPublishDir, storage))
 				)},
-				{ "AOTArgument",  (
-					new LoadValue ((key, value) =>
-					{
-						if (!string.IsNullOrEmpty (value))
-							Application.AotArguments.Add (value);
-					}),
-					new SaveValue ((key, storage) =>
-						storage.AddRange (Application.AotArguments.Where (v => !string.IsNullOrEmpty (v)).Select (v => $"{key}={v}")))
-				)},
-				{ "AOTCompiler", (
-					new LoadValue ((key, value) => AOTCompiler = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, AOTCompiler, storage))
-				)},
-				{ "AOTOutputDirectory", (
-					new LoadValue ((key, value) => AOTOutputDirectory = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, AOTOutputDirectory, storage))
-				)},
 				{ "AppBundleManifestPath", (
 					new LoadValue ((key, value) => Application.InfoPListPath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.InfoPListPath, storage))
@@ -259,10 +239,6 @@ namespace Xamarin.Linker {
 				{ "Debug", (
 					new LoadValue ((key, value) => Application.EnableDebug = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableDebug ? "true" : "false")}"))
-				)},
-				{ "DedupAssembly", (
-					new LoadValue ((key, value) => DedupAssembly = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, DedupAssembly, storage))
 				)},
 				{ "DeploymentTarget", (
 					new LoadValue ((key, value) => {
@@ -460,10 +436,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => MSBuildPostProcessOutputFile = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildPostProcessOutputFile, storage))
 				)},
-				{ "MtouchFloat32", (
-					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
-					new SaveValue ((key, storage) => saveNullableBool (key, Application.AotFloat32, storage))
-				)},
 				{ "NoWarn", ( // we should support '$(NoWarn)' at some point: https://github.com/dotnet/macios/issues/25645
 					new LoadValue ((key, value) => loadWarningLevel (key, value, ErrorHelper.WarningLevel.Disable)),
 					new SaveValue ((key, storage) => saveWarningLevel (key, storage, ErrorHelper.WarningLevel.Disable))
@@ -652,17 +624,6 @@ namespace Xamarin.Linker {
 				{ "UnmanagedCallersOnlyMapPath", (
 					new LoadValue ((key, value) => UnmanagedCallersOnlyMapPath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, UnmanagedCallersOnlyMapPath, storage))
-				)},
-				{ "UseLlvm", (
-					new LoadValue ((key, value) => {
-						var use_llvm = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase);
-						if (use_llvm) {
-							Abi |= Abi.LLVM;
-						} else {
-							Abi &= ~Abi.LLVM;
-						}
-					}),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Abi.HasFlag (Abi.LLVM), storage))
 				)},
 				{ "Verbosity", (
 					new LoadValue ((key, value) => {
@@ -895,9 +856,6 @@ namespace Xamarin.Linker {
 			if (Verbosity > 0) {
 				Application.Log ($"LinkerConfiguration:");
 				Application.Log ($"    ABI: {Abi.AsArchString ()}");
-				Application.Log ($"    AOTArguments: {string.Join (", ", Application.AotArguments)}");
-				Application.Log ($"    AOTOutputDirectory: {AOTOutputDirectory}");
-				Application.Log ($"    DedupAssembly: {DedupAssembly}");
 				Application.Log ($"    AppBundleManifestPath: {Application.InfoPListPath}");
 				Application.Log ($"    AreAnyAssembliesTrimmed: {Application.AreAnyAssembliesTrimmed}");
 				Application.Log ($"    AssemblyName: {Application.AssemblyName}");
@@ -937,7 +895,6 @@ namespace Xamarin.Linker {
 				Application.Log ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
 				Application.Log ($"    UnmanagedCallersOnlyMapPath: {UnmanagedCallersOnlyMapPath}");
 				Application.Log ($"    UseInterpreter: {Application.UseInterpreter}");
-				Application.Log ($"    UseLlvm: {Application.IsLLVM}");
 				Application.Log ($"    Verbosity: {Verbosity}");
 				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
 				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");

@@ -1494,9 +1494,10 @@ Valid values:
 * `partial-static`: Uses pre-generated static registration code for the platform
   assembly (`Microsoft.<Platform>.dll`) and registers all other assemblies at
   runtime using the dynamic registrar. Almost as fast as `dynamic` at build
-  time, and has almost no startup delay. Requires trimming to be disabled
-  ([TrimMode](#trimmode)=`copy`) and [MarshalManagedExceptionMode](#marshalmanagedexceptionmode)
-  to be `default` (or unset).
+  time, and has almost no startup delay. Requires that the platform assembly is
+  not trimmed (for example when [TrimMode](#trimmode)=`copy`) and that
+  [MarshalManagedExceptionMode](#marshalmanagedexceptionmode) is `default` (or
+  unset).
 * `static`: Generates Objective-C registration code at build time for all
   assemblies, using native marshalling trampolines. Not supported with
   NativeAOT, and not supported in .NET 12+.
@@ -1510,8 +1511,9 @@ Valid values:
   effectively. Slowest at build time, but has no startup delay. A number of
   other optimizations are also only possible when using the `trimmable-static`
   registrar.
-* `default`: Uses the default registrar for the current build configuration (same
-  as leaving the property unset).
+
+Leave this property unset to use the default registrar for the current build
+configuration.
 
 When using NativeAOT (`PublishAot=true`), only `managed-static` (in .NET 11 and
 earlier) and `trimmable-static` are supported.

@@ -223,7 +223,10 @@ namespace Foundation {
 			get => GetData ()->handle;
 			set {
 				var data = GetData ();
-				// Automatic toggling applies only to the handle whose ivar we claimed.
+				// ImplicitToggleRef is about the ivar of the object this peer currently wraps (see the comment
+				// above CreateManagedRef), so clear it when the pointer changes. Clear it before storing the new
+				// pointer, so the GC never sees the flag together with the new pointer. RegisteredToggleRef is an
+				// explicit MarkDirty request, and stays set.
 				if (data->handle != value)
 					data->flags &= ~Flags.ImplicitToggleRef;
 				data->handle = value;
@@ -272,7 +275,7 @@ namespace Foundation {
 			HasManagedRef = 32,
 			// 64, // Used by SoM
 			IsCustomType = 128,
-			ImplicitToggleRef = 256,
+			ImplicitToggleRef = 256, // See the comment above CreateManagedRef.
 		}
 
 		// Must be kept in sync with the same enum in trampolines.h
@@ -519,7 +522,7 @@ namespace Foundation {
 		Register the current object with the toggleref machinery if the following conditions are met:
 		-The new refcounting is enabled; and
 		-The class is not a custom type - it must wrap a framework class.
-		User types with an associated GCHandle are toggled separately (see CreateManagedRef).
+		User types with an associated GCHandle are toggled implicitly (see CreateManagedRef).
 		*/
 		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
 		/// <remarks>
@@ -594,6 +597,51 @@ namespace Foundation {
 		[DllImport ("__Internal")]
 		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
+		// Implicit toggle refs (Flags.ImplicitToggleRef)
+		//
+		// A user-type peer can hold managed state, so it must stay alive while native code owns the native
+		// object. For most user types, a native -retain goes through our retain trampoline, which creates a
+		// strong GCHandle for the peer. But native code can also take a reference without calling -retain:
+		// objc_loadWeakRetained (which ARC, Swift and UIKit use to read weak references) takes it through
+		// -retainWeakReference. Our retainWeakReference trampoline runs while the Objective-C runtime holds an
+		// internal lock, so it can't call managed code, which means it can't create a GCHandle. The GC could
+		// then collect the peer while native code still uses the object, and the next time native code calls
+		// into managed code with this object, we'd create a new peer without the old peer's state.
+		//
+		// So a peer that owns the GCHandle ivar of its native object is an implicit toggle ref. When the GC
+		// finds no other references to such a peer, and the peer isn't disposed and still owns its native
+		// reference (HasManagedRef), the GC checks the native retain count. The peer owns exactly one
+		// reference, so a count above 1 means native code owns the object too, and the GC keeps the peer
+		// alive. The retain/release trampolines are unchanged: they still keep disposed peers alive while
+		// native code holds a -retain'ed reference, which the retain count check doesn't do.
+		//
+		// CreateManagedRef and EnsureManagedReference set the flag when they install this peer's GCHandle in
+		// the ivar, or find that the ivar already points to this peer (for instance when constructor chaining
+		// initializes the same peer twice). They don't set it when the ivar holds another peer's GCHandle,
+		// whether that peer is alive, disposed or collected (the ivar is only cleared when the native object
+		// is deallocated). The other peer may still own a native reference: a live peer always does, and a
+		// disposed or finalized peer keeps it until NSObject_Disposer releases it (or forever, if it
+		// resurrects itself). Then the retain count is at least 2 even when native code doesn't own the
+		// object, and if both peers were toggled, neither could ever be collected.
+		//
+		// The handle setter clears the flag whenever the pointer changes (including to null, when init
+		// returns nil or the native object is deallocated), because the flag was about the old object's ivar.
+		// If init returns a different object, InitializeHandle calls EnsureManagedReference, which sets the
+		// flag again if this peer owns, or can claim, the new object's ivar. That doesn't happen in the legacy
+		// RegisterObjectsBeforeInit mode, nor when the handle changes in other ways (such as NSObject.Init ()),
+		// so the peer then stays untracked. Disposing doesn't clear the flag: the GC ignores disposed peers
+		// and peers without HasManagedRef.
+		//
+		// We can't reuse RegisteredToggleRef for this: it records an explicit request (MarkDirty), and that
+		// request must survive handle changes. For example, CALayer's NSObjectFlag constructor calls
+		// MarkDirtyIfDerived before the derived constructor calls InitializeHandle. A single bit can't be both
+		// kept and cleared when the handle changes. We also don't call MarkDirty here: for user types it frees
+		// the strong GCHandle that the retain trampoline may already have created.
+		//
+		// Known gaps: a weak reference that's promoted after the GC checked the retain count, but before the
+		// peer is marked as queued for finalization (after that, promoting it returns nil), still loses the
+		// peer. And a peer that can't install its GCHandle because the ivar still holds an old peer's GCHandle
+		// isn't protected at all: the retain trampoline only strengthens the GCHandle stored in the ivar.
 		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			var hadManagedRef = HasManagedRef;
@@ -622,7 +670,6 @@ namespace Foundation {
 					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 					gchandle.Free ();
 				} else {
-					// Weak-reference promotion bypasses the retain trampoline.
 					flags |= Flags.ImplicitToggleRef;
 				}
 			}
@@ -634,8 +681,9 @@ namespace Foundation {
 		// Issue #25861: if 'init' returned a different handle than 'alloc' for a user type,
 		// the gchandle ivar was set on the (now typically freed) alloc'd handle. Make sure
 		// the final handle also has a gchandle ivar pointing back at this managed object, so
-		// it can be resolved native->managed. Does nothing for direct bindings (no ivar) or
-		// if the ivar is already set.
+		// it can be resolved native->managed. Does nothing for direct bindings (no ivar).
+		// If the ivar is already set, leave it unchanged but restore implicit tracking when
+		// it points to this peer.
 		void EnsureManagedReference (NativeHandle newHandle)
 		{
 			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)

@@ -162,8 +162,9 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  *
  * 2) Types that can be toggled, must have the [ObjectiveCTrackedType]
  *    attribute (on any subclass). We put this attribute on NSObject.
- *    User-type peers that install a GCHandle are toggled automatically;
- *    framework peers are toggled when needed (see NSObject.MarkDirty).
+ *    User-type peers that own the GCHandle ivar of their native object are toggled
+ *    implicitly (NSObjectFlagsImplicitToggleRef). Other peers are toggled explicitly
+ *    when needed (NSObjectFlagsRegisteredToggleRef, see NSObject.MarkDirty).
  *
  * 3) We have to call ObjectiveCMarshal.CreateReferenceTrackingHandle when an
  *    object is toggled. This callback returns a GCHandle for the managed

@@ -1,6 +1,7 @@
 <Project>
   <!-- Do not sign files that already have a signature -->
   <ItemGroup>
+    <Skip Include="Xamarin.Apple.Tools.MaciOS.dll" />
     <Skip Include="System.Reflection.MetadataLoadContext.dll" />
     <!-- Microsoft.iOS.Windows.Sdk content -->
     <Skip Include="tools\msbuild\iOS\Microsoft.Win32.Registry.dll" />

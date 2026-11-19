@@ -28,8 +28,7 @@ MSBUILD_DIRECTORIES          =
 
 ALL_SOURCES:= \
 	$(shell git ls-files | sed 's/ /\\ /g') \
-	$(wildcard $(XAMARIN_MACDEV_PATH)/Xamarin.MacDev/*.cs) \
-	$(wildcard $(XAMARIN_MACDEV_PATH)/Xamarin.MacDev/*.csproj) \
+	$(TOP)/Directory.Build.props \
 	Versions.g.cs \
 	$(wildcard $(TOP)/tools/common/*.cs) \
 
@@ -133,7 +132,7 @@ endif
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
 .build-stamp: $(ALL_SOURCES)
-	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
+	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY)
 	$(Q) touch $@
 
 # make all the target assemblies build when any of the sources have changed
@@ -157,7 +156,6 @@ test run-test run-tests tests run-tests-msbuild:
 
 clean-local::
 	git clean -xfdq
-	cd $(XAMARIN_MACDEV_PATH) && git clean -xfdq
 
 Versions.g.cs: Makefile $(TOP)/Make.config.inc
 	$(Q) printf "internal static class VersionConstants {\\n" > $@.tmp

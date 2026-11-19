@@ -17,10 +17,10 @@
     <PackageReference Include="ICSharpCode.NRefactory" Version="$(ICSharpCodeNRefactoryPackageVersion)" />
     <PackageReference Include="ClangSharp" Version="$(ClangSharpPackageVersion)" />
     <PackageReference Include="libclang" Version="$(libClangPackageVersion)" />
+    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/PListObject.cs" />
     <Compile Include="../../common/ApplePlatform.cs" />
     <Compile Include="../../common/Execution.cs" />
     <Compile Include="../../common/ProductConstants.cs" />

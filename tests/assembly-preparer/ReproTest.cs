@@ -7,8 +7,8 @@ using Microsoft.Build.Logging.StructuredLogger;
 namespace AssemblyPreparerTests;
 
 public class ReproTest : BaseClass {
-	[TestCase (ApplePlatform.iOS, false)]
-	public void RoundTrip (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.iOS)]
+	public void RoundTrip (ApplePlatform platform)
 	{
 		Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -19,13 +19,13 @@ public class ReproTest : BaseClass {
 		// this test can also be repurposed to run an existing repro by setting the _PrepareAssembliesMakeReproPath variable
 
 		var reproPath = Environment.GetEnvironmentVariable ("_PrepareAssembliesMakeReproPath");
-		var referenceAssemblies = Configuration.GetReferenceAssemblies (platform, false);
+		var referenceAssemblies = Configuration.GetReferenceAssemblies (platform, true);
 		if (string.IsNullOrEmpty (reproPath)) {
 			var code = @"public class SomeLibrary {}";
 
 			reproPath = Xamarin.Cache.CreateTemporaryDirectory ();
 			Directory.Delete (reproPath); // the repro path can't exist prior to Prepare
-			AssertPrepareCode (platform, isCoreCLR, (preparer) => {
+			AssertPrepareCode (platform, true, (preparer) => {
 				preparer.MakeReproPath = reproPath;
 				preparer.Registrar = RegistrarMode.Dynamic;
 			}, code, out string _);

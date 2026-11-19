@@ -276,7 +276,6 @@ public class AssemblyPreparer : IDisposable {
 			new GenerateReferencesStep (),
 			new GatherFrameworksStep (),
 			new ComputeNativeBuildFlagsStep (),
-			new ComputeAOTArguments (),
 
 			// Must be the last step.
 			new DoneStep (),

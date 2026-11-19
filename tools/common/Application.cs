@@ -67,10 +67,7 @@ namespace Xamarin.Bundler {
 		public string AppDirectory = ".";
 		public bool DeadStrip = true;
 		public bool EnableDebug;
-		// The list of assemblies that we do generate debugging info for.
-		public bool DebugAll;
 		public bool UseInterpreter; // Only applicable to mobile platforms.
-		public List<string> DebugAssemblies = new List<string> ();
 		public Optimizations Optimizations = new Optimizations ();
 #if LEGACY_TOOLS
 		public readonly RegistrarMode Registrar = RegistrarMode.Static;
@@ -83,10 +80,6 @@ namespace Xamarin.Bundler {
 		public bool? PublishReadyToRun;
 		public string PublishReadyToRunContainerFormat = "";
 
-		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
-		public List<string> AotArguments = new List<string> ();
-		public List<string>? AotOtherArguments = null;
-		public bool? AotFloat32 = null;
 		public bool? TrimExportAttributes;
 		public HashSet<ExportAttributeRemovalBlocker> TrimExportAttributesBlockers = new HashSet<ExportAttributeRemovalBlocker> ();
 
@@ -997,139 +990,6 @@ namespace Xamarin.Bundler {
 
 			return !IsInterpreted (assembly);
 		}
-
-#if !LEGACY_TOOLS
-		public IList<string> GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile)
-		{
-			GetAotArguments (filename, abi, outputDir, outputFile, llvmOutputFile, dataFile, null, out var processArguments, out var aotArguments);
-			processArguments.Add (string.Join (",", aotArguments));
-			processArguments.Add (filename);
-			return processArguments;
-		}
-
-		public void GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile, bool? isDedupAssembly, out List<string> processArguments, out List<string> aotArguments, string? llvm_path = null)
-		{
-			string fname = Path.GetFileName (filename);
-			processArguments = new List<string> ();
-			var app = this;
-			bool enable_llvm = (abi & Abi.LLVM) != 0;
-			bool enable_thumb = (abi & Abi.Thumb) != 0;
-			bool enable_debug = app.EnableDebug;
-			bool enable_debug_symbols = app.PackageManagedDebugSymbols;
-			bool interp = app.IsInterpreted (Assembly.GetIdentity (filename)) && !(isDedupAssembly.HasValue && isDedupAssembly.Value);
-			bool interp_full = !interp && app.UseInterpreter;
-			string arch = abi.AsArchString ();
-
-			processArguments.Add ("--debug");
-
-			if (enable_llvm)
-				processArguments.Add ("--llvm");
-
-			if (!interp)
-				processArguments.Add ("-O=gsharedvt");
-			if (app.AotOtherArguments is not null)
-				processArguments.AddRange (app.AotOtherArguments);
-			if (app.AotFloat32.HasValue)
-				processArguments.Add (app.AotFloat32.Value ? "-O=float32" : "-O=-float32");
-			aotArguments = new List<string> ();
-			if (Platform == ApplePlatform.MacCatalyst) {
-				aotArguments.Add ($"--aot=mtriple={arch}-apple-ios{DeploymentTarget}-macabi");
-			} else {
-				aotArguments.Add ($"--aot=mtriple={(enable_thumb ? arch.Replace ("arm", "thumb") : arch)}-ios");
-			}
-			aotArguments.Add ($"data-outfile={dataFile}");
-			aotArguments.Add ("static");
-			aotArguments.Add ("asmonly");
-			// This method is used in legacy build as well, where dedup is not supported. 
-			// Variable isDedupAssembly could have the following values:
-			// - NULL means that dedup is not enabled
-			// - FALSE means that dedup-skip flag should be passed for all assemblies except a container assemblt
-			// - TRUE means that dedup-include flag should be passed for the container assembly
-			if (isDedupAssembly.HasValue) {
-				if (isDedupAssembly.Value) {
-					aotArguments.Add ($"dedup-include={fname}");
-				} else {
-					aotArguments.Add ($"dedup-skip");
-				}
-			}
-			if (app.LibMonoLinkMode == AssemblyBuildTarget.StaticObject)
-				aotArguments.Add ("direct-icalls");
-			aotArguments.AddRange (app.AotArguments);
-			if (interp) {
-				if (fname != Driver.CorlibName + ".dll")
-					throw ErrorHelper.CreateError (99, Errors.MX0099, fname);
-				aotArguments.Add ("interp");
-			} else if (interp_full) {
-				aotArguments.Add ("interp");
-				aotArguments.Add ("full");
-			} else
-				aotArguments.Add ("full");
-
-			if (IsDeviceBuild) {
-				aotArguments.Add ("readonly-value=ObjCRuntime.Runtime.Arch=i4/0");
-			} else if (IsSimulatorBuild) {
-				aotArguments.Add ("readonly-value=ObjCRuntime.Runtime.Arch=i4/1");
-			}
-
-			var aname = Path.GetFileNameWithoutExtension (fname);
-			var sdk_or_product = Profile.IsSdkAssembly (aname) || Profile.IsProductAssembly (aname);
-
-			if (enable_llvm)
-				aotArguments.Add ("nodebug");
-			else if (!(enable_debug || enable_debug_symbols))
-				aotArguments.Add ("nodebug");
-			else if (app.DebugAll || app.DebugAssemblies.Contains (fname) || !sdk_or_product)
-				aotArguments.Add ("soft-debug");
-
-			aotArguments.Add ("dwarfdebug");
-
-			/* Needed for #4587 */
-			if (enable_debug && !enable_llvm)
-				aotArguments.Add ("no-direct-calls");
-
-			if (!app.UseDlsym (filename))
-				aotArguments.Add ("direct-pinvoke");
-
-			if (enable_llvm) {
-				if (!string.IsNullOrEmpty (llvm_path)) {
-					aotArguments.Add ($"llvm-path={llvm_path}");
-				} else {
-					aotArguments.Add ($"llvm-path={app.FrameworkCurrentDirectory}/LLVM/bin/");
-				}
-			}
-
-			aotArguments.Add ($"outfile={outputFile}");
-			if (enable_llvm)
-				aotArguments.Add ($"llvm-outfile={llvmOutputFile}");
-
-			// If the interpreter is enabled, and we're building for x86_64, we're AOT-compiling but we
-			// don't have access to infinite trampolines. So we're bumping the trampoline count (unless
-			// the developer has already set a value) to something higher than the default.
-			//
-			// Ref:
-			// * https://github.com/dotnet/macios/issues/14887
-			// * https://github.com/dotnet/runtime/issues/68808
-			if (interp && (abi & Abi.x86_64) == Abi.x86_64) {
-				// The default values are here: https://github.com/dotnet/runtime/blob/main/src/mono/mono/mini/aot-compiler.c#L13945-L13953
-				// Let's try 4x the default values.
-				var trampolines = new []
-				{
-					(Name: "ntrampolines", Default: 4096),
-					(Name: "nrgctx-trampolines", Default: 4096),
-					(Name: "nimt-trampolines", Default: 512),
-					(Name: "nrgctx-fetch-trampolines", Default: 128),
-					(Name: "ngsharedvt-trampolines", Default: 512),
-					(Name: "nftnptr-arg-trampolines", Default: 128),
-					(Name: "nunbox-arbitrary-trampolines", Default: 256),
-				};
-				foreach (var tramp in trampolines) {
-					var nameWithEq = tramp.Name + "=";
-					if (!aotArguments.Any (v => v.StartsWith (nameWithEq, StringComparison.Ordinal)))
-						aotArguments.Add (nameWithEq + (tramp.Default * 4).ToString (CultureInfo.InvariantCulture));
-				}
-			}
-		}
-#endif // !LEGACY_TOOLS
 
 		public string AssemblyName {
 			get {

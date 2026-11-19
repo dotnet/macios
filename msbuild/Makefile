@@ -126,7 +126,15 @@ endif
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
-# Use a local Xamarin.Messaging.Remote package for ConfigureMac in the installed SDKs:
+# Build Xamarin.Messaging.Remote from a source checkout during normal builds:
+#
+#     export MESSAGING_REMOTE_REPO=/absolute/path/to/dotnet-macios-devtools
+#     make -C msbuild all install
+#
+# Each build packs a fresh version and prints the package path and version.
+# Unset MESSAGING_REMOTE_REPO to use the tracked version on the next build.
+#
+# Or use an existing local package for ConfigureMac in the installed SDKs:
 #
 #     make -C msbuild use-local-messaging-remote MESSAGING_REMOTE_PACKAGE=/path/to/Xamarin.Messaging.Remote.<version>.nupkg
 #
@@ -159,8 +167,20 @@ endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
+ifneq ($(strip $(MESSAGING_REMOTE_REPO)$(wildcard obj/messaging-remote-repo)),)
+.PHONY: force-messaging-remote-build
+.build-stamp: force-messaging-remote-build
+endif
+
 .build-stamp: $(ALL_SOURCES)
+ifneq ($(strip $(MESSAGING_REMOTE_REPO)),)
+	$(Q) mkdir -p obj
+	$(Q) touch obj/messaging-remote-repo
+	$(Q) MESSAGING_REMOTE_REPO="$(MESSAGING_REMOTE_REPO)" DOTNET="$(DOTNET)" MAKE="$(MAKE)" ./stage-local-messaging-remote.sh --build
+else
 	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
+	$(Q) rm -f obj/messaging-remote-repo
+endif
 	$(Q) touch $@
 
 # make all the target assemblies build when any of the sources have changed

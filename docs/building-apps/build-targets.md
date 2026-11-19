@@ -94,6 +94,30 @@ Run the build in a separate MSBuild invocation and pass that path as
 Escape any `%` characters in these property values as `%25` when passing them
 to MSBuild.
 
+### Testing local ConfigureMac changes
+
+When building dotnet/macios from source, set `MESSAGING_REMOTE_REPO` to an
+absolute path to a dotnet-macios-devtools checkout:
+
+```shell
+export MESSAGING_REMOTE_REPO="/path/to/dotnet-macios-devtools"
+make -C msbuild all install
+```
+
+Normal dotnet/macios builds also honor this variable. Each build packs a fresh
+`Xamarin.Messaging.Remote` version, prints its path and version, and updates the
+installed SDK's ConfigureMac files. The devtools checkout must support
+`make -C remote pack PACKAGE_PATH_FILE=...`. Build or pack failures stop the
+macios build; an older package is never selected instead.
+
+Tracked feeds and package versions stay unchanged. Unset the variable and
+build again to return to the tracked package:
+
+```shell
+unset MESSAGING_REMOTE_REPO
+make -C msbuild all install
+```
+
 ## DeployToDevice
 
 Deploys an already-built iOS or tvOS app to a device or simulator without

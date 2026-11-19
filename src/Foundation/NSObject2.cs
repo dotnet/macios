@@ -221,7 +221,13 @@ namespace Foundation {
 
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
-			set => GetData ()->handle = value;
+			set {
+				var data = GetData ();
+				// Automatic toggling applies only to the handle whose ivar we claimed.
+				if (data->handle != value)
+					data->flags &= ~Flags.ImplicitToggleRef;
+				data->handle = value;
+			}
 		}
 
 		internal unsafe NSObjectData* GetData ()
@@ -266,6 +272,7 @@ namespace Foundation {
 			HasManagedRef = 32,
 			// 64, // Used by SoM
 			IsCustomType = 128,
+			ImplicitToggleRef = 256,
 		}
 
 		// Must be kept in sync with the same enum in trampolines.h
@@ -512,6 +519,7 @@ namespace Foundation {
 		Register the current object with the toggleref machinery if the following conditions are met:
 		-The new refcounting is enabled; and
 		-The class is not a custom type - it must wrap a framework class.
+		User types with an associated GCHandle are toggled separately (see CreateManagedRef).
 		*/
 		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
 		/// <remarks>
@@ -596,8 +604,10 @@ namespace Foundation {
 					var existing = Runtime.GetGCHandleForObject (handle);
 					// Constructor chaining may initialize the same wrapper more than once.
 					// The existing wrapper already owns the native reference, so don't retain it again.
-					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this)) {
+						flags |= Flags.ImplicitToggleRef;
 						return;
+					}
 				}
 
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
@@ -611,6 +621,9 @@ namespace Foundation {
 					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
 					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 					gchandle.Free ();
+				} else {
+					// Weak-reference promotion bypasses the retain trampoline.
+					flags |= Flags.ImplicitToggleRef;
 				}
 			}
 
@@ -627,8 +640,12 @@ namespace Foundation {
 		{
 			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
 				return;
-			if (Runtime.GetGCHandleForObject (newHandle) != IntPtr.Zero)
+			var existing = Runtime.GetGCHandleForObject (newHandle);
+			if (existing != IntPtr.Zero) {
+				if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+					flags |= Flags.ImplicitToggleRef;
 				return;
+			}
 			HasManagedRef = true;
 			var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 			var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
@@ -646,6 +663,8 @@ namespace Foundation {
 				// case in CreateManagedRef.
 				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 				gchandle.Free ();
+			} else {
+				flags |= Flags.ImplicitToggleRef;
 			}
 		}
 

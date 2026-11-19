@@ -1354,8 +1354,8 @@ xamarin_objc_type_size (const char *type)
  * Managed code releases its ref when either of the following conditions occur:
  *  - Dispose is called (manually) on the object.
  *  - The Handle property on the managed object changes.
- *  - The GC frees the object. This can only happen if refCount == 1 and that ref is a managed ref 
- *    (since otherwise there will be a strong gchandle to the managed object preventing the GC from freeing it).
+ *  - The GC frees the object. User-type peers with an associated GCHandle are toggle refs, so
+ *    the GC checks the native retain count even when ownership bypasses the retain trampoline.
  * 
  * Objects are removed from the native<->managed dictionary when either of the following conditions occur:
  *  - The native object is dealloc'ed (refcount reaches 0).
@@ -1559,6 +1559,8 @@ xamarin_release_managed_ref (id self, bool user_type)
 	if (user_type) {
 		/* clear MANAGED_REF_BIT */
 		set_gchandle_flags_safe (self, (enum XamarinGCHandleFlags) (get_flags_safe (self) & ~XamarinGCHandleFlags_HasManagedRef));
+		// User types are toggle refs too; see the framework-peer explanation below.
+		xamarin_framework_peer_waypoint_safe ();
 	} else {
 		//
 		// This waypoint (lock+unlock) is needed so that we can safely call retainCount in the

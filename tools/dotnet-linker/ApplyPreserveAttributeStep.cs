@@ -1,6 +1,8 @@
 using System.IO;
+using System.Linq;
 
 using Mono.Cecil;
+using Mono.Cecil.Cil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 using Xamarin.Bundler;
@@ -92,10 +94,18 @@ namespace Xamarin.Linker.Steps {
 				return false;
 			}
 
-			// An assembly-level [Preserve (typeof (T))] can point to a type in another assembly. If that assembly isn't
-			// trimmed, everything in it is kept anyway, so there's nothing to do (and we must not modify it).
-			if (!abr.IsAssemblyTrimmed (type))
-				return false;
+			// A CopyUsed assembly can still be removed. Use a type token because DynamicDependency
+			// requires members and the target type may not have any.
+			if (!abr.IsAssemblyTrimmed (type)) {
+				var moduleConstructor = GetOrCreateModuleConstructor (abr.CurrentAssembly.MainModule, out var modified);
+				if (moduleConstructor.Body.Instructions.Any (v => v.OpCode == OpCodes.Ldtoken && v.Operand is TypeReference tr && tr.FullName == type.FullName && tr.Resolve () == type))
+					return modified;
+				var il = moduleConstructor.Body.GetILProcessor ();
+				var first = moduleConstructor.Body.Instructions [0];
+				il.InsertBefore (first, il.Create (OpCodes.Ldtoken, abr.CurrentAssembly.MainModule.ImportReference (type)));
+				il.InsertBefore (first, il.Create (OpCodes.Pop));
+				return true;
+			}
 
 			return AddDynamicDependencyAttribute (type, allMembers);
 		}

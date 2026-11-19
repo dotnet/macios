@@ -202,11 +202,13 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	[Test]
 	[TestCase (false, "link")]
 	[TestCase (false, "copy")]
+	[TestCase (false, "")]
 	[TestCase (true, "copy")]
 	[TestCase (true, "")]
 	public void ExplicitInterfaceHelpersInReferencedAssembliesAreSaved (bool hotReloadCompatibleBuild, string trimMode)
 	{
 		var code = @"
+		[assembly: Foundation.Preserve (typeof (Referenced.Target))]
 		[assembly: Foundation.Preserve (typeof (Referenced.Target), AllMembers = true)]
 		public class Test {}
 		";
@@ -257,6 +259,11 @@ public class ApplyPreserveAttributeTests : BaseClass {
 
 		if (trimMode != "link") {
 			Assert.That (File.Exists (targetOutputPath), Is.False, "Untrimmed referenced assembly was not rewritten");
+			using var source = AssemblyDefinition.ReadAssembly (testInfo.OutputPath);
+			var constructor = source.MainModule.Types.Single (v => v.Name == "<Module>").GetStaticConstructor ();
+			var roots = constructor.Body.Instructions.Where (v => v.OpCode == OpCodes.Ldtoken && v.Operand is TypeReference tr && tr.FullName == "Referenced.Target").ToArray ();
+			Assert.That (roots, Has.Length.EqualTo (1), "Referenced type root");
+			Assert.That (roots [0].Next.OpCode, Is.EqualTo (OpCodes.Pop), "Referenced type token is discarded");
 			return;
 		}
 

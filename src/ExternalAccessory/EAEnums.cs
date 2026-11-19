@@ -41,11 +41,11 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryConfigurationStatus : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory configuration succeeded.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled accessory configuration.</summary>
 		UserCancelledConfiguration,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory configuration failed.</summary>
 		Failed,
 	}
 

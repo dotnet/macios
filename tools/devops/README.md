@@ -114,6 +114,11 @@ Both `build-pipeline.yml` and `build-pull-request.yml` include the independent
 `templates/governance/devskim.yml` stage. It runs without Xcode or a product build,
 using `Microsoft.CST.DevSkim.CLI` **1.0.100** on a Linux agent with .NET 10.
 It follows the existing pipelines' branch and path triggers.
+The test pipelines include the same scan stage, and the simulator tests stage
+depends on it. A failed scan prevents simulator tests from running and fails the
+test pipeline, blocking PRs until the DevSkim issues are fixed. Test-pipeline
+scans retain their reports in pipeline artifacts; VSDrops and GitHub publication
+remain in the main CI and PR build pipelines.
 Installation explicitly uses the repository's top-level `NuGet.config`, which
 includes the `dotnet-public` Azure Artifacts mirror and clears inherited sources.
 This avoids direct nuget.org access on network-isolated agents.
@@ -136,7 +141,7 @@ findings or rule suppressions: changing them requires a new scan and does not
 remove findings from previously generated SARIF or HTML reports.
 
 All default rules run at every severity and confidence, with inline suppressions
-disabled. `scripts/check_devskim.py` fails the job for every result tagged
+disabled. `scripts/devskim/check_devskim.py` fails the job for every result tagged
 `API.DangerousAPI.BannedFunction`, including moderate-severity `DS154189` and
 best-practice/manual-review rules. Other findings remain in the reports for
 triage. Scanner failures, missing/malformed reports, and explicit SARIF execution
@@ -147,7 +152,7 @@ before provisioning, and tool installation output is retained as `install.log`
 even when installation fails. The scan passes its artifact name to both download
 jobs, so retries use that scan attempt's reports rather than an older artifact.
 
-After the scan (including failed scans), `scripts/report_devskim.py` generates
+After the scan (including failed scans), `scripts/devskim/report_devskim.py` generates
 `index.html` and `summary.json` alongside the SARIF and logs. The self-contained
 HTML report shows blocking and non-blocking counts, scan errors, searchable
 findings, severity/category filters, source links at the scanned revision, and
@@ -196,28 +201,24 @@ using the root `NuGet.config`, so the repository's `global.json` does not affect
 installation. DevSkim can run on .NET 10 or a newer runtime.
 The tool and reports are stored in `tests/.devskim/`, which Git ignores and which
 is outside the scanned source directories. CI runs the same
-`scripts/run_devskim.py` script, with the same source directories, options, and
+`scripts/devskim/run_devskim.py` script, with the same source directories, options, and
 pass/fail rules. The target fails if it finds banned APIs or scan errors.
 It writes HTML, Markdown, JSON, and SARIF reports, plus logs.
-Local runs never publish reports or post comments. To test the runner script, run:
-
-```bash
-python3 -m unittest discover -s tools/devops/automation/scripts -p 'test_devskim*.py'
-```
+Local runs never publish reports or post comments.
 
 For an existing download of the `devskim` artifact, generate the report without
 re-running the scan (pass every expected source so missing files remain visible):
 
 ```bash
 reports=/path/to/downloaded/devskim
-python3 tools/devops/automation/scripts/report_devskim.py --output-directory "$reports" \
+python3 tools/devops/automation/scripts/devskim/report_devskim.py --output-directory "$reports" \
   "$reports"/{runtime,src,tools,msbuild,external,dotnet,scripts,builds,eng}.sarif
 open "$reports/index.html" # macOS default browser
 ```
 
 `--disable-supression` is the CLI's spelling. When updating the pinned version,
-verify its flags and result-tag representation and rerun the gate tests plus a
-real scan. Existing native-symbol/P/Invoke checks and CodeQL are unchanged.
+verify its flags and result-tag representation and run a real scan.
+Existing native-symbol/P/Invoke checks and CodeQL are unchanged.
 
 ### Main Stage Template (`templates/main-stage.yml`)
 

@@ -13,7 +13,7 @@ import report_devskim
 
 VERSION = "1.0.100"
 SOURCES = ("runtime", "src", "tools", "msbuild", "external", "dotnet", "scripts", "builds", "eng")
-REPOSITORY = Path(__file__).resolve().parents[4]
+REPOSITORY = Path(__file__).resolve().parents[5]
 
 
 def install(dotnet, tool_directory, output_directory):

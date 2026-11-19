@@ -264,14 +264,15 @@ namespace PdfKit {
 		Horizontal = 1,
 	}
 
+	/// <summary>Specifies the state of a PDF widget cell.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetCellState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell has a mixed or indeterminate value.</summary>
 		Mixed = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell is off.</summary>
 		Off = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell is on.</summary>
 		On = 1,
 	}
 }

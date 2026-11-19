@@ -58280,7 +58280,6 @@ T:PdfKit.PdfPageImageInitializationOptionKeys
 T:PdfKit.PdfSelectionGranularity
 T:PdfKit.PdfViewScale
 T:PdfKit.PdfViewTitle
-T:PdfKit.PdfWidgetCellState
 T:PencilKit.PKCanvasView
 T:PencilKit.PKCanvasViewDrawingPolicy
 T:PencilKit.PKContentVersion

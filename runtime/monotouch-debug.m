@@ -1024,8 +1024,11 @@ monotouch_process_connection (int fd)
 					// Set environment variables, replacing %FORWARD_PORT% with the port
 					char port_str [16];
 					NSString *formatted_port = [NSString stringWithFormat: @"%ld", forward_port];
-					if (![formatted_port getCString: port_str maxLength: sizeof (port_str) encoding: NSUTF8StringEncoding])
-						xamarin_assertion_message ("Could not format the forwarded port.");
+					if (![formatted_port getCString: port_str maxLength: sizeof (port_str) encoding: NSUTF8StringEncoding]) {
+						LOG (PRODUCT ": Could not format the forwarded port.");
+						close (listen_fd);
+						return false;
+					}
 					for (int i = 0; i < port_replacement_env_var_count; i++) {
 						char *value = port_replacement_env_vars [i].value;
 						char *replacement = strstr (value, "%FORWARD_PORT%");

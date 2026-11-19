@@ -125,9 +125,6 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 		sig = [self methodSignatureForSelector: sel];
 	}
 	unsigned long signature_arg_count = [sig numberOfArguments];
-	if (signature_arg_count < 2 || signature_arg_count > INT32_MAX)
-		xamarin_assertion_message ("Invalid method signature argument count: %lu.", signature_arg_count);
-	num_arg = signature_arg_count - 2;
 
 	// prolog
 	MonoObject *mthis = NULL;
@@ -149,14 +146,25 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 	gboolean needs_writeback = FALSE; // determines if there are any ref/out parameters.
 	MonoType *p;
 	unsigned long mofs = 0;
+	unsigned long desc_arg_count;
+	size_t desc_size;
 
-	unsigned long desc_arg_count = num_arg + 2; /* 1 for the return value + 1 if this is a category instance method */
-	if (desc_arg_count > (SIZE_MAX - sizeof (MethodDescription)) / sizeof (BindAsData))
-		xamarin_assertion_message ("Method description size overflow.");
-	size_t desc_size = desc_arg_count * sizeof (BindAsData) + sizeof (MethodDescription);
+	if (signature_arg_count < 2 || signature_arg_count > INT32_MAX) {
+		exception_gchandle = xamarin_get_exception_for_method (8040, INVALID_GCHANDLE, "Invalid method signature argument count.", sel, self);
+		goto exception_handling;
+	}
+	num_arg = signature_arg_count - 2;
+	desc_arg_count = num_arg + 2; /* 1 for the return value + 1 if this is a category instance method */
+	if (desc_arg_count > (SIZE_MAX - sizeof (MethodDescription)) / sizeof (BindAsData)) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
+	desc_size = desc_arg_count * sizeof (BindAsData) + sizeof (MethodDescription);
 	desc = (MethodDescription *) xamarin_calloc (desc_size);
-	if (desc == NULL)
-		xamarin_assertion_message ("Could not allocate the method description.");
+	if (desc == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
 	desc->bindas_count = (int32_t) desc_arg_count;
 	free_list = s_list_prepend (free_list, desc);
 
@@ -184,19 +192,27 @@ xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel
 
 	frame_length = [sig frameLength];
 	implicit_frame_length = sizeof (void *) * (isCategoryInstance ? 1ul : 2ul);
-	if (frame_length < implicit_frame_length)
-		xamarin_assertion_message ("Invalid method signature frame length: %lu.", frame_length);
+	if (frame_length < implicit_frame_length) {
+		exception_gchandle = xamarin_get_exception_for_method (8040, INVALID_GCHANDLE, "Invalid method signature frame length.", sel, self);
+		goto exception_handling;
+	}
 	frame_length -= implicit_frame_length;
 	arg_frame = (void **) xamarin_calloc (frame_length == 0 ? 1 : frame_length);
-	if (arg_frame == NULL)
-		xamarin_assertion_message ("Could not allocate the argument frame.");
+	if (arg_frame == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
 	free_list = s_list_prepend (free_list, arg_frame);
 	managed_arg_count = num_arg + (isCategoryInstance ? 1 : 0);
-	if (managed_arg_count > SIZE_MAX / sizeof (void *))
-		xamarin_assertion_message ("Method argument storage size overflow.");
+	if (managed_arg_count > SIZE_MAX / sizeof (void *)) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
 	arg_ptrs = (void **) xamarin_calloc (managed_arg_count == 0 ? 1 : sizeof (void *) * managed_arg_count);
-	if (arg_ptrs == NULL)
-		xamarin_assertion_message ("Could not allocate the argument pointers.");
+	if (arg_ptrs == NULL) {
+		exception = (MonoObject *) mono_get_exception_out_of_memory ();
+		goto exception_handling;
+	}
 	free_list = s_list_prepend (free_list, arg_ptrs);
 	
 #ifdef TRACE

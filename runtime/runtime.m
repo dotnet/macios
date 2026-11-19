@@ -915,8 +915,10 @@ xamarin_find_protocol_wrapper_type (uint32_t token_ref)
 
 	const MTProtocolWrapperMap *entries = options.RegistrationData->protocol_wrappers;
 	int count = options.RegistrationData->protocol_wrapper_count;
-	if (count < 0 || (size_t) count > SIZE_MAX / sizeof (*entries) || (count > 0 && entries == NULL))
-		xamarin_assertion_message ("Invalid protocol wrapper map.");
+	if (count < 0 || (size_t) count > SIZE_MAX / sizeof (*entries) || (count > 0 && entries == NULL)) {
+		xamarin_throw_product_exception (8018, "Invalid protocol wrapper map.");
+		return INVALID_TOKEN_REF;
+	}
 
 	size_t low = 0;
 	size_t high = (size_t) count;
@@ -1213,6 +1215,7 @@ unsigned long
 xamarin_objc_type_size (const char *type)
 {
 	const char *original_type = type;
+	const char *error_message = NULL;
 
 	switch (type [0]) {
 		case _C_ID: return sizeof (id);
@@ -1252,22 +1255,25 @@ xamarin_objc_type_size (const char *type)
 			xamarin_assertion_message ("Unhandled type encoding: %s", type);
 			break;
 		case _C_ARY_B: {
+			error_message = "Invalid array length in type encoding";
 			if (type [1] < '0' || type [1] > '9')
-				xamarin_assertion_message ("Invalid array length in type encoding: %s", original_type);
+				goto invalid_type;
 			char *element_type = NULL;
 			errno = 0;
 			unsigned long len = strtoul (type + 1, &element_type, 10);
 			if (errno == ERANGE || *element_type == 0)
-				xamarin_assertion_message ("Invalid array length in type encoding: %s", original_type);
+				goto invalid_type;
 			type = element_type;
 
 			unsigned long size = xamarin_objc_type_size (type);
+			error_message = "Array element size overflow in type encoding";
 			if (size > ULONG_MAX - (sizeof (void *) - 1))
-				xamarin_assertion_message ("Array element size overflow in type encoding: %s", original_type);
+				goto invalid_type;
 
 			size = (size + (sizeof (void *) - 1)) & ~((sizeof (void *) - 1));
+			error_message = "Array size overflow in type encoding";
 			if (size != 0 && len > ULONG_MAX / size)
-				xamarin_assertion_message ("Array size overflow in type encoding: %s", original_type);
+				goto invalid_type;
 
 			return len * size;
 		}
@@ -1335,6 +1341,14 @@ xamarin_objc_type_size (const char *type)
 	}
 	
 	xamarin_assertion_message ("Unsupported type encoding: %s", original_type);
+
+invalid_type:
+	;
+	char *message = xamarin_strdup_printf ("%s: %s", error_message, original_type);
+	GCHandle exception_gchandle = xamarin_create_product_exception (8040, message);
+	xamarin_free (message);
+	xamarin_process_managed_exception_gchandle (exception_gchandle);
+	return 0;
 }
 
 /*

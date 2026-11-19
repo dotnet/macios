@@ -49,3 +49,16 @@ The low-level writer still allocates and uses standard-stream locks; it is not
 an async-signal-safe logger. Do not replace weak-reference/finalizer diagnostics
 with `NSLog`, `os_log`, or `PRINT`, which can re-enter Objective-C while its
 internal locks are held.
+
+Runtime failures
+================
+
+When managed code is available, report failures as managed exceptions rather
+than assertions. Trampolines must release their temporary storage before passing
+the exception to the existing exception-marshaling path. Diagnostic helpers should
+return whatever information is available instead of terminating the process.
+
+The registration map, command-line arguments, environment snapshots, assembly
+locations, and host runtime contract are also used before the managed runtime
+is initialized. Their fatal validation and allocation failures cannot rely on
+managed exceptions.

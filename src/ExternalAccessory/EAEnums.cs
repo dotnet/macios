@@ -25,13 +25,13 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryBrowserState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that Wi-Fi is unavailable on the device.</summary>
 		WiFiUnavailable = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the browser has stopped searching for accessories.</summary>
 		Stopped,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the browser is searching for accessories.</summary>
 		Searching,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that an accessory is being configured.</summary>
 		Configuring,
 	}
 

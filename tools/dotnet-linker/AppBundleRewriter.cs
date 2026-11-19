@@ -1487,8 +1487,10 @@ namespace Xamarin.Linker {
 
 		void SaveAssembly (AssemblyDefinition assembly)
 		{
-			if (assembly != CurrentAssembly && assembly != PlatformAssembly && !configuration.Assemblies.Contains (assembly))
-				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it isn't part of the current link context.");
+			// This check catches modifications made to an assembly other than the current or platform assembly.
+			// Set the current assembly before modifying it; do not broaden this check to all loaded assemblies.
+			if (assembly != CurrentAssembly && assembly != PlatformAssembly)
+				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it's not the current assembly ({CurrentAssembly.Name}) or the platform assembly ({PlatformAssembly.Name}).");
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
 			if (configuration.HotReloadModifiedAssemblySafetyNet && IsReloadableAssembly (assembly)) {
@@ -1640,58 +1642,64 @@ namespace Xamarin.Linker {
 			} while (IsMemberNameUsed (type, helperName));
 			nextExplicitInterfaceImplementationRootIndex [type] = helperIndex;
 
-			var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
-			type.Methods.Add (helper);
-			SaveAssembly (type.Module.Assembly);
-			explicitInterfaceImplementationRoots [method] = helper;
-			generatedExplicitInterfaceImplementationRoots.Add (helper);
-			modified = true;
+			var currentAssembly = CurrentAssembly;
+			SetCurrentAssembly (type.Module.Assembly);
+			try {
+				var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
+				type.Methods.Add (helper);
+				explicitInterfaceImplementationRoots [method] = helper;
+				generatedExplicitInterfaceImplementationRoots.Add (helper);
+				modified = true;
 
-			var il = helper.Body.GetILProcessor ();
-			il.Emit (OpCodes.Ldtoken, method);
-			il.Emit (OpCodes.Pop);
-
-			if (method.HasGenericParameters) {
-				foreach (var gp in method.GenericParameters)
-					helper.GenericParameters.Add (new GenericParameter (gp.Name, helper) { Attributes = gp.Attributes });
-				foreach (var gp in method.GenericParameters) {
-					var helperParameter = helper.GenericParameters [gp.Position];
-					foreach (var constraint in gp.Constraints)
-						helperParameter.Constraints.Add (new GenericParameterConstraint (RebindMethodGenericParameters (constraint.ConstraintType, helper)));
-					// Copy attributes such as [DynamicallyAccessedMembers] too, otherwise the trimmer warns
-					// about the instantiation below (IL2091).
-					foreach (var attribute in gp.CustomAttributes)
-						helperParameter.CustomAttributes.Add (new CustomAttribute (attribute.Constructor, attribute.GetBlob ()));
-				}
-
-				// We need a reference to the method on the open generic type (instantiated with its own generic
-				// parameters) if the declaring type is generic.
-				MethodReference target = method;
-				if (type.HasGenericParameters) {
-					var owner = new GenericInstanceType (type);
-					foreach (var gp in type.GenericParameters)
-						owner.GenericArguments.Add (gp);
-					target = new MethodReference (method.Name, method.ReturnType, owner) {
-						HasThis = method.HasThis,
-						ExplicitThis = method.ExplicitThis,
-						CallingConvention = method.CallingConvention,
-					};
-					foreach (var gp in method.GenericParameters)
-						target.GenericParameters.Add (new GenericParameter (gp.Name, target));
-					foreach (var p in method.Parameters)
-						target.Parameters.Add (new ParameterDefinition (p.ParameterType));
-				}
-
-				var instantiated = new GenericInstanceMethod (target);
-				foreach (var gp in helper.GenericParameters)
-					instantiated.GenericArguments.Add (gp);
-				il.Emit (OpCodes.Ldtoken, instantiated);
+				var il = helper.Body.GetILProcessor ();
+				il.Emit (OpCodes.Ldtoken, method);
 				il.Emit (OpCodes.Pop);
+
+				if (method.HasGenericParameters) {
+					foreach (var gp in method.GenericParameters)
+						helper.GenericParameters.Add (new GenericParameter (gp.Name, helper) { Attributes = gp.Attributes });
+					foreach (var gp in method.GenericParameters) {
+						var helperParameter = helper.GenericParameters [gp.Position];
+						foreach (var constraint in gp.Constraints)
+							helperParameter.Constraints.Add (new GenericParameterConstraint (RebindMethodGenericParameters (constraint.ConstraintType, helper)));
+						// Copy attributes such as [DynamicallyAccessedMembers] too, otherwise the trimmer warns
+						// about the instantiation below (IL2091).
+						foreach (var attribute in gp.CustomAttributes)
+							helperParameter.CustomAttributes.Add (new CustomAttribute (attribute.Constructor, attribute.GetBlob ()));
+					}
+
+					// We need a reference to the method on the open generic type (instantiated with its own generic
+					// parameters) if the declaring type is generic.
+					MethodReference target = method;
+					if (type.HasGenericParameters) {
+						var owner = new GenericInstanceType (type);
+						foreach (var gp in type.GenericParameters)
+							owner.GenericArguments.Add (gp);
+						target = new MethodReference (method.Name, method.ReturnType, owner) {
+							HasThis = method.HasThis,
+							ExplicitThis = method.ExplicitThis,
+							CallingConvention = method.CallingConvention,
+						};
+						foreach (var gp in method.GenericParameters)
+							target.GenericParameters.Add (new GenericParameter (gp.Name, target));
+						foreach (var p in method.Parameters)
+							target.Parameters.Add (new ParameterDefinition (p.ParameterType));
+					}
+
+					var instantiated = new GenericInstanceMethod (target);
+					foreach (var gp in helper.GenericParameters)
+						instantiated.GenericArguments.Add (gp);
+					il.Emit (OpCodes.Ldtoken, instantiated);
+					il.Emit (OpCodes.Pop);
+				}
+
+				il.Emit (OpCodes.Ret);
+
+				SaveCurrentAssembly ();
+				return helper;
+			} finally {
+				SetCurrentAssembly (currentAssembly);
 			}
-
-			il.Emit (OpCodes.Ret);
-
-			return helper;
 		}
 
 		static bool IsMemberNameUsed (TypeDefinition type, string name)

@@ -2071,6 +2071,22 @@ namespace FSKit {
 		NativeHandle Constructor (FSKernelCacheCoherencyType grantedCoherency);
 	}
 
+	/// <summary>Flags that control the atomic behavior of a file system rename operation.</summary>
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (27, 3)]
+	[Flags]
+	[Native]
+	public enum FSRenameFlags : ulong {
+		/// <summary>Performs a plain rename.</summary>
+		None = 0,
+		/// <summary>Atomically exchanges the source and destination items, both of which must exist.</summary>
+		Swap = 0x2,
+		/// <summary>Fails if an item already exists at the destination.</summary>
+		Exclusive = 0x4,
+	}
+
 #if !STABLE_FSKIT
 	[Experimental ("APL0002")]
 #endif
@@ -2200,6 +2216,27 @@ namespace FSKit {
 		[Abstract]
 		[Export ("renameItem:inDirectory:named:toNewName:inDirectory:overItem:context:replyHandler:")]
 		void RenameItem (FSItem item, FSItem sourceDirectory, FSFileName sourceName, FSFileName destinationName, FSItem destinationDirectory, [NullAllowed] FSItem overItem, FSContext context, FSVolumeHandlerRenameItemHandler reply);
+
+		/// <summary>Gets the rename flags that this volume supports.</summary>
+		/// <remarks>Implement this property together with the flag-aware rename method. FSKit rejects unsupported flags and assumes no flags are supported if this property is not implemented. FSKit reads this value after the file system replies to the load-resource request; subsequent changes have no effect.</remarks>
+		[Mac (27, 3)]
+		[Export ("supportedRenameFlags")]
+		FSRenameFlags SupportedRenameFlags { get; }
+
+		/// <summary>Renames an item while atomically honoring the requested flags.</summary>
+		/// <param name="item">The item to rename.</param>
+		/// <param name="sourceDirectory">The directory that currently contains the item.</param>
+		/// <param name="sourceName">The item's current name.</param>
+		/// <param name="destinationName">The item's new name.</param>
+		/// <param name="destinationDirectory">The directory that will contain the renamed item.</param>
+		/// <param name="overItem">The existing destination item, or <see langword="null" /> if none exists.</param>
+		/// <param name="flags">The requested rename flags, restricted to those supported by the volume.</param>
+		/// <param name="context">The context for the operation.</param>
+		/// <param name="reply">The callback that receives the rename result or an error.</param>
+		/// <remarks>When implemented, this method handles every rename, including plain renames with <see cref="FSRenameFlags.None" />.</remarks>
+		[Mac (27, 3)]
+		[Export ("renameItem:inDirectory:named:toNewName:inDirectory:overItem:flags:context:replyHandler:")]
+		void RenameItem (FSItem item, FSItem sourceDirectory, FSFileName sourceName, FSFileName destinationName, FSItem destinationDirectory, [NullAllowed] FSItem overItem, FSRenameFlags flags, FSContext context, FSVolumeHandlerRenameItemHandler reply);
 
 		[Abstract]
 		[Export ("removeItem:named:fromDirectory:context:replyHandler:")]

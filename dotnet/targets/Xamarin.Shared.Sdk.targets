@@ -1613,20 +1613,24 @@
 			Error="true"
 			ResourceName="E7248"
 		/>
-		<Error
-			Text="The property 'RunAotCompilation' is not supported because Mono AOT compilation has been removed."
+		<!-- The property 'RunAotCompilation' is not supported because Mono AOT compilation has been removed. -->
+		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(RunAotCompilation)' == 'true'"
-			/>
+			Error="true"
+			ResourceName="E7269"
+		/>
 		<!-- The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file. -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
 			Error="true"
 			ResourceName="E7203"
 		/>
-		<Error
-			Text="The property 'AotAssemblies' is not supported because Mono AOT compilation has been removed."
+		<!-- The property 'AotAssemblies' is not supported because Mono AOT compilation has been removed. -->
+		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(AotAssemblies)' == 'true'"
-			/>
+			Error="true"
+			ResourceName="E7270"
+		/>
 		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
 		<!-- The property 'EnableSGenConc' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
@@ -1659,20 +1663,24 @@
 			ResourceName="W7239"
 			Warning="true"
 		/>
-		<Warning
-			Text="The property 'MtouchUseLlvm' has no effect because Mono AOT compilation has been removed."
+		<!-- The property 'MtouchUseLlvm' has no effect because Mono AOT compilation has been removed. -->
+		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchUseLlvm)' == 'true'"
-			/>
+			ResourceName="W7271"
+			Warning="true"
+		/>
 		<!-- The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
 			ResourceName="W7237"
 			Warning="true"
 		/>
-		<Warning
-			Text="The property 'MtouchFloat32' has no effect because Mono AOT compilation has been removed."
+		<!-- The property 'MtouchFloat32' has no effect because Mono AOT compilation has been removed. -->
+		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchFloat32)' != ''"
-			/>
+			ResourceName="W7272"
+			Warning="true"
+		/>
 		<!-- The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR). -->
 		<MacDevMessage
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MonoUseCompressedInterfaceBitmap)' == 'true'"

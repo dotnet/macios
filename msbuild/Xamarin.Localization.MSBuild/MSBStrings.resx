@@ -1501,9 +1501,6 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
     <data name="E7263" xml:space="preserve">
         <value>Support for Xamarin projects has ended. Please migrate your project to .NET</value>
     </data>
-    <data name="E7268" xml:space="preserve">
-        <value>An absolute IntermediateOutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath.</value>
-    </data>
 
     <data name="E7264" xml:space="preserve">
         <value>Invalid framework: {0}</value>
@@ -1518,6 +1515,15 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
             The following are literal names and should not be translated: Xcode, 'Include', '.xcodeproj'
             {0}: An invalid path to an Xcode project file
         </comment>
+    </data>
+    <data name="E7268" xml:space="preserve">
+        <value>An absolute IntermediateOutputPath is not supported when building remotely. Note that this may occur as a consequence of setting UseArtifactsOutput=true or ArtifactsPath.</value>
+    </data>
+    <data name="E7269" xml:space="preserve">
+        <value>The property 'RunAotCompilation' is not supported because Mono AOT compilation has been removed.</value>
+    </data>
+    <data name="E7270" xml:space="preserve">
+        <value>The property 'AotAssemblies' is not supported because Mono AOT compilation has been removed.</value>
     </data>
 
     <data name="M0001" xml:space="preserve">
@@ -2015,6 +2021,12 @@ None</value>
     </data>
     <data name="W7261" xml:space="preserve">
         <value>Referenced iOS Watch App Project {0} not found, ignoring.</value>
+    </data>
+    <data name="W7271" xml:space="preserve">
+        <value>The property 'MtouchUseLlvm' has no effect because Mono AOT compilation has been removed.</value>
+    </data>
+    <data name="W7272" xml:space="preserve">
+        <value>The property 'MtouchFloat32' has no effect because Mono AOT compilation has been removed.</value>
     </data>
 
 </root>

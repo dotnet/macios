@@ -12,11 +12,11 @@ namespace ExternalAccessory {
 	[Native]
 	[Flags]
 	public enum EAWiFiUnconfiguredAccessoryProperties : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports AirPlay.</summary>
 		SupportsAirPlay = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports AirPrint.</summary>
 		SupportsAirPrint = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports HomeKit.</summary>
 		SupportsHomeKit = (1 << 2), // iOS 8 beta 5
 	}
 

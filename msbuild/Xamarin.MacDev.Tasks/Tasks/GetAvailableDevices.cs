@@ -39,7 +39,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		cancellationTokenSource = new CancellationTokenSource ();
 
 		// run devicectl and simctl in parallel
-		var devicectlTask = RunDeviceCtlAsync ();
+		var devicectlTask = RunDeviceCtlAsync (cancellationTokenSource.Token);
 		var simctlTask = RunSimCtlAsync ();
 
 		System.Threading.Tasks.Task.WhenAll (new [] { devicectlTask, simctlTask }).Wait (cancellationTokenSource.Token);
@@ -98,18 +98,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		foreach (var d in devices) {
 			if (!d.RuntimeIdentifiers.Any ())
 				continue;
-			if (d.RuntimeIdentifiers.Count () == 1) {
-				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.First ());
-				continue;
-			}
-			// if we have multiple runtime identifiers, we're running in the simulator, and one is x64 and the other is arm64.
-			// if 'RuntimeIdentifier' is set on the task, set that value, otherwise
-			// if we can run on arm64, then pick the arm64 simulator, otherwise pick the x64 simulator
-			if (!string.IsNullOrEmpty (RuntimeIdentifier)) {
-				d.Item.SetMetadata ("RuntimeIdentifier", RuntimeIdentifier);
-			} else {
-				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
-			}
+			d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single ());
 		}
 
 		DiscardedDevices = devices.Where (d => d.Discarded).Select (v => {
@@ -171,15 +160,19 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		}
 	}
 
-	async System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunDeviceCtlAsync ()
+	protected virtual PhysicalDeviceService CreatePhysicalDeviceService () => new PhysicalDeviceService (this, SdkDevPath);
+
+	async System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunDeviceCtlAsync (CancellationToken cancellationToken)
 	{
-		var json = await ExecuteCtlAsync ("devicectl", "list", "devices");
+		var result = await CreatePhysicalDeviceService ().ListAsync (cancellationToken);
 		var rv = new List<DeviceInfo> ();
 
-		// Use shared parser from Xamarin.MacDev for devicectl JSON extraction
-		var parsedDevices = DeviceCtlOutputParser.ParseDevices (json);
+		// The service only logs a failed discovery at info level, so report the failures that left us without a device list.
+		// Unusable output (InvalidOutput) isn't reported as an error.
+		if (result.Status is PhysicalDeviceDiscoveryStatus.ExecutionFailed or PhysicalDeviceDiscoveryStatus.ToolUnavailable or PhysicalDeviceDiscoveryStatus.TimedOut)
+			Log.LogError (MSBStrings.E7200, result.ErrorMessage);
 
-		foreach (var device in parsedDevices) {
+		foreach (var device in result.Devices) {
 			var udid = device.Udid;
 
 			if (string.IsNullOrEmpty (udid))
@@ -337,7 +330,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 						switch (arch.ToLowerInvariant ()) {
 						case "x64":
 						case "x86_64":
-							runtimeIdentifiers.Add (runtimeIdentifier + "x64");
 							break;
 						case "arm64":
 							runtimeIdentifiers.Add (runtimeIdentifier + "arm64");
@@ -349,6 +341,8 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 							break;
 						}
 					}
+					if (runtimeIdentifiers.Count == 0 && string.IsNullOrEmpty (discardedReason))
+						discardedReason = MSBStrings.M0170;
 				}
 			} else {
 				discardedReason = $"Device is not available: {device.AvailabilityError}";

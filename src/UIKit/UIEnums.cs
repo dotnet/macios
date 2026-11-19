@@ -96,7 +96,14 @@ namespace UIKit {
 		Bordered,
 
 		/// <summary>Style for a done button.   This should be used if the screen will be dismissed upon tapping.</summary>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIBarButtonItemStyle.Prominent' instead.")]
 		Done,
+
+		/// <summary>A prominent button style for completing or finalizing a task.</summary>
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		Prominent = 2,
 	}
 
 	// NSInteger -> UIBarButtonItem.h
@@ -517,6 +524,7 @@ namespace UIKit {
 	// NSInteger -> UIStringDrawing.h
 	/// <summary>An enumeration of values used to specify line break mode.</summary>
 	/// <remarks>To be added.</remarks>
+	[NativeName ("NSLineBreakMode")]
 	[Native]
 	// note: __TVOS_PROHIBITED -> because it uses NSLineBreakMode (but we need this because we don't expose the later)
 	public enum UILineBreakMode : long {
@@ -1058,6 +1066,7 @@ namespace UIKit {
 #else
 	[Native]
 #endif
+	[NativeName ("NSTextAlignment")]
 	public enum UITextAlignment : long {
 		/// <summary>Text is left-aligned.</summary>
 		Left,
@@ -3820,6 +3829,10 @@ namespace UIKit {
 		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 		[Field ("UIWindowSceneSessionRoleAssistiveAccessApplication")]
 		AssistiveAccessApplication,
+
+		[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+		[Field ("UIWindowSceneSessionRoleCameraCaptureAccessory")]
+		CameraCaptureAccessory,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -4930,6 +4943,80 @@ namespace UIKit {
 	public enum UITextAttachmentViewProviderReusePolicy : ulong {
 		ScrollingOutOfViewport = 1uL << 0,
 		EditingInlineParagraphs = 1uL << 1,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIArrangementViewControllerViewPlacement : long {
+		None = 0,
+		Primary = 1,
+		Secondary = 2,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIBarButtonItemAxisBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		HorizontalOnly = 1,
+		[NoTV]
+		VerticalPreferred = 2,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIHingeStatus : long {
+		Unknown = 0,
+		Closed = 1,
+		PartiallyOpen = 2,
+		FullyOpen = 3,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIVerticalBarBehavior : long {
+		Automatic = 0,
+		Disabled = 1,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIVerticalBarCompressionBehavior : long {
+		Automatic = 0,
+		[NoTV]
+		PrefersBarItems = 1,
+		[NoTV]
+		PrefersTabBar = 2,
+	}
+
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIVerticalBarEdge : long {
+		Unspecified = 0,
+		[NoTV]
+		Leading = 1,
+		[NoTV]
+		Trailing = 2,
+	}
+
+	[Flags]
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 1)]
+	[Native]
+	public enum UIViewReservedRegionQueryOptions : ulong {
+		None = 0,
+		IncludeInactive = 1uL << 0,
+	}
+
+	/// <summary>Specifies the alignment of a navigation item's title.</summary>
+	[TV (27, 2), MacCatalyst (27, 2), iOS (27, 2)]
+	[Native]
+	public enum UINavigationItemTitleAlignment : long {
+		/// <summary>The system determines the alignment, or has not yet resolved a trait's alignment.</summary>
+		Automatic = 0,
+		/// <summary>The title is aligned to the leading edge.</summary>
+		Leading = 1,
+		/// <summary>The title uses centered alignment.</summary>
+		Center = 2,
 	}
 
 	// NSInteger -> NSTextTable.h

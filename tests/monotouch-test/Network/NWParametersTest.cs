@@ -254,6 +254,12 @@ namespace MonoTouchFixtures.Network {
 				Assert.Throws<ArgumentNullException> (() => parameters.ProhibitInterface (null), "");
 				Assert.That (interfaces.Count, Is.Not.EqualTo (0), "No network interfaces found.");
 				parameters.ProhibitInterface (interfaces [0]);
+				var found = new List<string> ();
+				parameters.IterateProhibitedInterfaces ((NWInterface iface) => {
+					found.Add (iface.Name);
+					return true;
+				});
+				Assert.That (found, Is.EqualTo (new [] { interfaces [0].Name }), "Prohibited interfaces");
 			}
 		}
 
@@ -348,15 +354,16 @@ namespace MonoTouchFixtures.Network {
 			}
 		}
 
-		[Test]
-		public void AttributionPropertyTest ()
+		[TestCase (NWParametersAttribution.Developer)]
+		[TestCase (NWParametersAttribution.User)]
+		public void AttributionPropertyTest (NWParametersAttribution attribution)
 		{
 			TestRuntime.AssertXcodeVersion (13, 0);
 			using (var parameters = new NWParameters ()) {
 				Assert.DoesNotThrow (() => {
-					parameters.Attribution = NWParametersAttribution.Developer;
+					parameters.Attribution = attribution;
 				});
-				Assert.That (parameters.Attribution, Is.EqualTo (NWParametersAttribution.Developer));
+				Assert.That (parameters.Attribution, Is.EqualTo (attribution));
 			}
 		}
 

@@ -140,6 +140,14 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+### Localizable Build Messages
+
+All user-visible messages in `msbuild/Xamarin.MacDev.Tasks` and `tools/assembly-preparer`
+must come from an English `.resx` resource, such as
+`msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx` or `tools/mtouch/Errors.resx`.
+This includes logged errors, warnings, informational messages, and exception messages
+shown to users. Do not hard-code these messages in C# or edit generated translations.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building
@@ -155,6 +163,8 @@ Located in `msbuild/` directory:
 If a target or task creates a file, that file must be added to the `FileWrites` item group. This ensures MSBuild's incremental clean can delete generated files. Additionally, if a target produces multiple output files, all of them should be listed in the target's `Outputs` attribute for correct incremental build behavior.
 
 ### Project Templates
+
+Never replace `net$(BundledNETCoreAppTargetFrameworkVersion)` with a specific TFM.
 
 Common project structure for Apple platform apps:
 ```xml

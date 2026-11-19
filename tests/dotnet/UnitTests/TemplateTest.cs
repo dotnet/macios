@@ -154,6 +154,21 @@ namespace Xamarin.Tests {
 			return Templates.Where (v => v.TemplateType == TemplateType.Project).ToArray ();
 		}
 
+		public static IEnumerable<TestCaseData> GetProjectTemplateFrameworks ()
+		{
+			foreach (var info in GetProjectTemplates ()) {
+				var configPath = Path.Combine (Configuration.SourceRoot, "dotnet", "Templates", $"Microsoft.{info.Platform.AsString ()}.Templates", info.Template, info.Language?.AsString () ?? "", ".template.config", "template.json");
+				using var config = JsonDocument.Parse (File.ReadAllText (configPath));
+				var framework = config.RootElement.GetProperty ("symbols").GetProperty ("Framework");
+				yield return new TestCaseData (info, null, framework.GetProperty ("defaultValue").GetString ());
+				foreach (var choice in framework.GetProperty ("choices").EnumerateArray ()) {
+					var targetFramework = choice.GetProperty ("choice").GetString ();
+					yield return new TestCaseData (info, "--framework", targetFramework);
+					yield return new TestCaseData (info, "-f", targetFramework);
+				}
+			}
+		}
+
 		public class TemplateConfig {
 			public string? Name;
 			public string? ShortName;
@@ -248,6 +263,53 @@ namespace Xamarin.Tests {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				ExecuteWithMagicWordAndAssert (appExecutable);
 			}
+		}
+
+		[TestCaseSource (nameof (GetProjectTemplateFrameworks))]
+		public void CreateProjectTemplateWithFramework (TemplateInfo info, string? option, string targetFramework)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (info.Platform);
+
+			var language = info.Language ?? TemplateLanguage.CSharp;
+			var outputDir = Path.Combine (Cache.CreateTemporaryDirectory (), info.Template);
+			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier (), extraArguments: option is null ? [] : [option, targetFramework]);
+			var projectPath = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
+			Assert.That (File.ReadAllText (projectPath), Does.Contain ($"<TargetFramework>{targetFramework}</TargetFramework>"), "The generated project must target the selected framework.");
+		}
+
+		[TestCase ("ios", "F#", "fsproj")]
+		[TestCase ("ios-notification-service-extension", "C#", "csproj")]
+		public void CreateProjectTemplateWithParameters (string template, string language, string extension)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+
+			var outputDir = Path.Combine (Cache.CreateTemporaryDirectory (), template);
+			var arguments = new List<string> { "--framework", "net11.0-ios", "--minOSVersion", "16.0" };
+			if (template == "ios-notification-service-extension")
+				arguments.AddRange (["--extensionClassName", "CustomNotificationService"]);
+			DotNet.AssertNew (outputDir, template, language: language, extraArguments: arguments.ToArray ());
+
+			var project = File.ReadAllText (Path.Combine (outputDir, $"{template}.{extension}"));
+			Assert.That (project, Does.Contain ("<TargetFramework>net11.0-ios</TargetFramework>"), "TargetFramework");
+			Assert.That (project, Does.Contain ("<SupportedOSPlatformVersion>16.0</SupportedOSPlatformVersion>"), "SupportedOSPlatformVersion");
+			if (template == "ios-notification-service-extension") {
+				var source = File.ReadAllText (Path.Combine (outputDir, "NotificationServiceClass.cs"));
+				Assert.That (source, Does.Contain ("class CustomNotificationService"), "Extension class name");
+			}
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-controller")]
+		[TestCase (ApplePlatform.TVOS, "tvos-controller")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-controller")]
+		[TestCase (ApplePlatform.MacOSX, "macos-controller")]
+		public void CreateItemTemplateWithNamespace (ApplePlatform platform, string template)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var outputDir = Cache.CreateTemporaryDirectory ();
+			DotNet.AssertNew (outputDir, template, name: "CustomController", extraArguments: ["--namespace", "CustomNamespace"]);
+			var source = File.ReadAllText (Path.Combine (outputDir, "CustomController.cs"));
+			Assert.That (source, Does.Contain ("namespace CustomNamespace"), "Namespace");
 		}
 
 		[Test]

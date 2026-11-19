@@ -31,8 +31,6 @@
 //
 //
 
-#define DOUBLE_BLOCKS
-
 global using nfloat = global::System.Runtime.InteropServices.NFloat;
 
 using CloudKit;
@@ -1739,7 +1737,7 @@ namespace Foundation {
 		Taiwan = 7,
 #endif
 
-		/// <summary>Calendar for the Republic of China.</summary>
+		/// <summary>The Taiwan calendar.</summary>
 		[Field ("NSCalendarIdentifierRepublicOfChina")]
 		RepublicOfChina = 7,
 
@@ -2523,6 +2521,11 @@ namespace Foundation {
 		[Static]
 		NSData FromData (NSData source);
 
+		/// <summary>Creates data by copying bytes from unmanaged memory.</summary>
+		/// <param name="bytes">A pointer to at least <paramref name="size" /> readable bytes, or a null pointer when <paramref name="size" /> is zero.</param>
+		/// <param name="size">The number of bytes to copy.</param>
+		/// <returns>A new data object containing an independent copy of the bytes.</returns>
+		/// <remarks>The bytes are copied during this call; the pointer is not retained.</remarks>
 		[Export ("dataWithBytes:length:"), Static]
 		NSData FromBytes (IntPtr bytes, nuint size);
 
@@ -2559,9 +2562,17 @@ namespace Foundation {
 		[Export ("subdataWithRange:")]
 		NSData Subdata (NSRange range);
 
+		/// <summary>Copies bytes from the beginning of the data into unmanaged memory.</summary>
+		/// <param name="buffer">A pointer to at least <paramref name="length" /> writable bytes.</param>
+		/// <param name="length">The maximum number of bytes to copy. At most <see cref="Length" /> bytes are copied.</param>
+		/// <remarks>The copy completes during this call; the pointer is not retained. Do not modify mutable data concurrently with this call.</remarks>
 		[Export ("getBytes:length:")]
 		void GetBytes (IntPtr buffer, nuint length);
 
+		/// <summary>Copies a range of the data into unmanaged memory.</summary>
+		/// <param name="buffer">A pointer to at least <paramref name="range" />.<see cref="NSRange.Length" /> writable bytes.</param>
+		/// <param name="range">The range of bytes to copy, which must be within the data.</param>
+		/// <remarks>The copy completes during this call; the pointer is not retained. Do not modify mutable data concurrently with this call.</remarks>
 		[Export ("getBytes:range:")]
 		void GetBytes (IntPtr buffer, NSRange range);
 
@@ -5786,6 +5797,10 @@ namespace Foundation {
 		[Export ("appendData:")]
 		void AppendData (NSData other);
 
+		/// <summary>Appends a copy of bytes from unmanaged memory.</summary>
+		/// <param name="bytes">A pointer to at least <paramref name="len" /> readable bytes.</param>
+		/// <param name="len">The number of bytes to append.</param>
+		/// <remarks>The bytes are copied during this call; the pointer is not retained.</remarks>
 		[Export ("appendBytes:length:")]
 		void AppendBytes (IntPtr bytes, nuint len);
 
@@ -5796,12 +5811,21 @@ namespace Foundation {
 		[Override]
 		nuint Length { get; set; }
 
+		/// <summary>Replaces a range of the data with bytes from unmanaged memory without changing the data length.</summary>
+		/// <param name="range">The range of existing bytes to replace, which must be within the data.</param>
+		/// <param name="buffer">A pointer to at least <paramref name="range" />.<see cref="NSRange.Length" /> readable bytes.</param>
+		/// <remarks>The bytes are copied during this call; the pointer is not retained. Do not modify the data concurrently with this call.</remarks>
 		[Export ("replaceBytesInRange:withBytes:")]
 		void ReplaceBytes (NSRange range, IntPtr buffer);
 
 		[Export ("resetBytesInRange:")]
 		void ResetBytes (NSRange range);
 
+		/// <summary>Replaces a range of the data with bytes from unmanaged memory, changing the data length if necessary.</summary>
+		/// <param name="range">The range of existing bytes to replace, which must be within the data. A zero-length range inserts bytes at its location.</param>
+		/// <param name="buffer">A pointer to at least <paramref name="length" /> readable bytes, or a null pointer when <paramref name="length" /> is zero.</param>
+		/// <param name="length">The number of replacement bytes. Zero removes the requested range.</param>
+		/// <remarks>The data length changes by the difference between <paramref name="length" /> and the range length. The bytes are copied during this call; the pointer is not retained. Do not modify the data concurrently with this call.</remarks>
 		[Export ("replaceBytesInRange:withBytes:length:")]
 		void ReplaceBytes (NSRange range, IntPtr buffer, nuint length);
 
@@ -7567,6 +7591,8 @@ namespace Foundation {
 	[BaseType (typeof (NSObject), Name = "NSUUID")]
 	[DesignatedDefaultCtor]
 	interface NSUuid : NSSecureCoding, NSCopying {
+		/// <summary>Creates a UUID from its string representation.</summary>
+		/// <param name="str">A UUID string in the form <c>XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX</c>.</param>
 		[Export ("initWithUUIDString:")]
 		NativeHandle Constructor (string str);
 
@@ -7574,6 +7600,9 @@ namespace Foundation {
 		//[Export ("initWithUUIDBytes:"), Internal]
 		//NativeHandle Constructor (IntPtr bytes, bool unused);
 
+		/// <summary>Copies the 16 UUID bytes into unmanaged memory.</summary>
+		/// <param name="uuid">A pointer to at least 16 writable bytes.</param>
+		/// <remarks>The copy completes during this call; the pointer is not retained.</remarks>
 		[Export ("getUUIDBytes:"), Internal]
 		void GetUuidBytes (IntPtr uuid);
 
@@ -11068,9 +11097,7 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")]
-#nullable enable
 		void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest?> completionHandler);
-#nullable disable
 
 		/// <param name="session">To be added.</param>
 		/// <param name="task">To be added.</param>
@@ -18400,7 +18427,6 @@ namespace Foundation {
 		[Export ("presentedItemOperationQueue", ArgumentSemantic.Retain)]
 		NSOperationQueue PresentedItemOperationQueue { get; }
 
-#if DOUBLE_BLOCKS
 		/// <param name="readerAction">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
@@ -18412,23 +18438,22 @@ namespace Foundation {
 		/// <remarks>To be added.</remarks>
 		[Export ("relinquishPresentedItemToWriter:")]
 		void RelinquishPresentedItemToWriter (NSFilePresenterReacquirer writerAction);
-#endif
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("savePresentedItemChangesWithCompletionHandler:")]
-		void SavePresentedItemChanges (Action<NSError> completionHandler);
+		void SavePresentedItemChanges (Action<NSError?> completionHandler);
 
 		/// <param name="completionHandler">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedItemDeletionWithCompletionHandler:")]
-		void AccommodatePresentedItemDeletion (Action<NSError> completionHandler);
+		void AccommodatePresentedItemDeletion (Action<NSError?> completionHandler);
 
 		[NoTV, Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("accommodatePresentedItemEvictionWithCompletionHandler:")]
-		void AccommodatePresentedItemEviction (Action<NSError> completionHandler);
+		void AccommodatePresentedItemEviction (Action<NSError?> completionHandler);
 
 		/// <param name="newURL">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -18464,7 +18489,7 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("accommodatePresentedSubitemDeletionAtURL:completionHandler:")]
-		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError> completionHandler);
+		void AccommodatePresentedSubitemDeletion (NSUrl url, Action<NSError?> completionHandler);
 
 		/// <param name="atUrl">To be added.</param>
 		/// <summary>To be added.</summary>

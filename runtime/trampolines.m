@@ -43,6 +43,29 @@
 
 static pthread_mutex_t refcount_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER;
 
+// We try to use the associated object API as little as possible, because the API does
+// not like recursion (see bug #35017), and it calls retain/release, which we might
+// have overridden with our own code that calls these functions. So in addition to
+// keeping the gchandle inside the associated object, we also keep it in a hash
+// table, so that xamarin_get_gchandle_trampoline does not have to call any
+// associated object API to get the gchandle.
+// Also cache NSObjectData: looking it up with associated-object APIs from
+// retainWeakReference would invert Objective-C's lock order during fork (see bug #26844).
+static CFMutableDictionaryRef gchandle_hash = NULL;
+static pthread_mutex_t gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
+
+struct gchandle_dictionary_entry {
+	GCHandle gc_handle;
+	enum XamarinGCHandleFlags gchandle_flags;
+	struct NSObjectData *data;
+};
+
+static void
+release_gchandle_dictionary_entry (CFAllocatorRef allocator, const void *value)
+{
+	free ((void *) value);
+}
+
 size_t
 xamarin_get_primitive_size (char type)
 {
@@ -777,6 +800,15 @@ xamarin_notify_dealloc (id self, GCHandle gchandle)
 	xamarin_unregister_nsobject (self, gchandle, &exception_gchandle);
 	xamarin_free_gchandle (self, gchandle);
 
+#if SUPPORTS_DYNAMIC_REGISTRATION
+	if (xamarin_supports_dynamic_registration) {
+		pthread_mutex_lock (&gchandle_hash_lock);
+		if (gchandle_hash != NULL)
+			CFDictionaryRemoveValue (gchandle_hash, self);
+		pthread_mutex_unlock (&gchandle_hash_lock);
+	}
+#endif
+
 	MONO_THREAD_DETACH;
 
 	xamarin_process_managed_exception_gchandle (exception_gchandle);
@@ -842,8 +874,8 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 #if defined(DEBUG_REF_COUNTING)
 	struct NSObjectData *data = xamarin_get_nsobject_data (self);
 	// Don't use PRINT/NSLog/os_log here, because the process can end up aborting due to recursive locks inside the ObjC runtime. Luckily fprintf works fine.
-	fprintf (stderr, "xamarin_retainWeakReference_trampoline (%s Handle=%p) flags: %x isInFinalizerQueue: %i data: %p data->flags: %x data->handle: %p\n",
-		class_getName ([self class]), self, flags, isInFinalizerQueue, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
+	fprintf (stderr, "xamarin_retainWeakReference_trampoline (Handle=%p) flags: %x isInFinalizerQueue: %i data: %p data->flags: %x data->handle: %p\n",
+		self, flags, isInFinalizerQueue, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
 #endif
 
 	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
@@ -853,26 +885,6 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 
 	/* Invoke the real release method */
 	return xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
-}
-
-// We try to use the associated object API as little as possible, because the API does
-// not like recursion (see bug #35017), and it calls retain/release, which we might
-// have overridden with our own code that calls these functions. So in addition to
-// keeping the gchandle inside the associated object, we also keep it in a hash
-// table, so that xamarin_get_gchandle_trampoline does not have to call any
-// associated object API to get the gchandle.
-static CFMutableDictionaryRef gchandle_hash = NULL;
-static pthread_mutex_t gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
-
-struct gchandle_dictionary_entry {
-	GCHandle gc_handle;
-	enum XamarinGCHandleFlags gchandle_flags;
-};
-
-static void
-release_gchandle_dictionary_entry (CFAllocatorRef allocator, const void *value)
-{
-	free ((void *) value);
 }
 
 static const char *associated_key = "x"; // the string value doesn't matter, only the pointer value.
@@ -904,23 +916,27 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 		if (data != NULL)
 			obj->data = data;
 		obj->gchandle_flags = gchandle_flags;
-	}
-	
-	pthread_mutex_lock (&gchandle_hash_lock);
-	if (gchandle_hash == NULL) {
-		CFDictionaryValueCallBacks value_callbacks = { };
-		value_callbacks.release = release_gchandle_dictionary_entry;
-		gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, &value_callbacks);
-	}
-	if (gc_handle == INVALID_GCHANDLE) {
-		CFDictionaryRemoveValue (gchandle_hash, self);
-	} else {
-		struct gchandle_dictionary_entry *entry = (struct gchandle_dictionary_entry *) calloc (1, sizeof (struct gchandle_dictionary_entry));
+
+		pthread_mutex_lock (&gchandle_hash_lock);
+		if (gchandle_hash == NULL) {
+			CFDictionaryValueCallBacks value_callbacks = { };
+			value_callbacks.release = release_gchandle_dictionary_entry;
+			gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, &value_callbacks);
+		}
+
+		struct gchandle_dictionary_entry *entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
+		if (entry == NULL) {
+			entry = (struct gchandle_dictionary_entry *) calloc (1, sizeof (struct gchandle_dictionary_entry));
+			CFDictionarySetValue (gchandle_hash, self, entry);
+		}
 		entry->gc_handle = gc_handle;
 		entry->gchandle_flags = gchandle_flags;
-		CFDictionarySetValue (gchandle_hash, self, entry);
+		// A GCHandle can be cleared temporarily (for example by copyWithZone).
+		// Keep the data until native deallocation, just like the associated object.
+		entry->data = obj->data;
+
+		pthread_mutex_unlock (&gchandle_hash_lock);
 	}
-	pthread_mutex_unlock (&gchandle_hash_lock);
 
 	return true;
 }
@@ -975,16 +991,18 @@ struct NSObjectData *
 xamarin_get_nsobject_data_trampoline (id self, SEL sel)
 {
 	/* This is for types registered using the dynamic registrar */
-	XamarinAssociatedObject *obj;
-	obj = objc_getAssociatedObject (self, associated_key);
-
 	struct NSObjectData *data = NULL;
-	if (obj != NULL)
-		data = obj->data;
+	pthread_mutex_lock (&gchandle_hash_lock);
+	if (gchandle_hash != NULL) {
+		struct gchandle_dictionary_entry *entry = (struct gchandle_dictionary_entry *) CFDictionaryGetValue (gchandle_hash, self);
+		if (entry != NULL)
+			data = entry->data;
+	}
+	pthread_mutex_unlock (&gchandle_hash_lock);
 
 #if defined(DEBUG_REF_COUNTING)
-	PRINT ("xamarin_get_nsobject_data_trampoline (%s = %p) obj: %p data: %p data->flags: %x data->handle: %p\n",
-		class_getName ([self class]), self, obj, data ? data->flags : NULL, data ? data->handle : NULL);
+	fprintf (stderr, "xamarin_get_nsobject_data_trampoline (Handle=%p) data: %p data->flags: %x data->handle: %p\n",
+		self, data, (unsigned int) (data ? data->flags : 0), data ? data->handle : NULL);
 #endif
 
 	return data;
@@ -1792,10 +1810,6 @@ xamarin_convert_managed_to_nsarray_with_func (MonoArray *array, xamarin_managed_
 {
 	id *buf = NULL;
 	NSArray *rv = NULL;
-#if !defined (CORECLR_RUNTIME)
-	size_t element_size = 0;
-	char *ptr = NULL;
-#endif
 
 	if (array == NULL)
 		return NULL;
@@ -1806,29 +1820,9 @@ xamarin_convert_managed_to_nsarray_with_func (MonoArray *array, xamarin_managed_
 
 	buf = (id *) calloc (sizeof (id), length);
 
-#if !defined (CORECLR_RUNTIME)
-	MonoClass *object_class = mono_object_get_class ((MonoObject *) array);
-	MonoClass *element_class = mono_class_get_element_class (object_class);
-	xamarin_mono_object_release (&object_class);
-
-	bool is_value_type = mono_class_is_valuetype (element_class);
-	if (is_value_type) {
-		element_size = (size_t) mono_class_value_size (element_class, NULL);
-		ptr = (char *) mono_array_addr_with_size (array, (int) element_size, 0);
-	}
-#endif
-
 	for (unsigned long i = 0; i < length; i++) {
 		MonoObject *value = NULL;
-#if defined (CORECLR_RUNTIME)
 		value = mono_array_get (array, i, exception_gchandle);
-#else
-		if (is_value_type) {
-			value = mono_value_box (mono_domain_get (), element_class, ptr + element_size * i);
-		} else {
-			value = mono_array_get (array, MonoObject *, i);
-		}
-#endif
 		if (*exception_gchandle != INVALID_GCHANDLE) {
 			*exception_gchandle = xamarin_get_exception_for_element_conversion_failure (*exception_gchandle, i);
 			goto exception_handling;
@@ -1846,9 +1840,6 @@ xamarin_convert_managed_to_nsarray_with_func (MonoArray *array, xamarin_managed_
 
 exception_handling:
 	free (buf);
-#if !defined (CORECLR_RUNTIME)
-	xamarin_mono_object_release (&element_class);
-#endif
 
 	return rv;
 }
@@ -1868,27 +1859,11 @@ xamarin_convert_nsarray_to_managed_with_func (NSArray *array, MonoClass *managed
 	bool is_value_type = mono_class_is_valuetype (managedElementType);
 	MonoObject *mobj;
 	void *valueptr = NULL;
-#if !defined (CORECLR_RUNTIME)
-	size_t element_size = 0;
-	char *ptr = NULL;
-#endif
-
-#if !defined (CORECLR_RUNTIME)
-	if (is_value_type) {
-		element_size = (size_t) mono_class_value_size (managedElementType, NULL);
-		ptr = (char *) mono_array_addr_with_size (rv, (int) element_size, 0);
-	}
-#endif
 
 	for (unsigned long i = 0; i < length; i++) {
 		if (is_value_type) {
 			valueptr = convert ([array objectAtIndex: i], valueptr, managedElementType, context, exception_gchandle);
-#if defined (CORECLR_RUNTIME)
 			xamarin_bridge_set_array_struct_value (rv, i, managedElementType, valueptr, exception_gchandle);
-#else
-			memcpy (ptr, valueptr, element_size);
-			ptr += element_size;
-#endif
 		} else {
 			mobj = (MonoObject *) convert ([array objectAtIndex: i], NULL, managedElementType, context, exception_gchandle);
 			if (*exception_gchandle == INVALID_GCHANDLE) {

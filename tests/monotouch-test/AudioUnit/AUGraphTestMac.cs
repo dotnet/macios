@@ -51,6 +51,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			TestRuntime.AssertNotVirtualMachine ();
 			TestRuntime.IgnoreIfLockedScreen ();
+			TestRuntime.RequestMicrophonePermission ();
 
 			SetupAUGraph ();
 

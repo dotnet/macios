@@ -417,15 +417,9 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		public MethodReference Foundation_NSObject_HandleSetterMethod {
+		public MethodReference Foundation_NSObject_GetOrCreateNSObjectForConstructor {
 			get {
-				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_handle", "Foundation.NSObject::set_handle", predicate: null, out var _);
-			}
-		}
-
-		public MethodReference Foundation_NSObject_FlagsSetterMethod {
-			get {
-				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "set_flags", "Foundation.NSObject::set_flags", predicate: null, out var _);
+				return GetMethodReference (PlatformAssembly, Foundation_NSObject, "GetOrCreateNSObjectForConstructor", "Foundation.NSObject::GetOrCreateNSObjectForConstructor", true, 1, System_IntPtr, System_UInt32);
 			}
 		}
 
@@ -614,12 +608,6 @@ namespace Xamarin.Linker {
 		public TypeReference System_Runtime_CompilerServices_RuntimeHelpers {
 			get {
 				return GetTypeReference (CorlibAssembly, "System.Runtime.CompilerServices.RuntimeHelpers", out var _);
-			}
-		}
-
-		public MethodReference RuntimeHelpers_GetUninitializedObject {
-			get {
-				return GetMethodReference (CorlibAssembly, System_Runtime_CompilerServices_RuntimeHelpers, "GetUninitializedObject", isStatic: true, System_Type);
 			}
 		}
 
@@ -1509,16 +1497,6 @@ namespace Xamarin.Linker {
 			}
 			AssemblySaved?.Invoke (assembly);
 			if (action == AssemblyAction.Copy) {
-#if !ASSEMBLY_PREPARER
-				// Preserve TypeForwardedTo which would the linker sweep otherwise
-				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
-				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
-				if (assembly.MainModule.HasExportedTypes) {
-					foreach (var type in assembly.MainModule.ExportedTypes) {
-						annotations.Mark (type);
-					}
-				}
-#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1534,11 +1512,6 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateAttribute (MethodReference constructor)
 		{
-#if !ASSEMBLY_PREPARER
-			// For some reason the trimmer doesn't mark attribute constructors
-			// This is probably only needed when running as a custom linker step.
-			configuration.Context.Annotations.Mark (constructor.Resolve ());
-#endif // !ASSEMBLY_PREPARER
 			return new CustomAttribute (constructor);
 		}
 

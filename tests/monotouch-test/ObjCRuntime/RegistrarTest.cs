@@ -73,6 +73,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void EventTestOSType ()
 		{
+			TestRuntime.CheckBluetoothPermission ();
+
 			using var mgr = new CBCentralManager (new DispatchQueue ("com.xamarin.tests.ios-plain"));
 			// The bug happens when there's no event listener for 'UpdatedState', which is a required protocol method.
 			// mgr.UpdatedState += (sender, e) => { };
@@ -2551,15 +2553,25 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void ConstructorChaining ()
 		{
-			using (var obj = new CtorChaining2 (2)) {
-				Assert.That (obj.InitCalled, Is.True, "Init called");
-				Assert.That (obj.InitCallsInitCalled, Is.True, "InitCallsInit called");
+			CtorChaining2.InitializedInstance = null;
+			try {
+				using (var obj = new CtorChaining2 (2)) {
+					Assert.That (obj.InitCalled, Is.True, "Init called");
+					Assert.That (obj.InitCallsInitCalled, Is.True, "InitCallsInit called");
+					Assert.That (CtorChaining2.InitializedInstance, Is.SameAs (obj), "Initialized instance");
+					Assert.That (obj.RetainCount, Is.EqualTo ((nuint) 1), "Retain count");
+				}
+			} finally {
+				CtorChaining2.InitializedInstance = null;
 			}
 		}
 
 		class CtorChaining2 : CtorChaining1 {
+			public static CtorChaining2 InitializedInstance;
+
 			public CtorChaining2 ()
 			{
+				InitializedInstance = this;
 			}
 
 			public CtorChaining2 (int value)

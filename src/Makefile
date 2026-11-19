@@ -58,7 +58,7 @@ DOTNET_REFERENCES = \
 	/r:$(DOTNET_BCL_DIR)/System.Xml.ReaderWriter.dll \
 
 DOTNET_OR_GREATER_DEFINES:=$(foreach version,$(shell seq 6 $(firstword $(subst ., ,$(subst net,,$(DOTNET_TFM))))),/define:NET$(version)_0_OR_GREATER)
-DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths
+DOTNET_FLAGS=/warnaserror+ /nostdlib+ /deterministic /features:strict /nologo /target:library /debug /unsafe /define:NET $(DOTNET_OR_GREATER_DEFINES) $(DOTNET_REFERENCES) /fullpaths -nullable+
 
 ifeq ($(XCODE_IS_STABLE),true)
 DOTNET_FLAGS+=/define:XCODE_IS_STABLE
@@ -282,7 +282,6 @@ $($(2)_DOTNET_BUILD_DIR)/core-$(3).rsp: Makefile frameworks.sources $($(2)_DOTNE
 		$($(2)_DEFINES) \
 		-d:COREBUILD \
 		$($(2)_DOTNET_CORE_SOURCES) \
-		-nullable+ \
 		-warnaserror+ \
 		-nowarn:1591 \
 		-nowarn:$(XML_DOCS_WARNINGS) \
@@ -303,6 +302,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-nowarn:436,1591,CA1416,CS8981 \
 		-nowarn:$(XML_DOCS_WARNINGS) \
 		-warnaserror+ \
+		-nullable+ \
 		-out:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).dll \
 		-doc:$($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).xml \
 		-r:$($(2)_DOTNET_BUILD_DIR)/core-$(3).dll \
@@ -451,13 +451,22 @@ $$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $
 
 rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
-$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
+# The .NET analyzers and the .editorconfig are only used for the platform assembly (the one we ship), not for the
+# intermediate core and apidefinition assemblies. scripts/rsp-to-csproj ignores them, because MSBuild adds them to the
+# generated project files by itself.
+# The path to .editorconfig must be relative, just like the paths to the source files: csc matches the .editorconfig
+# sections against the full path of each source file, and that silently doesn't match if the two are spelled differently
+# (for instance if only one of them goes through a symlink, such as /tmp on macOS).
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(TOP)/.editorconfig $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) rm -f $$@
 	$$(Q) echo \
 		$(DOTNET_FLAGS) \
 		/analyzer:$(ROSLYN_GENERATOR_COMMON) \
 		/analyzer:$(ROSLYN_GENERATOR) \
 		/analyzer:$(ROSLYN_ANALYZER) \
+		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.NetAnalyzers.dll \
+		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll \
+		/analyzerconfig:$(TOP)/.editorconfig \
 		/generatedfilesout:$($(2)_DOTNET_BUILD_DIR)/generated-sources \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_GENERATOR),) \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_ANALYZER),) \
@@ -475,7 +484,6 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml \
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.Substitutions.xml \
 		-warnaserror+ \
-		-nullable+ \
 		$$($(2)_DOTNET_SOURCES) \
 		@$$(abspath $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources) \
 		-out:$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll \

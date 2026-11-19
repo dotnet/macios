@@ -31,7 +31,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ACTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolUpload" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolValidate" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.AOTCompile" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Archive" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.BGen" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Codesign" AssemblyFile="$(_TaskAssemblyName)" />
@@ -72,6 +71,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindWatchOS2AppBundle" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateBundleName" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetAvailableDevices" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetCachedFileHash" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetDirectories" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFiles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFileSystemEntries" AssemblyFile="$(_TaskAssemblyName)" />
@@ -157,14 +157,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<_ReferencesWithNativeReferencesToExpand Include="@(ReferencePath)" Condition="Exists('%(RelativeDir)%(Filename).resources.zip') Or Exists('%(RelativeDir)%(Filename).resources')" />
 			<_NativeReferencesToExpand Include="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)" />
+			<_NativeReferencesToValidate Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework'" />
 		</ItemGroup>
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0))"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToValidate->Count()) &gt; 0))"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
 			NativeReferences="@(_NativeReferencesToExpand)"
+			NativeReferencesToValidate="@(_NativeReferencesToValidate)"
 			References="@(_ReferencesWithNativeReferencesToExpand)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -682,6 +684,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
 			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
 			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+			<_CompileAppManifestInputLine Include="ValidateSceneManifest=$(ValidateSceneManifest)" />
 			<!-- @(_CompileAppManifestInputFile) contains additional files to use as Inputs -->
 			<_CompileAppManifestInputFile Include="$(_CompileAppManifestInputFile)" />
 			<_CompileAppManifestInputFile Include="@(_FontFilesToRegister)" />
@@ -703,7 +706,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_CompileAppManifest"
 		Condition="'$(_BundleOriginalResources)' != 'true'"
 		DependsOnTargets="$(_CompileAppManifestDependsOn)"
-		Inputs="@(_CompileAppManifestInputFile)"
+		Inputs="@(_CompileAppManifestInputFile);$(AppBundleManifest)"
 		Outputs="$(_TemporaryAppManifest)"
 		>
 
@@ -735,6 +738,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			TargetArchitectures="$(TargetArchitectures)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			Validate="$(_CreateAppManifest)"
+			ValidateSceneManifest="$(ValidateSceneManifest)"
 			>
 		</CompileAppManifest>
 	</Target>
@@ -856,6 +860,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- $(_CompiledEntitlements) will be passed to the native compiler, it's used to embed the entitlements in the executable -->
 			<Output TaskParameter="EntitlementsInExecutable" PropertyName="_CompiledEntitlements" />
+			<Output TaskParameter="EntitlementsInExecutableHash" PropertyName="_CompiledEntitlementsHash" />
 
 			<!-- $(_CompiledCodesignEntitlements) will be used only with Codesign tasks when building for device or desktop. MUST NOT BE SET for iOS Simulator builds. -->
 			<Output TaskParameter="EntitlementsInSignature" PropertyName="_CompiledCodesignEntitlements" />
@@ -2051,6 +2056,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			DocumentationFile="$(_CompiledApiDefinitionDocumentationFile)"
 			NoConfig="true"
 			NoStandardLib="true"
+			Nullable="annotations"
 			Deterministic="true"
 			OutputAssembly="$(_CompiledApiDefinitionAssembly)"
 			References="@(_CompiledApiDefinitionReferences)"
@@ -2277,6 +2283,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<ItemsFile>$(_StampDirectory)%(FileName).items</ItemsFile>
 			</_UnpackLibraryResourceItems>
 		</ItemGroup>
+		<PropertyGroup>
+			<!-- Shared resource caches must be regenerated from all references, not a partially built input list. -->
+			<_UnpackLibraryResourcesOutputs>@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')</_UnpackLibraryResourcesOutputs>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_BeforeUnpackLibraryResources"
@@ -2313,15 +2323,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
-			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(StampFile)')" />
 
 			<_BundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
+			<_UnpackedBundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_UnpackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_IsMultiRidBuild)' != 'true'" DependsOnTargets="$(_UnpackLibraryResourcesDependsOn)"
 		Inputs="@(_UnpackLibraryResourceItems)"
-		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)')">
+		Outputs="$(_UnpackLibraryResourcesOutputs)">
 
 		<MakeDir Directories="$(_StampDirectory)" />
 
@@ -2444,7 +2456,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 
 		<ParseBundlerArguments
-			Aot="@(_AotArguments)"
 			ExtraArgs="$(AppBundleExtraOptions)"
 			MarshalManagedExceptionMode="$(MarshalManagedExceptionMode)"
 			MarshalObjectiveCExceptionMode="$(MarshalObjectiveCExceptionMode)"
@@ -2454,7 +2465,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Registrar="$(Registrar)"
 			BundlerVerbosity="$(_BundlerVerbosity)"
 			>
-			<Output TaskParameter="Aot" ItemName="_AotArguments" />
 			<Output TaskParameter="CustomBundleName" PropertyName="_CustomBundleName" />
 			<Output TaskParameter="CustomLinkFlags" ItemName="_CustomLinkFlags" />
 			<Output TaskParameter="DlSym" ItemName="_BundlerDlsym" />
@@ -3732,11 +3742,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</PropertyGroup>
 
 	<Target Name="_AddAppleApplicationArtifactMetadata"
-		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And (Exists('$(_AppBundleManifestPath)') Or '$(IsRemoteBuild)' == 'true')">
+		Condition="'@(ApplicationArtifact->Count())' != '0' And '$(_AppBundleManifestPath)' != '' And Exists('$(_AppBundleManifestPath)')">
 		<ReadAppManifest
-			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			AppManifest="$(_AppBundleManifestPath)"
+			DisableMinimumOSVersion="true"
 			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
@@ -3759,11 +3769,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="GetApplicationArtifacts" DependsOnTargets="$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
-
-	<PropertyGroup>
-		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
-		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
-	</PropertyGroup>
 
 	<PropertyGroup>
 		<_PrepareAssembliesForPreparationDependsOn>
@@ -3799,9 +3804,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PrepareAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		Inputs="@(_AssembliesToPrepare);$(_LinkerCachePath);$(_AssemblyPreparerConfigurationStamp)"
-		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile)"
+		Outputs="$(_PreparedAssembliesItemsPath);$(_AssemblyPreparerMSBuildOutputFile);$(_NativeAOTResourceSubstitutions)"
 		DependsOnTargets="_PrepareAssembliesForPreparation;_ComputeAssembliesToPostprocessOnPublish;SelectRegistrar"
 		>
 		<PrepareAssemblies
@@ -3825,7 +3830,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PrepareAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PrepareAssemblies)' == 'true'"
+		Condition="'$(IsMacEnabled)' == 'true'"
 		DependsOnTargets="_ExecutePrepareAssemblies"
 		>
 		<ReadItemsFromFile File="$(_PreparedAssembliesItemsPath)">
@@ -3840,6 +3845,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_AssemblyPreparerConfigurationStamp)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
 			<FileWrites Include="$(_AssemblyPreparerMSBuildOutputFile)" Condition="Exists('$(_AssemblyPreparerMSBuildOutputFile)')" />
+			<FileWrites Include="$(_NativeAOTResourceSubstitutions)" Condition="'$(_NativeAOTResourceSubstitutions)' != ''" />
 		</ItemGroup>
 	</Target>
 
@@ -3867,7 +3873,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<!-- Persist the task outputs so _PostprocessAssemblies can restore its item changes when this target is skipped. -->
 	<Target
 		Name="_ExecutePostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		Inputs="@(_AssembliesToPostProcess);$(_LinkerCachePath)"
 		Outputs="$(_PostprocessedAssembliesItemsPath);$(_AssemblyPostProcessorMSBuildOutputFile)"
 		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
@@ -3896,7 +3902,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target
 		Name="_PostprocessAssemblies"
-		Condition="'$(IsMacEnabled)' == 'true' And '$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
+		Condition="'$(IsMacEnabled)' == 'true' And '$(RuntimeIdentifiers)' == '' And '$(_PostprocessAssembliesAfterIlc)' != 'true'"
 		AfterTargets="ILLink"
 		BeforeTargets="NativeCompile;CreateReadyToRunImages"
 		DependsOnTargets="_ExecutePostprocessAssemblies"

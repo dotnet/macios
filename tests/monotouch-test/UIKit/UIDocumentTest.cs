@@ -9,6 +9,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -56,7 +57,10 @@ namespace MonoTouchFixtures.UIKit {
 
 		string GetFileName ()
 		{
-			string file = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "mydocument.txt");
+			// Use the temporary directory instead of the Documents directory: accessing the Documents
+			// directory can trigger a TCC ("Files and Folders") permission prompt on macOS, which hangs
+			// forever in CI (there's no user around to answer the prompt).
+			string file = Path.Combine (NSFileManager.TemporaryDirectory, $"mydocument-{Process.GetCurrentProcess ().Id}.txt");
 			if (File.Exists (file))
 				File.Delete (file);
 			return file;

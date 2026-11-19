@@ -757,9 +757,9 @@ public partial class Generator : IMemberGatherer {
 				} else {
 					if (!AttributeManager.HasAttribute<CCallbackAttribute> (pi)) {
 						if (t.FullName?.StartsWith ("System.Action`", StringComparison.Ordinal) == true || t.FullName?.StartsWith ("System.Func`", StringComparison.Ordinal) == true) {
-							ErrorHelper.Warning (1116, safe_name, t.FullName);
+							ErrorHelper.Warning (BindingTouch, 1116, safe_name, t.FullName);
 						} else {
-							ErrorHelper.Warning (1115, safe_name, t.FullName);
+							ErrorHelper.Warning (BindingTouch, 1115, safe_name, t.FullName);
 						}
 					}
 					pars.Add (new TrampolineParameterInfo (NativeHandleType, safe_name));
@@ -1248,10 +1248,8 @@ public partial class Generator : IMemberGatherer {
 		if (string.IsNullOrEmpty (export.Selector))
 			throw new BindingException (1024, true, mo.DeclaringType!.FullName, mo.Name);
 
-		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1) {
-			Console.Error.WriteLine ("Export attribute contains invalid selector name: {0}", export.Selector);
-			Environment.Exit (1);
-		}
+		if (export.Selector.IndexOfAny (invalid_selector_chars) != -1)
+			throw new BindingException (1129, true, export.Selector, FormatProvider (mo));
 
 		return export;
 	}
@@ -1558,7 +1556,7 @@ public partial class Generator : IMemberGatherer {
 
 		if (exceptions.All (v => v is BindingException pe && !pe.Error)) {
 			foreach (var e in exceptions)
-				ErrorHelper.Show (e);
+				ErrorHelper.Show (BindingTouch, e);
 			return;
 		}
 
@@ -2110,7 +2108,7 @@ public partial class Generator : IMemberGatherer {
 					try {
 						getter = String.Format (getter, keyname, castToEnum);
 					} catch {
-						Console.WriteLine ("OOPS: g={0} k={1} c={2}", og, keyname, castToEnum);
+						BindingTouch.Log ($"OOPS: g={og} k={keyname} c={castToEnum}");
 						throw;
 					}
 					setter = String.Format (setter, keyname, castToUnderlying);
@@ -2599,7 +2597,7 @@ public partial class Generator : IMemberGatherer {
 		return parentAvailability;
 	}
 
-	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null)
+	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null, PlatformName? excludedPlatform = null)
 	{
 		bool printed = false;
 		if (mi is null)
@@ -2608,6 +2606,8 @@ public partial class Generator : IMemberGatherer {
 		AvailabilityBaseAttribute []? type_ca = null;
 
 		foreach (var availability in GetPlatformAttributesToPrint (mi, null, inlinedType)) {
+			if (availability.Platform == excludedPlatform)
+				continue;
 			var t = inlinedType ?? (mi as TypeInfo) ?? mi.DeclaringType;
 			if (type_ca is null) {
 				if (t is not null)
@@ -2846,10 +2846,10 @@ public partial class Generator : IMemberGatherer {
 			if (!BindThirdPartyLibrary) {
 				if (minfo.Method?.ReturnType?.TryIsArray (out var et) == true) {
 					if (IsModel (et))
-						ErrorHelper.Warning (1109, minfo.Method.DeclaringType, minfo.Method.Name, et, et.Namespace, et.Name);
+						ErrorHelper.Warning (BindingTouch, 1109, minfo.Method.DeclaringType, minfo.Method.Name, et, et.Namespace, et.Name);
 				}
 				if (IsModel (minfo.Method?.ReturnType))
-					ErrorHelper.Warning (1107, minfo.Method?.DeclaringType, minfo.Method?.Name, minfo.Method?.ReturnType, minfo.Method?.ReturnType?.Namespace, minfo.Method?.ReturnType?.Name);
+					ErrorHelper.Warning (BindingTouch, 1107, minfo.Method?.DeclaringType, minfo.Method?.Name, minfo.Method?.ReturnType, minfo.Method?.ReturnType?.Namespace, minfo.Method?.ReturnType?.Name);
 			}
 
 			if (minfo.is_bindAs) {
@@ -3138,7 +3138,7 @@ public partial class Generator : IMemberGatherer {
 						var mai = new MarshalInfo (this, mi, pi);
 
 						if (mai.PlainString)
-							ErrorHelper.Warning (1101);
+							ErrorHelper.Warning (BindingTouch, 1101);
 
 						target_name = "ns" + pi.Name;
 						handle = "";
@@ -3519,7 +3519,7 @@ public partial class Generator : IMemberGatherer {
 					// don't warn on obsoleted API, there's likely a new version that fix this
 					// any no good reason for using the obsolete API anyway
 					if (!AttributeManager.HasAttribute<ObsoleteAttribute> (mi) && !AttributeManager.HasAttribute<ObsoleteAttribute> (mi.DeclaringType))
-						ErrorHelper.Warning (1106, mi.DeclaringType, mi.Name, pi.Name, pi.ParameterType, pi.ParameterType.Namespace, pi.ParameterType.Name);
+						ErrorHelper.Warning (BindingTouch, 1106, mi.DeclaringType, mi.Name, pi.Name, pi.ParameterType, pi.ParameterType.Namespace, pi.ParameterType.Name);
 				}
 			}
 
@@ -3608,7 +3608,7 @@ public partial class Generator : IMemberGatherer {
 		var hasStaticAtt = AttributeManager.HasAttribute<StaticAttribute> (mi);
 		if (category_type is not null && hasStaticAtt && !minfo.ignore_category_static_warnings) {
 			var baseTypeAtt = AttributeManager.GetCustomAttribute<BaseTypeAttribute> (minfo.type);
-			ErrorHelper.Warning (1117, mi.Name, type.FullName, baseTypeAtt?.BaseType.FullName);
+			ErrorHelper.Warning (BindingTouch, 1117, mi.Name, type.FullName, baseTypeAtt?.BaseType.FullName);
 		}
 
 		indent++;
@@ -4008,9 +4008,10 @@ public partial class Generator : IMemberGatherer {
 		PrintPropertyAttributes (pi, minfo, skipTypeInjection);
 	}
 
-	void PrintPropertyAttributes (PropertyInfo pi, MemberInformation minfo, bool skipTypeInjection = false)
+	void PrintPropertyAttributes (PropertyInfo pi, MemberInformation minfo, bool skipTypeInjection = false, bool is_appearance = false)
 	{
 		Type type = minfo.type;
+		var excludedPlatform = is_appearance ? PlatformName.MacOSX : (PlatformName?) null;
 		PrintObsoleteAttributes (pi);
 
 		foreach (var ba in AttributeManager.GetCustomAttributes<DebuggerBrowsableAttribute> (pi))
@@ -4029,13 +4030,15 @@ public partial class Generator : IMemberGatherer {
 		// we must look if the type has an [Availability] attribute
 		if (type != pi.DeclaringType) {
 			// print, if not duplicated from the type (being inlined into), the property availability
-			if (!PrintPlatformAttributes (pi, type) && !skipTypeInjection) {
+			if (!PrintPlatformAttributes (pi, type, excludedPlatform) && !skipTypeInjection) {
 				// print, if not duplicated from the type (being inlined into), the property declaring type (protocol) availability
-				PrintPlatformAttributes (pi.DeclaringType, type);
+				PrintPlatformAttributes (pi.DeclaringType, type, excludedPlatform);
 			}
 		} else {
-			PrintPlatformAttributes (pi);
+			PrintPlatformAttributes (pi, excludedPlatform: excludedPlatform);
 		}
+		if (is_appearance)
+			print (AttributeFactory.CreateUnsupportedAttribute (PlatformName.MacOSX).ToString ());
 
 		foreach (var sa in AttributeManager.GetCustomAttributes<ThreadSafeAttribute> (pi))
 			print (sa.Safe ? "[ThreadSafe]" : "[ThreadSafe (false)]");
@@ -4088,7 +4091,7 @@ public partial class Generator : IMemberGatherer {
 			var elType = pi.PropertyType.IsArray ? pi.PropertyType.GetElementType () : pi.PropertyType;
 
 			if (IsModel (elType)) {
-				ErrorHelper.Warning (1110, pi.DeclaringType, pi.Name, pi.PropertyType, pi.PropertyType.Namespace, pi.PropertyType.Name);
+				ErrorHelper.Warning (BindingTouch, 1110, pi.DeclaringType, pi.Name, pi.PropertyType, pi.PropertyType.Namespace, pi.PropertyType.Name);
 			}
 		}
 
@@ -4096,7 +4099,7 @@ public partial class Generator : IMemberGatherer {
 			if (!WriteDocumentation (pi) && is_appearance)
 				WriteAppearanceMemberDocumentation (type, pi.Name);
 			print_generated_code ();
-			PrintPropertyAttributes (pi, minfo);
+			PrintPropertyAttributes (pi, minfo, is_appearance: is_appearance);
 			PrintAttributes (pi, preserve: true, advice: true);
 			var wrapNullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
 			print ("{0} {1}{2}{3} {4} {{",
@@ -4119,7 +4122,12 @@ public partial class Generator : IMemberGatherer {
 						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
 						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes), wrap);
-					else
+					else if (!IsModel (pi.PropertyType) && IsProtocolInterface (pi.PropertyType, false)) {
+						print ("var wrapped = {0};", wrap);
+						print ("var ret = wrapped as {0} ?? Runtime.GetINativeObject<{0}> (wrapped.GetHandle (), false);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
+						print ("GC.KeepAlive (wrapped);");
+						print ("return ret{0};", nullable ? "" : "!");
+					} else
 						print ("return ({0} as {1})!;", wrap, TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes));
 				}
 				indent--;
@@ -4135,7 +4143,7 @@ public partial class Generator : IMemberGatherer {
 				if (is_protocol_wrapper) {
 					print ("var rvalue = value as NSObject;");
 					print ("if (!(value is null) && rvalue is null)");
-					print ("\tthrow new ArgumentException (\"The object passed of type \" + value.GetType () + \" does not derive from NSObject\");");
+					print ("\trvalue = Runtime.GetNSObject (value.GetHandle ());");
 				}
 
 				if (TypeManager.IsDictionaryContainerType (pi.PropertyType))
@@ -4146,6 +4154,8 @@ public partial class Generator : IMemberGatherer {
 					else
 						print ("{0} = {1}value;", wrap, is_protocol_wrapper ? "r" : "");
 				}
+				if (is_protocol_wrapper)
+					print ("GC.KeepAlive (value);");
 				indent--;
 				print ("}");
 			}
@@ -4175,7 +4185,7 @@ public partial class Generator : IMemberGatherer {
 		if (!WriteDocumentation (pi) && is_appearance)
 			WriteAppearanceMemberDocumentation (type, pi.Name);
 		print_generated_code (optimizable: IsOptimizable (pi));
-		PrintPropertyAttributes (pi, minfo);
+		PrintPropertyAttributes (pi, minfo, is_appearance: is_appearance);
 
 		PrintAttributes (pi, preserve: true, advice: true, bindAs: true);
 
@@ -4456,7 +4466,11 @@ public partial class Generator : IMemberGatherer {
 		var asyncAttribute = AttributeManager.GetOneCustomAttribute<AsyncAttribute> (mi);
 		var xmlDocs = asyncKind == AsyncMethodKind.Plain ? asyncAttribute.XmlDocs : asyncAttribute.XmlDocsWithOutParameter;
 		if (!string.IsNullOrEmpty (xmlDocs)) {
-			var docLines = xmlDocs.Split ('\n');
+			var doc = new XmlDocument { PreserveWhitespace = true };
+			doc.LoadXml ($"<member>{xmlDocs}</member>");
+			var resultParameter = asyncKind == AsyncMethodKind.WithResultOutParameter ? minfo.GetUniqueParamName ("result") : null;
+			var node = CompleteMethodDocumentation (doc.DocumentElement!, minfo, minfo.AsyncInitialParams, resultParameter);
+			var docLines = node.InnerXml.Split ('\n');
 			foreach (var line in docLines)
 				print ($"/// {line}");
 		}
@@ -4654,39 +4668,13 @@ public partial class Generator : IMemberGatherer {
 
 		bool wroteDocs;
 		if (minfo.is_extension_method) {
-			wroteDocs = WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi);
-		} else if (minfo.is_category_extension) {
-			// If the method has xml docs, it's unlikely it'll have for the 'This' parameter we add to the method signature.
-			// So in that case, inject docs for the 'This' parameter.
-			var injectParamNode = new Func<XmlNode, XmlNode> (node => {
-				var children = node.ChildNodes.Cast<XmlNode> ();
-				XmlNode? firstParamDocs = null;
-				foreach (var p in children) {
-					if (p.Name != "param")
-						continue;
-					// if the method already has a 'param' doc for 'This', then we don't add any
-					if (p.Attributes? ["name"]?.Value == "This")
-						return p;
-					if (firstParamDocs is null)
-						firstParamDocs = p;
-				}
-				// if the method has parameters, but doesn't have any 'param' docs, then we don't add any 'param' doc for 'This'.
-				if (mi.GetParameters ().Length > 0 && firstParamDocs is null)
-					return node;
-				// we're good for injection
-				var thisParamDoc = node.OwnerDocument!.CreateElement ("param");
-				thisParamDoc.SetAttribute ("name", "This");
-				thisParamDoc.InnerText = "The instance on which this method operates.";
-				node.InsertBefore (thisParamDoc, firstParamDocs);
-				return node;
-			});
-			wroteDocs = WriteDocumentation (mi, transformNode: injectParamNode);
+			wroteDocs = WriteDocumentation ((MemberInfo?) GetProperty (mi) ?? mi, node => CompleteMethodDocumentation (node, minfo, mi.GetParameters ()));
 		} else if (minfo.is_factory_method) {
 			// The xml documentation is written for the generated factory method instead
 			// of the (internal) backing constructor. See GenerateFactoryMethod.
 			wroteDocs = false;
 		} else {
-			wroteDocs = WriteDocumentation (mi);
+			wroteDocs = WriteDocumentation (mi, node => CompleteMethodDocumentation (node, minfo, mi.GetParameters ()));
 		}
 
 		if (!wroteDocs && minfo.is_appearance)
@@ -4849,11 +4837,11 @@ public partial class Generator : IMemberGatherer {
 		// author added one but didn't mark the return value as nullable, the factory method
 		// won't be able to return null on failure, which is almost certainly a mistake.
 		if (!minfo.is_factory_method_nullable && HasOutNSErrorParameter (mi))
-			ErrorHelper.Warning (1125, mi.DeclaringType, mi.Name);
+			ErrorHelper.Warning (BindingTouch, 1125, mi.DeclaringType, mi.Name);
 
 		minfo.render_as_factory_method = true;
 
-		WriteDocumentation (mi);
+		WriteDocumentation (mi, node => CompleteMethodDocumentation (node, minfo, mi.GetParameters ()));
 		PrintMethodAttributes (minfo);
 
 		print_generated_code (optimizable: IsOptimizable (mi), factoryMethod: true);
@@ -5139,9 +5127,6 @@ public partial class Generator : IMemberGatherer {
 		var extensionMethods = optionalInstanceMethods.Concat (requiredInstanceMethods.Where (v => IsRequired (v, out var generateExtensionMethod) && generateExtensionMethod));
 		var extensionProperties = optionalInstanceProperties.Concat (requiredInstanceProperties.Where (v => IsRequired (v, out var generateExtensionMethod) && generateExtensionMethod));
 
-		// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated interface - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
-		print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
-
 		if (!WriteDocumentation (type)) {
 			print ($"/// <summary>This interface represents the Objective-C protocol <c>{protocol_name}</c>.</summary>");
 			print ($"/// <remarks>");
@@ -5377,16 +5362,11 @@ public partial class Generator : IMemberGatherer {
 		print ("}");
 		print ("");
 
-		print ("#pragma warning restore CS1573");
-
 		// avoid (for unified) all the metadata for empty static classes, we can introduce them later when required
 		bool include_extensions = false;
 		if (backwardsCompatibleCodeGeneration)
 			include_extensions = extensionMethods.Any () || extensionProperties.Any () || requiredInstanceAsyncMethods.Any ();
 		if (include_extensions) {
-			// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated extension member - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
-			print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
-													  // extension methods
 			if (BindingTouch.SupportsXmlDocumentation) {
 				print ($"/// <summary>Extension methods to the <see cref=\"I{TypeName}\" /> interface to support all the methods from the {protocol_name} protocol.</summary>");
 				print ($"/// <remarks>");
@@ -5427,7 +5407,6 @@ public partial class Generator : IMemberGatherer {
 			indent--;
 			print ("}");
 			print ("");
-			print ("#pragma warning restore CS1573");
 		}
 
 		// Add API from base interfaces we also need to implement.
@@ -5525,7 +5504,7 @@ public partial class Generator : IMemberGatherer {
 					// Check that all the duplicates use the same selector, and if not show a warning.
 					exportAttributes [i] = GetOneExportAttribute (properties [i]);
 					if (i > 0 && exportAttributes [i].Selector != exportAttributes [0].Selector) {
-						ErrorHelper.Warning (1068, type.FullName, gr.Key, properties [0].DeclaringType?.FullName, properties [i].DeclaringType?.FullName,
+						ErrorHelper.Warning (BindingTouch, 1068, type.FullName, gr.Key, properties [0].DeclaringType?.FullName, properties [i].DeclaringType?.FullName,
 							properties [0].DeclaringType?.Name, properties [0].Name, exportAttributes [0].Selector, properties [i].DeclaringType?.Name, properties [i].Name, exportAttributes [i].Selector);
 					}
 					if (properties [i].CanRead && properties [i].CanWrite) {
@@ -5636,7 +5615,7 @@ public partial class Generator : IMemberGatherer {
 	StreamWriter GetOutputStreamForType (Type type)
 	{
 		if (type.Namespace is null)
-			ErrorHelper.Warning (1103, type.FullName);
+			ErrorHelper.Warning (BindingTouch, 1103, type.FullName);
 
 		var tn = Nomenclator.GetGeneratedTypeName (type);
 		if (type.IsGenericType)
@@ -5898,6 +5877,44 @@ public partial class Generator : IMemberGatherer {
 		return DocumentationManager.WriteDocumentation (sw!, indent, info, transformNode);
 	}
 
+	XmlNode CompleteMethodDocumentation (XmlNode node, MemberInformation minfo, ParameterInfo [] parameters, string? resultParameter = null)
+	{
+		if (node.SelectSingleNode ("param") is null && !(minfo.is_category_extension && minfo.Method!.GetParameters ().Length == 0))
+			return node;
+
+		// Documentation nodes are cached and reused for signatures with different parameters.
+		node = node.CloneNode (true);
+		var paramDocs = node.ChildNodes.Cast<XmlNode> ().Where (v => v.Name == "param").ToList ();
+
+		void AddParameter (string? name, string description, bool prepend = false)
+		{
+			if (paramDocs.Any (v => v.Attributes? ["name"]?.Value == name))
+				return;
+			var paramDoc = node.OwnerDocument!.CreateElement ("param");
+			paramDoc.SetAttribute ("name", name);
+			paramDoc.InnerText = description;
+			if (prepend)
+				node.InsertBefore (paramDoc, paramDocs.FirstOrDefault ());
+			else if (paramDocs.Count > 0)
+				node.InsertAfter (paramDoc, paramDocs.Last ());
+			else
+				node.AppendChild (paramDoc);
+			if (prepend)
+				paramDocs.Insert (0, paramDoc);
+			else
+				paramDocs.Add (paramDoc);
+		}
+
+		if (minfo.is_extension_method || minfo.category_extension_type is not null || (minfo.is_protocol_implementation_method && !minfo.is_static))
+			AddParameter ("This", "The instance on which this method operates.", prepend: true);
+		foreach (var parameter in parameters)
+			AddParameter (parameter.Name, $"The {parameter.Name} parameter.");
+		if (resultParameter is not null)
+			AddParameter (resultParameter, "The result returned by the synchronous method.");
+
+		return node;
+	}
+
 	// Emits a generated summary for a member of a strongly-typed appearance class. These members are
 	// proxies for the corresponding members on the enclosing type, and the documentation injected from
 	// Apple's documentation doesn't cover them, so we generate a summary that points back to the type.
@@ -6052,7 +6069,7 @@ public partial class Generator : IMemberGatherer {
 				if (is_static_class)
 					throw new BindingException (1025, true, type.FullName);
 				if (is_model && base_type == TypeCache.System_Object)
-					ErrorHelper.Warning (1060, type.FullName);
+					ErrorHelper.Warning (BindingTouch, 1060, type.FullName);
 
 				GenerateProtocolTypes (type, class_visibility, TypeName, protocol!.Name ?? objc_type_name, protocol);
 			}
@@ -6117,7 +6134,7 @@ public partial class Generator : IMemberGatherer {
 
 			if (is_model) {
 				if (is_category_class)
-					ErrorHelper.Show (new BindingException (1022, true));
+					ErrorHelper.Show (BindingTouch, new BindingException (1022, true));
 				print ("[Model]");
 			}
 
@@ -6163,7 +6180,7 @@ public partial class Generator : IMemberGatherer {
 					if (type.Name == "MKUserLocation" && protocolType.Name == "IMKAnnotation")
 						continue;
 
-					ErrorHelper.Warning (1111, protocolType, type, nonInterfaceName);
+					ErrorHelper.Warning (BindingTouch, 1111, protocolType, type, nonInterfaceName);
 					continue;
 				}
 
@@ -7333,7 +7350,7 @@ public partial class Generator : IMemberGatherer {
 					// if there are any [Dispose] attributes then they all must opt-in in order for the generated Dispose method to be optimizable
 					bool optimizable = !has_dispose_attributes || IsOptimizable (type);
 					if (BindingTouch.SupportsXmlDocumentation)
-						print ("/// <inheritdoc />");
+						print ("/// <inheritdoc cref=\"Foundation.NSObject.Dispose(bool)\" />");
 					print_generated_code (optimizable: optimizable);
 					print ("protected override void Dispose (bool disposing)");
 					print ("{");

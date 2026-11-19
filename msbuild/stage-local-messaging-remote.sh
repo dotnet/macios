@@ -12,8 +12,8 @@ if [[ ! -f "$PACKAGE" ]]; then
 	exit 1
 fi
 
-PACKAGE=$(cd "$(dirname "$PACKAGE")" && pwd)/$(basename "$PACKAGE")
-TOP=$(cd "$(dirname "$0")/.." && pwd)
+PACKAGE=$(cd "$(dirname "$PACKAGE")" && pwd -P)/$(basename "$PACKAGE")
+TOP=$(cd "$(dirname "$0")/.." && pwd -P)
 NUSPEC=$(mktemp)
 trap 'rm -f "$NUSPEC"' EXIT
 
@@ -29,8 +29,8 @@ if [[ "$PACKAGE_ID" != "Xamarin.Messaging.Remote" ]]; then
 	echo "The package '$PACKAGE' is '$PACKAGE_ID', not 'Xamarin.Messaging.Remote'." >&2
 	exit 1
 fi
-if [[ ! "$PACKAGE_VERSION" =~ ^[0-9A-Za-z.+-]+$ ]]; then
-	echo "The package '$PACKAGE' has an invalid version: '$PACKAGE_VERSION'." >&2
+if [[ ! "$PACKAGE_VERSION" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-[0-9A-Za-z-]+(\.[0-9A-Za-z-]+)*)?$ ]]; then
+	echo "The package '$PACKAGE' must have a normalized three-part version without build metadata: '$PACKAGE_VERSION'." >&2
 	exit 1
 fi
 for TASK_FRAMEWORK in net12.0 netstandard2.0; do
@@ -44,6 +44,20 @@ PACKAGE_ROOT="$TOP/packages"
 PACKAGE_VERSION_LOWER=$(printf '%s' "$PACKAGE_VERSION" | tr '[:upper:]' '[:lower:]')
 RESTORED_PACKAGE="$PACKAGE_ROOT/xamarin.messaging.remote/$PACKAGE_VERSION_LOWER"
 PACKAGE_HASH=$(openssl dgst -sha512 -binary "$PACKAGE" | base64 | tr -d '\n')
+
+if [[ -d "$RESTORED_PACKAGE" ]]; then
+	RESTORED_PACKAGE_PHYSICAL=$(cd "$RESTORED_PACKAGE" && pwd -P)
+	case "$PACKAGE" in
+		"$RESTORED_PACKAGE_PHYSICAL"/*)
+			echo "The package must not be inside its NuGet cache directory: '$RESTORED_PACKAGE_PHYSICAL'." >&2
+			exit 1
+			;;
+	esac
+	if [[ "$PACKAGE" -ef "$RESTORED_PACKAGE/xamarin.messaging.remote.$PACKAGE_VERSION_LOWER.nupkg" ]]; then
+		echo "The package must not be inside its NuGet cache directory: '$RESTORED_PACKAGE_PHYSICAL'." >&2
+		exit 1
+	fi
+fi
 
 # Remove an existing package with the same version, so NuGet doesn't reuse it.
 rm -rf "$RESTORED_PACKAGE"

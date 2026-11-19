@@ -132,7 +132,9 @@ endif
 #
 # The target prints the staged package version. To check it, look for
 # "Xamarin.Messaging.Remote/<version>" in Xamarin.iOS.Tasks.Windows/obj/project.assets.json.
-# Use a version that isn't on a configured feed. To go back to the tracked version, run:
+# Use a normalized three-part version without build metadata that isn't on a
+# configured feed, and don't use a package in its own NuGet cache directory.
+# To go back to the tracked version, run:
 #
 #     rm -f msbuild/.build-stamp && make -C msbuild all install
 ifneq ($(filter iOS,$(DOTNET_PLATFORMS)),)

@@ -1354,8 +1354,9 @@ xamarin_objc_type_size (const char *type)
  * Managed code releases its ref when either of the following conditions occur:
  *  - Dispose is called (manually) on the object.
  *  - The Handle property on the managed object changes.
- *  - The GC frees the object. User-type peers with an associated GCHandle are toggle refs, so
- *    the GC checks the native retain count even when ownership bypasses the retain trampoline.
+ *  - The GC frees the object. User-type peers can be implicit toggle refs when their GCHandle is
+ *    stored in the native object. The GC then checks the native retain count even when ownership
+ *    bypasses the retain trampoline. See NSObject.CreateManagedRef for the conditions and limitations.
  * 
  * Objects are removed from the native<->managed dictionary when either of the following conditions occur:
  *  - The native object is dealloc'ed (refcount reaches 0).
@@ -1568,15 +1569,17 @@ xamarin_release_managed_ref (id self, bool user_type)
 	// The race is between the following actions (given a managed object Z):
 	//
 	//   a1) Thread A nulls out the handle for Z (framework peers), or clears Z's
-	//       HasManagedRef flag (user types)
+	//       managed HasManagedRef flag (user types)
 	//   a2) Thread A calls release on Z's original handle
-	//   b1) Thread B fetches the handle for Z
+	//   b1) Thread B reads Z's managed HasManagedRef flag (user types) or its handle
+	//       (framework peers)
 	//   b2) Thread B calls retainCount on Z's handle
 	//
 	// Possible execution orders:
 	//
-	//   1) a1-*: all such orders are safe, because b1 will read NULL (or see that Z
-	//      no longer has a managed ref) and b2 won't do anything
+	//   1) a1-*: all such orders are safe, because b1 will see that Z no longer
+	//      has a managed ref (user types) or will read NULL (framework peers), so
+	//      b2 won't call retainCount.
 	//   2) b1-b2-a1-a2: retainCount before release is safe.
 	//   3) b1-a1-b2-a2: retainCount before release is safe.
 	//   4) b1-a1-a2-b2: unsafe; this tries to call retainCount after
@@ -1585,7 +1588,7 @@ xamarin_release_managed_ref (id self, bool user_type)
 	// Order 4 would look like this:
 	//
 	//   * Thread B runs a GC, and starts calling toggleref callbacks.
-	//   * Thread B fetches the handle (H) for object Z in a toggleref
+	//   * Thread B reads Z's flags and fetches its handle (H) in a toggleref
 	//     callback.
 	//   * Thread A calls xamarin_release_managed_ref for object Z, and
 	//     calls release on H, deallocating it.
@@ -1597,10 +1600,10 @@ xamarin_release_managed_ref (id self, bool user_type)
 	//
 	//   * Thread B runs a GC, locks the framework peer lock, and starts
 	//     calling toggleref callbacks.
-	//   * Thread B fetches the handle (H) for object Z in a toggleref
+	//   * Thread B reads Z's flags and fetches its handle (H) in a toggleref
 	//     callback.
 	//   * Thread A calls xamarin_release_managed_ref for object Z (after nulling out
-	//     the handle for Z, or clearing its HasManagedRef flag)
+	//     the handle for Z, or clearing its managed HasManagedRef flag)
 	//   * Thread A tries to lock the framework peer lock, and blocks
 	//     (before calling release on H)
 	//   * Thread B successfully calls retainCount on H
@@ -1608,9 +1611,9 @@ xamarin_release_managed_ref (id self, bool user_type)
 	//     the GC, and unlocks the framework peer lock.
 	//   * Thread A wakes up, and calls release on H.
 	//
-	// An alternative phrasing would be to say that the lock prevents both
-	// a1 and a2 from happening between b1 and b2 from above, thus making
-	// order 4 impossible.
+	// An alternative phrasing would be to say that the lock prevents a2
+	// from happening between b1 and b2 from above, thus making order 4
+	// impossible.
 	//
 	// Q) Why not just unlock after calling release, to avoid the strange-
 	//    looking empty lock?

@@ -1385,7 +1385,17 @@
 		<Error Text="The Mono runtime is no longer supported. Set 'UseMonoRuntime=false' to use CoreCLR or NativeAOT." Condition="'$(UseMonoRuntime)' != 'false'" />
 	</Target>
 
-	<Target Name="_VerifyValidProperties">
+	<Target Name="_VerifyValidProperties" DependsOnTargets="_ParseBundlerArguments">
+		<MacDevMessage
+			Error="true"
+			ResourceName="E7202"
+			Condition="'$(EnableAssemblyILStripping)' == 'true'"
+			/>
+		<MacDevMessage
+			Error="true"
+			ResourceName="E7203"
+			Condition="'$(_BundlerAssemblyILStrippingRequested)' == 'true'"
+			/>
 		<MacDevMessage
 			Warning="true"
 			ResourceName="UseNativeHttpHandlerHasNoEffectOnMacOS"

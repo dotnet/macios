@@ -4724,6 +4724,30 @@ namespace Xamarin.Tests {
 			AssertWarningMessages (warnings, expectedWarnings);
 		}
 
+		[TestCase ("true", "", "EnableAssemblyILStripping=true is not supported because assembly IL stripping has been removed.")]
+		[TestCase ("false", "--nostrip:false", "--nostrip:false is not supported because assembly IL stripping has been removed.")]
+		[TestCase ("", "-nostrip:0", "--nostrip:false is not supported because assembly IL stripping has been removed.")]
+		[TestCase ("false", "--nostrip", null)]
+		[TestCase ("", "--nosymbolstrip", null)]
+		public void AssemblyILStrippingProperties (string propertyValue, string extraArgs, string? expectedError)
+		{
+			var platform = ApplePlatform.iOS;
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
+			var properties = new Dictionary<string, string> ();
+			properties ["_XamarinSdkRootDirectory"] = Path.GetDirectoryName (Configuration.GetSdkRoot (platform))!;
+			properties ["_TaskAssemblyName"] = Path.Combine (Configuration.GetSdkRoot (platform), "msbuild", Configuration.DotNetTfm, "Xamarin.MacDev.Tasks.dll");
+			properties ["_PlatformName"] = platform.AsString ();
+			properties ["OutputType"] = "Library";
+			properties ["TargetFrameworkVersion"] = Configuration.DotNetTfm.Replace ("net", "");
+			properties ["EnableAssemblyILStripping"] = propertyValue;
+			properties ["AppBundleExtraOptions"] = extraArgs;
+			var result = expectedError is null
+				? DotNet.AssertBuild (projectPath, properties, target: "_VerifyValidProperties")
+				: DotNet.AssertBuildFailure (projectPath, properties, target: "_VerifyValidProperties");
+			AssertErrorMessages (BinLog.GetBuildLogErrors (result.BinLogPath).ToArray (), expectedError is null ? [] : [expectedError]);
+		}
+
 		// macOS doesn't support UseNativeHttpHandler / any of our native http handlers being the default http handler.
 		[Test]
 		[TestCase (ApplePlatform.MacCatalyst, "NSUrlSessionHandler", "true")]

@@ -36,31 +36,18 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The --aot option is not supported because Mono AOT compilation has been removed."));
 		}
 
-		[TestCase ("true", 1)]
-		[TestCase ("false", 0)]
-		[TestCase ("", 0)]
-		public void AssemblyILStrippingProperty (string value, int expectedErrors)
-		{
-			var task = CreateTask<CustomParseBundlerArguments> ();
-			task.EnableAssemblyILStripping = value;
-			ExecuteTask (task, expectedErrorCount: expectedErrors);
-			if (expectedErrors > 0)
-				Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("EnableAssemblyILStripping=true is not supported because assembly IL stripping has been removed."));
-		}
-
-		[TestCase ("--nostrip", 0)]
-		[TestCase ("-nostrip:true", 0)]
-		[TestCase ("/nostrip=1", 0)]
-		[TestCase ("--nostrip:false", 1)]
-		[TestCase ("-nostrip:0", 1)]
-		[TestCase ("/nostrip=no", 1)]
-		public void LegacyAssemblyILStrippingOption (string option, int expectedErrors)
+		[TestCase ("--nostrip", null)]
+		[TestCase ("-nostrip:true", null)]
+		[TestCase ("/nostrip=1", null)]
+		[TestCase ("--nostrip:false", "true")]
+		[TestCase ("-nostrip:0", "true")]
+		[TestCase ("/nostrip=no", "true")]
+		public void LegacyAssemblyILStrippingOption (string option, string? requested)
 		{
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = option;
-			ExecuteTask (task, expectedErrorCount: expectedErrors);
-			if (expectedErrors > 0)
-				Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("--nostrip:false is not supported because assembly IL stripping has been removed."));
+			ExecuteTask (task);
+			Assert.That (task.AssemblyILStrippingRequested, Is.EqualTo (requested));
 		}
 
 		[Test]

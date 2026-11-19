@@ -1,2 +1,0 @@
-!missing-enum! NSURLSessionTaskMetricsEarlyDataStatus not bound
-!missing-selector! NSURLSessionTaskTransactionMetrics::earlyDataStatus not bound

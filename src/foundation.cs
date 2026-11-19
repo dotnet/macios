@@ -21217,6 +21217,12 @@ namespace Foundation {
 		[MacCatalyst (14, 0)]
 		[Export ("domainResolutionProtocol")]
 		NSUrlSessionTaskMetricsDomainResolutionProtocol DomainResolutionProtocol { get; }
+
+		/// <summary>Gets whether the request was sent in TLS early data and whether the server accepted it.</summary>
+		/// <remarks>Always returns <see cref="NSUrlSessionTaskMetricsEarlyDataStatus.NotAttempted" /> in classic loading mode.</remarks>
+		[iOS (27, 3), TV (27, 3), Mac (27, 3), MacCatalyst (27, 3)]
+		[Export ("earlyDataStatus")]
+		NSUrlSessionTaskMetricsEarlyDataStatus EarlyDataStatus { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -22836,6 +22842,18 @@ namespace Foundation {
 		Tcp,
 		Tls,
 		Https,
+	}
+
+	/// <summary>Describes whether a request was sent in TLS early data and accepted by the server.</summary>
+	[iOS (27, 3), TV (27, 3), Mac (27, 3), MacCatalyst (27, 3)]
+	[Native]
+	public enum NSUrlSessionTaskMetricsEarlyDataStatus : long {
+		/// <summary>The request was not sent in early data.</summary>
+		NotAttempted = 0,
+		/// <summary>The request was sent in early data, but the server rejected it or the handshake did not complete.</summary>
+		Attempted = 1,
+		/// <summary>The request was sent in early data and accepted by the server.</summary>
+		AttemptedAndAccepted = 2,
 	}
 
 	[NoiOS]

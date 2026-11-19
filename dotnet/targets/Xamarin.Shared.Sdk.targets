@@ -21,7 +21,6 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectPostILTrimInformation" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
@@ -557,7 +556,6 @@
 			_ParseBundlerArguments;
 			_ComputeVariables;
 			_CreateRuntimeConfiguration;
-			_FindAotCompiler;
 			_DetectAppManifest;
 			_ReadAppManifest;
 			_WriteAppManifest;
@@ -823,6 +821,7 @@
 			<!-- The files the assembly-preparer writes its MSBuild output properties to (one per pass; read back in _SetDynamicRegistrationSupportedFeature and added to FileWrites). -->
 			<_AssemblyPreparerMSBuildOutputFile>$(DeviceSpecificIntermediateOutputPath)assembly-preparer-msbuild-output.txt</_AssemblyPreparerMSBuildOutputFile>
 			<_AssemblyPostProcessorMSBuildOutputFile>$(DeviceSpecificIntermediateOutputPath)assembly-postprocessor-msbuild-output.txt</_AssemblyPostProcessorMSBuildOutputFile>
+			<_NativeAOTResourceSubstitutions Condition="'$(_UseNativeAot)' == 'true'">$(DeviceSpecificIntermediateOutputPath)nativeaot-resource-substitutions.xml</_NativeAOTResourceSubstitutions>
 
 			<!-- The directory where the linker puts *.items files that will be loaded in the _LoadLinkerOutput target -->
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
@@ -878,10 +877,6 @@
 			<_CustomLinkerOptions>
 				AreAnyAssembliesTrimmed=$(_AreAnyAssembliesTrimmed)
 				AssemblyName=$(AssemblyName).dll
-				@(_AotArguments -> 'AOTArgument=%(Identity)')
-				AOTCompiler=$(_XamarinAOTCompiler)
-				AOTOutputDirectory=$(_AOTOutputDirectory)
-				DedupAssembly=$(_DedupAssembly)
 				AppBundleManifestPath=$(_AppBundleManifestPath)
 				AssemblyPublishDir=$(_AssemblyPublishDir)
 				CacheDirectory=$(_LinkerCacheDirectory)
@@ -915,7 +910,6 @@
 				@(_MonoLibrary -> 'MonoLibrary=%(Identity)')
 				MSBuildOutputFile=$(_AssemblyPreparerMSBuildOutputFile)
 				MSBuildPostProcessOutputFile=$(_AssemblyPostProcessorMSBuildOutputFile)
-				MtouchFloat32=$(MtouchFloat32)
 				NoWarn=$(_BundlerNoWarn)
 				Optimize=$(_BundlerOptimize)
 				PartialStaticRegistrarLibrary=$(_LibPartialStaticRegistrar)
@@ -943,7 +937,6 @@
 				TypeMapFilePath=$(_TypeMapFilePath)
 				TypeMapOutputDirectory=$(_TypeMapOutputDirectory)
 				UnmanagedCallersOnlyMapPath=$(_UnmanagedCallersOnlyMapPath)
-				UseLlvm=$(MtouchUseLlvm)
 				Verbosity=$(_BundlerVerbosity)
 				Warn=$(_BundlerWarn)
 				WarnAsError=$(_BundlerWarnAsError)
@@ -984,9 +977,6 @@
 
 			-->
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --disable-opt unusedtypechecks</_ExtraTrimmerArgs>
-
-			<!-- If a release build and the app is not extensible (no interpreter or JIT/code-loading for macOS) then the sealer optimization can be used -->
-			<_ExtraTrimmerArgs Condition="'$(_BundlerDebug)' != 'true' And '$(MtouchInterpreter)' == '' And '$(_RunAotCompiler)' == 'true' And '$(_PlatformName)' != 'macOS'">$(_ExtraTrimmerArgs) --enable-opt sealer</_ExtraTrimmerArgs>
 
 			<!-- Enable serialization discovery. Ref: https://github.com/dotnet/macios/issues/15676 -->
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --enable-serialization-discovery</_ExtraTrimmerArgs>
@@ -1267,9 +1257,6 @@
 			<!-- Don't strip IL by default -->
 			<EnableAssemblyILStripping>false</EnableAssemblyILStripping>
 
-			<!-- Strip if we are AOT and Release  -->
-			<EnableAssemblyILStripping Condition="'$(_RunAotCompiler)' == 'true' And '$(Configuration)' == 'Release' And '$(_IsMultiRidBuild)' != 'true'">true</EnableAssemblyILStripping>
-
 			<!-- Don't strip if we are running the interpreter  -->
 			<EnableAssemblyILStripping Condition="'$(MtouchInterpreter)' != ''">false</EnableAssemblyILStripping>
 		</PropertyGroup>
@@ -1344,7 +1331,6 @@
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_RegistrarFile.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_ReferencesFile.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" />
-			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/TrimmerRootDescriptor.items" />
@@ -1369,7 +1355,6 @@
 			<_RegistrarFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_RegistrarFile.items'" />
 			<_ReferencesFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_ReferencesFile.items'" />
 			<_ProcessedReferenceNativeSymbol Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'ReferenceNativeSymbol.items'" />
-			<_AssembliesToAOT Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssembliesToAOT.items'" />
 			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
 			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
 			<_TrimmerRootDescriptorFromCustomLinkerSteps Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'TrimmerRootDescriptor.items'" />
@@ -1515,8 +1500,16 @@
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(RunAotCompilation)' == 'true'"
 			/>
 		<Error
+			Text="The property 'RunAotCompilation' is not supported because Mono AOT compilation has been removed."
+			Condition="'$(UseMonoRuntime)' == 'true' And '$(RunAotCompilation)' == 'true'"
+			/>
+		<Error
 			Text="The property 'AotAssemblies' is set to 'true', which is not supported when not using the Mono runtime (for instance when using CoreCLR). Please remove it from the project file."
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(AotAssemblies)' == 'true'"
+			/>
+		<Error
+			Text="The property 'AotAssemblies' is not supported because Mono AOT compilation has been removed."
+			Condition="'$(UseMonoRuntime)' == 'true' And '$(AotAssemblies)' == 'true'"
 			/>
 		<!-- 'MtouchEnableSGenConc' is a deprecated alias for 'EnableSGenConc' (see Xamarin.Shared.props), so only warn about 'EnableSGenConc' if the value didn't come from 'MtouchEnableSGenConc', to avoid showing two warnings for the same setting. -->
 		<Warning
@@ -1541,8 +1534,16 @@
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchUseLlvm)' == 'true'"
 			/>
 		<Warning
+			Text="The property 'MtouchUseLlvm' has no effect because Mono AOT compilation has been removed."
+			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchUseLlvm)' == 'true'"
+			/>
+		<Warning
 			Text="The property 'MtouchFloat32' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
 			Condition="'$(UseMonoRuntime)' == 'false' And '$(MtouchFloat32)' != ''"
+			/>
+		<Warning
+			Text="The property 'MtouchFloat32' has no effect because Mono AOT compilation has been removed."
+			Condition="'$(UseMonoRuntime)' == 'true' And '$(MtouchFloat32)' != ''"
 			/>
 		<Warning
 			Text="The property 'MonoUseCompressedInterfaceBitmap' has no effect when not using the Mono runtime (for instance when using CoreCLR)."
@@ -1567,22 +1568,6 @@
 	</PropertyGroup>
 
 	<Target Name="_ComputeVariables" DependsOnTargets="$(_ComputeVariablesDependsOn)">
-		<PropertyGroup Condition="'$(_RunAotCompiler)' == ''">
-			<!-- Don't run the AOT compiler by default -->
-			<_RunAotCompiler>false</_RunAotCompiler>
-		</PropertyGroup>
-		<!-- We don't run Mono's AOT compiler if we're not using Mono (aka if we're using NativeAOT or CoreCLR) -->
-		<PropertyGroup Condition="'$(UseMonoRuntime)' == 'true'" >
-			<!-- We need it for device builds for mobile platforms -->
-			<_RunAotCompiler Condition="'$(_SdkIsSimulator)' != 'true' And '$(SdkIsDesktop)' != 'true'">true</_RunAotCompiler>
-			<!-- We need it if the interpreter is enabled, no matter where -->
-			<_RunAotCompiler Condition="'$(MtouchInterpreter)' != '' And '$(_PlatformName)' != 'macOS'">true</_RunAotCompiler>
-			<!-- We need it for Mac Catalyst on arm64 -->
-			<_RunAotCompiler Condition="'$(RuntimeIdentifier)' == 'maccatalyst-arm64'">true</_RunAotCompiler>
-			<!-- We need it for iOS/tvOS simulator on arm64 -->
-			<_RunAotCompiler Condition="'$(RuntimeIdentifier)' == 'iossimulator-arm64' Or '$(RuntimeIdentifier)' == 'tvossimulator-arm64'">true</_RunAotCompiler>
-		</PropertyGroup>
-
 		<PropertyGroup>
 			<!-- Compute the absolute path to the publish directory. We only use this to compute the relative path of app bundle path relative to the publish directory -->
 			<!-- Take into account that 'PublishDir' may or may not be an absolute path to begin with -->
@@ -1602,22 +1587,9 @@
 			<_AppBundleFrameworksDir Condition="'$(SdkIsMobile)' == 'true'">$(_RelativeAppBundlePath)\Frameworks\</_AppBundleFrameworksDir>
 			<_AppBundleFrameworksDir Condition="'$(SdkIsDesktop)' == 'true'">$(_RelativeAppBundlePath)\Contents\Frameworks\</_AppBundleFrameworksDir>
 
-			<_AOTInputDirectory>$(_IntermediateNativeLibraryDir)aot-input/</_AOTInputDirectory>
-			<_AOTOutputDirectory>$(_IntermediateNativeLibraryDir)aot-output/</_AOTOutputDirectory>
-
 			<!-- A temporary output directory for our linker steps -->
 			<_LinkerCacheDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-cache'))</_LinkerCacheDirectory>
 			<_LinkerCacheDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-cache</_LinkerCacheDirectory>
-
-			<!-- 
-				Enable dedup optimization when we run AOT compiler and target ARM64 architecture.
-				Target architecture condition is required since when we target x86_64 we utilize MONO_AOT_MODE_INTERP_ONLY mode (AOT + interpreter).
-				In such setup, during runtime, AOT images are loaded but marked as unusuable as they are compiled with `full` compiler switch and the code falls back to interpreter.
-				Dedup AOT image is specially handled by the AOT runtime and it is not allowed to have it marked as unusuable.
-			-->
-			<_IsDedupEnabled Condition="'$(_IsDedupEnabled)' == '' And '$(_RunAotCompiler)' == 'true' And '$(IsMacEnabled)' == 'true' And '$(TargetArchitectures)' == 'ARM64' And '$(MtouchInterpreter)' != 'all'">true</_IsDedupEnabled>
-			<_DedupAssemblyName>aot-instances</_DedupAssemblyName>
-			<_DedupAssembly Condition="'$(_IsDedupEnabled)' == 'true'">$(IntermediateOutputPath)$(_DedupAssemblyName).dll</_DedupAssembly>
 
 			<!-- Always link statically when using NativeAOT -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">static</_LibMonoLinkMode>
@@ -1713,41 +1685,6 @@
 		<Warning Condition="'$(GenerateRuntimeConfigurationFiles)' != 'true'" Text="Some features may not work correctly, because the generation of the runtime configure file (*.runtimeconfig.json) has been disabled." />
 	</Target>
 
-	<Target Name="_FindAotCompiler" DependsOnTargets="_ComputeVariables">
-		<PropertyGroup>
-			<_XamarinAOTCompilerCachePath>$(DeviceSpecificIntermediateOutputPath)aot-compiler-path-$(NETCoreSdkVersion).txt</_XamarinAOTCompilerCachePath>
-		</PropertyGroup>
-
-		<!-- This task does not take a SessionId because we cache the path on Windows for remote builds to avoid a round-trip -->
-		<ReadLinesFromFile
-			Condition="Exists('$(_XamarinAOTCompilerCachePath)')"
-			File="$(_XamarinAOTCompilerCachePath)"
-		>
-			<Output TaskParameter="Lines" PropertyName="_XamarinAOTCompiler" />
-		</ReadLinesFromFile>
-
-		<FindAotCompiler
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(_RunAotCompiler)' == 'true' And '$(_XamarinAOTCompiler)' == ''"
-			KeepTemporaryOutput="$(FindAotCompilerKeepKeepTemporaryOutput)"
-			MonoAotCrossCompiler="@(MonoAotCrossCompiler)"
-			RuntimeIdentifier="$(RuntimeIdentifier)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-		>
-			<Output TaskParameter="AotCompiler" PropertyName="_XamarinAOTCompiler" />
-		</FindAotCompiler>
-
-		<!-- This task does not take a SessionId because we cache the path on Windows for remote builds to avoid a round-trip -->
-		<WriteLinesToFile
-			File="$(_XamarinAOTCompilerCachePath)"
-			Lines="$(_XamarinAOTCompiler)"
-			Overwrite="true"
-		/>
-		<ItemGroup>
-			<FileWrites Include="$(_XamarinAOTCompilerCachePath)" />
-		</ItemGroup>
-	</Target>
-
 	<Target Name="_PostPrepareForILLinkFixups" AfterTargets="PrepareForILLink">
 		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
 			<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
@@ -1772,180 +1709,10 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_CreateAOTDedupAssembly"
-			Condition="'$(_IsDedupEnabled)' == 'true'"
-			DependsOnTargets="_ComputeManagedAssemblyToLink"
-			BeforeTargets="PrepareForILLink"
-			Inputs="$(MSBuildThisFileFullPath)"
-			Outputs="$(_DedupAssembly)">
-
-		<WriteLinesToFile File="$(_IntermediateNativeLibraryDir)aot-instances.cs" Overwrite="true" Lines="" WriteOnlyWhenDifferent="true" />
-		<Csc Sources="$(_IntermediateNativeLibraryDir)aot-instances.cs"
-			OutputAssembly="$(_DedupAssembly)"
-			TargetType="library"
-			Deterministic="true"
-			References="@(ReferencePath)"
-			ToolExe="$(CscToolExe)"
-			ToolPath="$(CscToolPath)" />
-		<Delete Files="$(_IntermediateNativeLibraryDir)aot-instances.cs" />
-
-		<ItemGroup>
-			<ManagedAssemblyToLink Include="$(_DedupAssembly)" />
-			<TrimmerRootAssembly Include="$(_DedupAssemblyName)" />
-		</ItemGroup>
-	</Target>
-
-	<!--
-		When the assembly-preparer is used to post-process assemblies, the set of
-		assemblies that gets AOT-compiled (and which is used to detect AOT generic instantiation deduplication)
-		is computed from ResolvedFileToPublish instead of from the linker's own assembly collection. The dedup
-		assembly (aot-instances.dll) is only added to the linker's assembly collection (via ManagedAssemblyToLink
-		and TrimmerRootAssembly in _CreateAOTDedupAssembly), so it's not part of ResolvedFileToPublish, and as a
-		result deduplication would be disabled in this case. Add the dedup assembly to ResolvedFileToPublish so
-		that it's included in the set of assemblies the assembly-preparer processes, and deduplication is enabled
-		in this case as well.
-	-->
-	<Target Name="_AddDedupAssemblyToResolvedFileToPublish"
-			Condition="'$(_IsDedupEnabled)' == 'true'"
-			DependsOnTargets="_ComputeVariables;_CreateAOTDedupAssembly"
-			BeforeTargets="_PrepareAssembliesForPostProcessing">
-		<ItemGroup>
-			<!-- Find out if the dedup assembly is already part of ResolvedFileToPublish (it will be when
-			     trimming is enabled, because then it goes through ILLink like any other assembly). -->
-			<_DedupAssemblyInResolvedFileToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Filename)%(Extension)' == 'aot-instances.dll'" />
-		</ItemGroup>
-		<ItemGroup Condition="'@(_DedupAssemblyInResolvedFileToPublish)' == ''">
-			<ResolvedFileToPublish Include="$(_DedupAssembly)">
-				<PublishFolderType>Assembly</PublishFolderType>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-				<RelativePath>$(_AssemblyPublishDir)aot-instances.dll</RelativePath>
-				<OriginalRelativePath>aot-instances.dll</OriginalRelativePath>
-			</ResolvedFileToPublish>
-		</ItemGroup>
-	</Target>
-
 	<Target Name="_ComputeDotNetRoot">
 		<PropertyGroup>
 			<_DotNetRoot Condition="'$(IsMacEnabled)' == 'true'">$(_DotNetRootRemoteDirectory)</_DotNetRoot>
 		</PropertyGroup>
-	</Target>
-
-	<PropertyGroup>
-		<_AOTCompileDependsOn>
-			$(_AOTCompileDependsOn);
-			_ComputeDotNetRoot;
-			_ComputeVariables;
-			_FindAotCompiler;
-			_DetectAppManifest;
-			_ReadAppManifest;
-			_WriteAppManifest;
-			_CreateAOTDedupAssembly;
-			_GenerateAOTCompileDependencyCache;
-			_CleanAOTCompileCache;
-		</_AOTCompileDependsOn>
-	</PropertyGroup>
-
-	<!--
-		_GenerateAOTCompileDependencyCache
-
-		Generate a file used to track dependencies between incremental build
-		executions. This handles cases where properties change that can't be
-		tracked with timestamps. The file contains a hash of aot compiler
-		inputs that are known to contribute to incremental build
-		inconsistencies.
-
-	-->
-	<Target Name="_GenerateAOTCompileDependencyCache">
-		<PropertyGroup>
-			<_AOTCompileCachePath>$(DeviceSpecificOutputPath)AOTCompileInputs.cache</_AOTCompileCachePath>
-			<_AOTCompileCachePath2>$(_AOTCompileCachePath).uptodate</_AOTCompileCachePath2>
-		</PropertyGroup>
-		<ItemGroup>
-			<_CustomAdditionalAOTCompileInputs Include="$(_AOTCompileCachePath)" />
-			<_AOTCompileCache Include="$(_XamarinAOTCompiler)" />
-			<_AOTCompileCache Include="$(_MinimumOSVersion)" />
-			<_AOTCompileCache Include="$(_SdkDevPath)" />
-			<_AOTCompileCache Include="$(_ComputedTargetFrameworkMoniker)" />
-			<_AOTCompileCache Include="$(MtouchInterpreter)" />
-			<_AOTCompileCache Include="$(MtouchUseLlvm)" />
-			<_AOTCompileCache Include="$(_BundlerDebug)" />
-			<_AOTCompileCache Include="$(AppBundleExtraOptions)" />
-		</ItemGroup>
-
-		<Hash
-			ItemsToHash="@(_AOTCompileCache)"
-			IgnoreCase="false">
-			<Output TaskParameter="HashResult" PropertyName="_AOTCompileDependencyHash" />
-		</Hash>
-
-		<WriteLinesToFile Lines="$(_AOTCompileDependencyHash)" File="$(_AOTCompileCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
-
-		<ItemGroup>
-			<FileWrites Include="$(_AOTCompileCachePath)" />
-		</ItemGroup>
-	</Target>
-	<!-- Delete any cached aot compiler output if the cache is stale -->
-	<Target Name="_CleanAOTCompileCache"
-			Inputs="$(_AOTCompileCachePath)"
-			Outputs="$(_AOTCompileCachePath2)"
-		>
-		<RemoveDir Directories="$(_AOTOutputDirectory)" />
-		<Copy SourceFiles="$(_AOTCompileCachePath)" DestinationFiles="$(_AOTCompileCachePath2)" />
-		<ItemGroup>
-			<FileWrites Include="$(_AOTCompileCachePath2)" />
-		</ItemGroup>
-	</Target>
-
-	<Target Name="_AOTCompile"
-			Condition="'$(_RunAotCompiler)' == 'true'"
-			DependsOnTargets="$(_AOTCompileDependsOn)"
-		>
-
-		<ItemGroup>
-			<_AotEnvironment Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
-		</ItemGroup>
-
-		<AOTCompile
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			Assemblies="@(_AssembliesToAOT)"
-			AotEnvironment="@(_AotEnvironment)"
-			AOTCompilerPath="$(_XamarinAOTCompiler)"
-			InputDirectory="$(_AOTInputDirectory)"
-			MaxDegreeOfParallelism="$(AotCompileMaxDegreeOfParallelism)"
-			MinimumOSVersion="$(_MinimumOSVersion)"
-			OutputDirectory="$(_AOTOutputDirectory)\%(_AssembliesToAOT.Arch)"
-			SdkDevPath="$(_SdkDevPath)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-		>
-			<Output TaskParameter="AssemblyFiles" ItemName="_AOTAssemblyFiles" />
-			<Output TaskParameter="FileWrites" ItemName="FileWrites" />
-		</AOTCompile>
-
-		<CompileNativeCode
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			CompileInfo="@(_AOTAssemblyFiles)"
-			MinimumOSVersion="$(_MinimumOSVersion)"
-			SdkDevPath="$(_SdkDevPath)"
-			SdkIsSimulator="$(_SdkIsSimulator)"
-			SdkRoot="$(_SdkRoot)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			DotNetRoot="$(_DotNetRoot)"
-		>
-		</CompileNativeCode>
-
-		<ItemGroup Condition="'$(IsMacEnabled)' == 'true'">
-			<!-- Add the AOT-compiled output to the main executable -->
-			<_XamarinMainLibraries Include="@(_AssembliesToAOT -> '%(ObjectFile)')" />
-			<_XamarinMainLibraries Include="@(_AssembliesToAOT -> '%(LLVMFile)')" />
-
-			<!-- copy the aotdata files to the .app -->
-			<ResolvedFileToPublish Include="%(_AssembliesToAOT.AOTData)" >
-				<RelativePath>$(_AssemblyPublishDir)\%(_AssembliesToAOT.Filename).aotdata.%(_AssembliesToAOT.Arch)</RelativePath>
-				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-			</ResolvedFileToPublish>
-		</ItemGroup>
 	</Target>
 
 	<!--
@@ -1992,6 +1759,11 @@
 			<ManagedBinary Include="$(IntermediateLinkDir)$(TargetName)$(TargetExt)" />
 			<IlcCompileInput Include="@(ManagedBinary)" />
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
+		</ItemGroup>
+
+		<!-- Assembly preparation keeps native resources available for extraction, but excludes them from ILC's output. -->
+		<ItemGroup>
+			<IlcArg Include="--substitution:$(_NativeAOTResourceSubstitutions)" Condition="'$(_NativeAOTResourceSubstitutions)' != ''" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -2200,7 +1972,6 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_ComputeNativeExecutableInputs;
-			_AOTCompile;
 		</_CompileNativeExecutableDependsOn>
 
 		<_CompileNativeExecutableDependsOn Condition="'$(_UseNativeAot)' == 'true'">

@@ -339,11 +339,7 @@ void			xamarin_mono_object_release_at_process_exit (MonoObject *mobj);
  */
 MonoAssembly * xamarin_open_assembly (const char *name);
 
-void mono_aot_register_module (void *aot_info);
-
-typedef void (*xamarin_register_module_callback) ();
 typedef void (*xamarin_register_assemblies_callback) ();
-extern xamarin_register_module_callback xamarin_register_modules;
 extern xamarin_register_assemblies_callback xamarin_register_assemblies;
 
 // This has a managed equivalent in NSObject.cs

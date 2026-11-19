@@ -672,6 +672,11 @@ xamarin_gc_toggleref_callback (uint32_t flags, id handle, xamarin_get_handle_fun
 		if (handle == NULL) { /* This shouldn't really happen */
 			res = MONO_TOGGLE_REF_DROP;
 		} else {
+			// This runs during the GC, so -retainCount must not run managed code. Managed
+			// implementations of -retainCount are not supported (see the comment above
+			// NSObject.CreateManagedRef). We don't bypass an override with objc_msgSendSuper,
+			// because native classes (such as toll-free bridged classes) can implement
+			// -retainCount themselves, and their superclass would report the wrong count.
 			if ([handle retainCount] == 1)
 				res = MONO_TOGGLE_REF_WEAK;
 			else

@@ -644,6 +644,10 @@ namespace Foundation {
 		// because the ivar still holds an old peer's GCHandle gets no implicit tracking; an explicit
 		// MarkDirty registration may still apply. The retain trampoline can only create a strong GCHandle
 		// for the peer in the ivar.
+		//
+		// The GC sends -retainCount to toggled objects while it runs, so -retainCount must not run managed
+		// code. Implementing -retainCount in managed code (for instance [Export ("retainCount")]) is not
+		// supported: implicit tracking makes this reachable for any user type, not only CALayer subclasses.
 		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			var hadManagedRef = HasManagedRef;

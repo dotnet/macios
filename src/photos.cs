@@ -258,6 +258,12 @@ namespace Photos {
 		[NullAllowed]
 		CLLocation Location { get; set; }
 
+		/// <summary>Gets or sets the time zone in which the asset was captured.</summary>
+		/// <remarks>Applies to the asset's creation date. Set to <see langword="null" /> to restore the time zone derived from the original metadata.</remarks>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("timeZone", ArgumentSemantic.Copy)]
+		NSTimeZone TimeZone { get; set; }
+
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -2061,6 +2067,11 @@ namespace Photos {
 
 		[Export ("keywords", ArgumentSemantic.Copy)]
 		string [] Keywords { get; }
+
+		/// <summary>Gets the asset's capture time zone, or <see langword="null" /> if the library does not record one.</summary>
+		[TV (27, 3), Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("timeZone", ArgumentSemantic.Copy)]
+		NSTimeZone TimeZone { get; }
 	}
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]

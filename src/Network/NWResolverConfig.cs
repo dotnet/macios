@@ -23,8 +23,7 @@ namespace Network {
 
 		public NWResolverConfig (NWEndpoint urlEndpoint, NWResolverConfigEndpointType endpointType)
 		{
-			if (urlEndpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlEndpoint));
+			ArgumentNullException.ThrowIfNull (urlEndpoint);
 			NativeHandle urlEndpointHandle = urlEndpoint.Handle;
 			switch (endpointType) {
 			case NWResolverConfigEndpointType.Https:

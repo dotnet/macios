@@ -85,11 +85,11 @@ static partial class BindingSyntaxFactory {
 		@class: "BlockLiteral");
 
 	/// <summary>
-	/// TypeSyntax for ObjCRuntime.BlockLiteral.
+	/// TypeSyntax for System.ArgumentNullException.
 	/// </summary>
-	public static readonly TypeSyntax ThrowHelper = StringExtensions.GetIdentifierName (
-		@namespace: ["ObjCRuntime"],
-		@class: "ThrowHelper");
+	public static readonly TypeSyntax ArgumentNullException = StringExtensions.GetIdentifierName (
+		@namespace: ["System"],
+		@class: "ArgumentNullException");
 
 	/// <summary>
 	/// TypeSyntax for ObjCRuntime.Trampolines.

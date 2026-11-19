@@ -63,8 +63,7 @@ namespace CoreFoundation {
 
 		static IntPtr Create (NSUrl bundleUrl)
 		{
-			if (bundleUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleUrl));
+			ArgumentNullException.ThrowIfNull (bundleUrl);
 
 			IntPtr result = CFBundleCreate (IntPtr.Zero, bundleUrl.Handle);
 			GC.KeepAlive (bundleUrl);
@@ -89,8 +88,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static CFBundle []? GetBundlesFromDirectory (NSUrl directoryUrl, string bundleType)
 		{
-			if (directoryUrl is null) // NSUrl cannot be "" by definition
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (directoryUrl));
+			ArgumentNullException.ThrowIfNull (directoryUrl); // NSUrl cannot be "" by definition
 			if (String.IsNullOrEmpty (bundleType))
 				throw new ArgumentException (nameof (bundleType));
 			var bundleTypeHandle = CFString.CreateNative (bundleType);
@@ -372,8 +370,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static NSUrl? GetResourceUrl (NSUrl bundleUrl, string resourceName, string resourceType, string subDirName)
 		{
-			if (bundleUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleUrl));
+			ArgumentNullException.ThrowIfNull (bundleUrl);
 
 			if (String.IsNullOrEmpty (resourceName))
 				throw new ArgumentException (nameof (resourceName));
@@ -431,8 +428,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static NSUrl? []? GetResourceUrls (NSUrl bundleUrl, string resourceType, string subDirName)
 		{
-			if (bundleUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleUrl));
+			ArgumentNullException.ThrowIfNull (bundleUrl);
 
 			if (String.IsNullOrEmpty (resourceType))
 				throw new ArgumentException (nameof (resourceType));
@@ -571,8 +567,7 @@ namespace CoreFoundation {
 			if (string.IsNullOrEmpty (key))
 				throw new ArgumentException (nameof (key));
 
-			if (localizations is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (localizations));
+			ArgumentNullException.ThrowIfNull (localizations);
 
 			using var keyHandle = new TransientCFString (key);
 			using var defaultValueHandle = new TransientCFString (defaultValue);
@@ -611,10 +606,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static string? []? GetLocalizationsForPreferences (string [] locArray, string [] prefArray)
 		{
-			if (locArray is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (locArray));
-			if (prefArray is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (prefArray));
+			ArgumentNullException.ThrowIfNull (locArray);
+			ArgumentNullException.ThrowIfNull (prefArray);
 
 			var cfLocalArrayHandle = IntPtr.Zero;
 			var cfPrefArrayHandle = IntPtr.Zero;
@@ -641,8 +634,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static string? []? GetLocalizations (NSUrl bundle)
 		{
-			if (bundle is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundle));
+			ArgumentNullException.ThrowIfNull (bundle);
 			var rv = CFBundleCopyLocalizationsForURL (bundle.Handle);
 			GC.KeepAlive (bundle);
 			return CFArray.StringArrayFromHandle (rv, true);
@@ -657,8 +649,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static string? []? GetPreferredLocalizations (string [] locArray)
 		{
-			if (locArray is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (locArray));
+			ArgumentNullException.ThrowIfNull (locArray);
 
 			var cfString = new CFString [locArray.Length];
 			for (int index = 0; index < locArray.Length; index++) {
@@ -741,8 +732,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static NSDictionary? GetInfoDictionary (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			var result = Runtime.GetNSObject<NSDictionary> (CFBundleCopyInfoDictionaryForURL (url.Handle), true);
 			GC.KeepAlive (url);
 			return result;
@@ -808,8 +798,7 @@ namespace CoreFoundation {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static bool IsExecutableLoadable (CFBundle bundle)
 		{
-			if (bundle is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundle));
+			ArgumentNullException.ThrowIfNull (bundle);
 
 			bool result = CFBundleIsExecutableLoadable (bundle.GetCheckedHandle ()) != 0;
 			GC.KeepAlive (bundle);
@@ -825,8 +814,7 @@ namespace CoreFoundation {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static bool IsExecutableLoadable (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			bool result = CFBundleIsExecutableLoadableForURL (url.Handle) != 0;
 			GC.KeepAlive (url);

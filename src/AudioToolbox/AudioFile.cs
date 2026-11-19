@@ -792,8 +792,7 @@ namespace AudioToolbox {
 		/// <inheritdoc cref="Create(CFUrl,AudioFileType,AudioStreamBasicDescription,AudioFileFlags)" />
 		public static AudioFile? Create (string url, AudioFileType fileType, AudioStreamBasicDescription format, AudioFileFlags inFlags)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			using (var cfurl = CFUrl.FromUrlString (url, null)!)
 				return Create (cfurl, fileType, format, inFlags);
@@ -933,8 +932,7 @@ namespace AudioToolbox {
 		/// </remarks>
 		public static AudioFile? Open (string url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			using (var cfurl = CFUrl.FromUrlString (url, null)!)
 				return Open (cfurl, permissions, out error, fileTypeHint);
@@ -950,8 +948,7 @@ namespace AudioToolbox {
 		/// <inheritdoc cref="Open(string,AudioFilePermission,out AudioFileError,AudioFileType)" />
 		public static AudioFile? Open (CFUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
 			GC.KeepAlive (url);
@@ -968,8 +965,7 @@ namespace AudioToolbox {
 		/// <inheritdoc cref="Open(string,AudioFilePermission,out AudioFileError,AudioFileType)" />
 		public static AudioFile? Open (NSUrl url, AudioFilePermission permissions, out AudioFileError error, AudioFileType fileTypeHint = 0)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			AudioFile? audioFile = Open (url.Handle, permissions, fileTypeHint, out error);
 			GC.KeepAlive (url);
@@ -1118,8 +1114,7 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (long inStartingPacket, int nPackets, byte [] buffer, out AudioFileError error)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			int count = buffer.Length;
 			return RealReadPacketData (false, inStartingPacket, ref nPackets, buffer, 0, ref count, out error);
 		}
@@ -1193,8 +1188,7 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, byte [] buffer, int offset, ref int count, out AudioFileError error)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0)
 				throw new ArgumentException (nameof (offset), "<0");
 			if (count < 0)
@@ -1246,12 +1240,10 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public unsafe AudioStreamPacketDescription []? ReadPacketData (bool useCache, long inStartingPacket, ref int nPackets, IntPtr buffer, ref int count, out AudioFileError error, AudioStreamPacketDescription [] descriptions)
 		{
-			if (buffer == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
 			if (count < 0)
 				throw new ArgumentException (nameof (count), "<0");
-			if (descriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptions));
+			ArgumentNullException.ThrowIfNull (descriptions);
 
 			fixed (AudioStreamPacketDescription* p = descriptions) {
 				return RealReadPacketData (useCache, inStartingPacket, ref nPackets, buffer, ref count, out error, descriptions);
@@ -1319,8 +1311,7 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (long inStartingPacket, int nPackets, byte [] buffer, out AudioFileError error)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			return RealReadFixedPackets (false, inStartingPacket, nPackets, buffer, 0, buffer.Length, out error);
 		}
 
@@ -1349,8 +1340,7 @@ namespace AudioToolbox {
 		/// <returns>Array of packet descriptors for the packets that were read.</returns>
 		public AudioStreamPacketDescription []? ReadFixedPackets (bool useCache, long inStartingPacket, int nPackets, byte [] buffer, int offset, int count, out AudioFileError error)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0)
 				throw new ArgumentException (nameof (offset), "<0");
 			if (count < 0)
@@ -1397,10 +1387,9 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, int numPackets, IntPtr buffer, int byteCount)
 		{
-			if (buffer == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
-
 			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
+
 				if (AudioFileWritePackets (Handle, useCache ? (byte) 1 : (byte) 0, byteCount, null, startingPacket, &numPackets, buffer) == 0)
 					return numPackets;
 			}
@@ -1417,10 +1406,10 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount)
 		{
-			if (packetDescriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
-			if (buffer == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (packetDescriptions);
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) buffer, nameof (buffer));
+			}
 			int nPackets = packetDescriptions.Length;
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
@@ -1441,10 +1430,8 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		unsafe public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount)
 		{
-			if (packetDescriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (packetDescriptions);
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
 			if (byteCount < 0)
@@ -1472,8 +1459,7 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, IntPtr buffer, int byteCount, out AudioFileError errorCode)
 		{
-			if (packetDescriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
+			ArgumentNullException.ThrowIfNull (packetDescriptions);
 			if (buffer == IntPtr.Zero)
 				throw new ArgumentException (nameof (buffer));
 			int nPackets = packetDescriptions.Length;
@@ -1511,10 +1497,8 @@ namespace AudioToolbox {
 		/// <returns>The number of packets written or -1 on error.</returns>
 		unsafe public int WritePackets (bool useCache, long startingPacket, AudioStreamPacketDescription [] packetDescriptions, byte [] buffer, int offset, int byteCount, out AudioFileError errorCode)
 		{
-			if (packetDescriptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (packetDescriptions));
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (packetDescriptions);
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
 			if (byteCount < 0)
@@ -1600,8 +1584,7 @@ namespace AudioToolbox {
 			if (buffer == IntPtr.Zero)
 				throw new ArgumentException (nameof (buffer));
 
-			if (packetDependencies is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (packetDependencies));
+			ArgumentNullException.ThrowIfNull (packetDependencies);
 
 			unsafe {
 				fixed (AudioStreamPacketDescription* packetDescriptionsPtr = packetDescriptions) {
@@ -1638,8 +1621,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("macos26.0")]
 		public AudioFileError WritePackets (bool useCache, AudioStreamPacketDescription []? packetDescriptions, AudioStreamPacketDependencyDescription [] packetDependencies, long startingPacket, ref int numPackets, byte [] buffer, int offset, int numBytes)
 		{
-			if (buffer is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0)
 				throw new ArgumentOutOfRangeException (nameof (offset), "< 0");
 			if (numBytes < 0)
@@ -1866,8 +1848,9 @@ namespace AudioToolbox {
 		[Obsolete ("Use 'SetUserData (AudioFileChunkType, int, byte[])' instead.")]
 		public int SetUserData (int userDataId, int index, int userDataSize, IntPtr userData)
 		{
-			if (userData == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (userData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) userData, nameof (userData));
+			}
 			return (int) AudioFileSetUserData (Handle, userDataId, index, userDataSize, userData);
 		}
 #endif // !XAMCORE_5_0
@@ -1879,8 +1862,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		public AudioFileError SetUserData (AudioFileChunkType chunkType, int index, byte [] data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			unsafe {
 				fixed (byte* dataPtr = data)
@@ -2119,8 +2101,9 @@ namespace AudioToolbox {
 		/// <returns>Whether the operation succeeded or not.</returns>
 		public bool SetProperty (AudioFileProperty property, int dataSize, IntPtr propertyData)
 		{
-			if (propertyData == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyData));
+			unsafe {
+				ArgumentNullException.ThrowIfNull ((void*) propertyData, nameof (propertyData));
+			}
 			return AudioFileSetProperty (Handle, property, dataSize, propertyData) == 0;
 		}
 
@@ -2207,8 +2190,7 @@ namespace AudioToolbox {
 			}
 
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 				unsafe {
 					fixed (byte* bp = value) {
@@ -2330,8 +2312,7 @@ namespace AudioToolbox {
 				return GetProperty<AudioFilePacketTableInfo> (AudioFileProperty.PacketTableInfo);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 
 				AudioFilePacketTableInfo afpti = value.Value;
 				var res = AudioFileSetProperty (Handle, AudioFileProperty.PacketTableInfo, sizeof (AudioFilePacketTableInfo), &afpti);

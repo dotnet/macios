@@ -36,10 +36,8 @@ namespace Network {
 
 		public void AddAdditionalHttpHeaderField (string fieldName, string fieldValue)
 		{
-			if (fieldName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fieldName));
-			if (fieldValue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fieldValue));
+			ArgumentNullException.ThrowIfNull (fieldName);
+			ArgumentNullException.ThrowIfNull (fieldValue);
 
 			using var fieldNamePtr = new TransientString (fieldName);
 			using var fieldValuePtr = new TransientString (fieldValue);

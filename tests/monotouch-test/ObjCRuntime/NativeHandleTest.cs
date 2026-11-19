@@ -3,6 +3,24 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class NativeHandleTest {
+		class NativeObject : INativeObject {
+			public NativeHandle Handle { get; set; }
+		}
+
+		[Test]
+		public void GetNonNullHandle ()
+		{
+			INativeObject value = null;
+			var exception = Assert.Throws<ArgumentNullException> (() => value.GetNonNullHandle ("argument"));
+			Assert.That (exception.ParamName, Is.EqualTo ("argument"), "Null argument name");
+
+			var nativeObject = new NativeObject ();
+			Assert.Throws<ObjectDisposedException> (() => nativeObject.GetNonNullHandle ("argument"), "Zero handle");
+
+			nativeObject.Handle = (IntPtr) 42;
+			Assert.That (nativeObject.GetNonNullHandle ("argument"), Is.EqualTo (nativeObject.Handle), "Valid handle");
+		}
+
 		[Test]
 		public unsafe void Operators ()
 		{

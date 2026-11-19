@@ -36,8 +36,7 @@ namespace AVFoundation {
 		/// <returns>A newly created <see cref="AVAudioRecorder" /> instance if successful, null otherwise.</returns>
 		public static AVAudioRecorder? Create (NSUrl url, AudioSettings settings, out NSError? error)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
+			ArgumentNullException.ThrowIfNull (settings);
 			var rv = new AVAudioRecorder (NSObjectFlag.Empty);
 			rv.InitializeHandle (rv._InitWithUrl (url, settings.Dictionary, out error), string.Empty, false);
 			if (rv.Handle == IntPtr.Zero) {
@@ -54,8 +53,7 @@ namespace AVFoundation {
 		/// <returns>A newly created <see cref="AVAudioRecorder" /> instance if successful, null otherwise.</returns>
 		public static AVAudioRecorder? Create (NSUrl url, AVAudioFormat? format, out NSError? error)
 		{
-			if (format is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (format));
+			ArgumentNullException.ThrowIfNull (format);
 			var rv = new AVAudioRecorder (NSObjectFlag.Empty);
 			rv.InitializeHandle (rv._InitWithUrl (url, format, out error), string.Empty, false);
 			if (rv.Handle == IntPtr.Zero) {

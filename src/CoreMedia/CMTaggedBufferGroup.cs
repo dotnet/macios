@@ -70,11 +70,9 @@ namespace CoreMedia {
 		{
 			IntPtr handle;
 
-			if (tagCollections is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (tagCollections));
+			ArgumentNullException.ThrowIfNull (tagCollections);
 
-			if (buffers is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (buffers));
+			ArgumentNullException.ThrowIfNull (buffers);
 
 			if (tagCollections.Length != buffers.Length)
 				throw new ArgumentException ($"The '{nameof (tagCollections)}' and '{nameof (buffers)}' arrays must both have the same number of elements.");

@@ -133,8 +133,7 @@ namespace CoreFoundation {
 				{
 					var sc = SynchronizationContext.Current;
 					if (sc is null) {
-						if (queue is null)
-							ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+						ArgumentNullException.ThrowIfNull (queue);
 						SynchronizationContext.SetSynchronizationContext (new DispatchQueueSynchronizationContext (queue));
 					}
 					try {
@@ -167,16 +166,14 @@ namespace CoreFoundation {
 		/// <include file="../../docs/api/CoreFoundation/DispatchSource.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.DispatchSource.SetRegistrationHandler(System.Action)']/*" />
 		public void SetRegistrationHandler (Action handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			Action callback =
 				delegate
 				{
 					var sc = SynchronizationContext.Current;
 					if (sc is null) {
-						if (queue is null)
-							ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+						ArgumentNullException.ThrowIfNull (queue);
 						SynchronizationContext.SetSynchronizationContext (new DispatchQueueSynchronizationContext (queue));
 					}
 					try {
@@ -200,16 +197,14 @@ namespace CoreFoundation {
 		///         </remarks>
 		public void SetCancelHandler (Action handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			Action callback =
 				delegate
 				{
 					var sc = SynchronizationContext.Current;
 					if (sc is null) {
-						if (queue is null)
-							ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+						ArgumentNullException.ThrowIfNull (queue);
 						SynchronizationContext.SetSynchronizationContext (new DispatchQueueSynchronizationContext (queue));
 					}
 					try {
@@ -853,8 +848,7 @@ namespace CoreFoundation {
 			///         <remarks>To be added.</remarks>
 			public VnodeMonitor (string path, VnodeMonitorKind vnodeKind, DispatchQueue? queue = null)
 			{
-				if (path is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+				ArgumentNullException.ThrowIfNull (path);
 
 				using var pathPtr = new TransientString (path);
 				fd = open (pathPtr, O_EVTONLY);

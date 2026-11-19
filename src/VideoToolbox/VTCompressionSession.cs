@@ -214,8 +214,7 @@ namespace VideoToolbox {
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
 			NSDictionary frameProperties, CVImageBuffer sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
-			if (sourceFrame is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceFrame));
+			ArgumentNullException.ThrowIfNull (sourceFrame);
 
 			VTStatus status = EncodeFrame (imageBuffer, presentationTimestamp, duration, frameProperties, sourceFrame.GetCheckedHandle (), out infoFlags);
 			GC.KeepAlive (sourceFrame);
@@ -234,8 +233,7 @@ namespace VideoToolbox {
 		public VTStatus EncodeFrame (CVImageBuffer imageBuffer, CMTime presentationTimestamp, CMTime duration,
 			NSDictionary? frameProperties, IntPtr sourceFrame, out VTEncodeInfoFlags infoFlags)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
 
 			infoFlags = default;
 			unsafe {
@@ -357,8 +355,7 @@ namespace VideoToolbox {
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		public VTStatus SetCompressionProperties (VTCompressionProperties options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 
 			var dictionary = options.Dictionary;
 			var rv = VTSessionSetProperties (GetCheckedHandle (), dictionary.Handle);

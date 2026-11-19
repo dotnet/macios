@@ -77,10 +77,8 @@ namespace Darwin {
 
 		static IntPtr asl_open (string ident, string facility, Option options)
 		{
-			if (ident is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
-			if (facility is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
+			ArgumentNullException.ThrowIfNull (ident);
+			ArgumentNullException.ThrowIfNull (facility);
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open (identStr, facilityStr, options);
@@ -112,10 +110,8 @@ namespace Darwin {
 
 		static IntPtr asl_open_from_file (int /* int */ fd, string ident, string facility)
 		{
-			if (ident is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ident));
-			if (facility is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (facility));
+			ArgumentNullException.ThrowIfNull (ident);
+			ArgumentNullException.ThrowIfNull (facility);
 			using var identStr = new TransientString (ident);
 			using var facilityStr = new TransientString (facility);
 			return asl_open_from_file (fd, identStr, facilityStr);
@@ -184,8 +180,7 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public int Log (string text)
 		{
-			if (text is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (text));
+			ArgumentNullException.ThrowIfNull (text);
 
 			return asl_log (Handle, IntPtr.Zero, text);
 		}
@@ -199,8 +194,7 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public int Log (Message msg)
 		{
-			if (msg is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
+			ArgumentNullException.ThrowIfNull (msg);
 
 			int result = asl_send (Handle, msg.Handle);
 			GC.KeepAlive (msg);
@@ -234,8 +228,7 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public IEnumerable<Message> Search (Message msg)
 		{
-			if (msg is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (msg));
+			ArgumentNullException.ThrowIfNull (msg);
 			// The native asl_search call is done here (and not in the iterator method below) to
 			// keep 'msg' alive across the native call. If it were done in the iterator, the C#
 			// compiler would hoist 'this' and 'msg' into fields of the generated state machine, and
@@ -336,14 +329,12 @@ namespace Darwin {
 
 		public string this [string key] {
 			get {
-				if (key is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+				ArgumentNullException.ThrowIfNull (key);
 				using var keyStr = new TransientString (key);
 				return Marshal.PtrToStringAuto (asl_get (Handle, keyStr))!;
 			}
 			set {
-				if (key is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+				ArgumentNullException.ThrowIfNull (key);
 				using var keyStr = new TransientString (key);
 				using var valueStr = new TransientString (value);
 				asl_set (Handle, keyStr, valueStr);
@@ -358,8 +349,7 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public void Remove (string key)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			using var keyStr = new TransientString (key);
 			asl_unset (Handle, keyStr);
 		}

@@ -46,8 +46,7 @@ namespace Network {
 		// entitlement.
 		public NWEthernetChannel (ushort ethernetType, NWInterface networkInterface)
 		{
-			if (networkInterface is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (networkInterface));
+			ArgumentNullException.ThrowIfNull (networkInterface);
 
 			InitializeHandle (nw_ethernet_channel_create (ethernetType, networkInterface.Handle));
 			GC.KeepAlive (networkInterface);
@@ -85,8 +84,7 @@ namespace Network {
 
 		public void SetQueue (DispatchQueue queue)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+			ArgumentNullException.ThrowIfNull (queue);
 			nw_ethernet_channel_set_queue (GetCheckedHandle (), queue.Handle);
 			GC.KeepAlive (queue);
 		}
@@ -107,8 +105,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Send (ReadOnlySpan<byte> content, ushort vlanTag, string remoteAddress, Action<NWError?> callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			using (var dispatchData = DispatchData.FromReadOnlySpan (content)) {
 				unsafe {

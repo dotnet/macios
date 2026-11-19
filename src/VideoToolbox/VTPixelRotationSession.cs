@@ -71,11 +71,9 @@ namespace VideoToolbox {
 
 		public VTStatus RotateImage (CVPixelBuffer sourceBuffer, CVPixelBuffer destinationBuffer)
 		{
-			if (sourceBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceBuffer));
+			ArgumentNullException.ThrowIfNull (sourceBuffer);
 
-			if (destinationBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
+			ArgumentNullException.ThrowIfNull (destinationBuffer);
 
 			VTStatus status = VTPixelRotationSessionRotateImage (GetCheckedHandle (), sourceBuffer.Handle, destinationBuffer.Handle);
 			GC.KeepAlive (sourceBuffer);
@@ -85,8 +83,7 @@ namespace VideoToolbox {
 
 		public VTStatus SetRotationProperties (VTPixelRotationProperties options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 
 			var dictionary = options.Dictionary;
 			var rv = VTSessionSetProperties (Handle, dictionary.Handle);

@@ -32,8 +32,7 @@ namespace Network {
 
 		public NWDataTransferReport (NWConnection connection)
 		{
-			if (connection is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
+			ArgumentNullException.ThrowIfNull (connection);
 
 			InitializeHandle (nw_connection_create_new_data_transfer_report (connection.Handle));
 			GC.KeepAlive (connection);
@@ -144,10 +143,8 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Collect (DispatchQueue queue, Action<NWDataTransferReport> handler)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineCollectHandler;

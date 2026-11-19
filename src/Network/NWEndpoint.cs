@@ -46,10 +46,8 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? Create (string hostname, string port)
 		{
-			if (hostname is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (hostname));
-			if (port is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (port));
+			ArgumentNullException.ThrowIfNull (hostname);
+			ArgumentNullException.ThrowIfNull (port);
 			using var hostnamePtr = new TransientString (hostname);
 			using var portPtr = new TransientString (port);
 			var handle = nw_endpoint_create_host (hostnamePtr, portPtr);
@@ -127,8 +125,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public static NWEndpoint? CreateBonjourService (string name, string serviceType, string domain)
 		{
-			if (serviceType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (serviceType));
+			ArgumentNullException.ThrowIfNull (serviceType);
 			using var namePtr = new TransientString (name);
 			using var serviceTypePtr = new TransientString (serviceType);
 			using var domainPtr = new TransientString (domain);
@@ -175,8 +172,7 @@ namespace Network {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static NWEndpoint? Create (string url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			using var urlPtr = new TransientString (url);
 			var handle = nw_endpoint_create_url (urlPtr);
 			if (handle == IntPtr.Zero)

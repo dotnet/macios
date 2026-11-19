@@ -23,8 +23,7 @@ namespace Network {
 
 		public static NWProxyConfig? CreateRelay (NWRelayHop firstHop, NWRelayHop? secondHop)
 		{
-			if (firstHop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (firstHop));
+			ArgumentNullException.ThrowIfNull (firstHop);
 			var handle = nw_proxy_config_create_relay (firstHop.GetCheckedHandle (), secondHop.GetHandle ());
 			GC.KeepAlive (firstHop);
 			GC.KeepAlive (secondHop);
@@ -38,12 +37,9 @@ namespace Network {
 
 		public static NWProxyConfig? CreateObliviousHttp (NWRelayHop hop, string relaysResourcePath, byte [] gatewayKeyConfig)
 		{
-			if (hop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (hop));
-			if (relaysResourcePath is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (relaysResourcePath));
-			if (gatewayKeyConfig is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (gatewayKeyConfig));
+			ArgumentNullException.ThrowIfNull (hop);
+			ArgumentNullException.ThrowIfNull (relaysResourcePath);
+			ArgumentNullException.ThrowIfNull (gatewayKeyConfig);
 
 			using var resourcePathPtr = new TransientString (relaysResourcePath);
 
@@ -63,8 +59,7 @@ namespace Network {
 
 		public static NWProxyConfig? CreateHttpConnect (NWEndpoint proxyEndpoint, NWProtocolTlsOptions? options)
 		{
-			if (proxyEndpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyEndpoint));
+			ArgumentNullException.ThrowIfNull (proxyEndpoint);
 
 			var handle = nw_proxy_config_create_http_connect (proxyEndpoint.GetCheckedHandle (), options.GetHandle ());
 			GC.KeepAlive (proxyEndpoint);
@@ -79,8 +74,7 @@ namespace Network {
 
 		public static NWProxyConfig? CreateSocksV5 (NWEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			var handle = nw_proxy_config_create_socksv5 (endpoint.GetCheckedHandle ());
 			GC.KeepAlive (endpoint);
 			if (handle == NativeHandle.Zero)
@@ -93,10 +87,8 @@ namespace Network {
 
 		public void SetUsernameAndPassword (string username, string password)
 		{
-			if (username is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (username));
-			if (password is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (password));
+			ArgumentNullException.ThrowIfNull (username);
+			ArgumentNullException.ThrowIfNull (password);
 
 			using var usernamePtr = new TransientString (username);
 			using var passwordPtr = new TransientString (password);
@@ -119,8 +111,7 @@ namespace Network {
 
 		public void AddMatchDomain (string domain)
 		{
-			if (domain is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (domain));
+			ArgumentNullException.ThrowIfNull (domain);
 			using var domainPtr = new TransientString (domain);
 			nw_proxy_config_add_match_domain (GetCheckedHandle (), domainPtr);
 		}
@@ -135,8 +126,7 @@ namespace Network {
 
 		public void AddExcludedDomain (string domain)
 		{
-			if (domain is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (domain));
+			ArgumentNullException.ThrowIfNull (domain);
 			using var domainPtr = new TransientString (domain);
 			nw_proxy_config_add_excluded_domain (GetCheckedHandle (), domainPtr);
 		}
@@ -163,8 +153,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateMatchDomains (Action<string?> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateMatchDomainHandler;
@@ -190,8 +179,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateExcludedDomains (Action<string?> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateExcludeDomainHandler;

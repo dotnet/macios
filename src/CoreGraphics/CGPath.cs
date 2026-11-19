@@ -375,8 +375,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			CGPathAddRects (Handle, &m, rects, rects.Length);
 		}
 
@@ -387,8 +386,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddRects (CGAffineTransform m, CGRect [] rects, int count)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			if (count > rects.Length)
 				throw new ArgumentException (nameof (count));
 			CGPathAddRects (Handle, &m, rects, count);
@@ -399,8 +397,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddRects (CGRect [] rects)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			CGPathAddRects (Handle, null, rects, rects.Length);
 		}
 
@@ -410,8 +407,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddRects (CGRect [] rects, int count)
 		{
-			if (rects is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (rects));
+			ArgumentNullException.ThrowIfNull (rects);
 			if (count > rects.Length)
 				throw new ArgumentException (nameof (count));
 			CGPathAddRects (Handle, null, rects, count);
@@ -426,8 +422,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			CGPathAddLines (Handle, &m, points, points.Length);
 		}
 
@@ -438,8 +433,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddLines (CGAffineTransform m, CGPoint [] points, int count)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			if (count > points.Length)
 				throw new ArgumentException (nameof (count));
 			CGPathAddLines (Handle, &m, points, count);
@@ -450,8 +444,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddLines (CGPoint [] points)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			CGPathAddLines (Handle, null, points, points.Length);
 		}
 
@@ -461,8 +454,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddLines (CGPoint [] points, int count)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 			if (count > points.Length)
 				throw new ArgumentException (nameof (count));
 			CGPathAddLines (Handle, null, points, count);
@@ -536,8 +528,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddPath (CGAffineTransform t, CGPath path2)
 		{
-			if (path2 is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path2));
+			ArgumentNullException.ThrowIfNull (path2);
 			CGPathAddPath (Handle, &t, path2.Handle);
 			GC.KeepAlive (path2);
 		}
@@ -547,8 +538,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public unsafe void AddPath (CGPath path2)
 		{
-			if (path2 is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path2));
+			ArgumentNullException.ThrowIfNull (path2);
 			CGPathAddPath (Handle, null, path2.Handle);
 			GC.KeepAlive (path2);
 		}

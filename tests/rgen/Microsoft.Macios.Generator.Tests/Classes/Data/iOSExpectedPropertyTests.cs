@@ -714,8 +714,7 @@ public partial class PropertyTests
 		[Export ("setCenter:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
 			var nsb_value__handle__ = nsb_value!.GetNonNullHandle (nameof (nsb_value));
 			if (IsDirectBinding) {
@@ -759,8 +758,7 @@ public partial class PropertyTests
 		[Export ("setName:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			var nsvalue = global::CoreFoundation.CFString.CreateNative (value);
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setName:"), nsvalue);
@@ -803,8 +801,7 @@ public partial class PropertyTests
 		[Export ("setSurnames:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromStrings (value);
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSurnames:"), nsa_value.Handle);
@@ -841,8 +838,7 @@ public partial class PropertyTests
 		[SupportedOSPlatform ("maccatalyst13.1")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
 			var nsb_value__handle__ = nsb_value!.GetNonNullHandle (nameof (nsb_value));
 			global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setNotRegistedLocation:"), nsa_value__handle__);
@@ -972,8 +968,7 @@ public partial class PropertyTests
 		[Export ("setResults:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var nsa_value = global::Foundation.NSArray.FromNSObjects (value);
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setResults:"), nsa_value.Handle);
@@ -1018,8 +1013,7 @@ public partial class PropertyTests
 		[Export ("setSealedProperty:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			var nsvalue = global::CoreFoundation.CFString.CreateNative (value);
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSealedProperty:"), nsvalue);
@@ -1102,8 +1096,7 @@ public partial class PropertyTests
 		[Export ("setSizes:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSizes:"), value);
 			} else {

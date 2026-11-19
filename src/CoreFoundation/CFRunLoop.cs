@@ -369,8 +369,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public CFRunLoopExitReason RunInMode (NSString mode, double seconds, bool returnAfterSourceHandled)
 		{
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (mode);
 
 			CFRunLoopExitReason result = CFRunLoopRunInMode (mode.Handle, seconds, returnAfterSourceHandled ? (byte) 1 : (byte) 0);
 			GC.KeepAlive (mode);
@@ -390,10 +389,8 @@ namespace CoreFoundation {
 		/// <param name="mode">The mode to add the source to. If you use <see cref="NSRunLoopMode.Common" /> the source is added to all common modes.</param>
 		public void AddSource (CFRunLoopSource source, NSString mode)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (source);
+			ArgumentNullException.ThrowIfNull (mode);
 
 			CFRunLoopAddSource (Handle, source.Handle, mode.Handle);
 			GC.KeepAlive (source);
@@ -413,10 +410,8 @@ namespace CoreFoundation {
 		///         </remarks>
 		public bool ContainsSource (CFRunLoopSource source, NSString mode)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (source);
+			ArgumentNullException.ThrowIfNull (mode);
 
 			bool result = CFRunLoopContainsSource (Handle, source.Handle, mode.Handle) != 0;
 			GC.KeepAlive (source);
@@ -432,10 +427,8 @@ namespace CoreFoundation {
 		/// <param name="mode">The mode to remove it from. If you use <see cref="NSRunLoopMode.Common" /> the source is removed from all common modes.</param>
 		public void RemoveSource (CFRunLoopSource source, NSString mode)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (source);
+			ArgumentNullException.ThrowIfNull (mode);
 
 			CFRunLoopRemoveSource (Handle, source.Handle, mode.Handle);
 			GC.KeepAlive (source);

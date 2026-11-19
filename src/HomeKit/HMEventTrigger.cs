@@ -16,8 +16,7 @@ namespace HomeKit {
 		static public NSPredicate CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent (HMSignificantEvent significantEvent, NSDateComponents offset)
 		{
 			var constant = significantEvent.GetConstant ();
-			if (constant is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (significantEvent));
+			ArgumentNullException.ThrowIfNull (constant, nameof (significantEvent));
 			return CreatePredicateForEvaluatingTriggerOccurringBeforeSignificantEvent (constant, offset);
 		}
 
@@ -34,8 +33,7 @@ namespace HomeKit {
 		static public NSPredicate CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent (HMSignificantEvent significantEvent, NSDateComponents offset)
 		{
 			var constant = significantEvent.GetConstant ();
-			if (constant is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (significantEvent));
+			ArgumentNullException.ThrowIfNull (constant, nameof (significantEvent));
 			return CreatePredicateForEvaluatingTriggerOccurringAfterSignificantEvent (constant, offset);
 		}
 	}

@@ -380,8 +380,7 @@ namespace MetalPerformanceShaders {
 						dimension15,
 					};
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 16)
 					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), "Length must be 16.");
 
@@ -445,8 +444,7 @@ namespace MetalPerformanceShaders {
 						dimension15,
 					};
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 16)
 					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), "Length must be 16.");
 

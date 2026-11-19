@@ -116,8 +116,7 @@ namespace CoreFoundation {
 		/// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
 		public int Write (byte [] buffer)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			return Write (buffer, 0, buffer.Length);
 		}
 
@@ -131,8 +130,7 @@ namespace CoreFoundation {
 		/// <exception cref="ObjectDisposedException">The stream has been disposed.</exception>
 		public unsafe int Write (byte [] buffer, nint offset, nint count)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			GetCheckedHandle ();
 			if (offset < 0)
 				throw new ArgumentException ();
@@ -188,10 +186,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected override void ScheduleWithRunLoop (CFRunLoop loop, NSString? mode)
 		{
-			if (loop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (loop));
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (loop);
+			ArgumentNullException.ThrowIfNull (mode);
 			CFWriteStreamScheduleWithRunLoop (Handle, loop.Handle, mode.Handle);
 			GC.KeepAlive (loop);
 			GC.KeepAlive (mode);
@@ -206,10 +202,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected override void UnscheduleFromRunLoop (CFRunLoop loop, NSString? mode)
 		{
-			if (loop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (loop));
-			if (mode is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (mode));
+			ArgumentNullException.ThrowIfNull (loop);
+			ArgumentNullException.ThrowIfNull (mode);
 			CFWriteStreamUnscheduleFromRunLoop (Handle, loop.Handle, mode.Handle);
 			GC.KeepAlive (loop);
 			GC.KeepAlive (mode);
@@ -224,8 +218,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected override IntPtr DoGetProperty (NSString name)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 			IntPtr result = CFWriteStreamCopyProperty (Handle, name.Handle);
 			GC.KeepAlive (name);
 			return result;
@@ -241,8 +234,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected override bool DoSetProperty (NSString name, INativeObject? value)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 			bool result = CFWriteStreamSetProperty (Handle, name.Handle, value.GetHandle ()) != 0;
 			GC.KeepAlive (name);
 			GC.KeepAlive (value);

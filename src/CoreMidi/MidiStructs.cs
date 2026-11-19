@@ -28,8 +28,7 @@ namespace CoreMidi {
 				return new byte [] { sysExIdByte0, sysExIdByte1, sysExIdByte2 };
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 3)
 					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), "Length must be 3");
 
@@ -57,8 +56,7 @@ namespace CoreMidi {
 				return new byte [] { revisionLevel0, revisionLevel1, revisionLevel2, revisionLevel3 };
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 4)
 					ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (value), "Length must be 4");
 

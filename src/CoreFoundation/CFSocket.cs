@@ -231,8 +231,7 @@ namespace CoreFoundation {
 
 		static byte [] CreateData (IPEndPoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 
 			if (endpoint.AddressFamily == AddressFamily.InterNetwork) {
 				var buffer = new byte [16];

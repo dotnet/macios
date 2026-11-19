@@ -6,8 +6,7 @@ namespace Metal {
 		/// <param name="viewports">The viewports to set.</param>
 		public void SetViewports (params MTLViewport [] viewports)
 		{
-			if (viewports is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (viewports));
+			ArgumentNullException.ThrowIfNull (viewports);
 
 			unsafe {
 				fixed (MTLViewport* ptr = viewports) {
@@ -31,8 +30,7 @@ namespace Metal {
 		/// <param name="scissorRects">The rectangles to set.</param>
 		public void SetScissorRects (params MTLScissorRect [] scissorRects)
 		{
-			if (scissorRects is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (scissorRects));
+			ArgumentNullException.ThrowIfNull (scissorRects);
 
 			unsafe {
 				fixed (MTLScissorRect* ptr = scissorRects) {

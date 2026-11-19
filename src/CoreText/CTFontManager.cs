@@ -104,8 +104,7 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("macos10.6")]
 		public static bool IsFontSupported (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			bool result = CTFontManagerIsSupportedFont (url.Handle) != 0;
 			GC.KeepAlive (url);
 			return result;
@@ -121,8 +120,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public static NSError? RegisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
-			if (fontUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fontUrl));
+			ArgumentNullException.ThrowIfNull (fontUrl);
 
 			IntPtr error = IntPtr.Zero;
 
@@ -144,8 +142,7 @@ namespace CoreText {
 
 		static NSArray EnsureNonNullArray (object [] items, string name)
 		{
-			if (items is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (items, nameof (name));
 
 			foreach (var i in items)
 				if (i is null)
@@ -244,8 +241,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public static NSError? UnregisterFontsForUrl (NSUrl fontUrl, CTFontManagerScope scope)
 		{
-			if (fontUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fontUrl));
+			ArgumentNullException.ThrowIfNull (fontUrl);
 
 			IntPtr error = IntPtr.Zero;
 
@@ -345,8 +341,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos")]
 		public static CTFontDescriptor [] GetFonts (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			var arrayPtr = CTFontManagerCreateFontDescriptorsFromURL (url.Handle);
 			GC.KeepAlive (url);
@@ -413,8 +408,7 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("maccatalyst18.0", "Use 'CreateFontDescriptors' or 'RegisterFontsForUrl' instead.")]
 		public static bool RegisterGraphicsFont (CGFont font, [NotNullWhen (true)] out NSError? error)
 		{
-			if (font is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
+			ArgumentNullException.ThrowIfNull (font);
 			IntPtr h = IntPtr.Zero;
 			bool ret;
 			try {
@@ -477,8 +471,7 @@ namespace CoreText {
 		[ObsoletedOSPlatform ("maccatalyst18.0")]
 		public static bool UnregisterGraphicsFont (CGFont font, out NSError? error)
 		{
-			if (font is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (font));
+			ArgumentNullException.ThrowIfNull (font);
 			IntPtr h = IntPtr.Zero;
 			bool ret;
 			try {
@@ -587,8 +580,7 @@ namespace CoreText {
 
 		public static CTFontDescriptor? CreateFontDescriptor (NSData data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			var p = CTFontManagerCreateFontDescriptorFromData (data.Handle);
 			GC.KeepAlive (data);
@@ -611,8 +603,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static CTFontDescriptor []? CreateFontDescriptors (NSData data)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			var p = CTFontManagerCreateFontDescriptorsFromData (data.Handle);
 			GC.KeepAlive (data);
@@ -675,8 +666,7 @@ namespace CoreText {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RequestFonts (CTFontDescriptor [] fontDescriptors, CTFontManagerRequestFontsHandler completionHandler)
 		{
-			if (completionHandler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+			ArgumentNullException.ThrowIfNull (completionHandler);
 
 			using (var arr = EnsureNonNullArray (fontDescriptors, nameof (fontDescriptors))) {
 				unsafe {

@@ -200,8 +200,7 @@ namespace AddressBook {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void RequestAccess (Action<bool, NSError?> onCompleted)
 		{
-			if (onCompleted is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (onCompleted));
+			ArgumentNullException.ThrowIfNull (onCompleted);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, byte, IntPtr, void> trampoline = &TrampolineCompletionHandler;
@@ -287,8 +286,7 @@ namespace AddressBook {
 		///         </exception>
 		public void Add (ABRecord record)
 		{
-			if (record is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
+			ArgumentNullException.ThrowIfNull (record);
 
 			IntPtr error;
 			NativeHandle recordHandle = record.Handle;
@@ -315,8 +313,7 @@ namespace AddressBook {
 		///         </exception>
 		public void Remove (ABRecord record)
 		{
-			if (record is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (record));
+			ArgumentNullException.ThrowIfNull (record);
 
 			IntPtr error;
 			NativeHandle recordHandle = record.Handle;
@@ -372,8 +369,7 @@ namespace AddressBook {
 		///         <remarks>To be added.</remarks>
 		public ABPerson [] GetPeople (ABRecord source)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
 			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
@@ -389,8 +385,7 @@ namespace AddressBook {
 		///         <remarks>To be added.</remarks>
 		public ABPerson [] GetPeople (ABRecord source, ABPersonSortBy sortOrdering)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
 			GC.KeepAlive (source);
 			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
@@ -440,8 +435,7 @@ namespace AddressBook {
 		///         <remarks>To be added.</remarks>
 		public ABGroup [] GetGroups (ABRecord source)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
@@ -470,8 +464,7 @@ namespace AddressBook {
 		///         </remarks>
 		public static string? LocalizedLabel (NSString label)
 		{
-			if (label is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
+			ArgumentNullException.ThrowIfNull (label);
 
 			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle), true);
 			GC.KeepAlive (label);

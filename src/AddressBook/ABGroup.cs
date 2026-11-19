@@ -94,8 +94,7 @@ namespace AddressBook {
 		public ABGroup (ABRecord source)
 			: base (IntPtr.Zero, true)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 
 			InitializeHandle (ABGroupCreateInSource (source.Handle));
 			GC.KeepAlive (source);
@@ -157,8 +156,7 @@ namespace AddressBook {
 		///         </exception>
 		public void Add (ABRecord person)
 		{
-			if (person is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (person));
+			ArgumentNullException.ThrowIfNull (person);
 			IntPtr error;
 			unsafe {
 				if (ABGroupAddMember (Handle, person.Handle, &error) == 0)
@@ -242,8 +240,7 @@ namespace AddressBook {
 		///         </exception>
 		public void Remove (ABRecord member)
 		{
-			if (member is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (member));
+			ArgumentNullException.ThrowIfNull (member);
 			IntPtr error;
 			unsafe {
 				if (ABGroupRemoveMember (Handle, member.Handle, &error) == 0)

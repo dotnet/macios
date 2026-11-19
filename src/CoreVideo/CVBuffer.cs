@@ -83,8 +83,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public void RemoveAttachment (NSString key)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			CVBufferRemoveAttachment (Handle, key.Handle);
 			GC.KeepAlive (key);
@@ -119,8 +118,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public T? GetAttachment<T> (NSString key, out CVAttachmentMode attachmentMode) where T : class, INativeObject
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			T? result2 = Runtime.GetINativeObject<T> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
 			GC.KeepAlive (key);
 			return result2;
@@ -140,8 +138,7 @@ namespace CoreVideo {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public NSObject? GetAttachment (NSString key, out CVAttachmentMode attachmentMode)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			NSObject? result = Runtime.GetNSObject<NSObject> (CVBufferCopyAttachment (Handle, key.Handle, out attachmentMode), true);
 			GC.KeepAlive (key);
 			return result;
@@ -187,8 +184,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public void PropagateAttachments (CVBuffer destinationBuffer)
 		{
-			if (destinationBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
+			ArgumentNullException.ThrowIfNull (destinationBuffer);
 
 			CVBufferPropagateAttachments (Handle, destinationBuffer.Handle);
 			GC.KeepAlive (destinationBuffer);
@@ -210,10 +206,8 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public void SetAttachment (NSString key, INativeObject @value, CVAttachmentMode attachmentMode)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-			if (@value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (@value, nameof (value));
 			CVBufferSetAttachment (Handle, key.Handle, @value.Handle, attachmentMode);
 			GC.KeepAlive (key);
 			GC.KeepAlive (@value);
@@ -228,8 +222,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public void SetAttachments (NSDictionary theAttachments, CVAttachmentMode attachmentMode)
 		{
-			if (theAttachments is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (theAttachments));
+			ArgumentNullException.ThrowIfNull (theAttachments);
 			CVBufferSetAttachments (Handle, theAttachments.Handle, attachmentMode);
 			GC.KeepAlive (theAttachments);
 		}
@@ -247,8 +240,7 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("macos")]
 		public bool HasAttachment (NSString key)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 			bool result = CVBufferHasAttachment (Handle, key.Handle) != 0;
 			GC.KeepAlive (key);
 			return result;

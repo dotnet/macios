@@ -158,7 +158,7 @@ namespace CoreFoundation {
 									CFNotificationSuspensionBehavior suspensionBehavior = CFNotificationSuspensionBehavior.DeliverImmediately)
 		{
 			if (darwinnc is not null && darwinnc.Handle == Handle && name is null) {
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name), "When using the Darwin Notification Center, the value passed must not be null");
+				throw new ArgumentNullException (nameof (name), "When using the Darwin Notification Center, the value passed must not be null");
 			}
 
 			var strHandle = CFString.CreateNative (name);
@@ -249,8 +249,7 @@ namespace CoreFoundation {
 		public void PostNotification (string notification, INativeObject objectToObserve, NSDictionary? userInfo = null, bool deliverImmediately = false, bool postOnAllSessions = false)
 		{
 			// The name of the notification to post.This value must not be NULL.
-			if (notification is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
+			ArgumentNullException.ThrowIfNull (notification);
 
 			var strHandle = CFString.CreateNative (notification);
 			CFNotificationCenterPostNotificationWithOptions (
@@ -270,8 +269,7 @@ namespace CoreFoundation {
 		///         </remarks>
 		public void RemoveObserver (CFNotificationObserverToken token)
 		{
-			if (token is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (token));
+			ArgumentNullException.ThrowIfNull (token);
 			if (token.nameHandle == IntPtr.Zero && token.stringName != NullNotificationName)
 				throw new ObjectDisposedException (nameof (token));
 			if (token.centerHandle != Handle)

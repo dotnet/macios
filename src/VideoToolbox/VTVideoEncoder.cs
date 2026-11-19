@@ -112,7 +112,7 @@ namespace VideoToolbox {
 			if (dict [VTVideoEncoderList.CodecType] is NSNumber codecTypeNum)
 				CodecType = codecTypeNum.Int32Value;
 			else
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException ("VTVideoEncoder 'dict [VTVideoEncoderList.CodecType]' could not be casted to NSNumber.");
+				throw new ArgumentNullException ("VTVideoEncoder 'dict [VTVideoEncoderList.CodecType]' could not be casted to NSNumber.");
 
 			CodecName = dict [VTVideoEncoderList.CodecName] as NSString;
 			DisplayName = dict [VTVideoEncoderList.DisplayName] as NSString;

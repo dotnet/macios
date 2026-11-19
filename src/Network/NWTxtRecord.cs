@@ -144,8 +144,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool Apply (NWTxtRecordApplyDelegate handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, NWTxtRecordFindKey, IntPtr, nuint, byte> trampoline = &TrampolineApplyHandler;
@@ -179,8 +178,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool GetValue (string key, NWTxtRecordGetValueDelegete handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, NWTxtRecordFindKey, IntPtr, nuint, void> trampoline = &TrampolineAccessKeyHandler;
@@ -210,8 +208,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool GetRawBytes (NWTxtRecordGetRawByteDelegate handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, nuint, void> trampoline = &TrampolineRawBytesHandler;

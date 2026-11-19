@@ -279,11 +279,9 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public int KEvent (KernelEvent [] changeList, KernelEvent [] eventList, TimeSpan? timeout = null)
 		{
-			if (changeList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (changeList));
+			ArgumentNullException.ThrowIfNull (changeList);
 
-			if (eventList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (eventList));
+			ArgumentNullException.ThrowIfNull (eventList);
 
 			if (changeList.Length < 1)
 				throw new ArgumentOutOfRangeException ("eventList must contain at least one element", nameof (eventList));
@@ -304,11 +302,9 @@ namespace Darwin {
 		///         <remarks>To be added.</remarks>
 		public unsafe int KEvent (KernelEvent [] changeList, int nChanges, KernelEvent [] eventList, int nEvents, TimeSpec? timeout = null)
 		{
-			if (changeList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (changeList));
+			ArgumentNullException.ThrowIfNull (changeList);
 
-			if (eventList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (eventList));
+			ArgumentNullException.ThrowIfNull (eventList);
 
 			if (changeList.Length < 1)
 				throw new ArgumentOutOfRangeException ("eventList must contain at least one element", nameof (eventList));

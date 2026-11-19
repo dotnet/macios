@@ -135,8 +135,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static NSUrl? GetDefaultApplicationUrlForUrl (NSUrl url, LSRoles roles = LSRoles.All)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			var result = Runtime.GetNSObject<NSUrl> (
 				LSCopyDefaultApplicationURLForURL (url.Handle, roles, IntPtr.Zero)
@@ -159,8 +158,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static NSUrl? GetDefaultApplicationUrlForContentType (string contentType, LSRoles roles = LSRoles.All)
 		{
-			if (contentType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
+			ArgumentNullException.ThrowIfNull (contentType);
 
 			var contentTypeHandle = CFString.CreateNative (contentType);
 			try {
@@ -186,8 +184,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static NSUrl [] GetApplicationUrlsForUrl (NSUrl url, LSRoles roles = LSRoles.All)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			var result = NSArray.NonNullArrayFromHandleDropNullElements<NSUrl> (
 				LSCopyApplicationURLsForURL (url.Handle, roles),
@@ -214,10 +211,8 @@ namespace CoreServices {
 		public static bool CanUrlAcceptUrl (NSUrl itemUrl, NSUrl targetUrl,
 			LSRoles roles, LSAcceptanceFlags acceptanceFlags, out LSResult result)
 		{
-			if (itemUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (itemUrl));
-			if (targetUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (targetUrl));
+			ArgumentNullException.ThrowIfNull (itemUrl);
+			ArgumentNullException.ThrowIfNull (targetUrl);
 
 			byte acceptsItem;
 			unsafe {
@@ -255,8 +250,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static NSUrl [] GetApplicationUrlsForBundleIdentifier (string bundleIdentifier)
 		{
-			if (bundleIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bundleIdentifier));
+			ArgumentNullException.ThrowIfNull (bundleIdentifier);
 
 			var bundleIdentifierHandle = CFString.CreateNative (bundleIdentifier);
 			try {
@@ -282,8 +276,7 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public unsafe static LSResult Open (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			LSResult result = LSOpenCFURLRef (url.Handle, (void**) 0);
 			GC.KeepAlive (url);
@@ -297,8 +290,7 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public unsafe static LSResult Open (NSUrl url, out NSUrl? launchedUrl)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			void* launchedUrlHandle;
 			var result = LSOpenCFURLRef (url.Handle, &launchedUrlHandle);
@@ -321,8 +313,7 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public static LSResult Register (NSUrl url, bool update)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			LSResult result = LSRegisterURL (url.Handle, (byte) (update ? 1 : 0));
 			GC.KeepAlive (url);
@@ -347,8 +338,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static string? []? GetAllRoleHandlersForContentType (string contentType, LSRoles roles = LSRoles.All)
 		{
-			if (contentType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
+			ArgumentNullException.ThrowIfNull (contentType);
 
 			var contentTypeHandle = CFString.CreateNative (contentType);
 			try {
@@ -374,8 +364,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static string? GetDefaultRoleHandlerForContentType (string contentType, LSRoles roles = LSRoles.All)
 		{
-			if (contentType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
+			ArgumentNullException.ThrowIfNull (contentType);
 
 			var contentTypeHandle = CFString.CreateNative (contentType);
 			try {
@@ -405,10 +394,8 @@ namespace CoreServices {
 		public static LSResult SetDefaultRoleHandlerForContentType (string contentType, string handlerBundleId,
 			LSRoles roles = LSRoles.All)
 		{
-			if (contentType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (contentType));
-			if (handlerBundleId is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handlerBundleId));
+			ArgumentNullException.ThrowIfNull (contentType);
+			ArgumentNullException.ThrowIfNull (handlerBundleId);
 
 			var contentTypeHandle = CFString.CreateNative (contentType);
 			var handlerBundleIdHandle = CFString.CreateNative (handlerBundleId);
@@ -437,8 +424,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos10.15", "Use 'GetApplicationUrlsForUrl' instead.")]
 		public static string? []? GetAllHandlersForUrlScheme (string urlScheme)
 		{
-			if (urlScheme is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
+			ArgumentNullException.ThrowIfNull (urlScheme);
 
 			var urlSchemeHandle = CFString.CreateNative (urlScheme);
 			try {
@@ -463,8 +449,7 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos10.15", "Use 'GetDefaultApplicationUrlForUrl' instead.")]
 		public static string? GetDefaultHandlerForUrlScheme (string urlScheme)
 		{
-			if (urlScheme is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
+			ArgumentNullException.ThrowIfNull (urlScheme);
 
 			var urlSchemeHandle = CFString.CreateNative (urlScheme);
 			try {
@@ -490,10 +475,8 @@ namespace CoreServices {
 		[ObsoletedOSPlatform ("macos14.0")]
 		public static LSResult SetDefaultHandlerForUrlScheme (string urlScheme, string handlerBundleId)
 		{
-			if (urlScheme is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlScheme));
-			if (handlerBundleId is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handlerBundleId));
+			ArgumentNullException.ThrowIfNull (urlScheme);
+			ArgumentNullException.ThrowIfNull (handlerBundleId);
 
 			var urlSchemeHandle = CFString.CreateNative (urlScheme);
 			var handlerBundleIdHandle = CFString.CreateNative (handlerBundleId);

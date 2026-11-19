@@ -90,8 +90,7 @@ namespace CoreFoundation {
 
 		internal static unsafe NativeHandle Create (params NativeHandle [] values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			fixed (NativeHandle* pv = values) {
 				return CFArrayCreate (IntPtr.Zero,
 						(IntPtr) pv,
@@ -102,8 +101,7 @@ namespace CoreFoundation {
 
 		public static unsafe NativeHandle Create (params INativeObject [] values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			int c = values.Length;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (int i = 0; i < c; ++i)
@@ -136,8 +134,7 @@ namespace CoreFoundation {
 		/// </remarks>
 		public static unsafe NativeHandle Create (IReadOnlyList<string?> values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			var c = values.Count;
 			var _values = c <= 256 ? stackalloc IntPtr [c] : new IntPtr [c];
 			for (var i = 0; i < c; ++i)

@@ -18,8 +18,7 @@ namespace Network {
 
 		public NWMulticastGroup (NWEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 
 			InitializeHandle (nw_group_descriptor_create_multicast (endpoint.GetCheckedHandle ()));
 			GC.KeepAlive (endpoint);
@@ -30,8 +29,7 @@ namespace Network {
 
 		public void AddEndpoint (NWEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			nw_group_descriptor_add_endpoint (GetCheckedHandle (), endpoint.GetCheckedHandle ());
 			GC.KeepAlive (endpoint);
 		}
@@ -52,8 +50,7 @@ namespace Network {
 
 		public void SetSpecificSource (NWEndpoint endpoint)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
+			ArgumentNullException.ThrowIfNull (endpoint);
 			nw_multicast_group_descriptor_set_specific_source (GetCheckedHandle (), endpoint.GetCheckedHandle ());
 			GC.KeepAlive (endpoint);
 		}
@@ -75,8 +72,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateEndpoints (Func<NWEndpoint, bool> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, OS_nw_endpoint, byte> trampoline = &TrampolineEnumerateEndpointsHandler;

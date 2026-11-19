@@ -42,10 +42,8 @@ namespace ImageIO {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSUrl url, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (url);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, nint, IntPtr, byte*, void> trampoline = &SDCGImageSourceAnimationBlock.Invoke;
@@ -64,10 +62,8 @@ namespace ImageIO {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static CGImageAnimationStatus AnimateImage (NSData data, CGImageAnimationOptions options, CGImageSourceAnimationHandler handler)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (data);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, nint, IntPtr, byte*, void> trampoline = &SDCGImageSourceAnimationBlock.Invoke;

@@ -82,8 +82,7 @@ namespace Compression {
 		{
 			if (!NeedsInput ())
 				throw new InvalidOperationException ("We have something left in previous input!");
-			if (inputBufferPtr is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inputBufferPtr));
+			ArgumentNullException.ThrowIfNull (inputBufferPtr);
 			if (_inputBufferHandle.Pointer is not null)
 				throw new InvalidOperationException ("Unexpected input buffer handler found.");
 
@@ -99,8 +98,7 @@ namespace Compression {
 
 		internal int GetDeflateOutput (byte [] outputBuffer)
 		{
-			if (outputBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputBuffer));
+			ArgumentNullException.ThrowIfNull (outputBuffer);
 			if (NeedsInput ())
 				throw new InvalidOperationException ("GetDeflateOutput should only be called after providing input");
 
@@ -117,8 +115,7 @@ namespace Compression {
 
 		private unsafe CompressionStatus ReadDeflateOutput (byte [] outputBuffer, StreamFlag flushCode, out int bytesRead)
 		{
-			if (outputBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputBuffer));
+			ArgumentNullException.ThrowIfNull (outputBuffer);
 
 			if (outputBuffer.Length < 0)
 				throw new ArgumentException ("outputbuffer length must be bigger than 0");
@@ -150,8 +147,7 @@ namespace Compression {
 
 		internal bool Finish (byte [] outputBuffer, out int bytesRead)
 		{
-			if (outputBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputBuffer));
+			ArgumentNullException.ThrowIfNull (outputBuffer);
 			if (outputBuffer.Length < 0)
 				throw new ArgumentException ("Can't pass in an empty output buffer!");
 
@@ -164,8 +160,7 @@ namespace Compression {
 		/// </summary>
 		internal unsafe bool Flush (byte [] outputBuffer, out int bytesRead)
 		{
-			if (outputBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputBuffer));
+			ArgumentNullException.ThrowIfNull (outputBuffer);
 			if (outputBuffer.Length < 0)
 				throw new ArgumentException ("Can't pass in an empty output buffer!");
 			if (!NeedsInput ())

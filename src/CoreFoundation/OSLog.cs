@@ -78,10 +78,8 @@ namespace CoreFoundation {
 
 		public OSLog (string subsystem, string category)
 		{
-			if (subsystem is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (subsystem));
-			if (category is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (category));
+			ArgumentNullException.ThrowIfNull (subsystem);
+			ArgumentNullException.ThrowIfNull (category);
 			using var subsystemPtr = new TransientString (subsystem);
 			using var categoryPtr = new TransientString (category);
 			InitializeHandle (os_log_create (subsystemPtr, categoryPtr));
@@ -94,8 +92,7 @@ namespace CoreFoundation {
 
 		public void Log (OSLogLevel level, string message)
 		{
-			if (message is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (message));
+			ArgumentNullException.ThrowIfNull (message);
 
 			using var messagePtr = new TransientString (message);
 			xamarin_os_log (Handle, level, messagePtr);

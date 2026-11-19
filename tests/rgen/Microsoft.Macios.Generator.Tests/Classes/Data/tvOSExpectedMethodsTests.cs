@@ -162,8 +162,7 @@ public partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -198,8 +197,7 @@ public partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string?>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity2boolstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -234,8 +232,7 @@ public partial class MethodTests
 	[Export ("completeRequestReturningItems:completionHandler:")]
 	public virtual unsafe partial void CompleteRequest (global::Foundation.NSExtensionItem[] returningItems, global::System.Action<bool, string, string?>? completionHandler)
 	{
-		if (returningItems is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (returningItems));
+		global::System.ArgumentNullException.ThrowIfNull (returningItems, nameof (returningItems));
 		using var nsa_returningItems = global::Foundation.NSArray.FromNSObjects (returningItems);
 		using var block_completionHandler = global::ObjCRuntime.Trampolines.SDActionArity3boolstringstring?.CreateNullableBlock (completionHandler);
 		global::ObjCRuntime.BlockLiteral* block_ptr_completionHandler = completionHandler is not null ? &block_completionHandler : null;
@@ -290,8 +287,7 @@ public partial class MethodTests
 	[Export ("filteredArrayUsingStrings:")]
 	public virtual unsafe partial global::Foundation.NSArray FilterStrings (string[] predicate)
 	{
-		if (predicate is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (predicate));
+		global::System.ArgumentNullException.ThrowIfNull (predicate, nameof (predicate));
 		using var nsa_predicate = global::Foundation.NSArray.FromStrings (predicate);
 		global::Foundation.NSArray ret;
 		if (IsDirectBinding) {
@@ -312,8 +308,7 @@ public partial class MethodTests
 	[Export ("arrayWithContentsOfFile:")]
 	public virtual unsafe partial static global::Foundation.NSArray FromFile (string path)
 	{
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		global::Foundation.NSArray ret;
 		if (IsDirectBinding) {
@@ -356,8 +351,7 @@ public partial class MethodTests
 	[Export ("bookmarkDataWithContentsOfURL:subdomain:error:")]
 	public static unsafe partial global::Foundation.NSData GetBookmarkData (global::Foundation.NSUrl bookmarkFileUrl, string subdomain, out global::Foundation.NSError? error)
 	{
-		if (subdomain is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (subdomain));
+		global::System.ArgumentNullException.ThrowIfNull (subdomain, nameof (subdomain));
 		var bookmarkFileUrl__handle__ = bookmarkFileUrl!.GetNonNullHandle (nameof (bookmarkFileUrl));
 		var nssubdomain = global::CoreFoundation.CFString.CreateNative (subdomain);
 		global::ObjCRuntime.NativeHandle error__handle__;
@@ -413,8 +407,7 @@ public partial class MethodTests
 	[Export ("sortedArrayUsingComparator:")]
 	public virtual unsafe partial global::Foundation.NSArray Sort (global::Foundation.NSComparator cmptr)
 	{
-		if (cmptr is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmptr));
+		global::System.ArgumentNullException.ThrowIfNull (cmptr, nameof (cmptr));
 		using var block_cmptr = global::ObjCRuntime.Trampolines.SDNSComparator.CreateNullableBlock (cmptr);
 		global::ObjCRuntime.BlockLiteral* block_ptr_cmptr = cmptr is not null ? &block_cmptr : null;
 		global::Foundation.NSArray ret;
@@ -455,8 +448,7 @@ public partial class MethodTests
 	[Export ("writeToFile:atomically:")]
 	public virtual unsafe partial bool WriteToFile (string path, bool useAuxiliaryFile)
 	{
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		bool ret;
 		if (IsDirectBinding) {

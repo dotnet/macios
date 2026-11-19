@@ -54,8 +54,7 @@ namespace GameController {
 
 		public GCDualSenseAdaptiveTriggerPositionalAmplitudes (float [] values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			if (values.Length > DiscretePositionCount)
 				throw new ArgumentOutOfRangeException ($"The '{nameof (values)}' array length can't be greater than {DiscretePositionCount}.");
 
@@ -125,8 +124,7 @@ namespace GameController {
 		public GCDualSenseAdaptiveTriggerPositionalAmplitudes_Blittable (float [] values)
 #endif
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 
 			value0 = values.Length >= 1 ? values [0] : 0;
 			value1 = values.Length >= 2 ? values [1] : 0;
@@ -155,8 +153,7 @@ namespace GameController {
 
 		public GCDualSenseAdaptiveTriggerPositionalResistiveStrengths (float [] values)
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 			if (values.Length > DiscretePositionCount)
 				throw new ArgumentOutOfRangeException ($"The '{nameof (values)}' array length can't be greater than {DiscretePositionCount}.");
 
@@ -226,8 +223,7 @@ namespace GameController {
 		public GCDualSenseAdaptiveTriggerPositionalResistiveStrengths_Blittable (float [] values)
 #endif
 		{
-			if (values is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (values));
+			ArgumentNullException.ThrowIfNull (values);
 
 			value0 = values.Length >= 1 ? values [0] : 0;
 			value1 = values.Length >= 2 ? values [1] : 0;

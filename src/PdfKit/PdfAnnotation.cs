@@ -27,8 +27,7 @@ namespace PdfKit {
 		[SupportedOSPlatform ("tvos18.2")]
 		public bool SetValue<T> (T value, PdfAnnotationKey key) where T : class, INativeObject
 		{
-			if (value is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (value);
 
 			bool result = _SetValue (value.Handle, key.GetConstant ()!);
 			GC.KeepAlive (value);

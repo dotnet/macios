@@ -16,8 +16,7 @@ namespace VideoSubscriberAccount {
 		/// <exception cref="ArgumentNullException"><paramref name="self" /> is <see langword="null" />.</exception>
 		public static NSString? [] GetConstants (this VSAccountProviderAuthenticationScheme [] self)
 		{
-			if (self is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (self));
+			ArgumentNullException.ThrowIfNull (self);
 
 			var array = new NSString? [self.Length];
 			for (int n = 0; n < self.Length; n++)
@@ -32,8 +31,7 @@ namespace VideoSubscriberAccount {
 		/// <exception cref="NotSupportedException">An element in <paramref name="constants" /> has no associated authentication scheme on the current platform.</exception>
 		public static VSAccountProviderAuthenticationScheme [] GetValues (NSString [] constants)
 		{
-			if (constants is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (constants));
+			ArgumentNullException.ThrowIfNull (constants);
 
 			var array = new VSAccountProviderAuthenticationScheme [constants.Length];
 			for (int n = 0; n < constants.Length; n++)

@@ -80,8 +80,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateInterfaces (Action<NWInterface> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, byte> trampoline = &TrampolineEnumerateInterfacesHandler;

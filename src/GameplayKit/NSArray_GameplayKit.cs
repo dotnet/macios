@@ -27,8 +27,7 @@ namespace GameplayKit {
 		[Export ("shuffledArrayWithRandomSource:")]
 		public static T [] GetShuffledArray<T> (this NSArray This, GKRandomSource randomSource) where T : class, INativeObject
 		{
-			if (randomSource is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (randomSource));
+			ArgumentNullException.ThrowIfNull (randomSource);
 			var result = NSArray.NonNullArrayFromHandleDropNullElements<T> (Messaging.IntPtr_objc_msgSend_IntPtr (This.Handle, Selector.GetHandle ("shuffledArrayWithRandomSource:"), randomSource.Handle));
 			GC.KeepAlive (This);
 			GC.KeepAlive (randomSource);

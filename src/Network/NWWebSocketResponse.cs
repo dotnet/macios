@@ -76,8 +76,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public bool EnumerateAdditionalHeaders (Action<string?, string?> handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte> trampoline = &TrampolineEnumerateHeadersHandler;

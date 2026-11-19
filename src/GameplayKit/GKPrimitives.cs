@@ -63,8 +63,7 @@ namespace GameplayKit {
 				return new Vector3 [] { point1, point2, point3 };
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 3)
 					throw new ArgumentOutOfRangeException (nameof (value), "The length of the Value array must be 3");
 				point1 = value [0];

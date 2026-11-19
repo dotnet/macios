@@ -87,8 +87,7 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetTitle (string title)
 		{
-			if (title is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (title));
+			ArgumentNullException.ThrowIfNull (title);
 
 			var titleHandle = CFString.CreateNative (title);
 			try {
@@ -113,8 +112,7 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetLanguageIdentifier (string languageIdentifier)
 		{
-			if (languageIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (languageIdentifier));
+			ArgumentNullException.ThrowIfNull (languageIdentifier);
 
 			var languageIdentifierHandle = CFString.CreateNative (languageIdentifier);
 			try {
@@ -139,8 +137,7 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetAlternativeText (string alternativeText)
 		{
-			if (alternativeText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (alternativeText));
+			ArgumentNullException.ThrowIfNull (alternativeText);
 
 			var alternativeTextHandle = CFString.CreateNative (alternativeText);
 			try {
@@ -165,8 +162,7 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetExpansionText (string expansionText)
 		{
-			if (expansionText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (expansionText));
+			ArgumentNullException.ThrowIfNull (expansionText);
 
 			var expansionTextHandle = CFString.CreateNative (expansionText);
 			try {
@@ -191,8 +187,7 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("tvos")]
 		public void SetActualText (string actualText)
 		{
-			if (actualText is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (actualText));
+			ArgumentNullException.ThrowIfNull (actualText);
 
 			var actualTextHandle = CFString.CreateNative (actualText);
 			try {

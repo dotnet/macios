@@ -411,8 +411,7 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="obj"/> is <see langword="null"/>.</exception>
 		public void LowlevelSetObject (NSObject obj, IntPtr key)
 		{
-			if (obj is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
+			ArgumentNullException.ThrowIfNull (obj);
 
 			LowlevelSetObject (obj.Handle, key);
 			GC.KeepAlive (obj);
@@ -424,8 +423,7 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="obj"/> is <see langword="null"/>.</exception>
 		internal void LowlevelSetObject (NSString obj, IntPtr key)
 		{
-			if (obj is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
+			ArgumentNullException.ThrowIfNull (obj);
 
 			LowlevelSetObject (obj.Handle, key);
 			GC.KeepAlive (obj);
@@ -437,11 +435,9 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="obj"/> or <paramref name="key" /> is <see langword="null"/>.</exception>
 		internal void LowlevelSetObject (INativeObject obj, INativeObject key)
 		{
-			if (obj is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (obj));
+			ArgumentNullException.ThrowIfNull (obj);
 
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			LowlevelSetObject (obj.Handle, key.Handle);
 			GC.KeepAlive (obj);
@@ -454,8 +450,7 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException">Thrown when  <paramref name="key" /> is <see langword="null"/>.</exception>
 		internal void LowlevelSetObject (IntPtr obj, INativeObject key)
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			LowlevelSetObject (obj, key.Handle);
 			GC.KeepAlive (key);
@@ -467,8 +462,7 @@ namespace Foundation {
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="str"/> is <see langword="null"/>.</exception>
 		public void LowlevelSetObject (string str, IntPtr key)
 		{
-			if (str is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (str));
+			ArgumentNullException.ThrowIfNull (str);
 
 			var ptr = CFString.CreateNative (str);
 			LowlevelSetObject (ptr, key);

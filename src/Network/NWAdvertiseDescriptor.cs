@@ -78,11 +78,9 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public static NWAdvertiseDescriptor? CreateBonjourService (string name, string type, string? domain = null)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
-			if (type is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (type));
+			ArgumentNullException.ThrowIfNull (type);
 
 			using var namePtr = new TransientString (name);
 			using var typePtr = new TransientString (type);
@@ -101,8 +99,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void SetTxtRecord (string txt)
 		{
-			if (txt is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (txt));
+			ArgumentNullException.ThrowIfNull (txt);
 			var n = System.Text.Encoding.UTF8.GetByteCount (txt);
 			using var txtPtr = new TransientString (txt);
 			nw_advertise_descriptor_set_txt_record (GetCheckedHandle (), txtPtr, (nuint) n);

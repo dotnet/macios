@@ -131,8 +131,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public void AssignDefaultSettings (PMPrintSettings settings)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
+			ArgumentNullException.ThrowIfNull (settings);
 			PMSessionDefaultPrintSettings (Handle, settings.Handle);
 			GC.KeepAlive (settings);
 		}
@@ -145,8 +144,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public void AssignDefaultPageFormat (PMPageFormat pageFormat)
 		{
-			if (pageFormat is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pageFormat));
+			ArgumentNullException.ThrowIfNull (pageFormat);
 			PMSessionDefaultPageFormat (Handle, pageFormat.Handle);
 			GC.KeepAlive (pageFormat);
 		}
@@ -196,8 +194,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public PMStatusCode ValidatePrintSettings (PMPrintSettings settings, out bool changed)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
+			ArgumentNullException.ThrowIfNull (settings);
 
 			PMStatusCode code;
 			byte c;
@@ -346,8 +343,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public PMStatusCode CopySettings (PMPrintSettings destination)
 		{
-			if (destination is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destination));
+			ArgumentNullException.ThrowIfNull (destination);
 			PMStatusCode status = PMCopyPrintSettings (Handle, destination.Handle);
 			GC.KeepAlive (destination);
 			return status;
@@ -674,8 +670,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public string? GetLocalizedName (PMPrinter printer)
 		{
-			if (printer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (printer));
+			ArgumentNullException.ThrowIfNull (printer);
 			PMStatusCode code;
 			IntPtr name;
 			unsafe {
@@ -725,8 +720,7 @@ namespace PrintCore {
 
 		static IntPtr Create (string printerId)
 		{
-			if (printerId is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (printerId));
+			ArgumentNullException.ThrowIfNull (printerId);
 
 			var printerIdHandle = CFString.CreateNative (printerId);
 			try {
@@ -929,10 +923,8 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryPrintFile (PMPrintSettings settings, PMPageFormat? pageFormat, NSUrl fileUrl, string? mimeType = null)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
-			if (fileUrl is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (fileUrl));
+			ArgumentNullException.ThrowIfNull (settings);
+			ArgumentNullException.ThrowIfNull (fileUrl);
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
@@ -958,10 +950,8 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public PMStatusCode TryPrintFromProvider (PMPrintSettings settings, PMPageFormat? pageFormat, CGDataProvider provider, string? mimeType = null)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
-			if (provider is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (provider));
+			ArgumentNullException.ThrowIfNull (settings);
+			ArgumentNullException.ThrowIfNull (provider);
 
 			IntPtr mime = CFString.CreateNative (mimeType);
 			try {
@@ -986,8 +976,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public PMResolution GetOutputResolution (PMPrintSettings settings)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
+			ArgumentNullException.ThrowIfNull (settings);
 
 			PMResolution res;
 			unsafe {
@@ -1005,8 +994,7 @@ namespace PrintCore {
 		///         <remarks>To be added.</remarks>
 		public void SetOutputResolution (PMPrintSettings settings, PMResolution res)
 		{
-			if (settings is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (settings));
+			ArgumentNullException.ThrowIfNull (settings);
 			unsafe {
 				PMPrinterSetOutputResolution (Handle, settings.Handle, &res);
 				GC.KeepAlive (settings);

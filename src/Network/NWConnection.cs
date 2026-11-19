@@ -70,10 +70,8 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public NWConnection (NWEndpoint endpoint, NWParameters parameters)
 		{
-			if (endpoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (endpoint));
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (endpoint);
+			ArgumentNullException.ThrowIfNull (parameters);
 			InitializeHandle (nw_connection_create (endpoint.Handle, parameters.Handle));
 			GC.KeepAlive (endpoint);
 			GC.KeepAlive (parameters);
@@ -236,8 +234,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void SetQueue (DispatchQueue queue)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+			ArgumentNullException.ThrowIfNull (queue);
 			nw_connection_set_queue (GetCheckedHandle (), queue.Handle);
 			GC.KeepAlive (queue);
 		}
@@ -355,8 +352,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Receive (uint minimumIncompleteLength, uint maximumLength, NWConnectionReceiveCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletion;
@@ -373,8 +369,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveData (uint minimumIncompleteLength, uint maximumLength, NWConnectionReceiveDispatchDataCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletionData;
@@ -386,8 +381,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveReadOnlyData (uint minimumIncompleteLength, uint maximumLength, NWConnectionReceiveReadOnlySpanCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletionReadOnlyData;
@@ -405,8 +399,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveMessage (NWConnectionReceiveCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletion;
@@ -422,8 +415,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveMessageData (NWConnectionReceiveDispatchDataCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletionData;
@@ -435,8 +427,7 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void ReceiveMessageReadOnlyData (NWConnectionReceiveReadOnlySpanCompletion callback)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineReceiveCompletionReadOnlyData;
@@ -519,10 +510,8 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void Send (DispatchData? buffer, NWContentContext context, bool isComplete, Action<NWError?> callback)
 		{
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (context);
+			ArgumentNullException.ThrowIfNull (callback);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineSendCompletion;
@@ -539,8 +528,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public unsafe void SendIdempotent (DispatchData? buffer, NWContentContext context, bool isComplete)
 		{
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
+			ArgumentNullException.ThrowIfNull (context);
 
 			LowLevelSend (GetCheckedHandle (), buffer, context.Handle, isComplete, (BlockLiteral*) NWConnectionConstants._SendIdempotentContent);
 			GC.KeepAlive (context);
@@ -598,8 +586,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public NWProtocolMetadata? GetProtocolMetadata (NWProtocolDefinition definition)
 		{
-			if (definition is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (definition));
+			ArgumentNullException.ThrowIfNull (definition);
 
 			var x = nw_connection_copy_protocol_metadata (GetCheckedHandle (), definition.Handle);
 			if (x == IntPtr.Zero)
@@ -610,8 +597,7 @@ namespace Network {
 
 		public T? GetProtocolMetadata<T> (NWProtocolDefinition definition) where T : NWProtocolMetadata
 		{
-			if (definition is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (definition));
+			ArgumentNullException.ThrowIfNull (definition);
 
 			var x = nw_connection_copy_protocol_metadata (GetCheckedHandle (), definition.Handle);
 			GC.KeepAlive (definition);
@@ -670,10 +656,8 @@ namespace Network {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void GetEstablishmentReport (DispatchQueue queue, Action<NWEstablishmentReport> handler)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, nw_establishment_report_t, void> trampoline = &TrampolineGetEstablishmentReportHandler;

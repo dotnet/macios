@@ -110,8 +110,7 @@ public class ConstructorTests
 	[Export ("initFileURLWithPath:isDirectory:")]
 	public ConstructorTests (string path, bool isDir) : base (global::Foundation.NSObjectFlag.Empty)
 	{
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		if (IsDirectBinding) {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_bool (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initFileURLWithPath:isDirectory:"), nspath, isDir ? (byte) 1 : (byte) 0), "initFileURLWithPath:isDirectory:");
@@ -125,14 +124,11 @@ public class ConstructorTests
 	[Export ("initWithScheme:host:path:")]
 	public ConstructorTests (string scheme, string host, string path) : base (global::Foundation.NSObjectFlag.Empty)
 	{
-		if (scheme is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (scheme));
+		global::System.ArgumentNullException.ThrowIfNull (scheme, nameof (scheme));
 		var nsscheme = global::CoreFoundation.CFString.CreateNative (scheme);
-		if (host is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (host));
+		global::System.ArgumentNullException.ThrowIfNull (host, nameof (host));
 		var nshost = global::CoreFoundation.CFString.CreateNative (host);
-		if (path is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+		global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 		var nspath = global::CoreFoundation.CFString.CreateNative (path);
 		if (IsDirectBinding) {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithScheme:host:path:"), nsscheme, nshost, nspath), "initWithScheme:host:path:");
@@ -148,8 +144,7 @@ public class ConstructorTests
 	[Export ("initWithString:")]
 	public ConstructorTests (string urlString) : base (global::Foundation.NSObjectFlag.Empty)
 	{
-		if (urlString is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlString));
+		global::System.ArgumentNullException.ThrowIfNull (urlString, nameof (urlString));
 		var nsurlString = global::CoreFoundation.CFString.CreateNative (urlString);
 		if (IsDirectBinding) {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithString:"), nsurlString), "initWithString:");
@@ -165,8 +160,7 @@ public class ConstructorTests
 	public ConstructorTests (string urlString, global::Foundation.NSUrl relativeToUrl) : base (global::Foundation.NSObjectFlag.Empty)
 	{
 		var relativeToUrl__handle__ = relativeToUrl!.GetNonNullHandle (nameof (relativeToUrl));
-		if (urlString is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (urlString));
+		global::System.ArgumentNullException.ThrowIfNull (urlString, nameof (urlString));
 		var nsurlString = global::CoreFoundation.CFString.CreateNative (urlString);
 		if (IsDirectBinding) {
 			InitializeHandle (global::ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("initWithString:relativeToURL:"), nsurlString, relativeToUrl__handle__), "initWithString:relativeToURL:");

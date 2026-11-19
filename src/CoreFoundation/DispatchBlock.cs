@@ -66,8 +66,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags = DispatchBlockFlags.None)
 		{
-			if (action is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
+			ArgumentNullException.ThrowIfNull (action);
 			return new DispatchBlock (action, flags);
 		}
 
@@ -80,8 +79,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (Action action, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
-			if (action is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
+			ArgumentNullException.ThrowIfNull (action);
 			return new DispatchBlock (action, flags, qosClass, relative_priority);
 		}
 
@@ -94,8 +92,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public static DispatchBlock Create (DispatchBlock block, DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority)
 		{
-			if (block is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (block));
+			ArgumentNullException.ThrowIfNull (block);
 			return block.Create (flags, qosClass, relative_priority);
 		}
 
@@ -134,8 +131,7 @@ namespace CoreFoundation {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static IntPtr create (Action action, DispatchBlockFlags flags)
 		{
-			if (action is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
+			ArgumentNullException.ThrowIfNull (action);
 
 			unsafe {
 				using var block = BlockStaticDispatchClass.CreateBlock (action);
@@ -153,8 +149,7 @@ namespace CoreFoundation {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static IntPtr create (DispatchBlockFlags flags, DispatchQualityOfService qosClass, int relative_priority, Action action)
 		{
-			if (action is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (action));
+			ArgumentNullException.ThrowIfNull (action);
 
 			unsafe {
 				using var block = BlockStaticDispatchClass.CreateBlock (action);
@@ -181,8 +176,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public void Notify (DispatchQueue queue, Action notification)
 		{
-			if (notification is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
+			ArgumentNullException.ThrowIfNull (notification);
 			using (var block = new DispatchBlock (notification))
 				Notify (queue, block);
 		}
@@ -193,10 +187,8 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		public void Notify (DispatchQueue queue, DispatchBlock notification)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (notification is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (notification));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (notification);
 			dispatch_block_notify (GetCheckedHandle (), queue.GetCheckedHandle (), notification.GetCheckedHandle ());
 			GC.KeepAlive (queue);
 			GC.KeepAlive (notification);

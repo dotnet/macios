@@ -85,8 +85,7 @@ namespace CoreGraphics {
 #if !COREBUILD
 		static IntPtr Create (CFPropertyList propertyList)
 		{
-			if (propertyList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyList));
+			ArgumentNullException.ThrowIfNull (propertyList);
 			IntPtr result = CGColorSpaceCreateWithPropertyList (propertyList.GetCheckedHandle ());
 			GC.KeepAlive (propertyList);
 			return result;
@@ -167,8 +166,7 @@ namespace CoreGraphics {
 
 		public static CGColorSpace? CreateCalibratedGray (nfloat [] whitepoint, nfloat []? blackpoint, nfloat gamma)
 		{
-			if (whitepoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (whitepoint));
+			ArgumentNullException.ThrowIfNull (whitepoint);
 			if (whitepoint.Length != 3)
 				throw new ArgumentException ("Must have exactly 3 values", nameof (whitepoint));
 			if (blackpoint is not null && blackpoint.Length != 3)
@@ -188,8 +186,7 @@ namespace CoreGraphics {
 
 		public static CGColorSpace? CreateCalibratedRGB (nfloat [] whitepoint, nfloat []? blackpoint, nfloat []? gamma, nfloat []? matrix)
 		{
-			if (whitepoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (whitepoint));
+			ArgumentNullException.ThrowIfNull (whitepoint);
 			if (whitepoint.Length != 3)
 				throw new ArgumentException ("Must have exactly 3 values", nameof (whitepoint));
 			if (blackpoint is not null && blackpoint.Length != 3)
@@ -213,8 +210,7 @@ namespace CoreGraphics {
 		// Available since the beginning of time
 		public static CGColorSpace? CreateLab (nfloat [] whitepoint, nfloat []? blackpoint, nfloat []? range)
 		{
-			if (whitepoint is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (whitepoint));
+			ArgumentNullException.ThrowIfNull (whitepoint);
 			if (whitepoint.Length != 3)
 				throw new ArgumentException ("Must have exactly 3 values", nameof (whitepoint));
 			if (blackpoint is not null && blackpoint.Length != 3)
@@ -266,8 +262,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public static CGColorSpace? CreateWithName (string name)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 			using (var ns = new NSString (name)) {
 				var cs = CGColorSpaceCreateWithName (ns.Handle);
 				return FromHandle (cs, true);

@@ -20,8 +20,7 @@ namespace SceneKit {
 		/// <param name="vertices">The array of vertices to use as the geometry source.</param>
 		public static unsafe SCNGeometrySource FromVertices (SCNVector3 [] vertices)
 		{
-			if (vertices is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (vertices));
+			ArgumentNullException.ThrowIfNull (vertices);
 
 			fixed (SCNVector3* ptr = vertices)
 				return FromVertices ((IntPtr) ptr, vertices.Length);
@@ -34,8 +33,7 @@ namespace SceneKit {
 		/// </remarks>
 		public static unsafe SCNGeometrySource FromNormals (SCNVector3 [] normals)
 		{
-			if (normals is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (normals));
+			ArgumentNullException.ThrowIfNull (normals);
 
 			fixed (SCNVector3* ptr = normals)
 				return FromNormals ((IntPtr) ptr, normals.Length);
@@ -49,8 +47,7 @@ namespace SceneKit {
 		/// </remarks>
 		public static unsafe SCNGeometrySource FromTextureCoordinates (CGPoint [] texcoords)
 		{
-			if (texcoords is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (texcoords));
+			ArgumentNullException.ThrowIfNull (texcoords);
 
 			fixed (CGPoint* ptr = texcoords)
 				return FromTextureCoordinates ((IntPtr) ptr, texcoords.Length);

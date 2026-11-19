@@ -19,8 +19,7 @@ namespace MetalPerformanceShaders {
 		public MPSImageCanny (IMTLDevice device, float [] transform, float sigma)
 			: this (NSObjectFlag.Empty)
 		{
-			if (transform is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (transform));
+			ArgumentNullException.ThrowIfNull (transform);
 			if (transform.Length < 3)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (transform), $"Length must be at least '3'.");
 

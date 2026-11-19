@@ -204,8 +204,7 @@ namespace CoreVideo {
 			IntPtr handle;
 			GCHandle gchandle;
 
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			if (data.Length < height * bytesPerRow)
 				throw new ArgumentOutOfRangeException (nameof (data), "The length of data is smaller than height * bytesPerRow");
@@ -316,17 +315,13 @@ namespace CoreVideo {
 			PlaneData data;
 			GCHandle data_handle;
 
-			if (planes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (planes));
+			ArgumentNullException.ThrowIfNull (planes);
 
-			if (planeWidths is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (planeWidths));
+			ArgumentNullException.ThrowIfNull (planeWidths);
 
-			if (planeHeights is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (planeHeights));
+			ArgumentNullException.ThrowIfNull (planeHeights);
 
-			if (planeBytesPerRow is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (planeBytesPerRow));
+			ArgumentNullException.ThrowIfNull (planeBytesPerRow);
 
 			var planeCount = planes.Length;
 

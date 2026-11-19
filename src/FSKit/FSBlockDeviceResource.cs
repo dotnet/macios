@@ -7,8 +7,7 @@ namespace FSKit {
 	public partial class FSBlockDeviceResource {
 		static void ValidateArray (byte [] buffer, long offset, nuint length)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 
 			if (offset < 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (offset), offset, "Must be positive.");

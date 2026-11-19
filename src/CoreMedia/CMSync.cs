@@ -147,8 +147,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public bool MightDrift (CMClock otherClock)
 		{
-			if (otherClock is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (otherClock));
+			ArgumentNullException.ThrowIfNull (otherClock);
 
 			bool result = CMClockMightDrift (Handle, otherClock.Handle) != 0;
 			GC.KeepAlive (otherClock);
@@ -279,8 +278,7 @@ namespace CoreMedia {
 		[ObsoletedOSPlatform ("ios9.0", message: "Use 'CMTimebaseCreateWithSourceClock' instead.")]
 		static IntPtr Create (CMClock masterClock)
 		{
-			if (masterClock is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (masterClock));
+			ArgumentNullException.ThrowIfNull (masterClock);
 
 			CMTimebaseError error;
 			IntPtr handle;
@@ -330,8 +328,7 @@ namespace CoreMedia {
 		[ObsoletedOSPlatform ("maccatalyst13.0", message: "Use 'CMTimebaseCreateWithSourceTimebase' instead.")]
 		static IntPtr Create (CMTimebase masterTimebase)
 		{
-			if (masterTimebase is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (masterTimebase));
+			ArgumentNullException.ThrowIfNull (masterTimebase);
 
 			CMTimebaseError error;
 			IntPtr handle;
@@ -373,8 +370,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("maccatalyst")]
 		static IntPtr Create (CFAllocator? allocator, CMClock sourceClock)
 		{
-			if (sourceClock is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceClock));
+			ArgumentNullException.ThrowIfNull (sourceClock);
 
 			CMTimebaseError error;
 			IntPtr handle;
@@ -410,8 +406,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("maccatalyst")]
 		static IntPtr Create (CFAllocator? allocator, CMTimebase sourceTimebase)
 		{
-			if (sourceTimebase is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (sourceTimebase));
+			ArgumentNullException.ThrowIfNull (sourceTimebase);
 
 			CMTimebaseError error;
 			IntPtr handle;
@@ -697,10 +692,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public CMTimebaseError AddTimer (NSTimer timer, NSRunLoop runloop)
 		{
-			if (timer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
-			if (runloop is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (runloop));
+			ArgumentNullException.ThrowIfNull (timer);
+			ArgumentNullException.ThrowIfNull (runloop);
 
 			// NSRunloop and CFRunloop[Ref] are NOT toll free bridged types
 			using (var cf = runloop.GetCFRunLoop ()) {
@@ -719,8 +712,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public CMTimebaseError RemoveTimer (NSTimer timer)
 		{
-			if (timer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
+			ArgumentNullException.ThrowIfNull (timer);
 
 			CMTimebaseError result = CMTimebaseRemoveTimer (Handle, timer.Handle);
 			GC.KeepAlive (timer);
@@ -737,8 +729,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetTimerNextFireTime (NSTimer timer, CMTime fireTime)
 		{
-			if (timer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
+			ArgumentNullException.ThrowIfNull (timer);
 
 			CMTimebaseError result = CMTimebaseSetTimerNextFireTime (Handle, timer.Handle, fireTime, 0);
 			GC.KeepAlive (timer);
@@ -754,8 +745,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public CMTimebaseError SetTimerToFireImmediately (NSTimer timer)
 		{
-			if (timer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (timer));
+			ArgumentNullException.ThrowIfNull (timer);
 
 			CMTimebaseError result = CMTimebaseSetTimerToFireImmediately (Handle, timer.Handle);
 			GC.KeepAlive (timer);
@@ -782,8 +772,7 @@ namespace CoreMedia {
 		[ObsoletedOSPlatform ("ios8.0", message: "Use 'SourceTimebase' instead.")]
 		public CMTimebaseError SetMasterTimebase (CMTimebase newMasterTimebase)
 		{
-			if (newMasterTimebase is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newMasterTimebase));
+			ArgumentNullException.ThrowIfNull (newMasterTimebase);
 
 			var result = CMTimebaseSetMasterTimebase (Handle, newMasterTimebase.Handle);
 			GC.KeepAlive (newMasterTimebase);
@@ -811,8 +800,7 @@ namespace CoreMedia {
 		[ObsoletedOSPlatform ("ios8.0", message: "Use 'SourceClock' instead.")]
 		public CMTimebaseError SetMasterClock (CMClock newMasterClock)
 		{
-			if (newMasterClock is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (newMasterClock));
+			ArgumentNullException.ThrowIfNull (newMasterClock);
 
 			var result = CMTimebaseSetMasterClock (Handle, newMasterClock.Handle);
 			GC.KeepAlive (newMasterClock);
@@ -999,11 +987,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static double GetRelativeRate (CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB)
 		{
-			if (clockOrTimebaseA is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseA));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseA);
 
-			if (clockOrTimebaseB is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseB));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseB);
 
 			double result = CMSyncGetRelativeRate (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle);
 			GC.KeepAlive (clockOrTimebaseA);
@@ -1029,11 +1015,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static CMSyncError GetRelativeRateAndAnchorTime (CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB, out double relativeRate, out CMTime timeA, out CMTime timeB)
 		{
-			if (clockOrTimebaseA is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseA));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseA);
 
-			if (clockOrTimebaseB is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseB));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseB);
 
 			relativeRate = default;
 			timeA = default;
@@ -1066,10 +1050,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static CMTime ConvertTime (CMTime time, CMClockOrTimebase from, CMClockOrTimebase to)
 		{
-			if (from is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (from));
-			if (to is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (to));
+			ArgumentNullException.ThrowIfNull (from);
+			ArgumentNullException.ThrowIfNull (to);
 
 			CMTime result = CMSyncConvertTime (time, from.Handle, to.Handle);
 			GC.KeepAlive (from);
@@ -1087,11 +1069,9 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static bool MightDrift (CMClockOrTimebase clockOrTimebaseA, CMClockOrTimebase clockOrTimebaseB)
 		{
-			if (clockOrTimebaseA is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseA));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseA);
 
-			if (clockOrTimebaseB is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (clockOrTimebaseB));
+			ArgumentNullException.ThrowIfNull (clockOrTimebaseB);
 
 			bool result = CMSyncMightDrift (clockOrTimebaseA.Handle, clockOrTimebaseB.Handle) != 0;
 			GC.KeepAlive (clockOrTimebaseA);

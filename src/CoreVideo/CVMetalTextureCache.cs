@@ -32,8 +32,7 @@ namespace CoreVideo {
 
 		static IntPtr Create (IMTLDevice metalDevice, CVMetalTextureAttributes? textureAttributes)
 		{
-			if (metalDevice is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (metalDevice));
+			ArgumentNullException.ThrowIfNull (metalDevice);
 
 			IntPtr handle;
 			CVReturn err;
@@ -66,8 +65,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public static CVMetalTextureCache? FromDevice (IMTLDevice metalDevice)
 		{
-			if (metalDevice is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (metalDevice));
+			ArgumentNullException.ThrowIfNull (metalDevice);
 			IntPtr handle;
 			CVReturn err;
 			unsafe {
@@ -100,8 +98,7 @@ namespace CoreVideo {
 		///         <remarks>To be added.</remarks>
 		public static CVMetalTextureCache? FromDevice (IMTLDevice metalDevice, CVMetalTextureAttributes? textureAttributes, out CVReturn creationErr)
 		{
-			if (metalDevice is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (metalDevice));
+			ArgumentNullException.ThrowIfNull (metalDevice);
 			IntPtr handle;
 			unsafe {
 				creationErr = CVMetalTextureCacheCreate (IntPtr.Zero,
@@ -139,8 +136,7 @@ namespace CoreVideo {
 		/// <remarks>To be added.</remarks>
 		public CVMetalTexture? TextureFromImage (CVImageBuffer imageBuffer, MTLPixelFormat format, nint width, nint height, nint planeIndex, out CVReturn errorCode)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
 
 			IntPtr texture;
 			unsafe {

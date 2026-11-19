@@ -253,8 +253,7 @@ namespace CoreFoundation {
 		/// <param name="str">The managed string to initialize the new <see cref="CFString" /> with.</param>
 		public CFString (string str)
 		{
-			if (str is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (str));
+			ArgumentNullException.ThrowIfNull (str);
 
 			using var strPtr = new TransientString (str, TransientString.Encoding.Unicode);
 			InitializeHandle (CFStringCreateWithCharacters (IntPtr.Zero, strPtr, str.Length));

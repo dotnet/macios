@@ -31,8 +31,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public SecTrust (SecCertificate certificate, SecPolicy policy)
 		{
-			if (certificate is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (certificate));
+			ArgumentNullException.ThrowIfNull (certificate);
 
 			Initialize (certificate.Handle, policy);
 			GC.KeepAlive (certificate);
@@ -80,8 +79,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void SetPolicy (SecPolicy policy)
 		{
-			if (policy is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policy));
+			ArgumentNullException.ThrowIfNull (policy);
 
 			SetPolicies (policy.Handle);
 			GC.KeepAlive (policy);
@@ -92,8 +90,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void SetPolicies (IEnumerable<SecPolicy> policies)
 		{
-			if (policies is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policies));
+			ArgumentNullException.ThrowIfNull (policies);
 
 			using (var array = NSArray.FromNSObjects (policies.ToArray ()))
 				SetPolicies (array.Handle);
@@ -104,8 +101,7 @@ namespace Security {
 		///         <remarks>To be added.</remarks>
 		public void SetPolicies (NSArray policies)
 		{
-			if (policies is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (policies));
+			ArgumentNullException.ThrowIfNull (policies);
 
 			SetPolicies (policies.Handle);
 			GC.KeepAlive (policies);
@@ -209,10 +205,8 @@ namespace Security {
 		public SecStatusCode Evaluate (DispatchQueue queue, SecTrustCallback handler)
 		{
 			// headers have `dispatch_queue_t _Nullable queue` but it crashes... don't trust headers, even for SecTrust
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, SecTrustResult, void> trampoline = &TrampolineEvaluate;
@@ -248,10 +242,8 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public SecStatusCode Evaluate (DispatchQueue queue, SecTrustWithErrorCallback handler)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (queue);
+			ArgumentNullException.ThrowIfNull (handler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, byte, IntPtr, void> trampoline = &TrampolineEvaluateError;
@@ -361,8 +353,7 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		public void SetOCSPResponse (NSData ocspResponse)
 		{
-			if (ocspResponse is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponse));
+			ArgumentNullException.ThrowIfNull (ocspResponse);
 
 			SetOCSPResponse (ocspResponse.Handle);
 			GC.KeepAlive (ocspResponse);
@@ -377,8 +368,7 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		public void SetOCSPResponse (IEnumerable<NSData> ocspResponses)
 		{
-			if (ocspResponses is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponses));
+			ArgumentNullException.ThrowIfNull (ocspResponses);
 
 			using (var array = NSArray.FromNSObjects (ocspResponses.ToArray ()))
 				SetOCSPResponse (array.Handle);
@@ -393,8 +383,7 @@ namespace Security {
 		[SupportedOSPlatform ("tvos")]
 		public void SetOCSPResponse (NSArray ocspResponses)
 		{
-			if (ocspResponses is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (ocspResponses));
+			ArgumentNullException.ThrowIfNull (ocspResponses);
 
 			SetOCSPResponse (ocspResponses.Handle);
 			GC.KeepAlive (ocspResponses);

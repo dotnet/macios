@@ -65,8 +65,7 @@ namespace Network {
 		[SupportedOSPlatform ("maccatalyst")]
 		public void AddProxy (NWProxyConfig proxyConfig)
 		{
-			if (proxyConfig is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (proxyConfig));
+			ArgumentNullException.ThrowIfNull (proxyConfig);
 			nw_privacy_context_add_proxy (GetCheckedHandle (), proxyConfig.GetCheckedHandle ());
 			GC.KeepAlive (proxyConfig);
 		}

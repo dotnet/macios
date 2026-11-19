@@ -200,8 +200,7 @@ namespace CoreText {
 
 		static IntPtr Create (CTRunDelegateOperations operations)
 		{
-			if (operations is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (operations));
+			ArgumentNullException.ThrowIfNull (operations);
 
 			CTRunDelegateCallbacks callbacks = operations.GetCallbacks ();
 			unsafe {

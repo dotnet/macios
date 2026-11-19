@@ -45,8 +45,7 @@ namespace AddressBookUI {
 		/// <returns>A formatted string representing the address.</returns>
 		static public string ToString (NSDictionary address, bool addCountryName)
 		{
-			if (address is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (address));
+			ArgumentNullException.ThrowIfNull (address);
 
 			NativeHandle addressHandle = address.Handle;
 			using (NSString s = new NSString (ABCreateStringWithAddressDictionary (addressHandle, addCountryName ? (byte) 1 : (byte) 0))) {

@@ -1180,12 +1180,13 @@ public class BindingSyntaxFactoryRuntimeTests {
 		Assert.Equal (expectedDeclaration, declaration.ToFullString ());
 	}
 
-	[Fact]
-	void ThrowIfNullTests ()
+	[Theory]
+	[InlineData ("markers")]
+	[InlineData ("@event")]
+	void ThrowIfNullTests (string variableName)
 	{
-		var variableName = "markers";
 		var declaration = ThrowIfNull (variableName);
-		var expected = $"if (markers is null)\n\t{Global ("ObjCRuntime.ThrowHelper")}.ThrowArgumentNullException (nameof (markers));";
+		var expected = $"{Global ("System.ArgumentNullException")}.ThrowIfNull ({variableName}, nameof ({variableName}));";
 		Assert.Equal (expected, declaration.ToFullString ());
 	}
 

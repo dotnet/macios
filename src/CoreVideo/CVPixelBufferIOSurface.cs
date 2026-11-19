@@ -65,8 +65,7 @@ namespace CoreVideo {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static CVPixelBuffer? Create (IOSurface.IOSurface surface, out CVReturn result, CVPixelBufferAttributes? pixelBufferAttributes = null)
 		{
-			if (surface is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (surface));
+			ArgumentNullException.ThrowIfNull (surface);
 
 			IntPtr pixelBufferPtr;
 			unsafe {

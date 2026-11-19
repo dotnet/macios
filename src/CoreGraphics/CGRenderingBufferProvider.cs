@@ -35,8 +35,7 @@ namespace CoreGraphics {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe static CGRenderingBufferProvider? Create (IntPtr info, nuint size, LockPointerCallback lockPointer, UnlockPointerCallback unlockPointer, ReleaseInfoCallback releaseInfo)
 		{
-			if (lockPointer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (lockPointer));
+			ArgumentNullException.ThrowIfNull (lockPointer);
 
 			delegate* unmanaged<BlockLiteral*, IntPtr, IntPtr> lockPointerTrampoline = &LockPointerBlock;
 			using var lockPointerBlock = new BlockLiteral (lockPointerTrampoline, lockPointer, typeof (CGRenderingBufferProvider), nameof (LockPointerBlock));

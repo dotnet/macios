@@ -74,10 +74,8 @@ namespace CoreFoundation {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void Read (int fd, nuint size, DispatchQueue dispatchQueue, DispatchIOHandler handler)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
-			if (dispatchQueue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dispatchQueue));
+			ArgumentNullException.ThrowIfNull (handler);
+			ArgumentNullException.ThrowIfNull (dispatchQueue);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;
@@ -99,12 +97,9 @@ namespace CoreFoundation {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void Write (int fd, DispatchData dispatchData, DispatchQueue dispatchQueue, DispatchIOHandler handler)
 		{
-			if (dispatchData is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dispatchData));
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
-			if (dispatchQueue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dispatchQueue));
+			ArgumentNullException.ThrowIfNull (dispatchData);
+			ArgumentNullException.ThrowIfNull (handler);
+			ArgumentNullException.ThrowIfNull (dispatchQueue);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, int, void> trampoline = &Trampoline_DispatchReadWriteHandler;

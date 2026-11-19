@@ -39,10 +39,8 @@ namespace Foundation {
 
 		unsafe NativeHandle InitNSThread (NSObject target, Selector selector, NSObject? argument)
 		{
-			if (target is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (target));
-			if (selector is null)
-				ThrowHelper.ThrowArgumentNullException (nameof (selector));
+			ArgumentNullException.ThrowIfNull (target);
+			ArgumentNullException.ThrowIfNull (selector);
 
 			IntPtr result;
 			if (IsDirectBinding) {

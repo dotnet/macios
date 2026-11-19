@@ -194,8 +194,7 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public void Draw (CGContext context)
 		{
-			if (context is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (context));
+			ArgumentNullException.ThrowIfNull (context);
 			CTLineDraw (Handle, context.Handle);
 			GC.KeepAlive (context);
 		}
@@ -332,8 +331,7 @@ namespace CoreText {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateCaretOffsets (CaretEdgeEnumerator enumerator)
 		{
-			if (enumerator is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (enumerator));
+			ArgumentNullException.ThrowIfNull (enumerator);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, double, nint, byte, byte*, void> trampoline = &TrampolineEnumerate;

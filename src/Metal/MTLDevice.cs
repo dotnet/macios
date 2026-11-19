@@ -133,8 +133,7 @@ namespace Metal {
 		[ObsoletedOSPlatform ("macos27.0", "Device notifications are not applicable on Apple Silicon")]
 		public static void RemoveObserver (NSObject observer)
 		{
-			if (observer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (observer));
+			ArgumentNullException.ThrowIfNull (observer);
 
 			MTLRemoveDeviceObserver (observer.Handle);
 			GC.KeepAlive (observer);
@@ -156,8 +155,7 @@ namespace Metal {
 		///         <remarks>To be added.</remarks>
 		public static IMTLBuffer? CreateBuffer<T> (this IMTLDevice This, T [] data, MTLResourceOptions options) where T : struct
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 
 			var handle = GCHandle.Alloc (data, GCHandleType.Pinned); // This requires a pinned GCHandle, since it's not possible to use unsafe code to get the address of a generic object.
 			try {
@@ -175,8 +173,7 @@ namespace Metal {
 		/// <remarks>To be added.</remarks>
 		public unsafe static void GetDefaultSamplePositions (this IMTLDevice This, MTLSamplePosition [] positions, nuint count)
 		{
-			if (positions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (positions));
+			ArgumentNullException.ThrowIfNull (positions);
 
 			if (positions.Length < (nint) count)
 				throw new ArgumentException ("Length of 'positions' cannot be less than 'count'.");
@@ -191,10 +188,8 @@ namespace Metal {
 		[UnsupportedOSPlatform ("tvos")]
 		public static void ConvertSparseTileRegions (this IMTLDevice This, MTLRegion [] tileRegions, MTLRegion [] pixelRegions, MTLSize tileSize, nuint numRegions)
 		{
-			if (tileRegions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tileRegions));
-			if (pixelRegions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pixelRegions));
+			ArgumentNullException.ThrowIfNull (tileRegions);
+			ArgumentNullException.ThrowIfNull (pixelRegions);
 
 			var tileRegionsHandle = GCHandle.Alloc (tileRegions, GCHandleType.Pinned);
 			var pixelRegionsHandle = GCHandle.Alloc (pixelRegions, GCHandleType.Pinned);
@@ -214,10 +209,8 @@ namespace Metal {
 		[UnsupportedOSPlatform ("tvos")]
 		public static void ConvertSparsePixelRegions (this IMTLDevice This, MTLRegion [] pixelRegions, MTLRegion [] tileRegions, MTLSize tileSize, MTLSparseTextureRegionAlignmentMode mode, nuint numRegions)
 		{
-			if (tileRegions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tileRegions));
-			if (pixelRegions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pixelRegions));
+			ArgumentNullException.ThrowIfNull (tileRegions);
+			ArgumentNullException.ThrowIfNull (pixelRegions);
 
 			var tileRegionsHandle = GCHandle.Alloc (tileRegions, GCHandleType.Pinned);
 			var pixelRegionsHandle = GCHandle.Alloc (pixelRegions, GCHandleType.Pinned);

@@ -299,8 +299,7 @@ namespace Security {
 
 		internal unsafe SslStatus Read (byte [] data, int offset, int size, out nint processed)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			processed = default;
 			fixed (byte* d = &data [offset])
 			fixed (nint* processedPtr = &processed)
@@ -323,8 +322,7 @@ namespace Security {
 
 		internal unsafe SslStatus Write (byte [] data, int offset, int size, out nint processed)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			processed = default;
 			fixed (byte* d = &data [offset])
 			fixed (nint* processedPtr = &processed)
@@ -641,8 +639,7 @@ namespace Security {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public int SetSessionConfig (NSString config)
 		{
-			if (config is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (config));
+			ArgumentNullException.ThrowIfNull (config);
 
 			int result = SSLSetSessionConfig (Handle, config.Handle);
 			GC.KeepAlive (config);
@@ -823,8 +820,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios13.0", "Use 'Network.framework' instead.")]
 		public int SetOcspResponse (NSData response)
 		{
-			if (response is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (response));
+			ArgumentNullException.ThrowIfNull (response);
 			int result = SSLSetOCSPResponse (Handle, response.Handle);
 			GC.KeepAlive (response);
 			return result;

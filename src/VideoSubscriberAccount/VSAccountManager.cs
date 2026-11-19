@@ -21,10 +21,8 @@ namespace VideoSubscriberAccount {
 		/// <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		public void CheckAccessStatus (VSAccountManagerAccessOptions accessOptions, Action<VSAccountAccessStatus, NSError> completionHandler)
 		{
-			if (accessOptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (accessOptions));
-			if (completionHandler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+			ArgumentNullException.ThrowIfNull (accessOptions);
+			ArgumentNullException.ThrowIfNull (completionHandler);
 
 			CheckAccessStatus (accessOptions.Dictionary, completionHandler);
 		}
@@ -34,8 +32,7 @@ namespace VideoSubscriberAccount {
 		/// <returns>A task that represents the asynchronous operation. The task result contains the current <see cref="VSAccountAccessStatus" />.</returns>
 		public Task<VSAccountAccessStatus> CheckAccessStatusAsync (VSAccountManagerAccessOptions accessOptions)
 		{
-			if (accessOptions is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (accessOptions));
+			ArgumentNullException.ThrowIfNull (accessOptions);
 
 			return CheckAccessStatusAsync (accessOptions.Dictionary);
 		}

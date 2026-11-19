@@ -91,8 +91,7 @@ namespace ImageIO {
 		public NSString? GetStringValue (CGImageMetadata? parent, NSString path)
 		{
 			// parent may be null
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			var result = CGImageMetadataCopyStringValueWithPath (Handle, parent.GetHandle (), path.Handle);
 			GC.KeepAlive (parent);
 			GC.KeepAlive (path);
@@ -125,8 +124,7 @@ namespace ImageIO {
 		public CGImageMetadataTag? GetTag (CGImageMetadata? parent, NSString path)
 		{
 			// parent may be null
-			if (path is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+			ArgumentNullException.ThrowIfNull (path);
 			IntPtr result = CGImageMetadataCopyTagWithPath (Handle, parent.GetHandle (), path.Handle);
 			GC.KeepAlive (parent);
 			GC.KeepAlive (path);
@@ -194,10 +192,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public CGImageMetadataTag? CopyTagMatchingImageProperty (NSString dictionaryName, NSString propertyName)
 		{
-			if (dictionaryName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dictionaryName));
-			if (propertyName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyName));
+			ArgumentNullException.ThrowIfNull (dictionaryName);
+			ArgumentNullException.ThrowIfNull (propertyName);
 			IntPtr result = CGImageMetadataCopyTagMatchingImageProperty (Handle, dictionaryName.Handle, propertyName.Handle);
 			GC.KeepAlive (dictionaryName);
 			GC.KeepAlive (propertyName);

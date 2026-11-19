@@ -411,8 +411,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public unsafe AudioFormat []? GetFormatList (byte [] magicCookie)
 		{
-			if (magicCookie is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (magicCookie));
+			ArgumentNullException.ThrowIfNull (magicCookie);
 
 			var afi = new AudioFormatInfo ();
 			afi.AudioStreamBasicDescription = this;
@@ -1599,8 +1598,7 @@ namespace AudioToolbox {
 		// The returned block must be released with FreeHGlobal
 		internal unsafe IntPtr ToBlock (out int size)
 		{
-			if (Channels is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (Channels));
+			ArgumentNullException.ThrowIfNull (Channels);
 
 			var desc_size = sizeof (AudioChannelDescription);
 
@@ -1625,8 +1623,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public static AudioFormatError Validate (AudioChannelLayout layout)
 		{
-			if (layout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layout));
+			ArgumentNullException.ThrowIfNull (layout);
 
 			int ptr_size;
 			var ptr = layout.ToBlock (out ptr_size);
@@ -1643,10 +1640,8 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public unsafe static int []? GetChannelMap (AudioChannelLayout inputLayout, AudioChannelLayout outputLayout)
 		{
-			if (inputLayout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inputLayout));
-			if (outputLayout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputLayout));
+			ArgumentNullException.ThrowIfNull (inputLayout);
+			ArgumentNullException.ThrowIfNull (outputLayout);
 
 			var channels_count = GetNumberOfChannels (outputLayout);
 			if (channels_count is null)
@@ -1682,10 +1677,8 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public unsafe static float [,]? GetMatrixMixMap (AudioChannelLayout inputLayout, AudioChannelLayout outputLayout)
 		{
-			if (inputLayout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (inputLayout));
-			if (outputLayout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputLayout));
+			ArgumentNullException.ThrowIfNull (inputLayout);
+			ArgumentNullException.ThrowIfNull (outputLayout);
 
 			var channels_count_output = GetNumberOfChannels (outputLayout);
 			if (channels_count_output is null)
@@ -1724,8 +1717,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public static int? GetNumberOfChannels (AudioChannelLayout layout)
 		{
-			if (layout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layout));
+			ArgumentNullException.ThrowIfNull (layout);
 
 			int ptr_size;
 			var ptr = layout.ToBlock (out ptr_size);
@@ -1745,8 +1737,7 @@ namespace AudioToolbox {
 		///         <remarks>To be added.</remarks>
 		public static AudioChannelLayoutTag? GetTagForChannelLayout (AudioChannelLayout layout)
 		{
-			if (layout is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (layout));
+			ArgumentNullException.ThrowIfNull (layout);
 
 			int ptr_size;
 			var ptr = layout.ToBlock (out ptr_size);

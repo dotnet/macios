@@ -473,8 +473,7 @@ namespace Foundation {
 
 		internal bool TryGetValue<T> (INativeObject key, [NotNullWhen (true)] out T? value) where T : class, INativeObject
 		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			var ptr = _ObjectForKey (key.Handle);
 			GC.KeepAlive (key);

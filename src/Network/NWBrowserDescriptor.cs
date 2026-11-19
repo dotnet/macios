@@ -39,8 +39,7 @@ namespace Network {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static NWBrowserDescriptor CreateApplicationServiceName (string applicationServiceName)
 		{
-			if (applicationServiceName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (applicationServiceName));
+			ArgumentNullException.ThrowIfNull (applicationServiceName);
 
 			using var applicationServiceNamePtr = new TransientString (applicationServiceName);
 			return new NWBrowserDescriptor (nw_browse_descriptor_create_application_service (applicationServiceNamePtr), owns: true);
@@ -67,8 +66,7 @@ namespace Network {
 		public static NWBrowserDescriptor CreateBonjourService (string type, string? domain)
 		{
 			// domain can be null, type CANNOT	
-			if (type is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (type));
+			ArgumentNullException.ThrowIfNull (type);
 
 			using var typePtr = new TransientString (type);
 			using var domainPtr = new TransientString (domain);

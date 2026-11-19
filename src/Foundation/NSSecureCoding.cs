@@ -17,8 +17,7 @@ namespace Foundation {
 		/// <param name="type">The type.</param>
 		public static bool SupportsSecureCoding (Type type)
 		{
-			if (type is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (type));
+			ArgumentNullException.ThrowIfNull (type);
 
 #if MONOMAC
 			try {
@@ -38,8 +37,7 @@ namespace Foundation {
 		/// <param name="klass">The klass.</param>
 		public static bool SupportsSecureCoding (Class klass)
 		{
-			if (klass is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (klass));
+			ArgumentNullException.ThrowIfNull (klass);
 			bool result = SupportsSecureCoding (klass.Handle);
 			GC.KeepAlive (klass);
 			return result;

@@ -96,8 +96,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos")]
 		public static string? GetName (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			IntPtr name = IntPtr.Zero;
 			OSStatus error;
@@ -126,8 +125,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos")]
 		public static InstrumentInfo []? GetInstrumentInfo (NSUrl url)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			IntPtr array = IntPtr.Zero;
 			unsafe {

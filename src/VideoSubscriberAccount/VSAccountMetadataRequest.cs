@@ -18,8 +18,7 @@ namespace VideoSubscriberAccount {
 			}
 			set {
 				var constants = value.GetConstants ();
-				if (constants is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (constants, nameof (value));
 				SupportedAuthenticationSchemesString = constants!;
 			}
 		}

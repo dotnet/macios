@@ -51,8 +51,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public VTStatus SetProperties (VTPropertyOptions options)
 		{
-			if (options is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
+			ArgumentNullException.ThrowIfNull (options);
 
 			var optionsDictionary = options.Dictionary;
 			VTStatus status = VTSessionSetProperties (Handle, optionsDictionary.Handle);
@@ -67,8 +66,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public VTStatus SetProperty (NSString propertyKey, NSObject? value)
 		{
-			if (propertyKey is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyKey));
+			ArgumentNullException.ThrowIfNull (propertyKey);
 
 			VTStatus status = VTSessionSetProperty (Handle, propertyKey.Handle, value.GetHandle ());
 			GC.KeepAlive (propertyKey);
@@ -101,8 +99,7 @@ namespace VideoToolbox {
 		///         <remarks>To be added.</remarks>
 		public NSObject? GetProperty (NSString propertyKey)
 		{
-			if (propertyKey is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (propertyKey));
+			ArgumentNullException.ThrowIfNull (propertyKey);
 
 			VTStatus result;
 			IntPtr ret;

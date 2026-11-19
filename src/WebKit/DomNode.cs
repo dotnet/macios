@@ -89,8 +89,7 @@ namespace WebKit {
 		///         <remarks>To be added.</remarks>
 		public IDomEventListener AddEventListener (string type, DomEventListenerHandler handler, bool useCapture)
 		{
-			if (handler is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handler));
+			ArgumentNullException.ThrowIfNull (handler);
 			var obj = new DomNodeEventProxy (this, handler);
 			AddEventListener (type, obj, useCapture);
 			return obj;
@@ -104,8 +103,7 @@ namespace WebKit {
 		///         <remarks>To be added.</remarks>
 		public IDomEventListener AddEventListener (string type, Action<DomEvent> callback, bool useCapture)
 		{
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 			var obj = new DomNodeEventProxy2 (callback);
 			AddEventListener (type, obj, useCapture);
 			return obj;

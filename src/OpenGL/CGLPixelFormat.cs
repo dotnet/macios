@@ -75,8 +75,7 @@ namespace OpenGL {
 
 		static IntPtr Create (CGLPixelFormatAttribute [] attributes, out int npix)
 		{
-			if (attributes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attributes));
+			ArgumentNullException.ThrowIfNull (attributes);
 			IntPtr pixelFormatOut;
 			var marshalAttribs = new CGLPixelFormatAttribute [attributes.Length + 1];
 

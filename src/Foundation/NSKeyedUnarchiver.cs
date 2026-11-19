@@ -31,10 +31,8 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public static void GlobalSetClass (Class kls, string codedName)
 		{
-			if (codedName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (codedName));
-			if (kls is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (kls));
+			ArgumentNullException.ThrowIfNull (codedName);
+			ArgumentNullException.ThrowIfNull (kls);
 
 			var ptr = CFString.CreateNative (codedName);
 			ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("setClass:forClassName:"), kls.Handle, ptr);
@@ -48,8 +46,7 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		public static Class GlobalGetClass (string codedName)
 		{
-			if (codedName is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (codedName));
+			ArgumentNullException.ThrowIfNull (codedName);
 
 			var ptr = CFString.CreateNative (codedName);
 			var result = new Class (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classForClassName:"), ptr));

@@ -231,8 +231,7 @@ namespace CoreFoundation {
 		public static void CreatePairWithSocket (CFSocket socket, out CFReadStream readStream,
 												 out CFWriteStream writeStream)
 		{
-			if (socket is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (socket));
+			ArgumentNullException.ThrowIfNull (socket);
 
 			IntPtr read, write;
 			unsafe {
@@ -396,8 +395,7 @@ namespace CoreFoundation {
 		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForHTTPRequest (CFHTTPMessage request)
 		{
-			if (request is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
+			ArgumentNullException.ThrowIfNull (request);
 
 			var handle = CFReadStreamCreateForHTTPRequest (IntPtr.Zero, request.Handle);
 			GC.KeepAlive (request);
@@ -428,10 +426,8 @@ namespace CoreFoundation {
 		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForStreamedHTTPRequest (CFHTTPMessage request, CFReadStream body)
 		{
-			if (request is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
-			if (body is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
+			ArgumentNullException.ThrowIfNull (request);
+			ArgumentNullException.ThrowIfNull (body);
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
 			GC.KeepAlive (request);
@@ -449,10 +445,8 @@ namespace CoreFoundation {
 		[ObsoletedOSPlatform ("tvos9.0", "Use 'NSUrlSession' instead.")]
 		public static CFHTTPStream CreateForStreamedHTTPRequest (CFHTTPMessage request, NSInputStream body)
 		{
-			if (request is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (request));
-			if (body is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (body));
+			ArgumentNullException.ThrowIfNull (request);
+			ArgumentNullException.ThrowIfNull (body);
 
 			var handle = CFReadStreamCreateForStreamedHTTPRequest (IntPtr.Zero, request.Handle, body.Handle);
 			GC.KeepAlive (request);

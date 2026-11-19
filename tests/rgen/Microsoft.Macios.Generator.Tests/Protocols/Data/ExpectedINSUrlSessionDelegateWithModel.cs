@@ -89,8 +89,7 @@ public partial interface INSUrlSessionDelegate : INativeObject, IDisposable
 	[Export ("URLSession:didReceiveChallenge:completionHandler:")]
 	internal static void _DidReceiveChallenge (this global::Microsoft.Macios.Generator.Tests.Protocols.Data.INSUrlSessionDelegate self, global::Foundation.NSUrlSession session, global::Foundation.NSUrlAuthenticationChallenge challenge, global::.Action<global::Foundation.NSUrlSessionAuthChallengeDisposition, global::Foundation.NSUrlCredential> completionHandler)
 	{
-		if (completionHandler is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		global::System.ArgumentNullException.ThrowIfNull (completionHandler, nameof (completionHandler));
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
 		var challenge__handle__ = challenge!.GetNonNullHandle (nameof (challenge));
 		global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_ (self.Handle, global::ObjCRuntime.Selector.GetHandle ("URLSession:didReceiveChallenge:completionHandler:"), session__handle__, challenge__handle__, completionHandler);
@@ -162,8 +161,7 @@ internal unsafe sealed class NSUrlSessionDelegateWrapper : BaseWrapper, INSUrlSe
 	[Export ("URLSession:didReceiveChallenge:completionHandler:")]
 	public void DidReceiveChallenge (global::Foundation.NSUrlSession session, global::Foundation.NSUrlAuthenticationChallenge challenge, global::.Action<global::Foundation.NSUrlSessionAuthChallengeDisposition, global::Foundation.NSUrlCredential> completionHandler)
 	{
-		if (completionHandler is null)
-			global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (completionHandler));
+		global::System.ArgumentNullException.ThrowIfNull (completionHandler, nameof (completionHandler));
 		var session__handle__ = session!.GetNonNullHandle (nameof (session));
 		var challenge__handle__ = challenge!.GetNonNullHandle (nameof (challenge));
 		global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_ (this.Handle, global::ObjCRuntime.Selector.GetHandle ("URLSession:didReceiveChallenge:completionHandler:"), session__handle__, challenge__handle__, completionHandler);

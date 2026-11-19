@@ -121,10 +121,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (CGDataConsumer consumer, string typeIdentifier, int imageCount, CGImageDestinationOptions? options = null)
 		{
-			if (consumer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (consumer));
-			if (typeIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (typeIdentifier));
+			ArgumentNullException.ThrowIfNull (consumer);
+			ArgumentNullException.ThrowIfNull (typeIdentifier);
 
 			using var dict = options?.ToDictionary ();
 			var typeId = CFString.CreateNative (typeIdentifier);
@@ -152,10 +150,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (NSMutableData data, string typeIdentifier, int imageCount, CGImageDestinationOptions? options = null)
 		{
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
-			if (typeIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (typeIdentifier));
+			ArgumentNullException.ThrowIfNull (data);
+			ArgumentNullException.ThrowIfNull (typeIdentifier);
 
 			using var dict = options?.ToDictionary ();
 			var typeId = CFString.CreateNative (typeIdentifier);
@@ -182,10 +178,8 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public static CGImageDestination? Create (NSUrl url, string typeIdentifier, int imageCount)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			if (typeIdentifier is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (typeIdentifier));
+			ArgumentNullException.ThrowIfNull (url);
+			ArgumentNullException.ThrowIfNull (typeIdentifier);
 
 			var typeId = CFString.CreateNative (typeIdentifier);
 			try {
@@ -221,8 +215,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImage image, CGImageDestinationOptions? options = null)
 		{
-			if (image is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
+			ArgumentNullException.ThrowIfNull (image);
 
 			using (var dict = options?.ToDictionary ()) {
 				CGImageDestinationAddImage (Handle, image.Handle, dict.GetHandle ());
@@ -236,8 +229,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImage image, NSDictionary? properties)
 		{
-			if (image is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
+			ArgumentNullException.ThrowIfNull (image);
 
 			CGImageDestinationAddImage (Handle, image.Handle, properties.GetHandle ());
 			GC.KeepAlive (image);
@@ -256,8 +248,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImageSource source, int index, CGImageDestinationOptions? options = null)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 
 			using var dict = options?.ToDictionary ();
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, dict.GetHandle ());
@@ -272,8 +263,7 @@ namespace ImageIO {
 		///         <remarks>To be added.</remarks>
 		public void AddImage (CGImageSource source, int index, NSDictionary? properties)
 		{
-			if (source is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
+			ArgumentNullException.ThrowIfNull (source);
 
 			CGImageDestinationAddImageFromSource (Handle, source.Handle, index, properties.GetHandle ());
 			GC.KeepAlive (source);
@@ -314,8 +304,7 @@ namespace ImageIO {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public void AddImageAndMetadata (CGImage image, CGImageMetadata meta, NSDictionary? options)
 		{
-			if (image is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
+			ArgumentNullException.ThrowIfNull (image);
 			CGImageDestinationAddImageAndMetadata (Handle, image.Handle, meta.GetHandle (), options.GetHandle ());
 			GC.KeepAlive (image);
 			GC.KeepAlive (meta);
@@ -359,8 +348,7 @@ namespace ImageIO {
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
 		public bool CopyImageSource (CGImageSource image, NSDictionary? options, out NSError? error)
 		{
-			if (image is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (image));
+			ArgumentNullException.ThrowIfNull (image);
 			byte result;
 			IntPtr err;
 			unsafe {

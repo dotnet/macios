@@ -44,7 +44,7 @@ namespace MultipeerConnectivity {
 				if (certificates is null)
 					InitializeHandle (_Init (myPeerID, null, encryptionPreference));
 				else
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (identity));
+					throw new ArgumentNullException (nameof (identity));
 			} else {
 				var array = new INativeObject [certificates.Length + 1];
 				array [0] = identity;

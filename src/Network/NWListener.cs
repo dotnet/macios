@@ -40,10 +40,8 @@ namespace Network {
 		{
 			IntPtr handle;
 
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
-			if (port is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (port));
+			ArgumentNullException.ThrowIfNull (parameters);
+			ArgumentNullException.ThrowIfNull (port);
 
 			using var portPtr = new TransientString (port);
 			handle = nw_listener_create_with_port (portPtr, parameters.Handle);
@@ -64,8 +62,7 @@ namespace Network {
 		{
 			IntPtr handle;
 
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
+			ArgumentNullException.ThrowIfNull (parameters);
 
 			handle = nw_listener_create (parameters.Handle);
 			GC.KeepAlive (parameters);
@@ -84,10 +81,8 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public static NWListener? Create (NWConnection connection, NWParameters parameters)
 		{
-			if (parameters is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (parameters));
-			if (connection is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (connection));
+			ArgumentNullException.ThrowIfNull (parameters);
+			ArgumentNullException.ThrowIfNull (connection);
 
 			var handle = nw_listener_create_with_connection (connection.Handle, parameters.Handle);
 			GC.KeepAlive (connection);
@@ -115,8 +110,7 @@ namespace Network {
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static NWListener? Create (NWParameters parameters, string launchd_key)
 		{
-			if (launchd_key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (launchd_key));
+			ArgumentNullException.ThrowIfNull (launchd_key);
 
 			using var launchd_key_ptr = new TransientString (launchd_key);
 			var handle = nw_listener_create_with_launchd_key (parameters.GetNonNullHandle (nameof (parameters)), launchd_key_ptr);
@@ -135,8 +129,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void SetQueue (DispatchQueue queue)
 		{
-			if (queue is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (queue));
+			ArgumentNullException.ThrowIfNull (queue);
 
 			nw_listener_set_queue (GetCheckedHandle (), queue.Handle);
 			GC.KeepAlive (queue);

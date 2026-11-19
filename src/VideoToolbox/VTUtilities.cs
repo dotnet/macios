@@ -36,8 +36,7 @@ namespace VideoToolbox {
 		/// <exception cref="ArgumentNullException"><paramref name="pixelBuffer" /> is <see langword="null" />.</exception>
 		public static VTStatus ToCGImage (this CVPixelBuffer pixelBuffer, out CGImage? image)
 		{
-			if (pixelBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (pixelBuffer));
+			ArgumentNullException.ThrowIfNull (pixelBuffer);
 
 			VTStatus ret;
 			IntPtr imagePtr;

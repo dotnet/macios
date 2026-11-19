@@ -63,8 +63,7 @@ namespace CoreGraphics {
 
 		public unsafe void SetCallback (string name, delegate* unmanaged<IntPtr, IntPtr, void> callback)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			using var namePtr = new TransientString (name);
 			CGPDFOperatorTableSetCallback (Handle, namePtr, callback);

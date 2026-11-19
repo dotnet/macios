@@ -20,8 +20,7 @@ namespace UIKit {
 		public static Class [] ToClasses (params Type [] traits)
 #endif
 		{
-			if (traits is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (traits));
+			ArgumentNullException.ThrowIfNull (traits);
 
 			return Class.FromTypes (traits);
 		}
@@ -189,8 +188,7 @@ namespace UIKit {
 		public static Class [] ToClasses (IUITraitDefinition [] traits)
 #endif
 		{
-			if (traits is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (traits));
+			ArgumentNullException.ThrowIfNull (traits);
 			var traitsClasses = new Class [traits.Length];
 			for (var i = 0; i < traits.Length; i++)
 				traitsClasses [i] = new Class (traits [i].GetType ());

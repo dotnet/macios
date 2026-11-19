@@ -94,8 +94,7 @@ namespace CoreMedia {
 		public static CMSampleBuffer? CreateWithPacketDescriptions (CMBlockBuffer? dataBuffer, CMFormatDescription formatDescription, int samplesCount,
 			CMTime sampleTimestamp, AudioStreamPacketDescription [] packetDescriptions, out CMSampleBufferError error)
 		{
-			if (formatDescription is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (formatDescription));
+			ArgumentNullException.ThrowIfNull (formatDescription);
 			if (samplesCount <= 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (samplesCount), "Negative");
 
@@ -156,8 +155,7 @@ namespace CoreMedia {
 
 		public unsafe static CMSampleBuffer? CreateWithNewTiming (CMSampleBuffer original, CMSampleTimingInfo []? timing, out OSStatus status)
 		{
-			if (original is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (original));
+			ArgumentNullException.ThrowIfNull (original);
 
 			nint count = timing is null ? 0 : timing.Length;
 			IntPtr handle;
@@ -198,8 +196,7 @@ namespace CoreMedia {
 		public CMSampleBufferError CallForEachSample (Func<CMSampleBuffer, int, CMSampleBufferError> callback)
 		{
 			// it makes no sense not to provide a callback - and it also crash the app
-			if (callback is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (callback));
+			ArgumentNullException.ThrowIfNull (callback);
 
 			GCHandle h = GCHandle.Alloc (Tuple.Create (callback, this));
 			try {
@@ -266,10 +263,8 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public static CMSampleBuffer? CreateForImageBuffer (CVImageBuffer imageBuffer, bool dataReady, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
-			if (formatDescription is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (formatDescription));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
+			ArgumentNullException.ThrowIfNull (formatDescription);
 
 			IntPtr buffer;
 			unsafe {
@@ -774,8 +769,7 @@ namespace CoreMedia {
 		[SupportedOSPlatform ("tvos")]
 		public CMSampleBufferError CopyPCMDataIntoAudioBufferList (int frameOffset, int numFrames, AudioBuffers bufferList)
 		{
-			if (bufferList is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bufferList));
+			ArgumentNullException.ThrowIfNull (bufferList);
 
 			return CMSampleBufferCopyPCMDataIntoAudioBufferList (Handle, frameOffset, numFrames, (IntPtr) bufferList);
 		}
@@ -810,10 +804,8 @@ namespace CoreMedia {
 		public static CMSampleBuffer? CreateReadyWithPacketDescriptions (CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, int samplesCount,
 			CMTime sampleTimestamp, AudioStreamPacketDescription []? packetDescriptions, out CMSampleBufferError error)
 		{
-			if (dataBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dataBuffer));
-			if (formatDescription is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (formatDescription));
+			ArgumentNullException.ThrowIfNull (dataBuffer);
+			ArgumentNullException.ThrowIfNull (formatDescription);
 			if (samplesCount <= 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (samplesCount), "smaller than 0");
 
@@ -863,8 +855,7 @@ namespace CoreMedia {
 			int samplesCount, CMSampleTimingInfo []? sampleTimingArray, nuint []? sampleSizeArray,
 			out CMSampleBufferError error)
 		{
-			if (dataBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dataBuffer));
+			ArgumentNullException.ThrowIfNull (dataBuffer);
 			if (samplesCount < 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (samplesCount), "Negative");
 
@@ -923,10 +914,8 @@ namespace CoreMedia {
 		public static CMSampleBuffer? CreateReadyWithImageBuffer (CVImageBuffer imageBuffer,
 			CMFormatDescription formatDescription, ref CMSampleTimingInfo sampleTiming, out CMSampleBufferError error)
 		{
-			if (imageBuffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
-			if (formatDescription is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (formatDescription));
+			ArgumentNullException.ThrowIfNull (imageBuffer);
+			ArgumentNullException.ThrowIfNull (formatDescription);
 
 			IntPtr buffer;
 			unsafe {

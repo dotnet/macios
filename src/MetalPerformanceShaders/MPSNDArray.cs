@@ -97,11 +97,9 @@ namespace MetalPerformanceShaders {
 		[SupportedOSPlatform ("tvos18.0")]
 		public MPSNDArray? Create (nuint numberOfDimensions, nuint [] dimensionSizes, nuint [] dimStrides)
 		{
-			if (dimensionSizes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dimensionSizes));
+			ArgumentNullException.ThrowIfNull (dimensionSizes);
 
-			if (dimStrides is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (dimStrides));
+			ArgumentNullException.ThrowIfNull (dimStrides);
 
 			if (dimensionSizes.Length != (int) numberOfDimensions)
 				ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException (nameof (dimensionSizes), $"Length must be equal to 'numberOfDimensions'.");

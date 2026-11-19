@@ -52,7 +52,7 @@ namespace ObjCRuntime {
 		public static T? Get<T> (ref T? value, IntPtr handle, Converter<IntPtr, T?> c)
 			where T : class, INativeObject, IDisposable
 		{
-			c = ThrowHelper.ThrowIfNull (c);
+			ArgumentNullException.ThrowIfNull (c);
 
 			if (handle == IntPtr.Zero) {
 				if (value is not null)

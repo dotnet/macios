@@ -65,8 +65,7 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		public static bool IsDynamic (string utType)
 		{
-			if (utType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (utType));
+			ArgumentNullException.ThrowIfNull (utType);
 
 			var ptr = CFString.CreateNative (utType);
 			var result = UTTypeIsDynamic (ptr);
@@ -87,8 +86,7 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		public static bool IsDeclared (string utType)
 		{
-			if (utType is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (utType));
+			ArgumentNullException.ThrowIfNull (utType);
 
 			var ptr = CFString.CreateNative (utType);
 			var result = UTTypeIsDeclared (ptr);
@@ -128,10 +126,8 @@ namespace MobileCoreServices {
 		///         <remarks>To be added.</remarks>
 		public static string? []? CreateAllIdentifiers (string tagClass, string tag, string conformingToUti)
 		{
-			if (tagClass is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tagClass));
-			if (tag is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tag));
+			ArgumentNullException.ThrowIfNull (tagClass);
+			ArgumentNullException.ThrowIfNull (tag);
 
 			var a = CFString.CreateNative (tagClass);
 			var b = CFString.CreateNative (tag);
@@ -167,10 +163,8 @@ namespace MobileCoreServices {
 		[ObsoletedOSPlatform ("ios14.0", "Use the 'UniformTypeIdentifiers.UTType' API instead.")]
 		public static string? []? CopyAllTags (string uti, string tagClass)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
-			if (tagClass is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tagClass));
+			ArgumentNullException.ThrowIfNull (uti);
+			ArgumentNullException.ThrowIfNull (tagClass);
 
 			var a = CFString.CreateNative (uti);
 			var b = CFString.CreateNative (tagClass);
@@ -190,10 +184,8 @@ namespace MobileCoreServices {
 		///         <remarks>To be added.</remarks>
 		public static bool ConformsTo (string uti, string conformsToUti)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
-			if (conformsToUti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (conformsToUti));
+			ArgumentNullException.ThrowIfNull (uti);
+			ArgumentNullException.ThrowIfNull (conformsToUti);
 
 			var a = CFString.CreateNative (uti);
 			var b = CFString.CreateNative (conformsToUti);
@@ -212,8 +204,7 @@ namespace MobileCoreServices {
 		///         <remarks>To be added.</remarks>
 		public static string? GetDescription (string uti)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
+			ArgumentNullException.ThrowIfNull (uti);
 
 			var a = CFString.CreateNative (uti);
 			var ret = CFString.FromHandle (UTTypeCopyDescription (a), true);
@@ -231,10 +222,8 @@ namespace MobileCoreServices {
 		///         <remarks>To be added.</remarks>
 		public static string? GetPreferredTag (string uti, string tagClass)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
-			if (tagClass is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (tagClass));
+			ArgumentNullException.ThrowIfNull (uti);
+			ArgumentNullException.ThrowIfNull (tagClass);
 
 			var a = CFString.CreateNative (uti);
 			var b = CFString.CreateNative (tagClass);
@@ -253,8 +242,7 @@ namespace MobileCoreServices {
 		///         <remarks>To be added.</remarks>
 		public static NSDictionary? GetDeclaration (string uti)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
+			ArgumentNullException.ThrowIfNull (uti);
 
 			var a = CFString.CreateNative (uti);
 			var ret = Runtime.GetNSObject<NSDictionary> (UTTypeCopyDeclaration (a), true);
@@ -267,8 +255,7 @@ namespace MobileCoreServices {
 
 		public static NSUrl? GetDeclaringBundleUrl (string uti)
 		{
-			if (uti is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (uti));
+			ArgumentNullException.ThrowIfNull (uti);
 
 			var a = CFString.CreateNative (uti);
 			var ret = Runtime.GetNSObject<NSUrl> (UTTypeCopyDeclaringBundleURL (a), true);

@@ -10,8 +10,7 @@ namespace FSKit {
 		public FSFileName (byte [] bytes)
 			: base (NSObjectFlag.Empty)
 		{
-			if (bytes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bytes));
+			ArgumentNullException.ThrowIfNull (bytes);
 
 			unsafe {
 				fixed (byte* bytesPtr = bytes) {
@@ -25,8 +24,7 @@ namespace FSKit {
 		/// <returns>A new <see cref="FSFileName" /> instance.</returns>
 		public FSFileName Create (byte [] bytes)
 		{
-			if (bytes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (bytes));
+			ArgumentNullException.ThrowIfNull (bytes);
 
 			unsafe {
 				fixed (byte* bytesPtr = bytes) {

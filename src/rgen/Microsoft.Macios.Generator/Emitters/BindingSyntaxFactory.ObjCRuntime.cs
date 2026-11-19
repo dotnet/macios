@@ -1036,33 +1036,19 @@ static partial class BindingSyntaxFactory {
 		};
 
 	/// <summary>
-	/// Generates an if-statement that throws an <see cref="ArgumentNullException"/> if the specified variable is null.
+	/// Generates a call to <see cref="ArgumentNullException.ThrowIfNull(object, string)"/> for the specified variable.
 	/// </summary>
 	/// <param name="variableName">The name of the variable to check for null.</param>
-	/// <returns>An <see cref="IfStatementSyntax"/> that performs the null check and throws if necessary.</returns>
+	/// <returns>An <see cref="ExpressionStatementSyntax"/> that performs the null check and throws if necessary.</returns>
 	internal static SyntaxNode ThrowIfNull (string variableName)
 	{
-		var isExpression = IsPatternExpression (
-			IdentifierName (variableName),
-			ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression))).NormalizeWhitespace ();
-
-		var throwHelper = ExpressionStatement (
+		return ExpressionStatement (
 			MemberInvocationExpression (
-				instanceVariable: ThrowHelper,
-				methodName: "ThrowArgumentNullException",
-				arguments: [Argument (NameOf (variableName))]
+				instanceVariable: ArgumentNullException,
+				methodName: "ThrowIfNull",
+				arguments: [Argument (IdentifierName (variableName)), Argument (NameOf (variableName))]
 			)
 		);
-
-		// if + throw using the mono style, other methods will remove the spaces with added before the ()
-		return IfStatement (
-			attributeLists: default,
-			ifKeyword: Token (SyntaxKind.IfKeyword).WithTrailingTrivia (Space),
-			openParenToken: Token (SyntaxKind.OpenParenToken),
-			condition: isExpression,
-			closeParenToken: Token (SyntaxKind.CloseParenToken),
-			statement: throwHelper.WithLeadingTrivia (LineFeed, Tab),
-			@else: default);
 	}
 
 	/// <summary>

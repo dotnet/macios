@@ -62,8 +62,7 @@ namespace QuickLook {
 		[ObsoletedOSPlatform ("macos15.0", "Use the QuickLookThumbnailing framework instead for creating thumbnails for files.")]
 		public static CGImage? Create (NSUrl url, CGSize maxThumbnailSize, float scaleFactor = 1, bool iconMode = false)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 
 			NSMutableDictionary? dictionary = null;
 

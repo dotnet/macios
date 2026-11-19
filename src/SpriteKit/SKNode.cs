@@ -89,10 +89,8 @@ namespace SpriteKit {
 		public static SKNode? Create (string filename, Type [] types, out NSError error)
 		{
 			// Let's fail early.
-			if (filename is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (filename));
-			if (types is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (types));
+			ArgumentNullException.ThrowIfNull (filename);
+			ArgumentNullException.ThrowIfNull (types);
 			if (types.Length == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (types), "Length must be greater than zero.");
 
@@ -118,8 +116,7 @@ namespace SpriteKit {
 		public static SKNode? Create (string filename, NSSet<Class> classes, out NSError error)
 		{
 			// `filename` will be checked by `Create` later
-			if (classes is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (classes));
+			ArgumentNullException.ThrowIfNull (classes);
 			if (classes.Count == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (classes), "Length must be greater than zero.");
 

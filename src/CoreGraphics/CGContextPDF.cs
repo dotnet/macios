@@ -361,8 +361,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void SetUrl (NSUrl url, CGRect region)
 		{
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			CGPDFContextSetURLForRect (Handle, url.Handle, region);
 			GC.KeepAlive (url);
 		}
@@ -376,8 +375,7 @@ namespace CoreGraphics {
 		///         <remarks>Use this to add destinations in a PDF document.   These destinations can be reached by the user when they click on a region of the document that was defined with SetDestination.</remarks>
 		public void AddDestination (string name, CGPoint point)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var nameHandle = CFString.CreateNative (name);
 			try {
@@ -396,8 +394,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		public void SetDestination (string name, CGRect rect)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
+			ArgumentNullException.ThrowIfNull (name);
 
 			var nameHandle = CFString.CreateNative (name);
 			try {

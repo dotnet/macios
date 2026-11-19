@@ -98,8 +98,7 @@ namespace CoreMidi {
 				return map_value ?? (map_value = new byte [128]);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+				ArgumentNullException.ThrowIfNull (value);
 				if (value.Length != 128)
 					throw new ArgumentOutOfRangeException (nameof (value), "The length of the Value array must be 128");
 				map_value = value;

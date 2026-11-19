@@ -40,7 +40,7 @@ namespace SystemConfiguration {
 		static public StatusCode TryCopyCurrentNetworkInfo (string interfaceName, out NSDictionary? currentNetworkInfo)
 		{
 			if (string.IsNullOrEmpty (interfaceName))
-				ThrowHelper.ThrowArgumentNullException (nameof (interfaceName));
+				throw new ArgumentNullException (nameof (interfaceName));
 
 			using var nss = new TransientCFString (interfaceName);
 			var ni = CNCopyCurrentNetworkInfo (nss);
@@ -112,7 +112,7 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOnline (string iface)
 		{
 			if (string.IsNullOrEmpty (iface))
-				ThrowHelper.ThrowArgumentNullException (nameof (iface));
+				throw new ArgumentNullException (nameof (iface));
 
 			using var nss = new TransientCFString (iface);
 			return CNMarkPortalOnline (nss) != 0;
@@ -131,7 +131,7 @@ namespace SystemConfiguration {
 		static public bool MarkPortalOffline (string iface)
 		{
 			if (string.IsNullOrEmpty (iface))
-				ThrowHelper.ThrowArgumentNullException (nameof (iface));
+				throw new ArgumentNullException (nameof (iface));
 
 			using var nss = new TransientCFString (iface);
 			return CNMarkPortalOffline (nss) != 0;

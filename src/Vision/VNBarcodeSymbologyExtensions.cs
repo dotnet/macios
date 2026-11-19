@@ -17,8 +17,7 @@ namespace Vision {
 		///         <remarks>To be added.</remarks>
 		public static NSString [] GetConstants (this VNBarcodeSymbology [] self)
 		{
-			if (self is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (self));
+			ArgumentNullException.ThrowIfNull (self);
 
 			var array = new NSString [self.Length];
 			for (int n = 0; n < self.Length; n++)
@@ -32,8 +31,7 @@ namespace Vision {
 		///         <remarks>To be added.</remarks>
 		public static VNBarcodeSymbology [] GetValues (NSString []? constants)
 		{
-			if (constants is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (constants));
+			ArgumentNullException.ThrowIfNull (constants);
 
 			var array = new VNBarcodeSymbology [constants.Length];
 			for (int n = 0; n < constants.Length; n++)

@@ -208,8 +208,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setBoolActionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1bool.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -242,8 +241,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setCompletionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDAction.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -276,8 +274,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setCreateObjectHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDTrampolinePropertyTests_CreateObject.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -310,8 +307,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setDuplicateCompletionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDAction.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -342,8 +338,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_ (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setImageGeneratorCompletionHandler:"), value);
 			} else {
@@ -374,8 +369,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setImageGeneratorCompletionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDAVAssetImageGenerateAsynchronouslyForTimeCompletionHandler.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -408,8 +402,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setIntActionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1int.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -442,8 +435,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setInternalRenderBlockHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDAUInternalRenderBlock.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -476,8 +468,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setKernelRoiCallback:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -510,8 +501,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setKernelRoiCallback:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDCIKernelRoiCallback.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -544,8 +534,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setManualRenderingCallback:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDAVAudioEngineManualRenderingBlock.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {
@@ -578,8 +567,7 @@ public partial class TrampolinePropertyTests
 		[Export ("setStringActionHandler:")]
 		set
 		{
-			if (value is null)
-				global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+			global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 			using var block_value = global::ObjCRuntime.Trampolines.SDActionArity1string.CreateNullableBlock (value);
 			global::ObjCRuntime.BlockLiteral* block_ptr_value = value is not null ? &block_value : null;
 			if (IsDirectBinding) {

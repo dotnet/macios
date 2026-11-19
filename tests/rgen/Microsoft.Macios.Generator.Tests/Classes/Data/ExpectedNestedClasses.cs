@@ -312,8 +312,7 @@ public partial class OuterClass
 				[Export ("setSizes:")]
 				set
 				{
-					if (value is null)
-						global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+					global::System.ArgumentNullException.ThrowIfNull (value, nameof (value));
 					if (IsDirectBinding) {
 						global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, global::ObjCRuntime.Selector.GetHandle ("setSizes:"), value);
 					} else {
@@ -331,8 +330,7 @@ public partial class OuterClass
 			[Export ("arrayWithContentsOfFile:")]
 			public virtual unsafe partial static global::Foundation.NSArray FromFile (string path)
 			{
-				if (path is null)
-					global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+				global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 				var nspath = global::CoreFoundation.CFString.CreateNative (path);
 				global::Foundation.NSArray ret;
 				if (IsDirectBinding) {
@@ -373,8 +371,7 @@ public partial class OuterClass
 			[Export ("sortedArrayUsingComparator:")]
 			public virtual unsafe partial global::Foundation.NSArray Sort (global::Foundation.NSComparator cmptr)
 			{
-				if (cmptr is null)
-					global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (cmptr));
+				global::System.ArgumentNullException.ThrowIfNull (cmptr, nameof (cmptr));
 				using var block_cmptr = global::ObjCRuntime.Trampolines.SDNSComparator.CreateNullableBlock (cmptr);
 				global::ObjCRuntime.BlockLiteral* block_ptr_cmptr = cmptr is not null ? &block_cmptr : null;
 				global::Foundation.NSArray ret;
@@ -415,8 +412,7 @@ public partial class OuterClass
 			[Export ("writeToFile:atomically:")]
 			public virtual unsafe partial bool WriteToFile (string path, bool useAuxiliaryFile)
 			{
-				if (path is null)
-					global::ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (path));
+				global::System.ArgumentNullException.ThrowIfNull (path, nameof (path));
 				var nspath = global::CoreFoundation.CFString.CreateNative (path);
 				bool ret;
 				if (IsDirectBinding) {

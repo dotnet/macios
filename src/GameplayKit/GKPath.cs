@@ -16,8 +16,7 @@ namespace GameplayKit {
 
 		public static GKPath FromPoints (Vector2 [] points, float radius, bool cyclical)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 
 			var buffer = IntPtr.Zero;
 			try {
@@ -34,8 +33,7 @@ namespace GameplayKit {
 		public GKPath (Vector2 [] points, float radius, bool cyclical)
 			: base (NSObjectFlag.Empty)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 
 			var buffer = IntPtr.Zero;
 			try {
@@ -54,8 +52,7 @@ namespace GameplayKit {
 		[SupportedOSPlatform ("maccatalyst")]
 		public static GKPath FromPoints (Vector3 [] points, float radius, bool cyclical)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 
 			var buffer = IntPtr.Zero;
 			try {
@@ -75,8 +72,7 @@ namespace GameplayKit {
 		public GKPath (Vector3 [] points, float radius, bool cyclical)
 			: base (NSObjectFlag.Empty)
 		{
-			if (points is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+			ArgumentNullException.ThrowIfNull (points);
 
 			var buffer = IntPtr.Zero;
 			try {

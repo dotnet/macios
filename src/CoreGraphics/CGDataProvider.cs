@@ -71,8 +71,7 @@ namespace CoreGraphics {
 		///         <remarks>To be added.</remarks>
 		static public CGDataProvider? FromFile (string file)
 		{
-			if (file is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (file));
+			ArgumentNullException.ThrowIfNull (file);
 
 			using var filePtr = new TransientString (file);
 			var handle = CGDataProviderCreateWithFilename (filePtr);
@@ -84,8 +83,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (string file)
 		{
-			if (file is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (file));
+			ArgumentNullException.ThrowIfNull (file);
 
 			using var filePtr = new TransientString (file);
 			var handle = CGDataProviderCreateWithFilename (filePtr);
@@ -109,8 +107,7 @@ namespace CoreGraphics {
 		static IntPtr Create (NSUrl url)
 		{
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
-			if (url is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
+			ArgumentNullException.ThrowIfNull (url);
 			IntPtr result = CGDataProviderCreateWithURL (url.Handle);
 			GC.KeepAlive (url);
 			return result;
@@ -130,8 +127,7 @@ namespace CoreGraphics {
 		static IntPtr Create (NSData data)
 		{
 			// not it's a __nullable parameter but it would return nil (see unit tests) and create an invalid instance
-			if (data is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (data));
+			ArgumentNullException.ThrowIfNull (data);
 			IntPtr result = CGDataProviderCreateWithCFData (data.Handle);
 			GC.KeepAlive (data);
 			return result;
@@ -228,8 +224,7 @@ namespace CoreGraphics {
 
 		static IntPtr Create (byte [] buffer, int offset, int count)
 		{
-			if (buffer is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffer));
+			ArgumentNullException.ThrowIfNull (buffer);
 			if (offset < 0 || offset > buffer.Length)
 				throw new ArgumentException (nameof (offset));
 			if (offset + count > buffer.Length)

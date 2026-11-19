@@ -1,0 +1,3 @@
+!missing-enum! FSRenameFlags not bound
+!missing-protocol-member! FSVolumeHandler::renameItem:inDirectory:named:toNewName:inDirectory:overItem:flags:context:replyHandler: not found
+!missing-protocol-member! FSVolumeHandler::supportedRenameFlags not found

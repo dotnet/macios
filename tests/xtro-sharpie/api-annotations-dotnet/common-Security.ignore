@@ -30,5 +30,3 @@
 !missing-protocol! OS_sec_trust not bound
 
 ## Apple-private SPI, marked SPI_AVAILABLE in SecPolicy.h.
-!missing-field! kSecPolicyAppleQWACTLSBinding not bound
-!missing-pinvoke! SecPolicyCreateQWACTLSBinding is not bound

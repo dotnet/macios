@@ -1,0 +1,2 @@
+!missing-selector! THNearbyNetworkCredentials::isForPreferredNetwork not bound
+!unknown-selector! THNearbyNetworkCredentials::isPreferredNetworkCredentials not found

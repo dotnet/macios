@@ -1,0 +1,45 @@
+!missing-enum-value! PHPickerCapabilities native value PHPickerCapabilitiesAutomaticModalInPresentation = 32 not bound
+!missing-enum-value! PHPickerCapabilities native value PHPickerCapabilitiesAutomaticPreferredContentSize = 64 not bound
+!missing-enum-value! PHPickerCapabilities native value PHPickerCapabilitiesSidebar = 128 not bound
+!missing-enum-value! PHPickerMetadataOptions native value PHPickerMetadataOptionsRemoveAppleReferenceImage = 4 not bound
+!missing-enum-value! PHPickerMetadataOptions native value PHPickerMetadataOptionsRemoveKeywords = 8 not bound
+!missing-enum! PHPhotosUIError not bound
+!missing-enum! PHPickerPrimaryButtonType not bound
+!missing-enum! PHPickerResultThumbnailSize not bound
+!missing-enum! PHPickerSecondaryButtonType not bound
+!missing-field! PHPhotosUIErrorDomain not bound
+!missing-protocol-member! PHPickerViewControllerDelegate::pickerDidPerformPrimaryAction: not found
+!missing-protocol-member! PHPickerViewControllerDelegate::pickerDidPerformSecondaryAction: not found
+!missing-selector! +PHPickerAspectRatio::deviceAspectRatio not bound
+!missing-selector! +PHPickerFilter::landscapeAspectRatioFilter not bound
+!missing-selector! PHPickerAspectRatio::initWithAspectRatio: not bound
+!missing-selector! PHPickerConfiguration::aspectRatio not bound
+!missing-selector! PHPickerConfiguration::containerIdentifier not bound
+!missing-selector! PHPickerConfiguration::minimumSelectionLimit not bound
+!missing-selector! PHPickerConfiguration::primaryButtonType not bound
+!missing-selector! PHPickerConfiguration::prompt not bound
+!missing-selector! PHPickerConfiguration::secondaryButtonType not bound
+!missing-selector! PHPickerConfiguration::setAspectRatio: not bound
+!missing-selector! PHPickerConfiguration::setContainerIdentifier: not bound
+!missing-selector! PHPickerConfiguration::setMinimumSelectionLimit: not bound
+!missing-selector! PHPickerConfiguration::setPrimaryButtonType: not bound
+!missing-selector! PHPickerConfiguration::setPrompt: not bound
+!missing-selector! PHPickerConfiguration::setSecondaryButtonType: not bound
+!missing-selector! PHPickerConfiguration::setTitle: not bound
+!missing-selector! PHPickerConfiguration::title not bound
+!missing-selector! PHPickerResult::requestThumbnailImageURLForPreferredSize:resultHandler: not bound
+!missing-selector! PHPickerSearchText::prefersAutomaticFocus not bound
+!missing-selector! PHPickerSearchText::setPrefersAutomaticFocus: not bound
+!missing-selector! PHPickerUpdateConfiguration::containerIdentifier not bound
+!missing-selector! PHPickerUpdateConfiguration::minimumSelectionLimit not bound
+!missing-selector! PHPickerUpdateConfiguration::primaryButtonType not bound
+!missing-selector! PHPickerUpdateConfiguration::prompt not bound
+!missing-selector! PHPickerUpdateConfiguration::secondaryButtonType not bound
+!missing-selector! PHPickerUpdateConfiguration::setContainerIdentifier: not bound
+!missing-selector! PHPickerUpdateConfiguration::setMinimumSelectionLimit: not bound
+!missing-selector! PHPickerUpdateConfiguration::setPrimaryButtonType: not bound
+!missing-selector! PHPickerUpdateConfiguration::setPrompt: not bound
+!missing-selector! PHPickerUpdateConfiguration::setSecondaryButtonType: not bound
+!missing-selector! PHPickerUpdateConfiguration::setTitle: not bound
+!missing-selector! PHPickerUpdateConfiguration::title not bound
+!missing-type! PHPickerAspectRatio not bound

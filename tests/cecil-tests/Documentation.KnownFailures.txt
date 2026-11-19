@@ -58539,7 +58539,6 @@ T:SafariServices.SFSafariTab
 T:SafariServices.SFSafariToolbarItem
 T:SafariServices.SFSafariViewControllerActivityButton
 T:SafariServices.SFSafariViewControllerDataStore
-T:SafariServices.SFSafariViewControllerDismissButtonStyle
 T:SafariServices.SFSafariViewControllerPrewarmingToken
 T:SafariServices.SFSafariWindow
 T:SafariServices.SFUniversalLink

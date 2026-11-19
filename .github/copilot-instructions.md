@@ -155,7 +155,7 @@ must use `MacDevMessage` with `Error="true"` or `Warning="true"`:
   Use `E` followed by four digits for an error resource name, or `W` followed by four
   digits for a warning. Set `ResourceName` to that name. Reuse an existing code only
   for the same diagnostic; otherwise, choose an unused number in the 7xxx range.
-  `MacDevMessage` replaces `E` or `W` with the platform's `MT` or `MM` prefix.
+  In shipped SDKs, `MacDevMessage` replaces `E` or `W` with `MT` on every platform.
   Suppress a warning by adding its full code (for example, `MT7260`) to `NoWarn`.
 * Keep resource entries sorted alphabetically by their `name` attribute.
 * Put the English message, including any `{0}` placeholders, in an XML comment

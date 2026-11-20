@@ -7,11 +7,11 @@ namespace AssemblyPreparerTests;
 
 public class ApplyPreserveAttributeTests : BaseClass {
 	[Test]
-	[TestCase (ApplePlatform.MacCatalyst, false)]
-	[TestCase (ApplePlatform.iOS, false)]
-	[TestCase (ApplePlatform.TVOS, false)]
-	[TestCase (ApplePlatform.MacOSX, true)]
-	public void ExplicitInterfaceMembers (ApplePlatform platform, bool isCoreCLR)
+	[TestCase (ApplePlatform.MacCatalyst)]
+	[TestCase (ApplePlatform.iOS)]
+	[TestCase (ApplePlatform.TVOS)]
+	[TestCase (ApplePlatform.MacOSX)]
+	public void ExplicitInterfaceMembers (ApplePlatform platform)
 	{
 		var code = @"
 		using System;
@@ -32,7 +32,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 		}
 		";
 
-		AssertPrepare (platform, isCoreCLR, code, out var assemblyDefinition);
+		AssertPrepare (platform, code, out var assemblyDefinition);
 
 		var moduleConstructor = assemblyDefinition.MainModule.Types.Single (v => v.Name == "<Module>").GetStaticConstructor ();
 		Assert.That (moduleConstructor, Is.Not.Null, "Module constructor");

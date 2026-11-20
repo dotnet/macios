@@ -11,7 +11,7 @@ public class DisposeTests : BaseClass {
 		var assembly = AssemblyDefinition.CreateAssembly (new AssemblyNameDefinition ("Test", new Version (1, 0)), "Test", ModuleKind.Dll);
 		resolver.CacheAssembly (assembly);
 
-		var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Configuration.Application.PreTrimAssemblyResolver = resolver, "public class C {}", out _);
+		var preparer = CreatePreparer (ApplePlatform.iOS, p => p.Configuration.Application.PreTrimAssemblyResolver = resolver, "public class C {}", out _);
 
 		Assert.That (resolver.IsDisposed, Is.False, "Resolver disposed before preparer");
 		preparer.Dispose ();

@@ -22,8 +22,6 @@ namespace MonoTouchFixtures.GamePlayKit {
 		[Test]
 		public void GKTriangleTest ()
 		{
-			TestRuntime.AssertNotInterpreter ("This test does not work in the interpreter: https://github.com/dotnet/runtime/issues/110644");
-
 			var max = new Vector2 (10, 10);
 			var min = new Vector2 (1, 1);
 			var def = new GKTriangle ();

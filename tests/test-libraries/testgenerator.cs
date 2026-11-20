@@ -894,7 +894,6 @@ namespace Bindings.Test
 
 	static void WriteAsserts (StringBuilder w, BindAsData v)
 	{
-		w.AppendLine ($"\t\t\tAssertIfIgnored ();");
 		if (v.MinXcodeVersion is not null) {
 			w.AppendLine ($"\t\t\tTestRuntime.AssertXcodeVersion ({v.MinXcodeVersion.Major}, {v.MinXcodeVersion.Minor});");
 			w.AppendLine ();
@@ -949,7 +948,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			w.AppendLine ("\t\t[Test]");
 			w.AppendLine ($"\t\tpublic void Test_{s} ()");
 			w.AppendLine ("\t\t{");
-			w.AppendLine ($"\t\t\tAssertIfIgnored ();");
 			w.AppendLine ("\t\t\tusing (var tc = new ObjCRegistrarTest ()) {");
 			w.AppendLine ($"\t\t\t\tvar s = tc.PS{s};");
 			for (int i = 0; i < s.Length; i++)
@@ -1704,7 +1702,6 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			w.AppendLine ($"\t\t[Test]");
 			w.AppendLine ($"\t\tpublic void Test_{s} ()");
 			w.AppendLine ($"\t\t{{");
-			w.AppendLine ($"\t\t\tAssertIfIgnored ();");
 			w.AppendLine ($"\t\t\tIntPtr class_ptr = Class.GetHandle (typeof (GeneratedStretTrampolines));");
 			w.AppendLine ($"\t\t\tS{s} rv = new S{s} ();");
 			w.AppendLine ($"\t\t\tdouble rvd;");

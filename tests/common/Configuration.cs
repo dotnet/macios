@@ -544,7 +544,7 @@ namespace Xamarin.Tests {
 			return GetBaseLibrary (platform);
 		}
 
-		public static List<string> GetBCLAssemblies (ApplePlatform platform, bool isCoreCLR)
+		public static List<string> GetBCLAssemblies (ApplePlatform platform)
 		{
 			var assemblies = new List<string> ();
 			string rid;
@@ -552,21 +552,19 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.MacCatalyst:
 				rid = "maccatalyst-arm64";
-				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.maccatalyst-arm64" : $"microsoft.netcore.app.runtime.mono.maccatalyst-arm64";
+				packageName = "microsoft.netcore.app.runtime.maccatalyst-arm64";
 				break;
 			case ApplePlatform.iOS:
 				rid = "ios-arm64";
-				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.ios-arm64" : $"microsoft.netcore.app.runtime.mono.ios-arm64";
+				packageName = "microsoft.netcore.app.runtime.ios-arm64";
 				break;
 			case ApplePlatform.TVOS:
 				rid = "tvos-arm64";
-				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.tvOS-arm64" : $"microsoft.netcore.app.runtime.mono.tvOS-arm64";
+				packageName = "microsoft.netcore.app.runtime.tvOS-arm64";
 				break;
 			case ApplePlatform.MacOSX:
 				rid = "osx-arm64";
 				packageName = "microsoft.netcore.app.runtime.osx-arm64";
-				if (!isCoreCLR)
-					throw new InvalidOperationException ($"Mono doesn't support macOS, but was asked for the BCL assemblies for macOS");
 				break;
 			default:
 				throw new NotSupportedException ($"Unsupported platform: {platform}");
@@ -581,21 +579,21 @@ namespace Xamarin.Tests {
 			return assemblies;
 		}
 
-		public static List<string> GetReferenceAssemblies (ApplePlatform platform, bool isCoreCLR)
+		public static List<string> GetReferenceAssemblies (ApplePlatform platform)
 		{
 			var assemblies = new List<string> ();
 
-			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetBCLAssemblies (platform));
 			assemblies.AddRange (GetRefLibrary (platform));
 
 			return assemblies;
 		}
 
-		public static List<string> GetImplementationAssemblies (ApplePlatform platform, bool isCoreCLR)
+		public static List<string> GetImplementationAssemblies (ApplePlatform platform)
 		{
 			var assemblies = new List<string> ();
 
-			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetBCLAssemblies (platform));
 			assemblies.AddRange (GetBaseLibraryImplementations (platform).First ());
 
 			return assemblies;

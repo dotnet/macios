@@ -5,16 +5,30 @@
 # NuGet.config to the ConfigureMac target (RemoteNuGetConfigFile), so that
 # the workloads can be installed on the Mac without depending on the Mac's
 # checkout of this repository.
+# Set PACKAGES_DIR, FEED_DIR and CONFIG_FILE to override the CI paths.
 
 set -o pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../../../.."
 REPO_DIR=$(pwd)
 
-PACKAGES_DIR="$BUILD_SOURCESDIRECTORY/artifacts/${MACIOS_UPLOAD_PREFIX:-}not-signed-package"
-OUTPUT_DIR="$HOME/remote_build_testing/nuget"
-FEED_DIR="$OUTPUT_DIR/feed"
-CONFIG_FILE="$OUTPUT_DIR/NuGet.config"
+PACKAGES_DIR="${PACKAGES_DIR:-${BUILD_SOURCESDIRECTORY:?Set BUILD_SOURCESDIRECTORY or PACKAGES_DIR}/artifacts/${MACIOS_UPLOAD_PREFIX:-}not-signed-package}"
+FEED_DIR="${FEED_DIR:-$HOME/remote_build_testing/nuget/feed}"
+CONFIG_FILE="${CONFIG_FILE:-$HOME/remote_build_testing/nuget/NuGet.config}"
+
+if ! ls "$PACKAGES_DIR/"*.nupkg >/dev/null 2>&1; then
+	echo "No NuGet packages found in $PACKAGES_DIR"
+	exit 1
+fi
+
+PACKAGES_DIR=$(cd "$PACKAGES_DIR" && pwd -P)
+mkdir -p "$FEED_DIR" "$(dirname "$CONFIG_FILE")"
+FEED_DIR=$(cd "$FEED_DIR" && pwd -P)
+if [[ "$PACKAGES_DIR" == "$FEED_DIR" ]]; then
+	echo "The package source and feed directories must be different: $FEED_DIR"
+	exit 1
+fi
+
 ESCAPED_FEED_DIR=$(printf '%s' "$FEED_DIR" | sed \
 	-e 's/&/\&amp;/g' \
 	-e 's/</\&lt;/g' \
@@ -22,13 +36,8 @@ ESCAPED_FEED_DIR=$(printf '%s' "$FEED_DIR" | sed \
 	-e 's/"/\&quot;/g' \
 	-e 's/[\\&|]/\\&/g')
 
-if ! ls "$PACKAGES_DIR/"*.nupkg >/dev/null 2>&1; then
-	echo "No NuGet packages found in $PACKAGES_DIR"
-	exit 1
-fi
-
-rm -rf "$OUTPUT_DIR"
-mkdir -p "$FEED_DIR"
+# Remove stale packages without deleting other files in a caller-supplied directory.
+find "$FEED_DIR" -maxdepth 1 -type f -name '*.nupkg' -delete
 cp "$PACKAGES_DIR/"*.nupkg "$FEED_DIR"
 
 # Start from the repository's NuGet.config:

@@ -220,6 +220,8 @@ Versions.g.cs: Makefile $(TOP)/Make.config.inc
 
 dotnet:: $(DOTNET_TARGETS)
 
+.PHONY: install-remote-locally
 install-remote-locally:
+	PACKAGES_DIR="$(abspath $(DOTNET_NUPKG_DIR))" FEED_DIR="$(abspath $(DOTNET_DESTDIR)/feed)" CONFIG_FILE="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" "$(TOP)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
 	@# it doesn't matter which project we use, it just has to be *a* project.
-	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -v:diag $(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj
+	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -p:RemoteNuGetConfigFile="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" -v:diag "$(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj"

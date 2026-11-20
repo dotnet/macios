@@ -118,6 +118,18 @@ unset MESSAGING_REMOTE_REPO
 make -C msbuild all install
 ```
 
+To configure this Mac over SSH using the workload packages already built in
+`_build/nupkgs`, run:
+
+```shell
+make -C msbuild install-remote-locally
+```
+
+This copies the packages into `_build/feed`, creates `_build/feed/NuGet.config`
+with that feed and the repository's feeds, and passes the config to
+`ConfigureMac`. **This resets the local XMA cache** before installing the SDK,
+workload, and agents.
+
 ## DeployToDevice
 
 Deploys an already-built iOS or tvOS app to a device or simulator without

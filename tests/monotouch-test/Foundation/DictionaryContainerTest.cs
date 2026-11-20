@@ -84,6 +84,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			SetStringValue (key, value);
 		}
+
+		public NSDictionary<TKey, TValue> GetNSDictionary_<TKey, TValue> (NSString key)
+			where TKey : class, INativeObject
+			where TValue : class, INativeObject
+		{
+			return GetNSDictionary<TKey, TValue> (key);
+		}
 	}
 
 	[TestFixture]
@@ -98,6 +105,64 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		NSString key = new NSString ("key");
+
+		[Test]
+		public void GetGenericDictionary_Missing ()
+		{
+			var dc = new DictionaryContainerPoker ();
+			Assert.That (dc.GetNSDictionary_<NSString, NSNumber> (key), Is.Null, "Missing");
+			Assert.Throws<ArgumentNullException> (() => dc.GetNSDictionary_<NSString, NSNumber> (null), "Null key");
+		}
+
+		[TestCase (false, false)]
+		[TestCase (false, true)]
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		public void GetGenericDictionary (bool mutable, bool empty)
+		{
+			using var firstKey = new NSString ("first");
+			using var secondKey = new NSString ("second");
+			using var firstValue = new NSNumber (42);
+			using var secondValue = new NSNumber (84);
+			using var source = new NSMutableDictionary ();
+			if (!empty) {
+				source [firstKey] = firstValue;
+				source [secondKey] = secondValue;
+			}
+			using var dictionary = mutable ? (NSDictionary) new NSMutableDictionary (source) : new NSDictionary (source);
+			var dc = new DictionaryContainerPoker ();
+			((NSMutableDictionary) dc.Dictionary) [key] = dictionary;
+
+			using var result = dc.GetNSDictionary_<NSString, NSNumber> (key);
+			Assert.That (result, Is.Not.Null, "Dictionary");
+			Assert.That (result.Count, Is.EqualTo (dictionary.Count), "Count");
+			if (!empty) {
+				Assert.That (result [firstKey].Int32Value, Is.EqualTo (42), "First value");
+				Assert.That (result [secondKey].Int32Value, Is.EqualTo (84), "Second value");
+			}
+			Assert.That (dc.Dictionary [key].Handle, Is.EqualTo (dictionary.Handle), "Original dictionary");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void GetGenericDictionary_Typed (bool mutable)
+		{
+			using var entryKey = new NSString ("entry");
+			using var value = new NSNumber (42);
+			using var dictionary = mutable
+				? (NSDictionary) new NSMutableDictionary<NSString, NSNumber> { [entryKey] = value }
+				: new NSDictionary<NSString, NSNumber> (entryKey, value);
+			var dc = new DictionaryContainerPoker ();
+			((NSMutableDictionary) dc.Dictionary) [key] = dictionary;
+
+			var result = dc.GetNSDictionary_<NSString, NSNumber> (key);
+			Assert.That (result, Is.Not.Null, "Dictionary");
+			Assert.That (result [entryKey].Int32Value, Is.EqualTo (42), "Value");
+			if (!mutable)
+				Assert.That (result, Is.SameAs (dictionary), "Typed dictionary");
+			else
+				result.Dispose ();
+		}
 
 		[Test]
 		public void SetArrayValue_NSNumber ()

@@ -277,9 +277,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	xamarin_initialize ();
 	XAMARIN_LAUNCH_TIME_PRINT ("\tmonotouch init time");
 
-	if (xamarin_register_assemblies != NULL)
-		xamarin_register_assemblies ();
-
 #if !defined (NATIVEAOT)
 	if (xamarin_executable_name) {
 		assembly = xamarin_open_and_register (xamarin_executable_name, &exception_gchandle);

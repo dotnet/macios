@@ -89,7 +89,6 @@ bool xamarin_is_multi_rid_build = false;
 /* Callbacks */
 
 xamarin_setup_callback xamarin_setup = NULL;
-xamarin_register_assemblies_callback xamarin_register_assemblies = NULL;
 xamarin_extension_main_callback xamarin_extension_main = NULL;
 
 /* Local variable */

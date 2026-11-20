@@ -225,11 +225,6 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("struct AssemblyLocations assembly_locations = {{ {0}, assembly_location_entries }};", assembly_location_count);
 			}
 
-			sw.WriteLine ("void xamarin_register_assemblies_impl ()");
-			sw.WriteLine ("{");
-			sw.WriteLine ("}");
-			sw.WriteLine ();
-
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
@@ -357,7 +352,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("void xamarin_initialize_callbacks ()");
 			sw.WriteLine ("{");
 			sw.WriteLine ("\txamarin_setup = xamarin_setup_impl;");
-			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
 			sw.WriteLine ("}");
 		}
 

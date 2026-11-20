@@ -696,6 +696,10 @@
         </comment>
     </data>
 
+    <data name="E0175a" xml:space="preserve">
+        <value>The xcframework '{0}' does not support the requested architectures '{1}' for platform '{2}' and platform variant '{3}'. Supported architectures: '{4}'. Contact the vendor of the xcframework to obtain a version that supports these architectures.</value>
+    </data>
+
     <data name="W0176" xml:space="preserve">
         <value>Conflicting '{0}' and '{1}' options. '{1}' will be ignored.</value>
     </data>

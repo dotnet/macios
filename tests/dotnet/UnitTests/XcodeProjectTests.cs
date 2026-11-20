@@ -11,6 +11,15 @@ namespace Xamarin.Tests {
 
 		readonly string XCodeTestProjectDir = Path.Combine (Configuration.SourceRoot, "tests", "common", "TestProjects", "Xcode");
 
+		const string SwiftApiDefinition = @"
+using Foundation;
+namespace XcProjBinding;
+[BaseType (typeof(NSObject))]
+interface SwiftBindTest {
+	[Static,Export (""getStringWithMyString:"")]
+	string GetString (string myString);
+}";
+
 		void AddXcodeProjectItem (string project, string path, Dictionary<string, string> metadata)
 		{
 			string xcProjItem = $@"
@@ -38,9 +47,11 @@ namespace Xamarin.Tests {
 
 
 		[Test]
-		[TestCase ("Debug", "iossimulator-arm64")]
-		[TestCase ("Release", "ios-arm64")]
-		public void BuildAppiOS (string projConfig, string rid)
+		[TestCase ("Debug", "iossimulator-arm64", false)]
+		[TestCase ("Release", "ios-arm64", false)]
+		[TestCase ("Debug", "iossimulator-arm64", true)]
+		[TestCase ("Release", "ios-arm64", true)]
+		public void BuildAppiOS (string projConfig, string rid, bool useBinding)
 		{
 			var platform = ApplePlatform.iOS;
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -48,12 +59,27 @@ namespace Xamarin.Tests {
 			var testDir = Cache.CreateTemporaryDirectory (TestName);
 			var proj = Path.Combine (testDir, $"{TestName}.csproj");
 			DotNet.AssertNew (testDir, "ios");
+			var xcodeConsumer = proj;
+			if (useBinding) {
+				var bindingDir = Path.Combine (testDir, "Binding");
+				DotNet.AssertNew (bindingDir, "iosbinding");
+				xcodeConsumer = Path.Combine (bindingDir, "Binding.csproj");
+				File.WriteAllText (Path.Combine (bindingDir, "ApiDefinition.cs"), SwiftApiDefinition);
+				var appDelegate = Path.Combine (testDir, "AppDelegate.cs");
+				File.WriteAllText (appDelegate, File.ReadAllText (appDelegate).Replace ("return true;", @"Console.WriteLine (XcProjBinding.SwiftBindTest.GetString (""test"")); return true;"));
+				var content = File.ReadAllText (proj).Replace ("</Project>", @"<ItemGroup>
+  <Compile Remove=""Binding/**/*.cs"" />
+  <ProjectReference Include=""Binding/Binding.csproj"" />
+</ItemGroup>
+</Project>");
+				File.WriteAllText (proj, content);
+			}
 
 			var xcodeProjName = "TemplateFx";
 			var xcodeProjDirSrc = Path.Combine (XCodeTestProjectDir, xcodeProjName);
 			var xcodeProjDirDest = Cache.CreateTemporaryDirectory ($"{TestName}XcProj");
 			FileHelpers.CopyDirectory (xcodeProjDirSrc, xcodeProjDirDest);
-			AddXcodeProjectItem (proj, Path.Combine (xcodeProjDirDest, $"{xcodeProjName}.xcodeproj"),
+			AddXcodeProjectItem (xcodeConsumer, Path.Combine (xcodeProjDirDest, $"{xcodeProjName}.xcodeproj"),
 				new Dictionary<string, string> {
 					{ "SchemeName", xcodeProjName },
 				});
@@ -64,14 +90,16 @@ namespace Xamarin.Tests {
 			var appDir = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app");
 			Assert.That (appDir, Does.Exist, $"Expected app dir '{appDir}' did not exist.");
 			var appContent = Directory.GetFiles (appDir, "*", SearchOption.AllDirectories);
-			var expectedAppOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app", "Frameworks", $"{xcodeProjName}.framework", "Info.plist");
-			Assert.That (appContent, Does.Contain (expectedAppOutput), $"Expected framework output '{expectedAppOutput}' did not exist.");
+			foreach (var framework in new [] { xcodeProjName, "DynamicDependency" }) {
+				var expectedAppOutput = Path.Combine (appDir, "Frameworks", $"{framework}.framework", "Info.plist");
+				Assert.That (appContent, Does.Contain (expectedAppOutput), $"Expected framework output '{expectedAppOutput}' did not exist.");
+			}
 
 		}
 
 		[Test]
 		[TestCase ("Release", "Release", false)]
-		[TestCase ("Debug", "Relase", true)]
+		[TestCase ("Debug", "Release", true)]
 		[TestCase ("Release", "Debug", true)]
 		public void BuildBindingiOS (string projConfig, string fxConfig, bool createNativeReference)
 		{
@@ -103,6 +131,8 @@ namespace Xamarin.Tests {
 				expectedXcodeFxOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ()}.xcframework");
 			}
 			Assert.That (expectedXcodeFxOutput, createNativeReference ? Does.Exist : Does.Not.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' to exist when CreateNativeReference=true.");
+			if (createNativeReference)
+				AssertXcFrameworkOutput (platform, testDir, "DynamicDependency", projConfig);
 		}
 
 		[Test]
@@ -128,15 +158,7 @@ namespace Xamarin.Tests {
 				});
 
 			// Add API definition to expose the API from the xcodeproj
-			var apiDefinition = @"
-using Foundation;
-namespace XcProjBinding;
-[BaseType (typeof(NSObject))]
-interface SwiftBindTest {
-	[Static,Export (""getStringWithMyString:"")]
-	string GetString (string myString);
-}";
-			File.WriteAllText (Path.Combine (testDir, "ApiDefinition.cs"), apiDefinition);
+			File.WriteAllText (Path.Combine (testDir, "ApiDefinition.cs"), SwiftApiDefinition);
 
 			// Add class file to ensure ensure the xcframework from our xcodeproj was built and bound
 			string classContent = @"
@@ -152,6 +174,7 @@ public class Binding
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 			AssertXcFrameworkOutput (platform, testDir, xcodeProjName);
+			AssertXcFrameworkOutput (platform, testDir, "DynamicDependency");
 		}
 
 		[Test]
@@ -183,12 +206,14 @@ public class Binding
 
 			List<string> zipContent = ZipHelpers.List (expectedNupkgOutput);
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
-			var expectedFxPath = $"lib/{tfm}/{TestName}.resources/{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
-			if (UsesCompressedBindingResourcePackage (platform)) {
+			if (UsesCompressedBindingResourcePackage (platform))
 				zipContent = ZipHelpers.ListInnerZip (expectedNupkgOutput, $"lib/{tfm}/{TestName}.resources.zip");
-				expectedFxPath = $"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
+			foreach (var framework in new [] { xcodeProjName, "DynamicDependency" }) {
+				var expectedFxPath = $"{framework}{platform.AsString ()}.xcframework/Info.plist";
+				if (!UsesCompressedBindingResourcePackage (platform))
+					expectedFxPath = $"lib/{tfm}/{TestName}.resources/{expectedFxPath}";
+				Assert.That (zipContent, Does.Contain (expectedFxPath), $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
 			}
-			Assert.That (zipContent, Does.Contain (expectedFxPath), $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
 		}
 
 		[Test]
@@ -229,9 +254,11 @@ public class Binding
 			rv = DotNet.AssertBuild (proj, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetNotExecuted (allTargets, "_BuildXcodeProjects", "Second _BuildXcodeProjects");
+			AssertTargetExecuted (allTargets, "_AddXcodeProjectNativeReferences", "Second _AddXcodeProjectNativeReferences");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxSecondWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
 			Assert.That (outputFxFirstWriteTime, Is.EqualTo (outputFxSecondWriteTime), $"Expected '{expectedXcodeFxOutput}' write time to be '{outputFxFirstWriteTime}', but was '{outputFxSecondWriteTime}'");
+			AssertXcFrameworkOutput (platform, testDir, "DynamicDependency");
 
 			// Update xcode project, _BuildXcodeProjects should run and outputs should be updated
 			File.SetLastWriteTime (Path.Combine (xcodeProjPath, "project.pbxproj"), DateTime.Now);

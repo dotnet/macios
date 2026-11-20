@@ -530,8 +530,6 @@
 !missing-null-allowed! 'System.String AppKit.NSDocumentController::TypeForUrl(Foundation.NSUrl,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSEvent::get_Characters()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSEvent::get_CharactersIgnoringModifiers()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String AppKit.NSFont::get_DisplayName()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String AppKit.NSFont::get_FamilyName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSFontDescriptor::get_PostscriptName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSFontManager::LocalizedNameForFamily(System.String,System.String)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.String AppKit.NSGlyphInfo::get_GlyphName()' is missing an [NullAllowed] on return type
@@ -1062,7 +1060,6 @@
 !missing-field! NSFontBinding not bound
 !missing-field! NSFontBoldBinding not bound
 !missing-field! NSFontFamilyNameBinding not bound
-!missing-field! NSFontIdentityMatrix not bound
 !missing-field! NSFontItalicBinding not bound
 !missing-field! NSFontNameBinding not bound
 !missing-field! NSFontSizeBinding not bound
@@ -1291,7 +1288,6 @@
 !missing-protocol! NSInputServiceProvider not bound
 !missing-selector! +NSBitmapImageRep::getTIFFCompressionTypes:count: not bound
 !missing-selector! +NSBitmapImageRep::representationOfImageRepsInArray:usingType:properties: not bound
-!missing-selector! +NSFont::fontWithName:matrix: not bound
 !missing-selector! +NSMediaLibraryBrowserController::sharedMediaLibraryBrowserController not bound
 !missing-selector! +NSObject::exposeBinding: not bound
 !missing-selector! +NSPDFImageRep::imageRepWithData: not bound
@@ -1326,10 +1322,6 @@
 !missing-selector! NSDocument::setLastComponentOfFileName: not bound
 !missing-selector! NSDraggingItem::imageComponentsProvider not bound
 !missing-selector! NSEvent::pressureBehavior not bound
-!missing-selector! NSFont::getAdvancements:forGlyphs:count: not bound
-!missing-selector! NSFont::getAdvancements:forPackedGlyphs:length: not bound
-!missing-selector! NSFont::getBoundingRects:forGlyphs:count: not bound
-!missing-selector! NSFont::matrix not bound
 !missing-selector! NSFontPanel::setWorksWhenModal: not bound
 !missing-selector! NSFontPanel::worksWhenModal not bound
 !missing-selector! NSImage::initByReferencingURL: not bound

@@ -644,4 +644,7 @@
 	<data name="BI1129" xml:space="preserve">
 		<value>The selector '{0}' on '{1}' contains invalid characters.</value>
 	</data>
+	<data name="BI1130" xml:space="preserve">
+		<value>The return value of '{0}.{1}' uses [AlwaysReturnNewInstance], but is not a concrete NSObject binding type.</value>
+	</data>
 </root>

@@ -97,6 +97,8 @@ public class AttributeManager {
 			return typeof (FactoryMethodAttribute);
 		case "ForcedTypeAttribute":
 			return typeof (ForcedTypeAttribute);
+		case "AlwaysReturnNewInstanceAttribute":
+			return typeof (AlwaysReturnNewInstanceAttribute);
 		case "Foundation.AdviceAttribute":
 			return typeof (Foundation.AdviceAttribute);
 		case "Foundation.ExportAttribute":

@@ -353,6 +353,14 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The return value of '\*.\*' uses [AlwaysReturnNewInstance], but is not a concrete NSObject binding type.
+
+`[return: AlwaysReturnNewInstance]` (or `[AlwaysReturnNewInstance]` on a property)
+creates a fresh managed wrapper instead of looking up an existing wrapper in the
+runtime cache. Use it only for concrete Objective-C binding classes with an
+accessible native-handle constructor. Nullable results remain null, and retained
+return values are released after the new wrapper takes its own reference.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

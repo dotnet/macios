@@ -45,7 +45,26 @@ namespace Extrospection {
 			if (!decl.IsExternC)
 				return;
 
+			if (!decl.IsAvailable ())
+				return;
+
 			var name = decl.Name;
+			// System headers and public underscore names can validate existing imports without
+			// expanding the framework API surface that we report as missing.
+			var matched = dllimports.ContainsKey (name);
+			if (matched)
+				found.Add (name);
+			using var mangling = decl.Handle.Mangling;
+			var entryPoint = mangling.ToString ();
+			if (entryPoint.StartsWith ("_", StringComparison.Ordinal))
+				entryPoint = entryPoint.Substring (1);
+			if (dllimports.ContainsKey (entryPoint)) {
+				found.Add (entryPoint);
+				matched = true;
+			}
+			if (matched)
+				return;
+
 			// do not consider _* or __* as public API that should be bound
 			if (name [0] == '_')
 				return;
@@ -54,19 +73,10 @@ namespace Extrospection {
 			if (framework is null)
 				return;
 
-			// check availability macros to see if the API is available on the OS and not deprecated
-			if (!decl.IsAvailable ())
-				return;
-
-			if (!dllimports.ContainsKey (name)) {
-				// if we find functions without matching DllImport then we report them
-				// but don't report deprecated functions
-				if (!decl.IsDeprecated ())
-					Log.On (framework).Add ($"!missing-pinvoke! {name} is not bound");
-				return;
-			}
-
-			found.Add (name);
+			// if we find functions without matching DllImport then we report them
+			// but don't report deprecated functions
+			if (!decl.IsDeprecated ())
+				Log.On (framework).Add ($"!missing-pinvoke! {name} is not bound");
 		}
 
 		public override void EndVisit ()

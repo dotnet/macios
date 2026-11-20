@@ -584,12 +584,12 @@ public partial class Generator : IMemberGatherer {
 		if (mi.ReturnType.IsArray && TypeManager.IsWrappedType (mi.ReturnType.GetElementType ())) {
 			returntype = NativeHandleType;
 			returnformat = "return Runtime.RetainAndAutoreleaseNSObject (NSArray.FromNSObjects({0}));";
-		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType)) {
-			returntype = Generator.NativeHandleType;
-			returnformat = "return Runtime.RetainAndAutoreleaseNativeObject ({0});";
-		} else if (TypeManager.IsWrappedType (mi.ReturnType)) {
+		} else if (IsNSObject (mi.ReturnType) && !IsProtocolInterface (mi.ReturnType)) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return Runtime.RetainAndAutoreleaseNSObject ({0});";
+		} else if (TypeCache.INativeObject.IsAssignableFrom (mi.ReturnType) || TypeManager.IsWrappedType (mi.ReturnType)) {
+			returntype = Generator.NativeHandleType;
+			returnformat = "return Runtime.RetainAndAutoreleaseNativeObject ({0});";
 		} else if (mi.ReturnType == TypeCache.System_String) {
 			returntype = Generator.NativeHandleType;
 			returnformat = "return NSString.CreateNative ({0}, true);";
@@ -692,10 +692,18 @@ public partial class Generator : IMemberGatherer {
 					continue;
 				} else {
 					var refname = $"__xamarin_pref{pi.Position}";
-					convert.Append ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
+					var isNSObject = IsNSObject (nt) && !IsProtocolInterface (nt);
+					if (pi.IsOut)
+						convert.AppendLine ($"{TypeManager.RenderType (nt)} {refname};");
+					else if (isForced)
+						convert.AppendLine ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, true, {(isForcedOwns ? "true" : "false")})!;");
+					else if (isNSObject)
+						convert.AppendLine ($"var {refname} = Runtime.GetNSObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero)!;");
+					else
+						convert.AppendLine ($"var {refname} = Runtime.GetINativeObject<{TypeManager.RenderType (nt)}> ({safe_name} is not null ? *{safe_name} : NativeHandle.Zero, false)!;");
 					pars.Add (new TrampolineParameterInfo ($"{NativeHandleType}*", safe_name));
 					postConvert.AppendLine ($"if ({safe_name} is not null)");
-					postConvert.Append ($"\t*{safe_name} = Runtime.RetainAndAutoreleaseNativeObject ({refname});");
+					postConvert.AppendLine ($"\t*{safe_name} = Runtime.RetainAndAutorelease{(isNSObject ? "NSObject" : "NativeObject")} ({refname});");
 					invoke.Append (outOrRef);
 					invoke.Append (" ");
 					invoke.Append (refname);
@@ -3463,12 +3471,12 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.AppendFormat ("var {0}OriginalValue = {0}Value;\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
 						by_ref_init.Insert (0, string.Format ("NSArray {0}ArrayValue = NSArray.FromNSObjects ({0});\n", pi.Name.GetSafeParamName ()));
-						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
+						by_ref_init.AppendFormat ("{0}ArrayValue.GetHandle ();\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfString) {
 						by_ref_init.Insert (0, string.Format ("var {0}ArrayValue = NSArray.FromNullableStrings ({0});\n", pi.Name.GetSafeParamName ()));
-						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
+						by_ref_init.AppendFormat ("{0}ArrayValue.GetHandle ();\n", pi.Name.GetSafeParamName ());
 					} else if (isNSObject || isINativeObjectSubclass) {
-						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
+						by_ref_init.AppendFormat ("Runtime.RetainAndAutorelease{1} ({0});\n", pi.Name.GetSafeParamName (), isNSObject ? "NSObject" : "NativeObject");
 					} else {
 						throw ErrorHelper.CreateError (88, mai.Type, mi);
 					}
@@ -3480,7 +3488,7 @@ public partial class Generator : IMemberGatherer {
 					by_ref_processing.AppendFormat ("{0} = CFString.FromHandle ({0}Value)!;\n", pi.Name.GetSafeParamName ());
 				} else if (isArray) {
 					if (!pi.IsOut)
-						by_ref_processing.AppendFormat ("if ({0}Value != ({0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle))\n\t", pi.Name.GetSafeParamName ());
+						by_ref_processing.AppendFormat ("if ({0}Value != {0}ArrayValue.GetHandle ())\n\t", pi.Name.GetSafeParamName ());
 
 					if (isArrayOfNSObject || isArrayOfINativeObjectSubclass) {
 						by_ref_processing.AppendFormat ("{0} = CFArray.ArrayFromHandle<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementElementType!));
@@ -3494,9 +3502,9 @@ public partial class Generator : IMemberGatherer {
 						by_ref_processing.AppendFormat ("{0}ArrayValue?.Dispose ();\n", pi.Name.GetSafeParamName ());
 				} else if (isNSObject && !isForcedType) {
 					by_ref_processing.AppendFormat ("{0} = Runtime.GetNSObject<{1}> ({0}Value)!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType));
-				} else if (isINativeObjectSubclass) {
+				} else if (isNSObject || isINativeObjectSubclass) {
 					if (!pi.IsOut)
-						by_ref_processing.AppendFormat ("if ({0}Value != ({0} is null ? NativeHandle.Zero : {0}.Handle))\n\t", pi.Name.GetSafeParamName ());
+						by_ref_processing.AppendFormat ("if ({0}Value != {0}.GetHandle ())\n\t", pi.Name.GetSafeParamName ());
 					by_ref_processing.AppendFormat ("{0} = Runtime.GetINativeObject<{1}> ({0}Value, {2}, {3})!;\n", pi.Name.GetSafeParamName (), TypeManager.RenderType (elementType), isForcedType ? "true" : "false", (isForcedType && isForcedOwns) ? "true" : "false");
 				} else {
 					throw ErrorHelper.CreateError (88, mai.Type, mi);

@@ -18,7 +18,7 @@ The following metadata can be set:
 * Include: The path to the build directory for the Xcode app extension project.
 * Name: The name of the extension.
 * BuildOutput: This value is appended to the `Include` value to produce the location of the appex bundle. Typically Xcode will place simulator and device builds in different locations, so this can be used to have a single `AdditionalAppExtensions` entry pointing to two different appex bundles, depending on whether building for the simulator or device.
-* CodesignEntitlements: Specifies the entitlements to use when signing the app extension. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists).
+* CodesignEntitlements: Specifies the entitlements to use when signing the app extension. The default value is '%(Name).entitlements' in the 'Include' build directory (if this file exists). For device and desktop builds, these entitlements are merged with the extension's embedded provisioning profile and expanded using the extension's bundle identifier before signing. The source entitlements file is not modified.
 * CodesignWarnIfNoEntitlements: A warning will be produced if no `CodesignEntitlements` value is set. This property can be set to `false` to silence this warning.
 
 Example:

@@ -16,10 +16,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-        <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)">
+        <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)/NativeIntentsExtension">
             <Name>NativeIntentsExtension</Name>
             <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
             <CodesignEntitlements Condition="'$(AdditionalAppExtensionEntitlements)' != ''">$(AdditionalAppExtensionEntitlements)</CodesignEntitlements>
+        </AdditionalAppExtensions>
+        <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)/SecondNativeIntentsExtension">
+            <Name>SecondNativeIntentsExtension</Name>
+            <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
+        </AdditionalAppExtensions>
+        <AdditionalAppExtensions Include="$(AdditionalAppExtensionPath)/NativeIntentsExtensionWithoutEntitlements">
+            <Name>NativeIntentsExtensionWithoutEntitlements</Name>
+            <BuildOutput>$(AdditionalAppExtensionBuildOutput)</BuildOutput>
         </AdditionalAppExtensions>
     </ItemGroup>
 </Project>

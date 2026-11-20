@@ -278,6 +278,7 @@ namespace Xamarin.MacDev.Tasks {
 			string metallibDirectory;
 			string frameworksDirectory;
 			string xpcDirectory;
+			string plugInsDirectory;
 			switch (Platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
@@ -285,6 +286,7 @@ namespace Xamarin.MacDev.Tasks {
 				metallibDirectory = appPath;
 				frameworksDirectory = Path.Combine (appPath, "Frameworks");
 				xpcDirectory = Path.Combine (appPath, "XPCServices");
+				plugInsDirectory = "PlugIns";
 				break;
 			case ApplePlatform.MacOSX:
 			case ApplePlatform.MacCatalyst:
@@ -292,6 +294,7 @@ namespace Xamarin.MacDev.Tasks {
 				metallibDirectory = Path.Combine (appPath, "Contents", "Resources");
 				frameworksDirectory = Path.Combine (appPath, "Contents", "Frameworks");
 				xpcDirectory = Path.Combine (appPath, "Contents", "XPCServices");
+				plugInsDirectory = Path.Combine ("Contents", "PlugIns");
 				break;
 			default:
 				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
@@ -299,11 +302,12 @@ namespace Xamarin.MacDev.Tasks {
 
 			dylibDirectory = PathUtils.EnsureTrailingSlash (dylibDirectory);
 			metallibDirectory = PathUtils.EnsureTrailingSlash (metallibDirectory);
+			plugInsDirectory = PathUtils.EnsureTrailingSlash (plugInsDirectory);
 
 			foreach (var entry in EnumerateAppBundleEntries (appPath)) {
 				var relativePath = entry.Substring (appPath.Length);
 				// Don't recurse into the PlugIns directory, that's already handled for any app bundle inside the PlugIns directory
-				if (relativePath.StartsWith ("PlugIns" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))
+				if (relativePath.StartsWith (plugInsDirectory, StringComparison.OrdinalIgnoreCase))
 					continue;
 				// Don't recurse into the Watch directory, for the same reason
 				if (relativePath.StartsWith ("Watch" + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase))

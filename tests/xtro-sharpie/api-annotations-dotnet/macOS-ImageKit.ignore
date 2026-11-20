@@ -2,10 +2,6 @@
 !unknown-native-enum! IKCellsStyle bound
 !unknown-native-enum! IKGroupStyle bound
 
-# Deprecated, macOS version lower than the supported by Xamarin.Mac.
-!missing-field! IKPictureTakerShowAddressBookPicture not bound
-!missing-field! IKPictureTakerShowEmptyPicture not bound
-
 # Informal protocols
 ## Inside IKImageBrowserDelegate informal protocol
 !missing-selector! NSObject::imageBrowserSelectionDidChange: not bound

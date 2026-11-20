@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>TFM</TargetFramework>
+    <OutputType>Library</OutputType>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">iOSBackgroundDownloadExtension1</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <IsAppExtension>true</IsAppExtension>
+    <ApplicationId>com.companyname.iOSApp1.backgrounddownloadextension</ApplicationId>
+  </PropertyGroup>
+  <ItemGroup>
+    <CustomEntitlements Include="com.apple.security.application-groups" Type="StringArray" Value="group.com.companyname.backgroundassets" />
+  </ItemGroup>
+</Project>

@@ -1487,18 +1487,39 @@ namespace Xamarin.Linker {
 
 		void SaveAssembly (AssemblyDefinition assembly)
 		{
+			// This check catches modifications made to an assembly other than the current or platform assembly.
+			// Set the current assembly before modifying it; do not broaden this check to all loaded assemblies.
 			if (assembly != CurrentAssembly && assembly != PlatformAssembly)
 				throw new InvalidOperationException ($"Can't save assembly {assembly.Name} because it's not the current assembly ({CurrentAssembly.Name}) or the platform assembly ({PlatformAssembly.Name}).");
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
-			if (configuration.HotReloadModifiedAssemblySafetyNet && configuration.HotReloadCompatibleBuild && action == AssemblyAction.Copy && assembly != PlatformAssembly) {
+			if (configuration.HotReloadModifiedAssemblySafetyNet && IsReloadableAssembly (assembly)) {
 				configuration.Logger.LogError (ErrorHelper.CreateError (99, $"The assembly '{assembly.Name.Name}' is reloadable, but was modified during a Hot Reload compatible build."));
 				return;
 			}
 			AssemblySaved?.Invoke (assembly);
-			if (action == AssemblyAction.Copy) {
+			if (action is AssemblyAction.Copy or AssemblyAction.CopyUsed) {
+#if !ASSEMBLY_PREPARER
+				// Preserve TypeForwardedTo which would the linker sweep otherwise
+				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
+				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
+				if (assembly.MainModule.HasExportedTypes) {
+					foreach (var type in assembly.MainModule.ExportedTypes) {
+						annotations.Mark (type);
+					}
+				}
+#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
+		}
+
+		// Returns true if the assembly can be hot reloaded, in which case it must not be modified.
+		bool IsReloadableAssembly (AssemblyDefinition assembly)
+		{
+			if (!configuration.HotReloadCompatibleBuild || assembly == PlatformAssembly)
+				return false;
+			var action = configuration.Context.Annotations.GetAction (assembly);
+			return action is AssemblyAction.Copy or AssemblyAction.CopyUsed;
 		}
 
 		public void ClearCurrentAssembly ()
@@ -1517,7 +1538,7 @@ namespace Xamarin.Linker {
 
 		// We only need to add dependency attributes if the target dependency is in a trimmed assembly,
 		// otherwise the target dependency won't be trimmed away.
-		bool IsAssemblyTrimmed (IMemberDefinition member)
+		public bool IsAssemblyTrimmed (IMemberDefinition member)
 		{
 			var assembly = member is TypeDefinition td ? td.Module.Assembly : member.DeclaringType.Module.Assembly;
 			var action = configuration.Context.Annotations.GetAction (assembly);
@@ -1529,16 +1550,190 @@ namespace Xamarin.Linker {
 			if (!IsAssemblyTrimmed (dependsOn))
 				return false;
 
-			var signature = DocumentationComments.GetSignature (dependsOn);
+			var signature = GetDynamicDependencySignature (dependsOn, out var modified);
+			if (signature is null)
+				return false;
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
 				var attribute = CreateDynamicDependencyAttribute (signature);
-				return AddAttributeOnlyOnce (addToMethod, attribute);
+				return AddAttributeOnlyOnce (addToMethod, attribute) | modified;
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
 				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType);
-				return AddAttributeOnlyOnce (addToMethod, attribute);
+				return AddAttributeOnlyOnce (addToMethod, attribute) | modified;
 			} else {
 				var attribute = CreateDynamicDependencyAttribute (signature, dependsOn.DeclaringType, dependsOn.DeclaringType.Module.Assembly);
-				return AddAttributeOnlyOnce (addToMethod, attribute);
+				return AddAttributeOnlyOnce (addToMethod, attribute) | modified;
+			}
+		}
+
+		const string ExplicitInterfaceImplementationRootPrefix = "__linker_preserve_explicit_interface_implementation_";
+
+		// Maps explicit interface implementations to the helper methods we generated for them. User code may declare
+		// methods whose names start with the helper prefix, so don't identify helpers by name.
+		readonly Dictionary<MethodDefinition, MethodDefinition> explicitInterfaceImplementationRoots = new ();
+		readonly HashSet<MethodDefinition> generatedExplicitInterfaceImplementationRoots = new ();
+		// The next helper suffix to try for each type, so that we don't scan the same names repeatedly.
+		readonly Dictionary<TypeDefinition, int> nextExplicitInterfaceImplementationRootIndex = new ();
+
+		/// <summary>
+		/// Returns true if the method is an explicit interface implementation (for example <c>void IFoo.Bar ()</c>).
+		/// </summary>
+		public static bool IsExplicitInterfaceImplementation ([NotNullWhen (true)] MethodDefinition? method)
+		{
+			return method is not null && method.HasOverrides && method.Name.IndexOf ('.') >= 0;
+		}
+
+		/// <summary>
+		/// Returns the signature to use in a DynamicDependency attribute to preserve the given method.
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     Explicit interface implementations can't always be referenced by signature, because the trimmers
+		///     can't parse the documentation signature of members whose name contains a generic interface name
+		///     (https://github.com/dotnet/runtime/pull/137387). Instead create a helper method that references
+		///     the method with 'ldtoken', and return the signature for the helper method.
+		///   </para>
+		///   <para>
+		///     Returns null for explicit interface implementations in assemblies that aren't trimmed, because there's
+		///     nothing to preserve, and those assemblies must not be modified (for instance in Hot Reload builds).
+		///   </para>
+		/// </remarks>
+		public string? GetDynamicDependencySignature (MethodDefinition method, out bool modified)
+		{
+			modified = false;
+			if (!IsExplicitInterfaceImplementation (method))
+				return DocumentationComments.GetSignature (method);
+
+			if (!IsAssemblyTrimmed (method))
+				return null;
+
+			var helper = GetOrCreateExplicitInterfaceImplementationRoot (method, out modified);
+			if (helper.HasGenericParameters)
+				return helper.Name + "``" + helper.GenericParameters.Count;
+			return helper.Name;
+		}
+
+		/// <summary>
+		/// Get or create a private static method in the declaring type of the given explicit interface implementation,
+		/// which references the explicit interface implementation using 'ldtoken'. Preserving the helper method will
+		/// preserve the explicit interface implementation.
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     If the explicit interface implementation is generic, the helper method is generic too, with the same generic
+		///     parameters and constraints, and it also references the explicit interface implementation instantiated with
+		///     the helper's generic parameters. Without that instantiation, NativeAOT won't be able to create instantiations
+		///     of the method at runtime (using MethodInfo.MakeGenericMethod).
+		///   </para>
+		/// </remarks>
+		MethodDefinition GetOrCreateExplicitInterfaceImplementationRoot (MethodDefinition method, out bool modified)
+		{
+			modified = false;
+
+			if (explicitInterfaceImplementationRoots.TryGetValue (method, out var existing))
+				return existing;
+
+			// Pick a name that isn't used by any other member in the type, including user members, because the
+			// DynamicDependency signature for the helper is just its name (which would match any member with that name).
+			var type = method.DeclaringType;
+			nextExplicitInterfaceImplementationRootIndex.TryGetValue (type, out var helperIndex);
+			string helperName;
+			do {
+				helperName = ExplicitInterfaceImplementationRootPrefix + helperIndex++;
+			} while (IsMemberNameUsed (type, helperName));
+			nextExplicitInterfaceImplementationRootIndex [type] = helperIndex;
+
+			var currentAssembly = CurrentAssembly;
+			SetCurrentAssembly (type.Module.Assembly);
+			try {
+				var helper = new MethodDefinition (helperName, MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.HideBySig, type.Module.TypeSystem.Void);
+				type.Methods.Add (helper);
+				explicitInterfaceImplementationRoots [method] = helper;
+				generatedExplicitInterfaceImplementationRoots.Add (helper);
+				modified = true;
+
+				var il = helper.Body.GetILProcessor ();
+				il.Emit (OpCodes.Ldtoken, method);
+				il.Emit (OpCodes.Pop);
+
+				if (method.HasGenericParameters) {
+					foreach (var gp in method.GenericParameters)
+						helper.GenericParameters.Add (new GenericParameter (gp.Name, helper) { Attributes = gp.Attributes });
+					foreach (var gp in method.GenericParameters) {
+						var helperParameter = helper.GenericParameters [gp.Position];
+						foreach (var constraint in gp.Constraints)
+							helperParameter.Constraints.Add (new GenericParameterConstraint (RebindMethodGenericParameters (constraint.ConstraintType, helper)));
+						// Copy attributes such as [DynamicallyAccessedMembers] too, otherwise the trimmer warns
+						// about the instantiation below (IL2091).
+						foreach (var attribute in gp.CustomAttributes)
+							helperParameter.CustomAttributes.Add (new CustomAttribute (attribute.Constructor, attribute.GetBlob ()));
+					}
+
+					// We need a reference to the method on the open generic type (instantiated with its own generic
+					// parameters) if the declaring type is generic.
+					MethodReference target = method;
+					if (type.HasGenericParameters) {
+						var owner = new GenericInstanceType (type);
+						foreach (var gp in type.GenericParameters)
+							owner.GenericArguments.Add (gp);
+						target = new MethodReference (method.Name, method.ReturnType, owner) {
+							HasThis = method.HasThis,
+							ExplicitThis = method.ExplicitThis,
+							CallingConvention = method.CallingConvention,
+						};
+						foreach (var gp in method.GenericParameters)
+							target.GenericParameters.Add (new GenericParameter (gp.Name, target));
+						foreach (var p in method.Parameters)
+							target.Parameters.Add (new ParameterDefinition (p.ParameterType));
+					}
+
+					var instantiated = new GenericInstanceMethod (target);
+					foreach (var gp in helper.GenericParameters)
+						instantiated.GenericArguments.Add (gp);
+					il.Emit (OpCodes.Ldtoken, instantiated);
+					il.Emit (OpCodes.Pop);
+				}
+
+				il.Emit (OpCodes.Ret);
+
+				SaveCurrentAssembly ();
+				return helper;
+			} finally {
+				SetCurrentAssembly (currentAssembly);
+			}
+		}
+
+		static bool IsMemberNameUsed (TypeDefinition type, string name)
+		{
+			return type.Methods.Any (v => v.Name == name)
+				|| type.Fields.Any (v => v.Name == name)
+				|| type.Properties.Any (v => v.Name == name)
+				|| type.Events.Any (v => v.Name == name)
+				|| type.NestedTypes.Any (v => v.Name == name);
+		}
+
+		// Replace any references to a method's generic parameters with the corresponding generic parameters of the given method.
+		static TypeReference RebindMethodGenericParameters (TypeReference type, MethodDefinition method)
+		{
+			switch (type) {
+			case GenericParameter gp when gp.Type == GenericParameterType.Method:
+				return method.GenericParameters [gp.Position];
+			case GenericInstanceType git:
+				var instance = new GenericInstanceType (git.ElementType);
+				foreach (var arg in git.GenericArguments)
+					instance.GenericArguments.Add (RebindMethodGenericParameters (arg, method));
+				return instance;
+			case ArrayType at:
+				return new ArrayType (RebindMethodGenericParameters (at.ElementType, method), at.Rank);
+			case ByReferenceType brt:
+				return new ByReferenceType (RebindMethodGenericParameters (brt.ElementType, method));
+			case PointerType pt:
+				return new PointerType (RebindMethodGenericParameters (pt.ElementType, method));
+			case RequiredModifierType rmt:
+				return new RequiredModifierType (rmt.ModifierType, RebindMethodGenericParameters (rmt.ElementType, method));
+			case OptionalModifierType omt:
+				return new OptionalModifierType (omt.ModifierType, RebindMethodGenericParameters (omt.ElementType, method));
+			default:
+				return type;
 			}
 		}
 
@@ -1617,21 +1812,49 @@ namespace Xamarin.Linker {
 		public bool AddPreserveAllMembersDynamicDependencyAttributes (MethodDefinition addToMethod, TypeDefinition type)
 		{
 			var signatures = new HashSet<string> (StringComparer.Ordinal);
+			var modified = false;
 
 			foreach (var field in type.Fields) {
 				if (!field.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
 					signatures.Add (DocumentationComments.GetSignature (field));
 			}
-			foreach (var method in type.Methods) {
-				if (!method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+			// Use ToArray, because GetDynamicDependencySignature may add methods to the type.
+			foreach (var method in type.Methods.ToArray ()) {
+				if (method.HasCustomAttribute ("System.Runtime.CompilerServices", "CompilerGeneratedAttribute"))
+					continue;
+				if (generatedExplicitInterfaceImplementationRoots.Contains (method))
+					continue;
+				if (IsExplicitInterfaceImplementation (method)) {
+					var signature = GetDynamicDependencySignature (method, out var helperAdded);
+					if (signature is not null)
+						signatures.Add (signature);
+					modified |= helperAdded;
+				} else {
 					signatures.Add (DocumentationComments.GetNameSignature (method));
+				}
 			}
-			foreach (var property in type.Properties)
-				signatures.Add (DocumentationComments.GetSignature (property));
-			foreach (var @event in type.Events)
-				signatures.Add (DocumentationComments.GetSignature (@event));
+			// Explicitly implemented properties and events are preserved by preserving their accessors
+			// (which may be compiler-generated, and thus skipped above).
+			foreach (var property in type.Properties) {
+				if (IsExplicitInterfaceImplementation (property.GetMethod) || IsExplicitInterfaceImplementation (property.SetMethod)) {
+					modified |= AddExplicitAccessorSignature (signatures, property.GetMethod);
+					modified |= AddExplicitAccessorSignature (signatures, property.SetMethod);
+				} else {
+					signatures.Add (DocumentationComments.GetSignature (property));
+				}
+			}
+			foreach (var @event in type.Events) {
+				if (IsExplicitInterfaceImplementation (@event.AddMethod) || IsExplicitInterfaceImplementation (@event.RemoveMethod)) {
+					modified |= AddExplicitAccessorSignature (signatures, @event.AddMethod);
+					modified |= AddExplicitAccessorSignature (signatures, @event.RemoveMethod);
+					modified |= AddExplicitAccessorSignature (signatures, @event.InvokeMethod);
+				} else {
+					signatures.Add (DocumentationComments.GetSignature (@event));
+				}
+			}
 
-			if (signatures.Count == 0) {
+			// Assemblies that aren't trimmed keep the type anyway, so there's no need for a placeholder member.
+			if (signatures.Count == 0 && IsAssemblyTrimmed (type)) {
 				// The type has no declared members, so add a placeholder member and preserve that,
 				// which will keep the type itself (same pattern as AddDynamicDependencyAttributeToStaticConstructor).
 				var placeholderName = "__linker_preserve__";
@@ -1645,7 +1868,6 @@ namespace Xamarin.Linker {
 				signatures.Add (DocumentationComments.GetSignature (placeholderMember));
 			}
 
-			var modified = false;
 			foreach (var signature in signatures.OrderBy (v => v, StringComparer.Ordinal))
 				modified |= AddAttributeOnlyOnce (addToMethod, CreateDynamicDependencyAttribute (signature, type));
 
@@ -1673,6 +1895,20 @@ namespace Xamarin.Linker {
 			return false;
 		}
 
+		bool AddExplicitAccessorSignature (HashSet<string> signatures, MethodDefinition? accessor)
+		{
+			if (accessor is null)
+				return false;
+			if (!IsExplicitInterfaceImplementation (accessor)) {
+				signatures.Add (DocumentationComments.GetNameSignature (accessor));
+				return false;
+			}
+			var signature = GetDynamicDependencySignature (accessor, out var modified);
+			if (signature is not null)
+				signatures.Add (signature);
+			return modified;
+		}
+
 		/// <summary>
 		/// Preserve a method conditionally on another type
 		/// </summary>
@@ -1681,7 +1917,9 @@ namespace Xamarin.Linker {
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
 			CustomAttribute attrib;
-			var signature = DocumentationComments.GetSignature (forMethod);
+			var signature = GetDynamicDependencySignature (forMethod, out var modified);
+			if (signature is null)
+				return modified;
 
 			if (onType == forMethod.DeclaringType) {
 				attrib = CreateDynamicDependencyAttribute (signature);
@@ -1691,7 +1929,7 @@ namespace Xamarin.Linker {
 				attrib = CreateDynamicDependencyAttribute (signature, forMethod.DeclaringType, forMethod.Module.Assembly);
 			}
 
-			return AddAttributeToStaticConstructor (onType, attrib);
+			return AddAttributeToStaticConstructor (onType, attrib) | modified;
 		}
 
 		/// <summary>

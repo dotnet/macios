@@ -2846,6 +2846,7 @@ namespace UIKit {
 			get; // readonly
 		}
 
+		/// <summary>Gets the delegate that provides view controllers for previewing.</summary>
 		[Wrap ("WeakDelegate")]
 		IUIViewControllerPreviewingDelegate Delegate { get; }
 

@@ -2816,6 +2816,7 @@ namespace VideoToolbox {
 		[Export ("frameSupportedPixelFormats")]
 		NSNumber [] WeakFrameSupportedPixelFormats { get; }
 
+		/// <summary>Gets the pixel formats supported for frame processing.</summary>
 		CVPixelFormatType [] FrameSupportedPixelFormats {
 			[Wrap ("Array.ConvertAll (this.WeakFrameSupportedPixelFormats, (v) => (CVPixelFormatType) v.UInt32Value);")]
 			get;
@@ -2825,6 +2826,7 @@ namespace VideoToolbox {
 		[Export ("sourcePixelBufferAttributes")]
 		NSDictionary WeakSourcePixelBufferAttributes { get; }
 
+		/// <summary>Gets the pixel buffer attributes required for source frames.</summary>
 		[Wrap ("WeakSourcePixelBufferAttributes")]
 		CVPixelBufferAttributes SourcePixelBufferAttributes { get; }
 
@@ -2832,6 +2834,7 @@ namespace VideoToolbox {
 		[Export ("destinationPixelBufferAttributes")]
 		NSDictionary WeakDestinationPixelBufferAttributes { get; }
 
+		/// <summary>Gets the pixel buffer attributes required for destination frames.</summary>
 		[Wrap ("WeakDestinationPixelBufferAttributes")]
 		CVPixelBufferAttributes DestinationPixelBufferAttributes { get; }
 

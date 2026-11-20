@@ -2326,6 +2326,7 @@ namespace AuthenticationServices {
 		[Export ("supportedDeviceSigningAlgorithms")]
 		NSNumber [] WeakSupportedDeviceSigningAlgorithms { get; }
 
+		/// <summary>Gets the signing algorithms supported for device keys.</summary>
 		[Mac (15, 0)]
 		ASAuthorizationProviderExtensionSigningAlgorithm [] SupportedDeviceSigningAlgorithms {
 			[Wrap ("ASAuthorizationProviderExtensionSigningAlgorithmExtensions.ToEnumArray (WeakSupportedDeviceSigningAlgorithms)!")]
@@ -2338,6 +2339,7 @@ namespace AuthenticationServices {
 			get;
 		}
 
+		/// <summary>Gets the encryption algorithms supported for device keys.</summary>
 		[Mac (15, 0)]
 		ASAuthorizationProviderExtensionEncryptionAlgorithm [] SupportedDeviceEncryptionAlgorithms {
 			[Wrap ("ASAuthorizationProviderExtensionEncryptionAlgorithmExtensions.ToEnumArray (WeakSupportedDeviceEncryptionAlgorithms)!")]
@@ -2348,6 +2350,7 @@ namespace AuthenticationServices {
 		[Export ("supportedUserSecureEnclaveKeySigningAlgorithms")]
 		NSNumber [] WeakSupportedUserSecureEnclaveKeySigningAlgorithms { get; }
 
+		/// <summary>Gets the signing algorithms supported for user keys stored in the Secure Enclave.</summary>
 		[Mac (15, 0)]
 		ASAuthorizationProviderExtensionSigningAlgorithm [] SupportedUserSecureEnclaveKeySigningAlgorithms {
 			[Wrap ("ASAuthorizationProviderExtensionSigningAlgorithmExtensions.ToEnumArray (WeakSupportedUserSecureEnclaveKeySigningAlgorithms)!")]

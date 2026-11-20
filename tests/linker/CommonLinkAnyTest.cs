@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace LinkAnyTest {
 			// test behavior (we did not break anything)
 			Assert.That (b, Is.EqualTo ("b"), "Stop");
 			// test that BlockLiteral is fully preserved
-			int size = Marshal.SizeOf (typeof (BlockLiteral)); // e.g. unused 'reserved' must not be removed
+			int size = Marshal.SizeOf<BlockLiteral> (); // e.g. unused 'reserved' must not be removed
 			Assert.That (size, Is.EqualTo (IntPtr.Size == 8 ? 48 : 28), "BlockLiteral size");
 
 		}
@@ -47,6 +48,10 @@ namespace LinkAnyTest {
 		[Test]
 		public void AppContextGetData ()
 		{
+#if NATIVEAOT
+			Assert.That (AppContext.GetData ("APP_PATHS"), Is.Null, "APP_PATHS");
+			Assert.That (AppContext.GetData ("PINVOKE_OVERRIDE"), Is.Null, "PINVOKE_OVERRIDE");
+#else
 			// https://github.com/dotnet/runtime/issues/50290
 			Assert.That (AppContext.GetData ("APP_PATHS"), Is.Not.Null, "APP_PATHS");
 			if (TestRuntime.IsCoreCLR) {
@@ -54,6 +59,7 @@ namespace LinkAnyTest {
 			} else {
 				Assert.That (AppContext.GetData ("PINVOKE_OVERRIDE"), Is.Not.Null, "PINVOKE_OVERRIDE");
 			}
+#endif
 		}
 
 		[Test]
@@ -71,20 +77,36 @@ namespace LinkAnyTest {
 		[Test]
 		public void JsonSerializer_Serialize ()
 		{
+#if NATIVEAOT
+			var a = JsonSerializer.Serialize (42, SimpleJsonContext.Default.Int32);
+#else
 			var a = JsonSerializer.Serialize (42);
+#endif
 			Assert.That (a, Is.EqualTo ("42"), "serialized 42");
 
+#if NATIVEAOT
+			var b = JsonSerializer.Serialize (new int [] { 42, 3, 14, 15 }, SimpleJsonContext.Default.Int32Array);
+#else
 			var b = JsonSerializer.Serialize (new int [] { 42, 3, 14, 15 });
+#endif
 			Assert.That (b, Is.EqualTo ("[42,3,14,15]"), "serialized array");
 		}
 
 		[Test]
 		public void JsonSerializer_Deserialize ()
 		{
+#if NATIVEAOT
+			var a = JsonSerializer.Deserialize ("42", SimpleJsonContext.Default.Int32);
+#else
 			var a = JsonSerializer.Deserialize<int> ("42");
+#endif
 			Assert.That (a, Is.EqualTo (42), "deserialized 42");
 
+#if NATIVEAOT
+			var b = JsonSerializer.Deserialize ("[42,3,14,15]", SimpleJsonContext.Default.Int32Array);
+#else
 			var b = JsonSerializer.Deserialize<int []> ("[42,3,14,15]");
+#endif
 			Assert.That (b!, Is.EqualTo (new int [] { 42, 3, 14, 15 }), "deserialized array");
 		}
 
@@ -149,4 +171,10 @@ namespace LinkAnyTest {
 			}
 		}
 	}
+
+#if NATIVEAOT
+	[JsonSerializable (typeof (int))]
+	[JsonSerializable (typeof (int []))]
+	partial class SimpleJsonContext : JsonSerializerContext { }
+#endif
 }

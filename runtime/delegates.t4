@@ -17,6 +17,13 @@
 			OnlyDynamicUsage = true,
 		},
 
+		new XDelegate ("void", "void", "xamarin_on_uncaught_objectivec_exception",
+			"NSException *", "IntPtr", "exc"
+		) {
+			WrappedManagedFunction = "OnUncaughtObjectiveCException",
+			OnlyDynamicUsage = false,
+		},
+
 		new XDelegate ("void", "void", "xamarin_throw_ns_exception",
 			"NSException *", "IntPtr", "exc"
 		) {

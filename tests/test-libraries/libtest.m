@@ -621,6 +621,14 @@ static UltimateMachine *shared;
 @implementation ObjCProtocolTestImpl
 @end
 
+void
+throw_uncaught_objc_exception (NSException *exception)
+{
+	[NSThread detachNewThreadWithBlock: ^{
+		@throw exception;
+	}];
+}
+
 @implementation ObjCExceptionTest
 {
 }

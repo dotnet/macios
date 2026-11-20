@@ -96,22 +96,22 @@ namespace CoreFoundation {
 		extern static IntPtr dispatch_source_get_data (dispatch_source_t source);
 
 		[DllImport (Constants.libcLibrary)]
-		extern static IntPtr dispatch_source_merge_data (dispatch_source_t source, IntPtr data);
+		extern static void dispatch_source_merge_data (dispatch_source_t source, IntPtr data);
 
 		[DllImport (Constants.libcLibrary)]
-		unsafe extern static IntPtr dispatch_source_set_event_handler (dispatch_source_t source, BlockLiteral* handler);
+		unsafe extern static void dispatch_source_set_event_handler (dispatch_source_t source, BlockLiteral* handler);
 
 		[DllImport (Constants.libcLibrary)]
-		unsafe extern static IntPtr dispatch_source_set_registration_handler (dispatch_source_t source, BlockLiteral* handler);
+		unsafe extern static void dispatch_source_set_registration_handler (dispatch_source_t source, BlockLiteral* handler);
 
 		[DllImport (Constants.libcLibrary)]
-		unsafe extern static IntPtr dispatch_source_set_cancel_handler (dispatch_source_t source, BlockLiteral* handler);
+		unsafe extern static void dispatch_source_set_cancel_handler (dispatch_source_t source, BlockLiteral* handler);
 
 		[DllImport (Constants.libcLibrary)]
-		unsafe extern static IntPtr dispatch_source_set_event_handler_f (dispatch_source_t source, IntPtr handler);
+		unsafe extern static void dispatch_source_set_event_handler_f (dispatch_source_t source, IntPtr handler);
 
 		[DllImport (Constants.libcLibrary)]
-		extern static IntPtr dispatch_source_cancel (dispatch_source_t source);
+		extern static void dispatch_source_cancel (dispatch_source_t source);
 
 		[DllImport (Constants.libcLibrary)]
 		extern static IntPtr dispatch_source_testcancel (dispatch_source_t source);

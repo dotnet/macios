@@ -187,6 +187,169 @@ namespace CoreMedia {
 		DV420,
 	}
 
+	/// <summary>Provides vendor identifiers for media format descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMFormatDescriptionVendor {
+		[Field ("kCMFormatDescriptionVendor_Apple")]
+		NSString Apple { get; }
+	}
+
+	/// <summary>Provides keys for color components in text format description dictionaries.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTextFormatDescriptionColor {
+		[Field ("kCMTextFormatDescriptionColor_Red")]
+		NSString Red { get; }
+
+		[Field ("kCMTextFormatDescriptionColor_Green")]
+		NSString Green { get; }
+
+		[Field ("kCMTextFormatDescriptionColor_Blue")]
+		NSString Blue { get; }
+
+		[Field ("kCMTextFormatDescriptionColor_Alpha")]
+		NSString Alpha { get; }
+	}
+
+	/// <summary>Provides keys for the edges of a text format description's default text box.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTextFormatDescriptionRect {
+		[Field ("kCMTextFormatDescriptionRect_Top")]
+		NSString Top { get; }
+
+		[Field ("kCMTextFormatDescriptionRect_Left")]
+		NSString Left { get; }
+
+		[Field ("kCMTextFormatDescriptionRect_Bottom")]
+		NSString Bottom { get; }
+
+		[Field ("kCMTextFormatDescriptionRect_Right")]
+		NSString Right { get; }
+	}
+
+	/// <summary>Provides keys for default text styles in text format descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTextFormatDescriptionStyle {
+		[Field ("kCMTextFormatDescriptionStyle_StartChar")]
+		NSString StartChar { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_Font")]
+		NSString Font { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_FontFace")]
+		NSString FontFace { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_ForegroundColor")]
+		NSString ForegroundColor { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_FontSize")]
+		NSString FontSize { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_EndChar")]
+		NSString EndChar { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_Height")]
+		NSString Height { get; }
+
+		[Field ("kCMTextFormatDescriptionStyle_Ascent")]
+		NSString Ascent { get; }
+	}
+
+	/// <summary>Provides extension keys for QuickTime and 3GPP text format descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTextFormatDescriptionExtension {
+		[Field ("kCMTextFormatDescriptionExtension_DisplayFlags")]
+		NSString DisplayFlags { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_BackgroundColor")]
+		NSString BackgroundColor { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_DefaultTextBox")]
+		NSString DefaultTextBox { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_DefaultStyle")]
+		NSString DefaultStyle { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_HorizontalJustification")]
+		NSString HorizontalJustification { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_VerticalJustification")]
+		NSString VerticalJustification { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_FontTable")]
+		NSString FontTable { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_TextJustification")]
+		NSString TextJustification { get; }
+
+		[Field ("kCMTextFormatDescriptionExtension_DefaultFontName")]
+		NSString DefaultFontName { get; }
+	}
+
+	/// <summary>Provides extension keys for time-code format descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTimeCodeFormatDescriptionExtension {
+		[Field ("kCMTimeCodeFormatDescriptionExtension_SourceReferenceName")]
+		NSString SourceReferenceName { get; }
+	}
+
+	/// <summary>Provides keys for a time-code format description's source reference name dictionary.</summary>
+	[MacCatalyst (13, 1)]
+	[Static]
+	interface CMTimeCodeFormatDescriptionKeys {
+		[Field ("kCMTimeCodeFormatDescriptionKey_Value")]
+		NSString Value { get; }
+
+		[Field ("kCMTimeCodeFormatDescriptionKey_LangCode")]
+		NSString LangCode { get; }
+	}
+
+	/// <summary>Specifies the serialization format for image descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	enum CMImageDescriptionFlavor {
+		/// <summary>The QuickTime Movie image description format.</summary>
+		[Field ("kCMImageDescriptionFlavor_QuickTimeMovie")]
+		QuickTimeMovie,
+
+		/// <summary>The ISO family sample description format used in MP4 files.</summary>
+		[Field ("kCMImageDescriptionFlavor_ISOFamily")]
+		IsoFamily,
+
+		/// <summary>The ISO family sample description format with additional rules for 3GPP files.</summary>
+		[Field ("kCMImageDescriptionFlavor_3GPFamily")]
+		ThreeGPFamily,
+
+		/// <summary>The ISO family sample description format with Apple extensions for M4A, M4B, and M4V files.</summary>
+		[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
+		[Field ("kCMImageDescriptionFlavor_ISOFamilyWithAppleExtensions")]
+		IsoFamilyWithAppleExtensions,
+	}
+
+	/// <summary>Specifies the serialization format for sound descriptions.</summary>
+	[MacCatalyst (13, 1)]
+	enum CMSoundDescriptionFlavor {
+		/// <summary>The most backward-compatible QuickTime Movie sound description format, using version 1 where possible.</summary>
+		[Field ("kCMSoundDescriptionFlavor_QuickTimeMovie")]
+		QuickTimeMovie,
+
+		/// <summary>The QuickTime Movie version 2 sound description format, without the legacy constant-bit-rate layout.</summary>
+		[Field ("kCMSoundDescriptionFlavor_QuickTimeMovieV2")]
+		QuickTimeMovieV2,
+
+		/// <summary>The ISO family sample description format used in MP4 and M4A files.</summary>
+		[Field ("kCMSoundDescriptionFlavor_ISOFamily")]
+		IsoFamily,
+
+		/// <summary>The ISO family sample description format with additional rules for 3GPP files.</summary>
+		[Field ("kCMSoundDescriptionFlavor_3GPFamily")]
+		ThreeGPFamily,
+	}
+
 	enum CMMPEG2VideoProfile : int {
 		HDV_720p30 = 0x68647631, // 'hdv1'
 		HDV_1080i60 = 0x68647632, // 'hdv2'

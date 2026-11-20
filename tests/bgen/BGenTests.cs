@@ -13,6 +13,36 @@ namespace GeneratorTests {
 	[Parallelizable (ParallelScope.All)]
 	public class BGenTests : BGenBase {
 		[Test]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void ReadOnlySpanParameters (Profile profile)
+		{
+			var bgen = BuildFile (profile, "read-only-span.cs");
+			var tmpDirectory = bgen.TmpDirectory ?? throw new InvalidOperationException ("No binding output directory.");
+			var contents = File.ReadAllText (Path.Combine (tmpDirectory, "SpanTests", "SpanConsumer.g.cs"));
+			foreach (var name in new [] { "value", "@string", "first", "second" }) {
+				var variable = name.TrimStart ('@');
+				Assert.That (contents, Does.Contain ($"CFString.CreateNative ({name});"), $"Marshal {name}");
+				Assert.That (contents, Does.Contain ($"CFString.ReleaseNative (ns{variable});"), $"Release {name}");
+			}
+			var type = bgen.ApiAssembly.MainModule.GetType ("SpanTests", "SpanConsumer");
+			var spanMethods = type.Methods.Where (v => v.HasBody && v.Parameters.Any (p => p.ParameterType.Name == "ReadOnlySpan`1")).ToArray ();
+			Assert.That (spanMethods.Length, Is.EqualTo (4), "Span members");
+			foreach (var method in spanMethods) {
+				Assert.That (method.CustomAttributes.Any (v => v.AttributeType.Name == "ExportAttribute"), Is.False, $"Span overloads must not be registered: {method}");
+				var calls = method.Body.Instructions
+					.Where (v => v.OpCode.FlowControl == FlowControl.Call)
+					.Select (v => v.Operand)
+					.OfType<MethodReference> ()
+					.ToArray ();
+				Assert.That (calls.Any (v => v.DeclaringType.FullName == "CoreFoundation.CFString" && v.Name == "CreateNative" && v.Parameters [0].ParameterType.Name == "ReadOnlySpan`1"), Is.True, $"Native span conversion: {method}");
+				Assert.That (calls.Any (v => v.Name == "ToString"), Is.False, $"No intermediate managed string: {method}");
+			}
+		}
+
+		[Test]
 		public void PrecompiledApiAssemblyWithoutSources ()
 		{
 			var targetFramework = TargetFramework.Parse (BGenTool.GetTargetFramework (Profile.iOS));

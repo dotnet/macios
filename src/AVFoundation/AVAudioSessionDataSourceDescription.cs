@@ -39,19 +39,6 @@ namespace AVFoundation {
 		Right,
 	}
 
-	/// <summary>Enumerates microphone directivity values.</summary>
-	///     <remarks>To be added.</remarks>
-	public enum AVAudioDataSourcePolarPattern {
-		/// <summary>To be added.</summary>
-		Unknown,
-		/// <summary>To be added.</summary>
-		Omnidirectional,
-		/// <summary>To be added.</summary>
-		Cardioid,
-		/// <summary>To be added.</summary>
-		Subcardioid,
-	}
-
 	/// <summary>Describes a data source of an <see cref="AVFoundation.AVAudioSession" /> object.</summary>
 	///     <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessiondatasourcedescription">Apple documentation for <c>AVAudioSessionDataSourceDescription</c></related>
@@ -79,31 +66,6 @@ namespace AVFoundation {
 			return AVAudioDataSourceOrientation.Unknown;
 		}
 
-		static internal AVAudioDataSourcePolarPattern ToPolarPattern (NSString? p)
-		{
-			if (p == AVAudioSession.PolarPatternOmnidirectional_)
-				return AVAudioDataSourcePolarPattern.Omnidirectional;
-			if (p == AVAudioSession.PolarPatternCardioid_)
-				return AVAudioDataSourcePolarPattern.Cardioid;
-			if (p == AVAudioSession.PolarPatternSubcardioid_)
-				return AVAudioDataSourcePolarPattern.Subcardioid;
-			return AVAudioDataSourcePolarPattern.Unknown;
-		}
-
-		static internal NSString? ToToken (AVAudioDataSourcePolarPattern p)
-		{
-			switch (p) {
-			case AVAudioDataSourcePolarPattern.Omnidirectional:
-				return AVAudioSession.PolarPatternOmnidirectional_;
-			case AVAudioDataSourcePolarPattern.Cardioid:
-				return AVAudioSession.PolarPatternCardioid_;
-			case AVAudioDataSourcePolarPattern.Subcardioid:
-				return AVAudioSession.PolarPatternSubcardioid_;
-			default:
-				return null;
-			}
-		}
-
 		/// <summary>Indicates the location of the data source on the device.</summary>
 		///         <value>The value can be either LocationUpper or LocationLower from <see cref="AVFoundation.AVAudioSession" />.<para tool="nullallowed">This value can be <see langword="null" />.</para></value>
 		///         <remarks>To be added.</remarks>
@@ -123,8 +85,7 @@ namespace AVFoundation {
 		}
 
 		/// <summary>The supported polar configurations by this audio data source.</summary>
-		///         <value>Array of strings containing the names of the supported microphone directions for the source, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" />.</value>
-		///         <remarks>To be added.</remarks>
+		/// <value>The supported microphone polar patterns, or <see langword="null" /> if the data source has no selectable patterns.</value>
 		public AVAudioDataSourcePolarPattern []? SupportedPolarPatterns {
 			get {
 				var x = SupportedPolarPatterns_;
@@ -134,37 +95,35 @@ namespace AVFoundation {
 				int n = x.Length;
 				var r = new AVAudioDataSourcePolarPattern [n];
 				for (int i = 0; i < n; i++)
-					r [i] = ToPolarPattern (x [i]);
+					r [i] = AVAudioDataSourcePolarPatternExtensions.GetValue (x [i]);
 				return r;
 			}
 		}
 
-		/// <summary>Indicates the currenly selected microphone direction.</summary>
-		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Indicates the currently selected microphone direction.</summary>
+		/// <value>The selected polar pattern, or <see cref="AVAudioDataSourcePolarPattern.Unknown" /> if no pattern is selected or recognized.</value>
 		public AVAudioDataSourcePolarPattern SelectedPolarPattern {
 			get {
-				return ToPolarPattern (SelectedPolarPattern_);
+				return AVAudioDataSourcePolarPatternExtensions.GetValue (SelectedPolarPattern_);
 			}
 		}
 
 		/// <summary>The preferred microphone direction.</summary>
-		///         <value>The current setting for the microphone direction, one of PolarPatternOmnidirectional, PolarPatternCardioid, PolarPatternSubcardioid from <see cref="AVFoundation.AVAudioSession" /></value>
-		///         <remarks>To change this property, call the <see cref="AVFoundation.AVAudioSessionDataSourceDescription.SetPreferredPolarPattern(AVFoundation.AVAudioDataSourcePolarPattern,out Foundation.NSError)" />.</remarks>
+		/// <value>The preferred polar pattern, or <see cref="AVAudioDataSourcePolarPattern.Unknown" /> if no preference is set or recognized.</value>
+		/// <remarks>To change this property, call <see cref="SetPreferredPolarPattern" />.</remarks>
 		public AVAudioDataSourcePolarPattern PreferredPolarPattern {
 			get {
-				return ToPolarPattern (PreferredPolarPattern_);
+				return AVAudioDataSourcePolarPatternExtensions.GetValue (PreferredPolarPattern_);
 			}
 		}
 
-		/// <param name="pattern">To be added.</param>
-		///         <param name="outError">To be added.</param>
-		///         <summary>Sets the preferred directivity for the data source.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the preferred directivity for the data source.</summary>
+		/// <param name="pattern">The preferred polar pattern, or <see cref="AVAudioDataSourcePolarPattern.Unknown" /> to clear the preference.</param>
+		/// <param name="outError">The error if the operation fails.</param>
+		/// <returns><see langword="true" /> if the preference was set; otherwise, <see langword="false" />.</returns>
 		public bool SetPreferredPolarPattern (AVAudioDataSourcePolarPattern pattern, out NSError outError)
 		{
-			return SetPreferredPolarPattern_ (ToToken (pattern), out outError);
+			return SetPreferredPolarPattern_ (pattern.GetConstant (), out outError);
 		}
 	}
 }

@@ -17,6 +17,14 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected override string Command { get; set; } = "-create-xcframework";
 
+		public override bool Execute ()
+		{
+			if (ShouldExecuteRemotely ())
+				XcArchivePath = GetRemotePath (XcArchivePath);
+
+			return base.Execute ();
+		}
+
 		protected override IList<string> GenerateCommandLineCommands ()
 		{
 			var args = new List<string> ();

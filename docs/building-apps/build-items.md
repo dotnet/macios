@@ -438,6 +438,10 @@ Applicable to all platforms.
 `<XcodeProject>` can be used to build and consume the outputs
 of Xcode framework projects created in Xcode or elsewehere.
 
+Building these items from Windows requires a connection to a Mac. For iOS binding
+projects built using Pair to Mac, the Xcode project sources are copied to the
+Mac and built there, and binding resource packages are copied back to Windows.
+
 The `Include` metadata should point to the path of the XCODEPROJ file to be built.
 
 ```xml

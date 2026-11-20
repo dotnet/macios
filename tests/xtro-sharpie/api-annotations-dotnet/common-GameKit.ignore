@@ -1,1 +1,0 @@
-!missing-null-allowed! 'System.Void GameKit.GKTurnBasedMatch::DeclineInvite(System.Action`2<GameKit.GKTurnBasedMatch,Foundation.NSError>)' is missing a '?' on parameter 'completionHandler' block parameter #0

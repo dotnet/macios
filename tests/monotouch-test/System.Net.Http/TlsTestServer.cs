@@ -22,9 +22,9 @@ namespace MonoTests.System.Net.Http {
 	static class TlsTestServer {
 		// Creates a secure (TLS) NWListener bound to 127.0.0.1 on an available port. The listener
 		// answers every connection with a minimal "HTTP/1.1 200 OK" response and then closes it.
-		public static NWListener CreateNWTlsListener (bool requireClientCert)
+		public static NWListener CreateNWTlsListener (bool requireClientCert, bool wrongHostName = false)
 		{
-			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx ();
+			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx (wrongHostName);
 			using var secIdentity = SecIdentity.Import (pfxData, pfxPassword);
 			using var secIdentity2 = new SecIdentity2 (secIdentity);
 			using var readyEvent = new ManualResetEventSlim (false);
@@ -79,16 +79,18 @@ namespace MonoTests.System.Net.Http {
 			return listener;
 		}
 
-		public static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx ()
+		public static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx (bool wrongHostName = false)
 		{
 			using var rsa = RSA.Create (2048);
+			var hostName = wrongHostName ? "not-localhost" : "localhost";
 			var certRequest = new CertificateRequest (
-				"CN=localhost", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+				$"CN={hostName}", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 			var sanBuilder = new SubjectAlternativeNameBuilder ();
-			sanBuilder.AddIpAddress (IPAddress.Loopback);
-			sanBuilder.AddDnsName ("localhost");
+			if (!wrongHostName)
+				sanBuilder.AddIpAddress (IPAddress.Loopback);
+			sanBuilder.AddDnsName (hostName);
 			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
-			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
+			using var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
 			var password = Guid.NewGuid ().ToString ();
 			return (cert.Export (X509ContentType.Pfx, password), password);
 		}

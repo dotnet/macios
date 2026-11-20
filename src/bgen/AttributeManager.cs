@@ -525,6 +525,12 @@ public class AttributeManager {
 			return (T []) cached;
 
 		var result = FilterAttributes<T> (GetAttributes (provider), provider);
+		if (result is AvailabilityBaseAttribute [] availability) {
+			foreach (var introduced in availability.OfType<IntroducedAttribute> ()) {
+				if (availability.Any (attribute => attribute.AvailabilityKind == AvailabilityKind.Unavailable && attribute.Platform == introduced.Platform))
+					throw ErrorHelper.CreateError (1130, Generator.FormatProvider (provider), introduced.Platform);
+			}
+		}
 		attributeCache [key] = result;
 		return result;
 	}

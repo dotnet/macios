@@ -630,6 +630,48 @@ namespace GeneratorTests {
 			BuildFile (Profile.iOS, "generic-strong-dictionary.cs");
 		}
 
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		[TestCase (Profile.MacCatalyst)]
+		[TestCase (Profile.macOSMobile)]
+		public void StrongDictionaryInlineFields (Profile profile)
+		{
+			var bgen = BuildFile (profile, "strong-dictionary-inline-fields.cs");
+			var options = bgen.ApiAssembly.MainModule.GetType ("InlineStrongDictionary.Options");
+			var keys = options.NestedTypes.Single (v => v.Name == "Keys");
+			Assert.That (keys.IsNestedPrivate, Is.True, "Keys visibility");
+			var cropRect = keys.Properties.Single (v => v.Name == "CropRect");
+			Assert.That (cropRect.PropertyType.FullName, Is.EqualTo ("Foundation.NSString"), "Key type");
+			var field = cropRect.CustomAttributes.Single (v => v.AttributeType.Name == "FieldAttribute");
+			Assert.That (field.ConstructorArguments [0].Value, Is.EqualTo ("NativeCropRect"), "Native symbol");
+			Assert.That (field.ConstructorArguments [1].Value, Is.EqualTo ("__Internal"), "Native library");
+			Assert.That (cropRect.GetMethod.Body.Instructions.Any (v => v.Operand is MethodReference method && method.Name == "GetStringConstant"), Is.True, "Native key lookup");
+			Assert.That (cropRect.GetMethod.Body.Instructions.Any (v => v.OpCode == OpCodes.Stsfld), Is.True, "Key caching");
+			foreach (var propertyName in new [] { "CropRect", "CropAndScale", "Name", "Enabled", "Values", "ReadOnly", "WriteOnly", "Newer" }) {
+				var property = options.Properties.Single (v => v.Name == propertyName);
+				foreach (var accessor in new [] { property.GetMethod, property.SetMethod }.Where (v => v is not null))
+					Assert.That (accessor.Body.Instructions.Any (v => v.Operand is MethodReference method && method.DeclaringType.Name == "Keys" && method.Name == "get_" + propertyName), Is.True, accessor.Name);
+			}
+
+			var notOnTV = profile != Profile.tvOS;
+			Assert.That (options.Properties.Any (v => v.Name == "NotOnTV"), Is.EqualTo (notOnTV), "Unavailable property");
+			Assert.That (keys.Properties.Any (v => v.Name == "NotOnTV"), Is.EqualTo (notOnTV), "Unavailable key");
+			string [] Availability (IEnumerable<CustomAttribute> attributes) => attributes
+				.Where (v => v.AttributeType.Name == "SupportedOSPlatformAttribute")
+				.Select (v => (string) v.ConstructorArguments [0].Value).OrderBy (v => v).ToArray ();
+			Assert.That (Availability (keys.CustomAttributes), Is.Not.Empty, "Dictionary availability is emitted");
+			Assert.That (Availability (keys.CustomAttributes), Is.EqualTo (Availability (options.CustomAttributes)), "Dictionary availability on keys");
+			Assert.That (Availability (keys.Properties.Single (v => v.Name == "Newer").CustomAttributes), Is.EqualTo (Availability (options.Properties.Single (v => v.Name == "Newer").CustomAttributes)), "Property availability on key");
+
+			var contents = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "InlineStrongDictionary", "Options.g.cs"));
+			Assert.That (contents, Does.Contain ("[Field (\"NativeName\", \"/tmp/libInline.dylib\")]"), "Explicit library path");
+			Assert.That (contents, Does.Contain ("Dlfcn.GetStringConstant (Libraries.libInlinedylib.Handle, \"NativeName\")"), "Explicit library handle");
+			var mixed = File.ReadAllText (Path.Combine (bgen.TmpDirectory!, "InlineStrongDictionary", "MixedOptions.g.cs"));
+			Assert.That (mixed.Split ("GetInt32Value (LegacyKeys.LegacyKey!)").Length - 1, Is.EqualTo (2), "Legacy key selection");
+			Assert.That (mixed, Does.Contain ("GetInt32Value (LegacyKeys.LegacyKey)"), "Qualified legacy key");
+			Assert.That (mixed, Does.Contain ("GetInt32Value (Keys.Inline)"), "Inline key in legacy dictionary");
+		}
+
 		[Test]
 		public void GenericNSObjectParameter ()
 		{

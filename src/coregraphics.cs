@@ -498,29 +498,16 @@ namespace CoreGraphics {
 	}
 
 	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface CGPdfTagPropertyKeys {
-		[Field ("kCGPDFTagPropertyActualText")]
-		NSString ActualTextKey { get; }
-
-		[Field ("kCGPDFTagPropertyAlternativeText")]
-		NSString AlternativeTextKey { get; }
-
-		[Field ("kCGPDFTagPropertyTitleText")]
-		NSString TitleTextKey { get; }
-
-		[Field ("kCGPDFTagPropertyLanguageText")]
-		NSString LanguageTextKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CGPdfTagPropertyKeys")]
+	[StrongDictionary]
 	interface CGPdfTagProperties {
 		// <quote>The following CGPDFTagProperty keys are to be paired with CFStringRef values</quote>
+		[Field ("kCGPDFTagPropertyActualText")]
 		string ActualText { get; set; }
+		[Field ("kCGPDFTagPropertyAlternativeText")]
 		string AlternativeText { get; set; }
+		[Field ("kCGPDFTagPropertyTitleText")]
 		string TitleText { get; set; }
+		[Field ("kCGPDFTagPropertyLanguageText")]
 		string LanguageText { get; set; }
 	}
 

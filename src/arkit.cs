@@ -1380,430 +1380,320 @@ namespace ARKit {
 	///   <para>All values are in the range [0..1], where 0.0 indicates the neutral state and 1.0 indicates maximum displacement.</para>
 	/// </remarks>
 	[NoTV, NoMac]
-	[StrongDictionary ("ARBlendShapeLocationKeys")]
+	[StrongDictionary]
 	interface ARBlendShapeLocationOptions {
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationBrowDownLeft")]
 		float BrowDownLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationBrowDownRight")]
 		float BrowDownRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationBrowInnerUp")]
 		float BrowInnerUp { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationBrowOuterUpLeft")]
 		float BrowOuterUpLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationBrowOuterUpRight")]
 		float BrowOuterUpRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationCheekPuff")]
 		float CheekPuff { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationCheekSquintLeft")]
 		float CheekSquintLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationCheekSquintRight")]
 		float CheekSquintRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeBlinkLeft")]
 		float EyeBlinkLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeBlinkRight")]
 		float EyeBlinkRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookDownLeft")]
 		float EyeLookDownLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookDownRight")]
 		float EyeLookDownRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookInLeft")]
 		float EyeLookInLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookInRight")]
 		float EyeLookInRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookOutLeft")]
 		float EyeLookOutLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookOutRight")]
 		float EyeLookOutRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookUpLeft")]
 		float EyeLookUpLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeLookUpRight")]
 		float EyeLookUpRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeSquintLeft")]
 		float EyeSquintLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeSquintRight")]
 		float EyeSquintRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeWideLeft")]
 		float EyeWideLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationEyeWideRight")]
 		float EyeWideRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationJawForward")]
 		float JawForward { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationJawLeft")]
 		float JawLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationJawOpen")]
 		float JawOpen { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationJawRight")]
 		float JawRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthClose")]
 		float MouthClose { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthDimpleLeft")]
 		float MouthDimpleLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthDimpleRight")]
 		float MouthDimpleRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthFrownLeft")]
 		float MouthFrownLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthFrownRight")]
 		float MouthFrownRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthFunnel")]
 		float MouthFunnel { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthLeft")]
 		float MouthLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthLowerDownLeft")]
 		float MouthLowerDownLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthLowerDownRight")]
 		float MouthLowerDownRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthPressLeft")]
 		float MouthPressLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthPressRight")]
 		float MouthPressRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthPucker")]
 		float MouthPucker { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthRight")]
 		float MouthRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthRollLower")]
 		float MouthRollLower { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthRollUpper")]
 		float MouthRollUpper { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthShrugLower")]
 		float MouthShrugLower { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthShrugUpper")]
 		float MouthShrugUpper { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthSmileLeft")]
 		float MouthSmileLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthSmileRight")]
 		float MouthSmileRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthStretchLeft")]
 		float MouthStretchLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthStretchRight")]
 		float MouthStretchRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthUpperUpLeft")]
 		float MouthUpperUpLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationMouthUpperUpRight")]
 		float MouthUpperUpRight { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationNoseSneerLeft")]
 		float NoseSneerLeft { get; set; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("ARBlendShapeLocationNoseSneerRight")]
 		float NoseSneerRight { get; set; }
 
 		/// <summary>Gets or sets the extension of a tongue.</summary>
 		///         <value>The extension of a tongue.</value>
 		///         <remarks>To be added.</remarks>
-		float TongueOut { get; set; }
-	}
-
-	[NoTV, NoMac]
-	[Static]
-	[Internal]
-	interface ARBlendShapeLocationKeys {
-
-		[Field ("ARBlendShapeLocationBrowDownLeft")]
-		NSString BrowDownLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationBrowDownRight")]
-		NSString BrowDownRightKey { get; }
-
-		[Field ("ARBlendShapeLocationBrowInnerUp")]
-		NSString BrowInnerUpKey { get; }
-
-		[Field ("ARBlendShapeLocationBrowOuterUpLeft")]
-		NSString BrowOuterUpLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationBrowOuterUpRight")]
-		NSString BrowOuterUpRightKey { get; }
-
-		[Field ("ARBlendShapeLocationCheekPuff")]
-		NSString CheekPuffKey { get; }
-
-		[Field ("ARBlendShapeLocationCheekSquintLeft")]
-		NSString CheekSquintLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationCheekSquintRight")]
-		NSString CheekSquintRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeBlinkLeft")]
-		NSString EyeBlinkLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeBlinkRight")]
-		NSString EyeBlinkRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookDownLeft")]
-		NSString EyeLookDownLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookDownRight")]
-		NSString EyeLookDownRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookInLeft")]
-		NSString EyeLookInLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookInRight")]
-		NSString EyeLookInRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookOutLeft")]
-		NSString EyeLookOutLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookOutRight")]
-		NSString EyeLookOutRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookUpLeft")]
-		NSString EyeLookUpLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeLookUpRight")]
-		NSString EyeLookUpRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeSquintLeft")]
-		NSString EyeSquintLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeSquintRight")]
-		NSString EyeSquintRightKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeWideLeft")]
-		NSString EyeWideLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationEyeWideRight")]
-		NSString EyeWideRightKey { get; }
-
-		[Field ("ARBlendShapeLocationJawForward")]
-		NSString JawForwardKey { get; }
-
-		[Field ("ARBlendShapeLocationJawLeft")]
-		NSString JawLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationJawOpen")]
-		NSString JawOpenKey { get; }
-
-		[Field ("ARBlendShapeLocationJawRight")]
-		NSString JawRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthClose")]
-		NSString MouthCloseKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthDimpleLeft")]
-		NSString MouthDimpleLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthDimpleRight")]
-		NSString MouthDimpleRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthFrownLeft")]
-		NSString MouthFrownLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthFrownRight")]
-		NSString MouthFrownRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthFunnel")]
-		NSString MouthFunnelKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthLeft")]
-		NSString MouthLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthLowerDownLeft")]
-		NSString MouthLowerDownLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthLowerDownRight")]
-		NSString MouthLowerDownRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthPressLeft")]
-		NSString MouthPressLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthPressRight")]
-		NSString MouthPressRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthPucker")]
-		NSString MouthPuckerKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthRight")]
-		NSString MouthRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthRollLower")]
-		NSString MouthRollLowerKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthRollUpper")]
-		NSString MouthRollUpperKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthShrugLower")]
-		NSString MouthShrugLowerKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthShrugUpper")]
-		NSString MouthShrugUpperKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthSmileLeft")]
-		NSString MouthSmileLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthSmileRight")]
-		NSString MouthSmileRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthStretchLeft")]
-		NSString MouthStretchLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthStretchRight")]
-		NSString MouthStretchRightKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthUpperUpLeft")]
-		NSString MouthUpperUpLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationMouthUpperUpRight")]
-		NSString MouthUpperUpRightKey { get; }
-
-		[Field ("ARBlendShapeLocationNoseSneerLeft")]
-		NSString NoseSneerLeftKey { get; }
-
-		[Field ("ARBlendShapeLocationNoseSneerRight")]
-		NSString NoseSneerRightKey { get; }
-
 		[Field ("ARBlendShapeLocationTongueOut")]
-		NSString TongueOutKey { get; }
+		float TongueOut { get; set; }
 	}
 
 	/// <summary>An <see cref="ARKit.ARAnchor" /> that locates a detected face in the AR session's world coordinates.</summary>

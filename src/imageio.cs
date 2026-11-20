@@ -4636,26 +4636,15 @@ namespace ImageIO {
 	}
 
 	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface CGImageAnimationOptionsKeys {
-		[Field ("kCGImageAnimationDelayTime")]
-		NSString DelayTimeKey { get; }
-
-		[Field ("kCGImageAnimationLoopCount")]
-		NSString LoopCountKey { get; }
-
-		[Field ("kCGImageAnimationStartIndex")]
-		NSString StartIndexKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CGImageAnimationOptionsKeys")]
+	[StrongDictionary]
 	interface CGImageAnimationOptions {
+		[Field ("kCGImageAnimationDelayTime")]
 		double DelayTime { get; set; }
 
+		[Field ("kCGImageAnimationLoopCount")]
 		nuint LoopCount { get; set; }
 
+		[Field ("kCGImageAnimationStartIndex")]
 		nuint StartIndex { get; set; }
 	}
 

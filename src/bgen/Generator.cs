@@ -1392,7 +1392,7 @@ public partial class Generator : IMemberGatherer {
 
 				var is_abstract = false;
 
-				if (pi.TryCanRead (out var getter)) {
+				if (pi.TryCanRead (out var getter) && !getter.IsUnavailable (this)) {
 					var ba = GetBindAttribute (getter);
 
 					if (!is_abstract)
@@ -1400,7 +1400,7 @@ public partial class Generator : IMemberGatherer {
 					DeclareInvoker (getter);
 				}
 
-				if (pi.TryCanWrite (out var setter)) {
+				if (pi.TryCanWrite (out var setter) && !setter.IsUnavailable (this)) {
 					var ba = GetBindAttribute (setter);
 					var notImpl = AttributeManager.HasAttribute<NotImplementedAttribute> (setter);
 

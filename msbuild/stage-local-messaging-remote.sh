@@ -17,7 +17,11 @@ if [[ -z "$PACKAGE" && -n "${MESSAGING_REMOTE_REPO:-}" ]]; then
 		echo "MESSAGING_REMOTE_REPO must point to a checkout containing remote/Makefile: '$MESSAGING_REMOTE_REPO'." >&2
 		exit 1
 	fi
-	"$MAKE" -C "$MESSAGING_REMOTE_REPO/remote" pack "PACKAGE_PATH_FILE=$TEMP_DIR/package-path"
+	(
+		# The devtools checkout restores to its own cache, not the macios cache.
+		unset NuGetPackageRoot
+		"$MAKE" -C "$MESSAGING_REMOTE_REPO/remote" pack "PACKAGE_PATH_FILE=$TEMP_DIR/package-path"
+	)
 	if [[ ! -s "$TEMP_DIR/package-path" ]] || ! IFS= read -r PACKAGE < "$TEMP_DIR/package-path" || [[ -z "$PACKAGE" ]]; then
 		echo "The remote pack target did not write the new package path to PACKAGE_PATH_FILE. Update the messaging remote checkout." >&2
 		exit 1

@@ -26,6 +26,7 @@
 #include <zlib.h>
 
 #include <stdlib.h>
+#include <limits.h>
 #include <string.h>
 #include <arpa/inet.h>
 #include <sys/types.h>
@@ -110,7 +111,10 @@ monotouch_set_monodevelop_port (int port)
 void
 monotouch_wait_for_port_forwarding ()
 {
-	if (getenv ("DOTNET_WATCH") == NULL)
+	char *watch = xamarin_copy_environment_variable ("DOTNET_WATCH");
+	bool is_watch = watch != NULL;
+	free (watch);
+	if (!is_watch)
 		return;
 
 	struct timeval now;
@@ -154,7 +158,7 @@ get_preference (NSArray *preferences, NSUserDefaults *defaults, NSString *lookup
 static uint64_t xamarin_launch_timestamp = 0;
 void monotouch_start_launch_timer ()
 {
-	const char *action = getenv ("XAMARIN_TRACK_LAUNCH_DURATION");
+	char *action = xamarin_copy_environment_variable ("XAMARIN_TRACK_LAUNCH_DURATION");
 	if (!action || !*action) {
 		// do nothing (null or empty string)
 	} else if (strcmp (action, "disable") == 0) {
@@ -165,6 +169,7 @@ void monotouch_start_launch_timer ()
 	} else {
 		PRINT (PRODUCT ": Unknown value for XAMARIN_TRACK_LAUNCH_DURATION: %s", action);
 	}
+	free (action);
 }
 
 static void
@@ -212,25 +217,41 @@ void xamarin_capture_debugging_settings ()
 	// environment on the main thread (such as managed code in the app's Main method).
 	char *evar;
 
-	evar = getenv ("__XAMARIN_DEBUG_MODE__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_MODE__");
 	if (evar != NULL) {
-		captured_debug_mode = strdup (evar);
+		captured_debug_mode = evar;
 		unsetenv ("__XAMARIN_DEBUG_MODE__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_PORT__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_PORT__");
 	if (evar != NULL) {
-		captured_debug_port = strdup (evar);
+		captured_debug_port = evar;
 		unsetenv ("__XAMARIN_DEBUG_PORT__");
 	}
 
-	evar = getenv ("__XAMARIN_DEBUG_HOSTS__");
+	evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_HOSTS__");
 	if (evar != NULL) {
-		captured_debug_hosts = strdup (evar);
+		captured_debug_hosts = evar;
 		unsetenv ("__XAMARIN_DEBUG_HOSTS__");
 	}
 
 	unsetenv ("__XAMARIN_DEBUG_CONNECT_TIMEOUT__");
+}
+
+static bool
+parse_debug_configuration_number (const char *text, long maximum, long *value)
+{
+	char *end = NULL;
+	errno = 0;
+	long parsed = strtol (text, &end, 10);
+	if (end == text || errno == ERANGE || parsed < 0 || parsed > maximum)
+		return false;
+	while (isspace ((unsigned char) *end))
+		end++;
+	if (*end != 0)
+		return false;
+	*value = parsed;
+	return true;
 }
 
 void monotouch_configure_debugging ()
@@ -317,7 +338,7 @@ void monotouch_configure_debugging ()
 	free (captured_debug_hosts);
 	captured_debug_hosts = NULL;
 
-	const char *evar = getenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
+	char *evar = xamarin_copy_environment_variable ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	if (evar && *evar) {
 		int timeout = (int) strtol (evar, NULL, 10);
 		if (timeout > 0) {
@@ -326,6 +347,7 @@ void monotouch_configure_debugging ()
 		}
 		unsetenv ("__XAMARIN_DEBUG_CONNECTION_TIMEOUT__");
 	}
+	free (evar);
 
 #if MONOTOUCH && defined (__x86_64__)
 	// Try to read shared memory as well
@@ -334,16 +356,16 @@ void monotouch_configure_debugging ()
 		// Don't read shared memory in normal apps, because we're always able to pass
 		// the debug data (host/port) using either command-line arguments or environment variables
 	} else if ((shmkey = ftok ("/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/bin/mtouch", 0)) == -1) {
-		LOG (PRODUCT ": Could not create shared memory key: %s\n", strerror (errno));
+		LOG (PRODUCT ": Could not create shared memory key: %s\n", xamarin_error_description (errno).text);
 	} else {
 		size_t shmsize = 1024;
 		int shmid = shmget (shmkey, shmsize, 0);
 		if (shmid == -1) {
-			LOG (PRODUCT ": Could not get shared memory id: %s\n", strerror (errno));
+			LOG (PRODUCT ": Could not get shared memory id: %s\n", xamarin_error_description (errno).text);
 		} else {
 			void *ptr = shmat (shmid, NULL, SHM_RDONLY);
 			if (ptr == NULL || ptr == (void *) -1) {
-				LOG (PRODUCT ": Could not map shared memory: %s\n", strerror (errno));
+				LOG (PRODUCT ": Could not map shared memory: %s\n", xamarin_error_description (errno).text);
 			} else {
 				LOG (PRODUCT ": Read %i bytes from shared memory: %p with key %i and id %i\n", (int) shmsize, ptr, shmkey, shmid);
 				// Make a local copy of the shared memory, so that it doesn't change while we're parsing it.
@@ -383,43 +405,34 @@ void monotouch_configure_debugging ()
 
 	// Finally, fall back to loading values from MonoTouchDebugConfiguration.txt
 	NSString *conf_path = [bundle_path stringByAppendingPathComponent:@"MonoTouchDebugConfiguration.txt"];
-	FILE *debug_conf = fopen ([conf_path UTF8String], "r");
-	if (debug_conf != NULL) { 
+	NSError *read_error = nil;
+	NSString *debug_conf = [NSString stringWithContentsOfFile: conf_path encoding: NSUTF8StringEncoding error: &read_error];
+	if (debug_conf != nil) {
 		bool add_hosts = [hosts count] == 0;
-		char line [128];
-		int i;
-
-		while (!feof (debug_conf)) {
-			if (fgets (line, sizeof (line), debug_conf) != NULL) {
-				// Remove trailing newline
-				for (i = 0; line[i]; i++) {
-					if (line [i] == '\n' || line [i] == '\r') {
-						line [i] = 0;
-						break;
+		for (NSString *configuration_line in [debug_conf componentsSeparatedByCharactersInSet: [NSCharacterSet newlineCharacterSet]]) {
+			const char *line = [configuration_line UTF8String];
+			if (!strncmp ("IP: ", line, 4)) {
+				if (add_hosts) {
+					NSString *ip = [NSString stringWithUTF8String: line + 4];
+					if (![hosts containsObject: ip]) {
+						[hosts addObject: ip];
+						LOG (PRODUCT ": Added IP to look for the IDE: %s\n", [ip UTF8String]);
 					}
 				}
-				
-				if (!strncmp ("IP: ", line, 4)) {
-					if (add_hosts) {
-						NSString *ip;
-
-						ip = [NSString stringWithUTF8String:line + 4];
-						if (![hosts containsObject:ip]) {
-							[hosts addObject:ip];
-							LOG (PRODUCT ": Added IP to look for the IDE: %s\n", [ip UTF8String]);
-						}
-					}
-				} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
+			} else if (!strncmp ("USB Debugging: ", line, 15) && (connection_mode == NULL || !strcmp (connection_mode, "default"))) {
 #if defined(__aarch64__)
-					debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
+				debugging_mode = !strncmp ("USB Debugging: 1", line, 16) ? DebuggingModeUsb : DebuggingModeWifi;
 #endif
-				} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
-					monodevelop_port = strtol (line + 6, NULL, 10);
-				}
+			} else if (!strncmp ("Port: ", line, 6) && monodevelop_port == -1) {
+				long port;
+				if (parse_debug_configuration_number (line + 6, UINT16_MAX, &port) && port > 0)
+					monodevelop_port = port;
+				else
+					PRINT (PRODUCT ": Invalid port in debugger configuration: %s", line + 6);
 			}
 		}
-		
-		fclose (debug_conf);
+	} else if (![[read_error domain] isEqualToString: NSCocoaErrorDomain] || [read_error code] != NSFileReadNoSuchFileError) {
+		PRINT (PRODUCT ": Could not read debugger configuration '%s': %s", [conf_path UTF8String], [[read_error description] UTF8String]);
 	}
 
 	if (debug_enabled) {
@@ -523,13 +536,13 @@ monotouch_connect_wifi (NSMutableArray *ips)
 				sin6->sin6_port = htons (listen_port);
 				family_str = "IPv6";
 			} else {
-				PRINT (PRODUCT ": Error parsing '%s': %s", ip, errno ? strerror (errno) : "unsupported address type");
+				PRINT (PRODUCT ": Error parsing '%s': %s", ip, errno ? xamarin_error_description (errno).text : "unsupported address type");
 				sockets[i] = -1;
 				continue;
 			}
 			
 			if ((sockets[i] = socket (family, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-				PRINT (PRODUCT ": Failed to create %s socket: %s", family_str, strerror (errno));
+				PRINT (PRODUCT ": Failed to create %s socket: %s", family_str, xamarin_error_description (errno).text);
 				continue;
 			}
 			
@@ -546,7 +559,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 			}
 			
 			if (rv < 0 && errno != EINPROGRESS) {
-				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, (int) listen_port, strerror (errno));
+				PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, (int) listen_port, xamarin_error_description (errno).text);
 				close (sockets[i]);
 				sockets[i] = -1;
 				continue;
@@ -592,7 +605,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 					continue;
 				
 				// irrecoverable error
-				PRINT (PRODUCT ": Error while waiting for connections: %s", strerror (errno));
+				PRINT (PRODUCT ": Error while waiting for connections: %s", xamarin_error_description (errno).text);
 				free (sockets);
 				return;
 			}
@@ -616,7 +629,8 @@ monotouch_connect_wifi (NSMutableArray *ips)
 				
 				// okay, this socket is ready for reading or writing...
 				if (getsockopt (sockets[i], SOL_SOCKET, SO_ERROR, &error, &optlen) < 0) {
-					PRINT (PRODUCT ": Error while trying to get socket options for %s: %s", [[ips objectAtIndex:i] UTF8String], strerror (errno));
+					int saved_errno = errno;
+					PRINT (PRODUCT ": Error while trying to get socket options for %s: %s", [[ips objectAtIndex:i] UTF8String], xamarin_error_description (saved_errno).text);
 					close (sockets[i]);
 					sockets[i] = -1;
 					waiting--;
@@ -624,7 +638,7 @@ monotouch_connect_wifi (NSMutableArray *ips)
 				}
 				
 				if (error != 0) {
-					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], (int) listen_port, strerror (error));
+					PRINT (PRODUCT ": Socket error while connecting to IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], (int) listen_port, xamarin_error_description (error).text);
 					close (sockets[i]);
 					sockets[i] = -1;
 					waiting--;
@@ -678,13 +692,13 @@ monotouch_connect_usb ()
 	// Create the listen socket and set it up
 	listen_socket = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (listen_socket == -1) {
-		PRINT (PRODUCT ": Could not create socket for the IDE to connect to: %s", strerror (errno));
+		PRINT (PRODUCT ": Could not create socket for the IDE to connect to: %s", xamarin_error_description (errno).text);
 		return;
 	}
 	
 	flags = 1;
 	if (setsockopt (listen_socket, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof (flags)) == -1) {
-		PRINT (PRODUCT ": Could not set SO_REUSEADDR on the listening socket (%s)", strerror (errno));
+		PRINT (PRODUCT ": Could not set SO_REUSEADDR on the listening socket (%s)", xamarin_error_description (errno).text);
 		// not a fatal failure
 	}
 	
@@ -695,7 +709,7 @@ monotouch_connect_usb ()
 	listen_addr.sin_addr.s_addr = INADDR_ANY;
 	rv = bind (listen_socket, (struct sockaddr *) &listen_addr, sizeof (listen_addr));
 	if (rv == -1) {
-		PRINT (PRODUCT ": Could not bind to address: %s", strerror (errno));
+		PRINT (PRODUCT ": Could not bind to address: %s", xamarin_error_description (errno).text);
 		goto cleanup;
 	}
 
@@ -706,7 +720,7 @@ monotouch_connect_usb ()
 
 	rv = listen (listen_socket, 1);
 	if (rv == -1) {
-		PRINT (PRODUCT ": Could not listen for the IDE: %s", strerror (errno));
+		PRINT (PRODUCT ": Could not listen for the IDE: %s", xamarin_error_description (errno).text);
 		goto cleanup;
 	}
 
@@ -747,20 +761,20 @@ monotouch_connect_usb ()
 		} while (rv == -1 && errno == EINTR);
 
 		if (rv == -1) {
-			PRINT (PRODUCT ": Failed while waiting for the IDE to connect: %s", strerror (errno));
+			PRINT (PRODUCT ": Failed while waiting for the IDE to connect: %s", xamarin_error_description (errno).text);
 			goto cleanup;
 		}
 
 		len = sizeof (struct sockaddr_in);
 		fd = accept (listen_socket, (struct sockaddr *) &listen_addr, &len);
 		if (fd == -1) {
-			PRINT (PRODUCT ": Failed to accept connection from the IDE: %s", strerror (errno));
+			PRINT (PRODUCT ": Failed to accept connection from the IDE: %s", xamarin_error_description (errno).text);
 			goto cleanup;
 		}
 
 		flags = 1;
 		if (setsockopt (fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flags, sizeof (flags)) < 0) {
-			PRINT (PRODUCT ": Could not set TCP_NODELAY on socket (%s)", strerror (errno));
+			PRINT (PRODUCT ": Could not set TCP_NODELAY on socket (%s)", xamarin_error_description (errno).text);
 			// not a fatal failure
 		}
 
@@ -782,24 +796,24 @@ monotouch_dump_objc_api (Class klass)
 	Method *methods;
 	objc_property_t *props;
 	
-	printf ("Dumping class %p = %s\n", klass, class_getName (klass));
+	xamarin_write_formatted (STDOUT_FILENO, "Dumping class %p = %s\n", klass, class_getName (klass));
 	
 	vars = class_copyIvarList (klass, &c);
-	printf ("\t%i instance variables:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance variables:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, ivar_getName (vars [i]));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, ivar_getName (vars [i]));
 	free (vars);
 	
 	methods = class_copyMethodList (klass, &c);
-	printf ("\t%i instance methods:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance methods:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, sel_getName (method_getName (methods [i])));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, sel_getName (method_getName (methods [i])));
 	free (methods);
 	
 	props = class_copyPropertyList (klass, &c);
-	printf ("\t%i instance properties:\n", c);
+	xamarin_write_formatted (STDOUT_FILENO, "\t%i instance properties:\n", c);
 	for (unsigned int i = 0; i < c; i++)
-		printf ("\t\t#%i: %s\n", i + 1, property_getName (props [i]));
+		xamarin_write_formatted (STDOUT_FILENO, "\t\t#%i: %s\n", i + 1, property_getName (props [i]));
 	free (props);
 	
 	fflush (stdout);
@@ -829,7 +843,7 @@ port_forward_thread (void *arg)
 		socklen_t src_len = sizeof (src_addr);
 		int src_fd = accept (listen_fd, (struct sockaddr *) &src_addr, &src_len);
 		if (src_fd == -1) {
-			LOG (PRODUCT ": Port forwarding: failed to accept connection: %s\n", strerror (errno));
+			LOG (PRODUCT ": Port forwarding: failed to accept connection: %s\n", xamarin_error_description (errno).text);
 			break;
 		}
 
@@ -854,7 +868,7 @@ port_forward_thread (void *arg)
 				rv = select (maxfd, &rset, NULL, NULL, NULL);
 			} while (rv == -1 && errno == EINTR);
 			if (rv < 0) {
-				LOG (PRODUCT ": Port forwarding: select failed: %s\n", strerror (errno));
+				LOG (PRODUCT ": Port forwarding: select failed: %s\n", xamarin_error_description (errno).text);
 				keep_listening = false;
 				break;
 			}
@@ -867,12 +881,12 @@ port_forward_thread (void *arg)
 				} while (n == -1 && errno == EINTR);
 				if (n <= 0) {
 					// The source disconnected; keep the listener open for the next connection.
-					LOG (PRODUCT ": Port forwarding: source disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
+					LOG (PRODUCT ": Port forwarding: source disconnected (n=%zd, errno=%s)\n", n, xamarin_error_description (errno).text);
 					break;
 				}
 				if (!send_uninterrupted (dst_fd, buf, (size_t) n)) {
 					// The destination is gone; stop the thread.
-					LOG (PRODUCT ": Port forwarding: failed to send to the destination: %s\n", strerror (errno));
+					LOG (PRODUCT ": Port forwarding: failed to send to the destination: %s\n", xamarin_error_description (errno).text);
 					keep_listening = false;
 					break;
 				}
@@ -884,13 +898,13 @@ port_forward_thread (void *arg)
 				} while (n == -1 && errno == EINTR);
 				if (n <= 0) {
 					// The destination disconnected; stop the thread.
-					LOG (PRODUCT ": Port forwarding: destination disconnected (n=%zd, errno=%s)\n", n, strerror (errno));
+					LOG (PRODUCT ": Port forwarding: destination disconnected (n=%zd, errno=%s)\n", n, xamarin_error_description (errno).text);
 					keep_listening = false;
 					break;
 				}
 				if (!send_uninterrupted (src_fd, buf, (size_t) n)) {
 					// The source is gone; keep the listener open for the next connection.
-					LOG (PRODUCT ": Port forwarding: failed to send to the source: %s\n", strerror (errno));
+					LOG (PRODUCT ": Port forwarding: failed to send to the source: %s\n", xamarin_error_description (errno).text);
 					break;
 				}
 			}
@@ -921,13 +935,13 @@ monotouch_process_connection (int fd)
 
 		rv = recv_uninterrupted (fd, &cmd_len, 1);
 		if (rv <= 0) {
-			LOG (PRODUCT ": Error while receiving command from the IDE (%s)\n", strerror (errno));
+			LOG (PRODUCT ": Error while receiving command from the IDE (%s)\n", xamarin_error_description (errno).text);
 			return false;
 		}
 
 		rv = recv_uninterrupted (fd, command, cmd_len);
 		if (rv <= 0) {
-			LOG (PRODUCT ": Error while receiving command from the IDE (%s)\n", strerror (errno));
+			LOG (PRODUCT ": Error while receiving command from the IDE (%s)\n", xamarin_error_description (errno).text);
 			return false;
 		}
 		
@@ -950,7 +964,7 @@ monotouch_process_connection (int fd)
 			return true;
 		} else if (!strcmp (command, "ping")) {
 			if (!send_uninterrupted (fd, "pong", 5))
-				LOG (PRODUCT ": Got keepalive request from the IDE, but could not send response back (%s)\n", strerror (errno));
+				LOG (PRODUCT ": Got keepalive request from the IDE, but could not send response back (%s)\n", xamarin_error_description (errno).text);
 		} else if (!strcmp (command, "exit process")) {
 			LOG (PRODUCT ": The IDE requested an exit, will exit immediately.\n");
 			fflush (stderr);
@@ -980,7 +994,7 @@ monotouch_process_connection (int fd)
 			// Create a listening socket on a randomly assigned port
 			int listen_fd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
 			if (listen_fd == -1) {
-				LOG (PRODUCT ": Port forwarding: failed to create listen socket: %s\n", strerror (errno));
+				LOG (PRODUCT ": Port forwarding: failed to create listen socket: %s\n", xamarin_error_description (errno).text);
 			} else {
 				int flags = 1;
 				setsockopt (listen_fd, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof (flags));
@@ -995,13 +1009,13 @@ monotouch_process_connection (int fd)
 				socklen_t bound_len = sizeof (bound_addr);
 
 				if (bind (listen_fd, (struct sockaddr *) &listen_addr, sizeof (listen_addr)) == -1) {
-					LOG (PRODUCT ": Port forwarding: failed to bind listen socket: %s\n", strerror (errno));
+					LOG (PRODUCT ": Port forwarding: failed to bind listen socket: %s\n", xamarin_error_description (errno).text);
 					close (listen_fd);
 				} else if (listen (listen_fd, 5) == -1) {
-					LOG (PRODUCT ": Port forwarding: failed to listen: %s\n", strerror (errno));
+					LOG (PRODUCT ": Port forwarding: failed to listen: %s\n", xamarin_error_description (errno).text);
 					close (listen_fd);
 				} else if (getsockname (listen_fd, (struct sockaddr *) &bound_addr, &bound_len) == -1) {
-					LOG (PRODUCT ": Port forwarding: failed to get the assigned port: %s\n", strerror (errno));
+					LOG (PRODUCT ": Port forwarding: failed to get the assigned port: %s\n", xamarin_error_description (errno).text);
 					close (listen_fd);
 				} else {
 					long forward_port = ntohs (bound_addr.sin_port);
@@ -1009,7 +1023,12 @@ monotouch_process_connection (int fd)
 
 					// Set environment variables, replacing %FORWARD_PORT% with the port
 					char port_str [16];
-					snprintf (port_str, sizeof (port_str), "%ld", forward_port);
+					NSString *formatted_port = [NSString stringWithFormat: @"%ld", forward_port];
+					if (![formatted_port getCString: port_str maxLength: sizeof (port_str) encoding: NSUTF8StringEncoding]) {
+						LOG (PRODUCT ": Could not format the forwarded port.");
+						close (listen_fd);
+						return false;
+					}
 					for (int i = 0; i < port_replacement_env_var_count; i++) {
 						char *value = port_replacement_env_vars [i].value;
 						char *replacement = strstr (value, "%FORWARD_PORT%");
@@ -1104,13 +1123,13 @@ int monotouch_debug_connect (NSMutableArray *ips, int debug_port, int output_por
 			sin6->sin6_port = htons (output_port);
 			family_str = "IPv6";
 		} else {
-			PRINT (PRODUCT ": Error parsing '%s': %s", ip, errno ? strerror (errno) : "unsupported address type");
+			PRINT (PRODUCT ": Error parsing '%s': %s", ip, errno ? xamarin_error_description (errno).text : "unsupported address type");
 			sockets[i] = -1;
 			continue;
 		}
 		
 		if ((sockets[i] = socket (family, SOCK_STREAM, IPPROTO_TCP)) == -1) {
-			PRINT (PRODUCT ": Failed to create %s socket: %s", family_str, strerror (errno));
+			PRINT (PRODUCT ": Failed to create %s socket: %s", family_str, xamarin_error_description (errno).text);
 			continue;
 		}
 		
@@ -1127,7 +1146,7 @@ int monotouch_debug_connect (NSMutableArray *ips, int debug_port, int output_por
 		}
 		
 		if (rv < 0 && errno != EINPROGRESS) {
-			PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, output_port, strerror (errno));
+			PRINT (PRODUCT ": Failed to connect to %s on port %d: %s", ip, output_port, xamarin_error_description (errno).text);
 			close (sockets[i]);
 			sockets[i] = -1;
 			continue;
@@ -1173,7 +1192,7 @@ int monotouch_debug_connect (NSMutableArray *ips, int debug_port, int output_por
 				continue;
 			
 			// irrecoverable error
-			PRINT (PRODUCT ": Error while waiting for connections: %s", strerror (errno));
+			PRINT (PRODUCT ": Error while waiting for connections: %s", xamarin_error_description (errno).text);
 			free (sockets);
 			return 1;
 		}
@@ -1197,7 +1216,8 @@ int monotouch_debug_connect (NSMutableArray *ips, int debug_port, int output_por
 			
 			// okay, this socket is ready for reading or writing...
 			if (getsockopt (sockets[i], SOL_SOCKET, SO_ERROR, &error, &optlen) < 0) {
-				PRINT (PRODUCT ": Error while trying to get socket options for %s: %s", [[ips objectAtIndex:i] UTF8String], strerror (errno));
+				int saved_errno = errno;
+				PRINT (PRODUCT ": Error while trying to get socket options for %s: %s", [[ips objectAtIndex:i] UTF8String], xamarin_error_description (saved_errno).text);
 				close (sockets[i]);
 				sockets[i] = -1;
 				waiting--;
@@ -1205,7 +1225,7 @@ int monotouch_debug_connect (NSMutableArray *ips, int debug_port, int output_por
 			}
 			
 			if (error != 0) {
-				PRINT (PRODUCT ": Socket error while connecting to the IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], output_port, strerror (error));
+				PRINT (PRODUCT ": Socket error while connecting to the IDE on %s:%d: %s", [[ips objectAtIndex:i] UTF8String], output_port, xamarin_error_description (error).text);
 				close (sockets[i]);
 				sockets[i] = -1;
 				waiting--;

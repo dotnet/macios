@@ -36,7 +36,7 @@
 static void
 dump_state (const char *prefix, struct XamarinCallState *state)
 {
-	fprintf (stderr, "DUMP %s type: %llu is_stret: %i self: %p SEL: %s\n" 
+	xamarin_write_formatted (STDERR_FILENO, "DUMP %s type: %llu is_stret: %i self: %p SEL: %s\n" 
 		"    rdi:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"
 		"    rsi:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"
 		"    rdx:     0x%llx = %lld = (double) %f = (float, float) (%f, %f)\n"
@@ -338,7 +338,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		LOGZ ("    output buffer of size %i:", (int) size);
 		if (size > 8)
 				LOGZ ("\n     ");
-		for (int i = 0; i < size; i++) {
+		for (size_t i = 0; i < size; i++) {
 			if (i > 0 && i % 8 == 0)
 				LOGZ ("\n         ");
 			LOGZ (" 0x%.2x", ((uint8_t *) target) [i]);

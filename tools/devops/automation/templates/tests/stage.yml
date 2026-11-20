@@ -74,6 +74,7 @@ stages:
 - stage: ${{ parameters.stageName }}
   displayName: ${{ parameters.displayName }}
   dependsOn:
+  - devskim
   - ${{ if eq(parameters.postPipeline, false) }}:
     - build_packages
   - configure_build

@@ -1,0 +1,165 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+parameters:
+- name: use1ES
+  type: boolean
+  default: true
+
+stages:
+- stage: devskim
+  displayName: DevSkim
+  dependsOn: []
+  jobs:
+  - job: devskim
+    displayName: Scan for banned APIs
+    timeoutInMinutes: 30
+    ${{ if parameters.use1ES }}:
+      pool:
+        name: AzurePipelines-EO
+        image: 1ESPT-Ubuntu22.04
+        os: linux
+    ${{ else }}:
+      pool:
+        vmImage: ubuntu-latest
+    workspace:
+      clean: all
+    steps:
+    - checkout: self
+      path: s/$(BUILD_REPOSITORY_TITLE)
+      clean: true
+      submodules: recursive
+      fetchTags: false
+
+    - bash: |
+        set -euo pipefail
+        mkdir -p "$REPORTS"
+        echo "##vso[task.setvariable variable=artifact_name;isOutput=true]devskim-$(System.JobAttempt)"
+      name: initialize_devskim
+      displayName: Initialize DevSkim diagnostics
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
+    - task: UseDotNet@2
+      displayName: Install .NET for DevSkim
+      inputs:
+        packageType: sdk
+        version: 10.0.x
+
+    - bash: |
+        set -euo pipefail
+        python3 "$(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/devskim/run_devskim.py" \
+          --install-only --tool-directory "$(Agent.TempDirectory)/devskim-tool" \
+          --output-directory "$REPORTS"
+      displayName: Install pinned DevSkim
+      workingDirectory: $(Agent.TempDirectory)
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
+    - bash: |
+        set -euo pipefail
+        python3 tools/devops/automation/scripts/devskim/run_devskim.py \
+          --tool-directory "$(Agent.TempDirectory)/devskim-tool" --output-directory "$REPORTS"
+      displayName: Run DevSkim and fail on banned APIs
+      workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
+    - bash: |
+        set -euo pipefail
+        python3 tools/devops/automation/scripts/devskim/run_devskim.py --report-only \
+          --output-directory "$REPORTS" --scan-status "$AGENT_JOBSTATUS"
+      displayName: Create DevSkim HTML report
+      condition: succeededOrFailed()
+      workingDirectory: $(Pipeline.Workspace)/s/$(BUILD_REPOSITORY_TITLE)
+      env:
+        REPORTS: $(Build.ArtifactStagingDirectory)/devskim
+
+    - template: ../common/publish-pipeline-artifact.yml
+      parameters:
+        use1ES: ${{ parameters.use1ES }}
+        displayName: Publish DevSkim reports
+        path: $(Build.ArtifactStagingDirectory)/devskim
+        artifact: $(initialize_devskim.artifact_name)
+        condition: always()
+
+  - ${{ if parameters.use1ES }}:
+    - job: publish_devskim
+      displayName: Publish DevSkim HTML report
+      dependsOn: devskim
+      condition: succeededOrFailed()
+      timeoutInMinutes: 30
+      variables:
+        DevSkimArtifactName: $[ dependencies.devskim.outputs['initialize_devskim.artifact_name'] ]
+      pool:
+        name: AzurePipelines-EO
+        image: 1ESPT-Windows2022
+        os: windows
+      workspace:
+        clean: all
+      templateContext:
+        outputs:
+        - output: artifactsDrop
+          displayName: Publish DevSkim HTML report to VSDrops
+          dropServiceURI: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+          dropMetadataContainerName: DropMetadata-DevSkim-$(System.JobAttempt)
+          buildNumber: $(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)
+          sourcePath: $(Pipeline.Workspace)/devskim-report
+          toLowerCase: false
+      steps:
+      - checkout: self
+        path: s/$(BUILD_REPOSITORY_TITLE)
+        clean: true
+        fetchTags: false
+
+      - task: DownloadPipelineArtifact@2
+        displayName: Download DevSkim reports
+        inputs:
+          artifactName: $(DevSkimArtifactName)
+          targetPath: $(Pipeline.Workspace)/devskim-report
+
+      - pwsh: |
+          $url = "https://vsdrop.corp.microsoft.com/file/v1/$(BUILD_REPOSITORY_TITLE)/devskim/$(Build.BuildNumber)/$(Build.BuildId)-$(System.JobAttempt)/;/index.html"
+          Write-Host "##vso[task.setvariable variable=url;isOutput=true]$url"
+        name: report_link
+        displayName: Record DevSkim HTML report link
+
+    - job: comment_devskim
+      displayName: Publish DevSkim failure gist and comment
+      dependsOn:
+      - devskim
+      - publish_devskim
+      condition: succeededOrFailed()
+      timeoutInMinutes: 15
+      variables:
+        DevSkimArtifactName: $[ dependencies.devskim.outputs['initialize_devskim.artifact_name'] ]
+        DevSkimDropUploaded: $[ eq(dependencies.publish_devskim.result, 'Succeeded') ]
+        DevSkimReportUrl: $[ dependencies.publish_devskim.outputs['report_link.url'] ]
+      pool:
+        name: AzurePipelines-EO
+        image: 1ESPT-Windows2022
+        os: windows
+      workspace:
+        clean: all
+      steps:
+      - checkout: self
+        path: s/$(BUILD_REPOSITORY_TITLE)
+        clean: true
+        fetchTags: false
+
+      - task: DownloadPipelineArtifact@2
+        displayName: Download DevSkim reports
+        inputs:
+          artifactName: $(DevSkimArtifactName)
+          targetPath: $(Pipeline.Workspace)/devskim-report
+
+      - pwsh: |
+          python "$env:PIPELINE_WORKSPACE/s/$env:BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/devskim/comment_devskim.py" `
+            "$env:PIPELINE_WORKSPACE/devskim-report/summary.json"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        displayName: Publish gist and comment on PR or commit only for DevSkim failures
+        condition: succeededOrFailed()
+        env:
+          GITHUB_TOKEN: $(GitHub.Token)
+          DEVSKIM_DROP_UPLOADED: $(DevSkimDropUploaded)
+          DEVSKIM_REPORT_URL: $(DevSkimReportUrl)

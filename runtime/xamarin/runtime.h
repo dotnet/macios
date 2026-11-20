@@ -159,7 +159,7 @@ struct AssemblyLocations {
 void xamarin_initialize ();
 void xamarin_initialize_dynamic_registrar ();
 
-void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__, format(printf, 1, 2)));
+void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__, format(__printf__, 1, 2)));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).
 const char *	xamarin_get_bundle_path (); /* Public API */
 // Sets the bundle path (where the managed executable is). By default APP/Contents/MonoBundle.
@@ -194,7 +194,7 @@ void			xamarin_throw_nsexception (MonoException *exc);
 void			xamarin_rethrow_managed_exception (GCHandle original_gchandle, GCHandle *exception_gchandle);
 MonoException *	xamarin_create_exception (const char *msg);
 id				xamarin_get_handle (MonoObject *obj, GCHandle *exception_gchandle);
-char *			xamarin_strdup_printf (const char *msg, ...) __attribute__((format(printf, 1, 2)));
+char *			xamarin_strdup_printf (const char *msg, ...) __attribute__((format(__printf__, 1, 2)));
 void *			xamarin_calloc (size_t size);
 void			xamarin_free (void *ptr);
 MonoMethod *	xamarin_get_reflection_method_method (MonoReflectionMethod *method);

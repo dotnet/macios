@@ -53,6 +53,10 @@ variables:
     value: true
 
 stages:
+  - template: ../governance/devskim.yml
+    parameters:
+      use1ES: false
+
   - template: ../tests-stage.yml
     parameters:
       xcodeChannel: $(xcodeChannel)

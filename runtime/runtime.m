@@ -7,6 +7,7 @@
 */
 
 #include <pthread.h>
+#include <limits.h>
 #include <objc/runtime.h>
 #include <sys/stat.h>
 #include <dlfcn.h>
@@ -804,29 +805,31 @@ xamarin_open_and_register (const char *aname, GCHandle *exception_gchandle)
 static int
 compare_mtclassmap (const void *a, const void *b)
 {
-	MTClassMap *mapa = (MTClassMap *) a;
-	MTClassMap *mapb = (MTClassMap *) b;
-
-	intptr_t diff = (intptr_t)mapa->handle - (intptr_t)mapb->handle;
-	const int shift = (sizeof(intptr_t) * 8) - 1;
-
-	return (diff >> shift) | !!diff;
+	const MTClassMap *mapa = (const MTClassMap *) a;
+	const MTClassMap *mapb = (const MTClassMap *) b;
+	intptr_t left = (intptr_t) mapa->handle;
+	intptr_t right = (intptr_t) mapb->handle;
+	return (left > right) - (left < right);
 }
 
 void
 xamarin_add_registration_map (struct MTRegistrationMap *map, bool partial)
 {
 	if (strcmp (map->product_hash, PRODUCT_HASH) != 0) {
-		fprintf (stderr, PRODUCT ": The static registrar map for %s (and %i other assemblies) is invalid. It was built using a runtime with hash %s, but the current runtime was built with hash %s.\n", map->assemblies [0].name, map->assembly_count - 1, map->product_hash, PRODUCT_HASH);
+		xamarin_write_formatted (STDERR_FILENO, PRODUCT ": The static registrar map for %s (and %i other assemblies) is invalid. It was built using a runtime with hash %s, but the current runtime was built with hash %s.\n", map->assemblies [0].name, map->assembly_count - 1, map->product_hash, PRODUCT_HASH);
 		return;
 	}
+
+	if (map->map_count < 0 || (size_t) map->map_count > SIZE_MAX / sizeof (MTClassMap) || (map->map_count > 0 && map->map == NULL))
+		xamarin_assertion_message ("Invalid registration class map.");
+
+	// Sort the type map according to Class
+	if (map->map_count > 1 && heapsort (map->map, (size_t) map->map_count, sizeof (MTClassMap), compare_mtclassmap) != 0)
+		xamarin_assertion_message ("Failed to sort the registration class map (error %i).", errno);
 
 	options.RegistrationData = map;
 	if (partial)
 		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsPartialStaticRegistrar);
-
-	// Sort the type map according to Class
-	qsort (map->map, (size_t) map->map_count, sizeof (MTClassMap), compare_mtclassmap);
 }
 
 /*
@@ -903,26 +906,32 @@ exception_handler (NSException *exc)
 	xamarin_handling_unhandled_exceptions = 0;
 }
 
-static int
-xamarin_compare_ints (const void *a, const void *b)
-{
-	uint32_t x = *(uint32_t *) a;
-	uint32_t y = *(uint32_t *) b;
-	return x < y ? -1 : (x == y ? 0 : 1);
-}
-
 uint32_t
 xamarin_find_protocol_wrapper_type (uint32_t token_ref)
 {
-	if (options.RegistrationData == NULL || options.RegistrationData->protocol_wrappers == NULL)
+	if (options.RegistrationData == NULL)
 		return INVALID_TOKEN_REF;
 
-	void* ptr = bsearch (&token_ref, options.RegistrationData->protocol_wrappers, (size_t) options.RegistrationData->protocol_wrapper_count, sizeof (MTProtocolWrapperMap), xamarin_compare_ints);
-	if (ptr == NULL)
+	const MTProtocolWrapperMap *entries = options.RegistrationData->protocol_wrappers;
+	int count = options.RegistrationData->protocol_wrapper_count;
+	if (count < 0 || (size_t) count > SIZE_MAX / sizeof (*entries) || (count > 0 && entries == NULL)) {
+		xamarin_throw_product_exception (8018, "Invalid protocol wrapper map.");
 		return INVALID_TOKEN_REF;
+	}
 
-	MTProtocolWrapperMap *entry = (MTProtocolWrapperMap *) ptr;
-	return entry->wrapper_token;
+	size_t low = 0;
+	size_t high = (size_t) count;
+	while (low < high) {
+		size_t middle = low + (high - low) / 2;
+		if (token_ref < entries [middle].protocol_token) {
+			high = middle;
+		} else if (token_ref > entries [middle].protocol_token) {
+			low = middle + 1;
+		} else {
+			return entries [middle].wrapper_token;
+		}
+	}
+	return INVALID_TOKEN_REF;
 }
 
 void
@@ -1048,6 +1057,24 @@ xamarin_free (void *ptr)
 	// which means we have to use the free function mono expects.
 	if (ptr)
 		free (ptr);
+}
+
+char *
+xamarin_copy_environment_variable (const char *name)
+{
+	@autoreleasepool {
+		// Read a fresh snapshot because startup and port forwarding change the environment.
+		NSString *value = [[[NSProcessInfo processInfo] environment] objectForKey: [NSString stringWithUTF8String: name]];
+		if (value == nil)
+			return NULL;
+		const char *utf8 = [value UTF8String];
+		if (utf8 == NULL)
+			xamarin_assertion_message ("Could not encode environment variable '%s' as UTF-8.", name);
+		char *copy = strdup (utf8);
+		if (copy == NULL)
+			xamarin_assertion_message ("Could not copy environment variable '%s'.", name);
+		return copy;
+	}
 }
 
 char *
@@ -1187,6 +1214,7 @@ unsigned long
 xamarin_objc_type_size (const char *type)
 {
 	const char *original_type = type;
+	const char *error_message = NULL;
 
 	switch (type [0]) {
 		case _C_ID: return sizeof (id);
@@ -1226,15 +1254,25 @@ xamarin_objc_type_size (const char *type)
 			xamarin_assertion_message ("Unhandled type encoding: %s", type);
 			break;
 		case _C_ARY_B: {
-			unsigned long size = 0;
-			unsigned long len = (unsigned long) atol (type+1);
-			do {
-				type++;
-			} while (isdigit (*type));
+			error_message = "Invalid array length in type encoding";
+			if (type [1] < '0' || type [1] > '9')
+				goto invalid_type;
+			char *element_type = NULL;
+			errno = 0;
+			unsigned long len = strtoul (type + 1, &element_type, 10);
+			if (errno == ERANGE || *element_type == 0)
+				goto invalid_type;
+			type = element_type;
 
-			size = xamarin_objc_type_size (type);
+			unsigned long size = xamarin_objc_type_size (type);
+			error_message = "Array element size overflow in type encoding";
+			if (size > ULONG_MAX - (sizeof (void *) - 1))
+				goto invalid_type;
 
 			size = (size + (sizeof (void *) - 1)) & ~((sizeof (void *) - 1));
+			error_message = "Array size overflow in type encoding";
+			if (size != 0 && len > ULONG_MAX / size)
+				goto invalid_type;
 
 			return len * size;
 		}
@@ -1302,6 +1340,14 @@ xamarin_objc_type_size (const char *type)
 	}
 	
 	xamarin_assertion_message ("Unsupported type encoding: %s", original_type);
+
+invalid_type:
+	;
+	char *message = xamarin_strdup_printf ("%s: %s", error_message, original_type);
+	GCHandle exception_gchandle = xamarin_create_product_exception (8040, message);
+	xamarin_free (message);
+	xamarin_process_managed_exception_gchandle (exception_gchandle);
+	return 0;
 }
 
 /*
@@ -1837,8 +1883,9 @@ bool
 xamarin_log_marshalled_exceptions ()
 {
 	if (xamarin_log_exceptions == XamarinTriStateNone) {
-		const char *var = getenv ("XAMARIN_LOG_MARSHALLED_EXCEPTIONS");
+		char *var = xamarin_copy_environment_variable ("XAMARIN_LOG_MARSHALLED_EXCEPTIONS");
 		xamarin_log_exceptions = (var && *var) ? XamarinTriStateEnabled : XamarinTriStateDisabled;
+		free (var);
 	}
 	return xamarin_log_exceptions == XamarinTriStateEnabled;
 }
@@ -2353,13 +2400,18 @@ xamarin_initialize_crash_report_directory ()
 
 	// Only do this if crash reports are enabled (DOTNET_EnableCrashReport=1),
 	// otherwise there's no point in setting the crash report directory.
-	const char *enableCrashReport = getenv ("DOTNET_EnableCrashReport");
-	if (enableCrashReport == NULL || strcmp (enableCrashReport, "1") != 0)
+	char *enableCrashReport = xamarin_copy_environment_variable ("DOTNET_EnableCrashReport");
+	bool enabled = enableCrashReport != NULL && strcmp (enableCrashReport, "1") == 0;
+	free (enableCrashReport);
+	if (!enabled)
 		return;
 
 	// If DOTNET_CrashReportRootPath is already set, respect it and don't override it
 	// (nor create any directory), since the caller is then responsible for the location.
-	if (getenv ("DOTNET_CrashReportRootPath") != NULL)
+	char *crashReportRootPath = xamarin_copy_environment_variable ("DOTNET_CrashReportRootPath");
+	bool hasRootPath = crashReportRootPath != NULL;
+	free (crashReportRootPath);
+	if (hasRootPath)
 		return;
 
 	NSArray *paths = NSSearchPathForDirectoriesInDomains (NSCachesDirectory, NSUserDomainMask, YES);
@@ -2406,12 +2458,14 @@ xamarin_vm_initialize ()
 	};
 
 	char contract_str [19]; // 0x + 16 hex digits + '\0'
-	snprintf (contract_str, sizeof (contract_str), "0x%zx", (size_t) (&host_contract));
+	NSString *contract = [NSString stringWithFormat: @"0x%zx", (size_t) (&host_contract)];
+	if (![contract getCString: contract_str maxLength: sizeof (contract_str) encoding: NSUTF8StringEncoding])
+		xamarin_assertion_message ("Could not format the host runtime contract address.");
 
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
 	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
-	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
+	char *startupHooks = xamarin_copy_environment_variable ("DOTNET_STARTUP_HOOKS");
 
 	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
 	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
@@ -2446,6 +2500,7 @@ xamarin_vm_initialize ()
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
 	xamarin_free (system_corelib_directory);
+	free (startupHooks);
 
 	if (!rv)
 		xamarin_assertion_message ("Failed to initialize the VM");
@@ -2594,13 +2649,30 @@ xamarin_locate_app_resource (const char *resource, char *path, size_t pathlen)
 	return xamarin_locate_assembly_resource_for_root (app_path, NULL, resource, path, pathlen);
 }
 
+bool
+xamarin_copy_path (NSString *candidate, char *path, size_t capacity)
+{
+	if (path == NULL || capacity == 0) {
+		LOG (PRODUCT ": Invalid output buffer for resource path.");
+		errno = EINVAL;
+		return false;
+	}
+	if (candidate == nil || ![candidate getFileSystemRepresentation: path maxLength: capacity]) {
+		path [0] = 0;
+		LOG (PRODUCT ": Could not encode resource path without truncation: %@", candidate);
+		errno = candidate == nil ? EILSEQ : ENAMETOOLONG;
+		return false;
+	}
+	return true;
+}
+
 static bool
 xamarin_locate_assembly_resource_for_root (const char *root, const char *culture, const char *resource, char *path, size_t pathlen)
 {
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
-		if (snprintf (path, pathlen, "%s/%s/%s", root, culture, resource) < 0) {
-			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s'): %s", root, culture, resource, strerror (errno));
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s", root, culture, resource], path, pathlen)) {
+			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s'): %s", root, culture, resource, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
 			return true;
@@ -2608,8 +2680,8 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	}
 
 	// arch-specific extension
-	if (snprintf (path, pathlen, "%s/%s.%s", root, resource, xamarin_arch_name) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (4): %s", resource, strerror (errno));
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s.%s", root, resource, xamarin_arch_name], path, pathlen)) {
+		LOG (PRODUCT ": Failed to construct path for resource: %s (4): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2617,16 +2689,16 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 #if !MONOMAC
 	// pointer-size subdirectory with arch-specific extension
-	if (snprintf (path, pathlen, "%s/%s/%s.%s", root, ARCH_SUBDIR, resource, xamarin_arch_name) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s.%s", root, ARCH_SUBDIR, resource, xamarin_arch_name], path, pathlen)) {
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
 	}
 
 	// pointer-size subdirectory
-	if (snprintf (path, pathlen, "%s/%s/%s", root, ARCH_SUBDIR, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/%s", root, ARCH_SUBDIR, resource], path, pathlen)) {
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2634,8 +2706,8 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 #endif // !MONOMAC
 
 	// RID-specific subdirectory
-	if (snprintf (path, pathlen, "%s/.xamarin/%s/%s", root, RUNTIMEIDENTIFIER, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, strerror (errno));
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/.xamarin/%s/%s", root, RUNTIMEIDENTIFIER, resource], path, pathlen)) {
+		LOG (PRODUCT ": Failed to construct path for resource: %s (5): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2643,8 +2715,8 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 
 	if (culture != NULL && *culture != 0) {
 		// culture-specific directory
-		if (snprintf (path, pathlen, "%s/%s/.xamarin/%s/%s", root, culture, RUNTIMEIDENTIFIER, resource) < 0) {
-			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s', runtimeidentifier: %s): %s", root, culture, resource, RUNTIMEIDENTIFIER, strerror (errno));
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s/.xamarin/%s/%s", root, culture, RUNTIMEIDENTIFIER, resource], path, pathlen)) {
+			LOG (PRODUCT ": Failed to construct path for assembly resource (root directory: '%s', culture: '%s', resource: '%s', runtimeidentifier: %s): %s", root, culture, resource, RUNTIMEIDENTIFIER, xamarin_error_description (errno).text);
 			return false;
 		} else if (xamarin_file_exists (path)) {
 			return true;
@@ -2652,8 +2724,8 @@ xamarin_locate_assembly_resource_for_root (const char *root, const char *culture
 	}
 
 	// just the file, no extensions, etc.
-	if (snprintf (path, pathlen, "%s/%s", root, resource) < 0) {
-		LOG (PRODUCT ": Failed to construct path for resource: %s (6): %s", resource, strerror (errno));
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s", root, resource], path, pathlen)) {
+		LOG (PRODUCT ": Failed to construct path for resource: %s (6): %s", resource, xamarin_error_description (errno).text);
 		return false;
 	} else if (xamarin_file_exists (path)) {
 		return true;
@@ -2683,7 +2755,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	// For extensions this might be a relative path that points to container app (../../Frameworks/...).
 	const char *explicit_location = xamarin_find_assembly_directory (aname);
 	if (explicit_location) {
-		snprintf (root, sizeof (root), "%s/%s", app_path, explicit_location);
+		if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/%s", app_path, explicit_location], root, sizeof (root)))
+			return false;
 		if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 			LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from explicit path '%s': %s\n", resource, explicit_location, path);
 			return true;
@@ -2704,7 +2777,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	// so that we can create a framework that works for both simulator and
 	// device, without affecting device builds in any way (device-specific
 	// files just go in the MonoBundle directory)
-	snprintf (root, sizeof (root), "%s/Frameworks/%s.framework/MonoBundle/simulator", app_path, aname);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Frameworks/%s.framework/MonoBundle/simulator", app_path, aname], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from framework '%s': %s\n", resource, aname, path);
 		return true;
@@ -2712,7 +2786,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 #endif // !MONOMAC
 
 	// Then in a framework named as the assembly
-	snprintf (root, sizeof (root), "%s/Frameworks/%s.framework/MonoBundle", app_path, aname);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Frameworks/%s.framework/MonoBundle", app_path, aname], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from framework '%s': %s\n", resource, aname, path);
 		return true;
@@ -2720,7 +2795,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 
 	// Then in the container app's root directory (for extensions)
 	if (xamarin_launch_mode == XamarinLaunchModeExtension) {
-		snprintf (root, sizeof (root), "../..");
+		if (!xamarin_copy_path (@"../..", root, sizeof (root)))
+			return false;
 		if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 			LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from container app bundle '%s': %s\n", resource, aname, path);
 			return true;
@@ -2728,7 +2804,8 @@ xamarin_locate_assembly_resource (const char *assembly_name, const char *culture
 	}
 
 #if TARGET_OS_MACCATALYST
-	snprintf (root, sizeof (root), "%s/Contents/%s", app_path, [xamarin_custom_bundle_name UTF8String]);
+	if (!xamarin_copy_path ([NSString stringWithFormat: @"%s/Contents/%s", app_path, [xamarin_custom_bundle_name UTF8String]], root, sizeof (root)))
+		return false;
 	if (xamarin_locate_assembly_resource_for_root (root, culture, resource, path, pathlen)) {
 		LOG_RESOURCELOOKUP (PRODUCT ": Located resource '%s' from macOS content bundle '%s': %s\n", resource, aname, path);
 		return true;
@@ -2747,23 +2824,29 @@ xamarin_set_assembly_directories (struct AssemblyLocations *directories)
 	options.AssemblyLocations = directories;
 }
 
-static int
-compare_assembly_location (const void *key, const void *value)
-{
-	return strcmp ((const char *) key, ((struct AssemblyLocation *) value)->assembly_name);
-}
-
 const char *
 xamarin_find_assembly_directory (const char *assembly_name)
 {
 	if (options.AssemblyLocations == NULL)
 		return NULL;
 
-	struct AssemblyLocation *entry;
-
-	entry = (struct AssemblyLocation *) bsearch (assembly_name, options.AssemblyLocations->locations, options.AssemblyLocations->length, sizeof (struct AssemblyLocation), compare_assembly_location);
-
-	return entry ? entry->location : NULL;
+	const struct AssemblyLocation *entries = options.AssemblyLocations->locations;
+	size_t low = 0;
+	size_t high = options.AssemblyLocations->length;
+	if (high > SIZE_MAX / sizeof (*entries) || (high > 0 && entries == NULL))
+		xamarin_assertion_message ("Invalid assembly location map.");
+	while (low < high) {
+		size_t middle = low + (high - low) / 2;
+		int comparison = strcmp (assembly_name, entries [middle].assembly_name);
+		if (comparison < 0) {
+			high = middle;
+		} else if (comparison > 0) {
+			low = middle + 1;
+		} else {
+			return entries [middle].location;
+		}
+	}
+	return NULL;
 }
 
 MonoMethod *

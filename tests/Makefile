@@ -14,6 +14,10 @@ include $(TOP)/mk/rules.mk
 
 XHARNESS_EXECUTABLE=xharness/bin/Debug/xharness.dll
 
+.PHONY: devskim
+devskim:
+	$(Q) python3 $(TOP)/tools/devops/automation/scripts/devskim/run_devskim.py --dotnet "$(DOTNET)"
+
 ifneq ($(RELEASE),)
 CONFIG=Release
 else

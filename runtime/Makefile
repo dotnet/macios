@@ -24,7 +24,7 @@ SHIPPED_HEADERS +=         \
 SHARED_SOURCES += bindings.m bindings-generated.m shared.m runtime.m trampolines.m trampolines-invoke.m xamarin-support.m nsstring-localization.m trampolines-varargs.m coreclr-bridge.m nativeaot-bridge.m swift-functions.swift
 SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-x86_64-objc_msgSend.s trampolines-x86_64-objc_msgSendSuper.s trampolines-x86_64-objc_msgSend_stret.s trampolines-x86_64-objc_msgSendSuper_stret.s
 SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
-SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
+SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h native-support.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
 
 SHARED_FILES = $(SHARED_SOURCES) $(SHARED_HEADERS) $(SHARED_X64_SOURCES) $(SHARED_ARM64_SOURCES)
 

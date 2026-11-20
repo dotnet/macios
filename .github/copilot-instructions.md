@@ -148,6 +148,14 @@ must come from an English `.resx` resource, such as
 This includes logged errors, warnings, informational messages, and exception messages
 shown to users. Do not hard-code these messages in C# or edit generated translations.
 
+When adding diagnostic codes for changes targeting `main` (not backports),
+fetch the target branch and check the codes at its latest tip before choosing
+new ones. Also check open pull requests and, when running on a developer's
+machine, other local sessions for codes they add. Pick unused numbers across
+errors, warnings, and informational messages in the same diagnostic range.
+Recheck before creating the pull request, since another change may have claimed
+the numbers in the meantime.
+
 ### MSBuild Targets Pitfalls
 
 * **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building

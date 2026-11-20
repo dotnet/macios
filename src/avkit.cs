@@ -322,7 +322,7 @@ namespace AVKit {
 		bool RequiresFullSubtitles { get; set; }
 		#endregion
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("contentProposalViewController", ArgumentSemantic.Assign)]
@@ -392,7 +392,7 @@ namespace AVKit {
 
 		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
 		[Export ("infoViewActions", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIAction [] InfoViewActions { get; set; }
 
 		[TV (15, 0), NoMac, NoiOS, NoMacCatalyst]
@@ -985,7 +985,7 @@ namespace AVKit {
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
-		[Export ("activeTintColor", ArgumentSemantic.Assign), NullAllowed]
+		[Export ("activeTintColor", ArgumentSemantic.Assign), System.Diagnostics.CodeAnalysis.AllowNull]
 		UIColor ActiveTintColor { get; set; }
 
 		[NoiOS, NoMac, NoMacCatalyst]

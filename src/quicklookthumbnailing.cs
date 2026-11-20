@@ -102,7 +102,7 @@ namespace QuickLookThumbnailing {
 
 		[iOS (14, 0)]
 		[MacCatalyst (14, 0)]
-		[NullAllowed, Export ("contentType", ArgumentSemantic.Copy)]
+		[System.Diagnostics.CodeAnalysis.AllowNull, Export ("contentType", ArgumentSemantic.Copy)]
 		UTType ContentType { get; set; }
 	}
 

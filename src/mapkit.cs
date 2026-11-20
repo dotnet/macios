@@ -853,7 +853,7 @@ namespace MapKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("cameraZoomRange", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		MKMapCameraZoomRange CameraZoomRange { get; set; }
 
 		[MacCatalyst (13, 1)]
@@ -1232,7 +1232,7 @@ namespace MapKit {
 		[MacCatalyst (13, 1)]
 		[Appearance]
 		[Export ("pinTintColor")]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		UIColor PinTintColor { get; set; }
 
 		[MacCatalyst (13, 1)]
@@ -2078,7 +2078,7 @@ namespace MapKit {
 		double DistanceFromString (string distance);
 
 		[Export ("locale", ArgumentSemantic.Copy)]
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		NSLocale Locale { get; set; }
 
 		[Export ("units", ArgumentSemantic.Assign)]
@@ -2324,7 +2324,7 @@ namespace MapKit {
 		[Export ("createPath")]
 		void CreatePath ();
 
-		[NullAllowed]
+		[System.Diagnostics.CodeAnalysis.AllowNull]
 		[Export ("path")]
 		CGPath Path { get; set; }
 

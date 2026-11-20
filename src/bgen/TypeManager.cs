@@ -674,14 +674,18 @@ public class TypeManager {
 		var strongDictionaries = new List<Type> ();
 
 		foreach (var t in api.GetTypes ()) {
+			var isStrongDictionary = AttributeManager.HasAttribute<StrongDictionaryAttribute> (t);
 			if ((processEnums && t.IsEnum) ||
 				AttributeManager.HasAttribute<BaseTypeAttribute> (t) ||
 				AttributeManager.HasAttribute<ProtocolAttribute> (t) ||
 				AttributeManager.HasAttribute<StaticAttribute> (t) ||
-				AttributeManager.HasAttribute<PartialAttribute> (t))
+				AttributeManager.HasAttribute<PartialAttribute> (t)) {
 				// skip those types that are not available
 				types.Add (t);
-			if (AttributeManager.HasAttribute<StrongDictionaryAttribute> (t))
+			} else if (t.IsInterface && !isStrongDictionary) {
+				ErrorHelper.Warning (BindingTouch, 1130, t.FullName);
+			}
+			if (isStrongDictionary)
 				strongDictionaries.Add (t);
 		}
 

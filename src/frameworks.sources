@@ -75,6 +75,13 @@ ADDRESSBOOKUI_SOURCES = \
 
 ADSUPPORT_SOURCES = \
 
+# ApplicationServices
+
+APPLICATIONSERVICES_SOURCES = \
+	ApplicationServices/AXObserver.cs \
+	ApplicationServices/AXUIElement.cs \
+	ApplicationServices/AXValue.cs \
+
 # AppKit
 
 APPKIT_API_SOURCES = \
@@ -2047,6 +2054,7 @@ MACOS_FRAMEWORKS =          \
 	Accounts                \
 	AdServices              \
 	AdSupport               \
+	ApplicationServices     \
 	AppKit XKit             \
 	AppTrackingTransparency \
 	AudioToolbox            \

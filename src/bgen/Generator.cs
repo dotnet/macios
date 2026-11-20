@@ -3096,7 +3096,7 @@ public partial class Generator : IMemberGatherer {
 			} else if (etype == TypeCache.System_String) {
 				cast_a = "CFArray.StringArrayFromHandle (";
 				cast_b = $", {owns})!";
-			} else if (etype == TypeCache.Selector) {
+			} else if (etype == TypeCache.Selector || etype.IsValueType) {
 				exceptions.Add (ErrorHelper.CreateError (1066, mai.Type.FullName, mi.DeclaringType?.FullName, mi.Name));
 			} else {
 				if (NamespaceCache.NamespacesThatConflictWithTypes.Contains (etype.Namespace!))
@@ -3390,7 +3390,7 @@ public partial class Generator : IMemberGatherer {
 					} else {
 						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
-				} else if (etype == TypeCache.Selector) {
+				} else if (etype == TypeCache.Selector || etype.IsValueType) {
 					exceptions.Add (ErrorHelper.CreateError (1065, mai.Type.FullName, string.IsNullOrEmpty (pi.Name) ? $"#{pi.Position}" : pi.Name, mi.DeclaringType?.FullName, mi.Name));
 				} else {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {

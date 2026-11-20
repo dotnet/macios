@@ -218,7 +218,16 @@ This usually indicates a bug in the product; please [file a bug report](https://
 
 ### <a name='BI1065'/>BI1065: Unsupported parameter type '\*' for the parameter '\*' in \*.
 
+Array parameters are marshalled as `NSArray` instances. Arrays of value types
+(including structs, primitives, and enums) cannot be marshalled this way without
+an appropriate `[BindAs]` conversion. For native APIs that take a pointer to a
+buffer of structs, bind the parameter as `IntPtr` or an appropriate pointer type
+instead.
+
 ### <a name='BI1066'/>BI1066: Unsupported return type '\*' in \*.
+
+Array return values are marshalled from `NSArray` instances. Arrays of value
+types are not supported without an appropriate `[BindAs]` conversion.
 
 ### <a name='BI1067'/>BI1067: The type '\*' is trying to inline the property '\*' from the protocols '\*' and '\*', but the inlined properties don't share the same accessors ('\*' is read-only, while '\*' is write-only).
 

@@ -72,6 +72,16 @@ cat <<EOF
 			"LssFiles": []
 		  },
 		  {
+			"SourceFile": "$WORKING_DIRECTORY/../../tools/analyzers/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "$WORKING_DIRECTORY/../../tools/analyzers/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
+		  },
+		  {
 			"SourceFile": "$WORKING_DIRECTORY/../../tools/sharpie/Sharpie.Bind/Resources.resx",
 			"Languages": "",
 			"CopyOption": "LangIDOnName",

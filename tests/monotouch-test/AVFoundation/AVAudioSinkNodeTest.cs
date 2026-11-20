@@ -11,12 +11,43 @@ namespace MonoTouchFixtures.AVFoundation {
 	[Preserve (AllMembers = true)]
 	public class AVAudioSinkNodeTest {
 		[Test]
+		public void TimestampInput ()
+		{
+			var timestamp = new AudioTimeStamp {
+				SampleTime = 1234,
+				HostTime = 5678,
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid | AudioTimeStamp.AtsFlags.HostTimeValid,
+			};
+			var expected = timestamp;
+			using var buffers = new AudioBuffers (1);
+#if XAMCORE_5_0
+			AVAudioSinkNodeReceiverHandler handler = (in AudioTimeStamp time, uint count, AudioBuffers data) => {
+#else
+			AVAudioSinkNodeReceiverHandler2 handler = (AudioTimeStamp time, uint count, AudioBuffers data) => {
+#endif
+				Assert.That (time, Is.EqualTo (expected), "Timestamp");
+				Assert.That (count, Is.EqualTo (32), "Frames");
+				Assert.That (data, Is.SameAs (buffers), "Buffers");
+				return 17;
+			};
+#if XAMCORE_5_0
+			Assert.That (handler (in timestamp, 32, buffers), Is.EqualTo (17), "Result");
+#else
+			Assert.That (handler (timestamp, 32, buffers), Is.EqualTo (17), "Result");
+			AVAudioSinkNodeReceiverHandler legacy = (AudioTimeStamp time, uint count, ref AudioBuffers data) => handler (time, count, data);
+			var legacyBuffers = buffers;
+			Assert.That (legacy (timestamp, 32, ref legacyBuffers), Is.EqualTo (17), "Legacy result");
+#endif
+			Assert.That (timestamp, Is.EqualTo (expected), "Input");
+		}
+
+		[Test]
 		public void SinkNodeCallback ()
 		{
 			var callbackEvent = new ManualResetEvent (false);
 			SinkNodeCallbackTest (callbackEvent, () => {
 #if XAMCORE_5_0
-				var handler = new AVAudioSinkNodeReceiverHandler ((ts, n, buffers) => SinkHandler (ts, n, buffers, callbackEvent));
+				var handler = new AVAudioSinkNodeReceiverHandler ((in AudioTimeStamp ts, uint n, AudioBuffers buffers) => SinkHandler2 (ts, n, buffers, callbackEvent));
 #else
 				var handler = new AVAudioSinkNodeReceiverHandler ((AudioTimeStamp ts, uint n, ref AudioBuffers buffers) => SinkHandler (ts, n, ref buffers, callbackEvent));
 #endif
@@ -42,7 +73,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			var callbackEvent = new ManualResetEvent (false);
 			SinkNodeCallbackTest (callbackEvent, () => {
 #if XAMCORE_5_0
-				var handler = new AVAudioSinkNodeReceiverHandler ((ts, n, buffers) => SinkHandler (ts, n, buffers, callbackEvent));
+				var handler = new AVAudioSinkNodeReceiverHandler ((in AudioTimeStamp ts, uint n, AudioBuffers buffers) => SinkHandler2 (ts, n, buffers, callbackEvent));
 #else
 				var handler = new AVAudioSinkNodeReceiverHandler2 ((ts, n, buffers) => SinkHandler2 (ts, n, buffers, callbackEvent));
 #endif

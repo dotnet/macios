@@ -80,7 +80,11 @@ namespace CoreGraphics {
 			return new NMatrix2 (mat.M11, mat.M21, mat.M12, mat.M22);
 		}
 
+#if XAMCORE_5_0
+		public static void Transpose (in NMatrix2 mat, out NMatrix2 result)
+#else
 		public static void Transpose (ref NMatrix2 mat, out NMatrix2 result)
+#endif
 		{
 			result.M11 = mat.M11;
 			result.M12 = mat.M21;
@@ -91,11 +95,19 @@ namespace CoreGraphics {
 		public static NMatrix2 Multiply (NMatrix2 left, NMatrix2 right)
 		{
 			NMatrix2 result;
+#if XAMCORE_5_0
+			Multiply (in left, in right, out result);
+#else
 			Multiply (ref left, ref right, out result);
+#endif
 			return result;
 		}
 
+#if XAMCORE_5_0
+		public static void Multiply (in NMatrix2 left, in NMatrix2 right, out NMatrix2 result)
+#else
 		public static void Multiply (ref NMatrix2 left, ref NMatrix2 right, out NMatrix2 result)
+#endif
 		{
 			result.M11 = left.M11 * right.M11 + left.M12 * right.M21;
 			result.M12 = left.M11 * right.M12 + left.M12 * right.M22;

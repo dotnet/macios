@@ -2517,7 +2517,7 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithName (IntPtr name, nfloat size, CGAffineTransform* matrix);
 
-		static IntPtr Create (string name, nfloat size, ref CGAffineTransform matrix)
+		static IntPtr Create (string name, nfloat size, in CGAffineTransform matrix)
 		{
 			var n = CFString.CreateNative (name);
 			try {
@@ -2534,10 +2534,25 @@ namespace CoreText {
 			}
 		}
 
+#if XAMCORE_5_0
+		public CTFont (string name, nfloat size, in CGAffineTransform matrix)
+#else
 		public CTFont (string name, nfloat size, ref CGAffineTransform matrix)
-			: base (Create (name, size, ref matrix), true)
+#endif
+			: base (Create (name, size, in matrix), true)
 		{
 		}
+
+#if !XAMCORE_5_0
+		/// <summary>Creates a font with the specified name, size, and transformation matrix.</summary>
+		/// <param name="name">The font's PostScript or family name.</param>
+		/// <param name="size">The font size in points, or zero to use the default size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		public CTFont (string name, nfloat size, CGAffineTransform matrix)
+			: this (name, size, ref matrix)
+		{
+		}
+#endif
 
 		static IntPtr Create (CTFontDescriptor descriptor, nfloat size)
 		{
@@ -2561,7 +2576,7 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithFontDescriptor (IntPtr descriptor, nfloat size, CGAffineTransform* matrix);
 
-		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, ref CGAffineTransform matrix)
+		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, in CGAffineTransform matrix)
 		{
 			if (descriptor is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptor));
@@ -2577,10 +2592,25 @@ namespace CoreText {
 			return handle;
 		}
 
+#if XAMCORE_5_0
+		public CTFont (CTFontDescriptor descriptor, nfloat size, in CGAffineTransform matrix)
+#else
 		public CTFont (CTFontDescriptor descriptor, nfloat size, ref CGAffineTransform matrix)
-			: base (Create (descriptor, size, ref matrix), true)
+#endif
+			: base (Create (descriptor, size, in matrix), true)
 		{
 		}
+
+#if !XAMCORE_5_0
+		/// <summary>Creates a font from a descriptor with the specified size and transformation matrix.</summary>
+		/// <param name="descriptor">The descriptor that specifies the font's attributes.</param>
+		/// <param name="size">The font size in points, or zero to use the descriptor's size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		public CTFont (CTFontDescriptor descriptor, nfloat size, CGAffineTransform matrix)
+			: this (descriptor, size, ref matrix)
+		{
+		}
+#endif
 
 		static IntPtr Create (string name, nfloat size, CTFontOptions options)
 		{
@@ -2616,7 +2646,7 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithNameAndOptions (IntPtr name, nfloat size, CGAffineTransform* matrix, nuint options);
 
-		static IntPtr Create (string name, nfloat size, ref CGAffineTransform matrix, CTFontOptions options)
+		static IntPtr Create (string name, nfloat size, in CGAffineTransform matrix, CTFontOptions options)
 		{
 			if (name is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
@@ -2640,10 +2670,30 @@ namespace CoreText {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
+#if XAMCORE_5_0
+		public CTFont (string name, nfloat size, in CGAffineTransform matrix, CTFontOptions options)
+#else
 		public CTFont (string name, nfloat size, ref CGAffineTransform matrix, CTFontOptions options)
-			: base (Create (name, size, ref matrix, options), true)
+#endif
+			: base (Create (name, size, in matrix, options), true)
 		{
 		}
+
+#if !XAMCORE_5_0
+		/// <summary>Creates a font with the specified name, size, transformation matrix, and options.</summary>
+		/// <param name="name">The font's PostScript or family name.</param>
+		/// <param name="size">The font size in points, or zero to use the default size.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		/// <param name="options">The font creation options.</param>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		public CTFont (string name, nfloat size, CGAffineTransform matrix, CTFontOptions options)
+			: this (name, size, ref matrix, options)
+		{
+		}
+#endif
 
 		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, CTFontOptions options)
 		{
@@ -2675,7 +2725,7 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateWithFontDescriptorAndOptions (IntPtr descriptor, nfloat size, CGAffineTransform* matrix, nuint options);
 
-		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, ref CGAffineTransform matrix)
+		static IntPtr Create (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, in CGAffineTransform matrix)
 		{
 			if (descriptor is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptor));
@@ -2695,10 +2745,30 @@ namespace CoreText {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
+#if XAMCORE_5_0
+		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, in CGAffineTransform matrix)
+#else
 		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, ref CGAffineTransform matrix)
-			: base (Create (descriptor, size, options, ref matrix), true)
+#endif
+			: base (Create (descriptor, size, options, in matrix), true)
 		{
 		}
+
+#if !XAMCORE_5_0
+		/// <summary>Creates a font from a descriptor with the specified size, options, and transformation matrix.</summary>
+		/// <param name="descriptor">The descriptor that specifies the font's attributes.</param>
+		/// <param name="size">The font size in points, or zero to use the descriptor's size.</param>
+		/// <param name="options">The font creation options.</param>
+		/// <param name="matrix">The transformation matrix to apply to the font.</param>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("tvos")]
+		public CTFont (CTFontDescriptor descriptor, nfloat size, CTFontOptions options, CGAffineTransform matrix)
+			: this (descriptor, size, options, ref matrix)
+		{
+		}
+#endif
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern /* CTFontRef __nonnull */ IntPtr CTFontCreateWithGraphicsFont (
@@ -2806,7 +2876,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithAttributes (IntPtr font, nfloat size, CGAffineTransform* matrix, IntPtr attributes);
+#if XAMCORE_5_0
+		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, in CGAffineTransform matrix)
+#else
 		public CTFont? WithAttributes (nfloat size, CTFontDescriptor attributes, ref CGAffineTransform matrix)
+#endif
 		{
 			unsafe {
 				fixed (CGAffineTransform* matrixPtr = &matrix) {
@@ -2826,7 +2900,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithSymbolicTraits (IntPtr font, nfloat size, CGAffineTransform* matrix, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask);
+#if XAMCORE_5_0
+		public CTFont? WithSymbolicTraits (nfloat size, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask, in CGAffineTransform matrix)
+#else
 		public CTFont? WithSymbolicTraits (nfloat size, CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask, ref CGAffineTransform matrix)
+#endif
 		{
 			unsafe {
 				fixed (CGAffineTransform* matrixPtr = &matrix) {
@@ -2851,7 +2929,11 @@ namespace CoreText {
 
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern IntPtr CTFontCreateCopyWithFamily (IntPtr font, nfloat size, CGAffineTransform* matrix, IntPtr family);
+#if XAMCORE_5_0
+		public CTFont? WithFamily (nfloat size, string family, in CGAffineTransform matrix)
+#else
 		public CTFont? WithFamily (nfloat size, string family, ref CGAffineTransform matrix)
+#endif
 		{
 			if (family is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (family));
@@ -3426,7 +3508,11 @@ namespace CoreText {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public CGPath? GetPathForGlyph (CGGlyph glyph, in CGAffineTransform transform)
+#else
 		public CGPath? GetPathForGlyph (CGGlyph glyph, ref CGAffineTransform transform)
+#endif
 		{
 			IntPtr h;
 			unsafe {

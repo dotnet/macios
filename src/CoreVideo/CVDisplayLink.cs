@@ -388,7 +388,11 @@ namespace CoreVideo {
 		///     <summary>To be added.</summary>
 		///     <returns>To be added.</returns>
 		///     <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public delegate CVReturn DisplayLinkOutputCallback (CVDisplayLink displayLink, in CVTimeStamp inNow, in CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut);
+#else
 		public delegate CVReturn DisplayLinkOutputCallback (CVDisplayLink displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut);
+#endif
 		delegate CVReturn CVDisplayLinkOutputCallback (IntPtr displayLink, ref CVTimeStamp inNow, ref CVTimeStamp inOutputTime, CVOptionFlags flagsIn, ref CVOptionFlags flagsOut, IntPtr displayLinkContext);
 
 		[UnmanagedCallersOnly]
@@ -397,10 +401,17 @@ namespace CoreVideo {
 			GCHandle callbackHandle = GCHandle.FromIntPtr (displayLinkContext);
 			DisplayLinkOutputCallback func = (DisplayLinkOutputCallback) callbackHandle.Target!;
 			CVDisplayLink delegateDisplayLink = new CVDisplayLink (displayLink, false);
+#if XAMCORE_5_0
+			return func (delegateDisplayLink,
+				in System.Runtime.CompilerServices.Unsafe.AsRef<CVTimeStamp> (inNow),
+				in System.Runtime.CompilerServices.Unsafe.AsRef<CVTimeStamp> (inOutputTime),
+				flagsIn, ref System.Runtime.CompilerServices.Unsafe.AsRef<CVOptionFlags> (flagsOut));
+#else
 			return func (delegateDisplayLink,
 				ref System.Runtime.CompilerServices.Unsafe.AsRef<CVTimeStamp> (inNow),
 				ref System.Runtime.CompilerServices.Unsafe.AsRef<CVTimeStamp> (inOutputTime),
 				flagsIn, ref System.Runtime.CompilerServices.Unsafe.AsRef<CVOptionFlags> (flagsOut));
+#endif
 		}
 
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]

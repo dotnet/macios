@@ -429,7 +429,11 @@ namespace AudioToolbox {
 		/// <param name="sourceFormat">Input audio format.</param>
 		/// <param name="destinationFormat">Output audio format.</param>
 		/// <returns>A new <see cref="AudioConverter" /> instance if successful, <see langword="null" /> otherwise.</returns>
+#if XAMCORE_5_0
+		public static AudioConverter? Create (in AudioStreamBasicDescription sourceFormat, in AudioStreamBasicDescription destinationFormat)
+#else
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat)
+#endif
 		{
 			AudioConverterError res;
 			return Create (sourceFormat, destinationFormat, out res);
@@ -440,11 +444,24 @@ namespace AudioToolbox {
 		/// <param name="destinationFormat">The destination audio format.</param>
 		/// <param name="error">In case of failure, will contain the error code for the failure. Otherwise the value <see cref="AudioConverterError.None" /> will be returned.</param>
 		/// <returns>A new <see cref="AudioConverter" /> instance if successful, <see langword="null" /> otherwise.</returns>
+#if XAMCORE_5_0
+		public static AudioConverter? Create (in AudioStreamBasicDescription sourceFormat, in AudioStreamBasicDescription destinationFormat, out AudioConverterError error)
+#else
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, out AudioConverterError error)
+#endif
 		{
 			IntPtr ptr = new IntPtr ();
 			unsafe {
-				error = AudioConverterNew (&sourceFormat, &destinationFormat, &ptr);
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat)
+				fixed (AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat)
+#else
+				AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat;
+				AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat;
+#endif
+				{
+					error = AudioConverterNew (sourceFormatPtr, destinationFormatPtr, &ptr);
+				}
 			}
 			if (error != AudioConverterError.None)
 				return null;
@@ -457,15 +474,26 @@ namespace AudioToolbox {
 		/// <param name="destinationFormat">Output audio format.</param>
 		/// <param name="descriptions">A list of codec to be used.</param>
 		/// <returns>A new <see cref="AudioConverter" /> instance if successful, <see langword="null" /> otherwise.</returns>
+#if XAMCORE_5_0
+		public static AudioConverter? Create (in AudioStreamBasicDescription sourceFormat, in AudioStreamBasicDescription destinationFormat, AudioClassDescription [] descriptions)
+#else
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioClassDescription [] descriptions)
+#endif
 		{
 			if (descriptions is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (descriptions));
 
 			IntPtr ptr = new IntPtr ();
 			unsafe {
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat)
+				fixed (AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat)
+#else
+				AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat;
+				AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat;
+#endif
 				fixed (AudioClassDescription* descriptionsPtr = descriptions) {
-					var res = AudioConverterNewSpecific (&sourceFormat, &destinationFormat, descriptions.Length, descriptionsPtr, &ptr);
+					var res = AudioConverterNewSpecific (sourceFormatPtr, destinationFormatPtr, descriptions.Length, descriptionsPtr, &ptr);
 					if (res != AudioConverterError.None)
 						return null;
 				}
@@ -484,11 +512,24 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
+#if XAMCORE_5_0
+		public static AudioConverter? Create (in AudioStreamBasicDescription sourceFormat, in AudioStreamBasicDescription destinationFormat, AudioConverterOptions options, out AudioConverterError error)
+#else
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioConverterOptions options, out AudioConverterError error)
+#endif
 		{
 			IntPtr ptr = default (IntPtr);
 			unsafe {
-				error = AudioConverterNewWithOptions (&sourceFormat, &destinationFormat, options, &ptr);
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat)
+				fixed (AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat)
+#else
+				AudioStreamBasicDescription* sourceFormatPtr = &sourceFormat;
+				AudioStreamBasicDescription* destinationFormatPtr = &destinationFormat;
+#endif
+				{
+					error = AudioConverterNewWithOptions (sourceFormatPtr, destinationFormatPtr, options, &ptr);
+				}
 			}
 			if (error != AudioConverterError.None)
 				return null;
@@ -504,7 +545,11 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
+#if XAMCORE_5_0
+		public static AudioConverter? Create (in AudioStreamBasicDescription sourceFormat, in AudioStreamBasicDescription destinationFormat, AudioConverterOptions options)
+#else
 		public static AudioConverter? Create (AudioStreamBasicDescription sourceFormat, AudioStreamBasicDescription destinationFormat, AudioConverterOptions options)
+#endif
 		{
 			return Create (sourceFormat, destinationFormat, options, out var _);
 		}

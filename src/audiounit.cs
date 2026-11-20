@@ -33,11 +33,24 @@ using MidiCIProfileState = Foundation.NSObject;
 #endif
 
 namespace AudioUnit {
+#if XAMCORE_5_0
+	delegate AudioUnitStatus AUInternalRenderBlock (ref AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, AURenderEventEnumerator realtimeEventListHead, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
+#else
 	delegate AudioUnitStatus AUInternalRenderBlock (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, AURenderEventEnumerator realtimeEventListHead, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
+#endif
+#if XAMCORE_5_0
+	delegate AudioUnitStatus AURenderBlock (ref AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
+#else
 	delegate AudioUnitStatus AURenderBlock (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber, AudioBuffers outputData, [BlockCallback][NullAllowed] AURenderPullInputBlock pullInputBlock);
+#endif
 
+#if XAMCORE_5_0
+	internal delegate AudioUnitStatus AURenderPullInputBlock (ref AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timestamp,
+			uint frameCount, nint inputBusNumber, AudioBuffers inputData);
+#else
 	internal delegate AudioUnitStatus AURenderPullInputBlock (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp,
 			uint frameCount, nint inputBusNumber, AudioBuffers inputData);
+#endif
 
 	delegate void AUScheduleParameterBlock (AUEventSampleTime eventSampleTime, uint rampDurationSampleFrames, ulong parameterAddress, float value);
 	[MacCatalyst (13, 1)]
@@ -77,7 +90,11 @@ namespace AudioUnit {
 	///     <param name="frameCount">The number of available audio frames.</param>
 	///     <param name="inputBusNumber">The input bus index.</param>
 	///     <summary>Delegate that tells an I/O host when input is available.</summary>
+#if XAMCORE_5_0
+	delegate void AUInputHandler (ref AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timestamp, uint frameCount, nint inputBusNumber);
+#else
 	delegate void AUInputHandler (ref AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint inputBusNumber);
+#endif
 	/// <param name="transportStateFlags">The state of the audio transport.</param>
 	///     <param name="currentSamplePosition">The host sample position, in audio unit samples.</param>
 	///     <param name="cycleStartBeatPosition">The starting beat position for the cycle. <see langword="null" /> if not cycling.</param>
@@ -91,7 +108,11 @@ namespace AudioUnit {
 	///       <para>Developers may optionally assign an instance of this class to the <see cref="AUAudioUnit.TransportStateBlock" /> property so that they can call it at the beginning of render cycles to get the transport state at the cycle start.</para>
 	///     </remarks>
 	delegate bool AUHostTransportStateBlock (ref AUHostTransportStateFlags transportStateFlags, ref double currentSamplePosition, ref double cycleStartBeatPosition, ref double cycleEndBeatPosition);
+#if XAMCORE_5_0
+	delegate void AURenderObserver (AudioUnitRenderActionFlags actionFlags, in AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber);
+#else
 	delegate void AURenderObserver (AudioUnitRenderActionFlags actionFlags, ref AudioTimeStamp timestamp, uint frameCount, nint outputBusNumber);
+#endif
 	/// <param name="param">The parameter that will be assigned to the value that is converted from <paramref name="str" />.</param>
 	///     <param name="str">The string to convert.</param>
 	///     <summary>Converts <paramref name="str" /> to the appropriate type and assigns it to <paramref name="param" />.</summary>

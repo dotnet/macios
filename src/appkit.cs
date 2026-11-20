@@ -32923,10 +32923,18 @@ namespace AppKit {
 		NSOpenGLContext GetOpenGLContext (NSOpenGLPixelFormat pixelFormat);
 
 		[Export ("canDrawInOpenGLContext:pixelFormat:forLayerTime:displayTime:")]
+#if XAMCORE_5_0
+		bool CanDraw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, in CVTimeStamp ts);
+#else
 		bool CanDraw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, ref CVTimeStamp ts);
+#endif
 
 		[Export ("drawInOpenGLContext:pixelFormat:forLayerTime:displayTime:")]
+#if XAMCORE_5_0
+		void Draw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, in CVTimeStamp ts);
+#else
 		void Draw (NSOpenGLContext context, NSOpenGLPixelFormat pixelFormat, double t, ref CVTimeStamp ts);
+#endif
 	}
 
 	[NoMacCatalyst]

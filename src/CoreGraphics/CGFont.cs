@@ -349,9 +349,18 @@ namespace CoreGraphics {
 			return new CTFont (CTFontCreateWithGraphicsFont (Handle, size, null, IntPtr.Zero), true);
 		}
 
+#if XAMCORE_5_0
+		public unsafe CTFont ToCTFont (nfloat size, in CGAffineTransform matrix)
+#else
 		public unsafe CTFont ToCTFont (nfloat size, CGAffineTransform matrix)
+#endif
 		{
-			return new CTFont (CTFontCreateWithGraphicsFont (Handle, size, &matrix, IntPtr.Zero), true);
+#if XAMCORE_5_0
+			fixed (CGAffineTransform* matrixPtr = &matrix)
+#else
+			CGAffineTransform* matrixPtr = &matrix;
+#endif
+			return new CTFont (CTFontCreateWithGraphicsFont (Handle, size, matrixPtr, IntPtr.Zero), true);
 		}
 
 #if TODO

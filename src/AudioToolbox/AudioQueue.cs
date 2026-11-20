@@ -687,10 +687,19 @@ namespace AudioToolbox {
 		///         <summary>To be added.</summary>
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error.</returns>
 		///         <remarks>To be added.</remarks>
+#if XAMCORE_5_0
+		public AudioQueueStatus Start (in AudioTimeStamp startTime)
+#else
 		public AudioQueueStatus Start (AudioTimeStamp startTime)
+#endif
 		{
 			unsafe {
-				return AudioQueueStart (handle, &startTime);
+#if XAMCORE_5_0
+				fixed (AudioTimeStamp* startTimePtr = &startTime)
+#else
+				AudioTimeStamp* startTimePtr = &startTime;
+#endif
+				return AudioQueueStart (handle, startTimePtr);
 			}
 		}
 
@@ -945,9 +954,15 @@ namespace AudioToolbox {
 			AudioTimeStamp* actualStartTime);
 
 		/// <include file="../../docs/api/AudioToolbox/AudioQueue.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioQueue.EnqueueBuffer(System.IntPtr,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)']/*" />
+#if XAMCORE_5_0
+		public AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
+								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
+								   in AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#else
 		public AudioQueueStatus EnqueueBuffer (IntPtr audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
 								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 								   ref AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#endif
 		{
 			if (audioQueueBuffer == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
@@ -1010,16 +1025,21 @@ namespace AudioToolbox {
 		}
 
 		/// <include file="../../docs/api/AudioToolbox/AudioQueue.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.AudioQueue.EnqueueBuffer(AudioToolbox.AudioQueueBuffer*,System.Int32,AudioToolbox.AudioStreamPacketDescription[],System.Int32,System.Int32,AudioToolbox.AudioQueueParameterEvent[],AudioToolbox.AudioTimeStamp@,AudioToolbox.AudioTimeStamp@)']/*" />
+#if XAMCORE_5_0
+		public unsafe AudioQueueStatus EnqueueBuffer (AudioQueueBuffer* audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
+								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
+								   in AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#else
 		public unsafe AudioQueueStatus EnqueueBuffer (AudioQueueBuffer* audioQueueBuffer, int bytes, AudioStreamPacketDescription [] desc,
 								   int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent [] parameterEvents,
 								   ref AudioTimeStamp startTime, out AudioTimeStamp actualStartTime)
+#endif
 		{
 			if (audioQueueBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
 
 			fixed (AudioStreamPacketDescription* descPtr = desc)
 			fixed (AudioQueueParameterEvent* parameterEventsPtr = parameterEvents) {
-				startTime = default;
 				actualStartTime = default;
 				fixed (AudioTimeStamp* startTimePtr = &startTime, actualStartTimePtr = &actualStartTime) {
 					return AudioQueueEnqueueBufferWithParameters (
@@ -1159,16 +1179,30 @@ namespace AudioToolbox {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioQueueStatus AudioQueueDeviceTranslateTime (IntPtr AQ, AudioTimeStamp* inTime, AudioTimeStamp* translatedTime);
 
-		/// <param name="timeToTranslate">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Translates a timestamp between the audio queue's sample-time and host-time representations.</summary>
+		/// <param name="timeToTranslate">The timestamp to translate, with its flags indicating which time values are valid.</param>
+		/// <returns>A timestamp containing the available sample-time and host-time translations.</returns>
+		/// <exception cref="AudioQueueException">The audio queue could not translate the timestamp.</exception>
+#if XAMCORE_5_0
+		public AudioTimeStamp TranslateTime (in AudioTimeStamp timeToTranslate)
+#else
 		public AudioTimeStamp TranslateTime (AudioTimeStamp timeToTranslate)
+#endif
 		{
-			AudioTimeStamp ret;
+			var ret = new AudioTimeStamp {
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid | AudioTimeStamp.AtsFlags.HostTimeValid,
+			};
 
 			unsafe {
-				AudioQueueDeviceTranslateTime (handle, &timeToTranslate, &ret);
+				AudioQueueStatus status;
+#if XAMCORE_5_0
+				fixed (AudioTimeStamp* timePtr = &timeToTranslate)
+#else
+				AudioTimeStamp* timePtr = &timeToTranslate;
+#endif
+				status = AudioQueueDeviceTranslateTime (handle, timePtr, &ret);
+				if (status != AudioQueueStatus.Ok)
+					throw new AudioQueueException (status);
 			}
 			return ret;
 		}
@@ -2015,7 +2049,11 @@ namespace AudioToolbox {
 		/// <param name="desc">Stream description.</param>
 		///         <summary>Creates an OutputAudioQueue.</summary>
 		///         <remarks>Usually the stream description is fetched from an AudioFile or an AudioStreamFile</remarks>
+#if XAMCORE_5_0
+		public OutputAudioQueue (in AudioStreamBasicDescription desc) : this (in desc, null, (CFString) null!)
+#else
 		public OutputAudioQueue (AudioStreamBasicDescription desc) : this (desc, null, (CFString) null!)
+#endif
 		{
 		}
 
@@ -2024,8 +2062,13 @@ namespace AudioToolbox {
 		///         <param name="runMode">The run mode for the run loop.</param>
 		///         <summary>Creates an OutputAudioQueue, specifying on which run loop events are delivered.</summary>
 		///         <remarks>Usually the stream description is fetched from an AudioFile or an AudioStreamFile.</remarks>
+#if XAMCORE_5_0
+		public OutputAudioQueue (in AudioStreamBasicDescription desc, CFRunLoop runLoop, string runMode)
+			: this (in desc, runLoop, runMode is null ? null : new CFString (runMode))
+#else
 		public OutputAudioQueue (AudioStreamBasicDescription desc, CFRunLoop runLoop, string runMode)
 			: this (desc, runLoop, runMode is null ? null : new CFString (runMode))
+#endif
 		{
 		}
 
@@ -2034,14 +2077,23 @@ namespace AudioToolbox {
 		///         <param name="runMode">The run mode for the run loop.</param>
 		///         <summary>Creates an OutputAudioQueue, specifying on which run loop events are delivered.</summary>
 		///         <remarks>Usually the stream description is fetched from an AudioFile or an AudioStreamFile.</remarks>
+#if XAMCORE_5_0
+		public OutputAudioQueue (in AudioStreamBasicDescription desc, CFRunLoop? runLoop, CFString? runMode)
+#else
 		public OutputAudioQueue (AudioStreamBasicDescription desc, CFRunLoop? runLoop, CFString? runMode)
+#endif
 		{
 			IntPtr h;
 			GCHandle gch = GCHandle.Alloc (this);
 
 			OSStatus code = 0;
 			unsafe {
-				code = AudioQueueNewOutput (&desc,
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* descPtr = &desc)
+#else
+				AudioStreamBasicDescription* descPtr = &desc;
+#endif
+				code = AudioQueueNewOutput (descPtr,
 					&output_callback,
 					GCHandle.ToIntPtr (gch),
 					runLoop.GetHandle (),
@@ -2071,13 +2123,22 @@ namespace AudioToolbox {
 		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
 		///         <remarks>
 		///         </remarks>
+#if XAMCORE_5_0
+		public AudioQueueStatus SetOfflineRenderFormat (in AudioStreamBasicDescription desc, AudioChannelLayout layout)
+#else
 		public AudioQueueStatus SetOfflineRenderFormat (AudioStreamBasicDescription desc, AudioChannelLayout layout)
+#endif
 		{
 			int size;
 			var h = layout is null ? IntPtr.Zero : layout.ToBlock (out size);
 			try {
 				unsafe {
-					return AudioQueueSetOfflineRenderFormat (handle, &desc, h);
+#if XAMCORE_5_0
+					fixed (AudioStreamBasicDescription* descPtr = &desc)
+#else
+					AudioStreamBasicDescription* descPtr = &desc;
+#endif
+					return AudioQueueSetOfflineRenderFormat (handle, descPtr, h);
 				}
 			} finally {
 				Marshal.FreeHGlobal (h);
@@ -2182,8 +2243,13 @@ namespace AudioToolbox {
 		///         <summary>Creates an AudioQueue for recording, and invokes the notification callback on an internal AudioQueue thread.</summary>
 		///         <remarks>
 		///         </remarks>
+#if XAMCORE_5_0
+		public InputAudioQueue (in AudioStreamBasicDescription desc)
+		 : this (in desc, null, null)
+#else
 		public InputAudioQueue (AudioStreamBasicDescription desc)
 		 : this (desc, null, null)
+#endif
 		{
 		}
 
@@ -2193,7 +2259,11 @@ namespace AudioToolbox {
 		///         <summary>Creates an AudioQueue for recording, specifying on which run loop events are delivered.</summary>
 		///         <remarks>
 		///         </remarks>
+#if XAMCORE_5_0
+		public InputAudioQueue (in AudioStreamBasicDescription desc, CFRunLoop? runLoop, string? runMode)
+#else
 		public InputAudioQueue (AudioStreamBasicDescription desc, CFRunLoop? runLoop, string? runMode)
+#endif
 		{
 			IntPtr h;
 			GCHandle mygch = GCHandle.Alloc (this);
@@ -2201,7 +2271,12 @@ namespace AudioToolbox {
 
 			OSStatus code = 0;
 			unsafe {
-				code = AudioQueueNewInput (&desc, &input_callback, GCHandle.ToIntPtr (mygch),
+#if XAMCORE_5_0
+				fixed (AudioStreamBasicDescription* descPtr = &desc)
+#else
+				AudioStreamBasicDescription* descPtr = &desc;
+#endif
+				code = AudioQueueNewInput (descPtr, &input_callback, GCHandle.ToIntPtr (mygch),
 					runLoop.GetHandle (), s.GetHandle (),
 					0, &h);
 				GC.KeepAlive (runLoop);

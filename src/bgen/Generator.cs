@@ -2947,7 +2947,7 @@ public partial class Generator : IMemberGatherer {
 			// Format nicely the type, as succinctly as possible
 			Type parType = pi.ParameterType;
 			if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
-				if (!AttributeManager.HasAttribute<WrapAttribute> (mi)) {
+				if (!AttributeManager.HasAttribute<WrapAttribute> (mi) || AttributeManager.HasAttribute<ExportAttribute> (mi)) {
 					var ti = MakeTrampoline (parType);
 					sb.AppendFormat ("[BlockProxy (typeof (ObjCRuntime.Trampolines.{0}))]", ti.NativeInvokerName);
 				} else {

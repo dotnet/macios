@@ -752,16 +752,18 @@ namespace GeneratorTests {
 				Assert.That (method.IsVirtual, Is.True, $"Protocol implementation: {typeName}");
 				bgen.AssertApiCallsMethod (method, "GetType", $"Instance wrapper: {typeName}");
 				bgen.AssertApiCallsMethod (type.Methods.Single (v => v.Name == "SetWrappedValue"), "WriteLine", $"Void wrapper: {typeName}");
+				var handler = type.Methods.Single (v => v.Name == "InvokeWrappedHandler").Parameters [0];
+				Assert.That (handler.CustomAttributes.Any (v => v.AttributeType.Name == "BlockProxyAttribute"), Is.True, $"Block conversion: {typeName}");
 			}
 
 			var protocol = types.Single (v => v.FullName == "WrapTest.IWrappedProtocol");
 			Assert.That (protocol.Methods.Single (v => v.Name == "GetWrappedValue").Body.Instructions.Any (v => v.OpCode == OpCodes.Add), Is.True, "Optional wrapper");
 			var metadata = protocol.CustomAttributes.Where (v => v.AttributeType.Name == "ProtocolMemberAttribute").ToArray ();
-			Assert.That (metadata.Length, Is.EqualTo (3), "Protocol metadata count");
-			Assert.That (metadata.Select (v => v.Properties.Single (p => p.Name == "Selector").Argument.Value), Is.EquivalentTo (new [] { "wrappedName", "wrappedValue:", "wrappedSetValue:" }), "Protocol selectors");
+			Assert.That (metadata.Length, Is.EqualTo (4), "Protocol metadata count");
+			Assert.That (metadata.Select (v => v.Properties.Single (p => p.Name == "Selector").Argument.Value), Is.EquivalentTo (new [] { "wrappedName", "wrappedValue:", "wrappedSetValue:", "wrappedHandler:" }), "Protocol selectors");
 
 			var extensions = types.Single (v => v.FullName == "WrapTest.WrappedProtocol_Extensions");
-			foreach (var name in new [] { "GetWrappedName", "GetWrappedValue", "SetWrappedValue" }) {
+			foreach (var name in new [] { "GetWrappedName", "GetWrappedValue", "SetWrappedValue", "InvokeWrappedHandler" }) {
 				var method = extensions.Methods.Single (v => v.Name == name);
 				var call = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Callvirt);
 				Assert.That (((MethodReference) call.Operand).DeclaringType.FullName, Is.EqualTo ("WrapTest.IWrappedProtocol"), $"Extension receiver: {name}");

@@ -55,6 +55,11 @@ namespace WrapTest {
 		[Export ("wrappedSetValue:")]
 		[Wrap ("Console.WriteLine (value)", IsVirtual = true)]
 		void SetWrappedValue (int value);
+
+		[Abstract (GenerateExtensionMethod = true)]
+		[Export ("wrappedHandler:")]
+		[Wrap ("handler ()", IsVirtual = true)]
+		void InvokeWrappedHandler (Action handler);
 	}
 
 	[BaseType (typeof (NSObject))]

@@ -12,7 +12,9 @@
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 
 using UIKit;
 
@@ -327,12 +329,13 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (view.UnregistrationCount, Is.EqualTo (3), "Unregistration overrides");
 		}
 
-		[Test]
-		public void RegisterForTraitChanges_Overrides ()
+		[TestCase (false)]
+		[TestCase (true)]
+		public void RegisterForTraitChanges_Overrides (bool useDerivedView)
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
 
-			using var view = new TraitObservableView ();
+			using var view = useDerivedView ? new DerivedTraitObservableView () : new TraitObservableView ();
 			var traits = new [] { new Class (typeof (UITraitVerticalSizeClass)) };
 			var action = new Selector ("notifyTraitChange:collection:");
 			using var callbackRegistration = view.RegisterForTraitChanges (traits, (a, b) => { });
@@ -361,10 +364,64 @@ namespace MonoTouchFixtures.UIKit {
 			GC.KeepAlive (action);
 		}
 
+		[UnmanagedCallersOnly]
+		static void NativeTraitChangeHandler (IntPtr block, IntPtr environment, IntPtr previousCollection)
+		{
+			BlockLiteral.GetTarget<Action<IUITraitEnvironment, UITraitCollection>> (block)?.Invoke (
+				Runtime.GetINativeObject<IUITraitEnvironment> (environment, false),
+				Runtime.GetNSObject<UITraitCollection> (previousCollection));
+		}
+
+		[Test]
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		public unsafe void RegisterForTraitChanges_NativeHandler ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new TraitObservableView ();
+			using var traits = NSArray.FromNSObjects (new Class (typeof (UITraitVerticalSizeClass)));
+			var callbacks = 0;
+			delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &NativeTraitChangeHandler;
+			using var block = new BlockLiteral (trampoline, (Action<IUITraitEnvironment, UITraitCollection>) ((a, b) => callbacks++), typeof (UITraitOverridesTest), nameof (NativeTraitChangeHandler));
+			var handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (view.Handle,
+				new Selector ("registerForTraitChanges:withHandler:").Handle, traits.Handle, (IntPtr) (&block));
+			using var registration = view.LastRegistration;
+			Assert.That (registration, Is.Not.Null, "Managed registration");
+			Assert.That (handle, Is.EqualTo ((IntPtr) registration.Handle), "Native registration handle");
+			Assert.That (view.RegistrationCount, Is.EqualTo (1), "Native registration override");
+
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.UpdateTraitsIfNeeded ();
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Regular;
+			view.UpdateTraitsIfNeeded ();
+			Assert.That (callbacks, Is.GreaterThan (0), "Native handler invoked");
+			GC.KeepAlive (view);
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_DisposeOnBackgroundThread ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new TraitObservableView ();
+			using var registration = view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => { });
+			Task.Run (() => {
+				registration.Dispose ();
+				registration.Dispose ();
+			}).GetAwaiter ().GetResult ();
+
+			Assert.That (view.UnregistrationCount, Is.EqualTo (0), "Cleanup deferred");
+			Assert.That (registration.Handle, Is.Not.EqualTo (NativeHandle.Zero), "Registration retained until cleanup");
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => registration.Handle == NativeHandle.Zero), Is.True, "Deferred cleanup completed");
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Unregistered once");
+			Assert.That (view.UnregisteredOnMainThread, Is.True, "Unregistered on main thread");
+		}
+
 		[Register ("TraitObservableView")]
 		class TraitObservableView : UIView {
 			public int RegistrationCount;
 			public int UnregistrationCount;
+			public bool UnregisteredOnMainThread;
 			public IUITraitChangeRegistration? LastRegistration;
 
 			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
@@ -388,6 +445,30 @@ namespace MonoTouchFixtures.UIKit {
 			public override void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
 			{
 				UnregistrationCount++;
+				UnregisteredOnMainThread = NSThread.IsMain;
+				base.UnregisterForTraitChanges (registration);
+			}
+		}
+
+		[Register ("DerivedTraitObservableView")]
+		class DerivedTraitObservableView : TraitObservableView {
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+			{
+				return base.RegisterForTraitChanges (traits, handler);
+			}
+
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action)
+			{
+				return base.RegisterForTraitChanges (traits, target, action);
+			}
+
+			public override IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action)
+			{
+				return base.RegisterForTraitChanges (traits, action);
+			}
+
+			public override void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+			{
 				base.UnregisterForTraitChanges (registration);
 			}
 		}

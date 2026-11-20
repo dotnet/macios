@@ -381,6 +381,11 @@ namespace UIKit {
 
 			public void Dispose ()
 			{
+				if (!NSThread.IsMain) {
+					CoreFoundation.DispatchQueue.MainQueue.DispatchAsync (Dispose);
+					return;
+				}
+
 				if (state is not null) {
 					state.Observable.UnregisterForTraitChanges (state.Registration);
 					Release ();

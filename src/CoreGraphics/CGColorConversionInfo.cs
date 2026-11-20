@@ -31,8 +31,9 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public partial class CGColorConversionInfo : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CGColorConversionInfo : NativeObject, ICreatableNativeObject<CGColorConversionInfo> {
+		static CGColorConversionInfo ICreatableNativeObject<CGColorConversionInfo>.Create (NativeHandle handle, bool owns) => new CGColorConversionInfo (handle, owns);
+
 		internal CGColorConversionInfo (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -52,7 +52,7 @@ namespace CoreFoundation {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CFURL.h
-	public class CFUrl : NativeObject {
+	public class CFUrl : NativeObject, ICreatableNativeObject<CFUrl> {
 #if !COREBUILD
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static /* CFURLRef */ IntPtr CFURLCreateWithFileSystemPath (/* CFAllocatorRef */ IntPtr allocator,
@@ -60,7 +60,8 @@ namespace CoreFoundation {
 			/* CFURLPathStyle */ nint pathStyle,
 			/* Boolean */ byte isDirectory);
 
-		[Preserve (Conditional = true)]
+		static CFUrl ICreatableNativeObject<CFUrl>.Create (NativeHandle handle, bool owns) => new CFUrl (handle, owns);
+
 		internal CFUrl (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

@@ -19,11 +19,12 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class VTMultiPassStorage : NativeObject {
+	public class VTMultiPassStorage : NativeObject, ICreatableNativeObject<VTMultiPassStorage> {
 		bool closed;
 		VTStatus closedStatus;
 
-		[Preserve (Conditional = true)]
+		static VTMultiPassStorage ICreatableNativeObject<VTMultiPassStorage>.Create (NativeHandle handle, bool owns) => new VTMultiPassStorage (handle, owns);
+
 		internal VTMultiPassStorage (NativeHandle handle, bool owns)
 			: base (handle, false)
 		{

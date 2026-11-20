@@ -46,7 +46,7 @@ namespace CoreText {
 	///       </para>
 	///     </remarks>
 	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SimpleTextInput/">SimpleTextInput</related>
-	public partial class CTFont : NativeObject {
+	public partial class CTFont : NativeObject, ICreatableNativeObject<CTFont> {
 	}
 	/// <summary>Font Descriptors contain a description of font features that can identify a font.</summary>
 	///     <remarks>
@@ -67,6 +67,6 @@ namespace CoreText {
 	/// ]]></code>
 	///       </example>
 	///     </remarks>
-	public partial class CTFontDescriptor : NativeObject {
+	public partial class CTFontDescriptor : NativeObject, ICreatableNativeObject<CTFontDescriptor> {
 	}
 }

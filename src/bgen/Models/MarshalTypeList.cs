@@ -48,7 +48,7 @@ public class MarshalTypeList : List<MarshalType> {
 		}
 		if (frameworks.HaveCoreVideo) {
 			// owns `false` like ptr ctor https://github.com/dotnet/macios/blob/6f68ab6f79c5f1d96d2cbb1e697330623164e46d/src/CoreVideo/CVBuffer.cs#L74-L90
-			Add (new MarshalType (typeCache.CVPixelBuffer!, create: "Runtime.GetINativeObject<CVPixelBuffer> (", closingCreate: ", %OWNS%)!"));
+			Add (typeCache.CVPixelBuffer);
 		}
 		Add (typeCache.CGLayer);
 		if (frameworks.HaveCoreMedia)

@@ -330,7 +330,7 @@ namespace NetworkExtension {
 		[NoTV, iOS (13, 4)]
 		[MacCatalyst (13, 1)]
 		NWInterface NetworkInterface {
-			[Wrap ("Runtime.GetINativeObject<NWInterface> (WeakNetworkInterface, false)!")]
+			[Wrap ("Runtime.GetCreatableNativeObject<NWInterface> (WeakNetworkInterface, false)!")]
 			get;
 			[Wrap ("WeakNetworkInterface = Runtime.RetainAndAutoreleaseNativeObject (value)")]
 			set;

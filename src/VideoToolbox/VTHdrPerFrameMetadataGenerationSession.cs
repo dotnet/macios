@@ -9,8 +9,9 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-	public class VTHdrPerFrameMetadataGenerationSession : NativeObject {
-		[Preserve (Conditional = true)]
+	public class VTHdrPerFrameMetadataGenerationSession : NativeObject, ICreatableNativeObject<VTHdrPerFrameMetadataGenerationSession> {
+		static VTHdrPerFrameMetadataGenerationSession ICreatableNativeObject<VTHdrPerFrameMetadataGenerationSession>.Create (NativeHandle handle, bool owns) => new VTHdrPerFrameMetadataGenerationSession (handle, owns);
+
 		protected VTHdrPerFrameMetadataGenerationSession (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

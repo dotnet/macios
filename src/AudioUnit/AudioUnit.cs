@@ -420,7 +420,7 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class AudioUnit : DisposableObject {
+	public class AudioUnit : DisposableObject, ICreatableNativeObject<AudioUnit> {
 #if !COREBUILD
 		GCHandle gcHandle;
 		bool _isPlaying;
@@ -428,7 +428,8 @@ namespace AudioUnit {
 		Dictionary<uint, RenderDelegate>? renderer;
 		Dictionary<uint, InputDelegate>? inputs;
 
-		[Preserve (Conditional = true)]
+		static AudioUnit ICreatableNativeObject<AudioUnit>.Create (NativeHandle handle, bool owns) => new AudioUnit (handle, owns);
+
 		internal AudioUnit (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -1331,7 +1332,7 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public unsafe class AURenderEventEnumerator : INativeObject
+	public unsafe class AURenderEventEnumerator : INativeObject, ICreatableNativeObject<AURenderEventEnumerator>
 #if COREBUILD
 	{ }
 #else
@@ -1358,7 +1359,8 @@ namespace AudioUnit {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static AURenderEventEnumerator ICreatableNativeObject<AURenderEventEnumerator>.Create (NativeHandle handle, bool owns) => new AURenderEventEnumerator (handle, owns);
+
 		internal AURenderEventEnumerator (NativeHandle handle, bool owns)
 		{
 			Handle = handle;

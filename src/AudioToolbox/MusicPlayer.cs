@@ -112,14 +112,15 @@ namespace AudioToolbox {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// MusicPlayer.h
-	public class MusicPlayer : DisposableObject {
+	public class MusicPlayer : DisposableObject, ICreatableNativeObject<MusicPlayer> {
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static /* OSStatus */ MusicPlayerStatus NewMusicPlayer (/* MusicPlayer* */ IntPtr* outPlayer);
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static /* OSStatus */ MusicPlayerStatus DisposeMusicPlayer (/* MusicPlayer */ IntPtr inPlayer);
 
-		[Preserve (Conditional = true)]
+		static MusicPlayer ICreatableNativeObject<MusicPlayer>.Create (NativeHandle handle, bool owns) => new MusicPlayer (handle, owns);
+
 		MusicPlayer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

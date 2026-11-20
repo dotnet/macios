@@ -49,9 +49,10 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGLayer.h
-	public class CGLayer : NativeObject {
+	public class CGLayer : NativeObject, ICreatableNativeObject<CGLayer> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CGLayer ICreatableNativeObject<CGLayer>.Create (NativeHandle handle, bool owns) => new CGLayer (handle, owns);
+
 		internal CGLayer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

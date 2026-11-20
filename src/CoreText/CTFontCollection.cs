@@ -107,8 +107,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTFontCollection : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTFontCollection : NativeObject, ICreatableNativeObject<CTFontCollection> {
+		static CTFontCollection ICreatableNativeObject<CTFontCollection>.Create (NativeHandle handle, bool owns) => new CTFontCollection (handle, owns);
+
 		internal CTFontCollection (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{

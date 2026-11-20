@@ -166,6 +166,16 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 	public bool ArrayElementIsINativeObject { get; init; }
 
 	/// <summary>
+	/// True if the concrete type implements the native-object factory interface for itself.
+	/// </summary>
+	public bool IsCreatableNativeObject { get; init; }
+
+	/// <summary>
+	/// True if the array element implements the native-object factory interface for itself.
+	/// </summary>
+	public bool ArrayElementIsCreatableNativeObject { get; init; }
+
+	/// <summary>
 	/// If the type is an array of enums, it returns the special type of the underlying enum type.
 	/// </summary>
 	public SpecialType? ArrayElementEnumUnderlyingType { get; init; }
@@ -402,6 +412,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			interfaces: out interfaces);
 
 		IsWrapped = symbol.IsWrapped (isNSObject);
+		IsCreatableNativeObject = HasNativeObjectFactory (symbol, IsWrapped);
 		if (symbol is IArrayTypeSymbol arraySymbol) {
 			// override the name and namespace with the array name
 			(Name, Namespace) = GetTypeNameAndNamespace (arraySymbol.ElementType);
@@ -411,10 +422,36 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			ArrayElementEnumUnderlyingType = arraySymbol.ElementType is INamedTypeSymbol enumType ? enumType.EnumUnderlyingType?.SpecialType : null;
 			ArrayElementTypeIsWrapped = arraySymbol.ElementType.IsWrapped ();
 			ArrayElementIsINativeObject = arraySymbol.ElementType.IsINativeObject ();
+			ArrayElementIsCreatableNativeObject = HasNativeObjectFactory (arraySymbol.ElementType, ArrayElementTypeIsWrapped);
+		}
+
+		static bool HasNativeObjectFactory (ITypeSymbol symbol, bool isWrapped)
+		{
+			if (symbol is not INamedTypeSymbol { TypeKind: TypeKind.Class, IsAbstract: false } named ||
+				isWrapped || symbol.HasAttribute (AttributesNames.ProtocolAttribute) || !IsClosed (named))
+				return false;
+
+			return named.AllInterfaces.Any (i =>
+				i.OriginalDefinition.MetadataName == "ICreatableNativeObject`1" &&
+				i.ContainingNamespace.ToDisplayString () == "ObjCRuntime" &&
+				i.ContainingType is null &&
+				SymbolEqualityComparer.Default.Equals (i.TypeArguments [0], symbol));
+
+			static bool IsClosed (ITypeSymbol type)
+				=> type switch {
+					ITypeParameterSymbol => false,
+					IArrayTypeSymbol a => IsClosed (a.ElementType),
+					IPointerTypeSymbol p => IsClosed (p.PointedAtType),
+					INamedTypeSymbol n => !n.IsUnboundGenericType && n.TypeArguments.All (IsClosed) &&
+						(n.ContainingType is null || IsClosed (n.ContainingType)),
+					_ => true,
+				};
 		}
 
 		// try to get the named type symbol to have more educated decisions
 		var namedTypeSymbol = symbol as INamedTypeSymbol;
+		if (ArrayElementIsCreatableNativeObject && symbol is IArrayTypeSymbol factoryArray)
+			namedTypeSymbol = factoryArray.ElementType as INamedTypeSymbol;
 
 		// store the enum special type, useful when generate code that needs to cast
 		EnumUnderlyingType = namedTypeSymbol?.EnumUnderlyingType?.SpecialType;
@@ -511,6 +548,9 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 			return false;
 		if (IsStrongDictionary != other.IsStrongDictionary)
 			return false;
+		if (IsCreatableNativeObject != other.IsCreatableNativeObject ||
+			ArrayElementIsCreatableNativeObject != other.ArrayElementIsCreatableNativeObject)
+			return false;
 
 		// compare base classes and interfaces, order does not matter at all
 		var listComparer = new CollectionComparer<string> ();
@@ -549,6 +589,8 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		hashCode.Add (Delegate);
 		hashCode.Add (IsProtocol);
 		hashCode.Add (IsStrongDictionary);
+		hashCode.Add (IsCreatableNativeObject);
+		hashCode.Add (ArrayElementIsCreatableNativeObject);
 		foreach (var parent in parents) {
 			hashCode.Add (parent);
 		}
@@ -637,6 +679,7 @@ readonly partial struct TypeInfo : IEquatable<TypeInfo> {
 		return this with {
 			IsArray = false,
 			SpecialType = ArrayElementType ?? SpecialType.None,
+			IsCreatableNativeObject = ArrayElementIsCreatableNativeObject,
 		};
 	}
 

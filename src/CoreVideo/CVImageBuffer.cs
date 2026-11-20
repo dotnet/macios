@@ -37,9 +37,10 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public partial class CVImageBuffer : CVBuffer {
+	public partial class CVImageBuffer : CVBuffer, ICreatableNativeObject<CVImageBuffer> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CVImageBuffer ICreatableNativeObject<CVImageBuffer>.Create (NativeHandle handle, bool owns) => new CVImageBuffer (handle, owns);
+
 		internal CVImageBuffer (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

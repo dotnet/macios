@@ -411,8 +411,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTParagraphStyle : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTParagraphStyle : NativeObject, ICreatableNativeObject<CTParagraphStyle> {
+		static CTParagraphStyle ICreatableNativeObject<CTParagraphStyle>.Create (NativeHandle handle, bool owns) => new CTParagraphStyle (handle, owns);
+
 		internal CTParagraphStyle (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

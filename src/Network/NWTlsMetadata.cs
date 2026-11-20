@@ -17,9 +17,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWTlsMetadata : NWProtocolMetadata {
+	public class NWTlsMetadata : NWProtocolMetadata, ICreatableNativeObject<NWTlsMetadata> {
 
-		[Preserve (Conditional = true)]
+		static NWTlsMetadata ICreatableNativeObject<NWTlsMetadata>.Create (NativeHandle handle, bool owns) => new NWTlsMetadata (handle, owns);
+
 		internal NWTlsMetadata (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public SecProtocolMetadata SecProtocolMetadata

@@ -38,8 +38,9 @@ namespace CoreGraphics {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	// CGDataProvider.h
-	public partial class CGDataProvider : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class CGDataProvider : NativeObject, ICreatableNativeObject<CGDataProvider> {
+		static CGDataProvider ICreatableNativeObject<CGDataProvider>.Create (NativeHandle handle, bool owns) => new CGDataProvider (handle, owns);
+
 		internal CGDataProvider (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

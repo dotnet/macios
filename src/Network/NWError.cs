@@ -19,8 +19,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWError : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWError : NativeObject, ICreatableNativeObject<NWError> {
+		static NWError ICreatableNativeObject<NWError>.Create (NativeHandle handle, bool owns) => new NWError (handle, owns);
+
 		internal NWError (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

@@ -54,8 +54,9 @@ namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKSearch : NativeObject {
-		[Preserve (Conditional = true)]
+	public class SKSearch : NativeObject, ICreatableNativeObject<SKSearch> {
+		static SKSearch ICreatableNativeObject<SKSearch>.Create (NativeHandle handle, bool owns) => new SKSearch (handle, owns);
+
 		internal SKSearch (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -126,7 +127,7 @@ namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKDocument : NativeObject {
+	public class SKDocument : NativeObject, ICreatableNativeObject<SKDocument> {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKDocumentCreate (IntPtr scheme, IntPtr docParent, IntPtr name);
 		[DllImport (Constants.SearchKitLibrary)]
@@ -158,7 +159,8 @@ namespace SearchKit {
 		{
 		}
 
-		[Preserve (Conditional = true)]
+		static SKDocument ICreatableNativeObject<SKDocument>.Create (NativeHandle handle, bool owns) => new SKDocument (handle, owns);
+
 		internal SKDocument (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -225,7 +227,7 @@ namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKIndex : DisposableObject {
+	public class SKIndex : DisposableObject, ICreatableNativeObject<SKIndex> {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static IntPtr SKIndexCreateWithURL (IntPtr url, IntPtr str, SKIndexType type, IntPtr dict);
 		[DllImport (Constants.SearchKitLibrary)]
@@ -240,7 +242,8 @@ namespace SearchKit {
 		[DllImport (Constants.SearchKitLibrary)]
 		extern static void SKIndexClose (IntPtr handle);
 
-		[Preserve (Conditional = true)]
+		static SKIndex ICreatableNativeObject<SKIndex>.Create (NativeHandle handle, bool owns) => new SKIndex (handle, owns);
+
 		SKIndex (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -628,8 +631,9 @@ namespace SearchKit {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
-	public class SKSummary : NativeObject {
-		[Preserve (Conditional = true)]
+	public class SKSummary : NativeObject, ICreatableNativeObject<SKSummary> {
+		static SKSummary ICreatableNativeObject<SKSummary>.Create (NativeHandle handle, bool owns) => new SKSummary (handle, owns);
+
 		internal SKSummary (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

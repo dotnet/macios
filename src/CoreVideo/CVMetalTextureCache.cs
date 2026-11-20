@@ -15,7 +15,7 @@ using Metal;
 
 namespace CoreVideo {
 
-	public partial class CVMetalTextureCache : NativeObject {
+	public partial class CVMetalTextureCache : NativeObject, ICreatableNativeObject<CVMetalTextureCache> {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe extern static CVReturn /* CVReturn = int32_t */ CVMetalTextureCacheCreate (
 			/* CFAllocatorRef __nullable */ IntPtr allocator,
@@ -24,7 +24,8 @@ namespace CoreVideo {
 			/* CFDictionaryRef __nullable */ IntPtr textureAttributes,
 			/* CVMetalTextureCacheRef __nullable * __nonnull */ IntPtr* cacheOut);
 
-		[Preserve (Conditional = true)]
+		static CVMetalTextureCache ICreatableNativeObject<CVMetalTextureCache>.Create (NativeHandle handle, bool owns) => new CVMetalTextureCache (handle, owns);
+
 		internal CVMetalTextureCache (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

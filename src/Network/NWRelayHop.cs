@@ -12,8 +12,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWRelayHop : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWRelayHop : NativeObject, ICreatableNativeObject<NWRelayHop> {
+		static NWRelayHop ICreatableNativeObject<NWRelayHop>.Create (NativeHandle handle, bool owns) => new NWRelayHop (handle, owns);
+
 		internal NWRelayHop (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

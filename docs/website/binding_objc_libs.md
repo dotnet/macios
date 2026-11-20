@@ -1421,6 +1421,40 @@ Objective-C and CocoaTouch world to the Xamarin.iOS world:
 |`CFIndex`|`nint`|
 |`NSGlyph`|`nuint`|
 
+### Native handle factories
+
+Manually bound native wrappers that are not `NSObject` subclasses can implement
+`ObjCRuntime.ICreatableNativeObject<T>` to support construction without reflection:
+
+```csharp
+public sealed class MyCFObject : CoreFoundation.NativeObject, ICreatableNativeObject<MyCFObject> {
+    MyCFObject (NativeHandle handle, bool owns) : base (handle, owns) { }
+
+    static MyCFObject ICreatableNativeObject<MyCFObject>.Create (NativeHandle handle, bool owns)
+        => new MyCFObject (handle, owns);
+}
+```
+
+Use `Runtime.GetCreatableNativeObject<MyCFObject> (handle, owns)` to wrap a handle.
+It returns `null` for a zero handle without invoking the factory, and otherwise
+passes ownership through unchanged. The explicit factory implementation does not
+add a public `Create` method to the wrapper. Its direct constructor call makes the
+constructor reachable to trimming without a `[Preserve]` attribute.
+
+The interface is invariant. Each derived wrapper must implement the interface
+with its own type to use the constrained factory helper; inheriting
+`ICreatableNativeObject<BaseWrapper>` is not sufficient. Binding generators select
+this path only for concrete wrappers with the matching self-typed interface.
+Objective-C object wrappers, protocols, and unconstrained generic APIs continue to
+use `Runtime.GetNSObject` or `Runtime.GetINativeObject`, preserving their existing
+dynamic-type and object-identity behavior.
+
+Wrappers without a `(NativeHandle handle, bool owns)` constructor must use the
+constrained helper when running with the legacy or dynamic registrar.
+`Runtime.GetINativeObject` still requires that constructor in those modes; the
+managed static and trimmable static registrars can invoke source factories
+without it.
+
 <a name="Arrays"></a>
 
 ### Arrays

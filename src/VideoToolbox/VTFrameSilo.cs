@@ -21,8 +21,9 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class VTFrameSilo : NativeObject {
-		[Preserve (Conditional = true)]
+	public class VTFrameSilo : NativeObject, ICreatableNativeObject<VTFrameSilo> {
+		static VTFrameSilo ICreatableNativeObject<VTFrameSilo>.Create (NativeHandle handle, bool owns) => new VTFrameSilo (handle, owns);
+
 		internal VTFrameSilo (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

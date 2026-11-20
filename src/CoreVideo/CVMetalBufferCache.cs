@@ -15,9 +15,10 @@ namespace CoreVideo {
 	[SupportedOSPlatform ("maccatalyst18.0")]
 	[SupportedOSPlatform ("macos15.0")]
 	[SupportedOSPlatform ("tvos18.0")]
-	public class CVMetalBufferCache : NativeObject {
+	public class CVMetalBufferCache : NativeObject, ICreatableNativeObject<CVMetalBufferCache> {
 #if !COREBUILD
-		[Preserve (Conditional = true)]
+		static CVMetalBufferCache ICreatableNativeObject<CVMetalBufferCache>.Create (NativeHandle handle, bool owns) => new CVMetalBufferCache (handle, owns);
+
 		internal CVMetalBufferCache (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -119,7 +120,7 @@ namespace CoreVideo {
 			}
 			if (res != CVReturn.Success)
 				throw new Exception ($"Could not create CVMetalBuffer, CVMetalBufferCacheCreateBufferFromImage returned: {res}");
-			return Runtime.GetINativeObject<CVMetalBuffer> (handle, true);
+			return Runtime.GetCreatableNativeObject<CVMetalBuffer> (handle, true);
 		}
 
 		[DllImport (Constants.CoreVideoLibrary)]

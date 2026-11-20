@@ -219,6 +219,10 @@ static partial class BindingSyntaxFactory {
 			{ IsByRef: true, Type.IsReferenceType: true, Type.IsNullable: false} 
 				=> (parameterIdentifier,
 					PointerType (NativeHandle)),
+
+			{ IsByRef: true, Type.IsCreatableNativeObject: true } or
+			{ IsByRef: true, Type.ArrayElementIsCreatableNativeObject: true }
+				=> (parameterIdentifier, PointerType (NativeHandle)),
 			
 			// by default, we will use the parameter name as is and the type of the parameter
 			_ => (parameterIdentifier, GetLowLevelType (parameterType)),
@@ -282,13 +286,13 @@ static partial class BindingSyntaxFactory {
 			
 			// CFArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementTypeIsWrapped: true } 
-				=> GetCFArrayFromHandle (parameterType.ToArrayElementType ().GetIdentifierSyntax (), [
+				=> GetCFArrayFromHandle (parameterType.ToArrayElementType (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true), 
 			
 			// NSArray.ArrayFromHandle<{0}> ({1})!
 			{ Type.IsArray: true, Type.ArrayElementIsINativeObject: true } 
-				=> GetNSArrayFromHandle (parameterType.ToArrayElementType ().GetIdentifierSyntax (), [
+				=> GetNSArrayFromHandle (parameterType.ToArrayElementType (), [
 					Argument (parameterIdentifier)
 				], suppressNullableWarning: true),
 			
@@ -309,7 +313,7 @@ static partial class BindingSyntaxFactory {
 						BoolArgument (false)
 					], suppressNullableWarning: true),
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, true, Forced.Owns)!
-			{ Parameter.ForcedType: not null } => GetINativeObject (parameterType.GetIdentifierSyntax (), 
+			{ Parameter.ForcedType: not null } => GetINativeObject (parameterType, 
 				[
 					Argument (parameterIdentifier),
 					BoolArgument (true),
@@ -317,6 +321,10 @@ static partial class BindingSyntaxFactory {
 				], suppressNullableWarning: true),
 			
 			// special types
+
+			{ Type.IsCreatableNativeObject: true } =>
+				GetINativeObject (parameterType, [Argument (parameterIdentifier), BoolArgument (false)],
+					suppressNullableWarning: !parameterType.IsNullable),
 			
 			// CoreMedia.CMSampleBuffer
 			// {0} == IntPtr.Zero ? null! : new global::CoreMedia.CMSampleBuffer ({0}, false)
@@ -347,14 +355,14 @@ static partial class BindingSyntaxFactory {
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true, Type.IsNullable: true } =>
-				GetINativeObject (parameterType.WithNullable (isNullable: false).GetIdentifierSyntax (), [
+				GetINativeObject (parameterType.WithNullable (isNullable: false), [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: false),
 			
 			// Runtime.GetINativeObject<ParameterType> (ParameterName, false)!
 			{ Type.IsINativeObject: true } =>
-				GetINativeObject (parameterType.GetIdentifierSyntax (), [
+				GetINativeObject (parameterType, [
 					Argument (parameterIdentifier), 
 					BoolArgument (false)
 				], suppressNullableWarning: true),
@@ -445,6 +453,26 @@ static partial class BindingSyntaxFactory {
 		var tempVariableName = GetNameForTempTrampolineVariable (parameter);
 		if (tempVariableName is null)
 			return [];
+
+		if (parameter.Type.IsCreatableNativeObject || parameter.Type.ArrayElementIsCreatableNativeObject) {
+			var declaration = VariableInitialization (tempVariableName,
+				DefaultExpression (parameter.Type.GetIdentifierSyntax ()), withType: parameter.Type.GetIdentifierSyntax ());
+			if (parameter.ReferenceKind == ReferenceKind.Out)
+				return [declaration];
+
+			var handle = PrefixUnaryExpression (SyntaxKind.PointerIndirectionExpression, IdentifierName (parameter.Name));
+			var value = parameter.Type.IsArray
+				? GetNSArrayFromHandle (parameter.Type.ToArrayElementType (), [Argument (handle)], !parameter.Type.IsNullable)
+				: GetINativeObject (parameter.Type, [Argument (handle), BoolArgument (parameter.ForcedType?.Owns ?? false)],
+					!parameter.Type.IsNullable);
+			return [
+				declaration,
+				IfStatement (IsPatternExpression (IdentifierName (parameter.Name),
+					UnaryPattern (ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression)))),
+					ExpressionStatement (AssignmentExpression (SyntaxKind.SimpleAssignmentExpression,
+						IdentifierName (tempVariableName), value)))
+			];
+		}
 
 		if (parameter.Type.IsNullable) {
 			// declare a new variable to hold the temp var
@@ -542,7 +570,8 @@ static partial class BindingSyntaxFactory {
 		if (tempVariableName is null)
 			return [];
 
-		if (parameter.Type.IsNullable) {
+		if (parameter.Type.IsNullable && !parameter.Type.IsCreatableNativeObject &&
+			!parameter.Type.ArrayElementIsCreatableNativeObject) {
 			// check if the temp variable has a value and assign it to the parameter
 			// if (ParameterName is not null && TempVariable.HasValue)
 			//     *ParameterName = TempVariable.Value;
@@ -598,6 +627,13 @@ static partial class BindingSyntaxFactory {
 		}
 
 		if (parameter.Type.IsReferenceType) {
+			ExpressionSyntax retainedValue = parameter.Type.ArrayElementIsCreatableNativeObject
+				? ConditionalExpression (
+					IsPatternExpression (IdentifierName (tempVariableName),
+						ConstantPattern (LiteralExpression (SyntaxKind.NullLiteralExpression))),
+					MemberAccessExpression (SyntaxKind.SimpleMemberAccessExpression, NativeHandle, IdentifierName ("Zero")),
+					RetainAndAutoreleaseNSObject ([Argument (NSArrayFromNSObjects ([Argument (IdentifierName (tempVariableName))]))]))
+				: RetainAndAutoreleaseNativeObject ([Argument (IdentifierName (tempVariableName))]);
 			// assign the value of the temp variable to the parameter	
 			var assignment = IfStatement (
 				IsPatternExpression (
@@ -612,16 +648,7 @@ static partial class BindingSyntaxFactory {
 						PrefixUnaryExpression (
 							SyntaxKind.PointerIndirectionExpression,
 							IdentifierName (parameter.Name)),
-						InvocationExpression (
-								MemberAccessExpression (
-									SyntaxKind.SimpleMemberAccessExpression,
-									Runtime,
-									IdentifierName ("RetainAndAutoreleaseNativeObject").WithTrailingTrivia (Space)))
-							.WithArgumentList (
-								ArgumentList (
-									SingletonSeparatedList (
-										Argument (
-											IdentifierName (tempVariableName))))))));
+						retainedValue)));
 			return [assignment];
 		}
 		return [];

@@ -35,8 +35,9 @@ using CoreFoundation;
 namespace Security {
 
 	/// <summary>Encapsulates a security policy. A policy comprises a set of rules that specify how to evaluate a certificate for a certain level of trust.</summary>
-	public partial class SecPolicy : NativeObject {
-		[Preserve (Conditional = true)]
+	public partial class SecPolicy : NativeObject, ICreatableNativeObject<SecPolicy> {
+		static SecPolicy ICreatableNativeObject<SecPolicy>.Create (NativeHandle handle, bool owns) => new SecPolicy (handle, owns);
+
 		internal SecPolicy (NativeHandle handle, bool owns)
 			: base (handle, owns, true)
 		{

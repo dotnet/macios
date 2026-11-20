@@ -21,9 +21,10 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolTcpOptions : NWProtocolOptions {
+	public class NWProtocolTcpOptions : NWProtocolOptions, ICreatableNativeObject<NWProtocolTcpOptions> {
 
-		[Preserve (Conditional = true)]
+		static NWProtocolTcpOptions ICreatableNativeObject<NWProtocolTcpOptions>.Create (NativeHandle handle, bool owns) => new NWProtocolTcpOptions (handle, owns);
+
 		internal NWProtocolTcpOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public NWProtocolTcpOptions () : this (nw_tcp_create_options (), owns: true) { }

@@ -21,8 +21,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWProtocolIPOptions : NWProtocolOptions {
-		[Preserve (Conditional = true)]
+	public class NWProtocolIPOptions : NWProtocolOptions, ICreatableNativeObject<NWProtocolIPOptions> {
+		static NWProtocolIPOptions ICreatableNativeObject<NWProtocolIPOptions>.Create (NativeHandle handle, bool owns) => new NWProtocolIPOptions (handle, owns);
+
 		internal NWProtocolIPOptions (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		public void SetVersion (NWIPVersion version)

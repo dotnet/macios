@@ -10,7 +10,7 @@ namespace ObjCRuntime {
 	/// <summary>Representation of an Objective-C protocol.</summary>
 	///     <remarks>
 	///     </remarks>
-	public partial class Protocol : INativeObject {
+	public partial class Protocol : INativeObject, ICreatableNativeObject<Protocol> {
 #if !COREBUILD
 		NativeHandle handle;
 
@@ -48,7 +48,8 @@ namespace ObjCRuntime {
 			this.handle = handle;
 		}
 
-		[Preserve (Conditional = true)]
+		static Protocol ICreatableNativeObject<Protocol>.Create (NativeHandle handle, bool owns) => new Protocol (handle, owns);
+
 		internal Protocol (NativeHandle handle, bool owns)
 		{
 			// protocols can't be freed, so we ignore the 'owns' parameter.

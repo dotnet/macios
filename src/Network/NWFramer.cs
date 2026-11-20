@@ -29,8 +29,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWFramer : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWFramer : NativeObject, ICreatableNativeObject<NWFramer> {
+		static NWFramer ICreatableNativeObject<NWFramer>.Create (NativeHandle handle, bool owns) => new NWFramer (handle, owns);
+
 		internal NWFramer (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

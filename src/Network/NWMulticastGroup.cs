@@ -9,8 +9,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWMulticastGroup : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWMulticastGroup : NativeObject, ICreatableNativeObject<NWMulticastGroup> {
+		static NWMulticastGroup ICreatableNativeObject<NWMulticastGroup>.Create (NativeHandle handle, bool owns) => new NWMulticastGroup (handle, owns);
+
 		internal NWMulticastGroup (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.NetworkLibrary)]

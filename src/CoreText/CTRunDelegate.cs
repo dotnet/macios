@@ -187,8 +187,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTRunDelegate : NativeObject, IDisposable {
-		[Preserve (Conditional = true)]
+	public class CTRunDelegate : NativeObject, IDisposable, ICreatableNativeObject<CTRunDelegate> {
+		static CTRunDelegate ICreatableNativeObject<CTRunDelegate>.Create (NativeHandle handle, bool owns) => new CTRunDelegate (handle, owns);
+
 		internal CTRunDelegate (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

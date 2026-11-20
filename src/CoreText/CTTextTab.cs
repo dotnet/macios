@@ -84,8 +84,9 @@ namespace CoreText {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CTTextTab : NativeObject {
-		[Preserve (Conditional = true)]
+	public class CTTextTab : NativeObject, ICreatableNativeObject<CTTextTab> {
+		static CTTextTab ICreatableNativeObject<CTTextTab>.Create (NativeHandle handle, bool owns) => new CTTextTab (handle, owns);
+
 		internal CTTextTab (NativeHandle handle, bool owns)
 			: base (handle, owns, verify: true)
 		{

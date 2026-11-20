@@ -20,10 +20,11 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWListener : NativeObject {
+	public class NWListener : NativeObject, ICreatableNativeObject<NWListener> {
 		bool connectionHandlerWasSet = false;
 		object connectionHandlerLock = new object ();
-		[Preserve (Conditional = true)]
+		static NWListener ICreatableNativeObject<NWListener>.Create (NativeHandle handle, bool owns) => new NWListener (handle, owns);
+
 		internal NWListener (NativeHandle handle, bool owns) : base (handle, owns)
 		{
 		}

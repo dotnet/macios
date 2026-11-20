@@ -18,8 +18,9 @@ namespace CFNetwork {
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFHTTPAuthentication : CFType {
-		[Preserve (Conditional = true)]
+	public class CFHTTPAuthentication : CFType, ICreatableNativeObject<CFHTTPAuthentication> {
+		static CFHTTPAuthentication ICreatableNativeObject<CFHTTPAuthentication>.Create (NativeHandle handle, bool owns) => new CFHTTPAuthentication (handle, owns);
+
 		internal CFHTTPAuthentication (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

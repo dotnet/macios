@@ -308,7 +308,7 @@ public partial class Generator {
 		case "CGImage":
 		case "ImageIO.CGImageMetadata":
 		case "CIBarcodeDescriptor":
-			print ("return Runtime.GetINativeObject <{0}> (GetHandle (\"{1}\"), false)!;", propertyType, propertyName);
+			print ("return Runtime.{2} <{0}> (GetHandle (\"{1}\"), false)!;", propertyType, propertyName, NativeObjectFactoryMethod (pinfo.PropertyType));
 			break;
 		case "AVCameraCalibrationData":
 		case "MLModel":

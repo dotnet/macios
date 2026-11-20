@@ -21,8 +21,9 @@ namespace Network {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
-	public class NWInterface : NativeObject {
-		[Preserve (Conditional = true)]
+	public class NWInterface : NativeObject, ICreatableNativeObject<NWInterface> {
+		static NWInterface ICreatableNativeObject<NWInterface>.Create (NativeHandle handle, bool owns) => new NWInterface (handle, owns);
+
 		internal NWInterface (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 #if !COREBUILD

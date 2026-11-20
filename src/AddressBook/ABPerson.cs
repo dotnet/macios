@@ -238,7 +238,7 @@ namespace AddressBook {
 	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	[UnsupportedOSPlatform ("macos")]
 	[UnsupportedOSPlatform ("tvos")]
-	public class ABPerson : ABRecord, IComparable, IComparable<ABPerson> {
+	public class ABPerson : ABRecord, IComparable, IComparable<ABPerson>, ICreatableNativeObject<ABPerson> {
 		[DllImport (Constants.AddressBookLibrary)]
 		extern static IntPtr ABPersonCreate ();
 
@@ -265,7 +265,8 @@ namespace AddressBook {
 			GC.KeepAlive (source);
 		}
 
-		[Preserve (Conditional = true)]
+		static ABPerson ICreatableNativeObject<ABPerson>.Create (NativeHandle handle, bool owns) => new ABPerson (handle, owns);
+
 		internal ABPerson (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{

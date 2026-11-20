@@ -231,14 +231,34 @@ namespace CoreGraphics {
 		}
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateIndexed (/* CGColorSpaceRef */ IntPtr baseSpace,
-			/* size_t */ nint lastIndex, /* const unsigned char* */ byte [] colorTable);
+		unsafe extern static /* CGColorSpaceRef */ IntPtr CGColorSpaceCreateIndexed (/* CGColorSpaceRef */ IntPtr baseSpace,
+			/* size_t */ nint lastIndex, /* const unsigned char* */ byte* colorTable);
 
-		/// <include file="../../docs/api/CoreGraphics/CGColorSpace.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGColorSpace.CreateIndexed(CoreGraphics.CGColorSpace,System.Int32,System.Byte[])']/*" />
+		/// <summary>Creates an indexed color space based on the specified color space.</summary>
+		/// <param name="baseSpace">The color space upon which the indexed color space is based.</param>
+		/// <param name="lastIndex">The maximum valid index value in the color table (must be less than or equal to 255).</param>
+		/// <param name="colorTable">The color table, with one byte allocated for each color component of each entry.</param>
+		/// <returns>An indexed <see cref="CGColorSpace" />, or <see langword="null" /> if the color space could not be created.</returns>
+		/// <remarks>
+		///   <para>
+		///     An indexed color space allows colors to be represented with a byte index whose rendered color is looked up in <paramref name="colorTable" />.
+		///   </para>
+		///   <para>
+		///     For example, in a 24-bit RGB color space, color index 2 is looked up as the 3-byte values at indices 6, 7, and 8 in <paramref name="colorTable" />.
+		///   </para>
+		///   <para>
+		///     The number of elements in <paramref name="colorTable" /> should be <c>(<paramref name="lastIndex" /> + 1)</c> multiplied by the number of components in <paramref name="baseSpace" />.
+		///   </para>
+		/// </remarks>
 		public static CGColorSpace? CreateIndexed (CGColorSpace baseSpace, int lastIndex, byte [] colorTable)
 		{
-			var ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTable);
-			GC.KeepAlive (baseSpace);
+			IntPtr ptr;
+			unsafe {
+				fixed (byte* colorTablePtr = colorTable) {
+					ptr = CGColorSpaceCreateIndexed (baseSpace.GetHandle (), lastIndex, colorTablePtr);
+					GC.KeepAlive (baseSpace);
+				}
+			}
 			return FromHandle (ptr, true);
 		}
 
@@ -470,11 +490,11 @@ namespace CoreGraphics {
 		extern static /* size_t */ nint CGColorSpaceGetColorTableCount (/* CGColorSpaceRef */ IntPtr space);
 
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		extern static void CGColorSpaceGetColorTable (/* CGColorSpaceRef */ IntPtr space, /* uint8_t* */ byte [] table);
+		unsafe extern static void CGColorSpaceGetColorTable (/* CGColorSpaceRef */ IntPtr space, /* uint8_t* */ byte* table);
 
-		/// <summary>Return the entries of the color table used in an indexed color space</summary>
-		///         <returns>An array of bytes with the same format that was provided to the CreateIndexed method</returns>
-		///         <remarks>An empty array is returned if the Model is not CGColorSpaceModel.Indexed</remarks>
+		/// <summary>Returns the entries of the color table used in an indexed color space.</summary>
+		/// <returns>An array of bytes with the same format that was provided to <see cref="CreateIndexed" />.</returns>
+		/// <remarks>An empty array is returned if <see cref="Model" /> is not <see cref="CGColorSpaceModel.Indexed" />.</remarks>
 		public byte [] GetColorTable ()
 		{
 			nint n = CGColorSpaceGetColorTableCount (Handle);
@@ -482,7 +502,11 @@ namespace CoreGraphics {
 				return Array.Empty<byte> ();
 
 			byte [] table = new byte [n * GetBaseColorSpace ()!.Components];
-			CGColorSpaceGetColorTable (Handle, table);
+			unsafe {
+				fixed (byte* tablePtr = table) {
+					CGColorSpaceGetColorTable (Handle, tablePtr);
+				}
+			}
 			return table;
 		}
 

@@ -232,8 +232,14 @@ public partial class Generator : IMemberGatherer {
 		if (marshalTypes.TryGetMarshalType (mai.Type, out var mt))
 			return mt.Encoding;
 
-		if (mai.Type.IsValueType)
+		if (mai.Type.IsValueType) {
+			if (!formatted) {
+				var nativeNameAttr = AttributeManager.GetCustomAttribute<ObjCRuntime.NativeNameAttribute> (mai.Type);
+				if (!string.IsNullOrEmpty (nativeNameAttr?.NativeName))
+					return nativeNameAttr.NativeName;
+			}
 			return PrimitiveType (mai.Type, formatted);
+		}
 
 		// Arrays are returned as NSArrays
 		if (mai.Type.IsArray)
@@ -253,7 +259,9 @@ public partial class Generator : IMemberGatherer {
 				return TypeManager.FormatType (null, elementType) + "*";
 			}
 
-			return (mai.IsOut ? "out " : "ref ") + elementType.Name;
+			var nativeNameAttr = AttributeManager.GetCustomAttribute<ObjCRuntime.NativeNameAttribute> (elementType);
+			var elementName = !string.IsNullOrEmpty (nativeNameAttr?.NativeName) ? nativeNameAttr.NativeName : elementType.Name;
+			return (mai.IsOut ? "out " : "ref ") + elementName;
 		}
 
 		// Pass "ValueType*" directly

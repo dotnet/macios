@@ -459,14 +459,14 @@ namespace Security {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
-		extern static SecStatusCode SecKeychainAddGenericPassword (
+		unsafe extern static SecStatusCode SecKeychainAddGenericPassword (
 			IntPtr keychain,
 			int serviceNameLength,
-			byte []? serviceName,
+			byte* serviceName,
 			int accountNameLength,
-			byte []? accountName,
+			byte* accountName,
 			int passwordLength,
-			byte [] passwordData,
+			byte* passwordData,
 			IntPtr itemRef);
 
 		[SupportedOSPlatform ("macos")]
@@ -491,21 +491,21 @@ namespace Security {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
-		extern static SecStatusCode SecKeychainAddInternetPassword (
+		unsafe extern static SecStatusCode SecKeychainAddInternetPassword (
 			IntPtr keychain,
 			int serverNameLength,
-			byte []? serverName,
+			byte* serverName,
 			int securityDomainLength,
-			byte []? securityDomain,
+			byte* securityDomain,
 			int accountNameLength,
-			byte []? accountName,
+			byte* accountName,
 			int pathLength,
-			byte []? path,
+			byte* path,
 			short port,
 			IntPtr protocol,
 			IntPtr authenticationType,
 			int passwordLength,
-			byte [] passwordData,
+			byte* passwordData,
 			IntPtr itemRef);
 
 		[SupportedOSPlatform ("macos")]
@@ -539,17 +539,16 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		extern static SecStatusCode SecKeychainItemFreeContent (IntPtr attrList, IntPtr data);
 
-		/// <param name="serverName">To be added.</param>
-		///         <param name="accountName">To be added.</param>
-		///         <param name="password">To be added.</param>
-		///         <param name="protocolType">To be added.</param>
-		///         <param name="port">To be added.</param>
-		///         <param name="path">To be added.</param>
-		///         <param name="authenticationType">To be added.</param>
-		///         <param name="securityDomain">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds an internet password to the default keychain.</summary>
+		/// <param name="serverName">The server name associated with the password.</param>
+		/// <param name="accountName">The account name for the password.</param>
+		/// <param name="password">The password data bytes.</param>
+		/// <param name="protocolType">The network protocol associated with the password.</param>
+		/// <param name="port">The network port number, or 0 for the default port.</param>
+		/// <param name="path">The path on the server, or <see langword="null" />.</param>
+		/// <param name="authenticationType">The authentication scheme used for the password.</param>
+		/// <param name="securityDomain">The security domain on the server, or <see langword="null" />.</param>
+		/// <returns>A <see cref="SecStatusCode" /> indicating the result of the operation.</returns>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -582,22 +581,34 @@ namespace Security {
 			if (!String.IsNullOrEmpty (path))
 				pathBytes = System.Text.Encoding.UTF8.GetBytes (path);
 
-			return SecKeychainAddInternetPassword (
-				IntPtr.Zero,
-				serverNameBytes?.Length ?? 0,
-				serverNameBytes,
-				securityDomainBytes?.Length ?? 0,
-				securityDomainBytes,
-				accountNameBytes?.Length ?? 0,
-				accountNameBytes,
-				pathBytes?.Length ?? 0,
-				pathBytes,
-				port,
-				SecProtocolKeys.FromSecProtocol (protocolType),
-				KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
-				password?.Length ?? 0,
-				password!,
-				IntPtr.Zero);
+			unsafe {
+				fixed (byte* serverNamePtr = serverNameBytes) {
+					fixed (byte* securityDomainPtr = securityDomainBytes) {
+						fixed (byte* accountNamePtr = accountNameBytes) {
+							fixed (byte* pathPtr = pathBytes) {
+								fixed (byte* passwordPtr = password) {
+									return SecKeychainAddInternetPassword (
+										IntPtr.Zero,
+										serverNameBytes?.Length ?? 0,
+										serverNamePtr,
+										securityDomainBytes?.Length ?? 0,
+										securityDomainPtr,
+										accountNameBytes?.Length ?? 0,
+										accountNamePtr,
+										pathBytes?.Length ?? 0,
+										pathPtr,
+										port,
+										SecProtocolKeys.FromSecProtocol (protocolType),
+										KeysAuthenticationType.FromSecAuthenticationType (authenticationType),
+										password?.Length ?? 0,
+										passwordPtr,
+										IntPtr.Zero);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 
 
@@ -692,12 +703,11 @@ namespace Security {
 			}
 		}
 
-		/// <param name="serviceName">To be added.</param>
-		///         <param name="accountName">To be added.</param>
-		///         <param name="password">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds a generic password to the default keychain.</summary>
+		/// <param name="serviceName">The service name associated with the password.</param>
+		/// <param name="accountName">The account name for the password.</param>
+		/// <param name="password">The password data bytes.</param>
+		/// <returns>A <see cref="SecStatusCode" /> indicating the result of the operation.</returns>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
@@ -714,16 +724,24 @@ namespace Security {
 			if (!String.IsNullOrEmpty (accountName))
 				accountNameBytes = System.Text.Encoding.UTF8.GetBytes (accountName);
 
-			return SecKeychainAddGenericPassword (
-				IntPtr.Zero,
-				serviceNameBytes?.Length ?? 0,
-				serviceNameBytes,
-				accountNameBytes?.Length ?? 0,
-				accountNameBytes,
-				password?.Length ?? 0,
-				password!,
-				IntPtr.Zero
-				);
+			unsafe {
+				fixed (byte* serviceNamePtr = serviceNameBytes) {
+					fixed (byte* accountNamePtr = accountNameBytes) {
+						fixed (byte* passwordPtr = password) {
+							return SecKeychainAddGenericPassword (
+								IntPtr.Zero,
+								serviceNameBytes?.Length ?? 0,
+								serviceNamePtr,
+								accountNameBytes?.Length ?? 0,
+								accountNamePtr,
+								password?.Length ?? 0,
+								passwordPtr,
+								IntPtr.Zero
+								);
+						}
+					}
+				}
+			}
 		}
 
 		/// <param name="serviceName">To be added.</param>

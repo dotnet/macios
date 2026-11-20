@@ -26,7 +26,6 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeRuntimeConfigFiles" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PostTrimmingProcessing" AssemblyFile="$(_TaskAssemblyName)" />
 
@@ -267,7 +266,6 @@
 		<!-- We re-use ComputeFilesToPublish & CopyFilesToPublishDirectory to copy files to the .app -->
 		<!-- ComputeFilesToPublish will run ILLink -->
 		<!-- single-rid build (either plain single, or inner build for multi-rid build) -->
-		<!-- Note - _ComputeStripAssemblyIL must be before _StripAssemblyIL as msbuild DependsOn do not execute before Conditions are evaluated -->
 		<CreateAppBundleDependsOn Condition="'$(RuntimeIdentifiers)' == ''">
 			$(CreateAppBundleDependsOn);
 			_CopyResourcesToBundle;
@@ -289,8 +287,6 @@
 			_ComputeFrameworkFilesToPublish;
 			_ComputeDynamicLibrariesToPublish;
 			ComputeFilesToPublish;
-			_ComputeStripAssemblyIL;
-			_StripAssemblyIL;
 			_LoadLinkerOutput;
 			_CompileNativeExecutable;
 			_LinkNativeExecutable;
@@ -1219,54 +1215,6 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_ComputeStripAssemblyIL" Condition=" '$(EnableAssemblyILStripping)' == '' " DependsOnTargets="_ComputeVariables;ComputeFilesToPublish">
-		<PropertyGroup>
-			<!-- Don't strip IL by default -->
-			<EnableAssemblyILStripping>false</EnableAssemblyILStripping>
-
-			<!-- Don't strip if we are running the interpreter  -->
-			<EnableAssemblyILStripping Condition="'$(MtouchInterpreter)' != ''">false</EnableAssemblyILStripping>
-		</PropertyGroup>
-	</Target>
-
-	<!-- The DependsOnTargets here will not force EnableAssemblyILStripping to be calculated before the condition is evaulated. The order in CreateAppBundleDependsOn matters. -->
-	<Target Name="_StripAssemblyIL" Condition="'$(EnableAssemblyILStripping)' == 'true'" DependsOnTargets="_ComputeStripAssemblyIL">
-		<PropertyGroup>
-			<_StrippedAssemblyDirectory>$(DeviceSpecificIntermediateOutputPath)stripped</_StrippedAssemblyDirectory>
-		</PropertyGroup>
-		<ItemGroup>
-			<_AssembliesToBeStripped Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == ''">
-				<OutputPath>$(_StrippedAssemblyDirectory)\%(ResolvedFileToPublish.OriginalRelativePath)</OutputPath>
-			</_AssembliesToBeStripped>
-
-			<!-- Some assemblies added to ResolvedFileToPublish don't have OriginalRelativePath set (e.g. the
-			     TypeMap assemblies the trimmable-static registrar generates). Without it the OutputPath above
-			     collapses to the bare stripped directory, and ILStrip fails trying to write to a directory
-			     ("Access to the path '.../stripped/' is denied"). Fall back to the file name in that case. -->
-			<_AssembliesToBeStripped Condition="'%(_AssembliesToBeStripped.OriginalRelativePath)' == ''">
-				<OutputPath>$(_StrippedAssemblyDirectory)\%(Filename)%(Extension)</OutputPath>
-			</_AssembliesToBeStripped>
-
-			<!-- Use forward slashes in OutputPath, otherwise ILStrip will create filenames that resemble the part of
-				 the relative path of the item that uses backslashes, instead of writing the file to the location of the
-				 relative path. -->
-			<_AssembliesToBeStripped>
-				<OutputPath>$([System.String]::Copy('%(OutputPath)').Replace('\', '/'))</OutputPath>
-			</_AssembliesToBeStripped>
-		</ItemGroup>
-		<MobileILStrip
-			Assemblies="@(_AssembliesToBeStripped)"
-			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true'"
-			>
-			<Output TaskParameter="StrippedAssemblies" ItemName="_StrippedAssemblies" />
-		</MobileILStrip>
-		<ItemGroup>
-			<ResolvedFileToPublish Remove="@(_AssembliesToBeStripped)" />
-			<ResolvedFileToPublish Include="@(_StrippedAssemblies)" />
-		</ItemGroup>
-	</Target>
-
 
 	<!--
 		When building for NativeAOT with the trimmable-static registrar, we generate
@@ -1435,7 +1383,17 @@
 		<Error Text="The Mono runtime is no longer supported. Set 'UseMonoRuntime=false' to use CoreCLR or NativeAOT." Condition="'$(UseMonoRuntime)' != 'false'" />
 	</Target>
 
-	<Target Name="_VerifyValidProperties">
+	<Target Name="_VerifyValidProperties" DependsOnTargets="_ParseBundlerArguments">
+		<MacDevMessage
+			Error="true"
+			ResourceName="E7202"
+			Condition="'$(EnableAssemblyILStripping)' == 'true'"
+			/>
+		<MacDevMessage
+			Error="true"
+			ResourceName="E7203"
+			Condition="'$(_BundlerAssemblyILStrippingRequested)' == 'true'"
+			/>
 		<MacDevMessage
 			Warning="true"
 			ResourceName="UseNativeHttpHandlerHasNoEffectOnMacOS"

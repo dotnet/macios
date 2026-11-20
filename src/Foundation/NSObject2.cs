@@ -333,7 +333,7 @@ namespace Foundation {
 			// deferred registration for user types (see #25861); no-op if already registered
 			// (e.g. direct bindings, which InitializeObject registers eagerly).
 			if (alloced && !Runtime.RegisterObjectsBeforeInit)
-				Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
+				Runtime.RegisterNSObject (this, handle);
 		}
 
 		// This is just here as a constructor chain that can will
@@ -608,8 +608,7 @@ namespace Foundation {
 					rv = xamarin_set_gchandle_with_flags_safe (handle, h, gchandle_flags, (IntPtr) GetData ());
 				}
 				if (rv == 0) {
-					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
-					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
+					// A secondary wrapper must not replace the native object's primary managed peer.
 					gchandle.Free ();
 				}
 			}
@@ -655,11 +654,14 @@ namespace Foundation {
 			if (!Runtime.TryGetIsUserType (handle, out var user_type, out var error_message))
 				throw new InvalidOperationException ($"Unable to release the managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 			HasManagedRef = false;
-			if (!user_type) {
+			var ownsNativeGCHandle = user_type && ReferenceEquals (Runtime.GetGCHandleTarget (Runtime.GetGCHandleForObject (handle)), this);
+			if (!ownsNativeGCHandle) {
 				/* If we're a wrapper type, we need to unregister here, since we won't enter the release trampoline */
 				Runtime.NativeObjectHasDied (handle, this);
+			} else {
+				Runtime.UnregisterNSObject (handle, this);
 			}
-			xamarin_release_managed_ref (handle, user_type.AsByte ());
+			xamarin_release_managed_ref (handle, ownsNativeGCHandle.AsByte ());
 		}
 
 		static bool IsProtocol (Type type, IntPtr protocol)
@@ -907,13 +909,8 @@ namespace Foundation {
 					return;
 
 				if (handle != IntPtr.Zero) {
-					// Issue #25861: use the ownership-aware unregister so we don't remove an
-					// object_map entry that another object created after reusing this (freed)
-					// address. The legacy switch restores the previous unconditional removal.
-					if (Runtime.RegisterObjectsBeforeInit)
-						Runtime.UnregisterNSObject (handle);
-					else
-						Runtime.UnregisterNSObject (handle, this);
+					// Only unregister this wrapper, preserving other wrappers for the same handle.
+					Runtime.UnregisterNSObject (handle, this);
 				}
 
 				handle = value;
@@ -966,7 +963,7 @@ namespace Foundation {
 				if (handle == previousHandle) {
 					// 'init' returned the same handle, so the setter above was a no-op.
 					// Complete the deferred registration now (no-op if already registered).
-					Runtime.RegisterNSObject (this, handle, onlyIfNeeded: true);
+					Runtime.RegisterNSObject (this, handle);
 				} else {
 					// 'init' returned a different handle; the gchandle ivar was set on the
 					// previous (now typically freed) handle, so re-establish it on the final

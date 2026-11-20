@@ -20,7 +20,7 @@ namespace LocalAuthentication {
 #else
 		[iOS (18, 0)]
 #if __IOS__ && !__MACCATALYST__
-		[Obsolete ("This value is not available on this platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 #endif
 		[NoTV, MacCatalyst (18, 0), Mac (15, 0)]
@@ -36,7 +36,7 @@ namespace LocalAuthentication {
 #else
 		[iOS (18, 0)]
 #if __IOS__ && !__MACCATALYST__
-		[Obsolete ("This value is not available on this platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 #endif
 #endif
 		[NoTV, MacCatalyst (18, 0), Mac (15, 0)]

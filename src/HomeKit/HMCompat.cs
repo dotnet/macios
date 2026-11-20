@@ -37,7 +37,7 @@ namespace HomeKit {
 #endif
 
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromHomeKit)]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -63,7 +63,7 @@ namespace HomeKit {
 	}
 
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromHomeKit)]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -91,7 +91,7 @@ namespace HomeKit {
 	}
 
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromHomeKit)]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -119,7 +119,7 @@ namespace HomeKit {
 	public delegate void HMFetchRoomHandler (HMMatterRoom [] rooms, NSError error);
 
 	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("This class is removed.")]
+	[Obsolete (Constants.RemovedFromHomeKit)]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
 	[UnsupportedOSPlatform ("maccatalyst")]

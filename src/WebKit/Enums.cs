@@ -154,7 +154,7 @@ namespace WebKit {
 		/// <summary>To be added.</summary>
 		Link = 4,
 		/// <summary>To be added.</summary>
-		[Obsolete ("This API is not available on this platform.")]
+		[Obsolete (Constants.ApiUnavailableOnThisPlatform)]
 		Selection = 8,
 		/// <summary>To be added.</summary>
 		Any = UInt64.MaxValue,

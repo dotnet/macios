@@ -30,7 +30,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacCatalyst:
 				return Path.Combine (frameworkPath, "Resources", "Info.plist");
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, platform));
 			}
 		}
 

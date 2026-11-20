@@ -96,7 +96,7 @@ namespace Xamarin.MacDev.Tasks {
 					arguments.Add (Path.Combine (SdkRoot, "System", "iOSSupport", "System", "Library", "Frameworks"));
 					break;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 
 				arguments.Add ("-isysroot");

@@ -12,7 +12,17 @@
 	<Target Name="_ValidateReadyToRunComposite"
 			Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(PublishReadyToRunComposite)' != 'true' And '$(_CanOutputAppBundle)' == 'true'"
 			BeforeTargets="_PrepareForReadyToRunCompilation">
-		<Error Text="Setting 'PublishReadyToRunComposite' to '$(PublishReadyToRunComposite)' isn't supported for $(_PlatformName) projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely." />
+		<ItemGroup>
+			<_PublishReadyToRunCompositeNotSupportedArguments Include="0" Value="$(PublishReadyToRunComposite)" />
+			<_PublishReadyToRunCompositeNotSupportedArguments Include="1" Value="$(_PlatformName)" />
+		</ItemGroup>
+		<!-- Setting 'PublishReadyToRunComposite' to '{0}' isn't supported for {1} projects, only composite ReadyToRun compilation is supported. Either remove the 'PublishReadyToRunComposite' property, or set 'PublishReadyToRun=false' to turn off ReadyToRun compilation completely. -->
+		<MacDevMessage
+			Error="true"
+			FormatArguments="@(_PublishReadyToRunCompositeNotSupportedArguments)"
+			FormatArgumentsMetadata="Value"
+			ResourceName="E7243"
+		/>
 	</Target>
 
 	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,

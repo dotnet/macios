@@ -15,13 +15,27 @@
 		</PropertyGroup>
 
 		<!-- It's mandatory to specify a runtime identifier for device when publishing for a mobile platform (iOS, tvOS). -->
-		<Error
-			Text="A runtime identifier for a device architecture must be specified in order to publish this project. '$(RuntimeIdentifier)' is a simulator architecture."
+		<ItemGroup>
+			<_CannotPublishSimulatorArguments Include="0" Value="$(RuntimeIdentifier)" />
+		</ItemGroup>
+		<!-- A runtime identifier for a device architecture must be specified in order to publish this project. '{0}' is a simulator architecture. -->
+		<MacDevMessage
 			Condition="$(RuntimeIdentifier.StartsWith('iossimulator-')) Or $(RuntimeIdentifier.StartsWith('tvossimulator-'))"
+			Error="true"
+			FormatArguments="@(_CannotPublishSimulatorArguments)"
+			FormatArgumentsMetadata="Value"
+			ResourceName="E7212"
 		/>
-		<Error
-			Text="A runtime identifier for a device architecture must be specified in order to publish this project. '$(RuntimeIdentifiers)' are simulator architectures."
+		<ItemGroup>
+			<_CannotPublishSimulatorsArguments Include="0" Value="$(RuntimeIdentifiers)" />
+		</ItemGroup>
+		<!-- A runtime identifier for a device architecture must be specified in order to publish this project. '{0}' are simulator architectures. -->
+		<MacDevMessage
 			Condition="$(RuntimeIdentifiers.Contains('iossimulator-')) Or $(RuntimeIdentifiers.Contains('tvossimulator-'))"
+			Error="true"
+			FormatArguments="@(_CannotPublishSimulatorsArguments)"
+			FormatArgumentsMetadata="Value"
+			ResourceName="E7213"
 		/>
 	</Target>
 	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts" Returns="@(ApplicationArtifact)">

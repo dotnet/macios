@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacCatalyst:
 				return ManifestKeys.LSMinimumSystemVersion;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, platform));
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacCatalyst:
 				return Path.Combine (appBundlePath, "Contents", "Info.plist");
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, platform));
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacCatalyst:
 				return "MacCatalyst";
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, platform));
 			}
 		}
 	}

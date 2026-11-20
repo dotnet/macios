@@ -114,12 +114,47 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (errorsNotInResx, Is.Empty, $"The following error(s) were found in the MSBStrings resource but not in MSBStrings.resx. Try to recompile the msbuild project and then the test project\n{errorsNotInResx}");
 		}
 
-		[TestCase ("msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx")]
-		[TestCase ("tools/mtouch/Errors.resx")]
-		public void ResourcesAreUniqueAndSorted (string relativePath)
+		[TestCase ("msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx", true)]
+		[TestCase ("tools/mtouch/Errors.resx", false)]
+		public void ResourcesAreUniqueAndSorted (string relativePath, bool sortAlphabetically)
 		{
 			var resxPath = Path.Combine (Configuration.RootPath, relativePath);
-			ResxAssertions.AssertEntriesAreUniqueAndSorted (resxPath);
+			ResxAssertions.AssertEntriesAreUniqueAndSorted (resxPath, sortAlphabetically);
+		}
+
+		[TestCase ("E0191", true, "MT0191")]
+		[TestCase ("W7260", false, "MT7260")]
+		public void MacDevMessageLogsDiagnosticCodes (string resourceName, bool error, string expectedCode)
+		{
+			var task = CreateTask<MacDevMessage> ();
+			task.ResourceName = resourceName;
+			task.Error = error;
+			task.Warning = !error;
+			task.FormatArguments = [new TaskItem ("iOS"), new TaskItem ("1.0"), new TaskItem ("27.0"), new TaskItem ("26.0")];
+
+			ExecuteTask (task, error ? 1 : 0);
+
+			var code = error ? Engine.Logger.ErrorEvents.Single ().Code : Engine.Logger.WarningsEvents.Single ().Code;
+			Assert.That (code, Is.EqualTo (expectedCode));
+		}
+
+		[TestCase ("")]
+		[TestCase (@"Assets\Images;Other/Images")]
+		public void MacDevMessageFormatsMetadataArguments (string resourcePrefix)
+		{
+			var count = new TaskItem ("Count");
+			count.SetMetadata ("Value", "4");
+			var prefix = new TaskItem ("Prefix");
+			prefix.SetMetadata ("Value", resourcePrefix);
+			var task = CreateTask<MacDevMessage> ();
+			task.Error = true;
+			task.ResourceName = "E7257";
+			task.FormatArguments = [count, prefix];
+			task.FormatArgumentsMetadata = "Value";
+
+			ExecuteTask (task, 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"AppBundleResourcePrefix supports up to 3 semicolon-separated paths, but 4 were specified: '{resourcePrefix}'. Please reduce the number of resource prefix paths."));
 		}
 	}
 }

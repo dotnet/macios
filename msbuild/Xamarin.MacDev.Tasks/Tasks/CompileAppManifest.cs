@@ -244,7 +244,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 				break;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 		}
 
@@ -368,7 +368,7 @@ namespace Xamarin.MacDev.Tasks {
 			case ApplePlatform.MacOSX:
 				return CompileMac (plist);
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 		}
 

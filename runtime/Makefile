@@ -26,7 +26,7 @@ SHARED_X64_SOURCES += trampolines-x86_64.m trampolines-x86_64-asm.s trampolines-
 SHARED_ARM64_SOURCES += trampolines-arm64.m trampolines-arm64-asm.s trampolines-arm64-objc_msgSend.s trampolines-arm64-objc_msgSendSuper.s
 SHARED_HEADERS += shared.h product.h delegates.h runtime-internal.h $(SHARED_INC) $(SHIPPED_HEADERS) trampolines-internal.h slinked-list.h
 
-SHARED_FILES = $(SHARED_SOURCES) $(SHARED_HEADERS) $(SHARED_X64_SOURCES) $(SHARED_ARM64_SOURCES)
+SHARED_FILES = $(SHARED_SOURCES) $(SHARED_HEADERS) $(SHARED_X64_SOURCES) $(SHARED_ARM64_SOURCES) swift-widgetkit-functions.swift
 
 EXTRA_DEPENDENCIES = $(SHARED_HEADERS) $(TOP)/Make.config
 
@@ -90,12 +90,19 @@ MONOTOUCH_ARM64_SOURCE_STEMS = $(patsubst %.s,%,$(patsubst %.m,%,$(SHARED_ARM64_
 # .NET
 #
 
-DOTNET_iOS_LIBRARIES = libextension-dotnet-coreclr.a
+DOTNET_iOS_LIBRARIES = libextension-dotnet-coreclr.a libxamarin-widgetkit.a
 DOTNET_tvOS_LIBRARIES = libextension-dotnet-coreclr.a libtvextension-dotnet-coreclr.a
-DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a
-DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet-coreclr.a
+DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a libxamarin-widgetkit.a
+DOTNET_MacCatalyst_LIBRARIES = libextension-dotnet-coreclr.a libxamarin-widgetkit.a
 
 define DotNetLibTemplate
+.libs/$(2)/swift-widgetkit-functions.o: swift-widgetkit-functions.swift $(TOP)/Make.config
+
+.libs/$(2)/libxamarin-widgetkit.a: .libs/$(2)/swift-widgetkit-functions.o
+	$$(Q) rm -f $$@
+	$$(call Q_2,AR,    [$1]) $(AR) Scru $$@ $$^
+	$$(call Q_2,RANLIB,[$1]) $(RANLIB) -no_warning_for_no_symbols -q $$@
+
 DOTNET_TARGETS += \
 	$$(foreach lib,$$(DOTNET_$(1)_LIBRARIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/$$(lib)) \
 	$$(foreach header,$$(SHIPPED_HEADERS),$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_NAME)/runtimes/$(2)/native/$$(header)) \

@@ -544,10 +544,6 @@ namespace Xamarin.Linker {
 					}),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.RequiresPInvokeWrappers, storage))
 				)},
-				{ "RuntimeConfigurationFile", (
-					new LoadValue ((key, value) => Application.RuntimeConfigurationFile = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, Application.RuntimeConfigurationFile, storage))
-				)},
 				{ "RuntimeConfigurationFilePath", (
 					new LoadValue ((key, value) => RuntimeConfigurationFilePath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, RuntimeConfigurationFilePath, storage))
@@ -884,7 +880,6 @@ namespace Xamarin.Linker {
 				Application.Log ($"    PlatformAssembly: {PlatformAssembly}.dll");
 				Application.Log ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
 				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
-				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
 				Application.Log ($"    RuntimeConfigurationFilePath: {RuntimeConfigurationFilePath}");
 				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
 				Application.Log ($"    SdkDevPath: {Application.SdkRoot}");

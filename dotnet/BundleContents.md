@@ -10,7 +10,7 @@ that we're supposed to copy to the app bundle somehow:
       in that case `CopyToPublishDirectory` must be used.
 * `@(Content)` and `@(BundleResource)` items (the `CopyToOutputDirectory` or
   `CopyToPublishDirectory` metadata has no effect on these items).
-* Runtime packs (our own, or the runtime itself (CoreCLR/MonoVM)). We have
+* Runtime packs (our own, or the runtime itself (CoreCLR/NativeAOT)). We have
   some logic to detect this.
 * The output from referenced projects (transitively).
 * NuGets with a runtimes/RID/native directory. An aggravating issue here is

@@ -12,6 +12,30 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
+		// https://github.com/dotnet/macios/issues/8782
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void RuntimeErrorMessages (ApplePlatform platform)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
+			var projectPath = GetProjectPath ("InvalidRegistrarApp", runtimeIdentifiers, platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			DotNet.AssertBuild (projectPath, properties);
+
+			if (!CanExecute (platform, runtimeIdentifiers))
+				return;
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			var result = Execute (appExecutable, out var output, out _);
+			Assert.That (result.TimedOut, Is.False, $"The app timed out:\n{output}");
+			Assert.That (result.ExitCode, Is.Not.EqualTo (0), $"Registration should have failed:\n{output}");
+			Assert.That (output, Does.Contain ("ObjCRuntime.RuntimeException"), "Exception type");
+			Assert.That (output, Does.Contain ("The registrar found an invalid type `System.DateTime` in signature for method `InvalidRegistrarApp.InvalidDateTimeClass.F`. Use `Foundation.NSDate` instead."), "Registrar diagnostic");
+			Assert.That (output, Does.Not.Contain ("MissingManifestResourceException"), "Error resource lookup");
+		}
+
 		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
 		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
 		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)

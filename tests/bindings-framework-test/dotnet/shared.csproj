@@ -26,6 +26,7 @@
   <ItemGroup>
     <ObjcBindingApiDefinition Include="$(ThisTestDirectory)/ApiDefinition.cs" />
     <ObjcBindingCoreSource Include="$(ThisTestDirectory)/StructsAndEnums.cs" />
+    <NativeReference Include="$(SystemFramework)" Kind="Framework" Condition="'$(SystemFramework)' != ''" />
 
     <None Include="$(TestLibrariesDirectory)\libframework.m">
       <Link>libframework.m</Link>

@@ -456,6 +456,13 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable<KeyValuePair<TKey, TValue>>
+		/// <summary>Returns an enumerator that iterates through the dictionary.</summary>
+		/// <returns>An enumerator that can be used to iterate through the dictionary.</returns>
+		public new IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator ()
+		{
+			return ((IEnumerable<KeyValuePair<TKey, TValue>>) this).GetEnumerator ();
+		}
+
 		IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
 		{
 			foreach (var key in Keys) {

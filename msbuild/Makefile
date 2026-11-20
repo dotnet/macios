@@ -220,8 +220,8 @@ Versions.g.cs: Makefile $(TOP)/Make.config.inc
 
 dotnet:: $(DOTNET_TARGETS)
 
-# The feed must be readable over SSH, so it's not in the checkout: macOS doesn't
-# let SSH sessions read external volumes, where the checkout might be.
+# Keep the feed outside the checkout: macOS may restrict SSH access to
+# external volumes.
 REMOTE_LOCAL_FEED_DIR ?= $(HOME)/Library/Caches/macios-remote-feed
 
 .PHONY: install-remote-locally

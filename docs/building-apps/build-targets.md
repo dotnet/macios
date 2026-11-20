@@ -127,8 +127,8 @@ make -C msbuild install-remote-locally
 
 This copies the packages into `~/Library/Caches/macios-remote-feed`, creates a
 `NuGet.config` there with that feed and the repository's feeds, and passes the
-config to `ConfigureMac`. The feed isn't in the checkout because macOS doesn't
-let SSH sessions read external volumes. Set `REMOTE_LOCAL_FEED_DIR` to use a
+config to `ConfigureMac`. The feed isn't in the checkout because macOS may
+restrict SSH access to external volumes. Set `REMOTE_LOCAL_FEED_DIR` to use a
 different directory. **This resets the local XMA cache** before installing the
 SDK, workload, and agents.
 

@@ -197,6 +197,8 @@ Describe 'New-BuildConfiguration' {
                 "CONFIGURE_PLATFORMS_IOS_NUGET_SDK_NAME" = "iOSNuGetSdkName";
                 "CONFIGURE_PLATFORMS_TVOS_NUGET_REF_NAME" = "tvOSNuGetRefName";
                 "CONFIGURE_PLATFORMS_ios-arm64_NUGET_RUNTIME_NAME" = "iOSNuGetRuntimeName";
+                "CONFIGURE_PLATFORMS_XCODE_VERSION" = "26.1";
+                "CONFIGURE_PLATFORMS_XCODE_IS_STABLE" = "true";
                 "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI" = "SYSTEM_TEAMFOUNDATIONCOLLECTIONURI";
                 "SYSTEM_TEAMPROJECT" = "SYSTEM_TEAMPROJECT";
             }
@@ -237,11 +239,9 @@ Describe 'New-BuildConfiguration' {
   ""TVOS__NUGET_OS_VERSION"": null,
   ""INCLUDE_MACCATALYST"": null,
   ""MACCATALYST__NUGET_OS_VERSION"": null,
-  ""Commit"": ""BUILD_SOURCEVERSION"",
-  ""Tags"": [
-    ""ciBuild"",
-    ""BUILD_SOURCEBRANCHNAME""
-  ]
+  ""XCODE_VERSION"": ""26.1"",
+  ""XCODE_IS_STABLE"": ""true"",
+  ""Commit"": ""BUILD_SOURCEVERSION""
 }"
         }
 
@@ -282,11 +282,9 @@ Describe 'New-BuildConfiguration' {
   ""TVOS__NUGET_OS_VERSION"": null,
   ""INCLUDE_MACCATALYST"": null,
   ""MACCATALYST__NUGET_OS_VERSION"": null,
-  ""Commit"": ""BUILD_SOURCEVERSION"",
-  ""Tags"": [
-    ""ciBuild"",
-    ""BUILD_SOURCEBRANCHNAME""
-  ]
+  ""XCODE_VERSION"": ""26.1"",
+  ""XCODE_IS_STABLE"": ""true"",
+  ""Commit"": ""BUILD_SOURCEVERSION""
 }
 "
         }

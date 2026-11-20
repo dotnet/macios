@@ -913,6 +913,7 @@
 				NoWarn=$(_BundlerNoWarn)
 				Optimize=$(_BundlerOptimize)
 				PartialStaticRegistrarLibrary=$(_LibPartialStaticRegistrar)
+				@(PInvokeStaticLibraryTargets -> 'PInvokeStaticLibraryTarget=%(Identity)')
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
 				PublishReadyToRun=$(PublishReadyToRun)
@@ -1738,8 +1739,8 @@
 		</PropertyGroup>
 
 		<ItemGroup>
-			<!-- We need to mark all __Internal P/Invokes as direct, so that the native linker doesn't remove them -->
-			<DirectPInvoke Include="__Internal" />
+			<!-- We need to mark all static library P/Invokes as direct, so that the native linker doesn't remove them -->
+			<DirectPInvoke Include="@(PInvokeStaticLibraryTargets)" />
 		</ItemGroup>
 
 		<ItemGroup>

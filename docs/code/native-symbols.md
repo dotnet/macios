@@ -38,6 +38,12 @@ During the build we try to collect the following:
 * Any calls to the `ObjCRuntime.Dlfcn` APIs: we try to collect the symbol name (this might not always succeed, if the symbol name is not a constant).
 * We don't process calls to `System.Runtime.InteropServices.NativeLibrary` at the moment (this may change in the future, if there's need).
 
+P/Invoke entry points are also collected for library names listed in the
+[`PInvokeStaticLibraryTargets`](../building-apps/build-items.md#pinvokestaticlibrarytargets)
+item group, which contains `__Internal` by default. This lets applications
+preserve entry points resolved through `NativeLibrary.SetDllImportResolver`
+without analyzing calls to `NativeLibrary` itself.
+
 This is further complicated by the fact that we only want to create native
 references for symbols that survive trimming.
 

@@ -378,6 +378,59 @@ the `CollectAppManifestsDependsOn` property:
 </Target>
 ```
 
+## PInvokeStaticLibraryTargets
+
+An item group that lists P/Invoke library names whose entry points are linked
+statically into the app's native executable. The build asks the native linker
+to preserve these entry points so that they remain available at runtime, even
+when a library name is remapped with `NativeLibrary.SetDllImportResolver`.
+Library names are case-sensitive.
+
+This item group contains `__Internal` by default. Additional library names can
+be added in the project file:
+
+```xml
+<ItemGroup>
+    <PInvokeStaticLibraryTargets Include="RemapMe" />
+</ItemGroup>
+```
+
+The library name must match the value in the `DllImport` or `LibraryImport`
+attribute, not the path to the native library. This item group does not link
+the library into the app or configure runtime library resolution. Use
+[NativeReference](#nativereference) to link the static library and configure
+runtime resolution as needed.
+
+The default entry can also be removed. Since the default is added by the
+Apple SDK after project-level items are evaluated, remove it in a target
+that runs before the public MSBuild target `PrepareForBuild`:
+
+```xml
+<Target Name="RemoveInternalPInvokeTarget" BeforeTargets="PrepareForBuild">
+    <ItemGroup>
+        <PInvokeStaticLibraryTargets Remove="__Internal" />
+    </ItemGroup>
+</Target>
+```
+
+This runs before the library names are captured in the linker options and,
+for NativeAOT builds, before they are added to `DirectPInvoke`.
+
+Removing `__Internal` also affects the SDK's own P/Invokes to that library.
+Required entry points may be removed by the native linker or symbol stripping,
+which can cause runtime failures. Use `ReferenceNativeSymbol` to preserve any
+entry points that are still needed.
+
+For NativeAOT builds, P/Invokes to these libraries are direct P/Invokes, so
+`NativeLibrary.SetDllImportResolver` is not used for them.
+
+Use [ReferenceNativeSymbol](#referencenativesymbol) when individual symbols
+need to be preserved instead of all P/Invoke entry points for a library.
+C# does not permit an empty library name in a `DllImport` attribute (CS0591),
+and MSBuild items cannot have an empty `Include`. For P/Invokes with empty
+library names emitted by other tools, use `ReferenceNativeSymbol` to preserve
+the required entry points.
+
 ## ReferenceNativeSymbol
 
 The item group `ReferenceNativeSymbol` can be used to specify how we should

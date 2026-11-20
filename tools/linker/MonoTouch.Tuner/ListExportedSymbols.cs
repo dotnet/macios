@@ -256,7 +256,7 @@ namespace Xamarin.Linker.Steps {
 					addPInvokeSymbol = true;
 
 				switch (pinfo.Module.Name) {
-				case "__Internal":
+				case var library when Configuration.PInvokeStaticLibraryTargets.Contains (library):
 					if (Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT) {
 						// For NativeAOT builds, don't add inlined dlfcn P/Invoke wrappers as
 						// required symbols: only the surviving ones will have native code generated,

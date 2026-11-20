@@ -30,6 +30,10 @@ namespace Xamarin.Tests {
 			properties ["Configuration"] = configuration;
 
 			var result = DotNet.AssertBuild (project_path, properties);
+			if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
+				var dylibs = Directory.GetFiles (appPath, "*.dylib", SearchOption.AllDirectories);
+				Assert.That (dylibs, Is.Empty, "Release device app bundles must not contain dylibs.");
+			}
 			var recordArgs = BinLog.ReadBuildEvents (result.BinLogPath).ToList ();
 			var findString = "Output Property: ArchiveDir";
 			var findString2 = "TaskOutput: ArchiveDir";

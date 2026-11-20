@@ -173,6 +173,10 @@ public class AttributeManager {
 			return typeof (OverrideAttribute);
 		case "PostGetAttribute":
 			return typeof (PostGetAttribute);
+		case "PointerAsStructAttribute":
+			return typeof (PointerAsStructAttribute);
+		case "PointerAsArrayAttribute":
+			return typeof (PointerAsArrayAttribute);
 		case "PrologueSnippetAttribute":
 			return typeof (PrologueSnippetAttribute);
 		case "PostSnippetAttribute":

@@ -24,6 +24,45 @@ namespace MonoTouchFixtures.MapKit {
 			Assert.Throws<ArgumentNullException> (() => MKPolygon.FromPoints (null));
 		}
 
+		[TestCase (false)]
+		[TestCase (true)]
+		public void FromPoints (bool withInterior)
+		{
+			var points = new [] { new MKMapPoint (10, 20), new MKMapPoint (30, 40), new MKMapPoint (50, 20) };
+			using var interior = MKPolygon.FromPoints (new [] { new MKMapPoint (25, 25), new MKMapPoint (30, 30), new MKMapPoint (35, 25) });
+			using var polygon = withInterior ? MKPolygon.FromPoints (points, new [] { interior }) : MKPolygon.FromPoints (points);
+			Assert.That (polygon.Points, Is.EqualTo (points), "Points");
+			Assert.That (polygon.InteriorPolygons?.Length ?? 0, Is.EqualTo (withInterior ? 1 : 0), "InteriorPolygons");
+		}
+
+		[TestCase (false)]
+		[TestCase (true)]
+		public void FromCoordinates (bool withInterior)
+		{
+			var coordinates = new [] { new CLLocationCoordinate2D (10, 20), new CLLocationCoordinate2D (30, 40), new CLLocationCoordinate2D (50, 20) };
+			using var interior = MKPolygon.FromCoordinates (new [] { new CLLocationCoordinate2D (25, 25), new CLLocationCoordinate2D (30, 30), new CLLocationCoordinate2D (35, 25) });
+			using var polygon = withInterior ? MKPolygon.FromCoordinates (coordinates, new [] { interior }) : MKPolygon.FromCoordinates (coordinates);
+			var actual = polygon.GetCoordinates (0, coordinates.Length);
+			Assert.That (polygon.PointCount, Is.EqualTo ((nint) coordinates.Length), "PointCount");
+			for (var i = 0; i < coordinates.Length; i++) {
+				Assert.That (actual [i].Latitude, Is.EqualTo (coordinates [i].Latitude).Within (1e-10), $"Latitude {i}");
+				Assert.That (actual [i].Longitude, Is.EqualTo (coordinates [i].Longitude).Within (1e-10), $"Longitude {i}");
+			}
+			Assert.That (polygon.InteriorPolygons?.Length ?? 0, Is.EqualTo (withInterior ? 1 : 0), "InteriorPolygons");
+		}
+
+		[Test]
+		public void EmptyWithInterior ()
+		{
+			using var interior = MKPolygon.FromPoints (new [] { new MKMapPoint (10, 20), new MKMapPoint (30, 40), new MKMapPoint (50, 20) });
+			using var fromPoints = MKPolygon.FromPoints ([], new [] { interior });
+			using var fromCoordinates = MKPolygon.FromCoordinates ([], new [] { interior });
+			CheckEmpty (fromPoints);
+			CheckEmpty (fromCoordinates);
+			Assert.That (fromPoints.InteriorPolygons?.Length ?? 0, Is.EqualTo (0), "Points/InteriorPolygons");
+			Assert.That (fromCoordinates.InteriorPolygons?.Length ?? 0, Is.EqualTo (0), "Coordinates/InteriorPolygons");
+		}
+
 		[Test]
 		public void FromPoints_Interior_Null ()
 		{

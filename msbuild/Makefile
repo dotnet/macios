@@ -219,3 +219,7 @@ Versions.g.cs: Makefile $(TOP)/Make.config.inc
 	$(Q) mv $@.tmp $@
 
 dotnet:: $(DOTNET_TARGETS)
+
+install-remote-locally:
+	@# it doesn't matter which project we use, it just has to be *a* project.
+	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -v:diag $(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj

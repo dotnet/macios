@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 using Foundation;
@@ -61,6 +63,122 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				Assert.That (gotUnexpectedResponse, Is.EqualTo (0), $"Unexpected response count: {msg}");
 				Assert.That (gotFinalizedResponse, Is.EqualTo (0), $"Responses after finalization: {msg}");
 			});
+		}
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern IntPtr objc_retain (IntPtr handle);
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern void objc_release (IntPtr handle);
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern unsafe IntPtr objc_initWeak (IntPtr* location, IntPtr handle);
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern unsafe IntPtr objc_loadWeakRetained (IntPtr* location);
+
+		[DllImport (Constants.ObjectiveCLibrary)]
+		static extern unsafe void objc_destroyWeak (IntPtr* location);
+
+		[Test]
+		public void NativeOwnershipKeepsCustomPeerAlive ()
+		{
+			var weakPeer = CheckNativeOwnership ();
+
+			CollectAndDrain ();
+			Assert.That (weakPeer.TryGetTarget (out _), Is.False, "peer collected after native release");
+		}
+
+		[Test]
+		public void ReplacedInitHandleDoesNotRootSecondPeer ()
+		{
+			using var owner = new CustomPeer ();
+			var weakPeer = CreatePeerWithReplacedHandle (owner);
+
+			CollectAndDrain ();
+			Assert.That (weakPeer.TryGetTarget (out _), Is.False, "second peer collected");
+			Assert.That (Runtime.GetNSObject (owner.Handle), Is.SameAs (owner), "original peer");
+			GC.KeepAlive (owner);
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference<CustomPeer> CreatePeerWithReplacedHandle (CustomPeer owner)
+		{
+			var peer = new CustomPeer (owner);
+			Assert.That (peer.Handle, Is.EqualTo (owner.Handle), "replacement handle");
+			return new WeakReference<CustomPeer> (peer, trackResurrection: true);
+		}
+
+		// Keep any managed locals from the identity check out of the collection after release.
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static WeakReference<CustomPeer> CheckNativeOwnership ()
+		{
+			var (handle, retained, weakPeer) = CreateRetainedPeer ();
+			try {
+				Assert.That (retained, Is.EqualTo (handle), "native retain");
+				CollectAndDrain ();
+
+				weakPeer.TryGetTarget (out var original);
+				var resolved = Runtime.GetNSObject (handle) as CustomPeer;
+				Assert.That (original, Is.Not.Null, "original peer survived collection");
+				Assert.That (resolved, Is.SameAs (original), "peer identity");
+				Assert.That (resolved?.State, Is.EqualTo (42), "peer state");
+			} finally {
+				objc_release (retained);
+			}
+			return weakPeer;
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static (IntPtr Handle, IntPtr Retained, WeakReference<CustomPeer> Peer) CreateRetainedPeer ()
+		{
+			var peer = new CustomPeer { State = 42 };
+			var handle = (IntPtr) peer.Handle;
+			var retained = PromoteWeakReference (handle);
+			return (handle, retained, new WeakReference<CustomPeer> (peer, trackResurrection: true));
+		}
+
+		static unsafe IntPtr PromoteWeakReference (IntPtr handle)
+		{
+			var slot = IntPtr.Zero;
+			objc_initWeak (&slot, handle);
+			try {
+				return objc_loadWeakRetained (&slot);
+			} finally {
+				objc_destroyWeak (&slot);
+			}
+		}
+
+		static void CollectAndDrain ()
+		{
+			for (var i = 0; i < 3; i++) {
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				// Finalized NSObject peers release their native reference on the main thread.
+				using var deadline = NSDate.FromTimeIntervalSinceNow (0.05);
+				NSRunLoop.Current.RunUntil (deadline);
+			}
+		}
+
+		[Preserve (AllMembers = true)]
+		class CustomPeer : NSObject {
+			public int State;
+
+			public CustomPeer ()
+			{
+			}
+
+			public CustomPeer (NativeHandle handle) : base (handle)
+			{
+			}
+
+			public CustomPeer (CustomPeer owner) : base (NSObjectFlag.Empty)
+			{
+				// Simulate an initializer that replaces its allocation with an existing object.
+				var replacement = objc_retain ((IntPtr) owner.Handle);
+				objc_release ((IntPtr) Handle);
+				InitializeHandle (replacement, "initForTest", throwOnInitFailure: false);
+			}
 		}
 	}
 

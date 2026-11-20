@@ -58,6 +58,7 @@ enum NSObjectFlags {
 	NSObjectFlagsHasManagedRef = 32,
 	// 64, // Used by SoM
 	NSObjectFlagsIsCustomType = 128,
+	NSObjectFlagsImplicitToggleRef = 256,
 };
 
 enum XamarinGCHandleType : int {

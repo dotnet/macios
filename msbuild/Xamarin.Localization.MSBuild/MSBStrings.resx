@@ -540,6 +540,11 @@
     <data name="E0145" xml:space="preserve">
         <value>No {0} signing identities match the specified provisioning profile '{1}'.</value>
     </data>
+
+    <data name="MultipleProvisioningProfiles" xml:space="preserve">
+        <value>Found {0} provisioning profiles matching the name '{1}'. Set the CodesignProvision property to the UUID of the intended profile instead: '{2}'.</value>
+        <comment>{0} is the number of matching profiles, {1} is the provisioning profile name, and {2} is a list of matching profile UUIDs.</comment>
+    </data>
     
     <data name="E0146" xml:space="preserve">
         <value>Bundle identifier '{0}' does not match any installed provisioning profile for selected signing identity '{0}'.</value>

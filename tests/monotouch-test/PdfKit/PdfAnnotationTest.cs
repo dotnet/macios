@@ -26,6 +26,12 @@ namespace MonoTouchFixtures.PdfKit {
 		}
 
 		[Test]
+		public void AnnotationKey ()
+		{
+			Assert.That (PdfAnnotationKey.AppearanceDictionary.GetConstant ()?.ToString (), Is.EqualTo ("/AP"));
+		}
+
+		[Test]
 		public void QuadrilateralPoints ()
 		{
 			using (var obj = new PdfAnnotation ()) {

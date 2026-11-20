@@ -18,6 +18,8 @@ namespace MonoTouchFixtures.MobileCoreServices {
 		[Test]
 		public void NSStringConstants ()
 		{
+			Assert.That (UTType.PDF.ToString (), Is.EqualTo ("com.adobe.pdf"), "PDF value");
+			Assert.That (UTType.TagClassFilenameExtension.ToString (), Is.EqualTo ("public.filename-extension"), "Filename extension tag class");
 			Assert.That (UTType.ExportedTypeDeclarationsKey, Is.Not.Null, "ExportedTypeDeclarationsKey");
 			Assert.That (UTType.ImportedTypeDeclarationsKey, Is.Not.Null, "ImportedTypeDeclarationsKey");
 			Assert.That (UTType.IdentifierKey, Is.Not.Null, "IdentifierKey");
@@ -30,6 +32,10 @@ namespace MonoTouchFixtures.MobileCoreServices {
 
 			Assert.That (UTType.TagClassFilenameExtension, Is.Not.Null, "TagClassFilenameExtension");
 			Assert.That (UTType.TagClassMIMEType, Is.Not.Null, "TagClassMIMEType");
+#if __MACOS__
+			Assert.That (UTType.TagClassNSPboardType?.ToString (), Is.EqualTo ("com.apple.nspboard-type"), "TagClassNSPboardType");
+			Assert.That (UTType.TagClassOSType?.ToString (), Is.EqualTo ("com.apple.ostype"), "TagClassOSType");
+#endif
 
 			Assert.That (UTType.Item, Is.Not.Null, "Item");
 			Assert.That (UTType.Content, Is.Not.Null, "Content");

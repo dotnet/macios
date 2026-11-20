@@ -193,6 +193,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "AVFoundation", 10, 7 },
 					{ "CoreLocation", 10, 7 },
 					{ "CoreMedia", 10, 7 },
+					{ "CoreMediaIO", 10, 7 },
 					{ "CoreWlan", "CoreWLAN", 10, 7 },
 					{ "StoreKit", 10, 7 },
 
@@ -729,6 +730,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				// Add frameworks that are not in iOS
 				catalyst_frameworks.Add ("AppKit", 13, 0);
+				catalyst_frameworks.Add ("CoreMediaIO", 13, 1);
 				catalyst_frameworks.Add ("ExecutionPolicy", 16, 0);
 				catalyst_frameworks.Add ("ServiceManagement", 16, 0);
 			}

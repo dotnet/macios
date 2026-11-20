@@ -13,6 +13,12 @@ application or library projects are built.
 
 An item group that contains any additional app extensions to copy into the app bundle.
 
+The extension's built `Info.plist` determines its location in the app bundle:
+extensions with an `NSExtension` dictionary go in `PlugIns`, while ExtensionKit
+extensions with an `EXAppExtensionAttributes` dictionary go in `Extensions`.
+On macOS and Mac Catalyst these directories are inside `Contents`. An app can
+contain both kinds of extension; no extra metadata is required.
+
 The following metadata can be set:
 
 * Include: The path to the build directory for the Xcode app extension project.

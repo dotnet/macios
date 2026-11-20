@@ -827,6 +827,11 @@ namespace CoreMidi {
 		IntPtr byteptr;
 		byte []? bytes;
 		int start;
+#if !XAMCORE_5_0
+		readonly object bytesLock = new ();
+		GCHandle pinnedBytes;
+		bool disposed;
+#endif
 		/// <summary>The number of bytes in the Bytes array</summary>
 		///         <remarks>
 		///         </remarks>
@@ -901,6 +906,13 @@ namespace CoreMidi {
 		/// <include file="../../docs/api/CoreMidi/MidiPacket.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPacket.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
+#if !XAMCORE_5_0
+			lock (bytesLock) {
+				disposed = true;
+				if (pinnedBytes.IsAllocated)
+					pinnedBytes.Free ();
+			}
+#endif
 			// make sure we don't leave pointers to potentially freed memory.
 			byteptr = IntPtr.Zero;
 		}
@@ -916,19 +928,24 @@ namespace CoreMidi {
 		}
 
 #if !XAMCORE_5_0
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a pointer to the packet's MIDI data.</summary>
+		/// <remarks>
+		///   If the packet was constructed from a managed array, accessing this property pins the array until the packet is disposed.
+		///   Keep the packet alive and do not dispose it while using the returned pointer.
+		///   Returns <see cref="IntPtr.Zero" /> after the packet has been disposed.
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("This property may return a pointer to a managed object, and this pointer is never safe to use. Use ByteArray or BytePointer instead.")]
+		[Obsolete ("Use ByteArray or BytePointer instead. Accessing this property pins the managed array until the packet is disposed.")]
 		public IntPtr Bytes {
 			get {
-				if (bytes is null || bytes.Length < 1)
-					return byteptr;
-				unsafe {
-					fixed (byte* p = &bytes [start]) {
-						return (IntPtr) p;
-					}
+				lock (bytesLock) {
+					if (disposed)
+						return IntPtr.Zero;
+					if (bytes is null || bytes.Length < 1)
+						return byteptr;
+					if (!pinnedBytes.IsAllocated)
+						pinnedBytes = GCHandle.Alloc (bytes, GCHandleType.Pinned);
+					return pinnedBytes.AddrOfPinnedObject () + start;
 				}
 			}
 		}

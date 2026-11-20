@@ -573,4 +573,14 @@
         <value>Transient disposable type not declared with 'using'</value>
     </data>
     
+    <!-- RBI0043 -->
+    <data name="RBI0043Title" xml:space="preserve">
+        <value>Fixed pointer escapes its pinned lifetime</value>
+    </data>
+    <data name="RBI0043MessageFormat" xml:space="preserve">
+        <value>Do not return a pointer obtained from a fixed statement; the managed memory is no longer pinned when the caller uses it</value>
+    </data>
+    <data name="RBI0043Description" xml:space="preserve">
+        <value>Keep all uses of a fixed pointer inside the fixed statement, or explicitly pin the memory for the entire lifetime of the returned pointer.</value>
+    </data>
 </root>

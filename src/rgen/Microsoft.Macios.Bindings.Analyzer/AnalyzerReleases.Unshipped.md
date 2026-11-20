@@ -24,3 +24,4 @@
 | RBI0018 | Usage    | Error    | The export attribute must have a nonnull selector.                                   |
 | RBI0019 | Usage    | Error    | The selector string cannot contain any whitespace characters.                        |
 | RBI0042 | Usage    | Error    | Transient disposable type not declared with 'using'.                                 |
+| RBI0043 | Usage    | Error    | A pointer obtained from a fixed statement is returned after its pin expires.         |

@@ -2207,6 +2207,7 @@ namespace NetworkExtension {
 		[NoTV]
 		[return: NullAllowed]
 		[Export ("copyAppRules")]
+		[return: Release]
 		NEAppRule [] CopyAppRules ();
 
 		// CopyAppRules was incorrectly bound to AppRules and it is only available on macOS

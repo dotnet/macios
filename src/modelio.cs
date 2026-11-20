@@ -1646,21 +1646,25 @@ namespace ModelIO {
 		[Internal]
 		[Static]
 		[Export ("newBoxWithDimensions:segments:geometryType:inwardNormals:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh NewBoxWithDimensions (Vector3 dimensions, Vector3i segments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		[Static]
 		[Export ("newPlaneWithDimensions:segments:geometryType:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreatePlane (Vector2 dimensions, Vector2i segments, MDLGeometryType geometryType, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		[Static]
 		[Export ("newEllipsoidWithRadii:radialSegments:verticalSegments:geometryType:inwardNormals:hemisphere:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateEllipsoid (Vector3 radii, nuint radialSegments, nuint verticalSegments, MDLGeometryType geometryType, bool inwardNormals, bool hemisphere, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		[Static]
 		[Export ("newCylinderWithHeight:radii:radialSegments:verticalSegments:geometryType:inwardNormals:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateCylindroid (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
@@ -1668,11 +1672,13 @@ namespace ModelIO {
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("newCapsuleWithHeight:radii:radialSegments:verticalSegments:hemisphereSegments:geometryType:inwardNormals:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateCapsule (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, nuint hemisphereSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		[Static]
 		[Export ("newEllipticalConeWithHeight:radii:radialSegments:verticalSegments:geometryType:inwardNormals:allocator:")]
+		[return: Release]
 		[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
 		MDLMesh CreateEllipticalCone (float height, Vector2 radii, nuint radialSegments, nuint verticalSegments, MDLGeometryType geometryType, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
@@ -1687,6 +1693,7 @@ namespace ModelIO {
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("newIcosahedronWithRadius:inwardNormals:allocator:")]
+		[return: Release]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		/// <param name="radius">The radius of the icosahedron.</param>
@@ -1702,6 +1709,7 @@ namespace ModelIO {
 		[Static]
 		[MacCatalyst (13, 1)]
 		[Export ("newIcosahedronWithRadius:inwardNormals:geometryType:allocator:")]
+		[return: Release]
 		MDLMesh CreateIcosahedron (float radius, bool inwardNormals, MDLGeometryType geometryType, [NullAllowed] IMDLMeshBufferAllocator allocator);
 
 		/// <param name="mesh">To be added.</param>
@@ -1712,6 +1720,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Static]
 		[Export ("newSubdividedMesh:submeshIndex:subdivisionLevels:")]
+		[return: Release]
 		[return: NullAllowed]
 		MDLMesh CreateSubdividedMesh (MDLMesh mesh, nuint submeshIndex, nuint subdivisionLevels);
 
@@ -1858,6 +1867,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZone:")]
+		[return: Release]
 		IMDLMeshBufferZone CreateZone (nuint capacity);
 
 		/// <param name="sizes">To be added.</param>
@@ -1867,6 +1877,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newZoneForBuffersWithSize:andType:")]
+		[return: Release]
 		IMDLMeshBufferZone CreateZone (NSNumber [] sizes, NSNumber [] types);
 
 		/// <param name="length">To be added.</param>
@@ -1876,6 +1887,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBuffer:type:")]
+		[return: Release]
 		IMDLMeshBuffer CreateBuffer (nuint length, MDLMeshBufferType type);
 
 		/// <param name="data">To be added.</param>
@@ -1885,6 +1897,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferWithData:type:")]
+		[return: Release]
 		IMDLMeshBuffer CreateBuffer (NSData data, MDLMeshBufferType type);
 
 		/// <param name="zone">To be added.</param>
@@ -1895,6 +1908,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:length:type:")]
+		[return: Release]
 		[return: NullAllowed]
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, nuint length, MDLMeshBufferType type);
 
@@ -1906,6 +1920,7 @@ namespace ModelIO {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("newBufferFromZone:data:type:")]
+		[return: Release]
 		[return: NullAllowed]
 		IMDLMeshBuffer CreateBuffer ([NullAllowed] IMDLMeshBufferZone zone, NSData data, MDLMeshBufferType type);
 	}

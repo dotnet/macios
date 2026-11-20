@@ -1166,6 +1166,7 @@ namespace ARKit {
 	[DisableDefaultCtor]
 	interface ARConfiguration : NSCopying {
 
+		[PropagateToSubclasses]
 		[Static]
 		[Export ("isSupported")]
 		bool IsSupported { get; }

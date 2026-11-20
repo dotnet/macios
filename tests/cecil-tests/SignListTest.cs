@@ -11,8 +11,6 @@ using System.Xml.Linq;
 
 using NUnit.Framework;
 
-using Xamarin.Tests;
-
 #nullable enable
 
 namespace Cecil.Tests {

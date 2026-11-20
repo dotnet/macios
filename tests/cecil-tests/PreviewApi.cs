@@ -8,8 +8,6 @@ using NUnit.Framework;
 
 using Mono.Cecil;
 
-using Xamarin.Tests;
-
 #nullable enable
 
 namespace Cecil.Tests {

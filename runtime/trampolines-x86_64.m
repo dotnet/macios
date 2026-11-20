@@ -283,7 +283,7 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 		return;
 	}
 
-	size_t struct_length = strlen (struct_name);
+	size_t struct_length = strnlen (struct_name, 16);
 	size_t field_count = struct_length;
 	bool is_struct = field_count > 1;
 

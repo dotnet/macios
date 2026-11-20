@@ -1,6 +1,3 @@
-## https://bugzilla.xamarin.com/show_bug.cgi?id=30717
-!duplicate-register! _NSDatePickerCellDelegate exists as both AppKit.NSDatePickerCell/_NSDatePickerCellDelegate and AppKit.NSDatePicker/_NSDatePickerCellDelegate
-
 ## In header as old style unnamaed enum
 !unknown-native-enum! NSModalResponse bound
 !unknown-native-enum! NSWindowLevel bound

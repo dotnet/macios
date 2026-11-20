@@ -279,21 +279,6 @@ The configure stage dynamically generates test matrices based on:
 1. **Enabled Platforms** - iOS, macOS, tvOS, Mac Catalyst
 2. **Test Categories** - cecil, dotnettests, fsharp, generator, introspection, etc.
 
-PR labels can enable additional tests.
-
-### Supported Test Labels
-
-| Label | Effect |
-|-------|--------|
-| `run-ios-tests` | Run iOS tests |
-| `run-tvos-tests` | Run tvOS tests |
-| `run-mac-tests` | Run macOS tests |
-| `run-maccatalyst-tests` | Run Mac Catalyst tests |
-| `skip-packages` | Skip package creation |
-| `skip-nugets` | Skip NuGet creation |
-| `skip-signing` | Skip signing |
-| `skip-api-comparison` | Skip API diff |
-
 ### Test Configurations
 
 ```yaml
@@ -592,7 +577,7 @@ build-pull-request.yml (Entry Point - PR)
         │       │   ├─► scripts/undo_github_merge.ps1
         │       ├─► scripts/bash/configure-platforms.sh
         │       ├─► scripts/bash/validate-xcode-channel.sh
-        │       ├─► scripts/parse_pr_labels.ps1 (via MaciosCI.psd1)
+        │       ├─► scripts/VSTS.psm1 (via MaciosCI.psd1)
         │       ├─► scripts/bash/configure-decisions.sh
         │       └─► templates/common/publish-pipeline-artifact.yml
         │
@@ -622,7 +607,7 @@ build-pull-request.yml (Entry Point - PR)
                             │   └─► system-dependencies.sh
                             │       └─► scripts/bash/install-xcode.sh
                             │
-                            ├─► scripts/parse_pr_labels.ps1
+                            ├─► Set build directory
                             │
                             ├─► scripts/bash/configure-build.sh
                             │
@@ -806,7 +791,7 @@ Symbol  Meaning
    - Verify `macOSName` and `XcodeChannel` values
 
 2. **Test matrix empty**
-   - Check PR labels are set correctly
+   - Check enabled platforms and test configurations
    - Verify `configure` stage completed successfully
 
 3. **Signing failures**

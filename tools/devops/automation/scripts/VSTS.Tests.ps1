@@ -210,7 +210,7 @@ Describe 'New-BuildConfiguration' {
         }
 
         It 'gets the build build configuration' {
-            $buildConfiguration = New-BuildConfiguration -AddTags $false
+            $buildConfiguration = New-BuildConfiguration
 
             $buildConfiguration | ConvertTo-Json | Should -Be "{
   ""DOTNET_PLATFORMS"": ""iOS tvOS"",
@@ -249,7 +249,7 @@ Describe 'New-BuildConfiguration' {
             $testDirectory = Join-Path "." "subdir"
             $configFile = Join-Path $testDirectory "buildconfiguration.json"
             New-Item -Path "$testDirectory" -ItemType "directory" -Force
-            New-BuildConfiguration -AddTags $false -ConfigFile $configFile
+            New-BuildConfiguration -ConfigFile $configFile
 
             $buildConfiguration = Get-Content -Path $configFile -Raw
             Remove-Item -Path $testDirectory -Recurse
@@ -287,6 +287,33 @@ Describe 'New-BuildConfiguration' {
   ""Commit"": ""BUILD_SOURCEVERSION""
 }
 "
+        }
+
+        It 'exports the full PR number for a manual build' {
+            Import-Module ./GitHub -Force
+            $prVariables = @{
+                "BUILD_REASON" = "Manual"
+                "BUILD_SOURCEBRANCH" = "refs/heads/dev/feature"
+                "BUILD_SOURCEBRANCHNAME" = "feature"
+                "BUILD_SOURCEVERSION" = "abc123"
+                "IS_PR" = "true"
+                "SYSTEM_PULLREQUEST_PULLREQUESTNUMBER" = "456"
+            }
+            $previousVariables = @{}
+            foreach ($entry in $prVariables.GetEnumerator()) {
+                $previousVariables[$entry.Key] = [Environment]::GetEnvironmentVariable($entry.Key)
+                [Environment]::SetEnvironmentVariable($entry.Key, $entry.Value)
+            }
+
+            try {
+                $output = @(New-BuildConfiguration 6>&1 | ForEach-Object { $_.ToString() })
+                $output | Should -Contain "##vso[task.setvariable variable=pr_number;isOutput=true]456"
+                $output | Should -Contain "##vso[task.setvariable variable=prBuild;isOutput=true]True"
+            } finally {
+                foreach ($entry in $previousVariables.GetEnumerator()) {
+                    [Environment]::SetEnvironmentVariable($entry.Key, $entry.Value)
+                }
+            }
         }
     }
 }

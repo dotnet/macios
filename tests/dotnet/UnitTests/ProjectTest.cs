@@ -2685,7 +2685,8 @@ namespace Xamarin.Tests {
 		// [TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")] // Currently doesn't work because we emit signatures with structs from the MetalPerformanceShaders framework, which isn't available in the tvOS simulator.
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void PInvokeWrapperGenerator (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		public void PInvokeWrapperGenerator (ApplePlatform platform, string runtimeIdentifiers, bool removeParameterNames = false)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2699,6 +2700,11 @@ namespace Xamarin.Tests {
 			properties ["MtouchExtraArgs"] = extraArgs;
 			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 			properties ["HotReloadCompatibleBuild"] = "false"; // P/Invoke wrappers modify assemblies, which is incompatible with Hot Reload.
+			if (removeParameterNames) {
+				// Full trimming in Release removes parameter names: https://github.com/dotnet/macios/issues/27371
+				properties ["Configuration"] = "Release";
+				properties ["TrimMode"] = "full";
+			}
 
 			DotNet.AssertBuild (project_path, properties);
 		}

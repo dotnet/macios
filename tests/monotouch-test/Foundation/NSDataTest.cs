@@ -170,6 +170,46 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void AsStreamSpanRead ()
+		{
+			using var data = NSData.FromArray (new byte [] { 1, 2, 3 });
+			using var stream = data.AsStream ();
+			var buffer = new byte [] { 255, 255, 255, 255 };
+			Assert.That (stream.Read (Span<byte>.Empty), Is.Zero, "Empty read");
+			Assert.That (stream.Position, Is.Zero, "Position after empty read");
+			Assert.That (stream.Read (buffer.AsSpan (1, 2)), Is.EqualTo (2), "Partial read");
+			Assert.That (buffer, Is.EqualTo (new byte [] { 255, 1, 2, 255 }), "Destination slice");
+			Assert.That (stream.Position, Is.EqualTo (2), "Position after partial read");
+			Assert.That (stream.Read (buffer.AsSpan ()), Is.EqualTo (1), "Final byte");
+			Assert.That (buffer [0], Is.EqualTo (3), "Final byte value");
+			Assert.That (stream.Read (buffer.AsSpan ()), Is.Zero, "EOF");
+			stream.Position = 10;
+			Assert.That (stream.Read (buffer.AsSpan ()), Is.Zero, "Position beyond EOF");
+			stream.Dispose ();
+			Assert.Throws<ObjectDisposedException> (() => {
+				var bytesRead = stream.Read (buffer.AsSpan ());
+				Assert.Fail ($"Read returned {bytesRead} bytes instead of throwing for a disposed stream.");
+			}, "Disposed stream");
+		}
+
+		[Test]
+		public void AsStreamSpanReadDetectsMutableDataChanges ()
+		{
+			using var data = NSMutableData.FromLength (1);
+			using var stream = data.AsStream ();
+			var buffer = new byte [1];
+			Assert.That (stream.Read (buffer.AsSpan ()), Is.EqualTo (1), "Initial read");
+			stream.Position = 0;
+			var originalBytes = data.Bytes;
+			data.Length = 1024 * 1024;
+			Assert.That (data.Bytes, Is.Not.EqualTo (originalBytes), "Underlying buffer was reallocated");
+			Assert.Throws<InvalidOperationException> (() => {
+				var bytesRead = stream.Read (buffer.AsSpan ());
+				Assert.Fail ($"Read returned {bytesRead} bytes instead of throwing for a changed underlying buffer.");
+			}, "Changed underlying buffer");
+		}
+
+		[Test]
 		public void ToArray ()
 		{
 			using (var data = NSData.FromArray (new byte [] { 1, 2, 3 })) {

@@ -76,6 +76,7 @@ public partial class Generator : IMemberGatherer {
 	}
 	public GeneratedTypes GeneratedTypes;
 	List<Exception> exceptions = new List<Exception> ();
+	readonly HashSet<ICustomAttributeProvider> bindAsNullabilityWarnings = new ();
 
 	Dictionary<Type, IEnumerable<string>> selectors = new Dictionary<Type, IEnumerable<string>> ();
 	Dictionary<Type, bool> need_abstract = new Dictionary<Type, bool> ();
@@ -321,15 +322,28 @@ public partial class Generator : IMemberGatherer {
 			return null;
 
 		var rv = AttributeManager.GetCustomAttribute<BindAsAttribute> (cu);
-		if (rv is not null)
-			return rv;
-
 		var minfo = cu as MethodInfo;
-		rv = AttributeManager.GetCustomAttribute<BindAsAttribute> (minfo?.ReturnParameter);
-		if (rv is not null)
-			return rv;
+		rv ??= AttributeManager.GetCustomAttribute<BindAsAttribute> (minfo?.ReturnParameter);
+		if (rv is null)
+			return null;
 
-		return null;
+		var originalType = rv.OriginalType ?? (cu switch {
+			PropertyInfo property => property.PropertyType,
+			MethodInfo method => method.ReturnType,
+			ParameterInfo parameter => parameter.ParameterType,
+			_ => null,
+		});
+		var nullableProvider = (ICustomAttributeProvider?) minfo?.ReturnParameter ?? cu;
+		if ((originalType == TypeCache.NSNumber || originalType == TypeCache.NSValue) &&
+			rv.Type.IsValueType && TypeManager.GetUnderlyingNullableType (rv.Type) is null &&
+			AttributeManager.IsNullable (nullableProvider) && bindAsNullabilityWarnings.Add (nullableProvider)) {
+			var target = cu is ParameterInfo parameter
+				? $"{FormatProvider (parameter.Member)} (parameter '{parameter.Name}')"
+				: FormatProvider (cu);
+			exceptions.Add (ErrorHelper.CreateWarning (1130, target, rv.Type));
+		}
+
+		return rv;
 	}
 
 	public BindAsAttribute GetOneBindAsAttribute (ICustomAttributeProvider cu)

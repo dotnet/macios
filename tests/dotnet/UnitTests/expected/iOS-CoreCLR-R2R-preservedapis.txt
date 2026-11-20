@@ -886,7 +886,6 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/Exceptio
 Microsoft.iOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_InvalidCastException
 Microsoft.iOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_OutOfMemoryException
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsCoreCLR
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsManagedStaticRegistrar
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar

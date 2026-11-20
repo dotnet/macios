@@ -886,7 +886,6 @@ Microsoft.tvOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/Excepti
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_InvalidCastException
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_OutOfMemoryException
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags
-Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsCoreCLR
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsManagedStaticRegistrar
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
 Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar

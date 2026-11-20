@@ -899,7 +899,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_InvalidCastException
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/ExceptionType ObjCRuntime.Runtime/ExceptionType::System_OutOfMemoryException
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsCoreCLR
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsManagedStaticRegistrar
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar

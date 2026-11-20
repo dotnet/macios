@@ -549,24 +549,10 @@ class BuildConfiguration {
         }
 
         if ($prId) {
-          $prInfo = Get-GitHubPRInfo -ChangeId $prId
-          Write-Host $prInfo
-
-          # make peoples life better, loop over the labels and add them as tags in the vsts build
-          foreach ($labelInfo in $prInfo.labels) {
-            $labelName = $labelInfo.name
-            Write-Host "Found label $labelName"
-            $tags.Add($labelName)
-          }
-          # special tag, we want to know if we are using a pr
-          $tags.Add("prBuild")
-
-          # special tag, lets add the target branch, will be useful to the users
-          $ref = $prInfo.base.ref
-          $tags.Add("$ref")
+          Write-Host "Found PR: $prId"
 
           # set output variables based on the git labels
-          $this.SetLabelsFromPR($prInfo, $true)
+          $this.SetLabelsFromPR($null, $true)
         } else {
           if ($Env:IS_PR -eq "true") {
             Write-Host "No PR id found; treating build as CI."

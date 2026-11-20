@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -10,19 +10,21 @@ using Mono.Cecil;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class EnumTest {
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
 		// https://github.com/dotnet/macios/issues/9724
-		public void NoAvailabilityOnError (AssemblyInfo info)
+		public void NoAvailabilityOnError (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			HashSet<string> found = new HashSet<string> ();
 			foreach (var type in assembly.MainModule.Types)
 				NoAvailabilityOnError (type, found);
 
-			Assert.That (found, Is.Empty, string.Join (", ", found));
+			Assert.IsEmpty (found, string.Join (", ", found));
 		}
 
 		bool IsErrorEnum (TypeDefinition type)

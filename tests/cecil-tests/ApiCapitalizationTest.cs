@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Text.RegularExpressions;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Xamarin.Tests;
@@ -18,7 +18,7 @@ using ICustomAttributeProvider = Mono.Cecil.ICustomAttributeProvider;
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public class ApiCapitalizationTest {
 		bool IsMemberObsolete (ICustomAttributeProvider member)
 		{
@@ -111,10 +111,11 @@ namespace Cecil.Tests {
 			return Char.IsUpper (memberName [0]);
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[Test]
-		public void PropertiesCapitalizationTest (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		[TestMethod]
+		public void PropertiesCapitalizationTest (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			Func<TypeDefinition, IEnumerable<string>> selectLambda = (type) => {
 				var typeName = type.Name;
@@ -126,10 +127,11 @@ namespace Cecil.Tests {
 			CapitalizationTest (assembly, selectLambda);
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[Test]
-		public void MethodsCapitalizationTest (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		[TestMethod]
+		public void MethodsCapitalizationTest (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			Func<TypeDefinition, IEnumerable<string>> selectLambda = (type) => {
 				return from m in type.Methods
@@ -139,10 +141,11 @@ namespace Cecil.Tests {
 			CapitalizationTest (assembly, selectLambda);
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[Test]
-		public void EventsCapitalizationTest (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		[TestMethod]
+		public void EventsCapitalizationTest (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			Func<TypeDefinition, IEnumerable<string>> selectLambda = (type) => {
 				return from e in type.Events
@@ -152,10 +155,11 @@ namespace Cecil.Tests {
 			CapitalizationTest (assembly, selectLambda);
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		[Test]
-		public void FieldsCapitalizationTest (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		[TestMethod]
+		public void FieldsCapitalizationTest (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			Func<TypeDefinition, IEnumerable<string>> selectLambda = (type) => {
 				return from f in type.Fields
@@ -176,7 +180,7 @@ namespace Cecil.Tests {
 				TypeCheck (type, selectLambda, typeDict);
 			}
 
-			Assert.That (typeDict.Count (), Is.EqualTo (0), $"Capitalization Issues Found: {string.Join (Environment.NewLine, typeDict)}");
+			Assert.AreEqual (0, typeDict.Count (), $"Capitalization Issues Found: {string.Join (Environment.NewLine, typeDict)}");
 		}
 
 		public void TypeCheck (TypeDefinition type, Func<TypeDefinition, IEnumerable<string>> selectLambda, Dictionary<string, string> typeDict)

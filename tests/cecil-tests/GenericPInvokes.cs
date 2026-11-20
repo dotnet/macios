@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Xamarin.Utils;
@@ -11,33 +11,35 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public class GenericPInvokesTest {
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		public void CheckSetupBlockUnsafeUsage (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
+		public void CheckSetupBlockUnsafeUsage (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			// We should not call BlockLiteral.SetupBlockUnsafe in our code at all.
 			// All our code should use the function pointer syntax for block creation:
 			//     var block = new BlockLiteral (&function, nameof (<type where function is defined), nameof (function))
 
 			var assembly = info.Assembly;
-			var callsToSetupBlock = AllSetupBlocks (assembly);
-			Assert.That (callsToSetupBlock.Select (v => v.FullName), Is.Empty, "No calls at all to BlockLiteral.SetupBlockUnsafe");
+			var callsToSetupBlock = AllSetupBlocks (assembly).Select (v => v.FullName).ToArray ();
+			Assert.IsEmpty (callsToSetupBlock, $"No calls at all to BlockLiteral.SetupBlockUnsafe\n{string.Join ("\n", callsToSetupBlock)}");
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		public void CheckAllPInvokes (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
+		public void CheckAllPInvokes (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			var pinvokes = AllPInvokes (assembly).Where (IsPInvokeOK);
-			Assert.That (pinvokes.Count, Is.GreaterThan (0));
+			Assert.IsGreaterThan (0, pinvokes.Count ());
 
 			var failures = pinvokes.Where (ContainsGenerics).ToList ();
 			var failingMethods = ListOfFailingMethods (failures);
 
-			Assert.That (failures.Count,
-				Is.EqualTo (0),
-				$"There are {failures.Count} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/dotnet/macios/issues/11771 ):{failingMethods}");
+			Assert.AreEqual (0, failures.Count, $"There are {failures.Count} pinvoke methods that contain generics. This will not work in .NET 7 and above (see https://github.com/dotnet/macios/issues/11771 ):{failingMethods}");
 		}
 
 		string ListOfFailingMethods (IEnumerable<MethodDefinition> methods)

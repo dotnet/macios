@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -13,8 +13,9 @@ using Xamarin.Utils;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class ObsoleteTest {
+		[TestMethod]
 		// This test verifies that we don't have any obsolete API in .NET that we don't expect to be there
 		// in particular that we don't start out with obsolete APIs from the very beginning (such API should have been removed).
 		// Any obsoleted API after the first stable .NET release should likely be skipped (until XAMCORE_5_0)
@@ -26,9 +27,10 @@ namespace Cecil.Tests {
 		// hide the member from intellisense but still allow it
 		// to compile (with errors/warnings).
 		//
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))] // call this method with every .net6 library
-		public void GetAllObsoletedThings (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))] // call this method with every .net6 library
+		public void GetAllObsoletedThings (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 
 			// Make a list of Obsolete things
@@ -39,7 +41,7 @@ namespace Cecil.Tests {
 				found.Add (prop.AsFullName ());
 			}
 
-			Assert.That (found, Is.Empty, "Obsolete API: add '[EditorBrowsable (EditorBrowsableState.Never)]' for newly obsoleted API to pass this test.");
+			Assert.IsEmpty (found, $"Obsolete API: add '[EditorBrowsable (EditorBrowsableState.Never)]' for newly obsoleted API to pass this test.\n{string.Join ("\n", found)}");
 		}
 
 		bool FilterMember (ICustomAttributeProvider provider)

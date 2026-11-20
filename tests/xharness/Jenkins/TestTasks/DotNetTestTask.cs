@@ -20,7 +20,7 @@ namespace Xharness.Jenkins.TestTasks {
 			using (var resource = await NotifyAndAcquireDesktopResourceAsync ()) {
 				var trx = Logs.Create ($"results-{Timestamp}.trx", LogType.TrxLog.ToString ());
 				var html = Logs.Create ($"results-{Timestamp}.html", LogType.HtmlLog.ToString ());
-				var xml = Logs.Create ($"results-{Timestamp}.xml", LogType.NUnitResult.ToString ());
+				var xml = TestProject?.IsNUnitTestProject == true ? Logs.Create ($"results-{Timestamp}.xml", LogType.NUnitResult.ToString ()) : null;
 
 				var args = new List<string> {
 					"test",
@@ -31,7 +31,7 @@ namespace Xharness.Jenkins.TestTasks {
 					"--logger:html;LogFileName=" + Path.GetFileName (html.FullPath)
 				};
 
-				if (TestProject?.IsNUnitTestProject == true)
+				if (xml is not null)
 					args.Add ($"--logger:nunit;LogFileName={Path.GetFileName (xml.FullPath)}");
 
 				var filter = TestProject?.Filter;
@@ -53,6 +53,9 @@ namespace Xharness.Jenkins.TestTasks {
 				WorkingDirectory = Path.GetDirectoryName (ProjectFile)!;
 
 				await ExecuteProcessAsync (Jenkins.Harness.GetDotNetExecutable (Path.GetDirectoryName (ProjectFile)!), args);
+
+				if (xml is null)
+					return;
 
 				try {
 					var xmlDoc = new XmlDocument ();

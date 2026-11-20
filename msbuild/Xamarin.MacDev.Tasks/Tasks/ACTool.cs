@@ -368,7 +368,12 @@ namespace Xamarin.MacDev.Tasks {
 
 						Directory.CreateDirectory (dir);
 
-						File.Copy (src, dest, true);
+						try {
+							File.Copy (src, dest, true);
+						} catch (Exception ex) when (ex is IOException || ex is UnauthorizedAccessException) {
+							Log.LogError (null, null, null, src, 0, 0, 0, 0, MSBStrings.E7238, src, dest, ex.Message);
+							return false;
+						}
 
 						// Handle both Contents.json (for .xcassets) and icon.json (for .icon folders)
 						var fileName = Path.GetFileName (vpath);

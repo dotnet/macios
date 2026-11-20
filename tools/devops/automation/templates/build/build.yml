@@ -43,10 +43,6 @@ parameters:
   - name: use1ES
     type: boolean
 
-  - name: disableCodeQL
-    type: boolean
-    default: true
-
   - name: XcodeChannel
     type: string
 
@@ -68,7 +64,6 @@ steps:
 
   - template: ../common/setup.yml
     parameters:
-      disableCodeQL: ${{ parameters.disableCodeQL }}
       keyringPass: ${{ parameters.keyringPass }}
       requiredDiskSpace: ${{ parameters.requiredDiskSpace }}
       statusContext: ${{ parameters.statusContext }}
@@ -168,10 +163,6 @@ steps:
        xcrun -k
     displayName: 'Clear Xcode cache'
 
-  - task: CodeQL3000Init@0
-    displayName: CodeQL 3000 Init
-    condition: and(succeeded(), ne('${{ parameters.disableCodeQL }}', 'true'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-
   # Actual build of the project
   - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-macios.sh
     name: build
@@ -187,10 +178,6 @@ steps:
   - ${{ each step in parameters.buildSteps }}:
       - ${{ each pair in step }}:
           ${{ pair.key }}: ${{ pair.value }}
-
-  - task: CodeQL3000Finalize@0
-    displayName: CodeQL 3000 Finalize
-    condition: and(succeededOrFailed(), ne('${{ parameters.disableCodeQL }}', 'true'), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
 
   # clean the bot after we use it
   - template: ../common/teardown.yml

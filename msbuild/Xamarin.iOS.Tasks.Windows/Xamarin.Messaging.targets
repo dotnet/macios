@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build"	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayHello" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFileFromBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFilesToBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyLongPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.VerifyBuildSignature" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayGoodbye" AssemblyFile="$(_TaskAssemblyName)" />
+
+	<Import Project="$(MSBuildThisFileDirectory)Xamarin.ConfigureMac.targets" />
 
 	<PropertyGroup>
 		<IsRemoteBuild Condition="'$(IsRemoteBuild)' == ''">true</IsRemoteBuild>
@@ -108,30 +109,32 @@
 				DotNetSdkPath=$(_DotNetRootRemoteDirectory),
 				ContinueOnDisconnected=$(ContinueOnDisconnected)" />
 
-		<SayHello Condition="'$(ServerAddress)' != ''" 
-				  SessionId="$(BuildSessionId)"
-				  LocalBasePath="$(LocalBasePath)"
-				  LocalSettingsPath="$(LocalSettingsPath)"
+		<SayHello SessionId="$(BuildSessionId)"
+				  Condition="'$(ServerAddress)' != ''"
+				  AgentsDirectory="$(MessagingAgentsDirectory)"
+				  AppName="$(BuildAppName)"
 				  BasePath="$(BasePath)"
 				  BuildsPath="$(BuildsPath)"
-				  LogsPath="$(LogsPath)"
-				  IntermediateDir="$(IntermediateOutputPath)build_package\"
+				  ContinueOnDisconnected="$(ContinueOnDisconnected)"
 				  DotNetRuntimePath="$(DotNetRuntimePath)"
 				  DotNetSdkPath="$(_DotNetRootRemoteDirectory)"
+				  GenerateCache="$(GenerateCache)"
+				  IntermediateDir="$(IntermediateOutputPath)build_package\"
+				  LocalBasePath="$(LocalBasePath)"
+				  LocalSettingsPath="$(LocalSettingsPath)"
+				  LogsPath="$(LogsPath)"
+				  NoWarn="$(NoWarn)"
+				  ProjectDirectory="$(MSBuildProjectDirectory)"
 				  ServerAddress="$(ServerAddress)"
+				  ServerPassword="$(ServerPassword)"
+				  ServerPasswordFile="$(ServerPasswordFile)"
 				  ServerSshPort="$(ServerSshPort)"
 				  ServerTcpPort="$(ServerTcpPort)"
 				  ServerUser="$(ServerUser)"
-				  ServerPassword="$(ServerPassword)"
 				  SSHKey="$(SSHKey)"
 				  SSHPassPhrase="$(SSHPassPhrase)"
-				  AppName="$(BuildAppName)"
-				  GenerateCache="$(GenerateCache)"
-				  ProjectDirectory="$(MSBuildProjectDirectory)"
-				  ContinueOnDisconnected="$(ContinueOnDisconnected)"
-				  VisualStudioProcessId="$(VisualStudioProcessId)"
-				  NoWarn="$(NoWarn)"
-				  AgentsDirectory="$(MessagingAgentsDirectory)">
+				  SSHPassPhraseFile="$(SSHPassPhraseFile)"
+				  VisualStudioProcessId="$(VisualStudioProcessId)">
 			<Output TaskParameter="DidEstablishConnection" PropertyName="_DidEstablishConnection" />
 			<Output TaskParameter="IsBuildServerAvailable" PropertyName="MtouchTargetsEnabled" />
 			<Output TaskParameter="IsBuildServerAvailable" PropertyName="IsMacEnabled" />

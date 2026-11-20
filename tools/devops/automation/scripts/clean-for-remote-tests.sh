@@ -24,14 +24,18 @@ if du -hs ~/Library/Logs/Xamarin.Messaging*; then
 	safe_rm ~/Library/Logs/Xamarin.Messaging*
 fi
 
-# Make sure we don't have any old stuff installed
-if du -hs ~/Library/Caches/Xamarin; then
-	safe_rm ~/Library/Caches/Xamarin
-fi
+if [[ "${RESET_XMA_CACHE:-false}" == "true" ]]; then
+	# Make sure we don't have any old stuff installed
+	if du -hs ~/Library/Caches/Xamarin; then
+		safe_rm ~/Library/Caches/Xamarin
+	fi
 
-# Make sure we don't have any old stuff installed
-if du -hs ~/Library/Caches/maui; then
-	safe_rm ~/Library/Caches/maui
+	# Make sure we don't have any old stuff installed
+	if du -hs ~/Library/Caches/maui; then
+		safe_rm ~/Library/Caches/maui
+	fi
+else
+	echo "Preserving XMA caches. Set RESET_XMA_CACHE=true to remove them."
 fi
 
 # Clean up temporary logs

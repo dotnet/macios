@@ -4,12 +4,75 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
+using System.Text.Json;
 
 #nullable enable
 
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class WindowsTest : TestBaseClass {
+
+		[Category ("Windows")]
+		[TestCase ("/Users/example/sdk", "/Users/example/sdk/")]
+		[TestCase ("/Users/example's/%0A/sdk/", "/Users/example's/%0A/sdk/")]
+		public void RemoteBuildUsesConfiguredPaths (string remoteRoot, string expectedRoot)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = GetProjectPath ("MySimpleApp", "iossimulator-arm64", ApplePlatform.iOS, out _);
+			var properties = GetDefaultProperties (includeRemoteProperties: false);
+			properties ["RemoteDotNetRoot"] = remoteRoot.Replace ("%", "%25");
+			properties ["RemoteBasePath"] = "/Users/example/PairToMac";
+			var environment = new Dictionary<string, string?> {
+				{ "_DotNetRootRemoteDirectory", null },
+				{ "BasePath", null },
+			};
+			var json = DotNet.GetProperty (project, "_DotNetRootRemoteDirectory,_XamarinSdkRootDirectory,_XamarinSdkRootDirectoryOnMac,NetCoreRoot,BasePath", target: "EnsureMessagingContext", properties: properties, environment: environment);
+			using var document = JsonDocument.Parse (json);
+			var values = document.RootElement.GetProperty ("Properties");
+			var localRoot = values.GetProperty ("NetCoreRoot").GetString () ?? "";
+			var localSdk = values.GetProperty ("_XamarinSdkRootDirectory").GetString () ?? "";
+			Assert.That (localRoot, Is.Not.Empty, "Local .NET root");
+			Assert.That (localSdk, Does.StartWith (localRoot), "Local SDK root");
+			Assert.Multiple (() => {
+				Assert.That (values.GetProperty ("_DotNetRootRemoteDirectory").GetString (), Is.EqualTo (expectedRoot), "Remote .NET root");
+				Assert.That (values.GetProperty ("_XamarinSdkRootDirectoryOnMac").GetString (), Is.EqualTo (localSdk.Replace (localRoot, expectedRoot)), "Remote SDK directory");
+				Assert.That (values.GetProperty ("BasePath").GetString (), Is.EqualTo ("/Users/example/PairToMac"), "Remote base path");
+			});
+		}
+
+		[Test]
+		[Category ("Windows")]
+		public void RemoteBuildRejectsRelativeDotNetRoot ()
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = GetProjectPath ("MySimpleApp", "iossimulator-arm64", ApplePlatform.iOS, out _);
+			var properties = GetDefaultProperties (includeRemoteProperties: false);
+			properties ["RemoteDotNetRoot"] = "relative/sdk";
+
+			var result = DotNet.AssertBuildFailure (project, properties, target: "EnsureMessagingContext");
+			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).Select (v => v.Message);
+			Assert.That (errors, Does.Contain ("RemoteDotNetRoot must be an absolute path on the remote Mac."), "Remote SDK root error");
+		}
+
+		[Test]
+		[Category ("Windows")]
+		public void RemoteBuildRejectsConfigureMacInSameInvocation ()
+		{
+			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = GetProjectPath ("MySimpleApp", "iossimulator-arm64", ApplePlatform.iOS, out _);
+			var properties = GetDefaultProperties (includeRemoteProperties: false);
+			properties ["_ConfiguredMacInCurrentInvocation"] = "true";
+
+			var result = DotNet.AssertBuildFailure (project, properties, target: "EnsureMessagingContext");
+			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).Select (v => v.Message);
+			Assert.That (errors, Does.Contain ("Run ConfigureMac in a separate MSBuild invocation, then pass RemoteDotNetRoot to the build."), "Separate invocation error");
+		}
 
 		[Category ("Windows")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]

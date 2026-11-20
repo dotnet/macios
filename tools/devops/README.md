@@ -276,15 +276,15 @@ Pool: `AzurePipelines-EO` with `1ESPT-Windows2022` image
 
 The configure stage dynamically generates test matrices based on:
 
-1. **PR Labels** - Control which tests run
-2. **Enabled Platforms** - iOS, macOS, tvOS, Mac Catalyst
-3. **Test Categories** - cecil, dotnettests, fsharp, generator, introspection, etc.
+1. **Enabled Platforms** - iOS, macOS, tvOS, Mac Catalyst
+2. **Test Categories** - cecil, dotnettests, fsharp, generator, introspection, etc.
+
+PR labels can enable additional tests.
 
 ### Supported Test Labels
 
 | Label | Effect |
 |-------|--------|
-| `skip-all-tests` | Skip all test execution |
 | `run-ios-tests` | Run iOS tests |
 | `run-tvos-tests` | Run tvOS tests |
 | `run-mac-tests` | Run macOS tests |
@@ -703,9 +703,8 @@ run-post-pr-build-tests.yml ─────────────────�
         │                                                                    │
         └─► Stage: publish_test_results                                      │
             └─► templates/tests/publish-results.yml                          │
-                ├─► Job: publish_test_results                                │
-                │   └─► templates/tests/publish-html.yml                     │
-                └─► Job: publish_skipped_tests (if skip-all-tests label)     │
+                └─► Job: publish_test_results                                │
+                    └─► templates/tests/publish-html.yml                     │
                                                                              │
 run-pr-api-diff.yml ─────────────────────────────────────────────────────────┤
 │                                                                            │

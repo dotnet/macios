@@ -86,6 +86,8 @@ namespace Xharness.Jenkins {
 
 		#region private vars
 
+		static readonly Regex testLabelRegex = new Regex ("(skip-|run-)(.*)(-tests)");
+
 		readonly Jenkins jenkins;
 		readonly IVersionControlSystem vcs;
 
@@ -113,7 +115,8 @@ namespace Xharness.Jenkins {
 				var pullRequestLabels = labels as string [] ?? labels.ToArray ();
 				if (pullRequestLabels.Length > 0) {
 					MainLog?.WriteLine ($"Found {pullRequestLabels.Length} label(s) in the pull request #{pullRequest}: {string.Join (", ", pullRequestLabels)}");
-					return pullRequestLabels;
+					// GitHub labels can enable tests, but can't disable them.
+					return pullRequestLabels.Where (label => testLabelRegex.Match (label).Groups [1].Value != "skip-");
 				}
 			}
 
@@ -184,16 +187,15 @@ namespace Xharness.Jenkins {
 			// the second examples means that we have all tests disable because the skip-all-tests is last
 			// In order to make this work we need to get the first label, decide if it is skip or run, then set it
 			var labelSelectedTests = new Dictionary<string, bool> ();
-			var regexp = new Regex ("(skip-|run-)(.*)(-tests)");
 			foreach (var label in labels) {
 				// use a regexp to parse the label, the possibilities are
 				// skip-*-tests
 				// run-*-tests
 				// if we have a match, we decide if we skip or run and set the label accordingly
-				if (!regexp.IsMatch (label))
+				var match = testLabelRegex.Match (label);
+				if (!match.Success)
 					continue;
 				MainLog?.WriteLine ($"Label {label} matches regexp.");
-				var match = regexp.Match (label);
 				var matchedLabel = match.Groups [2].Value;
 				var run = match.Groups [1].Value == "run-";
 				MainLog?.WriteLine ($"Setting label {matchedLabel} to be enabled: {run}");

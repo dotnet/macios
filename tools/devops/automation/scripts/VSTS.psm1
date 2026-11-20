@@ -298,19 +298,6 @@ class BuildConfiguration {
         }
     }
 
-    static [string[]] $labelsOfInterest = $(
-        "build-package",
-        "skip-packages",
-        "skip-nugets",
-        "skip-signing",
-        "skip-packaged-macos-tests",
-        "run-packaged-macos-tests",
-        "skip-api-comparison",
-        "run-windows-tests",
-        "skip-windows-tests",
-        "skip-all-tests"
-    )
-
     [void] SetLabelsFromPR ([PSCustomObject] $prInfo, [bool]$isPR) {
         # set if the build is a PR or not
         if ($isPR) {

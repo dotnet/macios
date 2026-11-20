@@ -13,16 +13,10 @@ function AddOutputVariable () {
 	set -x
 }
 
-# Run mac tests if any desktop platform is enabled, and they've not been disabled.
-if [[ "${LABELS_SKIP_PACKAGED_MACOS_TESTS:-}" == "True" ]]; then
-	# They've been skipped: don't run them
-	RUN_MAC_TESTS=false
-elif [[ "${LABELS_RUN_PACKAGED_MACOS_TESTS:-}" == "True" ]]; then
+# Run mac tests if explicitly enabled or any desktop platform is enabled.
+if [[ "${LABELS_RUN_PACKAGED_MACOS_TESTS:-}" == "True" ]]; then
 	# They've been explicitly enabled: run them
 	RUN_MAC_TESTS=true
-elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
-	# All tests have been skipped
-	RUN_MAC_TESTS=false
 elif [[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACOS:-}" != "" ]] ||
 	[[ "${CONFIGURE_PLATFORMS_INCLUDE_DOTNET_MACCATALYST:-}" != "" ]]; then
 	# Run mac tests if a .NET desktop platform is enabled
@@ -33,16 +27,10 @@ else
 fi
 AddOutputVariable RUN_MAC_TESTS "$RUN_MAC_TESTS"
 
-# Run windows tests if any platform is enabled, and they've not been disabled.
-if [[ "${LABELS_SKIP_WINDOWS_TESTS:-}" == "True" ]]; then
-	# They've been skipped: don't run them
-	RUN_WINDOWS_TESTS=false
-elif [[ "${LABELS_RUN_WINDOWS_TESTS:-}" == "True" ]]; then
+# Run windows tests if explicitly enabled or any platform is enabled.
+if [[ "${LABELS_RUN_WINDOWS_TESTS:-}" == "True" ]]; then
 	# They've been explicitly enabled: run them
 	RUN_WINDOWS_TESTS=true
-elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
-	# All tests have been skipped
-	RUN_WINDOWS_TESTS=false
 elif [[ "${CONFIGURE_PLATFORMS_DOTNET_PLATFORMS:-}" == "" ]]; then
 	# No platforms enabled, don't run windows tests
 	RUN_WINDOWS_TESTS=false

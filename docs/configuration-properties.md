@@ -8,7 +8,6 @@ There are a number of properties that are contingent upon the configuration sett
 | **Property**                                            | **Default value**                 | **Condition?**                                                                         |
 |---------------------------------------------------------|-----------------------------------|----------------------------------------------------------------------------------------|
 | DebuggerSupport                                         | false                             |                                                                                        |
-| EnableAssemblyILStripping                               | true                              |                                                                                        |
 | RuntimeIdentifiers                                      | maccatalyst-x64;maccatalyst-arm64 | TargetFramework == netx.x-maccatalyst and effective SupportedOSPlatformVersion < 27.0  |
 | RuntimeIdentifier                                       | Host architecture                 | TargetFramework == netx.x-maccatalyst and effective SupportedOSPlatformVersion >= 27.0 |
 | RuntimeIdentifiers                                      | osx-x64;osx-arm64                 | TargetFramework == netx.x-macos and effective SupportedOSPlatformVersion < 27.0        |

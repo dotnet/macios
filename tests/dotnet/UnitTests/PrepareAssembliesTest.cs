@@ -93,7 +93,6 @@ namespace Xamarin.Tests {
 			Clean (projectPath);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = configuration;
-			properties ["EnableAssemblyILStripping"] = "true";
 			properties ["MtouchLink"] = registrar == "managed-static" ? "SdkOnly" : "Full";
 			properties ["PublishReadyToRun"] = "false";
 			properties ["Registrar"] = registrar;
@@ -102,8 +101,8 @@ namespace Xamarin.Tests {
 			if (dynamicRegistrationSupported is not null)
 				properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported;
 
-			var target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish;_ComputeStripAssemblyIL;_StripAssemblyIL";
-			var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), "stripped");
+			var target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish";
+			var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), "postprocessed-assemblies");
 			DotNet.AssertBuild (projectPath, properties, target: target);
 			var platformAssemblyPath = Path.Combine (assemblyDirectory, Configuration.GetBaseLibraryName (platform));
 			var appAssemblyPath = Path.Combine (assemblyDirectory, project + ".dll");

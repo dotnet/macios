@@ -28,6 +28,8 @@ DYNAMIC_TEST_FRAMEWORKS+=SwiftTest
 DYNAMIC_TEST_FRAMEWORKS+=SwiftTest2
 
 GENERATED_FILES = \
+	libstructsizes.generated.h \
+	../introspection/ApiStructSizeTest.generated.cs \
 	libtest.structs.h \
 	libtest.decompile.m \
 	libtest.properties.h \
@@ -37,6 +39,8 @@ GENERATED_FILES = \
 	TrampolineTest.generated.cs \
 
 GENERATED_FILES_PATTERN = \
+	libstructsizes.generated%h \
+	../introspection/ApiStructSizeTest.generated%cs \
 	libtest.methods%h \
 	libtest.methods%m \
 	libtest.structs%h \
@@ -230,7 +234,7 @@ define PlatformStaticTemplate
 
 all-local:: .libs/$(1)/$(2).a
 endef
-$(foreach testFramework,libtest libtest2,$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(eval $(call PlatformStaticTemplate,$(xcframeworkPlatform),$(testFramework),$(XCFRAMEWORK_$(xcframeworkPlatform)_RUNTIME_IDENTIFIERS)))))
+$(foreach testFramework,libtest libtest2 libstructsizes,$(foreach xcframeworkPlatform,$(XCFRAMEWORK_PLATFORMS),$(eval $(call PlatformStaticTemplate,$(xcframeworkPlatform),$(testFramework),$(XCFRAMEWORK_$(xcframeworkPlatform)_RUNTIME_IDENTIFIERS)))))
 
 # Create a dynamic library for each platform, which would potentially be a fat dynamic library.
 # Here 'platform' is defined as a platform for xcframework - ios device is one platform, where ios simulator is another.
@@ -283,6 +287,7 @@ $(foreach testFramework,$(TEST_FRAMEWORKS),$(foreach xcframeworkPlatform,$(XCFRA
 
 define Template
 $(1)_TARGETS = \
+	.libs/$(1)/libstructsizes.a \
 	.libs/$(1)/libtest2.a \
 	.libs/$(1)/libtest.a \
 
@@ -379,6 +384,7 @@ all-local:: .libs/$(1).xcframework
 endef
 $(eval $(call TestLibraryXCFramework,libtest))
 $(eval $(call TestLibraryXCFramework,libtest2))
+$(eval $(call TestLibraryXCFramework,libstructsizes))
 endif # XCFRAMEWORK_PLATFORMS
 
 ifneq ($(XCFRAMEWORK_PLATFORMS),)

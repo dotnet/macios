@@ -312,18 +312,6 @@ class BuildConfiguration {
     )
 
     [void] SetLabelsFromPR ([PSCustomObject] $prInfo, [bool]$isPR) {
-        if ($prInfo) {
-            Write-Debug "Setting VSTS labels from $($prInfo.labels)"
-            foreach ($l in [BuildConfiguration]::labelsOfInterest) {
-                $labelPresent = 1 -eq ($prInfo.labels | Where-Object { $_.name -eq "$l"}).Count
-                # We need to replace dashes with underscores, because bash can't access an environment variable with a dash in the name.
-                $lbl = $l.Replace('-', '_')
-                Write-Host "##vso[task.setvariable variable=$lbl;isOutput=true]$labelPresent"
-            }
-        } else {
-            Write-Debug "Not setting PR labels because there was not info provided."
-        }
-
         # set if the build is a PR or not
         if ($isPR) {
           Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]True"

@@ -220,13 +220,8 @@ Versions.g.cs: Makefile $(TOP)/Make.config.inc
 
 dotnet:: $(DOTNET_TARGETS)
 
-# Keep the feed outside the checkout: macOS may restrict SSH access to
-# external volumes.
-REMOTE_LOCAL_FEED_DIR ?= $(HOME)/Library/Caches/macios-remote-feed
-
 .PHONY: install-remote-locally
 install-remote-locally:
-	@echo "⚠️ Resetting the remote cache (on this machine), and then installing the remote support (also on this machine) ⚠️"
-	@PACKAGES_DIR="$(abspath $(DOTNET_NUPKG_DIR))" FEED_DIR="$(REMOTE_LOCAL_FEED_DIR)" CONFIG_FILE="$(REMOTE_LOCAL_FEED_DIR)/NuGet.config" "$(TOP)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
+	PACKAGES_DIR="$(abspath $(DOTNET_NUPKG_DIR))" FEED_DIR="$(abspath $(DOTNET_DESTDIR)/feed)" CONFIG_FILE="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" "$(TOP)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
 	@# it doesn't matter which project we use, it just has to be *a* project.
-	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -p:RemoteNuGetConfigFile="$(REMOTE_LOCAL_FEED_DIR)/NuGet.config" -v:diag "$(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj"
+	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -p:RemoteNuGetConfigFile="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" -v:diag "$(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj"

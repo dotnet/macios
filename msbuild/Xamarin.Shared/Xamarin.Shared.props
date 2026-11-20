@@ -283,8 +283,8 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 	<!-- This is used to determine if VS is connected to mac. -->
 	<PropertyGroup>
-		<IsMacEnabled Condition="'$(IsMacEnabled)' == '' And !$([MSBuild]::IsOSPlatform('windows'))">true</IsMacEnabled>
-		<IsMacEnabled Condition="'$(IsMacEnabled)' == '' And  $([MSBuild]::IsOSPlatform('windows'))">false</IsMacEnabled>
+		<IsMacEnabled Condition="'$(IsMacEnabled)' == '' And $([MSBuild]::IsOSPlatform('osx'))">true</IsMacEnabled>
+		<IsMacEnabled Condition="'$(IsMacEnabled)' == ''">false</IsMacEnabled>
 		<MtouchTargetsEnabled Condition="'$(_PlatformName)' != 'macOS'">$(IsMacEnabled)</MtouchTargetsEnabled>
 	</PropertyGroup>
 

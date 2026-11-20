@@ -54,15 +54,15 @@ make global.json
 
 make -C builds dotnet
 
-var=$(make -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET)
+var=$(make --no-print-directory -s -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET)
 DOTNET=${var#*=}
 echo "Using dotnet found at $DOTNET"
 
-var=$(make -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET_PLATFORMS)
+var=$(make --no-print-directory -s -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET_PLATFORMS)
 DOTNET_PLATFORMS=${var#*=}
 echo "Dotnet platforms are '$DOTNET_PLATFORMS'"
 
-var=$(make -C "${REPO_FOLDER}/tools/devops" print-abspath-variable VARIABLE=DOTNET_NUPKG_DIR)
+var=$(make --no-print-directory -s -C "${REPO_FOLDER}/tools/devops" print-abspath-variable VARIABLE=DOTNET_NUPKG_DIR)
 DOTNET_NUPKG_DIR=${var#*=}
 echo "Using nuget dir $DOTNET_NUPKG_DIR"
 
@@ -103,6 +103,6 @@ if [ ${#PLATFORMS[@]} -gt 0 ]; then
 fi
 set -u
 
-var=$(make -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET_DIR)
+var=$(make --no-print-directory -s -C "${REPO_FOLDER}/tools/devops" print-variable VARIABLE=DOTNET_DIR)
 DOTNET_DIR=${var#*=}
 ls -lR "$DOTNET_DIR"

@@ -7,7 +7,9 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 #nullable enable
 
@@ -40,6 +42,147 @@ namespace UIKit {
 		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return _RegisterForTraitChanges (This, ToClasses (traits), handler);
+		}
+
+		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			return This.RegisterForTraitChanges (traits, handler);
+		}
+
+		[UnmanagedCallersOnly]
+		private static void TraitChangeHandler (IntPtr block, NativeHandle environment, NativeHandle previousCollection)
+		{
+			var handler = BlockLiteral.GetTarget<Action<IUITraitEnvironment, UITraitCollection>> (block);
+			if (handler is not null) {
+				var observable = Runtime.GetINativeObject<IUITraitEnvironment> (environment, false)
+					?? throw new InvalidOperationException ("The trait change callback has no environment.");
+				var collection = Runtime.GetNSObject<UITraitCollection> (previousCollection)
+					?? throw new InvalidOperationException ("The trait change callback has no previous collection.");
+				handler (observable, collection);
+			}
+		}
+
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal static unsafe IUITraitChangeRegistration RegisterForTraitChangesCore (IUITraitChangeObservable This, Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			ArgumentNullException.ThrowIfNull (handler);
+			using var array = NSArray.FromNSObjects (traits);
+			delegate* unmanaged<IntPtr, NativeHandle, NativeHandle, void> trampoline = &TraitChangeHandler;
+			using var block = new BlockLiteral (trampoline, handler, typeof (IUITraitChangeObservable), nameof (TraitChangeHandler));
+			var selector = Selector.GetHandle ("registerForTraitChanges:withHandler:");
+			var super = GetSuper (This);
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, (IntPtr) (&block));
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, (IntPtr) (&block));
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			return CreateRegistration (This, handle);
+		}
+
+		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, NSObject target, Selector action)
+		{
+			return This.RegisterForTraitChanges (traits, target, action);
+		}
+
+		internal static unsafe IUITraitChangeRegistration RegisterForTraitChangesCore (IUITraitChangeObservable This, Class [] traits, NSObject target, Selector action)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			var targetHandle = target.GetNonNullHandle (nameof (target));
+			var actionHandle = action.GetNonNullHandle (nameof (action));
+			using var array = NSArray.FromNSObjects (traits);
+			var selector = Selector.GetHandle ("registerForTraitChanges:withTarget:action:");
+			var super = GetSuper (This);
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, targetHandle, actionHandle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, targetHandle, actionHandle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (target);
+			GC.KeepAlive (action);
+			return CreateRegistration (This, handle, target);
+		}
+
+		internal static IUITraitChangeRegistration _RegisterForTraitChanges (IUITraitChangeObservable This, Class [] traits, Selector action)
+		{
+			return This.RegisterForTraitChanges (traits, action);
+		}
+
+		internal static unsafe IUITraitChangeRegistration RegisterForTraitChangesCore (IUITraitChangeObservable This, Class [] traits, Selector action)
+		{
+			UIApplication.EnsureUIThread ();
+			ArgumentNullException.ThrowIfNull (traits);
+			var actionHandle = action.GetNonNullHandle (nameof (action));
+			using var array = NSArray.FromNSObjects (traits);
+			var selector = Selector.GetHandle ("registerForTraitChanges:withAction:");
+			var super = GetSuper (This);
+			NativeHandle handle;
+			if (super is null) {
+				handle = Messaging.NativeHandle_objc_msgSend_NativeHandle_NativeHandle (This.Handle, selector, array.Handle, actionHandle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				handle = Messaging.NativeHandle_objc_msgSendSuper_NativeHandle_NativeHandle (&objcSuper, selector, array.Handle, actionHandle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (action);
+			return CreateRegistration (This, handle);
+		}
+
+		private static IUITraitChangeRegistration CreateRegistration (IUITraitChangeObservable observable, NativeHandle handle, NSObject? target = null)
+		{
+			var registration = Runtime.GetINativeObject<IUITraitChangeRegistration> (handle, false)
+				?? throw new InvalidOperationException ("UIKit returned a null trait change registration.");
+			return new UITraitChangeRegistrationToken (observable, registration, target);
+		}
+
+		private static NSObject? GetSuper (IUITraitChangeObservable observable)
+		{
+			return observable is NSObject { IsDirectBinding: false } obj ? obj : null;
+		}
+
+		internal static unsafe void UnregisterForTraitChangesInternal (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
+		{
+			UIApplication.EnsureUIThread ();
+			if (registration is UITraitChangeRegistrationToken token) {
+				token.Unregister (This);
+				return;
+			}
+
+			var handle = registration.GetNonNullHandle (nameof (registration));
+			var nativeToken = UITraitChangeRegistrationToken.Find (handle);
+			if (nativeToken is not null) {
+				nativeToken.Unregister (This);
+				return;
+			}
+
+			UnregisterForTraitChangesCore (This, registration);
+		}
+
+		private static unsafe void UnregisterForTraitChangesCore (IUITraitChangeObservable This, IUITraitChangeRegistration registration)
+		{
+			var handle = registration.GetNonNullHandle (nameof (registration));
+			var selector = Selector.GetHandle ("unregisterForTraitChanges:");
+			var super = GetSuper (This);
+			if (super is null) {
+				Messaging.void_objc_msgSend_NativeHandle (This.Handle, selector, handle);
+			} else {
+				var objcSuper = new ObjCSuper (super);
+				Messaging.void_objc_msgSendSuper_NativeHandle (&objcSuper, selector, handle);
+			}
+			GC.KeepAlive (This);
+			GC.KeepAlive (super);
+			GC.KeepAlive (registration);
 		}
 
 		/// <summary>
@@ -182,6 +325,98 @@ namespace UIKit {
 			return _RegisterForTraitChanges (This, ToClasses (traits), action);
 		}
 
+		private sealed class UITraitChangeRegistrationToken : IUITraitChangeRegistration, IDisposable {
+			// Native wrappers must resolve to their token without extending its lifetime.
+			static readonly Dictionary<NativeHandle, WeakReference<UITraitChangeRegistrationToken>> registrations = new ();
+
+			sealed class RegistrationState {
+				public readonly IUITraitChangeObservable Observable;
+				public readonly IUITraitChangeRegistration Registration;
+				public readonly NSObject? Target;
+
+				public RegistrationState (IUITraitChangeObservable observable, IUITraitChangeRegistration registration, NSObject? target)
+				{
+					Observable = observable;
+					Registration = registration;
+					Target = target;
+				}
+			}
+
+			GCHandle lifetime;
+			RegistrationState? state;
+
+			public NativeHandle Handle {
+				get {
+					return Runtime.RetainAndAutoreleaseNativeObject (state?.Registration);
+				}
+			}
+
+			public UITraitChangeRegistrationToken (IUITraitChangeObservable observable, IUITraitChangeRegistration registration, NSObject? target)
+			{
+				state = new RegistrationState (observable, registration, target);
+				// All native wrappers must survive collection until main-thread unregistration completes.
+				lifetime = GCHandle.Alloc (state);
+				registrations.Add (registration.Handle, new WeakReference<UITraitChangeRegistrationToken> (this, trackResurrection: true));
+				GC.KeepAlive (registration);
+			}
+
+			internal static UITraitChangeRegistrationToken? Find (NativeHandle handle)
+			{
+				return registrations.TryGetValue (handle, out var reference) && reference.TryGetTarget (out var token) ? token : null;
+			}
+
+			public NSObject Copy (NSZone? zone)
+			{
+				if (state is null)
+					throw new ObjectDisposedException (nameof (UITraitChangeRegistrationToken));
+				throw new NotSupportedException ("Trait change registration tokens cannot be copied.");
+			}
+
+			~UITraitChangeRegistrationToken ()
+			{
+				Runtime.NSLog ("Warning: trait change registration object was not disposed manually with Dispose()");
+				// The queued delegate roots this token until UIKit unregistration completes on the main thread.
+				CoreFoundation.DispatchQueue.MainQueue.DispatchAsync (Dispose);
+			}
+
+			public void Dispose ()
+			{
+				if (!NSThread.IsMain) {
+					CoreFoundation.DispatchQueue.MainQueue.DispatchAsync (Dispose);
+					return;
+				}
+
+				if (state is not null) {
+					state.Observable.UnregisterForTraitChanges (state.Registration);
+					Release ();
+				}
+				GC.SuppressFinalize (this);
+			}
+
+			internal void Unregister (IUITraitChangeObservable observable)
+			{
+				if (state is null)
+					return;
+
+				// The public override has already run; continue its base/native path.
+				UnregisterForTraitChangesCore (observable, state.Registration);
+				Release ();
+				GC.SuppressFinalize (this);
+			}
+
+			void Release ()
+			{
+				var state = this.state;
+				if (state is null)
+					return;
+
+				registrations.Remove (state.Registration.Handle);
+				this.state = null;
+				lifetime.Free ();
+				GC.KeepAlive (state.Target);
+			}
+		}
+
 #if XAMCORE_5_0
 		private static Class [] ToClasses (IUITraitDefinition [] traits)
 #else
@@ -202,21 +437,21 @@ namespace UIKit {
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Action<IUITraitEnvironment, UITraitCollection>)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), handler);
+			return _RegisterForTraitChanges (this, ToClasses (traits), handler);
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], NSObject, Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, NSObject target, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), target, action);
+			return _RegisterForTraitChanges (this, ToClasses (traits), target, action);
 		}
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Use the 'UITraitChangeObservable.RegisterForTraitChanges (Class[], Selector)' method instead.")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (IUITraitDefinition [] traits, Selector action)
 		{
-			return RegisterForTraitChanges (ToClasses (traits), action);
+			return _RegisterForTraitChanges (this, ToClasses (traits), action);
 		}
 #endif // !XACMORE_5_0
 

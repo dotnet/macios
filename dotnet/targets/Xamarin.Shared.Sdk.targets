@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" InitialTargets="_CheckForUnsupportedHost" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<Target Name="_CheckForUnsupportedHost" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+		<Error Text="Building .NET for $(_PlatformName) projects on Linux is not supported. Use macOS, or Windows with a connection to a Mac, to build this project." />
+	</Target>
 
 	<PropertyGroup>
 		<!-- Use single-project MSBuild properties to generate the application manifest by default -->

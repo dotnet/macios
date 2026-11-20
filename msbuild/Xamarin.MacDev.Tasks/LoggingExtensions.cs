@@ -77,7 +77,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <summary>
 		/// Creates an MSBuild error following our MTErrors convention.</summary>
 		/// <remarks>
-		/// For every new error we need to update "docs/website/mtouch-errors.md" and "tools/mtouch/error.cs".</remarks>
+		/// Document each new diagnostic under "docs/messages", update its allocation mapping, and regenerate the indexes with "bash docs/update-diagnostic-docs.sh".</remarks>
 		/// <param name="errorCode">In the 7xxx range for MSBuild error.</param>
 		/// <param name="message">The error's message to be displayed in the error pad.</param>
 		/// <param name="fileName">Path to the known guilty file or null.</param>
@@ -90,7 +90,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <summary>
 		/// Creates an MSBuild error following our MTErrors convention.</summary>
 		/// <remarks>
-		/// For every new error we need to update "docs/website/mtouch-errors.md" and "tools/mtouch/error.cs".</remarks>
+		/// Document each new diagnostic under "docs/messages", update its allocation mapping, and regenerate the indexes with "bash docs/update-diagnostic-docs.sh".</remarks>
 		/// <param name="errorCode">In the 7xxx range for MSBuild error.</param>
 		/// <param name="message">The error's message to be displayed in the error pad.</param>
 		/// <param name="fileName">Path to the known guilty file or null.</param>

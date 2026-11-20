@@ -824,28 +824,35 @@ namespace Registrar {
 			Runtime.NSLog (String.Format (message, args));
 		}
 
-		Class.objc_attribute_prop [] GetPropertyAttributes (ObjCProperty property, out int count, bool isProtocol)
+		string? [] GetPropertyAttributes (ObjCProperty property, out int count, bool isProtocol)
 		{
 			// http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtPropertyIntrospection.html
-			var props = new Class.objc_attribute_prop [5];
-			count = 0;
+			var props = new string? [5 * 2];
+			int index = 0;
 
-			props [count++] = new Class.objc_attribute_prop { name = "T", value = ToSignature (property.PropertyType, property, true) };
+			void Add (string name, string value)
+			{
+				props [index++] = name;
+				props [index++] = value;
+			}
+
+			Add ("T", ToSignature (property.PropertyType, property, true));
 			switch (property.ArgumentSemantic) {
 			case ArgumentSemantic.Copy:
-				props [count++] = new Class.objc_attribute_prop { name = "C", value = "" };
+				Add ("C", "");
 				break;
 			case ArgumentSemantic.Retain:
-				props [count++] = new Class.objc_attribute_prop { name = "&", value = "" };
+				Add ("&", "");
 				break;
 			}
 			if (!isProtocol)
-				props [count++] = new Class.objc_attribute_prop { name = "V", value = property.Selector };
+				Add ("V", property.Selector);
 
 			if (property.IsReadOnly)
-				props [count++] = new Class.objc_attribute_prop { name = "R", value = string.Empty };
+				Add ("R", string.Empty);
 
-			props [count++] = new Class.objc_attribute_prop { name = "N", value = string.Empty }; // nonatomic
+			Add ("N", string.Empty); // nonatomic
+			count = index / 2;
 			return props;
 		}
 

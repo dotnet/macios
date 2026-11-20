@@ -23,6 +23,7 @@ namespace ObjCRuntime {
 			BStr,
 			Ansi, // aka LPStr
 			Unicode,
+			Utf8,
 		};
 
 		public TransientString (nint size)
@@ -44,6 +45,32 @@ namespace ObjCRuntime {
 				break;
 			case Encoding.Unicode:
 				ptr = Marshal.StringToHGlobalUni (str);
+				break;
+			case Encoding.Utf8:
+				ptr = Marshal.StringToHGlobalAnsi (str);
+				break;
+			default:
+				throw new ArgumentOutOfRangeException (nameof (encoding));
+			}
+		}
+
+		public TransientString (string? str, out int byteCount, Encoding encoding = Encoding.Auto)
+			: this (str, encoding)
+		{
+			if (str is null) {
+				byteCount = 0;
+				return;
+			}
+
+			switch (encoding) {
+			case Encoding.Auto:
+			case Encoding.Ansi:
+			case Encoding.Utf8:
+				byteCount = System.Text.Encoding.UTF8.GetByteCount (str);
+				break;
+			case Encoding.BStr:
+			case Encoding.Unicode:
+				byteCount = System.Text.Encoding.Unicode.GetByteCount (str);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException (nameof (encoding));
@@ -76,6 +103,9 @@ namespace ObjCRuntime {
 				break;
 			case Encoding.Unicode:
 				result = Marshal.PtrToStringUni (ptr);
+				break;
+			case Encoding.Utf8:
+				result = Marshal.PtrToStringUTF8 (ptr);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException (nameof (encoding));

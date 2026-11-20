@@ -332,11 +332,15 @@ namespace CoreNFC {
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'LockDsfId' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'LockDsfId' instead.")]
 		[Export ("lockDFSIDWithRequestFlag:completionHandler:")]
 		void LockDfsi (NFCIso15693RequestFlag flags, Action<NSError?> completionHandler);
 
 		[MacCatalyst (13, 1)]
 		[Abstract]
+		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GetSystemInfoAndUid' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'GetSystemInfoAndUid' instead.")]
 		[Export ("getSystemInfoWithRequestFlag:completionHandler:")]
 		void GetSystemInfo (NFCIso15693RequestFlag flags, NFCGetSystemInfoCompletionHandler completionHandler);
 

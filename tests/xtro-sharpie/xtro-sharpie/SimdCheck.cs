@@ -291,6 +291,35 @@ namespace Extrospection {
 			return false;
 		}
 
+		static MethodDefinition GetProtocolImplementation (MethodDefinition method)
+		{
+			if (!method.DeclaringType.IsInterface || method.IsStatic || !method.HasBody)
+				return method;
+
+			var calls = method.Body.Instructions.Where (v => v.OpCode.FlowControl == Mono.Cecil.Cil.FlowControl.Call).ToArray ();
+			if (calls.Length != 1 || calls [0].OpCode.Code != Mono.Cecil.Cil.Code.Call || calls [0].Operand is not MethodReference target)
+				return method;
+
+			var name = method.Name;
+			if (method.IsGetter)
+				name = "Get" + name.Substring (4);
+			else if (method.IsSetter)
+				name = "Set" + name.Substring (4);
+
+			if (target.Name != "_" + name || target.DeclaringType.FullName != method.DeclaringType.FullName)
+				return method;
+
+			var implementation = method.DeclaringType.Methods.FirstOrDefault (v => v.FullName == target.FullName);
+			if (implementation is null || !implementation.IsStatic || !implementation.IsAssembly || !implementation.HasBody ||
+				implementation.ReturnType.FullName != method.ReturnType.FullName ||
+				implementation.Parameters.Count != method.Parameters.Count + 1 ||
+				implementation.Parameters [0].ParameterType.FullName != method.DeclaringType.FullName ||
+				!implementation.Parameters.Skip (1).Select (v => v.ParameterType.FullName).SequenceEqual (method.Parameters.Select (v => v.ParameterType.FullName)))
+				return method;
+
+			return implementation;
+		}
+
 		void CheckMarshalDirective (MethodDefinition method, string simd_type, bool only_return_type_is_simd)
 		{
 			if (!method.HasBody)
@@ -306,7 +335,8 @@ namespace Extrospection {
 			// The [MarshalDirective] attribute isn't copied to the generated code,
 			// so instead apply some heuristics and detect calls to the xamarin_simd__ P/Invoke,
 			// and if there are any, then assume the method binding has a [MarshalDirective].
-			var body = method.Body;
+			// Default protocol members forward to a generated static implementation.
+			var body = GetProtocolImplementation (method).Body;
 			var anyCalls = false;
 			foreach (var i in body.Instructions) {
 				switch (i.OpCode.Code) {

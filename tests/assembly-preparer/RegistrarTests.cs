@@ -63,6 +63,86 @@ public class RegistrarTests : BaseClass {
 		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
 	}
 
+	[TestCase (RegistrarMode.Static)]
+	[TestCase (RegistrarMode.ManagedStatic)]
+	public void RetainCountExport (RegistrarMode registrar)
+	{
+		var code = """
+			using Foundation;
+			using ObjCRuntime;
+
+			class MethodExport : NSObject {
+				[Export ("retainCount")]
+				public nuint GetRetainCount () => 0;
+			}
+
+			class PropertyExport : NSObject {
+				[Export ("retainCount")]
+				public nuint Count => 0;
+			}
+
+			[Category (typeof (NSObject))]
+			static class RetainCountCategory {
+				[Export ("retainCount")]
+				public static nuint GetRetainCount (this NSObject self) => 0;
+			}
+			""";
+
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out _,
+			extraConfig: $"UnmanagedCallersOnlyMapPath={Path.Combine (Xamarin.Cache.CreateTemporaryDirectory (), "uco.txt")}");
+		preparer.Prepare (out _);
+		if (registrar == RegistrarMode.Static)
+			new Xamarin.Linker.RegistrarStep ().Process (preparer.Configuration.DerivedLinkContext);
+
+		var logger = (TestLogger) preparer.Configuration.Logger;
+		Assert.That (logger.Errors.Where (v => v.Code == 4199).Select (v => v.Message), Is.EquivalentTo (new [] {
+			"Cannot export the instance selector 'retainCount' on the member 'MethodExport.GetRetainCount()' because the garbage collector must be able to call it without running managed code.",
+			"Cannot export the instance selector 'retainCount' on the member 'PropertyExport.get_Count()' because the garbage collector must be able to call it without running managed code.",
+			"Cannot export the instance selector 'retainCount' on the member 'RetainCountCategory.GetRetainCount(Foundation.NSObject)' because the garbage collector must be able to call it without running managed code.",
+		}), "Error messages");
+	}
+
+	[TestCase (RegistrarMode.Static)]
+	[TestCase (RegistrarMode.ManagedStatic)]
+	public void RetainCountDeclaration (RegistrarMode registrar)
+	{
+		var code = """
+			using Foundation;
+			using ObjCRuntime;
+
+			class StaticMethodExport : NSObject {
+				[Export ("retainCount")]
+				public static nuint GetRetainCount () => 0;
+			}
+
+			class StaticPropertyExport : NSObject {
+				[Export ("retainCount")]
+				public static nuint Count => 0;
+			}
+
+			[Register ("NativeRetainCount", true)]
+			class NativeRetainCount : NSObject {
+				[Export ("retainCount")]
+				public nuint GetRetainCount () => 0;
+			}
+
+			[Protocol]
+			interface IRetainCount {
+				[Export ("retainCount")]
+				nuint GetRetainCount ();
+			}
+			""";
+
+		using var preparer = CreatePreparer (ApplePlatform.iOS, false, p => p.Registrar = registrar, code, out _,
+			extraConfig: $"UnmanagedCallersOnlyMapPath={Path.Combine (Xamarin.Cache.CreateTemporaryDirectory (), "uco.txt")}");
+		AssertPrepare (preparer);
+		if (registrar == RegistrarMode.Static)
+			new Xamarin.Linker.RegistrarStep ().Process (preparer.Configuration.DerivedLinkContext);
+
+		var logger = (TestLogger) preparer.Configuration.Logger;
+		Assert.That (logger.Errors, Is.Empty, "Errors");
+	}
+
 	[Test]
 	public void ModelClassAsGenericArgument ()
 	{

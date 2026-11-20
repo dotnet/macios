@@ -258,6 +258,10 @@ namespace Registrar {
 				if (method.Method is null)
 					return;
 
+				if (!IsWrapper && !IsProtocol && !method.IsNativeStatic && method.Selector == "retainCount")
+					Registrar.AddException (ref exceptions, Registrar.CreateException (4199, method, Errors.MT4199,
+						method.Method.DeclaringType?.FullName, Registrar.GetDescriptiveMethodName (method.Method)));
+
 				var split = method.Selector.Split (':');
 				var nativeParamCount = split.Length - 1;
 

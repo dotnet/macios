@@ -2648,6 +2648,15 @@ third-party binding, please contact the vendor.
 
 ### MT4180: Cannot construct an instance of the type '*' from Objective-C because the type is abstract. [Runtime exception]
 
+### MT4199: Cannot export the instance selector 'retainCount' on the member '{type}.{member}' because the garbage collector must be able to call it without running managed code.
+
+The garbage collector calls `retainCount` while managed code cannot safely run.
+A managed implementation can cause hangs, crashes, or heap corruption.
+
+Remove the export of the instance selector `retainCount`, including exports on
+property getters or category methods. Bindings to the native `retainCount` method
+and class (static) selectors are not affected.
+
 ## MT5xxx: GCC and toolchain error messages
 
 ### MT51xx: Compilation

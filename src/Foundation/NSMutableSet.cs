@@ -55,10 +55,10 @@ namespace Foundation {
 		{
 		}
 
-		/// <summary>Creates a new mutable set containing all objects from both sets.</summary>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSMutableSet" /> containing the union of both sets, or <see langword="null" /> if both sets are <see langword="null" />.</returns>
+		/// <returns>A new <see cref="NSMutableSet" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSMutableSet? operator + (NSMutableSet? first, NSMutableSet? second)
@@ -75,10 +75,10 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Creates a new mutable set with objects from the first set that are not in the second set.</summary>
-		/// <param name="first">The first set.</param>
-		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSMutableSet" /> containing the difference, or <see langword="null" /> if the first set is <see langword="null" />.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSMutableSet" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		public static NSMutableSet? operator - (NSMutableSet? first, NSMutableSet? second)
 		{

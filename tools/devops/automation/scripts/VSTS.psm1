@@ -557,13 +557,6 @@ class BuildConfiguration {
           $tags.Add("$($configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME)")
           Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]False"
         }
-        # Remove empty entries
-        $tags = $tags | Where {$_}
-        if ($addTags) {
-            Set-BuildTags -Tags $tags.ToArray()
-        }
-        # add the tags and serialize to json
-        $configuration | Add-Member -NotePropertyName Tags -NotePropertyValue $tags
 
         $jsonConfiguration = $configuration | ConvertTo-Json
 

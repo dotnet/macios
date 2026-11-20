@@ -29,6 +29,7 @@ steps:
     submodules: recursive
     path: s/$(BUILD_REPOSITORY_TITLE)
     fetchTags: false
+    fetchDepth: '0'
     retryCount: 3
 
 # some bots don't seem to have pwsh installed, so make sure it is
@@ -47,7 +48,7 @@ steps:
   timeoutInMinutes: 5
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'), ${{ parameters.runPowerShellBootstrapTests }})
 
-- pwsh: ./undo_github_merge.ps1 -SourceBranch "$(Build.SourceBranch)" -IsPr "$Env:IS_PR"
+- pwsh: ./undo_github_merge.ps1 -SourceVersion "$(Build.SourceVersion)" -SourceBranch "$Env:SYSTEM_PULLREQUEST_SOURCEBRANCH" -IsPr "$Env:IS_PR"
   name: fix_commit
   displayName: "Undo Github merge"
   workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts

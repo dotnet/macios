@@ -24,6 +24,11 @@ it ensure our tool chain can cope with them.
 
 * "Link all assemblies" for both simulator/devices
 
+Tests that need native bindings should call the required bindings directly rather
+than register the entire bindings-test assembly with the test runner. Registering
+that assembly preserves unrelated tests and can keep types alive that other
+link-all tests expect to be trimmed (see [#9617](https://github.com/dotnet/macios/issues/9617)).
+
 
 ## link sdk
 

@@ -2686,6 +2686,24 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The NSCell subclass &apos;{0}&apos; does not have a constructor that takes a single ObjCRuntime.NativeHandle argument. Add this constructor so that copied native cells can be wrapped in managed instances..
+        /// </summary>
+        public static string MT4199 {
+            get {
+                return ResourceManager.GetString("MT4199", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The NSCell subclass &apos;{0}&apos; does not implement Copy (NSZone). Override this method to copy the managed state when the native cell is copied..
+        /// </summary>
+        public static string MT4200 {
+            get {
+                return ResourceManager.GetString("MT4200", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5101 {

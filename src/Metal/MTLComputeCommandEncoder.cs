@@ -5,7 +5,7 @@ namespace Metal {
 	// add some extension methods to make the API of the protocol nicer
 	public static class IMTLComputeCommandEncoderExtensions {
 
-		public static void SetBuffers (this IMTLComputeCommandEncoder table, IMTLBuffer [] buffers, nuint [] offsets, NSRange range)
+		public static void SetBuffers (this IMTLComputeCommandEncoder table, IMTLBuffer? [] buffers, nuint [] offsets, NSRange range)
 		{
 			if (buffers is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (buffers));
@@ -15,7 +15,7 @@ namespace Metal {
 			var bufferPtrArray = buffers.Length <= 1024 ? stackalloc IntPtr [buffers.Length] : new IntPtr [buffers.Length];
 			// get all intptr from the array to pass to the lower level call
 			for (var i = 0; i < buffers.Length; i++) {
-				bufferPtrArray [i] = buffers [i].Handle;
+				bufferPtrArray [i] = buffers [i].GetHandle ();
 			}
 
 			unsafe {

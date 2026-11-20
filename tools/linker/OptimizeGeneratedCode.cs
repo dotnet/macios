@@ -1077,6 +1077,13 @@ namespace Xamarin.Linker {
 			method.Body.Instructions.Clear ();
 			method.Body.Instructions.Add (Instruction.Create (OpCodes.Ret));
 
+			RemoveProtocolMemberDependencies (method);
+			return true;
+		}
+
+		internal static bool RemoveProtocolMemberDependencies (MethodDefinition method)
+		{
+			var modified = false;
 			// Only remove DynamicDependency attributes that takes a single string argument.
 			// The generator generates other DynamicDependency attributes, and we don't want to remove those.
 			for (var i = method.CustomAttributes.Count - 1; i >= 0; i--) {
@@ -1095,9 +1102,10 @@ namespace Xamarin.Linker {
 					continue;
 
 				method.CustomAttributes.RemoveAt (i);
+				modified = true;
 			}
 
-			return true;
+			return modified;
 		}
 	}
 

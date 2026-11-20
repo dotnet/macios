@@ -136,7 +136,11 @@ namespace UIKit {
 	/// <summary>An enumeration whose values specify actions caused by control characters.</summary>
 	[Native]
 	[Flags]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSControlCharacterAction : long {
 		/// <summary>Glyphs with this action are filtered from the layout.</summary>
 		ZeroAdvancement = (1 << 0),
@@ -152,7 +156,11 @@ namespace UIKit {
 		ContainerBreak = (1 << 5),
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSDirectionalRectEdge : ulong {
@@ -166,7 +174,11 @@ namespace UIKit {
 
 	// NSInteger -> NSLayoutManager.h
 	/// <summary>An enumeration whose values specify characteristics of a glyph.</summary>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Native]
 	public enum NSGlyphProperty : long {
 		/// <summary>Null glyph; ignored for layout and display.</summary>
@@ -183,7 +195,11 @@ namespace UIKit {
 	/// <summary>An enumeration of attributes for use with constraint-based layouts.</summary>
 	/// <remarks>Values used to specify particular constraint attributes in constraint-based layouts. These values are primarily used by methods in the <see cref="NSLayoutConstraint" /> class. </remarks>
 	[Native]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSLayoutAttribute : long {
 		/// <summary>Indicates no attribute.</summary>
 		NoAttribute = 0,
@@ -254,7 +270,11 @@ namespace UIKit {
 	/// <include file="../docs/api/UIKit/NSLayoutFormatOptions.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutFormatOptions']/*" />
 	[Native]
 	[Flags]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSLayoutFormatOptions : ulong {
 		/// <summary>To be added.</summary>
 		None = 0,
@@ -324,7 +344,11 @@ namespace UIKit {
 	///   system of constraints, the constraint solver will throw an exception.
 	/// </remarks>
 	[Native]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSLayoutRelation : long {
 		/// <summary>A less-than-or-equal relationship.</summary>
 		LessThanOrEqual = -1,
@@ -334,7 +358,11 @@ namespace UIKit {
 		GreaterThanOrEqual = 1,
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSLineBreakStrategy : ulong {
@@ -347,7 +375,11 @@ namespace UIKit {
 		Standard = 0xffff,
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Native]
 	public enum NSRectAlignment : long {
 		None = 0,
@@ -361,7 +393,11 @@ namespace UIKit {
 		TopTrailing,
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Native]
 	public enum NSTextScalingType : long {
 		Standard = 0,
@@ -371,7 +407,11 @@ namespace UIKit {
 	// NSInteger -> NSLayoutManager.h
 	/// <summary>An enumeration whose values specify the direction in which text is laid out. Used with <see cref="NSTextContainer.LayoutOrientation" />.</summary>
 	[Native]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSTextLayoutOrientation : long {
 		/// <summary>To be added.</summary>
 		Horizontal,
@@ -383,7 +423,11 @@ namespace UIKit {
 	/// <summary>A flagging enumeration whose values are used by Text Kit to specify whether actions pertain to attributes, characters, or both.</summary>
 	[Native]
 	[Flags]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	public enum NSTextStorageEditActions : ulong {
 		/// <summary>Attributes were modified.</summary>
 		Attributes = 1,
@@ -392,7 +436,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutManager.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutManager']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	partial interface NSLayoutManager : NSSecureCoding {
@@ -1587,7 +1635,11 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	interface NSLayoutManagerDelegate {
 		/// <param name="sender">To be added.</param>
 		///         <summary>Indicates that the NSLayoutManager has invalidated layout information (not glyph information).</summary>
@@ -1717,7 +1769,11 @@ namespace UIKit {
 		bool ShouldSetLineFragmentRect (NSLayoutManager layoutManager, ref CGRect lineFragmentRect, ref CGRect lineFragmentUsedRect, ref nfloat baselineOffset, NSTextContainer textContainer, NSRange glyphRange);
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	interface NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> : NSCopying
 		where SectionIdentifierType : NSObject
@@ -1829,7 +1885,11 @@ namespace UIKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSParagraphStyle_Class/index.html">Apple documentation for <c>NSParagraphStyle</c></related>
 	[ThreadSafe]
 	[BaseType (typeof (NSObject))]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	interface NSParagraphStyle : NSSecureCoding, NSMutableCopying {
 		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
 		///         <value>To be added.</value>
@@ -2016,7 +2076,11 @@ namespace UIKit {
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/index.html">Apple documentation for <c>NSMutableParagraphStyle</c></related>
 	[ThreadSafe]
 	[BaseType (typeof (NSParagraphStyle))]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	interface NSMutableParagraphStyle {
 		/// <summary>The distance, in points, between the bottom of one line fragment and the top of the next.</summary>
 		///         <value>To be added.</value>
@@ -2224,10 +2288,18 @@ namespace UIKit {
 		NSLineBreakStrategy LineBreakStrategy { get; set; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	delegate NSCollectionLayoutGroupCustomItem [] NSCollectionLayoutGroupCustomItemProvider (INSCollectionLayoutEnvironment layoutEnvironment);
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutGroup : NSCopying {
@@ -2275,10 +2347,18 @@ namespace UIKit {
 		NSCollectionLayoutGroup GetVerticalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem repeatingSubitem, nint count);
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	delegate void NSCollectionLayoutSectionVisibleItemsInvalidationHandler (INSCollectionLayoutVisibleItem [] visibleItems, CGPoint contentOffset, INSCollectionLayoutEnvironment layoutEnvironment);
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutSection : NSCopying {
@@ -2341,7 +2421,11 @@ namespace UIKit {
 		UICollectionLayoutSectionOrthogonalScrollingProperties OrthogonalScrollingProperties { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutGroupCustomItem : NSCopying {
@@ -2362,7 +2446,11 @@ namespace UIKit {
 
 	interface INSCollectionLayoutContainer { }
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Protocol]
 	interface NSCollectionLayoutContainer {
 		[Abstract]
@@ -2384,7 +2472,11 @@ namespace UIKit {
 
 	interface INSCollectionLayoutEnvironment { }
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Protocol]
 	interface NSCollectionLayoutEnvironment {
 
@@ -2401,7 +2493,11 @@ namespace UIKit {
 
 	interface INSCollectionLayoutVisibleItem { }
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Protocol]
 	interface NSCollectionLayoutVisibleItem
 #if !MONOMAC
@@ -2470,7 +2566,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutAnchor`1.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutAnchor`1']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutAnchor<AnchorType> : NSCopying, NSCoding {
@@ -2558,7 +2658,11 @@ namespace UIKit {
 
 	/// <summary>An <see cref="NSLayoutAnchor{AnchorType}" /> whose methods create horizontal <see cref="NSLayoutConstraint" /> objects.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutXAxisAnchor/index.html">Apple documentation for <c>NSLayoutXAxisAnchor</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutXAxisAnchor>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutXAxisAnchor {
@@ -2600,7 +2704,11 @@ namespace UIKit {
 
 	/// <summary>An <see cref="NSLayoutAnchor{AnchorType}" /> whose methods create vertical <see cref="NSLayoutConstraint" /> objects.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutYAxisAnchor/index.html">Apple documentation for <c>NSLayoutYAxisAnchor</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutYAxisAnchor>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutYAxisAnchor {
@@ -2642,7 +2750,11 @@ namespace UIKit {
 
 	/// <summary>An <see cref="NSLayoutAnchor{AnchorType}" /> whose methods create dimensional <see cref="NSLayoutConstraint" /> objects.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AppKit/Reference/NSLayoutDimension_ClassReference/index.html">Apple documentation for <c>NSLayoutDimension</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSLayoutAnchor<NSLayoutDimension>))]
 	[DisableDefaultCtor] // Handle is nil
 	interface NSLayoutDimension {
@@ -2738,7 +2850,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSLayoutConstraint.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSLayoutConstraint']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	interface NSLayoutConstraint
 #if MONOMAC
@@ -2871,7 +2987,11 @@ namespace UIKit {
 	/// <summary>Defines the relationship between <see cref="NSTextAttachment" />s and a <see cref="NSLayoutManager" />.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachmentContainer_Protocol/index.html">Apple documentation for <c>NSTextAttachmentContainer</c></related>
 	[Introduced (PlatformName.iOS)]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Model]
 	[Protocol]
 	[BaseType (typeof (NSObject))]
@@ -2905,7 +3025,11 @@ namespace UIKit {
 	///     
 	///     
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextattachment">Apple documentation for <c>NSTextAttachment</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextAttachment : NSTextAttachmentContainer, NSSecureCoding, NSTextAttachmentLayout
 #if !MONOMAC
@@ -3006,7 +3130,11 @@ namespace UIKit {
 	}
 
 	[TV (15, 0), iOS (15, 0)]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (15, 0)]
+#endif
 	[Protocol]
 	interface NSTextAttachmentLayout {
 
@@ -3029,7 +3157,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSTextStorage.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSTextStorage']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSMutableAttributedString), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextStorageDelegate) })]
 	partial interface NSTextStorage : NSSecureCoding {
 		[Export ("initWithString:")]
@@ -3142,7 +3274,11 @@ namespace UIKit {
 
 	/// <summary>A delegate object that provides events relating to processing editing for <see cref="NSTextStorage" />.</summary>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextstoragedelegate">Apple documentation for <c>NSTextStorageDelegate</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Model]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -3204,7 +3340,11 @@ namespace UIKit {
 		void DidProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta);
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutAnchor : NSCopying, INSCopying {
@@ -3233,7 +3373,11 @@ namespace UIKit {
 		bool IsFractionalOffset { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutDimension : NSCopying {
@@ -3279,7 +3423,11 @@ namespace UIKit {
 	}
 
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutSize : NSCopying {
@@ -3294,7 +3442,11 @@ namespace UIKit {
 		NSCollectionLayoutDimension HeightDimension { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutSpacing : NSCopying {
@@ -3316,7 +3468,11 @@ namespace UIKit {
 		bool IsFixedSpacing { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutEdgeSpacing : NSCopying {
@@ -3337,7 +3493,11 @@ namespace UIKit {
 		NSCollectionLayoutSpacing Bottom { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutSupplementaryItem : NSCopying {
@@ -3362,7 +3522,11 @@ namespace UIKit {
 		NSCollectionLayoutAnchor ItemAnchor { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutItem : NSCopying {
@@ -3387,7 +3551,11 @@ namespace UIKit {
 		NSCollectionLayoutSupplementaryItem [] SupplementaryItems { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSCollectionLayoutSupplementaryItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutBoundarySupplementaryItem : NSCopying {
@@ -3412,7 +3580,11 @@ namespace UIKit {
 		CGPoint Offset { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutDecorationItem : NSCopying {
@@ -3428,7 +3600,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSDataAsset.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSDataAsset']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // - (instancetype)init NS_UNAVAILABLE;
 	interface NSDataAsset : NSCopying {
@@ -3474,7 +3650,11 @@ namespace UIKit {
 	///   <para>The <see cref="NSShadow" /> class encapsulates the visual attributes of a drop shadow.</para>
 	/// </remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSShadow_Class/index.html">Apple documentation for <c>NSShadow</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface NSShadow : NSSecureCoding, NSCopying {
@@ -3504,7 +3684,11 @@ namespace UIKit {
 	/// <summary>Represents a tab location in Text Kit.</summary>
 	///     
 	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstexttab">Apple documentation for <c>NSTextTab</c></related>
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextTab : NSSecureCoding, NSCopying {
 		/// <param name="alignment">To be added.</param>
@@ -3561,7 +3745,11 @@ namespace UIKit {
 		NSString ColumnTerminatorsAttributeName { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[Protocol]
 	// no [Model] since it's not exposed in any API
 	// only NSTextContainer conforms to it but it's only queried by iOS itself
@@ -3577,7 +3765,11 @@ namespace UIKit {
 	}
 
 	/// <include file="../docs/api/UIKit/NSTextContainer.xml" path="/Documentation/Docs[@DocId='T:UIKit.NSTextContainer']/*" />
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextContainer : NSTextLayoutOrientationProvider, NSSecureCoding {
 		[MacCatalyst (13, 1)]
@@ -3696,6 +3888,9 @@ namespace UIKit {
 	}
 
 	/// <summary>String drawing extension methods for <see cref="Foundation.NSString" />.</summary>
+#if MONOMAC
+	[NoMacCatalyst]
+#endif
 	[ThreadSafe]
 	[Category, BaseType (typeof (NSString))]
 	interface NSExtendedStringDrawing {
@@ -3748,7 +3943,11 @@ namespace UIKit {
 		CGRect GetBoundingRect (CGSize size, NSStringDrawingOptions options, StringAttributes attributes, [NullAllowed] NSStringDrawingContext context);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTextLayoutManagerDelegate {
@@ -3772,7 +3971,11 @@ namespace UIKit {
 		NSTextAttachmentViewProvider GetCachedTextAttachmentViewProvider (NSTextLayoutManager textLayoutManager, NSTextAttachment attachment);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextLayoutManagerSegmentType : long {
 		Standard = 0,
@@ -3780,7 +3983,11 @@ namespace UIKit {
 		Highlight = 2,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSTextLayoutManagerSegmentOptions : ulong {
@@ -3792,7 +3999,11 @@ namespace UIKit {
 		UpstreamAffinity = (1uL << 4),
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSTextLayoutFragmentEnumerationOptions : ulong {
@@ -3805,13 +4016,25 @@ namespace UIKit {
 
 	interface INSTextLayoutManagerDelegate { }
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	delegate bool NSTextLayoutManagerEnumerateRenderingAttributesDelegate (NSTextLayoutManager textLayoutManager, NSDictionary<NSString, NSObject> attributes, NSTextRange textRange);
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	delegate bool NSTextLayoutManagerEnumerateTextSegmentsDelegate ([NullAllowed] NSTextRange textSegmentRange, CGRect textSegmentFrame, nfloat baselinePosition, NSTextContainer textContainer);
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NSTextLayoutManager : NSSecureCoding, NSTextSelectionDataSource {
@@ -3915,7 +4138,11 @@ namespace UIKit {
 		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSTextContentManagerEnumerationOptions : ulong {
@@ -3923,7 +4150,11 @@ namespace UIKit {
 		Reverse = (1uL << 0),
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTextContentManagerDelegate {
@@ -3935,7 +4166,11 @@ namespace UIKit {
 		bool ShouldEnumerateTextElement (NSTextContentManager textContentManager, NSTextElement textElement, NSTextContentManagerEnumerationOptions options);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol]
 	interface NSTextElementProvider {
 		[Abstract]
@@ -3969,7 +4204,11 @@ namespace UIKit {
 
 	interface INSTextContentManagerDelegate { }
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextContentManager : NSTextElementProvider, NSSecureCoding {
@@ -4026,7 +4265,11 @@ namespace UIKit {
 
 	interface INSTextLocation { }
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol]
 	interface NSTextLocation {
 		[Abstract]
@@ -4042,7 +4285,11 @@ namespace UIKit {
 		nuint GetNativeHash ();
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextElement {
 		[Export ("initWithTextContentManager:")]
@@ -4068,7 +4315,11 @@ namespace UIKit {
 		bool IsRepresentedElement { get; }
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSTextElement))]
 	interface NSTextParagraph {
 		[Export ("initWithAttributedString:")]
@@ -4089,7 +4340,11 @@ namespace UIKit {
 		NSTextRange ParagraphSeparatorRange { get; }
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextLineFragment : NSSecureCoding {
@@ -4125,7 +4380,11 @@ namespace UIKit {
 		nfloat GetFractionOfDistanceThroughGlyph (CGPoint point);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextLayoutFragmentState : ulong {
 		None = 0,
@@ -4134,7 +4393,11 @@ namespace UIKit {
 		LayoutAvailable = 3,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextAttachmentViewProvider {
@@ -4164,7 +4427,11 @@ namespace UIKit {
 		CGRect GetAttachmentBounds (NSDictionary<NSString, NSObject> attributes, INSTextLocation location, [NullAllowed] NSTextContainer textContainer, CGRect proposedLineFragment, CGPoint position);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextLayoutFragment : NSSecureCoding, NSTextViewportRenderingSurfaceKey {
@@ -4231,7 +4498,11 @@ namespace UIKit {
 		NSTextLineFragment GetTextLineFragment (INSTextLocation textLocation, bool isUpstreamAffinity);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextRange {
@@ -4273,14 +4544,22 @@ namespace UIKit {
 
 	interface INSTextViewportRenderingSurface { }
 
+#if MONOMAC
+	[TV (27, 0), iOS (27, 0), NoMacCatalyst, Mac (27, 0)]
+#else
 	[TV (27, 0), iOS (27, 0), MacCatalyst (27, 0), Mac (27, 0)]
+#endif
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface NSTextViewportRenderingSurface {
 	}
 
 	interface INSTextViewportRenderingSurfaceKey { }
 
+#if MONOMAC
+	[TV (18, 0), iOS (18, 0), NoMacCatalyst, Mac (15, 0)]
+#else
 	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
+#endif
 	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface NSTextViewportRenderingSurfaceKey {
 	}
@@ -4288,7 +4567,11 @@ namespace UIKit {
 	interface INSTextViewportLayoutControllerDelegate { }
 
 	[TV (15, 0), iOS (15, 0)]
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (15, 0)]
+#endif
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTextViewportLayoutControllerDelegate {
@@ -4319,7 +4602,11 @@ namespace UIKit {
 		void ReceivedSetNeedsLayout (NSTextViewportLayoutController textViewportLayoutController);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextViewportLayoutController {
@@ -4353,7 +4640,11 @@ namespace UIKit {
 		void AdjustViewport (nfloat verticalOffset);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionGranularity : long {
 		Character,
@@ -4363,7 +4654,11 @@ namespace UIKit {
 		Sentence,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionAffinity : long {
 		Upstream = 0,
@@ -4371,7 +4666,11 @@ namespace UIKit {
 	}
 
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextSelection : NSSecureCoding {
@@ -4413,30 +4712,54 @@ namespace UIKit {
 		NSTextSelection GetTextSelection (NSTextRange [] textRanges);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	delegate void NSTextSelectionDataSourceEnumerateSubstringsDelegate ([NullAllowed] NSString substring, NSTextRange substringRange, [NullAllowed] NSTextRange enclodingRange, out bool stop);
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	delegate void NSTextSelectionDataSourceEnumerateCaretOffsetsDelegate (nfloat caretOffset, INSTextLocation location, bool leadingEdge, out bool stop);
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	delegate void NSTextSelectionDataSourceEnumerateContainerBoundariesDelegate (INSTextLocation location, out bool stop);
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionNavigationLayoutOrientation : long {
 		Horizontal = 0,
 		Vertical = 1,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionNavigationWritingDirection : long {
 		LeftToRight = 0,
 		RightToLeft = 1,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTextSelectionDataSource {
@@ -4486,7 +4809,11 @@ namespace UIKit {
 		CGPoint ConvertInteractionPoint (CGPoint point, INSTextLocation containerLocation);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionNavigationDirection : long {
 		Forward,
@@ -4497,7 +4824,11 @@ namespace UIKit {
 		Down,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Native]
 	public enum NSTextSelectionNavigationDestination : long {
 		Character,
@@ -4509,7 +4840,11 @@ namespace UIKit {
 		Document,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSTextSelectionNavigationModifier : ulong {
@@ -4520,7 +4855,11 @@ namespace UIKit {
 
 	interface INSTextSelectionDataSource { }
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSTextSelectionNavigation {
@@ -4566,7 +4905,11 @@ namespace UIKit {
 		NSTextRange [] GetDeletionRanges (NSTextSelection textSelection, NSTextSelectionNavigationDirection direction, NSTextSelectionNavigationDestination destination, bool allowsDecomposition);
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface NSTextContentStorageDelegate : NSTextContentManagerDelegate {
@@ -4579,7 +4922,11 @@ namespace UIKit {
 
 	interface INSTextStorageObserving { }
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[Protocol]
 	interface NSTextStorageObserving {
 		[Abstract]
@@ -4595,7 +4942,11 @@ namespace UIKit {
 		void PerformEditingTransaction (NSTextStorage textStorage, Action transaction);
 	}
 
+#if MONOMAC
+	[TV (16, 0), iOS (16, 0), NoMacCatalyst]
+#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
 	enum NSTextListMarkerFormats {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -4687,7 +5038,11 @@ namespace UIKit {
 		Decimal,
 	}
 
+#if MONOMAC
+	[TV (16, 0), iOS (16, 0), NoMacCatalyst]
+#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
 	[Flags]
 	[Native]
 	public enum NSTextListOptions : ulong {
@@ -4696,7 +5051,11 @@ namespace UIKit {
 		PrependEnclosingMarker = 1,
 	}
 
+#if MONOMAC
+	[TV (15, 0), iOS (15, 0), NoMacCatalyst]
+#else
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
+#endif
 	[BaseType (typeof (NSTextContentManager))]
 	interface NSTextContentStorage : NSTextStorageObserving {
 		[Wrap ("WeakDelegate")]
@@ -4733,7 +5092,11 @@ namespace UIKit {
 		bool IncludesTextListMarkers { get; set; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	interface NSTextList : NSCoding, NSCopying, NSSecureCoding {
 		[Export ("initWithMarkerFormat:options:")]
@@ -4785,7 +5148,11 @@ namespace UIKit {
 		bool IncludesTextListMarkers { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
 	interface NSTextBlock : NSSecureCoding, NSCopying {
@@ -4874,7 +5241,11 @@ namespace UIKit {
 		NSColor BackgroundColor { get; set; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSTextBlock))]
 	[DisableDefaultCtor]
 	interface NSTextTableBlock {
@@ -4898,7 +5269,11 @@ namespace UIKit {
 		nint ColumnSpan { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#else
 	[MacCatalyst (13, 1)]
+#endif
 	[BaseType (typeof (NSTextBlock))]
 	interface NSTextTable {
 		[NoiOS, NoTV, NoMacCatalyst]
@@ -4931,7 +5306,11 @@ namespace UIKit {
 		bool HidesEmptyCells { get; set; }
 	}
 
+#if MONOMAC
+	[TV (16, 0), iOS (16, 0), NoMacCatalyst]
+#else
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
+#endif
 	[BaseType (typeof (NSTextParagraph))]
 	interface NSTextListElement {
 		[Export ("initWithAttributedString:")]
@@ -4974,6 +5353,9 @@ namespace UIKit {
 		NSTextListElement ParentElement { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#endif
 	enum NSAttributedStringDocumentType {
 		[DefaultEnumValue]
 		[Field (null)]
@@ -5016,6 +5398,9 @@ namespace UIKit {
 		OpenDocument = NSDocumentType.OpenDocument,
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#endif
 	[Static]
 	[Internal]
 	interface NSAttributedStringDocumentAttributeKey {
@@ -5164,6 +5549,9 @@ namespace UIKit {
 		NSString DefaultFontExcludedDocumentAttribute { get; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#endif
 	[StrongDictionary (nameof (NSAttributedStringDocumentReadingOptionKey), Suffix = "DocumentOption")]
 	interface NSAttributedStringDocumentReadingOptions {
 #if XAMCORE_5_0
@@ -5204,6 +5592,9 @@ namespace UIKit {
 		bool TextKit1ListMarkerFormat { get; set; }
 	}
 
+#if MONOMAC
+	[NoMacCatalyst]
+#endif
 	[Static]
 	[Internal]
 	interface NSAttributedStringDocumentReadingOptionKey {
@@ -5261,7 +5652,11 @@ namespace UIKit {
 		NSString TextKit1ListMarkerFormatDocumentOption { get; }
 	}
 
+#if MONOMAC
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), NoMacCatalyst]
+#else
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface NSAdaptiveImageGlyph : NSCopying, NSSecureCoding, CTAdaptiveImageProviding {
@@ -5283,14 +5678,22 @@ namespace UIKit {
 		UTType ContentType { get; }
 	}
 
+#if MONOMAC
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), NoMacCatalyst]
+#else
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+#endif
 	enum NSTextHighlightStyle {
 		[DefaultEnumValue]
 		[Field ("NSTextHighlightStyleDefault")]
 		Default,
 	}
 
+#if MONOMAC
+	[TV (18, 0), Mac (15, 0), iOS (18, 0), NoMacCatalyst]
+#else
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
+#endif
 	enum NSTextHighlightColorScheme {
 		[DefaultEnumValue]
 		[Field ("NSTextHighlightColorSchemeDefault")]
@@ -5308,7 +5711,11 @@ namespace UIKit {
 
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorTextUpdateReason : long
@@ -5320,7 +5727,11 @@ namespace UIKit {
 		UndoRedo,
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorState : long
@@ -5334,7 +5745,11 @@ namespace UIKit {
 		InteractiveStreaming,
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorTextReplacementReason : long
@@ -5352,7 +5767,11 @@ namespace UIKit {
 		Temporary = 4,
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorContextScope : long
@@ -5365,7 +5784,11 @@ namespace UIKit {
 		VisibleArea,
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorTextAnimation : long
@@ -5384,7 +5807,11 @@ namespace UIKit {
 		IndicateGrammar = 10,
 	}
 
+#if MONOMAC
+	[TV (27, 0), NoMacCatalyst, iOS (27, 0), Mac (27, 0)]
+#else
 	[TV (27, 0), MacCatalyst (27, 0), iOS (27, 0), Mac (27, 0)]
+#endif
 	[Native]
 #if MONOMAC
 	public enum NSWritingToolsCoordinatorTextDecoration : long
@@ -5396,7 +5823,11 @@ namespace UIKit {
 		GrammarUnderline,
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[BaseType (typeof (NSObject))]
 #if MONOMAC
 	interface NSWritingToolsCoordinator
@@ -5502,7 +5933,11 @@ namespace UIKit {
 	delegate void UIWritingToolsCoordinatorDelegateRequestsDecorationContainerViewCallback (View view);
 #endif
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
 	[BaseType (typeof (NSObject))]
 #if MONOMAC
@@ -5577,7 +6012,11 @@ namespace UIKit {
 		void WillChangeToState (XWritingToolsCoordinator writingToolsCoordinator, XWritingToolsCoordinatorState newState, Action completion);
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 #if MONOMAC
@@ -5599,7 +6038,11 @@ namespace UIKit {
 		Action CompletionHandler { get; set; }
 	}
 
+#if MONOMAC
+	[NoTV, NoMacCatalyst, iOS (18, 2), Mac (15, 2)]
+#else
 	[NoTV, MacCatalyst (18, 2), iOS (18, 2), Mac (15, 2)]
+#endif
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 #if MONOMAC

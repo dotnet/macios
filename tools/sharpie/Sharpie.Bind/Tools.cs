@@ -15,11 +15,24 @@ public static class Tools {
 		return rv.PrintMessages ();
 	}
 
-	static BindTool? CreateBindTool (string [] args)
+	public static BindTool? CreateBindTool (string [] args)
 	{
 		var showHelp = false;
-
 		var binder = new BindTool ();
+
+		void AddSource (string path, bool framework)
+		{
+			framework |= path.TrimEnd (Path.DirectorySeparatorChar).EndsWith (".framework", StringComparison.OrdinalIgnoreCase);
+			if (framework) {
+				if (!string.IsNullOrEmpty (binder.SourceFramework))
+					binder.BindingResult.ReportError (20 /* Only one input header or framework can be specified. */);
+				binder.SourceFramework = path;
+			} else {
+				if (!string.IsNullOrEmpty (binder.SourceFile))
+					binder.BindingResult.ReportError (20 /* Only one input header or framework can be specified. */);
+				binder.SourceFile = path;
+			}
+		}
 
 		var os = new OptionSet {
 			{ "Options:" },
@@ -31,8 +44,8 @@ public static class Tools {
 			{ "" },
 			{ "Parse options:" },
 			{ "s|sdk=", "Target SDK.", v => binder.Sdk = v },
-			{ "f|framework=", "The input framework to bind. Implies setting the scope (--scope) to the framework, setting the namespace (--namespace) to the name of the framework, and no other sources/headers can be specified. If the framework provides an 'Info.plist' with SDK information (DTSDKName), the '-sdk' option will be implied as well (if not manually specified).", v => binder.SourceFramework = v },
-			{ "header=", "The input header file to bind. This can also be a .framework directory.", v => binder.SourceFile = v },
+			{ "f|framework=", "The input framework to bind. Implies setting the scope (--scope) to the framework, setting the namespace (--namespace) to the name of the framework, and no other sources/headers can be specified. If the framework provides an 'Info.plist' with SDK information (DTSDKName), the '-sdk' option will be implied as well (if not manually specified).", v => AddSource (v, true) },
+			{ "header=", "The input header file to bind. This can also be a .framework directory.", v => AddSource (v, false) },
 			{   "scope=", "Restrict following #include and #import directives declared in header files to within the specified DIR directory.", v => binder.DirectoriesInScope.Add (Path.GetFullPath (v)) },
 			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang.", v => { } },
 			{ "clang-resource-dir=", "Specify the Clang resource directory.", v => binder.ClangResourceDirectory = v },

@@ -185,6 +185,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "QuickLook", 10, 5 },
 					{ "QuartzComposer", "Quartz", 10, 5, "QuartzComposer" },
 					{ "ImageCaptureCore", "ImageCaptureCore", 10,5 },
+					{ "InputMethodKit", "InputMethodKit", 10, 5 },
 
 					{ "ServiceManagement", 10, 6 },
 					{ "QuickLookUI", "Quartz", 10, 6, "QuickLookUI" },

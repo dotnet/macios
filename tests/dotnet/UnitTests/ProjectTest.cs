@@ -4132,6 +4132,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/HealthKit.framework/Versions/A/HealthKit",
 			"/System/Library/Frameworks/ImageCaptureCore.framework/Versions/A/ImageCaptureCore",
 			"/System/Library/Frameworks/ImageIO.framework/Versions/A/ImageIO",
+			"/System/Library/Frameworks/InputMethodKit.framework/Versions/A/InputMethodKit",
 			"/System/Library/Frameworks/Intents.framework/Versions/A/Intents",
 			"/System/Library/Frameworks/IntentsUI.framework/Versions/A/IntentsUI",
 			"/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface",

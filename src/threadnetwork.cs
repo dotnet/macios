@@ -129,7 +129,7 @@ namespace ThreadNetwork {
 	interface THNearbyNetworkCredentials {
 		/// <summary>Gets whether these credentials belong to the preferred network.</summary>
 		/// <remarks>This value is a snapshot and does not change when the preferred network changes.</remarks>
-		[Export ("isPreferredNetworkCredentials")]
+		[Export ("isForPreferredNetwork")]
 		bool IsPreferredNetworkCredentials { get; }
 	}
 

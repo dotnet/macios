@@ -32,7 +32,17 @@ public class VTLowLatencyFrameInterpolationConfigurationTest {
 			Assert.That (obj.FrameWidth, Is.EqualTo ((nint) 120), "FrameWidth");
 			Assert.That (obj.FrameHeight, Is.EqualTo ((nint) 240), "FrameHeight");
 			Assert.That (obj.SpatialScaleFactor, Is.EqualTo ((nint) 1), "SpatialScaleFactor");
-			Assert.That (obj.NumberOfInterpolatedFrames, Is.EqualTo ((nint) 0 /* this doesn't make sense, should be 2, but I confirmed the same behavior in Xcode */), "NumberOfInterpolatedFrames");
+#if __MACOS__ || __MACCATALYST__
+			if (TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 27, 2)) {
+				Assert.That (obj.NumberOfInterpolatedFrames, Is.EqualTo ((nint) 2), "NumberOfInterpolatedFrames");
+			} else if (TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 27, 0)) {
+				// The exact macOS version where this behavior changed is unknown.
+				Assert.That (obj.NumberOfInterpolatedFrames, Is.EqualTo ((nint) 0).Or.EqualTo ((nint) 2), "NumberOfInterpolatedFrames");
+			} else
+#endif
+			{
+				Assert.That (obj.NumberOfInterpolatedFrames, Is.EqualTo ((nint) 0 /* this doesn't make sense, should be 2, but I confirmed the same behavior in Xcode */), "NumberOfInterpolatedFrames");
+			}
 		});
 	}
 

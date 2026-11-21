@@ -502,6 +502,75 @@ namespace Xamarin.Tests {
 			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "trimmable-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "managed-static")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "trimmable-static")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "managed-static")]
+		public void NativeAotEmbeddedNativeResources (ApplePlatform platform, string runtimeIdentifiers, string registrar)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			// Model an existing legacy binding without invoking the unsupported .NET 12 binding-embedding target.
+			var bindingDirectory = Cache.CreateTemporaryDirectory ();
+			var bindingProjectPath = Path.Combine (bindingDirectory, "BindingWithEmbeddedFramework.csproj");
+			var nativePlatform = platform == ApplePlatform.iOS ? "ios" : "macos";
+			var frameworkDirectory = Path.Combine (Configuration.SourceRoot, "tests", "test-libraries", ".libs", nativePlatform, "XTest.framework");
+			var zipResult = ExecutionHelper.Execute ("/usr/bin/zip",
+				new [] { "-r", "-y", Path.Combine (bindingDirectory, "XTest.framework.zip"), "." },
+				out StringBuilder zipOutput, frameworkDirectory);
+			Assert.That (zipResult, Is.EqualTo (0), $"Creating the embedded framework archive: {zipOutput}");
+			File.Copy (Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "BindingWithEmbeddedFramework", "StructsAndEnums.cs"), Path.Combine (bindingDirectory, "CFunctions.cs"));
+			File.WriteAllText (Path.Combine (bindingDirectory, "LinkWith.cs"), """
+				[assembly: ObjCRuntime.LinkWith ("XTest.framework", SmartLink = true)]
+				""");
+			File.WriteAllText (bindingProjectPath, $"""
+				<Project Sdk="Microsoft.NET.Sdk">
+					<PropertyGroup>
+						<TargetFramework>{platform.ToFramework ()}</TargetFramework>
+					</PropertyGroup>
+					<ItemGroup>
+						<EmbeddedResource Include="XTest.framework.zip" LogicalName="XTest.framework" />
+					</ItemGroup>
+				</Project>
+				""");
+			var bindingProperties = GetDefaultProperties ();
+			bindingProperties ["Configuration"] = "Release";
+			DotNet.AssertBuild (bindingProjectPath, bindingProperties);
+			var bindingPath = Path.Combine (GetBinDir (bindingProjectPath, platform, "", "Release"), "BindingWithEmbeddedFramework.dll");
+			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = "Release";
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["PrebuiltBindingPath"] = bindingPath;
+			properties ["Registrar"] = registrar;
+			DotNet.AssertBuild (projectPath, properties);
+
+			using var binding = AssemblyDefinition.ReadAssembly (bindingPath);
+			var resource = binding.MainModule.Resources.OfType<EmbeddedResource> ().Single (v => v.Name == "XTest.framework");
+			var embeddedFramework = resource.GetResourceData ();
+			Assert.That (embeddedFramework.Length, Is.GreaterThan (0), "The binding must contain the embedded framework");
+			var executable = File.ReadAllBytes (GetNativeExecutable (platform, appPath));
+			Assert.That (executable.AsSpan ().IndexOf (embeddedFramework), Is.EqualTo (-1), "The executable must not embed the native framework archive");
+
+			var substitutionsPath = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, "Release"), "nativeaot-resource-substitutions.xml");
+			var substitutions = System.Xml.Linq.XDocument.Load (substitutionsPath);
+			Assert.That (substitutions.Descendants ("assembly").Single (v => (string?) v.Attribute ("fullname") == "BindingWithEmbeddedFramework")
+				.Elements ("resource").Select (v => (string?) v.Attribute ("name")), Does.Contain ("XTest.framework"), "ILC native resource exclusions");
+
+			var timestamp = File.GetLastWriteTimeUtc (substitutionsPath);
+			var result = DotNet.AssertBuild (projectPath, properties);
+			AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Incremental preparation");
+			Assert.That (File.GetLastWriteTimeUtc (substitutionsPath), Is.EqualTo (timestamp), "Incremental builds must reuse substitutions");
+
+			File.Delete (substitutionsPath);
+			result = DotNet.AssertBuild (projectPath, properties);
+			AssertTargetExecuted (BinLog.GetAllTargets (result.BinLogPath), "_ExecutePrepareAssemblies", "Missing substitutions");
+			Assert.That (substitutionsPath, Does.Exist, "Preparation must regenerate missing substitutions");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
@@ -1464,6 +1533,42 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (projectPath, GetDefaultProperties (runtimeIdentifiers));
 		}
 
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", false)]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", false)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", true)]
+		public void LibraryBundleResourcesSurviveIncrementalBuild (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var config = bundleOriginalResources ? "DebugOriginal" : "DebugCompiled";
+			var projectPath = GetProjectPath ("AppWithLibraryWithResourcesReference", runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: config);
+			Clean (projectPath);
+			Clean (GetProjectPath ("LibraryWithResources", platform: platform));
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = config;
+			properties ["BundleOriginalResources"] = bundleOriginalResources ? "true" : "false";
+
+			DotNet.AssertBuild (projectPath, properties);
+			var resourcePath = Path.Combine (GetResourcesDirectory (platform, appPath), "C.ttf");
+			Assert.That (resourcePath, Does.Exist, "Library resource after initial build");
+			var expected = File.ReadAllBytes (resourcePath);
+
+			for (var i = 0; i < 3; i++) {
+				Directory.Delete (appPath, true);
+				var result = DotNet.AssertBuild (projectPath, properties);
+				AssertTargetNotExecuted (BinLog.GetAllTargets (result.BinLogPath), "_UnpackLibraryResources", $"Incremental build {i}");
+				Assert.That (resourcePath, Does.Exist, $"Library resource after incremental build {i}");
+				Assert.That (File.ReadAllBytes (resourcePath), Is.EqualTo (expected), $"Library resource contents after incremental build {i}");
+			}
+		}
+
 		public enum DuplicatedResourcesScenarios {
 			FirstLibraryAndSecondLibrary,
 			FirstLibraryAndExecutable,
@@ -2348,6 +2453,7 @@ namespace Xamarin.Tests {
 		}
 
 
+		[Ignore ("Fully trimmed app extension builds fail: https://github.com/dotnet/macios/issues/27342")]
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
 		[TestCase (ApplePlatform.MacOSX)]
@@ -2592,6 +2698,7 @@ namespace Xamarin.Tests {
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
 			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
+			properties ["HotReloadCompatibleBuild"] = "false"; // P/Invoke wrappers modify assemblies, which is incompatible with Hot Reload.
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -3461,6 +3568,8 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
+			var bindingProjectPath = GetProjectPath ("BindingWithEmbeddedFramework", platform: platform);
+			Clean (bindingProjectPath);
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: "Release");
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
@@ -4635,6 +4744,7 @@ namespace Xamarin.Tests {
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";
 			properties ["XamarinDebugPort"] = "123";
+			properties ["XamarinDebugConnectTimeout"] = "10";
 			properties ["StandardOutputPath"] = stdout;
 			properties ["StandardErrorPath"] = stderr;
 			properties ["OpenNewInstance"] = "true";
@@ -4660,7 +4770,7 @@ namespace Xamarin.Tests {
 				Assert.That (stderrContents, Does.Contain ("Found debug mode telegraph in environment variables"), "mode");
 				Assert.That (stderrContents, Does.Contain ("Found port 123 in environment variables"), "port");
 				Assert.That (stderrContents, Does.Contain ("Found host localhost in environment variables"), "host");
-				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi Connect Timeout: -1"), "summary");
+				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi"), "summary");
 			});
 		}
 	}

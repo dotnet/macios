@@ -8,22 +8,24 @@
 
 namespace JavaScriptCore {
 	// untyped enum -> JSValueRef.h
-	/// <summary>An enumeration whose values specify JavaScript types, including <c>Object</c> and <c>undefined</c>.</summary>
+	/// <summary>Identifies the type of a JavaScript value.</summary>
 	public enum JSType {
-		/// <summary>To be added.</summary>
+		/// <summary>The unique undefined value.</summary>
 		Undefined,
-		/// <summary>To be added.</summary>
+		/// <summary>The unique null value.</summary>
 		Null,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive Boolean value, either <see langword="true"/> or <see langword="false"/>.</summary>
 		Boolean,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive number value.</summary>
 		Number,
-		/// <summary>To be added.</summary>
+		/// <summary>A primitive string value.</summary>
 		String,
-		/// <summary>To be added.</summary>
+		/// <summary>An object value, represented by a <c>JSObjectRef</c>.</summary>
 		Object,
+		/// <summary>A primitive symbol value.</summary>
 		[MacCatalyst (13, 1)]
 		Symbol,
+		/// <summary>A primitive BigInt value.</summary>
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]
 		BigInt,
 	}
@@ -32,13 +34,13 @@ namespace JavaScriptCore {
 	/// <summary>Enumerates attributes of properties.</summary>
 	[Flags]
 	public enum JSPropertyAttributes : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The property has no special attributes.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The property is read-only.</summary>
 		ReadOnly = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The property is not enumerated by JavaScript property enumerators or <c>for...in</c> loops.</summary>
 		DontEnum = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>The delete operation fails for the property.</summary>
 		DontDelete = 1 << 3,
 	}
 
@@ -46,17 +48,22 @@ namespace JavaScriptCore {
 	/// <summary>Enumerates class attributes.</summary>
 	[Flags]
 	public enum JSClassAttributes : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>The class has no special attributes.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The class does not automatically create a shared prototype for its instances. Use <c>JSObjectSetPrototype</c> to manage prototypes manually.</summary>
 		NoAutomaticPrototype = 1 << 1,
 	}
 
+	/// <summary>Identifies the result of comparing two JavaScript operands.</summary>
 	[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), Mac (15, 0)]
 	public enum JSRelationCondition : uint {
+		/// <summary>The operands cannot be compared.</summary>
 		Undefined,
+		/// <summary>The operands have equivalent values.</summary>
 		Equal,
+		/// <summary>The left operand is greater than the right operand.</summary>
 		GreaterThan,
+		/// <summary>The left operand is less than the right operand.</summary>
 		LessThan,
 	}
 }

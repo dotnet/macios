@@ -15,9 +15,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ExtraArgs { get; set; } = "";
 
 		[Output]
-		public ITaskItem [] Aot { get; set; } = [];
-
-		[Output]
 		public ITaskItem [] DlSym { get; set; } = [];
 
 		[Output]
@@ -99,7 +96,6 @@ namespace Xamarin.MacDev.Tasks {
 				var args = StringUtils.ParseArguments (extraArgs);
 				List<string>? xml = null;
 				List<string>? customLinkFlags = null;
-				var aot = new List<ITaskItem> ();
 				var envVariables = new List<ITaskItem> ();
 				var dlsyms = new List<ITaskItem> ();
 				int? verbosity = null;
@@ -137,7 +133,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					switch (name) {
 					case "aot":
-						aot.Add (new TaskItem (value));
+						Log.LogError (MSBStrings.E7201 /* The --aot option is not supported because Mono AOT compilation has been removed. */);
 						break;
 					case "nosymbolstrip":
 						// There's also a version that takes symbols as arguments:
@@ -298,12 +294,6 @@ namespace Xamarin.MacDev.Tasks {
 					if (DlSym is not null)
 						dlsyms.AddRange (DlSym);
 					DlSym = dlsyms.ToArray ();
-				}
-
-				if (aot.Count > 0) {
-					if (Aot is not null)
-						aot.AddRange (Aot);
-					Aot = aot.ToArray ();
 				}
 
 				if (verbosity.HasValue)

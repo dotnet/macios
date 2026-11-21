@@ -12,20 +12,21 @@
 
 namespace CoreBluetooth {
 
+	/// <summary>Represents the current state of a <see cref="CBManager" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The state is unknown; an update is imminent.</summary>
 		Unknown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection to the system Bluetooth service was momentarily lost; an update is imminent.</summary>
 		Resetting,
-		/// <summary>To be added.</summary>
+		/// <summary>The platform does not support the Bluetooth Low Energy role of the manager.</summary>
 		Unsupported,
-		/// <summary>To be added.</summary>
+		/// <summary>The app is not authorized to use the Bluetooth Low Energy role.</summary>
 		Unauthorized,
-		/// <summary>To be added.</summary>
+		/// <summary>Bluetooth is powered off.</summary>
 		PoweredOff,
-		/// <summary>To be added.</summary>
+		/// <summary>Bluetooth is powered on and available to use.</summary>
 		PoweredOn,
 	}
 
@@ -93,26 +94,26 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBCharacteristicProperties : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Permits broadcasts of the characteristic value using a characteristic configuration descriptor. Not allowed for local characteristics.</summary>
 		Broadcast = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits reads of the characteristic value.</summary>
 		Read = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits writes of the characteristic value without a response.</summary>
 		WriteWithoutResponse = 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits writes of the characteristic value.</summary>
 		Write = 8,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits notifications of the characteristic value without a response.</summary>
 		Notify = 16,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits indications of the characteristic value.</summary>
 		Indicate = 32,
-		/// <summary>To be added.</summary>
+		/// <summary>Permits signed writes of the characteristic value.</summary>
 		AuthenticatedSignedWrites = 64,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that additional characteristic properties are defined in the extended properties descriptor. Not allowed for local characteristics.</summary>
 		ExtendedProperties = 128,
-		/// <summary>To be added.</summary>
+		/// <summary>Only trusted devices can enable notifications of the characteristic value.</summary>
 		[MacCatalyst (13, 1)]
 		NotifyEncryptionRequired = 0x100,
-		/// <summary>To be added.</summary>
+		/// <summary>Only trusted devices can enable indications of the characteristic value.</summary>
 		[MacCatalyst (13, 1)]
 		IndicateEncryptionRequired = 0x200,
 	}
@@ -211,9 +212,9 @@ namespace CoreBluetooth {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCharacteristicWriteType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Writes the characteristic value and receives a response with the result of the write.</summary>
 		WithResponse,
-		/// <summary>To be added.</summary>
+		/// <summary>Writes the characteristic value without a response; delivery is best-effort and may not be guaranteed.</summary>
 		WithoutResponse,
 	}
 
@@ -231,13 +232,13 @@ namespace CoreBluetooth {
 	[Flags]
 	[Native]
 	public enum CBAttributePermissions : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows read access to the attribute.</summary>
 		Readable = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows write access to the attribute.</summary>
 		Writeable = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a trusted device to read the attribute.</summary>
 		ReadEncryptionRequired = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Requires a trusted device to write the attribute.</summary>
 		WriteEncryptionRequired = 1 << 3,
 	}
 

@@ -593,6 +593,20 @@ namespace PhotosUI {
 		[Abstract]
 		[Export ("picker:didFinishPicking:")]
 		void DidFinishPicking (PHPickerViewController picker, PHPickerResult [] results);
+
+		/// <summary>Called when the user taps the primary button.</summary>
+		/// <param name="picker">The picker whose primary button was tapped.</param>
+		/// <remarks>The picker is not automatically dismissed.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("pickerDidPerformPrimaryAction:")]
+		void DidPerformPrimaryAction (PHPickerViewController picker);
+
+		/// <summary>Called when the user taps the secondary button.</summary>
+		/// <param name="picker">The picker whose secondary button was tapped.</param>
+		/// <remarks>The picker is not automatically dismissed.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("pickerDidPerformSecondaryAction:")]
+		void DidPerformSecondaryAction (PHPickerViewController picker);
 	}
 
 	[NoTV, Mac (13, 0), iOS (14, 0)]
@@ -656,6 +670,12 @@ namespace PhotosUI {
 		[Export ("selectionLimit")]
 		nint SelectionLimit { get; set; }
 
+		/// <summary>Gets or sets the minimum number of items that should be selected.</summary>
+		/// <remarks>The default, <see cref="NSRange.NotFound" />, means one item without preselection and zero with preselection.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("minimumSelectionLimit")]
+		nint MinimumSelectionLimit { get; set; }
+
 		[NullAllowed, Export ("filter", ArgumentSemantic.Copy)]
 		PHPickerFilter Filter { get; set; }
 
@@ -685,12 +705,48 @@ namespace PhotosUI {
 		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
 		PHPickerSearchText SearchText { get; set; }
+
+		/// <summary>Gets or sets the primary button type. The default is <see cref="PHPickerPrimaryButtonType.Automatic" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("primaryButtonType", ArgumentSemantic.Assign)]
+		PHPickerPrimaryButtonType PrimaryButtonType { get; set; }
+
+		/// <summary>Gets or sets the secondary button type. The default is <see cref="PHPickerSecondaryButtonType.Automatic" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("secondaryButtonType", ArgumentSemantic.Assign)]
+		PHPickerSecondaryButtonType SecondaryButtonType { get; set; }
+
+		/// <summary>Gets or sets the aspect ratio of items in the picker, or <see langword="null" /> to use the default.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("aspectRatio", ArgumentSemantic.Copy)]
+		PHPickerAspectRatio AspectRatio { get; set; }
+
+		/// <summary>Gets or sets the identifier of the collection whose items can be shown.</summary>
+		/// <remarks>A <see langword="null" /> or unresolved identifier allows items from any collection.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("containerIdentifier", ArgumentSemantic.Copy)]
+		string ContainerIdentifier { get; set; }
+
+		/// <summary>Gets or sets the localized picker title, or <see langword="null" /> to use the default.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("title", ArgumentSemantic.Copy)]
+		string Title { get; set; }
+
+		/// <summary>Gets or sets the localized prompt shown when the picker is presented. The default is <see langword="null" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("prompt", ArgumentSemantic.Copy)]
+		string Prompt { get; set; }
 	}
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface PHPickerSearchText : NSCopying {
+		/// <summary>Gets or sets whether to focus the search field when the picker opens or its search text is updated. The default is <see langword="false" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("prefersAutomaticFocus")]
+		bool PrefersAutomaticFocus { get; set; }
+
 		[Export ("initWithString:")]
 		NativeHandle Constructor (string text);
 
@@ -776,6 +832,12 @@ namespace PhotosUI {
 		[Export ("spatialMediaFilter")]
 		PHPickerFilter SpatialMediaFilter { get; }
 
+		/// <summary>Gets a filter for media with a landscape aspect ratio.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Static]
+		[Export ("landscapeAspectRatioFilter")]
+		PHPickerFilter LandscapeAspectRatioFilter { get; }
+
 		[NoTV, Mac (13, 0), iOS (15, 0)]
 		[MacCatalyst (15, 0)]
 		[Static]
@@ -795,6 +857,12 @@ namespace PhotosUI {
 		PHPickerFilter GetNotFilterOfSubfilter (PHPickerFilter subfilter);
 	}
 
+	/// <summary>Handles the result of a picker thumbnail image URL request.</summary>
+	/// <param name="url">The temporary thumbnail file URL, or <see langword="null" /> if unavailable. Copy the file synchronously before this handler returns or awaits to keep it.</param>
+	/// <param name="error">An error describing a failed request, or <see langword="null" /> on success.</param>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	delegate void PHPickerResultThumbnailImageUrlHandler ([NullAllowed] NSUrl url, [NullAllowed] NSError error);
+
 	[NoTV, Mac (13, 0), iOS (14, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
@@ -806,6 +874,14 @@ namespace PhotosUI {
 
 		[NullAllowed, Export ("assetIdentifier")]
 		string AssetIdentifier { get; }
+
+		/// <summary>Requests a thumbnail file URL using the preferred size.</summary>
+		/// <param name="preferredSize">The recommended minimum thumbnail dimension.</param>
+		/// <param name="resultHandler">Receives the temporary file URL and any error. Copy the file before the handler returns to keep it.</param>
+		/// <remarks>The thumbnail file is removed when the result handler returns. Copy the file synchronously before returning or awaiting an asynchronous operation.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("requestThumbnailImageURLForPreferredSize:resultHandler:")]
+		void RequestThumbnailImageUrl (PHPickerResultThumbnailSize preferredSize, PHPickerResultThumbnailImageUrlHandler resultHandler);
 	}
 
 	[NoTV, NoMac, iOS (14, 0)]
@@ -839,12 +915,61 @@ namespace PhotosUI {
 		[Export ("selectionLimit")]
 		nint SelectionLimit { get; set; }
 
+		/// <summary>Gets or sets the minimum number of items that should be selected.</summary>
+		/// <remarks>The default, <see cref="NSRange.NotFound" />, means one item without preselection and zero with preselection.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("minimumSelectionLimit")]
+		nint MinimumSelectionLimit { get; set; }
+
 		[Export ("edgesWithoutContentMargins", ArgumentSemantic.Assign)]
 		NSDirectionalRectEdge EdgesWithoutContentMargins { get; set; }
 
 		[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		[NullAllowed, Export ("searchText", ArgumentSemantic.Copy)]
 		PHPickerSearchText SearchText { get; set; }
+
+		/// <summary>Gets or sets the localized picker title, or <see langword="null" /> to use the default.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("title", ArgumentSemantic.Copy)]
+		string Title { get; set; }
+
+		/// <summary>Gets or sets the localized prompt shown when the picker is presented. The default is <see langword="null" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("prompt", ArgumentSemantic.Copy)]
+		string Prompt { get; set; }
+
+		/// <summary>Gets or sets the primary button type. The default is <see cref="PHPickerPrimaryButtonType.Automatic" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("primaryButtonType", ArgumentSemantic.Assign)]
+		PHPickerPrimaryButtonType PrimaryButtonType { get; set; }
+
+		/// <summary>Gets or sets the secondary button type. The default is <see cref="PHPickerSecondaryButtonType.Automatic" />.</summary>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[Export ("secondaryButtonType", ArgumentSemantic.Assign)]
+		PHPickerSecondaryButtonType SecondaryButtonType { get; set; }
+
+		/// <summary>Gets or sets the identifier of the collection of items to show.</summary>
+		/// <remarks>The default is <see langword="null" />. An unresolved identifier is treated as <see langword="null" />.</remarks>
+		[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		[NullAllowed, Export ("containerIdentifier", ArgumentSemantic.Copy)]
+		string ContainerIdentifier { get; set; }
+	}
+
+	/// <summary>Specifies the aspect ratio of items shown by a photo picker.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PHPickerAspectRatio : NSCopying {
+		/// <summary>Gets an aspect ratio based on the device.</summary>
+		[Static]
+		[Export ("deviceAspectRatio")]
+		PHPickerAspectRatio DeviceAspectRatio { get; }
+
+		/// <summary>Creates a custom aspect ratio from an item's width divided by its height.</summary>
+		/// <param name="aspectRatio">The ratio of width to height, which must be greater than zero.</param>
+		[Export ("initWithAspectRatio:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (nfloat aspectRatio);
 	}
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]

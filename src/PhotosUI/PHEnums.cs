@@ -96,6 +96,15 @@ namespace PhotosUI {
 		CollectionNavigation = 1 << 2,
 		SelectionActions = 1 << 3,
 		SensitivityAnalysisIntervention = 1uL << 4,
+		/// <summary>Automatically updates whether the picker can be dismissed interactively.</summary>
+		[Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		AutomaticModalInPresentation = 1uL << 5,
+		/// <summary>Automatically updates the picker's preferred content size.</summary>
+		[Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		AutomaticPreferredContentSize = 1uL << 6,
+		/// <summary>The sidebar used for navigation.</summary>
+		[Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		Sidebar = 1uL << 7,
 	}
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
@@ -105,6 +114,80 @@ namespace PhotosUI {
 		None = 0,
 		RemoveLocation = 1 << 0,
 		RemoveCaptions = 1 << 1,
+		/// <summary>Removes metadata marking an asset as an Apple Reference Image.</summary>
+		[Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+		RemoveAppleReferenceImage = 1uL << 2,
+		/// <summary>Removes keyword metadata.</summary>
+		RemoveKeywords = 1uL << 3,
+	}
+
+	/// <summary>Specifies the recommended minimum dimension of a picker result thumbnail.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[Native]
+	public enum PHPickerResultThumbnailSize : long {
+		/// <summary>A minimum dimension of approximately 100 pixels.</summary>
+		Small = 1,
+		/// <summary>A minimum dimension of approximately 360 pixels.</summary>
+		Standard = 2,
+	}
+
+	/// <summary>Specifies the primary button displayed by a photo picker.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[Native]
+	public enum PHPickerPrimaryButtonType : long {
+		/// <summary>The system chooses the button based on context.</summary>
+		Automatic = 0,
+		/// <summary>No primary button is displayed.</summary>
+		None = 1,
+		/// <summary>An Add button.</summary>
+		Add = 2,
+		/// <summary>A Done button.</summary>
+		Done = 3,
+		/// <summary>An Edit button.</summary>
+		Edit = 4,
+		/// <summary>A Save button.</summary>
+		Save = 5,
+		/// <summary>A Next button.</summary>
+		Next = 6,
+		/// <summary>A Choose button.</summary>
+		Choose = 7,
+		/// <summary>A Continue button.</summary>
+		Continue = 8,
+	}
+
+	/// <summary>Specifies the secondary button displayed by a photo picker.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[Native]
+	public enum PHPickerSecondaryButtonType : long {
+		/// <summary>The system chooses the button based on context.</summary>
+		Automatic = 0,
+		/// <summary>No secondary button is displayed.</summary>
+		None = 1,
+		/// <summary>A Cancel button.</summary>
+		Cancel = 2,
+		/// <summary>A Back button.</summary>
+		Back = 3,
+		/// <summary>A Close button.</summary>
+		Close = 4,
+		/// <summary>A Clear button that clears the selection.</summary>
+		Clear = 5,
+	}
+
+	/// <summary>Identifies errors reported by PhotosUI operations.</summary>
+	[NoTV, Mac (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[ErrorDomain ("PHPhotosUIErrorDomain")]
+	[Native]
+	public enum PHPhotosUIError : long {
+		/// <summary>No album matches the supplied local identifier in the specified library.</summary>
+		AssetCollectionNotFound = 1,
+		/// <summary>The user cannot add content to the target album.</summary>
+		AssetCollectionNotWritable = 2,
+		/// <summary>Album creation did not produce an asset collection.</summary>
+		AssetCollectionCreationFailed = 3,
+		/// <summary>The shared album cannot accept content until migration completes.</summary>
+		SharedAlbumMigrationInProgress = 100,
+		/// <summary>The operation requires iCloud Photos, which is not enabled on the device.</summary>
+		ICloudPhotosNotEnabled = 101,
 	}
 
 	[NoTV, Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]

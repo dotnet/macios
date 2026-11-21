@@ -475,6 +475,9 @@ namespace Introspection {
 				// Xcode 27.0 Conformance not in headers
 				case "PHPickerSearchText":
 					return true;
+				// Xcode 27.3: conformance is not declared in the headers.
+				case "PHPickerAspectRatio":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -718,6 +721,9 @@ namespace Introspection {
 					return true;
 				// Xcode 27.0 Conformance not in headers
 				case "PHPickerSearchText":
+					return true;
+				// Xcode 27.3: conformance is not declared in the headers.
+				case "PHPickerAspectRatio":
 					return true;
 				}
 				break;

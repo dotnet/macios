@@ -33,7 +33,11 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return _RegisterForTraitChanges (this, traits, handler);
@@ -190,7 +194,11 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			return _RegisterForTraitChanges (this, handler, traits);
@@ -207,7 +215,11 @@ namespace UIKit {
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
@@ -226,7 +238,11 @@ namespace UIKit {
 		/// <typeparam name="T1">A trait to observe</typeparam>
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -248,7 +264,11 @@ namespace UIKit {
 		/// <typeparam name="T2">A trait to observe</typeparam>
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -273,7 +293,11 @@ namespace UIKit {
 		/// <typeparam name="T3">A trait to observe</typeparam>
 		/// <typeparam name="T4">A trait to observe</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -298,7 +322,11 @@ namespace UIKit {
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="target">The object whose specified selector will be called.</param>
 		/// <param name="action">The selector to call on the specified object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object and <paramref name="target" /> alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 		{
 			return _RegisterForTraitChanges (this, traits, target, action);
@@ -314,7 +342,11 @@ namespace UIKit {
 		/// </summary>
 		/// <param name="traits">The traits to observe.</param>
 		/// <param name="action">The selector to call on the current object.</param>
-		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		/// </remarks>
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Selector action)
 		{
 			return _RegisterForTraitChanges (this, traits, action);

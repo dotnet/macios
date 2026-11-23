@@ -1652,7 +1652,7 @@
         <Str Cat="Text">
           <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[A Extensão WatchKit '{0}' possui um Info.plist inválido: o matriz UIRequiredDeviceCapabilities não deve conter a capacidade 'watch-companion'.]]></Val>
+            <Val><![CDATA[A Extensão WatchKit '{0}' possui um Info.plist inválido: a matriz UIRequiredDeviceCapabilities não deve conter a capacidade 'watch-companion'.]]></Val>
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[The WatchKit Extension '{0}' has an invalid Info.plist: the UIRequiredDeviceCapabilities array should not contain the 'watch-companion' capability.]D;]A;        ]]></Val>

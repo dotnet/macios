@@ -32,10 +32,7 @@ namespace ObjCRuntime {
 
 		void IReleaseOnMainThread.ReleaseOnMainThread ()
 		{
-			if (Handle != NativeHandle.Zero) {
-				Release ();
-				ClearHandle ();
-			}
+			base.Dispose (false);
 		}
 
 		protected internal override void Retain ()

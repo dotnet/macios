@@ -55,6 +55,8 @@ The valid set of arguments depend on the platform.
 
 Typically these shouldn't be used unless specified by a Microsoft engineer.
 
+The `--aot` option is no longer supported: Mono AOT compilation has been removed.
+
 ## AppIcon
 
 The `AppIcon` item group can be used to specify an app icon for the app.
@@ -610,9 +612,10 @@ Code signing is enabled by default for all platforms; this can be overridden wit
 
 ## EnableCrashReport
 
-Enables crash reports for the app. When enabled, the `DOTNET_EnableCrashReport`
-environment variable is set to `1` at startup, which makes the .NET runtime's
-in-process crash reporter write a JSON crash report when the app crashes.
+Enables in-process crash reports for apps targeting .NET 11 or later. When enabled,
+the `DOTNET_EnableCrashReport` environment variable is set to `1` at startup,
+which makes the .NET runtime's in-process crash reporter write a JSON crash report
+when the app crashes.
 
 This setting is disabled by default, but it can be enabled like this:
 
@@ -624,7 +627,7 @@ This setting is disabled by default, but it can be enabled like this:
 
 The crash reports are written to a subdirectory of the app's caches directory.
 
-See also: [Collect crash dumps](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/collect-dumps-crash).
+See also: [Collect crash dumps](/dotnet/core/diagnostics/collect-dumps-crash).
 
 ## EnableDefaultCodesignEntitlements
 
@@ -1284,18 +1287,12 @@ See also [MacOSXSdkVersion](#macosxsdkversion).
 
 ## MtouchUseLlvm
 
-A boolean property that specifies whether AOT compilation should be done using LLVM.
+A boolean property that previously selected LLVM for Mono AOT compilation.
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 
-Default:
-
-* On iOS and tvOS: enabled for Release builds (where `Configuration="Release"`).
-* On Mac Catalyst: never enabled by default.
-
-This property only has an effect when using the Mono runtime, and a warning
-will be shown if it's set when not using the Mono runtime (for instance when
-using CoreCLR).
+Mono AOT compilation is no longer available in .NET 11, so this property has
+no effect. A warning is shown when it is set to `true`.
 
 ## NoBindingEmbedding
 
@@ -1456,7 +1453,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 Specifies whether ReadyToRun (R2R) compilation produces a single composite image containing all the assemblies, or one image per assembly.
 
-Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](https://learn.microsoft.com/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
+Only composite ReadyToRun compilation is supported for iOS, tvOS and Mac Catalyst apps, because the ReadyToRun code is embedded in the app bundle as native Mach-O code, and the runtime only knows how to locate such code for a composite image. Setting this property to `false` will produce a build error; set [PublishReadyToRun](/dotnet/core/deploying/ready-to-run) to `false` to turn off ReadyToRun compilation completely instead.
 
 Default: `true` (when `PublishReadyToRun` is `true`).
 

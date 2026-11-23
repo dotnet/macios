@@ -11,7 +11,8 @@
 	<Import Project="../../common/shared-dotnet.csproj" />
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\BindingWithEmbeddedFramework\$(_PlatformName)\BindingWithEmbeddedFramework.csproj" />
+		<ProjectReference Include="..\..\BindingWithEmbeddedFramework\$(_PlatformName)\BindingWithEmbeddedFramework.csproj" Condition="'$(PrebuiltBindingPath)' == ''" />
+		<Reference Include="BindingWithEmbeddedFramework" HintPath="$(PrebuiltBindingPath)" Condition="'$(PrebuiltBindingPath)' != ''" />
 	</ItemGroup>
 
 	<ItemGroup>

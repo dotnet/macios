@@ -2397,6 +2397,7 @@ namespace Registrar {
 #if MONOMAC || BUNDLER
 			ObjCMethod? custom_copy_with_zone = null;
 			var isNSCellSubclass = false;
+			var hasNativeHandleConstructor = false;
 #if BUNDLER
 			var isMac = App.Platform == ApplePlatform.MacOSX;
 #elif MONOMAC
@@ -2500,6 +2501,10 @@ namespace Registrar {
 					continue;
 
 				var parameters = GetParameters (ctor);
+#if MONOMAC || BUNDLER
+				if (parameters?.Length == 1 && Is (parameters [0], ObjCRuntime, "NativeHandle"))
+					hasNativeHandleConstructor = true;
+#endif
 				if (parameters is null || parameters.Length == 0) {
 					Trace ("        [CTOR] {0} default => init", GetTypeName (type));
 
@@ -2526,6 +2531,23 @@ namespace Registrar {
 				if (method.SetExportAttribute (ea, ref exceptions))
 					objcType.Add (method, ref exceptions);
 			}
+
+#if MONOMAC || BUNDLER
+			if (isNSCellSubclass && !objcType.IsWrapper && !objcType.IsModel && !IsAbstract (type)) {
+				if (!hasNativeHandleConstructor)
+					ReportWarning (4199, Errors.MT4199, GetTypeFullName (type));
+
+				var hasManagedCopy = false;
+				for (ObjCType? current = objcType; current is not null && !current.IsWrapper; current = current.BaseType) {
+					if (!current.IsModel && current.TryGetMember ("copyWithZone:", false, out var member) && member is ObjCMethod copy && copy.Method is not null) {
+						hasManagedCopy = true;
+						break;
+					}
+				}
+				if (!hasManagedCopy)
+					ReportWarning (4200, Errors.MT4200, GetTypeFullName (type));
+			}
+#endif
 
 			if (objcType.IsProtocol) {
 				OnRegisterProtocol (objcType);

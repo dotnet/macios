@@ -189,6 +189,16 @@ namespace Xamarin.Tests {
 				Assert.That (File.GetLastWriteTimeUtc (optimizedImagePath), Is.EqualTo (imageTimestamp), "Incremental image timestamp");
 				Assert.That (File.GetLastWriteTimeUtc (optimizedPropertyListPath), Is.EqualTo (propertyListTimestamp), "Incremental property list timestamp");
 				Assert.That (File.GetLastWriteTimeUtc (optimizedLocalizationPath), Is.EqualTo (localizationTimestamp), "Incremental localization timestamp");
+
+				// Turning the optimizations off must replace the optimized files with the original ones, even though the original files are older.
+				properties ["OptimizePNGs"] = "false";
+				properties ["OptimizePropertyLists"] = "false";
+				DotNet.AssertBuild (project_path, properties);
+				var originalPropertyListPath = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "settings.plist");
+				var originalLocalizationPath = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "en.lproj", "Localizable.strings");
+				Assert.That (File.ReadAllBytes (optimizedImagePath), Is.EqualTo (File.ReadAllBytes (originalImagePath)), "Unoptimized image contents");
+				Assert.That (File.ReadAllBytes (optimizedPropertyListPath), Is.EqualTo (File.ReadAllBytes (originalPropertyListPath)), "Unoptimized property list contents");
+				Assert.That (File.ReadAllBytes (optimizedLocalizationPath), Is.EqualTo (File.ReadAllBytes (originalLocalizationPath)), "Unoptimized localization contents");
 			}
 		}
 

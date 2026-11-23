@@ -340,6 +340,8 @@
 		<ItemGroup>
 			<_AppBundleBuildProperties Include="LinkMode=$(LinkMode)" />
 			<_AppBundleBuildProperties Include="MtouchLink=$(MtouchLink)" />
+			<_AppBundleBuildProperties Include="OptimizePNGs=$(OptimizePNGs)" />
+			<_AppBundleBuildProperties Include="OptimizePropertyLists=$(OptimizePropertyLists)" />
 			<_AppBundleBuildProperties Include="PublishTrimmed=$(PublishTrimmed)" />
 			<_AppBundleBuildProperties Include="TrimMode=$(TrimMode)" />
 		</ItemGroup>

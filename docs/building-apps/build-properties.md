@@ -55,6 +55,8 @@ The valid set of arguments depend on the platform.
 
 Typically these shouldn't be used unless specified by a Microsoft engineer.
 
+The `--aot` option is no longer supported: Mono AOT compilation has been removed.
+
 ## AppIcon
 
 The `AppIcon` item group can be used to specify an app icon for the app.
@@ -1285,18 +1287,12 @@ See also [MacOSXSdkVersion](#macosxsdkversion).
 
 ## MtouchUseLlvm
 
-A boolean property that specifies whether AOT compilation should be done using LLVM.
+A boolean property that previously selected LLVM for Mono AOT compilation.
 
 Applicable to iOS, tvOS and Mac Catalyst projects.
 
-Default:
-
-* On iOS and tvOS: enabled for Release builds (where `Configuration="Release"`).
-* On Mac Catalyst: never enabled by default.
-
-This property only has an effect when using the Mono runtime, and a warning
-will be shown if it's set when not using the Mono runtime (for instance when
-using CoreCLR).
+Mono AOT compilation is no longer available in .NET 11, so this property has
+no effect. A warning is shown when it is set to `true`.
 
 ## NoBindingEmbedding
 

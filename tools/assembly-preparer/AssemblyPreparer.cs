@@ -165,6 +165,7 @@ public class AssemblyPreparer : IDisposable {
 		var steps = new List<ConfigurationAwareStep> {
 			// CollectAssembliesStep
 			new LoadAssembliesStep (),
+			new GenerateNativeAOTResourceSubstitutionsStep (),
 		};
 		steps.Add (new ComputeMethodOverridesStep ());
 		steps.Add (new CoreTypeMapStep ());
@@ -276,7 +277,6 @@ public class AssemblyPreparer : IDisposable {
 			new GenerateReferencesStep (),
 			new GatherFrameworksStep (),
 			new ComputeNativeBuildFlagsStep (),
-			new ComputeAOTArguments (),
 
 			// Must be the last step.
 			new DoneStep (),

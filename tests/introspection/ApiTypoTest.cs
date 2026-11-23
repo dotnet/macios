@@ -945,7 +945,12 @@ namespace Introspection {
 			// being verified won't change from the simulator
 			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator/desktop");
 
+#if MONOMAC
+			// Don't dispose the shared spell checker: macOS 27.2 can leave a stale preference observer.
+			var checker = SpellChecker.SharedSpellChecker;
+#else
 			using var checker = new SpellChecker ();
+#endif
 
 			// Collect all unique words from public API names (split on uppercase boundaries)
 			var words = new Dictionary<string, List<MemberInfo>> (StringComparer.Ordinal);

@@ -21,6 +21,9 @@ namespace ObjCRuntime {
 		{
 		}
 
+		/// <summary>Releases the wrapper's native reference.</summary>
+		/// <param name="disposing">If <see langword="true" />, releases the native reference on the calling thread. If <see langword="false" />, queues the release on the main thread.</param>
+		/// <remarks>The queued release runs when the main run loop processes the disposal queue.</remarks>
 		protected override void Dispose (bool disposing)
 		{
 			if (!disposing && Handle != NativeHandle.Zero) {

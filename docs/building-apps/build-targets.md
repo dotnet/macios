@@ -44,6 +44,92 @@ $ dotnet run --device UDID
 
 Added in .NET 11.
 
+## ConfigureMac
+
+Prepares an Apple silicon Mac for remote iOS builds. Windows is the supported
+client; a Mac can also connect to itself over SSH for development. The client
+must have the iOS workload and a .NET 12 SDK at least as recent as
+`12.0.100-alpha.1.26523.103`.
+The target checks Xcode and the iOS simulator runtimes, but does not install
+them or change the selected Xcode. Set `XcodeLocation` to check a different
+Xcode on the Mac.
+
+For example:
+
+```shell
+dotnet msbuild MyApp.csproj -t:ConfigureMac -p:ServerAddress=mac.example.com -p:ServerUser=remote-user -p:ServerPasswordFile=C:\private\mac-password.txt
+```
+
+Wrapper projects must invoke `ConfigureMac` on the iOS project so it uses
+that project's workload configuration. The target returns the remote SDK path,
+which a wrapper can capture from `TargetOutputs`.
+
+`ServerPasswordFile` is the path to a protected UTF-8 file on the client.
+Do not pass passwords or key passphrases as MSBuild properties or environment
+variables: MSBuild can record them in logs and binlogs. The target also supports
+SSH-agent identities and key files supplied with `SSHKey`. For an encrypted
+key, set `SSHPassPhraseFile` to a protected file on the client. The same
+property can be used for remote builds. SSH-agent identities and unencrypted
+keys work only with `ConfigureMac`; remote builds require a password or an
+encrypted key. On Windows, SSH-agent support requires the OpenSSH agent;
+Pageant is not supported.
+
+The Mac's host key must be in the client's SSH known-hosts file. Alternatively,
+set `ServerFingerprint` to the expected SHA256 fingerprint. Use `ServerSshPort`
+if the Mac uses a port other than 22.
+
+The target installs a matching .NET SDK, iOS workload, and build agents under
+`~/Library/Caches/maui/PairToMac` by default. Set `RemoteBasePath` to use a
+different directory. `RemoteNuGetConfigFile` can specify a NuGet configuration
+file already on the Mac. Existing XMA NuGet configuration files are preserved
+unless `OverwriteRemoteNuGetConfig` is set to `true`. If an existing file
+differs, the target fails rather than replacing it. `ResetRemoteCache` removes
+the existing XMA cache when set to `true`; it is `false` by default.
+
+The resulting `RemoteDotNetRoot`, `RemoteHomeDirectory`, `RemoteArchitecture`,
+and `ConfiguredRemoteBasePath` properties are available after the target runs.
+For example, add `-getProperty:RemoteDotNetRoot` to print the remote SDK path.
+Run the build in a separate MSBuild invocation and pass that path as
+`RemoteDotNetRoot`. If you set `RemoteBasePath`, pass it to the build too.
+Escape any `%` characters in these property values as `%25` when passing them
+to MSBuild.
+
+### Testing local ConfigureMac changes
+
+When building dotnet/macios from source, set `MESSAGING_REMOTE_REPO` to an
+absolute path to a dotnet-macios-devtools checkout:
+
+```shell
+export MESSAGING_REMOTE_REPO="/path/to/dotnet-macios-devtools"
+make -C msbuild all install
+```
+
+Normal dotnet/macios builds also honor this variable. Each build packs a fresh
+`Xamarin.Messaging.Remote` version, prints its path and version, and updates the
+installed SDK's ConfigureMac files. The devtools checkout must support
+`make -C remote pack PACKAGE_PATH_FILE=...`. Build or pack failures stop the
+macios build; an older package is never selected instead.
+
+Tracked feeds and package versions stay unchanged. Unset the variable and
+build again to return to the tracked package:
+
+```shell
+unset MESSAGING_REMOTE_REPO
+make -C msbuild all install
+```
+
+To configure this Mac over SSH using the workload packages already built in
+`_build/nupkgs`, run:
+
+```shell
+make -C msbuild install-remote-locally
+```
+
+This copies the packages into `_build/feed`, creates `_build/feed/NuGet.config`
+with that feed and the repository's feeds, and passes the config to
+`ConfigureMac`. **This resets the local XMA cache** before installing the SDK,
+workload, and agents.
+
 ## DeployToDevice
 
 Deploys an already-built iOS or tvOS app to a device or simulator without

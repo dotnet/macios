@@ -16,6 +16,8 @@
 
 		-->
 		<MessagingVersion Condition="'$(MessagingVersion)' == ''">[18.11.15-g73d6b6539d]</MessagingVersion>
+		<!-- Xamarin.Messaging.Remote is published to the general-testing feed: https://dev.azure.com/dnceng/public/_artifacts/feed/general-testing -->
+		<MessagingRemoteVersion Condition="'$(MessagingRemoteVersion)' == ''">[1.0.4-release-test-remote-macios.26567.2]</MessagingRemoteVersion>
 	</PropertyGroup>
 	<Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props" />
 </Project>

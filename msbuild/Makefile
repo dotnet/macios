@@ -109,11 +109,46 @@ DOTNET_IOS_WINDOWS_OUTPUT_FILES =                                \
 DOTNET_IOS_WINDOWS_FILES = $(IOS_WINDOWS_TARGETS) $(foreach file,$(DOTNET_IOS_WINDOWS_OUTPUT_FILES),Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/$(file))
 DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Build.zip
 
+ifneq ($(filter iOS,$(DOTNET_PLATFORMS)),)
+.copy-stamp-iOS: .copy-stamp-iOS-configure-mac
+
+.copy-stamp-iOS-configure-mac: .build-stamp Xamarin.iOS.Tasks.Windows/Xamarin.ConfigureMac.targets
+	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/ConfigureMac
+	$(Q) $(CP) Xamarin.iOS.Tasks.Windows/Xamarin.ConfigureMac.targets Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Broker.zip Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Build.zip $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/
+	$(Q) rsync -a --delete --delete-excluded --exclude='*.pdb' Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/ConfigureMac/ $(DOTNET_DESTDIR)/$(IOS_NUGET_SDK_NAME)/tools/msbuild/ConfigureMac/
+	$(Q) touch $@
+endif
+
 .copy-windows-files: .build-stamp
-	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS
+	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/ConfigureMac
 	$(Q) $(CP) $(DOTNET_IOS_WINDOWS_FILES) $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/
+	$(Q) rsync -a --delete --delete-excluded --exclude='*.pdb' Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/ConfigureMac/ $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/ConfigureMac/
 
 .dotnet-windows: .build-stamp .copy-windows-files
+
+# Build Xamarin.Messaging.Remote from a source checkout during normal builds:
+#
+#     export MESSAGING_REMOTE_REPO=/absolute/path/to/dotnet-macios-devtools
+#     make -C msbuild all install
+#
+# Each build packs a fresh version and prints the package path and version.
+# Unset MESSAGING_REMOTE_REPO to use the tracked version on the next build.
+#
+# Or use an existing local package for ConfigureMac in the installed SDKs:
+#
+#     make -C msbuild use-local-messaging-remote MESSAGING_REMOTE_PACKAGE=/path/to/Xamarin.Messaging.Remote.<version>.nupkg
+#
+# The target prints the staged package version. To check it, look for
+# "Xamarin.Messaging.Remote/<version>" in Xamarin.iOS.Tasks.Windows/obj/project.assets.json.
+# Use a normalized three-part version without build metadata that isn't on a
+# configured feed, and don't use a package in its own NuGet cache directory.
+# To go back to the tracked version, run:
+#
+#     rm -f msbuild/.build-stamp && make -C msbuild all install
+ifneq ($(filter iOS,$(DOTNET_PLATFORMS)),)
+use-local-messaging-remote:
+	$(Q) DOTNET="$(DOTNET)" MAKE="$(MAKE)" ./stage-local-messaging-remote.sh "$(MESSAGING_REMOTE_PACKAGE)"
+endif
 
 ifndef NO_XCODE
 all-local:: .dotnet-windows
@@ -132,8 +167,20 @@ endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
+ifneq ($(strip $(MESSAGING_REMOTE_REPO)$(wildcard obj/messaging-remote-repo)),)
+.PHONY: force-messaging-remote-build
+.build-stamp: force-messaging-remote-build
+endif
+
 .build-stamp: $(ALL_SOURCES)
+ifneq ($(strip $(MESSAGING_REMOTE_REPO)),)
+	$(Q) mkdir -p obj
+	$(Q) touch obj/messaging-remote-repo
+	$(Q) MESSAGING_REMOTE_REPO="$(MESSAGING_REMOTE_REPO)" DOTNET="$(DOTNET)" MAKE="$(MAKE)" ./stage-local-messaging-remote.sh --build
+else
 	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
+	$(Q) rm -f obj/messaging-remote-repo
+endif
 	$(Q) touch $@
 
 # make all the target assemblies build when any of the sources have changed
@@ -172,3 +219,10 @@ Versions.g.cs: Makefile $(TOP)/Make.config.inc
 	$(Q) mv $@.tmp $@
 
 dotnet:: $(DOTNET_TARGETS)
+
+.PHONY: install-remote-locally
+install-remote-locally:
+	@echo "⚠️ Resetting the remote cache (on this machine), and then installing the remote support (also on this machine) ⚠️"
+	@PACKAGES_DIR="$(abspath $(DOTNET_NUPKG_DIR))" FEED_DIR="$(abspath $(DOTNET_DESTDIR)/feed)" CONFIG_FILE="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" "$(TOP)/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
+	@# it doesn't matter which project we use, it just has to be *a* project.
+	dotnet build /t:ConfigureMac -bl -p:ServerAddress=localhost -p:ServerUser="$(USER)" -tl:off -p:ResetRemoteCache=true -p:RemoteNuGetConfigFile="$(abspath $(DOTNET_DESTDIR)/feed/NuGet.config)" -v:diag "$(TOP)/tests/dotnet/MySimpleApp/iOS/MySimpleApp.csproj"

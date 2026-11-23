@@ -52,9 +52,16 @@ namespace Xamarin.Tests {
 		protected static Dictionary<string, string> AddRemoteProperties (Dictionary<string, string>? properties = null)
 		{
 			properties ??= new Dictionary<string, string> ();
-			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP") ?? string.Empty;
-			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER") ?? string.Empty;
-			properties ["ServerPassword"] = Environment.GetEnvironmentVariable ("XMA_PASSWORD") ?? string.Empty;
+			// MSBuild unescapes percent sequences in property values.
+			properties ["ServerAddress"] = Environment.GetEnvironmentVariable ("MAC_AGENT_IP")?.Replace ("%", "%25") ?? "";
+			properties ["ServerUser"] = Environment.GetEnvironmentVariable ("MAC_AGENT_USER")?.Replace ("%", "%25") ?? "";
+			if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XMA_PASSWORD")) || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ServerPassword")))
+				throw new InvalidOperationException ("Unset XMA_PASSWORD and ServerPassword before starting dotnet. Use run-remote-windows-tests.ps1 or set XMA_PASSWORD_FILE to a protected password file.");
+			var passwordFile = Environment.GetEnvironmentVariable ("XMA_PASSWORD_FILE");
+			if (string.IsNullOrEmpty (passwordFile))
+				passwordFile = Environment.GetEnvironmentVariable ("ServerPasswordFile");
+			if (!string.IsNullOrEmpty (passwordFile))
+				properties ["ServerPasswordFile"] = passwordFile.Replace ("%", "%25");
 			if (!string.IsNullOrEmpty (properties ["ServerUser"]))
 				properties ["ContinueOnDisconnected"] = "false";
 			return properties;

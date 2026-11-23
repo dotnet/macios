@@ -57,6 +57,14 @@ steps:
   name: macInfo
   displayName: Set agent information
 
+- bash: |
+    script="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/clean-for-remote-tests.sh"
+    if ! grep -Fq 'RESET_XMA_CACHE' "$script"; then
+      echo "This checkout uses an outdated remote test cleanup that resets XMA caches. Update the branch to run remote tests."
+      exit 1
+    fi
+  displayName: 'Check remote test cleanup'
+
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/clean-for-remote-tests.sh
   displayName: 'Clean for remote tests'
   continueOnError: true
@@ -135,10 +143,6 @@ steps:
     displayName: Download not-signed-package
     artifact: not-signed-package
 
-  - download: macios
-    displayName: Download WorkloadRollback.json
-    artifact: WorkloadRollback
-
   - pwsh: |
       Get-ChildItem -Path "$(Pipeline.Workspace)/macios" -Recurse -Force
     displayName: 'Display downloads'
@@ -159,16 +163,28 @@ steps:
       allowFailedBuilds: true
       patterns: |
         ${{ parameters.uploadPrefix }}not-signed-package/**
-        ${{ parameters.uploadPrefix }}WorkloadRollback/**
       path: $(Build.SourcesDirectory)/artifacts
 
-- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/install-workloads.sh
-  workingDirectory: $(System.DefaultWorkingDirectory)
-  displayName: 'Install .NET + workloads'
-  timeoutInMinutes: 45
+- bash: |
+    set -eu
+    repo="$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE"
+    script="$repo/tools/devops/automation/scripts/prepare-remote-nuget-config.sh"
+    if test -f "$script" &&
+       test -f "$repo/tools/devops/automation/scripts/remote-password-file.ps1" &&
+       test -f "$repo/tools/devops/automation/scripts/configure-remote-mac.ps1" &&
+       test -f "$repo/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.ConfigureMac.targets" &&
+       grep -Fq 'XMA_PASSWORD_FILE' "$repo/tools/devops/automation/scripts/run-remote-windows-tests.ps1" &&
+       grep -Fq 'ServerPasswordFile' "$repo/tests/dotnet/UnitTests/TestBaseClass.cs" &&
+       grep -Fq 'ServerPasswordFile' "$repo/msbuild/Xamarin.MacDev.Tasks/Tasks/MessagingTasks.cs" &&
+       grep -Fq 'ServerPasswordFile' "$repo/msbuild/Xamarin.iOS.Tasks.Windows/Xamarin.Messaging.targets"; then
+      "$script"
+      echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]true"
+    else
+      echo "This checkout is missing the secure remote Mac test setup. Update the branch to run remote tests."
+      echo "##vso[task.setvariable variable=CONFIGURE_MAC_AVAILABLE;isOutput=true]false"
+    fi
+  name: remoteNuGetConfig
+  displayName: 'Create NuGet feed for remote tests'
+  timeoutInMinutes: 15
   env:
     MACIOS_UPLOAD_PREFIX: ${{ parameters.uploadPrefix }}
-
-- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/prepare-for-remote-tests.sh
-  displayName: 'Prepare for remote tests'
-  continueOnError: true

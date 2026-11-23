@@ -355,15 +355,23 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void BaseWrapperDisposeReleasesSynchronously ()
 		{
 			var obj = new NSObject ();
-			var mainThreadId = Thread.CurrentThread.ManagedThreadId;
 			TestBaseWrapper.ReleaseThreadId = 0;
 			var wrapper = new TestBaseWrapper (obj.Handle, owns: false);
 			try {
-				wrapper.Dispose ();
+				var workerThreadId = 0;
+				var releaseThreadId = 0;
+				var thread = new Thread (() => {
+					workerThreadId = Thread.CurrentThread.ManagedThreadId;
+					wrapper.Dispose ();
+					releaseThreadId = Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0);
+				}) {
+					IsBackground = true,
+				};
+				thread.Start ();
+				Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
-				Assert.That (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0), Is.EqualTo (mainThreadId));
+				Assert.That (releaseThreadId, Is.EqualTo (workerThreadId));
 			} finally {
-				wrapper.Dispose ();
 				obj.Dispose ();
 			}
 		}

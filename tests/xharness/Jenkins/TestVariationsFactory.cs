@@ -30,6 +30,7 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines
+			var is_simulator = test.ProjectPlatform == "iPhoneSimulator";
 
 			switch (test.Platform) {
 			case TestPlatform.Mac:
@@ -59,7 +60,7 @@ namespace Xharness.Jenkins {
 				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
 				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
 				yield return new TestData { Variation = "Release (all optimizations, link all)", TestVariation = "release|all-optimizations|linkall", Ignored = ignore };
-				yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier }; // it's necessary to specify RID, because NativeAOT defaults to building for device
+				yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = is_simulator ? arm64_sim_runtime_identifier : "" }; // it's necessary to specify RID when building for the simulator, because NativeAOT defaults to building for device
 				yield return new TestData { Variation = "Release (compat inline Class.GetHandle)", TestVariation = "inline-class-gethandle-compat|release", Ignored = ignore };
 				yield return new TestData { Variation = "Release (strict inline Class.GetHandle)", TestVariation = "inline-class-gethandle-strict|release", Ignored = ignore };
 				yield return new TestData { Variation = "Release (compat inline dlfcn)", TestVariation = "inline-dlfcn-methods-compat|release", Ignored = ignore };

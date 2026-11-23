@@ -5547,7 +5547,7 @@ namespace Registrar {
 		static string GetParamName (MethodDefinition method, int i)
 		{
 			var p = method.Parameters [i];
-			if (p.Name is not null)
+			if (!string.IsNullOrEmpty (p.Name))
 				return p.Name;
 			return "__p__" + i.ToString ();
 		}

@@ -15,7 +15,7 @@ namespace ObjCRuntime {
 	///       <para />
 	///       <para>The class provides a constructor that take a native handle, and a flag indicating whether the underlying object has already been retained by managed code or not as well as implementing the IDisposable interface which will invoke the Objective-C release method on the target when the object is no longer referenced by managed code.</para>
 	///     </remarks>
-	public abstract class BaseWrapper : NativeObject {
+	public abstract class BaseWrapper : NativeObject, IReleaseOnMainThread {
 		protected BaseWrapper (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
@@ -24,13 +24,13 @@ namespace ObjCRuntime {
 		protected override void Dispose (bool disposing)
 		{
 			if (!disposing && Handle != NativeHandle.Zero) {
-				NSObject.NSObject_Disposer.AddRelease (this);
+				NSObject.NSObject_Disposer.Add (this);
 				return;
 			}
 			base.Dispose (disposing);
 		}
 
-		internal void ReleaseOnMainThread ()
+		void IReleaseOnMainThread.ReleaseOnMainThread ()
 		{
 			if (Handle != NativeHandle.Zero) {
 				Release ();

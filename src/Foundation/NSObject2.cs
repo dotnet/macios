@@ -188,6 +188,7 @@ namespace Foundation {
 #if !COREBUILD
 		, IEquatable<NSObject>
 		, IDisposable
+		, IReleaseOnMainThread
 #endif
 		, INSObjectFactory {
 #if !COREBUILD
@@ -1307,28 +1308,16 @@ namespace Foundation {
 			}
 		}
 
+		void IReleaseOnMainThread.ReleaseOnMainThread ()
+		{
+			ReleaseManagedRef ();
+		}
+
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			readonly struct DisposerEntry {
-				public readonly NSObject? Object;
-				public readonly BaseWrapper? Wrapper;
-
-				public DisposerEntry (NSObject obj)
-				{
-					Object = obj;
-					Wrapper = null;
-				}
-
-				public DisposerEntry (BaseWrapper wrapper)
-				{
-					Object = null;
-					Wrapper = wrapper;
-				}
-			}
-
-			static readonly List<DisposerEntry> drainList1 = new List<DisposerEntry> ();
-			static readonly List<DisposerEntry> drainList2 = new List<DisposerEntry> ();
-			static List<DisposerEntry> handles = drainList1;
+			static readonly List<IReleaseOnMainThread> drainList1 = new List<IReleaseOnMainThread> ();
+			static readonly List<IReleaseOnMainThread> drainList2 = new List<IReleaseOnMainThread> ();
+			static List<IReleaseOnMainThread> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
@@ -1340,21 +1329,11 @@ namespace Foundation {
 				// Can't make the class static, because it has to subclass NSObject.
 			}
 
-			static internal void Add (NSObject handle)
-			{
-				Add (new DisposerEntry (handle));
-			}
-
-			static internal void AddRelease (BaseWrapper wrapper)
-			{
-				Add (new DisposerEntry (wrapper));
-			}
-
-			static void Add (DisposerEntry entry)
+			static internal void Add (IReleaseOnMainThread handle)
 			{
 				bool call_drain;
 				lock (lock_obj) {
-					handles.Add (entry);
+					handles.Add (handle);
 					call_drain = handles.Count == 1;
 				}
 				if (!call_drain)
@@ -1373,7 +1352,7 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<DisposerEntry> drainList;
+				List<IReleaseOnMainThread> drainList;
 
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
@@ -1393,14 +1372,8 @@ namespace Foundation {
 						handles = drainList1;
 				}
 
-				foreach (var entry in drainList) {
-					if (entry.Object is not null)
-						entry.Object.ReleaseManagedRef ();
-					else if (entry.Wrapper is not null)
-						entry.Wrapper.ReleaseOnMainThread ();
-					else
-						throw new InvalidOperationException ("Invalid disposer queue entry.");
-				}
+				foreach (var entry in drainList)
+					entry.ReleaseOnMainThread ();
 				drainList.Clear ();
 
 				lock (lock_obj) {

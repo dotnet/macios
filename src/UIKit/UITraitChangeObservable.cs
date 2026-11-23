@@ -445,6 +445,7 @@ namespace UIKit {
 				registrations.Remove (state.Registration.Handle);
 				this.state = null;
 				lifetime.Free ();
+				GC.KeepAlive (state.Registration);
 				GC.KeepAlive (state.Target);
 			}
 		}

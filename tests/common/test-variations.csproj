@@ -11,6 +11,7 @@
 		<TestVariations Include="linksdk" Description="Run with trimmer (MtouchLink/LinkMode) set to 'SdkOnly'" />
 		<TestVariations Include="linkall" Description="Run with trimmer (MtouchLink/LinkMode) set to 'Full'" />
 		<TestVariations Include="dynamic-registrar" Description="Dynamic registrar" />
+		<TestVariations Include="all-optimizations" Description="All optimizations" />
 		<TestVariations Include="all-optimizations-except-uithread-checks" Description="All optimizations except UIThread checks" />
 		<TestVariations Include="trimmable-static-registrar" Description="Trimmable static registrar" />
 		<TestVariations Include="inline-dlfcn-methods-compat" Description="Enables 'InlineDlfcnMethods' in compatibility mode." />

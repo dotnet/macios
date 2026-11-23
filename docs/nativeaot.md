@@ -62,6 +62,10 @@ because it's not possible to use `dotnet publish` when running from the IDE.
 
 ## Compatibility and limitations
 
+Assembly preparation generates exclusions for native libraries embedded in binding
+assemblies, keeping them available for native linking without embedding them in the
+executable. Ordinary managed resources are preserved.
+
 There are no known issues specific to our platforms with NativeAOT; but the
 [limitations][2] are exactly the same as for other supported platforms.
 

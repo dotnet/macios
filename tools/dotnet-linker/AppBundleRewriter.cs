@@ -1499,16 +1499,6 @@ namespace Xamarin.Linker {
 			}
 			AssemblySaved?.Invoke (assembly);
 			if (action is AssemblyAction.Copy or AssemblyAction.CopyUsed) {
-#if !ASSEMBLY_PREPARER
-				// Preserve TypeForwardedTo which would the linker sweep otherwise
-				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
-				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
-				if (assembly.MainModule.HasExportedTypes) {
-					foreach (var type in assembly.MainModule.ExportedTypes) {
-						annotations.Mark (type);
-					}
-				}
-#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1571,7 +1561,7 @@ namespace Xamarin.Linker {
 		// methods whose names start with the helper prefix, so don't identify helpers by name.
 		readonly Dictionary<MethodDefinition, MethodDefinition> explicitInterfaceImplementationRoots = new ();
 		readonly HashSet<MethodDefinition> generatedExplicitInterfaceImplementationRoots = new ();
-		// The next helper suffix to try for each type, so that we don't scan the same names repeatedly.
+		readonly Dictionary<TypeDefinition, HashSet<string>> explicitInterfaceImplementationRootNames = new ();
 		readonly Dictionary<TypeDefinition, int> nextExplicitInterfaceImplementationRootIndex = new ();
 
 		/// <summary>
@@ -1635,11 +1625,20 @@ namespace Xamarin.Linker {
 			// Pick a name that isn't used by any other member in the type, including user members, because the
 			// DynamicDependency signature for the helper is just its name (which would match any member with that name).
 			var type = method.DeclaringType;
+			if (!explicitInterfaceImplementationRootNames.TryGetValue (type, out var names)) {
+				names = new HashSet<string> (StringComparer.Ordinal);
+				names.UnionWith (type.Methods.Select (v => v.Name));
+				names.UnionWith (type.Fields.Select (v => v.Name));
+				names.UnionWith (type.Properties.Select (v => v.Name));
+				names.UnionWith (type.Events.Select (v => v.Name));
+				names.UnionWith (type.NestedTypes.Select (v => v.Name));
+				explicitInterfaceImplementationRootNames.Add (type, names);
+			}
 			nextExplicitInterfaceImplementationRootIndex.TryGetValue (type, out var helperIndex);
 			string helperName;
 			do {
 				helperName = ExplicitInterfaceImplementationRootPrefix + helperIndex++;
-			} while (IsMemberNameUsed (type, helperName));
+			} while (!names.Add (helperName));
 			nextExplicitInterfaceImplementationRootIndex [type] = helperIndex;
 
 			var currentAssembly = CurrentAssembly;
@@ -1700,15 +1699,6 @@ namespace Xamarin.Linker {
 			} finally {
 				SetCurrentAssembly (currentAssembly);
 			}
-		}
-
-		static bool IsMemberNameUsed (TypeDefinition type, string name)
-		{
-			return type.Methods.Any (v => v.Name == name)
-				|| type.Fields.Any (v => v.Name == name)
-				|| type.Properties.Any (v => v.Name == name)
-				|| type.Events.Any (v => v.Name == name)
-				|| type.NestedTypes.Any (v => v.Name == name);
 		}
 
 		// Replace any references to a method's generic parameters with the corresponding generic parameters of the given method.

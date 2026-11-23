@@ -171,16 +171,21 @@ public class ApplyPreserveAttributeTests : BaseClass {
 	public void HelperNameDoesNotCollideWithUserMethod ()
 	{
 		var code = @"
+		using System;
 		using Foundation;
 
-		interface IMyInterface<T> { void Run (); }
+		interface IMyInterface<T> { void Run (); void RunAgain (); }
 
 		[Preserve (AllMembers = true)]
 		abstract class MyClass : IMyInterface<string> {
 			int __linker_preserve_explicit_interface_implementation_0;
 			static void __linker_preserve_explicit_interface_implementation_1 () {}
 			public abstract void __linker_preserve_explicit_interface_implementation_2 ();
+			int __linker_preserve_explicit_interface_implementation_3 { get; set; }
+			event EventHandler __linker_preserve_explicit_interface_implementation_4 { add {} remove {} }
+			class __linker_preserve_explicit_interface_implementation_5 {}
 			void IMyInterface<string>.Run () {}
+			void IMyInterface<string>.RunAgain () {}
 		}
 		";
 
@@ -188,6 +193,7 @@ public class ApplyPreserveAttributeTests : BaseClass {
 
 		var myClass = assemblyDefinition.MainModule.Types.Single (v => v.Name == "MyClass");
 		var signatures = GetModuleConstructorSignatures (assemblyDefinition, "MyClass");
+		var helpers = myClass.Methods.Where (v => v.HasBody && v.Body.Instructions [0].OpCode == OpCodes.Ldtoken).ToArray ();
 		Assert.Multiple (() => {
 			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_0"), Is.EqualTo (0), "Field name reused");
 			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_1"), Is.EqualTo (1), "User method count 1");
@@ -195,7 +201,11 @@ public class ApplyPreserveAttributeTests : BaseClass {
 			Assert.That (myClass.Methods.Single (v => v.Name == "__linker_preserve_explicit_interface_implementation_2").IsAbstract, Is.True, "User method is still abstract");
 			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_1"), "User method preserved 1");
 			Assert.That (signatures, Does.Contain ("__linker_preserve_explicit_interface_implementation_2"), "User method preserved 2");
-			Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EqualTo (new [] { "IMyInterface<System.String>.Run" }), "Rooted explicit method");
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_3"), Is.EqualTo (0), "Property name reused");
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_4"), Is.EqualTo (0), "Event name reused");
+			Assert.That (myClass.Methods.Count (v => v.Name == "__linker_preserve_explicit_interface_implementation_5"), Is.EqualTo (0), "Nested type name reused");
+			Assert.That (helpers.Select (v => v.Name).Distinct ().Count (), Is.EqualTo (2), "Helper names are unique");
+			Assert.That (GetExplicitInterfaceImplementationRoots (myClass, signatures), Is.EquivalentTo (new [] { "IMyInterface<System.String>.Run", "IMyInterface<System.String>.RunAgain" }), "Rooted explicit methods");
 		});
 	}
 

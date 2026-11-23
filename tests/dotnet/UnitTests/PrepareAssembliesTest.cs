@@ -85,6 +85,111 @@ class MainClass {{
 			}
 		}
 
+		[TestCase ("copy", true)]
+		[TestCase ("copyused", false)]
+		[TestCase ("copyused", true)]
+		public void TypeForwarderInUntrimmedAssembly (string trimMode, bool rewrite)
+		{
+			const ApplePlatform platform = ApplePlatform.MacOSX;
+			const string runtimeIdentifier = "osx-arm64";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var tmpdir = Xamarin.Cache.CreateTemporaryDirectory ();
+			var appDir = Path.Combine (tmpdir, "App");
+			var forwarderDir = Path.Combine (tmpdir, "Forwarder");
+			var destinationDir = Path.Combine (tmpdir, "Destination");
+			Directory.CreateDirectory (appDir);
+			Directory.CreateDirectory (forwarderDir);
+			Directory.CreateDirectory (destinationDir);
+
+			File.WriteAllText (Path.Combine (destinationDir, "Destination.csproj"), $@"
+<Project Sdk=""Microsoft.NET.Sdk"">
+	<PropertyGroup>
+		<TargetFramework>{Configuration.DotNetTfm}</TargetFramework>
+	</PropertyGroup>
+</Project>");
+			File.WriteAllText (Path.Combine (destinationDir, "Destination.cs"), "namespace Forwarded; public class Target {} public class Referenced {}");
+			File.WriteAllText (Path.Combine (forwarderDir, "Forwarder.csproj"), $@"
+<Project Sdk=""Microsoft.NET.Sdk"">
+	<PropertyGroup>
+		<TargetFramework>{platform.ToFramework ()}</TargetFramework>
+		<IsTrimmable>false</IsTrimmable>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include=""../Destination/Destination.csproj"" />
+	</ItemGroup>
+</Project>");
+			File.WriteAllText (Path.Combine (forwarderDir, "Forwarder.cs"), @"
+using System.Runtime.CompilerServices;
+using Foundation;
+using ObjCRuntime;
+
+[assembly: TypeForwardedTo (typeof (Forwarded.Target))]
+[assembly: TypeForwardedTo (typeof (Forwarded.Referenced))]
+public class Marker {
+	[Field (""NSFoundationVersionNumber"", ""Foundation"")]
+	public static double Value => Dlfcn.GetDouble (0, ""NSFoundationVersionNumber"");
+}");
+
+			var appProject = Path.Combine (appDir, "App.csproj");
+			File.WriteAllText (appProject, $@"
+<Project Sdk=""Microsoft.NET.Sdk"">
+	<PropertyGroup>
+		<TargetFramework>{platform.ToFramework ()}</TargetFramework>
+		<OutputType>Exe</OutputType>
+		<ApplicationId>com.microsoft.forwarder-test</ApplicationId>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include=""../Forwarder/Forwarder.csproj"" IsTrimmable=""false"" />
+	</ItemGroup>
+	<Target Name=""SetForwarderPreparationMode"" BeforeTargets=""_PrepareAssembliesForPreparation"">
+		<ItemGroup>
+			<ResolvedFileToPublish Update=""@(ResolvedFileToPublish)"" Condition=""'%(Filename)' == 'Forwarder'"">
+				<IsTrimmable>false</IsTrimmable>
+				<TrimMode>{(trimMode == "copy" ? "copy" : "")}</TrimMode>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
+	<Target Name=""SetForwarderLinkMode"" AfterTargets=""PrepareForILLink"">
+		<ItemGroup>
+			<ManagedAssemblyToLink Update=""@(ManagedAssemblyToLink)"" Condition=""'%(Filename)' == 'Forwarder'"">
+				<TrimMode>{trimMode}</TrimMode>
+			</ManagedAssemblyToLink>
+		</ItemGroup>
+	</Target>
+</Project>");
+			File.WriteAllText (Path.Combine (appDir, "Main.cs"), @"
+class MainClass {
+	static void Main () {
+		System.Console.WriteLine (Marker.Value);
+		System.Console.WriteLine (typeof (Forwarded.Target));
+		System.Console.WriteLine (System.Type.GetType (""Forwarded.Referenced, Forwarder"", true));
+	}
+}");
+
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = "Release";
+			properties ["LinkMode"] = "Full";
+			properties ["InlineDlfcnMethods"] = rewrite ? "strict" : "disabled";
+			var result = DotNet.AssertBuild (appProject, properties);
+			AssertThatLinkerExecuted (result);
+
+			var preparedPath = Path.Combine (GetObjDir (appProject, platform, runtimeIdentifier, "Release"), "prepared-assemblies", "Forwarder.dll");
+			Assert.That (File.Exists (preparedPath), Is.EqualTo (rewrite), "Untrimmed assembly rewritten by the preparer");
+			var inputPath = Path.Combine (forwarderDir, "bin", "Release", platform.ToFramework (), "Forwarder.dll");
+			using var prepared = AssemblyDefinition.ReadAssembly (rewrite ? preparedPath : inputPath);
+			Assert.That (prepared.MainModule.Types.Any (v => v.Name == "Dlfcn"), Is.EqualTo (rewrite), "Dlfcn calls rewritten");
+			Assert.That (prepared.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Target" && v.IsForwarder), Is.True, "Prepared forwarder");
+			Assert.That (prepared.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Referenced" && v.IsForwarder), Is.True, "Prepared referenced forwarder");
+
+			var assemblyPath = Path.Combine (GetAppPath (appProject, platform, runtimeIdentifier, "Release"), GetRelativeAssemblyDirectory (platform), "Forwarder.dll");
+			using var linked = AssemblyDefinition.ReadAssembly (assemblyPath);
+			// ILLink removes unreferenced forwarders from CopyUsed assemblies, whether or not they were rewritten.
+			Assert.That (linked.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Target" && v.IsForwarder), Is.EqualTo (trimMode == "copy"), "Linked forwarder");
+			Assert.That (linked.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Referenced" && v.IsForwarder), Is.True, "Linked referenced forwarder");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "managed-static", "SdkOnly", "Release")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "dynamic", "None", "Debug")]

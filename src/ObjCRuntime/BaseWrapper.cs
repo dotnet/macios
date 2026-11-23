@@ -5,6 +5,7 @@
 #if !COREBUILD
 
 using CoreFoundation;
+using Foundation;
 
 namespace ObjCRuntime {
 
@@ -18,6 +19,23 @@ namespace ObjCRuntime {
 		protected BaseWrapper (NativeHandle handle, bool owns)
 			: base (handle, owns)
 		{
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			if (!disposing && Handle != NativeHandle.Zero) {
+				NSObject.NSObject_Disposer.AddRelease (this);
+				return;
+			}
+			base.Dispose (disposing);
+		}
+
+		internal void ReleaseOnMainThread ()
+		{
+			if (Handle != NativeHandle.Zero) {
+				Release ();
+				ClearHandle ();
+			}
 		}
 
 		protected internal override void Retain ()

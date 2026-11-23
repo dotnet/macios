@@ -1309,9 +1309,26 @@ namespace Foundation {
 
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			static readonly List<NSObject> drainList1 = new List<NSObject> ();
-			static readonly List<NSObject> drainList2 = new List<NSObject> ();
-			static List<NSObject> handles = drainList1;
+			readonly struct DisposerEntry {
+				public readonly NSObject? Object;
+				public readonly BaseWrapper? Wrapper;
+
+				public DisposerEntry (NSObject obj)
+				{
+					Object = obj;
+					Wrapper = null;
+				}
+
+				public DisposerEntry (BaseWrapper wrapper)
+				{
+					Object = null;
+					Wrapper = wrapper;
+				}
+			}
+
+			static readonly List<DisposerEntry> drainList1 = new List<DisposerEntry> ();
+			static readonly List<DisposerEntry> drainList2 = new List<DisposerEntry> ();
+			static List<DisposerEntry> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
@@ -1325,9 +1342,19 @@ namespace Foundation {
 
 			static internal void Add (NSObject handle)
 			{
+				Add (new DisposerEntry (handle));
+			}
+
+			static internal void AddRelease (BaseWrapper wrapper)
+			{
+				Add (new DisposerEntry (wrapper));
+			}
+
+			static void Add (DisposerEntry entry)
+			{
 				bool call_drain;
 				lock (lock_obj) {
-					handles.Add (handle);
+					handles.Add (entry);
 					call_drain = handles.Count == 1;
 				}
 				if (!call_drain)
@@ -1346,11 +1373,11 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<NSObject> drainList;
+				List<DisposerEntry> drainList;
 
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
-					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
+					// see where this function would be re-entrant, is if in the call to a release below,
 					// the native dealloc method for a type ended up executing the run loop, and that runloop
 					// processed a drain request, ending up in this method (again).
 					if (draining) {
@@ -1366,8 +1393,14 @@ namespace Foundation {
 						handles = drainList1;
 				}
 
-				foreach (NSObject x in drainList)
-					x.ReleaseManagedRef ();
+				foreach (var entry in drainList) {
+					if (entry.Object is not null)
+						entry.Object.ReleaseManagedRef ();
+					else if (entry.Wrapper is not null)
+						entry.Wrapper.ReleaseOnMainThread ();
+					else
+						throw new InvalidOperationException ("Invalid disposer queue entry.");
+				}
 				drainList.Clear ();
 
 				lock (lock_obj) {

@@ -277,6 +277,22 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		class Level1 : NSObject { } // we need two levels of subclassing, since the XI will override 'release' on the first one, and we need to override it as well.
+
+		class TestBaseWrapper : BaseWrapper {
+			public static int ReleaseThreadId;
+
+			public TestBaseWrapper (NativeHandle handle, bool owns)
+				: base (handle, owns)
+			{
+			}
+
+			protected override void Release ()
+			{
+				Interlocked.Exchange (ref ReleaseThreadId, Thread.CurrentThread.ManagedThreadId);
+				base.Release ();
+			}
+		}
+
 		class ReleaseNotifier : Level1 {
 			Action deallocated;
 			bool enabled;
@@ -306,6 +322,49 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				obj.SetAssociatedObject (IntPtr.Zero, notifier, AssociatedObjects.AssociationPolicy.Retain);
 				notifier.Dispose (); // remove any managed references.
 				notifier.enabled = true; // notify on the next 'release' message.
+			}
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static void CreateAndForgetBaseWrapper (NativeHandle handle)
+		{
+			_ = new TestBaseWrapper (handle, owns: false);
+		}
+
+		[Test]
+		public void BaseWrapperFinalizerReleasesOnMainThread ()
+		{
+			var obj = new NSObject ();
+			try {
+				var mainThreadId = Thread.CurrentThread.ManagedThreadId;
+				TestBaseWrapper.ReleaseThreadId = 0;
+				CreateAndForgetBaseWrapper (obj.Handle);
+
+				GC.Collect ();
+				GC.WaitForPendingFinalizers ();
+				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
+
+				Assert.That (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0), Is.EqualTo (mainThreadId));
+				GC.KeepAlive (obj);
+			} finally {
+				obj.Dispose ();
+			}
+		}
+
+		[Test]
+		public void BaseWrapperDisposeReleasesSynchronously ()
+		{
+			var obj = new NSObject ();
+			var mainThreadId = Thread.CurrentThread.ManagedThreadId;
+			TestBaseWrapper.ReleaseThreadId = 0;
+			var wrapper = new TestBaseWrapper (obj.Handle, owns: false);
+			try {
+				wrapper.Dispose ();
+
+				Assert.That (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0), Is.EqualTo (mainThreadId));
+			} finally {
+				wrapper.Dispose ();
+				obj.Dispose ();
 			}
 		}
 

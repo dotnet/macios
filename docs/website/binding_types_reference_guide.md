@@ -64,6 +64,45 @@ You can control many other aspects of the code generation by applying other
 attributes to the interface as well as configuring the [`[BaseType]`](#BaseTypeAttribute) 
 attribute.
 
+### Native fast enumeration
+
+Apply `[NSFastEnumeration]` to a binding for an Objective-C class or protocol
+that implements `NSFastEnumeration`. The generator adds `IEnumerable<NSObject>`
+and generic and non-generic enumerators, allowing `foreach` and LINQ without
+copying the native collection into a managed array.
+
+Specify an element type for a strongly typed collection:
+
+```csharp
+[BaseType (typeof (NSObject))]
+[NSFastEnumeration (typeof (NSString))]
+interface NativeStringCollection {
+}
+```
+
+For a generic binding, specify the generic element parameter's name instead:
+
+```csharp
+[BaseType (typeof (NSObject))]
+[NSFastEnumeration ("T")]
+interface NativeCollection<T> where T : NSObject {
+}
+```
+
+Element types must be native object types or bound protocol interfaces.
+Enumeration attributes on bound protocols also apply to classes implementing
+those protocols. Protocol interfaces provide default enumeration implementations.
+Do not apply this attribute to static bindings, categories, or collections that
+already provide their own enumerators, such as `NSArray` and `NSDictionary`.
+The native object must implement `NSFastEnumeration`; the attribute does not
+implement the native protocol on behalf of managed subclasses.
+
+The generated enumerators use `Foundation.NSFastEnumerator<T>`, which can also be
+used by manually implemented bindings. Dispose an enumerator when finished
+(`foreach` does this automatically). Changing a native collection while
+enumerating it throws `InvalidOperationException` when the collection reports
+the mutation through the native protocol.
+
 ### Generating events
 
 One feature of the Xamarin.iOS and Xamarin.Mac API design is that we map

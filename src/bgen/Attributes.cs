@@ -146,6 +146,35 @@ public class BaseTypeAttribute : Attribute {
 	public bool IsStubClass { get; set; }
 }
 
+/// <summary>Generates enumerable support for an Objective-C type that implements NSFastEnumeration.</summary>
+[AttributeUsage (AttributeTargets.Interface)]
+public class NSFastEnumerationAttribute : Attribute {
+	/// <summary>Uses <c>Foundation.NSObject</c> as the element type.</summary>
+	public NSFastEnumerationAttribute ()
+	{
+	}
+
+	/// <summary>Uses the specified native object or protocol type as the element type.</summary>
+	/// <param name="elementType">The managed type of each enumerated object.</param>
+	public NSFastEnumerationAttribute (Type elementType)
+	{
+		ElementType = elementType;
+	}
+
+	/// <summary>Uses a generic parameter of the binding as the element type.</summary>
+	/// <param name="genericParameterName">The name of the generic element type parameter.</param>
+	public NSFastEnumerationAttribute (string genericParameterName)
+	{
+		GenericParameterName = genericParameterName;
+	}
+
+	/// <summary>Gets the managed element type, or <see langword="null"/> when not specified.</summary>
+	public Type? ElementType { get; }
+
+	/// <summary>Gets the generic element parameter name, or <see langword="null"/> when not specified.</summary>
+	public string? GenericParameterName { get; }
+}
+
 //
 // Used for methods that invoke other targets, not this.Handle
 //

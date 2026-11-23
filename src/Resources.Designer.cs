@@ -1208,5 +1208,23 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [NSFastEnumeration] attribute on &apos;{0}&apos; specifies an invalid element type &apos;{1}&apos;. Use a native object type, a protocol type, or the name of a generic type parameter..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The [NSFastEnumeration] attribute on &apos;{0}&apos; can&apos;t be used on a static binding or a category..
+        /// </summary>
+        internal static string BI1131 {
+            get {
+                return ResourceManager.GetString("BI1131", resourceCulture);
+            }
+        }
     }
 }

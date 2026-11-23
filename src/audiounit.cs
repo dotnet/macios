@@ -853,7 +853,8 @@ namespace AudioUnit {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface AUAudioUnitBusArray : INSFastEnumeration {
+	[NSFastEnumeration (typeof (AUAudioUnitBus))]
+	interface AUAudioUnitBusArray {
 		/// <param name="owner">The owner of the bus array.</param>
 		/// <param name="busType">Whether the bus array will be for input or output.</param>
 		/// <param name="busArray">The bus array whose members to copy.</param>

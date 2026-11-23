@@ -1,4 +1,4 @@
-AppBundleSize: 11,123,598 bytes (10,862.9 KB = 10.6 MB)
+AppBundleSize: 11,057,766 bytes (10,798.6 KB = 10.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.iOS.TypeMap.dll:
     16,384 bytes (16.0 KB = 0.0 MB)
@@ -9,7 +9,7 @@ _SizeTestApp.TypeMap.dll:
 Frameworks/libcoreclr.framework/Info.plist:
     838 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,132,952 bytes (4,036.1 KB = 3.9 MB)
+    4,067,120 bytes (3,971.8 KB = 3.9 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
     880 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:

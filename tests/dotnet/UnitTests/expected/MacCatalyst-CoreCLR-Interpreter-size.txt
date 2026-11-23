@@ -1,9 +1,9 @@
-AppBundleSize: 9,665,444 bytes (9,438.9 KB = 9.2 MB)
+AppBundleSize: 9,580,596 bytes (9,356.1 KB = 9.1 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
     1,076 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    149,784 bytes (146.3 KB = 0.1 MB)
+    149,592 bytes (146.1 KB = 0.1 MB)
 Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMap.dll:
     19,968 bytes (19.5 KB = 0.0 MB)
 Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMaps.dll:
@@ -11,7 +11,7 @@ Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMaps.dll:
 Contents/MonoBundle/_SizeTestApp.TypeMap.dll:
     3,584 bytes (3.5 KB = 0.0 MB)
 Contents/MonoBundle/libcoreclr.dylib:
-    5,395,960 bytes (5,269.5 KB = 5.1 MB)
+    5,311,304 bytes (5,186.8 KB = 5.1 MB)
 Contents/MonoBundle/libSystem.Globalization.Native.dylib:
     93,064 bytes (90.9 KB = 0.1 MB)
 Contents/MonoBundle/libSystem.IO.Compression.Native.dylib:

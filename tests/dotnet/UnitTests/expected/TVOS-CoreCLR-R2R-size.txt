@@ -1,4 +1,4 @@
-AppBundleSize: 11,034,537 bytes (10,775.9 KB = 10.5 MB)
+AppBundleSize: 10,968,705 bytes (10,711.6 KB = 10.5 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _Microsoft.tvOS.TypeMap.dll:
     16,384 bytes (16.0 KB = 0.0 MB)
@@ -9,7 +9,7 @@ _SizeTestApp.TypeMap.dll:
 Frameworks/libcoreclr.framework/Info.plist:
     813 bytes (0.8 KB = 0.0 MB)
 Frameworks/libcoreclr.framework/libcoreclr:
-    4,115,432 bytes (4,019.0 KB = 3.9 MB)
+    4,049,600 bytes (3,954.7 KB = 3.9 MB)
 Frameworks/libSystem.Globalization.Native.framework/Info.plist:
     855 bytes (0.8 KB = 0.0 MB)
 Frameworks/libSystem.Globalization.Native.framework/libSystem.Globalization.Native:

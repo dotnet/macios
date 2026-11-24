@@ -309,17 +309,19 @@ namespace CloudKit {
 		HundredsOfGigabytes,
 	}
 
+	/// <summary>Enumerates the roles of participants in a CloudKit share.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKShareParticipantRole : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The participant's role is unknown.</summary>
 		Unknown = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant owns the share.</summary>
 		Owner = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant is a private user.</summary>
 		PrivateUser = 3,
-		/// <summary>To be added.</summary>
+		/// <summary>The participant is a public user.</summary>
 		PublicUser = 4,
+		/// <summary>The participant is an administrator of the share.</summary>
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		Administrator = 2,
 	}

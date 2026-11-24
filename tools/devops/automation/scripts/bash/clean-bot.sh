@@ -139,9 +139,10 @@ oldXcodes=(
 	"/Applications/Xcode_13.0.0-beta3.app"
 )
 
-# remove wrongly added .xip files under /Applications, confuses provisionator and 
+# remove wrongly added .xip and .aea files under /Applications, confuses provisionator and 
 # are not needed and wrong
 sudo rm -Rf /Applications/*.xip
+sudo rm -Rf /Applications/*.aea
 
 # pick the current selected xcode to make sure we do not remove it.
 XCODE_SELECT=$(xcode-select -p)

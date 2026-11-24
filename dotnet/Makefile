@@ -179,7 +179,7 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call ImplicitNamespaceImports,$(
 
 include $(TOP)/scripts/generate-target-platforms/fragment.mk
 define SupportedTargetPlatforms
-Microsoft.$(1).Sdk/targets/Microsoft.$(1).Sdk.SupportedTargetPlatforms.props: $(TOP)/builds/Versions-$(1).plist.in Makefile $(GENERATE_TARGET_PLATFORMS) Makefile
+Microsoft.$(1).Sdk/targets/Microsoft.$(1).Sdk.SupportedTargetPlatforms.props: $(TOP)/builds/Versions-$(1).plist.in $(TOP)/Make.config.inc $(GENERATE_TARGET_PLATFORMS) Makefile
 	$(Q) rm -f $$@.tmp
 	$(Q) $(GENERATE_TARGET_PLATFORMS_EXEC) $(1) "$(DOTNET_TFM)" "$$(SUPPORTED_API_VERSIONS_$(2))" $$@.tmp
 	$(Q) mv $$@.tmp $$@
@@ -190,7 +190,7 @@ include $(TOP)/scripts/generate-workloadmanifest-json/fragment.mk
 include $(TOP)/scripts/generate-workloadmanifest-targets/fragment.mk
 include $(TOP)/scripts/generate-workloaddependencies-json/fragment.mk
 define WorkloadTargets
-Workloads/Microsoft.NET.Sdk.$(1)/WorkloadManifest.json: Makefile $(TOP)/Make.config.inc $(GIT_DIRECTORY)/HEAD $(GIT_DIRECTORY)/index Makefile $(GENERATE_WORKLOADMANIFEST_JSON) | Workloads/Microsoft.NET.Sdk.$(1)
+Workloads/Microsoft.NET.Sdk.$(1)/WorkloadManifest.json: Makefile $(TOP)/Make.config.inc $(TOP)/eng/Version.Details.props $(GIT_DIRECTORY)/HEAD $(GIT_DIRECTORY)/index $(GENERATE_WORKLOADMANIFEST_JSON) | Workloads/Microsoft.NET.Sdk.$(1)
 	$$(Q) rm -f $$@.tmp
 	$$(Q_GEN) $(GENERATE_WORKLOADMANIFEST_JSON_EXEC) "$(1)" "$(3)" "$(5)" "$$(DOTNET_$(4)_RUNTIME_IDENTIFIERS)" "$$@.tmp" "$$(DOTNET_WINDOWS_PLATFORMS)" "$(DOTNET_TFM)_$$($(4)_NUGET_OS_VERSION)" "$(SUPPORTED_API_VERSIONS_$(4))" $(TOP)/eng/Version.Details.props "$$(DOTNET_$(4)_RUNTIME_IDENTIFIERS_NO_ARCH)"
 	$$(Q) mv $$@.tmp $$@

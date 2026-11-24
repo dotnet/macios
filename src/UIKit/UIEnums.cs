@@ -5010,6 +5010,17 @@ namespace UIKit {
 		Center = 2,
 	}
 
+	/// <summary>Specifies how a navigation controller presents its bar content.</summary>
+	[NoMac, TV (27, 3), iOS (27, 3), MacCatalyst (27, 3)]
+	[Native]
+	public enum UIBarContainerBehavior : long {
+		/// <summary>The system decides whether to render a local bar or integrate its content into a parent container.</summary>
+		Automatic = 0,
+		/// <summary>The navigation controller always renders its own bar.</summary>
+		[NoTV]
+		Local = 1,
+	}
+
 	// NSInteger -> NSTextTable.h
 	[MacCatalyst (13, 1)]
 	[Native]

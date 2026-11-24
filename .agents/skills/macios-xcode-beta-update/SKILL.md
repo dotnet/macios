@@ -14,7 +14,7 @@ Collect or confirm:
 - Beta number (for example `2`)
 - Azure Artifacts package version (for example `26.4.0-beta.2`)
 - Xcode product build version (for example `17E5212f`)
-- Xcode URL (for example `https://dl.internalx.com/internal-files/xcodes/Xcode_26.4_beta_2.xip`)
+- Xcode URL (for example `https://dl.internalx.com/internal-files/xcodes/Xcode_26.4_beta_2.xip`; starting with Xcode 27.3, Apple also ships `.aea` archives, which are equally supported)
 - Optional prior bump PR to mirror
 - Whether to do this in two phases (non-test changes first, tests second)
 
@@ -31,7 +31,7 @@ Apply minimal, surgical changes in these files:
    - `XCODE_PACKAGE_NAME=xcode-apple-silicon`
    - `XCODE_PACKAGE_VERSION=<major.minor.patch-beta.number>`
    - `XCODE_BUILD_VERSION=<ProductBuildVersion>`
-   - `XCODE_URL=<user-provided-xip-url>`
+   - `XCODE_URL=<user-provided-xip-or-aea-url>`
    - `XCODE_DEVELOPER_ROOT=/Applications/Xcode_<major.minor>.0-beta<beta>.app/Contents/Developer` (for betas)
 
    `XCODE_DEVELOPER_ROOT` must name the same application that `XCODE_PACKAGE_VERSION`
@@ -55,7 +55,7 @@ Apply minimal, surgical changes in these files:
    once the package is installed.
 
    Before queuing CI, verify that the matching immutable package exists — with its
-   Apple-signed XIP and `xcode-metadata.json` — in **both** feeds, because the two
+   Apple-signed XIP or AEA archive and `xcode-metadata.json` — in **both** feeds, because the two
    pipelines resolve the same coordinates in their own organization:
    - `devdiv/DevDiv/macios-tools-internal`
    - `dnceng/internal/macios-tools-internal`

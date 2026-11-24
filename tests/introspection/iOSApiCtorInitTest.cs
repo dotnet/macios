@@ -197,6 +197,15 @@ namespace Introspection {
 				if (TestRuntime.CheckXcodeVersion (16, 2) && TestRuntime.IsSimulator)
 					return true;
 				break;
+#if !__TVOS__ && !__MACCATALYST__
+			case "MPSGraphCompilationDescriptor":
+				// The iOS 27.3 simulator asserts with "unhandled platform (7) for MPSGraph serialization".
+				if (TestRuntime.IsSimulator &&
+					TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 27, 3) &&
+					!TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 27, 4))
+					return true;
+				break;
+#endif
 			case "NERelayManager":
 				// -init asserts on the CI iOS/tvOS 17.0 simulator seeds (21A5248u/21J5273p).
 				if (TestRuntime.IsSimulator &&

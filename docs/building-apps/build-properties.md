@@ -1823,7 +1823,7 @@ All platforms default to `copy` for debug builds and
 If that property isn't set, builds using the `Debug` configuration are debug
 builds.
 
-In .NET 9, the default values were:
+In .NET 11 (and earlier), the default values were:
 
 * iOS and tvOS: `partial` when building for device, `copy` when building for the simulator.
 * macOS: always `copy`.

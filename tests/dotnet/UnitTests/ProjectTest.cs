@@ -2685,7 +2685,8 @@ namespace Xamarin.Tests {
 		// [TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")] // Currently doesn't work because we emit signatures with structs from the MetalPerformanceShaders framework, which isn't available in the tvOS simulator.
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void PInvokeWrapperGenerator (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
+		public void PInvokeWrapperGenerator (ApplePlatform platform, string runtimeIdentifiers, bool removeParameterNames = false)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2699,6 +2700,11 @@ namespace Xamarin.Tests {
 			properties ["MtouchExtraArgs"] = extraArgs;
 			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
 			properties ["HotReloadCompatibleBuild"] = "false"; // P/Invoke wrappers modify assemblies, which is incompatible with Hot Reload.
+			if (removeParameterNames) {
+				// Full trimming in Release removes parameter names: https://github.com/dotnet/macios/issues/27371
+				properties ["Configuration"] = "Release";
+				properties ["TrimMode"] = "full";
+			}
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -3882,6 +3888,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/VisionKit.framework/VisionKit",
 			"/System/Library/Frameworks/WatchConnectivity.framework/WatchConnectivity",
 			"/System/Library/Frameworks/WebKit.framework/WebKit",
+			"/System/Library/Frameworks/WidgetKit.framework/WidgetKit",
 			"/usr/lib/libc++.1.dylib",
 			"/usr/lib/libcompression.dylib",
 			"/usr/lib/libiconv.2.dylib",
@@ -3890,12 +3897,14 @@ namespace Xamarin.Tests {
 			"/usr/lib/libz.1.dylib",
 			"/usr/lib/libicucore.A.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
+			"/usr/lib/swift/libswiftCoreAudio.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
 			"/usr/lib/swift/libswiftFoundation.dylib",
+			"/usr/lib/swift/libswiftIntents.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
 			"/usr/lib/swift/libswiftos.dylib",
@@ -4205,6 +4214,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox",
 			"/System/Library/Frameworks/Vision.framework/Versions/A/Vision",
 			"/System/Library/Frameworks/WebKit.framework/Versions/A/WebKit",
+			"/System/Library/Frameworks/WidgetKit.framework/Versions/A/WidgetKit",
 			"/usr/lib/libc++.1.dylib",
 			"/usr/lib/libcompression.dylib",
 			"/usr/lib/libiconv.2.dylib",
@@ -4213,10 +4223,13 @@ namespace Xamarin.Tests {
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
+			"/usr/lib/swift/libswiftCoreAudio.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
+			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
+			"/usr/lib/swift/libswiftIntents.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -4305,6 +4318,7 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/UserNotificationsUI.framework/Versions/A/UserNotificationsUI",
 			"/System/iOSSupport/System/Library/Frameworks/VisionKit.framework/Versions/A/VisionKit",
 			"/System/iOSSupport/System/Library/Frameworks/WebKit.framework/Versions/A/WebKit",
+			"/System/iOSSupport/System/Library/Frameworks/WidgetKit.framework/Versions/A/WidgetKit",
 			"/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
 			"/System/Library/Frameworks/Accessibility.framework/Versions/A/Accessibility",
 			"/System/Library/Frameworks/Accounts.framework/Versions/A/Accounts",
@@ -4403,11 +4417,13 @@ namespace Xamarin.Tests {
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
+			"/usr/lib/swift/libswiftCoreAudio.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftCoreLocation.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
+			"/usr/lib/swift/libswiftIntents.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -4545,6 +4561,67 @@ namespace Xamarin.Tests {
 				Assert.That (commands.Length, Is.EqualTo (expected ? 1 : 0), "LocalAuthenticationEmbeddedUI load commands");
 				if (expected)
 					Assert.That (commands [0].cmd, Is.EqualTo ((uint) MachO.LoadCommands.LoadWeakDylib), "LocalAuthenticationEmbeddedUI must be weakly linked");
+			}
+		}
+
+		static IEnumerable<TestCaseData> GetSwiftBridgeTrimmingTestCases ()
+		{
+			foreach (var defines in new [] { "USE_SWIFT_REVIEW", "USE_SWIFT_WIDGETKIT", "USE_SWIFT_REVIEW;USE_SWIFT_WIDGETKIT" }) {
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "", "Full");
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, false, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, true, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", defines, false, "static", "Full");
+			}
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_WIDGETKIT", false, "static", "None");
+		}
+
+		[TestCaseSource (nameof (GetSwiftBridgeTrimmingTestCases))]
+		public void SwiftBridgeTrimming (ApplePlatform platform, string runtimeIdentifiers, string defines, bool publishAot, string libXamarinLinkMode, string linkMode)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath ("ApiTestApp", runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["MtouchLink"] = linkMode;
+			properties ["LinkMode"] = linkMode;
+			properties ["UseMonoRuntime"] = "false";
+			if (libXamarinLinkMode.Length > 0)
+				properties ["_LibXamarinLinkMode"] = libXamarinLinkMode;
+			properties ["RequireLinkWithAttributeForObjectiveCClassSearch"] = "true";
+			properties ["NoSymbolStrip"] = "true";
+			properties ["AdditionalDefineConstants"] = defines;
+			if (publishAot) {
+				properties ["PublishAot"] = "true";
+				properties ["_IsPublishing"] = "true";
+			}
+			DotNet.AssertBuild (projectPath, properties);
+
+			if (Configuration.IsBuildingRemotely)
+				return;
+
+			var executable = GetNativeExecutable (platform, appPath);
+			var symbols = Configuration.GetNativeSymbols (executable);
+			var useWidgetKit = defines.Contains ("USE_SWIFT_WIDGETKIT");
+			// NativeAOT collects bridge roots before ILC trimming; see https://github.com/dotnet/macios/issues/26850.
+			var expectAllBridges = publishAot || linkMode == "None";
+			var expectStoreKit = expectAllBridges || defines.Contains ("USE_SWIFT_REVIEW");
+			var expectWidgetKit = expectAllBridges || useWidgetKit;
+			if (libXamarinLinkMode.Length == 0) {
+				var dylib = Path.Combine (appPath, "libxamarin-dotnet-coreclr-debug.dylib");
+				Assert.That (File.Exists (dylib), Is.True, "The default simulator configuration must use the runtime dylib.");
+				Assert.That (GetLinkedWithFrameworks (dylib).Any (v => v.Contains ("/WidgetKit.framework/")), Is.False, "The runtime dylib must not depend on WidgetKit.");
+			} else {
+				Assert.That (symbols, expectStoreKit ? Does.Contain ("_OBJC_CLASS_$_XamarinStoreKitSwiftFunctions") : Does.Not.Contain ("_OBJC_CLASS_$_XamarinStoreKitSwiftFunctions"), "StoreKit bridge");
+			}
+			Assert.That (symbols, expectWidgetKit ? Does.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions") : Does.Not.Contain ("_OBJC_CLASS_$_XamarinWidgetKitSwiftFunctions"), "WidgetKit bridge");
+			if (useWidgetKit) {
+				if (CanExecute (platform, runtimeIdentifiers))
+					ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifiers);
+			} else if (!expectWidgetKit) {
+				Assert.That (GetLinkedWithFrameworks (executable).Any (v => v.Contains ("/WidgetKit.framework/")), Is.False, "Unused WidgetKit must not add a native framework dependency.");
 			}
 		}
 

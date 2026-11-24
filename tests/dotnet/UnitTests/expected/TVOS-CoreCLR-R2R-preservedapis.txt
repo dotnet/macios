@@ -319,6 +319,7 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::FlagsInternal()
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding

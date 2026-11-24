@@ -37,7 +37,16 @@ public class RegistrarTests : BaseClass {
 			public MyRetainedProtocolWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
 		}
 
-		public class MyClass : UIWindowSceneDelegate, IMyProtocol, IMyTrimmedProtocol, IMyRetainedProtocol {
+		[ObjectiveCFramework (""TestFramework"")]
+		[Protocol (Name = ""MyExternalProtocol"", WrapperType = typeof (MyExternalProtocolWrapper))]
+		public interface IMyExternalProtocol : INativeObject, IDisposable {
+		}
+
+		internal sealed class MyExternalProtocolWrapper : BaseWrapper, IMyExternalProtocol {
+			public MyExternalProtocolWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
+		}
+
+		public class MyClass : UIWindowSceneDelegate, IMyProtocol, IMyTrimmedProtocol, IMyRetainedProtocol, IMyExternalProtocol {
 		}
 		";
 		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
@@ -73,6 +82,7 @@ public class RegistrarTests : BaseClass {
 		userAssembly.MainModule.GetType ("MyClass").Interfaces.Clear ();
 		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyProtocol"));
 		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyTrimmedProtocol"));
+		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyExternalProtocol"));
 		new ManagedRegistrarStep ().Process (context);
 		new RegistrarStep ().Process (context);
 
@@ -83,6 +93,7 @@ public class RegistrarTests : BaseClass {
 		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
 		Assert.That (declaration, Does.Not.Contain ("MyTrimmedProtocol"), "Trimmed protocol with wrapper");
 		Assert.That (declaration, Does.Contain ("MyRetainedProtocol"), "Retained protocol with trimmed conformance");
+		Assert.That (declaration, Does.Contain ("MyExternalProtocol"), "External framework protocol");
 		Assert.That (header, Has.Some.StartsWith ("@protocol MyRetainedProtocol"), "Retained protocol declaration");
 	}
 

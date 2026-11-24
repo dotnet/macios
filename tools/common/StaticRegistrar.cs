@@ -1252,7 +1252,8 @@ namespace Registrar {
 				if (preTrimType?.HasInterfaces == true)
 					return preTrimType.Interfaces.Select (v => v.InterfaceType.Resolve ())
 						.Where (v => GetProtocolAttributeWrapperType (v) is not null &&
-							(IsPlatformType (v) || LinkContext?.GetLoadedAssembly (v.Module.Assembly.Name.Name)?.MainModule.GetType (v.FullName) is not null)).ToArray ();
+							(Frameworks.TryGetFramework (App, v.Resolve (), out string? _) ||
+								LinkContext?.GetLoadedAssembly (v.Module.Assembly.Name.Name)?.MainModule.GetType (v.FullName) is not null)).ToArray ();
 			}
 #endif
 

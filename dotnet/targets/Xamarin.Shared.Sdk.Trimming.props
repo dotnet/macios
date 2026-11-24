@@ -41,18 +41,6 @@
 
 	-->
 
-	<PropertyGroup>
-		<!-- Compute debug state before the trimming defaults and runtime feature switches. -->
-		<!-- Xamarin.Mac: use MmpDebug (this differs from the old-style logic, which checks $(DebugSymbols) as well) -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' == 'macOS'">$(MmpDebug)</_BundlerDebug>
-		<!-- Xamarin.iOS: Use MtouchDebug -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchDebug)</_BundlerDebug>
-		<!-- Otherwise the default is true if we're building a Debug configuration -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(Configuration)' == 'Debug'">true</_BundlerDebug>
-		<!-- As a last resort, the default is false for all platforms -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
-	</PropertyGroup>
-
 	<!-- Since we know if we're building for a simulator or not, we can determine the default trimming behavior -->
 	<PropertyGroup Condition="'$(TrimMode)' != ''">
 		<!-- If TrimMode is set, then that's the default link mode -->

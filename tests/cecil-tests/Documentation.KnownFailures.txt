@@ -1657,8 +1657,6 @@ F:CloudKit.CKErrorCode.TemporarilyUnavailable
 F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
 F:CloudKit.CKRecordZoneEncryptionScope.Record
 F:CloudKit.CKRecordZoneEncryptionScope.Zone
-F:CloudKit.CKSyncEnginePendingDatabaseChangeType.DeleteZone
-F:CloudKit.CKSyncEnginePendingDatabaseChangeType.SaveZone
 F:Contacts.CNAuthorizationStatus.Limited
 F:Contacts.CNErrorCode.ChangeHistoryExpired
 F:Contacts.CNErrorCode.ChangeHistoryInvalidAnchor
@@ -55226,7 +55224,6 @@ T:CloudKit.CKSyncEngineFetchedRecordDeletion
 T:CloudKit.CKSyncEngineFetchedRecordZoneChangesEvent
 T:CloudKit.CKSyncEngineFetchedZoneDeletion
 T:CloudKit.CKSyncEnginePendingDatabaseChange
-T:CloudKit.CKSyncEnginePendingDatabaseChangeType
 T:CloudKit.CKSyncEnginePendingRecordZoneChange
 T:CloudKit.CKSyncEnginePendingZoneDelete
 T:CloudKit.CKSyncEnginePendingZoneSave

@@ -425,10 +425,13 @@ namespace CloudKit {
 		EncryptedDataReset,
 	}
 
+	/// <summary>Enumerates changes that the sync engine can make to a database.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingDatabaseChangeType : long {
+		/// <summary>The sync engine should save a record zone.</summary>
 		SaveZone,
+		/// <summary>The sync engine should delete a record zone.</summary>
 		DeleteZone,
 	}
 

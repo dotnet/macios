@@ -1692,11 +1692,14 @@ namespace Foundation {
 				// try to throw on enter
 				ThrowIfNeeded (cancellationToken);
 
+				var doneWithAllData = false;
 				while (current is null) {
 					Task waitForData;
 					lock (dataLock) {
-						if (data.Count == 0 && receivedAllData && position == length)
+						if (data.Count == 0 && receivedAllData && position == length) {
+							doneWithAllData = true;
 							break;
+						}
 
 						if (data.Count > 0 && current is null) {
 							current = data.Peek ();
@@ -1721,7 +1724,7 @@ namespace Foundation {
 				// try to throw again before read
 				ThrowIfNeeded (cancellationToken);
 
-				if (current is null)
+				if (doneWithAllData)
 					return 0;
 
 				var d = currentStream!;

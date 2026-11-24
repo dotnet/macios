@@ -85,6 +85,7 @@ trigger:
       - tools/mtouch/README.md
       - msbuild/Xamarin.Localization.MSBuild/README.md
       - '**/TranslatedAssemblies/*.*.resx'
+      - 'macios/Localize/**'
 
 extends:
   template: azure-pipelines/MicroBuild.1ES.Official.yml@CustomPipelineTemplates

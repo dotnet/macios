@@ -1245,6 +1245,16 @@ namespace Registrar {
 
 		protected override TypeReference []? GetLinkedAwayInterfaces (TypeReference type)
 		{
+#if ASSEMBLY_PREPARER
+			if (App.IsPostProcessingAssemblies && App.PreTrimAssemblyResolver is not null) {
+				// Only recover native protocols: trimmed managed protocols no longer have generated declarations.
+				var preTrimType = GetPreTrimAttributeProvider (type.Resolve ()) as TypeDefinition;
+				if (preTrimType?.HasInterfaces == true)
+					return preTrimType.Interfaces.Select (v => v.InterfaceType.Resolve ())
+						.Where (v => GetProtocolAttributeWrapperType (v) is not null).ToArray ();
+			}
+#endif
+
 			if (LinkContext is null)
 				return null;
 
@@ -5550,7 +5560,7 @@ namespace Registrar {
 		static string GetParamName (MethodDefinition method, int i)
 		{
 			var p = method.Parameters [i];
-			if (p.Name is not null)
+			if (!string.IsNullOrEmpty (p.Name))
 				return p.Name;
 			return "__p__" + i.ToString ();
 		}

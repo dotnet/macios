@@ -55877,7 +55877,6 @@ T:ExecutionPolicy.EPError
 T:ExecutionPolicy.EPExecutionPolicy
 T:ExtensionKit.EXAppExtensionBrowserViewController
 T:ExtensionKit.EXHostViewController
-T:ExternalAccessory.EABluetoothAccessoryPickerError
 T:FileProvider.NSFileProviderContentPolicy
 T:FileProvider.NSFileProviderCreateItemOptions
 T:FileProvider.NSFileProviderCreateOrModifyItemCompletionHandler
@@ -58250,18 +58249,13 @@ T:PdfKit.PdfAnnotationWidgetSubtype
 T:PdfKit.PdfAppearanceCharacteristics
 T:PdfKit.PdfAppearanceCharacteristicsKeys
 T:PdfKit.PdfBorderKeys
-T:PdfKit.PdfDisplayDirection
 T:PdfKit.PdfDocumentAttributes
-T:PdfKit.PdfDocumentPermissions
 T:PdfKit.PdfDocumentWriteOptions
-T:PdfKit.PdfInterpolationQuality
 T:PdfKit.PdfPageImageInitializationOption
 T:PdfKit.PdfPageImageInitializationOptionKeys
 T:PdfKit.PdfSelectionGranularity
-T:PdfKit.PdfThumbnailLayoutMode
 T:PdfKit.PdfViewScale
 T:PdfKit.PdfViewTitle
-T:PdfKit.PdfWidgetCellState
 T:PencilKit.PKCanvasView
 T:PencilKit.PKCanvasViewDrawingPolicy
 T:PencilKit.PKContentVersion
@@ -58522,7 +58516,6 @@ T:SafariServices.SFSafariTab
 T:SafariServices.SFSafariToolbarItem
 T:SafariServices.SFSafariViewControllerActivityButton
 T:SafariServices.SFSafariViewControllerDataStore
-T:SafariServices.SFSafariViewControllerDismissButtonStyle
 T:SafariServices.SFSafariViewControllerPrewarmingToken
 T:SafariServices.SFSafariWindow
 T:SafariServices.SFUniversalLink

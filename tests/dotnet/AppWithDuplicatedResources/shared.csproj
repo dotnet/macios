@@ -24,11 +24,11 @@
 		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
 
 		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</ImageAsset>
 
 		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</InterfaceDefinition>
 
 		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
@@ -45,11 +45,11 @@
 		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
 
 		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</ImageAsset>
 
 		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</InterfaceDefinition>
 
 		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />
@@ -66,11 +66,11 @@
 		<PartialAppManifest Include="../../LibraryWithResources/shared.plist" />
 
 		<ImageAsset Include="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../LibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
 		</ImageAsset>
 
 		<InterfaceDefinition Include="../../LibraryWithResources/$(_PlatformName)/**/*.storyboard;../../LibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableFirstExecutableInterfaceDefinition)' != 'true'" >
-			<Link>$([MSBuild]::MakeRelative ('../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../LibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))-other</Link>
 		</InterfaceDefinition>
 
 		<SceneKitAsset Include="../../LibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)-other" />
@@ -87,11 +87,11 @@
 		<PartialAppManifest Include="../../SecondLibraryWithResources/shared.plist" />
 
 		<ImageAsset Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.*" Exclude="../../SecondLibraryWithResources/$(_PlatformName)/**/*.xcassets/**/*.DS_Store">
-			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</ImageAsset>
 
 		<InterfaceDefinition Include="../../SecondLibraryWithResources/$(_PlatformName)/**/*.storyboard;../../SecondLibraryWithResources/$(_PlatformName)/**/*.xib" Condition="'$(DisableSecondExecutableInterfaceDefinition)' != 'true'">
-			<Link>$([MSBuild]::MakeRelative ('../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
+			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)/../../SecondLibraryWithResources/$(_PlatformName)/Resources', '%(FullPath)'))</Link>
 		</InterfaceDefinition>
 
 		<SceneKitAsset Include="../../SecondLibraryWithResources/*.scnassets/*" Link="%(RecursiveDir)%(FileName)%(Extension)" />

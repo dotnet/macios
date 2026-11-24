@@ -4606,17 +4606,20 @@ namespace Xamarin.Tests {
 		static IEnumerable<TestCaseData> GetSwiftBridgeTrimmingTestCases ()
 		{
 			foreach (var defines in new [] { "USE_SWIFT_REVIEW", "USE_SWIFT_WIDGETKIT", "USE_SWIFT_REVIEW;USE_SWIFT_WIDGETKIT" }) {
-				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "static", "Full");
-				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "", "Full");
-				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, false, "static", "Full");
-				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, true, "static", "Full");
-				yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", defines, false, "static", "Full");
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "static", "Full", false);
+				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", defines, false, "", "Full", false);
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, false, "static", "Full", false);
+				yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", defines, true, "static", "Full", false);
+				yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", defines, false, "static", "Full", false);
 			}
-			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_WIDGETKIT", false, "static", "None");
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_WIDGETKIT", false, "static", "None", false);
+			yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", "USE_SWIFT_WIDGETKIT", false, "", "Full", true);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_REVIEW", false, "static", "Full", true);
+			yield return new TestCaseData (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "USE_SWIFT_WIDGETKIT", false, "static", "Full", true);
 		}
 
 		[TestCaseSource (nameof (GetSwiftBridgeTrimmingTestCases))]
-		public void SwiftBridgeTrimming (ApplePlatform platform, string runtimeIdentifiers, string defines, bool publishAot, string libXamarinLinkMode, string linkMode)
+		public void SwiftBridgeTrimming (ApplePlatform platform, string runtimeIdentifiers, string defines, bool publishAot, string libXamarinLinkMode, string linkMode, bool useMonoRuntime)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -4626,7 +4629,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchLink"] = linkMode;
 			properties ["LinkMode"] = linkMode;
-			properties ["UseMonoRuntime"] = "false";
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (libXamarinLinkMode.Length > 0)
 				properties ["_LibXamarinLinkMode"] = libXamarinLinkMode;
 			properties ["RequireLinkWithAttributeForObjectiveCClassSearch"] = "true";
@@ -4649,7 +4652,7 @@ namespace Xamarin.Tests {
 			var expectStoreKit = expectAllBridges || defines.Contains ("USE_SWIFT_REVIEW");
 			var expectWidgetKit = expectAllBridges || useWidgetKit;
 			if (libXamarinLinkMode.Length == 0) {
-				var dylib = Path.Combine (appPath, "libxamarin-dotnet-coreclr-debug.dylib");
+				var dylib = Path.Combine (appPath, useMonoRuntime ? "libxamarin-dotnet-debug.dylib" : "libxamarin-dotnet-coreclr-debug.dylib");
 				Assert.That (File.Exists (dylib), Is.True, "The default simulator configuration must use the runtime dylib.");
 				Assert.That (GetLinkedWithFrameworks (dylib).Any (v => v.Contains ("/WidgetKit.framework/")), Is.False, "The runtime dylib must not depend on WidgetKit.");
 			} else {

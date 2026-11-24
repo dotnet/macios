@@ -2640,11 +2640,12 @@ namespace Xamarin.Tests {
 			properties ["MonoBundlingExtraArgs"] = extraArgs;
 			properties ["MtouchExtraArgs"] = extraArgs;
 			properties ["Registrar"] = "static"; // enable the static registrar too, see https://github.com/dotnet/macios/issues/15190.
-			properties ["HotReloadCompatibleBuild"] = "false"; // P/Invoke wrappers modify assemblies, which is incompatible with Hot Reload.
 			if (removeParameterNames) {
 				// Full trimming in Release removes parameter names: https://github.com/dotnet/macios/issues/27371
 				properties ["Configuration"] = "Release";
 				properties ["TrimMode"] = "full";
+				properties ["PrepareAssemblies"] = "true";
+				properties ["PostProcessAssemblies"] = "true";
 			}
 
 			DotNet.AssertBuild (project_path, properties);

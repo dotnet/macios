@@ -403,7 +403,8 @@ namespace Xamarin.Tests {
 
 		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)
 		{
-			return Get (projectPath, name, "Property", target, properties, environment);
+			// MSBuild writes a trailing newline after the value in the result file.
+			return Get (projectPath, name, "Property", target, properties, environment).Trim ();
 		}
 
 		// returns json

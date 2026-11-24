@@ -2380,6 +2380,15 @@
 				PublishFolderType="None"
 			/>
 
+			<!-- Don't publish any *.wit files (WASI component type definitions), they're not used on Apple platforms -->
+			<ResolvedFileToPublish
+				Update="@(ResolvedFileToPublish)"
+				Condition=" '%(ResolvedFileToPublish.Extension)' == '.wit' And
+				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
+				            "
+				PublishFolderType="None"
+			/>
+
 			<!-- Remove the libxamarin-*.dylib files we don't want -->
 			<ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dylib' And '%(Filename)%(Extension)' != '$(_LibXamarinName)' And $([System.String]::new('%(Filename)').StartsWith('libxamarin-dotnet', StringComparison.Ordinal))" />
 

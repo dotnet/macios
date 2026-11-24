@@ -1624,9 +1624,9 @@
 		<ItemGroup Condition="'$(IsAppExtension)' == 'true'">
 			<!-- https://github.com/xamarin/xamarin-macios/issues/19037 -->
 			<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
-				 So here we set RootMode=Library for these cases. -->
-			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Library" />
-			<TrimmerRootAssembly Include="@(IntermediateAssembly->'%(Filename)')" RootMode="Library" Condition="'@(TrimmerRootAssembly)' == ''" />
+				 So here we set RootMode=Visible for these cases. -->
+			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Visible" />
+			<TrimmerRootAssembly Include="@(IntermediateAssembly->'%(Filename)')" RootMode="Visible" Condition="'@(TrimmerRootAssembly)' == ''" />
 		</ItemGroup>
 		<!-- If $(IntermediateAssembly) was modified by the AssemblyPreparer task, then we must update the TrimmerRootAssembly item group to point to the updated version of the intermediate assembly. -->
 		<!-- It turned out a bit complicated, because we want to preserve any existing metadata on the items in the TrimmerRootAssembly item group. -->

@@ -269,7 +269,7 @@ public partial class Generator {
 					TryComputeLibraryName (fa.LibraryName, type, out libname, out libPath);
 				// We need to check for special cases inside FieldAttributes
 				// fa.LibraryName could contain a different framework i.e UITrackingRunLoopMode (UIKit) inside NSRunLoopMode enum (Foundation).
-				// libPath could have a custom path i.e. CoreImage which in macOS is inside Quartz
+				// libPath could have a custom path.
 				// library_name contains the Framework constant name the Field is inside of, used as fallback.
 				print ("[Field (\"{0}\", \"{1}\")]", fa.SymbolName, libPath ?? libname);
 				print ("internal unsafe static {1} {0} {{", fa.SymbolName, isBackingFieldValueType ? backingFieldTypeName : "IntPtr");

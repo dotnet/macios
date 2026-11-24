@@ -21,6 +21,12 @@ namespace MonoTouchFixtures.CoreImage {
 	public class FilterTest {
 
 		[Test]
+		public void InputImageKey ()
+		{
+			Assert.That (CIFilterInputKey.Image.ToString (), Is.EqualTo ("inputImage"));
+		}
+
+		[Test]
 		public void HighlightShadowAdjust ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");

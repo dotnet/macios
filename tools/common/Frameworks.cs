@@ -153,7 +153,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "CoreImage", 10, 0 },
 					{ "Foundation", 10, 0 },
 					{ "ImageKit", "Quartz", 10, 0, "ImageKit" },
-					{ "PdfKit", "Quartz", 10, 0, "PDFKit" },
+					{ "PdfKit", "PDFKit", 10, 0 },
 					{ "Security", 10, 0 },
 
 					{ "GSS", "GSS", 10, 1 },
@@ -975,18 +975,6 @@ public class Frameworks : Dictionary<string, Framework> {
 	{
 		if (!TryGetFrameworks (platform, out var all_frameworks))
 			return null;
-
-		if (!string.IsNullOrEmpty (libraryName) && libraryName [0] == '+') {
-			// Keep these pseudo-library mappings in sync with Generator.TryComputeLibraryName.
-			var frameworkNamespace = libraryName switch {
-				"+CoreImage" => platform == ApplePlatform.MacOSX ? "Quartz" : "CoreImage",
-				"+CoreServices" => platform == ApplePlatform.MacOSX ? "CoreServices" : "MobileCoreServices",
-				"+PDFKit" => platform == ApplePlatform.MacOSX ? "Quartz" : "PdfKit",
-				_ => null,
-			};
-			if (frameworkNamespace is not null && all_frameworks.TryGetValue (frameworkNamespace, out var mappedFramework))
-				return mappedFramework;
-		}
 
 		if (all_frameworks.TryGetValue (libraryName, out var namespaceFramework))
 			return namespaceFramework;

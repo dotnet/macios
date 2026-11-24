@@ -12,27 +12,6 @@ public static class PlatformNameExtensionsBgen {
 		throw new BindingException (1047, currentPlatform);
 	}
 
-	public static string GetCoreImageMap (this PlatformName currentPlatform)
-	{
-		if (currentPlatform.TryGetCoreImageMap (out var coreImageMap))
-			return coreImageMap;
-		throw new BindingException (1047, currentPlatform);
-	}
-
-	public static string GetCoreServicesMap (this PlatformName currentPlatform)
-	{
-		if (currentPlatform.TryGetCoreServicesMap (out var coreServicesMap))
-			return coreServicesMap;
-		throw new BindingException (1047, currentPlatform);
-	}
-
-	public static string GetPDFKitMap (this PlatformName currentPlatform)
-	{
-		if (currentPlatform.TryGetPDFKitMap (out var pdfKitMap))
-			return pdfKitMap;
-		throw new BindingException (1047, currentPlatform);
-	}
-
 	public static ApplePlatform AsApplePlatform (this PlatformName platform)
 	{
 		switch (platform) {

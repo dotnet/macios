@@ -46,6 +46,12 @@ class RootContext {
 	}
 
 	// TODO: clean code coming from the old generator
+	/// <summary>Computes the native library used by a field binding and records it when its identifier is valid.</summary>
+	/// <param name="attributeLibraryName">The library name or path specified by the field attribute, if any.</param>
+	/// <param name="typeNamespace">The namespace to use when no library is specified.</param>
+	/// <param name="libraryName">The computed library name, which may not be a valid C# identifier.</param>
+	/// <param name="libraryPath">The specified library name or path, or <see langword="null" /> when using the namespace.</param>
+	/// <returns><see langword="true" /> if the library name is a valid C# identifier; otherwise, <see langword="false" />.</returns>
 	public bool TryComputeLibraryName (string? attributeLibraryName, string typeNamespace,
 		[NotNullWhen (true)] out string? libraryName,
 		out string? libraryPath)
@@ -53,32 +59,16 @@ class RootContext {
 		libraryPath = null;
 
 		if (!string.IsNullOrEmpty (attributeLibraryName)) {
-			// Remapped
 			libraryName = attributeLibraryName;
-			if (libraryName [0] == '+') {
-				switch (libraryName) {
-				case "+CoreImage":
-					CurrentPlatform.TryGetCoreImageMap (out libraryName);
-					break;
-				case "+CoreServices":
-					CurrentPlatform.TryGetCoreServicesMap (out libraryName);
-					break;
-				case "+PDFKit":
-					libraryName = "PdfKit";
-					CurrentPlatform.TryGetPDFKitMap (out libraryPath);
-					break;
-				}
-			} else {
-				// we get something in LibraryName from FieldAttribute so we assume
-				// it is a path to a library, so we save the path and change library name
-				// to a valid identifier if needed
-				libraryPath = libraryName;
-				// without extension makes more sense, but we can't change it since it breaks compat
-				libraryName = Path.GetFileNameWithoutExtension (libraryName);
+			// we get something in LibraryName from FieldAttribute so we assume
+			// it is a path to a library, so we save the path and change library name
+			// to a valid identifier if needed
+			libraryPath = libraryName;
+			// without extension makes more sense, but we can't change it since it breaks compat
+			libraryName = Path.GetFileNameWithoutExtension (libraryName);
 
-				if (libraryName.Contains ('.'))
-					libraryName = libraryName.Replace (".", string.Empty);
-			}
+			if (libraryName.Contains ('.'))
+				libraryName = libraryName.Replace (".", string.Empty);
 		} else {
 			libraryName = typeNamespace;
 		}

@@ -403,10 +403,13 @@ namespace CloudKit {
 		DidSendChanges,
 	}
 
+	/// <summary>Enumerates changes that the sync engine can make to records in a zone.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingRecordZoneChangeType : long {
+		/// <summary>The sync engine should save a record.</summary>
 		SaveRecord,
+		/// <summary>The sync engine should delete a record.</summary>
 		DeleteRecord,
 	}
 

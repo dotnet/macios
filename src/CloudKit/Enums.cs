@@ -351,11 +351,15 @@ namespace CloudKit {
 	}
 
 
+	/// <summary>Enumerates changes to the signed-in iCloud account that the sync engine reports.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineAccountChangeType : long {
+		/// <summary>The user signed in to an iCloud account.</summary>
 		SignIn,
+		/// <summary>The user signed out of an iCloud account.</summary>
 		SignOut,
+		/// <summary>The user switched from one iCloud account to another.</summary>
 		SwitchAccounts,
 	}
 

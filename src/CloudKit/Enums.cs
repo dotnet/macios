@@ -326,11 +326,15 @@ namespace CloudKit {
 		Administrator = 2,
 	}
 
+	/// <summary>Flags indicating the access options available for a CloudKit share.</summary>
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantAccessOption : ulong {
+		/// <summary>The user can share with anyone who has the share URL.</summary>
 		AnyoneWithLink = 1uL << 0,
+		/// <summary>The user can share only with specified recipients.</summary>
 		SpecifiedRecipientsOnly = 1uL << 1,
+		/// <summary>The user can share with anyone who has the URL or only with specified recipients.</summary>
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 

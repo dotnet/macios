@@ -1657,9 +1657,6 @@ F:CloudKit.CKErrorCode.TemporarilyUnavailable
 F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
 F:CloudKit.CKRecordZoneEncryptionScope.Record
 F:CloudKit.CKRecordZoneEncryptionScope.Zone
-F:CloudKit.CKSharingParticipantAccessOption.Any
-F:CloudKit.CKSharingParticipantAccessOption.AnyoneWithLink
-F:CloudKit.CKSharingParticipantAccessOption.SpecifiedRecipientsOnly
 F:CloudKit.CKSharingParticipantPermissionOption.Any
 F:CloudKit.CKSharingParticipantPermissionOption.ReadOnly
 F:CloudKit.CKSharingParticipantPermissionOption.ReadWrite
@@ -55236,7 +55233,6 @@ T:CloudKit.CKShareParticipant
 T:CloudKit.CKShareRequestAccessOperation
 T:CloudKit.CKShareRequestAccessOperationPerShareAccessRequestCompletionHandler
 T:CloudKit.CKShareRequestAccessOperationShareRequestAccessCompletionHandler
-T:CloudKit.CKSharingParticipantAccessOption
 T:CloudKit.CKSharingParticipantPermissionOption
 T:CloudKit.CKSubscription
 T:CloudKit.CKSyncEngine

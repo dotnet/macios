@@ -499,6 +499,159 @@ namespace Cecil.Tests {
 		};
 
 		[Test]
+		public void CheckForBlockTrampolineUserDelegateTypes ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var failures = new Dictionary<string, string> ();
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				foreach (var method in info.Assembly.EnumerateMethods (m => m.HasBody)) {
+					foreach (var instruction in method.Body.Instructions) {
+						if (instruction.OpCode.Code != Code.Call && instruction.OpCode.Code != Code.Newobj)
+							continue;
+						if (instruction.Operand is not MethodReference constructor ||
+							!constructor.DeclaringType.Is ("ObjCRuntime", "BlockLiteral") ||
+							constructor.Name != ".ctor" || constructor.Parameters.Count != 4 ||
+							!constructor.Parameters [2].ParameterType.Is ("System", "Type") ||
+							!constructor.Parameters [3].ParameterType.Is ("System", "String"))
+							continue;
+
+						// Match the typeof/nameof arguments used by the block constructor optimizer.
+						var loadName = PreviousInstruction (instruction);
+						var getType = PreviousInstruction (loadName);
+						var loadType = PreviousInstruction (getType);
+						var location = method.RenderLocation (instruction);
+						Assert.That (loadName.OpCode, Is.EqualTo (OpCodes.Ldstr), location);
+						Assert.That (getType.OpCode, Is.EqualTo (OpCodes.Call), location);
+						Assert.That (getType.Operand is MethodReference getTypeMethod &&
+							getTypeMethod.DeclaringType.Is ("System", "Type") &&
+							getTypeMethod.Name == "GetTypeFromHandle", Is.True, location);
+						Assert.That (loadType.OpCode, Is.EqualTo (OpCodes.Ldtoken), location);
+						var trampolineType = ((TypeReference) loadType.Operand).Resolve ();
+						var trampoline = trampolineType.Methods.Single (m => m.Name == (string) loadName.Operand);
+						if (trampoline.CustomAttributes.Any (a => a.AttributeType.Is ("ObjCRuntime", "UserDelegateTypeAttribute")))
+							continue;
+
+						var message = $"{trampoline.AsFullName ()}: needs [UserDelegateType] because its signature is used to create a BlockLiteral.";
+						failures [message] = $"{location}: {message}";
+					}
+				}
+			}
+			Helper.AssertFailures (failures, knownFailuresBlockTrampolines, nameof (knownFailuresBlockTrampolines), "Block trampolines without [UserDelegateType]");
+		}
+
+		static Instruction PreviousInstruction (Instruction instruction)
+		{
+			var previous = instruction.Previous;
+			while (previous?.OpCode == OpCodes.Nop)
+				previous = previous.Previous;
+			return previous ?? throw new InvalidOperationException ($"No instruction before {instruction}.");
+		}
+
+		// Existing unannotated trampolines, kept here to catch new omissions without changing unrelated APIs.
+		static HashSet<string> knownFailuresBlockTrampolines = new HashSet<string> {
+			"Accessibility.AXSettings.OpenSettingsFeatureCompletionHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"AddressBook.ABAddressBook.TrampolineCompletionHandler(System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"AudioToolbox.AudioConverter.PrepareCompletionHandler(System.IntPtr, System.Int32): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"AudioUnit.AudioComponent.TrampolineAction(System.IntPtr, AudioUnit.AudioComponentValidationResult, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreFoundation.DispatchIO.Trampoline_DispatchReadWriteHandler(System.IntPtr, System.IntPtr, System.Int32): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGBitmapContext.CGBitmapContextCreateAdaptive_OnAllocate(System.IntPtr, CoreGraphics.CGContentInfo*, CoreGraphics.CGBitmapParameters*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGBitmapContext.CGBitmapContextCreateAdaptive_OnError(System.IntPtr, System.IntPtr, CoreGraphics.CGContentInfo*, CoreGraphics.CGBitmapParameters*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGBitmapContext.CGBitmapContextCreateAdaptive_OnFree(System.IntPtr, System.IntPtr, CoreGraphics.CGContentInfo*, CoreGraphics.CGBitmapParameters*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGBitmapContext.CGBitmapContextCreateAdaptive_OnResolve(System.IntPtr, CoreGraphics.CGContentInfo*, CoreGraphics.CGBitmapParameters*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGPDFArray.ApplyBlockHandler(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGRenderingBufferProvider.LockPointerBlock(ObjCRuntime.BlockLiteral*, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGRenderingBufferProvider.ReleaseInfoBlock(ObjCRuntime.BlockLiteral*, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreGraphics.CGRenderingBufferProvider.UnlockPointerBlock(ObjCRuntime.BlockLiteral*, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreText.CTFontDescriptor.MatchFontDescriptorsHandler(System.IntPtr, CoreText.CTFontDescriptorMatchingState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreText.CTFontManager.TrampolineRegistrationHandler(System.IntPtr, System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreText.CTFontManager.TrampolineRequestFonts(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"CoreText.CTLine.TrampolineEnumerate(System.IntPtr, System.Double, System.IntPtr, System.Byte, System.Byte*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"ImageIO.CGImageAnimation/SDCGImageSourceAnimationBlock.Invoke(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte*): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"ImageIO.CGImageMetadata.TagEnumerator(System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"MediaAccessibility.MACaptionAppearance.Callback(System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Metal.MTLDevice.TrampolineNotificationHandler(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"MetalPerformanceShaders.MPSImageBatch.InvokeIterator(System.IntPtr, System.IntPtr, System.UIntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWBrowser.TrampolineChangesHandler(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWBrowser.TrampolineStateChangesHandler(System.IntPtr, Network.NWBrowserState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWBrowseResult.TrampolineEnumerateInterfacesHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.Trampoline_StateChangeCallback(System.IntPtr, Network.NWConnectionState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineBooleanChangeHandler(System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineGetEstablishmentReportHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolinePathChanged(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineReceiveCompletion(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineReceiveCompletionData(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineReceiveCompletionReadOnlyData(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnection.TrampolineSendCompletion(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnectionGroup.TrampolineReceiveHandler(System.IntPtr, System.IntPtr, System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnectionGroup.TrampolineSendCompletion(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnectionGroup.TrampolineSetNewConnectionHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWConnectionGroup.TrampolineStateChangedHandler(System.IntPtr, Network.NWConnectionGroupState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWContentContext.TrampolineProtocolIterator(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWDataTransferReport.TrampolineCollectHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEstablishmentReport.TrampolineEnumerateProtocolsHandler(System.IntPtr, System.IntPtr, System.UIntPtr, System.UIntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEstablishmentReport.TrampolineEnumerateResolutionReport(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEstablishmentReport.TrampolineResolutionEnumeratorHandler(System.IntPtr, Network.NWReportResolutionSource, System.UIntPtr, System.Int32, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEthernetChannel.TrampolineReceiveHandler(System.IntPtr, System.IntPtr, System.UInt16, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEthernetChannel.TrampolineSendCompletion(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWEthernetChannel.TrampolineStateChangesHandler(System.IntPtr, Network.NWEthernetChannelState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineCleanupHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineInputHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineOutputHandler(System.IntPtr, System.IntPtr, System.IntPtr, System.UIntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineParseInputHandler(System.IntPtr, System.IntPtr, System.UIntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineParseOutputHandler(System.IntPtr, System.IntPtr, System.UIntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineStopHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramer.TrampolineWakeupHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramerMessage.TrampolineAccessValueHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWFramerMessage.TrampolineSetDataHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWListener.TrampolineAdvertisedEndpointChangedHandler(System.IntPtr, System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWListener.TrampolineListenerStateChanged(System.IntPtr, Network.NWListenerState, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWListener.TrampolineNewConnection(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWListener.TrampolineNewConnectionGroup(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWMulticastGroup.TrampolineEnumerateEndpointsHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWParameters.TrampolineConfigureHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWParameters.TrampolineIterateProhibitedHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWParameters.TrampolineIterateProhibitedTypeHandler(System.IntPtr, Network.NWInterfaceType): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWPath.TrampolineEnumerator(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWPath.TrampolineGatewaysHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWPathMonitor.TrampolineUpdatedSnapshot(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWProtocolDefinition.TrampolineCreateFramerHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWProtocolStack.TrampolineIterateHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWProxyConfig.TrampolineEnumerateExcludeDomainHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWProxyConfig.TrampolineEnumerateMatchDomainHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWTxtRecord.TrampolineAccessKeyHandler(System.IntPtr, System.IntPtr, Network.NWTxtRecordFindKey, System.IntPtr, System.UIntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWTxtRecord.TrampolineApplyHandler(System.IntPtr, System.IntPtr, Network.NWTxtRecordFindKey, System.IntPtr, System.UIntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWTxtRecord.TrampolineRawBytesHandler(System.IntPtr, System.IntPtr, System.UIntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketMetadata.TrampolinePongHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketOptions.TrampolineClientRequestHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketOptions.TrampolineClientRequestHandlerAction(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketRequest.TrampolineEnumerateHeaderHandler(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketRequest.TrampolineEnumerateSubprotocolHandler(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Network.NWWebSocketResponse.TrampolineEnumerateHeadersHandler(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"ObjCRuntime.BlockStaticDispatchClass.TrampolineDispatchBlock(System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"PassKit.PKPayLaterView.TrampolineValidateAmount(System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecIdentity2.TrampolineAccessCertificates(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecProtocolMetadata.TrampolineAccessPreSharedKeys(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecProtocolMetadata.TrampolineCertificateChainForPeer(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecProtocolMetadata.TrampolineDistinguishedNamesForPeer(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecProtocolMetadata.TrampolineOcspReposeForPeer(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecProtocolMetadata.TrampolineSignatureAlgorithmsForPeer(System.IntPtr, System.UInt16): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecSharedCredential/ActionTrampoline.Invoke(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecSharedCredential/ArrayErrorActionTrampoline.Invoke(System.IntPtr, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecTrust.TrampolineEvaluate(System.IntPtr, System.IntPtr, Security.SecTrustResult): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"Security.SecTrust.TrampolineEvaluateError(System.IntPtr, System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"UIKit.UIAccessibility.TrampolineRequestGuidedAccessSession(System.IntPtr, System.Byte): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"UIKit.UIGuidedAccessRestriction/UIGuidedAccessConfigureAccessibilityFeaturesTrampoline.Invoke(System.IntPtr, System.Byte, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTCompressionSession.VTCompressionOutputHandlerCallback(ObjCRuntime.BlockLiteral*, VideoToolbox.VTStatus, VideoToolbox.VTEncodeInfoFlags, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTDecompressionSession.VTDecompressionMultiImageCapableOutputBlockCallback(ObjCRuntime.BlockLiteral*, VideoToolbox.VTStatus, VideoToolbox.VTDecodeInfoFlags, System.IntPtr, System.IntPtr, CoreMedia.CMTime, CoreMedia.CMTime): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTDecompressionSession.VTDecompressionOutputHandlerTrampoline(ObjCRuntime.BlockLiteral*, VideoToolbox.VTStatus, VideoToolbox.VTDecodeInfoFlags, System.IntPtr, CoreMedia.CMTime, CoreMedia.CMTime): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTDecompressionSession.VTDecompressionOutputMultiImageCallbackBlock(ObjCRuntime.BlockLiteral*, System.IntPtr, System.IntPtr, VideoToolbox.VTStatus, VideoToolbox.VTDecodeInfoFlags, System.IntPtr, CoreMedia.CMTime, CoreMedia.CMTime): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTMotionEstimationSession.OutputHandlerTrampoline(ObjCRuntime.BlockLiteral*, VideoToolbox.VTStatus, VideoToolbox.VTMotionEstimationInfoFlags, System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTRawProcessingSession.VTRawProcessingOutputHandlerCallback(System.IntPtr, VideoToolbox.VTStatus, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+			"VideoToolbox.VTRawProcessingSession.VTRawProcessingParameterChangeHandlerCallback(System.IntPtr, System.IntPtr): needs [UserDelegateType] because its signature is used to create a BlockLiteral.",
+		};
+
+		[Test]
 		public void CheckForMonoPInvokeCallback ()
 		{
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();

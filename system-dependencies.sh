@@ -1054,7 +1054,7 @@ function remove_old_simulator_prereleases ()
 		fi
 	done <<< "$identifiers"
 
-	for attempt in $(seq 1 60); do
+	for ((attempt = 1; attempt <= 60; attempt++)); do
 		prereleases=$(xcrun simctl list runtimes --json | jq -c --arg os "$1" --arg version "$2" --argjson builds "$3" "$query") || return 1
 		if test "$prereleases" == "[]"; then
 			return 0

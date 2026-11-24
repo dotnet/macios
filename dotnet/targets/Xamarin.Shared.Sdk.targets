@@ -1577,7 +1577,8 @@
 			<_RelativePublishDir>$([MSBuild]::MakeRelative($(MSBuildProjectDirectory),$(_AbsolutePublishDir)))</_RelativePublishDir>
 			<_RelativePublishDir>$([MSBuild]::EnsureTrailingSlash($(_RelativePublishDir)))</_RelativePublishDir>
 			<!-- Compute the relative path of the app bundle relative to the publish directory. The _AppBundlePath is relative to the project directory, so to compute this we need to have both app bundle path and the publish directory as absolute paths first. -->
-			<_RelativeAppBundlePath>$([MSBuild]::MakeRelative($(_AbsolutePublishDir),$(MSBuildProjectDirectory)/$(_AppBundlePath)))</_RelativeAppBundlePath>
+			<!-- _AppBundlePath stays an absolute path when the app bundle is on a different drive than the project (Windows only, there's no relative path between drives), so use Path.Combine (which keeps an absolute path as-is) instead of just appending it to the project directory. -->
+			<_RelativeAppBundlePath>$([MSBuild]::MakeRelative($(_AbsolutePublishDir),$([System.IO.Path]::Combine($(MSBuildProjectDirectory),$(_AppBundlePath)))))</_RelativeAppBundlePath>
 
 			<_IntermediateNativeLibraryDir>$(IntermediateOutputPath)nativelibraries/</_IntermediateNativeLibraryDir>
 			<_IntermediateFrameworksDir>$(DeviceSpecificIntermediateOutputPath)frameworks</_IntermediateFrameworksDir>
@@ -2099,6 +2100,7 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)$(_LibXamarinName)" />
+			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)libxamarin-widgetkit.a" Condition="'$(_PlatformName)' != 'tvOS'" />
 			<!-- Link with the libraries shipped with the mono runtime pack -->
 			<_XamarinMainLibraries Include="@(_MonoLibrary)" />
 

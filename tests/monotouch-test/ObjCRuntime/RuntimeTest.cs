@@ -280,15 +280,22 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		class TestBaseWrapper : BaseWrapper {
 			public static int ReleaseThreadId;
+			public int ReleaseCount;
 
 			public TestBaseWrapper (NativeHandle handle, bool owns)
 				: base (handle, owns)
 			{
 			}
 
+			public void FinalizeWrapper ()
+			{
+				Dispose (false);
+			}
+
 			protected override void Release ()
 			{
 				Interlocked.Exchange (ref ReleaseThreadId, Thread.CurrentThread.ManagedThreadId);
+				Interlocked.Increment (ref ReleaseCount);
 				base.Release ();
 			}
 		}
@@ -326,9 +333,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static void CreateAndForgetBaseWrapper (NativeHandle handle)
+		static WeakReference CreateAndForgetBaseWrapper (NativeHandle handle)
 		{
-			_ = new TestBaseWrapper (handle, owns: false);
+			return new WeakReference (new TestBaseWrapper (handle, owns: false));
 		}
 
 		[Test]
@@ -338,15 +345,41 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			try {
 				var mainThreadId = Thread.CurrentThread.ManagedThreadId;
 				TestBaseWrapper.ReleaseThreadId = 0;
-				CreateAndForgetBaseWrapper (obj.Handle);
+				var wrapper = CreateAndForgetBaseWrapper (obj.Handle);
 
-				GC.Collect ();
-				GC.WaitForPendingFinalizers ();
-				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
+				var watch = Stopwatch.StartNew ();
+				while (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0) == 0 && watch.Elapsed < TimeSpan.FromSeconds (5)) {
+					GC.Collect (GC.MaxGeneration, GCCollectionMode.Forced, true, true);
+					GC.WaitForPendingFinalizers ();
+					NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
+				}
 
+				Assert.That (wrapper.IsAlive, Is.False, "Wrapper was not collected");
 				Assert.That (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0), Is.EqualTo (mainThreadId));
 				GC.KeepAlive (obj);
 			} finally {
+				obj.Dispose ();
+			}
+		}
+
+		[Test]
+		public void BaseWrapperQueuedFinalizerAndDisposeReleaseOnlyOnce ()
+		{
+			var obj = new NSObject ();
+			var mainThreadId = Thread.CurrentThread.ManagedThreadId;
+			var wrapper = new TestBaseWrapper (obj.Handle, owns: false);
+			TestBaseWrapper.ReleaseThreadId = 0;
+			try {
+				wrapper.FinalizeWrapper ();
+				wrapper.Dispose ();
+				Assert.That (wrapper.ReleaseCount, Is.Zero, "Release ran before the main run loop drained the queue");
+
+				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
+
+				Assert.That (wrapper.ReleaseCount, Is.EqualTo (1));
+				Assert.That (Interlocked.CompareExchange (ref TestBaseWrapper.ReleaseThreadId, 0, 0), Is.EqualTo (mainThreadId));
+			} finally {
+				wrapper.Dispose ();
 				obj.Dispose ();
 			}
 		}

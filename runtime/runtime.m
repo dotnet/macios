@@ -68,7 +68,6 @@ enum XamarinLaunchMode xamarin_launch_mode = XamarinLaunchModeApp;
 #if SUPPORTS_DYNAMIC_REGISTRATION
 bool xamarin_supports_dynamic_registration = true;
 #endif
-const char *xamarin_runtime_configuration_name = NULL;
 
 // The runtimeconfig.json 'configProperties' baked into the app as C arrays (CoreCLR only).
 // These are set from the generated main (xamarin_setup_impl) and consumed by
@@ -2413,8 +2412,8 @@ xamarin_vm_initialize ()
 	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
 	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
 
-	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
-	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
+	// Properties supplied here must not also come from runtimeconfig.json; keep the reserved
+	// properties in tools/dotnet-linker/Steps/GenerateMainStep.cs in sync.
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
 		"APP_PATHS",

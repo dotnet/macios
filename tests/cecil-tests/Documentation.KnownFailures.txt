@@ -55323,13 +55323,10 @@ T:Contacts.CNContactStoreListContactsHandler
 T:Contacts.CNFetchRequest
 T:Contacts.CNFetchResult`1
 T:ContactsUI.CNContactPicker
-T:CoreAnimation.CAAutoresizingMask
 T:CoreAnimation.CAConstraint
-T:CoreAnimation.CAConstraintAttribute
 T:CoreAnimation.CAConstraintLayoutManager
 T:CoreAnimation.CAContentsFormat
 T:CoreAnimation.CACornerCurve
-T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
 T:CoreAnimation.CAFrameRateRange
@@ -55360,7 +55357,6 @@ T:CoreBluetooth.CBConnectionEventMatchingOptions
 T:CoreBluetooth.CBConnectPeripheralOptions
 T:CoreBluetooth.CBL2CapChannel
 T:CoreBluetooth.CBManagerAuthorization
-T:CoreBluetooth.CBManagerState
 T:CoreBluetooth.RestoredState
 T:CoreData.NSBatchInsertRequest
 T:CoreData.NSBatchInsertRequestDictionaryHandler
@@ -55530,7 +55526,6 @@ T:CoreImage.CIRawDecoderVersion
 T:CoreImage.CIRawFilter
 T:CoreImage.CIReductionFilter
 T:CoreImage.CIRenderDestination
-T:CoreImage.CIRenderDestinationAlphaMode
 T:CoreImage.CIRenderTask
 T:CoreImage.CIRoundedQRCodeGenerator
 T:CoreImage.CIRoundedRectangleGenerator

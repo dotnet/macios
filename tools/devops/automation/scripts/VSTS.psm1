@@ -312,18 +312,6 @@ class BuildConfiguration {
     )
 
     [void] SetLabelsFromPR ([PSCustomObject] $prInfo, [bool]$isPR) {
-        if ($prInfo) {
-            Write-Debug "Setting VSTS labels from $($prInfo.labels)"
-            foreach ($l in [BuildConfiguration]::labelsOfInterest) {
-                $labelPresent = 1 -eq ($prInfo.labels | Where-Object { $_.name -eq "$l"}).Count
-                # We need to replace dashes with underscores, because bash can't access an environment variable with a dash in the name.
-                $lbl = $l.Replace('-', '_')
-                Write-Host "##vso[task.setvariable variable=$lbl;isOutput=true]$labelPresent"
-            }
-        } else {
-            Write-Debug "Not setting PR labels because there was not info provided."
-        }
-
         # set if the build is a PR or not
         if ($isPR) {
           Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]True"
@@ -549,24 +537,10 @@ class BuildConfiguration {
         }
 
         if ($prId) {
-          $prInfo = Get-GitHubPRInfo -ChangeId $prId
-          Write-Host $prInfo
-
-          # make peoples life better, loop over the labels and add them as tags in the vsts build
-          foreach ($labelInfo in $prInfo.labels) {
-            $labelName = $labelInfo.name
-            Write-Host "Found label $labelName"
-            $tags.Add($labelName)
-          }
-          # special tag, we want to know if we are using a pr
-          $tags.Add("prBuild")
-
-          # special tag, lets add the target branch, will be useful to the users
-          $ref = $prInfo.base.ref
-          $tags.Add("$ref")
+          Write-Host "Found PR: $prId"
 
           # set output variables based on the git labels
-          $this.SetLabelsFromPR($prInfo, $true)
+          $this.SetLabelsFromPR($null, $true)
         } else {
           if ($Env:IS_PR -eq "true") {
             Write-Host "No PR id found; treating build as CI."
@@ -583,13 +557,6 @@ class BuildConfiguration {
           $tags.Add("$($configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME)")
           Write-Host "##vso[task.setvariable variable=prBuild;isOutput=true]False"
         }
-        # Remove empty entries
-        $tags = $tags | Where {$_}
-        if ($addTags) {
-            Set-BuildTags -Tags $tags.ToArray()
-        }
-        # add the tags and serialize to json
-        $configuration | Add-Member -NotePropertyName Tags -NotePropertyValue $tags
 
         $jsonConfiguration = $configuration | ConvertTo-Json
 

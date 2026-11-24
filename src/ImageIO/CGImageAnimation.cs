@@ -83,6 +83,7 @@ namespace ImageIO {
 		// This class bridges native block invocations that call into C#
 		//
 		static internal class SDCGImageSourceAnimationBlock {
+			[UserDelegateType (typeof (CGImageSourceAnimationHandler))]
 			[UnmanagedCallersOnly]
 			internal unsafe static void Invoke (IntPtr block, nint index, IntPtr image, byte* stop)
 			{

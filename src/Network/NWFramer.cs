@@ -63,6 +63,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_wakeup_handler (OS_nw_framer framer, void* wakeup_handler);
 
+		[UserDelegateType (typeof (Action<NWFramer>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineWakeupHandler (IntPtr block, OS_nw_framer framer)
 		{
@@ -91,6 +92,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_stop_handler (OS_nw_framer framer, void* stop_handler);
 
+		[UserDelegateType (typeof (Func<NWFramer, bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineStopHandler (IntPtr block, OS_nw_framer framer)
 		{
@@ -119,6 +121,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_output_handler (OS_nw_framer framer, void* output_handler);
 
+		[UserDelegateType (typeof (Action<NWFramer, NWProtocolMetadata, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineOutputHandler (IntPtr block, OS_nw_framer framer, OS_nw_protocol_metadata message, nuint message_length, byte is_complete)
 		{
@@ -148,6 +151,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_input_handler (OS_nw_framer framer, void* input_handler);
 
+		[UserDelegateType (typeof (NWFramerInputDelegate))]
 		[UnmanagedCallersOnly]
 		static nuint TrampolineInputHandler (IntPtr block, OS_nw_framer framer)
 		{
@@ -177,6 +181,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_cleanup_handler (OS_nw_framer framer, void* cleanup_handler);
 
+		[UserDelegateType (typeof (Action<NWFramer>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineCleanupHandler (IntPtr block, OS_nw_framer framer)
 		{
@@ -303,6 +308,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte nw_framer_parse_output (OS_nw_framer framer, nuint minimum_incomplete_length, nuint maximum_length, byte* temp_buffer, BlockLiteral* parse);
 
+		[UserDelegateType (typeof (Func<IntPtr, ulong, bool, ulong>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineParseOutputHandler (IntPtr block, IntPtr buffer, nuint buffer_length, byte is_complete)
 		{
@@ -334,6 +340,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte nw_framer_parse_input (OS_nw_framer framer, nuint minimum_incomplete_length, nuint maximum_length, byte* temp_buffer, BlockLiteral* parse);
 
+		[UserDelegateType (typeof (Func<IntPtr, ulong, bool, ulong>))]
 		[UnmanagedCallersOnly]
 		static nuint TrampolineParseInputHandler (IntPtr block, IntPtr buffer, nuint buffer_length, byte is_complete)
 		{

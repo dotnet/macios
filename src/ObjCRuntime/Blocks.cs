@@ -697,6 +697,7 @@ namespace ObjCRuntime {
 	// first use of the class
 
 	internal class BlockStaticDispatchClass {
+		[UserDelegateType (typeof (Action))]
 		[UnmanagedCallersOnly]
 		internal static unsafe void TrampolineDispatchBlock (IntPtr block)
 		{

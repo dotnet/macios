@@ -420,7 +420,7 @@ namespace UIKit {
 				}
 
 				if (state is not null) {
-					state.Observable.UnregisterForTraitChanges (this);
+					state.Observable.UnregisterForTraitChanges (state.Registration);
 					Release ();
 				}
 				GC.SuppressFinalize (this);

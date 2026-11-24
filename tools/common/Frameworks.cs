@@ -897,7 +897,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		return new string (chars);
 	}
 
-	static bool IsNativeAOTPInvokeSurviving (string moduleName, string entryPoint, HashSet<string> symbols)
+	static bool IsNativeAOTPInvokeSurviving (string moduleName, string entryPoint, HashSet<string> symbols, string [] pinvokeSymbols)
 	{
 		// Direct P/Invokes don't have a __pinvoke_ symbol, but their entry point is unresolved
 		// in ILC's output. The importing module isn't encoded, so matching by entry point may
@@ -910,10 +910,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		// DefaultDllImportSearchPathsAttribute adds numeric search path flags to the module.
 		var moduleMarker = $"_Module__{SanitizeNativeAOTModuleName (moduleName)}";
 		var entryPointMarker = $"__{entryPoint}";
-		foreach (var symbol in symbols) {
-			if (!symbol.StartsWith ("__pinvoke_", StringComparison.Ordinal))
-				continue;
-
+		foreach (var symbol in pinvokeSymbols) {
 			var moduleMarkerIndex = symbol.IndexOf (moduleMarker, StringComparison.Ordinal);
 			if (moduleMarkerIndex < 0)
 				continue;
@@ -977,9 +974,9 @@ public class Frameworks : Dictionary<string, Framework> {
 		if (!string.IsNullOrEmpty (libraryName) && libraryName [0] == '+') {
 			// Keep these pseudo-library mappings in sync with Generator.TryComputeLibraryName.
 			var frameworkNamespace = libraryName switch {
-				"+CoreImage" => platform == ApplePlatform.MacOSX ? "Quartz" : "CoreImage",
+				"+CoreImage" => "CoreImage",
 				"+CoreServices" => platform == ApplePlatform.MacOSX ? "CoreServices" : "MobileCoreServices",
-				"+PDFKit" => platform == ApplePlatform.MacOSX ? "Quartz" : "PdfKit",
+				"+PDFKit" => "PdfKit",
 				_ => null,
 			};
 			if (frameworkNamespace is not null && all_frameworks.TryGetValue (frameworkNamespace, out var mappedFramework))
@@ -1016,6 +1013,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		var symbols = app.NativeAOTSurvivingPInvokeSymbols;
 		if (symbols is null)
 			return;
+		var pinvokeSymbols = symbols.Where (symbol => symbol.StartsWith ("__pinvoke_", StringComparison.Ordinal)).ToArray ();
 
 		const string dlfcnPrefix = "xamarin_Dlfcn_";
 		const string dlfcnSuffix = "_Native";
@@ -1066,7 +1064,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					var moduleName = pinvoke.Module.Name;
 					var entryPoint = pinvoke.EntryPoint ?? method.Name;
-					if (!IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols))
+					if (!IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols, pinvokeSymbols))
 						continue;
 
 					const string categoryFrameworkPrefix = "xamarin_CategoryFramework_";

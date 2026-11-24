@@ -40,6 +40,10 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 
 	public const string PInvokePrefix = "xamarin_Class_GetHandle_";
 	public const string PInvokeSuffix = "_Native";
+	public const string CategoryFrameworkPInvokePrefix = "xamarin_CategoryFramework_";
+	// Category bindings use a separate entry point that also identifies the category's framework. This
+	// lets NativeAOT builds link the framework that provides the category, not just the extended class.
+	public const string CategoryPInvokePrefix = "xamarin_Category_GetHandle_";
 
 	protected override bool ConditionToProcess ()
 	{
@@ -112,8 +116,21 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 	{
 		// [DllImport ("__Internal")]
 		// static extern IntPtr xamarin_Class_GetClassHandle_{objectiveCClassName}_Native ();
+		// or, for category bindings:
+		// static extern IntPtr xamarin_Category_GetHandle_{categoryFramework}_{objectiveCClassName}_Native ();
 
-		return abr.CreateInternalPInvoke (callingMethod.Module, "ObjCRuntime", "Class", $"{PInvokePrefix}{objectiveCClassName}{PInvokeSuffix}", out _);
+		var entryPoint = $"{PInvokePrefix}{objectiveCClassName}{PInvokeSuffix}";
+		if (IsBindingCategory (callingMethod.DeclaringType) &&
+			Frameworks.TryGetFramework (App, callingMethod.DeclaringType, out Framework? categoryFramework))
+			entryPoint = $"{CategoryPInvokePrefix}{categoryFramework.Namespace}_{objectiveCClassName}{PInvokeSuffix}";
+
+		return abr.CreateInternalPInvoke (callingMethod.Module, "ObjCRuntime", "Class", entryPoint, out _);
+	}
+
+	static bool IsBindingCategory (TypeDefinition type)
+	{
+		return type.IsAbstract && type.IsSealed && type.Fields.Any (v =>
+			v.Name == "__IsBindingCategory" && v.IsLiteral && v.Constant is true);
 	}
 
 	protected override bool ProcessMethod (MethodDefinition method)
@@ -122,6 +139,16 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 
 		if (!method.HasBody)
 			return modified;
+
+		if (App.XamarinRuntime == XamarinRuntime.NativeAOT &&
+			inlining_enabled == true &&
+			method.Name != ".cctor" &&
+			IsBindingCategory (method.DeclaringType) &&
+			Frameworks.TryGetFramework (App, method.DeclaringType, out Framework? categoryFramework)) {
+			var markerName = $"{CategoryFrameworkPInvokePrefix}{categoryFramework.Namespace}{PInvokeSuffix}";
+			var marker = abr.CreateInternalPInvoke (method.Module, "ObjCRuntime", "Class", markerName, out _);
+			modified |= abr.AddDynamicDependencyAttribute (method, marker);
+		}
 
 		if (method.DeclaringType.Name == "Class" && method.DeclaringType.Namespace == "ObjCRuntime")
 			return modified; // don't process the Class methods themselves
@@ -184,7 +211,7 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 						continue;
 					}
 				} else {
-					if (App.StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
+					if (IsBindingCategory (method.DeclaringType) || App.StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
 						App.Log (3, "The call to Class.GetHandle in '{0}' is trying to get the handle for the Objective-C class '{1}', but we couldn't determine whether this class should be statically preserved or not. Since we're in compat mode, we're assuming the class should not be statically preserved.", FormatMethod (method), objectiveCClassName);
 					continue;
 				}

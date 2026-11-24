@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using Microsoft.Build.Framework;
 
@@ -9,16 +8,12 @@ using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks;
 
-// This task will select which runtime (monovm/coreclr/nativeaot) libraries to:
+// This task will select which runtime (coreclr/nativeaot) libraries to:
 // * Add to the app bundle
 // * Link with
 public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 	[Required]
 	public string DotNetRuntime { get; set; } = string.Empty;
-
-	public ITaskItem [] MonoRuntimeComponentLink { get; set; } = [];
-
-	public ITaskItem [] MonoRuntimeComponentDontLink { get; set; } = [];
 
 	[Required]
 	public ITaskItem [] ResolvedFileToPublish { get; set; } = [];
@@ -45,6 +40,24 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 
 	public override bool Execute ()
 	{
+		if (!string.Equals (DotNetRuntime, "coreclr", StringComparison.OrdinalIgnoreCase) &&
+			!string.Equals (DotNetRuntime, "nativeaot", StringComparison.OrdinalIgnoreCase)) {
+			Log.LogError (MSBStrings.E7165 /* Invalid DotNetRuntime value: '{0}' */, DotNetRuntime);
+			return false;
+		}
+
+		if (!string.Equals (RuntimeLibLinkMode, "static", StringComparison.OrdinalIgnoreCase) &&
+			!string.Equals (RuntimeLibLinkMode, "dylib", StringComparison.OrdinalIgnoreCase)) {
+			Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+			return false;
+		}
+
+		if (string.Equals (DotNetRuntime, "nativeaot", StringComparison.OrdinalIgnoreCase) &&
+			string.Equals (RuntimeLibLinkMode, "dylib", StringComparison.OrdinalIgnoreCase)) {
+			Log.LogError (MSBStrings.E7166 /* Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}' */, RuntimeLibLinkMode);
+			return false;
+		}
+
 		var copyToAppBundle = new List<ITaskItem> ();
 		var dylibsToFrameworks = new List<ITaskItem> ();
 		var linkWithRuntimeLibraries = new List<ITaskItem> ();
@@ -89,36 +102,9 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			var dylibs = group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".dylib", StringComparison.OrdinalIgnoreCase));
 			var staticlibs = group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".a", StringComparison.OrdinalIgnoreCase));
 
-			if (string.Equals (DotNetRuntime, "monovm", StringComparison.OrdinalIgnoreCase)) {
-				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
-				case "static":
-					// only link
-					linkWithRuntimeLibraries.AddRange (staticlibs);
-					continue;
-				case "dylib":
-					// copy + link
-					copyToAppBundle.AddRange (dylibs);
-					linkWithRuntimeLibraries.AddRange (staticlibs);
-					continue;
-				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
-					return false;
-				}
-			}
-
 			if (string.Equals (DotNetRuntime, "nativeaot", StringComparison.OrdinalIgnoreCase)) {
-				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
-				case "static":
-					// only link, but NativeAOT's build logic computes these libraries, so there's nothing for us to do here.
-					continue;
-				case "dylib":
-					// NativeAOT is static only
-					Log.LogError (MSBStrings.E7166 /* Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}' */, RuntimeLibLinkMode);
-					continue;
-				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
-					return false;
-				}
+				// NativeAOT's build logic computes these libraries.
+				continue;
 			}
 
 			if (string.Equals (DotNetRuntime, "coreclr", StringComparison.OrdinalIgnoreCase)) {
@@ -156,23 +142,8 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					// we don't want any .a files, but we want all .dylib files.
 					copyToAppBundle.AddRange (dylibs);
 					continue;
-				default:
-					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
-					return false;
 				}
 			}
-
-			Log.LogError (MSBStrings.E7165 /* Invalid DotNetRuntime value: '{0}' */, DotNetRuntime);
-			return false;
-		}
-
-		if (string.Equals (DotNetRuntime, "monovm", StringComparison.OrdinalIgnoreCase) && RuntimeLibLinkMode.ToLowerInvariant () == "static") {
-			var dontLinkWithFilenames = new HashSet<string> (MonoRuntimeComponentDontLink.Select (v => v.ItemSpec));
-			var dontLinkWith = linkWithRuntimeLibraries.Where (v => dontLinkWithFilenames.Contains (v.GetMetadata ("Filename") + v.GetMetadata ("Extension")));
-			linkWithRuntimeLibraries = linkWithRuntimeLibraries.Except (dontLinkWith).ToList ();
-			Log.LogMessage (MessageImportance.Low, "Not linking with the following libraries, because the corresponding component was enabled/disabled:");
-			foreach (var item in dontLinkWith)
-				Log.LogMessage (MessageImportance.Low, $"    {item.ItemSpec}");
 		}
 
 		OutputResolvedFileToPublish = copyToAppBundle.ToArray ();

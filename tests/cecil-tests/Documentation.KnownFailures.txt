@@ -55213,7 +55213,6 @@ T:CloudKit.CKNotificationInfo
 T:CloudKit.CKOperation
 T:CloudKit.CKOperationConfiguration
 T:CloudKit.CKOperationGroup
-T:CloudKit.CKOperationGroupTransferSize
 T:CloudKit.CKQuery
 T:CloudKit.CKQueryCursor
 T:CloudKit.CKQueryNotification

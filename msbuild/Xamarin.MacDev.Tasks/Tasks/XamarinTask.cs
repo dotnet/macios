@@ -84,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 						currentSdk = new MacOSXSdk (xcodeLocator.DeveloperRoot, xcodeLocator.DeveloperRootVersionPlist);
 						break;
 					default:
-						throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+						throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 					}
 				}
 				return currentSdk;
@@ -138,7 +138,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return "MacCatalyst";
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -155,7 +155,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.TVOS:
 					return VersionConstants.Microsoft_tvOS_Version;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}

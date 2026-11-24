@@ -198,7 +198,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return "Contents";
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -294,7 +294,7 @@ namespace Xamarin.MacDev.Tasks {
 				xpcDirectory = Path.Combine (appPath, "Contents", "XPCServices");
 				break;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 
 			dylibDirectory = PathUtils.EnsureTrailingSlash (dylibDirectory);

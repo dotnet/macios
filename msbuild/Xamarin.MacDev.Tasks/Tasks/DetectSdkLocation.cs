@@ -71,7 +71,7 @@ namespace Xamarin.MacDev.Tasks {
 				var v = CurrentSdk.GetInstalledSdkVersions (false);
 				return v.Count > 0 ? v [v.Count - 1] : AppleSdkVersion.UseDefault;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 		}
 

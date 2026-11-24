@@ -94,7 +94,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return Path.Combine (AppBundleDir.ItemSpec, "Contents", "Frameworks");
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -109,7 +109,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return Path.Combine (AppBundleDir.ItemSpec, "Contents", CustomBundleName);
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}

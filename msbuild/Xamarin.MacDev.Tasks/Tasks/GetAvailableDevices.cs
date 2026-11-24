@@ -86,7 +86,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				minimumOSVersionString = appManifest.GetMinimumSystemVersion ();
 				break;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 			if (Version.TryParse (minimumOSVersionString, out var minimumOSVersion)) {
 				foreach (var d in devices.Where (d => !d.Discarded && d.MinimumOSVersion < minimumOSVersion))

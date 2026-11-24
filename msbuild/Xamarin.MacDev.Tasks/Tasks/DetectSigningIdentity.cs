@@ -39,7 +39,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return macDevelopmentPrefixes;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -54,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return macDirectDistributionPrefixes;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -69,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return macAppStoreDistributionPrefixes;
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -84,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 				case ApplePlatform.MacCatalyst:
 					return "com.apple.application-identifier";
 				default:
-					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 				}
 			}
 		}
@@ -158,7 +158,7 @@ namespace Xamarin.MacDev.Tasks {
 							requireProvisioningProfile = !string.IsNullOrEmpty (ProvisioningProfile);
 							break;
 						default:
-							throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+							throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 						}
 					} else {
 						requireProvisioningProfile = string.Equals (CodesignRequireProvisioningProfile, "true", StringComparison.OrdinalIgnoreCase);

@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 				targetOperatingSystem = "iOS";
 				break;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 
 			if (!Enum.TryParse<TargetArchitecture> (Architectures, out var architectures)) {

@@ -49,7 +49,11 @@ Copyright (C) 2014 Xamarin. All rights reserved.
 		Condition = "'$(UsingAppleNETSdk)' != 'true'"
 		Inputs="@(_CompileToNativeInput);@(_FileNativeReference)"
 		Outputs="$(_AppBundlePath)Contents\MacOS\$(_AppBundleName);$(DeviceSpecificOutputPath)bundler.stamp">
-		<Error Text="Support for Xamarin projects has ended. Please migrate your project to .NET" />
+		<!-- Support for Xamarin projects has ended. Please migrate your project to .NET -->
+		<MacDevMessage
+			Error="true"
+			ResourceName="E7263"
+		/>
 	</Target>
 
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"

@@ -21,8 +21,18 @@
 	<Target
 		Name="ShowRunHelp"
 		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices">
-		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
-		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
+		<!-- It's currently not supported to launch an app from the command line on Windows. -->
+		<MacDevMessage
+			Condition="$([MSBuild]::IsOSPlatform('windows'))"
+			Error="true"
+			ResourceName="E7215"
+		/>
+		<!-- The app must be built before showing how to launch it. -->
+		<MacDevMessage
+			Condition="!Exists('$(_AppBundleManifestPath)')"
+			Error="true"
+			ResourceName="E7207"
+		/>
 
 		<GetMlaunchArguments
 			AppManifestPath="$(_AppBundleManifestPath)"
@@ -49,8 +59,18 @@
 	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
 	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(SdkIsMobile)' == 'true' And '$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
-		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
-		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
+		<!-- It's currently not supported to launch an app from the command line on Windows. -->
+		<MacDevMessage
+			Condition="$([MSBuild]::IsOSPlatform('windows'))"
+			Error="true"
+			ResourceName="E7215"
+		/>
+		<!-- The app must be built before the arguments to launch the app using mlaunch can be computed. -->
+		<MacDevMessage
+			Condition="!Exists('$(_AppBundleManifestPath)')"
+			Error="true"
+			ResourceName="E7206"
+		/>
 
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
@@ -99,8 +119,18 @@
 
 	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
-		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
-		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
+		<!-- It's currently not supported to launch an app from the command line on Windows. -->
+		<MacDevMessage
+			Condition="$([MSBuild]::IsOSPlatform('windows'))"
+			Error="true"
+			ResourceName="E7215"
+		/>
+		<!-- The app must be built before the arguments to launch the app using mlaunch can be computed. -->
+		<MacDevMessage
+			Condition="!Exists('$(_AppBundleManifestPath)')"
+			Error="true"
+			ResourceName="E7206"
+		/>
 
 		<PropertyGroup>
 			<!-- capture output by default -->

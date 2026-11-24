@@ -129,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add ($"-L{Path.Combine (SdkRoot, "System", "iOSSupport", "usr", "lib")}");
 				break;
 			default:
-				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				throw new InvalidOperationException (string.Format (MSBStrings.E7265, Platform));
 			}
 
 			bool hasDylibs = false;

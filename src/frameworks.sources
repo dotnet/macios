@@ -1999,6 +1999,7 @@ SHARED_SOURCES = \
 	ObjCRuntime/UserDelegateTypeAttribute.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \
+	WidgetKit/WidgetCenter.cs \
 
 #
 # Here we list the frameworks each platform contains.
@@ -2155,6 +2156,7 @@ MACOS_FRAMEWORKS =          \
 	VideoToolbox            \
 	Vision                  \
 	WebKit                  \
+	WidgetKit               \
 
 IOS_FRAMEWORKS =         \
 	$(COMMON_FRAMEWORKS) \
@@ -2278,6 +2280,7 @@ IOS_FRAMEWORKS =         \
 	VisionKit \
 	WatchConnectivity \
 	WebKit \
+	WidgetKit \
 
 TVOS_FRAMEWORKS =           \
 	$(COMMON_FRAMEWORKS)    \
@@ -2450,6 +2453,7 @@ MACCATALYST_FRAMEWORKS = \
 	Vision \
 	VisionKit \
 	WebKit \
+	WidgetKit \
 
 #
 # Compute the SOURCES variables.

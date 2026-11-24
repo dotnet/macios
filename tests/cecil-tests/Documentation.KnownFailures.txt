@@ -1673,8 +1673,6 @@ F:CloudKit.CKSyncEnginePendingDatabaseChangeType.DeleteZone
 F:CloudKit.CKSyncEnginePendingDatabaseChangeType.SaveZone
 F:CloudKit.CKSyncEnginePendingRecordZoneChangeType.DeleteRecord
 F:CloudKit.CKSyncEnginePendingRecordZoneChangeType.SaveRecord
-F:CloudKit.CKSyncEngineSyncReason.Manual
-F:CloudKit.CKSyncEngineSyncReason.Scheduled
 F:CloudKit.CKSyncEngineZoneDeletionReason.Deleted
 F:CloudKit.CKSyncEngineZoneDeletionReason.EncryptedDataReset
 F:CloudKit.CKSyncEngineZoneDeletionReason.Purged
@@ -55260,7 +55258,6 @@ T:CloudKit.CKSyncEngineSentRecordZoneChangesEvent
 T:CloudKit.CKSyncEngineState
 T:CloudKit.CKSyncEngineStateSerialization
 T:CloudKit.CKSyncEngineStateUpdateEvent
-T:CloudKit.CKSyncEngineSyncReason
 T:CloudKit.CKSyncEngineWillFetchChangesEvent
 T:CloudKit.CKSyncEngineWillFetchRecordZoneChangesEvent
 T:CloudKit.CKSyncEngineWillSendChangesEvent

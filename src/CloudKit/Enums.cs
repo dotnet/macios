@@ -363,10 +363,13 @@ namespace CloudKit {
 		SwitchAccounts,
 	}
 
+	/// <summary>Enumerates reasons that the sync engine starts a synchronization.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineSyncReason : long {
+		/// <summary>The sync was scheduled by the system.</summary>
 		Scheduled,
+		/// <summary>The app initiated the sync manually.</summary>
 		Manual,
 	}
 

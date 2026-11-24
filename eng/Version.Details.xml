@@ -59,6 +59,22 @@
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>6c32694dd88ba7a66ea294e62d1181d8a05fcce3</Sha>
     </Dependency>
+    <Dependency Name="Microsoft.iOS.Sdk.net11.0_27.2" Version="27.2.11039">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>34b3b25d471c22f2a62c36ec0971b021d0a0e000</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.tvOS.Sdk.net11.0_27.2" Version="27.2.11039">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>34b3b25d471c22f2a62c36ec0971b021d0a0e000</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.macOS.Sdk.net11.0_27.2" Version="27.2.11039">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>34b3b25d471c22f2a62c36ec0971b021d0a0e000</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net11.0_27.2" Version="27.2.11039">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>34b3b25d471c22f2a62c36ec0971b021d0a0e000</Sha>
+    </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
     <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="11.0.0-beta.26566.116">

@@ -35,6 +35,11 @@ namespace Introspection {
 			case "QuickLookUI.QLPreviewPanel":
 			case "MonoMac.QuickLookUI.QLPreviewPanel":
 				return true;
+			// NSSpellChecker's default initializer can leave a stale replacement-preferences observer on macOS 27.2.
+			// The upper bound (macOS 27.3) is just to check whether Apple fixes this; it hasn't been verified or tested.
+			case "MonoMac.AppKit.NSSpellChecker":
+			case "AppKit.NSSpellChecker":
+				return Mac.CheckSystemVersion (27, 2) && !Mac.CheckSystemVersion (27, 3);
 			// These should be DisableDefaultCtor but can't due to backward compat
 			case "MonoMac.AppKit.NSCollectionViewTransitionLayout":
 			case "AppKit.NSCollectionViewTransitionLayout":

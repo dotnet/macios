@@ -338,11 +338,15 @@ namespace CloudKit {
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 
+	/// <summary>Flags indicating the permissions available to participants in a CloudKit share.</summary>
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantPermissionOption : ulong {
+		/// <summary>The participant can read shared data.</summary>
 		ReadOnly = 1uL << 0,
+		/// <summary>The participant can read and write shared data.</summary>
 		ReadWrite = 1uL << 1,
+		/// <summary>The participant can have read-only or read-write permission.</summary>
 		Any = ReadOnly | ReadWrite,
 	}
 

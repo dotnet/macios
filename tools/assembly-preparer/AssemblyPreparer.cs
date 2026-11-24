@@ -199,6 +199,7 @@ public class AssemblyPreparer : IDisposable {
 		steps.Add (new ComputeExportAttributeRemovalStep ());
 		steps.Add (new TrimmableRegistrarStep ());
 		steps.Add (new ManagedRegistrarLookupTablesStep ());
+		steps.Add (new RemoveProtocolMemberPreservationStep ());
 		steps.Add (new InlineClassGetHandleStep ());
 		steps.Add (new SaveAssembliesStep ());
 

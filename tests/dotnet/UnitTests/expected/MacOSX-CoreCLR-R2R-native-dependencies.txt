@@ -27,7 +27,6 @@ Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreAud
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreBluetooth.framework/Versions/A/CoreBluetooth
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreData.framework/Versions/A/CoreData
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
-Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation
@@ -126,7 +125,6 @@ Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/VideoSu
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Vision.framework/Versions/A/Vision
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/WebKit.framework/Versions/A/WebKit
-Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/WidgetKit.framework/Versions/A/WidgetKit
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /usr/lib/libSystem.B.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadDylib /usr/lib/libc++.1.dylib
@@ -157,14 +155,11 @@ Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /System/Library/Frameworks/Lin
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /System/Library/Frameworks/MediaExtension.framework/Versions/A/MediaExtension
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /System/Library/Frameworks/StateReporting.framework/Versions/A/StateReporting
-Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftCoreAudio.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftCoreFoundation.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftCoreImage.dylib
-Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftCoreLocation.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftDarwin.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftDispatch.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftIOKit.dylib
-Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftIntents.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftMetal.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftOSLog.dylib
 Contents/MacOS/SizeTestApp [ARM64]: LoadWeakDylib /usr/lib/swift/libswiftObjectiveC.dylib
@@ -203,7 +198,6 @@ Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreAu
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreBluetooth.framework/Versions/A/CoreBluetooth
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreData.framework/Versions/A/CoreData
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
-Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreGraphics.framework/Versions/A/CoreGraphics
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreImage.framework/Versions/A/CoreImage
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/CoreLocation.framework/Versions/A/CoreLocation
@@ -302,7 +296,6 @@ Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/VideoS
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/VideoToolbox.framework/Versions/A/VideoToolbox
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/Vision.framework/Versions/A/Vision
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/WebKit.framework/Versions/A/WebKit
-Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/WidgetKit.framework/Versions/A/WidgetKit
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /System/Library/Frameworks/iTunesLibrary.framework/Versions/A/iTunesLibrary
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /usr/lib/libSystem.B.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadDylib /usr/lib/libc++.1.dylib
@@ -333,14 +326,11 @@ Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /System/Library/Frameworks/Li
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /System/Library/Frameworks/MediaExtension.framework/Versions/A/MediaExtension
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /System/Library/Frameworks/StateReporting.framework/Versions/A/StateReporting
-Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftCoreAudio.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftCoreFoundation.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftCoreImage.dylib
-Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftCoreLocation.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftDarwin.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftDispatch.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftIOKit.dylib
-Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftIntents.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftMetal.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftOSLog.dylib
 Contents/MacOS/SizeTestApp [x86_64]: LoadWeakDylib /usr/lib/swift/libswiftObjectiveC.dylib

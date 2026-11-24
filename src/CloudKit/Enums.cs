@@ -413,11 +413,15 @@ namespace CloudKit {
 		DeleteRecord,
 	}
 
+	/// <summary>Enumerates reasons that the sync engine reports a record zone deletion.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineZoneDeletionReason : long {
+		/// <summary>The app deleted the record zone.</summary>
 		Deleted,
+		/// <summary>The iCloud account owner purged the app's data in Settings.</summary>
 		Purged,
+		/// <summary>The iCloud account owner reset their encrypted data.</summary>
 		EncryptedDataReset,
 	}
 

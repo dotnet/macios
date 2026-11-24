@@ -2208,6 +2208,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<ItemsFile>$(_StampDirectory)%(FileName).items</ItemsFile>
 			</_UnpackLibraryResourceItems>
 		</ItemGroup>
+		<PropertyGroup>
+			<!-- Shared resource caches must be regenerated from all references, not a partially built input list. -->
+			<_UnpackLibraryResourcesOutputs>@(_UnpackLibraryResourceItems->'%(StampFile)');@(_UnpackLibraryResourceItems->'%(ItemsFile)')</_UnpackLibraryResourcesOutputs>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_BeforeUnpackLibraryResources"
@@ -2244,15 +2248,17 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
-			<FileWrites Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(ItemsFile)')" />
+			<FileWrites Include="@(_UnpackLibraryResourceItems -> '%(StampFile)')" />
 
 			<_BundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
+			<_UnpackedBundleResourceWithLogicalName Include="@(_PreviouslyUnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
 	</Target>
 
 	<Target Name="_UnpackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'true' And '$(_IsMultiRidBuild)' != 'true'" DependsOnTargets="$(_UnpackLibraryResourcesDependsOn)"
 		Inputs="@(_UnpackLibraryResourceItems)"
-		Outputs="@(_UnpackLibraryResourceItems->'%(StampFile)')">
+		Outputs="$(_UnpackLibraryResourcesOutputs)">
 
 		<MakeDir Directories="$(_StampDirectory)" />
 

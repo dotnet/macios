@@ -310,10 +310,6 @@ Describe "TestResults tests" {
     "build_macos_tests_job": {
       "outputs": {
         "fix_commit.GIT_HASH": "8a881722232ef37ed73f8926acd113a6ccc8eafd",
-        "configuration.BuildNugets": "True",
-        "configuration.BuildPkgs": "True",
-        "configuration.PR_ID": "20434",
-        "configuration.SignPkgs": "True",
         "build.TESTS_BOT": "XAMBOT-1001.Sonoma"
       },
       "identifier": null,
@@ -368,8 +364,8 @@ Describe "TestResults tests" {
         "configure_platforms.MACCATALYST_NUGET_OS_VERSION": "18.2",
         "configure_platforms.MACOS_NUGET_OS_VERSION": "15.2",
         "configure_platforms.TVOS_NUGET_OS_VERSION": "18.2",
-        "labels.agent.version": "4.252.0",
-        "labels.prBuild": "False",
+        "build_configuration.agent.version": "4.252.0",
+        "build_configuration.prBuild": "False",
         "decisions.agent.version": "4.252.0",
         "decisions.RUN_MAC_TESTS": "false",
         "decisions.RUN_WINDOWS_TESTS": "true",

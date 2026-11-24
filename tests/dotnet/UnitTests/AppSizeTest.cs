@@ -8,6 +8,7 @@ using Mono.Cecil;
 
 namespace Xamarin.Tests {
 	[TestFixture]
+	[NonParallelizable]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -47,6 +48,23 @@ namespace Xamarin.Tests {
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
+		}
+
+		[TestCase ("iOS-NativeAOT-DllImportSearchPaths", "NATIVEAOT_DLLIMPORT_SEARCH_PATHS", false)]
+		[TestCase ("iOS-NativeAOT-ReferenceNativeSymbol", null, true)]
+		[TestCase ("iOS-NativeAOT-CategoryFramework", "NATIVEAOT_CATEGORY_FRAMEWORKS", false)]
+		public void NativeAOT_LoadDylib (string name, string? additionalDefineConstants, bool referenceNativeSymbol)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			if (additionalDefineConstants is not null)
+				dict ["AdditionalDefineConstants"] = additionalDefineConstants;
+			if (referenceNativeSymbol)
+				dict ["NativeAOTReferenceNativeSymbol"] = "true";
+			Run (ApplePlatform.iOS, "ios-arm64", "Release", name, false, dict, assertAppSize: false);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
@@ -114,7 +132,8 @@ namespace Xamarin.Tests {
 		// * Files added or removed from app bundle
 		// * Total app size changed >10kb
 		// * For those apps where assembly APIs can be compared, any API was added or removed.
-		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null)
+		// * Native library dependencies added, removed, or linked differently.
+		void Run (ApplePlatform platform, string runtimeIdentifiers, string configuration, string name, bool supportsAssemblyInspection, Dictionary<string, string>? extraProperties = null, bool assertAppSize = true)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -148,18 +167,48 @@ namespace Xamarin.Tests {
 
 			try {
 				Assert.Multiple (() => {
-					AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+					if (assertAppSize) {
+						AssertAppSize (platform, name, appPath, update, forceUpdate, expectedDirectory);
+						AssertExpectedDSyms (platform, appPath);
+					}
+					AssertNativeDependencies (name, appPath, update, expectedDirectory);
 
 					if (supportsAssemblyInspection)
 						AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
-
-					AssertExpectedDSyms (platform, appPath);
 				});
 			} catch {
 				// If the test fails on CI, copy the resulting .app bundle to a location that will be uploaded as an
 				// Azure DevOps artifact (zipped). This is for diagnostic purposes only.
 				CopyAppBundleForDiagnostics (name, appPath);
 				throw;
+			}
+		}
+
+		static void AssertNativeDependencies (string name, string appPath, bool update, string expectedDirectory)
+		{
+			var dependencies = new List<string> ();
+			foreach (var file in Directory.EnumerateFiles (appPath, "*", SearchOption.AllDirectories)) {
+				if (!MachO.IsMachOFile (file))
+					continue;
+
+				var relativePath = Path.GetRelativePath (appPath, file);
+				foreach (var slice in MachO.Read (file)) {
+					foreach (var command in slice.load_commands.OfType<DylibLoadCommand> ())
+						dependencies.Add ($"{relativePath} [{slice.Architecture}]: {command.Command} {command.name}");
+				}
+			}
+			dependencies.Sort (StringComparer.Ordinal);
+			Assert.That (dependencies, Is.Not.Empty, "No native library dependencies found in the app bundle.");
+
+			var expectedFile = Path.Combine (expectedDirectory, $"{name}-native-dependencies.txt");
+			var expected = File.Exists (expectedFile) ? File.ReadAllLines (expectedFile) : [];
+			var report = string.Join ('\n', dependencies) + "\n";
+			if (update) {
+				Directory.CreateDirectory (expectedDirectory);
+				File.WriteAllText (expectedFile, report);
+			} else if (!dependencies.SequenceEqual (expected)) {
+				UploadUpdatedExpectedFile (expectedFile, report);
+				Assert.That (dependencies, Is.EqualTo (expected), "Native library dependencies changed. " + GetUpdateHint ());
 			}
 		}
 

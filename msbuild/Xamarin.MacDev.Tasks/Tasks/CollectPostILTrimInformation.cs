@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, FilterToDlfcnSymbols (survivingSymbols));
+			WriteSymbolsToFile (this, SurvivingNativeSymbolsFile, FilterToSurvivingNativeSymbols (survivingSymbols));
 			WriteSymbolsToFile (this, SurvivingClassesFile, FilterToClassSymbols (survivingSymbols));
 		}
 
@@ -107,9 +107,36 @@ namespace Xamarin.MacDev.Tasks {
 			return FilterTo (symbols, "_xamarin_Dlfcn_", "_Native");
 		}
 
+		public static IEnumerable<string> FilterToSurvivingNativeSymbols (IEnumerable<string> symbols)
+		{
+			return FilterToDlfcnSymbols (symbols).Concat (
+				FilterTo (symbols, "_xamarin_CategoryFramework_", "_Native")
+					.Select (framework => $"xamarin_CategoryFramework_{framework}_Native"));
+		}
+
+		// Category lookups are returned as "{framework}/{class}". '/' can't be part of an Objective-C class name.
 		public static IEnumerable<string> FilterToClassSymbols (IEnumerable<string> symbols)
 		{
-			return FilterTo (symbols, "_xamarin_Class_GetHandle_", "_Native");
+			var categorySymbols = FilterTo (symbols, "_xamarin_Category_GetHandle_", "_Native")
+				.Select (symbol => {
+					var separator = symbol.IndexOf ('_');
+					return separator > 0 && separator < symbol.Length - 1 ? symbol.Substring (0, separator) + "/" + symbol.Substring (separator + 1) : "";
+				})
+				.Where (symbol => symbol.Length > 0);
+			return FilterTo (symbols, "_xamarin_Class_GetHandle_", "_Native").Concat (categorySymbols);
+		}
+
+		public static string GetClassName (string classSymbol)
+		{
+			var separator = classSymbol.IndexOf ('/');
+			return separator < 0 ? classSymbol : classSymbol.Substring (separator + 1);
+		}
+
+		public static bool TryGetCategoryFramework (string classSymbol, out string framework)
+		{
+			var separator = classSymbol.IndexOf ('/');
+			framework = separator < 0 ? "" : classSymbol.Substring (0, separator);
+			return separator >= 0;
 		}
 
 		static IEnumerable<string> FilterTo (IEnumerable<string> symbols, string prefix, string suffix)

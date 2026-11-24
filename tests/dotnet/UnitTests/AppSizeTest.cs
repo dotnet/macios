@@ -412,7 +412,7 @@ namespace Xamarin.Tests {
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
-			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
+			return FormattableString.Invariant ($"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)");
 		}
 	}
 

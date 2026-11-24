@@ -287,25 +287,25 @@ namespace CloudKit {
 		FiresOnce = 1 << 3,
 	}
 
-	/// <summary>Enumerates approximate data transfer sizes for a CloudKit operation group.</summary>
+	/// <summary>Enumerates possible data transfer sizes for a CloudKit operation group.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKOperationGroupTransferSize : long {
 		/// <summary>The transfer size is unknown.</summary>
 		Unknown,
-		/// <summary>The transfer size is approximately one kilobyte.</summary>
+		/// <summary>The transfer size represents one or more kilobytes.</summary>
 		Kilobytes,
-		/// <summary>The transfer size is approximately one megabyte.</summary>
+		/// <summary>The transfer size represents one or more megabytes.</summary>
 		Megabytes,
-		/// <summary>The transfer size is approximately tens of megabytes.</summary>
+		/// <summary>The transfer size represents tens of megabytes.</summary>
 		TensOfMegabytes,
-		/// <summary>The transfer size is approximately hundreds of megabytes.</summary>
+		/// <summary>The transfer size represents hundreds of megabytes.</summary>
 		HundredsOfMegabytes,
-		/// <summary>The transfer size is approximately one gigabyte.</summary>
+		/// <summary>The transfer size represents one or more gigabytes.</summary>
 		Gigabytes,
-		/// <summary>The transfer size is approximately tens of gigabytes.</summary>
+		/// <summary>The transfer size represents tens of gigabytes.</summary>
 		TensOfGigabytes,
-		/// <summary>The transfer size is approximately hundreds of gigabytes.</summary>
+		/// <summary>The transfer size represents hundreds of gigabytes.</summary>
 		HundredsOfGigabytes,
 	}
 

@@ -1657,18 +1657,6 @@ F:CloudKit.CKErrorCode.TemporarilyUnavailable
 F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
 F:CloudKit.CKRecordZoneEncryptionScope.Record
 F:CloudKit.CKRecordZoneEncryptionScope.Zone
-F:CloudKit.CKSyncEngineEventType.AccountChange
-F:CloudKit.CKSyncEngineEventType.DidFetchChanges
-F:CloudKit.CKSyncEngineEventType.DidFetchRecordZoneChanges
-F:CloudKit.CKSyncEngineEventType.DidSendChanges
-F:CloudKit.CKSyncEngineEventType.FetchedDatabaseChanges
-F:CloudKit.CKSyncEngineEventType.FetchedRecordZoneChanges
-F:CloudKit.CKSyncEngineEventType.SentDatabaseChanges
-F:CloudKit.CKSyncEngineEventType.SentRecordZoneChanges
-F:CloudKit.CKSyncEngineEventType.StateUpdate
-F:CloudKit.CKSyncEngineEventType.WillFetchChanges
-F:CloudKit.CKSyncEngineEventType.WillFetchRecordZoneChanges
-F:CloudKit.CKSyncEngineEventType.WillSendChanges
 F:CloudKit.CKSyncEnginePendingDatabaseChangeType.DeleteZone
 F:CloudKit.CKSyncEnginePendingDatabaseChangeType.SaveZone
 F:CloudKit.CKSyncEnginePendingRecordZoneChangeType.DeleteRecord
@@ -55233,7 +55221,6 @@ T:CloudKit.CKSyncEngineDidFetchChangesEvent
 T:CloudKit.CKSyncEngineDidFetchRecordZoneChangesEvent
 T:CloudKit.CKSyncEngineDidSendChangesEvent
 T:CloudKit.CKSyncEngineEvent
-T:CloudKit.CKSyncEngineEventType
 T:CloudKit.CKSyncEngineFailedRecordSave
 T:CloudKit.CKSyncEngineFailedZoneSave
 T:CloudKit.CKSyncEngineFetchChangesContext

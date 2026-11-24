@@ -373,20 +373,33 @@ namespace CloudKit {
 		Manual,
 	}
 
+	/// <summary>Enumerates the events reported by the CloudKit sync engine.</summary>
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineEventType : long {
+		/// <summary>The sync engine's state changed.</summary>
 		StateUpdate,
+		/// <summary>The signed-in iCloud account changed.</summary>
 		AccountChange,
+		/// <summary>The sync engine fetched changes to the database.</summary>
 		FetchedDatabaseChanges,
+		/// <summary>The sync engine fetched changes to a record zone.</summary>
 		FetchedRecordZoneChanges,
+		/// <summary>The sync engine sent changes to the database.</summary>
 		SentDatabaseChanges,
+		/// <summary>The sync engine sent changes to a record zone.</summary>
 		SentRecordZoneChanges,
+		/// <summary>The sync engine is about to fetch changes.</summary>
 		WillFetchChanges,
+		/// <summary>The sync engine is about to fetch record zone changes.</summary>
 		WillFetchRecordZoneChanges,
+		/// <summary>The sync engine finished fetching record zone changes.</summary>
 		DidFetchRecordZoneChanges,
+		/// <summary>The sync engine finished fetching changes.</summary>
 		DidFetchChanges,
+		/// <summary>The sync engine is about to send changes.</summary>
 		WillSendChanges,
+		/// <summary>The sync engine finished sending changes.</summary>
 		DidSendChanges,
 	}
 

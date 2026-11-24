@@ -112,17 +112,6 @@
 		<!-- Add a property that specifies the name of the platform assembly for each platform -->
 		<_PlatformAssemblyName>Microsoft.$(_PlatformName)</_PlatformAssemblyName>
 
-		<!-- We have to set DebuggerSupport before importing Microsoft.NET.Sdk -->
-		<!-- That means we have to set _BundlerDebug before that, because DebuggerSupport depends on it -->
-		<!-- Xamarin.Mac: use MmpDebug (this differs from the old-style logic, which checks $(DebugSymbols) as well) -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' == 'macOS'">$(MmpDebug)</_BundlerDebug>
-		<!-- Xamarin.iOS: Use MtouchDebug -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchDebug)</_BundlerDebug>
-		<!-- Otherwise the default is true if we're building a Debug configuration -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(Configuration)' == 'Debug'">true</_BundlerDebug>
-		<!-- As a last resort, the default is false for all platforms -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
-
 		<!-- Generate the trusted platform assembly list at build time for faster startup in non-debug builds. -->
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>

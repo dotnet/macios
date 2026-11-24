@@ -12,25 +12,41 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
-		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
-		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
-		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "Debug", "None", null, "partial-static")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", "Debug", "SdkOnly", null, "trimmable-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", null, null, "partial-static")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "Debug", null, null, "partial-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release", null, null, "trimmable-static")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "Release", null, null, "trimmable-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Debug", null, "false", "trimmable-static")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release", null, "true", "partial-static")]
+		public void DefaultCoreCLRRegistrar (ApplePlatform platform, string runtimeIdentifiers, string configuration, string? linkMode, string? debug, string expectedRegistrar)
 		{
-			var runtimeIdentifiers = "iossimulator-arm64";
-
 			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
 			var projectPath = GetProjectPath ("MySimpleApp", platform: platform);
 			Clean (projectPath);
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["MtouchLink"] = linkMode;
+			properties ["Configuration"] = configuration;
+			if (linkMode is not null)
+				properties ["MtouchLink"] = linkMode;
+			if (debug is not null)
+				properties ["MtouchDebug"] = debug;
 			properties ["UseMonoRuntime"] = "false";
 
 			var result = DotNet.AssertBuild (projectPath, properties, environmentVariables: EnablePropertyTracking);
 
 			Assert.That (BinLog.TryFindPropertyValue (result.BinLogPath, "Registrar", out var registrar), Is.True, "Could not find the 'Registrar' property in the binlog.");
 			Assert.That (registrar, Is.EqualTo (expectedRegistrar), "Registrar");
+
+			var targets = BinLog.GetAllTargets (result.BinLogPath);
+			if (expectedRegistrar == "partial-static") {
+				AssertTargetNotExecuted (targets, "ILLink", "The trimmer should not have executed.");
+			} else {
+				AssertTargetExecuted (targets, "ILLink", "The trimmer should have executed.");
+			}
 		}
 
 		[TestCase (ApplePlatform.iOS)]

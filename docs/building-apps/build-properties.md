@@ -1791,12 +1791,10 @@ The valid options are:
 See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more information about the `TrimMode` property.
 
 > [!NOTE]
-> For technical reasons, the trimmer must run for all iOS, tvOS, macOS
-> and Mac Catalyst projects, even if no assemblies are to be trimmed. For this
-> reason, it's not valid to disable trimming by setting
+> Don't set
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
-> to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
-> will be raised if `PublishTrimmed` is set to `false`).
+> to any value; the build reports an error if it's set. To disable trimming,
+> set `TrimMode=copy` instead.
 
 > [!NOTE]
 > Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
@@ -1819,7 +1817,13 @@ Going forward, the `MtouchLink` and `LinkMode` properties will be deprecated, pl
 
 The default trim mode depends on numerous factors, and may also change in the future.
 
-The current (as of .NET 9) default values are:
+All platforms default to `copy` for debug builds and
+`partial` otherwise. A build is a debug build when [MmpDebug](#mmpdebug) is
+`true` on macOS, or [MtouchDebug](#mtouchdebug) is `true` on other platforms.
+If that property isn't set, builds using the `Debug` configuration are debug
+builds.
+
+In .NET 9, the default values were:
 
 * iOS and tvOS: `partial` when building for device, `copy` when building for the simulator.
 * macOS: always `copy`.

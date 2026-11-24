@@ -11,66 +11,45 @@ schedules:
     - main
 
 parameters:
-- name: macOSName  # comes from the build agent demand named macOS.Name
-  displayName: Name of the version of macOS to use
+- name: CodeQLSourceBranch
+  displayName: Branch to run CodeQL on (only change this to test changes to this pipeline)
   type: string
-  default: 'Tahoe'
-
-resources:
-  repositories:
-  - repository: yaml-templates
-    type: git
-    name: xamarin.yaml-templates
-    ref: refs/heads/main
-
-variables:
-- template: /tools/devops/automation/templates/variables/common.yml
+  default: refs/heads/main
 
 stages:
 - stage: build_nightly
-  displayName: Build Nightly
+  displayName: CodeQL
   dependsOn: []
   jobs:
   - job: build_nightly_codeql
     displayName: CodeQL
-    timeoutInMinutes: 480
+    timeoutInMinutes: 180
     variables:
-      Codeql.Language: csharp,cpp,swift,powershell,actions,python,javascript
+      # CodeQL analyzes the source code without building it, so this job needs neither Xcode nor a Mac.
+      #
+      # Building under CodeQL doesn't work on our Macs: on Apple silicon CodeQL runs the traced build
+      # as x86_64 (using Rosetta 2), and the Xcode we use is arm64 only. CodeQL only supports macOS 26
+      # with Xcode 27 in build mode 'none'.
+      #
+      # All the languages below support build mode 'none'. Swift doesn't (it needs a traced build), so
+      # it's not analyzed.
+      Codeql.BuildMode: none
+      Codeql.Language: csharp,cpp,powershell,actions,python,javascript
     pool:
-      os: macOS
-      name: $(PRBuildPool)
-      demands:
-      - Agent.OS -equals Darwin
-      - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-      - macOS.Name -equals ${{ parameters.macOSName }}
-      - macOS.Architecture -equals arm64  # the pinned Xcode package is Apple silicon only
-      - XcodeChannel -equals $(xcodeChannel)
-    workspace:
-      clean: all
+      vmImage: ubuntu-latest
     steps:
     - checkout: self
-      path: s/$(BUILD_REPOSITORY_NAME)
-      clean: true
-      submodules: true
-      
-    - template: /tools/devops/automation/templates/build/build.yml
-      parameters:
-        vsdropsPrefix: ${{ variables.vsdropsPrefix }}
-        keyringPass: $(pass--lab--mac--builder--keychain)
-        gitHubToken: $(Github.Token)
-        xqaCertPass: $(xqa--certificates--password)
-        use1ES: false
-        disableCodeQL: false
-        xcodeChannel: $(xcodeChannel)
-        statusContext: "Nightly CodeQL"
-        buildSteps:
-        - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
-          displayName: 'Build Nugets'
-          condition: and(succeeded(), contains(variables['configuration.BuildNugets'], 'True'))
-          timeoutInMinutes: 360
+      fetchTags: false
+      submodules: recursive
 
-        - task: PublishPipelineArtifact@1
-          displayName: Publish Build Artifacts
-          inputs:
-            path: $(Build.SourcesDirectory)/package
-            artifact: not-signed-package
+    # CodeQL only runs on the branch in the CodeQLSourceBranch parameter (main by default). Nothing else
+    # stops it from running on other branches: CodeQL 3000 only warns that this can file duplicate bugs,
+    # and the 1ES templates treat every branch of a GitHub repository as its default branch, because
+    # they can't look up the default branch. See https://dev.azure.com/mseng/1ES/_workitems/edit/2479329
+    - task: CodeQL3000Init@0
+      displayName: CodeQL 3000 Init
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], '${{ parameters.CodeQLSourceBranch }}'))
+
+    - task: CodeQL3000Finalize@0
+      displayName: CodeQL 3000 Finalize
+      condition: and(succeeded(), eq(variables['Build.SourceBranch'], '${{ parameters.CodeQLSourceBranch }}'))

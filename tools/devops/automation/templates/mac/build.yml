@@ -50,10 +50,6 @@ steps:
   parameters:
     CleanseProcesses: true
 
-- bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/disable-codeql-arm64.sh
-  displayName: 'Disable CodeQL on arm64'
-  name: disableCodeQLOnArm64
-
 # Write a generic failure message to the failure comment file, so a failure will be reported
 # if something goes wrong before we successfully complete the tests (in which case we delete the file).
 - pwsh: |

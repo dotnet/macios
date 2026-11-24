@@ -29,6 +29,8 @@ namespace MonoTests.System.Net.Http {
 
 		readonly TcpListener listener;
 		readonly Action<LoopbackHttpContext> handler;
+		readonly HashSet<TcpClient> clients = new HashSet<TcpClient> ();
+		bool disposed;
 
 		public int Port { get; }
 
@@ -56,6 +58,13 @@ namespace MonoTests.System.Net.Http {
 				} catch (InvalidOperationException) {
 					return;
 				}
+				lock (clients) {
+					if (disposed) {
+						client.Dispose ();
+						return;
+					}
+					clients.Add (client);
+				}
 				_ = Task.Run (() => HandleClient (client));
 			}
 		}
@@ -63,11 +72,16 @@ namespace MonoTests.System.Net.Http {
 		void HandleClient (TcpClient client)
 		{
 			try {
-				using (client) {
+				BufferedStream stream;
+				lock (clients) {
+					if (disposed)
+						return;
 					client.ReceiveTimeout = (int) ClientTimeout.TotalMilliseconds;
 					client.SendTimeout = (int) ClientTimeout.TotalMilliseconds;
-					using var stream = new BufferedStream (client.GetStream ());
+					stream = new BufferedStream (client.GetStream ());
+				}
 
+				using (stream) {
 					var request = LoopbackHttpRequest.Read (stream, BaseUrl);
 					if (request is null)
 						return;
@@ -89,12 +103,25 @@ namespace MonoTests.System.Net.Http {
 			} catch (Exception e) {
 				// Don't let errors bring down the process, but log them so test failures are actionable.
 				Console.WriteLine ($"LoopbackHttpServer: error handling client: {e}");
+			} finally {
+				lock (clients) {
+					clients.Remove (client);
+					client.Dispose ();
+				}
 			}
 		}
 
 		public void Dispose ()
 		{
-			listener.Stop ();
+			lock (clients) {
+				if (disposed)
+					return;
+				disposed = true;
+				listener.Stop ();
+				foreach (var client in clients)
+					client.Dispose ();
+				clients.Clear ();
+			}
 		}
 	}
 

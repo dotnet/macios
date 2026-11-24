@@ -1670,10 +1670,14 @@ namespace Foundation {
 
 			void ThrowIfNeeded (CancellationToken cancellationToken)
 			{
+				Exception? error;
 				lock (dataLock) {
-					if (exc is not null)
-						throw exc;
+					error = exc;
 				}
+
+				// Throw outside the lock to avoid Mono's LLVM unwind bug (dotnet/runtime#129713).
+				if (error is not null)
+					throw error;
 
 				cancellationToken.ThrowIfCancellationRequested ();
 			}
@@ -1691,10 +1695,8 @@ namespace Foundation {
 				while (current is null) {
 					Task waitForData;
 					lock (dataLock) {
-						if (data.Count == 0 && receivedAllData && position == length) {
-							ThrowIfNeeded (cancellationToken);
-							return 0;
-						}
+						if (data.Count == 0 && receivedAllData && position == length)
+							break;
 
 						if (data.Count > 0 && current is null) {
 							current = data.Peek ();
@@ -1718,6 +1720,9 @@ namespace Foundation {
 
 				// try to throw again before read
 				ThrowIfNeeded (cancellationToken);
+
+				if (current is null)
+					return 0;
 
 				var d = currentStream!;
 				var bufferCount = Math.Min (count, (int) (d.Length - d.Position));

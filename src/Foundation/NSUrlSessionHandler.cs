@@ -1629,6 +1629,7 @@ namespace Foundation {
 
 			bool receivedAllData;
 			Exception? exc;
+			TaskCompletionSource<bool>? dataAvailable;
 
 			NSData? current;
 			Stream? currentStream;
@@ -1643,6 +1644,8 @@ namespace Foundation {
 				lock (dataLock) {
 					data.Enqueue (d);
 					length += (int) d.Length;
+					dataAvailable?.TrySetResult (true);
+					dataAvailable = null;
 				}
 			}
 
@@ -1650,6 +1653,8 @@ namespace Foundation {
 			{
 				lock (dataLock) {
 					receivedAllData = true;
+					dataAvailable?.TrySetResult (true);
+					dataAvailable = null;
 				}
 			}
 
@@ -1658,6 +1663,8 @@ namespace Foundation {
 				lock (dataLock) {
 					exc = e;
 					receivedAllData = true;
+					dataAvailable?.TrySetResult (true);
+					dataAvailable = null;
 				}
 			}
 
@@ -1682,6 +1689,7 @@ namespace Foundation {
 				ThrowIfNeeded (cancellationToken);
 
 				while (current is null) {
+					Task waitForData;
 					lock (dataLock) {
 						if (data.Count == 0 && receivedAllData && position == length) {
 							ThrowIfNeeded (cancellationToken);
@@ -1693,9 +1701,19 @@ namespace Foundation {
 							currentStream = current.AsStream ();
 							break;
 						}
+
+						waitForData = (dataAvailable ??= new TaskCompletionSource<bool> (TaskCreationOptions.RunContinuationsAsynchronously)).Task;
 					}
 
-					await Task.Delay (50, cancellationToken).ConfigureAwait (false);
+					try {
+						await waitForData.WaitAsync (cancellationToken).ConfigureAwait (false);
+					} catch (OperationCanceledException) {
+						// WaitAsync cancellation can run inline on NSURLSession's delegate queue.
+						// Complete the read asynchronously so consumers cannot block that queue.
+						await Task.CompletedTask.ConfigureAwait (ConfigureAwaitOptions.ForceYielding);
+						throw;
+					}
+					ThrowIfNeeded (cancellationToken);
 				}
 
 				// try to throw again before read

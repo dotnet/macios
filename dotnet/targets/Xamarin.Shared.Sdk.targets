@@ -112,17 +112,6 @@
 		<!-- Add a property that specifies the name of the platform assembly for each platform -->
 		<_PlatformAssemblyName>Microsoft.$(_PlatformName)</_PlatformAssemblyName>
 
-		<!-- We have to set DebuggerSupport before importing Microsoft.NET.Sdk -->
-		<!-- That means we have to set _BundlerDebug before that, because DebuggerSupport depends on it -->
-		<!-- Xamarin.Mac: use MmpDebug (this differs from the old-style logic, which checks $(DebugSymbols) as well) -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' == 'macOS'">$(MmpDebug)</_BundlerDebug>
-		<!-- Xamarin.iOS: Use MtouchDebug -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchDebug)</_BundlerDebug>
-		<!-- Otherwise the default is true if we're building a Debug configuration -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == '' And '$(Configuration)' == 'Debug'">true</_BundlerDebug>
-		<!-- As a last resort, the default is false for all platforms -->
-		<_BundlerDebug Condition="'$(_BundlerDebug)' == ''">false</_BundlerDebug>
-
 		<!-- Generate the trusted platform assembly list at build time for faster startup in non-debug builds. -->
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == '' And '$(_BundlerDebug)' != 'true'">true</GenerateTrustedPlatformAssemblies>
 		<GenerateTrustedPlatformAssemblies Condition="'$(GenerateTrustedPlatformAssemblies)' == ''">false</GenerateTrustedPlatformAssemblies>
@@ -586,25 +575,12 @@
 		<PropertyGroup>
 			<!--
 			Registrar configuration:
-				- Set 'partial-static' for CoreCLR simulator builds when no assemblies are trimmed
-				  and MarshalManagedExceptionMode is default (or not set), otherwise set 'trimmable-static'.
-				- Set 'managed-static' for:
-					- NativeAOT supported platforms in all configurations
-					- ios/tvos device builds in all configurations
-					- macOS/MacCatalyst builds in release configuration
-				  (NativeAOT defaults to 'trimmable-static' instead - that's set earlier, at
-				  evaluation time, in Xamarin.Shared.Sdk.props.)
-				- Set 'partial-static' for:
-					- when no assemblies are trimmed and when MarshalManagedExceptionMode is default (or not set)
-				- Otherwise set 'dynamic' 
+				- Set 'partial-static' for debug builds when no assemblies are trimmed
+				  and MarshalManagedExceptionMode is default (or not set).
+				- Otherwise set 'trimmable-static'
 			-->
-			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true' And '$(_SdkIsSimulator)' == 'true' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default')">partial-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(UseMonoRuntime)' != 'true'">trimmable-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(_UseNativeAot)' == 'true'">managed-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(_SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">managed-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(_BundlerDebug)' != 'true' And '$(SdkIsDesktop)' == 'true'">managed-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == '' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default')">partial-static</Registrar>
-			<Registrar Condition="'$(Registrar)' == ''">dynamic</Registrar>
+			<Registrar Condition="'$(Registrar)' == '' And '$(_BundlerDebug)' == 'true' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default')">partial-static</Registrar>
+			<Registrar Condition="'$(Registrar)' == ''">trimmable-static</Registrar>
 		</PropertyGroup>
 	</Target>
 

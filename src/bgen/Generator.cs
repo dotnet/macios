@@ -4048,7 +4048,7 @@ public partial class Generator : IMemberGatherer {
 
 	void PrintProtocolMemberAttributes (MemberInformation minfo)
 	{
-		if (!minfo.is_protocol_member || minfo.is_protocol_implementation_method)
+		if (!minfo.is_protocol_member || minfo.is_protocol_implementation_method || IsWrapped (minfo.mi))
 			return;
 
 		if (minfo.is_protocol_member_required!.Value) {
@@ -4711,6 +4711,8 @@ public partial class Generator : IMemberGatherer {
 			do_not_call_base = false;
 		} else if (minfo.is_protocol_implementation_method) {
 			do_not_call_base = false;
+		} else if (minfo.wrap_method is not null) {
+			do_not_call_base = false;
 		} else if (minfo.is_abstract || minfo.is_model) {
 			do_not_call_base = true;
 		} else {
@@ -4969,7 +4971,16 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	IEnumerable<MethodInfo> SelectProtocolMethods (Type type, bool? @static = null, bool? required = null, bool selectConstructors = false)
+	bool IsWrapped (MemberInfo member)
+	{
+		if (AttributeManager.HasAttribute<WrapAttribute> (member))
+			return true;
+		if (member is PropertyInfo property)
+			return AttributeManager.HasAttribute<WrapAttribute> (property.GetMethod) || AttributeManager.HasAttribute<WrapAttribute> (property.SetMethod);
+		return false;
+	}
+
+	IEnumerable<MethodInfo> SelectProtocolMethods (Type type, bool? @static = null, bool? required = null, bool selectConstructors = false, bool wrapped = false)
 	{
 		var list = type.GetMethods (BindingFlags.Public | BindingFlags.Instance);
 
@@ -4996,7 +5007,7 @@ public partial class Generator : IMemberGatherer {
 			if (availabilityAttribute is not null && m.IsUnavailable (this))
 				continue;
 
-			if (!hasExportAttribute)
+			if (wrapped ? !IsWrapped (m) : !hasExportAttribute)
 				continue;
 
 			if (@static.HasValue && @static.Value != hasStaticAttribute)
@@ -5009,11 +5020,14 @@ public partial class Generator : IMemberGatherer {
 		}
 	}
 
-	IEnumerable<PropertyInfo> SelectProtocolProperties (Type type, bool? @static = null, bool? required = null)
+	IEnumerable<PropertyInfo> SelectProtocolProperties (Type type, bool? @static = null, bool? required = null, bool wrapped = false)
 	{
 		var list = type.GetProperties (BindingFlags.Public | BindingFlags.Instance);
 
 		foreach (var p in list) {
+			if (wrapped != IsWrapped (p))
+				continue;
+
 			var attrs = AttributeManager.GetCustomAttributes<Attribute> (p);
 			AvailabilityBaseAttribute? availabilityAttribute = null;
 			bool hasExportAttribute = false;
@@ -5030,7 +5044,7 @@ public partial class Generator : IMemberGatherer {
 			if (availabilityAttribute is not null && p.IsUnavailable (this))
 				continue;
 
-			if (!hasExportAttribute) {
+			if (!hasExportAttribute && !wrapped) {
 				var getter = p.GetGetMethod ();
 				if (p.CanRead && !AttributeManager.HasAttribute<ExportAttribute> (getter)) {
 					if (!AttributeManager.HasAttribute<NotImplementedAttribute> (getter))
@@ -5263,6 +5277,13 @@ public partial class Generator : IMemberGatherer {
 
 		print ("{");
 		indent++;
+
+		foreach (var mi in SelectProtocolMethods (type, wrapped: true)) {
+			GenerateMethod (type, mi, is_protocol_member: true);
+		}
+		foreach (var pi in SelectProtocolProperties (type, wrapped: true)) {
+			GenerateProperty (type, pi, null, false, is_protocol_member: true);
+		}
 
 		foreach (var ctor in allProtocolConstructors) {
 			var minfo = new MemberInformation (this, this, ctor, type, null);

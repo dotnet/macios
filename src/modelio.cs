@@ -440,7 +440,12 @@ namespace ModelIO {
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("boundingBox", ArgumentSemantic.Assign)]
-		MDLAxisAlignedBoundingBox BoundingBox { get; set; }
+		MDLAxisAlignedBoundingBox BoundingBox {
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			get;
+			[MarshalDirective (NativePrefix = "xamarin_simd__", Library = "__Internal")]
+			set;
+		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

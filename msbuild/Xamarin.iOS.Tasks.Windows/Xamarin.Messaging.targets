@@ -71,16 +71,26 @@
 
 	<Target Name="_DisconnectAfterBuild" Condition="'$(ShouldDisconnect)' == 'true' Or ('$(ShouldDisconnect)' == 'if-connection-established' And '$(_DidEstablishConnection)' == 'true')" DependsOnTargets="_SayGoodbye" />
 
-	<!-- DIAGNOSTIC (-mt experiment): always run, so that MessagingBuildContext.Initialize runs in every TaskHost -->
+	<!--
+		Always run GenerateBuildSessionId, even if BuildSessionId and BuildAppName were passed in (for instance to the inner
+		per-RuntimeIdentifier builds), because the task also initializes Messaging in the current process. With
+		multithreaded MSBuild (-mt) the inner build may run its tasks in a different task host process than the outer build,
+		and remote tasks fail (SayHello can't connect) if Messaging isn't initialized in that process.
+		Values passed in are kept as-is.
+	-->
 	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true'">
 		<GenerateBuildSessionId MessagingVersion="$(MessagingVersion)" 
 			TargetFramework="$(TargetFramework)"
 			ProjectFullPath="$(MSBuildProjectFullPath)" 
 			ProjectName="$(MSBuildProjectName)"
 			VisualStudioProcessId="$(VisualStudioProcessId)">
-			<Output TaskParameter="BuildSessionId" PropertyName="BuildSessionId" />
-			<Output TaskParameter="BuildAppName" PropertyName="BuildAppName" />
+			<Output TaskParameter="BuildSessionId" PropertyName="_GeneratedBuildSessionId" />
+			<Output TaskParameter="BuildAppName" PropertyName="_GeneratedBuildAppName" />
 		</GenerateBuildSessionId>
+		<PropertyGroup>
+			<BuildSessionId Condition="'$(BuildSessionId)' == ''">$(_GeneratedBuildSessionId)</BuildSessionId>
+			<BuildAppName Condition="'$(BuildAppName)' == ''">$(_GeneratedBuildAppName)</BuildAppName>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_SayHello" Condition="'$(IsRemoteBuild)' == 'true'" DependsOnTargets="_GenerateBuildSessionId">

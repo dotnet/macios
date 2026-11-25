@@ -169,16 +169,12 @@ namespace CoreGraphics {
 				ret.LowlevelSetObject (CFBoolean.FalseHandle, kCGPDFContextAllowsCopying);
 			if (AccessPermissions.HasValue)
 				ret.LowlevelSetObject (NSNumber.FromInt32 ((int) AccessPermissions.Value), kCGPDFContextAccessPermissions);
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CGPDFInfo.CreateLinearizedPdf' is only supported on: 'ios' 14.0 and later, 'tvos' 14.0 and later.
 			// only set the keys if they exists in the current OS version
 			if ((kCGPDFContextCreateLinearizedPDF != IntPtr.Zero) && CreateLinearizedPdf.HasValue)
 				ret.LowlevelSetObject (CFBoolean.ToHandle (CreateLinearizedPdf.Value), kCGPDFContextCreateLinearizedPDF);
-#pragma warning restore CA1416
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CGPDFInfo.kCGPDFContextCreatePDFA' is only supported on: 'ios' 14.0 and later, 'tvos' 14.0 and later.
 			// default to kCFBooleanFalse
 			if ((kCGPDFContextCreatePDFA != IntPtr.Zero) && CreatePdfA2u.HasValue && CreatePdfA2u == true)
 				ret.LowlevelSetObject (CFBoolean.TrueHandle, kCGPDFContextCreatePDFA);
-#pragma warning restore CA1416
 			return ret;
 		}
 	}

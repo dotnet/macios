@@ -733,17 +733,17 @@ namespace CoreGraphics {
 		Rgba,
 		/// <summary>The bitmap contains alpha, red, green, and blue components, in that order.</summary>
 		Argb,
-		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped.</summary>
+		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped after them.</summary>
 		Rgbx,
-		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped; 16-bit floating-point components aren't supported.</summary>
+		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped before them; 16-bit floating-point components aren't supported.</summary>
 		Xrgb,
 		/// <summary>The bitmap contains blue, green, red, and alpha components, in that order. This layout supports only 8-bit components.</summary>
 		Bgra,
-		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped; it supports only 8-bit components.</summary>
+		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped after them; it supports only 8-bit components.</summary>
 		Bgrx,
 		/// <summary>The bitmap contains alpha, blue, green, and red components, in that order. This layout supports only 8-bit components.</summary>
 		Abgr,
-		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped; it supports only 8-bit components.</summary>
+		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped before them; it supports only 8-bit components.</summary>
 		Xbgr,
 		/// <summary>The bitmap contains cyan, magenta, yellow, and black components.</summary>
 		Cmyk,

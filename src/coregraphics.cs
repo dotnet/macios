@@ -533,14 +533,18 @@ namespace CoreGraphics {
 	}
 
 	// macOS 10.5
+	/// <summary>Predefined colors in the Generic gray color space.</summary>
 	[iOS (14, 0)]
 	[TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	enum CGConstantColor {
+		/// <summary>The white color in the Generic gray color space.</summary>
 		[Field ("kCGColorWhite")]
 		White,
+		/// <summary>The black color in the Generic gray color space.</summary>
 		[Field ("kCGColorBlack")]
 		Black,
+		/// <summary>The clear color in the Generic gray color space.</summary>
 		[Field ("kCGColorClear")]
 		Clear,
 	}

@@ -1775,9 +1775,6 @@ F:CoreGraphics.CGComponent.Integer16Bit
 F:CoreGraphics.CGComponent.Integer32Bit
 F:CoreGraphics.CGComponent.Integer8Bit
 F:CoreGraphics.CGComponent.Unknown
-F:CoreGraphics.CGConstantColor.Black
-F:CoreGraphics.CGConstantColor.Clear
-F:CoreGraphics.CGConstantColor.White
 F:CoreGraphics.CGDynamicRange.Constrained
 F:CoreGraphics.CGDynamicRange.High
 F:CoreGraphics.CGDynamicRange.Standard
@@ -55341,7 +55338,6 @@ T:CoreGraphics.CGBitmapLayout
 T:CoreGraphics.CGColorConversionOptions
 T:CoreGraphics.CGColorModel
 T:CoreGraphics.CGComponent
-T:CoreGraphics.CGConstantColor
 T:CoreGraphics.CGDisplayStreamKeys
 T:CoreGraphics.CGDisplayStreamYCbCrMatrixOptionKeys
 T:CoreGraphics.CGDynamicRange

@@ -410,7 +410,7 @@ namespace ObjCRuntime {
 			Class.InitializeClass (options);
 			InitializePlatform (options);
 
-			IsARM64CallingConvention = GetIsARM64CallingConvention ();
+			IsARM64CallingConvention = GetIsARM64CallingConvention (); // Can only be done after Runtime.Arch is set (i.e. InitializePlatform has been called).
 
 			objc_exception_mode = options->MarshalObjectiveCExceptionMode;
 			managed_exception_mode = options->MarshalManagedExceptionMode;
@@ -2911,6 +2911,32 @@ namespace ObjCRuntime {
 			return @delegate;
 		}
 
+		enum NXByteOrder /* unspecified in header, means most likely int */ {
+			Unknown,
+			LittleEndian,
+			BigEndian,
+		}
+
+		[StructLayout (LayoutKind.Sequential)]
+		struct NXArchInfo {
+			IntPtr name; // const char *
+			public int CpuType; // cpu_type_t -> integer_t -> int
+			public int CpuSubType; // cpu_subtype_t -> integer_t -> int
+			public NXByteOrder ByteOrder;
+			IntPtr description; // const char *
+
+			public string Name {
+				get { return Marshal.PtrToStringUTF8 (name)!; }
+			}
+
+			public string Description {
+				get { return Marshal.PtrToStringUTF8 (description)!; }
+			}
+		}
+
+		[DllImport (Constants.libSystemLibrary)]
+		static unsafe extern NXArchInfo* NXGetLocalArchInfo ();
+
 		/// <summary>Gets whether the current process uses ARM64 calling conventions.</summary>
 		/// <remarks>This is initialized during runtime startup.</remarks>
 		public static bool IsARM64CallingConvention;
@@ -2918,7 +2944,9 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static bool GetIsARM64CallingConvention ()
 		{
-			return RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
+			unsafe {
+				return NXGetLocalArchInfo ()->Name.StartsWith ("arm64", StringComparison.OrdinalIgnoreCase);
+			}
 		}
 
 		// Get the GCHandle from the IntPtr value and get the wrapped object.

@@ -171,14 +171,27 @@ namespace Test {
 				var sends = instructions.Where (v => v.Operand is MethodReference method && method.DeclaringType.Name == "Messaging" && method.Name.Contains ("objc_msgSend")).ToArray ();
 				Assert.That (sends.Length, Is.EqualTo (sendCount), $"{typeName}.{name}: message sends");
 				foreach (var send in sends) {
-					var keepAlive = instructions.SkipWhile (v => v != send).Skip (1)
-						.TakeWhile (v => v.OpCode.FlowControl != FlowControl.Branch && v.OpCode.FlowControl != FlowControl.Cond_Branch && v.OpCode.FlowControl != FlowControl.Return)
-						.FirstOrDefault (v => v.Operand is MethodReference method && method.DeclaringType.FullName == "System.GC" && method.Name == "KeepAlive");
-					if (keepAlive is null) {
-						Assert.Fail ($"{typeName}.{name}: {send.Operand} does not keep the receiver alive");
-						continue;
+					var guarded = false;
+					for (var instruction = send.Next; instruction is not null;) {
+						if ((instruction.OpCode == OpCodes.Br || instruction.OpCode == OpCodes.Br_S) &&
+							instruction.Operand is Instruction target && target.Offset > instruction.Offset) {
+							instruction = target;
+							continue;
+						}
+
+						if (instruction.OpCode.FlowControl is FlowControl.Branch or FlowControl.Cond_Branch or FlowControl.Return or FlowControl.Throw)
+							break;
+
+						if (instruction.OpCode == OpCodes.Ldarg_0 && instruction.Next is { } call &&
+							call.OpCode == OpCodes.Call && call.Operand is MethodReference method &&
+							method.DeclaringType.FullName == "System.GC" && method.Name == "KeepAlive") {
+							guarded = true;
+							break;
+						}
+
+						instruction = instruction.Next;
 					}
-					Assert.That (keepAlive.Previous.OpCode, Is.EqualTo (OpCodes.Ldarg_0), $"{typeName}.{name}: receiver");
+					Assert.That (guarded, Is.True, $"{typeName}.{name}: {send.Operand} does not keep the receiver alive");
 				}
 			}
 		}

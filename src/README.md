@@ -87,8 +87,7 @@ assemblies.
 The platform assemblies are compiled with `-warnaserror+`, so any diagnostic
 reported by an analyzer that's enabled by default is a build error too. If
 that's not wanted for a particular diagnostic, add it to
-`CSC_WARNINGS_TO_FIX` in `src/Makefile` (the availability warnings CA1416 and
-CA1422 are already ignored this way).
+`CSC_WARNINGS_TO_FIX` in `src/Makefile`.
 
 Changing `.editorconfig` rebuilds the platform assemblies.
 

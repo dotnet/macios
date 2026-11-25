@@ -151,7 +151,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_set_input_handler (OS_nw_framer framer, void* input_handler);
 
-		[UserDelegateType (typeof (NWFramerInputDelegate))]
+		[UserDelegateType (typeof (Func<NWFramer, ulong>))]
 		[UnmanagedCallersOnly]
 		static nuint TrampolineInputHandler (IntPtr block, OS_nw_framer framer)
 		{

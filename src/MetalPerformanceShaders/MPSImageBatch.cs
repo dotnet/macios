@@ -85,7 +85,7 @@ namespace MetalPerformanceShaders {
 
 		public delegate nint MPSImageBatchIterator (MPSImage image, nuint index);
 
-		[UserDelegateType (typeof (MPSImageBatchIterator))]
+		[UserDelegateType (typeof (Func<MPSImage, ulong, long>))]
 		[UnmanagedCallersOnly]
 		static unsafe nint InvokeIterator (IntPtr block, IntPtr image, nuint index)
 		{

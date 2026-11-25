@@ -390,7 +390,7 @@ steps:
     $targetDir = '$(Build.ArtifactStagingDirectory)\windows-binlogs'
     New-Item -Path "$targetDir" -ItemType "directory" -Force
 
-    $binlogs = Get-ChildItem $sourceDir -Recurse -Include "*.binlog","*.diag.txt","*.stacks.txt"
+    $binlogs = Get-ChildItem $sourceDir -Recurse -Include "*.binlog","*.diag.txt","*.stacks.txt","MSBuild_*.txt"
     foreach ($binlog in $binlogs) {
         if ($binlog.FullName.Contains("jenkins-results")) {
           continue

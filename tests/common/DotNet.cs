@@ -364,6 +364,11 @@ namespace Xamarin.Tests {
 					foreach (var kvp in environmentVariables)
 						env [kvp.Key] = kvp.Value;
 				}
+				// DIAGNOSTIC: trace the communication between MSBuild nodes and task hosts.
+				var msbuildDebugPath = Path.ChangeExtension (binlogPath, ".msbuilddebug");
+				Directory.CreateDirectory (msbuildDebugPath);
+				env ["MSBUILDDEBUGCOMM"] = "1";
+				env ["MSBUILDDEBUGPATH"] = msbuildDebugPath;
 				timeout ??= TimeSpan.FromMinutes (10);
 				var stacksPath = Path.ChangeExtension (binlogPath, ".stacks.txt");
 				var rv = new Execution {
@@ -434,7 +439,8 @@ namespace Xamarin.Tests {
 					{ "DOTNET_ROOT", Path.GetDirectoryName (Executable) },
 					{ "DOTNET_ROLL_FORWARD", "Major" },
 				};
-				foreach (var process in System.Diagnostics.Process.GetProcessesByName ("dotnet")) {
+				var processes = System.Diagnostics.Process.GetProcessesByName ("dotnet").Concat (System.Diagnostics.Process.GetProcessesByName ("MSBuild"));
+				foreach (var process in processes) {
 					sb.AppendLine ($"===== Managed stacks for PID {process.Id} =====");
 					try {
 						var stack = Execution.RunAsync (dotnetStack, new [] { "report", "-p", process.Id.ToString () }, env, timeout: TimeSpan.FromMinutes (2)).Result;

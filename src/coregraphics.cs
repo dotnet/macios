@@ -16,14 +16,22 @@ namespace CoreGraphics {
 		CGRect Infinite { get; }
 	}
 
+	/// <summary>Specifies the tone-mapping method used to adapt content to a display's dynamic range.</summary>
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum CGToneMapping : uint {
+		/// <summary>Uses the default tone-mapping method.</summary>
 		Default = 0,
+		/// <summary>Scales luminance based on the image's content.</summary>
 		ImageSpecificLumaScaling,
+		/// <summary>Maps luminance relative to the reference white.</summary>
 		ReferenceWhiteBased,
+		/// <summary>Uses a tone-mapping method recommended by the ITU-R.</summary>
 		IturRecommended,
+		/// <summary>Uses gamma-based tone mapping for extended-range content.</summary>
 		ExrGamma,
+		/// <summary>Does not apply tone mapping.</summary>
 		None,
+		/// <summary>Uses a gain curve that adapts to the available display headroom.</summary>
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		HeadroomAdaptiveGainCurve = 6,
 	}

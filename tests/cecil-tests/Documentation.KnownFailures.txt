@@ -1834,13 +1834,6 @@ F:CoreGraphics.CGPdfTagType.Toci
 F:CoreGraphics.CGPdfTagType.Warichu
 F:CoreGraphics.CGPdfTagType.WarichuPunctuation
 F:CoreGraphics.CGPdfTagType.WarichuText
-F:CoreGraphics.CGToneMapping.Default
-F:CoreGraphics.CGToneMapping.ExrGamma
-F:CoreGraphics.CGToneMapping.HeadroomAdaptiveGainCurve
-F:CoreGraphics.CGToneMapping.ImageSpecificLumaScaling
-F:CoreGraphics.CGToneMapping.IturRecommended
-F:CoreGraphics.CGToneMapping.None
-F:CoreGraphics.CGToneMapping.ReferenceWhiteBased
 F:CoreGraphics.NMatrix2.M11
 F:CoreGraphics.NMatrix2.M12
 F:CoreGraphics.NMatrix2.M21
@@ -55363,7 +55356,6 @@ T:CoreGraphics.CGRenderingBufferProvider.UnlockPointerCallback
 T:CoreGraphics.CGSession
 T:CoreGraphics.CGSessionKeys
 T:CoreGraphics.CGSessionProperties
-T:CoreGraphics.CGToneMapping
 T:CoreGraphics.CGToneMappingOptionKeys
 T:CoreGraphics.NMatrix2
 T:CoreGraphics.NMatrix3

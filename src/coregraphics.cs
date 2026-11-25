@@ -701,14 +701,22 @@ namespace CoreGraphics {
 		DeviceN = 1u << 4,
 	}
 
+	/// <summary>Specifies the numeric format and bit depth of a bitmap component.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	public enum CGComponent : uint {
+		/// <summary>The component format is unknown.</summary>
 		Unknown = 0,
+		/// <summary>An 8-bit integer component.</summary>
 		Integer8Bit = 1,
+		/// <summary>A 10-bit integer component.</summary>
 		Integer10Bit = 6,
+		/// <summary>A 16-bit integer component.</summary>
 		Integer16Bit = 2,
+		/// <summary>A 32-bit integer component.</summary>
 		Integer32Bit = 3,
+		/// <summary>A 16-bit floating-point component.</summary>
 		Float16Bit = 5,
+		/// <summary>A 32-bit floating-point component.</summary>
 		Float32Bit = 4,
 	}
 

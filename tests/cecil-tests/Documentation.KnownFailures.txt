@@ -1762,13 +1762,6 @@ F:CoreGraphics.CGBitmapLayout.Xrgb
 F:CoreGraphics.CGColorConversionInfoTriple.Intent
 F:CoreGraphics.CGColorConversionInfoTriple.Space
 F:CoreGraphics.CGColorConversionInfoTriple.Transform
-F:CoreGraphics.CGComponent.Float16Bit
-F:CoreGraphics.CGComponent.Float32Bit
-F:CoreGraphics.CGComponent.Integer10Bit
-F:CoreGraphics.CGComponent.Integer16Bit
-F:CoreGraphics.CGComponent.Integer32Bit
-F:CoreGraphics.CGComponent.Integer8Bit
-F:CoreGraphics.CGComponent.Unknown
 F:CoreGraphics.CGDynamicRange.Constrained
 F:CoreGraphics.CGDynamicRange.High
 F:CoreGraphics.CGDynamicRange.Standard
@@ -55330,7 +55323,6 @@ T:CoreGraphics.CGBitmapInfo
 T:CoreGraphics.CGBitmapInfoExtensions
 T:CoreGraphics.CGBitmapLayout
 T:CoreGraphics.CGColorConversionOptions
-T:CoreGraphics.CGComponent
 T:CoreGraphics.CGDisplayStreamKeys
 T:CoreGraphics.CGDisplayStreamYCbCrMatrixOptionKeys
 T:CoreGraphics.CGDynamicRange

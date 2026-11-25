@@ -140,6 +140,7 @@ public class VTMotionEstimationSession : VTSession {
 		return rv;
 	}
 
+	[UserDelegateType (typeof (VTMotionEstimationOutputHandler))]
 	[UnmanagedCallersOnly]
 	unsafe static void OutputHandlerTrampoline (BlockLiteral* block, VTStatus status, VTMotionEstimationInfoFlags infoFlags, IntPtr additionalInfo, IntPtr motionVectors)
 	{

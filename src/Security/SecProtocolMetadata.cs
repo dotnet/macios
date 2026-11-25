@@ -165,6 +165,7 @@ namespace Security {
 			return result;
 		}
 
+		[UserDelegateType (typeof (Action<DispatchData>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineDistinguishedNamesForPeer (IntPtr block, IntPtr data)
 		{
@@ -197,6 +198,7 @@ namespace Security {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<DispatchData>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineOcspReposeForPeer (IntPtr block, IntPtr data)
 		{
@@ -229,6 +231,7 @@ namespace Security {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<SecCertificate>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineCertificateChainForPeer (IntPtr block, IntPtr certificate)
 		{
@@ -261,6 +264,7 @@ namespace Security {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<ushort>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSignatureAlgorithmsForPeer (IntPtr block, ushort signatureAlgorithm)
 		{
@@ -369,6 +373,7 @@ namespace Security {
 
 		public delegate void SecAccessPreSharedKeysHandler (DispatchData psk, DispatchData pskIdentity);
 
+		[UserDelegateType (typeof (Action<DispatchData, DispatchData>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineAccessPreSharedKeys (IntPtr block, IntPtr psk, IntPtr psk_identity)
 		{

@@ -179,6 +179,7 @@ namespace CoreGraphics {
 			return r;
 		}
 
+		[UserDelegateType (typeof (Func<ulong, IntPtr, IntPtr, bool>))]
 		[UnmanagedCallersOnly]
 		static byte ApplyBlockHandler (IntPtr block, nint index, IntPtr value, IntPtr info)
 		{

@@ -137,6 +137,7 @@ namespace ImageIO {
 		extern unsafe static void CGImageMetadataEnumerateTagsUsingBlock (/* CGImageMetadataRef __nonnull */ IntPtr metadata,
 						/* CFStringRef __nullable */ IntPtr rootPath, /* CFDictionaryRef __nullable */ IntPtr options, BlockLiteral* block);
 
+		[UserDelegateType (typeof (CGImageMetadataTagBlock))]
 		[UnmanagedCallersOnly]
 		static byte TagEnumerator (IntPtr block, NativeHandle key, NativeHandle value)
 		{

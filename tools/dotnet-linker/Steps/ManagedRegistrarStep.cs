@@ -218,11 +218,6 @@ namespace Xamarin.Linker {
 			if (modified)
 				abr.SaveCurrentAssembly ();
 
-			// TODO: Move this to a separate "MakeEverythingWorkWithNativeAOTStep" linker step
-			if (App.XamarinRuntime == XamarinRuntime.NativeAOT && Configuration.Profile.IsProductAssembly (assembly) && !App.IsPostProcessingAssemblies) {
-				ImplementNSObjectRegisterToggleRefMethodStub ();
-			}
-
 			abr.ClearCurrentAssembly ();
 		}
 
@@ -1990,25 +1985,6 @@ namespace Xamarin.Linker {
 				}
 				if (isManagedNullable)
 					il.Append (endTarget);
-			}
-		}
-
-		void ImplementNSObjectRegisterToggleRefMethodStub ()
-		{
-			// The NSObject.RegisterToggleRef method is a Mono icall that is unused in NativeAOT.
-			// The method isn't included on all platforms but when it is present, we need to modify it
-			// so that ILC can trim it and it doesn't report the following warning:
-			// 
-			//    ILC: Method '[Microsoft.iOS]Foundation.NSObject.RegisterToggleRef(NSObject,native int,bool)' will always throw because:
-			//         Invalid IL or CLR metadata in 'Void Foundation.NSObject.RegisterToggleRef(Foundation.NSObject, IntPtr, Boolean)'
-			//
-			if (abr.TryGet_NSObject_RegisterToggleRef (out var registerToggleRef)) {
-				registerToggleRef!.IsPublic = false;
-				registerToggleRef!.IsInternalCall = false;
-
-				var body = registerToggleRef!.CreateBody (out var il);
-				il.Emit (OpCodes.Ret);
-				body.FinalizeGeneratedBody ();
 			}
 		}
 	}

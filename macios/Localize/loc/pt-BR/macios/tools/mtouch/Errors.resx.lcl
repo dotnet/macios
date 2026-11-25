@@ -4123,6 +4123,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX0134" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The optimization '{0}' is no longer supported.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Não há mais suporte para a otimização ‘{0}’.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Did not link system framework '{0}' (referenced by assembly '{1}') because it was introduced in {2} {3}, and we're using the {2} {4} SDK.]]></Val>
@@ -4690,18 +4699,27 @@
       <Item ItemId=";MX4196" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use Runtime.GetBlockWrapperCreator.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Os atributos de exportação não podem ser removidos porque o registrador gerenciado precisa usar Runtime.GetBlockWrapperCreator.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MX4197" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Export attributes cannot be removed because the managed registrar must use RegistrarHelper.GetBlockForDelegate.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Os atributos de exportação não podem ser removidos porque o registrador gerenciado deve usar RegistrarHelper.GetBlockForDelegate.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";MX4198" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Export attributes cannot be removed because the application uses an NSXpcInterface overload that obtains a selector from MethodInfo.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Os atributos de exportação não podem ser removidos porque o aplicativo usa uma sobrecarga NSXpcInterface que obtém um seletor de MethodInfo.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

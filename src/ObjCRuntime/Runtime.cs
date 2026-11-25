@@ -176,7 +176,7 @@ namespace ObjCRuntime {
 			IsTrimmableStaticRegistrar = 0x04,
 			/* unused				= 0x08,*/
 			IsSimulator = 0x10,
-			IsCoreCLR = 0x20,
+			/* unused				= 0x20,*/
 			IsNativeAOT = 0x40,
 		}
 
@@ -215,14 +215,6 @@ namespace ObjCRuntime {
 		public static class ClassHandles {
 		}
 #endif
-
-		[BindingImpl (BindingImplOptions.Optimizable)]
-		internal unsafe static bool IsCoreCLR {
-			get {
-				// The linker may turn calls to this property into a constant
-				return (options->Flags.HasFlag (InitializationFlags.IsCoreCLR));
-			}
-		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal unsafe static bool IsNativeAOT {
@@ -390,8 +382,7 @@ namespace ObjCRuntime {
 			objc_exception_mode = options->MarshalObjectiveCExceptionMode;
 			managed_exception_mode = options->MarshalManagedExceptionMode;
 
-			if (IsCoreCLR)
-				InitializeCoreCLRBridge (options);
+			InitializeCoreCLRBridge (options);
 
 			initialized = true;
 #if PROFILE
@@ -1233,12 +1224,7 @@ namespace ObjCRuntime {
 		// registration of a new object for a reused native pointer.
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
-			GCHandle handle;
-			if (Runtime.IsCoreCLR) {
-				handle = CreateTrackingGCHandle (obj, ptr);
-			} else {
-				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
-			}
+			var handle = CreateTrackingGCHandle (obj, ptr);
 
 			lock (lock_obj) {
 				if (onlyIfNeeded) {

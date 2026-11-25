@@ -1821,6 +1821,10 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
         <comment>Shown when listing the physical devices with 'devicectl' fails, times out, or devicectl can't be run.
 {0} - The reason for the failure, as reported by devicectl or by the device discovery. Do not translate 'devicectl'.</comment>
     </data>
+    <data name="E7201" xml:space="preserve">
+        <value>The --aot option is not supported because Mono AOT compilation has been removed.</value>
+        <comment>Shown when the --aot option is passed in AppBundleExtraOptions. Do not translate --aot, AppBundleExtraOptions, or Mono AOT.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

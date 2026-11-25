@@ -15,32 +15,20 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class ProcessRuntimeLibrariesTest : TestBase {
-		[Test]
-		public void MonoVM ()
+		[TestCase ("monovm", "static")]
+		[TestCase ("coreclr", "invalid")]
+		[TestCase ("nativeaot", "dylib")]
+		public void InvalidRuntimeOrLinkMode (string runtime, string linkMode)
 		{
 			var task = CreateTask<ProcessRuntimeLibraries> ();
-			task.DotNetRuntime = "monovm";
-			task.ResolvedFileToPublish = new [] {
-				CreateTaskItem ("/a/b/c/libmonosgen-2.0.dylib", new Dictionary<string, string> {
-					{ "AssetType", "native" },
-					{ "RuntimeIdentifier", "osx-x64" },
-					{ "NuGetPackageId", "runtime.osx-x64.Microsoft.NETCore.App" },
-				}),
-				CreateTaskItem ("/a/b/c/System.Private.CoreLib.dll", new Dictionary<string, string> {
-					{ "AssetType", "native" },
-					{ "RuntimeIdentifier", "osx-x64" },
-					{ "NuGetPackageId", "runtime.osx-x64.Microsoft.NETCore.App" },
-				}),
-			};
+			task.DotNetRuntime = runtime;
 			task.RuntimeIdentifier = "osx-x64";
-			task.RuntimeLibLinkMode = "dylib";
+			task.RuntimeLibLinkMode = linkMode;
 			task.RuntimeNuGetPackageId = "runtime.osx-x64.Microsoft.NETCore.App";
 			task.TargetFrameworkMoniker = TargetFramework.DotNet_macOS_String;
 
-			Assert.That (task.Execute (), Is.True, "Task execution");
-			Assert.That (task.OutputResolvedFileToPublish.Length, Is.EqualTo (2), "Output count");
-			Assert.That (task.OutputResolvedFileToPublish [0].ItemSpec, Is.EqualTo ("/a/b/c/System.Private.CoreLib.dll"), "System.Private.CoreLib.dll");
-			Assert.That (task.OutputResolvedFileToPublish [1].ItemSpec, Is.EqualTo ("/a/b/c/libmonosgen-2.0.dylib"), "libmonosgen-2.0.dylib");
+			Assert.That (task.Execute (), Is.False, "Task execution");
+			Assert.That (task.Log.HasLoggedErrors, Is.True, "Invalid runtime or link mode must report an error");
 		}
 
 		[Test]
@@ -111,6 +99,49 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void CoreCLR_static_iOS ()
+		{
+			var task = CreateTask<ProcessRuntimeLibraries> ();
+			task.DotNetRuntime = "coreclr";
+			task.ResolvedFileToPublish = new [] {
+				CreateTaskItem ("/a/b/c/System.Private.CoreLib.dll", new Dictionary<string, string> {
+					{ "AssetType", "runtime" },
+					{ "RuntimeIdentifier", "ios-arm64" },
+					{ "NuGetPackageId", "runtime.ios-arm64.Microsoft.NETCore.App" },
+				}),
+				CreateTaskItem ("/a/b/c/libgc.a", new Dictionary<string, string> {
+					{ "AssetType", "native" },
+					{ "RuntimeIdentifier", "ios-arm64" },
+					{ "NuGetPackageId", "runtime.ios-arm64.Microsoft.NETCore.App" },
+				}),
+				CreateTaskItem ("/a/b/c/libgc.dylib", new Dictionary<string, string> {
+					{ "AssetType", "native" },
+					{ "RuntimeIdentifier", "ios-arm64" },
+					{ "NuGetPackageId", "runtime.ios-arm64.Microsoft.NETCore.App" },
+				}),
+				CreateTaskItem ("/a/b/c/libhelper.a", new Dictionary<string, string> {
+					{ "AssetType", "native" },
+					{ "RuntimeIdentifier", "ios-arm64" },
+					{ "NuGetPackageId", "runtime.ios-arm64.Microsoft.NETCore.App" },
+				}),
+				CreateTaskItem ("/a/b/c/libmscordaccore.dylib", new Dictionary<string, string> {
+					{ "AssetType", "native" },
+					{ "RuntimeIdentifier", "ios-arm64" },
+					{ "NuGetPackageId", "runtime.ios-arm64.Microsoft.NETCore.App" },
+				}),
+			};
+			task.RuntimeIdentifier = "ios-arm64";
+			task.RuntimeLibLinkMode = "static";
+			task.RuntimeNuGetPackageId = "runtime.ios-arm64.Microsoft.NETCore.App";
+			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
+
+			Assert.That (task.Execute (), Is.True, "Task execution");
+			Assert.That (task.OutputResolvedFileToPublish.Select (v => v.ItemSpec), Is.EqualTo (new [] { "/a/b/c/System.Private.CoreLib.dll" }), "Only the managed assembly is copied");
+			Assert.That (task.DylibsToConvertToFrameworks.Select (v => v.ItemSpec), Is.EqualTo (new [] { "/a/b/c/libgc.dylib" }), "Frameworks");
+			Assert.That (task.LinkWithRuntimeLibraries.Select (v => v.ItemSpec), Is.EqualTo (new [] { "/a/b/c/libhelper.a" }), "Static libraries");
+		}
+
+		[Test]
 		public void NativeAOT ()
 		{
 			var task = CreateTask<ProcessRuntimeLibraries> ();
@@ -135,6 +166,7 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.Execute (), Is.True, "Task execution");
 			Assert.That (task.OutputResolvedFileToPublish.Length, Is.EqualTo (1), "Output count");
 			Assert.That (task.OutputResolvedFileToPublish [0].ItemSpec, Is.EqualTo ("/a/b/c/System.Private.CoreLib.dll"), "System.Private.CoreLib.dll");
+			Assert.That (task.LinkWithRuntimeLibraries, Is.Empty, "NativeAOT owns native libraries");
 		}
 
 		static ITaskItem CreateTaskItem (string path, Dictionary<string, string> metadata)

@@ -24,7 +24,6 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Drawing;
 using System.Diagnostics;
 
@@ -125,23 +124,6 @@ namespace Foundation {
 		public NSObject.Flags flags;
 	}
 
-	// This type wraps native memory that will track an NSObject, and free the native memory
-	// once the NSObject is finalized and completely gone / unresurrectable. It does so by
-	// creating a GCHandle that tracks the NSObject in question, and if this instance's
-	// finalizer is called, but the NSObject is still reachable, then re-schedule this instance's
-	// finalizer to run again later.
-	// This is similar to how NativeAOT handles the tagged memory returned by ObjectiveCMarshal.CreateReferenceTrackingHandle
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L15
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L59-L71
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L181-L185
-	unsafe class NSObjectDataHandle : TrackedMemory {
-		public NSObjectData* Data { get => (NSObjectData*) Value; }
-
-		public NSObjectDataHandle () : base ((nuint) sizeof (NSObjectData))
-		{
-		}
-	}
-
 	class TrackedMemory {
 		GCHandle handle;
 
@@ -188,6 +170,7 @@ namespace Foundation {
 #if !COREBUILD
 		, IEquatable<NSObject>
 		, IDisposable
+		, IReleaseOnMainThread
 #endif
 		, INSObjectFactory {
 #if !COREBUILD
@@ -204,10 +187,6 @@ namespace Foundation {
 		/// </summary>
 		/// <value>The assembly containing the platform-specific Foundation types.</value>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
-
-#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
-		static ConditionalWeakTable<NSObject, NSObjectDataHandle> data_table;
-#pragma warning restore CS8618
 
 		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
 		// safely from native code without having to make sure the GC doesn't move the memory around. Among
@@ -230,24 +209,9 @@ namespace Foundation {
 			if (data != IntPtr.Zero)
 				return (NSObjectData*) data;
 
-			if (Runtime.IsCoreCLR) {
-				data = (IntPtr) Runtime.GetTaggedMemory (this);
-				__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
-				return (NSObjectData*) data;
-			} else {
-				var data_handle = new NSObjectDataHandle ();
-				var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
-				if (existing_data != IntPtr.Zero) {
-					// return the existing data, the GC will collect the other one we just created
-					return (NSObjectData*) existing_data;
-				}
-				// tell the data handle we just created to track us
-				data_handle.CreateHandle (this);
-				// make sure the data isn't freed before this NSObject is collected, but also
-				// that it is freed after this NSObject is collected.
-				data_table.Add (this, data_handle);
-				return data_handle.Data;
-			}
+			data = (IntPtr) Runtime.GetTaggedMemory (this);
+			__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
+			return (NSObjectData*) data;
 		}
 
 		unsafe Flags flags {
@@ -476,8 +440,6 @@ namespace Foundation {
 
 		internal static NativeHandle InitializeObject ()
 		{
-			if (!Runtime.IsCoreCLR)
-				data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
 			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
 			return class_ptr;
 		}
@@ -487,26 +449,8 @@ namespace Foundation {
 			set { flags = value; }
 		}
 
-#if !__MACOS__
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		extern static void RegisterToggleRef (NSObject obj, IntPtr handle, bool isCustomType);
-#endif // !__MACOS__
-
 		[DllImport ("__Internal")]
 		static extern void xamarin_release_managed_ref (IntPtr handle, byte user_type);
-
-		static void RegisterToggleReference (NSObject obj, IntPtr handle, bool isCustomType)
-		{
-#if __MACOS__
-			Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
-#else
-			if (Runtime.IsCoreCLR) {
-				Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
-			} else {
-				RegisterToggleRef (obj, handle, isCustomType);
-			}
-#endif
-		}
 
 		/*
 		Register the current object with the toggleref machinery if the following conditions are met:
@@ -535,7 +479,7 @@ namespace Foundation {
 				return;
 
 			IsRegisteredToggleRef = true;
-			RegisterToggleReference (this, Handle, allowCustomTypes);
+			Runtime.RegisterToggleReferenceCoreCLR (this, Handle, allowCustomTypes);
 		}
 
 		private void InitializeObject (bool alloced)
@@ -1307,11 +1251,16 @@ namespace Foundation {
 			}
 		}
 
+		void IReleaseOnMainThread.ReleaseOnMainThread ()
+		{
+			ReleaseManagedRef ();
+		}
+
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			static readonly List<NSObject> drainList1 = new List<NSObject> ();
-			static readonly List<NSObject> drainList2 = new List<NSObject> ();
-			static List<NSObject> handles = drainList1;
+			static readonly List<IReleaseOnMainThread> drainList1 = new List<IReleaseOnMainThread> ();
+			static readonly List<IReleaseOnMainThread> drainList2 = new List<IReleaseOnMainThread> ();
+			static List<IReleaseOnMainThread> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
@@ -1323,7 +1272,7 @@ namespace Foundation {
 				// Can't make the class static, because it has to subclass NSObject.
 			}
 
-			static internal void Add (NSObject handle)
+			static internal void Add (IReleaseOnMainThread handle)
 			{
 				bool call_drain;
 				lock (lock_obj) {
@@ -1346,11 +1295,11 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<NSObject> drainList;
+				List<IReleaseOnMainThread> drainList;
 
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
-					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
+					// see where this function would be re-entrant, is if in the call to a release below,
 					// the native dealloc method for a type ended up executing the run loop, and that runloop
 					// processed a drain request, ending up in this method (again).
 					if (draining) {
@@ -1366,8 +1315,8 @@ namespace Foundation {
 						handles = drainList1;
 				}
 
-				foreach (NSObject x in drainList)
-					x.ReleaseManagedRef ();
+				foreach (var entry in drainList)
+					entry.ReleaseOnMainThread ();
 				drainList.Clear ();
 
 				lock (lock_obj) {

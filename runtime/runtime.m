@@ -68,7 +68,6 @@ enum XamarinLaunchMode xamarin_launch_mode = XamarinLaunchModeApp;
 #if SUPPORTS_DYNAMIC_REGISTRATION
 bool xamarin_supports_dynamic_registration = true;
 #endif
-const char *xamarin_runtime_configuration_name = NULL;
 
 // The runtimeconfig.json 'configProperties' baked into the app as C arrays (CoreCLR only).
 // These are set from the generated main (xamarin_setup_impl) and consumed by
@@ -89,7 +88,6 @@ bool xamarin_is_multi_rid_build = false;
 /* Callbacks */
 
 xamarin_setup_callback xamarin_setup = NULL;
-xamarin_register_module_callback xamarin_register_modules = NULL;
 xamarin_register_assemblies_callback xamarin_register_assemblies = NULL;
 xamarin_extension_main_callback xamarin_extension_main = NULL;
 
@@ -143,7 +141,7 @@ enum InitializationFlags : int {
 	InitializationFlagsIsTrimmableStaticRegistrar = 0x04,
 	/* unused									= 0x08,*/
 	InitializationFlagsIsSimulator				= 0x10,
-	InitializationFlagsIsCoreCLR                = 0x20,
+	/* unused									= 0x20,*/
 	InitializationFlagsIsNativeAOT              = 0x40,
 };
 
@@ -946,9 +944,6 @@ xamarin_initialize ()
 	options.flags = (enum InitializationFlags) (options.flags | InitializationFlagsIsSimulator);
 #endif
 
-#if defined (CORECLR_RUNTIME)
-	options.flags = (enum InitializationFlags) (options.flags | InitializationFlagsIsCoreCLR);
-#endif
 #if defined (NATIVEAOT)
 	options.flags = (enum InitializationFlags) (options.flags | InitializationFlagsIsNativeAOT);
 #endif
@@ -2414,8 +2409,8 @@ xamarin_vm_initialize ()
 	char *system_corelib_directory = xamarin_compute_system_corelib_directory ();
 	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
 
-	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
-	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
+	// Properties supplied here must not also come from runtimeconfig.json; keep the reserved
+	// properties in tools/dotnet-linker/Steps/GenerateMainStep.cs in sync.
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
 		"APP_PATHS",

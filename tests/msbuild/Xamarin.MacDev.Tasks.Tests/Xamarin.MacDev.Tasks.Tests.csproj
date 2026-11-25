@@ -36,7 +36,7 @@
     <ProjectReference Include="../../../msbuild/Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
     <ProjectReference Include="../../../msbuild/Messaging/Xamarin.Messaging.Build/Xamarin.Messaging.Build.csproj" Condition="'$(DesignTimeBuild)' == 'true'" />
 
-    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" ExcludeAssets="runtime" Condition="'$(DesignTimeBuild)' == 'true'" />
+    <PackageReference Include="Microsoft.Apple.Tools.MaciOS" Version="$(MicrosoftAppleToolsMaciOSPackageVersion)" ExcludeAssets="runtime" Condition="'$(DesignTimeBuild)' == 'true'" />
     <PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
     <PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />

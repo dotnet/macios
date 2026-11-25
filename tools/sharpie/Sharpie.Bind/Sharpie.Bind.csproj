@@ -17,7 +17,7 @@
     <PackageReference Include="ICSharpCode.NRefactory" Version="$(ICSharpCodeNRefactoryPackageVersion)" />
     <PackageReference Include="ClangSharp" Version="$(ClangSharpPackageVersion)" />
     <PackageReference Include="libclang" Version="$(libClangPackageVersion)" />
-    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
+    <PackageReference Include="Microsoft.Apple.Tools.MaciOS" Version="$(MicrosoftAppleToolsMaciOSPackageVersion)" />
   </ItemGroup>
 
   <ItemGroup>

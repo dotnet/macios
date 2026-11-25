@@ -17,7 +17,7 @@ dotnet pack Xamarin.MacDev/Xamarin.MacDev.csproj -c Release \
 In the macios checkout, select that version and add the local feed to the configured sources:
 
 ```sh
-export XamarinAppleToolsMaciOSPackageVersion="$MACIOS_DEVTOOLS_VERSION"
+export MicrosoftAppleToolsMaciOSPackageVersion="$MACIOS_DEVTOOLS_VERSION"
 export RestoreAdditionalProjectSources="$MACIOS_DEVTOOLS_FEED"
 dotnet build tools/assembly-preparer/assembly-preparer.csproj
 ```

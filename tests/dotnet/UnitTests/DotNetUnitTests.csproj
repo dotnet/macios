@@ -12,7 +12,7 @@
 		<PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
 		<PackageReference Include="MSBuild.StructuredLogger" Version="$(MSBuildStructuredLoggerPackageVersion)" />
 		<PackageReference Include="NUnitXml.TestLogger" Version="$(NUnitXmlTestLoggerPackageVersion)" />
-		<PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
+		<PackageReference Include="Microsoft.Apple.Tools.MaciOS" Version="$(MicrosoftAppleToolsMaciOSPackageVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>

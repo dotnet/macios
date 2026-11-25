@@ -175,7 +175,7 @@
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <PackageReference Include="Mono.Options" Version="6.12.0.148" />
-    <PackageReference Include="Xamarin.Apple.Tools.MaciOS" Version="$(XamarinAppleToolsMaciOSPackageVersion)" />
+    <PackageReference Include="Microsoft.Apple.Tools.MaciOS" Version="$(MicrosoftAppleToolsMaciOSPackageVersion)" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Errors.resx">

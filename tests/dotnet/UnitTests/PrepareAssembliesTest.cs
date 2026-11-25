@@ -69,7 +69,9 @@ namespace Xamarin.Tests {
 			properties ["_IsPublishing"] = "true";
 			properties ["Registrar"] = "trimmable-static";
 
-			DotNet.AssertBuild (project_path, properties);
+			var firstBuild = DotNet.AssertBuild (project_path, properties);
+			var firstBuildTargets = BinLog.GetAllTargets (firstBuild.BinLogPath);
+			AssertTargetExecuted (firstBuildTargets, "_ExecutePostprocessAssembliesAfterIlc", "Post-ILC NativeAOT post-processing");
 
 			var result = DotNet.AssertBuild (project_path, properties);
 			var targets = BinLog.GetAllTargets (result.BinLogPath);

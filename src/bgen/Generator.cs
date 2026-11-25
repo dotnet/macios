@@ -5910,6 +5910,7 @@ public partial class Generator : IMemberGatherer {
 
 	public bool TryComputeLibraryName (string? attributeLibraryName, Type type, [NotNullWhen (true)] out string? library_name, out string? library_path)
 	{
+		// Keep the pseudo-library mappings in sync with Frameworks.GetFrameworkFromLibraryName.
 		library_path = null;
 
 		if (attributeLibraryName is not null) {
@@ -6251,6 +6252,9 @@ public partial class Generator : IMemberGatherer {
 				   where_list);
 
 			indent++;
+
+			if (is_category_class)
+				print ("internal const bool __IsBindingCategory = true;");
 
 			if (!is_model && !is_partial) {
 				foreach (var ea in selectors [type].OrderBy (s => s, StringComparer.Ordinal)) {

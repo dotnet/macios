@@ -336,6 +336,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject::FlagsInternal()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding

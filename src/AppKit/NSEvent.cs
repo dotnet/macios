@@ -34,7 +34,9 @@ namespace AppKit {
 			// FIXME: broken
 			internal NSGraphicsContext Context {
 				get {
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSEvent.Context' is obsoleted on: 'macOS/OSX' 10.12 and later (This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.).
 					return target.Context;
+#pragma warning restore CA1422
 				}
 			}
 

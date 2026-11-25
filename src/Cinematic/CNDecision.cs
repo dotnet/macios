@@ -21,10 +21,12 @@ namespace Cinematic {
 		{
 
 			switch (identifierType) {
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 17.0 and later, 'maccatalyst' 17.0 and later. 'CNDecisionIdentifierType.Single' and 'CNDecisionIdentifierType.Group' are only supported on: 'ios' 15.0 and later.
 			case CNDecisionIdentifierType.Single:
 				InitializeHandle (_InitWithSingleIdentifier (time, detectionId, isStrong), "initWithTime:detectionID:strong:");
 				break;
 			case CNDecisionIdentifierType.Group:
+#pragma warning restore CA1416
 				InitializeHandle (_InitWithGroupIdentifier (time, detectionId, isStrong), "initWithTime:detectionGroupID:strong:");
 				break;
 			default:

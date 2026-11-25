@@ -253,7 +253,9 @@ namespace AppKit {
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, Action endedCallback)
 		{
 			var d = new NSAsyncActionDispatcher (endedCallback);
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSGraphics.ShowAnimationEffect(NSAnimationEffect, CGPoint, CGSize, NSObject, Selector, nint)' is obsoleted on: 'macOS/OSX' 14.0 and later (Use 'NSCursor.DisappearingItemCursor' instead.).
 			ShowAnimationEffect (animationEffect, centerLocation, size, d, NSActionDispatcher.Selector, IntPtr.Zero);
+#pragma warning restore CA1422
 			GC.KeepAlive (d);
 		}
 

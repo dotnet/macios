@@ -357,7 +357,9 @@ namespace CoreGraphics {
 		[UnsupportedOSPlatform ("macos")]
 		public static CGImage? ScreenImage {
 			get {
+#pragma warning disable CA1422 // This call site is reachable on: 'tvos' 15.0 and later. 'UIScreen.MainScreen' is obsoleted on: 'tvos' 26.0 and later (Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').).
 				return UIKit.UIScreen.MainScreen.Capture ().CGImage;
+#pragma warning restore CA1422
 			}
 		}
 #endif

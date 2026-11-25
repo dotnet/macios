@@ -46,8 +46,10 @@ namespace AppKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public new NSButtonCell Cell {
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSControl.Cell' is obsoleted on: 'macOS/OSX' 10.10 and later.
 			get { return (NSButtonCell) base.Cell; }
 			set { base.Cell = value; }
+#pragma warning restore CA1422
 		}
 
 		/// <param name="title">To be added.</param>

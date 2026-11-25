@@ -145,7 +145,9 @@ namespace Foundation {
 		[SupportedOSPlatform ("macos")]
 		public WebPreferences? WebPreferences {
 			get {
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'WebPreferences' is obsoleted on: 'macOS/OSX' 10.14 and later (No longer supported.).
 				return GetNativeValue<WebPreferences> (NSAttributedStringDocumentReadingOptionKey.WebPreferencesDocumentOption);
+#pragma warning restore CA1422
 			}
 			set {
 				SetNativeValue (NSAttributedStringDocumentReadingOptionKey.WebPreferencesDocumentOption, value);

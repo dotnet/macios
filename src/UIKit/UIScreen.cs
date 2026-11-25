@@ -20,7 +20,9 @@ namespace UIKit {
 		{
 			ArgumentNullException.ThrowIfNull (action);
 			var d = new NSActionDispatcher (action);
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIScreen.CreateDisplayLink(NSObject, Selector)' is obsoleted on: 'ios' 27.0 and later (Use the equivalent display link API on 'UIWindowScene' instead.), 'maccatalyst' 27.0 and later (Use the equivalent display link API on 'UIWindowScene' instead.).
 			return CreateDisplayLink (d, NSActionDispatcher.Selector);
+#pragma warning restore CA1422
 		}
 
 		/// <summary>Captures a screenshot of the entire screen.</summary>
@@ -37,7 +39,9 @@ namespace UIKit {
 		{
 			// This is from https://developer.apple.com/library/content/qa/qa1817/_index.html
 			// Updated to use UIGraphicsImageRenderer to avoid deprecated UIGraphicsBeginImageContextWithOptions
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIApplication.KeyWindow' is obsoleted on: 'ios' 13.0 and later (Should not be used for applications that support multiple scenes because it returns a key window across all connected scenes.), 'maccatalyst' 13.0 and later (Should not be used for applications that support multiple scenes because it returns a key window across all connected scenes.).
 			var view = UIApplication.SharedApplication.KeyWindow;
+#pragma warning restore CA1422
 			if (view is null)
 				throw new InvalidOperationException ("No key window is available to capture.");
 			using var renderer = new UIGraphicsImageRenderer (view.Bounds.Size);

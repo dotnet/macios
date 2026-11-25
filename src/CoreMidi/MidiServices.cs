@@ -1069,7 +1069,9 @@ namespace CoreMidi {
 				NativeHandle nsstrHandle = nsstr.Handle;
 				if (input) {
 					unsafe {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'MidiPort.MIDIInputPortCreate(int, nint, delegate* unmanaged<nint, nint, nint, void>, nint, int*)' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later.
 						code = MIDIInputPortCreate (client.handle, nsstrHandle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
+#pragma warning restore CA1422
 					}
 				} else {
 					unsafe {
@@ -2663,7 +2665,9 @@ namespace CoreMidi {
 				GCHandle gch = GCHandle.Alloc (this);
 				unsafe {
 					MidiEndpointRef tempHandle;
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'MidiEndpoint.MIDIDestinationCreate(int, nint, delegate* unmanaged<nint, nint, nint, void>, nint, int*)' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later.
 					code = MIDIDestinationCreate (client.handle, nsstr.Handle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
+#pragma warning restore CA1422
 					handle = tempHandle;
 				}
 				EndpointName = name;

@@ -58,7 +58,9 @@ namespace UIKit {
 		///   <para>If the action sheet is being presented on an iPad, then the <paramref name="cancelTitle" /> should be set to <see langword="null" />.</para>
 		/// </remarks>
 		public UIActionSheet (string? title, IUIActionSheetDelegate? del, string? cancelTitle, string? destroy, params string? []? other)
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIActionSheet' is obsoleted on: 'ios' 8.0 and later (Use 'UIAlertController' instead.), 'maccatalyst' 8.0 and later (Use 'UIAlertController' instead.).
 			: this (title, del, null, null, (string?) null)
+#pragma warning restore CA1422
 		{
 			if (destroy is not null)
 				DestructiveButtonIndex = AddButton (destroy);
@@ -83,6 +85,7 @@ namespace UIKit {
 		/// <param name="del">A delegate that will respond to taps in the action sheet.</param>
 		/// <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string? title, IUIActionSheetDelegate? del)
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIActionSheet' is obsoleted on: 'ios' 8.0 and later (Use 'UIAlertController' instead.), 'maccatalyst' 8.0 and later (Use 'UIAlertController' instead.).
 		: this (title, del, null, null, (string?) null) { }
 
 		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title.</summary>
@@ -90,6 +93,7 @@ namespace UIKit {
 		/// <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
 		public UIActionSheet (string? title)
 		: this (title, null, null, null, (string?) null) { }
+#pragma warning restore CA1422
 
 		/// <summary>Adds a button with the specified text.</summary>
 		/// <param name="name">Text for the button.</param>

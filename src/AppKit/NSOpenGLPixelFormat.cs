@@ -97,6 +97,7 @@ namespace AppKit {
 					case NSOpenGLPixelFormatAttribute.Stereo:
 					case NSOpenGLPixelFormatAttribute.MinimumPolicy:
 					case NSOpenGLPixelFormatAttribute.MaximumPolicy:
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSOpenGLPixelFormatAttribute.OffScreen', 'NSOpenGLPixelFormatAttribute.FullScreen', 'NSOpenGLPixelFormatAttribute.SingleRenderer', 'NSOpenGLPixelFormatAttribute.Robust', 'NSOpenGLPixelFormatAttribute.Window', 'NSOpenGLPixelFormatAttribute.MultiScreen', 'NSOpenGLPixelFormatAttribute.Compliant', 'NSOpenGLPixelFormatAttribute.PixelBuffer' and 'NSOpenGLPixelFormatAttribute.RemotePixelBuffer' are obsoleted.
 					case NSOpenGLPixelFormatAttribute.OffScreen:
 					case NSOpenGLPixelFormatAttribute.FullScreen:
 					case NSOpenGLPixelFormatAttribute.SingleRenderer:
@@ -112,6 +113,7 @@ namespace AppKit {
 
 					// Not listed in the docs, but header file implies it
 					case NSOpenGLPixelFormatAttribute.RemotePixelBuffer:
+#pragma warning restore CA1422
 					case NSOpenGLPixelFormatAttribute.AuxDepthStencil:
 					case NSOpenGLPixelFormatAttribute.ColorFloat:
 					case NSOpenGLPixelFormatAttribute.Multisample:
@@ -119,7 +121,9 @@ namespace AppKit {
 					case NSOpenGLPixelFormatAttribute.SampleAlpha:
 					case NSOpenGLPixelFormatAttribute.AllowOfflineRenderers:
 					case NSOpenGLPixelFormatAttribute.AcceleratedCompute:
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSOpenGLPixelFormatAttribute.MPSafe' is obsoleted on: 'macOS/OSX' 10.5 and later.
 					case NSOpenGLPixelFormatAttribute.MPSafe:
+#pragma warning restore CA1422
 						list.Add ((uint) v);
 						break;
 

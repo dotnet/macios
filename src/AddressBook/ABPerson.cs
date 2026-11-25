@@ -38,6 +38,8 @@ using CoreFoundation;
 
 namespace AddressBook {
 
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	static partial class ABPersonPropertyId {
 		public static int ToId (ABPersonProperty property)
 		{
@@ -114,6 +116,8 @@ namespace AddressBook {
 	public static partial class ABPersonDateLabel {
 	}
 
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	static partial class ABPersonKindId {
 		public static ABPersonKind ToPersonKind (NSNumber value)
 		{

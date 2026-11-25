@@ -117,7 +117,9 @@ namespace UIKit {
 		[SupportedOSPlatform ("maccatalyst")]
 		public PHAsset? PHAsset {
 			get {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIImagePickerController.PHAsset.get' is obsoleted on: 'ios' 14.0 and later (Use 'PHPicker' instead.), 'maccatalyst' 14.0 and later (Use 'PHPicker' instead.).
 				return (PHAsset?) Info [UIImagePickerController.PHAsset];
+#pragma warning restore CA1422
 			}
 		}
 

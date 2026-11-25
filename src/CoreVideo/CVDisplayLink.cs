@@ -76,7 +76,9 @@ namespace CoreVideo {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static CVDisplayLink? CreateFromDisplayId (uint displayId)
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'CVDisplayLink.CreateFromDisplayId(uint, out CVReturn)' is obsoleted on: 'macOS/OSX' 15.0 and later (Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.).
 			=> CreateFromDisplayId (displayId, out var _);
+#pragma warning restore CA1422
 
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
@@ -114,7 +116,9 @@ namespace CoreVideo {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static CVDisplayLink? CreateFromDisplayIds (uint [] displayIds)
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'CVDisplayLink.CreateFromDisplayIds(uint[], out CVReturn)' is obsoleted on: 'macOS/OSX' 15.0 and later (Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.).
 			=> CreateFromDisplayIds (displayIds, out var _);
+#pragma warning restore CA1422
 
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
@@ -145,7 +149,9 @@ namespace CoreVideo {
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		public static CVDisplayLink? CreateFromOpenGLMask (uint mask)
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'CVDisplayLink.CreateFromOpenGLMask(uint, out CVReturn)' is obsoleted on: 'macOS/OSX' 15.0 and later (Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.).
 			=> CreateFromOpenGLMask (mask, out var _);
+#pragma warning restore CA1422
 
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[SupportedOSPlatform ("macos")]

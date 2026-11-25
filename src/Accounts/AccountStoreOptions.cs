@@ -66,10 +66,12 @@ namespace Accounts {
 		/// <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
 		public string? FacebookAppId {
 			set {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACFacebookKey.AppId' is obsoleted on: 'ios' 11.0 and later (Use Facebook SDK instead.), 'maccatalyst' 11.0 and later (Use Facebook SDK instead.).
 				SetStringValue (ACFacebookKey.AppId, value);
 			}
 			get {
 				return GetStringValue (ACFacebookKey.AppId);
+#pragma warning restore CA1422
 			}
 		}
 
@@ -83,6 +85,7 @@ namespace Accounts {
 			if (permissions.Length == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (permissions));
 
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACFacebookKey.Permissions', 'ACFacebookAudienceValue.Everyone', 'ACFacebookAudienceValue.Friends', 'ACFacebookAudienceValue.OnlyMe' and 'ACFacebookKey.Audience' are obsoleted on: 'ios' 11.0 and later (Use Facebook SDK instead.), 'maccatalyst' 11.0 and later (Use Facebook SDK instead.).
 			SetArrayValue (ACFacebookKey.Permissions, permissions);
 
 			NSString v;
@@ -102,16 +105,19 @@ namespace Accounts {
 			}
 
 			SetNativeValue (ACFacebookKey.Audience, v);
+#pragma warning restore CA1422
 		}
 
 		/// <summary>Gets or sets the Tencent Weibo application identifier.</summary>
 		/// <value>The Tencent Weibo application identifier.</value>
 		public string? TencentWeiboAppId {
 			set {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACTencentWeiboKey.AppId' is obsoleted on: 'ios' 11.0 and later (Use Tencent Weibo SDK instead.), 'maccatalyst' 11.0 and later (Use Tencent Weibo SDK instead.).
 				SetStringValue (ACTencentWeiboKey.AppId, value);
 			}
 			get {
 				return GetStringValue (ACTencentWeiboKey.AppId);
+#pragma warning restore CA1422
 			}
 		}
 #endif

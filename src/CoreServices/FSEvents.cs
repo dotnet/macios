@@ -571,7 +571,9 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
 		{
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop, CFRunLoop.ModeDefault);
+#pragma warning restore CA1422
 		}
 
 		/// <param name="runLoop">To be added.</param>
@@ -580,7 +582,9 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop, NSString runLoopMode)
 		{
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
+#pragma warning restore CA1422
 		}
 
 		/// <param name="runLoop">To be added.</param>
@@ -588,7 +592,9 @@ namespace CoreServices {
 		///         <remarks>To be added.</remarks>
 		public void ScheduleWithRunLoop (NSRunLoop runLoop)
 		{
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
+#pragma warning restore CA1422
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -608,6 +614,7 @@ namespace CoreServices {
 
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop)
 		{
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.UnscheduleFromRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			UnscheduleFromRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
@@ -619,6 +626,7 @@ namespace CoreServices {
 		public void UnscheduleFromRunLoop (NSRunLoop runLoop)
 		{
 			UnscheduleFromRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
+#pragma warning restore CA1422
 		}
 
 		[DllImport (Constants.CoreServicesLibrary)]

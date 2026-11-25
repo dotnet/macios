@@ -417,6 +417,41 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (view.UnregisteredOnMainThread, Is.True, "Unregistered on main thread");
 		}
 
+		[Test]
+		public void RegisterForTraitChanges_DisposePreservesIdentity ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new IdentityAwareTraitObservableView ();
+			var callbacks = 0;
+			using var registration = view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => callbacks++);
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.UpdateTraitsIfNeeded ();
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Regular;
+			view.UpdateTraitsIfNeeded ();
+			Assert.That (callbacks, Is.GreaterThan (0), "Callback before disposal");
+
+			registration.Dispose ();
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Original token recognized");
+			Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
+
+			var previousCallbacks = callbacks;
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.UpdateTraitsIfNeeded ();
+			Assert.That (callbacks, Is.EqualTo (previousCallbacks), "No callback after disposal");
+			registration.Dispose ();
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Unregistered once");
+		}
+
+		[Register ("IdentityAwareTraitObservableView")]
+		class IdentityAwareTraitObservableView : TraitObservableView {
+			public override void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+			{
+				if (ReferenceEquals (registration, LastRegistration))
+					base.UnregisterForTraitChanges (registration);
+			}
+		}
+
 		[Register ("TraitObservableView")]
 		class TraitObservableView : UIView {
 			public int RegistrationCount;

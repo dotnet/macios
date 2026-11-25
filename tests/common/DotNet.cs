@@ -336,6 +336,10 @@ namespace Xamarin.Tests {
 				// Skip these for 'dotnet test' because they leak through '-- ' in
 				// RunArguments and get passed to the test runner as app arguments.
 				if (verb != "test") {
+					// DIAGNOSTIC: a text log is written as the build progresses, so it's still useful if the build hangs and is killed.
+					var textLogPath = Path.ChangeExtension (binlogPath, ".diag.txt");
+					args.Add ($"/flp:v=diag;logfile={textLogPath}");
+					Console.WriteLine ($"Text log: {textLogPath}");
 					args.Add ("/v:diag");
 					args.Add ("/consoleloggerparameters:Verbosity=Quiet");
 					// vb does not have preview lang, so we force it to latest
@@ -361,7 +365,16 @@ namespace Xamarin.Tests {
 						env [kvp.Key] = kvp.Value;
 				}
 				timeout ??= TimeSpan.FromMinutes (10);
-				var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
+				var stacksPath = Path.ChangeExtension (binlogPath, ".stacks.txt");
+				var rv = new Execution {
+					FileName = Executable,
+					Arguments = args,
+					Environment = env,
+					WorkingDirectory = Path.GetDirectoryName (project),
+					Timeout = timeout,
+					Log = Console.Out,
+					BeforeTimeoutKill = (pid) => CollectHangDiagnostics (pid, stacksPath),
+				}.RunAsync ().Result;
 				var output = rv.Output.MergedOutput;
 				if (assert_success && rv.ExitCode != 0) {
 					Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");
@@ -397,6 +410,43 @@ namespace Xamarin.Tests {
 			default:
 				throw new NotImplementedException ($"Unknown dotnet action: '{verb}'");
 			}
+		}
+
+		// DIAGNOSTIC: collect the process list and managed stack traces for all dotnet processes when a build hangs.
+		static void CollectHangDiagnostics (int pid, string outputPath)
+		{
+			var sb = new StringBuilder ();
+			sb.AppendLine ($"Build process {pid} timed out at {DateTime.Now:O}");
+			try {
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
+					var ps = Execution.RunAsync ("pwsh", new [] { "-NoProfile", "-Command", "Get-CimInstance Win32_Process | Where-Object { $_.Name -like 'dotnet*' -or $_.Name -like 'MSBuild*' } | Format-List ProcessId,ParentProcessId,Name,CreationDate,CommandLine | Out-String -Width 8192" }, timeout: TimeSpan.FromMinutes (1)).Result;
+					sb.AppendLine (ps.Output.MergedOutput);
+				}
+			} catch (Exception e) {
+				sb.AppendLine ($"Failed to list processes: {e}");
+			}
+
+			var dotnetStack = Environment.GetEnvironmentVariable ("DOTNET_STACK_PATH");
+			if (string.IsNullOrEmpty (dotnetStack) || !File.Exists (dotnetStack)) {
+				sb.AppendLine ($"dotnet-stack not found (DOTNET_STACK_PATH={dotnetStack})");
+			} else {
+				var env = new Dictionary<string, string?> {
+					{ "DOTNET_ROOT", Path.GetDirectoryName (Executable) },
+					{ "DOTNET_ROLL_FORWARD", "Major" },
+				};
+				foreach (var process in System.Diagnostics.Process.GetProcessesByName ("dotnet")) {
+					sb.AppendLine ($"===== Managed stacks for PID {process.Id} =====");
+					try {
+						var stack = Execution.RunAsync (dotnetStack, new [] { "report", "-p", process.Id.ToString () }, env, timeout: TimeSpan.FromMinutes (2)).Result;
+						sb.AppendLine ($"dotnet-stack exit code: {stack.ExitCode} timed out: {stack.TimedOut}");
+						sb.AppendLine (stack.Output.MergedOutput);
+					} catch (Exception e) {
+						sb.AppendLine ($"Failed to get stacks: {e}");
+					}
+				}
+			}
+			File.WriteAllText (outputPath, sb.ToString ());
+			Console.WriteLine ($"Hang diagnostics: {outputPath}");
 		}
 
 		public static string GetProperty (string projectPath, string name, string? target = null, Dictionary<string, string>? properties = null, Dictionary<string, string?>? environment = null)

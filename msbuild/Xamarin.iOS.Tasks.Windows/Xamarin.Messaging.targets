@@ -71,7 +71,8 @@
 
 	<Target Name="_DisconnectAfterBuild" Condition="'$(ShouldDisconnect)' == 'true' Or ('$(ShouldDisconnect)' == 'if-connection-established' And '$(_DidEstablishConnection)' == 'true')" DependsOnTargets="_SayGoodbye" />
 
-	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true' And ('$(BuildSessionId)' == '' Or '$(BuildAppName)' == '')">
+	<!-- DIAGNOSTIC (-mt experiment): always run, so that MessagingBuildContext.Initialize runs in every TaskHost -->
+	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true'">
 		<GenerateBuildSessionId MessagingVersion="$(MessagingVersion)" 
 			TargetFramework="$(TargetFramework)"
 			ProjectFullPath="$(MSBuildProjectFullPath)" 

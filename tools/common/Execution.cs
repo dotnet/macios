@@ -126,6 +126,8 @@ namespace Xamarin.Utils {
 		public int ExitCode { get; private set; }
 		public bool TimedOut { get; private set; }
 
+		public Action<int>? BeforeTimeoutKill;
+
 		public Action<string>? StandardOutputLineCallback;
 		public Action<string>? StandardErrorLineCallback;
 
@@ -233,6 +235,12 @@ namespace Xamarin.Utils {
 							if (!p.WaitForExit ((int) Timeout.Value.TotalMilliseconds)) {
 								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' (pid: {pid}) didn't finish in {Timeout.Value.TotalMilliseconds} ms, and will be killed.");
 								TimedOut = true;
+								// DIAGNOSTIC: collect information about the hung process before killing it.
+								try {
+									BeforeTimeoutKill?.Invoke (pid);
+								} catch (Exception ex) {
+									Log?.WriteLine ($"Failed to collect diagnostics for PID {pid}: {ex}");
+								}
 								try {
 									KillProcess (p);
 								} catch (Exception ex) {

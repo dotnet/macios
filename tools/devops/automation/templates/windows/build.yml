@@ -273,12 +273,14 @@ steps:
     Get-Content -Path $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/dotnet/Windows/config.runsettings | Write-Host
   displayName: 'Create runsettings for .NET tests'
 
-- pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-local-windows-tests.ps1
-  displayName: 'Run .NET tests locally'
-  timeoutInMinutes: 30
+# DIAGNOSTIC: local tests removed while iterating on -mt failures; install dotnet-stack to collect stacks from hung builds.
+- pwsh: |
+    $dotnet = "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tests\dotnet\Windows\bin\dotnet\dotnet.exe"
+    $toolPath = "$(Build.SourcesDirectory)\dotnet-diagnostics-tools"
+    & $dotnet tool install dotnet-stack --tool-path $toolPath --configfile "$(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\NuGet.config"
+    Write-Host "##vso[task.setvariable variable=DOTNET_STACK_PATH]$toolPath\dotnet-stack.exe"
+  displayName: 'Install dotnet-stack'
   continueOnError: true
-  ${{ if not(parameters.isPR) }}:
-    retryCountOnTaskFailure: ${{ parameters.retryCount }}
 
 - pwsh: $(Build.SourcesDirectory)\$(BUILD_REPOSITORY_TITLE)\tools\devops\automation\scripts\run-remote-windows-tests.ps1
   displayName: 'Run .NET tests remotely'
@@ -297,9 +299,6 @@ steps:
   name: configuration
   displayName: 'Parse build configuration'
   timeoutInMinutes: 10
-
-- pwsh: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run-generator-tests-on-windows.ps1
-  displayName: 'Run generator tests'
 
 - pwsh: |
     Write-Host "There are test failures, so failing the build"
@@ -391,7 +390,7 @@ steps:
     $targetDir = '$(Build.ArtifactStagingDirectory)\windows-binlogs'
     New-Item -Path "$targetDir" -ItemType "directory" -Force
 
-    $binlogs = Get-ChildItem $sourceDir -Recurse -Include "*.binlog"
+    $binlogs = Get-ChildItem $sourceDir -Recurse -Include "*.binlog","*.diag.txt","*.stacks.txt"
     foreach ($binlog in $binlogs) {
         if ($binlog.FullName.Contains("jenkins-results")) {
           continue

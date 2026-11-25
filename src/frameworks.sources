@@ -1920,6 +1920,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/ErrorConstants.cs \
 	ObjCRuntime/Extensions.cs \
 	ObjCRuntime/INativeObject.cs \
+	ObjCRuntime/IReleaseOnMainThread.cs \
 	ObjCRuntime/LinkWithAttribute.cs \
 	ObjCRuntime/Messaging.cs \
 	ObjCRuntime/NativeAttribute.cs \

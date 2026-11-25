@@ -761,8 +761,11 @@ namespace CoreGraphics {
 		CGComponent MaximumBitDepth { get; set; }
 	}
 
+	/// <summary>Specifies whether image components use integer or floating-point values.</summary>
 	public enum CGImageComponentInfo : uint {
+		/// <summary>The image components use integer values.</summary>
 		Integer = (0u << 8),
+		/// <summary>The image components use floating-point values.</summary>
 		Float = (1u << 8),
 	}
 

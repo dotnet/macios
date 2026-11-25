@@ -1754,8 +1754,6 @@ F:CoreGraphics.CGDynamicRange.Constrained
 F:CoreGraphics.CGDynamicRange.High
 F:CoreGraphics.CGDynamicRange.Standard
 F:CoreGraphics.CGEventSuppressionState.NumberOfEventSuppressionStates
-F:CoreGraphics.CGImageComponentInfo.Float
-F:CoreGraphics.CGImageComponentInfo.Integer
 F:CoreGraphics.CGPdfTagType.Annotation
 F:CoreGraphics.CGPdfTagType.Art
 F:CoreGraphics.CGPdfTagType.Bibliography
@@ -55313,7 +55311,6 @@ T:CoreGraphics.CGColorConversionOptions
 T:CoreGraphics.CGDisplayStreamKeys
 T:CoreGraphics.CGDisplayStreamYCbCrMatrixOptionKeys
 T:CoreGraphics.CGDynamicRange
-T:CoreGraphics.CGImageComponentInfo
 T:CoreGraphics.CGPDFOutlineOptions
 T:CoreGraphics.CGPdfTagProperties
 T:CoreGraphics.CGPdfTagType

@@ -36,7 +36,6 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGColorSpace.h
 	/// <summary>Determines how Quartz maps colors from the source color space to the gamut of the destination.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CGColorRenderingIntent {
 		/// <summary>The default rendering intent.</summary>
 		Default,

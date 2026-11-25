@@ -39,7 +39,7 @@ namespace CoreGraphics {
 	public enum CGColorRenderingIntent {
 		/// <summary>The default rendering intent.</summary>
 		Default,
-		/// <summary>Clamps colors outside of the gamut of the device into the space supported by the device.</summary>
+		/// <summary>Maps out-of-gamut colors to the closest match in the output-device gamut while leaving in-gamut colors unchanged. This can map distinct source colors to the same output color.</summary>
 		AbsoluteColorimetric,
 		/// <summary>Shifts all colors to account for the difference between the context and output-device white points, then maps out-of-gamut colors to the nearest output color, potentially clipping distinct colors to the same value.</summary>
 		RelativeColorimetric,

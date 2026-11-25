@@ -1746,9 +1746,6 @@ F:CoreGraphics.CGAffineTransform.Ty
 F:CoreGraphics.CGColorConversionInfoTriple.Intent
 F:CoreGraphics.CGColorConversionInfoTriple.Space
 F:CoreGraphics.CGColorConversionInfoTriple.Transform
-F:CoreGraphics.CGDynamicRange.Constrained
-F:CoreGraphics.CGDynamicRange.High
-F:CoreGraphics.CGDynamicRange.Standard
 F:CoreGraphics.CGEventSuppressionState.NumberOfEventSuppressionStates
 F:CoreGraphics.CGPdfTagType.Annotation
 F:CoreGraphics.CGPdfTagType.Art
@@ -55305,7 +55302,6 @@ T:CoreGraphics.CGBitmapInfoExtensions
 T:CoreGraphics.CGColorConversionOptions
 T:CoreGraphics.CGDisplayStreamKeys
 T:CoreGraphics.CGDisplayStreamYCbCrMatrixOptionKeys
-T:CoreGraphics.CGDynamicRange
 T:CoreGraphics.CGPDFOutlineOptions
 T:CoreGraphics.CGPdfTagProperties
 T:CoreGraphics.CGPdfTagType

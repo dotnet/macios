@@ -782,14 +782,18 @@ namespace CoreGraphics {
 		PixelFormatInfoMask = 0xF0000,
 	}
 
+	/// <summary>Specifies the dynamic range requested when tone-mapping content.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	enum CGDynamicRange {
+		/// <summary>Requests high dynamic range.</summary>
 		[Field ("kCGDynamicRangeHigh")]
 		High,
 
+		/// <summary>Requests a limited dynamic range for rendering content.</summary>
 		[Field ("kCGDynamicRangeConstrained")]
 		Constrained,
 
+		/// <summary>Requests standard dynamic range.</summary>
 		[Field ("kCGDynamicRangeStandard")]
 		Standard,
 	}

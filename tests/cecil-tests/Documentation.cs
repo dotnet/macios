@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -18,9 +18,9 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public partial class Documentation {
-		[Test]
+		[TestMethod]
 		public void VerifyNoUnresolvedCrefs ()
 		{
 			// We join all the APIs from all the platforms, so we can only run this test when all platforms are enabled.
@@ -91,7 +91,7 @@ namespace Cecil.Tests {
 		// Verify that all our publicly visible APIs are documented.
 		// This is obviously not true, so we have a rather huge list of known failures.
 		// However, this will prevent us from adding more undocumented APIs by accident.
-		[Test]
+		[TestMethod]
 		public void VerifyEveryVisibleMemberIsDocumented ()
 		{
 			// We join all the APIs from all the platforms, so we can only run this test when all platforms are enabled.
@@ -119,14 +119,11 @@ namespace Cecil.Tests {
 			}
 
 			var documentedButNotPresent = xmlMembers.Except (dllMembers).ToList ();
-			Assert.Multiple (() => {
-				if (documentedButNotPresent.Any ()) {
-					foreach (var dll in dllMembers)
-						Console.WriteLine (dll.DocId);
-				}
-				foreach (var doc in documentedButNotPresent)
-					Assert.Fail ($"{doc.DocId}: Documented API not found in the platform assembly. This probably indicates that the code to compute the doc name for a given member is incorrect.");
-			});
+			if (documentedButNotPresent.Any ()) {
+				foreach (var dll in dllMembers)
+					Console.WriteLine (dll.DocId);
+			}
+			Assert.IsEmpty (documentedButNotPresent, string.Join ("\n", documentedButNotPresent.Select (doc => $"{doc.DocId}: Documented API not found in the platform assembly. This probably indicates that the code to compute the doc name for a given member is incorrect.")));
 
 			var shouldHaveBeenDocumented = dllMembers
 											.Except (xmlMembers)
@@ -165,7 +162,7 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[Test]
+		[TestMethod]
 		public void NoRemarksOnEnumFields ()
 		{
 			var xmlEnumFieldsWithRemarks = new Dictionary<string, string> ();
@@ -191,7 +188,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			Assert.That (xmlEnumFieldsWithRemarks, Is.Empty, "No enum fields with <remarks> documentation.");
+			Assert.IsEmpty (xmlEnumFieldsWithRemarks, $"No enum fields with <remarks> documentation.\n{string.Join ("\n", xmlEnumFieldsWithRemarks)}");
 		}
 
 		static HashSet<AssemblyApi> GetDocumentedMembers (string xml)

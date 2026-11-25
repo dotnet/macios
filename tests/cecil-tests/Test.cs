@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -11,13 +11,15 @@ using Mono.Cecil.Cil;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class Test {
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
 		// ref: https://github.com/dotnet/macios/pull/7760
-		public void IdentifyBackingFieldAssignation (AssemblyInfo info)
+		public void IdentifyBackingFieldAssignation (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			// look inside all .cctor (static constructor) inside `assemblyName`
 			foreach (var m in assembly.EnumerateMethods ((m) => m.IsStatic && m.IsConstructor)) {
@@ -49,10 +51,12 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
 		// ref: https://github.com/dotnet/macios/issues/8249
-		public void EnsureUIThreadOnInit (AssemblyInfo info)
+		public void EnsureUIThreadOnInit (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 
 			// `CNContactsUserDefaults` is `[ThreadSafe (false)]` and part of iOS and macOS
@@ -83,9 +87,11 @@ namespace Cecil.Tests {
 			}
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void NoSystemConsoleReference (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void NoSystemConsoleReference (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			// this has a quite noticeable impact on (small) app size
 			if (assembly.MainModule.TryGetTypeReference ("System.Console", out var _))
@@ -124,9 +130,11 @@ namespace Cecil.Tests {
 			// keep up-to-date with the 'bannedCApi' list in tests/mtouch/MiscTests.cs
 		};
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void NoBannedApi (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void NoBannedApi (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			List<string> found = new List<string> ();
 			foreach (var m in assembly.EnumerateMethods ((m) => m.IsPInvokeImpl)) {
@@ -136,7 +144,7 @@ namespace Cecil.Tests {
 			}
 			// if multiple p/invoke are defined then the same symbol will show multiple times
 			// it's a feature :)
-			Assert.That (found, Is.Empty, string.Join (", ", found));
+			Assert.IsEmpty (found, string.Join (", ", found));
 		}
 
 		// from PlatformAvailability2.cs / keep in sync
@@ -148,10 +156,12 @@ namespace Cecil.Tests {
 			MacCatalyst,
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
 		// ref: https://github.com/dotnet/macios/issues/4835
-		public void Unavailable (AssemblyInfo info)
+		public void Unavailable (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 
 			var platform = PlatformName.None;
@@ -169,38 +179,38 @@ namespace Cecil.Tests {
 				platform = PlatformName.MacCatalyst;
 				break;
 			}
-			Assert.That (platform, Is.Not.EqualTo (PlatformName.None), "None");
+			Assert.AreNotEqual (PlatformName.None, platform, "None");
 
-			Assert.That (IsUnavailable (assembly, platform), Is.False, "Assembly");
-			Assert.That (IsUnavailable (assembly.MainModule, platform), Is.False, "MainModule");
+			Assert.IsFalse (IsUnavailable (assembly, platform), "Assembly");
+			Assert.IsFalse (IsUnavailable (assembly.MainModule, platform), "MainModule");
 			foreach (var type in assembly.MainModule.Types)
 				Unavailable (type, platform);
 		}
 
 		void Unavailable (TypeDefinition type, PlatformName platform)
 		{
-			Assert.That (IsUnavailable (type, platform), Is.False, type.FullName);
+			Assert.IsFalse (IsUnavailable (type, platform), type.FullName);
 			if (type.HasNestedTypes) {
 				foreach (var nt in type.NestedTypes)
 					Unavailable (nt, platform);
 			}
 			if (type.HasEvents) {
 				foreach (var @event in type.Events)
-					Assert.That (IsUnavailable (@event, platform), Is.False, @event.FullName);
+					Assert.IsFalse (IsUnavailable (@event, platform), @event.FullName);
 			}
 			// Enum members are generated with `[No*` by design
 			// as they ease code sharing and don't risk exposing private symbols
 			if (!type.IsEnum && type.HasFields) {
 				foreach (var field in type.Fields)
-					Assert.That (IsUnavailable (field, platform), Is.False, field.FullName);
+					Assert.IsFalse (IsUnavailable (field, platform), field.FullName);
 			}
 			if (type.HasMethods) {
 				foreach (var method in type.Methods)
-					Assert.That (IsUnavailable (method, platform), Is.False, method.FullName);
+					Assert.IsFalse (IsUnavailable (method, platform), method.FullName);
 			}
 			if (type.HasProperties) {
 				foreach (var property in type.Properties)
-					Assert.That (IsUnavailable (property, platform), Is.False, property.FullName);
+					Assert.IsFalse (IsUnavailable (property, platform), property.FullName);
 			}
 		}
 

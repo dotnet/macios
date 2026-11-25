@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 
@@ -14,11 +14,12 @@ using Xamarin.Tests;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class PreviewApi {
-		[TestCase ("CryptoTokenKit", "APL0001", "10.0")]
+		[TestMethod]
+		[DataRow ("CryptoTokenKit", "APL0001", "10.0")]
 		// [TestCase ("FSKit", "APL0002", "11.0")]
-		[TestCase ("ObjCBindings", "APL0003", "99.0")]
+		[DataRow ("ObjCBindings", "APL0003", "99.0")]
 		public void EverythingInNamespace (string ns, string expectedDiagnosticId, string stableInDotNetVersion)
 		{
 			// Verify that all types in the given namespace have an Experimental attribute.
@@ -48,11 +49,7 @@ namespace Cecil.Tests {
 				}
 			}
 
-			// This looks complicated, but it's to render test failures better than "Assert.That (failures, Is.Empty)"
-			Assert.Multiple (() => {
-				foreach (var failure in failures)
-					Assert.Fail (failure);
-			});
+			Assert.IsEmpty (failures, string.Join ("\n", failures));
 		}
 
 		bool TryGetExperimentalAttribute (ICustomAttributeProvider type, [NotNullWhen (true)] out string? diagnosticId)

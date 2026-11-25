@@ -1,7 +1,7 @@
 using System;
 using Mono.Cecil;
 using System.Collections.Generic;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Mono.Cecil.Cil;
 using Xamarin.Utils;
@@ -9,7 +9,7 @@ using Xamarin.Tests;
 #nullable enable
 
 namespace Cecil.Tests {
-	[TestFixture]
+	[TestClass]
 	public class GetterExceptionTest {
 		readonly HashSet<string> exceptionsToSkip = new ()
 		{
@@ -54,10 +54,11 @@ namespace Cecil.Tests {
 			return false;
 		}
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformImplementationAssemblyDefinitions))]
-		[Test]
-		public void TestForAssembliesWithGetterExceptions (AssemblyInfo info)
+		[DynamicData (nameof (Helper.NetPlatformImplementationAssemblyTestData), typeof (Helper))]
+		[TestMethod]
+		public void TestForAssembliesWithGetterExceptions (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			Dictionary<string, string> propertiesWithGetterExceptions = new ();
 			AssemblyDefinition assembly = info.Assembly;
 
@@ -68,10 +69,7 @@ namespace Cecil.Tests {
 
 			}
 
-			Assert.That (
-				propertiesWithGetterExceptions.Count (),
-				Is.EqualTo (0),
-				$"Exceptions found in Getters: {string.Join (Environment.NewLine, propertiesWithGetterExceptions)}");
+			Assert.AreEqual (0, propertiesWithGetterExceptions.Count (), $"Exceptions found in Getters: {string.Join (Environment.NewLine, propertiesWithGetterExceptions)}");
 		}
 	}
 }

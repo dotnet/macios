@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -13,14 +13,16 @@ using Mono.Cecil.Cil;
 
 namespace Cecil.Tests {
 
-	[TestFixture]
+	[TestClass]
 	public class MarshalAsTest {
 
 		HashSet<string> knownIssues = new HashSet<string> { };
 
-		[TestCaseSource (typeof (Helper), nameof (Helper.NetPlatformAssemblyDefinitions))]
-		public void TestAssembly (AssemblyInfo info)
+		[TestMethod]
+		[DynamicData (nameof (Helper.NetPlatformAssemblyTestData), typeof (Helper))]
+		public void TestAssembly (string assemblyPath)
 		{
+			var info = Helper.GetAssemblyInfo (assemblyPath);
 			var assembly = info.Assembly;
 			var failedMethods = new HashSet<string> ();
 			List<string>? failures = null;

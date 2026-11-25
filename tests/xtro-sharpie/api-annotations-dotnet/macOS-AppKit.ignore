@@ -973,9 +973,6 @@
 ## TraitEmphasized aliases BoldTrait, but only the alias is unavailable in the macOS headers.
 !extra-enum-value! Managed value 2 for NSFontSymbolicTraits.TraitEmphasized is available for the current platform while the value in the native header is not
 
-## Preserve the existing NSTableColumnResizing.None value; correcting it is a separate behavioral change.
-!missing-enum-value! NSTableColumnResizing native value NSTableColumnNoResizing = 0 not bound
-!extra-enum-value! Managed value -1 for NSTableColumnResizing.None not found in native headers
 !missing-field! NSAbortModalException not bound
 !missing-field! NSAbortPrintingException not bound
 !missing-field! NSAccessibilityAscendingSortDirectionValue not bound

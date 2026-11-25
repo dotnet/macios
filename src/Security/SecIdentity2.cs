@@ -92,6 +92,7 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern byte sec_identity_access_certificates (IntPtr identity, BlockLiteral* block);
 
+		[UserDelegateType (typeof (Action<SecCertificate2>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineAccessCertificates (IntPtr block, IntPtr cert)
 		{

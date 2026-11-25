@@ -57,6 +57,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_establishment_report_enumerate_resolutions (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
+		[UserDelegateType (typeof (Func<NWReportResolutionSource, ulong, uint, NWEndpoint, NWEndpoint, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineResolutionEnumeratorHandler (IntPtr block, NWReportResolutionSource source, nuint milliseconds, int endpoint_count, nw_endpoint_t successful_endpoint, nw_endpoint_t preferred_endpoint)
 		{
@@ -93,6 +94,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_establishment_report_enumerate_protocols (OS_nw_establishment_report report, BlockLiteral* enumerate_block);
 
+		[UserDelegateType (typeof (Func<NWProtocolDefinition, ulong, ulong, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineEnumerateProtocolsHandler (IntPtr block, nw_protocol_definition_t protocol, nuint handshake_milliseconds, nuint handshake_rtt_milliseconds)
 		{
@@ -139,6 +141,7 @@ namespace Network {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[UserDelegateType (typeof (Func<NWResolutionReport, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineEnumerateResolutionReport (IntPtr block, nw_resolution_report_t report)
 		{

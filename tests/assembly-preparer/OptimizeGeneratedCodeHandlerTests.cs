@@ -7,6 +7,28 @@ using Mono.Cecil.Rocks;
 namespace AssemblyPreparerTests;
 
 public class OptimizeGeneratedCodeHandlerTests : BaseClass {
+	[TestCase ("CoreText.CTLine", "EnumerateCaretOffsets", "v@?dqB^B")]
+	[TestCase ("ImageIO.CGImageAnimation", "AnimateImage", "v@?Q@^B")]
+	[TestCase ("MetalPerformanceShaders.MPSImageBatch", "Iterate", "q@?@Q")]
+	[TestCase ("Network.NWFramer", "set_InputHandler", "Q@?@")]
+	public void NativeIntegerBlockSignatures (string typeName, string methodName, string expectedSignature)
+	{
+		using var preparer = CreatePreparer (ApplePlatform.iOS, true, p => {
+			p.Registrar = RegistrarMode.Static;
+			p.Optimizations.OptimizeBlockLiteralSetupBlock = true;
+		}, "class Test { }", out _);
+		var context = preparer.Configuration.DerivedLinkContext;
+		new MonoTouch.Tuner.LoadAssembliesStep ().Process (context);
+		new Xamarin.Linker.Steps.OptimizeGeneratedCodeStep ().Process (context);
+		var assembly = context.GetAssemblies ().Single (v => v.Name.Name == "Microsoft.iOS");
+		var methods = assembly.MainModule.GetType (typeName).Methods.Where (v => v.Name == methodName).ToArray ();
+		Assert.That (methods, Is.Not.Empty, "Block constructors");
+		foreach (var method in methods) {
+			var signatures = method.Body.Instructions.Where (v => v.OpCode == OpCodes.Ldstr).Select (v => (string) v.Operand);
+			Assert.That (signatures, Does.Contain (expectedSignature), method.FullName);
+		}
+	}
+
 	[Test]
 	[TestCase (ApplePlatform.MacCatalyst, false)]
 	[TestCase (ApplePlatform.iOS, false)]

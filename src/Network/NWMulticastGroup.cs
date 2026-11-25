@@ -61,6 +61,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_group_descriptor_enumerate_endpoints (OS_nw_group_descriptor descriptor, BlockLiteral* enumerate_block);
 
+		[UserDelegateType (typeof (Func<NWEndpoint, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineEnumerateEndpointsHandler (IntPtr block, OS_nw_endpoint endpoint)
 		{

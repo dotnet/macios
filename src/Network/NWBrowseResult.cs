@@ -61,6 +61,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_browse_result_enumerate_interfaces (OS_nw_browse_result result, BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Func<NWInterface, bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEnumerateInterfacesHandler (IntPtr block, IntPtr inter)
 		{

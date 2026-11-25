@@ -150,6 +150,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern void nw_proxy_config_enumerate_match_domains (OS_nw_proxy_config config, /* nw_proxy_domain_enumerator_t */ BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Action<IntPtr>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEnumerateMatchDomainHandler (IntPtr block, IntPtr domainPtr)
 		{
@@ -176,6 +177,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static unsafe extern void nw_proxy_config_enumerate_excluded_domains (OS_nw_proxy_config config, BlockLiteral* enumerator);
 
+		[UserDelegateType (typeof (Action<IntPtr>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEnumerateExcludeDomainHandler (IntPtr block, IntPtr domainPtr)
 		{

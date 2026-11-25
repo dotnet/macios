@@ -52,6 +52,7 @@ namespace Network {
 			nw_protocol_stack_clear_application_protocols (GetCheckedHandle ());
 		}
 
+		[UserDelegateType (typeof (Action<NWProtocolOptions>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineIterateHandler (IntPtr block, IntPtr options)
 		{

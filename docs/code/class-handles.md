@@ -53,6 +53,9 @@ So we do the following:
 	  return the Objective-C class for that symbol (using a direct native
 	  reference), and modifies the code that fetches that symbol to call said
 	  P/Invoke.
+	  Category bindings use `xamarin_Category_GetHandle_<framework>_<class>_Native`
+	  instead, so that NativeAOT builds also know which framework provides the
+	  category (see [native-symbols.md](native-symbols.md)).
 
 2. After trimming, we figure out which of those symbols survived:
 

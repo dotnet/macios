@@ -26,6 +26,7 @@ public class RegistrarTests : BaseClass {
 		var config = $@"
 		AssemblyName=Microsoft.{platform.AsString ()}.dll
 		CacheDirectory={tempDir}
+		PrepareAssemblies=true
 		TypeMapAssemblyName=_TypeMap
 		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}

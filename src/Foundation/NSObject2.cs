@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Drawing;
 using System.Diagnostics;
+using System.Threading;
 
 using System.Runtime.InteropServices.ObjectiveC;
 
@@ -204,7 +205,7 @@ namespace Foundation {
 				// Implicit tracking applies only to the native object whose GCHandle ivar points to this peer.
 				// Clear it before changing the handle; leave explicit MarkDirty registration intact.
 				if (data->handle != value)
-					data->flags &= ~Flags.ImplicitToggleRef;
+					ClearFlags (Flags.ImplicitToggleRef);
 				data->handle = value;
 			}
 		}
@@ -220,9 +221,31 @@ namespace Foundation {
 			return (NSObjectData*) data;
 		}
 
+		// Only use the setter for a peer that no other thread can see yet. Otherwise use
+		// SetFlags and ClearFlags: native code can update the flags of a live peer on
+		// another thread (for instance a retain on a background thread sets HasManagedRef),
+		// and writing back the whole value could undo a concurrent change to another flag.
 		unsafe Flags flags {
 			get { return GetData ()->flags; }
 			set { GetData ()->flags = value; }
+		}
+
+		internal unsafe void SetFlags (Flags value)
+		{
+			Interlocked.Or (ref *(uint*) &GetData ()->flags, (uint) value);
+		}
+
+		unsafe void ClearFlags (Flags value)
+		{
+			Interlocked.And (ref *(uint*) &GetData ()->flags, ~(uint) value);
+		}
+
+		void SetFlags (Flags value, bool set)
+		{
+			if (set)
+				SetFlags (value);
+			else
+				ClearFlags (value);
 		}
 
 		// This enum has a native counterpart in runtime.h
@@ -255,17 +278,17 @@ namespace Foundation {
 
 		bool disposed {
 			get { return ((flags & Flags.Disposed) == Flags.Disposed); }
-			set { flags = value ? (flags | Flags.Disposed) : (flags & ~Flags.Disposed); }
+			set { SetFlags (Flags.Disposed, value); }
 		}
 
 		bool HasManagedRef {
 			get { return (flags & Flags.HasManagedRef) == Flags.HasManagedRef; }
-			set { flags = value ? (flags | Flags.HasManagedRef) : (flags & ~Flags.HasManagedRef); }
+			set { SetFlags (Flags.HasManagedRef, value); }
 		}
 
 		internal bool IsRegisteredToggleRef {
 			get { return ((flags & Flags.RegisteredToggleRef) == Flags.RegisteredToggleRef); }
-			set { flags = value ? (flags | Flags.RegisteredToggleRef) : (flags & ~Flags.RegisteredToggleRef); }
+			set { SetFlags (Flags.RegisteredToggleRef, value); }
 		}
 
 		/// <summary>
@@ -276,7 +299,7 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected internal bool IsDirectBinding {
 			get { return ((flags & Flags.IsDirectBinding) == Flags.IsDirectBinding); }
-			set { flags = value ? (flags | Flags.IsDirectBinding) : (flags & ~Flags.IsDirectBinding); }
+			set { SetFlags (Flags.IsDirectBinding, value); }
 		}
 
 		internal bool InFinalizerQueue {
@@ -289,7 +312,7 @@ namespace Foundation {
 				if (!value) {
 					value = Class.IsCustomType (GetType ());
 					if (value)
-						flags |= Flags.IsCustomType;
+						SetFlags (Flags.IsCustomType);
 				}
 				return value;
 			}
@@ -370,7 +393,7 @@ namespace Foundation {
 		public void ReRegisterForFinalize ()
 		{
 			GC.ReRegisterForFinalize (this);
-			flags &= ~Flags.InFinalizerQueue;
+			ClearFlags (Flags.InFinalizerQueue);
 		}
 
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
@@ -399,7 +422,7 @@ namespace Foundation {
 				// object. Reuse the wrapper created before the initializer was invoked.
 				var existing = Runtime.TryGetNSObjectFromIvar (handle);
 				if (existing is not null && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle && type.IsAssignableFrom (existing.GetType ())) {
-					existing.flags |= flags;
+					existing.SetFlags (flags);
 					return Runtime.AllocGCHandle (existing);
 				}
 
@@ -417,7 +440,7 @@ namespace Foundation {
 		{
 			var existing = Runtime.TryGetNSObjectFromIvar (handle);
 			if (existing is T typedExisting && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle) {
-				existing.flags |= (Flags) flags;
+				existing.SetFlags ((Flags) flags);
 				return typedExisting;
 			}
 
@@ -453,7 +476,6 @@ namespace Foundation {
 
 		internal Flags FlagsInternal {
 			get { return flags; }
-			set { flags = value; }
 		}
 
 		[DllImport ("__Internal")]
@@ -602,7 +624,7 @@ namespace Foundation {
 					// Constructor chaining may initialize the same wrapper more than once.
 					// The existing wrapper already owns the native reference, so don't retain it again.
 					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this)) {
-						flags |= Flags.ImplicitToggleRef;
+						SetFlags (Flags.ImplicitToggleRef);
 						return;
 					}
 				}
@@ -619,7 +641,7 @@ namespace Foundation {
 					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 					gchandle.Free ();
 				} else {
-					flags |= Flags.ImplicitToggleRef;
+					SetFlags (Flags.ImplicitToggleRef);
 				}
 			}
 
@@ -640,7 +662,7 @@ namespace Foundation {
 			var existing = Runtime.GetGCHandleForObject (newHandle);
 			if (existing != IntPtr.Zero) {
 				if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
-					flags |= Flags.ImplicitToggleRef;
+					SetFlags (Flags.ImplicitToggleRef);
 				return;
 			}
 			HasManagedRef = true;
@@ -661,7 +683,7 @@ namespace Foundation {
 				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 				gchandle.Free ();
 			} else {
-				flags |= Flags.ImplicitToggleRef;
+				SetFlags (Flags.ImplicitToggleRef);
 			}
 		}
 

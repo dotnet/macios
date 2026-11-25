@@ -336,7 +336,7 @@ void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
 	struct NSObjectData *data = (struct NSObjectData *) ptr;
-	data->flags = (enum NSObjectFlags) (data->flags | NSObjectFlagsInFinalizerQueue);
+	__atomic_fetch_or ((uint32_t *) &data->flags, (uint32_t) NSObjectFlagsInFinalizerQueue, __ATOMIC_SEQ_CST);
 	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) data->flags);
 }
 

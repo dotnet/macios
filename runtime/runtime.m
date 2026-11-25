@@ -1464,7 +1464,7 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		managed_object = xamarin_gchandle_get_target (old_gchandle);
 		if (managed_object) {
 			if (create_strong_gchandle (self, managed_object)) {
-				xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+				xamarin_set_nsobject_flags (managed_object, NSObjectFlagsHasManagedRef);
 			}
 		}
 

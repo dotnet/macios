@@ -20642,6 +20642,7 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("copyFormatDescription")]
+		[return: Release]
 		CMFormatDescription CopyFormatDescription ();
 
 		[MacCatalyst (13, 1)]

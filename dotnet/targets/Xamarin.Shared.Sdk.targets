@@ -2478,6 +2478,7 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)$(_LibXamarinName)" />
+			<_XamarinMainLibraries Include="$(_XamarinNativeLibraryDirectory)libxamarin-widgetkit.a" Condition="'$(_PlatformName)' != 'tvOS'" />
 			<!-- Link with the libraries shipped with the mono runtime pack -->
 			<_XamarinMainLibraries Include="@(_MonoLibrary)" />
 

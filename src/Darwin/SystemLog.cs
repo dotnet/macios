@@ -33,8 +33,17 @@ using System.Collections.Generic;
 
 namespace Darwin {
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Provides access to the legacy Apple System Log (ASL) service.</summary>
+	/// <remarks>
+	///   <para>Apple deprecated ASL in macOS 10.12. Use <see cref="CoreFoundation.OSLog" /> for unified logging
+	///   or <see cref="OSLog.OSLogStore" /> to read unified log entries.</para>
+	///   <para>These replacements are not drop-in equivalents for ASL file output, filter masks, message
+	///   attributes, or queries. This type retains its ASL implementation for compatibility.</para>
+	///   <para>Access to unified log entries depends on the log store's scope and permissions.
+	///   <see cref="CoreFoundation.OSLog" /> logs message text as public; do not include sensitive data.</para>
+	/// </remarks>
+	[SupportedOSPlatform ("macos")]
+	[ObsoletedOSPlatform ("macos10.12", "Use 'CoreFoundation.OSLog' for logging or 'OSLog.OSLogStore' to read unified log entries.")]
 	public class SystemLog : DisposableObject {
 		static SystemLog? _default;
 
@@ -264,8 +273,15 @@ namespace Darwin {
 		}
 	}
 
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Represents a legacy Apple System Log (ASL) message or query.</summary>
+	/// <remarks>
+	///   <para>Apple deprecated ASL in macOS 10.12. Use <see cref="CoreFoundation.OSLog" /> for unified logging
+	///   or <see cref="OSLog.OSLogStore" /> to read unified log entries.</para>
+	///   <para>Unified logging does not preserve ASL's arbitrary message attributes or query operators.
+	///   This type continues to wrap an ASL object for compatibility.</para>
+	/// </remarks>
+	[SupportedOSPlatform ("macos")]
+	[ObsoletedOSPlatform ("macos10.12", "Use 'CoreFoundation.OSLog' for logging or 'OSLog.OSLogStore' to read unified log entries.")]
 	public class Message : DisposableObject {
 		/// <summary>To be added.</summary>
 		///     <remarks>To be added.</remarks>

@@ -17,9 +17,9 @@ dotnet pack Xamarin.MacDev/Xamarin.MacDev.csproj -c Release \
 In the macios checkout, select that version and add the local feed to the configured sources:
 
 ```sh
-export MicrosoftAppleToolsMaciOSPackageVersion="$MACIOS_DEVTOOLS_VERSION"
 export RestoreAdditionalProjectSources="$MACIOS_DEVTOOLS_FEED"
-dotnet build tools/assembly-preparer/assembly-preparer.csproj
+dotnet build tools/assembly-preparer/assembly-preparer.csproj \
+    -p:MicrosoftAppleToolsMaciOSPackageVersion="$MACIOS_DEVTOOLS_VERSION"
 ```
 
-Use a new package version after each change, since NuGet caches packages by version. For Make-based builds, run `touch Directory.Build.props` after changing the version override so Make rebuilds the affected tools.
+Use a new package version after each change, since NuGet caches packages by version. For Make-based builds, update `<MicrosoftAppleToolsMaciOSPackageVersion>` in `eng/Version.Details.props` instead so Make rebuilds the affected tools.

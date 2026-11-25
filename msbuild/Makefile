@@ -29,6 +29,7 @@ MSBUILD_DIRECTORIES          =
 ALL_SOURCES:= \
 	$(shell git ls-files | sed 's/ /\\ /g') \
 	$(TOP)/Directory.Build.props \
+	$(TOP)/eng/Version.Details.props \
 	Versions.g.cs \
 	$(wildcard $(TOP)/tools/common/*.cs) \
 

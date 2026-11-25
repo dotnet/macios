@@ -37,8 +37,10 @@ namespace Xamarin.Tests {
 			};
 			if (additionalDefineConstants is not null)
 				dict ["AdditionalDefineConstants"] = additionalDefineConstants;
-			if (referenceNativeSymbol)
+			if (referenceNativeSymbol) {
 				dict ["NativeAOTReferenceNativeSymbol"] = "true";
+				dict ["_ExportSymbolsExplicitly"] = "false";
+			}
 			Run (ApplePlatform.iOS, "ios-arm64", "Release", name, false, dict, assertAppSize: false);
 		}
 

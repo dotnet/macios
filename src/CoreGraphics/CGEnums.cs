@@ -293,7 +293,7 @@ namespace CoreGraphics {
 		RubyPunctuation,
 		/// <summary>A smaller-text annotation formatted on two lines and placed inline after its base text.</summary>
 		Warichu,
-		/// <summary>The text content of a warichu side note.</summary>
+		/// <summary>The smaller text of a warichu annotation placed inline after its base text.</summary>
 		WarichuText,
 		/// <summary>Punctuation that encloses warichu text.</summary>
 		WarichuPunctuation,

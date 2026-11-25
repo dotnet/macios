@@ -720,19 +720,32 @@ namespace CoreGraphics {
 		Float32Bit = 4,
 	}
 
+	/// <summary>Specifies the color and alpha component layout of bitmap data.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	public enum CGBitmapLayout : uint {
+		/// <summary>The bitmap contains only an alpha component.</summary>
 		AlphaOnly,
+		/// <summary>The bitmap contains one grayscale component.</summary>
 		Gray,
+		/// <summary>The bitmap contains grayscale and alpha components, in that order.</summary>
 		GrayAlpha,
+		/// <summary>The bitmap contains red, green, blue, and alpha components, in that order.</summary>
 		Rgba,
+		/// <summary>The bitmap contains alpha, red, green, and blue components, in that order.</summary>
 		Argb,
+		/// <summary>The bitmap contains red, green, blue, and an unused component, in that order.</summary>
 		Rgbx,
+		/// <summary>The bitmap contains an unused component followed by red, green, and blue components.</summary>
 		Xrgb,
+		/// <summary>The bitmap contains blue, green, red, and alpha components, in that order.</summary>
 		Bgra,
+		/// <summary>The bitmap contains blue, green, red, and an unused component, in that order.</summary>
 		Bgrx,
+		/// <summary>The bitmap contains alpha, blue, green, and red components, in that order.</summary>
 		Abgr,
+		/// <summary>The bitmap contains an unused component followed by blue, green, and red components.</summary>
 		Xbgr,
+		/// <summary>The bitmap contains cyan, magenta, yellow, and black components.</summary>
 		Cmyk,
 	}
 

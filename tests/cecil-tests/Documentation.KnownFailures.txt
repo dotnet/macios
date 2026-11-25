@@ -1747,18 +1747,6 @@ F:CoreGraphics.CGBitmapInfo.AlphaInfoMask
 F:CoreGraphics.CGBitmapInfo.ByteOrderInfoMask
 F:CoreGraphics.CGBitmapInfo.ComponentInfoMask
 F:CoreGraphics.CGBitmapInfo.PixelFormatInfoMask
-F:CoreGraphics.CGBitmapLayout.Abgr
-F:CoreGraphics.CGBitmapLayout.AlphaOnly
-F:CoreGraphics.CGBitmapLayout.Argb
-F:CoreGraphics.CGBitmapLayout.Bgra
-F:CoreGraphics.CGBitmapLayout.Bgrx
-F:CoreGraphics.CGBitmapLayout.Cmyk
-F:CoreGraphics.CGBitmapLayout.Gray
-F:CoreGraphics.CGBitmapLayout.GrayAlpha
-F:CoreGraphics.CGBitmapLayout.Rgba
-F:CoreGraphics.CGBitmapLayout.Rgbx
-F:CoreGraphics.CGBitmapLayout.Xbgr
-F:CoreGraphics.CGBitmapLayout.Xrgb
 F:CoreGraphics.CGColorConversionInfoTriple.Intent
 F:CoreGraphics.CGColorConversionInfoTriple.Space
 F:CoreGraphics.CGColorConversionInfoTriple.Transform
@@ -55321,7 +55309,6 @@ T:CoreGraphics.CGBitmapContext.OnFreeCallback
 T:CoreGraphics.CGBitmapContext.OnResolveCallback
 T:CoreGraphics.CGBitmapInfo
 T:CoreGraphics.CGBitmapInfoExtensions
-T:CoreGraphics.CGBitmapLayout
 T:CoreGraphics.CGColorConversionOptions
 T:CoreGraphics.CGDisplayStreamKeys
 T:CoreGraphics.CGDisplayStreamYCbCrMatrixOptionKeys

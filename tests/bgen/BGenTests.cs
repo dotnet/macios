@@ -115,6 +115,75 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void InstanceReceiverIsKeptAlive ()
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				Defines = BGenTool.GetDefaultDefines (Profile.iOS),
+			};
+			bgen.CreateTemporaryBinding (@"
+using Foundation;
+using ObjCRuntime;
+
+namespace Test {
+	[Protocol]
+	interface ProtocolWithConstructor {
+		[Export (""initWithValue:"")]
+		NativeHandle Constructor (int value);
+	}
+
+	[Sealed]
+	[BaseType (typeof (NSObject))]
+	interface SealedReceiver {
+		[Export (""perform"")]
+		void Perform ();
+	}
+
+	[BaseType (typeof (NSObject))]
+	interface Receiver {
+		[Export (""perform"")]
+		void Perform ();
+
+		[Export (""value"")]
+		int Value { get; set; }
+
+		[Export (""makeCopy"")]
+		[return: Release]
+		NSObject MakeCopy ();
+
+		[Static, Export (""shared"")]
+		Receiver Shared { get; }
+	}
+}");
+			bgen.AssertExecute ("build");
+			bgen.AssertNoWarnings ();
+
+			foreach (var (typeName, name, sendCount) in new [] {
+				("Receiver", "Perform", 2),
+				("Receiver", "get_Value", 2),
+				("Receiver", "set_Value", 2),
+				("Receiver", "MakeCopy", 2),
+				("SealedReceiver", "Perform", 1),
+			}) {
+				var type = bgen.ApiAssembly.MainModule.GetType ("Test", typeName);
+				var instructions = type.Methods.Single (v => v.Name == name).Body.Instructions;
+				var sends = instructions.Where (v => v.Operand is MethodReference method && method.DeclaringType.Name == "Messaging" && method.Name.Contains ("objc_msgSend")).ToArray ();
+				Assert.That (sends.Length, Is.EqualTo (sendCount), $"{typeName}.{name}: message sends");
+				foreach (var send in sends) {
+					var keepAlive = instructions.SkipWhile (v => v != send).Skip (1)
+						.TakeWhile (v => v.OpCode.FlowControl != FlowControl.Branch && v.OpCode.FlowControl != FlowControl.Cond_Branch && v.OpCode.FlowControl != FlowControl.Return)
+						.FirstOrDefault (v => v.Operand is MethodReference method && method.DeclaringType.FullName == "System.GC" && method.Name == "KeepAlive");
+					if (keepAlive is null) {
+						Assert.Fail ($"{typeName}.{name}: {send.Operand} does not keep the receiver alive");
+						continue;
+					}
+					Assert.That (keepAlive.Previous.OpCode, Is.EqualTo (OpCodes.Ldarg_0), $"{typeName}.{name}: receiver");
+				}
+			}
+		}
+
+		[Test]
 		public void Bug27986 ()
 		{
 			var bgen = BuildFile (Profile.iOS, false, "bug27986.cs");

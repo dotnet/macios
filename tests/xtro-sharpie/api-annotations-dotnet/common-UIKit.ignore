@@ -17,9 +17,6 @@
 ## https://bugzilla.xamarin.com/show_bug.cgi?id=43788
 !missing-selector! +UIView::layerClass not bound
 
-## internal (xamarin) type
-!unknown-type! UIControlEventProxy bound
-
 ## typedef is used (no value) in UITextInput.h: typedef NSInteger UITextDirection
 !unknown-native-enum! UITextDirection bound
 

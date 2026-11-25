@@ -163,9 +163,6 @@
 !missing-selector! NSXMLParser::systemID not bound
 !missing-protocol! NSXMLParserDelegate not bound
 
-## Xamarin (not Apple) type
-!unknown-type! InternalNSNotificationHandler bound
-
 # Apple internals (we do not expose them)
 !missing-type! NSConstantString not bound
 !missing-type! NSSimpleCString not bound

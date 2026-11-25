@@ -16,7 +16,7 @@ namespace Extrospection {
 				return;
 
 			string? rname = null;
-			bool wrapper = true;
+			bool wrapper = false;
 			bool skip = false;
 
 			foreach (var ca in type.CustomAttributes) {
@@ -31,7 +31,7 @@ namespace Extrospection {
 					if (ca.HasProperties) {
 						foreach (var arg in ca.Properties) {
 							switch (arg.Name) {
-							case "Wrapper":
+							case "IsWrapper":
 								wrapper = (bool) arg.Argument.Value;
 								break;
 							case "SkipRegistration":

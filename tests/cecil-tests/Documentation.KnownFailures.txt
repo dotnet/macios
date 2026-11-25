@@ -1743,10 +1743,6 @@ F:CoreGraphics.CGAffineTransform.C
 F:CoreGraphics.CGAffineTransform.D
 F:CoreGraphics.CGAffineTransform.Tx
 F:CoreGraphics.CGAffineTransform.Ty
-F:CoreGraphics.CGBitmapInfo.AlphaInfoMask
-F:CoreGraphics.CGBitmapInfo.ByteOrderInfoMask
-F:CoreGraphics.CGBitmapInfo.ComponentInfoMask
-F:CoreGraphics.CGBitmapInfo.PixelFormatInfoMask
 F:CoreGraphics.CGColorConversionInfoTriple.Intent
 F:CoreGraphics.CGColorConversionInfoTriple.Space
 F:CoreGraphics.CGColorConversionInfoTriple.Transform
@@ -55305,7 +55301,6 @@ T:CoreGraphics.CGBitmapContext.OnAllocateCallback
 T:CoreGraphics.CGBitmapContext.OnErrorCallback
 T:CoreGraphics.CGBitmapContext.OnFreeCallback
 T:CoreGraphics.CGBitmapContext.OnResolveCallback
-T:CoreGraphics.CGBitmapInfo
 T:CoreGraphics.CGBitmapInfoExtensions
 T:CoreGraphics.CGColorConversionOptions
 T:CoreGraphics.CGDisplayStreamKeys

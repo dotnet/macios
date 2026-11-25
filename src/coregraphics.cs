@@ -769,11 +769,16 @@ namespace CoreGraphics {
 		Float = (1u << 8),
 	}
 
+	/// <summary>Flags describing the alpha, component, byte-order, and pixel-format information for a bitmap.</summary>
 	[Flags]
 	public enum CGBitmapInfo : uint {
+		/// <summary>A mask for extracting a bitmap's alpha information.</summary>
 		AlphaInfoMask = 0x1F,
+		/// <summary>A mask for extracting a bitmap's component information.</summary>
 		ComponentInfoMask = 0xF00,
+		/// <summary>A mask for extracting a bitmap's byte-order information.</summary>
 		ByteOrderInfoMask = 0x7000,
+		/// <summary>A mask for extracting a bitmap's pixel-format information.</summary>
 		PixelFormatInfoMask = 0xF0000,
 	}
 

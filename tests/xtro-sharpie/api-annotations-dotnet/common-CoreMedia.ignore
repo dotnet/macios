@@ -269,7 +269,9 @@
 ## block based version of CMSampleBufferCreateForImageBuffer (which use callbacks and is already bound)
 !missing-pinvoke! CMSampleBufferCreateForImageBufferWithMakeDataReadyHandler is not bound
 
-# they are added because we need to be back compatible yet we do have code to choose the correct one
+# CMSync.h exposes these legacy Master names as conditional static-inline wrappers when
+# CMTIMEBASE_USE_SOURCE_TERMINOLOGY is enabled. Keep the compatibility imports for obsolete
+# managed APIs; the Source replacements are already bound. Header absence is not export absence.
 !unknown-pinvoke! CMTimebaseCopyMaster bound
 !unknown-pinvoke! CMTimebaseCopyMasterClock bound
 !unknown-pinvoke! CMTimebaseCopyMasterTimebase bound

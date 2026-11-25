@@ -1,4 +1,5 @@
-## Not declared in header for macOS unlike iOS but in Security.framework anyway (via nm)
+## Legacy SecKey declarations are hidden by SEC_OS_IPHONE in macOS headers, but compatibility
+## exports remain in Security.framework. Preserve the obsolete managed APIs.
 ## These P/Invokes have been removed in XAMCORE_5_0
 !unknown-pinvoke! SecKeyDecrypt bound
 !unknown-pinvoke! SecKeyEncrypt bound

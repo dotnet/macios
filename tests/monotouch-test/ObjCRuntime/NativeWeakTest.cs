@@ -83,7 +83,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void NativeOwnershipKeepsCustomPeerAlive ()
 		{
-			var weakPeer = CheckNativeOwnership ();
+			var weakPeer = CheckNativeOwnership (() => new CustomPeer ());
 
 			CollectAndDrain ();
 			Assert.That (weakPeer.TryGetTarget (out _), Is.False, "peer collected after native release");
@@ -104,16 +104,36 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[MethodImpl (MethodImplOptions.NoInlining)]
 		static WeakReference<CustomPeer> CreatePeerWithReplacedHandle (CustomPeer owner)
 		{
-			var peer = new CustomPeer (owner);
+			var peer = new CustomPeer (objc_retain ((IntPtr) owner.Handle));
 			Assert.That (peer.Handle, Is.EqualTo (owner.Handle), "replacement handle");
 			return new WeakReference<CustomPeer> (peer, trackResurrection: true);
 		}
 
+		[Test]
+		public void NativeOwnershipKeepsPeerWithNewInitHandleAlive ()
+		{
+			var weakPeer = CheckNativeOwnership (CreatePeerWithNewHandle);
+
+			CollectAndDrain ();
+			Assert.That (weakPeer.TryGetTarget (out _), Is.False, "peer collected after native release");
+		}
+
+		// The replacement handle is a new instance, so its GCHandle ivar is still empty, and
+		// the peer must claim it (and its implicit toggle ref) after the handle changes.
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static CustomPeer CreatePeerWithNewHandle ()
+		{
+			var replacement = Messaging.IntPtr_objc_msgSend (Class.GetHandle (typeof (CustomPeer)), Selector.GetHandle ("alloc"));
+			var peer = new CustomPeer (replacement);
+			Assert.That ((IntPtr) peer.Handle, Is.EqualTo (replacement), "replacement handle");
+			return peer;
+		}
+
 		// Keep any managed locals from the identity check out of the collection after release.
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static WeakReference<CustomPeer> CheckNativeOwnership ()
+		static WeakReference<CustomPeer> CheckNativeOwnership (Func<CustomPeer> createPeer)
 		{
-			var (handle, retained, weakPeer) = CreateRetainedPeer ();
+			var (handle, retained, weakPeer) = CreateRetainedPeer (createPeer);
 			try {
 				Assert.That (retained, Is.EqualTo (handle), "native retain");
 				CollectAndDrain ();
@@ -130,9 +150,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		static (IntPtr Handle, IntPtr Retained, WeakReference<CustomPeer> Peer) CreateRetainedPeer ()
+		static (IntPtr Handle, IntPtr Retained, WeakReference<CustomPeer> Peer) CreateRetainedPeer (Func<CustomPeer> createPeer)
 		{
-			var peer = new CustomPeer { State = 42 };
+			var peer = createPeer ();
+			peer.State = 42;
 			var handle = (IntPtr) peer.Handle;
 			var retained = PromoteWeakReference (handle);
 			return (handle, retained, new WeakReference<CustomPeer> (peer, trackResurrection: true));
@@ -172,10 +193,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			{
 			}
 
-			public CustomPeer (CustomPeer owner) : base (NSObjectFlag.Empty)
+			// Simulate an initializer that returns a different object than the one it was sent to.
+			// The caller passes ownership of 'replacement'.
+			public CustomPeer (IntPtr replacement) : base (NSObjectFlag.Empty)
 			{
-				// Simulate an initializer that replaces its allocation with an existing object.
-				var replacement = objc_retain ((IntPtr) owner.Handle);
 				objc_release ((IntPtr) Handle);
 				InitializeHandle (replacement, "initForTest", throwOnInitFailure: false);
 			}

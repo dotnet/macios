@@ -202,7 +202,7 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
-	/// <summary>Standard tag types used to describe the logical structure of a PDF document.</summary>
+	/// <summary>Tag types for describing a PDF document's structure and content.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
 		/// <summary>The root of the document's logical structure.</summary>

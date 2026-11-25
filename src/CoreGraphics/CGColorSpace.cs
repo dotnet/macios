@@ -41,7 +41,7 @@ namespace CoreGraphics {
 		Default,
 		/// <summary>Clamps colors outside of the gamut of the device into the space supported by the device.</summary>
 		AbsoluteColorimetric,
-		/// <summary>Shifts all colors to adjust for the requirements of the context.</summary>
+		/// <summary>Shifts all colors to account for the difference between the context and output-device white points, then maps out-of-gamut colors to the nearest output color, potentially clipping distinct colors to the same value.</summary>
 		RelativeColorimetric,
 		/// <summary>Preserves the color relationship by compressing the gamut of the graphics context to fit the output device.</summary>
 		Perceptual,

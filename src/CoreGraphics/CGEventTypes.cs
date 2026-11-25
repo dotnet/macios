@@ -455,15 +455,15 @@ namespace CoreGraphics {
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventSuppressionState;
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Identifies an event-suppression state that may follow the posting of a Quartz event.</summary>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public enum CGEventSuppressionState : int {
-		/// <summary>To be added.</summary>
+		/// <summary>The interval after posting a Quartz event when local hardware events may be suppressed.</summary>
 		SuppressionInterval,
-		/// <summary>To be added.</summary>
+		/// <summary>A synthetic mouse drag, during which local hardware events may be suppressed.</summary>
 		RemoteMouseDrag,
+		/// <summary>The number of event-suppression states.</summary>
 		NumberOfEventSuppressionStates,
 	}
 

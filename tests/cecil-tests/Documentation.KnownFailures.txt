@@ -1746,7 +1746,6 @@ F:CoreGraphics.CGAffineTransform.Ty
 F:CoreGraphics.CGColorConversionInfoTriple.Intent
 F:CoreGraphics.CGColorConversionInfoTriple.Space
 F:CoreGraphics.CGColorConversionInfoTriple.Transform
-F:CoreGraphics.CGEventSuppressionState.NumberOfEventSuppressionStates
 F:CoreGraphics.NMatrix2.M11
 F:CoreGraphics.NMatrix2.M12
 F:CoreGraphics.NMatrix2.M21

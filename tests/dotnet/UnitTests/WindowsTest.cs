@@ -55,6 +55,30 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 		}
 
+		// https://github.com/dotnet/maui/issues/17438
+		[Category ("Windows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void AppBundleOnDifferentDrive (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project = "MySimpleApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _);
+			Clean (project_path);
+
+			// Put the output on a different drive than the project: there's no relative path between two drives, so _AppBundlePath ends up as an absolute path.
+			// The drive doesn't have to exist, because _ComputeVariables only computes paths, it doesn't write anything to the output directory.
+			var projectDrive = char.ToUpperInvariant (Path.GetPathRoot (project_path)! [0]);
+			var otherDrive = projectDrive == 'Z' ? 'Y' : 'Z';
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BaseOutputPath"] = $"{otherDrive}:\\{nameof (AppBundleOnDifferentDrive)}\\bin\\";
+
+			var relativeAppBundlePath = DotNet.GetProperty (project_path, "_RelativeAppBundlePath", target: "_ComputeVariables", properties: properties);
+			Assert.That (relativeAppBundlePath, Is.EqualTo ($"..\\{project}.app\\"), "_RelativeAppBundlePath");
+		}
+
 		class FileData {
 			public required string FullPath;
 			public required string RelativePath;

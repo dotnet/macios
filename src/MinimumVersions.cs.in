@@ -1,23 +1,22 @@
 using System.Runtime.Versioning;
 using ObjCRuntime;
 
+// undecorated API availability falls back to the minimum version of the current platform
 #if __IOS__ && !__MACCATALYST__
 [assembly: TargetPlatform ("ios")]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.iOS)]
 #elif __TVOS__
 [assembly: TargetPlatform ("tvos")]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.tvOS)]
 #elif __MACCATALYST__
 [assembly: TargetPlatform ("maccatalyst")]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.MacCatalyst)]
 #elif MONOMAC
 [assembly: TargetPlatform ("macos")]
+[assembly: SupportedOSPlatform (Constants.MinimumVersions.macOS)]
 #else
 	#error Unsupported Platform
 #endif
-
-// undecorated API availability falls back to those minimum versions, per platform
-[assembly: SupportedOSPlatform (Constants.MinimumVersions.iOS)]
-[assembly: SupportedOSPlatform (Constants.MinimumVersions.tvOS)]
-[assembly: SupportedOSPlatform (Constants.MinimumVersions.macOS)]
-[assembly: SupportedOSPlatform (Constants.MinimumVersions.MacCatalyst)]
 
 namespace ObjCRuntime {
 	public static partial class Constants {

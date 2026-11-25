@@ -21,15 +21,15 @@ namespace CoreGraphics {
 	enum CGToneMapping : uint {
 		/// <summary>Uses the default tone-mapping method.</summary>
 		Default = 0,
-		/// <summary>Scales luminance based on the image's content.</summary>
+		/// <summary>Applies tone mapping to HDR content associated with the <see cref="CGImage" /> gain map.</summary>
 		ImageSpecificLumaScaling,
-		/// <summary>Maps luminance relative to the reference white.</summary>
+		/// <summary>Uses a tone curve that preserves SDR contrast and rolls off HDR highlights.</summary>
 		ReferenceWhiteBased,
-		/// <summary>Uses a tone-mapping method recommended by the ITU-R.</summary>
+		/// <summary>Uses ITU-R tone mapping for HDR-to-SDR and SDR-to-HDR conversions, assuming a 1,000-nit mastering peak.</summary>
 		IturRecommended,
-		/// <summary>Uses gamma-based tone mapping for extended-range content.</summary>
+		/// <summary>Uses OpenEXR tone-mapping gamma to convert extended linear sRGB images to SDR.</summary>
 		ExrGamma,
-		/// <summary>Does not apply tone mapping.</summary>
+		/// <summary>Does not apply tone mapping and clips color-converted values in extended color spaces to the SDR range [0.0, 1.0].</summary>
 		None,
 		/// <summary>Uses a gain curve that adapts to the available display headroom.</summary>
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]

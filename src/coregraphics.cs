@@ -683,14 +683,21 @@ namespace CoreGraphics {
 		float DefaultHdrImageContentHeadroom { get; }
 	}
 
+	/// <summary>Flags that identify the color model of a color space.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Flags]
 	public enum CGColorModel : uint {
+		/// <summary>Indicates that the color space has no colorants.</summary>
 		NoColorant = 0u << 0,
+		/// <summary>Identifies a grayscale color model.</summary>
 		Gray = 1u << 0,
+		/// <summary>Identifies an RGB color model.</summary>
 		Rgb = 1u << 1,
+		/// <summary>Identifies a CMYK color model.</summary>
 		Cmyk = 1u << 2,
+		/// <summary>Identifies a Lab color model.</summary>
 		Lab = 1u << 3,
+		/// <summary>Identifies a DeviceN color model.</summary>
 		DeviceN = 1u << 4,
 	}
 

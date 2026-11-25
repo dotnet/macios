@@ -6,6 +6,7 @@ SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CoreMedia.framework/Co
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/CryptoKit.framework/CryptoKit
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Foundation.framework/Foundation
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/GSS.framework/GSS
+SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/MapKit.framework/MapKit
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Network.framework/Network
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/Security.framework/Security
 SizeTestApp [ARM64]: LoadDylib /System/Library/Frameworks/UIKit.framework/UIKit

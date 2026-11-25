@@ -360,6 +360,7 @@ namespace VideoToolbox {
 			}
 		}
 
+		[UserDelegateType (typeof (VTDecompressionMultiImageCapableOutputHandler))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
@@ -419,6 +420,7 @@ namespace VideoToolbox {
 			return VTDecompressionSessionSetMultiImageCallback (GetCheckedHandle (), &multiImageCapableOutputHandlerBlock, outputMultiImageReference);
 		}
 
+		[UserDelegateType (typeof (VTDecompressionOutputMultiImageCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
@@ -580,6 +582,7 @@ namespace VideoToolbox {
 			CMTime presentationTimeStamp,
 			CMTime presentationDuration);
 
+		[UserDelegateType (typeof (VTDecompressionOutputHandler))]
 		[UnmanagedCallersOnly]
 		static unsafe void VTDecompressionOutputHandlerTrampoline (BlockLiteral* block, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr imageBuffer, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{

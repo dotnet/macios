@@ -281,7 +281,7 @@ namespace CoreGraphics {
 		Code,
 		/// <summary>A link and its associated link annotation.</summary>
 		Link,
-		/// <summary>An annotation associated with document content.</summary>
+		/// <summary>An association between document content and a PDF annotation, excluding link and widget annotations.</summary>
 		Annotation,
 		/// <summary>A side note in smaller text placed next to the text it annotates.</summary>
 		Ruby = 600,
@@ -291,7 +291,7 @@ namespace CoreGraphics {
 		RubyAnnotationText,
 		/// <summary>Punctuation that encloses ruby annotation text.</summary>
 		RubyPunctuation,
-		/// <summary>A side note displayed in two smaller lines of text.</summary>
+		/// <summary>A smaller-text annotation formatted on two lines and placed inline after its base text.</summary>
 		Warichu,
 		/// <summary>The text content of a warichu side note.</summary>
 		WarichuText,

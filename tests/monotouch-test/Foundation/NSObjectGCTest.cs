@@ -25,7 +25,7 @@ namespace Xamarin.Mac.Tests {
 
 			// The object should now be resurrected through `NSObject_Disposer.Add(this)`
 			// and so `GCHandle` will return its reference:
-			var o = ObjCRuntime.Runtime.GetNSObject<NSString> (nativeHandle);
+			var o = ObjCRuntime.Runtime.GetNSObject<NSObject> (nativeHandle);
 
 			Assert.That ((IntPtr) o.Handle, Is.Not.EqualTo (IntPtr.Zero));
 
@@ -39,7 +39,7 @@ namespace Xamarin.Mac.Tests {
 		[System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
 		private static IntPtr CreateNativeObject ()
 		{
-			var foo = new NSString ("foo");
+			var foo = new NSObject ();
 			foo.DangerousRetain ();
 			return foo.Handle;
 		}

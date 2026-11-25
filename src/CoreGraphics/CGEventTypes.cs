@@ -441,17 +441,16 @@ namespace CoreGraphics {
 	}
 
 	// CGRemoteOperation.h:typedef uint32_t CGEventFilterMask;
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Flags for event classes that can pass through during event suppression.</summary>
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[Flags]
 	public enum CGEventFilterMask : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Allows local mouse events to pass through event suppression.</summary>
 		PermitLocalMouseEvents = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows local keyboard events to pass through event suppression.</summary>
 		PermitLocalKeyboardEvents = 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows system-defined events to pass through event suppression.</summary>
 		PermitSystemDefinedEvents = 4,
 	}
 

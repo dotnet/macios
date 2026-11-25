@@ -683,11 +683,11 @@ namespace CoreGraphics {
 		float DefaultHdrImageContentHeadroom { get; }
 	}
 
-	/// <summary>Flags that identify the color model of a color space.</summary>
+	/// <summary>Flags indicating the color models of the content drawn into an adaptive bitmap context.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Flags]
 	public enum CGColorModel : uint {
-		/// <summary>Indicates that the color space has no colorants.</summary>
+		/// <summary>No color-model bits are set.</summary>
 		NoColorant = 0u << 0,
 		/// <summary>Identifies a grayscale color model.</summary>
 		Gray = 1u << 0,

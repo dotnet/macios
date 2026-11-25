@@ -789,7 +789,7 @@ namespace CoreGraphics {
 		[Field ("kCGDynamicRangeHigh")]
 		High,
 
-		/// <summary>Requests a limited dynamic range for rendering content.</summary>
+		/// <summary>Requests constrained HDR for mixed-media and multiwindow rendering.</summary>
 		[Field ("kCGDynamicRangeConstrained")]
 		Constrained,
 

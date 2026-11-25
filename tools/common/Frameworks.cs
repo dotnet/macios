@@ -1021,6 +1021,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		const string dlfcnSuffix = "_Native";
 		var survivingDlfcnSymbols = new HashSet<string> ();
 		var requiredClasses = new HashSet<string> ();
+		var requiredFunctions = new HashSet<string> ();
 		foreach (var symbol in symbols) {
 			if (symbol.StartsWith (dlfcnPrefix, StringComparison.Ordinal) && symbol.EndsWith (dlfcnSuffix, StringComparison.Ordinal))
 				survivingDlfcnSymbols.Add (symbol.Substring (dlfcnPrefix.Length, symbol.Length - dlfcnPrefix.Length - dlfcnSuffix.Length));
@@ -1029,6 +1030,9 @@ public class Frameworks : Dictionary<string, Framework> {
 			if (symbol.Ignore || symbol.Mode == SymbolMode.Ignore)
 				continue;
 			switch (symbol.Type) {
+			case SymbolType.Function:
+				requiredFunctions.Add (symbol.Name);
+				break;
 			case SymbolType.ObjectiveCClass:
 				if (symbol.ObjectiveCName is not null)
 					requiredClasses.Add (symbol.ObjectiveCName);
@@ -1066,7 +1070,9 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					var moduleName = pinvoke.Module.Name;
 					var entryPoint = pinvoke.EntryPoint ?? method.Name;
-					if (!IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols, pinvokeSymbols))
+					// __Internal roots refer to the executable, not to an external framework.
+					var isRequiredFunction = moduleName != "__Internal" && requiredFunctions.Contains (entryPoint);
+					if (!isRequiredFunction && !IsNativeAOTPInvokeSurviving (moduleName, entryPoint, symbols, pinvokeSymbols))
 						continue;
 
 					const string categoryFrameworkPrefix = "xamarin_CategoryFramework_";

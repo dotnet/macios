@@ -37,46 +37,66 @@ namespace ReplayKit {
 		Entitlements = -5810,
 		/// <summary>Indicates that an active phone call prevented recording.</summary>
 		ActivePhoneCall = -5811,
-		/// <summary>To be added.</summary>
+		/// <summary>The recording failed to save.</summary>
 		FailedToSave = -5812,
-		/// <summary>To be added.</summary>
+		/// <summary>Recording isn't available while CarPlay is connected.</summary>
 		CarPlay = -5813,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection to the app being recorded became invalid.</summary>
 		FailedApplicationConnectionInvalid = -5814,
-		/// <summary>To be added.</summary>
+		/// <summary>The connection to the app being recorded was interrupted.</summary>
 		FailedApplicationConnectionInterrupted = -5815,
-		/// <summary>To be added.</summary>
+		/// <summary>No matching application context was found for the recording.</summary>
 		FailedNoMatchingApplicationContext = -5816,
-		/// <summary>To be added.</summary>
+		/// <summary>The media services failed during the recording.</summary>
 		FailedMediaServicesFailure = -5817,
-		/// <summary>To be added.</summary>
+		/// <summary>The system failed to mix the video.</summary>
 		VideoMixingFailure = -5818,
+		/// <summary>The broadcast couldn't be set up.</summary>
 		BroadcastSetupFailed = -5819,
+		/// <summary>The system couldn't obtain the URL for the recording.</summary>
 		FailedToObtainUrl = -5820,
+		/// <summary>The recording contained incorrect time stamps.</summary>
 		FailedIncorrectTimeStamps = -5821,
+		/// <summary>The system failed to process the first sample of the recording.</summary>
 		FailedToProcessFirstSample = -5822,
+		/// <summary>The asset writer failed to save the recording.</summary>
 		FailedAssetWriterFailedToSave = -5823,
+		/// <summary>There was no asset writer for the recording.</summary>
 		FailedNoAssetWriter = -5824,
+		/// <summary>The asset writer was in the wrong state.</summary>
 		FailedAssetWriterInWrongState = -5825,
+		/// <summary>The asset writer failed to export the recording.</summary>
 		FailedAssetWriterExportFailed = -5826,
+		/// <summary>The system failed to remove the recording file.</summary>
 		FailedToRemoveFile = -5827,
+		/// <summary>The export by the asset writer was canceled.</summary>
 		FailedAssetWriterExportCanceled = -5828,
+		/// <summary>The app tried to stop a recording that wasn't in progress.</summary>
 		AttemptToStopNonRecording = -5829,
+		/// <summary>The app tried to start a recording while one was already in progress.</summary>
 		AttemptToStartInRecordingState = -5830,
+		/// <summary>The system failed to capture a photo.</summary>
 		PhotoFailure = -5831,
+		/// <summary>The recording session is invalid.</summary>
 		RecordingInvalidSession = -5832,
+		/// <summary>The system failed to start the capture stack.</summary>
 		FailedToStartCaptureStack = -5833,
+		/// <summary>A parameter passed to the operation was invalid.</summary>
 		InvalidParameter = -5834,
 		FilePermissions = -5835,
+		/// <summary>A clip export to a URL is already in progress.</summary>
 		ExportClipToUrlInProgress = -5836,
 	}
 
+	/// <summary>Enumerates the modes of a preview view controller.</summary>
 	[NoiOS]
 	[NoMac]
 	[NoMacCatalyst]
 	[Native]
 	public enum RPPreviewViewControllerMode : long {
+		/// <summary>The view controller shows a preview of the recording.</summary>
 		Preview,
+		/// <summary>The view controller offers to share the recording.</summary>
 		Share,
 	}
 

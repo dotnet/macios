@@ -5555,8 +5555,6 @@ F:QuickLookThumbnailing.QLThumbnailGenerationRequestRepresentationTypes.Thumbnai
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Icon
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.LowQualityThumbnail
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Thumbnail
-F:ReplayKit.RPPreviewViewControllerMode.Preview
-F:ReplayKit.RPPreviewViewControllerMode.Share
 F:SafariServices.SFSafariSettingsError.Failed
 F:SafariServices.SFSafariSettingsError.NotAllowed
 F:SafetyKit.SAAuthorizationStatus.Authorized
@@ -58307,7 +58305,6 @@ T:QuickLookUI.QLPreviewView
 T:QuickLookUI.QLPreviewViewStyle
 T:ReplayKit.NSExtensionContext_RPBroadcastExtension
 T:ReplayKit.RPBroadcastActivityController
-T:ReplayKit.RPPreviewViewControllerMode
 T:ReplayKit.RPSampleBufferType
 T:ReplayKit.RPSystemBroadcastPickerView
 T:SafariServices.SFAddToHomeScreenActivityItemGetHomeScreenWebAppInfoCallback

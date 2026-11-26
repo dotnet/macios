@@ -1649,7 +1649,6 @@ F:ClassKit.CLSProgressReportingCapabilityKind.Duration
 F:ClassKit.CLSProgressReportingCapabilityKind.Percent
 F:ClassKit.CLSProgressReportingCapabilityKind.Quantity
 F:ClassKit.CLSProgressReportingCapabilityKind.Score
-F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
 F:CloudKit.CKRecordZoneEncryptionScope.Record
 F:CloudKit.CKRecordZoneEncryptionScope.Zone
 F:Contacts.CNAuthorizationStatus.Limited

@@ -5555,8 +5555,6 @@ F:QuickLookThumbnailing.QLThumbnailGenerationRequestRepresentationTypes.Thumbnai
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Icon
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.LowQualityThumbnail
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Thumbnail
-F:SafariServices.SFSafariSettingsError.Failed
-F:SafariServices.SFSafariSettingsError.NotAllowed
 F:SafetyKit.SAAuthorizationStatus.Authorized
 F:SafetyKit.SAAuthorizationStatus.Denied
 F:SafetyKit.SAAuthorizationStatus.NotDetermined
@@ -58325,7 +58323,6 @@ T:SafariServices.SFSafariPage
 T:SafariServices.SFSafariPageProperties
 T:SafariServices.SFSafariSettings
 T:SafariServices.SFSafariSettingsCheckAutoFillUserNamesAndPasswordsEnabledCompletionHandler
-T:SafariServices.SFSafariSettingsError
 T:SafariServices.SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler
 T:SafariServices.SFSafariSettingsOpenExtensionsSettingsCompletionHandler
 T:SafariServices.SFSafariTab

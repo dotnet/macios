@@ -5920,8 +5920,6 @@ F:SharedWithYou.SWHighlightPersistenceEventTrigger.Created
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Deleted
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Moved
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Renamed
-F:SharedWithYouCore.SWIdentifierType.Collaboration
-F:SharedWithYouCore.SWIdentifierType.Local
 F:ShazamKit.SHErrorCode.AudioDiscontinuity
 F:ShazamKit.SHErrorCode.CustomCatalogInvalid
 F:ShazamKit.SHErrorCode.CustomCatalogInvalidURL
@@ -58541,7 +58539,6 @@ T:SharedWithYouCore.SWCollaborationOption
 T:SharedWithYouCore.SWCollaborationOptionsGroup
 T:SharedWithYouCore.SWCollaborationOptionsPickerGroup
 T:SharedWithYouCore.SWCollaborationShareOptions
-T:SharedWithYouCore.SWIdentifierType
 T:SharedWithYouCore.SWPerson
 T:SharedWithYouCore.SWPersonIdentity
 T:SharedWithYouCore.SWPersonIdentityProof

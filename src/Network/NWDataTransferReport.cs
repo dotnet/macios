@@ -131,6 +131,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_data_transfer_report_collect (OS_nw_data_transfer_report report, IntPtr queue, BlockLiteral* collect_block);
 
+		[UserDelegateType (typeof (Action<NWDataTransferReport>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineCollectHandler (IntPtr block, IntPtr report)
 		{

@@ -12,14 +12,41 @@ public class RegistrarTests : BaseClass {
 	public void TrimmedModelProtocolConformance (ApplePlatform platform)
 	{
 		var code = @"
+		using System;
 		using Foundation;
+		using ObjCRuntime;
 		using UIKit;
 
 		[Protocol (Name = ""MyProtocol"")]
 		public interface IMyProtocol {
 		}
 
-		public class MyClass : UIWindowSceneDelegate, IMyProtocol {
+		[Protocol (Name = ""MyTrimmedProtocol"", WrapperType = typeof (MyTrimmedProtocolWrapper))]
+		public interface IMyTrimmedProtocol : INativeObject, IDisposable {
+		}
+
+		internal sealed class MyTrimmedProtocolWrapper : BaseWrapper, IMyTrimmedProtocol {
+			public MyTrimmedProtocolWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
+		}
+
+		[Protocol (Name = ""MyRetainedProtocol"", WrapperType = typeof (MyRetainedProtocolWrapper))]
+		public interface IMyRetainedProtocol : INativeObject, IDisposable {
+		}
+
+		internal sealed class MyRetainedProtocolWrapper : BaseWrapper, IMyRetainedProtocol {
+			public MyRetainedProtocolWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
+		}
+
+		[ObjectiveCFramework (""TestFramework"")]
+		[Protocol (Name = ""MyExternalProtocol"", WrapperType = typeof (MyExternalProtocolWrapper))]
+		public interface IMyExternalProtocol : INativeObject, IDisposable {
+		}
+
+		internal sealed class MyExternalProtocolWrapper : BaseWrapper, IMyExternalProtocol {
+			public MyExternalProtocolWrapper (IntPtr handle, bool owns) : base (handle, owns) { }
+		}
+
+		public class MyClass : UIWindowSceneDelegate, IMyProtocol, IMyTrimmedProtocol, IMyRetainedProtocol, IMyExternalProtocol {
 		}
 		";
 		var tempDir = Xamarin.Cache.CreateTemporaryDirectory ();
@@ -54,13 +81,20 @@ public class RegistrarTests : BaseClass {
 		var userAssembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
 		userAssembly.MainModule.GetType ("MyClass").Interfaces.Clear ();
 		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyProtocol"));
+		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyTrimmedProtocol"));
+		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyExternalProtocol"));
 		new ManagedRegistrarStep ().Process (context);
 		new RegistrarStep ().Process (context);
 
 		Assert.That (logger.Errors, Is.Empty, "Postprocessing errors");
-		var declaration = File.ReadLines (Path.Combine (tempDir, "registrar.h")).Single (v => v.StartsWith ("@interface MyClass :"));
+		var header = File.ReadAllLines (Path.Combine (tempDir, "registrar.h"));
+		var declaration = header.Single (v => v.StartsWith ("@interface MyClass :"));
 		Assert.That (declaration, Does.Contain ("UIWindowSceneDelegate"), "Native protocol conformance");
 		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
+		Assert.That (declaration, Does.Not.Contain ("MyTrimmedProtocol"), "Trimmed protocol with wrapper");
+		Assert.That (declaration, Does.Contain ("MyRetainedProtocol"), "Retained protocol with trimmed conformance");
+		Assert.That (declaration, Does.Contain ("MyExternalProtocol"), "External framework protocol");
+		Assert.That (header, Has.Some.StartsWith ("@protocol MyRetainedProtocol"), "Retained protocol declaration");
 	}
 
 	[TestCase (RegistrarMode.Static)]

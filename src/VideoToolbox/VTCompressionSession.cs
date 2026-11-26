@@ -483,6 +483,7 @@ namespace VideoToolbox {
 			}
 		}
 
+		[UserDelegateType (typeof (VTCompressionOutputHandler))]
 		[UnmanagedCallersOnly]
 		unsafe static void VTCompressionOutputHandlerCallback (BlockLiteral* block, VTStatus status, VTEncodeInfoFlags infoFlags, IntPtr sampleBuffer)
 		{

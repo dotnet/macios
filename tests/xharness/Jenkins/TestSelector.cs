@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.DotNet.XHarness.Common.Logging;
@@ -80,76 +79,28 @@ namespace Xharness.Jenkins {
 			=> platform.HasFlag (label);
 	}
 	/// <summary>
-	/// Allows to select the tests to be ran depending on certain conditions such as labels of modified files.
+	/// Selects tests using command-line labels and enabled platforms.
 	/// </summary>
 	class TestSelector {
 
 		#region private vars
 
 		readonly Jenkins jenkins;
-		readonly IVersionControlSystem vcs;
 
 		ILog? MainLog => jenkins?.MainLog;
 		Harness Harness => jenkins.Harness;
 
 		#endregion
 
-		public TestSelector (Jenkins jenkins, IVersionControlSystem versionControlSystem)
+		public TestSelector (Jenkins jenkins)
 		{
 			this.jenkins = jenkins;
-			this.vcs = versionControlSystem;
 		}
 
 		void DisableKnownFailingDeviceTests ()
 		{
 			// https://github.com/xamarin/maccore/issues/1008
 			jenkins.ForceExtensionBuildOnly = true;
-		}
-
-		IEnumerable<string> GetPullRequestLabels (int pullRequest)
-		{
-			if (pullRequest > 0) {
-				var labels = vcs.GetLabels (pullRequest);
-				var pullRequestLabels = labels as string [] ?? labels.ToArray ();
-				if (pullRequestLabels.Length > 0) {
-					MainLog?.WriteLine ($"Found {pullRequestLabels.Length} label(s) in the pull request #{pullRequest}: {string.Join (", ", pullRequestLabels)}");
-					return pullRequestLabels;
-				}
-			}
-
-			MainLog?.WriteLine ($"No labels were found in the pull request #{pullRequest}.");
-			return Array.Empty<string> ();
-		}
-
-		IEnumerable<string> GetEnvironmentLabels ()
-		{
-			var envLabels = Environment.GetEnvironmentVariable ("XHARNESS_LABELS");
-			if (!string.IsNullOrEmpty (envLabels)) {
-				var labels = envLabels.Split (new char [] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-				MainLog?.WriteLine ($"Found {labels.Length} label(s) in the environment variable XHARNESS_LABELS: {string.Join (", ", labels)}");
-				return labels;
-			}
-
-			MainLog?.WriteLine ($"No labels were in the environment variable XHARNESS_LABELS.");
-			return Array.Empty<string> ();
-		}
-
-		IEnumerable<string> GetCustomFileLabels ()
-		{
-			var customLabelsFile = Path.Combine (HarnessConfiguration.RootDirectory, "..", "jenkins", "custom-labels.txt");
-			if (File.Exists (customLabelsFile)) {
-				var customLabels = File.ReadAllLines (customLabelsFile).Select ((v) => v.Trim ()).Where (v => v.Length > 0 && v [0] != '#');
-				var customFileLabels = customLabels as string [] ?? customLabels.ToArray ();
-				if (customFileLabels.Length > 0) {
-					MainLog?.WriteLine ($"Found {customFileLabels.Length} label(s) in {customLabelsFile}: {string.Join (", ", customFileLabels)}");
-					return customFileLabels;
-				}
-				MainLog?.WriteLine ($"No labels were in {customLabelsFile}.");
-			} else {
-				MainLog?.WriteLine ($"The custom labels file {customLabelsFile} does not exist.");
-			}
-
-			return Array.Empty<string> ();
 		}
 
 		IEnumerable<string> GetHarnessLabels ()
@@ -163,19 +114,7 @@ namespace Xharness.Jenkins {
 			return Array.Empty<string> ();
 		}
 
-		HashSet<string> GetAllLabels (int pullRequest)
-		{
-			var labels = new HashSet<string> ();
-			labels.UnionWith (GetHarnessLabels ());
-			labels.UnionWith (GetPullRequestLabels (pullRequest));
-			labels.UnionWith (GetEnvironmentLabels ());
-			labels.UnionWith (GetCustomFileLabels ());
-
-			MainLog?.WriteLine ($"In total found {labels.Count} label(s): {string.Join (", ", labels.ToArray ())}");
-			return labels;
-		}
-
-		public void SelectTestsByLabel (HashSet<string> labels, TestSelection selection, string? prTarget = null)
+		public void SelectTestsByLabel (HashSet<string> labels, TestSelection selection)
 		{
 			// when parsing the labels, order matters, for example:
 			// 1. skip-all-tests, run-ios-tests
@@ -190,10 +129,10 @@ namespace Xharness.Jenkins {
 				// skip-*-tests
 				// run-*-tests
 				// if we have a match, we decide if we skip or run and set the label accordingly
-				if (!regexp.IsMatch (label))
+				var match = regexp.Match (label);
+				if (!match.Success)
 					continue;
 				MainLog?.WriteLine ($"Label {label} matches regexp.");
-				var match = regexp.Match (label);
 				var matchedLabel = match.Groups [2].Value;
 				var run = match.Groups [1].Value == "run-";
 				MainLog?.WriteLine ($"Setting label {matchedLabel} to be enabled: {run}");
@@ -232,14 +171,8 @@ namespace Xharness.Jenkins {
 
 		public void SelectTests (TestSelection selection)
 		{
-			if (!int.TryParse (Environment.GetEnvironmentVariable ("PR_ID"), out int pullRequest))
-				MainLog?.WriteLine ("The environment variable 'PR_ID' was not found, so no pull requests will be checked for test selection.");
-
-			// Then we check for labels. Labels are manually set, so those override
-			// whatever we did automatically.
-			var labels = GetAllLabels (pullRequest);
-			SelectTestsByLabel (labels, selection, pullRequest > 0 ?
-				vcs.GetPullRequestTargetBranch (pullRequest) : null);
+			var labels = new HashSet<string> (GetHarnessLabels ());
+			SelectTestsByLabel (labels, selection);
 
 			DisableKnownFailingDeviceTests ();
 

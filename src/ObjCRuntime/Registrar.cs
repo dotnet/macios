@@ -348,8 +348,9 @@ namespace Registrar {
 			public bool Add (ObjCMethod method, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
 				if (!IsWrapper && !IsProtocol && !method.IsNativeStatic && method.Selector == "retainCount" && method.Method is not null) {
-					RetainCountException ??= Registrar.CreateRetainCountException (method.Method);
-					AddException (ref exceptions, RetainCountException);
+					var exception = Registrar.CreateRetainCountException (method.Method);
+					RetainCountException ??= exception;
+					AddException (ref exceptions, exception);
 					return false;
 				}
 
@@ -1985,15 +1986,18 @@ namespace Registrar {
 				};
 				if (category_method.SetExportAttribute (ea, ref exceptions)) {
 					objcType.Add (category_method, ref exceptions);
-					if (objcType.RetainCountException is null)
-						declaringType.Add (category_method, ref exceptions);
 				}
 			}
 
 			// TODO: properties
 
-			if (objcType.RetainCountException is null)
+			if (objcType.RetainCountException is null) {
+				if (objcType.Methods is not null) {
+					foreach (var method in objcType.Methods)
+						declaringType.Add (method, ref exceptions);
+				}
 				OnRegisterCategory (objcType, ref exceptions);
+			}
 
 			return objcType;
 		}

@@ -20,7 +20,8 @@ namespace Xamarin.Tests {
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
 
 			var projectPath = GenerateProject (platform, nameof (DynamicRetainCountExport), runtimeIdentifier, out _);
-			File.WriteAllText (Path.Combine (Path.GetDirectoryName (projectPath)!, "Main.cs"), """
+			var projectDirectory = Path.GetDirectoryName (projectPath) ?? throw new InvalidOperationException ("The generated project path has no directory.");
+			File.WriteAllText (Path.Combine (projectDirectory, "Main.cs"), """
 				// Copyright (c) Microsoft Corporation.
 				// Licensed under the MIT License.
 
@@ -95,9 +96,19 @@ namespace Xamarin.Tests {
 						var category = module.DefineType ("RejectedRetainCountCategory", TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed);
 						var categoryConstructor = typeof (CategoryAttribute).GetConstructor ([typeof (Type)]) ?? throw new InvalidOperationException ("Missing CategoryAttribute constructor.");
 						category.SetCustomAttribute (new CustomAttributeBuilder (categoryConstructor, [typeof (NSFormatter)]));
+						var extensionConstructor = typeof (System.Runtime.CompilerServices.ExtensionAttribute).GetConstructor ([]) ?? throw new InvalidOperationException ("Missing ExtensionAttribute constructor.");
+						var validSelector = Selector.GetHandle ("retainCountCategoryRegression");
+						if (class_getInstanceMethod (categoryClass, validSelector) != IntPtr.Zero)
+							throw new InvalidOperationException ("The category test selector already exists.");
+						var validMethod = category.DefineMethod ("ValidExport", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCountCategoryRegression"]));
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = validMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
 						var categoryMethod = category.DefineMethod ("GetCount", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
 						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCount"]));
-						var extensionConstructor = typeof (System.Runtime.CompilerServices.ExtensionAttribute).GetConstructor ([]) ?? throw new InvalidOperationException ("Missing ExtensionAttribute constructor.");
 						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
 						il = categoryMethod.GetILGenerator ();
 						il.Emit (OpCodes.Ldc_I4_0);
@@ -106,6 +117,21 @@ namespace Xamarin.Tests {
 						AssertRejected (category.CreateType () ?? throw new InvalidOperationException ("Could not create the category test type."));
 						if (method_getImplementation (class_getInstanceMethod (categoryClass, selector)) != categoryImplementation)
 							throw new InvalidOperationException ("The category replaced the native retainCount implementation.");
+						if (class_getInstanceMethod (categoryClass, validSelector) != IntPtr.Zero)
+							throw new InvalidOperationException ("The rejected category installed its valid export.");
+
+						var validCategory = module.DefineType ("ValidRetainCountCategory", TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed);
+						validCategory.SetCustomAttribute (new CustomAttributeBuilder (categoryConstructor, [typeof (NSFormatter)]));
+						validMethod = validCategory.DefineMethod ("ValidExport", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCountCategoryRegression"]));
+						validMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = validMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						Class.GetHandle (validCategory.CreateType () ?? throw new InvalidOperationException ("Could not create the valid category test type."));
+						if (class_getInstanceMethod (categoryClass, validSelector) == IntPtr.Zero)
+							throw new InvalidOperationException ("The valid category export was not installed.");
 
 						var callback = wrapperType.GetMethod ("GetCount") ?? throw new InvalidOperationException ("Missing callback.");
 						for (var attempt = 0; attempt < 2; attempt++) {

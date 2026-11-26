@@ -78,6 +78,7 @@ public class RegistrarTests : BaseClass {
 		new LoadAssembliesStep ().Process (context);
 		var platformAssembly = context.GetAssemblies ().Single (v => v.Name.Name == $"Microsoft.{platform.AsString ()}");
 		platformAssembly.MainModule.GetType ("UIKit.UIWindowSceneDelegate").Interfaces.Clear ();
+		platformAssembly.MainModule.Types.Remove (platformAssembly.MainModule.GetType ("UIKit.IUIWindowSceneDelegate"));
 		var userAssembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
 		userAssembly.MainModule.GetType ("MyClass").Interfaces.Clear ();
 		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyProtocol"));

@@ -1649,8 +1649,6 @@ F:ClassKit.CLSProgressReportingCapabilityKind.Duration
 F:ClassKit.CLSProgressReportingCapabilityKind.Percent
 F:ClassKit.CLSProgressReportingCapabilityKind.Quantity
 F:ClassKit.CLSProgressReportingCapabilityKind.Score
-F:CloudKit.CKRecordZoneEncryptionScope.Record
-F:CloudKit.CKRecordZoneEncryptionScope.Zone
 F:Contacts.CNAuthorizationStatus.Limited
 F:Contacts.CNErrorCode.ChangeHistoryExpired
 F:Contacts.CNErrorCode.ChangeHistoryInvalidAnchor
@@ -55084,7 +55082,6 @@ T:CloudKit.CKQuerySubscription
 T:CloudKit.CKRecord
 T:CloudKit.CKRecordID
 T:CloudKit.CKRecordZone
-T:CloudKit.CKRecordZoneEncryptionScope
 T:CloudKit.CKRecordZoneID
 T:CloudKit.CKRecordZoneNotification
 T:CloudKit.CKRecordZonePerRecordZoneCompletionHandler

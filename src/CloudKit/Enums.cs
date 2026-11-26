@@ -439,10 +439,13 @@ namespace CloudKit {
 		DeleteZone,
 	}
 
+	/// <summary>Enumerates the scopes at which the data in a record zone is encrypted.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Native]
 	public enum CKRecordZoneEncryptionScope : long {
+		/// <summary>Each record in the zone is encrypted separately.</summary>
 		Record,
+		/// <summary>The whole zone is encrypted together.</summary>
 		Zone,
 	}
 }

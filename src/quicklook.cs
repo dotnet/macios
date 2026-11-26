@@ -140,7 +140,7 @@ namespace QuickLook {
 	public enum QLPreviewItemEditingMode : long {
 		/// <summary>The user can't edit the item.</summary>
 		Disabled = 0,
-		/// <summary>The user can edit the item, and the changes update the original item.</summary>
+		/// <summary>The user can edit the item. The changes overwrite the original item when possible; otherwise the controller creates an edited copy.</summary>
 		UpdateContents,
 		/// <summary>The user can edit the item, and the changes are saved to a copy of the original item.</summary>
 		CreateCopy,

@@ -26,6 +26,10 @@ namespace AVFoundation {
 #endif
 			=> new AVAudioSinkNode (GetHandler (receiverHandler), realtimeSafe: true);
 
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
 		AVAudioSinkNode (AVAudioSinkNodeReceiverHandlerRaw receiverHandler, bool realtimeSafe)
 			: base (NSObjectFlag.Empty)
 		{

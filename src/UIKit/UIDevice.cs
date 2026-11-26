@@ -22,9 +22,7 @@ namespace UIKit {
 #if __MACCATALYST__
 			return Runtime.CheckSystemVersion (major, minor, Runtime.iOSSupportVersion);
 #else
-#pragma warning disable CA1416 // This call site is reachable on all platforms. 'UIDevice.SystemVersion' is only supported on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later.
 			return Runtime.CheckSystemVersion (major, minor, SystemVersion);
-#pragma warning restore CA1416
 #endif
 		}
 	}

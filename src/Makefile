@@ -129,9 +129,6 @@ TVOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACCATALYST_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 
-# this is due to deprecated APIs used in the generated code.
-BGEN_WARNINGS_TO_FIX=BI1234
-
 # We ignore some xml docs warnings when building the core and apidefinition assemblies, because
 # the xml docs might want to reference generated APIs, so the compiler would warn about not
 # finding those APIs (because they haven't been generated yet).
@@ -152,14 +149,11 @@ CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),1591
 # warning CS8981: The type name 'nfloat' only contains lower-cased ascii characters. Such names may become reserved for the language.
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CS8981
 
-# availability warnings, need to fix https://github.com/dotnet/macios/pull/21185 to stop ignoring this.
-CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CA1416,CA1422
-
 WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
-CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
+CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 
 DOTNET_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
-DOTNET_CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
+DOTNET_CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 
 include ./Makefile.generator
 include ./Makefile.rgenerator
@@ -299,7 +293,7 @@ $($(2)_DOTNET_BUILD_DIR)/apidefinition-$(3).rsp: Makefile frameworks.sources $($
 		-debug \
 		-unsafe \
 		-target:library \
-		-nowarn:436,1591,CA1416,CS8981 \
+		-nowarn:436,1591,CS8981 \
 		-nowarn:$(XML_DOCS_WARNINGS) \
 		-warnaserror+ \
 		-nullable+ \
@@ -454,10 +448,12 @@ rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 # The .NET analyzers and the .editorconfig are only used for the platform assembly (the one we ship), not for the
 # intermediate core and apidefinition assemblies. scripts/rsp-to-csproj ignores them, because MSBuild adds them to the
 # generated project files by itself.
+# GeneratedMSBuildEditorConfig.editorconfig sets the MSBuild properties analyzers read (MSBuild generates a similar file
+# when building a project). Without it the platform compatibility analyzer (CA1416, CA1422, etc.) doesn't run at all.
 # The path to .editorconfig must be relative, just like the paths to the source files: csc matches the .editorconfig
 # sections against the full path of each source file, and that silently doesn't match if the two are spelled differently
 # (for instance if only one of them goes through a symlink, such as /tmp on macOS).
-$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(TOP)/.editorconfig $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
+$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(TOP)/.editorconfig $($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) rm -f $$@
 	$$(Q) echo \
 		$(DOTNET_FLAGS) \
@@ -467,6 +463,7 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(TOP)/
 		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.NetAnalyzers.dll \
 		/analyzer:$(DOTNET_ANALYZERS_DIR)/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll \
 		/analyzerconfig:$(TOP)/.editorconfig \
+		/analyzerconfig:$($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig \
 		/generatedfilesout:$($(2)_DOTNET_BUILD_DIR)/generated-sources \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_GENERATOR),) \
 		$$(if $(V),/reportanalyzer:$(ROSLYN_ANALYZER),) \

@@ -14,6 +14,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler);
@@ -29,6 +32,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
@@ -39,12 +45,15 @@ namespace UIKit {
 		/// Registers a callback handler that will be executed when the specified trait changes.
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
-		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
+		/// <param name="handler">The callback to execute when the specified trait changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
@@ -54,14 +63,17 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -72,15 +84,18 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -92,16 +107,19 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
-		/// <typeparam name="T4">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
+		/// <typeparam name="T4">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -122,6 +140,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action);
@@ -137,6 +158,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action);

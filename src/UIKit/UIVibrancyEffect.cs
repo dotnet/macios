@@ -61,6 +61,8 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		static public UIVibrancyEffect CreateWidgetEffectForNotificationCenter (UIVibrancyEffectStyle vibrancyStyle)
 		{
 			return (null as UIVibrancyEffect)!.GetWidgetEffect (vibrancyStyle);

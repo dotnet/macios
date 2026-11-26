@@ -75,7 +75,33 @@ namespace UIKit {
 				yield return uiv;
 		}
 
-		/// <include file="../../docs/api/UIKit/UIView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIView.BeginAnimations(System.String)']/*" />
+		/// <summary>Indicates the beginning of an animation block.</summary>
+		/// <param name="animation">The animation identifier.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="UIViewPropertyAnimator" />, or one of the <see cref="Animate(double,Action)" /> or <see cref="AnimateNotify(double,Action,UICompletionHandler)" /> overloads instead.</para>
+		///   <para>An animation block starts with a call to <see cref="BeginAnimations(string)" /> and ends with a call to <see cref="CommitAnimations" />. For example:</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// UIView.BeginAnimations ("slideAnimation");
+		///
+		/// UIView.SetAnimationDuration (2);
+		/// UIView.SetAnimationCurve (UIViewAnimationCurve.EaseInOut);
+		/// UIView.SetAnimationRepeatCount (2);
+		/// UIView.SetAnimationRepeatAutoreverses (true);
+		/// UIView.SetAnimationDelegate (this);
+		/// UIView.SetAnimationDidStopSelector (new Selector ("slideAnimationFinished:"));
+		/// imageView.Center = new CGPoint (UIScreen.MainScreen.Bounds.Right - imageView.Frame.Width / 2, imageView.Center.Y);
+		/// UIView.CommitAnimations ();
+		///     ]]></code>
+		///   </example>
+		/// </remarks>
+		/// <seealso cref="CommitAnimations" />
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static void BeginAnimations (string animation)
 		{
 			BeginAnimations (animation, IntPtr.Zero);
@@ -111,6 +137,12 @@ namespace UIKit {
 					WillEnd ();
 			}
 
+			[SupportedOSPlatform ("ios")]
+			[SupportedOSPlatform ("tvos")]
+			[SupportedOSPlatform ("maccatalyst")]
+			[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+			[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+			[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 			public static _UIViewStaticCallback Prepare ()
 			{
 				if (shared is null) {
@@ -121,11 +153,17 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>This event is raised when the animations will start.</summary>
+		/// <summary>This event is raised when the animations in an animation block are about to start.</summary>
 		/// <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
-		///         </remarks>
+		///   <para>This event is obsolete. Use the <see cref="UIViewPropertyAnimator" /> class to animate views instead.</para>
+		///   <para>This event is only raised if the app hasn't set its own animation delegate by calling <see cref="SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static event Action AnimationWillStart {
 			add {
 				_UIViewStaticCallback.Prepare ().WillStart += value;
@@ -135,11 +173,17 @@ namespace UIKit {
 			}
 		}
 
-		/// <summary>This event is raised when the animations will end.</summary>
+		/// <summary>This event is raised when the animations in an animation block are about to end.</summary>
 		/// <remarks>
-		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
-		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
-		///         </remarks>
+		///   <para>This event is obsolete. Use the <see cref="UIViewPropertyAnimator" /> class to animate views instead.</para>
+		///   <para>This event is only raised if the app hasn't set its own animation delegate by calling <see cref="SetAnimationDelegate(Foundation.NSObject)" />.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static event Action AnimationWillEnd {
 			add {
 				_UIViewStaticCallback.Prepare ().WillEnd += value;
@@ -270,6 +314,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler);
@@ -285,6 +332,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
@@ -295,12 +345,15 @@ namespace UIKit {
 		/// Registers a callback handler that will be executed when the specified trait changes.
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
-		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
+		/// <param name="handler">The callback to execute when the specified trait changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
@@ -310,14 +363,17 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -328,15 +384,18 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -348,16 +407,19 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
-		/// <typeparam name="T4">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
+		/// <typeparam name="T4">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -378,6 +440,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action);
@@ -393,6 +458,9 @@ namespace UIKit {
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
 		///   or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
 		/// </remarks>
+		[SupportedOSPlatform ("ios17.0")]
+		[SupportedOSPlatform ("tvos17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action);

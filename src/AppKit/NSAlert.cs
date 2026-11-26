@@ -62,18 +62,26 @@ namespace AppKit {
 	}
 
 	public partial class NSAlert {
-		/// <param name="window">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the alert as a sheet attached to the specified window.</summary>
+		/// <param name="window">The window to attach the sheet to.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheet (NSWindow window)
 		{
 			BeginSheet (window, null, null, IntPtr.Zero);
 		}
 
-		/// <param name="window">To be added.</param>
-		///         <param name="onEnded">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the alert as a sheet attached to the specified window, and calls a callback when the sheet is dismissed.</summary>
+		/// <param name="window">The window to attach the sheet to.</param>
+		/// <param name="onEnded">The callback to call when the sheet is dismissed.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheet (NSWindow window, Action? onEnded)
 		{
 			BeginSheetForResponse (window, r => {
@@ -82,29 +90,43 @@ namespace AppKit {
 			});
 		}
 
-		/// <param name="window">To be added.</param>
-		/// <param name="onEnded">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Shows the alert as a sheet attached to the specified window, and calls a callback with the response when the sheet is dismissed.</summary>
+		/// <param name="window">The window to attach the sheet to.</param>
+		/// <param name="onEnded">The callback to call when the sheet is dismissed. The argument is the return code for the button the user clicked.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheetForResponse (NSWindow window, Action<nint> onEnded)
 		{
 			BeginSheet (window, new NSAlertDidEndDispatcher (onEnded), NSAlertDidEndDispatcher.Selector, IntPtr.Zero);
 		}
 
-		/// <param name="window">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the alert as a sheet attached to the specified window, and waits until the user dismisses it.</summary>
+		/// <param name="window">The window to attach the sheet to.</param>
+		/// <returns>The return code for the button the user clicked.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
+		///   <para>This method runs a modal session for <see cref="NSApplication.SharedApplication" />.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public nint RunSheetModal (NSWindow window)
 		{
 			return RunSheetModal (window, NSApplication.SharedApplication);
 		}
 
-		/// <param name="window">To be added.</param>
-		///         <param name="application">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the alert as a sheet attached to the specified window, and waits until the user dismisses it.</summary>
+		/// <param name="window">The window to attach the sheet to. If <see langword="null" />, the alert is shown as a modal dialog instead, using <see cref="RunModal" />.</param>
+		/// <param name="application">The application used to run the modal session.</param>
+		/// <returns>The return code for the button the user clicked.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="application" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public nint RunSheetModal (NSWindow? window, NSApplication application)
 		{
 			if (application is null)

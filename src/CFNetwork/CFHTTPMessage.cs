@@ -36,10 +36,8 @@ namespace CFNetwork {
 
 			if (version.Major == 3 && version.Minor == 0) {
 				// HTTP 3.0 requires OS X 10.16 or later.
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'CFHTTPMessage._HTTPVersion3_0.get' is only supported on: 'ios' 14.0 and later, 'tvos' 14.0 and later.
 				if (_HTTPVersion3_0 != IntPtr.Zero)
 					return _HTTPVersion3_0;
-#pragma warning restore CA1416
 				else if (_HTTPVersion2_0 != IntPtr.Zero)
 					return _HTTPVersion2_0;
 				else

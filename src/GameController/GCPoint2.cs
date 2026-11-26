@@ -122,7 +122,9 @@ namespace GameController {
 				OperatingSystem.IsMacCatalystVersionAtLeast (17, 4) ||
 				OperatingSystem.IsIOSVersionAtLeast (17, 4) ||
 				OperatingSystem.IsTvOSVersionAtLeast (17, 4))
+#pragma warning disable CA1416 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later, 'TvOS' 17.4 and later. 'GCPoint2.NSStringFromGCPoint2(GCPoint2)' is only supported on: 'ios' 17.4 and later, 'maccatalyst' 17.4 and later.
 				return CFString.FromHandle (NSStringFromGCPoint2 (this));
+#pragma warning restore CA1416
 			return $"{{{x}, {y}}}";
 		}
 

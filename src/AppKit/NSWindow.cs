@@ -60,10 +60,14 @@ namespace AppKit {
 			}
 		}
 
-		/// <param name="windowRef">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="NSWindow" /> that wraps the specified Carbon window.</summary>
+		/// <param name="windowRef">The Carbon <c>WindowRef</c> to wrap.</param>
+		/// <returns>A new <see cref="NSWindow" /> that wraps <paramref name="windowRef" />.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete, and should not be used.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos15.0", "Do not use this method.")]
 		static public NSWindow FromWindowRef (IntPtr windowRef)
 		{
 			return new NSWindow (windowRef);

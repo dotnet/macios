@@ -61,14 +61,10 @@ namespace Network {
 						castedOptions = new NWProtocolUdpOptions (iface, owns: false);
 					} else if (definition.Equals (NWProtocolDefinition.CreateTlsDefinition ())) {
 						castedOptions = new NWProtocolTlsOptions (iface, owns: false);
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWProtocolIPOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later
 					} else if (definition.Equals (NWProtocolDefinition.CreateIPDefinition ())) {
 						castedOptions = new NWProtocolIPOptions (iface, owns: false);
-#pragma warning restore CA1416
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NWWebSocketOptions' is only supported on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'tvos' 13.0 and later.
 					} else if (definition.Equals (NWProtocolDefinition.CreateWebSocketDefinition ())) {
 						castedOptions = new NWWebSocketOptions (iface, owns: false);
-#pragma warning restore CA1416
 					}
 
 					try {

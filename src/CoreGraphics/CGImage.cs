@@ -350,11 +350,30 @@ namespace CoreGraphics {
 			return FromHandle (imageRef, true);
 		}
 #else
-		/// <include file="../../docs/api/CoreGraphics/CGImage.xml" path="/Documentation/Docs[@DocId='P:CoreGraphics.CGImage.ScreenImage']/*" />
+		/// <summary>Takes a screenshot of the main screen.</summary>
+		/// <value>A new image with the current contents of the main screen.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use <see cref="UIKit.UIView.Capture(bool)" /> on the view you want to capture instead.</para>
+		///   <para>Each call returns a new image, which can use a significant amount of memory. Dispose the image as soon as it's no longer needed.</para>
+		///   <para>When taking many screenshots in a loop that doesn't return to the main loop, use an <see cref="Foundation.NSAutoreleasePool" /> to make sure the memory is released right away:</para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// while (true) {
+		/// 	using (var pool = new NSAutoreleasePool ()) {
+		/// 		using (var img = CGImage.ScreenImage) {
+		/// 			// Use the contents of the image.
+		/// 		}
+		/// 	}
+		/// }
+		///     ]]></code>
+		///   </example>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("ios26.0", "Use 'UIView.Capture' on the view you want to capture instead.")]
+		[ObsoletedOSPlatform ("tvos26.0", "Use 'UIView.Capture' on the view you want to capture instead.")]
 		public static CGImage? ScreenImage {
 			get {
 				return UIKit.UIScreen.MainScreen.Capture ().CGImage;

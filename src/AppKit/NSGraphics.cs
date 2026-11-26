@@ -227,14 +227,16 @@ namespace AppKit {
 		[DllImport (Constants.AppKitLibrary, EntryPoint = "NSShowAnimationEffect")]
 		extern static void NSShowAnimationEffect (nuint animationEffect, CGPoint centerLocation, CGSize size, NativeHandle animationDelegate, NativeHandle didEndSelector, IntPtr contextInfo);
 
-		/// <param name="animationEffect">To be added.</param>
-		///         <param name="centerLocation">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <param name="animationDelegate">To be added.</param>
-		///         <param name="didEndSelector">To be added.</param>
-		///         <param name="contextInfo">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows an animation effect, such as the puff of smoke shown when an item is removed from the Dock.</summary>
+		/// <param name="animationEffect">The animation effect to show.</param>
+		/// <param name="centerLocation">The center of the animation, in screen coordinates.</param>
+		/// <param name="size">The size of the animation. Pass <see cref="CGSize.Empty" /> to use the default size.</param>
+		/// <param name="animationDelegate">The object to notify when the animation ends.</param>
+		/// <param name="didEndSelector">The selector to call on <paramref name="animationDelegate" /> when the animation ends.</param>
+		/// <param name="contextInfo">A pointer that is passed to <paramref name="didEndSelector" />.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSCursor.DisappearingItemCursor" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead.")]
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, NSObject animationDelegate, Selector didEndSelector, IntPtr contextInfo)
@@ -244,12 +246,16 @@ namespace AppKit {
 			GC.KeepAlive (didEndSelector);
 		}
 
-		/// <param name="animationEffect">To be added.</param>
-		///         <param name="centerLocation">To be added.</param>
-		///         <param name="size">To be added.</param>
-		///         <param name="endedCallback">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows an animation effect, such as the puff of smoke shown when an item is removed from the Dock.</summary>
+		/// <param name="animationEffect">The animation effect to show.</param>
+		/// <param name="centerLocation">The center of the animation, in screen coordinates.</param>
+		/// <param name="size">The size of the animation. Pass <see cref="CGSize.Empty" /> to use the default size.</param>
+		/// <param name="endedCallback">The callback to call when the animation ends.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSCursor.DisappearingItemCursor" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos14.0", "Use 'NSCursor.DisappearingItemCursor' instead.")]
 		public static void ShowAnimationEffect (NSAnimationEffect animationEffect, CGPoint centerLocation, CGSize size, Action endedCallback)
 		{
 			var d = new NSAsyncActionDispatcher (endedCallback);

@@ -74,6 +74,8 @@ namespace AddressBook {
 		}
 	}
 
+	[ObsoletedOSPlatform ("ios", "Use the 'Contacts' API instead.")]
+	[ObsoletedOSPlatform ("maccatalyst", "Use the 'Contacts' API instead.")]
 	static partial class ABSourcePropertyId {
 		public static int ToId (ABSourceProperty property)
 		{

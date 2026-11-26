@@ -32,6 +32,8 @@ namespace AppKit {
 			#region Generic Event Information
 
 			// FIXME: broken
+			[SupportedOSPlatform ("macos")]
+			[ObsoletedOSPlatform ("macos10.12", "This method always returns null. If you need access to the current drawing context, use NSGraphicsContext.CurrentContext inside of a draw operation.")]
 			internal NSGraphicsContext Context {
 				get {
 					return target.Context;

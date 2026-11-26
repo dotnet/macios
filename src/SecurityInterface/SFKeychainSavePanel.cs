@@ -9,7 +9,13 @@ namespace SecurityInterface {
 
 	public partial class SFKeychainSavePanel {
 
-		/// <summary>Gets the keychain created by the panel, or <see langword="null" /> if no keychain was created.</summary>
+		/// <summary>Gets the keychain created by the panel.</summary>
+		/// <value>The keychain created by the panel, or <see langword="null" /> if no keychain was created.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, because <see cref="SecKeychain" /> is deprecated.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "SecKeychain is deprecated.")]
 		public SecKeychain? Keychain => _Keychain == IntPtr.Zero ? null : new SecKeychain (_Keychain, owns: false);
 
 		/// <summary>Displays the save panel as a sheet and invokes the callback when it closes.</summary>

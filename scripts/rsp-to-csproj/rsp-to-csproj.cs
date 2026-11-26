@@ -193,7 +193,9 @@ foreach (var a in arguments) {
 		break;
 	case "analyzerconfig":
 		// MSBuild discovers .editorconfig files by itself, and csc fails (CS8700) if the same .editorconfig is passed twice.
-		if (Path.GetFileName (value) != ".editorconfig")
+		// src/Directory.Build.props already adds GeneratedMSBuildEditorConfig.editorconfig to the generated project files.
+		var analyzerConfigName = Path.GetFileName (value);
+		if (analyzerConfigName != ".editorconfig" && analyzerConfigName != "GeneratedMSBuildEditorConfig.editorconfig")
 			items.Add (new ("EditorConfigFiles", GetFullPath (value)));
 		break;
 	case "fullpaths":

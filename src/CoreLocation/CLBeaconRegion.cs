@@ -45,8 +45,10 @@ namespace CoreLocation {
 			: base (NSObjectFlag.Empty)
 		{
 			switch (uuidType) {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'CLBeaconRegionUuidType.ProximityUuid' and 'CLBeaconRegion._InitWithProximityUuid(NSUuid, string)' are obsoleted.
 			case CLBeaconRegionUuidType.ProximityUuid:
 				InitializeHandle (_InitWithProximityUuid (uuid, identifier), "initWithProximityUUID:identifier:");
+#pragma warning restore CA1422
 				break;
 			case CLBeaconRegionUuidType.Uuid:
 				InitializeHandle (_InitWithUuid (uuid, identifier), "initWithUUID:identifier:");
@@ -82,8 +84,10 @@ namespace CoreLocation {
 			: base (NSObjectFlag.Empty)
 		{
 			switch (uuidType) {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'CLBeaconRegionUuidType.ProximityUuid' and 'CLBeaconRegion._InitWithProximityUuid(NSUuid, ushort, string)' are obsoleted.
 			case CLBeaconRegionUuidType.ProximityUuid:
 				InitializeHandle (_InitWithProximityUuid (uuid, major, identifier), "initWithProximityUUID:major:identifier:");
+#pragma warning restore CA1422
 				break;
 			case CLBeaconRegionUuidType.Uuid:
 				InitializeHandle (_InitWithUuid (uuid, major, identifier), "initWithUUID:major:identifier:");
@@ -121,8 +125,10 @@ namespace CoreLocation {
 			: base (NSObjectFlag.Empty)
 		{
 			switch (uuidType) {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'CLBeaconRegionUuidType.ProximityUuid' and 'CLBeaconRegion._InitWithProximityUuid(NSUuid, ushort, ushort, string)' are obsoleted.
 			case CLBeaconRegionUuidType.ProximityUuid:
 				InitializeHandle (_InitWithProximityUuid (uuid, major, minor, identifier), "initWithProximityUUID:major:minor:identifier:");
+#pragma warning restore CA1422
 				break;
 			case CLBeaconRegionUuidType.Uuid:
 				InitializeHandle (_InitWithUuid (uuid, major, minor, identifier), "initWithUUID:major:minor:identifier:");

@@ -445,7 +445,9 @@ namespace AppKit {
 		public override string? ToString ()
 		{
 			try {
+#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSColor.ColorSpaceName' is obsoleted on: 'macOS/OSX' 10.14 and later (Use 'Type' and 'NSColorType' instead.).
 				string name = this.ColorSpaceName;
+#pragma warning restore CA1422
 				if (name == "NSNamedColorSpace")
 					return this.LocalizedCatalogNameComponent + "/" + this.LocalizedColorNameComponent;
 				if (name == "NSPatternColorSpace")

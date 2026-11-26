@@ -57,6 +57,10 @@ namespace UIKit {
 		///   <para>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</para>
 		///   <para>If the action sheet is being presented on an iPad, then the <paramref name="cancelTitle" /> should be set to <see langword="null" />.</para>
 		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios8.0", "Use 'UIAlertController' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIAlertController' instead.")]
 		public UIActionSheet (string? title, IUIActionSheetDelegate? del, string? cancelTitle, string? destroy, params string? []? other)
 			: this (title, del, null, null, (string?) null)
 		{
@@ -78,16 +82,24 @@ namespace UIKit {
 				CancelButtonIndex = AddButton (cancelTitle);
 		}
 
-		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title and a delegate that will handle taps.</summary>
+		/// <summary>Initializes a <see cref="UIActionSheet" /> with a title and a delegate that will handle taps.</summary>
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
 		/// <param name="del">A delegate that will respond to taps in the action sheet.</param>
 		/// <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios8.0", "Use 'UIAlertController' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIAlertController' instead.")]
 		public UIActionSheet (string? title, IUIActionSheetDelegate? del)
 		: this (title, del, null, null, (string?) null) { }
 
-		/// <summary>Initialize a <see cref="UIActionSheet" /> with a title.</summary>
+		/// <summary>Initializes a <see cref="UIActionSheet" /> with a title.</summary>
 		/// <param name="title">A title to be displayed in the title area of the action sheet.</param>
 		/// <remarks>Pass <see langword="null" /> to <paramref name="title" /> if there is no text to display in the title area.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios8.0", "Use 'UIAlertController' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIAlertController' instead.")]
 		public UIActionSheet (string? title)
 		: this (title, null, null, null, (string?) null) { }
 

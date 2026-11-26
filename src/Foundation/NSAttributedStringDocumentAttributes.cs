@@ -127,28 +127,25 @@ namespace Foundation {
 		[UnsupportedOSPlatform ("tvos")]
 		public NSUrl? ReadAccessUrl {
 			get {
-				// The warning is because NSAttributedStringDocumentReadingOptionKey is in AppKit for macOS, and UIKit for other platforms, so it's not possible to get the availability attributes correct here.
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'macOS/OSX' 12.0 and later. 'NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption' is only supported on: 'macOS/OSX' 12.0 and later.
 				return GetNativeValue<NSUrl> (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption);
-#pragma warning restore CA1416
 			}
 			set {
-				// The warning is because NSAttributedStringDocumentReadingOptionKey is in AppKit for macOS, and UIKit for other platforms, so it's not possible to get the availability attributes correct here.
-#pragma warning disable CA1416 // This call site is reachable on: 'ios' 13.0 and later, 'maccatalyst' 13.0 and later, 'macOS/OSX' 12.0 and later. 'NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption' is only supported on: 'macOS/OSX' 12.0 and later.
 				SetNativeValue (NSAttributedStringDocumentReadingOptionKey.ReadAccessUrlDocumentOption, value);
-#pragma warning restore CA1416
 			}
 		}
 #endif // !TVOS
 
 #if __MACOS__
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the WebKit preferences to use when reading HTML documents.</summary>
+		/// <value>The WebKit preferences to use, or <see langword="null" /> to use the default preferences.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, and is no longer supported.</para>
+		/// </remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.14", "No longer supported.")]
 		public WebPreferences? WebPreferences {
 			get {
 				return GetNativeValue<WebPreferences> (NSAttributedStringDocumentReadingOptionKey.WebPreferencesDocumentOption);

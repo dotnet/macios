@@ -650,11 +650,19 @@ namespace CoreMidi {
 			return null;
 		}
 
-		/// <param name="name">name for the input port.</param>
-		///         <summary>Creates a new MIDI input port.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>The input port can be used to read events from MIDI, the returned MidiPort raises an event to notify you of new data available.</remarks>
+		/// <summary>Creates a new MIDI input port.</summary>
+		/// <param name="name">The name of the input port.</param>
+		/// <returns>A new MIDI input port.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete.</para>
+		///   <para>Use the input port to receive MIDI data. The returned <see cref="MidiPort" /> raises the <see cref="MidiPort.MessageReceived" /> event when new data is available.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiPort CreateInputPort (string name)
 		{
 			return new MidiPort (this, name, true);
@@ -1069,7 +1077,9 @@ namespace CoreMidi {
 				NativeHandle nsstrHandle = nsstr.Handle;
 				if (input) {
 					unsafe {
+#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'MidiPort.MIDIInputPortCreate(int, nint, delegate* unmanaged<nint, nint, nint, void>, nint, int*)' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later.
 						code = MIDIInputPortCreate (client.handle, nsstrHandle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
+#pragma warning restore CA1422
 					}
 				} else {
 					unsafe {
@@ -2657,6 +2667,12 @@ namespace CoreMidi {
 			return new MidiEndpoint (h, "Destination" + destinationIndex, false);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		internal MidiEndpoint (MidiClient client, string name, out MidiError code)
 		{
 			using (var nsstr = new NSString (name)) {

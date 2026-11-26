@@ -35,11 +35,16 @@ using CoreGraphics;
 
 namespace AppKit {
 	public partial class NSGraphicsContext {
-		/// <param name="context">To be added.</param>
-		///         <param name="initialFlippedState">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a graphics context for the specified Core Graphics context.</summary>
+		/// <param name="context">The Core Graphics context to draw into.</param>
+		/// <param name="initialFlippedState">Whether the coordinate system of the new graphics context is flipped.</param>
+		/// <returns>A new graphics context that draws into <paramref name="context" />.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="context" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="FromCGContext(CGContext,bool)" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.14", "Use 'FromCGContext' instead.")]
 		public static NSGraphicsContext FromGraphicsPort (CGContext context, bool initialFlippedState)
 		{
 			if (context is null)
@@ -49,9 +54,13 @@ namespace AppKit {
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the underlying Core Graphics context.</summary>
+		/// <value>The Core Graphics context this graphics context draws into.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use <see cref="CGContext" /> instead.</para>
+		/// </remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.14", "Use 'CGContext' instead.")]
 		public virtual CGContext GraphicsPort {
 			get { return new CGContext (GraphicsPortHandle, false); }
 		}

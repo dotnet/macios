@@ -73,12 +73,20 @@ namespace AVFoundation {
 #endif
 			=> new AVAudioSourceNode (format, GetHandler (renderHandler), realtimeSafe: true);
 
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
 		AVAudioSourceNode (AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
 			: base (NSObjectFlag.Empty)
 		{
 			InitializeHandle (_InitWithRealtimeSafeRenderBlock (renderHandler), "initWithRealtimeSafeRenderBlock:");
 		}
 
+		[SupportedOSPlatform ("ios27.0")]
+		[SupportedOSPlatform ("tvos27.0")]
+		[SupportedOSPlatform ("macos27.0")]
+		[SupportedOSPlatform ("maccatalyst27.0")]
 		AVAudioSourceNode (AVAudioFormat format, AVAudioSourceNodeRenderHandlerRaw renderHandler, bool realtimeSafe)
 			: base (NSObjectFlag.Empty)
 		{

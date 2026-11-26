@@ -293,6 +293,8 @@ namespace Cecil.Tests {
 
 				void InstantiateTypeArguments (TypeReference type, MethodDefinition caller)
 				{
+					while (type is TypeSpecification specification && type is not GenericInstanceType)
+						type = specification.ElementType;
 					if (type is not GenericInstanceType generic)
 						return;
 					foreach (var argument in generic.GenericArguments)

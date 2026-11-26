@@ -41,5 +41,7 @@
 !unknown-pinvoke! os_release bound
 !unknown-pinvoke! os_retain bound
 
-# updated sharpie results
+# Private runtime implementation detail, not a public API: the ARM64 calling-convention
+# probe still uses NXGetLocalArchInfo, including for older supported OS versions.
+# Do not propagate its native deprecation to Runtime or IsARM64CallingConvention.
 !deprecated-attribute-missing! NXGetLocalArchInfo missing a [Deprecated] attribute

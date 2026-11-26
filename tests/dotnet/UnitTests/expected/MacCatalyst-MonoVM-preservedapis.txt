@@ -108,6 +108,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.AllocIfNeeded()
+Microsoft.MacCatalyst.dll:Foundation.NSObject.ClearFlags(Foundation.NSObject/Flags)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ClearHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
@@ -149,6 +150,8 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandl
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags, System.Boolean)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ToString()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -158,6 +161,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
@@ -10894,6 +10898,8 @@ System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap System.Threading
 System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap.TryGetValue(System.Threading.IAsyncLocal, out System.Object&)
 System.Private.CoreLib.dll:System.Threading.Interlocked
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Byte&, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int32&, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int64&, System.Int64, System.Int64)
@@ -10914,6 +10920,8 @@ System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange(System.UInt16&,
 System.Private.CoreLib.dll:System.Threading.Interlocked.Exchange`1(T&, T)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Increment(System.Int32&)
 System.Private.CoreLib.dll:System.Threading.Interlocked.MemoryBarrier()
+System.Private.CoreLib.dll:System.Threading.Interlocked.Or(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.Or(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.LowLevelLock
 System.Private.CoreLib.dll:System.Threading.LowLevelLock System.Threading.WaitSubsystem::s_lock
 System.Private.CoreLib.dll:System.Threading.LowLevelLock..cctor()

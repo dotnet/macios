@@ -1,11 +1,11 @@
-AppBundleSize: 9,380,202 bytes (9,160.4 KB = 8.9 MB)
+AppBundleSize: 9,380,262 bytes (9,160.4 KB = 8.9 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 aot-instances.aotdata.arm64:
     828,456 bytes (809.0 KB = 0.8 MB)
 Info.plist:
-    1,137 bytes (1.1 KB = 0.0 MB)
+    1,149 bytes (1.1 KB = 0.0 MB)
 Microsoft.iOS.aotdata.arm64:
-    23,336 bytes (22.8 KB = 0.0 MB)
+    23,344 bytes (22.8 KB = 0.0 MB)
 Microsoft.iOS.dll:
     49,152 bytes (48.0 KB = 0.0 MB)
 PkgInfo:
@@ -13,13 +13,13 @@ PkgInfo:
 runtimeconfig.bin:
     1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp:
-    7,281,240 bytes (7,110.6 KB = 6.9 MB)
+    7,281,256 bytes (7,110.6 KB = 6.9 MB)
 SizeTestApp.aotdata.arm64:
     1,464 bytes (1.4 KB = 0.0 MB)
 SizeTestApp.dll:
     7,168 bytes (7.0 KB = 0.0 MB)
 System.Private.CoreLib.aotdata.arm64:
-    640,920 bytes (625.9 KB = 0.6 MB)
+    640,944 bytes (625.9 KB = 0.6 MB)
 System.Private.CoreLib.dll:
     530,944 bytes (518.5 KB = 0.5 MB)
 System.Runtime.aotdata.arm64:

@@ -8,18 +8,27 @@ using System.Text;
 
 namespace Xamarin.Utils {
 	class StringUtils {
-		static StringUtils ()
-		{
-			PlatformID pid = Environment.OSVersion.Platform;
-			if (((int) pid != 128 && pid != PlatformID.Unix && pid != PlatformID.MacOSX))
-				shellQuoteChar = '"'; // Windows
-			else
-				shellQuoteChar = '\''; // !Windows
+		// Don't use static fields here: this code is used by MSBuild tasks that may run in parallel in the same process.
+		static char shellQuoteChar {
+			get {
+				PlatformID pid = Environment.OSVersion.Platform;
+				if (((int) pid != 128 && pid != PlatformID.Unix && pid != PlatformID.MacOSX))
+					return '"'; // Windows
+				return '\''; // !Windows
+			}
 		}
 
-		static readonly char shellQuoteChar;
-		static readonly char [] mustQuoteCharacters = new char [] { ' ', '\'', ',', '$', '\\' };
-		static readonly char [] mustQuoteCharactersProcess = { ' ', '\\', '"', '\'' };
+		const string mustQuoteCharacters = " ',$\\";
+		const string mustQuoteCharactersProcess = " \\\"'";
+
+		static bool ContainsAny (string str, string characters)
+		{
+			foreach (var c in str) {
+				if (characters.IndexOf (c) >= 0)
+					return true;
+			}
+			return false;
+		}
 
 		[return: NotNullIfNotNull (nameof (array))]
 		public static string []? Quote (params string [] array)
@@ -38,7 +47,7 @@ namespace Xamarin.Utils {
 			if (String.IsNullOrEmpty (f))
 				return f ?? String.Empty;
 
-			if (f.IndexOfAny (mustQuoteCharacters) == -1)
+			if (!ContainsAny (f, mustQuoteCharacters))
 				return f;
 
 			var s = new StringBuilder ();
@@ -80,7 +89,7 @@ namespace Xamarin.Utils {
 			if (String.IsNullOrEmpty (f))
 				return f ?? String.Empty;
 
-			if (f.IndexOfAny (mustQuoteCharactersProcess) == -1)
+			if (!ContainsAny (f, mustQuoteCharactersProcess))
 				return f;
 
 			var s = new StringBuilder ();

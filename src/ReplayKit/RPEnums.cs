@@ -51,7 +51,7 @@ namespace ReplayKit {
 		FailedMediaServicesFailure = -5817,
 		/// <summary>Mixing the audio and video failed during the recording.</summary>
 		VideoMixingFailure = -5818,
-		/// <summary>Saving the recording to the camera roll failed.</summary>
+		/// <summary>The broadcast setup failed.</summary>
 		BroadcastSetupFailed = -5819,
 		/// <summary>The system couldn't obtain the URL for the recording.</summary>
 		FailedToObtainUrl = -5820,

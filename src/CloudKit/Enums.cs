@@ -16,6 +16,7 @@ namespace CloudKit {
 		Restricted = 2,
 		/// <summary>The user has no iCloud account.</summary>
 		NoAccount = 3,
+		/// <summary>The user has an account, but it's temporarily unavailable (for example, because the user needs to sign in again).</summary>
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		TemporarilyUnavailable = 4,
 	}

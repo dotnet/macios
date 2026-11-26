@@ -100,6 +100,7 @@ Microsoft.iOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.AllocIfNeeded()
+Microsoft.iOS.dll:Foundation.NSObject.ClearFlags(Foundation.NSObject/Flags)
 Microsoft.iOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
@@ -143,6 +144,8 @@ Microsoft.iOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
+Microsoft.iOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags, System.Boolean)
+Microsoft.iOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags)
 Microsoft.iOS.dll:Foundation.NSObject.ToString()
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -152,6 +155,7 @@ Microsoft.iOS.dll:Foundation.NSObject/Flags
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
@@ -11116,6 +11120,8 @@ System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap System.Threading
 System.Private.CoreLib.dll:System.Threading.IAsyncLocalValueMap.TryGetValue(System.Threading.IAsyncLocal, out System.Object&)
 System.Private.CoreLib.dll:System.Threading.Interlocked
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int32&, System.Int32)
+System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Byte&, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int32&, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int64&, System.Int64, System.Int64)

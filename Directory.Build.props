@@ -7,6 +7,7 @@
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
+		<MicrosoftBuildTaskAuthoringAnalyzerPackageVersion>18.13.0-1.26562.113</MicrosoftBuildTaskAuthoringAnalyzerPackageVersion>
 		<NUnitConsoleRunnerPackageVersion>3.22.0</NUnitConsoleRunnerPackageVersion>
 		<NUnitXmlTestLoggerPackageVersion>8.0.0</NUnitXmlTestLoggerPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->

@@ -189,7 +189,9 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (workingDirectory)) {
 				log.LogMessage (MessageImportance.Low, "    Working directory: {0}", workingDirectory);
 			} else {
+#pragma warning disable MSBuildTask0002 // Multithreadable tasks don't run external processes; this is verified by the MultiThreadableTaskTest cecil test.
 				log.LogMessage (MessageImportance.Low, "    Current directory: {0}", Environment.CurrentDirectory);
+#pragma warning restore MSBuildTask0002
 			}
 			if (launchEnvironment?.Any () == true) {
 				log.LogMessage (MessageImportance.Low, "    With environment:");
@@ -316,6 +318,8 @@ namespace Xamarin.MacDev.Tasks {
 			if (directories is null)
 				yield break;
 
+			// Multithreadable tasks don't call this method; this is verified by the MultiThreadableTaskTest cecil test.
+#pragma warning disable MSBuildTask0003
 			foreach (var dir in directories) {
 				// Don't try to find files if we don't have a directory in the first place (or it doesn't exist).
 				if (!Directory.Exists (dir))
@@ -324,6 +328,7 @@ namespace Xamarin.MacDev.Tasks {
 				foreach (var file in Directory.EnumerateFiles (dir, "*", SearchOption.AllDirectories))
 					yield return new TaskItem (file);
 			}
+#pragma warning restore MSBuildTask0003
 		}
 
 		protected internal static IEnumerable<ITaskItem> CreateItemsForAllFilesRecursively (IEnumerable<ITaskItem>? directories)

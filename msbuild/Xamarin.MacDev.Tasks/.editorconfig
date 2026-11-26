@@ -1,0 +1,4 @@
+# Settings for Microsoft.Build.TaskAuthoring.Analyzer
+[*.cs]
+# APIs that are never safe in an MSBuild task (such as Console.*). This rule is only informational by default.
+dotnet_diagnostic.MSBuildTask0001.severity = warning

@@ -51,8 +51,6 @@ F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
 F:AdServices.AAAttributionErrorCode.PlatformNotSupported
-F:AppClip.APActivationPayloadErrorCode.Disallowed
-F:AppClip.APActivationPayloadErrorCode.DoesNotMatch
 F:AppKit.NSApplicationPresentationOptions.DisableScreenCornerInteractions
 F:AppKit.NSAttributedStringDocumentType.DocFormat
 F:AppKit.NSAttributedStringDocumentType.Html
@@ -53489,7 +53487,6 @@ T:Accounts.ACLinkedInKey
 T:AdServices.AAAttribution
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
-T:AppClip.APActivationPayloadErrorCode
 T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate
 T:AppKit.DrawerWillResizeContentsDelegate

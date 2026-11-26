@@ -413,7 +413,7 @@ namespace iTunesLibrary {
 		/// <summary>The name of the playlist.</summary>
 		[Field ("ITLibPlaylistPropertyName")]
 		Name,
-		/// <summary>Whether the playlist contains all the items in the library.</summary>
+		/// <summary>Whether every item in the playlist is exposed through this API.</summary>
 		[Field ("ITLibPlaylistPropertyAllItemsPlaylist")]
 		AllItemsPlaylist,
 		/// <summary>The distinguished kind of the playlist, as an <see cref="ITLibDistinguishedPlaylistKind" /> value.</summary>

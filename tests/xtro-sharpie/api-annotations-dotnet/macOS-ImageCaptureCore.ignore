@@ -42,7 +42,6 @@
 !missing-enum! ICReturnPTPDeviceErrorCode not bound
 !missing-enum! ICReturnThumbnailErrorCode not bound
 !missing-enum-native! ICScannerFunctionalUnitState
-!missing-enum-value! ICReturnCode native value ICReturnExFATVolumeInvalid = 21200 not bound
 !missing-field! ICCameraDeviceSupportsHEIF not bound
 !missing-field! ICDeleteCanceled not bound
 !missing-field! ICDeleteErrorCanceled not bound

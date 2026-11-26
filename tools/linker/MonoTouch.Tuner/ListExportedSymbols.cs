@@ -164,10 +164,12 @@ namespace Xamarin.Linker.Steps {
 		{
 			exportedName = null;
 
-			// The product assembly only has one type we may need to keep: XamarinSwiftFunctions
-			if (derivedLinkContext.LinkerConfiguration.Profile.IsProductAssembly (type.Module.Assembly)) {
+			// Keep the native Swift bridge classes when their managed bindings are used.
+			var isProductAssembly = derivedLinkContext.LinkerConfiguration.Profile.IsProductAssembly (type.Module.Assembly);
+			if (isProductAssembly) {
 				switch (type.Name) {
-				case "XamarinSwiftFunctions":
+				case "XamarinStoreKitSwiftFunctions":
+				case "XamarinWidgetKitSwiftFunctions":
 					break;
 				default:
 					return false;
@@ -181,7 +183,7 @@ namespace Xamarin.Linker.Steps {
 			if (!staticRegistrar.TryGetExportedTypeName (type, out exportedName))
 				return false;
 
-			if (derivedLinkContext.App.RequireLinkWithAttributeForObjectiveCClassSearch) {
+			if (!isProductAssembly && derivedLinkContext.App.RequireLinkWithAttributeForObjectiveCClassSearch) {
 				var has_linkwith_attributes = false;
 				if (derivedLinkContext.App.Assemblies.TryGetValue (type.Module.Assembly, out var asm))
 					has_linkwith_attributes = asm.HasLinkWithAttributes;
@@ -266,7 +268,10 @@ namespace Xamarin.Linker.Steps {
 						if (Configuration.InlineDlfcnMethodsEnabled && pinfo.EntryPoint.StartsWith (InlineDlfcnMethodsStep.PInvokePrefix, StringComparison.Ordinal))
 							break;
 						// Same goes for inlined Class.GetHandle calls.
-						if (Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled && pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.PInvokePrefix, StringComparison.Ordinal))
+						if (Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled &&
+							(pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.PInvokePrefix, StringComparison.Ordinal) ||
+							pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.CategoryPInvokePrefix, StringComparison.Ordinal) ||
+							pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.CategoryFrameworkPInvokePrefix, StringComparison.Ordinal)))
 							break;
 					}
 					DerivedLinkContext.App.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);

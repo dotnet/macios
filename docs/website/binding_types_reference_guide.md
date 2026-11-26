@@ -1496,9 +1496,25 @@ Properties flagged with the Field attribute can be of the following types:
 * `CGSize`
 * `System.IntPtr`
 * Enums
+* Delegates (read-only properties for Objective-C block constants)
 
 Setters are not supported for [enums backed by NSString constants](#enum-attributes), 
 but they can be manually bound if needed.
+
+Block constants can be exposed using a named delegate or a `System.Action` /
+`System.Func` delegate. The generated getter loads the block pointer, wraps it
+using the binding generator's block marshaling code, and caches the delegate.
+Use `[NullAllowed]` if the block constant can be null.
+
+```csharp
+delegate UIColor ColorTransformer (UIColor color);
+
+[Static]
+interface ColorTransformers {
+    [Field ("MyColorTransformer", "__Internal")]
+    ColorTransformer Default { get; }
+}
+```
 
 Example:
 

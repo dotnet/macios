@@ -53,7 +53,7 @@ int
 xamarin_coreclr_reference_tracking_have_references_changed_callback ();
 
 void
-xamarin_coreclr_reference_tracking_will_retain_weak_reference ();
+xamarin_coreclr_reference_tracking_synchronize_with_gc ();
 
 void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr);

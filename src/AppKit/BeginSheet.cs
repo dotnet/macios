@@ -71,7 +71,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="NSSavePanel.BeginSheet(NSWindow,NSSavePanelComplete)" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
+		[ObsoletedOSPlatform ("macos10.6", "Use NSSavePanel.BeginSheet (NSWindow, NSSavePanelComplete) instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow)
 		{
 			BeginSheet (directory, fileName, fileTypes, modalForWindow, null, null, IntPtr.Zero);
@@ -87,7 +87,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="NSSavePanel.BeginSheet(NSWindow,NSSavePanelComplete)" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
+		[ObsoletedOSPlatform ("macos10.6", "Use NSSavePanel.BeginSheet (NSWindow, NSSavePanelComplete) instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow, Action onEnded)
 		{
 			var obj = new NSAsyncActionDispatcher (onEnded);

@@ -91,8 +91,9 @@ that's not wanted for a particular diagnostic, add it to
 
 Changing `.editorconfig` rebuilds the platform assemblies.
 
-`make analyze` builds project files generated from the same response files
-using MSBuild, with the availability warnings (CA1416 and CA1422) enabled.
+Availability warnings are enabled in regular platform builds. `make analyze`
+builds project files generated from the same response files using MSBuild, but
+doesn't treat warnings as errors.
 
 #### Enums ####
 

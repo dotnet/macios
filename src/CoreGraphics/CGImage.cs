@@ -372,8 +372,8 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("ios26.0", "Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').")]
-		[ObsoletedOSPlatform ("tvos26.0", "Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').")]
+		[ObsoletedOSPlatform ("ios26.0", "Capture the screen through a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen') instead.")]
+		[ObsoletedOSPlatform ("tvos26.0", "Capture the screen through a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen') instead.")]
 		public static CGImage? ScreenImage {
 			get {
 				return UIKit.UIScreen.MainScreen.Capture ().CGImage;

@@ -68,7 +68,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheet (NSWindow window)
 		{
 			BeginSheet (window, null, null, IntPtr.Zero);
@@ -81,7 +81,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheet (NSWindow window, Action? onEnded)
 		{
 			BeginSheetForResponse (window, r => {
@@ -97,7 +97,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public void BeginSheetForResponse (NSWindow window, Action<nint> onEnded)
 		{
 			BeginSheet (window, new NSAlertDidEndDispatcher (onEnded), NSAlertDidEndDispatcher.Selector, IntPtr.Zero);
@@ -111,7 +111,7 @@ namespace AppKit {
 		///   <para>This method runs a modal session for <see cref="NSApplication.SharedApplication" />.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public nint RunSheetModal (NSWindow window)
 		{
 			return RunSheetModal (window, NSApplication.SharedApplication);
@@ -126,7 +126,7 @@ namespace AppKit {
 		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSWindow,Action{NSModalResponse})" /> instead.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheet (NSWindow, Action<NSModalResponse>) instead.")]
 		public nint RunSheetModal (NSWindow? window, NSApplication application)
 		{
 			if (application is null)

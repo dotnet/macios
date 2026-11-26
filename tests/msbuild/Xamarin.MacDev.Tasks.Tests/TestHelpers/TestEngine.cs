@@ -9,6 +9,8 @@ using Microsoft.Build.Logging;
 namespace Xamarin.MacDev.Tasks {
 
 	public class TestEngine : IBuildEngine, IBuildEngine2, IBuildEngine3, IBuildEngine4 {
+		readonly object logLock = new object ();
+
 		public Logger Logger {
 			get; set;
 		}
@@ -31,25 +33,29 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (Verbose)
 				Console.WriteLine (e.Message);
-			Logger.CustomEvents.Add (e);
+			lock (logLock)
+				Logger.CustomEvents.Add (e);
 		}
 		public void LogErrorEvent (BuildErrorEventArgs e)
 		{
 			if (Verbose)
 				Console.WriteLine (e.Message);
-			Logger.ErrorEvents.Add (e);
+			lock (logLock)
+				Logger.ErrorEvents.Add (e);
 		}
 		public void LogMessageEvent (BuildMessageEventArgs e)
 		{
 			if (Verbose)
 				Console.WriteLine (e.Message);
-			Logger.MessageEvents.Add (e);
+			lock (logLock)
+				Logger.MessageEvents.Add (e);
 		}
 		public void LogWarningEvent (BuildWarningEventArgs e)
 		{
 			if (Verbose)
 				Console.WriteLine (e.Message);
-			Logger.WarningsEvents.Add (e);
+			lock (logLock)
+				Logger.WarningsEvents.Add (e);
 		}
 
 		public int ColumnNumberOfTaskNode {

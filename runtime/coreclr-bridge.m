@@ -368,7 +368,12 @@ xamarin_coreclr_reference_tracking_synchronize_with_gc ()
 void
 xamarin_coreclr_reference_tracking_synchronize_with_gc_end ()
 {
-	__atomic_fetch_sub (&weak_reference_gate_state, (uint32_t) WeakReferenceGateInProgressUnit, __ATOMIC_SEQ_CST);
+	// A GC may have started (and cleared 'WeakReferenceGateChanged') while this call was in progress, so set it again.
+	// This must happen in the same atomic operation as decrementing the count, so that the GC sees at least one of them.
+	uint32_t state = __atomic_load_n (&weak_reference_gate_state, __ATOMIC_SEQ_CST);
+	// On failure, 'state' is updated with the current value, and we try again.
+	while (!__atomic_compare_exchange_n (&weak_reference_gate_state, &state, (state - WeakReferenceGateInProgressUnit) | WeakReferenceGateChanged, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST))
+		;
 }
 
 // This callback is called by the GC to check whether a given managed object

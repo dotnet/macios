@@ -11,11 +11,11 @@ namespace MetalFX {
 	[TV (18, 4)]
 	[Native]
 	public enum MTLFXSpatialScalerColorProcessingMode : long {
-		/// <summary>The input colors are in a perceptual color space.</summary>
+		/// <summary>The input and output textures use a perceptual color space, such as sRGB.</summary>
 		Perceptual = 0,
-		/// <summary>The input colors are in a linear color space.</summary>
+		/// <summary>The input and output textures use a linear color space in the 0 to 1 range.</summary>
 		Linear = 1,
-		/// <summary>The input colors are in a high dynamic range (HDR) color space.</summary>
+		/// <summary>The input and output textures use a high dynamic range (HDR) color space beyond the 0 to 1 range. MetalFX tone-maps the data and can reverse the mapping.</summary>
 		Hdr = 2,
 	}
 

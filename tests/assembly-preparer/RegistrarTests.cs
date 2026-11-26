@@ -93,7 +93,7 @@ public class RegistrarTests : BaseClass {
 		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
 		Assert.That (declaration, Does.Not.Contain ("MyTrimmedProtocol"), "Trimmed protocol with wrapper");
 		Assert.That (declaration, Does.Contain ("MyRetainedProtocol"), "Retained protocol with trimmed conformance");
-		Assert.That (declaration, Does.Contain ("MyExternalProtocol"), "External framework protocol");
+		Assert.That (declaration, Does.Not.Contain ("MyExternalProtocol"), "Trimmed external framework protocol");
 		Assert.That (header, Has.Some.StartsWith ("@protocol MyRetainedProtocol"), "Retained protocol declaration");
 	}
 

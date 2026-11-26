@@ -210,6 +210,7 @@ namespace AddressBook {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<bool, NSError>))]
 		[UnmanagedCallersOnly]
 		static unsafe void TrampolineCompletionHandler (IntPtr block, byte success, IntPtr error)
 		{

@@ -107,6 +107,8 @@ dependencies remain included independently of those references. This preserves
 dependencies declared for use through native code or runtime lookups, even when
 no managed P/Invoke or Objective-C class reference identifies them.
 
-Non-ignored `ReferenceNativeSymbol` class and field roots also contribute their
-frameworks. This includes roots for platform wrapper classes, which do not
-necessarily appear in the registrar implementation list.
+Non-ignored `ReferenceNativeSymbol` class, field, and function roots also
+contribute their frameworks. This includes roots for platform wrapper classes,
+which do not necessarily appear in the registrar implementation list. Function
+roots are matched against P/Invokes in external modules, not `__Internal`,
+which refers to the executable itself.

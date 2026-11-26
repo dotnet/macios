@@ -53,6 +53,7 @@ namespace UIKit {
 			return This.RegisterForTraitChanges (traits, handler);
 		}
 
+		[UserDelegateType (typeof (Action<IUITraitEnvironment, UITraitCollection>))]
 		[UnmanagedCallersOnly]
 		private static void TraitChangeHandler (IntPtr block, NativeHandle environment, NativeHandle previousCollection)
 		{
@@ -419,7 +420,7 @@ namespace UIKit {
 				}
 
 				if (state is not null) {
-					state.Observable.UnregisterForTraitChanges (state.Registration);
+					state.Observable.UnregisterForTraitChanges (this);
 					Release ();
 				}
 				GC.SuppressFinalize (this);

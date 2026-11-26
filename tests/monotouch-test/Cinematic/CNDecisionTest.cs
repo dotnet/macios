@@ -46,8 +46,10 @@ namespace MonoTouchFixtures.Cinematic {
 #else
 			TestRuntime.AssertXcodeVersion (15, 0);
 #endif
+			TestRuntime.AssertNotSimulator ("Cinematic is not available in the simulator.");
 
-			Assert.Throws<ArgumentOutOfRangeException> (() => new CNDecision (new CMTime (10, 30), 42, true, (CNDecisionIdentifierType) 42));
+			var exception = Assert.Throws<ArgumentOutOfRangeException> (() => new CNDecision (new CMTime (10, 30), 42, true, (CNDecisionIdentifierType) 42));
+			Assert.That (exception.ParamName, Is.EqualTo ("identifierType"), "ParamName");
 		}
 	}
 }

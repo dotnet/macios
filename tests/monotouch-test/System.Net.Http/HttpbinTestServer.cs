@@ -25,65 +25,11 @@ namespace MonoTests.System.Net.Http {
 
 		static string Start ()
 		{
-			// IANA suggested range for dynamic/private ports
-			const int MinPort = 49152;
-			const int MaxPort = 65535;
-
-			HttpListener? listener = null;
-			int port = -1;
-
-			for (var p = MinPort; p < MaxPort; p++) {
-				listener = new HttpListener ();
-				listener.Prefixes.Add ($"http://127.0.0.1:{p}/");
-				try {
-					listener.Start ();
-					port = p;
-					break;
-				} catch {
-					// port in use, try next
-					listener.Close ();
-					listener = null;
-				}
-			}
-
-			if (listener is null || port == -1)
-				throw new InvalidOperationException ("HttpbinTestServer: Could not find an available port.");
-
-			Task.Run (async () => {
-				try {
-					while (listener.IsListening) {
-						var context = await listener.GetContextAsync ();
-						_ = Task.Run (() => {
-							try {
-								HandleRequest (context);
-							} catch (Exception ex) {
-								try {
-									context.Response.StatusCode = 500;
-									var body = Encoding.UTF8.GetBytes (ex.ToString ());
-									context.Response.OutputStream.Write (body, 0, body.Length); // CodeQL [SM00430] This is a test server that only listens on localhost.
-								} catch {
-									// nothing we can do
-								}
-							} finally {
-								try {
-									context.Response.Close ();
-								} catch {
-									// nothing we can do
-								}
-							}
-						});
-					}
-				} catch (ObjectDisposedException) {
-					// listener was stopped
-				} catch (HttpListenerException) {
-					// listener was stopped
-				}
-			});
-
-			return $"http://127.0.0.1:{port}";
+			var server = new LoopbackHttpServer (HandleRequest);
+			return server.BaseUrl;
 		}
 
-		static void HandleRequest (HttpListenerContext context)
+		static void HandleRequest (LoopbackHttpContext context)
 		{
 			var path = context.Request.Url!.AbsolutePath;
 
@@ -116,7 +62,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET / or GET /get: return request info as JSON (including headers)
-		static void HandleGet (HttpListenerContext context)
+		static void HandleGet (LoopbackHttpContext context)
 		{
 			var headerLines = new List<string> ();
 			foreach (string key in context.Request.Headers) {
@@ -129,7 +75,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// POST /post: echo the posted body and request info
-		static void HandlePost (HttpListenerContext context)
+		static void HandlePost (LoopbackHttpContext context)
 		{
 			string data;
 			using (var reader = new StreamReader (context.Request.InputStream, context.Request.ContentEncoding)) {
@@ -141,7 +87,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /cookies: echo cookies from request as JSON
-		static void HandleCookies (HttpListenerContext context)
+		static void HandleCookies (LoopbackHttpContext context)
 		{
 			var cookieLines = new List<string> ();
 			var cookieHeader = context.Request.Headers ["Cookie"];
@@ -163,7 +109,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /cookies/set?name=value: set cookie(s) via Set-Cookie header and redirect to /cookies
-		static void HandleSetCookies (HttpListenerContext context)
+		static void HandleSetCookies (LoopbackHttpContext context)
 		{
 			var queryString = context.Request.QueryString;
 			foreach (string? key in queryString) {
@@ -177,7 +123,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /redirect/{n}: chain of redirects, ending at /get
-		static void HandleRedirect (HttpListenerContext context)
+		static void HandleRedirect (LoopbackHttpContext context)
 		{
 			var path = context.Request.Url!.AbsolutePath;
 			var countStr = path.Substring ("/redirect/".Length);
@@ -194,7 +140,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /redirect-to?url={url}: single redirect to the specified URL
-		static void HandleRedirectTo (HttpListenerContext context)
+		static void HandleRedirectTo (LoopbackHttpContext context)
 		{
 			var url = context.Request.QueryString ["url"];
 			if (url is null) {
@@ -207,7 +153,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /basic-auth/{user}/{pass}: HTTP Basic authentication
-		static void HandleBasicAuth (HttpListenerContext context)
+		static void HandleBasicAuth (LoopbackHttpContext context)
 		{
 			var path = context.Request.Url!.AbsolutePath;
 			var parts = path.Substring ("/basic-auth/".Length).Split ('/');
@@ -242,7 +188,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /digest-auth/auth/{user}/{pass}: HTTP Digest authentication
-		static void HandleDigestAuth (HttpListenerContext context)
+		static void HandleDigestAuth (LoopbackHttpContext context)
 		{
 			var path = context.Request.Url!.AbsolutePath;
 			var parts = path.Substring ("/digest-auth/auth/".Length).Split ('/');
@@ -292,7 +238,7 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		// GET /gzip: return gzip-compressed JSON response
-		static void HandleGzip (HttpListenerContext context)
+		static void HandleGzip (LoopbackHttpContext context)
 		{
 			var json = "{\"gzipped\": true, \"method\": \"GET\", \"origin\": \"127.0.0.1\"}";
 			var jsonBytes = Encoding.UTF8.GetBytes (json);
@@ -305,22 +251,20 @@ namespace MonoTests.System.Net.Http {
 			var compressed = ms.ToArray ();
 			context.Response.ContentType = "application/json";
 			context.Response.AddHeader ("Content-Encoding", "gzip");
-			context.Response.ContentLength64 = compressed.Length;
 			context.Response.OutputStream.Write (compressed, 0, compressed.Length);
 		}
 
 		// GET /html: return an HTML response with Content-Length
-		static void HandleHtml (HttpListenerContext context)
+		static void HandleHtml (LoopbackHttpContext context)
 		{
 			const string html = "<html><head><title>Test</title></head><body><h1>Herman Melville - Moby Dick</h1></body></html>";
 			var bytes = Encoding.UTF8.GetBytes (html);
 			context.Response.ContentType = "text/html; charset=utf-8";
-			context.Response.ContentLength64 = bytes.Length;
 			context.Response.OutputStream.Write (bytes, 0, bytes.Length);
 		}
 
 		// GET /status/{code}: return a response with the specified HTTP status code
-		static void HandleStatus (HttpListenerContext context)
+		static void HandleStatus (LoopbackHttpContext context)
 		{
 			var path = context.Request.Url!.AbsolutePath;
 			var codeStr = path.Substring ("/status/".Length);
@@ -330,11 +274,10 @@ namespace MonoTests.System.Net.Http {
 				context.Response.StatusCode = 400;
 		}
 
-		static void WriteJsonResponse (HttpListenerContext context, string json)
+		static void WriteJsonResponse (LoopbackHttpContext context, string json)
 		{
 			var bytes = Encoding.UTF8.GetBytes (json);
 			context.Response.ContentType = "application/json";
-			context.Response.ContentLength64 = bytes.Length;
 			context.Response.StatusCode = 200;
 			context.Response.OutputStream.Write (bytes, 0, bytes.Length);
 		}

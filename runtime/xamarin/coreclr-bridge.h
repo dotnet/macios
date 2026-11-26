@@ -56,6 +56,9 @@ void
 xamarin_coreclr_reference_tracking_synchronize_with_gc ();
 
 void
+xamarin_coreclr_reference_tracking_synchronize_with_gc_end ();
+
+void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr);
 
 void

@@ -201,9 +201,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			var promotedCount = 0;
 			var lostCount = 0;
 
+			var promoted = new IntPtr [objectCount];
 			for (var round = 0; round < rounds; round++) {
 				var promoter = CreatePromoter (objectCount);
-				var promoted = new IntPtr [objectCount];
 				x_weak_promoter_start (promoter);
 				GC.Collect ();
 				x_weak_promoter_join (promoter, promoted);
@@ -220,19 +220,23 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			}
 
+			Assert.That (promotedCount, Is.GreaterThan (0), "Promoted objects");
 			Assert.That (lostCount, Is.EqualTo (0), $"Lost peers ({promotedCount} objects promoted in {rounds} rounds)");
 		}
 
 		[MethodImpl (MethodImplOptions.NoInlining)]
 		static IntPtr CreatePromoter (int objectCount)
 		{
+			var peers = new CustomPeer [objectCount];
 			var handles = new IntPtr [objectCount];
 			for (var i = 0; i < objectCount; i++) {
-				var peer = new CustomPeer ();
-				peer.State = i + 1;
-				handles [i] = peer.Handle;
+				peers [i] = new CustomPeer ();
+				peers [i].State = i + 1;
+				handles [i] = peers [i].Handle;
 			}
-			return x_weak_promoter_create (handles, objectCount, 2000);
+			var promoter = x_weak_promoter_create (handles, objectCount, 2000);
+			GC.KeepAlive (peers);
+			return promoter;
 		}
 
 		[Preserve (AllMembers = true)]

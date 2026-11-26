@@ -1584,12 +1584,14 @@ struct x_weak_promoter {
 	int count;
 	uint64_t interval_ns;
 	pthread_t thread;
+	dispatch_semaphore_t started;
 };
 
 static void *
 x_weak_promoter_thread (void *arg)
 {
 	struct x_weak_promoter *promoter = (struct x_weak_promoter *) arg;
+	dispatch_semaphore_signal (promoter->started);
 	uint64_t next = clock_gettime_nsec_np (CLOCK_UPTIME_RAW);
 	for (int i = 0; i < promoter->count; i++) {
 		// Spread the promotions out in time, so that some of them happen while the GC is running.
@@ -1618,7 +1620,11 @@ void
 x_weak_promoter_start (void *promoter)
 {
 	struct x_weak_promoter *p = (struct x_weak_promoter *) promoter;
-	pthread_create (&p->thread, NULL, x_weak_promoter_thread, p);
+	p->started = dispatch_semaphore_create (0);
+	if (pthread_create (&p->thread, NULL, x_weak_promoter_thread, p) != 0)
+		abort ();
+	// Make sure the thread is running before the caller starts a GC.
+	dispatch_semaphore_wait (p->started, DISPATCH_TIME_FOREVER);
 }
 
 // The caller owns the returned (retained) objects.
@@ -1631,6 +1637,7 @@ x_weak_promoter_join (void *promoter, void **promoted)
 		promoted [i] = p->promoted [i];
 		objc_destroyWeak (&p->slots [i]);
 	}
+	dispatch_release (p->started);
 	free (p->slots);
 	free (p->promoted);
 	free (p);

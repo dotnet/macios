@@ -886,11 +886,15 @@ xamarin_retainWeakReference_trampoline (id self, SEL sel)
 
 	// Do not allow any weak references to be resolved if the managed wrapper has been scheduled for finalization,
 	// all kinds of bad things happen when native code tries to use such an object.
-	if (isInFinalizerQueue)
-		return FALSE;
+	BOOL rv = FALSE;
+	if (!isInFinalizerQueue) {
+		/* Invoke the real retainWeakReference method */
+		rv = xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+	}
 
-	/* Invoke the real release method */
-	return xamarin_invoke_objc_method_implementation_BOOL (self, sel, (IMP) xamarin_retainWeakReference_trampoline);
+	xamarin_coreclr_reference_tracking_synchronize_with_gc_end ();
+
+	return rv;
 }
 
 static const char *associated_key = "x"; // the string value doesn't matter, only the pointer value.

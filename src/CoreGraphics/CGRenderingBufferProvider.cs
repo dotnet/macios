@@ -60,6 +60,7 @@ namespace CoreGraphics {
 
 		public delegate IntPtr LockPointerCallback (IntPtr info);
 
+		[UserDelegateType (typeof (LockPointerCallback))]
 		[UnmanagedCallersOnly]
 		unsafe static IntPtr LockPointerBlock (BlockLiteral* block, IntPtr info)
 		{
@@ -71,6 +72,7 @@ namespace CoreGraphics {
 
 		public delegate void UnlockPointerCallback (IntPtr info, IntPtr pointer);
 
+		[UserDelegateType (typeof (UnlockPointerCallback))]
 		[UnmanagedCallersOnly]
 		unsafe static void UnlockPointerBlock (BlockLiteral* block, IntPtr info, IntPtr pointer)
 		{
@@ -81,6 +83,7 @@ namespace CoreGraphics {
 
 		public delegate void ReleaseInfoCallback (IntPtr info);
 
+		[UserDelegateType (typeof (ReleaseInfoCallback))]
 		[UnmanagedCallersOnly]
 		unsafe static void ReleaseInfoBlock (BlockLiteral* block, IntPtr info)
 		{

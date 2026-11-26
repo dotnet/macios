@@ -19,77 +19,27 @@ namespace MonoTouchFixtures.CoreFoundation {
 	[Preserve (AllMembers = true)]
 	public class ProxyTest {
 #if !MONOMAC
-		HttpListener listener;
-		int port;
-		Thread listener_thread;
+		LoopbackHttpServer server;
 		[OneTimeSetUp]
 		public void Setup ()
 		{
-			var listening = new ManualResetEvent (false);
-			listener_thread = new Thread (() => {
-				try {
-					listener = new HttpListener ();
-
-					// Try and find an unused port
-					int attemptsLeft = 50;
-					Random r = new Random ((int) DateTime.Now.Ticks);
-					while (attemptsLeft-- > 0) {
-						var newPort = r.Next (49152, 65535); // The suggested range for dynamic ports is 49152-65535 (IANA)
-						listener.Prefixes.Clear ();
-						listener.Prefixes.Add ("http://*:" + newPort + "/");
-						try {
-							listener.Start ();
-							listening.Set ();
-							port = newPort;
-							break;
-						} catch (Exception ex) {
-							Console.WriteLine ($"    Failed to listen on port {newPort}: {ex.Message}");
-						}
-					}
-
-					try {
-						//Console.WriteLine ($"    Test log server listening on: localhost:{port}");
-						do {
-							var context = listener.GetContext ();
-							var request = context.Request;
-							var pacPath = Path.Combine (NSBundle.MainBundle.ResourcePath, request.RawUrl.Substring (1));
-							pacPath = Path.GetFullPath (pacPath);
-							if (!pacPath.StartsWith (Path.GetFullPath (NSBundle.MainBundle.ResourcePath) + Path.DirectorySeparatorChar))
-								throw new InvalidOperationException ($"Invalid access: {request.RawUrl}");
-							Console.WriteLine ($"    Serving {pacPath}");
-							var buf = File.ReadAllBytes (pacPath);
-							context.Response.ContentLength64 = buf.Length;
-							context.Response.OutputStream.Write (buf, 0, buf.Length);
-							context.Response.OutputStream.Close ();
-							context.Response.Close ();
-						} while (true);
-					} catch (Exception e) {
-						if (e is HttpListenerException hle && ((uint) hle.HResult) == 0x80004005) {
-							// Console.WriteLine ($"    Listener closed successfully");
-						} else {
-							Console.WriteLine ($"    Exception during request processing: {e}");
-						}
-					}
-				} catch (Exception e) {
-					Console.WriteLine (e);
-				}
-				// Console.WriteLine ("    Listener thread completed");
+			server = new LoopbackHttpServer (context => {
+				var request = context.Request;
+				var pacPath = Path.Combine (NSBundle.MainBundle.ResourcePath, request.RawUrl.Substring (1));
+				pacPath = Path.GetFullPath (pacPath);
+				if (!pacPath.StartsWith (Path.GetFullPath (NSBundle.MainBundle.ResourcePath) + Path.DirectorySeparatorChar))
+					throw new InvalidOperationException ($"Invalid access: {request.RawUrl}");
+				Console.WriteLine ($"    Serving {pacPath}");
+				var buf = File.ReadAllBytes (pacPath);
+				context.Response.OutputStream.Write (buf, 0, buf.Length);
 			});
-			listener_thread.IsBackground = true;
-			listener_thread.Start ();
-			if (!listening.WaitOne (TimeSpan.FromSeconds (15))) {
-				TestRuntime.IgnoreInCI ("This fails on CI once in a while, so just ignore those.");
-				Assert.Fail ("Listener thread didn't finish in 15 seconds.");
-			}
 		}
 
 		[OneTimeTearDown]
 		public void TearDown ()
 		{
-			listener.Stop ();
-			listener_thread.Join (TimeSpan.FromSeconds (1));
-			listener = null;
-			listener_thread = null;
+			server.Dispose ();
+			server = null;
 		}
 
 		[Test]
@@ -208,7 +158,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestPACParsingUrl ()
 		{
 			NSError error;
-			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
+			var pacUri = new Uri ($"{server.BaseUrl}/example.pac");
 			var targetUri = NetworkResources.XamarinUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl (pacUri, targetUri, out error);
 			Assert.That (error, Is.Null, "Null error");
@@ -221,7 +171,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TestPacParsingUrlNoProxy ()
 		{
 			NSError error;
-			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
+			var pacUri = new Uri ($"{server.BaseUrl}/example.pac");
 			var targetUri = NetworkResources.MicrosoftUri;
 			var proxies = global::CoreFoundation.CFNetwork.ExecuteProxyAutoConfigurationUrl (pacUri, targetUri, out error);
 			Assert.That (error, Is.Null, "Null error");
@@ -237,7 +187,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			NSError error = null;
 			NSObject cbClient = null;
 			bool done = false;
-			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
+			var pacUri = new Uri ($"{server.BaseUrl}/example.pac");
 			var targetUri = NetworkResources.XamarinUri;
 
 			Exception ex;
@@ -271,7 +221,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			NSError error = null;
 			NSObject cbClient = null;
 			bool done = false;
-			var pacUri = new Uri ($"http://localhost:{port}/example.pac");
+			var pacUri = new Uri ($"{server.BaseUrl}/example.pac");
 			var targetUri = NetworkResources.MicrosoftUri;
 
 			Exception ex;

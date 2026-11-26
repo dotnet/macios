@@ -23,6 +23,7 @@ namespace Security {
 
 		// This class bridges native block invocations that call into C#
 		static internal class ActionTrampoline {
+			[UserDelegateType (typeof (Action<NSError>))]
 			[UnmanagedCallersOnly]
 			internal static unsafe void Invoke (IntPtr block, IntPtr obj)
 			{
@@ -85,6 +86,7 @@ namespace Security {
 		// it for our use here.
 		//
 		static internal class ArrayErrorActionTrampoline {
+			[UserDelegateType (typeof (Action<NSDictionary [], NSError>))]
 			[UnmanagedCallersOnly]
 			internal static unsafe void Invoke (IntPtr block, IntPtr array, IntPtr err)
 			{

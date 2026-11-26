@@ -1170,6 +1170,7 @@ namespace CoreText {
 
 		public delegate bool CTFontDescriptorProgressHandler (CTFontDescriptorMatchingState state, CTFontDescriptorMatchingProgress progress);
 
+		[UserDelegateType (typeof (Func<CTFontDescriptorMatchingState, NSDictionary, bool>))]
 		[UnmanagedCallersOnly]
 		static byte MatchFontDescriptorsHandler (IntPtr block, CTFontDescriptorMatchingState state, IntPtr progress)
 		{

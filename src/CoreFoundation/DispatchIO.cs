@@ -55,6 +55,7 @@ namespace CoreFoundation {
 		{
 		}
 
+		[UserDelegateType (typeof (DispatchIOHandler))]
 		[UnmanagedCallersOnly]
 		static void Trampoline_DispatchReadWriteHandler (IntPtr block, IntPtr dispatchData, int error)
 		{

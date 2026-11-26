@@ -469,6 +469,7 @@ namespace MediaAccessibility {
 			}
 		}
 
+		[UserDelegateType (typeof (Action))]
 		[UnmanagedCallersOnly]
 		static void Callback (IntPtr block)
 		{

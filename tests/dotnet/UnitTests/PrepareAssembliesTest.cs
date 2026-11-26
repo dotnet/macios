@@ -85,10 +85,12 @@ class MainClass {{
 			}
 		}
 
-		[TestCase ("copy", true)]
-		[TestCase ("copyused", false)]
-		[TestCase ("copyused", true)]
-		public void TypeForwarderInUntrimmedAssembly (string trimMode, bool rewrite)
+		[TestCase ("copy", true, true)]
+		[TestCase ("copyused", false, true)]
+		[TestCase ("copyused", true, true)]
+		[TestCase ("copyused", false, false)]
+		[TestCase ("copyused", true, false)]
+		public void TypeForwarderInUntrimmedAssembly (string trimMode, bool rewrite, bool prepareAssemblies)
 		{
 			const ApplePlatform platform = ApplePlatform.MacOSX;
 			const string runtimeIdentifier = "osx-arm64";
@@ -171,22 +173,27 @@ class MainClass {
 			var properties = GetDefaultProperties (runtimeIdentifier);
 			properties ["Configuration"] = "Release";
 			properties ["LinkMode"] = "Full";
+			properties ["PrepareAssemblies"] = prepareAssemblies ? "true" : "false";
 			properties ["InlineDlfcnMethods"] = rewrite ? "strict" : "disabled";
 			var result = DotNet.AssertBuild (appProject, properties);
 			AssertThatLinkerExecuted (result);
 
 			var preparedPath = Path.Combine (GetObjDir (appProject, platform, runtimeIdentifier, "Release"), "prepared-assemblies", "Forwarder.dll");
-			Assert.That (File.Exists (preparedPath), Is.EqualTo (rewrite), "Untrimmed assembly rewritten by the preparer");
+			Assert.That (File.Exists (preparedPath), Is.EqualTo (rewrite && prepareAssemblies), "Untrimmed assembly rewritten by the preparer");
 			var inputPath = Path.Combine (forwarderDir, "bin", "Release", platform.ToFramework (), "Forwarder.dll");
-			using var prepared = AssemblyDefinition.ReadAssembly (rewrite ? preparedPath : inputPath);
-			Assert.That (prepared.MainModule.Types.Any (v => v.Name == "Dlfcn"), Is.EqualTo (rewrite), "Dlfcn calls rewritten");
+			using var prepared = AssemblyDefinition.ReadAssembly (rewrite && prepareAssemblies ? preparedPath : inputPath);
+			Assert.That (prepared.MainModule.Types.Any (v => v.Name == "Dlfcn"), Is.EqualTo (rewrite && prepareAssemblies), "Dlfcn calls rewritten by the preparer");
 			Assert.That (prepared.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Target" && v.IsForwarder), Is.True, "Prepared forwarder");
 			Assert.That (prepared.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Referenced" && v.IsForwarder), Is.True, "Prepared referenced forwarder");
 
 			var assemblyPath = Path.Combine (GetAppPath (appProject, platform, runtimeIdentifier, "Release"), GetRelativeAssemblyDirectory (platform), "Forwarder.dll");
 			using var linked = AssemblyDefinition.ReadAssembly (assemblyPath);
+			if (!prepareAssemblies)
+				Assert.That (linked.MainModule.Types.Any (v => v.Name == "Dlfcn"), Is.EqualTo (rewrite), "Dlfcn calls rewritten by the linker");
+			// With assembly preparation:
 			// ILLink removes unreferenced forwarders from CopyUsed assemblies, whether or not they were rewritten.
-			Assert.That (linked.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Target" && v.IsForwarder), Is.EqualTo (trimMode == "copy"), "Linked forwarder");
+			// The legacy linker preserves all forwarders when it rewrites an assembly.
+			Assert.That (linked.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Target" && v.IsForwarder), Is.EqualTo (trimMode == "copy" || (!prepareAssemblies && rewrite)), "Linked forwarder");
 			Assert.That (linked.MainModule.ExportedTypes.Any (v => v.FullName == "Forwarded.Referenced" && v.IsForwarder), Is.True, "Linked referenced forwarder");
 		}
 

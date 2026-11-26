@@ -1649,8 +1649,6 @@ F:ClassKit.CLSProgressReportingCapabilityKind.Duration
 F:ClassKit.CLSProgressReportingCapabilityKind.Percent
 F:ClassKit.CLSProgressReportingCapabilityKind.Quantity
 F:ClassKit.CLSProgressReportingCapabilityKind.Score
-F:CloudKit.CKErrorCode.ParticipantAlreadyInvited
-F:CloudKit.CKErrorCode.TemporarilyUnavailable
 F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
 F:CloudKit.CKRecordZoneEncryptionScope.Record
 F:CloudKit.CKRecordZoneEncryptionScope.Zone

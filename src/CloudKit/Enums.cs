@@ -122,9 +122,11 @@ namespace CloudKit {
 		ParticipantMayNeedVerification = 33,
 		/// <summary>Indicates that the response was lost.</summary>
 		ResponseLost = 34,
-		/// <summary>To be added.</summary>
+		/// <summary>The asset isn't available.</summary>
 		AssetNotAvailable = 35,
+		/// <summary>The service is temporarily unavailable. Try again later.</summary>
 		TemporarilyUnavailable = 36,
+		/// <summary>The participant has already been invited to the share.</summary>
 		ParticipantAlreadyInvited = 37,
 	}
 

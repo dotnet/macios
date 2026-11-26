@@ -11,9 +11,9 @@ namespace AppClip {
 	[ErrorDomain ("APActivationPayloadErrorDomain")]
 	[Native]
 	public enum APActivationPayloadErrorCode : long {
-		/// <summary>The payload URL isn't allowed.</summary>
+		/// <summary>The user denied location access, or the App Clip wasn't launched from an NFC tag or a visual code.</summary>
 		Disallowed = 1,
-		/// <summary>The payload URL doesn't match the specified region.</summary>
+		/// <summary>The URL doesn't match the registered App Clip URL.</summary>
 		DoesNotMatch = 2,
 	}
 

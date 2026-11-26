@@ -162,8 +162,6 @@
 
 ## Added in Xcode 10.2 Final but deprecated
 
-!missing-release-attribute-on-return-value! AppKit.NSDictionaryControllerKeyValuePair AppKit.NSDictionaryController::get_NewObject()'s selector's ('newObject') Objective-C method family ('new') indicates that the native method returns a retained object, and as such a '[return: Release]' attribute is required.
-!missing-release-attribute-on-return-value! Foundation.NSObject AppKit.NSObjectController::get_NewObject()'s selector's ('newObject') Objective-C method family ('new') indicates that the native method returns a retained object, and as such a '[return: Release]' attribute is required.
 
 # Initial result from new rule extra-null-allowed
 !extra-null-allowed! 'AppKit.NSTextField AppKit.NSTextField::CreateTextField(System.String)' has a extraneous [NullAllowed] on parameter #0

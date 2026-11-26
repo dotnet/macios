@@ -5529,9 +5529,6 @@ F:PushToTalk.PTServiceStatus.Unavailable
 F:PushToTalk.PTTransmissionMode.FullDuplex
 F:PushToTalk.PTTransmissionMode.HalfDuplex
 F:PushToTalk.PTTransmissionMode.ListenOnly
-F:QuickLook.QLPreviewItemEditingMode.CreateCopy
-F:QuickLook.QLPreviewItemEditingMode.Disabled
-F:QuickLook.QLPreviewItemEditingMode.UpdateContents
 F:QuickLookThumbnailing.QLThumbnailError.GenerationFailed
 F:QuickLookThumbnailing.QLThumbnailError.NoCachedThumbnail
 F:QuickLookThumbnailing.QLThumbnailError.NoCloudThumbnail
@@ -58256,7 +58253,6 @@ T:QuickLook.QLEditingMode
 T:QuickLook.QLFilePreviewRequest
 T:QuickLook.QLFrame
 T:QuickLook.QLOpenUrl
-T:QuickLook.QLPreviewItemEditingMode
 T:QuickLook.QLPreviewProvider
 T:QuickLook.QLPreviewReply
 T:QuickLook.QLPreviewReplyAttachment

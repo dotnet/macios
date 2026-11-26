@@ -133,12 +133,16 @@ namespace QuickLook {
 		IQLPreviewItem GetPreviewItem (QLPreviewController controller, nint index);
 	}
 
+	/// <summary>Enumerates how a user can edit the item shown in a preview.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum QLPreviewItemEditingMode : long {
+		/// <summary>The user can't edit the item.</summary>
 		Disabled = 0,
+		/// <summary>The user can edit the item, and the changes update the original item.</summary>
 		UpdateContents,
+		/// <summary>The user can edit the item, and the changes are saved to a copy of the original item.</summary>
 		CreateCopy,
 	}
 

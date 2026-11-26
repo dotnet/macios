@@ -42,6 +42,10 @@ This target is part of the [.NET SDK device selection specification](https://git
 $ dotnet run --device UDID
 ```
 
+On Windows, the devices are queried on the remote Mac using the remote build
+connection. As with remote builds, this requires a password or an encrypted
+SSH key; SSH-agent identities and unencrypted keys aren't supported.
+
 Added in .NET 11.
 
 ## ConfigureMac
@@ -187,3 +191,112 @@ on a default simulator/device. A specific deployment target can be set by using 
 ```dotnetcli
 dotnet build -t:Run project.csproj -p:Device=<udid>
 ```
+
+## StreamDeviceLog
+
+Streams the system log of an iOS device or simulator on a remote Mac to the
+caller through a named pipe. Set [`Device`](build-properties.md#device) to the
+UDID or name of the device, and
+[`DeviceLogPipeName`](build-properties.md#devicelogpipename) to the name of
+the pipe.
+
+This is a long-running target. It uses the same connection and authentication
+properties as [`ConfigureMac`](#configuremac): an SSH key, then the SSH agent,
+then a password file. It also uses the same pipe and message format as
+[`SubscribeToDeviceUpdates`](#subscribetodeviceupdates), except that:
+
+- `Ready` has a `device` field instead of `devices`.
+- There are no `Update` messages. Each log line is sent as a `Log` message
+  instead:
+
+  ```json
+  {"version":1,"type":"Log","log":{"raw":"...","date":"...","deviceName":"...","tag":"...","pid":"...","level":"...","message":"..."}}
+  ```
+
+  Only `raw` is always present. The other fields are omitted when the line
+  can't be parsed.
+
+If the caller reads too slowly, log lines are dropped and a non-fatal `Error`
+message is sent.
+
+```shell
+DOTNET_CLI_USE_MSBUILD_SERVER=0 dotnet build MyApp.csproj -f net12.0-ios -t:StreamDeviceLog -nodeReuse:false -p:DeviceLogPipeName=<pipe-name> -p:Device=<udid> -p:ServerAddress=mac.example.com -p:ServerUser=remote-user
+```
+
+Added in .NET 12.
+
+## SubscribeToDeviceUpdates
+
+Sends the list of available devices and simulators to the caller through a
+named pipe, and sends the list again whenever it changes. The list is the same
+as the one returned by [`ComputeAvailableDevices`](#computeavailabledevices).
+Set [`DeviceUpdatesPipeName`](build-properties.md#deviceupdatespipename) to
+the name of the pipe.
+
+This is a long-running target: it only returns once the caller stops it.
+Run it in its own MSBuild invocation, and disable node reuse and the MSBuild
+server so the process ends with the target. Don't run it from inside an IDE's
+build:
+
+```shell
+DOTNET_CLI_USE_MSBUILD_SERVER=0 dotnet build MyApp.csproj -f net12.0-ios -t:SubscribeToDeviceUpdates -nodeReuse:false -p:DeviceUpdatesPipeName=<pipe-name> -p:ServerAddress=mac.example.com -p:ServerUser=remote-user
+```
+
+The target uses the same connection and authentication properties as
+[`ConfigureMac`](#configuremac): an SSH key, then the SSH agent, then a
+password file. Each list of devices is computed by running
+`ComputeAvailableDevices` on the project, so on Windows the properties needed
+for remote builds, such as `RemoteDotNetRoot` and a password or an encrypted
+key, must be set too. `TargetFramework`, `Configuration`, and a
+`RuntimeIdentifier` set by the user are passed to `ComputeAvailableDevices`.
+
+### Pipe
+
+The caller creates the pipe server before starting the build. Use a random
+name, and only allow the current user to connect. In .NET:
+
+```csharp
+var pipe = new NamedPipeServerStream (name, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+```
+
+The target connects to the pipe as a client, and fails if it can't connect
+within 30 seconds. The name is a pipe name, not a path.
+
+### Messages
+
+Messages are UTF-8 JSON objects, one per line (each line ends with `\n`, and
+is at most 1 MiB). Every message has `"version":1` and a `type`. Ignore fields
+and messages you don't recognize.
+
+The target sends these messages:
+
+| Type      | When                                                         | Fields                                    |
+|-----------|--------------------------------------------------------------|-------------------------------------------|
+| `Started` | First, right after connecting to the pipe, before connecting to the Mac. | `operation`: `DeviceUpdates` or `DeviceLog` |
+| `Ready`   | Once, when the subscription is active.                       | `devices`: the full list of devices        |
+| `Update`  | Whenever the list of devices changes.                        | `devices`: the full list of devices        |
+| `Error`   | When something fails.                                        | `code`, `message`, `fatal`                 |
+| `Ended`   | Last, if the pipe is still open.                             | `reason`: `Stopped`, `Disconnected`, `Failed` or `Completed` |
+
+Each device has the same item spec and metadata as the `@(Devices)` items
+returned by `ComputeAvailableDevices`. Metadata values are strings:
+
+```json
+{"version":1,"type":"Ready","devices":[{"itemSpec":"<udid>","metadata":{"Description":"iPhone 16 - iOS 26.0","Type":"Simulator","UDID":"<udid>"}}]}
+```
+
+Wait for `Ready` before using the list; the target doesn't return when it's
+ready. A non-fatal `Error`, for example when a list couldn't be computed,
+doesn't stop the subscription. A fatal `Error` is followed by `Ended` with the
+reason `Failed`, and the build fails.
+
+To stop the target, send `{"version":1,"type":"Stop"}` or close the pipe. This
+works at any time, including while connecting to the Mac. The target then
+disconnects within 10 seconds and the build succeeds.
+
+The target checks the output of `simctl` and `devicectl` on the Mac for
+changes every 3 seconds; it doesn't receive notifications from the Mac. Updates
+can therefore take a few seconds to arrive, and a change that is undone within
+3 seconds might not be reported.
+
+Added in .NET 12.

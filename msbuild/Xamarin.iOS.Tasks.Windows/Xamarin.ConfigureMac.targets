@@ -7,6 +7,8 @@
 
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.Messaging.Remote.Tasks.ConfigureMac" AssemblyFile="$(MSBuildThisFileDirectory)ConfigureMac/$(_ConfigureMacTaskFramework)/Xamarin.Messaging.Remote.Tasks.dll" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.Messaging.Remote.Tasks.StreamDeviceLog" AssemblyFile="$(MSBuildThisFileDirectory)ConfigureMac/$(_ConfigureMacTaskFramework)/Xamarin.Messaging.Remote.Tasks.dll" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.Messaging.Remote.Tasks.SubscribeToDeviceUpdates" AssemblyFile="$(MSBuildThisFileDirectory)ConfigureMac/$(_ConfigureMacTaskFramework)/Xamarin.Messaging.Remote.Tasks.dll" />
 
 	<Target Name="ConfigureMac" Returns="$(RemoteDotNetRoot)">
 		<PropertyGroup>
@@ -55,5 +57,57 @@
 		<PropertyGroup>
 			<_ConfiguredMacInCurrentInvocation>true</_ConfiguredMacInCurrentInvocation>
 		</PropertyGroup>
+	</Target>
+
+	<!-- Long-running target: it only returns once the caller sends Stop or closes the pipe. See docs/building-apps/build-targets.md. -->
+	<Target Name="SubscribeToDeviceUpdates">
+		<Error Condition="'$(DeviceUpdatesPipeName)' == ''" Text="The 'DeviceUpdatesPipeName' property must be set to the name of a named pipe created by the caller." />
+		<PropertyGroup>
+			<ServerSshPort Condition="'$(ServerSshPort)' == ''">22</ServerSshPort>
+			<!-- Only pass the RuntimeIdentifier if the user set it, so that the snapshots match what ComputeAvailableDevices returns. -->
+			<_DeviceUpdatesRuntimeIdentifier Condition="'$(_XamarinUsingDefaultRuntimeIdentifier)' != 'true'">$(RuntimeIdentifier)</_DeviceUpdatesRuntimeIdentifier>
+		</PropertyGroup>
+		<Xamarin.Messaging.Remote.Tasks.SubscribeToDeviceUpdates
+			Configuration="$(Configuration)"
+			PipeName="$(DeviceUpdatesPipeName)"
+			ProjectFile="$(MSBuildProjectFullPath)"
+			RemoteBasePath="$(RemoteBasePath)"
+			RemoteDotNetRoot="$(RemoteDotNetRoot)"
+			RuntimeIdentifier="$(_DeviceUpdatesRuntimeIdentifier)"
+			ServerAddress="$(ServerAddress)"
+			ServerFingerprint="$(ServerFingerprint)"
+			ServerPasswordFile="$(ServerPasswordFile)"
+			ServerSshPort="$(ServerSshPort)"
+			ServerUser="$(ServerUser)"
+			SessionId="$(BuildSessionId)"
+			SSHKey="$(SSHKey)"
+			SSHPassPhraseFile="$(SSHPassPhraseFile)"
+			TargetFramework="$(TargetFramework)"
+			XcodeLocation="$(XcodeLocation)"
+		/>
+	</Target>
+
+	<!-- Long-running target: it only returns once the caller sends Stop or closes the pipe. See docs/building-apps/build-targets.md. -->
+	<Target Name="StreamDeviceLog">
+		<Error Condition="'$(DeviceLogPipeName)' == ''" Text="The 'DeviceLogPipeName' property must be set to the name of a named pipe created by the caller." />
+		<Error Condition="'$(Device)' == ''" Text="The 'Device' property must be set to the UDID or name of the device or simulator to stream the log from." />
+		<PropertyGroup>
+			<ServerSshPort Condition="'$(ServerSshPort)' == ''">22</ServerSshPort>
+		</PropertyGroup>
+		<Xamarin.Messaging.Remote.Tasks.StreamDeviceLog
+			Device="$(Device)"
+			PipeName="$(DeviceLogPipeName)"
+			RemoteBasePath="$(RemoteBasePath)"
+			RemoteDotNetRoot="$(RemoteDotNetRoot)"
+			ServerAddress="$(ServerAddress)"
+			ServerFingerprint="$(ServerFingerprint)"
+			ServerPasswordFile="$(ServerPasswordFile)"
+			ServerSshPort="$(ServerSshPort)"
+			ServerUser="$(ServerUser)"
+			SessionId="$(BuildSessionId)"
+			SSHKey="$(SSHKey)"
+			SSHPassPhraseFile="$(SSHPassPhraseFile)"
+			XcodeLocation="$(XcodeLocation)"
+		/>
 	</Target>
 </Project>

@@ -442,6 +442,12 @@ either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
 For more information about device selection, see the
 [.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).
 
+## DeviceLogPipeName
+
+The name of the named pipe [`StreamDeviceLog`](build-targets.md#streamdevicelog)
+sends the device log to. The caller must create the pipe before starting the
+build.
+
 ## DeviceSpecificBuild
 
 If the build should be specific to the selected device.
@@ -459,6 +465,12 @@ Applicable to all platforms that support device-specific builds (currently iOS a
 The output path to use when device-specific builds are enabled.
 
 Applicable to all platforms that support device-specific builds (currently iOS and tvOS).
+
+## DeviceUpdatesPipeName
+
+The name of the named pipe [`SubscribeToDeviceUpdates`](build-targets.md#subscribetodeviceupdates)
+sends device updates to. The caller must create the pipe before starting the
+build.
 
 ## DiagnosticAddress
 

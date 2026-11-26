@@ -2408,8 +2408,6 @@ F:CoreSpotlight.CSSuggestionKind.None
 F:CoreSpotlight.CSUserInteraction.Default
 F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
-F:CoreTelephony.CTCellularPlanCapability.AndVoice
-F:CoreTelephony.CTCellularPlanCapability.Only
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -55601,7 +55599,6 @@ T:CoreSpotlight.CSSuggestionKind
 T:CoreSpotlight.CSUserInteraction
 T:CoreSpotlight.CSUserQuery
 T:CoreSpotlight.CSUserQueryContext
-T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler

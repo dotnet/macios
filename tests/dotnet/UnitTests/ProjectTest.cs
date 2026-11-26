@@ -4712,8 +4712,12 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var projectPath = Path.Combine (Configuration.SourceRoot, "dotnet", "targets", "Xamarin.Shared.Sdk.targets");
 			var properties = new Dictionary<string, string> ();
+			properties ["_XamarinSdkRootDirectory"] = Path.GetDirectoryName (Configuration.GetSdkRoot (platform))!;
 			properties ["_TaskAssemblyName"] = Path.Combine (Configuration.GetSdkRoot (platform), "msbuild", Configuration.DotNetTfm, "Xamarin.MacDev.Tasks.dll");
 			properties ["_PlatformName"] = platform.AsString ();
+			properties ["_TargetsDirectory"] = Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared") + Path.DirectorySeparatorChar;
+			properties ["OutputType"] = "Library";
+			properties ["TargetFrameworkVersion"] = Configuration.DotNetTfm.Replace ("net", "");
 			properties ["UseNativeHttpHandler"] = useNativeHttpHandler;
 			var rv = DotNet.AssertBuild (projectPath, properties, target: "_VerifyValidProperties");
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
@@ -4737,6 +4741,7 @@ namespace Xamarin.Tests {
 			properties ["_XamarinSdkRootDirectory"] = Path.GetDirectoryName (Configuration.GetSdkRoot (platform))!;
 			properties ["_TaskAssemblyName"] = Path.Combine (Configuration.GetSdkRoot (platform), "msbuild", Configuration.DotNetTfm, "Xamarin.MacDev.Tasks.dll");
 			properties ["_PlatformName"] = platform.AsString ();
+			properties ["_TargetsDirectory"] = Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared") + Path.DirectorySeparatorChar;
 			properties ["OutputType"] = "Library";
 			properties ["TargetFrameworkVersion"] = Configuration.DotNetTfm.Replace ("net", "");
 			properties ["EnableAssemblyILStripping"] = propertyValue;

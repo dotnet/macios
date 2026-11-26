@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Mono.Cecil;
+
 #nullable enable
 
 namespace Xamarin.Tests {

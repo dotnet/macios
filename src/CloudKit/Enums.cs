@@ -124,7 +124,7 @@ namespace CloudKit {
 		ResponseLost = 34,
 		/// <summary>The asset file couldn't be opened. The app may not have permission, or data protection may be hiding the file. Retry after the file can be opened.</summary>
 		AssetNotAvailable = 35,
-		/// <summary>The iCloud account needs the user to recover it in Settings. After the account changes, check the account status and retry.</summary>
+		/// <summary>The iCloud account isn't ready, and the user may need to check it in Settings. After the account changes, check the account status and retry.</summary>
 		TemporarilyUnavailable = 36,
 		/// <summary>The user is already invited to this share and must accept that invitation before continuing.</summary>
 		ParticipantAlreadyInvited = 37,
@@ -443,9 +443,9 @@ namespace CloudKit {
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Native]
 	public enum CKRecordZoneEncryptionScope : long {
-		/// <summary>The zone uses a separate encryption key for each record or share.</summary>
+		/// <summary>The zone uses per-record encryption keys.</summary>
 		Record,
-		/// <summary>The zone uses one encryption key for the encrypted values in its records and zone-wide share.</summary>
+		/// <summary>The zone uses per-zone encryption keys, which also cover its zone-wide share, if present.</summary>
 		Zone,
 	}
 }

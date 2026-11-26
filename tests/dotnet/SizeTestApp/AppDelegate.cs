@@ -2,6 +2,10 @@ using System;
 using System.Runtime.InteropServices;
 
 using Foundation;
+#if NATIVEAOT_CATEGORY_FRAMEWORKS
+using AVFoundation;
+using AVKit;
+#endif
 #if HAS_UIKIT
 using UIKit;
 #endif
@@ -13,6 +17,13 @@ namespace MySimpleApp {
 	public class Program {
 		static int Main (string [] args)
 		{
+#if NATIVEAOT_CATEGORY_FRAMEWORKS
+			AVAudioSession_AVPlaybackRouteSelecting.PrepareRouteSelectionForPlayback (
+				AVAudioSession.SharedInstance (), (_, _) => { });
+#endif
+#if NATIVEAOT_DLLIMPORT_SEARCH_PATHS
+			_ = GetSqliteLibVersionNumber ();
+#endif
 #if HAS_UIKIT
 			UIApplication.Main (args, null, typeof (AppDelegate));
 #elif HAS_APPKIT
@@ -23,6 +34,12 @@ namespace MySimpleApp {
 #endif
 			return 0;
 		}
+
+#if NATIVEAOT_DLLIMPORT_SEARCH_PATHS
+		[DllImport ("sqlite3", EntryPoint = "sqlite3_libversion_number")]
+		[DefaultDllImportSearchPaths (DllImportSearchPath.LegacyBehavior)]
+		static extern int GetSqliteLibVersionNumber ();
+#endif
 	}
 
 #if HAS_UIKIT

@@ -11,9 +11,7 @@ using Mono.Cecil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 
-#if ASSEMBLY_PREPARER
 using Xamarin.Build;
-#endif
 using Xamarin.Bundler;
 using Xamarin.Utils;
 using Xamarin.Tuner;
@@ -25,10 +23,7 @@ namespace Xamarin.Linker {
 		string LinkerFile;
 
 		public Abi Abi = Abi.None;
-		public string AOTCompiler = string.Empty;
-		public string AOTOutputDirectory = string.Empty;
 		public string AssemblyPublishDir = string.Empty;
-		public string DedupAssembly = string.Empty;
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
 		// The user-provided value of the $(DynamicRegistrationSupported) MSBuild property (null if not set).
@@ -86,7 +81,6 @@ namespace Xamarin.Linker {
 		public List<string> NativeCodeToCompileAndLink { get; private set; } = new List<string> ();
 		public CompilerFlags CompilerFlags;
 
-#if ASSEMBLY_PREPARER
 		List<ProductException> exceptions = new List<ProductException> ();
 		public List<ProductException> Exceptions {
 			get {
@@ -94,29 +88,18 @@ namespace Xamarin.Linker {
 			}
 		}
 		public DotNetResolver AssemblyResolver { get; private set; }
-	 	public IMetadataResolver MetadataResolver { get; private set; }
-#endif
+		public IMetadataResolver MetadataResolver { get; private set; }
 
-#if ASSEMBLY_PREPARER
-		public LinkContext Context { get =>  DerivedLinkContext; }
-#else
-		LinkContext? context;
-		public LinkContext Context { get => context!; private set { context = value; } }
-#endif
+		public LinkContext Context { get => DerivedLinkContext; }
 		public DerivedLinkContext DerivedLinkContext { get => Application.LinkContext; }
 		public Profile Profile { get; private set; }
 
-#if ASSEMBLY_PREPARER
 		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
 		public required List<AssemblyPreparerInfo> AssemblyInfos;
 		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
 		// The set of assemblies that were modified (i.e. that AppBundleRewriter.SaveAssembly was called for).
 		// Assemblies that aren't modified don't need to be re-serialized when saved.
 		public HashSet<AssemblyDefinition> ModifiedAssemblies = new ();
-#else
-		// The list of assemblies is populated in CollectAssembliesStep.
-		public List<AssemblyDefinition> Assemblies = new List<AssemblyDefinition> ();
-#endif
 
 		string? user_optimize_flags;
 
@@ -167,17 +150,7 @@ namespace Xamarin.Linker {
 		public static LinkerConfiguration GetInstance (LinkContext context)
 		{
 			if (!TryGetInstance (context, out var instance)) {
-#if ASSEMBLY_PREPARER
 				throw new InvalidOperationException ($"No LinkerConfiguration instance found for the given LinkContext.");
-#else
-				if (!context.TryGetCustomData ("LinkerOptionsFile", out var linker_options_file))
-					throw new Exception ($"No custom linker options file was passed to the linker (using --custom-data LinkerOptionsFile=...");
-				instance = new LinkerConfiguration (ConsoleLog.Instance, linker_options_file) {
-					Context = context,
-				};
-
-				configurations.Add (context, instance);
-#endif
 			}
 
 			return instance;
@@ -251,23 +224,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => AssemblyPublishDir = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, AssemblyPublishDir, storage))
 				)},
-				{ "AOTArgument",  (
-					new LoadValue ((key, value) =>
-					{
-						if (!string.IsNullOrEmpty (value))
-							Application.AotArguments.Add (value);
-					}),
-					new SaveValue ((key, storage) =>
-						storage.AddRange (Application.AotArguments.Where (v => !string.IsNullOrEmpty (v)).Select (v => $"{key}={v}")))
-				)},
-				{ "AOTCompiler", (
-					new LoadValue ((key, value) => AOTCompiler = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, AOTCompiler, storage))
-				)},
-				{ "AOTOutputDirectory", (
-					new LoadValue ((key, value) => AOTOutputDirectory = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, AOTOutputDirectory, storage))
-				)},
 				{ "AppBundleManifestPath", (
 					new LoadValue ((key, value) => Application.InfoPListPath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.InfoPListPath, storage))
@@ -283,10 +239,6 @@ namespace Xamarin.Linker {
 				{ "Debug", (
 					new LoadValue ((key, value) => Application.EnableDebug = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
 					new SaveValue ((key, storage) => storage.Add ($"{key}={(Application.EnableDebug ? "true" : "false")}"))
-				)},
-				{ "DedupAssembly", (
-					new LoadValue ((key, value) => DedupAssembly = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, DedupAssembly, storage))
 				)},
 				{ "DeploymentTarget", (
 					new LoadValue ((key, value) => {
@@ -484,10 +436,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => MSBuildPostProcessOutputFile = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, MSBuildPostProcessOutputFile, storage))
 				)},
-				{ "MtouchFloat32", (
-					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
-					new SaveValue ((key, storage) => saveNullableBool (key, Application.AotFloat32, storage))
-				)},
 				{ "NoWarn", ( // we should support '$(NoWarn)' at some point: https://github.com/dotnet/macios/issues/25645
 					new LoadValue ((key, value) => loadWarningLevel (key, value, ErrorHelper.WarningLevel.Disable)),
 					new SaveValue ((key, storage) => saveWarningLevel (key, storage, ErrorHelper.WarningLevel.Disable))
@@ -507,10 +455,6 @@ namespace Xamarin.Linker {
 				{ "PlatformAssembly", (
 					new LoadValue ((key, value) => PlatformAssembly = Path.GetFileNameWithoutExtension (value)),
 					new SaveValue ((key, storage) => saveNonEmpty (key, string.IsNullOrEmpty (PlatformAssembly) ? PlatformAssembly : PlatformAssembly + ".dll", storage))
-				)},
-				{ "PrepareAssemblies", (
-					new LoadValue ((key, value) => loadBool (key, value, out Application.PrepareAssemblies)),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.PrepareAssemblies, storage))
 				)},
 				{ "PublishTrimmed", (
 					new LoadValue ((key, value) => PublishTrimmed = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase)),
@@ -600,10 +544,6 @@ namespace Xamarin.Linker {
 					}),
 					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Application.RequiresPInvokeWrappers, storage))
 				)},
-				{ "RuntimeConfigurationFile", (
-					new LoadValue ((key, value) => Application.RuntimeConfigurationFile = value),
-					new SaveValue ((key, storage) => saveNonEmpty (key, Application.RuntimeConfigurationFile, storage))
-				)},
 				{ "RuntimeConfigurationFilePath", (
 					new LoadValue ((key, value) => RuntimeConfigurationFilePath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, RuntimeConfigurationFilePath, storage))
@@ -681,17 +621,6 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => UnmanagedCallersOnlyMapPath = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, UnmanagedCallersOnlyMapPath, storage))
 				)},
-				{ "UseLlvm", (
-					new LoadValue ((key, value) => {
-						var use_llvm = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase);
-						if (use_llvm) {
-							Abi |= Abi.LLVM;
-						} else {
-							Abi &= ~Abi.LLVM;
-						}
-					}),
-					new SaveValue ((key, storage) => saveOptionalDefaultFalseBool (key, Abi.HasFlag (Abi.LLVM), storage))
-				)},
 				{ "Verbosity", (
 					new LoadValue ((key, value) => {
 						if (!int.TryParse (value, out var verbosity))
@@ -760,12 +689,10 @@ namespace Xamarin.Linker {
 			Profile = new BaseProfile (this);
 			Application = new Application (this);
 
-#if ASSEMBLY_PREPARER
 			AssemblyResolver = new DotNetResolver (Application);
 			MetadataResolver = new MetadataResolver (AssemblyResolver);
 
 			configurations.Add (this.Context, this);
-#endif
 
 			CompilerFlags = new CompilerFlags (Application);
 
@@ -925,9 +852,6 @@ namespace Xamarin.Linker {
 			if (Verbosity > 0) {
 				Application.Log ($"LinkerConfiguration:");
 				Application.Log ($"    ABI: {Abi.AsArchString ()}");
-				Application.Log ($"    AOTArguments: {string.Join (", ", Application.AotArguments)}");
-				Application.Log ($"    AOTOutputDirectory: {AOTOutputDirectory}");
-				Application.Log ($"    DedupAssembly: {DedupAssembly}");
 				Application.Log ($"    AppBundleManifestPath: {Application.InfoPListPath}");
 				Application.Log ($"    AreAnyAssembliesTrimmed: {Application.AreAnyAssembliesTrimmed}");
 				Application.Log ($"    AssemblyName: {Application.AssemblyName}");
@@ -956,7 +880,6 @@ namespace Xamarin.Linker {
 				Application.Log ($"    PlatformAssembly: {PlatformAssembly}.dll");
 				Application.Log ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
 				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
-				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
 				Application.Log ($"    RuntimeConfigurationFilePath: {RuntimeConfigurationFilePath}");
 				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
 				Application.Log ($"    SdkDevPath: {Application.SdkRoot}");
@@ -967,7 +890,6 @@ namespace Xamarin.Linker {
 				Application.Log ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
 				Application.Log ($"    UnmanagedCallersOnlyMapPath: {UnmanagedCallersOnlyMapPath}");
 				Application.Log ($"    UseInterpreter: {Application.UseInterpreter}");
-				Application.Log ($"    UseLlvm: {Application.IsLLVM}");
 				Application.Log ($"    Verbosity: {Verbosity}");
 				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
 				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");
@@ -975,12 +897,6 @@ namespace Xamarin.Linker {
 			}
 		}
 
-#if !ASSEMBLY_PREPARER
-		public string GetAssemblyFileName (AssemblyDefinition assembly)
-		{
-			return Context.GetAssemblyLocation (assembly);
-		}
-#endif
 
 		public void WriteOutputForMSBuild (string itemName, List<MSBuildItem> items)
 		{
@@ -1045,7 +961,6 @@ namespace Xamarin.Linker {
 		{
 			// Unwrap aggregate exceptions, and collect all exceptions into a single list.
 			var list = ErrorHelper.CollectExceptions (exceptions);
-#if ASSEMBLY_PREPARER
 			var log = context.Configuration.Logger;
 			foreach (var ex in list) {
 				if (ex is ProductException pe) {
@@ -1058,30 +973,6 @@ namespace Xamarin.Linker {
 					log.LogException (ex);
 				}
 			}
-#else
-			// We can't really use the linker's reporting facilities and keep our own error codes, because we'll
-			// end up re-using the same error codes the linker already uses for its own purposes. So instead show
-			// a generic error using the linker's Context.LogMessage API, and then print our own errors to stderr.
-			// Since we print using a standard message format, msbuild will parse those error messages and show
-			// them as msbuild errors.
-			if (!TryGetInstance (context, out var instance)) {
-				// Something went very wrong. Just dump out everything.
-				context.LogMessage (MessageContainer.CreateCustomErrorMessage ("No linker configuration available.", 7000));
-				foreach (var exception in exceptions) {
-					context.LogMessage (MessageContainer.CreateCustomErrorMessage (exception.ToString (), 7000));
-				}
-				return;
-			}
-
-			var allWarnings = list.All (v => v is ProductException pe && !pe.IsError (instance.Application));
-			if (!allWarnings) {
-				var platform = instance.Platform.ToString ();
-				var msg = MessageContainer.CreateCustomErrorMessage (Errors.MX7000 /* An error occurred while executing the custom linker steps. Please review the build log for more information. */, 7000, platform);
-				context.LogMessage (msg);
-			}
-			// ErrorHelper.Show will print our errors and warnings to stderr.
-			ErrorHelper.Show (instance.Application, list);
-#endif
 		}
 
 		public IEnumerable<AssemblyDefinition> GetNonDeletedAssemblies (BaseStep step)

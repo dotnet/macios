@@ -1067,42 +1067,6 @@ function New-GitHubComment {
     return $request
 }
 
-<# 
-    .SYNOPSIS
-        Get the information of a PR in GitHub.
-
-    .PARAMETER ChangeId
-        The Id whose labels we want to retrieve.
-#>
-function Get-GitHubPRInfo {
-    param (
-        [Parameter(Mandatory)]
-        [String]
-        $ChangeId
-    )
-
-    $envVars = @{
-        "GITHUB_TOKEN" = $Env:GITHUB_TOKEN;
-    }
-
-    foreach ($key in $envVars.Keys) {
-        if (-not($envVars[$key])) {
-            Write-Debug "Environment variable missing: $key"
-            throw [System.InvalidOperationException]::new("Environment variable missing: $key")
-        }
-    }
-
-    $url = "https://api.github.com/repos/$Env:BUILD_REPOSITORY_NAME/pulls/$ChangeId"
-
-    $headers = @{
-        Authorization = ("token {0}" -f $Env:GITHUB_TOKEN);
-    }
-
-    $request = Invoke-Request -Request { Invoke-RestMethod -Uri $url -Method "GET" -ContentType 'application/json' -Headers $headers }
-    Write-Debug $request
-    return $request
-}
-
 <#
     .SYNOPSIS
         Get the PR Ids related to a commit hash. If the hash has multiple PRs, all of them will be returned.
@@ -1465,7 +1429,6 @@ function Get-IsCurrentCommitLatestInPR {
 
 # module exports, any other functions are private and should not be used outside the module.
 Export-ModuleMember -Function New-GitHubComment
-Export-ModuleMember -Function Get-GitHubPRInfo
 Export-ModuleMember -Function Get-GitHubPRsForHash
 Export-ModuleMember -Function New-GistWithFiles 
 Export-ModuleMember -Function New-GistObjectDefinition 

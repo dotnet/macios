@@ -5,6 +5,7 @@
 
 		<ApplicationTitle>SizeTestApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.sizetestapp</ApplicationId>
+		<DefineConstants>$(DefineConstants);$(AdditionalDefineConstants)</DefineConstants>
 
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
@@ -14,5 +15,11 @@
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(NativeAOTReferenceNativeSymbol)' == 'true'">
+		<ReferenceNativeSymbol Include="CNContact" SymbolType="ObjectiveCClass" />
+		<ReferenceNativeSymbol Include="kCMSampleAttachmentKey_NotSync" SymbolType="Field" />
+		<ReferenceNativeSymbol Include="MKMapPointsPerMeterAtLatitude" SymbolType="Function" />
 	</ItemGroup>
 </Project>

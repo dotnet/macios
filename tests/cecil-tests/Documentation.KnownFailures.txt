@@ -4085,8 +4085,6 @@ F:Intents.INVocabularyStringType.MediaAudiobookTitle
 F:Intents.INVocabularyStringType.MediaMusicArtistName
 F:Intents.INVocabularyStringType.MediaPlaylistTitle
 F:Intents.INVocabularyStringType.MediaShowTitle
-F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
-F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
@@ -56803,7 +56801,6 @@ T:Intents.INVoiceShortcutCenter
 T:Intents.INVoiceShortcutCenterGetVoiceShortcutsHandler
 T:Intents.INVolumeResolutionResult
 T:Intents.NSExtensionContext_ShareExtension
-T:IntentsUI.INUIAddVoiceShortcutButtonStyle
 T:IntentsUI.INUIAddVoiceShortcutViewController
 T:IntentsUI.INUIEditVoiceShortcutViewController
 T:IntentsUI.INUIHostedViewContext

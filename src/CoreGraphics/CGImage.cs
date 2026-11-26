@@ -353,7 +353,7 @@ namespace CoreGraphics {
 		/// <summary>Takes a screenshot of the main screen.</summary>
 		/// <value>A new image with the current contents of the main screen.</value>
 		/// <remarks>
-		///   <para>This property is obsolete, because it uses <see cref="UIKit.UIScreen.MainScreen" />. Capture the screen through a <see cref="UIKit.UIScreen" /> instance obtained through context instead.</para>
+		///   <para>This property is obsolete. Use <see cref="UIKit.UIView.Capture(bool)" /> on the view you want to capture instead.</para>
 		///   <para>Each call returns a new image, which can use a significant amount of memory. Dispose the image as soon as it's no longer needed.</para>
 		///   <para>When taking many screenshots in a loop that doesn't return to the main loop, use an <see cref="Foundation.NSAutoreleasePool" /> to make sure the memory is released right away:</para>
 		///   <example>
@@ -372,8 +372,8 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-		[ObsoletedOSPlatform ("ios26.0", "Capture the screen through a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen') instead.")]
-		[ObsoletedOSPlatform ("tvos26.0", "Capture the screen through a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen') instead.")]
+		[ObsoletedOSPlatform ("ios26.0", "Use 'UIView.Capture' on the view you want to capture instead.")]
+		[ObsoletedOSPlatform ("tvos26.0", "Use 'UIView.Capture' on the view you want to capture instead.")]
 		public static CGImage? ScreenImage {
 			get {
 				return UIKit.UIScreen.MainScreen.Capture ().CGImage;

@@ -163,6 +163,9 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  *
  * 2) Types that can be toggled, must have the [ObjectiveCTrackedType]
  *    attribute (on any subclass). We put this attribute on NSObject.
+ *    User-type peers that own the GCHandle ivar of their native object are toggled
+ *    implicitly (NSObjectFlagsImplicitToggleRef). Other peers are toggled explicitly
+ *    when needed (NSObjectFlagsRegisteredToggleRef, see NSObject.MarkDirty).
  *
  * 3) We have to call ObjectiveCMarshal.CreateReferenceTrackingHandle when an
  *    object is toggled. This callback returns a GCHandle for the managed
@@ -294,11 +297,11 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	int rv = 0;
 	struct NSObjectData *data = (struct NSObjectData *) ptr;
 	enum NSObjectFlags flags = (enum NSObjectFlags) data->flags;
-	bool isRegisteredToggleRef = (flags & NSObjectFlagsRegisteredToggleRef) == NSObjectFlagsRegisteredToggleRef;
+	bool isToggleRef = (flags & (NSObjectFlagsRegisteredToggleRef | NSObjectFlagsImplicitToggleRef)) != 0;
 	id handle = data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
-	if (isRegisteredToggleRef) {
+	if (isToggleRef && handle != NULL) {
 		res = xamarin_gc_toggleref_callback (flags, handle, NULL, NULL);
 
 		switch (res) {
@@ -315,11 +318,11 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 			break;
 		}
 	} else {
-		// If this isn't a toggle ref, it's effectively a weak gchandle
+		// A non-toggle ref or an object without a handle is effectively a weak gchandle.
 		rv = 0;
 	}
 
-	LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: %i) => %i (res: %i) isRegisteredToggleRef: %i\n", __func__, ptr, handle, flags, rv, res, isRegisteredToggleRef);
+	LOG_CORECLR (stderr, "%s (%p -> handle: %p flags: 0x%x) => %i (res: %i) isToggleRef: %i\n", __func__, ptr, handle, (unsigned) flags, rv, res, isToggleRef);
 
 	return rv;
 }
@@ -334,7 +337,7 @@ void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
 	struct NSObjectData *data = (struct NSObjectData *) ptr;
-	data->flags = (enum NSObjectFlags) (data->flags | NSObjectFlagsInFinalizerQueue);
+	__atomic_fetch_or ((uint32_t *) &data->flags, (uint32_t) NSObjectFlagsInFinalizerQueue, __ATOMIC_SEQ_CST);
 	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) data->flags);
 }
 

@@ -27,7 +27,6 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Drawing;
 using System.Diagnostics;
-using System.Threading;
 
 using System.Runtime.InteropServices.ObjectiveC;
 

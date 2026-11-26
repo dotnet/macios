@@ -6,6 +6,7 @@ using Mono.Cecil;
 
 using NUnit.Framework;
 
+using Xamarin.Bundler;
 using Xamarin.MacDev;
 using Xamarin.Tests;
 
@@ -387,6 +388,66 @@ namespace Xamarin.Tests {
 		{
 			var executableName = Path.GetFileNameWithoutExtension (app_directory);
 			return Path.Combine (app_directory, GetRelativeExecutableDirectory (platform), executableName);
+		}
+
+		protected static void AssertDynamicLibraryId (ApplePlatform platform, string appPath, string dylibDirectory, string library)
+		{
+			var dylibPath = Path.Combine (appPath, dylibDirectory, library);
+			Assert.That (dylibPath, Does.Exist, "dylib existence");
+
+			var invalidLoadCommands = new List<string> ();
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			foreach (var file in MachO.Read (appExecutable)) {
+				foreach (var lc in file.load_commands) {
+					if (lc is DylibLoadCommand loadCommand) {
+						if (!IsValidLoadLibrary (appExecutable, loadCommand.name)) {
+							invalidLoadCommands.Add ($"Invalid load library '{loadCommand.name}' in '{file.Filename}'");
+						}
+					}
+				}
+			}
+
+			var dylibs = Directory.GetFiles (Path.Combine (appPath, dylibDirectory), "*.dylib");
+			foreach (var dylib in dylibs) {
+				foreach (var file in MachO.Read (dylib)) {
+					foreach (var lc in file.load_commands) {
+						if (lc is DylibIdCommand loadCommand) {
+							if (!IsValidLoadLibrary (appExecutable, loadCommand.name)) {
+								invalidLoadCommands.Add ($"Invalid id '{loadCommand.name}' for library '{file.Filename}'");
+							}
+						}
+					}
+				}
+			}
+
+			Assert.That (invalidLoadCommands, Is.Empty);
+		}
+
+		static bool IsValidLoadLibrary (string appExecutable, string library)
+		{
+			const string executablePathPrefix = "@executable_path/";
+			if (library.StartsWith (executablePathPrefix, StringComparison.Ordinal)) {
+				var executableDirectory = Path.GetDirectoryName (appExecutable);
+				if (executableDirectory is null)
+					throw new InvalidOperationException ($"Unable to compute the directory of '{appExecutable}'");
+				var relativeToExecutable = library.Substring (executablePathPrefix.Length);
+				var resolvedPath = Path.GetFullPath (Path.Combine (executableDirectory, relativeToExecutable));
+				return File.Exists (resolvedPath);
+			}
+
+			var valid_prefixes = new string [] {
+				"/System/Library/",
+				"/System/iOSSupport/System/Library/",
+				"/System/iOSSupport/usr/lib/swift/",
+				"/usr/lib/",
+				"@rpath",
+			};
+			foreach (var valid_prefix in valid_prefixes) {
+				if (library.StartsWith (valid_prefix, StringComparison.Ordinal))
+					return true;
+			}
+			return false;
 		}
 
 		protected static string GetRelativeExecutableDirectory (ApplePlatform platform)

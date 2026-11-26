@@ -6,12 +6,16 @@ using Metal;
 
 namespace MetalFX {
 
+	/// <summary>Enumerates how a spatial scaler processes color.</summary>
 	[iOS (16, 0), MacCatalyst (16, 0)]
 	[TV (18, 4)]
 	[Native]
 	public enum MTLFXSpatialScalerColorProcessingMode : long {
+		/// <summary>The input colors are in a perceptual color space.</summary>
 		Perceptual = 0,
+		/// <summary>The input colors are in a linear color space.</summary>
 		Linear = 1,
+		/// <summary>The input colors are in a high dynamic range (HDR) color space.</summary>
 		Hdr = 2,
 	}
 

@@ -4665,9 +4665,6 @@ F:Metal.MTLVisibilityResultType.Reset
 F:Metal.NSDeviceCertification.iPhonePerformanceGaming
 F:Metal.NSProcessPerformanceProfile.Default
 F:Metal.NSProcessPerformanceProfile.Sustained
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Hdr
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Linear
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Perceptual
 F:MetalPerformanceShaders.MPSAccelerationStructureUsage.PreferCpuBuild
 F:MetalPerformanceShaders.MPSAccelerationStructureUsage.PreferGpuBuild
 F:MetalPerformanceShaders.MPSAliasingStrategy.AliasingReserved
@@ -57253,7 +57250,6 @@ T:Metal.NSDeviceCertification
 T:Metal.NSProcessInfo_NSDeviceCertification
 T:Metal.NSProcessPerformanceProfile
 T:MetalFX.MTLFXFrameInterpolatorDescriptor
-T:MetalFX.MTLFXSpatialScalerColorProcessingMode
 T:MetalFX.MTLFXSpatialScalerDescriptor
 T:MetalFX.MTLFXTemporalDenoisedScalerDescriptor
 T:MetalFX.MTLFXTemporalScalerDescriptor

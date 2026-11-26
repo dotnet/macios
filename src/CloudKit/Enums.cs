@@ -182,10 +182,10 @@ namespace CloudKit {
 		FetchChanges = 1 << 0,
 		/// <summary>The zone supports atomic operations on sets of records.</summary>
 		Atomic = 1 << 1,
-		/// <summary>The zone supports sharing individual record hierarchies.</summary>
+		/// <summary>The zone supports sharing records.</summary>
 		[MacCatalyst (13, 1)]
 		Sharing = 1 << 2,
-		/// <summary>The zone supports sharing the whole zone.</summary>
+		/// <summary>The zone supports one share that includes every record in the zone.</summary>
 		[iOS (15, 0), TV (15, 0)]
 		[MacCatalyst (15, 0)]
 		ZoneWideSharing = 1 << 3,

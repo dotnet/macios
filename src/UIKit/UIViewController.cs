@@ -120,7 +120,7 @@ namespace UIKit {
 		/// Registers a callback handler that will be executed when the specified trait changes.
 		/// </summary>
 		/// <typeparam name="T">The trait to observe.</typeparam>
-		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
+		/// <param name="handler">The callback to execute when the specified trait changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
 		///   Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
@@ -138,8 +138,8 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
@@ -159,9 +159,9 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>
@@ -182,10 +182,10 @@ namespace UIKit {
 		/// <summary>
 		/// Registers a callback handler that will be executed when any of the specified traits changes.
 		/// </summary>
-		/// <typeparam name="T1">A trait to observe</typeparam>
-		/// <typeparam name="T2">A trait to observe</typeparam>
-		/// <typeparam name="T3">A trait to observe</typeparam>
-		/// <typeparam name="T4">A trait to observe</typeparam>
+		/// <typeparam name="T1">A trait to observe.</typeparam>
+		/// <typeparam name="T2">A trait to observe.</typeparam>
+		/// <typeparam name="T3">A trait to observe.</typeparam>
+		/// <typeparam name="T4">A trait to observe.</typeparam>
 		/// <param name="handler">The callback to execute when any of the specified traits changes.</param>
 		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
 		/// <remarks>

@@ -1333,9 +1333,6 @@ F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeNone
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeSubject
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeText
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeVisualSearch
-F:AVRouting.AVCustomRoutingEventReason.Activate
-F:AVRouting.AVCustomRoutingEventReason.Deactivate
-F:AVRouting.AVCustomRoutingEventReason.Reactivate
 F:AVSystemRouting.AVSystemRouteEventReason.Activate
 F:AVSystemRouting.AVSystemRouteEventReason.Deactivate
 F:AVSystemRouting.AVSystemRouteLaunchMode.Application
@@ -54745,7 +54742,6 @@ T:AVRouting.AVCustomDeviceRoute
 T:AVRouting.AVCustomRoutingActionItem
 T:AVRouting.AVCustomRoutingController
 T:AVRouting.AVCustomRoutingEvent
-T:AVRouting.AVCustomRoutingEventReason
 T:AVRouting.AVCustomRoutingPartialIP
 T:AVRouting.AVRoutingPlaybackArbiter
 T:AVSystemRouting.AVSystemRoute

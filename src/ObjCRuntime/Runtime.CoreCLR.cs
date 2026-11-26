@@ -145,10 +145,13 @@ namespace ObjCRuntime {
 			if (options->xamarin_objc_msgsend_super_stret != IntPtr.Zero)
 				ObjectiveCMarshal.SetMessageSendCallback (ObjectiveCMarshal.MessageSendFunction.MsgSendSuperStret, options->xamarin_objc_msgsend_super_stret);
 
-			delegate* unmanaged<void> beginEndCallback = (delegate* unmanaged<void>) options->reference_tracking_begin_end_callback;
-			delegate* unmanaged<IntPtr, int> isReferencedCallback = (delegate* unmanaged<IntPtr, int>) options->reference_tracking_is_referenced_callback;
-			delegate* unmanaged<IntPtr, void> trackedObjectEnteredFinalization = (delegate* unmanaged<IntPtr, void>) options->reference_tracking_tracked_object_entered_finalization;
-			ObjectiveCMarshal.Initialize (beginEndCallback, isReferencedCallback, trackedObjectEnteredFinalization, UnhandledExceptionPropagationHandler);
+			var callbacks = new ObjectiveCReferenceTrackingCallbacks {
+				BeginEndCallback = (delegate* unmanaged<void>) options->reference_tracking_begin_end_callback,
+				IsReferencedCallback = (delegate* unmanaged<IntPtr, int>) options->reference_tracking_is_referenced_callback,
+				HaveReferencesChangedCallback = (delegate* unmanaged<int>) options->reference_tracking_have_references_changed_callback,
+				TrackedObjectEnteredFinalization = (delegate* unmanaged<IntPtr, void>) options->reference_tracking_tracked_object_entered_finalization,
+			};
+			ObjectiveCMarshal.Initialize (callbacks, UnhandledExceptionPropagationHandler);
 
 			if (!IsNativeAOT)
 				AssemblyLoadContext.Default.Resolving += ResolvingEventHandler;

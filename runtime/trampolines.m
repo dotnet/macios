@@ -36,6 +36,7 @@
 #include "product.h"
 #include "delegates.h"
 #include "xamarin/xamarin.h"
+#include "xamarin/coreclr-bridge.h"
 #include "slinked-list.h"
 #include "trampolines-internal.h"
 #include "runtime-internal.h"
@@ -863,11 +864,16 @@ xamarin_retain_trampoline (id self, SEL sel)
  *
  * For this reason, the managed wrapper's flags that say whether the manager wrapper is in the finalization
  * queue or not, is stored in native memory - and that's all we do here, we fetch the flag and return
- * FALSE if we're in the finalization queue.
+ * FALSE if we're in the finalization queue. Before that, we coordinate with the GC (without calling
+ * managed code), so that the GC doesn't finalize a managed wrapper after we've resolved the weak
+ * reference (see xamarin_coreclr_reference_tracking_will_retain_weak_reference).
  */
 BOOL
 xamarin_retainWeakReference_trampoline (id self, SEL sel)
 {
+	// This may wait until the GC has decided whether to finalize the managed wrapper.
+	xamarin_coreclr_reference_tracking_will_retain_weak_reference ();
+
 	uint32_t flags = xamarin_get_nsobject_id_flags (self);
 	bool isInFinalizerQueue = (flags & NSObjectFlagsInFinalizerQueue) == NSObjectFlagsInFinalizerQueue;
 

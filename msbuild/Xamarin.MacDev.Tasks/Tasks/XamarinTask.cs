@@ -189,7 +189,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (workingDirectory)) {
 				log.LogMessage (MessageImportance.Low, "    Working directory: {0}", workingDirectory);
 			} else {
-#pragma warning disable MSBuildTask0002 // Multithreadable tasks don't run external processes; this is verified by the MultiThreadableTaskTest cecil test.
+#pragma warning disable MSBuildTask0002 // This reads the current directory only for diagnostic output.
 				log.LogMessage (MessageImportance.Low, "    Current directory: {0}", Environment.CurrentDirectory);
 #pragma warning restore MSBuildTask0002
 			}

@@ -111,6 +111,31 @@ namespace Cecil.Tests {
 			Assert.That (failures, Is.Empty, "Multithreadable tasks must not use static state or unsafe APIs. Either fix the code, or remove [MSBuildMultiThreadableTask] from the task.\n\t" + string.Join ("\n\t", failures));
 		}
 
+		[Test]
+		public void FindsInheritedInterfaceImplementation ()
+		{
+			using var assembly = AssemblyDefinition.CreateAssembly (
+				new AssemblyNameDefinition ("InterfaceDispatchFixture", new Version (1, 0)),
+				"InterfaceDispatchFixture",
+				ModuleKind.Dll);
+			var module = assembly.MainModule;
+			var interfaceType = new TypeDefinition ("Fixture", "IRunnable", Mono.Cecil.TypeAttributes.Public | Mono.Cecil.TypeAttributes.Interface | Mono.Cecil.TypeAttributes.Abstract, null);
+			var interfaceMethod = new MethodDefinition ("Run", Mono.Cecil.MethodAttributes.Public | Mono.Cecil.MethodAttributes.Abstract | Mono.Cecil.MethodAttributes.Virtual | Mono.Cecil.MethodAttributes.NewSlot, module.TypeSystem.Void);
+			interfaceType.Methods.Add (interfaceMethod);
+			module.Types.Add (interfaceType);
+
+			var baseType = new TypeDefinition ("Fixture", "Base", Mono.Cecil.TypeAttributes.Public | Mono.Cecil.TypeAttributes.Class, null);
+			var implementation = new MethodDefinition ("Run", Mono.Cecil.MethodAttributes.Public | Mono.Cecil.MethodAttributes.Virtual, module.TypeSystem.Void);
+			baseType.Methods.Add (implementation);
+			module.Types.Add (baseType);
+
+			var derivedType = new TypeDefinition ("Fixture", "Derived", Mono.Cecil.TypeAttributes.Public | Mono.Cecil.TypeAttributes.Class, baseType);
+			derivedType.Interfaces.Add (new InterfaceImplementation (interfaceType));
+			module.Types.Add (derivedType);
+
+			Assert.That (Walker.GetInterfaceImplementations (derivedType, interfaceMethod), Does.Contain (implementation));
+		}
+
 		class Walker {
 			// Base method -> the methods in our assemblies that override or implement it.
 			readonly Dictionary<MethodDefinition, List<MethodDefinition>> overrides = new ();
@@ -177,6 +202,44 @@ namespace Cecil.Tests {
 						yield return candidate;
 					foreach (var parent in ifaceType.Interfaces)
 						interfaces.Enqueue (parent.InterfaceType);
+				}
+			}
+
+			static bool ImplementsInterface (TypeDefinition type, TypeDefinition interfaceType)
+			{
+				var pending = new Queue<TypeReference> ();
+				for (var current = type; current is not null; current = current.BaseType?.Resolve ()) {
+					foreach (var iface in current.Interfaces)
+						pending.Enqueue (iface.InterfaceType);
+				}
+
+				var visited = new HashSet<TypeDefinition> ();
+				while (pending.TryDequeue (out var iface)) {
+					var definition = iface.Resolve ();
+					Assert.That (definition, Is.Not.Null, $"Could not resolve interface {iface.FullName}");
+					if (definition == interfaceType)
+						return true;
+					if (!visited.Add (definition))
+						continue;
+					foreach (var parent in definition.Interfaces)
+						pending.Enqueue (parent.InterfaceType);
+				}
+				return false;
+			}
+
+			public static IEnumerable<MethodDefinition> GetInterfaceImplementations (TypeDefinition receiver, MethodDefinition interfaceMethod)
+			{
+				if (!ImplementsInterface (receiver, interfaceMethod.DeclaringType))
+					yield break;
+
+				for (var current = receiver; current is not null; current = current.BaseType?.Resolve ()) {
+					foreach (var method in current.Methods) {
+						if (method.IsStatic || method.IsConstructor)
+							continue;
+						if (method.Overrides.Any (o => o.Resolve () == interfaceMethod) ||
+							(method.IsPublic && SameSignature (method, interfaceMethod)))
+							yield return method;
+					}
 				}
 			}
 
@@ -268,6 +331,13 @@ namespace Cecil.Tests {
 					Add (method, caller);
 					if (!virtualCalls.TryAdd (method, caller))
 						return;
+					if (method.DeclaringType.IsInterface) {
+						foreach (var type in instantiated.Keys) {
+							foreach (var implementation in GetInterfaceImplementations (type, method))
+								Add (implementation, caller);
+						}
+						return;
+					}
 					if (overrides.TryGetValue (method, out var list)) {
 						foreach (var o in list.Where (o => IsInstantiated (o.DeclaringType)))
 							Add (o, caller);
@@ -288,6 +358,10 @@ namespace Cecil.Tests {
 							// Code outside our assemblies (such as MSBuild, or the BCL) may call this method.
 							Add (m, caller);
 						}
+					}
+					foreach (var call in virtualCalls.Where (v => v.Key.DeclaringType.IsInterface)) {
+						foreach (var implementation in GetInterfaceImplementations (type, call.Key))
+							Add (implementation, call.Value);
 					}
 				}
 

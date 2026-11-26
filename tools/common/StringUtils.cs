@@ -11,8 +11,8 @@ namespace Xamarin.Utils {
 		// Don't use static fields here: this code is used by MSBuild tasks that may run in parallel in the same process.
 		static char shellQuoteChar {
 			get {
-				PlatformID pid = Environment.OSVersion.Platform;
-				if (((int) pid != 128 && pid != PlatformID.Unix && pid != PlatformID.MacOSX))
+				PlatformID platform = Environment.OSVersion.Platform;
+				if (((int) platform != 128 && platform != PlatformID.Unix && platform != PlatformID.MacOSX))
 					return '"'; // Windows
 				return '\''; // !Windows
 			}

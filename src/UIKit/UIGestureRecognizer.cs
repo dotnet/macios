@@ -263,7 +263,7 @@ namespace UIKit {
 		///         <remarks>This overload allows the method that will be invoked to receive the recognizer that detected the gesture as a parameter.</remarks>
 		public UIPanGestureRecognizer (Action<UIPanGestureRecognizer> action) : base (Selector.GetHandle (UIGestureRecognizer.parametrized_selector), new Callback<UIPanGestureRecognizer> (action)) { }
 
-		internal UIPanGestureRecognizer (IntPtr sel, Token token) : base (token, sel) { }
+		internal UIPanGestureRecognizer (IntPtr sel, Token token) : base (sel, token) { }
 
 	}
 

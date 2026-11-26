@@ -209,33 +209,9 @@ namespace Xamarin.Bundler {
 		void GenerateMainImpl (StringWriter sw, Abi abi)
 		{
 			var app = App;
-			var assemblies = Assemblies;
 			var assembly_name = App.AssemblyName;
-			var assembly_externs = new StringBuilder ();
-			var assembly_aot_modules = new StringBuilder ();
-			var register_assemblies = new StringBuilder ();
 			var assembly_location = new StringBuilder ();
 			var assembly_location_count = 0;
-			var enable_llvm = (abi & Abi.LLVM) != 0;
-
-			if (app.XamarinRuntime == XamarinRuntime.MonoVM) {
-				register_assemblies.AppendLine ("\tGCHandle exception_gchandle = INVALID_GCHANDLE;");
-				foreach (var s in assemblies) {
-					if (!s.IsAOTCompiled)
-						continue;
-
-					var info = s.AssemblyDefinition.Name.Name;
-					info = EncodeAotSymbol (info);
-					assembly_externs.Append ("extern void *mono_aot_module_").Append (info).AppendLine ("_info;");
-					assembly_aot_modules.Append ("\tmono_aot_register_module (mono_aot_module_").Append (info).AppendLine ("_info);");
-
-					string sname = s.FileName;
-					if (assembly_name != sname && IsBoundAssembly (s)) {
-						register_assemblies.Append ("\txamarin_open_and_register (\"").Append (sname).Append ("\", &exception_gchandle);").AppendLine ();
-						register_assemblies.AppendLine ("\txamarin_process_managed_exception_gchandle (exception_gchandle);");
-					}
-				}
-			}
 
 			sw.WriteLine ("#include \"xamarin/xamarin.h\"");
 
@@ -249,28 +225,10 @@ namespace Xamarin.Bundler {
 				sw.WriteLine ("struct AssemblyLocations assembly_locations = {{ {0}, assembly_location_entries }};", assembly_location_count);
 			}
 
-			sw.WriteLine ();
-			sw.WriteLine (assembly_externs);
-
-			sw.WriteLine ("void xamarin_register_modules_impl ()");
-			sw.WriteLine ("{");
-			sw.WriteLine (assembly_aot_modules);
-			sw.WriteLine ("}");
-			sw.WriteLine ();
-
 			sw.WriteLine ("void xamarin_register_assemblies_impl ()");
 			sw.WriteLine ("{");
-			sw.WriteLine (register_assemblies);
 			sw.WriteLine ("}");
 			sw.WriteLine ();
-
-			if (app.UseInterpreter) {
-				sw.WriteLine ("extern \"C\" { void mono_ee_interp_init (const char *); }");
-				sw.WriteLine ("extern \"C\" { void mono_icall_table_init (void); }");
-				sw.WriteLine ("extern \"C\" { void mono_marshal_ilgen_init (void); }");
-				sw.WriteLine ("extern \"C\" { void mono_method_builder_ilgen_init (void); }");
-				sw.WriteLine ("extern \"C\" { void mono_sgen_mono_ilgen_init (void); }");
-			}
 
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
@@ -326,28 +284,6 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			if (app.UseInterpreter) {
-				sw.WriteLine ("\tmono_icall_table_init ();");
-				sw.WriteLine ("\tmono_marshal_ilgen_init ();");
-				sw.WriteLine ("\tmono_method_builder_ilgen_init ();");
-				sw.WriteLine ("\tmono_sgen_mono_ilgen_init ();");
-				if ((abi & Abi.x86_64) == Abi.x86_64) {
-					sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_INTERP_ONLY);");
-				} else {
-					sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_INTERP);");
-				}
-			} else if (app.XamarinRuntime == XamarinRuntime.NativeAOT) {
-				// don't call mono_jit_set_aot_mode
-			} else if (app.XamarinRuntime == XamarinRuntime.CoreCLR) {
-				// don't call mono_jit_set_aot_mode
-			} else if (app.IsDeviceBuild) {
-				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_FULL);");
-			} else if (app.Platform == ApplePlatform.MacCatalyst && ((abi & Abi.ARM64) == Abi.ARM64)) {
-				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_FULL);");
-			} else if (app.IsSimulatorBuild && ((abi & Abi.ARM64) == Abi.ARM64)) {
-				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_FULL);");
-			}
-
 			if (assembly_location.Length > 0)
 				sw.WriteLine ("\txamarin_set_assembly_directories (&assembly_locations);");
 
@@ -362,8 +298,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ($"\txamarin_runtime_libraries = xamarin_runtime_libraries_array;");
 
 			sw.WriteLine ("\txamarin_executable_name = \"{0}\";", assembly_name);
-			if (app.XamarinRuntime == XamarinRuntime.MonoVM)
-				sw.WriteLine ("\tmono_use_llvm = {0};", enable_llvm ? "TRUE" : "FALSE");
 			sw.WriteLine ("\txamarin_log_level = {0};", Verbosity.ToString (CultureInfo.InvariantCulture));
 			sw.WriteLine ("\txamarin_arch_name = \"{0}\";", abi.AsArchString ());
 			if (!app.IsDefaultMarshalManagedExceptionMode)
@@ -371,8 +305,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_marshal_objectivec_exception_mode = MarshalObjectiveCExceptionMode{0};", app.MarshalObjectiveCExceptions);
 			if (app.EnableDebug)
 				sw.WriteLine ("\txamarin_debug_mode = TRUE;");
-			if (!string.IsNullOrEmpty (app.MonoGCParams) && app.XamarinRuntime == XamarinRuntime.MonoVM)
-				sw.WriteLine ("\tsetenv (\"MONO_GC_PARAMS\", \"{0}\", 1);", app.MonoGCParams);
 			// Do this last, so that the app developer can override any other environment variable we set.
 			foreach (var kvp in app.EnvironmentVariables) {
 				var name = kvp.Key;
@@ -385,7 +317,6 @@ namespace Xamarin.Bundler {
 					sw.WriteLine ("\txamarin_initialize_dynamic_registrar ();");
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			}
-			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (runtimeConfigProperties is not null && runtimeConfigProperties.Count > 0) {
 				sw.WriteLine ("\txamarin_runtime_config_property_count = {0};", runtimeConfigProperties.Count);
 				sw.WriteLine ("\txamarin_runtime_config_property_keys = xamarin_runtime_config_property_keys_array;");
@@ -426,7 +357,6 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("{");
 			sw.WriteLine ("\txamarin_setup = xamarin_setup_impl;");
 			sw.WriteLine ("\txamarin_register_assemblies = xamarin_register_assemblies_impl;");
-			sw.WriteLine ("\txamarin_register_modules = xamarin_register_modules_impl;");
 			sw.WriteLine ("}");
 		}
 
@@ -451,46 +381,6 @@ namespace Xamarin.Bundler {
 				}
 			}
 			return sb.ToString ();
-		}
-
-		static readonly char [] charsToReplaceAot = new [] { '.', '-', '+', '<', '>' };
-		static string EncodeAotSymbol (string symbol)
-		{
-			var sb = new StringBuilder ();
-			/* This mimics what the aot-compiler does */
-			// https://github.com/dotnet/runtime/blob/2f08fcbfece0c09319f237a6aee6f74c4a9e14e8/src/mono/mono/metadata/native-library.c#L1265-L1284
-			// https://github.com/dotnet/runtime/blob/2f08fcbfece0c09319f237a6aee6f74c4a9e14e8/src/tasks/Common/Utils.cs#L419-L445
-			foreach (var b in System.Text.Encoding.UTF8.GetBytes (symbol)) {
-				char c = (char) b;
-				if ((c >= '0' && c <= '9') ||
-					(c >= 'a' && c <= 'z') ||
-					(c >= 'A' && c <= 'Z') ||
-					(c == '_')) {
-					sb.Append (c);
-					continue;
-				} else if (charsToReplaceAot.Contains (c)) {
-					sb.Append ('_');
-				} else {
-					// Append the hex representation of b between underscores
-					sb.Append ($"_{b:X}_");
-				}
-			}
-			return sb.ToString ();
-		}
-
-		static bool IsBoundAssembly (Assembly s)
-		{
-			if (s.IsFrameworkAssembly == true)
-				return false;
-
-			AssemblyDefinition ad = s.AssemblyDefinition;
-
-			foreach (ModuleDefinition md in ad.Modules)
-				foreach (TypeDefinition td in md.Types)
-					if (td.IsNSObject (s.App.LinkContext))
-						return true;
-
-			return false;
 		}
 
 #endif // !LEGACY_TOOLS

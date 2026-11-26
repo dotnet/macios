@@ -54,13 +54,13 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIQRCodeErrorCorrectionLevel : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 20% of the symbol data is dedicated to error correction.</summary>
 		L = 76,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 37% of the symbol data is dedicated to error correction.</summary>
 		M = 77,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 55% of the symbol data is dedicated to error correction.</summary>
 		Q = 81,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that approximately 65% of the symbol data is dedicated to error correction.</summary>
 		H = 72,
 	}
 
@@ -68,28 +68,29 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIDataMatrixCodeEccVersion : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Uses convolutional code error correction without data protection.</summary>
 		V000 = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses convolutional code error correction with one quarter of the symbol dedicated to error correction.</summary>
 		V050 = 50,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses convolutional code error correction with one third of the symbol dedicated to error correction.</summary>
 		V080 = 80,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses convolutional code error correction with one half of the symbol dedicated to error correction.</summary>
 		V100 = 100,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses convolutional code error correction with three quarters of the symbol dedicated to error correction.</summary>
 		V140 = 140,
-		/// <summary>To be added.</summary>
+		/// <summary>Uses Reed-Solomon error correction, with data protection overhead determined by the symbol size.</summary>
 		V200 = 200,
 	}
 
+	/// <summary>Specifies the alpha compositing mode for a <see cref="CIRenderDestination" />.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CIRenderDestinationAlphaMode : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Designates a destination with no alpha compositing.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Designates a destination that expects premultiplied alpha values.</summary>
 		Premultiplied = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Designates a destination that expects non-premultiplied alpha values.</summary>
 		Unpremultiplied = 2,
 	}
 }

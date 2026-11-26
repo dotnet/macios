@@ -12,11 +12,11 @@ namespace ExternalAccessory {
 	[Native]
 	[Flags]
 	public enum EAWiFiUnconfiguredAccessoryProperties : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports AirPlay.</summary>
 		SupportsAirPlay = (1 << 0),
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports AirPrint.</summary>
 		SupportsAirPrint = (1 << 1),
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory supports HomeKit.</summary>
 		SupportsHomeKit = (1 << 2), // iOS 8 beta 5
 	}
 
@@ -25,13 +25,13 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryBrowserState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that Wi-Fi is unavailable on the device.</summary>
 		WiFiUnavailable = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the browser has stopped searching for accessories.</summary>
 		Stopped,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the browser is searching for accessories.</summary>
 		Searching,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that an accessory is being configured.</summary>
 		Configuring,
 	}
 
@@ -41,26 +41,27 @@ namespace ExternalAccessory {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum EAWiFiUnconfiguredAccessoryConfigurationStatus : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory configuration succeeded.</summary>
 		Success,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled accessory configuration.</summary>
 		UserCancelledConfiguration,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory configuration failed.</summary>
 		Failed,
 	}
 
 	// NSInteger -> EAAccessoryManager.h
+	/// <summary>Identifies errors encountered while choosing a Bluetooth accessory.</summary>
 	[MacCatalyst (13, 1)]
 	[Native ("EABluetoothAccessoryPickerErrorCode")]
 	[ErrorDomain ("EABluetoothAccessoryPickerErrorDomain")]
 	public enum EABluetoothAccessoryPickerError : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory is already connected.</summary>
 		AlreadyConnected,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the accessory could not be found.</summary>
 		NotFound,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the user canceled the accessory selection.</summary>
 		Cancelled,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that accessory selection failed.</summary>
 		Failed,
 	}
 }

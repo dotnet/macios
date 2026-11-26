@@ -4218,12 +4218,6 @@ F:Intents.INVocabularyStringType.MediaShowTitle
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
 F:iTunesLibrary.ITLibPlaylistProperty.Primary
-F:JavaScriptCore.JSRelationCondition.Equal
-F:JavaScriptCore.JSRelationCondition.GreaterThan
-F:JavaScriptCore.JSRelationCondition.LessThan
-F:JavaScriptCore.JSRelationCondition.Undefined
-F:JavaScriptCore.JSType.BigInt
-F:JavaScriptCore.JSType.Symbol
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
@@ -5649,7 +5643,6 @@ F:PhotosUI.PHPickerMetadataOptions.RemoveCaptions
 F:PhotosUI.PHPickerMetadataOptions.RemoveLocation
 F:PhotosUI.PHPickerMode.Compact
 F:PhotosUI.PHPickerMode.Default
-F:PhotosUI.PHProjectCategory.Undefined
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Private
 F:PhotosUI.PHSharedAlbumCreationSharingPolicy.Public
 F:PushToTalk.PTChannelError.AppNotForeground
@@ -25369,10 +25362,6 @@ M:UIKit.IUITextViewDelegate.WillPresentEditMenu(UIKit.UITextView,UIKit.IUIEditMe
 M:UIKit.IUITextViewDelegate.WritingToolsDidEnd(UIKit.UITextView)
 M:UIKit.IUITextViewDelegate.WritingToolsWillBegin(UIKit.UITextView)
 M:UIKit.IUIToolTipInteractionDelegate.GetConfiguration(UIKit.UIToolTipInteraction,CoreGraphics.CGPoint)
-M:UIKit.IUITraitChangeObservable.RegisterForTraitChanges(ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.IUITraitChangeObservable.RegisterForTraitChanges(ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.IUITraitChangeObservable.RegisterForTraitChanges(ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
-M:UIKit.IUITraitChangeObservable.UnregisterForTraitChanges(UIKit.IUITraitChangeRegistration)
 M:UIKit.IUITraitDefinition.GetAffectsColorAppearance``1
 M:UIKit.IUITraitDefinition.GetIdentifier``1
 M:UIKit.IUITraitDefinition.GetName``1
@@ -26894,10 +26883,6 @@ M:UIKit.UIPresentationController.DismissalTransitionWillBegin
 M:UIKit.UIPresentationController.GetSoundIdentifier(UIKit.UIFocusUpdateContext)
 M:UIKit.UIPresentationController.PresentationTransitionDidEnd(System.Boolean)
 M:UIKit.UIPresentationController.PresentationTransitionWillBegin
-M:UIKit.UIPresentationController.RegisterForTraitChanges(ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UIPresentationController.RegisterForTraitChanges(ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.UIPresentationController.RegisterForTraitChanges(ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
-M:UIKit.UIPresentationController.UnregisterForTraitChanges(UIKit.IUITraitChangeRegistration)
 M:UIKit.UIPressesEvent.GetPresses(UIKit.UIGestureRecognizer)
 M:UIKit.UIPreviewAction.Create(System.String,UIKit.UIPreviewActionStyle,UIKit.UIPreviewHandler)
 M:UIKit.UIPreviewActionGroup.Create(System.String,UIKit.UIPreviewActionStyle,UIKit.UIPreviewAction[])
@@ -27750,9 +27735,6 @@ M:UIKit.UITrackingLayoutGuide.GetConstraintsActiveWhenNear(UIKit.NSDirectionalRe
 M:UIKit.UITrackingLayoutGuide.RemoveAllTrackedConstraints
 M:UIKit.UITrackingLayoutGuide.SetConstraintsActiveWhenAway(UIKit.NSLayoutConstraint[],UIKit.NSDirectionalRectEdge)
 M:UIKit.UITrackingLayoutGuide.SetConstraintsActiveWhenNear(UIKit.NSLayoutConstraint[],UIKit.NSDirectionalRectEdge)
-M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UITraitCollection.Contains(UIKit.UITraitCollection)
 M:UIKit.UITraitCollection.FromAccessibilityContrast(UIKit.UIAccessibilityContrast)
 M:UIKit.UITraitCollection.FromActiveAppearance(UIKit.UIUserInterfaceActiveAppearance)
@@ -27865,9 +27847,6 @@ M:UIKit.UIView.NeedsUpdateConstraints
 M:UIKit.UIView.PerformSystemAnimation(UIKit.UISystemAnimation,UIKit.UIView[],UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)
 M:UIKit.UIView.PerformWithoutAnimation(System.Action)
 M:UIKit.UIView.PointInside(CoreGraphics.CGPoint,UIKit.UIEvent)
-M:UIKit.UIView.RegisterForTraitChanges(ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UIView.RegisterForTraitChanges(ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.UIView.RegisterForTraitChanges(ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UIView.RemoveConstraint(UIKit.NSLayoutConstraint)
 M:UIKit.UIView.RemoveConstraints(UIKit.NSLayoutConstraint[])
 M:UIKit.UIView.RemoveFromSuperview
@@ -27907,7 +27886,6 @@ M:UIKit.UIView.SystemLayoutSizeFittingSize(CoreGraphics.CGSize)
 M:UIKit.UIView.TintColorDidChange
 M:UIKit.UIView.TransitionNotify(UIKit.UIView,System.Double,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)
 M:UIKit.UIView.TransitionNotify(UIKit.UIView,UIKit.UIView,System.Double,UIKit.UIViewAnimationOptions,UIKit.UICompletionHandler)
-M:UIKit.UIView.UnregisterForTraitChanges(UIKit.IUITraitChangeRegistration)
 M:UIKit.UIView.UpdateConstraints
 M:UIKit.UIView.UpdateConstraintsIfNeeded
 M:UIKit.UIView.UpdateProperties
@@ -27961,9 +27939,6 @@ M:UIKit.UIViewController.PrepareForSegue(UIKit.UIStoryboardSegue,Foundation.NSOb
 M:UIKit.UIViewController.PresentModalViewController(UIKit.UIViewController,System.Boolean)
 M:UIKit.UIViewController.PresentViewController(UIKit.UIViewController,System.Boolean,System.Action)
 M:UIKit.UIViewController.RegisterForPreviewingWithDelegate(UIKit.IUIViewControllerPreviewingDelegate,UIKit.UIView)
-M:UIKit.UIViewController.RegisterForTraitChanges(ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UIViewController.RegisterForTraitChanges(ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.UIViewController.RegisterForTraitChanges(ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UIViewController.RegisterSceneAccessory(UIKit.UISceneAccessory)
 M:UIKit.UIViewController.RemoveFromParentViewController
 M:UIKit.UIViewController.RemoveKeyCommand(UIKit.UIKeyCommand)
@@ -27989,7 +27964,6 @@ M:UIKit.UIViewController.ShowDetailViewController(UIKit.UIViewController,Foundat
 M:UIKit.UIViewController.ShowViewController(UIKit.UIViewController,Foundation.NSObject)
 M:UIKit.UIViewController.Transition(UIKit.UIViewController,UIKit.UIViewController,System.Double,UIKit.UIViewAnimationOptions,System.Action,UIKit.UICompletionHandler)
 M:UIKit.UIViewController.UnregisterForPreviewingWithContext(UIKit.IUIViewControllerPreviewing)
-M:UIKit.UIViewController.UnregisterForTraitChanges(UIKit.IUITraitChangeRegistration)
 M:UIKit.UIViewController.UnregisterSceneAccessory(UIKit.UISceneAccessoryRegistration)
 M:UIKit.UIViewController.Unwind(UIKit.UIStoryboardSegue,UIKit.UIViewController)
 M:UIKit.UIViewController.UpdateContentUnavailableConfiguration(UIKit.UIContentUnavailableConfigurationState)
@@ -28051,11 +28025,7 @@ M:UIKit.UIWindow.ResignKeyWindow
 M:UIKit.UIWindow.SendEvent(UIKit.UIEvent)
 M:UIKit.UIWindowScene.#ctor(UIKit.UISceneSession,UIKit.UISceneConnectionOptions)
 M:UIKit.UIWindowScene.CreateDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UIWindowScene.RegisterForTraitChanges(ObjCRuntime.Class[],Foundation.NSObject,ObjCRuntime.Selector)
-M:UIKit.UIWindowScene.RegisterForTraitChanges(ObjCRuntime.Class[],ObjCRuntime.Selector)
-M:UIKit.UIWindowScene.RegisterForTraitChanges(ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UIWindowScene.RequestGeometryUpdate(UIKit.UIWindowSceneGeometryPreferences,System.Action{Foundation.NSError})
-M:UIKit.UIWindowScene.UnregisterForTraitChanges(UIKit.IUITraitChangeRegistration)
 M:UIKit.UIWindowSceneActivationAction.Create(UIKit.UIActionIdentifier,UIKit.UIAction,UIKit.UIWindowSceneActivationActionConfigurationProvider)
 M:UIKit.UIWindowSceneActivationConfiguration.#ctor(Foundation.NSUserActivity)
 M:UIKit.UIWindowSceneActivationInteraction.#ctor(UIKit.UIWindowSceneActivationInteractionConfigurationProvider,System.Action{Foundation.NSError})
@@ -55330,13 +55300,10 @@ T:Contacts.CNContactStoreListContactsHandler
 T:Contacts.CNFetchRequest
 T:Contacts.CNFetchResult`1
 T:ContactsUI.CNContactPicker
-T:CoreAnimation.CAAutoresizingMask
 T:CoreAnimation.CAConstraint
-T:CoreAnimation.CAConstraintAttribute
 T:CoreAnimation.CAConstraintLayoutManager
 T:CoreAnimation.CAContentsFormat
 T:CoreAnimation.CACornerCurve
-T:CoreAnimation.CACornerMask
 T:CoreAnimation.CADynamicRange
 T:CoreAnimation.CAEdrMetadata
 T:CoreAnimation.CAFrameRateRange
@@ -55367,7 +55334,6 @@ T:CoreBluetooth.CBConnectionEventMatchingOptions
 T:CoreBluetooth.CBConnectPeripheralOptions
 T:CoreBluetooth.CBL2CapChannel
 T:CoreBluetooth.CBManagerAuthorization
-T:CoreBluetooth.CBManagerState
 T:CoreBluetooth.RestoredState
 T:CoreData.NSBatchInsertRequest
 T:CoreData.NSBatchInsertRequestDictionaryHandler
@@ -55537,7 +55503,6 @@ T:CoreImage.CIRawDecoderVersion
 T:CoreImage.CIRawFilter
 T:CoreImage.CIReductionFilter
 T:CoreImage.CIRenderDestination
-T:CoreImage.CIRenderDestinationAlphaMode
 T:CoreImage.CIRenderTask
 T:CoreImage.CIRoundedQRCodeGenerator
 T:CoreImage.CIRoundedRectangleGenerator
@@ -55912,7 +55877,6 @@ T:ExecutionPolicy.EPError
 T:ExecutionPolicy.EPExecutionPolicy
 T:ExtensionKit.EXAppExtensionBrowserViewController
 T:ExtensionKit.EXHostViewController
-T:ExternalAccessory.EABluetoothAccessoryPickerError
 T:FileProvider.NSFileProviderContentPolicy
 T:FileProvider.NSFileProviderCreateItemOptions
 T:FileProvider.NSFileProviderCreateOrModifyItemCompletionHandler
@@ -57022,7 +56986,6 @@ T:iTunesLibrary.ITLibrary
 T:iTunesLibrary.ITLibraryNotifications
 T:iTunesLibrary.MediaItemProperty
 T:JavaScriptCore.JSPromiseCreationExecutor
-T:JavaScriptCore.JSRelationCondition
 T:LinkPresentation.LPErrorCode
 T:LinkPresentation.LPLinkMetadata
 T:LinkPresentation.LPLinkView
@@ -58005,12 +57968,9 @@ T:ModelIO.MDLAnimatedValueInterpolation
 T:ModelIO.MDLAnimationBindComponent
 T:ModelIO.MDLBundleAssetResolver
 T:ModelIO.MDLDataPrecision
-T:ModelIO.MDLMaterialFace
-T:ModelIO.MDLNoiseTextureType
 T:ModelIO.MDLObjectHandler
 T:ModelIO.MDLPackedJointAnimation
 T:ModelIO.MDLPathAssetResolver
-T:ModelIO.MDLProbePlacement
 T:ModelIO.MDLRelativeAssetResolver
 T:ModelIO.MDLSkeleton
 T:ModelIO.MDLTransformMatrixOp
@@ -58289,18 +58249,13 @@ T:PdfKit.PdfAnnotationWidgetSubtype
 T:PdfKit.PdfAppearanceCharacteristics
 T:PdfKit.PdfAppearanceCharacteristicsKeys
 T:PdfKit.PdfBorderKeys
-T:PdfKit.PdfDisplayDirection
 T:PdfKit.PdfDocumentAttributes
-T:PdfKit.PdfDocumentPermissions
 T:PdfKit.PdfDocumentWriteOptions
-T:PdfKit.PdfInterpolationQuality
 T:PdfKit.PdfPageImageInitializationOption
 T:PdfKit.PdfPageImageInitializationOptionKeys
 T:PdfKit.PdfSelectionGranularity
-T:PdfKit.PdfThumbnailLayoutMode
 T:PdfKit.PdfViewScale
 T:PdfKit.PdfViewTitle
-T:PdfKit.PdfWidgetCellState
 T:PencilKit.PKCanvasView
 T:PencilKit.PKCanvasViewDrawingPolicy
 T:PencilKit.PKContentVersion
@@ -58451,7 +58406,6 @@ T:Photos.PHProjectCreationSource
 T:Photos.PHProjectSectionType
 T:Photos.PHProjectTextElementType
 T:PhotosUI.PHEditingExtensionContext
-T:PhotosUI.PHLivePhotoViewContentMode
 T:PhotosUI.PHPhotoLibrary_PhotosUISupport
 T:PhotosUI.PHPickerCapabilities
 T:PhotosUI.PHPickerConfiguration
@@ -58465,7 +58419,6 @@ T:PhotosUI.PHPickerSearchText
 T:PhotosUI.PHPickerUpdateConfiguration
 T:PhotosUI.PHPickerViewController
 T:PhotosUI.PHProjectAssetElement
-T:PhotosUI.PHProjectCategory
 T:PhotosUI.PHProjectElement
 T:PhotosUI.PHProjectExtensionContext
 T:PhotosUI.PHProjectInfo
@@ -58563,7 +58516,6 @@ T:SafariServices.SFSafariTab
 T:SafariServices.SFSafariToolbarItem
 T:SafariServices.SFSafariViewControllerActivityButton
 T:SafariServices.SFSafariViewControllerDataStore
-T:SafariServices.SFSafariViewControllerDismissButtonStyle
 T:SafariServices.SFSafariViewControllerPrewarmingToken
 T:SafariServices.SFSafariWindow
 T:SafariServices.SFUniversalLink

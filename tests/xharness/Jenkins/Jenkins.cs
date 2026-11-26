@@ -85,7 +85,7 @@ namespace Xharness.Jenkins {
 			Harness = harness ?? throw new ArgumentNullException (nameof (harness));
 			Simulators = new SimulatorLoader (processManager, new SimulatorSelector (processManager.XcodeRoot));
 			Devices = new HardwareDeviceLoader (processManager);
-			testSelector = new TestSelector (this, new GitHub (harness, processManager));
+			testSelector = new TestSelector (this);
 			testVariationsFactory = new TestVariationsFactory (this, processManager);
 			DeviceLoader = new JenkinsDeviceLoader (Simulators, Devices, Logs);
 			resourceManager = new ResourceManager ();

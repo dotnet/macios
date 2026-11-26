@@ -18,11 +18,11 @@ namespace AVRouting {
 	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum AVCustomRoutingEventReason : long {
-		/// <summary>The route was activated.</summary>
+		/// <summary>The user selected a route in the picker.</summary>
 		Activate = 0,
-		/// <summary>The route was deactivated.</summary>
+		/// <summary>The user deselected a route in the picker.</summary>
 		Deactivate,
-		/// <summary>The route was reactivated.</summary>
+		/// <summary>Reactivate a route that the user authorized earlier.</summary>
 		Reactivate,
 	}
 

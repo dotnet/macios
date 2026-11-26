@@ -42,9 +42,11 @@ namespace AppKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the cell that implements the button.</summary>
+		/// <value>The <see cref="NSButtonCell" /> that implements the button.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use the properties and methods on <see cref="NSButton" /> directly instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10")]
 		public new NSButtonCell Cell {

@@ -22,9 +22,11 @@ namespace AppKit {
 			return ret;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the area of the drawable that is affected when the buffers are swapped.</summary>
+		/// <value>The swap rectangle. It's only used if <see cref="SwapRectangleEnabled" /> is <see langword="true" />.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, because OpenGL is deprecated. Use Metal instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.7")]
 		unsafe public Rectangle SwapRectangle {
@@ -38,9 +40,11 @@ namespace AppKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets whether <see cref="SwapRectangle" /> is used when the buffers are swapped.</summary>
+		/// <value><see langword="true" /> if only the area in <see cref="SwapRectangle" /> is swapped, <see langword="false" /> otherwise.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, because OpenGL is deprecated. Use Metal instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.7")]
 		public bool SwapRectangleEnabled {
@@ -52,9 +56,11 @@ namespace AppKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets whether rasterization is enabled.</summary>
+		/// <value><see langword="true" /> if rasterization is enabled, <see langword="false" /> otherwise.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, because OpenGL is deprecated. Use Metal instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.7")]
 		public bool RasterizationEnabled {
@@ -107,9 +113,11 @@ namespace AppKit {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets whether state validation is enabled.</summary>
+		/// <value><see langword="true" /> if state validation is enabled, <see langword="false" /> otherwise.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, because OpenGL is deprecated. Use Metal instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.7")]
 		public bool StateValidation {

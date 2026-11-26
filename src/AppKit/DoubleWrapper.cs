@@ -82,7 +82,10 @@ namespace AppKit {
 	}
 
 	public partial class NSStatusItem {
-		/// <summary>Occurs when the user double-clicks the control.</summary>
+		/// <summary>Occurs when the user double-clicks the status item.</summary>
+		/// <remarks>
+		///   <para>This event is obsolete. Use the <see cref="Button" /> property to customize the status item's behavior instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "Soft-deprecation, forwards message to button, but will be gone in the future.")]
 		public event EventHandler DoubleClick {

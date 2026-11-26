@@ -15540,10 +15540,6 @@ M:CoreServices.FSEventStream.#ctor(CoreServices.FSEventStreamCreateOptions)
 M:CoreServices.FSEventStream.Release
 M:CoreServices.FSEventStream.Retain
 M:CoreServices.FSEventStream.SetDispatchQueue(CoreFoundation.DispatchQueue)
-M:CoreServices.FSEventStream.UnscheduleFromRunLoop(CoreFoundation.CFRunLoop,Foundation.NSString)
-M:CoreServices.FSEventStream.UnscheduleFromRunLoop(CoreFoundation.CFRunLoop)
-M:CoreServices.FSEventStream.UnscheduleFromRunLoop(Foundation.NSRunLoop,Foundation.NSString)
-M:CoreServices.FSEventStream.UnscheduleFromRunLoop(Foundation.NSRunLoop)
 M:CoreServices.FSEventStreamCreateOptions.#ctor
 M:CoreServices.FSEventStreamCreateOptions.#ctor(CoreServices.FSEventStreamCreateFlags,System.TimeSpan,System.String[])
 M:CoreServices.FSEventStreamCreateOptions.#ctor(CoreServices.FSEventStreamCreateFlags,System.TimeSpan,System.UInt64,System.String[])
@@ -15645,12 +15641,6 @@ M:CoreText.ICTAdaptiveImageProviding.GetImage(CoreGraphics.CGSize,System.Runtime
 M:CoreVideo.CVBuffer.HasAttachment(Foundation.NSString)
 M:CoreVideo.CVBuffer.Release
 M:CoreVideo.CVBuffer.Retain
-M:CoreVideo.CVDisplayLink.CreateFromDisplayId(System.UInt32,CoreVideo.CVReturn@)
-M:CoreVideo.CVDisplayLink.CreateFromDisplayId(System.UInt32)
-M:CoreVideo.CVDisplayLink.CreateFromDisplayIds(System.UInt32[],CoreVideo.CVReturn@)
-M:CoreVideo.CVDisplayLink.CreateFromDisplayIds(System.UInt32[])
-M:CoreVideo.CVDisplayLink.CreateFromOpenGLMask(System.UInt32,CoreVideo.CVReturn@)
-M:CoreVideo.CVDisplayLink.CreateFromOpenGLMask(System.UInt32)
 M:CoreVideo.CVDisplayLink.GetTypeId
 M:CoreVideo.CVDisplayLink.Release
 M:CoreVideo.CVDisplayLink.Retain

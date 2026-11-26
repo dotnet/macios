@@ -32,10 +32,12 @@ using System.Collections;
 
 namespace AppKit {
 	public partial class NSApplication {
-		/// <param name="sheet">To be added.</param>
-		///         <param name="docWindow">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the specified sheet attached to the specified window.</summary>
+		/// <param name="sheet">The sheet to show.</param>
+		/// <param name="docWindow">The window to attach the sheet to.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSWindow.BeginSheet(NSWindow,Action{nint})" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "Use NSWindow.BeginSheet instead.")]
 		public void BeginSheet (NSWindow sheet, NSWindow docWindow)
@@ -43,11 +45,13 @@ namespace AppKit {
 			BeginSheet (sheet, docWindow, null, null, IntPtr.Zero);
 		}
 
-		/// <param name="sheet">To be added.</param>
-		///         <param name="docWindow">To be added.</param>
-		///         <param name="onEnded">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the specified sheet attached to the specified window, and calls a callback when the sheet is dismissed.</summary>
+		/// <param name="sheet">The sheet to show.</param>
+		/// <param name="docWindow">The window to attach the sheet to.</param>
+		/// <param name="onEnded">The callback to call when the sheet is dismissed.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSWindow.BeginSheet(NSWindow,Action{nint})" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10", "Use NSWindow.BeginSheet instead.")]
 		public void BeginSheet (NSWindow sheet, NSWindow docWindow, Action onEnded)
@@ -58,12 +62,14 @@ namespace AppKit {
 	}
 
 	public partial class NSOpenPanel {
-		/// <param name="directory">To be added.</param>
-		///         <param name="fileName">To be added.</param>
-		///         <param name="fileTypes">To be added.</param>
-		///         <param name="modalForWindow">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the open panel as a sheet attached to the specified window.</summary>
+		/// <param name="directory">The directory to show initially.</param>
+		/// <param name="fileName">The file to select initially.</param>
+		/// <param name="fileTypes">The file types the user can select.</param>
+		/// <param name="modalForWindow">The window to attach the sheet to.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSSavePanel.BeginSheet(NSWindow,NSSavePanelComplete)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow)
@@ -71,13 +77,15 @@ namespace AppKit {
 			BeginSheet (directory, fileName, fileTypes, modalForWindow, null, null, IntPtr.Zero);
 		}
 
-		/// <param name="directory">To be added.</param>
-		///         <param name="fileName">To be added.</param>
-		///         <param name="fileTypes">To be added.</param>
-		///         <param name="modalForWindow">To be added.</param>
-		///         <param name="onEnded">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the open panel as a sheet attached to the specified window, and calls a callback when the sheet is dismissed.</summary>
+		/// <param name="directory">The directory to show initially.</param>
+		/// <param name="fileName">The file to select initially.</param>
+		/// <param name="fileTypes">The file types the user can select.</param>
+		/// <param name="modalForWindow">The window to attach the sheet to.</param>
+		/// <param name="onEnded">The callback to call when the sheet is dismissed.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="NSSavePanel.BeginSheet(NSWindow,NSSavePanelComplete)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow, Action onEnded)
@@ -88,10 +96,12 @@ namespace AppKit {
 	}
 
 	public partial class NSPageLayout {
-		/// <param name="printInfo">To be added.</param>
-		///         <param name="docWindow">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the page layout panel as a sheet attached to the specified window.</summary>
+		/// <param name="printInfo">The print information to show and edit.</param>
+		/// <param name="docWindow">The window to attach the sheet to.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSPrintInfo,NSWindow,Action{NSPageLayoutResult})" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 		public void BeginSheet (NSPrintInfo printInfo, NSWindow docWindow)
@@ -99,11 +109,13 @@ namespace AppKit {
 			BeginSheet (printInfo, docWindow, null, null, IntPtr.Zero);
 		}
 
-		/// <param name="printInfo">To be added.</param>
-		///         <param name="docWindow">To be added.</param>
-		///         <param name="onEnded">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Shows the page layout panel as a sheet attached to the specified window, and calls a callback when the sheet is dismissed.</summary>
+		/// <param name="printInfo">The print information to show and edit.</param>
+		/// <param name="docWindow">The window to attach the sheet to.</param>
+		/// <param name="onEnded">The callback to call when the sheet is dismissed.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="BeginSheet(NSPrintInfo,NSWindow,Action{NSPageLayoutResult})" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos14.0")]
 		public void BeginSheet (NSPrintInfo printInfo, NSWindow docWindow, Action onEnded)

@@ -553,10 +553,12 @@ namespace CoreServices {
 		static extern void FSEventStreamScheduleWithRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
 
-		/// <param name="runLoop">To be added.</param>
-		///         <param name="runLoopMode">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Schedules the event stream on the specified run loop in the specified mode.</summary>
+		/// <param name="runLoop">The run loop to schedule the event stream on.</param>
+		/// <param name="runLoopMode">The run loop mode.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (CFRunLoop runLoop, NSString runLoopMode)
@@ -566,9 +568,11 @@ namespace CoreServices {
 			GC.KeepAlive (runLoopMode);
 		}
 
-		/// <param name="runLoop">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Schedules the event stream on the specified run loop in the default mode.</summary>
+		/// <param name="runLoop">The run loop to schedule the event stream on.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
@@ -576,10 +580,12 @@ namespace CoreServices {
 			ScheduleWithRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
-		/// <param name="runLoop">To be added.</param>
-		///         <param name="runLoopMode">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Schedules the event stream on the specified run loop in the specified mode.</summary>
+		/// <param name="runLoop">The run loop to schedule the event stream on.</param>
+		/// <param name="runLoopMode">The run loop mode.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (NSRunLoop runLoop, NSString runLoopMode)
@@ -587,9 +593,11 @@ namespace CoreServices {
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
 		}
 
-		/// <param name="runLoop">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Schedules the event stream on the specified run loop in the default mode.</summary>
+		/// <param name="runLoop">The run loop to schedule the event stream on.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (NSRunLoop runLoop)
@@ -603,6 +611,12 @@ namespace CoreServices {
 		static extern void FSEventStreamUnscheduleFromRunLoop (IntPtr handle,
 			IntPtr runLoop, IntPtr runLoopMode);
 
+		/// <summary>Removes the event stream from the specified run loop in the specified mode.</summary>
+		/// <param name="runLoop">The run loop to remove the event stream from.</param>
+		/// <param name="runLoopMode">The run loop mode.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop, NSString runLoopMode)
@@ -612,6 +626,11 @@ namespace CoreServices {
 			GC.KeepAlive (runLoopMode);
 		}
 
+		/// <summary>Removes the event stream from the specified run loop in the default mode.</summary>
+		/// <param name="runLoop">The run loop to remove the event stream from.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop)
@@ -619,6 +638,12 @@ namespace CoreServices {
 			UnscheduleFromRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
+		/// <summary>Removes the event stream from the specified run loop in the specified mode.</summary>
+		/// <param name="runLoop">The run loop to remove the event stream from.</param>
+		/// <param name="runLoopMode">The run loop mode.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (NSRunLoop runLoop, NSString runLoopMode)
@@ -626,6 +651,11 @@ namespace CoreServices {
 			UnscheduleFromRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
 		}
 
+		/// <summary>Removes the event stream from the specified run loop in the default mode.</summary>
+		/// <param name="runLoop">The run loop to remove the event stream from.</param>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="SetDispatchQueue(CoreFoundation.DispatchQueue)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (NSRunLoop runLoop)

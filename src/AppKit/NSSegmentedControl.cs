@@ -14,9 +14,11 @@ namespace AppKit {
 	public partial class NSSegmentedControl {
 		NSActionDispatcher? dispatcher;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the cell that implements the segmented control.</summary>
+		/// <value>The <see cref="NSSegmentedCell" /> that implements the segmented control.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use the properties and methods on <see cref="NSSegmentedControl" /> directly instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos10.10")]
 		public new NSSegmentedCell Cell {

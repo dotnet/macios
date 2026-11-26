@@ -54,6 +54,13 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe static extern CVReturn CVDisplayLinkCreateWithCGDisplay (uint displayId, IntPtr* displayLink);
 
+		/// <summary>Creates a display link for the specified display.</summary>
+		/// <param name="displayId">The ID of the display.</param>
+		/// <param name="error">If the display link couldn't be created, the error that occurred.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[UnsupportedOSPlatform ("ios")]
@@ -71,6 +78,12 @@ namespace CoreVideo {
 			return new CVDisplayLink (handle, true);
 		}
 
+		/// <summary>Creates a display link for the specified display.</summary>
+		/// <param name="displayId">The ID of the display.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -87,6 +100,14 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe static extern CVReturn CVDisplayLinkCreateWithCGDisplays (uint* displayArray, nint count, IntPtr* displayLink);
 
+		/// <summary>Creates a display link for the specified displays.</summary>
+		/// <param name="displayIds">The IDs of the displays.</param>
+		/// <param name="error">If the display link couldn't be created, the error that occurred.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="displayIds" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[UnsupportedOSPlatform ("ios")]
@@ -110,6 +131,13 @@ namespace CoreVideo {
 			return new CVDisplayLink (handle, true);
 		}
 
+		/// <summary>Creates a display link for the specified displays.</summary>
+		/// <param name="displayIds">The IDs of the displays.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="displayIds" /> is <see langword="null" />.</exception>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -126,6 +154,13 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary)]
 		unsafe static extern CVReturn CVDisplayLinkCreateWithOpenGLDisplayMask (uint mask, IntPtr* displayLinkOut);
 
+		/// <summary>Creates a display link for the displays in the specified OpenGL display mask.</summary>
+		/// <param name="mask">The OpenGL display mask.</param>
+		/// <param name="error">If the display link couldn't be created, the error that occurred.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[ObsoletedOSPlatform ("macos15.0", "Use 'NSView.GetDisplayLink', 'NSWindow.GetDisplayLink' or 'NSScreen.GetDisplayLink' instead.")]
 		[UnsupportedOSPlatform ("ios")]
@@ -142,6 +177,12 @@ namespace CoreVideo {
 			return new CVDisplayLink (handle, true);
 		}
 
+		/// <summary>Creates a display link for the displays in the specified OpenGL display mask.</summary>
+		/// <param name="mask">The OpenGL display mask.</param>
+		/// <returns>A new display link, or <see langword="null" /> if it couldn't be created.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete. Use <see cref="AppKit.NSView.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" />, <see cref="AppKit.NSWindow.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> or <see cref="AppKit.NSScreen.GetDisplayLink(Foundation.NSObject,ObjCRuntime.Selector)" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]

@@ -102,6 +102,10 @@ namespace UIKit {
 		}
 
 		/// <summary>Gets the reference URL for the picked asset.</summary>
+		/// <value>The reference URL for the picked asset, or <see langword="null" /> if not available.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use <see cref="PHAsset" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios", "Use 'UIImagePickerController.PHAsset' instead.")]
@@ -113,6 +117,10 @@ namespace UIKit {
 		}
 
 		/// <summary>Gets the <see cref="Photos.PHAsset" /> associated with the picked media.</summary>
+		/// <value>The <see cref="Photos.PHAsset" /> associated with the picked media, or <see langword="null" /> if not available.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use <see cref="PhotosUI.PHPickerViewController" /> instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios14.0", "Use 'PHPicker' instead.")]

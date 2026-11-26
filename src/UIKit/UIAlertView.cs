@@ -14,7 +14,7 @@ namespace UIKit {
 	public partial class UIAlertView {
 		/// <summary>Constructor to initialize an alert view.</summary>
 		/// <param name="title">The string that is displayed in the alert view's title bar.</param>
-		/// <param name="message">A more desriptive string that appears in the alert view below the title.</param>
+		/// <param name="message">A more descriptive string that appears in the alert view below the title.</param>
 		/// <param name="del">The alert view's delegate.</param>
 		/// <param name="cancelButtonTitle">The string that appears in the cancel button.</param>
 		/// <param name="otherButtons">Titles of any additional buttons.</param>

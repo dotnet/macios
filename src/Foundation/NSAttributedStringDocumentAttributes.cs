@@ -136,9 +136,11 @@ namespace Foundation {
 #endif // !TVOS
 
 #if __MACOS__
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the WebKit preferences to use when reading HTML documents.</summary>
+		/// <value>The WebKit preferences to use, or <see langword="null" /> to use the default preferences.</value>
+		/// <remarks>
+		///   <para>This property is obsolete, and is no longer supported.</para>
+		/// </remarks>
 		[UnsupportedOSPlatform ("ios")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("maccatalyst")]

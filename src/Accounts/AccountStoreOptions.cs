@@ -61,9 +61,12 @@ namespace Accounts {
 		{
 		}
 
-		/// <summary>Represents Facebook App ID.</summary>
+		/// <summary>Gets or sets the Facebook application identifier.</summary>
 		/// <value>The Facebook application identifier.</value>
-		/// <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
+		/// <remarks>
+		///   <para>This property is obsolete. Use the Facebook SDK instead.</para>
+		///   <para>This property uses the <c>ACFacebookAppIdKey</c> key to access the underlying dictionary.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.0", "Use Facebook SDK instead.")]
@@ -77,9 +80,15 @@ namespace Accounts {
 			}
 		}
 
-		/// <param name="audience">Target audience.</param>
-		/// <param name="permissions">One or more requested permissions.</param>
-		/// <summary>Sets message posting permissions.</summary>
+		/// <summary>Sets the Facebook permissions to request, and the audience for posts.</summary>
+		/// <param name="audience">The audience for posts.</param>
+		/// <param name="permissions">One or more permissions to request.</param>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="permissions" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentException">Thrown if <paramref name="permissions" /> is empty.</exception>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="audience" /> isn't a valid value.</exception>
+		/// <remarks>
+		///   <para>This method is obsolete. Use the Facebook SDK instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.0", "Use Facebook SDK instead.")]
@@ -114,6 +123,9 @@ namespace Accounts {
 
 		/// <summary>Gets or sets the Tencent Weibo application identifier.</summary>
 		/// <value>The Tencent Weibo application identifier.</value>
+		/// <remarks>
+		///   <para>This property is obsolete. Use the Tencent Weibo SDK instead.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios11.0", "Use Tencent Weibo SDK instead.")]

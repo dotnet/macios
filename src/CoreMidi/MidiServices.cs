@@ -650,11 +650,13 @@ namespace CoreMidi {
 			return null;
 		}
 
-		/// <param name="name">name for the input port.</param>
-		///         <summary>Creates a new MIDI input port.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>The input port can be used to read events from MIDI, the returned MidiPort raises an event to notify you of new data available.</remarks>
+		/// <summary>Creates a new MIDI input port.</summary>
+		/// <param name="name">The name of the input port.</param>
+		/// <returns>A new MIDI input port.</returns>
+		/// <remarks>
+		///   <para>This method is obsolete.</para>
+		///   <para>Use the input port to receive MIDI data. The returned <see cref="MidiPort" /> raises the <see cref="MidiPort.MessageReceived" /> event when new data is available.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]

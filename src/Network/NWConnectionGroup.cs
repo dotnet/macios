@@ -164,6 +164,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_send_message (OS_nw_connection_group group, /* [NullAllowed] DispatchData */ IntPtr content, /* [NullAllowed] */ OS_nw_endpoint endpoint, OS_nw_content_context context, BlockLiteral* handler);
 
+		[UserDelegateType (typeof (Action<NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSendCompletion (IntPtr block, IntPtr error)
 		{
@@ -206,6 +207,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_receive_handler (OS_nw_connection_group group, uint maximum_message_size, byte reject_oversized_messages, BlockLiteral* handler);
 
+		[UserDelegateType (typeof (NWConnectionGroupReceiveDelegate))]
 		[UnmanagedCallersOnly]
 		static void TrampolineReceiveHandler (IntPtr block, IntPtr content, IntPtr context, byte isCompleted)
 		{
@@ -235,6 +237,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_state_changed_handler (OS_nw_connection_group group, BlockLiteral* handler);
 
+		[UserDelegateType (typeof (NWConnectionGroupStateChangedDelegate))]
 		[UnmanagedCallersOnly]
 		static void TrampolineStateChangedHandler (IntPtr block, NWConnectionGroupState state, IntPtr error)
 		{
@@ -349,6 +352,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_group_set_new_connection_handler (OS_nw_connection_group group, BlockLiteral* connectionHandler);
 
+		[UserDelegateType (typeof (Action<NWConnection>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSetNewConnectionHandler (IntPtr block, IntPtr connection)
 		{

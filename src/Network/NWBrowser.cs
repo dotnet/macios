@@ -119,6 +119,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_browser_set_browse_results_changed_handler (OS_nw_browser browser, BlockLiteral* handler);
 
+		[UserDelegateType (typeof (NWBrowserChangesDelegate))]
 		[UnmanagedCallersOnly]
 		static void TrampolineChangesHandler (IntPtr block, IntPtr oldResult, IntPtr newResult, byte completed)
 		{
@@ -193,6 +194,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_browser_set_state_changed_handler (OS_nw_browser browser, BlockLiteral* state_changed_handler);
 
+		[UserDelegateType (typeof (Action<NWBrowserState, NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineStateChangesHandler (IntPtr block, NWBrowserState state, IntPtr error)
 		{

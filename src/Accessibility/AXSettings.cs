@@ -82,6 +82,7 @@ namespace Accessibility {
 			AXOpenSettingsFeature ((nint) (long) feature, &block);
 		}
 
+		[UserDelegateType (typeof (Action<NSError>))]
 		[UnmanagedCallersOnly]
 		static void OpenSettingsFeatureCompletionHandler (IntPtr block, IntPtr error)
 		{

@@ -1875,34 +1875,8 @@ partial class TestRuntime {
 			File.WriteAllText (env, "Launched!"); // content doesn't matter, the file just has to exist.
 	}
 
-	enum NXByteOrder /* unspecified in header, means most likely int */ {
-		Unknown,
-		LittleEndian,
-		BigEndian,
-	}
-
-	[StructLayout (LayoutKind.Sequential)]
-	struct NXArchInfo {
-		IntPtr name; // const char *
-		public int CpuType; // cpu_type_t -> integer_t -> int
-		public int CpuSubType; // cpu_subtype_t -> integer_t -> int
-		public NXByteOrder ByteOrder;
-		IntPtr description; // const char *
-
-		public string Name {
-			get { return Marshal.PtrToStringAuto (name)!; }
-		}
-
-		public string Description {
-			get { return Marshal.PtrToStringAuto (description)!; }
-		}
-	}
-
-	[DllImport (Constants.libSystemLibrary)]
-	static unsafe extern NXArchInfo* NXGetLocalArchInfo ();
-
-	public unsafe static bool IsARM64 {
-		get { return NXGetLocalArchInfo ()->Name.StartsWith ("arm64"); }
+	public static bool IsARM64 {
+		get { return RuntimeInformation.ProcessArchitecture == Architecture.Arm64; }
 	}
 
 	[DllImport ("__Internal")]

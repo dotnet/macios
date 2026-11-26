@@ -364,6 +364,7 @@ namespace MonoTouchFixtures.UIKit {
 			GC.KeepAlive (action);
 		}
 
+		[UserDelegateType (typeof (Action<IUITraitEnvironment, UITraitCollection>))]
 		[UnmanagedCallersOnly]
 		static void NativeTraitChangeHandler (IntPtr block, IntPtr environment, IntPtr previousCollection)
 		{
@@ -383,6 +384,7 @@ namespace MonoTouchFixtures.UIKit {
 			var callbacks = 0;
 			delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &NativeTraitChangeHandler;
 			using var block = new BlockLiteral (trampoline, (Action<IUITraitEnvironment, UITraitCollection>) ((a, b) => callbacks++), typeof (UITraitOverridesTest), nameof (NativeTraitChangeHandler));
+			Assert.That (ObjCRuntime.BlocksTest.GetBlockSignature (&block), Is.EqualTo ("v@?@@"), "Native handler block signature");
 			var handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (view.Handle,
 				new Selector ("registerForTraitChanges:withHandler:").Handle, traits.Handle, (IntPtr) (&block));
 			using var registration = view.LastRegistration;
@@ -415,6 +417,41 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), () => registration.Handle == NativeHandle.Zero), Is.True, "Deferred cleanup completed");
 			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Unregistered once");
 			Assert.That (view.UnregisteredOnMainThread, Is.True, "Unregistered on main thread");
+		}
+
+		[Test]
+		public void RegisterForTraitChanges_DisposePreservesIdentity ()
+		{
+			TestRuntime.AssertXcodeVersion (15, 0);
+
+			using var view = new IdentityAwareTraitObservableView ();
+			var callbacks = 0;
+			using var registration = view.RegisterForTraitChanges<UITraitVerticalSizeClass> ((a, b) => callbacks++);
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.UpdateTraitsIfNeeded ();
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Regular;
+			view.UpdateTraitsIfNeeded ();
+			Assert.That (callbacks, Is.GreaterThan (0), "Callback before disposal");
+
+			registration.Dispose ();
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Original token recognized");
+			Assert.That (registration.Handle, Is.EqualTo (NativeHandle.Zero), "Registration disposed");
+
+			var previousCallbacks = callbacks;
+			view.TraitOverrides.VerticalSizeClass = UIUserInterfaceSizeClass.Compact;
+			view.UpdateTraitsIfNeeded ();
+			Assert.That (callbacks, Is.EqualTo (previousCallbacks), "No callback after disposal");
+			registration.Dispose ();
+			Assert.That (view.UnregistrationCount, Is.EqualTo (1), "Unregistered once");
+		}
+
+		[Register ("IdentityAwareTraitObservableView")]
+		class IdentityAwareTraitObservableView : TraitObservableView {
+			public override void UnregisterForTraitChanges (IUITraitChangeRegistration registration)
+			{
+				if (ReferenceEquals (registration, LastRegistration))
+					base.UnregisterForTraitChanges (registration);
+			}
 		}
 
 		[Register ("TraitObservableView")]

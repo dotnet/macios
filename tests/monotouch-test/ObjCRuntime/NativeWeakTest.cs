@@ -181,6 +181,60 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 		}
 
+		[DllImport ("__Internal")]
+		static extern IntPtr x_weak_promoter_create (IntPtr [] objects, int count, ulong interval_ns);
+
+		[DllImport ("__Internal")]
+		static extern void x_weak_promoter_start (IntPtr promoter);
+
+		[DllImport ("__Internal")]
+		static extern void x_weak_promoter_join (IntPtr promoter, [Out] IntPtr [] promoted);
+
+		// https://github.com/dotnet/macios/issues/27374
+		// A native thread (which the GC doesn't suspend) turns weak references into strong ones
+		// while the GC runs. Any object it gets back must still have its original managed peer.
+		[Test]
+		public void WeakPromotionDuringCollectionKeepsPeer ()
+		{
+			const int objectCount = 10000;
+			const int rounds = 5;
+			var promotedCount = 0;
+			var lostCount = 0;
+
+			for (var round = 0; round < rounds; round++) {
+				var promoter = CreatePromoter (objectCount);
+				var promoted = new IntPtr [objectCount];
+				x_weak_promoter_start (promoter);
+				GC.Collect ();
+				x_weak_promoter_join (promoter, promoted);
+				CollectAndDrain ();
+
+				for (var i = 0; i < objectCount; i++) {
+					if (promoted [i] == IntPtr.Zero)
+						continue;
+					promotedCount++;
+					var peer = Runtime.GetNSObject (promoted [i]) as CustomPeer;
+					if (peer?.State != i + 1)
+						lostCount++;
+					objc_release (promoted [i]);
+				}
+			}
+
+			Assert.That (lostCount, Is.EqualTo (0), $"Lost peers ({promotedCount} objects promoted in {rounds} rounds)");
+		}
+
+		[MethodImpl (MethodImplOptions.NoInlining)]
+		static IntPtr CreatePromoter (int objectCount)
+		{
+			var handles = new IntPtr [objectCount];
+			for (var i = 0; i < objectCount; i++) {
+				var peer = new CustomPeer ();
+				peer.State = i + 1;
+				handles [i] = peer.Handle;
+			}
+			return x_weak_promoter_create (handles, objectCount, 2000);
+		}
+
 		[Preserve (AllMembers = true)]
 		class CustomPeer : NSObject {
 			public int State;

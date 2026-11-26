@@ -25,6 +25,11 @@ void x_call_block (x_block_callback block);
 void* x_call_func_3 (void* (*fptr)(void*, void*, void*), void* p1, void* p2, void* p3);
 int x_get_nsobject_data_with_association_lock (id object, void **data);
 
+// Helpers for promoting weak references from a native thread (one the GC never suspends), see NativeWeakTest.cs.
+void *x_weak_promoter_create (void **objects, int count, uint64_t interval_ns);
+void x_weak_promoter_start (void *promoter);
+void x_weak_promoter_join (void *promoter, void **promoted);
+
 // Helper for the issue #25861 design work: a C callback invoked from
 // InitSurfacesSelfToManaged's 'init' with the 'self' pointer, used to verify that
 // managed code can resolve 'self' to the wrapper being constructed while 'init'

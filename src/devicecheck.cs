@@ -21,7 +21,7 @@ namespace DeviceCheck {
 		FeatureUnsupported,
 		/// <summary>The input provided to the operation is invalid.</summary>
 		InvalidInput,
-		/// <summary>Using the App Attest key failed. The key may already be attested, not be attested yet, or have been rejected.</summary>
+		/// <summary>Using the App Attest key failed. The key may already be attested, may not be attested yet, or may have been rejected.</summary>
 		InvalidKey,
 		/// <summary>Attestation couldn't reach the App Attest service. Retry later with the same key and client data hash.</summary>
 		ServerUnavailable,

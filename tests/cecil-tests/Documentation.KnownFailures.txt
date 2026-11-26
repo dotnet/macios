@@ -1612,8 +1612,6 @@ F:Cinematic.CNCinematicErrorCode.Malformed
 F:Cinematic.CNCinematicErrorCode.Unknown
 F:Cinematic.CNCinematicErrorCode.Unreadable
 F:Cinematic.CNCinematicErrorCode.Unsupported
-F:Cinematic.CNDecisionIdentifierType.Group
-F:Cinematic.CNDecisionIdentifierType.Single
 F:Cinematic.CNDetectionType.AutoFocus
 F:Cinematic.CNDetectionType.CatBody
 F:Cinematic.CNDetectionType.CatHead
@@ -14231,7 +14229,6 @@ M:Cinematic.CNAssetSpatialAudioInfo.Load(AVFoundation.AVAsset,Cinematic.CNAssetS
 M:Cinematic.CNAssetSpatialAudioInfo.LoadAsync(AVFoundation.AVAsset)
 M:Cinematic.CNCompositionInfo.InsertTimeRange(CoreMedia.CMTimeRange,Cinematic.CNAssetInfo,CoreMedia.CMTime,Foundation.NSError@)
 M:Cinematic.CNCustomDetectionTrack.#ctor(Cinematic.CNDetection[],System.Boolean)
-M:Cinematic.CNDecision.#ctor(CoreMedia.CMTime,System.Int64,System.Boolean,Cinematic.CNDecisionIdentifierType)
 M:Cinematic.CNDetection.#ctor(CoreMedia.CMTime,Cinematic.CNDetectionType,CoreGraphics.CGRect,System.Single)
 M:Cinematic.CNDetection.AccessibilityLabelForDetectionType(Cinematic.CNDetectionType)
 M:Cinematic.CNDetection.DisparityInNormalizedRect(CoreGraphics.CGRect,CoreVideo.CVPixelBuffer,Cinematic.CNDetectionType,System.Single)
@@ -55020,8 +55017,6 @@ T:Cinematic.CNBoundsPrediction
 T:Cinematic.CNCinematicErrorCode
 T:Cinematic.CNCompositionInfo
 T:Cinematic.CNCustomDetectionTrack
-T:Cinematic.CNDecision
-T:Cinematic.CNDecisionIdentifierType
 T:Cinematic.CNDetection
 T:Cinematic.CNDetectionTrack
 T:Cinematic.CNDetectionType

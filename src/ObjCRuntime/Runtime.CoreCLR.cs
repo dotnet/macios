@@ -563,10 +563,11 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (location);
 		}
 
+		// This sets the given flags, and leaves the other flags unchanged.
 		static void SetFlagsForNSObject (IntPtr gchandle, uint flags)
 		{
 			var obj = (NSObject) GetGCHandleTarget (gchandle)!;
-			obj.FlagsInternal = (NSObject.Flags) flags;
+			obj.SetFlags ((NSObject.Flags) flags);
 		}
 
 		static uint GetFlagsForNSObject (IntPtr gchandle)

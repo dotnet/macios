@@ -122,11 +122,11 @@ namespace CloudKit {
 		ParticipantMayNeedVerification = 33,
 		/// <summary>Indicates that the response was lost.</summary>
 		ResponseLost = 34,
-		/// <summary>The asset isn't available.</summary>
+		/// <summary>The asset file couldn't be opened. The app may not have permission, or data protection may be hiding the file. Retry after the file can be opened.</summary>
 		AssetNotAvailable = 35,
-		/// <summary>The service is temporarily unavailable. Try again later.</summary>
+		/// <summary>The iCloud account needs the user to recover it in Settings. After the account changes, check the account status and retry.</summary>
 		TemporarilyUnavailable = 36,
-		/// <summary>The participant has already been invited to the share.</summary>
+		/// <summary>The user is already invited to this share and must accept that invitation before continuing.</summary>
 		ParticipantAlreadyInvited = 37,
 	}
 

@@ -205,7 +205,8 @@ properties as [`ConfigureMac`](#configuremac): an SSH key, then the SSH agent,
 then a password file. It also uses the same pipe and message format as
 [`SubscribeToDeviceUpdates`](#subscribetodeviceupdates), except that:
 
-- `Ready` has a `device` field instead of `devices`.
+- `Ready` has a `device` field instead of `devices`. It means the remote log
+  process has started, not that log lines are available.
 - There are no `Update` messages. Each log line is sent as a `Log` message
   instead:
 
@@ -217,7 +218,10 @@ then a password file. It also uses the same pipe and message format as
   can't be parsed. `pid` is a number; the other fields are strings.
 
 A simulator must be booted, and a physical device must be connected to the Mac
-with USB (and unlocked). Otherwise the target fails with a fatal `Error`.
+with USB and unlocked. An unknown device fails before `Ready` with a fatal
+`Error` (`RMAC2023`), followed by `Ended` with reason `Failed`. A locked physical
+device fails after `Ready` (`RMAC2021`). A Wi-Fi-only device can report that it
+needs a USB connection after `Ready` and wait until the caller stops the stream.
 
 If the caller reads too slowly, log lines are dropped and a non-fatal `Error`
 message is sent.

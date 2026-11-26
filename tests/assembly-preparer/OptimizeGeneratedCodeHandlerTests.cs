@@ -13,7 +13,7 @@ public class OptimizeGeneratedCodeHandlerTests : BaseClass {
 	[TestCase ("Network.NWFramer", "set_InputHandler", "Q@?@")]
 	public void NativeIntegerBlockSignatures (string typeName, string methodName, string expectedSignature)
 	{
-		using var preparer = CreatePreparer (ApplePlatform.iOS, true, p => {
+		using var preparer = CreatePreparer (ApplePlatform.iOS, p => {
 			p.Registrar = RegistrarMode.Static;
 			p.Optimizations.OptimizeBlockLiteralSetupBlock = true;
 		}, "class Test { }", out _);

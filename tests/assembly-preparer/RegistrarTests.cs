@@ -57,7 +57,7 @@ public class RegistrarTests : BaseClass {
 		TypeMapOutputDirectory={Path.Combine (tempDir, "typemaps")}
 		UnmanagedCallersOnlyMapPath={Path.Combine (tempDir, "uco.txt")}
 		";
-		using var preparer = CreatePreparer (platform, true, p => p.Registrar = RegistrarMode.TrimmableStatic,
+		using var preparer = CreatePreparer (platform, p => p.Registrar = RegistrarMode.TrimmableStatic,
 			code, out _, extraConfig: config, hotReloadCompatibleBuild: true);
 		AssertPrepare (preparer);
 

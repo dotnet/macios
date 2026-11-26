@@ -210,11 +210,14 @@ then a password file. It also uses the same pipe and message format as
   instead:
 
   ```json
-  {"version":1,"type":"Log","log":{"raw":"...","date":"...","deviceName":"...","tag":"...","pid":"...","level":"...","message":"..."}}
+  {"version":1,"type":"Log","log":{"raw":"...","date":"...","deviceName":"...","tag":"...","pid":123,"level":"...","message":"..."}}
   ```
 
   Only `raw` is always present. The other fields are omitted when the line
-  can't be parsed.
+  can't be parsed. `pid` is a number; the other fields are strings.
+
+A simulator must be booted, and a physical device must be connected to the Mac
+with USB (and unlocked). Otherwise the target fails with a fatal `Error`.
 
 If the caller reads too slowly, log lines are dropped and a non-fatal `Error`
 message is sent.
@@ -291,7 +294,8 @@ doesn't stop the subscription. A fatal `Error` is followed by `Ended` with the
 reason `Failed`, and the build fails.
 
 To stop the target, send `{"version":1,"type":"Stop"}` or close the pipe. This
-works at any time, including while connecting to the Mac. The target then
+works at any time, including while connecting to the Mac. If a list of
+devices is being computed, the target stops once it's done. The target then
 disconnects within 10 seconds and the build succeeds.
 
 The target checks the output of `simctl` and `devicectl` on the Mac for

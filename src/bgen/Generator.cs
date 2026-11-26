@@ -3215,8 +3215,11 @@ public partial class Generator : IMemberGatherer {
 			// if this is a extension of any kind, ensure that we keep alive the this parameter
 			// so that it is not collected before the msg send call has completed.
 			print ("GC.KeepAlive (This);");
-		} else if (supercall) {
-			print ("GC.KeepAlive ({0});", target_name);
+		} else if (!minfo.is_static && !(minfo.is_protocol_member && mi.Name == "Constructor")) {
+			print ("GC.KeepAlive (this);");
+		}
+
+		if (supercall && !minfo.is_static) {
 			indent--;
 			print ("}"); // close unsafe block
 		}

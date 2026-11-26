@@ -65,17 +65,19 @@ namespace AppKit {
 		/// <param name="window">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
 		public void BeginSheet (NSWindow window)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSAlert.BeginSheet(NSWindow?, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.10 and later (Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.).
 			BeginSheet (window, null, null, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="window">To be added.</param>
 		///         <param name="onEnded">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
 		public void BeginSheet (NSWindow window, Action? onEnded)
 		{
 			BeginSheetForResponse (window, r => {
@@ -88,17 +90,19 @@ namespace AppKit {
 		/// <param name="onEnded">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
 		public void BeginSheetForResponse (NSWindow window, Action<nint> onEnded)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSAlert.BeginSheet(NSWindow?, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.10 and later (Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.).
 			BeginSheet (window, new NSAlertDidEndDispatcher (onEnded), NSAlertDidEndDispatcher.Selector, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="window">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
 		public nint RunSheetModal (NSWindow window)
 		{
 			return RunSheetModal (window, NSApplication.SharedApplication);
@@ -109,6 +113,8 @@ namespace AppKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use BeginSheetModalForWindow (NSWindow sheetWindow, Action<nint> handler) instead.")]
 		public nint RunSheetModal (NSWindow? window, NSApplication application)
 		{
 			if (application is null)

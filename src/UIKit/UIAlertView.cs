@@ -19,10 +19,12 @@ namespace UIKit {
 		/// <param name="cancelButtonTitle">The string that appears in the cancel button.</param>
 		/// <param name="otherButtons">Titles of any additional buttons.</param>
 		/// <remarks>This constructor is provided to make it possible to fully initialize an alert view when it is created.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios8.0", "Use 'UIAlertController' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIAlertController' instead.")]
 		public UIAlertView (string title, string message, IUIAlertViewDelegate del, string cancelButtonTitle, params string [] otherButtons)
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIAlertView' is obsoleted on: 'ios' 8.0 and later (Use 'UIAlertController' instead.), 'maccatalyst' 8.0 and later (Use 'UIAlertController' instead.).
 			: this (title, message, del, cancelButtonTitle, otherButtons is null || otherButtons.Length == 0 ? IntPtr.Zero : new NSString (otherButtons [0]).DangerousRetain ().DangerousAutorelease ().Handle, IntPtr.Zero, IntPtr.Zero)
-#pragma warning restore CA1422
 		{
 			if (otherButtons is null)
 				return;

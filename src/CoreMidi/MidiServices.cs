@@ -655,6 +655,12 @@ namespace CoreMidi {
 		///         <returns>
 		///         </returns>
 		///         <remarks>The input port can be used to read events from MIDI, the returned MidiPort raises an event to notify you of new data available.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		public MidiPort CreateInputPort (string name)
 		{
 			return new MidiPort (this, name, true);
@@ -2659,15 +2665,19 @@ namespace CoreMidi {
 			return new MidiEndpoint (h, "Destination" + destinationIndex, false);
 		}
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos11.0")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		internal MidiEndpoint (MidiClient client, string name, out MidiError code)
 		{
 			using (var nsstr = new NSString (name)) {
 				GCHandle gch = GCHandle.Alloc (this);
 				unsafe {
 					MidiEndpointRef tempHandle;
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'MidiEndpoint.MIDIDestinationCreate(int, nint, delegate* unmanaged<nint, nint, nint, void>, nint, int*)' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later.
 					code = MIDIDestinationCreate (client.handle, nsstr.Handle, &Read, GCHandle.ToIntPtr (gch), &tempHandle);
-#pragma warning restore CA1422
 					handle = tempHandle;
 				}
 				EndpointName = name;

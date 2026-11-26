@@ -129,9 +129,6 @@ TVOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACOS_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 MACCATALYST_GENERATOR_WARNASERROR=$(GENERATOR_WARNASERROR)
 
-# this is due to deprecated APIs used in the generated code.
-BGEN_WARNINGS_TO_FIX=BI1234
-
 # We ignore some xml docs warnings when building the core and apidefinition assemblies, because
 # the xml docs might want to reference generated APIs, so the compiler would warn about not
 # finding those APIs (because they haven't been generated yet).
@@ -153,10 +150,10 @@ CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),1591
 CSC_WARNINGS_TO_FIX:=$(CSC_WARNINGS_TO_FIX),CS8981
 
 WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
-CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
+CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 
 DOTNET_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
-DOTNET_CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX),$(BGEN_WARNINGS_TO_FIX)
+DOTNET_CORE_WARNINGS_TO_FIX = -nowarn:$(CSC_WARNINGS_TO_FIX)
 
 include ./Makefile.generator
 include ./Makefile.rgenerator

@@ -16,13 +16,17 @@ namespace UIKit {
 		/// <summary>Registers a method to be invoked whenever the display screen needs to be updated.</summary>
 		/// <param name="action">Delegate method to invoke when the screen needs to be updated.</param>
 		/// <returns>The active <see cref="CoreAnimation.CADisplayLink" /> that can be configured, read from, and scheduled to deliver events, or <see langword="null" /> if the display link could not be created.</returns>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios27.0", "Use the equivalent display link API on 'UIWindowScene' instead.")]
+		[ObsoletedOSPlatform ("tvos27.0", "Use the equivalent display link API on 'UIWindowScene' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst27.0", "Use the equivalent display link API on 'UIWindowScene' instead.")]
 		public CoreAnimation.CADisplayLink? CreateDisplayLink (Action action)
 		{
 			ArgumentNullException.ThrowIfNull (action);
 			var d = new NSActionDispatcher (action);
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIScreen.CreateDisplayLink(NSObject, Selector)' is obsoleted on: 'ios' 27.0 and later (Use the equivalent display link API on 'UIWindowScene' instead.), 'maccatalyst' 27.0 and later (Use the equivalent display link API on 'UIWindowScene' instead.).
 			return CreateDisplayLink (d, NSActionDispatcher.Selector);
-#pragma warning restore CA1422
 		}
 
 		/// <summary>Captures a screenshot of the entire screen.</summary>

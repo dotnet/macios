@@ -35,6 +35,8 @@ namespace AppKit {
 	public partial class NSPopUpButton {
 		/// <summary>Gets or sets the pop-up button cell associated with this control.</summary>
 		/// <value>The <see cref="NSPopUpButtonCell" /> used by this control.</value>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10")]
 		public new NSPopUpButtonCell Cell {
 			get { return (NSPopUpButtonCell) base.Cell; }
 			set { base.Cell = value; }

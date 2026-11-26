@@ -83,15 +83,15 @@ namespace AppKit {
 
 	public partial class NSStatusItem {
 		/// <summary>Occurs when the user double-clicks the control.</summary>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Soft-deprecation, forwards message to button, but will be gone in the future.")]
 		public event EventHandler DoubleClick {
 			add {
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSStatusItem.Target' and 'NSStatusItem.DoubleAction' are obsoleted on: 'macOS/OSX' 10.10 and later (Soft-deprecation, forwards message to button, but will be gone in the future.).
 				Target = ActionDispatcher.SetupDoubleAction (Target, value);
 				DoubleAction = ActionDispatcher.DoubleAction;
 			}
 			remove {
 				ActionDispatcher.RemoveDoubleAction (Target, value);
-#pragma warning restore CA1422
 			}
 		}
 	}

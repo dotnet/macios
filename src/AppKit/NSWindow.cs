@@ -64,11 +64,11 @@ namespace AppKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos15.0", "Do not use this method.")]
 		static public NSWindow FromWindowRef (IntPtr windowRef)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSWindow' is obsoleted on: 'macOS/OSX' 15.0 and later (Do not use this method.).
 			return new NSWindow (windowRef);
-#pragma warning restore CA1422
 		}
 
 		void InitializeReleasedWhenClosed ()

@@ -569,32 +569,32 @@ namespace CoreServices {
 		/// <param name="runLoop">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (CFRunLoop runLoop)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop, CFRunLoop.ModeDefault);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="runLoop">To be added.</param>
 		///         <param name="runLoopMode">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (NSRunLoop runLoop, NSString runLoopMode)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="runLoop">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void ScheduleWithRunLoop (NSRunLoop runLoop)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.ScheduleWithRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			ScheduleWithRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
-#pragma warning restore CA1422
 		}
 
 		[SupportedOSPlatform ("macos")]
@@ -612,21 +612,25 @@ namespace CoreServices {
 			GC.KeepAlive (runLoopMode);
 		}
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (CFRunLoop runLoop)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'FSEventStream.UnscheduleFromRunLoop(CFRunLoop, NSString)' is obsoleted on: 'macOS/OSX' 13.0 and later (Use 'SetDispatchQueue' instead.).
 			UnscheduleFromRunLoop (runLoop, CFRunLoop.ModeDefault);
 		}
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (NSRunLoop runLoop, NSString runLoopMode)
 		{
 			UnscheduleFromRunLoop (runLoop.GetCFRunLoop (), runLoopMode);
 		}
 
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos13.0", "Use 'SetDispatchQueue' instead.")]
 		public void UnscheduleFromRunLoop (NSRunLoop runLoop)
 		{
 			UnscheduleFromRunLoop (runLoop.GetCFRunLoop (), CFRunLoop.ModeDefault);
-#pragma warning restore CA1422
 		}
 
 		[DllImport (Constants.CoreServicesLibrary)]

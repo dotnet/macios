@@ -64,20 +64,26 @@ namespace Accounts {
 		/// <summary>Represents Facebook App ID.</summary>
 		/// <value>The Facebook application identifier.</value>
 		/// <remarks>The property uses constant ACFacebookAppIdKey value to access the underlying dictionary.</remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios11.0", "Use Facebook SDK instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use Facebook SDK instead.")]
 		public string? FacebookAppId {
 			set {
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACFacebookKey.AppId' is obsoleted on: 'ios' 11.0 and later (Use Facebook SDK instead.), 'maccatalyst' 11.0 and later (Use Facebook SDK instead.).
 				SetStringValue (ACFacebookKey.AppId, value);
 			}
 			get {
 				return GetStringValue (ACFacebookKey.AppId);
-#pragma warning restore CA1422
 			}
 		}
 
 		/// <param name="audience">Target audience.</param>
 		/// <param name="permissions">One or more requested permissions.</param>
 		/// <summary>Sets message posting permissions.</summary>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios11.0", "Use Facebook SDK instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use Facebook SDK instead.")]
 		public void SetPermissions (ACFacebookAudience audience, params string [] permissions)
 		{
 			if (permissions is null)
@@ -85,7 +91,6 @@ namespace Accounts {
 			if (permissions.Length == 0)
 				ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (permissions));
 
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACFacebookKey.Permissions', 'ACFacebookAudienceValue.Everyone', 'ACFacebookAudienceValue.Friends', 'ACFacebookAudienceValue.OnlyMe' and 'ACFacebookKey.Audience' are obsoleted on: 'ios' 11.0 and later (Use Facebook SDK instead.), 'maccatalyst' 11.0 and later (Use Facebook SDK instead.).
 			SetArrayValue (ACFacebookKey.Permissions, permissions);
 
 			NSString v;
@@ -105,19 +110,20 @@ namespace Accounts {
 			}
 
 			SetNativeValue (ACFacebookKey.Audience, v);
-#pragma warning restore CA1422
 		}
 
 		/// <summary>Gets or sets the Tencent Weibo application identifier.</summary>
 		/// <value>The Tencent Weibo application identifier.</value>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios11.0", "Use Tencent Weibo SDK instead.")]
+		[ObsoletedOSPlatform ("maccatalyst", "Use Tencent Weibo SDK instead.")]
 		public string? TencentWeiboAppId {
 			set {
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'ACTencentWeiboKey.AppId' is obsoleted on: 'ios' 11.0 and later (Use Tencent Weibo SDK instead.), 'maccatalyst' 11.0 and later (Use Tencent Weibo SDK instead.).
 				SetStringValue (ACTencentWeiboKey.AppId, value);
 			}
 			get {
 				return GetStringValue (ACTencentWeiboKey.AppId);
-#pragma warning restore CA1422
 			}
 		}
 #endif

@@ -40,13 +40,13 @@ namespace AppKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.14", "Use 'FromCGContext' instead.")]
 		public static NSGraphicsContext FromGraphicsPort (CGContext context, bool initialFlippedState)
 		{
 			if (context is null)
 				throw new ArgumentNullException (nameof (context));
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSGraphicsContext.FromGraphicsPort(nint, bool)' is obsoleted on: 'macOS/OSX' 10.14 and later (Use 'FromCGContext' instead.).
 			NSGraphicsContext result = FromGraphicsPort (context.Handle, initialFlippedState);
-#pragma warning restore CA1422
 			GC.KeepAlive (context);
 			return result;
 		}
@@ -54,10 +54,10 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.14", "Use 'CGContext' instead.")]
 		public virtual CGContext GraphicsPort {
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSGraphicsContext.GraphicsPortHandle' is obsoleted on: 'macOS/OSX' 10.14 and later (Use 'CGContext' instead.).
 			get { return new CGContext (GraphicsPortHandle, false); }
-#pragma warning restore CA1422
 		}
 	}
 }

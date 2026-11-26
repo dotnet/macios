@@ -61,11 +61,11 @@ namespace UIKit {
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios14.0")]
+		[ObsoletedOSPlatform ("maccatalyst14.0")]
 		static public UIVibrancyEffect CreateWidgetEffectForNotificationCenter (UIVibrancyEffectStyle vibrancyStyle)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIVibrancyEffect_NCWidgetAdditions.GetWidgetEffect(UIVibrancyEffect, UIVibrancyEffectStyle)' is obsoleted on: 'ios' 14.0 and later, 'maccatalyst' 14.0 and later.
 			return (null as UIVibrancyEffect)!.GetWidgetEffect (vibrancyStyle);
-#pragma warning restore CA1422
 		}
 #endif // HAS_NOTIFICATIONCENTER
 	}

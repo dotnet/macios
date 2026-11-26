@@ -76,11 +76,15 @@ namespace UIKit {
 		}
 
 		/// <include file="../../docs/api/UIKit/UIView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIView.BeginAnimations(System.String)']/*" />
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static void BeginAnimations (string animation)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIView.BeginAnimations(string?, nint)' is obsoleted on: 'ios' 13.0 and later (Please use the 'Action' handler based animation APIs instead.), 'maccatalyst' 13.0 and later (Please use the 'Action' handler based animation APIs instead.).
 			BeginAnimations (animation, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		[Register]
@@ -113,13 +117,17 @@ namespace UIKit {
 					WillEnd ();
 			}
 
+			[SupportedOSPlatform ("ios")]
+			[SupportedOSPlatform ("tvos")]
+			[SupportedOSPlatform ("maccatalyst")]
+			[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+			[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+			[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 			public static _UIViewStaticCallback Prepare ()
 			{
 				if (shared is null) {
 					shared = new _UIViewStaticCallback ();
-#pragma warning disable CA1422 // This call site is reachable on: 'ios' 15.0 and later, 'maccatalyst' 15.0 and later. 'UIView.SetAnimationDelegate(NSObject)' is obsoleted on: 'ios' 13.0 and later (Please use the 'Action' handler based animation APIs instead.), 'maccatalyst' 13.0 and later (Please use the 'Action' handler based animation APIs instead.).
 					SetAnimationDelegate (shared);
-#pragma warning restore CA1422
 				}
 				return shared;
 			}
@@ -130,6 +138,12 @@ namespace UIKit {
 		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
 		///         </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static event Action AnimationWillStart {
 			add {
 				_UIViewStaticCallback.Prepare ().WillStart += value;
@@ -144,6 +158,12 @@ namespace UIKit {
 		///           <para>The use of this method is discouraged. Application developers should prefer to use the <see cref="UIKit.UIViewPropertyAnimator" /> class to animate UIViews.</para>
 		///           <para>Notice that these events are only fired as long as the application does not install its own animation delegate by calling <see cref="UIKit.UIView.SetAnimationDelegate(Foundation.NSObject)" />.</para>
 		///         </remarks>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("tvos13.0", "Please use the 'Action' handler based animation APIs instead.")]
+		[ObsoletedOSPlatform ("maccatalyst13.0", "Please use the 'Action' handler based animation APIs instead.")]
 		public static event Action AnimationWillEnd {
 			add {
 				_UIViewStaticCallback.Prepare ().WillEnd += value;

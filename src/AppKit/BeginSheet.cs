@@ -36,11 +36,11 @@ namespace AppKit {
 		///         <param name="docWindow">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use NSWindow.BeginSheet instead.")]
 		public void BeginSheet (NSWindow sheet, NSWindow docWindow)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSApplication.BeginSheet(NSWindow, NSWindow, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.10 and later (Use NSWindow.BeginSheet instead.).
 			BeginSheet (sheet, docWindow, null, null, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="sheet">To be added.</param>
@@ -48,12 +48,12 @@ namespace AppKit {
 		///         <param name="onEnded">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.10", "Use NSWindow.BeginSheet instead.")]
 		public void BeginSheet (NSWindow sheet, NSWindow docWindow, Action onEnded)
 		{
 			var obj = new NSAsyncActionDispatcher (onEnded);
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSApplication.BeginSheet(NSWindow, NSWindow, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.10 and later (Use NSWindow.BeginSheet instead.).
 			BeginSheet (sheet, docWindow, obj, NSActionDispatcher.Selector, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 	}
 
@@ -64,11 +64,11 @@ namespace AppKit {
 		///         <param name="modalForWindow">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSOpenPanel.BeginSheet(string?, string?, string[]?, NSWindow?, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.6 and later (Use NSApplication.RunModal instead.).
 			BeginSheet (directory, fileName, fileTypes, modalForWindow, null, null, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="directory">To be added.</param>
@@ -78,12 +78,12 @@ namespace AppKit {
 		///         <param name="onEnded">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos10.6", "Use NSApplication.RunModal instead.")]
 		public void BeginSheet (string directory, string fileName, string [] fileTypes, NSWindow modalForWindow, Action onEnded)
 		{
 			var obj = new NSAsyncActionDispatcher (onEnded);
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSOpenPanel.BeginSheet(string?, string?, string[]?, NSWindow?, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 10.6 and later (Use NSApplication.RunModal instead.).
 			BeginSheet (directory, fileName, fileTypes, modalForWindow, obj, NSActionDispatcher.Selector, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 	}
 
@@ -92,11 +92,11 @@ namespace AppKit {
 		///         <param name="docWindow">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos14.0")]
 		public void BeginSheet (NSPrintInfo printInfo, NSWindow docWindow)
 		{
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSPageLayout.BeginSheet(NSPrintInfo, NSWindow, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 14.0 and later.
 			BeginSheet (printInfo, docWindow, null, null, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 
 		/// <param name="printInfo">To be added.</param>
@@ -104,12 +104,12 @@ namespace AppKit {
 		///         <param name="onEnded">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[SupportedOSPlatform ("macos")]
+		[ObsoletedOSPlatform ("macos14.0")]
 		public void BeginSheet (NSPrintInfo printInfo, NSWindow docWindow, Action onEnded)
 		{
 			var obj = new NSAsyncActionDispatcher (onEnded);
-#pragma warning disable CA1422 // This call site is reachable on: 'macOS/OSX' 14.0 and later. 'NSPageLayout.BeginSheet(NSPrintInfo, NSWindow, NSObject?, Selector?, nint)' is obsoleted on: 'macOS/OSX' 14.0 and later.
 			BeginSheet (printInfo, docWindow, obj, NSActionDispatcher.Selector, IntPtr.Zero);
-#pragma warning restore CA1422
 		}
 	}
 }

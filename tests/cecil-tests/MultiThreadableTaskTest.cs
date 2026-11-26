@@ -88,9 +88,15 @@ namespace Cecil.Tests {
 		public void NoSharedStateOrUnsafeApis ()
 		{
 			var path = GetTaskAssembly ();
-			var resolver = new BoundaryAssemblyResolver ();
+			using var resolver = new DefaultAssemblyResolver ();
+			foreach (var directory in resolver.GetSearchDirectories ())
+				resolver.RemoveSearchDirectory (directory);
 			resolver.AddSearchDirectory (Path.GetDirectoryName (path));
-			var assembly = AssemblyDefinition.ReadAssembly (path, new ReaderParameters { AssemblyResolver = resolver });
+			foreach (var sdk in Directory.EnumerateDirectories (Path.Combine (Configuration.DOTNET_DIR, "sdk")))
+				resolver.AddSearchDirectory (sdk);
+			resolver.AddSearchDirectory (AppContext.BaseDirectory);
+			resolver.AddSearchDirectory (Path.GetDirectoryName (typeof (object).Assembly.Location));
+			using var assembly = AssemblyDefinition.ReadAssembly (path, new ReaderParameters { AssemblyResolver = resolver });
 
 			var tasks = assembly.MainModule.Types
 				.Where (t => !t.IsAbstract && t.CustomAttributes.Any (ca => ca.AttributeType.FullName == MultiThreadableTaskAttribute))
@@ -105,27 +111,27 @@ namespace Cecil.Tests {
 			Assert.That (failures, Is.Empty, "Multithreadable tasks must not use static state or unsafe APIs. Either fix the code, or remove [MSBuildMultiThreadableTask] from the task.\n\t" + string.Join ("\n\t", failures));
 		}
 
-		// Assemblies that aren't next to the task assembly (such as MSBuild's) can't be resolved, and we don't look into them anyway.
-		class BoundaryAssemblyResolver : DefaultAssemblyResolver {
-			public override AssemblyDefinition? Resolve (AssemblyNameReference name)
-			{
-				try {
-					return base.Resolve (name);
-				} catch (AssemblyResolutionException) {
-					return null;
-				}
-			}
-		}
-
 		class Walker {
 			// Base method -> the methods in our assemblies that override or implement it.
 			readonly Dictionary<MethodDefinition, List<MethodDefinition>> overrides = new ();
 
 			public Walker (ModuleDefinition module)
 			{
-				var types = module.Types.Concat (module.AssemblyReferences
-					.Where (r => OurAssemblies.Contains (r.Name))
-					.SelectMany (r => module.AssemblyResolver.Resolve (r)?.MainModule.Types ?? []));
+				var modules = new Dictionary<string, ModuleDefinition> { { module.Assembly.Name.Name, module } };
+				var pending = new Queue<ModuleDefinition> ();
+				pending.Enqueue (module);
+				while (pending.TryDequeue (out var current)) {
+					foreach (var reference in current.AssemblyReferences.Where (r => OurAssemblies.Contains (r.Name))) {
+						if (modules.ContainsKey (reference.Name))
+							continue;
+						var dependency = current.AssemblyResolver.Resolve (reference);
+						Assert.That (dependency, Is.Not.Null, $"Could not resolve {reference.FullName}");
+						modules.Add (reference.Name, dependency.MainModule);
+						pending.Enqueue (dependency.MainModule);
+					}
+				}
+				Assert.That (modules.Keys, Is.EquivalentTo (OurAssemblies), "Missing task dependency assemblies");
+				var types = modules.Values.SelectMany (m => m.Types);
 				foreach (var type in types.SelectMany (EnumerateNestedTypes)) {
 					foreach (var method in type.Methods.Where (m => m.IsVirtual)) {
 						foreach (var baseMethod in GetBaseMethods (method)) {
@@ -152,27 +158,37 @@ namespace Cecil.Tests {
 						yield return md;
 				}
 				var type = method.DeclaringType;
-				var baseType = type.BaseType?.Resolve ();
-				while (baseType is not null) {
+				for (var baseType = type.BaseType?.Resolve (); baseType is not null; baseType = baseType.BaseType?.Resolve ()) {
 					foreach (var candidate in baseType.Methods.Where (m => m.IsVirtual && SameSignature (m, method)))
 						yield return candidate;
-					baseType = baseType.BaseType?.Resolve ();
 				}
-				foreach (var iface in type.Interfaces) {
-					var ifaceType = iface.InterfaceType.Resolve ();
-					if (ifaceType is null)
+				var interfaces = new Queue<TypeReference> ();
+				for (var t = type; t is not null; t = t.BaseType?.Resolve ()) {
+					foreach (var iface in t.Interfaces)
+						interfaces.Enqueue (iface.InterfaceType);
+				}
+				var visited = new HashSet<TypeDefinition> ();
+				while (interfaces.TryDequeue (out var iface)) {
+					var ifaceType = iface.Resolve ();
+					Assert.That (ifaceType, Is.Not.Null, $"Could not resolve interface {iface.FullName}");
+					if (!visited.Add (ifaceType))
 						continue;
 					foreach (var candidate in ifaceType.Methods.Where (m => SameSignature (m, method)))
 						yield return candidate;
+					foreach (var parent in ifaceType.Interfaces)
+						interfaces.Enqueue (parent.InterfaceType);
 				}
 			}
 
 			static bool SameSignature (MethodDefinition a, MethodDefinition b)
 			{
-				if (a.Name != b.Name || a.Parameters.Count != b.Parameters.Count)
+				if (a.Name != b.Name || a.Parameters.Count != b.Parameters.Count || a.GenericParameters.Count != b.GenericParameters.Count)
 					return false;
 				for (var i = 0; i < a.Parameters.Count; i++) {
-					if (a.Parameters [i].ParameterType.FullName != b.Parameters [i].ParameterType.FullName)
+					var left = a.Parameters [i].ParameterType;
+					var right = b.Parameters [i].ParameterType;
+					// Conservatively match generic signatures, including closed implementations such as IFoo<string>.
+					if (!left.ContainsGenericParameter && !right.ContainsGenericParameter && left.FullName != right.FullName)
 						return false;
 				}
 				return true;
@@ -275,6 +291,25 @@ namespace Cecil.Tests {
 					}
 				}
 
+				void InstantiateTypeArguments (TypeReference type, MethodDefinition caller)
+				{
+					if (type is not GenericInstanceType generic)
+						return;
+					foreach (var argument in generic.GenericArguments)
+						InstantiateTypeArgument (argument, caller);
+				}
+
+				void InstantiateTypeArgument (TypeReference type, MethodDefinition caller)
+				{
+					var element = type.GetElementType ();
+					if (element is GenericParameter)
+						return;
+					var definition = element.Resolve ();
+					Assert.That (definition, Is.Not.Null, $"Could not resolve {type.FullName}");
+					Instantiate (definition, caller);
+					InstantiateTypeArguments (type, caller);
+				}
+
 				void Report (MethodDefinition method, string problem)
 				{
 					var chain = new List<string> ();
@@ -286,6 +321,12 @@ namespace Cecil.Tests {
 
 				// MSBuild creates the task, sets its public properties, calls Execute (and maybe Cancel), and reads its output properties.
 				Instantiate (task, null);
+				var taskMethods = GetTypeAndBaseTypes (task).SelectMany (t => t.Methods).ToArray ();
+				var execute = taskMethods.FirstOrDefault (m => m.Name == "Execute" && !m.IsStatic && m.Parameters.Count == 0 && m.ReturnType.FullName == "System.Boolean");
+				Assert.That (execute, Is.Not.Null, $"{task.FullName} has no Execute entry point");
+				Add (execute, null);
+				foreach (var cancel in taskMethods.Where (m => (m.Name == "Cancel" || m.Name.EndsWith (".Cancel", StringComparison.Ordinal)) && !m.IsStatic && m.Parameters.Count == 0))
+					Add (cancel, null);
 				foreach (var ctor in task.Methods.Where (m => m.IsConstructor && !m.IsStatic))
 					Add (ctor, null);
 				foreach (var property in GetTypeAndBaseTypes (task).SelectMany (t => t.Properties)) {
@@ -310,19 +351,31 @@ namespace Cecil.Tests {
 
 					foreach (var ins in method.Body.Instructions) {
 						switch (ins.Operand) {
+						case TypeReference tr when ins.OpCode == OpCodes.Initobj || ins.OpCode == OpCodes.Constrained || ins.OpCode == OpCodes.Box:
+							// Generic parameters have no definition; their concrete arguments are recorded at the call site.
+							InstantiateTypeArgument (tr, method);
+							break;
 						case FieldReference fr when ins.OpCode == OpCodes.Ldsfld || ins.OpCode == OpCodes.Stsfld || ins.OpCode == OpCodes.Ldsflda:
 							var field = fr.Resolve ();
-							if (field is not null && IsOurs (field) && !IsInCompilerGeneratedType (field) && !IsResourceClass (field.DeclaringType))
+							Assert.That (field, Is.Not.Null, $"Could not resolve {fr.FullName}");
+							if (IsOurs (field) && !IsInCompilerGeneratedType (field) && !IsResourceClass (field.DeclaringType))
 								Report (method, $"accesses the static field {field.FullName}");
 							break;
 						case MethodReference mr:
+							InstantiateTypeArguments (mr.DeclaringType, method);
+							if (mr is GenericInstanceMethod genericMethod) {
+								foreach (var argument in genericMethod.GenericArguments)
+									InstantiateTypeArgument (argument, method);
+							}
 							if (IsBanned (mr)) {
 								Report (method, $"calls {mr.FullName}");
 								break;
 							}
-							var md = mr.Resolve ();
-							if (md is null)
+							// Array constructors and Get/Set pseudo-methods have no IL body or MethodDefinition.
+							if (mr.DeclaringType is ArrayType)
 								break;
+							var md = mr.Resolve ();
+							Assert.That (md, Is.Not.Null, $"Could not resolve {mr.FullName}");
 							if (ins.OpCode == OpCodes.Newobj)
 								Instantiate (md.DeclaringType, method);
 							if (md.IsVirtual && (ins.OpCode == OpCodes.Callvirt || ins.OpCode == OpCodes.Ldvirtftn))

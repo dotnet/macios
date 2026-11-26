@@ -4091,7 +4091,6 @@ F:Intents.INVocabularyStringType.MediaPlaylistTitle
 F:Intents.INVocabularyStringType.MediaShowTitle
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
 F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
-F:iTunesLibrary.ITLibPlaylistProperty.Primary
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
@@ -56836,7 +56835,6 @@ T:iTunesLibrary.ITLibMediaItemPlayStatus
 T:iTunesLibrary.ITLibMediaItemVideoInfo
 T:iTunesLibrary.ITLibPlaylist
 T:iTunesLibrary.ITLibPlaylistKind
-T:iTunesLibrary.ITLibPlaylistProperty
 T:iTunesLibrary.ITLibrary
 T:iTunesLibrary.ITLibraryNotifications
 T:iTunesLibrary.MediaItemProperty

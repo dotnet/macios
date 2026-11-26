@@ -408,32 +408,34 @@ namespace iTunesLibrary {
 		Artwork,
 	}
 
+	/// <summary>Identifies the properties of an <see cref="ITLibPlaylist" />.</summary>
 	public enum ITLibPlaylistProperty {
-		/// <summary>To be added.</summary>
+		/// <summary>The name of the playlist.</summary>
 		[Field ("ITLibPlaylistPropertyName")]
 		Name,
-		/// <summary>To be added.</summary>
+		/// <summary>Whether the playlist contains all the items in the library.</summary>
 		[Field ("ITLibPlaylistPropertyAllItemsPlaylist")]
 		AllItemsPlaylist,
-		/// <summary>To be added.</summary>
+		/// <summary>The distinguished kind of the playlist, as an <see cref="ITLibDistinguishedPlaylistKind" /> value.</summary>
 		[Field ("ITLibPlaylistPropertyDistinguisedKind")]
 		DistinguisedKind,
-		/// <summary>To be added.</summary>
+		/// <summary>Whether the playlist is the primary library playlist. Use <see cref="Primary" /> instead.</summary>
 		[Deprecated (PlatformName.MacOSX, 12, 0, message: "Use 'Primary' instead.")]
 		[Field ("ITLibPlaylistPropertyMaster")]
 		Master,
-		/// <summary>To be added.</summary>
+		/// <summary>The persistent identifier of the parent playlist.</summary>
 		[Field ("ITLibPlaylistPropertyParentPersistentID")]
 		ParentPersistentId,
+		/// <summary>Whether the playlist is the primary library playlist.</summary>
 		[Field ("ITLibPlaylistPropertyPrimary")]
 		Primary,
-		/// <summary>To be added.</summary>
+		/// <summary>Whether the playlist is visible in the user interface.</summary>
 		[Field ("ITLibPlaylistPropertyVisible")]
 		Visible,
-		/// <summary>To be added.</summary>
+		/// <summary>The media items in the playlist.</summary>
 		[Field ("ITLibPlaylistPropertyItems")]
 		Items,
-		/// <summary>To be added.</summary>
+		/// <summary>The kind of the playlist, as an <see cref="ITLibPlaylistKind" /> value.</summary>
 		[Field ("ITLibPlaylistPropertyKind")]
 		Kind,
 	}

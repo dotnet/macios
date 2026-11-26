@@ -67,15 +67,16 @@ namespace SafariServices {
 		Failed,
 	}
 
+	/// <summary>Specifies the title of the dismiss button in a Safari view controller.</summary>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SFSafariViewControllerDismissButtonStyle : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a button labeled Done.</summary>
 		Done,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a button labeled Close.</summary>
 		Close,
-		/// <summary>To be added.</summary>
+		/// <summary>Displays a button labeled Cancel.</summary>
 		Cancel,
 	}
 

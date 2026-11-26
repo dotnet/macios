@@ -101,7 +101,7 @@ public abstract class BaseClass {
 		};
 		DotNet.AssertBuild (csprojPath, properties);
 
-		var assemblies = Configuration.GetImplementationAssemblies (platform, isCoreCLR);
+		var assemblies = Configuration.GetImplementationAssemblies (platform, true);
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
 		var infos = assemblies.Select (v => new AssemblyPreparerInfo (v, Path.Combine (outDir, Path.GetFileName (v)), true, Path.GetFileNameWithoutExtension (v) == "Test" ? "copy" : "link")).ToArray ();
 		var logger = new TestLogger () { Platform = platform };
@@ -195,7 +195,7 @@ public abstract class BaseClass {
 		DotNet.AssertBuild (csprojPath, properties);
 		var assemblyDir = Path.Combine (tmpdir, "bin", "Debug");
 
-		var assemblies = Configuration.GetImplementationAssemblies (platform, isCoreCLR);
+		var assemblies = Configuration.GetImplementationAssemblies (platform, true);
 		assemblies.Add (Path.Combine (assemblyDir, "Test.dll"));
 		var infos = assemblies.Select (v => {
 			// The test assembly can be built as a reloadable (Copy) assembly to exercise the Hot Reload code paths.

@@ -16,6 +16,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
 	// This task will iterate over each input item, compute a hash value for all the specified metadata in the input items, and then set the specified output metadata to the hashed value
+	[MSBuildMultiThreadableTask]
 	public class ComputeHashForItems : XamarinTask {
 		[Required]
 		public ITaskItem [] Input { get; set; } = Array.Empty<ITaskItem> ();

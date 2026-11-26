@@ -83,6 +83,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void NativeOwnershipKeepsCustomPeerAlive ()
 		{
+			if (!TestRuntime.IsCoreCLR)
+				Assert.Ignore ("Implicit toggle refs are only supported on CoreCLR and NativeAOT.");
+
 			var weakPeer = CheckNativeOwnership (() => new CustomPeer ());
 
 			CollectAndDrain ();
@@ -112,6 +115,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void NativeOwnershipKeepsPeerWithNewInitHandleAlive ()
 		{
+			if (!TestRuntime.IsCoreCLR)
+				Assert.Ignore ("Implicit toggle refs are only supported on CoreCLR and NativeAOT.");
+
 			var weakPeer = CheckNativeOwnership (CreatePeerWithNewHandle);
 
 			CollectAndDrain ();

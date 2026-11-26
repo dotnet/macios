@@ -12,6 +12,123 @@ namespace Xamarin.Tests {
 			{ "MSBuildLogPropertyTracking", "1" },
 		};
 
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void DynamicRetainCountExport (ApplePlatform platform, string runtimeIdentifier)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GenerateProject (platform, nameof (DynamicRetainCountExport), runtimeIdentifier, out _);
+			File.WriteAllText (Path.Combine (Path.GetDirectoryName (projectPath)!, "Main.cs"), """
+				// Copyright (c) Microsoft Corporation.
+				// Licensed under the MIT License.
+
+				using System;
+				using System.Linq;
+				using System.Reflection;
+				using System.Reflection.Emit;
+				using System.Runtime.InteropServices;
+				using Foundation;
+				using ObjCRuntime;
+
+				class Program {
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr objc_allocateClassPair (IntPtr superclass, string name, IntPtr extraBytes);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern void objc_registerClassPair (IntPtr cls);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr class_getInstanceMethod (IntPtr cls, IntPtr selector);
+
+					[DllImport ("/usr/lib/libobjc.dylib")]
+					static extern IntPtr method_getImplementation (IntPtr method);
+
+					static void AssertRejected (Type type)
+					{
+						for (var attempt = 0; attempt < 2; attempt++) {
+							try {
+								Class.GetHandle (type);
+								throw new InvalidOperationException ($"Registration of {type.Name} succeeded on attempt {attempt}.");
+							} catch (AggregateException ex) when (ex.Flatten ().InnerExceptions.Any (v => v is RuntimeException error && error.Code == 4199)) {
+							}
+							if (Class.GetHandle (type.Name) != NativeHandle.Zero)
+								throw new InvalidOperationException ($"The rejected native class {type.Name} was registered.");
+						}
+					}
+
+					static void Main ()
+					{
+						var assembly = AssemblyBuilder.DefineDynamicAssembly (new AssemblyName ("RetainCountExports"), AssemblyBuilderAccess.Run);
+						var module = assembly.DefineDynamicModule ("RetainCountExports");
+						var builder = module.DefineType ("RejectedRetainCount", TypeAttributes.Public, typeof (NSObject));
+						var method = builder.DefineMethod ("GetCount", MethodAttributes.Public, typeof (nuint), []);
+						var exportConstructor = typeof (ExportAttribute).GetConstructor ([typeof (string)]) ?? throw new InvalidOperationException ("Missing ExportAttribute constructor.");
+						method.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCount"]));
+						var il = method.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						var type = builder.CreateType () ?? throw new InvalidOperationException ("Could not create the test type.");
+						AssertRejected (type);
+						var derived = module.DefineType ("RejectedDerivedRetainCount", TypeAttributes.Public, type).CreateType () ?? throw new InvalidOperationException ("Could not create the derived test type.");
+						AssertRejected (derived);
+
+						var cls = objc_allocateClassPair (Class.GetHandle (typeof (NSObject)), "RetainCountWrapper", IntPtr.Zero);
+						if (cls == IntPtr.Zero)
+							throw new InvalidOperationException ("Could not allocate the native wrapper class.");
+						objc_registerClassPair (cls);
+						var selector = Selector.GetHandle ("retainCount");
+						var originalImplementation = method_getImplementation (class_getInstanceMethod (cls, selector));
+						var wrapper = module.DefineType ("RetainCountWrapper", TypeAttributes.Public, typeof (NSObject));
+						var registerConstructor = typeof (RegisterAttribute).GetConstructor ([typeof (string), typeof (bool)]) ?? throw new InvalidOperationException ("Missing RegisterAttribute constructor.");
+						wrapper.SetCustomAttribute (new CustomAttributeBuilder (registerConstructor, ["RetainCountWrapper", true]));
+						var wrapperMethod = wrapper.DefineMethod ("GetCount", MethodAttributes.Public, typeof (nuint), []);
+						il = wrapperMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						var wrapperType = wrapper.CreateType () ?? throw new InvalidOperationException ("Could not create the wrapper test type.");
+						var categoryClass = Class.GetHandle (typeof (NSFormatter));
+						var categoryImplementation = method_getImplementation (class_getInstanceMethod (categoryClass, selector));
+						var category = module.DefineType ("RejectedRetainCountCategory", TypeAttributes.Public | TypeAttributes.Abstract | TypeAttributes.Sealed);
+						var categoryConstructor = typeof (CategoryAttribute).GetConstructor ([typeof (Type)]) ?? throw new InvalidOperationException ("Missing CategoryAttribute constructor.");
+						category.SetCustomAttribute (new CustomAttributeBuilder (categoryConstructor, [typeof (NSFormatter)]));
+						var categoryMethod = category.DefineMethod ("GetCount", MethodAttributes.Public | MethodAttributes.Static, typeof (nuint), [typeof (NSFormatter)]);
+						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (exportConstructor, ["retainCount"]));
+						var extensionConstructor = typeof (System.Runtime.CompilerServices.ExtensionAttribute).GetConstructor ([]) ?? throw new InvalidOperationException ("Missing ExtensionAttribute constructor.");
+						categoryMethod.SetCustomAttribute (new CustomAttributeBuilder (extensionConstructor, []));
+						il = categoryMethod.GetILGenerator ();
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Conv_U);
+						il.Emit (OpCodes.Ret);
+						AssertRejected (category.CreateType () ?? throw new InvalidOperationException ("Could not create the category test type."));
+						if (method_getImplementation (class_getInstanceMethod (categoryClass, selector)) != categoryImplementation)
+							throw new InvalidOperationException ("The category replaced the native retainCount implementation.");
+
+						var callback = wrapperType.GetMethod ("GetCount") ?? throw new InvalidOperationException ("Missing callback.");
+						for (var attempt = 0; attempt < 2; attempt++) {
+							try {
+								Runtime.ConnectMethod (wrapperType, callback, new Selector ("retainCount"));
+								throw new InvalidOperationException ("Connecting retainCount on a wrapper succeeded.");
+							} catch (RuntimeException ex) when (ex.Code == 4199) {
+							}
+							if (method_getImplementation (class_getInstanceMethod (cls, selector)) != originalImplementation)
+								throw new InvalidOperationException ("The native retainCount implementation was replaced.");
+						}
+						Console.WriteLine (Environment.GetEnvironmentVariable ("MAGIC_WORD"));
+					}
+				}
+				""");
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Registrar"] = "dynamic";
+			properties ["MtouchLink"] = "None";
+			properties ["UseMonoRuntime"] = "false";
+			DotNet.AssertBuild (projectPath, properties);
+			ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifier);
+		}
+
 		[TestCase (ApplePlatform.iOS, "None", "partial-static")]
 		[TestCase (ApplePlatform.iOS, "SdkOnly", "trimmable-static")]
 		public void DefaultCoreCLRSimulatorRegistrar (ApplePlatform platform, string linkMode, string expectedRegistrar)

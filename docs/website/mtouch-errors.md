@@ -2657,6 +2657,10 @@ Remove the export of the instance selector `retainCount`, including exports on
 property getters or category methods. Bindings to the native `retainCount` method
 and class (static) selectors are not affected.
 
+`Runtime.ConnectMethod` also rejects instance `retainCount` callbacks, even on
+native wrappers. A type with a rejected `retainCount` method is not registered
+with Objective-C, and later attempts to register it report the same error.
+
 ## MT5xxx: GCC and toolchain error messages
 
 ### MT51xx: Compilation

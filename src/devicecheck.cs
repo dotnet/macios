@@ -10,6 +10,7 @@
 
 namespace DeviceCheck {
 
+	/// <summary>Enumerates the errors that can occur when using DeviceCheck.</summary>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
@@ -18,8 +19,11 @@ namespace DeviceCheck {
 		UnknownSystemFailure,
 		/// <summary>The DeviceCheck feature is not supported on this device.</summary>
 		FeatureUnsupported,
+		/// <summary>The input provided to the operation is invalid.</summary>
 		InvalidInput,
+		/// <summary>The key is invalid.</summary>
 		InvalidKey,
+		/// <summary>The server is unavailable.</summary>
 		ServerUnavailable,
 	}
 

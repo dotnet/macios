@@ -2546,9 +2546,6 @@ F:CryptoTokenKit.TKTokenOperation.None
 F:CryptoTokenKit.TKTokenOperation.PerformKeyExchange
 F:CryptoTokenKit.TKTokenOperation.ReadData
 F:CryptoTokenKit.TKTokenOperation.SignData
-F:DeviceCheck.DCError.InvalidInput
-F:DeviceCheck.DCError.InvalidKey
-F:DeviceCheck.DCError.ServerUnavailable
 F:DeviceDiscoveryExtension.DDDeviceCategory.AccessorySetup
 F:DeviceDiscoveryExtension.DDDeviceCategory.DesktopComputer
 F:DeviceDiscoveryExtension.DDDeviceCategory.HiFiSpeaker
@@ -55657,7 +55654,6 @@ T:DataDetection.DDMatchPhoneNumber
 T:DataDetection.DDMatchPostalAddress
 T:DataDetection.DDMatchShipmentTrackingNumber
 T:DeviceCheck.DCAppAttestService
-T:DeviceCheck.DCError
 T:DeviceDiscoveryExtension.DDDevice
 T:DeviceDiscoveryExtension.DDDeviceCategory
 T:DeviceDiscoveryExtension.DDDeviceEvent

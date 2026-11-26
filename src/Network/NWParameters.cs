@@ -45,6 +45,7 @@ namespace Network {
 
 		static unsafe BlockLiteral* DISABLE_PROTOCOL () => (BlockLiteral*) NWParametersConstants._ProtocolDisable;
 
+		[UserDelegateType (typeof (Action<NWProtocolOptions>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineConfigureHandler (IntPtr block, IntPtr iface)
 		{
@@ -391,6 +392,7 @@ namespace Network {
 			nw_parameters_clear_prohibited_interface_types (GetCheckedHandle ());
 		}
 
+		[UserDelegateType (typeof (Func<NWInterface, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineIterateProhibitedHandler (IntPtr block, IntPtr iface)
 		{
@@ -421,6 +423,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Func<NWInterfaceType, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineIterateProhibitedTypeHandler (IntPtr block, NWInterfaceType type)
 		{

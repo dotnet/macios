@@ -187,6 +187,7 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static SecStatusCode /* OSStatus */ SecTrustEvaluateAsync (IntPtr /* SecTrustRef */ trust, IntPtr /* dispatch_queue_t */ queue, BlockLiteral* block);
 
+		[UserDelegateType (typeof (SecTrustCallback))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEvaluate (IntPtr block, IntPtr trust, SecTrustResult trustResult)
 		{
@@ -230,6 +231,7 @@ namespace Security {
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe static extern SecStatusCode SecTrustEvaluateAsyncWithError (IntPtr /* SecTrustRef */ trust, IntPtr /* dispatch_queue_t */ queue, BlockLiteral* block);
 
+		[UserDelegateType (typeof (SecTrustWithErrorCallback))]
 		[UnmanagedCallersOnly]
 		static void TrampolineEvaluateError (IntPtr block, IntPtr trust, byte result, IntPtr /* CFErrorRef _Nullable */  error)
 		{

@@ -16,14 +16,22 @@ namespace CoreGraphics {
 		CGRect Infinite { get; }
 	}
 
+	/// <summary>Specifies the tone-mapping method used to adapt content to a display's dynamic range.</summary>
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	enum CGToneMapping : uint {
+		/// <summary>Uses the default tone-mapping method.</summary>
 		Default = 0,
+		/// <summary>Applies tone mapping to HDR content associated with the <see cref="CGImage" /> gain map.</summary>
 		ImageSpecificLumaScaling,
+		/// <summary>Uses a tone curve that preserves SDR contrast and rolls off HDR highlights.</summary>
 		ReferenceWhiteBased,
+		/// <summary>Uses ITU-R tone mapping for HDR-to-SDR and SDR-to-HDR conversions, assuming a 1,000-nit mastering peak.</summary>
 		IturRecommended,
+		/// <summary>Uses OpenEXR tone-mapping gamma to convert extended linear sRGB images to SDR.</summary>
 		ExrGamma,
+		/// <summary>Does not apply tone mapping and clips color-converted values in extended color spaces to the SDR range [0.0, 1.0].</summary>
 		None,
+		/// <summary>Uses a gain curve that adapts to the available display headroom.</summary>
 		[TV (27, 0), Mac (27, 0), iOS (27, 0), MacCatalyst (27, 0)]
 		HeadroomAdaptiveGainCurve = 6,
 	}
@@ -525,14 +533,18 @@ namespace CoreGraphics {
 	}
 
 	// macOS 10.5
+	/// <summary>Predefined colors in the Generic gray color space.</summary>
 	[iOS (14, 0)]
 	[TV (14, 0)]
 	[MacCatalyst (14, 0)]
 	enum CGConstantColor {
+		/// <summary>The white color in the Generic gray color space.</summary>
 		[Field ("kCGColorWhite")]
 		White,
+		/// <summary>The black color in the Generic gray color space.</summary>
 		[Field ("kCGColorBlack")]
 		Black,
+		/// <summary>The clear color in the Generic gray color space.</summary>
 		[Field ("kCGColorClear")]
 		Clear,
 	}
@@ -671,41 +683,69 @@ namespace CoreGraphics {
 		float DefaultHdrImageContentHeadroom { get; }
 	}
 
+	/// <summary>Flags indicating the color models of the content drawn into an adaptive bitmap context.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Flags]
 	public enum CGColorModel : uint {
+		/// <summary>No color-model bits are set.</summary>
 		NoColorant = 0u << 0,
+		/// <summary>Identifies a grayscale color model.</summary>
 		Gray = 1u << 0,
+		/// <summary>Identifies an RGB color model.</summary>
 		Rgb = 1u << 1,
+		/// <summary>Identifies a CMYK color model.</summary>
 		Cmyk = 1u << 2,
+		/// <summary>Identifies a Lab color model.</summary>
 		Lab = 1u << 3,
+		/// <summary>Identifies a DeviceN color model.</summary>
 		DeviceN = 1u << 4,
 	}
 
+	/// <summary>Specifies the numeric format and bit depth of a bitmap component.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	public enum CGComponent : uint {
+		/// <summary>The component format is unknown.</summary>
 		Unknown = 0,
+		/// <summary>An 8-bit integer component.</summary>
 		Integer8Bit = 1,
+		/// <summary>A 10-bit integer component.</summary>
 		Integer10Bit = 6,
+		/// <summary>A 16-bit integer component.</summary>
 		Integer16Bit = 2,
+		/// <summary>A 32-bit integer component.</summary>
 		Integer32Bit = 3,
+		/// <summary>A 16-bit floating-point component.</summary>
 		Float16Bit = 5,
+		/// <summary>A 32-bit floating-point component.</summary>
 		Float32Bit = 4,
 	}
 
+	/// <summary>Specifies the color and alpha component layout of bitmap data.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	public enum CGBitmapLayout : uint {
+		/// <summary>The bitmap contains only an alpha component.</summary>
 		AlphaOnly,
+		/// <summary>The bitmap contains one grayscale component.</summary>
 		Gray,
+		/// <summary>The bitmap contains grayscale and alpha components, in that order.</summary>
 		GrayAlpha,
+		/// <summary>The bitmap contains red, green, blue, and alpha components, in that order.</summary>
 		Rgba,
+		/// <summary>The bitmap contains alpha, red, green, and blue components, in that order.</summary>
 		Argb,
+		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped after them.</summary>
 		Rgbx,
+		/// <summary>The bitmap contains red, green, and blue components, with alpha skipped before them; 16-bit floating-point components aren't supported.</summary>
 		Xrgb,
+		/// <summary>The bitmap contains blue, green, red, and alpha components, in that order. This layout supports only 8-bit components.</summary>
 		Bgra,
+		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped after them; it supports only 8-bit components.</summary>
 		Bgrx,
+		/// <summary>The bitmap contains alpha, blue, green, and red components, in that order. This layout supports only 8-bit components.</summary>
 		Abgr,
+		/// <summary>The bitmap contains blue, green, and red components, with alpha skipped before them; it supports only 8-bit components.</summary>
 		Xbgr,
+		/// <summary>The bitmap contains cyan, magenta, yellow, and black components.</summary>
 		Cmyk,
 	}
 
@@ -721,27 +761,39 @@ namespace CoreGraphics {
 		CGComponent MaximumBitDepth { get; set; }
 	}
 
+	/// <summary>Specifies whether image components use integer or floating-point values.</summary>
 	public enum CGImageComponentInfo : uint {
+		/// <summary>The image components use integer values.</summary>
 		Integer = (0u << 8),
+		/// <summary>The image components use floating-point values.</summary>
 		Float = (1u << 8),
 	}
 
+	/// <summary>Flags describing the alpha, component, byte-order, and pixel-format information for a bitmap.</summary>
 	[Flags]
 	public enum CGBitmapInfo : uint {
+		/// <summary>A mask for extracting a bitmap's alpha information.</summary>
 		AlphaInfoMask = 0x1F,
+		/// <summary>A mask for extracting a bitmap's component information.</summary>
 		ComponentInfoMask = 0xF00,
+		/// <summary>A mask for extracting a bitmap's byte-order information.</summary>
 		ByteOrderInfoMask = 0x7000,
+		/// <summary>A mask for extracting a bitmap's pixel-format information.</summary>
 		PixelFormatInfoMask = 0xF0000,
 	}
 
+	/// <summary>Specifies the dynamic range requested when tone-mapping content.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	enum CGDynamicRange {
+		/// <summary>Requests high dynamic range.</summary>
 		[Field ("kCGDynamicRangeHigh")]
 		High,
 
+		/// <summary>Requests constrained HDR for mixed-media and multiwindow rendering.</summary>
 		[Field ("kCGDynamicRangeConstrained")]
 		Constrained,
 
+		/// <summary>Requests standard dynamic range.</summary>
 		[Field ("kCGDynamicRangeStandard")]
 		Standard,
 	}

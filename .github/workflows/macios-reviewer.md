@@ -101,4 +101,4 @@ A maintainer commented `/review` on this pull request. Perform a thorough code r
 - **Never submit an APPROVE event.** Always use COMMENT — never REQUEST_CHANGES.
 - Do not submit any review event for pull requests authored by `csigs`.
 - Prioritize: bugs > breaking changes > binding correctness > safety > performance > missing tests > duplication > consistency > documentation.
-- Ignore comments from the user 'vs-mobiletools-engineering-service2'.
+- Ignore comments from the user 'vs-mobiletools-engineering-service2' and 'MauiBot'.

@@ -54,6 +54,17 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			};
 			itThread.Start ();
 
+			// A thread that disposes custom objects, which releases their native reference
+			// while the GC may be checking their retain count.
+			var disposeThread = new Thread (() => {
+				while (!done.WaitOne (0)) {
+					using var obj = new CustomObject ();
+				}
+			}) {
+				IsBackground = true,
+			};
+			disposeThread.Start ();
+
 			// Let the threads run for little bit. 500ms is enough to trigger the deadlock for me pretty much always.
 			// If the process deadlocks, the bug is there.
 			Thread.Sleep (500);
@@ -66,6 +77,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			if (!rrThread.Join (TimeSpan.FromSeconds (30)))
 				abort ();
 			if (!itThread.Join (TimeSpan.FromSeconds (30)))
+				abort ();
+			if (!disposeThread.Join (TimeSpan.FromSeconds (30)))
 				abort ();
 		}
 

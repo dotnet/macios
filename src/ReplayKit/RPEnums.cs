@@ -37,9 +37,9 @@ namespace ReplayKit {
 		Entitlements = -5810,
 		/// <summary>Indicates that an active phone call prevented recording.</summary>
 		ActivePhoneCall = -5811,
-		/// <summary>The recording failed to save.</summary>
+		/// <summary>The recording failed to save to the camera roll.</summary>
 		FailedToSave = -5812,
-		/// <summary>Recording isn't available while CarPlay is connected.</summary>
+		/// <summary>The recording failed to start because CarPlay is active.</summary>
 		CarPlay = -5813,
 		/// <summary>The connection to the app being recorded became invalid.</summary>
 		FailedApplicationConnectionInvalid = -5814,
@@ -49,13 +49,13 @@ namespace ReplayKit {
 		FailedNoMatchingApplicationContext = -5816,
 		/// <summary>The media services failed during the recording.</summary>
 		FailedMediaServicesFailure = -5817,
-		/// <summary>The system failed to mix the video.</summary>
+		/// <summary>Mixing the audio and video failed during the recording.</summary>
 		VideoMixingFailure = -5818,
-		/// <summary>The broadcast couldn't be set up.</summary>
+		/// <summary>Saving the recording to the camera roll failed.</summary>
 		BroadcastSetupFailed = -5819,
 		/// <summary>The system couldn't obtain the URL for the recording.</summary>
 		FailedToObtainUrl = -5820,
-		/// <summary>The recording contained incorrect time stamps.</summary>
+		/// <summary>The start or end time interval was malformed.</summary>
 		FailedIncorrectTimeStamps = -5821,
 		/// <summary>The system failed to process the first sample of the recording.</summary>
 		FailedToProcessFirstSample = -5822,
@@ -67,7 +67,7 @@ namespace ReplayKit {
 		FailedAssetWriterInWrongState = -5825,
 		/// <summary>The asset writer failed to export the recording.</summary>
 		FailedAssetWriterExportFailed = -5826,
-		/// <summary>The system failed to remove the recording file.</summary>
+		/// <summary>The temporary recording file couldn't be removed.</summary>
 		FailedToRemoveFile = -5827,
 		/// <summary>The export by the asset writer was canceled.</summary>
 		FailedAssetWriterExportCanceled = -5828,
@@ -75,7 +75,7 @@ namespace ReplayKit {
 		AttemptToStopNonRecording = -5829,
 		/// <summary>The app tried to start a recording while one was already in progress.</summary>
 		AttemptToStartInRecordingState = -5830,
-		/// <summary>The system failed to capture a photo.</summary>
+		/// <summary>Saving the recording to the camera roll failed.</summary>
 		PhotoFailure = -5831,
 		/// <summary>The recording session is invalid.</summary>
 		RecordingInvalidSession = -5832,
@@ -83,6 +83,7 @@ namespace ReplayKit {
 		FailedToStartCaptureStack = -5833,
 		/// <summary>A parameter passed to the operation was invalid.</summary>
 		InvalidParameter = -5834,
+		/// <summary>The recording failed because of a file permissions error.</summary>
 		FilePermissions = -5835,
 		/// <summary>A clip export to a URL is already in progress.</summary>
 		ExportClipToUrlInProgress = -5836,

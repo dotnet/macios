@@ -159,14 +159,15 @@ namespace PdfKit {
 		DownToFit = 2,
 	}
 
+	/// <summary>Specifies the permissions available for a PDF document.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDocumentPermissions : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the document has no permissions.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates user-level permissions for the document.</summary>
 		User = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates owner-level permissions for the document.</summary>
 		Owner = 2,
 	}
 
@@ -230,44 +231,48 @@ namespace PdfKit {
 		AnyArea = Int64.MaxValue,
 	}
 
+	/// <summary>Specifies the direction in which pages are displayed.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfDisplayDirection : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that pages are arranged vertically.</summary>
 		Vertical = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that pages are arranged horizontally.</summary>
 		Horizontal = 1,
 	}
 
+	/// <summary>Specifies the interpolation quality used when rendering images in a PDF.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfInterpolationQuality : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that interpolation is not applied.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that low-quality interpolation is applied.</summary>
 		Low = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that high-quality interpolation is applied.</summary>
 		High = 2,
 	}
 
+	/// <summary>Specifies the layout direction of PDF thumbnails.</summary>
 	[NoMac]
 	[Native]
 	[TV (18, 2)]
 	public enum PdfThumbnailLayoutMode : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that thumbnails are arranged vertically.</summary>
 		Vertical = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that thumbnails are arranged horizontally.</summary>
 		Horizontal = 1,
 	}
 
+	/// <summary>Specifies the state of a PDF widget cell.</summary>
 	[Native]
 	[TV (18, 2)]
 	public enum PdfWidgetCellState : long {
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell has a mixed or indeterminate value.</summary>
 		Mixed = -1,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell is off.</summary>
 		Off = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Indicates that the cell is on.</summary>
 		On = 1,
 	}
 }

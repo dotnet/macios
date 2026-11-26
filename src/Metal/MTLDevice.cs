@@ -107,6 +107,7 @@ namespace Metal {
 		///         <param name="notifyName">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
+		[UserDelegateType (typeof (MTLDeviceNotificationHandler))]
 		[UnmanagedCallersOnly]
 		public static unsafe void TrampolineNotificationHandler (IntPtr block, IntPtr device, IntPtr notifyName)
 		{

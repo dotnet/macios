@@ -551,6 +551,35 @@ namespace Cecil.Tests {
 		static HashSet<string> knownFailuresBlockTrampolines = new HashSet<string> {
 		};
 
+		[TestCase ("TrampolineStopHandler", "System.Byte")]
+		[TestCase ("TrampolineParseOutputHandler", "System.UIntPtr")]
+		public void NetworkFramerCallbackReturnTypes (string methodName, string returnType)
+		{
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				var type = info.Assembly.MainModule.GetType ("Network.NWFramer");
+				var method = type.Methods.Single (m => m.Name == methodName);
+				Assert.That (method.ReturnType.FullName, Is.EqualTo (returnType), $"{info.Platform}: {method.FullName}");
+			}
+		}
+
+		[Test]
+		public void DecompressionMultiImageCallbackSignature ()
+		{
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				var type = info.Assembly.MainModule.GetType ("VideoToolbox.VTDecompressionSession");
+				var method = type.Methods.SingleOrDefault (m => m.Name == "VTDecompressionSessionSetMultiImageCallback");
+				if (method is null)
+					continue; // Not available on tvOS.
+				Assert.That (method.Parameters [1].ParameterType, Is.TypeOf<FunctionPointerType> (), $"{info.Platform}: C callback, not a block");
+				var callback = (FunctionPointerType) method.Parameters [1].ParameterType;
+				Assert.That (callback.Parameters.Select (p => p.ParameterType.FullName), Is.EqualTo (new [] {
+					"System.IntPtr", "System.IntPtr", "VideoToolbox.VTStatus", "VideoToolbox.VTDecodeInfoFlags",
+					"System.IntPtr", "CoreMedia.CMTime", "CoreMedia.CMTime",
+				}), $"{info.Platform}: native callback arguments");
+				Assert.That (callback.ReturnType.FullName, Is.EqualTo ("System.Void"), $"{info.Platform}: native callback return");
+			}
+		}
+
 		[Test]
 		public void CheckForMonoPInvokeCallback ()
 		{

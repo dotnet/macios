@@ -283,6 +283,13 @@ namespace MonoTouchFixtures.VideoToolbox {
 					failures.Add ($"Multi output callback #{multiFrameCallbackCounter} failed: Expected outputMultiImageReference = 0x{multiSourceFrameValue:x}, got outputMultiImageReference = 0x{outputMultiImageReference:x}");
 				multiFrameCallbackCounter++;
 			}, multiSourceFrameValue);
+			Assert.That (st, Is.EqualTo (VTStatus.Ok), "SetMultiImageCallback");
+			using var baseLayer = new NSNumber (0);
+			using var stereoLayer = new NSNumber (1);
+			using var layers = NSArray.FromNSObjects (baseLayer, stereoLayer);
+			Assert.That (session.SetProperty (VTDecompressionPropertyKey.RequestedMvHevcVideoLayerIds, layers), Is.EqualTo (VTStatus.Ok), "RequestedMvHevcVideoLayerIds");
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
 
 			bufferEnumerator.Enumerate ((buffer) => {
 				var status = session.DecodeFrame (buffer, VTDecodeFrameFlags.EnableAsynchronousDecompression, sourceFrameValue, out var infoFlags);
@@ -291,7 +298,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
 			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
-			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter 2");
+			Assert.That (multiFrameCallbackCounter, Is.GreaterThan (0), "Multi-image callback counter");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
 

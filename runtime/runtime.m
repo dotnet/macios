@@ -246,7 +246,7 @@ xamarin_set_nsobject_flags (MonoObject *obj, uint32_t flags)
 	xamarin_set_flags_for_nsobject (obj->gchandle, flags);
 #else
 	struct Managed_NSObject *mobj = (struct Managed_NSObject *) obj;
-	mobj->data->flags = flags;
+	__atomic_fetch_or ((uint32_t *) &mobj->data->flags, flags, __ATOMIC_SEQ_CST);
 #endif
 }
 

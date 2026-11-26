@@ -144,6 +144,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.ObjCRuntime.IReleaseOnMainThread.ReleaseOnMainThread()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -168,7 +169,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::R
 Microsoft.MacCatalyst.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(ObjCRuntime.IReleaseOnMainThread)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
@@ -316,6 +317,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.IntPtrEqualityComparer ObjCRuntime.Runtime
 Microsoft.MacCatalyst.dll:ObjCRuntime.IntPtrEqualityComparer..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.IntPtrEqualityComparer.Equals(System.IntPtr, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.IntPtrEqualityComparer.GetHashCode(System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.IReleaseOnMainThread
+Microsoft.MacCatalyst.dll:ObjCRuntime.IReleaseOnMainThread.ReleaseOnMainThread()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Libraries
 Microsoft.MacCatalyst.dll:ObjCRuntime.Libraries/CoreFoundation
 Microsoft.MacCatalyst.dll:ObjCRuntime.Libraries/CoreFoundation..cctor()
@@ -705,9 +708,9 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,Sy
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
 Microsoft.MacCatalyst.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
 Microsoft.MacCatalyst.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
-Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
-Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList2
-Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::handles
+Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::drainList1
+Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::drainList2
+Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::handles
 Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.Runtime::delegates
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.MacCatalyst.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()

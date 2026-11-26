@@ -198,7 +198,7 @@ namespace Xharness.Jenkins {
 						await clone.CreateCopyAsync (jenkins.MainLog, processManager, task, HarnessConfiguration.RootDirectory);
 
 						if (!string.IsNullOrEmpty (runtime_identifer))
-							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer);
+							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer, last: false);
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);
 							foreach (var pr in clone.ProjectReferences) {

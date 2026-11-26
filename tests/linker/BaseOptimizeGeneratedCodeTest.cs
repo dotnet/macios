@@ -28,8 +28,6 @@ namespace Linker.Shared {
 		public void SetupBlock_CustomDelegate ()
 		{
 			IgnoreIfNotLinkAll ();
-			if (TestRuntime.IsILLinkSkipped)
-				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
 
 			int counter = 0;
 			var action = new Action (() => counter++);
@@ -38,6 +36,8 @@ namespace Linker.Shared {
 			Assert.That (counter, Is.EqualTo (2), "Counter");
 		}
 
+		// NativeAOT needs marshalling data for these block trampolines.
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void CustomDelegate (IntPtr block);
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -51,6 +51,7 @@ namespace Linker.Shared {
 		}
 
 		[UserDelegateType (typeof (Action))]
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		delegate void CustomDelegateWithAttribute (IntPtr block);
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -68,7 +69,7 @@ namespace Linker.Shared {
 		{
 			IgnoreIfNotLinkAll ();
 			if (TestRuntime.IsILLinkSkipped)
-				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
+				Assert.Ignore ("This performance test is not enabled for NativeAOT.");
 
 			// If you ran this test locally and it failed, run it again. If it fails multiple times, file a bug.
 			TestRuntime.IgnoreInCI ("This test randomly fails, so ignore it when doing CI (https://github.com/xamarin/maccore/issues/649)");
@@ -126,8 +127,6 @@ namespace Linker.Shared {
 		public void SetupBlockCodeTest ()
 		{
 			IgnoreIfNotLinkAll ();
-			if (TestRuntime.IsILLinkSkipped)
-				Assert.Ignore ("SetupBlock rewriting requires ILLink, which does not run with NativeAOT.");
 
 			int counter = 0;
 			var action = new Action (() => counter++);
@@ -154,6 +153,7 @@ namespace Linker.Shared {
 			Assert.That (counter, Is.EqualTo (19), "Counter");
 		}
 
+		[UnmanagedFunctionPointer (CallingConvention.Cdecl)]
 		public delegate void Action_IntPtr (IntPtr param);
 
 		[DllImport (Constants.libcLibrary)]

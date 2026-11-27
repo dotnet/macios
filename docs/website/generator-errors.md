@@ -353,6 +353,15 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: Invalid pointer binding for parameter '\*' in '\*.\*': \*
+
+The parameter's `[PointerAsStruct]` or `[PointerAsArray]` declaration is invalid.
+The message explains the unsupported type, length source, or marshalling context.
+Only blittable structs are supported. Arrays require exactly one integral length
+source and are limited to synchronous outgoing calls. See
+[Struct pointer parameters](../../src/bgen/README.md#struct-pointer-parameters)
+for supported declarations and lifetime requirements.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

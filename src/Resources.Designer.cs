@@ -1208,5 +1208,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid pointer binding for parameter &apos;{0}&apos; in &apos;{1}.{2}&apos;: {3}.
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
     }
 }

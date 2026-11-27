@@ -4028,11 +4028,6 @@ F:Intents.INVocabularyStringType.MediaAudiobookTitle
 F:Intents.INVocabularyStringType.MediaMusicArtistName
 F:Intents.INVocabularyStringType.MediaPlaylistTitle
 F:Intents.INVocabularyStringType.MediaShowTitle
-F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
-F:LinkPresentation.LPErrorCode.MetadataFetchFailed
-F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
-F:LinkPresentation.LPErrorCode.MetadataFetchTimedOut
-F:LinkPresentation.LPErrorCode.Unknown
 F:LocalAuthentication.LABiometryType.OpticId
 F:LocalAuthentication.LACompanionType.Mac
 F:LocalAuthentication.LACompanionType.None
@@ -56726,7 +56721,6 @@ T:iTunesLibrary.ITLibrary
 T:iTunesLibrary.ITLibraryNotifications
 T:iTunesLibrary.MediaItemProperty
 T:JavaScriptCore.JSPromiseCreationExecutor
-T:LinkPresentation.LPErrorCode
 T:LinkPresentation.LPLinkMetadata
 T:LinkPresentation.LPLinkView
 T:LinkPresentation.LPMetadataProvider

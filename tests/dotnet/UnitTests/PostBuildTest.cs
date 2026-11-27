@@ -717,6 +717,38 @@ namespace Xamarin.Tests {
 			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void AppExtensionR2RFrameworkPostProcessing (ApplePlatform platform, string runtimeIdentifier)
+		{
+			const string configuration = "Release";
+			const string frameworkName = "ExtensionProject.r2r";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath, configuration: configuration);
+			var extensionProjectPath = GetProjectPath ("ExtensionProject", platform: platform);
+			Clean (extensionProjectPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = configuration;
+			properties ["EnableCodeSigning"] = "false";
+			properties ["UseMonoRuntime"] = "false";
+
+			DotNet.AssertBuild (projectPath, properties);
+
+			var framework = Path.Combine (appPath, "Frameworks", frameworkName + ".framework", frameworkName);
+			var originalFramework = Path.Combine (GetObjDir (extensionProjectPath, platform, runtimeIdentifier, configuration), "r2rframework", frameworkName + ".framework", frameworkName);
+			var dsym = Path.Combine (Path.GetDirectoryName (appPath)!, frameworkName + ".framework.dSYM", "Contents", "Resources", "DWARF", frameworkName);
+			Assert.That (framework, Does.Exist, "Extension framework");
+			Assert.That (originalFramework, Does.Exist, "Original extension framework");
+			Assert.That (new FileInfo (framework).Length, Is.LessThan (new FileInfo (originalFramework).Length), "Extension framework should be stripped");
+			Assert.That (dsym, Does.Exist, "Extension framework dSYM");
+			var frameworkUuid = AssertExecute ("xcrun", "dwarfdump", "--uuid", framework).ToString ().Split (' ', StringSplitOptions.RemoveEmptyEntries) [1];
+			var dsymUuid = AssertExecute ("xcrun", "dwarfdump", "--uuid", dsym).ToString ().Split (' ', StringSplitOptions.RemoveEmptyEntries) [1];
+			Assert.That (dsymUuid, Is.EqualTo (frameworkUuid), "Extension framework dSYM UUID");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Release")]

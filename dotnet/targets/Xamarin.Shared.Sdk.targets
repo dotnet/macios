@@ -2961,6 +2961,12 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 				<Kind>Framework</Kind>
 				<DSymName>%(_R2RModule.FrameworkName).framework.dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- App extension frameworks are copied into the container app. -->
+			<_AppExtensionR2RFramework Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true' And '%(_FrameworksFromAppExtensions.Extension)' == '.r2r'" />
+			<_PostProcessingItem Include="@(_AppExtensionR2RFramework->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+				<Kind>Framework</Kind>
+				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
+			</_PostProcessingItem>
 		</ItemGroup>
 	</Target>
 

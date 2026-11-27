@@ -168,7 +168,12 @@ namespace MonoTests.System.Net.Http {
 
 			var headers = new NameValueCollection (StringComparer.OrdinalIgnoreCase);
 			string? line;
-			while (!string.IsNullOrEmpty (line = ReadLine (stream))) {
+			while (true) {
+				line = ReadLine (stream);
+				if (line is null)
+					return null;
+				if (line.Length == 0)
+					break;
 				var colon = line.IndexOf (':');
 				if (colon > 0)
 					headers.Add (line.Substring (0, colon).Trim (), line.Substring (colon + 1).Trim ());

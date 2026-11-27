@@ -247,7 +247,10 @@ namespace LinkAll {
 		public void Assembly_LoadFile ()
 		{
 #if NATIVEAOT
-			Assert.Throws<PlatformNotSupportedException> (() => Assembly.LoadFile (NSBundle.MainBundle.ExecutablePath!));
+			var executablePath = NSBundle.MainBundle.ExecutablePath;
+			if (string.IsNullOrEmpty (executablePath))
+				throw new InvalidOperationException ("No executable path.");
+			Assert.Throws<PlatformNotSupportedException> (() => Assembly.LoadFile (executablePath));
 #else
 			string filename = FindAssemblyPath ();
 			Assert.That (Assembly.LoadFile (Path.GetFullPath (filename)), Is.Not.Null, "1");

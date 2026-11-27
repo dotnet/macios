@@ -121,6 +121,7 @@ namespace Network {
 		}
 
 		// Returning 'byte' since 'bool' isn't blittable
+		[UserDelegateType (typeof (Func<NWInterface, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineEnumerator (IntPtr block, IntPtr iface)
 		{
@@ -187,6 +188,7 @@ namespace Network {
 		unsafe static extern void nw_path_enumerate_gateways (IntPtr path, BlockLiteral* enumerate_block);
 
 		// Returning 'byte' since 'bool' isn't blittable
+		[UserDelegateType (typeof (Func<NWEndpoint, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineGatewaysHandler (IntPtr block, IntPtr endpoint)
 		{

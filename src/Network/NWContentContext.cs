@@ -179,6 +179,7 @@ namespace Network {
 			GC.KeepAlive (protocolMetadata);
 		}
 
+		[UserDelegateType (typeof (Action<NWProtocolDefinition, NWProtocolMetadata>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineProtocolIterator (IntPtr block, IntPtr definition, IntPtr metadata)
 		{

@@ -377,7 +377,7 @@ $($(2)_DOTNET_BUILD_DIR)/GeneratedMSBuildEditorConfig.editorconfig: | $($(2)_DOT
 $($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml: $(TOP)/src/ILLink.LinkAttributes.xml.in | $($(2)_DOTNET_BUILD_DIR)
 	$$(call Q_PROF_GEN,$(3)) sed < $$< > $$@ 's|@PRODUCT_NAME@|Microsoft.$(1)|g;'
 
-$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $($(2)_DOTNET_BUILD_DIR) $(GENERATE_SOURCELINK_JSON)
+$($(2)_DOTNET_BUILD_DIR)/SourceLink.json: $(GENERATE_SOURCELINK_JSON) | $($(2)_DOTNET_BUILD_DIR)
 	$$(Q) $(GENERATE_SOURCELINK_JSON_EXEC) "$(PACKAGE_HEAD_REV)" "$(abspath $(TOP)/src)" "$$@"
 
 $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp: $($(2)_DOTNET_BUILD_DIR)/$(3)-generated-sources $($(2)_DOTNET_SOURCES) $(TOP)/src/generate-embed-files.sh
@@ -607,7 +607,7 @@ stylecop-csproj: $(CSPROJECTS) $(foreach platform,$(DOTNET_PLATFORMS),$($(call u
 csproj:: $(CSPROJECTS)
 ALL_TARGETS += $(CSPROJECTS)
 
-install-local:: $(INSTALL_TARGETS)
+install-local:: $(INSTALL_TARGETS) $(DOTNET_TARGETS)
 all-local:: $(ALL_TARGETS)
 
 $(DOTNET_TARGETS_DIRS):

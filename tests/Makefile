@@ -127,6 +127,10 @@ killall:
 test-msbuild run-tests-msbuild:
 	$(MAKE) test-macdev-tests test-macdev-tasks
 
+.PHONY: run-linux-tests
+run-linux-tests:
+	$(Q) bash linux/run-tests.sh "$(DOTNET)"
+
 # Example TEST_FILTER:
 #    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details

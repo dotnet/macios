@@ -1,4 +1,4 @@
-# Stage to verify the project builds successfully on Linux.
+# Stage to verify the project builds successfully and run basic tests on Linux.
 
 parameters:
 
@@ -51,4 +51,10 @@ stages:
         # so don't compile more than one at a time on these small agents.
         make -j$(nproc) SERIALIZE_CSC=1
       displayName: 'Build on Linux'
+      workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)
+
+    - bash: |
+        set -ex
+        make -C tests run-linux-tests
+      displayName: 'Run basic Linux tests'
       workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)

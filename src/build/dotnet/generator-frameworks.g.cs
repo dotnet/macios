@@ -167,6 +167,7 @@ partial class BGenFrameworks {
 		"AdServices",
 		"AdSupport",
 		"AppKit",
+		"ApplicationServices",
 		"AppTrackingTransparency",
 		"AudioToolbox",
 		"AudioUnit",
@@ -557,6 +558,7 @@ partial class BGenFrameworks {
 	bool? _AdSupport;
 	bool? _AppClip;
 	bool? _AppKit;
+	bool? _ApplicationServices;
 	bool? _AppTrackingTransparency;
 	bool? _ARKit;
 	bool? _AssetsLibrary;
@@ -737,6 +739,7 @@ partial class BGenFrameworks {
 	public bool HaveAdSupport { get { if (!_AdSupport.HasValue) _AdSupport = GetValue ("AdSupport"); return _AdSupport.Value; } }
 	public bool HaveAppClip { get { if (!_AppClip.HasValue) _AppClip = GetValue ("AppClip"); return _AppClip.Value; } }
 	public bool HaveAppKit { get { if (!_AppKit.HasValue) _AppKit = GetValue ("AppKit"); return _AppKit.Value; } }
+	public bool HaveApplicationServices { get { if (!_ApplicationServices.HasValue) _ApplicationServices = GetValue ("ApplicationServices"); return _ApplicationServices.Value; } }
 	public bool HaveAppTrackingTransparency { get { if (!_AppTrackingTransparency.HasValue) _AppTrackingTransparency = GetValue ("AppTrackingTransparency"); return _AppTrackingTransparency.Value; } }
 	public bool HaveARKit { get { if (!_ARKit.HasValue) _ARKit = GetValue ("ARKit"); return _ARKit.Value; } }
 	public bool HaveAssetsLibrary { get { if (!_AssetsLibrary.HasValue) _AssetsLibrary = GetValue ("AssetsLibrary"); return _AssetsLibrary.Value; } }

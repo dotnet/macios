@@ -26,6 +26,26 @@ Lfunc_begin2:
 	.cfi_offset w20, -32
 Lbeforeinvoke:
 
+#if defined (KNOWN_FRAME_LENGTH)
+	; The descriptor contains the aligned frame length, receiver and super flag.
+	; x8 is the indirect struct-return address and must not be used as scratch.
+	ldr x20, [x0]
+	ldr x11, [x0, #16]
+	ldr x0, [x0, #8]
+	sub sp, sp, x20
+	mov x9, x20
+	cbz x9, Lfixed_copy_end
+	add x12, x29, #16
+Lfixed_copy:
+	sub x9, x9, #16
+	add x15, x12, x9
+	ldp x13, x14, [x15]
+	add x15, sp, x9
+	stp x13, x14, [x15]
+	; Copy from the end so the caller's stack argument offsets are unchanged.
+	cbnz x9, Lfixed_copy
+Lfixed_copy_end:
+#else
 	; calculate the amount of stack space we need
 	sub sp, sp, #400
 
@@ -95,10 +115,22 @@ L_end:
 	ldp  q2, q3, [x22, #0x80]
 	ldp  q4, q5, [x22, #0xa0]
 	ldp  q6, q7, [x22, #0xc0]
+#endif
 
+#if defined (KNOWN_FRAME_LENGTH)
+	cbnz x11, Lfixed_super
+	bl _objc_msgSend
+	b Lafterinvoke
+Lfixed_super:
+	bl _objc_msgSendSuper
+#else
 	bl	OBJCMSGCALL
+#endif
 
 Lafterinvoke:
+#if defined (KNOWN_FRAME_LENGTH)
+	add sp, sp, x20
+#else
 	; restore the stack to it's previous value
 	add sp, sp, x21
 
@@ -106,6 +138,7 @@ Lafterinvoke:
 	ldp x21, x22, [sp, #0x50]
 
 	add sp, sp, #400
+#endif
 
 	ldp	x29, x30, [sp, #16]             ; 16-byte Folded Reload
 	ldp	x20, x19, [sp], #32             ; 16-byte Folded Reload
@@ -123,14 +156,27 @@ Lloh1:
 Lloh2:
 	ldr	w0, [x8]
 	cmp	w0, #4
+#if defined (KNOWN_FRAME_LENGTH)
+	b.eq	Ldisabledexception
+#else
 	b.eq	Lnomatchexception
+#endif
 
 	mov	x0, x19
 	bl	_objc_begin_catch
 Lcatchbegin:
 	mov	w1, #0
 	mov	x2, #0
+#if defined (KNOWN_FRAME_LENGTH)
+	bl	_xamarin_process_nsexception_with_managed_pending
+	b	Lcatchend
+Ldisabledexception:
+	mov	x0, x19
+	bl	_objc_begin_catch
+	bl	_objc_exception_rethrow
+#else
 	bl	_xamarin_process_nsexception_using_mode
+#endif
 Lcatchend:
 	bl	_objc_end_catch
 	; xamarin_process_nsexception_using_mode might have set a pending managed exception, which means we end up executing more code here

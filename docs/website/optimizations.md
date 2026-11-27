@@ -14,6 +14,53 @@ no-loc: [Objective-C, registrar, Registrar]
 This document explains the various optimizations that are applied at build time for
 Xamarin.iOS and Xamarin.Mac apps.
 
+## Fixed-frame Objective-C message sends
+
+For trimmed arm64 assemblies using CoreCLR or NativeAOT, the build rewrites eligible
+`objc_msgSend` and `objc_msgSendSuper` imports to call a shared trampoline linked into
+the app (`__Internal`). Each wrapper passes the calculated stack size, receiver,
+and direct/super dispatch flag in a descriptor. The trampoline copies the stack
+arguments instead of looking up the Objective-C method signature on every call.
+Rewritten sends retain the native exception-catching
+boundary and normal GC transitions.
+
+Each rewritten import has a managed wrapper that calls `Runtime.ThrowPendingException`
+immediately after the P/Invoke returns, before using its result. On an exception,
+the native catch boundary selects macios-owned thread-local storage when handing
+the exception to managed code. The managed check clears that storage before
+rethrowing, preserving the exception object and its stack trace.
+
+Unconverted imports still use the runtime's pending-exception storage and automatic
+check. Each exception is stored in only one of the two places. The choice is made
+when the exception is passed to managed code, not for the whole message send, so
+nested calls and reentrant exception handlers can mix both kinds of imports.
+
+NativeAOT can use its existing `DirectPInvoke` setting for `__Internal`: the managed
+wrapper supplies the exception check without relying on the compiler to recognize a
+libobjc import. Do not enable direct P/Invoke for standard libobjc message-send functions;
+those still need the runtime's message-send callbacks and pending-exception checks.
+
+Eligible imports do not require a particular declaring type, generator version,
+or `BindingImpl` attribute. Other method-level attributes prevent rewriting.
+
+This optimization leaves Mono, other architectures, untrimmed assemblies, explicit
+native-exception wrappers, and signatures with unknown native layouts unchanged.
+It supports direct and super sends, arm64 struct returns, and calculated stack
+frames of any supported size. This includes variadic helpers with fixed P/Invoke signatures, such as
+the existing helpers that shuffle variadic arguments into native stack slots.
+True managed varargs, custom marshaling, packed or explicit struct layouts, and
+non-blittable signatures keep their existing paths.
+Imports with a managed-byref receiver also keep their original P/Invoke so the
+runtime can pin the receiver; unsafe pointer receivers remain eligible.
+
+Disable it with:
+
+```xml
+<PropertyGroup>
+  <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize=-fixed-frame-objc-msgsend</AppBundleExtraOptions>
+</PropertyGroup>
+```
+
 ## Remove UIApplication.EnsureUIThread / NSApplication.EnsureUIThread
 
 > [!NOTE]

@@ -185,6 +185,7 @@ public class AssemblyPreparer : IDisposable {
 		}
 
 		steps.Add (new InlineDlfcnMethodsStep ());
+		steps.Add (new OptimizeObjCMsgSendStep ());
 
 		// Only add DetectApiUsageStep if it's needed:
 		// * If the user explicitly set $(DynamicRegistrationSupported), we don't need to compute the value, but

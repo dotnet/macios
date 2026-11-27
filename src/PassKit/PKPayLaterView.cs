@@ -13,6 +13,7 @@ namespace PassKit {
 	public delegate void PKPayLaterViewValidateAmountCallback (bool eligible);
 
 	public partial class PKPayLaterView {
+		[UserDelegateType (typeof (PKPayLaterViewValidateAmountCallback))]
 		[UnmanagedCallersOnly]
 		static void TrampolineValidateAmount (IntPtr block, byte eligible)
 		{

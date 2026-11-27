@@ -83,7 +83,7 @@ namespace MonoTouchFixtures.CoreServices {
 			// perform a request so that we fail in the auth, then create the auth object and check the count
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), async () => {
 				using (var request = CFHTTPMessage.CreateRequest (
-					new Uri (NetworkResources.Httpbin.GetStatusCodeUrl (HttpStatusCode.Unauthorized)), "GET", null)) {
+					new Uri (NetworkResources.Httpbin.GetBasicAuthUrl ("user", "password")), "GET", null)) {
 					request.SetBody (Array.Empty<byte> ()); // empty body, we are not interested
 					using (var stream = CFStream.CreateForHTTPRequest (request)) {
 						Assert.That (stream, Is.Not.Null, "Null stream");

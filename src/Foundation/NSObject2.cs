@@ -24,9 +24,9 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Drawing;
 using System.Diagnostics;
+using System.Threading;
 
 using System.Runtime.InteropServices.ObjectiveC;
 
@@ -125,23 +125,6 @@ namespace Foundation {
 		public NSObject.Flags flags;
 	}
 
-	// This type wraps native memory that will track an NSObject, and free the native memory
-	// once the NSObject is finalized and completely gone / unresurrectable. It does so by
-	// creating a GCHandle that tracks the NSObject in question, and if this instance's
-	// finalizer is called, but the NSObject is still reachable, then re-schedule this instance's
-	// finalizer to run again later.
-	// This is similar to how NativeAOT handles the tagged memory returned by ObjectiveCMarshal.CreateReferenceTrackingHandle
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L15
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L59-L71
-	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L181-L185
-	unsafe class NSObjectDataHandle : TrackedMemory {
-		public NSObjectData* Data { get => (NSObjectData*) Value; }
-
-		public NSObjectDataHandle () : base ((nuint) sizeof (NSObjectData))
-		{
-		}
-	}
-
 	class TrackedMemory {
 		GCHandle handle;
 
@@ -188,6 +171,7 @@ namespace Foundation {
 #if !COREBUILD
 		, IEquatable<NSObject>
 		, IDisposable
+		, IReleaseOnMainThread
 #endif
 		, INSObjectFactory {
 #if !COREBUILD
@@ -205,10 +189,6 @@ namespace Foundation {
 		/// <value>The assembly containing the platform-specific Foundation types.</value>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
 
-#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
-		static ConditionalWeakTable<NSObject, NSObjectDataHandle> data_table;
-#pragma warning restore CS8618
-
 		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
 		// safely from native code without having to make sure the GC doesn't move the memory around. Among
 		// other things, this means it's accessible from threads that has never seen/run managed code without
@@ -221,7 +201,14 @@ namespace Foundation {
 
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
-			set => GetData ()->handle = value;
+			set {
+				var data = GetData ();
+				// Implicit tracking applies only to the native object whose GCHandle ivar points to this peer.
+				// Clear it before changing the handle; leave explicit MarkDirty registration intact.
+				if (data->handle != value)
+					ClearFlags (Flags.ImplicitToggleRef);
+				data->handle = value;
+			}
 		}
 
 		internal unsafe NSObjectData* GetData ()
@@ -230,29 +217,36 @@ namespace Foundation {
 			if (data != IntPtr.Zero)
 				return (NSObjectData*) data;
 
-			if (Runtime.IsCoreCLR) {
-				data = (IntPtr) Runtime.GetTaggedMemory (this);
-				__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
-				return (NSObjectData*) data;
-			} else {
-				var data_handle = new NSObjectDataHandle ();
-				var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
-				if (existing_data != IntPtr.Zero) {
-					// return the existing data, the GC will collect the other one we just created
-					return (NSObjectData*) existing_data;
-				}
-				// tell the data handle we just created to track us
-				data_handle.CreateHandle (this);
-				// make sure the data isn't freed before this NSObject is collected, but also
-				// that it is freed after this NSObject is collected.
-				data_table.Add (this, data_handle);
-				return data_handle.Data;
-			}
+			data = (IntPtr) Runtime.GetTaggedMemory (this);
+			__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
+			return (NSObjectData*) data;
 		}
 
+		// Only use the setter for a peer that no other thread can see yet. Otherwise use
+		// SetFlags and ClearFlags: native code can update the flags of a live peer on
+		// another thread (for instance a retain on a background thread sets HasManagedRef),
+		// and writing back the whole value could undo a concurrent change to another flag.
 		unsafe Flags flags {
 			get { return GetData ()->flags; }
 			set { GetData ()->flags = value; }
+		}
+
+		internal unsafe void SetFlags (Flags value)
+		{
+			Interlocked.Or (ref *(uint*) &GetData ()->flags, (uint) value);
+		}
+
+		unsafe void ClearFlags (Flags value)
+		{
+			Interlocked.And (ref *(uint*) &GetData ()->flags, ~(uint) value);
+		}
+
+		void SetFlags (Flags value, bool set)
+		{
+			if (set)
+				SetFlags (value);
+			else
+				ClearFlags (value);
 		}
 
 		// This enum has a native counterpart in runtime.h
@@ -266,6 +260,7 @@ namespace Foundation {
 			HasManagedRef = 32,
 			// 64, // Used by SoM
 			IsCustomType = 128,
+			ImplicitToggleRef = 256, // See the comment above CreateManagedRef.
 		}
 
 		// Must be kept in sync with the same enum in trampolines.h
@@ -284,17 +279,17 @@ namespace Foundation {
 
 		bool disposed {
 			get { return ((flags & Flags.Disposed) == Flags.Disposed); }
-			set { flags = value ? (flags | Flags.Disposed) : (flags & ~Flags.Disposed); }
+			set { SetFlags (Flags.Disposed, value); }
 		}
 
 		bool HasManagedRef {
 			get { return (flags & Flags.HasManagedRef) == Flags.HasManagedRef; }
-			set { flags = value ? (flags | Flags.HasManagedRef) : (flags & ~Flags.HasManagedRef); }
+			set { SetFlags (Flags.HasManagedRef, value); }
 		}
 
 		internal bool IsRegisteredToggleRef {
 			get { return ((flags & Flags.RegisteredToggleRef) == Flags.RegisteredToggleRef); }
-			set { flags = value ? (flags | Flags.RegisteredToggleRef) : (flags & ~Flags.RegisteredToggleRef); }
+			set { SetFlags (Flags.RegisteredToggleRef, value); }
 		}
 
 		/// <summary>
@@ -305,7 +300,7 @@ namespace Foundation {
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected internal bool IsDirectBinding {
 			get { return ((flags & Flags.IsDirectBinding) == Flags.IsDirectBinding); }
-			set { flags = value ? (flags | Flags.IsDirectBinding) : (flags & ~Flags.IsDirectBinding); }
+			set { SetFlags (Flags.IsDirectBinding, value); }
 		}
 
 		internal bool InFinalizerQueue {
@@ -318,7 +313,7 @@ namespace Foundation {
 				if (!value) {
 					value = Class.IsCustomType (GetType ());
 					if (value)
-						flags |= Flags.IsCustomType;
+						SetFlags (Flags.IsCustomType);
 				}
 				return value;
 			}
@@ -399,7 +394,7 @@ namespace Foundation {
 		public void ReRegisterForFinalize ()
 		{
 			GC.ReRegisterForFinalize (this);
-			flags &= ~Flags.InFinalizerQueue;
+			ClearFlags (Flags.InFinalizerQueue);
 		}
 
 		// This method should never be called when using the managed static registrar, so assert that never happens by throwing an exception in that case.
@@ -428,7 +423,7 @@ namespace Foundation {
 				// object. Reuse the wrapper created before the initializer was invoked.
 				var existing = Runtime.TryGetNSObjectFromIvar (handle);
 				if (existing is not null && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle && type.IsAssignableFrom (existing.GetType ())) {
-					existing.flags |= flags;
+					existing.SetFlags (flags);
 					return Runtime.AllocGCHandle (existing);
 				}
 
@@ -446,7 +441,7 @@ namespace Foundation {
 		{
 			var existing = Runtime.TryGetNSObjectFromIvar (handle);
 			if (existing is T typedExisting && !existing.disposed && !existing.InFinalizerQueue && existing.Handle == handle) {
-				existing.flags |= (Flags) flags;
+				existing.SetFlags ((Flags) flags);
 				return typedExisting;
 			}
 
@@ -476,42 +471,22 @@ namespace Foundation {
 
 		internal static NativeHandle InitializeObject ()
 		{
-			if (!Runtime.IsCoreCLR)
-				data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
 			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
 			return class_ptr;
 		}
 
 		internal Flags FlagsInternal {
 			get { return flags; }
-			set { flags = value; }
 		}
-
-#if !__MACOS__
-		[MethodImplAttribute (MethodImplOptions.InternalCall)]
-		extern static void RegisterToggleRef (NSObject obj, IntPtr handle, bool isCustomType);
-#endif // !__MACOS__
 
 		[DllImport ("__Internal")]
 		static extern void xamarin_release_managed_ref (IntPtr handle, byte user_type);
-
-		static void RegisterToggleReference (NSObject obj, IntPtr handle, bool isCustomType)
-		{
-#if __MACOS__
-			Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
-#else
-			if (Runtime.IsCoreCLR) {
-				Runtime.RegisterToggleReferenceCoreCLR (obj, handle, isCustomType);
-			} else {
-				RegisterToggleRef (obj, handle, isCustomType);
-			}
-#endif
-		}
 
 		/*
 		Register the current object with the toggleref machinery if the following conditions are met:
 		-The new refcounting is enabled; and
 		-The class is not a custom type - it must wrap a framework class.
+		User types with an associated GCHandle are toggled implicitly (see CreateManagedRef).
 		*/
 		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
 		/// <remarks>
@@ -535,7 +510,7 @@ namespace Foundation {
 				return;
 
 			IsRegisteredToggleRef = true;
-			RegisterToggleReference (this, Handle, allowCustomTypes);
+			Runtime.RegisterToggleReferenceCoreCLR (this, Handle, allowCustomTypes);
 		}
 
 		private void InitializeObject (bool alloced)
@@ -586,6 +561,59 @@ namespace Foundation {
 		[DllImport ("__Internal")]
 		static extern byte xamarin_set_gchandle_with_flags_safe (IntPtr handle, IntPtr gchandle, XamarinGCHandleFlags gchandle_flags, IntPtr data);
 
+		// Implicit toggle refs (Flags.ImplicitToggleRef)
+		//
+		// A user-type peer can hold managed state, so it must stay alive while native code owns the native
+		// object. For most user types, a native -retain goes through our retain trampoline, which creates a
+		// strong GCHandle for the peer. But native code can also take a reference without calling -retain:
+		// objc_loadWeakRetained (which ARC, Swift and UIKit use to read weak references) takes it through
+		// -retainWeakReference. Our retainWeakReference trampoline runs while the Objective-C runtime holds an
+		// internal lock, so it can't call managed code, which means it can't create a GCHandle. The GC could
+		// then collect the peer while native code still uses the object. Later callbacks can fail, or a
+		// lookup can create a new peer without the old peer's state.
+		//
+		// On CoreCLR/NativeAOT, implicit toggle-ref tracking helps protect peers that own their native
+		// object's GCHandle ivar. When the GC finds no other references to such a peer, and the peer isn't
+		// disposed and still owns its native reference (HasManagedRef), the GC checks the native retain count.
+		// The peer owns one native reference, so a count above 1 can indicate that native code also owns the
+		// object; the GC keeps the peer alive in that case. The unchanged retain/release trampolines still
+		// keep disposed peers alive while native code holds a -retain'ed reference.
+		//
+		// CreateManagedRef and EnsureManagedReference set the flag when they install this peer's GCHandle in
+		// the ivar, or find that the ivar already points to this peer (for instance when constructor chaining
+		// initializes the same peer twice). They don't set it when the ivar holds another peer's GCHandle,
+		// whether that peer is alive, disposed or collected (the ivar normally remains set until the native
+		// object is deallocated). The other peer may still own a native reference. Disposal can start before
+		// that reference is released, and a finalizer can defer release or resurrect the peer without
+		// releasing it. The retain count can then be at least 2 even when native code holds no reference.
+		// If this peer were toggled, the other peer's reference could keep it alive until that reference
+		// is released, or indefinitely.
+		//
+		// The handle setter clears the flag whenever the pointer changes (including to null, when init
+		// returns nil or the native object is deallocated), because the flag was about the old object's ivar.
+		// If init returns a different, non-null object, InitializeHandle normally calls
+		// EnsureManagedReference, which sets the flag again if this peer owns, or can claim, the new
+		// object's ivar. That doesn't happen in the legacy RegisterObjectsBeforeInit mode, nor when the
+		// handle changes in other ways (such as NSObject.Init ()), so the peer doesn't regain implicit
+		// tracking for the new handle. Disposing doesn't directly clear the flag, but the GC doesn't use
+		// it to root a disposed peer or a peer without HasManagedRef.
+		//
+		// We can't reuse RegisteredToggleRef for this: it records an explicit request (MarkDirty), and that
+		// request must survive handle changes. For example, CALayer's NSObjectFlag constructor calls
+		// MarkDirtyIfDerived before the derived constructor calls InitializeHandle. A single bit can't be both
+		// kept and cleared when the handle changes. We also don't call MarkDirty here: for user types it frees
+		// the strong GCHandle that the retain trampoline may already have created.
+		//
+		// Known gaps: if native code promotes a weak reference after the GC checked the retain count, but
+		// before the peer is marked as queued for finalization (after that, promotion returns nil), the peer
+		// can still be finalized while native code owns the object. A peer that can't install its GCHandle
+		// because the ivar still holds an old peer's GCHandle gets no implicit tracking; an explicit
+		// MarkDirty registration may still apply. The retain trampoline can only create a strong GCHandle
+		// for the peer in the ivar.
+		//
+		// The GC sends -retainCount to toggled objects while it runs, so -retainCount must not run managed
+		// code. Implementing -retainCount in managed code (for instance [Export ("retainCount")]) is not
+		// supported: implicit tracking makes this reachable for any user type, not only CALayer subclasses.
 		void CreateManagedRef (bool isUserType, bool retain)
 		{
 			var hadManagedRef = HasManagedRef;
@@ -596,8 +624,10 @@ namespace Foundation {
 					var existing = Runtime.GetGCHandleForObject (handle);
 					// Constructor chaining may initialize the same wrapper more than once.
 					// The existing wrapper already owns the native reference, so don't retain it again.
-					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+					if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this)) {
+						SetFlags (Flags.ImplicitToggleRef);
 						return;
+					}
 				}
 
 				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
@@ -611,6 +641,8 @@ namespace Foundation {
 					// A GCHandle already existed: this shouldn't happen, but let's handle it anyway.
 					Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 					gchandle.Free ();
+				} else {
+					SetFlags (Flags.ImplicitToggleRef);
 				}
 			}
 
@@ -621,14 +653,19 @@ namespace Foundation {
 		// Issue #25861: if 'init' returned a different handle than 'alloc' for a user type,
 		// the gchandle ivar was set on the (now typically freed) alloc'd handle. Make sure
 		// the final handle also has a gchandle ivar pointing back at this managed object, so
-		// it can be resolved native->managed. Does nothing for direct bindings (no ivar) or
-		// if the ivar is already set.
+		// it can be resolved native->managed. Does nothing for direct bindings (no ivar).
+		// If the ivar is already set, leave it unchanged but restore implicit tracking when
+		// it points to this peer.
 		void EnsureManagedReference (NativeHandle newHandle)
 		{
 			if (!Runtime.TryGetIsUserType (newHandle, out var isUserType, out var _) || !isUserType)
 				return;
-			if (Runtime.GetGCHandleForObject (newHandle) != IntPtr.Zero)
+			var existing = Runtime.GetGCHandleForObject (newHandle);
+			if (existing != IntPtr.Zero) {
+				if (ReferenceEquals (Runtime.GetGCHandleTarget (existing), this))
+					SetFlags (Flags.ImplicitToggleRef);
 				return;
+			}
 			HasManagedRef = true;
 			var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 			var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
@@ -646,6 +683,8 @@ namespace Foundation {
 				// case in CreateManagedRef.
 				Runtime.NSLog ($"Tried to create a managed reference from an object that already has a managed reference (type: {GetType ()})");
 				gchandle.Free ();
+			} else {
+				SetFlags (Flags.ImplicitToggleRef);
 			}
 		}
 
@@ -1307,11 +1346,16 @@ namespace Foundation {
 			}
 		}
 
+		void IReleaseOnMainThread.ReleaseOnMainThread ()
+		{
+			ReleaseManagedRef ();
+		}
+
 		[Register ("__NSObject_Disposer")]
 		internal class NSObject_Disposer : NSObject {
-			static readonly List<NSObject> drainList1 = new List<NSObject> ();
-			static readonly List<NSObject> drainList2 = new List<NSObject> ();
-			static List<NSObject> handles = drainList1;
+			static readonly List<IReleaseOnMainThread> drainList1 = new List<IReleaseOnMainThread> ();
+			static readonly List<IReleaseOnMainThread> drainList2 = new List<IReleaseOnMainThread> ();
+			static List<IReleaseOnMainThread> handles = drainList1;
 
 			static readonly IntPtr class_ptr = Class.GetHandle ("__NSObject_Disposer");
 
@@ -1323,7 +1367,7 @@ namespace Foundation {
 				// Can't make the class static, because it has to subclass NSObject.
 			}
 
-			static internal void Add (NSObject handle)
+			static internal void Add (IReleaseOnMainThread handle)
 			{
 				bool call_drain;
 				lock (lock_obj) {
@@ -1346,11 +1390,11 @@ namespace Foundation {
 			[Export ("drain:")]
 			static void Drain (NSObject ctx)
 			{
-				List<NSObject> drainList;
+				List<IReleaseOnMainThread> drainList;
 
 				lock (lock_obj) {
 					// This function isn't re-entrant safe, so protect against it. The only possibility I can
-					// see where this function would be re-entrant, is if in the call to ReleaseManagedRef below,
+					// see where this function would be re-entrant, is if in the call to a release below,
 					// the native dealloc method for a type ended up executing the run loop, and that runloop
 					// processed a drain request, ending up in this method (again).
 					if (draining) {
@@ -1366,8 +1410,8 @@ namespace Foundation {
 						handles = drainList1;
 				}
 
-				foreach (NSObject x in drainList)
-					x.ReleaseManagedRef ();
+				foreach (var entry in drainList)
+					entry.ReleaseOnMainThread ();
 				drainList.Clear ();
 
 				lock (lock_obj) {

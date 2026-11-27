@@ -86,6 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Directory.CreateDirectory (OutputDirectory);
 			GenerateInlinedDlfcnNativeCode (nativeSourceFiles);
+			GenerateCategoryFrameworkNativeCode (nativeSourceFiles);
 			GenerateInlinedClassGetHandleNativeCode (nativeSourceFiles);
 
 			NativeSourceFiles = nativeSourceFiles.Select (path => {
@@ -122,7 +123,7 @@ namespace Xamarin.MacDev.Tasks {
 				var symbolType = rns.GetMetadata ("SymbolType").ToLowerInvariant ();
 				switch (symbolType) {
 				case "objectivecclass":
-					if (filterObjectiveCClasses && rv.Remove (nativeSymbol)) {
+					if (filterObjectiveCClasses && rv.RemoveWhere (v => CollectPostILTrimInformation.GetClassName (v) == nativeSymbol) > 0) {
 						Log.LogMessage (MessageImportance.Low, "Ignoring Objective-C class '{0}'", nativeSymbol);
 					}
 					break;
@@ -208,7 +209,8 @@ namespace Xamarin.MacDev.Tasks {
 			var sb = new StringBuilder ();
 			sb.AppendLine ($"#include <objc/runtime.h>");
 			sb.AppendLine ($"#include <Foundation/Foundation.h>");
-			foreach (var objectiveCClassName in classes) {
+			foreach (var classGroup in classes.GroupBy (CollectPostILTrimInformation.GetClassName).OrderBy (v => v.Key, StringComparer.Ordinal)) {
+				var objectiveCClassName = classGroup.Key;
 				// We don't want to import every header under the sun to find the @interface definitions for each class, so we generate
 				// a forward declaration for each class. To avoid potential issues with missing classes at runtime, we mark each declaration with __attribute__((weak_import)).
 				// The only exception is that we need to #include Foundation, which means we can't create declarations for Foundation classes.
@@ -222,8 +224,13 @@ namespace Xamarin.MacDev.Tasks {
 						sb.AppendLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
 					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // is stub: {info.IsStubClass}");
 				}
-				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native ();");
-				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ return [{objectiveCClassName} class]; }}");
+				foreach (var classSymbol in classGroup.OrderBy (v => v, StringComparer.Ordinal)) {
+					var functionName = CollectPostILTrimInformation.TryGetCategoryFramework (classSymbol, out var categoryFramework)
+						? $"xamarin_Category_GetHandle_{categoryFramework}_{objectiveCClassName}_Native"
+						: $"xamarin_Class_GetHandle_{objectiveCClassName}_Native";
+					sb.AppendLine ($"Class {functionName} ();");
+					sb.AppendLine ($"Class {functionName} () {{ return [{objectiveCClassName} class]; }}");
+				}
 				sb.AppendLine ();
 			}
 
@@ -235,7 +242,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		void GenerateInlinedDlfcnNativeCode (List<string> items)
 		{
-			var survivingSymbols = FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles), filterObjectiveCClasses: false);
+			var survivingSymbols = new HashSet<string> (FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles), filterObjectiveCClasses: false)
+				.Where (v => !v.StartsWith ("xamarin_CategoryFramework_", StringComparison.Ordinal)), StringComparer.Ordinal);
 
 			if (survivingSymbols.Count == 0) {
 				Log.LogMessage (MessageImportance.Low, "There were no surviving symbols that require inlined dlfcn native code.");
@@ -279,6 +287,28 @@ namespace Xamarin.MacDev.Tasks {
 			var outputPath = Path.Combine (OutputDirectory, "inlined-dlfcn.c");
 			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
 
+			items.Add (outputPath);
+		}
+
+		void GenerateCategoryFrameworkNativeCode (List<string> items)
+		{
+			const string prefix = "xamarin_CategoryFramework_";
+			const string suffix = "_Native";
+			var frameworks = ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles)
+				.Where (v => v.StartsWith (prefix, StringComparison.Ordinal) && v.EndsWith (suffix, StringComparison.Ordinal))
+				.Select (v => v.Substring (prefix.Length, v.Length - prefix.Length - suffix.Length))
+				.Where (v => v.Length > 0)
+				.OrderBy (v => v, StringComparer.Ordinal)
+				.ToArray ();
+			if (frameworks.Length == 0)
+				return;
+
+			var sb = new StringBuilder ();
+			foreach (var framework in frameworks)
+				sb.AppendLine ($"void* xamarin_CategoryFramework_{framework}_Native () {{ return (void*) 0; }}");
+
+			var outputPath = Path.Combine (OutputDirectory, "category-frameworks.c");
+			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
 			items.Add (outputPath);
 		}
 	}

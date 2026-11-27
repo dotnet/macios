@@ -80,3 +80,35 @@ references, and its build targets omit the globalization library when
 When no native symbols need exporting, the native linker uses `/dev/null` as
 the export list. Remote builds skip transferring empty files, so referencing
 an empty `mtouch-symbols.list` on the Mac would fail.
+
+## NativeAOT framework dependencies
+
+Framework dependencies are collected after ILC has trimmed the app. The
+assembly-preparer uses ILC's output to find surviving native references:
+
+* Inlined `Class.GetHandle` calls identify Objective-C classes. Their managed
+  binding types map those class names to frameworks.
+* Category bindings look up the class they extend, which may come from a
+  different framework (for example, NotificationCenter's category on UIKit's
+  `UIVibrancyEffect`). Their inlined lookup uses a separate
+  `xamarin_Category_GetHandle_<framework>_<class>_Native` function, so the
+  category's framework is linked only when that lookup survives. Generated
+  binding categories have a marker field that identifies them to the build
+  tools, without registering them as managed categories. Used category methods
+  reference a framework marker so instance methods are covered even when their
+  generated class-handle lookup is unused.
+* Direct P/Invokes appear as unresolved native symbols.
+* Indirect P/Invokes appear as `__pinvoke_` fixup symbols. Their module and
+  entry-point names are matched against P/Invoke declarations in the assemblies
+  to determine which frameworks they need.
+
+Binding assemblies' `ObjectiveCFramework` attributes and explicit framework
+dependencies remain included independently of those references. This preserves
+dependencies declared for use through native code or runtime lookups, even when
+no managed P/Invoke or Objective-C class reference identifies them.
+
+Non-ignored `ReferenceNativeSymbol` class, field, and function roots also
+contribute their frameworks. This includes roots for platform wrapper classes,
+which do not necessarily appear in the registrar implementation list. Function
+roots are matched against P/Invokes in external modules, not `__Internal`,
+which refers to the executable itself.

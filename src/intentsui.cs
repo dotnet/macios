@@ -40,20 +40,23 @@ namespace IntentsUI {
 		GenericAction,
 	}
 
+	/// <summary>Enumerates the visual styles of an add-to-Siri button.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INUIAddVoiceShortcutButtonStyle : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>A white button.</summary>
 		White = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>A white button with an outline.</summary>
 		WhiteOutline,
-		/// <summary>To be added.</summary>
+		/// <summary>A black button.</summary>
 		Black,
-		/// <summary>To be added.</summary>
+		/// <summary>A black button with an outline.</summary>
 		BlackOutline,
+		/// <summary>A button whose color matches the current appearance (light or dark).</summary>
 		[MacCatalyst (13, 1)]
 		Automatic,
+		/// <summary>A button with an outline whose color matches the current appearance (light or dark).</summary>
 		[MacCatalyst (13, 1)]
 		AutomaticOutLine,
 	}

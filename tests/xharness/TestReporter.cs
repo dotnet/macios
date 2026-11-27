@@ -42,6 +42,7 @@ namespace Xharness {
 		readonly string? deviceName;
 		readonly TimeSpan timeout;
 		readonly Stopwatch timeoutWatch;
+		readonly DateTime started = DateTime.UtcNow;
 		readonly string? additionalLogsDirectory;
 		readonly CancellationTokenSource cancellationTokenSource = new ();
 		readonly ExceptionLogger? exceptionLogger;
@@ -115,14 +116,8 @@ namespace Xharness {
 			} else {
 				string? line;
 				while ((line = await reader.ReadLineAsync ()) is not null) {
-					if (line.StartsWith ("Application launched. PID = ", StringComparison.Ordinal)) {
-						var pidstr = line.Substring ("Application launched. PID = ".Length);
-						if (!int.TryParse (pidstr, out pid))
-							mainLog.WriteLine ("Could not parse pid: {0}", pidstr);
-					} else if (line.Contains ("Xamarin.Hosting: Launched ") && line.Contains (" with pid ")) {
-						var pidstr = line.Substring (line.LastIndexOf (' '));
-						if (!int.TryParse (pidstr, out pid))
-							mainLog.WriteLine ("Could not parse pid: {0}", pidstr);
+					if (ProcessDiagnostics.TryParsePid (line, appInfo.BundleIdentifier, out var launchedPid)) {
+						pid = launchedPid;
 					} else if (line.Contains ("error MT1008")) {
 						launchFailure = true;
 					}
@@ -179,12 +174,12 @@ namespace Xharness {
 			return false;
 		}
 
-		Task KillAppProcess (int pid, CancellationTokenSource cancellationSource)
+		async Task KillAppProcess (int pid, CancellationTokenSource cancellationSource)
 		{
 			var launchTimedout = cancellationSource.IsCancellationRequested;
 			var timeoutType = launchTimedout ? "Launch" : "Completion";
 			mainLog.WriteLine ($"{timeoutType} timed out after {timeoutWatch.Elapsed.TotalSeconds} seconds");
-			return processManager.KillTreeAsync (pid, mainLog, true);
+			await ProcessDiagnostics.CollectAndTerminateAsync (processManager, logs, mainLog, pid, appInfo.BundleExecutable, started);
 		}
 
 		async Task CollectResult (ProcessExecutionResult runResult)
@@ -434,9 +429,9 @@ namespace Xharness {
 				WrenchLog.WriteLine ("AddFile: {0}", listener.TestLog.FullPath);
 				(Success, crashed, result.ResultMessage) = await TestsSucceeded (appInfo, listener.TestLog.FullPath, timedout);
 			} else if (timedout) {
-				WrenchLog.WriteLine ("AddSummary: <b><i>{0} never launched</i></b><br/>", runMode);
-				mainLog.WriteLine ("Test run never launched");
-				result.ResultMessage = "Test runner never started";
+				result.ResultMessage = TestProtocolConnected ? "Test run timed out without producing a result log" : "Test runner never started";
+				mainLog.WriteLine (result.ResultMessage);
+				WrenchLog.WriteLine ("AddSummary: <b><i>{0}: {1}</i></b><br/>", runMode, result.ResultMessage);
 				Success = false;
 			} else if (launchFailure) {
 				WrenchLog.WriteLine ("AddSummary: <b><i>{0} failed to launch</i></b><br/>", runMode);
@@ -459,6 +454,8 @@ namespace Xharness {
 				crashLogWaitTime = 5;
 
 			if (crashed)
+				crashLogWaitTime = 30;
+			if (timedout)
 				crashLogWaitTime = 30;
 
 			await crashReporter.EndCaptureAsync (TimeSpan.FromSeconds (crashLogWaitTime));

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -359,8 +360,23 @@ namespace Xharness {
 
 				MainLog.WriteLine ("Starting test run");
 
-				var testRunResult = await processManager.ExecuteCommandAsync (args, MainLog, testReporterTimeout, cancellationToken: testReporter.CancellationToken);
-				await testReporter.CollectSimulatorResult (testRunResult);
+				using var launchProcess = new Process ();
+				using var runCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
+				using var timeoutCancellation = new CancellationTokenSource ();
+				var execution = processManager.RunAsync (launchProcess, args, MainLog, testReporterTimeout + TimeSpan.FromMinutes (1), cancellationToken: runCancellation.Token, diagnostics: false);
+				var timedOut = await Task.WhenAny (execution, Task.Delay (testReporterTimeout, timeoutCancellation.Token)) != execution;
+				timeoutCancellation.Cancel ();
+				if (timedOut) {
+					try {
+						await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
+					} finally {
+						// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.
+						runCancellation.Cancel ();
+					}
+					await execution;
+				} else {
+					await testReporter.CollectSimulatorResult (await execution);
+				}
 
 				// cleanup after us
 				if (EnsureCleanSimulatorState)

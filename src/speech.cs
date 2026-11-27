@@ -59,9 +59,9 @@ namespace Speech {
 		Authorized,
 	}
 
+	/// <summary>Enumerates the errors that the Speech framework can report.</summary>
 	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[Native]
-	/// <summary>Enumerates the errors that the Speech framework can report.</summary>
 	[ErrorDomain ("SFSpeechErrorDomain")]
 	public enum SFSpeechErrorCode : long {
 		/// <summary>An internal error occurred.</summary>
@@ -77,7 +77,7 @@ namespace Speech {
 		Timeout = 12,
 #else
 		// Apple changed the value for 'Timeout' from 10 to 12 in Xcode 26.
-		/// <summary>The operation timed out. Apple changed the native value from 10 to 12; use <see cref="Timeout2" /> instead.</summary>
+		/// <summary>This is the legacy value for a timeout, which doesn't match the native value. Use <see cref="Timeout2" /> instead.</summary>
 		[Obsolete ("Use 'Timeout2' instead'.")]
 		Timeout = 10,
 		/// <summary>The operation timed out.</summary>

@@ -377,9 +377,9 @@ namespace LocalAuthentication {
 		void LoadData (LASecretCompletionHandler handler);
 	}
 
+	/// <summary>Enumerates the kinds of companion devices that can authenticate the user.</summary>
 	[Flags]
 	[Native]
-	/// <summary>Enumerates the kinds of companion devices that can authenticate the user.</summary>
 	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0), NoTV]
 	enum LACompanionType : long {
 		/// <summary>No companion device.</summary>

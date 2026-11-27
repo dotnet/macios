@@ -110,7 +110,7 @@ namespace Xharness.Jenkins.TestTasks {
 							var timeout = TimeSpan.FromMinutes (20);
 
 							var started = DateTime.UtcNow;
-							var execution = ProcessManager.RunAsync (proc, log, timeout + TimeSpan.FromMinutes (1), diagnostics: false);
+							var execution = ProcessManager.RunAsync (proc, log, timeout + TimeSpan.FromMinutes (2), diagnostics: false);
 							using var timeoutCancellation = new System.Threading.CancellationTokenSource ();
 							var timedOut = await Task.WhenAny (execution, Task.Delay (timeout, timeoutCancellation.Token)) != execution;
 							timeoutCancellation.Cancel ();

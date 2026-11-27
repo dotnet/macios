@@ -459,6 +459,12 @@ namespace Xharness {
 				crashLogWaitTime = 30;
 
 			await crashReporter.EndCaptureAsync (TimeSpan.FromSeconds (crashLogWaitTime));
+			if (timedout) {
+				foreach (var log in logs) {
+					if (Path.GetFileName (log.FullPath).StartsWith ("SpringBoard-", StringComparison.Ordinal))
+						mainLog.WriteLine ($"SpringBoard crash report collected during timed-out run: {log.FullPath}");
+				}
+			}
 
 			if (timedout) {
 				if (TestProtocolConnected) {

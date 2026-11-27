@@ -29,9 +29,10 @@ namespace Xharness {
 				Assert.That (actual, Is.EqualTo (pid));
 		}
 
-		[TestCase (true)]
-		[TestCase (false)]
-		public async Task CollectHungProcess (bool matches)
+		[TestCase (true, false)]
+		[TestCase (true, true)]
+		[TestCase (false, false)]
+		public async Task CollectHungProcess (bool matches, bool suspended)
 		{
 			if (!OperatingSystem.IsMacOS ())
 				Assert.Ignore ("Native hang diagnostics use macOS sample.");
@@ -47,13 +48,17 @@ namespace Xharness {
 			process.Start ();
 
 			try {
+				if (suspended) {
+					var stopped = await new MacOSProcessManager ().ExecuteCommandAsync ("/bin/kill", new [] { "-STOP", process.Id.ToString () }, log, TimeSpan.FromSeconds (5));
+					Assert.That (stopped.Succeeded, Is.True, "Controlled hung process must be suspended");
+				}
 				await ProcessDiagnostics.CollectAndTerminateAsync (new MacOSProcessManager (), logs, log, process.Id, matches ? "sleep" : "another-test-app", started);
 				if (matches) {
 					Assert.That (await process.WaitForExitAsync ().TimeoutAfter (TimeSpan.FromSeconds (10)), Is.True, "Hung process must terminate");
 					var samples = Directory.GetFiles (directory, "native-stacks-*.txt");
 					Assert.That (samples, Has.Length.EqualTo (1));
 					Assert.That (File.ReadAllText (samples [0]), Does.Contain ("Call graph:"));
-					var artifact = Path.Combine (TestContext.CurrentContext.TestDirectory, "native-stacks.txt");
+					var artifact = Path.Combine (TestContext.CurrentContext.TestDirectory, suspended ? "suspended-native-stacks.txt" : "native-stacks.txt");
 					File.Copy (samples [0], artifact, overwrite: true);
 					TestContext.AddTestAttachment (artifact, "Native stacks from controlled hung process");
 				} else {

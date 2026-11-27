@@ -363,11 +363,12 @@ namespace Xharness {
 				using var launchProcess = new Process ();
 				using var runCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
 				using var timeoutCancellation = new CancellationTokenSource ();
-				var execution = processManager.RunAsync (launchProcess, args, MainLog, testReporterTimeout + TimeSpan.FromMinutes (1), cancellationToken: runCancellation.Token, diagnostics: false);
+				var execution = processManager.RunAsync (launchProcess, args, MainLog, testReporterTimeout + TimeSpan.FromMinutes (2), cancellationToken: runCancellation.Token, diagnostics: false);
 				var timedOut = await Task.WhenAny (execution, Task.Delay (testReporterTimeout, timeoutCancellation.Token)) != execution;
 				timeoutCancellation.Cancel ();
 				if (timedOut) {
 					try {
+						await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, Logs, MainLog, simulator.UDID, AppInformation.BundleIdentifier, testReporterTimeout);
 						await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
 					} finally {
 						// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.

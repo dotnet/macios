@@ -9,10 +9,26 @@ using System.Threading.Tasks;
 using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.Common.Logging;
 using Microsoft.DotNet.XHarness.Common.Utilities;
+using Microsoft.DotNet.XHarness.iOS.Shared.Execution;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 namespace Xharness {
 	static class ProcessDiagnostics {
+		public static async Task CollectSimulatorLifecycleAsync (IMlaunchProcessManager processManager, ILogs logs, ILog mainLog, string udid, string bundleIdentifier, TimeSpan timeout)
+		{
+			try {
+				using var log = logs.Create ("simulator-lifecycle.log", "Simulator SpringBoard and test app lifecycle");
+				var identifier = bundleIdentifier.Replace ("\\", "\\\\").Replace ("\"", "\\\"");
+				var predicate = $"process == \"SpringBoard\" OR (process == \"runningboardd\" AND eventMessage CONTAINS \"{identifier}\")";
+				await RunToolAsync (processManager, log, Path.Combine (processManager.XcodeRoot, "Contents", "Developer", "usr", "bin", "simctl"),
+					"spawn", udid, "log", "show", "--style", "compact", "--last", $"{Math.Ceiling (timeout.TotalSeconds)}s", "--predicate", predicate);
+			} catch (IOException ex) {
+				mainLog.WriteLine ($"Could not write simulator lifecycle log: {ex.Message}");
+			} catch (UnauthorizedAccessException ex) {
+				mainLog.WriteLine ($"Could not write simulator lifecycle log: {ex.Message}");
+			}
+		}
+
 		public static bool TryParsePid (string line, string bundleIdentifier, out int pid)
 		{
 			pid = -1;
@@ -53,6 +69,7 @@ namespace Xharness {
 
 				try {
 					using var diagnosticLog = logs.Create ($"hang-diagnostics-{pid}.log", "Hang diagnostic collection");
+					await RunToolAsync (processManager, diagnosticLog, "/bin/ps", "-p", pid.ToString (), "-o", "pid,ppid,state,etime,command");
 					var samplePath = logs.CreateFile ($"native-stacks-{pid}.txt", "Native stacks of hung test app");
 					await RunToolAsync (processManager, diagnosticLog, "/usr/bin/sample", pid.ToString (), "3", "10", "-file", samplePath);
 
@@ -83,6 +100,10 @@ namespace Xharness {
 
 				log.WriteLine ($"Sending SIGABRT to test app PID {pid} to request a crash report.");
 				await RunToolAsync (processManager, log, "/bin/kill", "-ABRT", pid.ToString ());
+				if (!current.HasExited && IsSameProcess (pid, path, startTime)) {
+					// A stopped app cannot handle SIGABRT until it is resumed. Its original state was captured above.
+					await RunToolAsync (processManager, log, "/bin/kill", "-CONT", pid.ToString ());
+				}
 				if (!await current.WaitForExitAsync ().TimeoutAfter (TimeSpan.FromSeconds (5))) {
 					if (!IsSameProcess (pid, path, startTime)) {
 						log.WriteLine ($"Skipping SIGKILL for PID {pid}: process identity changed.");
@@ -92,9 +113,9 @@ namespace Xharness {
 					current.Kill ();
 				}
 			} catch (ArgumentException ex) {
-				log.WriteLine ($"Cannot collect hang diagnostics for PID {pid}: {ex.Message}");
+				log.WriteLine ($"Test app PID {pid} is no longer available for diagnostics or termination: {ex.Message}");
 			} catch (InvalidOperationException ex) {
-				log.WriteLine ($"Cannot collect hang diagnostics for PID {pid}: {ex.Message}");
+				log.WriteLine ($"Could not inspect or terminate test app PID {pid}: {ex.Message}");
 			} catch (Win32Exception ex) {
 				log.WriteLine ($"Cannot collect hang diagnostics for PID {pid}: {ex.Message}");
 			}

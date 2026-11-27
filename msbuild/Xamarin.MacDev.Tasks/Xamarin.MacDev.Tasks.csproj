@@ -19,8 +19,6 @@
     <CopyLocalLockFileAssemblies Condition="'$(TargetFramework)' == 'net$(BundledNETCoreAppTargetFrameworkVersion)'">true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
-  <Import Project="..\..\eng\Versions.props" />
-
   <ItemGroup>
     <PackageReference Include="Mono.Options" Version="6.12.0.148" />
     <PackageReference Include="System.Reflection.MetadataLoadContext" Version="8.0.0" />
@@ -33,6 +31,7 @@
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="$(MicrosoftBuildUtilitiesCorePackageVersion)" IncludeAssets="$(IncludeMSBuildAssets)" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" Version="$(MicrosoftNETILLinkTasksPackageVersion)" />
     <PackageReference Include="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)" GeneratePathProperty="true"/>
+    <PackageReference Include="Microsoft.Apple.Tools.MaciOS" Version="$(MicrosoftAppleToolsMaciOSPackageVersion)" />
     <PackageReference Include="Xamarin.Messaging.Build.Client" Version="$(MessagingVersion)" />
     <!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 -->
     <PackageReference Include="System.Drawing.Common" Version="$(SystemDrawingCommonPackageVersion)" />
@@ -40,7 +39,6 @@
     <PackageReference Include="System.Security.Cryptography.Xml" Version="$(SystemSecurityCryptographyXmlPackageVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
     <ProjectReference Include="..\..\tools\assembly-preparer\assembly-preparer.csproj" />
     <!-- We need the net472 implementation, otherwise the Build agent needs to be a net5.0 app -->
     <Reference Include="ILLink.Tasks">

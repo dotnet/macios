@@ -21,6 +21,10 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>0ebc5301bbf1a9ae6cd5324ca84d9423eac08521</Sha>
     </Dependency>
+    <Dependency Name="Microsoft.Apple.Tools.MaciOS" Version="1.0.0-preview.1.26576.1">
+      <Uri>https://github.com/dotnet/macios-devtools</Uri>
+      <Sha>4aec2a75386539a7d4edd859774456d99a1142e8</Sha>
+    </Dependency>
     <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-preview.26575.106">
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>0ebc5301bbf1a9ae6cd5324ca84d9423eac08521</Sha>

@@ -1628,12 +1628,16 @@ namespace HomeKit {
 		Sunset,
 	}
 
+	/// <summary>Enumerates the authorization status of an app to access home data.</summary>
 	[NoMac, MacCatalyst (14, 0)]
 	[Flags]
 	[Native]
 	public enum HMHomeManagerAuthorizationStatus : ulong {
+		/// <summary>The user has made a choice about the app accessing home data.</summary>
 		Determined = 1 << 0,
+		/// <summary>The system currently restricts access to home data.</summary>
 		Restricted = 1 << 1,
+		/// <summary>The app is authorized to access home data.</summary>
 		Authorized = 1 << 2,
 	}
 

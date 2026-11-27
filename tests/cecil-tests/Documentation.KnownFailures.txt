@@ -3521,9 +3521,6 @@ F:HomeKit.HMError.PartialCommunicationFailure
 F:HomeKit.HMError.QuotaExceeded
 F:HomeKit.HMError.TimedOutWaitingForAccessory
 F:HomeKit.HMError.WiFiCredentialGenerationFailed
-F:HomeKit.HMHomeManagerAuthorizationStatus.Authorized
-F:HomeKit.HMHomeManagerAuthorizationStatus.Determined
-F:HomeKit.HMHomeManagerAuthorizationStatus.Restricted
 F:HomeKit.HMServiceType.InputSource
 F:HomeKit.HMServiceType.Television
 F:HomeKit.HMServiceType.WiFiRouter
@@ -56411,7 +56408,6 @@ T:HomeKit.HMFetchRoomHandler
 T:HomeKit.HMHome
 T:HomeKit.HMHomeAccessControl
 T:HomeKit.HMHomeManager
-T:HomeKit.HMHomeManagerAuthorizationStatus
 T:HomeKit.HMHomeManagerFindVendorAccessoryCallback
 T:HomeKit.HMLocationEvent
 T:HomeKit.HMMutableCalendarEvent

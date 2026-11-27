@@ -14,6 +14,8 @@ $Env:_DotNetRootRemoteDirectory = "/Users/$Env:MAC_AGENT_USER/Library/Caches/mau
 if ("$Env:TESTFILTER" -eq "") {
     $Env:TESTFILTER = "Category=RemoteWindows|Category=RemoteWindowsInclusive"
 }
+# DIAGNOSTIC: only run the tests that fail with -mt.
+$Env:TESTFILTER = "($Env:TESTFILTER)&(Name~AppWithLibraryWithResourcesReferenceOnRemoteWindows|Name~BuildProjectsWithExtensionsOnRemoteWindows|Name~BundleStructureWithRemoteMac|Name~PluralRuntimeIdentifiersWithRemoteMac|Name~TrimmerKeepsParameterNamesWithRemoteMac|Name~RemoteTest)"
 
 & $Env:DOTNET `
     test `

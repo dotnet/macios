@@ -12,6 +12,7 @@ public class SdkDbTool : ObjectiveCBinder {
 	public SdkDbTool ()
 	{
 		SplitDocuments = false;
+		EnableModules = true;
 	}
 
 	protected override bool AddArguments (List<string> args)

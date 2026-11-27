@@ -311,7 +311,9 @@ namespace MonoTests.System.Net.Http {
 			var config = NSUrlSessionConfiguration.DefaultSessionConfiguration;
 			config.TimeoutIntervalForResource = 3;
 
+			var serverReady = new TaskCompletionSource<bool> (TaskCreationOptions.RunContinuationsAsynchronously);
 			var serverTask = Task.Run (async () => {
+				serverReady.SetResult (true);
 				try {
 					while (true) {
 						using var client = await listener.AcceptTcpClientAsync (serverCancellationToken);
@@ -347,12 +349,13 @@ namespace MonoTests.System.Net.Http {
 			try {
 				done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 					HttpClient client = new HttpClient (new NSUrlSessionHandler (config));
+					await serverReady.Task;
+
+					var responseMessage = await client.GetAsync (
+													$"http://127.0.0.1:{port}/",
+													HttpCompletionOption.ResponseHeadersRead);
 
 					try {
-						var responseMessage = await client.GetAsync (
-														$"http://127.0.0.1:{port}/",
-														HttpCompletionOption.ResponseHeadersRead);
-
 						using (var contentStream = await responseMessage.Content.ReadAsStreamAsync ())
 						using (var outputStream = new global::System.IO.MemoryStream ()) {
 							await contentStream.CopyToAsync (outputStream);

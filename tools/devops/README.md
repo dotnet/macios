@@ -471,7 +471,7 @@ build-pipeline.yml (Entry Point - CI)
     │           ├─► nuget-msi-convert/job/v4.yml@yaml-templates
     │           └─► templates/common/publish-pipeline-artifact.yml
     │
-    └─► localization/v1.yml@yaml-templates (main branch only)
+    └─► eng/common/templates-official/job/onelocbuild.yml (main branch only)
 
                     ┌──────────────────────────────────────┐
                     │     TRIGGERED PIPELINES (CI)         │

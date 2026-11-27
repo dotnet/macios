@@ -143,6 +143,7 @@ extends:
                 image: 1ESPT-Windows2022
                 os: windows
               CeapexServiceConnection: 'VSEng-AzureDevOps-ceapex-OneLocBuild'
+              # Generate the project during the build once dotnet/arcade#17847 is available.
               SkipLocProjectJsonGeneration: true
               ReusePr: false
               UseLfLineEndings: false

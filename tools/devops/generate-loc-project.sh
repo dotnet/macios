@@ -17,7 +17,14 @@ separator=""
 emit_loc_item () {
 	local source="$1"
 	local output="$2"
-	local lcl="$3"
+
+	if [ ! -f "$source" ]; then
+		printf 'Missing localization source: %s\n' "$source" >&2
+		return 1
+	fi
+
+	# Keep using the LCL files maintained by the current localization pipeline.
+	local lcl="macios/Localize/loc/{Lang}/macios/$source.lcl"
 
 	printf '%s' "$separator"
 	separator=$',\n'
@@ -43,11 +50,11 @@ for source in \
 	src/rgen/Microsoft.Macios.Bindings.Analyzer/Resources.resx \
 	tools/sharpie/Sharpie.Bind/Resources.resx
 do
-	emit_loc_item "$source" "${source%/*}/TranslatedAssemblies" "Localize/loc/{Lang}/$source.lcl"
+	emit_loc_item "$source" "${source%/*}/TranslatedAssemblies"
 done
 
 find dotnet/Templates -name 'templatestrings.en.json' | LC_ALL=C sort | while IFS= read -r source; do
-	emit_loc_item "$source" "${source%/*}" "Localize/loc/{Lang}/${source%.en.json}.json.lcl"
+	emit_loc_item "$source" "${source%/*}"
 done
 
 printf '\n'

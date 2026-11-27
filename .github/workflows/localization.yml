@@ -16,6 +16,6 @@ jobs:
         run: |
           tools/devops/generate-loc-project.sh > "$RUNNER_TEMP/LocProject.json"
           if ! diff -u eng/Localize/LocProject.json "$RUNNER_TEMP/LocProject.json"; then
-            echo "::error::Run tools/devops/generate-loc-project.sh > eng/Localize/LocProject.json"
+            echo "::error::eng/Localize/LocProject.json is out of date. Run: tools/devops/generate-loc-project.sh > eng/Localize/LocProject.json"
             exit 1
           fi

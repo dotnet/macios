@@ -30,6 +30,9 @@ namespace Xharness {
 		// In the 19 crashes we've seen on CI, SpringBoard crashed 17-24 seconds after mlaunch started (6-9 seconds
 		// after the app launched), and mlaunch took at most 31 seconds to launch the app (in 296 launches).
 		public static readonly TimeSpan LaunchWindow = TimeSpan.FromSeconds (60);
+		// Crash reports showed up as much as 39 seconds after the crash. Stop looking for reports after this
+		// much time past the launch window, so that a test run can't be ended long after it started.
+		public static readonly TimeSpan ReportDelay = TimeSpan.FromSeconds (60);
 		public static readonly TimeSpan PollInterval = TimeSpan.FromSeconds (5);
 
 		static readonly string [] captureTimeFormats = {
@@ -43,6 +46,7 @@ namespace Xharness {
 		readonly ILog log;
 		// Reports that existed before the launch, and reports we've already made a decision about.
 		readonly HashSet<string> seen;
+		readonly bool snapshotAvailable;
 
 		public static string DefaultDirectory => Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Logs", "DiagnosticReports");
 
@@ -52,7 +56,13 @@ namespace Xharness {
 			this.udid = udid;
 			this.attemptStart = attemptStart;
 			this.log = log;
-			seen = new HashSet<string> (ListReports (), StringComparer.Ordinal);
+			seen = new HashSet<string> (StringComparer.Ordinal);
+			try {
+				seen.UnionWith (ListReports ());
+				snapshotAvailable = true;
+			} catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) {
+				log.WriteLine ($"Could not list the existing SpringBoard crash reports: {e.Message}");
+			}
 		}
 
 		IEnumerable<string> ListReports ()
@@ -65,6 +75,8 @@ namespace Xharness {
 		// Returns the path of a new report with the recoverable crash, if there is one.
 		public string? Poll ()
 		{
+			if (!snapshotAvailable)
+				return null;
 			foreach (var path in ListReports ().OrderBy (v => v, StringComparer.Ordinal)) {
 				if (seen.Contains (path))
 					continue;
@@ -81,13 +93,21 @@ namespace Xharness {
 			return null;
 		}
 
-		// Polls until a report with the recoverable crash shows up, or until cancelled (in which case null is returned).
+		// Polls until a report with the recoverable crash shows up, or until it's too late to end the attempt,
+		// or until cancelled. Returns null if no such report showed up.
 		public async Task<string?> WaitForCrashAsync (CancellationToken cancellationToken)
 		{
+			if (!snapshotAvailable)
+				return null;
+			var deadline = attemptStart + LaunchWindow + ReportDelay;
 			try {
 				while (true) {
+					if (DateTimeOffset.Now > deadline) {
+						log.WriteLine ("Stopped looking for SpringBoard crash reports: the launch was too long ago.");
+						return null;
+					}
 					var path = Poll ();
-					if (path is not null)
+					if (path is not null && DateTimeOffset.Now <= deadline)
 						return path;
 					await Task.Delay (PollInterval, cancellationToken);
 				}

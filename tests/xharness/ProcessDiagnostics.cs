@@ -15,10 +15,10 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 
 namespace Xharness {
 	static class ProcessDiagnostics {
-		public static async Task CollectSimulatorLifecycleAsync (IMlaunchProcessManager processManager, ILogs logs, ILog mainLog, string udid, string bundleIdentifier, TimeSpan timeout)
+		public static async Task CollectSimulatorLifecycleAsync (IMlaunchProcessManager processManager, ILogs logs, ILog mainLog, string udid, string bundleIdentifier, TimeSpan timeout, string logName = "simulator-lifecycle.log", string description = "Simulator SpringBoard and test app lifecycle")
 		{
 			try {
-				using var log = logs.Create ("simulator-lifecycle.log", "Simulator SpringBoard and test app lifecycle");
+				using var log = logs.Create (logName, description);
 				var identifier = bundleIdentifier.Replace ("\\", "\\\\").Replace ("\"", "\\\"");
 				var predicate = $"process == \"SpringBoard\" OR (process == \"runningboardd\" AND eventMessage CONTAINS \"{identifier}\")";
 				await RunToolAsync (processManager, log, Path.Combine (processManager.XcodeRoot, "Contents", "Developer", "usr", "bin", "simctl"),

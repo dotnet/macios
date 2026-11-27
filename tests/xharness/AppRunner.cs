@@ -420,10 +420,13 @@ namespace Xharness {
 		}
 
 		class LaunchAttempt {
+			public required int Number { get; init; }
+			public required string Suffix { get; init; }
 			public required MlaunchArguments Arguments { get; init; }
 			public required ListenerTransport Transport { get; init; }
 			public required ISimpleListener Listener { get; init; }
 			public required IFileBackedLog TestLog { get; init; }
+			public string? StdoutLog { get; init; }
 			public required ICrashSnapshotReporter CrashReporter { get; init; }
 			public required ITestReporter TestReporter { get; init; }
 			public required CancellationTokenSource LaunchCallbackCancellation { get; init; }
@@ -492,21 +495,25 @@ namespace Xharness {
 			if (!isSimulator)
 				args.Add (new DisableMemoryLimitsArgument ());
 
+			string? stdoutLog = null;
 			if (isSimulator) {
-				var stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}{suffix}.log", "Standard output");
+				stdoutLog = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}{suffix}.log", "Standard output");
 				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}{suffix}.log", "Standard error");
-				attemptLogs.Add (stdout_log);
+				attemptLogs.Add (stdoutLog);
 				attemptLogs.Add (stderr_log);
-				args.Add (new SetStdoutArgument (stdout_log));
+				args.Add (new SetStdoutArgument (stdoutLog));
 				args.Add (new SetStderrArgument (stderr_log));
 				args.Add (new SimulatorUDIDArgument (simulator!.UDID));
 			}
 
 			return new LaunchAttempt {
+				Number = attemptNumber,
+				Suffix = suffix,
 				Arguments = args,
 				Transport = transport,
 				Listener = listener,
 				TestLog = listener_log,
+				StdoutLog = stdoutLog,
 				CrashReporter = crashReporter,
 				TestReporter = testReporter,
 				LaunchCallbackCancellation = launchCallbackCancellation,
@@ -526,25 +533,41 @@ namespace Xharness {
 			using var runCancellation = new CancellationTokenSource ();
 			using var timeoutCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
 			using var detectorCancellation = new CancellationTokenSource ();
-			var detector = new SpringBoardCrashDetector (SpringBoardCrashDetector.DefaultDirectory, udid, DateTimeOffset.Now, MainLog);
+			var attemptStart = DateTimeOffset.Now;
+			var detector = new SpringBoardCrashDetector (SpringBoardCrashDetector.DefaultDirectory, udid, attemptStart, MainLog);
 			var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
 			var execution = processManager.RunAsync (launchProcess, attempt.Arguments, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
 			var timeoutTask = Task.Delay (testReporterTimeout, timeoutCancellation.Token);
 			var crashTask = detector.WaitForCrashAsync (detectorCancellation.Token);
 
+			// Never end an attempt that has finished, or that has shown a failed test or the final summary.
+			string? GetTestProgress ()
+			{
+				if (attempt.Listener.CompletionTask.IsCompleted)
+					return "completed";
+				if (execution.IsCompleted || timeoutTask.IsCompleted)
+					return "finished or timed out";
+				if (SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath, attempt.StdoutLog))
+					return "reported results";
+				return null;
+			}
+
 			var completed = await Task.WhenAny (execution, timeoutTask, crashTask);
 			if (completed == crashTask) {
 				if (crashTask.Result is string crashReport) {
-					var listenerCompleted = attempt.Listener.CompletionTask.IsCompleted;
-					var hasTestResults = SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath);
-					if (SimulatorAttemptController.ShouldAbort (listenerCompleted, hasTestResults)) {
-						MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}). Ending this attempt.");
+					var progress = await SimulatorAttemptController.GetProgressAfterDiagnosticsAsync (GetTestProgress, async () => {
+						MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}).");
 						try {
-							await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, Logs, MainLog, udid, AppInformation.BundleIdentifier, testReporterTimeout);
-						} finally {
-							timeoutCancellation.Cancel ();
-							runCancellation.Cancel ();
+							await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, Logs, MainLog, udid, AppInformation.BundleIdentifier, DateTimeOffset.Now - attemptStart + TimeSpan.FromMinutes (1),
+								$"simulator-lifecycle-springboard{attempt.Suffix}.log", $"Simulator SpringBoard and test app lifecycle (attempt {attempt.Number}, SpringBoard crash)");
+						} catch (Exception e) {
+							MainLog.WriteLine ($"Failed to collect the simulator lifecycle log: {e.Message}");
 						}
+					});
+					if (progress is null) {
+						MainLog.WriteLine ("Ending this attempt.");
+						timeoutCancellation.Cancel ();
+						runCancellation.Cancel ();
 						try {
 							await execution;
 						} catch (Exception e) {
@@ -552,13 +575,19 @@ namespace Xharness {
 						}
 						// Make sure the app isn't still running when it's launched again.
 						await processManager.ExecuteXcodeCommandAsync ("simctl", new string [] { "terminate", udid, AppInformation.BundleIdentifier }, MainLog, TimeSpan.FromMinutes (1));
+						if (SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath, attempt.StdoutLog)) {
+							MainLog.WriteLine ("Test results arrived while stopping the app; reporting this attempt instead of relaunching.");
+							await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
+							return false;
+						}
 						return true;
 					}
-					MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}), but the test run has already {(listenerCompleted ? "completed" : "reported results")}. Waiting for the test run to finish.");
+					MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}), but the test run has already {progress}. Waiting for the test run to finish.");
 				}
 				await Task.WhenAny (execution, timeoutTask);
 			}
 			detectorCancellation.Cancel ();
+			await crashTask;
 
 			var timedOut = !execution.IsCompleted;
 			timeoutCancellation.Cancel ();

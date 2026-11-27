@@ -21,26 +21,39 @@ namespace Xharness {
 	public static class SimulatorAttemptController {
 		public const int MaxAttempts = 2;
 
-		// Only end an attempt if the test run hasn't finished, and hasn't reported any results:
-		// that way a relaunch can never hide a test result.
-		public static bool ShouldAbort (bool listenerCompleted, bool hasTestResults)
+		// Checks whether any of the logs (the test log, or the app's stdout) shows a failed test or the final summary.
+		// An attempt with such results is never ended early. This doesn't protect results the app hasn't written yet:
+		// with wrapped XML output (used on CI) the test log only gets results at the end of the run, so only the
+		// app's stdout shows failures while the tests are running.
+		public static bool HasTestResults (params string? [] logPaths)
 		{
-			return !listenerCompleted && !hasTestResults;
-		}
+			foreach (var path in logPaths) {
+				if (path is null || !File.Exists (path))
+					continue;
 
-		public static bool HasTestResults (string testLogPath)
-		{
-			if (!File.Exists (testLogPath))
-				return false;
-
-			using var stream = new FileStream (testLogPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
-			using var reader = new StreamReader (stream);
-			string? line;
-			while ((line = reader.ReadLine ()) is not null) {
-				if (line.Contains ("[FAIL]", StringComparison.Ordinal) || line.Contains ("Tests run:", StringComparison.Ordinal))
+				try {
+					using var stream = new FileStream (path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+					using var reader = new StreamReader (stream);
+					string? line;
+					while ((line = reader.ReadLine ()) is not null) {
+						if (line.Contains ("[FAIL]", StringComparison.Ordinal) || line.Contains ("Tests run:", StringComparison.Ordinal) || line.Contains ("<test-run ", StringComparison.Ordinal))
+							return true;
+					}
+				} catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) {
+					// If we can't tell, assume there are results, so that the attempt isn't ended.
 					return true;
+				}
 			}
 			return false;
+		}
+
+		public static async Task<string?> GetProgressAfterDiagnosticsAsync (Func<string?> getProgress, Func<Task> collectDiagnostics)
+		{
+			var progress = getProgress ();
+			if (progress is not null)
+				return progress;
+			await collectDiagnostics ();
+			return getProgress ();
 		}
 
 		public static SimulatorAttemptDecision Decide (int attempt, bool aborted)

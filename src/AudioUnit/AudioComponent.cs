@@ -596,6 +596,7 @@ namespace AudioUnit {
 		[UnsupportedOSPlatform ("tvos")]
 		public AudioComponentValidationResult Validate (NSDictionary? validationParameters = null) => Validate (validationParameters, out var _);
 
+		[UserDelegateType (typeof (Action<AudioComponentValidationResult, NSDictionary>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineAction (IntPtr blockPtr, AudioComponentValidationResult result, IntPtr dictionary)
 		{

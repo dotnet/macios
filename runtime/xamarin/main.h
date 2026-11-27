@@ -58,6 +58,7 @@ enum NSObjectFlags {
 	NSObjectFlagsHasManagedRef = 32,
 	// 64, // Used by SoM
 	NSObjectFlagsIsCustomType = 128,
+	NSObjectFlagsImplicitToggleRef = 256,
 };
 
 enum XamarinGCHandleType : int {
@@ -128,7 +129,6 @@ extern enum XamarinLaunchMode xamarin_launch_mode;
 #if SUPPORTS_DYNAMIC_REGISTRATION
 extern bool xamarin_supports_dynamic_registration;
 #endif
-extern const char *xamarin_runtime_configuration_name;
 extern int xamarin_runtime_config_property_count;
 extern const char **xamarin_runtime_config_property_keys;
 extern const char **xamarin_runtime_config_property_values;

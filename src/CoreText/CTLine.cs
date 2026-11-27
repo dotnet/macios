@@ -311,6 +311,9 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		unsafe static extern void CTLineEnumerateCaretOffsets (IntPtr line, BlockLiteral* blockEnumerator);
 
+		delegate void CaretEdgeSignature (double offset, long charIndex, bool leadingEdge, ref bool stop);
+
+		[UserDelegateType (typeof (CaretEdgeSignature))]
 		[UnmanagedCallersOnly]
 		unsafe static void TrampolineEnumerate (IntPtr blockPtr, double offset, nint charIndex, byte leadingEdge, byte* stopPointer)
 		{

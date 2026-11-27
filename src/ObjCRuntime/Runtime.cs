@@ -176,7 +176,7 @@ namespace ObjCRuntime {
 			IsTrimmableStaticRegistrar = 0x04,
 			/* unused				= 0x08,*/
 			IsSimulator = 0x10,
-			IsCoreCLR = 0x20,
+			/* unused				= 0x20,*/
 			IsNativeAOT = 0x40,
 		}
 
@@ -215,14 +215,6 @@ namespace ObjCRuntime {
 		public static class ClassHandles {
 		}
 #endif
-
-		[BindingImpl (BindingImplOptions.Optimizable)]
-		internal unsafe static bool IsCoreCLR {
-			get {
-				// The linker may turn calls to this property into a constant
-				return (options->Flags.HasFlag (InitializationFlags.IsCoreCLR));
-			}
-		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		internal unsafe static bool IsNativeAOT {
@@ -385,13 +377,12 @@ namespace ObjCRuntime {
 			Class.InitializeClass (options);
 			InitializePlatform (options);
 
-			IsARM64CallingConvention = GetIsARM64CallingConvention (); // Can only be done after Runtime.Arch is set (i.e. InitializePlatform has been called).
+			IsARM64CallingConvention = GetIsARM64CallingConvention ();
 
 			objc_exception_mode = options->MarshalObjectiveCExceptionMode;
 			managed_exception_mode = options->MarshalManagedExceptionMode;
 
-			if (IsCoreCLR)
-				InitializeCoreCLRBridge (options);
+			InitializeCoreCLRBridge (options);
 
 			initialized = true;
 #if PROFILE
@@ -1233,12 +1224,7 @@ namespace ObjCRuntime {
 		// registration of a new object for a reused native pointer.
 		internal static void RegisterNSObject (NSObject obj, IntPtr ptr, bool onlyIfNeeded = false)
 		{
-			GCHandle handle;
-			if (Runtime.IsCoreCLR) {
-				handle = CreateTrackingGCHandle (obj, ptr);
-			} else {
-				handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
-			}
+			var handle = CreateTrackingGCHandle (obj, ptr);
 
 			lock (lock_obj) {
 				if (onlyIfNeeded) {
@@ -2886,32 +2872,6 @@ namespace ObjCRuntime {
 			return @delegate;
 		}
 
-		enum NXByteOrder /* unspecified in header, means most likely int */ {
-			Unknown,
-			LittleEndian,
-			BigEndian,
-		}
-
-		[StructLayout (LayoutKind.Sequential)]
-		struct NXArchInfo {
-			IntPtr name; // const char *
-			public int CpuType; // cpu_type_t -> integer_t -> int
-			public int CpuSubType; // cpu_subtype_t -> integer_t -> int
-			public NXByteOrder ByteOrder;
-			IntPtr description; // const char *
-
-			public string Name {
-				get { return Marshal.PtrToStringUTF8 (name)!; }
-			}
-
-			public string Description {
-				get { return Marshal.PtrToStringUTF8 (description)!; }
-			}
-		}
-
-		[DllImport (Constants.libSystemLibrary)]
-		static unsafe extern NXArchInfo* NXGetLocalArchInfo ();
-
 		/// <summary>Gets whether the current process uses ARM64 calling conventions.</summary>
 		/// <remarks>This is initialized during runtime startup.</remarks>
 		public static bool IsARM64CallingConvention;
@@ -2919,9 +2879,7 @@ namespace ObjCRuntime {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static bool GetIsARM64CallingConvention ()
 		{
-			unsafe {
-				return NXGetLocalArchInfo ()->Name.StartsWith ("arm64", StringComparison.OrdinalIgnoreCase);
-			}
+			return RuntimeInformation.ProcessArchitecture == Architecture.Arm64;
 		}
 
 		// Get the GCHandle from the IntPtr value and get the wrapped object.

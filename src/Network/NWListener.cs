@@ -172,6 +172,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void Cancel () => nw_listener_cancel (GetCheckedHandle ());
 
+		[UserDelegateType (typeof (Action<NWListenerState, NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineListenerStateChanged (IntPtr block, NWListenerState state, IntPtr nwerror)
 		{
@@ -204,6 +205,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<NWConnection>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineNewConnection (IntPtr block, IntPtr connection)
 		{
@@ -244,6 +246,7 @@ namespace Network {
 		///     <remarks>To be added.</remarks>
 		public delegate void AdvertisedEndpointChanged (NWEndpoint endpoint, bool added);
 
+		[UserDelegateType (typeof (AdvertisedEndpointChanged))]
 		[UnmanagedCallersOnly]
 		static void TrampolineAdvertisedEndpointChangedHandler (IntPtr block, IntPtr endpoint, byte added)
 		{
@@ -317,6 +320,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_listener_set_new_connection_group_handler (IntPtr listener, /* [NullAllowed] */ BlockLiteral* handler);
 
+		[UserDelegateType (typeof (Action<NWConnectionGroup>))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]

@@ -2176,7 +2176,10 @@ namespace Test {
 			var bgen = BuildFile (profile, "release-attribute.cs");
 			bgen.AssertNoWarnings ();
 
-			var passesOwnsEqualsTrue = new Func<MethodDefinition, bool> ((method) => {
+			var assertOwnership = new Action<MethodDefinition> ((method) => {
+				var owns = method.MethodReturnType.CustomAttributes.Any (v => v.AttributeType.Name == "ReleaseAttribute");
+				var expected = owns ? Code.Ldc_I4_1 : Code.Ldc_I4_0;
+				var conversionCount = 0;
 				foreach (var ins in method.Body.Instructions) {
 					switch (ins.OpCode.Code) {
 					case Code.Call:
@@ -2187,13 +2190,18 @@ namespace Test {
 						case "GetINativeObject":
 						case "GetNSObject":
 						case "FromHandle":
+						case "ArrayFromHandle":
+						case "StringArrayFromHandle":
+						case "ArrayFromHandleFunc":
 							var prev = ins.Previous;
-							return prev.OpCode.Code == Code.Ldc_I4_1;
+							Assert.That (prev.OpCode.Code, Is.EqualTo (expected), $"{method.Name}: {mr.Name} ownership");
+							conversionCount++;
+							break;
 						}
 						break;
 					}
 				}
-				return false;
+				Assert.That (conversionCount, Is.GreaterThan (0), $"{method.Name}: conversion calls");
 			});
 
 			// The last argument in the call to GetNSObject, GetINativeObject or FromHandle (or any other object-creating methods) must be 'true'.
@@ -2202,7 +2210,7 @@ namespace Test {
 								.Where (v => v.Name != "get_ClassHandle");
 			Assert.Multiple (() => {
 				foreach (var method in methods)
-					Assert.That (passesOwnsEqualsTrue (method), Is.True, method.Name);
+					assertOwnership (method);
 			});
 		}
 

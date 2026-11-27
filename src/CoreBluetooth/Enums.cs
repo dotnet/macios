@@ -265,10 +265,12 @@ namespace CoreBluetooth {
 		Connected = 1,
 	}
 
+	/// <summary>Enumerates the device-specific features of a central manager.</summary>
 	[Flags, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
+		/// <summary>The hardware supports extended scans and enhanced connection creation.</summary>
 		ExtendedScanAndConnect = 1uL << 0,
 		/// <summary>The hardware and region support channel sounding.</summary>
 		[NoTV, iOS (27, 0), MacCatalyst (27, 0)]

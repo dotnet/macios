@@ -1663,7 +1663,6 @@ F:CoreAnimation.CATransform3D.M41
 F:CoreAnimation.CATransform3D.M42
 F:CoreAnimation.CATransform3D.M43
 F:CoreAnimation.CATransform3D.M44
-F:CoreBluetooth.CBCentralManagerFeature.ExtendedScanAndConnect
 F:CoreBluetooth.CBError.EncryptionTimedOut
 F:CoreBluetooth.CBError.LEGattExceededBackgroundNotificationLimit
 F:CoreBluetooth.CBError.LEGattNearBackgroundNotificationLimit
@@ -55109,7 +55108,6 @@ T:CoreAudioKit.CABtleMidiWindowController
 T:CoreAudioKit.CAInterDeviceAudioViewController
 T:CoreAudioKit.CANetworkBrowserWindowController
 T:CoreBluetooth.AdvertisementData
-T:CoreBluetooth.CBCentralManagerFeature
 T:CoreBluetooth.CBConnectionEventMatchingOptions
 T:CoreBluetooth.CBConnectPeripheralOptions
 T:CoreBluetooth.CBL2CapChannel

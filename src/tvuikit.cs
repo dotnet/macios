@@ -6,11 +6,16 @@ using UIKit;
 
 namespace TVUIKit {
 
+	/// <summary>Enumerates the axes along which the floating view of a caption button moves on focus.</summary>
 	[Native]
 	public enum TVCaptionButtonViewMotionDirection : long {
+		/// <summary>The floating view doesn't move.</summary>
 		None = 0,
+		/// <summary>The floating view slides horizontally.</summary>
 		Horizontal,
+		/// <summary>The floating view slides vertically.</summary>
 		Vertical,
+		/// <summary>The floating view slides along both axes.</summary>
 		All,
 	}
 

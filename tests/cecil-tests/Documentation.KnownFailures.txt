@@ -6032,10 +6032,6 @@ F:TVServices.TVTopShelfItemImageTraits.Scale2x
 F:TVServices.TVTopShelfSectionedItemImageShape.Hdtv
 F:TVServices.TVTopShelfSectionedItemImageShape.Poster
 F:TVServices.TVTopShelfSectionedItemImageShape.Square
-F:TVUIKit.TVCaptionButtonViewMotionDirection.All
-F:TVUIKit.TVCaptionButtonViewMotionDirection.Horizontal
-F:TVUIKit.TVCaptionButtonViewMotionDirection.None
-F:TVUIKit.TVCaptionButtonViewMotionDirection.Vertical
 F:TVUIKit.TVMediaItemContentTextTransform.Capitalized
 F:TVUIKit.TVMediaItemContentTextTransform.Lowercase
 F:TVUIKit.TVMediaItemContentTextTransform.None
@@ -58576,7 +58572,6 @@ T:TVServices.TVTopShelfSectionedItemImageShape
 T:TVServices.TVUserActivityType
 T:TVServices.TVUserManager
 T:TVUIKit.TVCaptionButtonView
-T:TVUIKit.TVCaptionButtonViewMotionDirection
 T:TVUIKit.TVCardView
 T:TVUIKit.TVCollectionViewFullScreenCell
 T:TVUIKit.TVCollectionViewFullScreenLayout

@@ -61,20 +61,29 @@ namespace Speech {
 
 	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[Native]
+	/// <summary>Enumerates the errors that the Speech framework can report.</summary>
 	[ErrorDomain ("SFSpeechErrorDomain")]
 	public enum SFSpeechErrorCode : long {
+		/// <summary>An internal error occurred.</summary>
 		InternalServiceError = 1,
+		/// <summary>The audio file couldn't be read.</summary>
 		AudioReadFailed = 2,
+		/// <summary>The custom language model templates are malformed.</summary>
 		UndefinedTemplateClassName = 7,
+		/// <summary>The custom language model file is malformed.</summary>
 		MalformedSupplementalModel = 8,
 #if XAMCORE_5_0
+		/// <summary>The operation timed out.</summary>
 		Timeout = 12,
 #else
 		// Apple changed the value for 'Timeout' from 10 to 12 in Xcode 26.
+		/// <summary>The operation timed out. Apple changed the native value from 10 to 12; use <see cref="Timeout2" /> instead.</summary>
 		[Obsolete ("Use 'Timeout2' instead'.")]
 		Timeout = 10,
+		/// <summary>The operation timed out.</summary>
 		Timeout2 = 12,
 #endif
+		/// <summary>A required parameter is missing or null.</summary>
 		MissingParameter = 13,
 	}
 

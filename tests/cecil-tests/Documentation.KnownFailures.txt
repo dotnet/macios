@@ -5859,12 +5859,6 @@ F:ShazamKit.SHMediaItemProperty.TimeRanges
 F:ShazamKit.SHMediaItemProperty.Title
 F:ShazamKit.SHMediaItemProperty.VideoUrl
 F:ShazamKit.SHMediaItemProperty.WebUrl
-F:Speech.SFSpeechErrorCode.AudioReadFailed
-F:Speech.SFSpeechErrorCode.InternalServiceError
-F:Speech.SFSpeechErrorCode.MalformedSupplementalModel
-F:Speech.SFSpeechErrorCode.MissingParameter
-F:Speech.SFSpeechErrorCode.Timeout2
-F:Speech.SFSpeechErrorCode.UndefinedTemplateClassName
 F:StoreKit.SKAdNetworkCoarseConversionValue.High
 F:StoreKit.SKAdNetworkCoarseConversionValue.Low
 F:StoreKit.SKAdNetworkCoarseConversionValue.Medium
@@ -58440,7 +58434,6 @@ T:SoundAnalysis.SNClassificationResult
 T:SoundAnalysis.SNClassifySoundRequest
 T:SoundAnalysis.SNTimeDurationConstraint
 T:Speech.SFAcousticFeature
-T:Speech.SFSpeechErrorCode
 T:Speech.SFSpeechLanguageModel
 T:Speech.SFSpeechLanguageModelConfiguration
 T:Speech.SFSpeechLanguageModelPrepareCustomModelHandler

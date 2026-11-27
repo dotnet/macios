@@ -119,6 +119,15 @@ namespace Xamarin.MacDev.Tasks {
 					copiedFiles.Add (Destination);
 				}
 				CopiedFiles = copiedFiles.ToArray ();
+			} else if (TouchDestinationFiles) {
+				// Ditto preserves source timestamps; refresh them so downstream post-processing doesn't reuse stale stamps.
+				var destination = Destination!.ItemSpec;
+				if (Directory.Exists (destination)) {
+					foreach (var file in Directory.EnumerateFiles (destination, "*", SearchOption.AllDirectories))
+						File.SetLastWriteTimeUtc (file, DateTime.UtcNow);
+				} else if (File.Exists (destination)) {
+					File.SetLastWriteTimeUtc (destination, DateTime.UtcNow);
+				}
 			}
 
 			return !Log.HasLoggedErrors;

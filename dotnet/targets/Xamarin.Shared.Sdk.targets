@@ -1069,6 +1069,17 @@
 		</_ComputeFrameworkFilesToPublishDependsOn>
 	</PropertyGroup>
 
+	<ItemDefinitionGroup>
+		<_FilteredFrameworkToPublish>
+			<NoSymbolStrip></NoSymbolStrip>
+			<NoDSymUtil></NoDSymUtil>
+		</_FilteredFrameworkToPublish>
+		<_FrameworksFromAppExtensions>
+			<NoSymbolStrip></NoSymbolStrip>
+			<NoDSymUtil></NoDSymUtil>
+		</_FrameworksFromAppExtensions>
+	</ItemDefinitionGroup>
+
 	<!-- Look in the _FrameworkNativeReference items for frameworks that need to be added to the app bundle, and add all those frameworks to _FrameworkToPublish -->
 	<Target Name="_ComputeFrameworkFilesToPublish" DependsOnTargets="$(_ComputeFrameworkFilesToPublishDependsOn)">
 		<ItemGroup>
@@ -1091,14 +1102,20 @@
 			FrameworkToPublish="@(_FrameworkToPublish)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
-			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
+			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublishFromTask" />
 		</FilterStaticFrameworks>
+		<ItemGroup>
+			<_FilteredFrameworkToPublish Include="@(_FilteredFrameworkToPublishFromTask)" />
+		</ItemGroup>
 
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
-			<Output TaskParameter="Items" ItemName="_FrameworksFromAppExtensions" />
+			<Output TaskParameter="Items" ItemName="_FrameworksFromAppExtensionsFromFile" />
 		</ReadItemsFromFile>
+		<ItemGroup>
+			<_FrameworksFromAppExtensions Include="@(_FrameworksFromAppExtensionsFromFile)" />
+		</ItemGroup>
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
@@ -1112,6 +1129,8 @@
 		<ItemGroup>
 			<_FrameworksFromAppExtensions Update="@(_FrameworksFromAppExtensions)">
 				<TargetDirectory>$(_RelativePublishDir)$(_AppBundleFrameworksDir)\%(Filename)%(Extension).framework</TargetDirectory>
+				<NoSymbolStrip Condition="'%(_FrameworksFromAppExtensions.NoSymbolStrip)' == ''">$(NoSymbolStrip)</NoSymbolStrip>
+				<NoDSymUtil Condition="'%(_FrameworksFromAppExtensions.NoDSymUtil)' == ''">$(NoDSymUtil)</NoDSymUtil>
 			</_FrameworksFromAppExtensions>
 		</ItemGroup>
 
@@ -1133,9 +1152,14 @@
 		<PropertyGroup>
 			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
 		</PropertyGroup>
+		<ItemGroup>
+			<_CopyDirectoriesToBundleInput Include="StripFrameworkHeaders=$(StripFrameworkHeaders)" />
+			<_CopyDirectoriesToBundleInput
+				Include="@(_DirectoriesToPublish->'%(Identity)|%(NoSymbolStrip)|%(NoDSymUtil)')" />
+		</ItemGroup>
 		<WriteLinesToFile
 			File="$(_CopyDirectoriesToBundleInputFile)"
-			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Lines="@(_CopyDirectoriesToBundleInput)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
@@ -2963,7 +2987,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			</_PostProcessingItem>
 			<!-- App extension frameworks are copied into the container app. -->
 			<_AppExtensionR2RFramework Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true' And '%(_FrameworksFromAppExtensions.Extension)' == '.r2r'" />
-			<_PostProcessingItem Include="@(_AppExtensionR2RFramework->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+			<_PostProcessingItem Include="@(_AppExtensionR2RFramework->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<Kind>Framework</Kind>
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>

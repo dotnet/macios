@@ -217,7 +217,10 @@
 			DependsOnTargets="_PrepareR2RModules"
 			>
 		<ItemGroup Condition="'$(CreateR2RFramework)' == 'true'">
-			<_FrameworkNativeReference Include="@(_R2RModule->'%(FrameworkPath)/%(FrameworkName)')" Kind="Framework" />
+			<_FrameworkNativeReference Include="@(_R2RModule->'%(FrameworkPath)/%(FrameworkName)')" Kind="Framework">
+				<NoSymbolStrip Condition="'$(NoSymbolStrip)' == 'true'">true</NoSymbolStrip>
+				<NoDSymUtil Condition="'$(NoDSymUtil)' == 'true'">true</NoDSymUtil>
+			</_FrameworkNativeReference>
 		</ItemGroup>
 		<ItemGroup Condition="'$(CreateR2RDylib)' == 'true'">
 			<_FileNativeReference Include="@(_R2RModule->'%(DylibOutput)')" Kind="Dynamic">

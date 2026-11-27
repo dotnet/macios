@@ -52,7 +52,8 @@ public partial class AppDelegate : UIApplicationDelegate {
 		];
 		foreach (var name in names) {
 			NSNotificationCenter.DefaultCenter.AddObserver (name, (notification) => {
-				TestRuntime.NSLog ($"State change: {notification.Name} (application state: {UIApplication.SharedApplication.ApplicationState})");
+				var sceneState = notification.Object is UIScene scene ? $", scene state: {scene.ActivationState}" : "";
+				TestRuntime.NSLog ($"State change: {notification.Name} (application state: {UIApplication.SharedApplication.ApplicationState}{sceneState})");
 			});
 		}
 	}

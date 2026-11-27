@@ -1624,11 +1624,6 @@ F:ClassKit.CLSContextTopic.None
 F:ClassKit.CLSContextType.Course
 F:ClassKit.CLSContextType.Custom
 F:ClassKit.CLSErrorCode.InvalidAccountCredentials
-F:ClassKit.CLSProgressReportingCapabilityKind.Binary
-F:ClassKit.CLSProgressReportingCapabilityKind.Duration
-F:ClassKit.CLSProgressReportingCapabilityKind.Percent
-F:ClassKit.CLSProgressReportingCapabilityKind.Quantity
-F:ClassKit.CLSProgressReportingCapabilityKind.Score
 F:Contacts.CNAuthorizationStatus.Limited
 F:Contacts.CNErrorCode.ChangeHistoryExpired
 F:Contacts.CNErrorCode.ChangeHistoryInvalidAnchor
@@ -54966,7 +54961,6 @@ T:Cinematic.CNSpatialAudioContentType
 T:Cinematic.CNSpatialAudioRenderingStyle
 T:ClassKit.CLSBinaryItem
 T:ClassKit.CLSProgressReportingCapability
-T:ClassKit.CLSProgressReportingCapabilityKind
 T:CloudKit.CKAcceptPerShareCompletionHandler
 T:CloudKit.CKAcceptSharesOperation
 T:CloudKit.CKAllowedSharingOptions

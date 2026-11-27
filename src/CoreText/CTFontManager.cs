@@ -193,6 +193,7 @@ namespace CoreText {
 
 		public delegate bool CTFontRegistrationHandler (NSError [] errors, bool done);
 
+		[UserDelegateType (typeof (CTFontRegistrationHandler))]
 		[UnmanagedCallersOnly]
 		static unsafe byte TrampolineRegistrationHandler (IntPtr block, /* NSArray */ IntPtr errors, byte done)
 		{
@@ -660,6 +661,7 @@ namespace CoreText {
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe void CTFontManagerRequestFonts (/* CFArrayRef */ IntPtr fontDescriptors, BlockLiteral* completionHandler);
 
+		[UserDelegateType (typeof (CTFontManagerRequestFontsHandler))]
 		[UnmanagedCallersOnly]
 		static unsafe void TrampolineRequestFonts (IntPtr block, /* CFArray */ IntPtr fontDescriptors)
 		{

@@ -99,6 +99,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_ws_options_set_client_request_handler (OS_nw_protocol_options options, IntPtr client_queue, BlockLiteral* handler);
 
+		[UserDelegateType (typeof (NWWebSocketClientRequestHandler))]
 		[UnmanagedCallersOnly]
 		static IntPtr TrampolineClientRequestHandler (IntPtr block, nw_ws_request_t request)
 		{
@@ -138,6 +139,7 @@ namespace Network {
 		}
 
 #if !XAMCORE_5_0
+		[UserDelegateType (typeof (NWWebSocketClientRequestHandler))]
 		[UnmanagedCallersOnly]
 		static IntPtr TrampolineClientRequestHandlerAction (IntPtr block, nw_ws_request_t request)
 		{

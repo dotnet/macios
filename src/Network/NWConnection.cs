@@ -109,6 +109,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<NWConnectionState, NWError>))]
 		[UnmanagedCallersOnly]
 		static void Trampoline_StateChangeCallback (IntPtr block, NWConnectionState state, IntPtr error)
 		{
@@ -140,6 +141,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<bool>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineBooleanChangeHandler (IntPtr block, byte value)
 		{
@@ -202,6 +204,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<NWPath>))]
 		[UnmanagedCallersOnly]
 		static void TrampolinePathChanged (IntPtr block, IntPtr path)
 		{
@@ -277,6 +280,7 @@ namespace Network {
 		///         <remarks>To be added.</remarks>
 		public void CancelCurrentEndpoint () => nw_connection_cancel_current_endpoint (GetCheckedHandle ());
 
+		[UserDelegateType (typeof (NWConnectionReceiveDispatchDataCompletion))]
 		[UnmanagedCallersOnly]
 		static void TrampolineReceiveCompletion (IntPtr block, IntPtr dispatchDataPtr, IntPtr contentContext, byte isComplete, IntPtr error)
 		{
@@ -304,6 +308,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (NWConnectionReceiveDispatchDataCompletion))]
 		[UnmanagedCallersOnly]
 		static void TrampolineReceiveCompletionData (IntPtr block, IntPtr dispatchDataPtr, IntPtr contentContext, byte isComplete, IntPtr error)
 		{
@@ -325,6 +330,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (NWConnectionReceiveDispatchDataCompletion))]
 		[UnmanagedCallersOnly]
 		static void TrampolineReceiveCompletionReadOnlyData (IntPtr block, IntPtr dispatchDataPtr, IntPtr contentContext, byte isComplete, IntPtr error)
 		{
@@ -445,6 +451,7 @@ namespace Network {
 			}
 		}
 
+		[UserDelegateType (typeof (Action<NWError>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSendCompletion (IntPtr block, IntPtr error)
 		{
@@ -652,6 +659,7 @@ namespace Network {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[UserDelegateType (typeof (Action<NWEstablishmentReport>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineGetEstablishmentReportHandler (IntPtr block, nw_establishment_report_t report)
 		{

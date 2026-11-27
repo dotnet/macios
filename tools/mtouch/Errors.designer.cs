@@ -2686,6 +2686,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot export the instance selector &apos;retainCount&apos; on the member &apos;{0}.{1}&apos; because the garbage collector must be able to call it without running managed code..
+        /// </summary>
+        public static string MT4199 {
+            get {
+                return ResourceManager.GetString("MT4199", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Missing &apos;{0}&apos; compiler. Please install Xcode &apos;Command-Line Tools&apos; component.
         /// </summary>
         public static string MT5101 {
@@ -3186,6 +3195,15 @@ namespace Xamarin.Bundler {
         public static string MX0133 {
             get {
                 return ResourceManager.GetString("MX0133", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The optimization &apos;{0}&apos; is no longer supported..
+        /// </summary>
+        public static string MX0134 {
+            get {
+                return ResourceManager.GetString("MX0134", resourceCulture);
             }
         }
         

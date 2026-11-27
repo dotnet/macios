@@ -54,63 +54,66 @@ namespace CoreAnimation {
 		TopBottomEdges = TopEdge | BottomEdge,
 	}
 
+	/// <summary>Specifies which corners of a <see cref="CALayer" /> are rounded.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	[Flags]
 	public enum CACornerMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the minimum x- and minimum y-coordinates.</summary>
 		MinXMinYCorner = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the maximum x- and minimum y-coordinates.</summary>
 		MaxXMinYCorner = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the minimum x- and maximum y-coordinates.</summary>
 		MinXMaxYCorner = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Rounds the corner at the maximum x- and maximum y-coordinates.</summary>
 		MaxXMaxYCorner = 1 << 3,
 	}
 
 	// untyped enum -> CALayer.h (only on OSX headers)
 	// note: autoresizingMask is an `unsigned int` @property
+	/// <summary>Specifies how a layer adjusts its frame when its superlayer's bounds change.</summary>
 	[Flags]
 	[NoiOS]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAAutoresizingMask : uint {
-		/// <summary>To be added.</summary>
+		/// <summary>Does not automatically resize the layer or adjust its margins.</summary>
 		NotSizable = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the minimum x-coordinate margin to resize.</summary>
 		MinXMargin = 1 << 0,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the layer's width to resize.</summary>
 		WidthSizable = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the maximum x-coordinate margin to resize.</summary>
 		MaxXMargin = 1 << 2,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the minimum y-coordinate margin to resize.</summary>
 		MinYMargin = 1 << 3,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the layer's height to resize.</summary>
 		HeightSizable = 1 << 4,
-		/// <summary>To be added.</summary>
+		/// <summary>Allows the maximum y-coordinate margin to resize.</summary>
 		MaxYMargin = 1 << 5,
 	}
 
 	// typedef int -> CAConstraintLayoutManager.h
+	/// <summary>Specifies the geometric attribute of a layer used in a <see cref="CAConstraint" />.</summary>
 	[NoiOS]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum CAConstraintAttribute {
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the minimum x-coordinate of a layer's frame.</summary>
 		MinX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the midpoint of a layer's frame along the x-axis.</summary>
 		MidX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the maximum x-coordinate of a layer's frame.</summary>
 		MaxX,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the width of a layer's frame.</summary>
 		Width,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the minimum y-coordinate of a layer's frame.</summary>
 		MinY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the midpoint of a layer's frame along the y-axis.</summary>
 		MidY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the maximum y-coordinate of a layer's frame.</summary>
 		MaxY,
-		/// <summary>To be added.</summary>
+		/// <summary>Specifies the height of a layer's frame.</summary>
 		Height,
 	};
 }

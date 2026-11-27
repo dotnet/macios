@@ -47,6 +47,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_framer_message_set_value (OS_nw_protocol_metadata message, IntPtr key, IntPtr value, BlockLiteral* dispose_value);
 
+		[UserDelegateType (typeof (Action<IntPtr>))]
 		[UnmanagedCallersOnly]
 		static void TrampolineSetDataHandler (IntPtr block, IntPtr data)
 		{
@@ -80,6 +81,7 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern byte nw_framer_message_access_value (OS_nw_protocol_metadata message, IntPtr key, BlockLiteral* access_value);
 
+		[UserDelegateType (typeof (Func<IntPtr, bool>))]
 		[UnmanagedCallersOnly]
 		static byte TrampolineAccessValueHandler (IntPtr block, IntPtr data)
 		{

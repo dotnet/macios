@@ -15885,6 +15885,9 @@ namespace UIKit {
 		[Export ("applicationFrame")]
 		CGRect ApplicationFrame { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use a 'UIScreen' instance obtained through context (such as 'view.Window.WindowScene.Screen'), or a 'UITraitCollection' obtained through context for properties with trait equivalents (such as 'DisplayScale').")]
 		[Export ("mainScreen")]
 		[Static]
 		UIScreen MainScreen { get; }
@@ -28276,7 +28279,7 @@ namespace UIKit {
 		IUIFocusDebuggerOutput SimulateFocusUpdateRequest (IUIFocusEnvironment environment);
 
 		// Removed from headers in Xcode 14
-		[Wrap ("true ? throw new InvalidOperationException (Constants.ApiRemovedGeneral) : false", IsVirtual = true)]
+		[Wrap ("true ? throw new InvalidOperationException (Constants.ApiRemovedGeneral) : \"\"", IsVirtual = true)]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Static]
 		[Export ("checkFocusGroupTreeForEnvironment:")]
@@ -37045,19 +37048,59 @@ namespace UIKit {
 	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Protocol]
 	interface UITraitChangeObservable {
+		/// <summary>Registers a callback handler that runs when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="handler">The callback to execute when a trait changes.</param>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///     or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		///   </para>
+		///   <para>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</para>
+		/// </remarks>
 		[Abstract (GenerateExtensionMethod = true)]
+		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, handler)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withHandler:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Action<IUITraitEnvironment, UITraitCollection> handler);
 
+		/// <summary>Registers a selector on the specified target to be called when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="target">The object on which to invoke the selector.</param>
+		/// <param name="action">The selector to invoke.</param>
+		/// <returns>A token that keeps this object and <paramref name="target" /> alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///     or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		///   </para>
+		///   <para>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</para>
+		/// </remarks>
 		[Abstract (GenerateExtensionMethod = true)]
+		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, target, action)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withTarget:action:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, NSObject target, Selector action);
 
+		/// <summary>Registers a selector on this observable to be called when any of the specified traits changes.</summary>
+		/// <param name="traits">The traits to observe.</param>
+		/// <param name="action">The selector to invoke.</param>
+		/// <returns>A token that keeps this object alive until the token is disposed or passed to <see cref="UnregisterForTraitChanges" />.</returns>
+		/// <remarks>
+		///   <para>
+		///     Keep the returned managed token reachable for as long as callbacks are needed. Dispose the token (for example with a <c>using</c> statement)
+		///     or pass it to <see cref="UnregisterForTraitChanges" /> when observation is no longer needed.
+		///   </para>
+		///   <para>The returned token cannot be copied. Calling <c>Copy</c> on an active token throws <see cref="NotSupportedException" />.</para>
+		/// </remarks>
 		[Abstract (GenerateExtensionMethod = true)]
+		[Wrap ("IUITraitChangeObservable.RegisterForTraitChangesCore (this, traits, action)", IsVirtual = true)]
 		[Export ("registerForTraitChanges:withAction:")]
 		IUITraitChangeRegistration RegisterForTraitChanges (Class [] traits, Selector action);
 
+		/// <summary>Unregisters a trait-change callback and releases the registration's reference to this observable.</summary>
+		/// <param name="registration">The token returned when the callback was registered.</param>
 		[Abstract]
+		[Wrap ("IUITraitChangeObservable.UnregisterForTraitChangesInternal (this, registration)", IsVirtual = true)]
 		[Export ("unregisterForTraitChanges:")]
 		void UnregisterForTraitChanges (IUITraitChangeRegistration registration);
 	}

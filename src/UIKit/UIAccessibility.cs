@@ -258,6 +258,7 @@ namespace UIKit {
 			return tcs.Task;
 		}
 
+		[UserDelegateType (typeof (Action<bool>))]
 		[UnmanagedCallersOnly]
 		static unsafe void TrampolineRequestGuidedAccessSession (IntPtr block, byte enable)
 		{

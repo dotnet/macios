@@ -1,9 +1,9 @@
-AppBundleSize: 19,686,141 bytes (19,224.7 KB = 18.8 MB)
+AppBundleSize: 19,685,492 bytes (19,224.1 KB = 18.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/Info.plist:
-    1,061 bytes (1.0 KB = 0.0 MB)
+    1,084 bytes (1.1 KB = 0.0 MB)
 Contents/MacOS/SizeTestApp:
-    152,280 bytes (148.7 KB = 0.1 MB)
+    151,848 bytes (148.3 KB = 0.1 MB)
 Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMap.dll:
     18,432 bytes (18.0 KB = 0.0 MB)
 Contents/MonoBundle/_Microsoft.MacCatalyst.TypeMaps.dll:
@@ -27,7 +27,7 @@ Contents/MonoBundle/Microsoft.MacCatalyst.dll:
 Contents/MonoBundle/SizeTestApp.dll:
     6,144 bytes (6.0 KB = 0.0 MB)
 Contents/MonoBundle/SizeTestApp.r2r.dylib:
-    10,317,016 bytes (10,075.2 KB = 9.8 MB)
+    10,316,776 bytes (10,075.0 KB = 9.8 MB)
 Contents/MonoBundle/System.Collections.Immutable.dll:
     13,824 bytes (13.5 KB = 0.0 MB)
 Contents/MonoBundle/System.Diagnostics.StackTrace.dll:

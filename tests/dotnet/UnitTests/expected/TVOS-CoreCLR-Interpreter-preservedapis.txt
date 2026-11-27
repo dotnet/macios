@@ -262,7 +262,6 @@ Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Bo
 Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.tvOS.dll:Foundation.NSObject.BeginInvokeOnMainThread(System.Threading.SendOrPostCallback, System.Object)
-Microsoft.tvOS.dll:Foundation.NSObject.ClearFlags(Foundation.NSObject/Flags)
 Microsoft.tvOS.dll:Foundation.NSObject.ClearHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean, System.Boolean)
@@ -301,16 +300,16 @@ Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.InvokeOnMainThread(System.Threading.SendOrPostCallback, System.Object)
 Microsoft.tvOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject.ObjCRuntime.IReleaseOnMainThread.ReleaseOnMainThread()
 Microsoft.tvOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.tvOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
+Microsoft.tvOS.dll:Foundation.NSObject.set_FlagsInternal(Foundation.NSObject/Flags)
 Microsoft.tvOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags, System.Boolean)
-Microsoft.tvOS.dll:Foundation.NSObject.SetFlags(Foundation.NSObject/Flags)
 Microsoft.tvOS.dll:Foundation.NSObject.ToString()
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.tvOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -321,7 +320,6 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::FlagsInternal()
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
-Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::ImplicitToggleRef
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
 Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
@@ -331,7 +329,7 @@ Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Add(ObjCRuntime.IReleaseOnMainThread)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
@@ -496,6 +494,8 @@ Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer ObjCRuntime.Runtime::IntPt
 Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer..ctor()
 Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer.Equals(System.IntPtr, System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer.GetHashCode(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.IReleaseOnMainThread
+Microsoft.tvOS.dll:ObjCRuntime.IReleaseOnMainThread.ReleaseOnMainThread()
 Microsoft.tvOS.dll:ObjCRuntime.Libraries
 Microsoft.tvOS.dll:ObjCRuntime.Libraries/CoreFoundation
 Microsoft.tvOS.dll:ObjCRuntime.Libraries/CoreFoundation..cctor()
@@ -1062,9 +1062,9 @@ Microsoft.tvOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,
 Microsoft.tvOS.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::SkippedProxyTypes
 Microsoft.tvOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
 Microsoft.tvOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
-Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
-Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList2
-Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::handles
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::drainList1
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::drainList2
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<ObjCRuntime.IReleaseOnMainThread> Foundation.NSObject/NSObject_Disposer::handles
 Microsoft.tvOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.Runtime::delegates
 Microsoft.tvOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.tvOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
@@ -20492,7 +20492,6 @@ System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.Int64&, Syste
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.Add(System.UInt64&, System.UInt64)
 System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.Int32&, System.Int32)
-System.Private.CoreLib.dll:System.Threading.Interlocked.And(System.UInt32&, System.UInt32)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Byte&, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Double&, System.Double, System.Double)
 System.Private.CoreLib.dll:System.Threading.Interlocked.CompareExchange(System.Int16&, System.Int16, System.Int16)

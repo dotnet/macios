@@ -378,6 +378,10 @@ that contains the `MakeBackgroundRed` extension method.   This means
 that you can now call `MakeBackgroundRed` on any `UIView` subclass,
 giving you the same functionality you would get on Objective-C.
 
+Category definitions may inherit protocol interfaces. The generated category
+class does not implement those interfaces, because it is a static class.
+Bindable protocol methods are exposed as extension methods instead.
+
 In some cases you will find **static** members inside categories like in the following example:
 
 ```objc

@@ -34,7 +34,6 @@
 		<NativeLibName>macos</NativeLibName>
 		<CompilerResponseFile>$(MSBuildThisFileDirectory)\..\..\src\rsp\dotnet\macos-defines-dotnet.rsp</CompilerResponseFile>
 		<RuntimeIdentifiers Condition="'$(UniversalBuild)' == 'true'">osx-x64;osx-arm64</RuntimeIdentifiers>
-		<RuntimeIdentifiers Condition="'$(Configuration)' == 'Release' And '$(SingleArchReleaseBuild)' == 'true'">osx-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 
 	<!-- Logic for Mac Catalyst -->
@@ -43,7 +42,6 @@
 		<NativeLibName>maccatalyst</NativeLibName>
 		<CompilerResponseFile>$(MSBuildThisFileDirectory)\..\..\src\rsp\dotnet\maccatalyst-defines-dotnet.rsp</CompilerResponseFile>
 		<RuntimeIdentifiers Condition="'$(UniversalBuild)' == 'true'">maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
-		<RuntimeIdentifiers Condition="'$(Configuration)' == 'Release' And '$(SingleArchReleaseBuild)' == 'true'">maccatalyst-x64</RuntimeIdentifiers>
 	</PropertyGroup>
 
 	<!-- Logic for all test suites -->

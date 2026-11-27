@@ -11,7 +11,7 @@ namespace Xamarin.BindingTests {
 			get {
 				// The [Protocol] attributes are removed by a custom trimmer step (RemoveAttributesStep),
 				// which doesn't run at all when ILLink is skipped, so the attributes are still around.
-				if (TestRuntime.IsILLinkSkipped)
+				if (TestRuntime.IsNativeAOT)
 					return true;
 
 				if (TestRuntime.IsLinkAll) {

@@ -69,7 +69,7 @@ namespace LinkAll.Attributes {
 			// type is preserved
 			Assert.That (t, Is.Not.Null, "type");
 			// but we did not ask the linker to preserve it's members
-			Assert.That (t.GetProperty ("Absent"), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "members");
+			Assert.That (t.GetProperty ("Absent"), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "members");
 		}
 
 		[Test]
@@ -78,7 +78,7 @@ namespace LinkAll.Attributes {
 			var klass = Type.GetType ("ObjCRuntime.Runtime, " + AssemblyName)!;
 			Assert.That (klass, Is.Not.Null, "Runtime");
 			var method = klass.GetMethod ("RegisterEntryAssembly", BindingFlags.NonPublic | BindingFlags.Static, null, new [] { typeof (Assembly) }, null);
-			Assert.That (method is null, Is.EqualTo (!Runtime.DynamicRegistrationSupported && !TestRuntime.IsILLinkSkipped), "RegisterEntryAssembly");
+			Assert.That (method is null, Is.EqualTo (!Runtime.DynamicRegistrationSupported && !TestRuntime.IsNativeAOT), "RegisterEntryAssembly");
 		}
 
 		[Test]

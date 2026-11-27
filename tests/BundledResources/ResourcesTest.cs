@@ -46,7 +46,7 @@ namespace BundledResources {
 			// break Hot Reload. So the bundled resources remain embedded unless this assembly was
 			// linked (in which case it's re-saved regardless, and stripping still applies).
 			AppContext.TryGetSwitch ("ObjCRuntime.Runtime.HotReloadCompatible", out var hotReloadCompatible);
-			var hasResources = isSimulator || TestRuntime.IsILLinkSkipped || (hotReloadCompatible && !TestRuntime.IsLinkAll);
+			var hasResources = isSimulator || TestRuntime.IsNativeAOT || (hotReloadCompatible && !TestRuntime.IsLinkAll);
 			if (!hasResources) {
 				Assert.That (resources.Length, Is.EqualTo (0), "No resources");
 			} else {

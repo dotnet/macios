@@ -68,8 +68,8 @@ namespace Linker.Shared {
 		public void SetupBlockPerfTest ()
 		{
 			IgnoreIfNotLinkAll ();
-			if (TestRuntime.IsILLinkSkipped)
-				Assert.Ignore ("This performance test is not enabled for NativeAOT.");
+			if (!global::ObjCRuntime.Runtime.DynamicRegistrationSupported)
+				Assert.Ignore ("Unoptimized SetupBlock requires the dynamic registrar.");
 
 			// If you ran this test locally and it failed, run it again. If it fails multiple times, file a bug.
 			TestRuntime.IgnoreInCI ("This test randomly fails, so ignore it when doing CI (https://github.com/xamarin/maccore/issues/649)");

@@ -47,9 +47,9 @@ partial class TestRuntime {
 	// When using NativeAOT on .NET 11+, ILLink does not run, and assembly post-processing
 	// happens after ILC. Attributes we'd otherwise remove (such as [Protocol]) therefore
 	// remain at runtime.
-	public static bool IsILLinkSkipped {
+	public static bool IsNativeAOT {
 		get {
-#if NATIVEAOT && NET11_0_OR_GREATER
+#if NATIVEAOT
 			return true;
 #else
 			return false;

@@ -12,7 +12,6 @@
     <MtouchExtraArgs>$(MtouchExtraArgs) --nowarn:2003</MtouchExtraArgs> <!-- warning MT2003: Option '...' will be ignored since ... --> 
     <MonoBundlingExtraArgs>$(MtouchExtraArgs)</MonoBundlingExtraArgs>
     <ThisTestDirectory>$(RootTestsDirectory)\linker\link all</ThisTestDirectory>
-    <SingleArchReleaseBuild Condition="'$(RuntimeIdentifier)' == ''">true</SingleArchReleaseBuild>
 
     <!-- trimmability warnings. The linker tests are here to verify what happens when code is trimmed, so some trimmer warnings are to be expected, when we assert unsupported behavior. -->
     <NoWarn>$(NoWarn);IL2121;IL2026;IL2045;IL2057;IL2059;IL2070;IL2075;IL2080;IL2096</NoWarn>

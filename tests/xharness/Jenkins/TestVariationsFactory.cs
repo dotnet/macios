@@ -60,7 +60,9 @@ namespace Xharness.Jenkins {
 			case "link all":
 				if (test.ProjectConfiguration == "Debug") {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
-					var ignore_arm64 = test.ProjectPlatform == "iPhone" || Harness.CanRunArm64 ? ignore : true;
+					var ignore_arm64 = ignore;
+					if (test.ProjectPlatform != "iPhone" && !Harness.CanRunArm64)
+						ignore_arm64 = true;
 					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore_arm64, RuntimeIdentifier = test.ProjectPlatform == "iPhoneSimulator" ? arm64_sim_runtime_identifier : arm64_runtime_identifier };
 					if (!string.IsNullOrEmpty (x64_runtime_identifier))
 						yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = !supports_x64 ? true : ignore, RuntimeIdentifier = x64_runtime_identifier };

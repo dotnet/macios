@@ -102,7 +102,7 @@ namespace LinkAll {
 			PropertyInfo pi = not_preserved_type.GetProperty ("Two")!;
 			// check the *unused* setter absence from the application
 			Assert.That (pi.GetGetMethod (), Is.Not.Null, "getter");
-			Assert.That (pi.GetSetMethod (), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "setter");
+			Assert.That (pi.GetSetMethod (), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "setter");
 		}
 
 		[Test]
@@ -114,7 +114,7 @@ namespace LinkAll {
 
 			PropertyInfo pi = not_preserved_type.GetProperty ("One")!;
 			// check the *unused* setter absence from the application
-			Assert.That (pi.GetGetMethod (), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "getter");
+			Assert.That (pi.GetGetMethod (), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "getter");
 			Assert.That (pi.GetSetMethod (), Is.Not.Null, "setter");
 		}
 
@@ -227,6 +227,10 @@ namespace LinkAll {
 			if (isExtension)
 				mainBundlePath = Path.GetDirectoryName (Path.GetDirectoryName (bundlePath))!;
 			foreach (var filepath in Directory.EnumerateFiles (mainBundlePath, filename, SearchOption.AllDirectories)) {
+#if __MACOS__ || __MACCATALYST__
+				if (!string.Equals (filepath, GetType ().Assembly.Location, StringComparison.Ordinal))
+					continue;
+#endif
 				var fname = Path.GetFileName (filepath);
 				if (filepath.EndsWith ($"{fname}.framework/{fname}", StringComparison.Ordinal)) {
 					// This isn't the assembly, but the native AOT'ed executable for the assembly.
@@ -401,7 +405,7 @@ namespace LinkAll {
 			var n = p.GetNestedType ("Derived")!;
 			Assert.That (n, Is.Not.Null, "Derived");
 			// however other stuff in Parent, like unused methods, will be removed
-			Assert.That (p.GetMethod ("UnusedMethod"), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "unused method");
+			Assert.That (p.GetMethod ("UnusedMethod"), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "unused method");
 			// while exported stuff will be present
 			Assert.That (n.GetMethod ("Foo"), Is.Not.Null, "unused Export method");
 		}
@@ -514,8 +518,8 @@ namespace LinkAll {
 			Assert.That (snfwc, Is.Not.Null, atmb.FullName + ".SetNotificationForWaitCompletion");
 			Assert.That (oifd, Is.Not.Null, atmb.FullName + ".ObjectIdForDebugger");
 #else
-			Assert.That (snfwc, TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, atmb.FullName + ".SetNotificationForWaitCompletion");
-			Assert.That (oifd, TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, atmb.FullName + ".ObjectIdForDebugger");
+			Assert.That (snfwc, TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, atmb.FullName + ".SetNotificationForWaitCompletion");
+			Assert.That (oifd, TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, atmb.FullName + ".ObjectIdForDebugger");
 #endif
 		}
 
@@ -527,8 +531,8 @@ namespace LinkAll {
 		[Test]
 		public void LinkedAwayGenericTypeAsOptionalMemberInProtocol ()
 		{
-			if (TestRuntime.IsILLinkSkipped)
-				Assert.Ignore ("Removing protocol metadata requires ILLink, which does not run with NativeAOT.");
+			if (TestRuntime.IsNativeAOT)
+				Assert.Ignore ("NativeAOT does not yet remove protocol metadata: https://github.com/dotnet/macios/issues/16678");
 
 			if (!global::XamarinTests.ObjCRuntime.Registrar.IsTrimmableStaticRegistrar)
 				Assert.Ignore ("This test only applies to the trimmable static registrar.");
@@ -576,7 +580,18 @@ namespace LinkAll {
 			var bundleName = isExtension ? "link all.appex" : "link all.app";
 			const string corelib = "System.Private.CoreLib.dll";
 			var suffix = Path.Combine (bundleName, bundleLocation, corelib);
+#if __MACOS__ || __MACCATALYST__
+#if __MACOS__
+			var platform = "osx";
+#else
+			var platform = "maccatalyst";
+#endif
+			var architecture = TestRuntime.IsARM64 ? "arm64" : "x64";
+			var universalSuffix = Path.Combine (bundleName, bundleLocation, ".xamarin", $"{platform}-{architecture}", corelib);
+			Assert.That (corlib, Does.EndWith (suffix).Or.EndWith (universalSuffix), corlib);
+#else
 			Assert.That (corlib, Does.EndWith (suffix), corlib);
+#endif
 #endif
 		}
 

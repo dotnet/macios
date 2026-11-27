@@ -78,12 +78,12 @@ namespace LinkAll.Interfaces {
 			Assert.That (type_a.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), Is.Not.Null, "A::Bar");
 
 			// I::Foo is never used and can be removed
-			Assert.That (type_i.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "I::Foo");
+			Assert.That (type_i.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "I::Foo");
 			// I::Bar is used in F so everyone implementing I needs Bar 
 			Assert.That (type_i.GetMethod ("Bar", BindingFlags.Instance | BindingFlags.Public), Is.Not.Null, "I::Bar");
 
 			// Foo and Bar are never used on B - so they can be removed
-			Assert.That (type_b.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), TestRuntime.IsILLinkSkipped ? Is.Not.Null : Is.Null, "B::Foo");
+			Assert.That (type_b.GetMethod ("Foo", BindingFlags.Instance | BindingFlags.Public), TestRuntime.IsNativeAOT ? Is.Not.Null : Is.Null, "B::Foo");
 		}
 
 		[Test]

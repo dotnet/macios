@@ -1,4 +1,5 @@
 #if __MACOS__
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -51,6 +52,9 @@ namespace LinkAllTests {
 		}
 
 		[Test]
+#if NATIVEAOT
+		[DynamicDependency (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.PublicProperties, typeof (SerializeMe))]
+#endif
 		public void XmlSerialization ()
 		{
 			const string xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" +
@@ -64,9 +68,6 @@ namespace LinkAllTests {
 			}
 		}
 
-#if NATIVEAOT
-		[Preserve (AllMembers = true)]
-#endif
 		public class SerializeMe {
 
 			[XmlAttribute]

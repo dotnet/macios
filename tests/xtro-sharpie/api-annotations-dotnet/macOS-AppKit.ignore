@@ -928,9 +928,21 @@
 # helpers
 !extra-enum-value! Managed value 0 for NSApplicationActivationOptions.Default not found in native headers
 
-# helpers / alternative names
+# Legacy values are preserved until XAMCORE_5_0; NSTickMarkPositionExtensions converts them to native aliases.
 !extra-enum-value! Managed value 2 for NSTickMarkPosition.Leading not found in native headers
 !extra-enum-value! Managed value 3 for NSTickMarkPosition.Trailing not found in native headers
+!wrong-enum-value! NSTickMarkPosition.Leading managed value 2 does not match native value NSTickMarkPositionLeading = 1
+!wrong-enum-value! NSTickMarkPosition.Trailing managed value 3 does not match native value NSTickMarkPositionTrailing = 0
+
+# Legacy values are preserved until XAMCORE_5_0; NSImageInterpolationExtensions converts them in both directions.
+!wrong-enum-value! NSImageInterpolation.High managed value 4 does not match native value NSImageInterpolationHigh = 3
+!wrong-enum-value! NSImageInterpolation.Medium managed value 3 does not match native value NSImageInterpolationMedium = 4
+
+# Managed values match x64 until XAMCORE_5_0; NSImageResizingModeExtensions and NSTextAlignmentExtensions handle arm64.
+!wrong-enum-value! NSImageResizingMode.Stretch managed value 0 does not match native value NSImageResizingModeStretch = 1
+!wrong-enum-value! NSImageResizingMode.Tile managed value 1 does not match native value NSImageResizingModeTile = 0
+!wrong-enum-value! NSTextAlignment.Center managed value 2 does not match native value NSTextAlignmentCenter = 1
+!wrong-enum-value! NSTextAlignment.Right managed value 1 does not match native value NSTextAlignmentRight = 2
 
 ## NSUserInterfaceItemIdentifier -> NS_TYPED_EXTENSIBLE_ENUM
 !missing-field! NSOutlineViewDisclosureButtonKey not bound

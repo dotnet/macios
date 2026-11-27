@@ -153,7 +153,11 @@ namespace AppKit {
 
 	/// <summary>Specifies the level of interpolation quality used when an image is scaled or transformed.</summary>
 	[NoMacCatalyst]
+#if XAMCORE_5_0
 	[Native]
+#else
+	[Native (ConvertToNative = "NSImageInterpolationExtensions.ToNative", ConvertToManaged = "NSImageInterpolationExtensions.ToManaged")]
+#endif
 	public enum NSImageInterpolation : ulong {
 		/// <summary>Uses the interpolation quality most appropriate for the current context.</summary>
 		Default,
@@ -162,9 +166,17 @@ namespace AppKit {
 		/// <summary>Uses a fast, low-quality interpolation algorithm.</summary>
 		Low,
 		/// <summary>Uses an interpolation algorithm that balances speed and quality.</summary>
+#if XAMCORE_5_0
+		Medium = 4,
+#else
 		Medium,
+#endif
 		/// <summary>Uses the slowest, highest-quality interpolation algorithm available.</summary>
+#if XAMCORE_5_0
+		High = 3,
+#else
 		High,
+#endif
 	}
 
 	/// <summary>Specifies a Porter-Duff compositing operator, or a Core Image-style blend mode, used to combine a source image with a destination image.</summary>
@@ -615,12 +627,24 @@ namespace AppKit {
 
 	/// <summary>Specifies how an image is resized to fill its destination.</summary>
 	[NoMacCatalyst]
+#if XAMCORE_5_0
+	[Native]
+#else
 	[Native (ConvertToNative = "NSImageResizingModeExtensions.ToNative", ConvertToManaged = "NSImageResizingModeExtensions.ToManaged")]
+#endif
 	public enum NSImageResizingMode : long {
 		/// <summary>Stretches the image to fill the destination.</summary>
+#if XAMCORE_5_0
+		Stretch = 1,
+#else
 		Stretch,
+#endif
 		/// <summary>Tiles the image to fill the destination.</summary>
+#if XAMCORE_5_0
+		Tile = 0,
+#else
 		Tile,
+#endif
 	}
 
 	#endregion
@@ -2143,14 +2167,26 @@ namespace AppKit {
 
 	/// <summary>Specifies the horizontal alignment of text within its container.</summary>
 	[NoMacCatalyst]
+#if XAMCORE_5_0
+	[Native]
+#else
 	[Native (ConvertToNative = "NSTextAlignmentExtensions.ToNative", ConvertToManaged = "NSTextAlignmentExtensions.ToManaged")]
+#endif
 	public enum NSTextAlignment : ulong {
 		/// <summary>Aligns text to the left edge of its container.</summary>
 		Left = 0,
 		/// <summary>Aligns text to the right edge of its container.</summary>
+#if XAMCORE_5_0
+		Right = 2,
+#else
 		Right = 1,
+#endif
 		/// <summary>Centers text within its container.</summary>
+#if XAMCORE_5_0
+		Center = 1,
+#else
 		Center = 2,
+#endif
 		/// <summary>Justifies text so that both edges align with the container, except for the last line.</summary>
 		Justified = 3,
 		/// <summary>Aligns text according to the natural writing direction of its script (left for left-to-right languages, right for right-to-left languages).</summary>
@@ -2978,16 +3014,28 @@ namespace AppKit {
 
 	/// <summary>Specifies the position of tick marks relative to a slider.</summary>
 	[NoMacCatalyst]
+#if XAMCORE_5_0
 	[Native]
+#else
+	[Native (ConvertToNative = "NSTickMarkPositionExtensions.ToNative", ConvertToManaged = "NSTickMarkPositionExtensions.ToManaged")]
+#endif
 	public enum NSTickMarkPosition : ulong {
 		/// <summary>Places tick marks below a horizontal slider.</summary>
 		Below,
 		/// <summary>Places tick marks above a horizontal slider.</summary>
 		Above,
 		/// <summary>Places tick marks to the left of a vertical slider.</summary>
+#if XAMCORE_5_0
+		Left = Above,
+#else
 		Left,
+#endif
 		/// <summary>Places tick marks to the right of a vertical slider.</summary>
+#if XAMCORE_5_0
+		Right = Below,
+#else
 		Right,
+#endif
 		/// <summary>Places tick marks at the leading edge of a vertical slider, honoring the current layout direction. Equivalent to <see cref="F:AppKit.NSTickMarkPosition.Left" />.</summary>
 		Leading = Left,
 		/// <summary>Places tick marks at the trailing edge of a vertical slider, honoring the current layout direction. Equivalent to <see cref="F:AppKit.NSTickMarkPosition.Right" />.</summary>

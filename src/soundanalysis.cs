@@ -13,14 +13,20 @@ using CoreMedia;
 
 namespace SoundAnalysis {
 
+	/// <summary>Enumerates the errors that Sound Analysis can report.</summary>
 	[ErrorDomain ("SNErrorDomain")]
 	[MacCatalyst (13, 1)]
 	[Native]
 	enum SNErrorCode : long {
+		/// <summary>An unknown error occurred.</summary>
 		UnknownError = 1,
+		/// <summary>The operation failed.</summary>
 		OperationFailed,
+		/// <summary>The audio format is invalid.</summary>
 		InvalidFormat,
+		/// <summary>The model is invalid.</summary>
 		InvalidModel,
+		/// <summary>The file is invalid.</summary>
 		InvalidFile,
 	}
 

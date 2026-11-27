@@ -5860,11 +5860,6 @@ F:ShazamKit.SHMediaItemProperty.Title
 F:ShazamKit.SHMediaItemProperty.VideoUrl
 F:ShazamKit.SHMediaItemProperty.WebUrl
 F:SoundAnalysis.SNClassifierIdentifier.Version1
-F:SoundAnalysis.SNErrorCode.InvalidFile
-F:SoundAnalysis.SNErrorCode.InvalidFormat
-F:SoundAnalysis.SNErrorCode.InvalidModel
-F:SoundAnalysis.SNErrorCode.OperationFailed
-F:SoundAnalysis.SNErrorCode.UnknownError
 F:SoundAnalysis.SNTimeDurationConstraintType.Enumerated
 F:SoundAnalysis.SNTimeDurationConstraintType.Range
 F:Speech.SFSpeechErrorCode.AudioReadFailed
@@ -58447,7 +58442,6 @@ T:SoundAnalysis.SNClassification
 T:SoundAnalysis.SNClassificationResult
 T:SoundAnalysis.SNClassifierIdentifier
 T:SoundAnalysis.SNClassifySoundRequest
-T:SoundAnalysis.SNErrorCode
 T:SoundAnalysis.SNTimeDurationConstraint
 T:SoundAnalysis.SNTimeDurationConstraintType
 T:Speech.SFAcousticFeature

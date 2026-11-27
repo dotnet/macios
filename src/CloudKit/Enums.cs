@@ -16,6 +16,7 @@ namespace CloudKit {
 		Restricted = 2,
 		/// <summary>The user has no iCloud account.</summary>
 		NoAccount = 3,
+		/// <summary>An iCloud account is signed in, but it isn't ready. Ask the user to verify their credentials in Settings.</summary>
 		[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
 		TemporarilyUnavailable = 4,
 	}
@@ -121,9 +122,11 @@ namespace CloudKit {
 		ParticipantMayNeedVerification = 33,
 		/// <summary>Indicates that the response was lost.</summary>
 		ResponseLost = 34,
-		/// <summary>To be added.</summary>
+		/// <summary>The asset file couldn't be opened. The app may not have permission, or data protection may be hiding the file. Retry after the file can be opened.</summary>
 		AssetNotAvailable = 35,
+		/// <summary>The iCloud account isn't ready, and the user may need to check it in Settings. After the account changes, check the account status and retry.</summary>
 		TemporarilyUnavailable = 36,
+		/// <summary>The user is already invited to this share and must accept that invitation before continuing.</summary>
 		ParticipantAlreadyInvited = 37,
 	}
 
@@ -179,9 +182,10 @@ namespace CloudKit {
 		FetchChanges = 1 << 0,
 		/// <summary>The zone supports atomic operations on sets of records.</summary>
 		Atomic = 1 << 1,
-		/// <summary>To be added.</summary>
+		/// <summary>The zone supports sharing records.</summary>
 		[MacCatalyst (13, 1)]
 		Sharing = 1 << 2,
+		/// <summary>The zone supports one share that includes every record in the zone.</summary>
 		[iOS (15, 0), TV (15, 0)]
 		[MacCatalyst (15, 0)]
 		ZoneWideSharing = 1 << 3,
@@ -435,10 +439,13 @@ namespace CloudKit {
 		DeleteZone,
 	}
 
+	/// <summary>Enumerates the scopes of the encryption keys used for the encrypted values in a record zone.</summary>
 	[TV (26, 0), Mac (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
 	[Native]
 	public enum CKRecordZoneEncryptionScope : long {
+		/// <summary>The zone uses per-record encryption keys.</summary>
 		Record,
+		/// <summary>The zone uses per-zone encryption keys, which also cover its zone-wide share, if present.</summary>
 		Zone,
 	}
 }

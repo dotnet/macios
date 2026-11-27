@@ -1386,12 +1386,12 @@
 	<Target Name="_VerifyValidProperties" DependsOnTargets="_ParseBundlerArguments">
 		<MacDevMessage
 			Error="true"
-			ResourceName="E7202"
+			ResourceName="E7203"
 			Condition="'$(EnableAssemblyILStripping)' == 'true'"
 			/>
 		<MacDevMessage
 			Error="true"
-			ResourceName="E7203"
+			ResourceName="E7204"
 			Condition="'$(_BundlerAssemblyILStrippingRequested)' == 'true'"
 			/>
 		<MacDevMessage
@@ -2138,7 +2138,8 @@
 			</_DynamicLibraryToReidentify>
 			<!-- Set ComputedRelativePath from Filename and Extension if not set (i.e. RelativePath didn't exist on the item) -->
 			<_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)" Condition="'%(SourceItemGroup)' == '_FileNativeReference' And '%(_DynamicLibraryToReidentify.ComputedRelativePath)' == ''">
-				<ComputedRelativePath>Contents/$(_CustomBundleName)/%(Filename)%(Extension)</ComputedRelativePath>
+				<ComputedRelativePath Condition="'$(SdkIsMobile)' == 'true'">%(Filename)%(Extension)</ComputedRelativePath>
+				<ComputedRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents/$(_CustomBundleName)/%(Filename)%(Extension)</ComputedRelativePath>
 			</_DynamicLibraryToReidentify>
 			<!-- Compute DynamicLibraryId and ReidentifiedPath -->
 			<_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)" Condition="'%(SourceItemGroup)' == '_FileNativeReference'">

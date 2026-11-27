@@ -1208,5 +1208,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1129", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The member &apos;{0}.{1}&apos; has a ReadOnlySpan&lt;char&gt; parameter and cannot be exported to Objective-C. Use [Bind] instead of [Export] for managed-only span overloads..
+        /// </summary>
+        internal static string BI1130 {
+            get {
+                return ResourceManager.GetString("BI1130", resourceCulture);
+            }
+        }
     }
 }

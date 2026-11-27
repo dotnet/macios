@@ -240,9 +240,20 @@ namespace CoreFoundation {
 			return CFStringCreateWithCharacters (IntPtr.Zero, valuePtr, value.Length);
 		}
 
+		/// <summary>Creates a native string by copying the characters in a span.</summary>
+		/// <param name="value">The characters to copy. An empty span creates an empty native string.</param>
+		/// <returns>A native string handle that must be released with <see cref="ReleaseNative" />.</returns>
+		public static NativeHandle CreateNative (ReadOnlySpan<char> value)
+		{
+			unsafe {
+				fixed (char* ptr = value)
+					return CFStringCreateWithCharacters (IntPtr.Zero, (IntPtr) ptr, value.Length);
+			}
+		}
+
 		/// <param name="handle">Handle to the Objective-C native <see cref="CFString" /> object.</param>
 		/// <summary>Releases a native Objective-C string.</summary>
-		/// <remarks>Use this method to release <see cref="CFString" /> handles that were previously allocated with <see cref="CreateNative(System.String)" />.</remarks>
+		/// <remarks>Use this method to release <see cref="CFString" /> handles that were previously allocated with <see cref="CreateNative(System.String)" /> or <see cref="CreateNative(ReadOnlySpan{char})" />.</remarks>
 		public static void ReleaseNative (NativeHandle handle)
 		{
 			if (handle != NativeHandle.Zero)

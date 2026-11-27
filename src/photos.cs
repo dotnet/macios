@@ -1884,21 +1884,14 @@ namespace Photos {
 		nfloat RenderScale { get; }
 	}
 
-	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface PHLivePhotoEditingOptionKeys {
-		[Field ("PHLivePhotoShouldRenderAtPlaybackTime")]
-		NSString ShouldRenderAtPlaybackTimeKey { get; }
-	}
-
 	/// <summary>Contains a playback option for use when processing or editing a Live Photo.</summary>
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("PHLivePhotoEditingOptionKeys")]
+	[StrongDictionary]
 	interface PHLivePhotoEditingOption {
 		/// <summary>Gets a Boolean value that tells whether rendering should happen at playback time.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("PHLivePhotoShouldRenderAtPlaybackTime")]
 		bool ShouldRenderAtPlaybackTime { get; }
 	}
 

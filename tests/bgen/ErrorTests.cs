@@ -1083,6 +1083,36 @@ namespace BI1066Errors
 			bgen.AssertErrorCount (errorMessages.Length);
 		}
 
+		[TestCase ("", 1130, "must specify a [Field] attribute or a key container in [StrongDictionary].")]
+		[TestCase ("[Export (\"ValueKey\")]", 1130, "must specify a [Field] attribute or a key container in [StrongDictionary].")]
+		[TestCase ("[Field (null, \"__Internal\")]", 1131, "must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants.")]
+		[TestCase ("[Field (\"\", \"__Internal\")]", 1131, "must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants.")]
+		[TestCase ("[Field (\"NativeKey\", \"__Internal\", SymbolAddress = true)]", 1131, "must specify a non-empty symbol name and must not set SymbolAddress, because dictionary keys are NSString constants.")]
+		[TestCase ("[Field (\"NativeKey\", \"__Internal\")][Export (\"ValueKey\")]", 1132, "cannot specify both [Field] and [Export]. Use [Field] for an inline key or [Export] for a key container member.")]
+		[TestCase ("[Field (\"NativeKey\")]", 1042, "Missing '[Field (LibraryName=value)]' for InlineErrors.Options.Value (e.g.\"__Internal\")")]
+		[TestCase ("[Field (\"NativeKey\", \"\")]", 1042, "Missing '[Field (LibraryName=value)]' for InlineErrors.Options.Value (e.g.\"__Internal\")")]
+		public void StrongDictionaryInlineFieldErrors (string attributes, int code, string message)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (Profile.iOS.AsPlatform ());
+			var bgen = new BGenTool {
+				Profile = Profile.iOS,
+				Defines = BGenTool.GetDefaultDefines (Profile.iOS),
+			};
+			bgen.CreateTemporaryBinding ($@"
+using Foundation;
+namespace InlineErrors {{
+	[StrongDictionary]
+	interface Options {{
+		{attributes}
+		int Value {{ get; set; }}
+	}}
+}}");
+			bgen.AssertExecuteError ("build");
+			var prefix = code == 1131 ? "The [Field] attribute on the strong dictionary property 'InlineErrors.Options.Value' " : "The strong dictionary property 'InlineErrors.Options.Value' ";
+			bgen.AssertError (code, code == 1042 ? message : prefix + message);
+			bgen.AssertErrorCount (1);
+		}
+
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void BI1126 (Profile profile)

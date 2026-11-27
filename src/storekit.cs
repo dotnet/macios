@@ -1025,62 +1025,42 @@ namespace StoreKit {
 	[NoMac]
 	[NoTV]
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("SKCloudServiceSetupOptionsKeys")]
+	[StrongDictionary]
 	interface SKCloudServiceSetupOptions {
 		// Headers comment: Action for setup entry point (of type SKCloudServiceSetupAction).
 		// FIXME: Once https://bugzilla.xamarin.com/show_bug.cgi?id=57870 is fixed we should have a wrapper on a new property
 		// `SKCloudServiceSetupAction Action { get; set; }` and avoid manual code.
 		[Internal]
-		[Export ("ActionKey")]
+		[Field ("SKCloudServiceSetupOptionsActionKey")]
 		NSString _Action { get; set; }
 
 		// Headers comment: Identifier of the iTunes Store item the user is trying to access which requires cloud service setup (NSNumber).
 		/// <summary>Gets or sets the identifier for the item for which access is being requested.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("SKCloudServiceSetupOptionsITunesItemIdentifierKey")]
 		nint ITunesItemIdentifier { get; set; }
 
 		/// <summary>Gets or sets the affiliate token.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[Field ("SKCloudServiceSetupOptionsAffiliateTokenKey")]
 		string AffiliateToken { get; set; }
 
 		/// <summary>Gets or sets the campaign token.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
+		[Field ("SKCloudServiceSetupOptionsCampaignTokenKey")]
 		string CampaignToken { get; set; }
 
 		/// <summary>Gets or sets the setup message identifier.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
-		string MessageIdentifier { get; set; }
-	}
-
-	[NoMac]
-	[NoTV]
-	[MacCatalyst (13, 1)]
-	[Internal, Static]
-	interface SKCloudServiceSetupOptionsKeys {
-		[Field ("SKCloudServiceSetupOptionsActionKey")]
-		NSString ActionKey { get; }
-
-		[Field ("SKCloudServiceSetupOptionsITunesItemIdentifierKey")]
-		NSString ITunesItemIdentifierKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("SKCloudServiceSetupOptionsAffiliateTokenKey")]
-		NSString AffiliateTokenKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("SKCloudServiceSetupOptionsCampaignTokenKey")]
-		NSString CampaignTokenKey { get; }
-
-		[MacCatalyst (13, 1)]
 		[Field ("SKCloudServiceSetupOptionsMessageIdentifierKey")]
-		NSString MessageIdentifierKey { get; }
+		string MessageIdentifier { get; set; }
 	}
 
 	/// <summary>Enumerates Cloud Service setup actions.</summary>

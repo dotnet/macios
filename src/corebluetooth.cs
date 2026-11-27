@@ -81,21 +81,12 @@ namespace CoreBluetooth {
 
 	[NoMac]
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("CBConnectionEventMatchingOptionsKeys")]
+	[StrongDictionary]
 	interface CBConnectionEventMatchingOptions {
-		NSUuid [] PeripheralUuids { get; set; }
-		CBUUID [] ServiceUuids { get; set; }
-	}
-
-	[NoMac]
-	[MacCatalyst (13, 1)]
-	[Static]
-	[Internal]
-	interface CBConnectionEventMatchingOptionsKeys {
 		[Field ("CBConnectionEventMatchingOptionPeripheralUUIDs")]
-		NSString PeripheralUuidsKey { get; }
+		NSUuid [] PeripheralUuids { get; set; }
 		[Field ("CBConnectionEventMatchingOptionServiceUUIDs")]
-		NSString ServiceUuidsKey { get; }
+		CBUUID [] ServiceUuids { get; set; }
 	}
 
 	[StrongDictionary ("CBConnectPeripheralOptionsKeys")]
@@ -347,71 +338,48 @@ namespace CoreBluetooth {
 	}
 
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("AdvertisementDataKeys")]
+	[StrongDictionary]
 	interface AdvertisementData {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataLocalNameKey")]
 		string LocalName { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataManufacturerDataKey")]
 		NSData ManufacturerData { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataServiceDataKey")]
 		NSDictionary<CBUUID, NSData> ServiceData { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataServiceUUIDsKey")]
 		CBUUID [] ServiceUuids { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataOverflowServiceUUIDsKey")]
 		CBUUID [] OverflowServiceUuids { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataTxPowerLevelKey")]
 		NSNumber TxPowerLevel { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBAdvertisementDataIsConnectable")]
 		bool IsConnectable { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		CBUUID [] SolicitedServiceUuids { get; set; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[Static, Internal]
-	interface AdvertisementDataKeys {
-		[Field ("CBAdvertisementDataLocalNameKey")]
-		NSString LocalNameKey { get; }
-
-		[Field ("CBAdvertisementDataManufacturerDataKey")]
-		NSString ManufacturerDataKey { get; }
-
-		[Field ("CBAdvertisementDataServiceDataKey")]
-		NSString ServiceDataKey { get; }
-
-		[Field ("CBAdvertisementDataServiceUUIDsKey")]
-		NSString ServiceUuidsKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("CBAdvertisementDataOverflowServiceUUIDsKey")]
-		NSString OverflowServiceUuidsKey { get; }
-
-		[Field ("CBAdvertisementDataTxPowerLevelKey")]
-		NSString TxPowerLevelKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("CBAdvertisementDataIsConnectable")]
-		NSString IsConnectableKey { get; }
-
-		[MacCatalyst (13, 1)]
 		[Field ("CBAdvertisementDataSolicitedServiceUUIDsKey")]
-		NSString SolicitedServiceUuidsKey { get; }
+		CBUUID [] SolicitedServiceUuids { get; set; }
 	}
 
 	/// <summary>Possible values for the options parameter in calls to <see cref="CoreBluetooth.CBCentralManager.ScanForPeripherals(CoreBluetooth.CBUUID[],Foundation.NSDictionary)" />.</summary>
@@ -420,36 +388,23 @@ namespace CoreBluetooth {
 	interface PeripheralScanningOptions { }
 
 	[MacCatalyst (13, 1)]
-	[StrongDictionary ("RestoredStateKeys")]
+	[StrongDictionary]
 	interface RestoredState {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBCentralManagerRestoredStatePeripheralsKey")]
 		CBPeripheral [] Peripherals { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Field ("CBCentralManagerRestoredStateScanServicesKey")]
 		CBPeripheral [] ScanServices { get; set; }
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		PeripheralScanningOptions ScanOptions { get; set; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[Static, Internal]
-	interface RestoredStateKeys {
-		[MacCatalyst (13, 1)]
-		[Field ("CBCentralManagerRestoredStatePeripheralsKey")]
-		NSString PeripheralsKey { get; }
-
-		[MacCatalyst (13, 1)]
-		[Field ("CBCentralManagerRestoredStateScanServicesKey")]
-		NSString ScanServicesKey { get; }
-
-		[MacCatalyst (13, 1)]
 		[Field ("CBCentralManagerRestoredStateScanOptionsKey")]
-		NSString ScanOptionsKey { get; }
+		PeripheralScanningOptions ScanOptions { get; set; }
 	}
 
 	interface ICBCentralManagerDelegate { }

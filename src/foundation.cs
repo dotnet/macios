@@ -10844,41 +10844,22 @@ namespace Foundation {
 		void Cancel (Action<NSData> resumeCallback);
 	}
 
-	[Internal]
-	[Static]
 	[MacCatalyst (13, 1)]
-	interface ProxyConfigurationDictionaryKeys {
-		[Field ("kCFNetworkProxiesHTTPEnable")]
-		NSString HttpEnableKey { get; }
-
-		[Field ("kCFStreamPropertyHTTPProxyHost")]
-		NSString HttpProxyHostKey { get; }
-
-		[Field ("kCFStreamPropertyHTTPProxyPort")]
-		NSString HttpProxyPortKey { get; }
-
-		[NoiOS, NoTV]
-		[NoMacCatalyst]
-		[Field ("kCFNetworkProxiesHTTPSEnable")]
-		NSString HttpsEnableKey { get; }
-
-		[Field ("kCFStreamPropertyHTTPSProxyHost")]
-		NSString HttpsProxyHostKey { get; }
-
-		[Field ("kCFStreamPropertyHTTPSProxyPort")]
-		NSString HttpsProxyPortKey { get; }
-	}
-
-	[MacCatalyst (13, 1)]
-	[StrongDictionary ("ProxyConfigurationDictionaryKeys")]
+	[StrongDictionary]
 	interface ProxyConfigurationDictionary {
+		[Field ("kCFNetworkProxiesHTTPEnable")]
 		bool HttpEnable { get; set; }
+		[Field ("kCFStreamPropertyHTTPProxyHost")]
 		string HttpProxyHost { get; set; }
+		[Field ("kCFStreamPropertyHTTPProxyPort")]
 		int HttpProxyPort { get; set; }
 		[NoiOS, NoTV]
 		[NoMacCatalyst]
+		[Field ("kCFNetworkProxiesHTTPSEnable")]
 		bool HttpsEnable { get; set; }
+		[Field ("kCFStreamPropertyHTTPSProxyHost")]
 		string HttpsProxyHost { get; set; }
+		[Field ("kCFStreamPropertyHTTPSProxyPort")]
 		int HttpsProxyPort { get; set; }
 	}
 

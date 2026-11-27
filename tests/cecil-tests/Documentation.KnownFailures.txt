@@ -353,10 +353,6 @@ F:AppKit.NSWritingToolsResultOptions.PlainText
 F:AppKit.NSWritingToolsResultOptions.PresentationIntent
 F:AppKit.NSWritingToolsResultOptions.RichText
 F:AppKit.NSWritingToolsResultOptions.Table
-F:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus.Authorized
-F:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus.Denied
-F:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus.NotDetermined
-F:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus.Restricted
 F:ARKit.ARAltitudeSource.Coarse
 F:ARKit.ARAltitudeSource.Precise
 F:ARKit.ARAltitudeSource.Unknown
@@ -53991,7 +53987,6 @@ T:AppKit.NSWritingToolsCoordinatorTextReplacementReason
 T:AppKit.NSWritingToolsCoordinatorTextUpdateReason
 T:AppKit.NSWritingToolsResultOptions
 T:AppTrackingTransparency.ATTrackingManager
-T:AppTrackingTransparency.ATTrackingManagerAuthorizationStatus
 T:ARKit.ARAltitudeSource
 T:ARKit.ARAppClipCodeAnchor
 T:ARKit.ARAppClipCodeUrlDecodingState

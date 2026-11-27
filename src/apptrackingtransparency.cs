@@ -7,13 +7,18 @@
 
 namespace AppTrackingTransparency {
 
+	/// <summary>Enumerates the user's tracking authorization status for the app.</summary>
 	[iOS (14, 0), TV (14, 0)]
 	[Introduced (PlatformName.MacCatalyst, 14, 0)]
 	[Native]
 	public enum ATTrackingManagerAuthorizationStatus : ulong {
+		/// <summary>The app hasn't asked the user for tracking authorization yet.</summary>
 		NotDetermined = 0,
+		/// <summary>Tracking authorization is restricted on this device, and the user can't change it.</summary>
 		Restricted = 1,
+		/// <summary>The user denied tracking authorization.</summary>
 		Denied = 2,
+		/// <summary>The user authorized tracking.</summary>
 		Authorized = 3,
 	}
 

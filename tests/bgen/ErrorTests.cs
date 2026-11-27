@@ -841,8 +841,11 @@ namespace BI1064Errors
 		}
 
 		[Test]
-		[TestCase (Profile.iOS)]
-		public void BI1065 (Profile profile)
+		[TestCase (Profile.iOS, "ObjCRuntime.Selector")]
+		[TestCase (Profile.iOS, "Metal.MTLRegion")]
+		[TestCase (Profile.iOS, "System.Int32")]
+		[TestCase (Profile.iOS, "Metal.MTLPurgeableState")]
+		public void BI1065 (Profile profile, string elementType)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool {
@@ -861,17 +864,20 @@ namespace BI1065Errors
 	{
 		// Can't put SEL into NSArray (SEL isn't an NSObject), so a Selector[] parameter/return value doesn't make sense
 		[Export (""testSelectorArray:"")]
-		void TestSelectorArray (Selector[] values);
+		void TestSelectorArray (ELEMENT_TYPE[] values);
 	}
-}");
+}".Replace ("ELEMENT_TYPE", elementType));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1065, "Unsupported parameter type 'ObjCRuntime.Selector[]' for the parameter 'values' in BI1065Errors.C.TestSelectorArray.");
+			bgen.AssertError (1065, $"Unsupported parameter type '{elementType}[]' for the parameter 'values' in BI1065Errors.C.TestSelectorArray.");
 			bgen.AssertErrorCount (1);
 		}
 
 		[Test]
-		[TestCase (Profile.iOS)]
-		public void BI1066 (Profile profile)
+		[TestCase (Profile.iOS, "ObjCRuntime.Selector")]
+		[TestCase (Profile.iOS, "Metal.MTLRegion")]
+		[TestCase (Profile.iOS, "System.Int32")]
+		[TestCase (Profile.iOS, "Metal.MTLPurgeableState")]
+		public void BI1066 (Profile profile, string elementType)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool {
@@ -890,11 +896,11 @@ namespace BI1066Errors
 	{
 		// Can't put SEL into NSArray (SEL isn't an NSObject), so a Selector[] parameter/return value doesn't make sense
 		[Export (""testSelectorArrayReturnValue"")]
-		Selector[] TestSelectorArrayReturnValue ();
+		ELEMENT_TYPE[] TestSelectorArrayReturnValue ();
 	}
-}");
+}".Replace ("ELEMENT_TYPE", elementType));
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1066, "Unsupported return type 'ObjCRuntime.Selector[]' in BI1066Errors.C.TestSelectorArrayReturnValue.");
+			bgen.AssertError (1066, $"Unsupported return type '{elementType}[]' in BI1066Errors.C.TestSelectorArrayReturnValue.");
 			bgen.AssertErrorCount (2); // We show the same error twice.
 		}
 

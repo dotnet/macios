@@ -20,6 +20,8 @@ namespace Xamarin.Tests {
 		public Profile Profile;
 		public bool InProcess = true; // if executed using an in-process bgen. Ignored if using the classic bgen (for XM/Classic), in which case we'll always use the out-of-process bgen.
 		public bool ProcessEnums;
+		public bool Core;
+		public bool CompileGeneratedCode = true;
 
 		public List<string> ApiDefinitions = new List<string> ();
 		public List<string> Sources = new List<string> ();
@@ -134,6 +136,8 @@ namespace Xamarin.Tests {
 
 			if (ProcessEnums)
 				sb.Add ("--process-enums");
+			if (Core)
+				sb.Add ("--core");
 
 			if (WarnAsError is not null) {
 				var arg = "--warnaserror";
@@ -212,7 +216,7 @@ namespace Xamarin.Tests {
 			}
 
 			var rv = ExecuteBgen (arguments);
-			if (rv != 0)
+			if (rv != 0 || !CompileGeneratedCode)
 				return rv;
 
 			var compileResult = Compile (AssemblyPath, File.ReadAllLines (GetGeneratedSourcesFileList ()).Concat (Sources).Concat (ExtraSources), false);

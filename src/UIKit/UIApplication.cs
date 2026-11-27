@@ -32,8 +32,18 @@ namespace UIKit {
 		///   <para>The initial value is controlled by the <c>CheckForIllegalCrossThreadCalls</c> build property, which defaults to <see langword="true" /> in debug builds and <see langword="false" /> in release builds.</para>
 		/// </remarks>
 		public static bool CheckForIllegalCrossThreadCalls;
-		/// <summary>If <see langword="true" />, the system will try to diagnose potential mistakes where events and delegate-object overrides are in conflict.</summary>
-		public static bool CheckForEventAndDelegateMismatches = true;
+		/// <summary>Controls whether conflicts between events and custom Objective-C delegate objects throw an exception.</summary>
+		/// <remarks>
+		///   <para>
+		///     Application initialization enables these checks in debug builds and disables them in release builds by default.
+		///     Set the <c>CheckForEventAndDelegateMismatches</c> MSBuild property to override this default.
+		///   </para>
+		///   <para>
+		///     Set this field to <see langword="false" /> to disable the checks at runtime.
+		///     Setting it to <see langword="true" /> cannot restore checks removed by the trimmer when the MSBuild property is <c>false</c>.
+		///   </para>
+		/// </remarks>
+		public static bool CheckForEventAndDelegateMismatches;
 
 		// We link with __Internal here so that this function is interposable from third-party native libraries.
 		// See: https://github.com/xamarin/MicrosoftInTune/issues/3 for an example.
@@ -62,6 +72,9 @@ namespace UIKit {
 			// itself, unless something else references it) is trimmed away.
 			if (Runtime.CheckForIllegalCrossThreadCalls)
 				CheckForIllegalCrossThreadCalls = true;
+
+			if (Runtime.CheckForEventAndDelegateMismatches)
+				CheckForEventAndDelegateMismatches = true;
 
 			SynchronizationContext.SetSynchronizationContext (new UIKitSynchronizationContext ());
 		}

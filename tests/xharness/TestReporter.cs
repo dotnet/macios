@@ -42,7 +42,9 @@ namespace Xharness {
 		readonly string? deviceName;
 		readonly TimeSpan timeout;
 		readonly Stopwatch timeoutWatch;
-		readonly DateTime started = DateTime.UtcNow;
+		readonly object launchIdentityLock = new ();
+		int launchedPid = -1;
+		DateTime? launchedStartTime;
 		readonly string? additionalLogsDirectory;
 		readonly CancellationTokenSource cancellationTokenSource = new ();
 		readonly ExceptionLogger? exceptionLogger;
@@ -102,6 +104,22 @@ namespace Xharness {
 				waitedForExit &= line?.Contains ("MT1111: ") != true;
 				if (line?.Contains ("error MT1007") == true)
 					launchFailure = true;
+				if (line is not null && ProcessDiagnostics.TryParsePid (line, appInfo.BundleIdentifier, out var pid)) {
+					try {
+						using var process = Process.GetProcessById (pid);
+						var startTime = process.StartTime.ToUniversalTime ();
+						lock (launchIdentityLock) {
+							launchedPid = pid;
+							launchedStartTime = startTime;
+						}
+					} catch (ArgumentException ex) {
+						mainLog.WriteLine ($"Could not record launched test app PID {pid}: {ex.Message}");
+					} catch (InvalidOperationException ex) {
+						mainLog.WriteLine ($"Could not record launched test app PID {pid}: {ex.Message}");
+					} catch (System.ComponentModel.Win32Exception ex) {
+						mainLog.WriteLine ($"Could not record launched test app PID {pid}: {ex.Message}");
+					}
+				}
 			});
 		}
 
@@ -179,7 +197,14 @@ namespace Xharness {
 			var launchTimedout = cancellationSource.IsCancellationRequested;
 			var timeoutType = launchTimedout ? "Launch" : "Completion";
 			mainLog.WriteLine ($"{timeoutType} timed out after {timeoutWatch.Elapsed.TotalSeconds} seconds");
-			await ProcessDiagnostics.CollectAndTerminateAsync (processManager, logs, mainLog, pid, appInfo.BundleExecutable, started);
+			DateTime? startTime;
+			lock (launchIdentityLock)
+				startTime = launchedPid == pid ? launchedStartTime : null;
+			if (startTime is null) {
+				mainLog.WriteLine ($"Skipping diagnostics and termination for PID {pid}: no process identity was recorded at launch.");
+				return;
+			}
+			await ProcessDiagnostics.CollectAndTerminateAsync (processManager, logs, mainLog, pid, appInfo.BundleExecutable, startTime.Value);
 		}
 
 		async Task CollectResult (ProcessExecutionResult runResult)

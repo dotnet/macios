@@ -5,6 +5,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.Common.Logging;
@@ -62,8 +63,8 @@ namespace Xharness {
 				using var process = Process.GetProcessById (pid);
 				var path = process.MainModule?.FileName;
 				var startTime = process.StartTime.ToUniversalTime ();
-				if (path is null || Path.GetFileName (path) != executable || startTime < started) {
-					log.WriteLine ($"Skipping diagnostics for PID {pid}: it does not match the test app '{executable}' launched after {started:O}.");
+				if (path is null || Path.GetFileName (path) != executable || startTime != started) {
+					log.WriteLine ($"Skipping diagnostics for PID {pid}: it does not match the test app '{executable}' launched at {started:O}.");
 					return;
 				}
 
@@ -83,7 +84,7 @@ namespace Xharness {
 						using var stackLog = logs.Create ($"managed-stacks-{pid}.txt", "Managed stacks of hung test app");
 						await RunToolAsync (processManager, stackLog, stackTool, "report", "--process-id", pid.ToString ());
 					} else {
-						diagnosticLog.WriteLine ("dotnet-stack is not on PATH. Managed stacks require a CoreCLR diagnostics-enabled app and dotnet-stack; NativeAOT does not support this protocol.");
+						diagnosticLog.WriteLine ("dotnet-stack is not on PATH, so managed stacks were not collected. CoreCLR apps need that tool and diagnostics enabled. NativeAOT cannot use it.");
 					}
 				} catch (IOException ex) {
 					log.WriteLine ($"Could not write hang diagnostics for PID {pid}: {ex.Message}");
@@ -111,6 +112,8 @@ namespace Xharness {
 					}
 					log.WriteLine ($"Test app PID {pid} did not exit after SIGABRT; sending SIGKILL.");
 					current.Kill ();
+				} else {
+					await WaitForCrashReportAsync (pid, executable, startTime, log);
 				}
 			} catch (ArgumentException ex) {
 				log.WriteLine ($"Test app PID {pid} is no longer available for diagnostics or termination: {ex.Message}");
@@ -119,6 +122,51 @@ namespace Xharness {
 			} catch (Win32Exception ex) {
 				log.WriteLine ($"Cannot collect hang diagnostics for PID {pid}: {ex.Message}");
 			}
+		}
+
+		static async Task WaitForCrashReportAsync (int pid, string executable, DateTime started, ILog log)
+		{
+			var directory = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Logs", "DiagnosticReports");
+			if (!Directory.Exists (directory)) {
+				log.WriteLine ($"Crash report directory does not exist: {directory}");
+				return;
+			}
+
+			var watch = Stopwatch.StartNew ();
+			while (watch.Elapsed < TimeSpan.FromSeconds (30)) {
+				try {
+					foreach (var path in Directory.EnumerateFiles (directory)) {
+						if (!Path.GetFileName (path).StartsWith (executable + "-", StringComparison.Ordinal) || File.GetLastWriteTimeUtc (path) < started)
+							continue;
+						if (path.EndsWith (".ips", StringComparison.Ordinal)) {
+							using var reader = File.OpenText (path);
+							var header = reader.ReadLine ();
+							var body = reader.ReadToEnd ();
+							using var document = JsonDocument.Parse (body.Length > 0 ? body : header ?? "");
+							if (!document.RootElement.TryGetProperty ("pid", out var reportPid) || reportPid.ValueKind != JsonValueKind.Number || !reportPid.TryGetInt32 (out var value) || value != pid)
+								continue;
+						} else if (path.EndsWith (".crash", StringComparison.Ordinal)) {
+							using var reader = File.OpenText (path);
+							var processLine = reader.ReadLine ();
+							if (processLine is null || !processLine.StartsWith ("Process:", StringComparison.Ordinal) || !processLine.TrimEnd ().EndsWith ($"[{pid}]", StringComparison.Ordinal))
+								continue;
+						} else {
+							continue;
+						}
+						log.WriteLine ($"Test app crash report is ready for collection: {path}");
+						return;
+					}
+				} catch (IOException ex) {
+					log.WriteLine ($"Could not read pending test app crash report: {ex.Message}");
+				} catch (UnauthorizedAccessException ex) {
+					log.WriteLine ($"Could not read pending test app crash report: {ex.Message}");
+					return;
+				} catch (JsonException ex) {
+					log.WriteLine ($"Test app crash report is not yet readable: {ex.Message}");
+				}
+				await Task.Delay (TimeSpan.FromSeconds (1));
+			}
+			log.WriteLine ($"No crash report for test app PID {pid} was found within 30 seconds.");
 		}
 
 		static bool IsSameProcess (int pid, string path, DateTime startTime)

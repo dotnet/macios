@@ -29,10 +29,11 @@ namespace Xharness {
 				Assert.That (actual, Is.EqualTo (pid));
 		}
 
-		[TestCase (true, false)]
-		[TestCase (true, true)]
-		[TestCase (false, false)]
-		public async Task CollectHungProcess (bool matches, bool suspended)
+		[TestCase (true, false, true)]
+		[TestCase (true, true, true)]
+		[TestCase (false, false, true)]
+		[TestCase (true, false, false)]
+		public async Task CollectHungProcess (bool matches, bool suspended, bool matchesIdentity)
 		{
 			if (!OperatingSystem.IsMacOS ())
 				Assert.Ignore ("Native hang diagnostics use macOS sample.");
@@ -44,16 +45,16 @@ namespace Xharness {
 			using var process = new Process ();
 			process.StartInfo.FileName = "/bin/sleep";
 			process.StartInfo.ArgumentList.Add ("120");
-			var started = DateTime.UtcNow;
 			process.Start ();
+			var started = process.StartTime.ToUniversalTime ();
 
 			try {
 				if (suspended) {
 					var stopped = await new MacOSProcessManager ().ExecuteCommandAsync ("/bin/kill", new [] { "-STOP", process.Id.ToString () }, log, TimeSpan.FromSeconds (5));
 					Assert.That (stopped.Succeeded, Is.True, "Controlled hung process must be suspended");
 				}
-				await ProcessDiagnostics.CollectAndTerminateAsync (new MacOSProcessManager (), logs, log, process.Id, matches ? "sleep" : "another-test-app", started);
-				if (matches) {
+				await ProcessDiagnostics.CollectAndTerminateAsync (new MacOSProcessManager (), logs, log, process.Id, matches ? "sleep" : "another-test-app", matchesIdentity ? started : started.AddSeconds (-1));
+				if (matches && matchesIdentity) {
 					Assert.That (await process.WaitForExitAsync ().TimeoutAfter (TimeSpan.FromSeconds (10)), Is.True, "Hung process must terminate");
 					var samples = Directory.GetFiles (directory, "native-stacks-*.txt");
 					Assert.That (samples, Has.Length.EqualTo (1));

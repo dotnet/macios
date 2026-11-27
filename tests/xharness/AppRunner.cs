@@ -361,9 +361,10 @@ namespace Xharness {
 				MainLog.WriteLine ("Starting test run");
 
 				using var launchProcess = new Process ();
-				using var runCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
-				using var timeoutCancellation = new CancellationTokenSource ();
-				var execution = processManager.RunAsync (launchProcess, args, MainLog, testReporterTimeout + TimeSpan.FromMinutes (2), cancellationToken: runCancellation.Token, diagnostics: false);
+				using var runCancellation = new CancellationTokenSource ();
+				using var timeoutCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
+				var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
+				var execution = processManager.RunAsync (launchProcess, args, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
 				var timedOut = await Task.WhenAny (execution, Task.Delay (testReporterTimeout, timeoutCancellation.Token)) != execution;
 				timeoutCancellation.Cancel ();
 				if (timedOut) {

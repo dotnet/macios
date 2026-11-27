@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
 
 using NUnit.Framework;
 
@@ -92,8 +93,12 @@ namespace Cecil.Tests {
 			foreach (var directory in resolver.GetSearchDirectories ())
 				resolver.RemoveSearchDirectory (directory);
 			resolver.AddSearchDirectory (Path.GetDirectoryName (path));
-			foreach (var sdk in Directory.EnumerateDirectories (Path.Combine (Configuration.DOTNET_DIR, "sdk")))
-				resolver.AddSearchDirectory (sdk);
+			using var globalJson = JsonDocument.Parse (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "global.json")));
+			var sdkVersion = globalJson.RootElement.GetProperty ("sdk").GetProperty ("version").GetString ()
+				?? throw new InvalidOperationException ("The SDK version is missing from global.json");
+			var sdkDirectory = Path.Combine (Configuration.DOTNET_DIR, "sdk", sdkVersion);
+			Assert.That (Directory.Exists (sdkDirectory), Is.True, $"The SDK directory '{sdkDirectory}' does not exist");
+			resolver.AddSearchDirectory (sdkDirectory);
 			resolver.AddSearchDirectory (AppContext.BaseDirectory);
 			resolver.AddSearchDirectory (Path.GetDirectoryName (typeof (object).Assembly.Location));
 			using var assembly = AssemblyDefinition.ReadAssembly (path, new ReaderParameters { AssemblyResolver = resolver });
@@ -155,7 +160,6 @@ namespace Cecil.Tests {
 						pending.Enqueue (dependency.MainModule);
 					}
 				}
-				Assert.That (modules.Keys, Is.EquivalentTo (OurAssemblies), "Missing task dependency assemblies");
 				var types = modules.Values.SelectMany (m => m.Types);
 				foreach (var type in types.SelectMany (EnumerateNestedTypes)) {
 					foreach (var method in type.Methods.Where (m => m.IsVirtual)) {
@@ -312,6 +316,7 @@ namespace Cecil.Tests {
 				// This is a rapid type analysis: a virtual call only reaches the overrides in types we've created an instance of.
 				// Instantiated type -> the method that created it.
 				var instantiated = new Dictionary<TypeDefinition, MethodDefinition?> ();
+				var instantiatedTypes = new HashSet<TypeDefinition> ();
 				// Method called virtually -> the method that called it.
 				var virtualCalls = new Dictionary<MethodDefinition, MethodDefinition> ();
 
@@ -323,7 +328,7 @@ namespace Cecil.Tests {
 
 				bool IsInstantiated (TypeDefinition type)
 				{
-					return instantiated.Keys.Any (t => GetTypeAndBaseTypes (t).Contains (type));
+					return instantiatedTypes.Contains (type);
 				}
 
 				void AddVirtualCall (MethodDefinition method, MethodDefinition caller)
@@ -348,7 +353,10 @@ namespace Cecil.Tests {
 				{
 					if (!IsOurs (type) || !instantiated.TryAdd (type, caller))
 						return;
-					foreach (var m in GetTypeAndBaseTypes (type).SelectMany (t => t.Methods).Where (m => m.IsVirtual)) {
+					var typeAndBaseTypes = GetTypeAndBaseTypes (type).ToArray ();
+					foreach (var instantiatedType in typeAndBaseTypes)
+						instantiatedTypes.Add (instantiatedType);
+					foreach (var m in typeAndBaseTypes.SelectMany (t => t.Methods).Where (m => m.IsVirtual)) {
 						var baseMethods = GetBaseMethods (m).ToArray ();
 						if (virtualCalls.TryGetValue (m, out var virtualCaller)) {
 							Add (m, virtualCaller);

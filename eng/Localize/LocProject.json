@@ -1,0 +1,511 @@
+{
+  "Projects": [
+    {
+      "LanguageSet": "VS_Main_Languages",
+      "LocItems": [
+        {
+          "SourceFile": "msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "msbuild/Xamarin.Localization.MSBuild/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/msbuild/Xamarin.Localization.MSBuild/MSBStrings.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "tools/mtouch/Errors.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "tools/mtouch/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/tools/mtouch/Errors.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "src/Resources.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/src/Resources.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "src/rgen/Microsoft.Macios.Generator/Resources.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src/rgen/Microsoft.Macios.Generator/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/src/rgen/Microsoft.Macios.Generator/Resources.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "src/rgen/Microsoft.Macios.Bindings.Analyzer/Resources.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "src/rgen/Microsoft.Macios.Bindings.Analyzer/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/src/rgen/Microsoft.Macios.Bindings.Analyzer/Resources.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "tools/sharpie/Sharpie.Bind/Resources.resx",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "tools/sharpie/Sharpie.Bind/TranslatedAssemblies",
+          "LclFile": "Localize/loc/{Lang}/tools/sharpie/Sharpie.Bind/Resources.resx.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-controller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-controller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-controller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-storyboard/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-storyboard/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-storyboard/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-view/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-view/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-view/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-viewcontroller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-viewcontroller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst-viewcontroller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalyst/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystbinding/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystbinding/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystbinding/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalystlib/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalysttest/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalysttest/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.MacCatalyst.Templates/maccatalysttest/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-controller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-controller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-controller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-notification-content-extension/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-notification-content-extension/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-notification-content-extension/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-notification-service-extension/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-notification-service-extension/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-notification-service-extension/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-storyboard/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-storyboard/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-storyboard/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-tabbed/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-tabbed/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-tabbed/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-view/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-view/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-view/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios-viewcontroller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios-viewcontroller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios-viewcontroller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios/fsharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios/fsharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios/fsharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ios/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ios/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ios/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/iosbinding/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/iosbinding/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/iosbinding/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ioslib/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ioslib/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ioslib/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/ioslib/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/ioslib/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/ioslib/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.iOS.Templates/iostest/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.iOS.Templates/iostest/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.iOS.Templates/iostest/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos-controller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos-controller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos-controller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos-storyboard/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos-storyboard/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos-storyboard/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos-view/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos-view/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos-view/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos-viewcontroller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos-viewcontroller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos-viewcontroller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macos/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macos/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macos/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macosbinding/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macosbinding/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macosbinding/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macoslib/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macoslib/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macoslib/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macoslib/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macoslib/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macoslib/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.macOS.Templates/macostest/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.macOS.Templates/macostest/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.macOS.Templates/macostest/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-controller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-controller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos-controller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-storyboard/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-storyboard/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos-storyboard/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-view/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-view/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos-view/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-viewcontroller/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos-viewcontroller/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos-viewcontroller/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvos/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvos/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvos/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvosbinding/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvosbinding/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvosbinding/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/visualbasic/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/visualbasic/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvoslib/visualbasic/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        },
+        {
+          "SourceFile": "dotnet/Templates/Microsoft.tvOS.Templates/tvostest/csharp/.template.config/localize/templatestrings.en.json",
+          "Languages": "",
+          "CopyOption": "LangIDOnName",
+          "OutputPath": "dotnet/Templates/Microsoft.tvOS.Templates/tvostest/csharp/.template.config/localize",
+          "LclFile": "Localize/loc/{Lang}/dotnet/Templates/Microsoft.tvOS.Templates/tvostest/csharp/.template.config/localize/templatestrings.json.lcl",
+          "LciFile": "",
+          "Parser": "",
+          "LssFiles": []
+        }
+      ],
+      "LssFiles": [],
+      "CloneLanguageSet": ""
+    }
+  ]
+}

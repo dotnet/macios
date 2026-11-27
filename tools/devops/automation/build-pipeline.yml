@@ -131,31 +131,19 @@ extends:
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
           useACES: true  # see templates/variables/common.yml
 
-      - template: localization/v1.yml@yaml-templates
-        parameters:
-          condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
-          preSteps:
-            - template: ../sdk-unified/steps/checkout/v1.yml@yaml-templates
-              parameters:
-                resource: self
-                commit: HEAD
-                clean: true
-                submodules: recursive
-                path: s/$(BUILD_REPOSITORY_TITLE)
-                fetchTags: false
-              
-            - bash: |
-                make LocProject.json              
-              workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops
-              displayName: 'Generate LocProject.json'
-                
-          settings:
-            locProjectPath: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/Localize/LocProject.json'
-            outputPath: '$(Build.ArtifactStagingDirectory)'
-            createPr: true
-            autoCompletePr: false
-            deletePrSourceBranch: false
-            prSourceBranchPrefix: 'locfiles'
-            repoType: gitHub
-            gitHubPatVariable: '$(GitHub.Token)'
-            postLocPowerShellScript: '$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/localizationBomRemoval.ps1'
+      - stage: localize
+        displayName: Localization
+        dependsOn: []
+        condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
+        jobs:
+          - template: /eng/common/templates-official/job/onelocbuild.yml
+            parameters:
+              pool:
+                name: AzurePipelines-EO
+                image: 1ESPT-Windows2022
+                os: windows
+              CeapexServiceConnection: 'VSEng-AzureDevOps-ceapex-OneLocBuild'
+              SkipLocProjectJsonGeneration: true
+              ReusePr: false
+              UseLfLineEndings: false
+              xLocCustomPowerShellScript: '$(System.DefaultWorkingDirectory)/tools/devops/automation/scripts/localizationBomRemoval.ps1'

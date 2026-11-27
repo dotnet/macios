@@ -1,0 +1,21 @@
+# yamllint disable rule:line-length rule:document-start rule:truthy
+name: Check localization project
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  localization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check LocProject.json
+        run: |
+          tools/devops/generate-loc-project.sh > "$RUNNER_TEMP/LocProject.json"
+          if ! diff -u eng/Localize/LocProject.json "$RUNNER_TEMP/LocProject.json"; then
+            echo "::error::Run tools/devops/generate-loc-project.sh > eng/Localize/LocProject.json"
+            exit 1
+          fi

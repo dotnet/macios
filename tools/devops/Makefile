@@ -2,7 +2,7 @@ TOP=../..
 include $(TOP)/Make.config
 
 LocProject.json: generate-loc-project.sh Makefile $(TOP)/Make.config
-	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh "$(CURDIR)" "$(TOP)" > $(TOP)/Localize/$@;
+	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh > $(TOP)/eng/Localize/$@;
 
 all check: check-sh check-yaml
 	@true

@@ -560,7 +560,12 @@ namespace Xharness {
 			using var detectorCancellation = new CancellationTokenSource ();
 			var attemptStart = DateTimeOffset.Now;
 			var detector = new SpringBoardCrashDetector (SpringBoardCrashDetector.DefaultDirectory, udid, attemptStart, MainLog);
-			var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
+			var launchedPid = 0;
+			var pidLog = new CallbackLog (line => {
+				if (ProcessDiagnostics.TryParsePid (line, AppInformation.BundleIdentifier, out var pid))
+					Interlocked.Exchange (ref launchedPid, pid);
+			});
+			var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog, pidLog);
 			var execution = processManager.RunAsync (launchProcess, attempt.Arguments, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
 			var timeoutTask = Task.Delay (testReporterTimeout, timeoutCancellation.Token);
 			var crashTask = detector.WaitForCrashAsync (detectorCancellation.Token);
@@ -603,18 +608,21 @@ namespace Xharness {
 						}
 						// Make sure the app isn't still running when it's launched again.
 						try {
-							await TerminateSimulatorAppAsync ();
+							await TerminateSimulatorAppAsync (Volatile.Read (ref launchedPid) > 0);
 						} catch (Exception e) {
 							MainLog.WriteLine ($"Failed to terminate the simulator test app: {e}");
 							attempt.StopFailure ??= $"Could not stop the simulator test app after a SpringBoard crash: {e.Message}";
 						}
 						StopListener (attempt.Listener);
 						attempt.ListenerStopped = true;
+						var hasResults = SimulatorAttemptController.HasTestResults (MainLog, out var failure, attempt.ProgressLogs);
 						if (attempt.StopFailure is not null) {
+							if (failure is not null)
+								attempt.StopFailure += $"; a test failure was also reported: {failure}";
 							attempt.LaunchCallbackCancellation.Cancel ();
 							return false;
 						}
-						if (SimulatorAttemptController.HasTestResults (MainLog, out var failure, attempt.ProgressLogs)) {
+						if (hasResults) {
 							attempt.FailureWhileStopping = failure;
 							MainLog.WriteLine ("Test results arrived while stopping the app; reporting this attempt instead of relaunching.");
 							await testReporter.CollectSimulatorResult (stoppedResult);
@@ -645,7 +653,7 @@ namespace Xharness {
 			return false;
 		}
 
-		async Task TerminateSimulatorAppAsync ()
+		async Task TerminateSimulatorAppAsync (bool launchReported)
 		{
 			using var output = new MemoryLog () { Timestamp = false };
 			var log = Log.CreateAggregatedLog (MainLog, output);
@@ -653,9 +661,9 @@ namespace Xharness {
 			var text = output.ToString ();
 			// simctl reports ESRCH when the app has already exited.
 			var alreadyStopped = result.ExitCode == 3 && (text.Contains ("found nothing to terminate", StringComparison.Ordinal) || text.Contains ("the app is not currently running", StringComparison.Ordinal));
-			if (!result.TimedOut && (result.Succeeded || alreadyStopped))
+			if (!result.TimedOut && (result.Succeeded || (alreadyStopped && launchReported)))
 				return;
-			throw new InvalidOperationException ($"simctl terminate failed (exit code {result.ExitCode}, timed out: {result.TimedOut}): {text}");
+			throw new InvalidOperationException ($"simctl terminate failed or the app launch was not confirmed (exit code {result.ExitCode}, timed out: {result.TimedOut}): {text}");
 		}
 
 		async Task DiscardSimulatorAttemptAsync (int attemptNumber, LaunchAttempt attempt)

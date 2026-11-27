@@ -99,6 +99,8 @@ normal timeouts as described above.
 
 If stopping the launch process or terminating the app fails, xharness does
 not relaunch it. It keeps the diagnostics and reports a harness failure.
+If the app is already gone, xharness only relaunches it when the launch
+process reported its PID; otherwise the launch may still be in progress.
 
 If the same crash happens in the second attempt, the test is stopped as soon
 as the crash is detected (instead of waiting for the timeout) and reported as

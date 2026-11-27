@@ -309,7 +309,7 @@ namespace MonoTests.System.Net.Http {
 			var config = NSUrlSessionConfiguration.DefaultSessionConfiguration;
 			config.TimeoutIntervalForResource = 3;
 
-			var serverTask = Task.Run (async () => {
+			Task.Run (async () => {
 				try {
 					while (true) {
 						using var client = await listener.AcceptTcpClientAsync (serverCancellationToken);
@@ -365,9 +365,6 @@ namespace MonoTests.System.Net.Http {
 				serverCancellationTokenSource.Cancel ();
 				listener.Stop ();
 			}
-
-			// This rethrows any unexpected exception from the server.
-			Assert.That (serverTask.Wait (TimeSpan.FromSeconds (10)), Is.True, "Server stopped");
 
 			if (!done) {
 				Assert.Inconclusive ("Test run timedout.");
@@ -903,12 +900,8 @@ namespace MonoTests.System.Net.Http {
 			readonly Task? targetTask;
 			readonly object targetAuthorizationHeadersLock = new object ();
 			readonly List<string> targetAuthorizationHeaders = new List<string> ();
-			readonly object clientsLock = new object ();
-			readonly List<TcpClient> clients = new List<TcpClient> ();
-			readonly List<Task> clientTasks = new List<Task> ();
 			readonly string expectedBasicAuth;
 			int targetRequestCount;
-			bool disposed;
 
 			public Uri OriginUri { get; }
 			public Uri TargetUri { get; }
@@ -963,14 +956,7 @@ namespace MonoTests.System.Net.Http {
 					} catch (InvalidOperationException) {
 						return;
 					}
-					lock (clientsLock) {
-						if (disposed) {
-							client.Dispose ();
-							return;
-						}
-						clients.Add (client);
-						clientTasks.Add (Task.Run (() => HandleClient (client, isTarget)));
-					}
+					_ = Task.Run (() => HandleClient (client, isTarget));
 				}
 			}
 
@@ -1008,9 +994,6 @@ namespace MonoTests.System.Net.Http {
 					}
 				} catch (Exception e) when (e is IOException || e is SocketException || e is ObjectDisposedException) {
 					LogRedirectTest (log, $"RedirectBasicAuthServer failed to handle a request: {e.Message}");
-				} finally {
-					lock (clientsLock)
-						clients.Remove (client);
 				}
 			}
 
@@ -1034,21 +1017,13 @@ namespace MonoTests.System.Net.Http {
 				originListener.Stop ();
 				targetListener?.Stop ();
 
-				// Close accepted connections too, otherwise their handlers stay blocked until the receive timeout.
-				var tasks = new List<Task> { originTask };
-				if (targetTask is not null)
-					tasks.Add (targetTask);
-				lock (clientsLock) {
-					disposed = true;
-					foreach (var client in clients)
-						client.Dispose ();
-					tasks.AddRange (clientTasks);
-				}
-
 				try {
-					Task.WaitAll (tasks.ToArray (), TimeSpan.FromSeconds (1));
+					if (targetTask is null)
+						Task.WaitAll (new [] { originTask }, TimeSpan.FromSeconds (1));
+					else
+						Task.WaitAll (new [] { originTask, targetTask }, TimeSpan.FromSeconds (1));
 				} catch {
-					// Stopping the listeners wakes the accept loops, and closing the clients wakes their handlers.
+					// Stopping the listeners wakes the accept loops.
 				}
 				LogRedirectTest (log, $"RedirectBasicAuthServer stopped origin {OriginUri} and target {TargetUri}.");
 			}

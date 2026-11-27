@@ -2558,10 +2558,6 @@ F:EventKit.EKErrorCode.NotificationSavedWithoutCollection
 F:EventKit.EKErrorCode.NotificationsCollectionFlagNotSet
 F:EventKit.EKErrorCode.ReminderAlarmContainsEmailOrUrl
 F:EventKit.EKErrorCode.SourceMismatch
-F:ExecutionPolicy.EPDeveloperToolStatus.Authorized
-F:ExecutionPolicy.EPDeveloperToolStatus.Denied
-F:ExecutionPolicy.EPDeveloperToolStatus.NotDetermined
-F:ExecutionPolicy.EPDeveloperToolStatus.Restricted
 F:ExecutionPolicy.EPError.Generic
 F:ExecutionPolicy.EPError.NotADeveloperTool
 F:FileProvider.NSFileProviderContentPolicy.DownloadEagerlyAndKeepDownloaded
@@ -55634,7 +55630,6 @@ T:EventKit.VirtualConferenceHandler
 T:EventKit.VirtualConferenceRoomTypeHandler
 T:EventKitUI.EKEventEditController
 T:ExecutionPolicy.EPDeveloperTool
-T:ExecutionPolicy.EPDeveloperToolStatus
 T:ExecutionPolicy.EPError
 T:ExecutionPolicy.EPExecutionPolicy
 T:ExtensionKit.EXAppExtensionBrowserViewController

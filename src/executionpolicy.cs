@@ -4,12 +4,17 @@ using CoreFoundation;
 
 namespace ExecutionPolicy {
 
+	/// <summary>Enumerates whether a process has developer tool privileges.</summary>
 	[MacCatalyst (16, 0)]
 	[Native]
 	public enum EPDeveloperToolStatus : long {
+		/// <summary>The user hasn't decided whether the process gets developer tool privileges.</summary>
 		NotDetermined = 0,
+		/// <summary>The process can't get developer tool privileges, and the user can't change that.</summary>
 		Restricted,
+		/// <summary>The user denied developer tool privileges to the process.</summary>
 		Denied,
+		/// <summary>The process has developer tool privileges.</summary>
 		Authorized,
 	}
 

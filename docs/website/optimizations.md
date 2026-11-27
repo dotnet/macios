@@ -20,8 +20,8 @@ For trimmed arm64 assemblies using CoreCLR or NativeAOT, the build rewrites elig
 `objc_msgSend` and `objc_msgSendSuper` imports to call a shared trampoline linked into
 the app (`__Internal`). Each wrapper passes the calculated stack size, receiver,
 and direct/super dispatch flag in a descriptor. The trampoline copies the stack
-arguments instead of looking up the
-Objective-C method signature on every call. They retain the native exception-catching
+arguments instead of looking up the Objective-C method signature on every call.
+Rewritten sends retain the native exception-catching
 boundary and normal GC transitions.
 
 Each rewritten import has a managed wrapper that calls `Runtime.ThrowPendingException`
@@ -40,14 +40,13 @@ wrapper supplies the exception check without relying on the compiler to recogniz
 libobjc import. Do not enable direct P/Invoke for standard libobjc message-send functions;
 those still need the runtime's message-send callbacks and pending-exception checks.
 
-The exception-check helper is private in the platform assembly and becomes public
-only when the build inserts calls to it. Eligible imports are rewritten regardless
-of their declaring type, generator version, or binding-generation attributes.
+Eligible imports do not require a particular declaring type, generator version,
+or `BindingImpl` attribute. Other method-level attributes prevent rewriting.
 
 This optimization leaves Mono, other architectures, untrimmed assemblies, explicit
 native-exception wrappers, and signatures with unknown native layouts unchanged.
-It supports direct and super sends, arm64 struct returns, and stack frames beyond
-80 bytes. This includes variadic helpers with fixed P/Invoke signatures, such as
+It supports direct and super sends, arm64 struct returns, and calculated stack
+frames of any supported size. This includes variadic helpers with fixed P/Invoke signatures, such as
 the existing helpers that shuffle variadic arguments into native stack slots.
 True managed varargs, custom marshaling, packed or explicit struct layouts, and
 non-blittable signatures keep their existing paths.

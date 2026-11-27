@@ -19,6 +19,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
+		// This method-level attribute deliberately keeps the import on the runtime-owned path.
 		[Preserve]
 		static extern void SendWithRuntimePendingException (IntPtr receiver, IntPtr selector);
 
@@ -39,6 +40,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			if (RuntimeInformation.ProcessArchitecture != Architecture.Arm64)
 				Assert.Ignore ("Fixed-frame message sends require arm64.");
+#if !NATIVEAOT
+			if (!TestRuntime.IsCoreCLR || !TestRuntime.IsLinkAll)
+				Assert.Ignore ("Mixed pending-exception owners require CoreCLR with the test assembly trimmed, or NativeAOT.");
+#endif
 
 			using var receiver = new ManagedExceptionTest ();
 			var nested = false;

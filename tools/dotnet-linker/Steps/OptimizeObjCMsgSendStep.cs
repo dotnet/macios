@@ -17,7 +17,7 @@ namespace Xamarin.Linker.Steps;
 
 public class OptimizeObjCMsgSendStep : AssemblyModifierStep {
 	protected override string Name => "Optimize Objective-C Message Sends";
-	protected override int ErrorCode => 2570;
+	protected override int ErrorCode => 2580;
 
 	public const string Library = "/usr/lib/libobjc.dylib";
 

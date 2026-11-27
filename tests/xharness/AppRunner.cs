@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.DotNet.XHarness.Common;
 using Microsoft.DotNet.XHarness.Common.CLI;
 using Microsoft.DotNet.XHarness.Common.Execution;
 using Microsoft.DotNet.XHarness.Common.Logging;
@@ -255,68 +256,18 @@ namespace Xharness {
 				args.Add (new SetEnvVariableArgument ("NUNIT_HOSTNAME", ipArg));
 			}
 
-			var listener_log = Logs.Create ($"test-{runMode.ToString ().ToLowerInvariant ()}-{Harness.Helpers.Timestamp}.log", LogType.TestLog.ToString (), timestamp: !useXmlOutput);
-			var (transport, listener, listenerTmpFile) = listenerFactory.Create (runMode, MainLog, listener_log, isSimulator, true, useXmlOutput);
-
-			var listenerPort = listener.InitializeAndGetPort ();
-
-			args.Add (new SetAppArgumentArgument ($"-transport:{transport}", true));
-			args.Add (new SetEnvVariableArgument ("NUNIT_TRANSPORT", transport.ToString ().ToUpper ()));
-
-			if (transport == ListenerTransport.File)
-				args.Add (new SetEnvVariableArgument ("NUNIT_LOG_FILE", listenerTmpFile));
-
-			args.Add (new SetAppArgumentArgument ($"-hostport:{listenerPort}", true));
-			args.Add (new SetEnvVariableArgument ("NUNIT_HOSTPORT", listenerPort));
-
-			if (listenerFactory.UseTunnel)
-				args.Add (new SetEnvVariableArgument ("USE_TCP_TUNNEL", true));
-
-			listener.StartAsync ();
-
-			// object that will take care of capturing and parsing the results
-			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
-
 			if (isSimulator && !await FindSimulatorAsync ())
 				return 1;
 
 			var testReporterTimeout = TimeSpan.FromMinutes (harness.Timeout * timeoutMultiplier);
-			var testReporter = testReporterFactory.Create (MainLog,
-				MainLog,
-				Logs,
-				crashReporter,
-				listener,
-				new XmlResultParser (),
-				AppInformation,
-				runMode,
-				harness.XmlJargon,
-				isSimulator ? simulator!.UDID : deviceName,
-				testReporterTimeout,
-				buildTask?.Logs?.Directory);
-
-			listener.ConnectedTask
-				.TimeoutAfter (TimeSpan.FromMinutes (harness.LaunchTimeout))
-				.ContinueWith (testReporter.LaunchCallback)
-				.DoNotAwait ();
-
-			args.AddRange (harness.EnvironmentVariables.Select (kvp => new SetEnvVariableArgument (kvp.Key, kvp.Value)));
-
-			if (IsExtension) {
-				throw new NotImplementedException ("Extensions aren't supported in xharness at the moment (no .NET extension tests yet)");
-			} else {
-				args.Add (isSimulator
-					? (MlaunchArgument) new LaunchSimulatorAppArgument (AppInformation.LaunchAppPath)
-					: new LaunchDeviceArgument (AppInformation.LaunchAppPath));
-			}
-			if (!isSimulator)
-				args.Add (new DisableMemoryLimitsArgument ());
+			var attempt = CreateLaunchAttempt (args, 1, useXmlOutput, testReporterTimeout);
+			var transport = attempt.Transport;
+			var listener = attempt.Listener;
+			var crashReporter = attempt.CrashReporter;
+			var testReporter = attempt.TestReporter;
+			string? springBoardFailure = null;
 
 			if (isSimulator) {
-				var stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}.log", "Standard output");
-				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}.log", "Standard error");
-				args.Add (new SetStdoutArgument (stdout_log));
-				args.Add (new SetStderrArgument (stderr_log));
-
 				var simulators = new [] { simulator! };
 				var systemLogs = new List<ICaptureLog> ();
 				foreach (var sim in simulators) {
@@ -354,34 +305,27 @@ namespace Xharness {
 				}
 				MainLog.WriteLine ("Enabled verbose logging");
 
-				args.Add (new SimulatorUDIDArgument (simulator!.UDID));
-
-				await crashReporter.StartCaptureAsync ();
-
 				MainLog.WriteLine ("Starting test run");
 
-				using var launchProcess = new Process ();
-				using var runCancellation = new CancellationTokenSource ();
-				using var timeoutCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
-				var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
-				var execution = processManager.RunAsync (launchProcess, args, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
-				var timedOut = await Task.WhenAny (execution, Task.Delay (testReporterTimeout, timeoutCancellation.Token)) != execution;
-				timeoutCancellation.Cancel ();
-				if (timedOut) {
-					try {
-						await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
-					} finally {
-						// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.
-						runCancellation.Cancel ();
-					}
-					await execution;
-				} else {
-					await testReporter.CollectSimulatorResult (await execution);
-				}
+				// If SpringBoard crashes right after the launch, launch the app again (once) on the same simulator,
+				// with a new listener, crash reporter and test reporter.
+				var (finalAttempt, decision, attempts) = await SimulatorAttemptController.RunAsync (
+					async (attemptNumber) => {
+						var current = attemptNumber == 1 ? attempt : CreateLaunchAttempt (args, attemptNumber, useXmlOutput, testReporterTimeout);
+						return (current, await RunSimulatorAttemptAsync (current, testReporterTimeout));
+					},
+					DiscardSimulatorAttemptAsync,
+					MainLog);
+				attempt = finalAttempt;
+				listener = attempt.Listener;
+				crashReporter = attempt.CrashReporter;
+				testReporter = attempt.TestReporter;
+				if (decision == SimulatorAttemptDecision.RepeatedSpringBoardCrash)
+					springBoardFailure = $"SpringBoard crashed (wallpaper snapshot) in the simulator {simulator!.UDID} right after launching the test app, in {attempts} consecutive attempts.";
 
 				// cleanup after us
 				if (EnsureCleanSimulatorState)
-					await simulator.KillEverything (MainLog);
+					await simulator!.KillEverything (MainLog);
 
 				foreach (var log in systemLogs)
 					log.StopCapture ();
@@ -395,6 +339,7 @@ namespace Xharness {
 			} else {
 				MainLog.WriteLine ("*** Executing {0}/{1} on device '{2}' ***", AppInformation.AppName, runMode, deviceName);
 
+				args = attempt.Arguments;
 				args.Add (new WaitForExitArgument ());
 				args.Add (new DeviceNameArgument (deviceName));
 
@@ -436,15 +381,31 @@ namespace Xharness {
 				}
 			}
 
-			if (!listener.StopAsync ().Wait (TimeSpan.FromSeconds (5))) {
-				MainLog.WriteLine ("Failed to stop listener within 5 seconds. Will cancel it.");
-				listener.Cancel ();
-			}
-			listener.Dispose ();
+			StopListener (listener);
 
 			// close a tunnel if it was created
 			if (!isSimulator && listenerFactory.UseTunnel)
 				await listenerFactory.TunnelBore.Close (deviceName);
+
+			if (springBoardFailure is not null) {
+				await crashReporter.EndCaptureAsync (TimeSpan.FromSeconds (5));
+				Result = TestExecutingResult.Crashed;
+				FailureMessage = springBoardFailure;
+				MainLog.WriteLine (springBoardFailure);
+				WrenchLog.WriteLine ($"AddSummary: <b><i>{runMode}: {springBoardFailure}</i></b><br/>");
+				if (harness.XmlJargon != XmlResultJargon.Missing) {
+					new XmlResultParser ().GenerateFailure (
+						Logs,
+						"springboard-crash",
+						AppInformation.AppName,
+						AppInformation.Variation,
+						$"SpringBoard crash {AppInformation.AppName} {AppInformation.Variation} on {simulator!.UDID}",
+						springBoardFailure,
+						MainLog.FullPath,
+						harness.XmlJargon);
+				}
+				return 1;
+			}
 
 			// check the final status, copy all the required data
 			(Result, FailureMessage) = await testReporter.ParseResult ();
@@ -456,6 +417,185 @@ namespace Xharness {
 			}
 
 			return testReporter?.Success == true ? 0 : 1;
+		}
+
+		class LaunchAttempt {
+			public required MlaunchArguments Arguments { get; init; }
+			public required ListenerTransport Transport { get; init; }
+			public required ISimpleListener Listener { get; init; }
+			public required IFileBackedLog TestLog { get; init; }
+			public required ICrashSnapshotReporter CrashReporter { get; init; }
+			public required ITestReporter TestReporter { get; init; }
+			public required CancellationTokenSource LaunchCallbackCancellation { get; init; }
+			public required List<string> AttemptLogs { get; init; }
+		}
+
+		LaunchAttempt CreateLaunchAttempt (MlaunchArguments baseArgs, int attemptNumber, bool useXmlOutput, TimeSpan testReporterTimeout)
+		{
+			var suffix = attemptNumber == 1 ? "" : $"-attempt{attemptNumber}";
+			var args = new MlaunchArguments ();
+			args.AddRange (baseArgs);
+			var attemptLogs = new List<string> ();
+
+			var listener_log = Logs.Create ($"test-{runMode.ToString ().ToLowerInvariant ()}-{Harness.Helpers.Timestamp}{suffix}.log", LogType.TestLog.ToString (), timestamp: !useXmlOutput);
+			attemptLogs.Add (listener_log.FullPath);
+			var (transport, listener, listenerTmpFile) = listenerFactory.Create (runMode, MainLog, listener_log, isSimulator, true, useXmlOutput);
+
+			var listenerPort = listener.InitializeAndGetPort ();
+
+			args.Add (new SetAppArgumentArgument ($"-transport:{transport}", true));
+			args.Add (new SetEnvVariableArgument ("NUNIT_TRANSPORT", transport.ToString ().ToUpper ()));
+
+			if (transport == ListenerTransport.File)
+				args.Add (new SetEnvVariableArgument ("NUNIT_LOG_FILE", listenerTmpFile));
+
+			args.Add (new SetAppArgumentArgument ($"-hostport:{listenerPort}", true));
+			args.Add (new SetEnvVariableArgument ("NUNIT_HOSTPORT", listenerPort));
+
+			if (listenerFactory.UseTunnel)
+				args.Add (new SetEnvVariableArgument ("USE_TCP_TUNNEL", true));
+
+			listener.StartAsync ();
+
+			// object that will take care of capturing and parsing the results
+			ICrashSnapshotReporter crashReporter = snapshotReporterFactory.Create (MainLog, Logs, isDevice: !isSimulator, deviceName, AppInformation);
+
+			var testReporter = testReporterFactory.Create (MainLog,
+				MainLog,
+				Logs,
+				crashReporter,
+				listener,
+				new XmlResultParser (),
+				AppInformation,
+				runMode,
+				harness.XmlJargon,
+				isSimulator ? simulator!.UDID : deviceName,
+				testReporterTimeout,
+				buildTask?.Logs?.Directory);
+
+			// Cancelled if the attempt is discarded, so that a discarded attempt can't report a launch failure.
+			var launchCallbackCancellation = new CancellationTokenSource ();
+			listener.ConnectedTask
+				.TimeoutAfter (TimeSpan.FromMinutes (harness.LaunchTimeout))
+				.ContinueWith (testReporter.LaunchCallback, launchCallbackCancellation.Token)
+				.DoNotAwait ();
+
+			args.AddRange (harness.EnvironmentVariables.Select (kvp => new SetEnvVariableArgument (kvp.Key, kvp.Value)));
+
+			if (IsExtension) {
+				throw new NotImplementedException ("Extensions aren't supported in xharness at the moment (no .NET extension tests yet)");
+			} else {
+				args.Add (isSimulator
+					? (MlaunchArgument) new LaunchSimulatorAppArgument (AppInformation.LaunchAppPath)
+					: new LaunchDeviceArgument (AppInformation.LaunchAppPath));
+			}
+			if (!isSimulator)
+				args.Add (new DisableMemoryLimitsArgument ());
+
+			if (isSimulator) {
+				var stdout_log = Logs.CreateFile ($"stdout-{Harness.Helpers.Timestamp}{suffix}.log", "Standard output");
+				var stderr_log = Logs.CreateFile ($"stderr-{Harness.Helpers.Timestamp}{suffix}.log", "Standard error");
+				attemptLogs.Add (stdout_log);
+				attemptLogs.Add (stderr_log);
+				args.Add (new SetStdoutArgument (stdout_log));
+				args.Add (new SetStderrArgument (stderr_log));
+				args.Add (new SimulatorUDIDArgument (simulator!.UDID));
+			}
+
+			return new LaunchAttempt {
+				Arguments = args,
+				Transport = transport,
+				Listener = listener,
+				TestLog = listener_log,
+				CrashReporter = crashReporter,
+				TestReporter = testReporter,
+				LaunchCallbackCancellation = launchCallbackCancellation,
+				AttemptLogs = attemptLogs,
+			};
+		}
+
+		// Returns true if the attempt was ended early because SpringBoard crashed right after the launch.
+		async Task<bool> RunSimulatorAttemptAsync (LaunchAttempt attempt, TimeSpan testReporterTimeout)
+		{
+			var testReporter = attempt.TestReporter;
+			var udid = simulator!.UDID;
+
+			await attempt.CrashReporter.StartCaptureAsync ();
+
+			using var launchProcess = new Process ();
+			using var runCancellation = new CancellationTokenSource ();
+			using var timeoutCancellation = CancellationTokenSource.CreateLinkedTokenSource (testReporter.CancellationToken);
+			using var detectorCancellation = new CancellationTokenSource ();
+			var detector = new SpringBoardCrashDetector (SpringBoardCrashDetector.DefaultDirectory, udid, DateTimeOffset.Now, MainLog);
+			var launchLog = Log.CreateAggregatedLog (testReporter.CallbackLog, MainLog);
+			var execution = processManager.RunAsync (launchProcess, attempt.Arguments, launchLog, testReporterTimeout + TimeSpan.FromMinutes (3), cancellationToken: runCancellation.Token, diagnostics: false);
+			var timeoutTask = Task.Delay (testReporterTimeout, timeoutCancellation.Token);
+			var crashTask = detector.WaitForCrashAsync (detectorCancellation.Token);
+
+			var completed = await Task.WhenAny (execution, timeoutTask, crashTask);
+			if (completed == crashTask) {
+				if (crashTask.Result is string crashReport) {
+					var listenerCompleted = attempt.Listener.CompletionTask.IsCompleted;
+					var hasTestResults = SimulatorAttemptController.HasTestResults (attempt.TestLog.FullPath);
+					if (SimulatorAttemptController.ShouldAbort (listenerCompleted, hasTestResults)) {
+						MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}). Ending this attempt.");
+						try {
+							await ProcessDiagnostics.CollectSimulatorLifecycleAsync (processManager, Logs, MainLog, udid, AppInformation.BundleIdentifier, testReporterTimeout);
+						} finally {
+							timeoutCancellation.Cancel ();
+							runCancellation.Cancel ();
+						}
+						try {
+							await execution;
+						} catch (Exception e) {
+							MainLog.WriteLine ($"Failed to stop the test app: {e}");
+						}
+						// Make sure the app isn't still running when it's launched again.
+						await processManager.ExecuteXcodeCommandAsync ("simctl", new string [] { "terminate", udid, AppInformation.BundleIdentifier }, MainLog, TimeSpan.FromMinutes (1));
+						return true;
+					}
+					MainLog.WriteLine ($"SpringBoard crashed in the simulator {udid} right after launching the test app (crash report: {crashReport}), but the test run has already {(listenerCompleted ? "completed" : "reported results")}. Waiting for the test run to finish.");
+				}
+				await Task.WhenAny (execution, timeoutTask);
+			}
+			detectorCancellation.Cancel ();
+
+			var timedOut = !execution.IsCompleted;
+			timeoutCancellation.Cancel ();
+			if (timedOut) {
+				try {
+					await testReporter.CollectSimulatorResult (new ProcessExecutionResult { TimedOut = true });
+				} finally {
+					// Collect the app's stacks before cancelling mlaunch, which may also terminate the app.
+					runCancellation.Cancel ();
+				}
+				await execution;
+			} else {
+				await testReporter.CollectSimulatorResult (await execution);
+			}
+			return false;
+		}
+
+		async Task DiscardSimulatorAttemptAsync (int attemptNumber, LaunchAttempt attempt)
+		{
+			attempt.LaunchCallbackCancellation.Cancel ();
+			StopListener (attempt.Listener);
+			await attempt.CrashReporter.EndCaptureAsync (TimeSpan.FromSeconds (5));
+
+			// Keep the logs, but relabel them so that they're not parsed for test results.
+			foreach (var log in Logs.Where (v => attempt.AttemptLogs.Contains (v.FullPath)))
+				log.Description += $" (attempt {attemptNumber}, ended after a SpringBoard crash)";
+
+			WrenchLog.WriteLine ($"AddSummary: <b><i>{runMode}: SpringBoard crashed in the simulator {simulator!.UDID} right after launching the test app; launched the app again.</i></b><br/>");
+		}
+
+		void StopListener (ISimpleListener listener)
+		{
+			if (!listener.StopAsync ().Wait (TimeSpan.FromSeconds (5))) {
+				MainLog.WriteLine ("Failed to stop listener within 5 seconds. Will cancel it.");
+				listener.Cancel ();
+			}
+			listener.Dispose ();
 		}
 
 		static bool IsLaunchFailure (IFileBackedLog log)

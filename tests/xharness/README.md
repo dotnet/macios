@@ -43,3 +43,67 @@ This prevents an earlier, unrelated crash from ending the wait too soon.
 Native samples do not guarantee managed method names. On physical devices,
 xharness collects crash reports, but these tools cannot inspect the app process.
 
+# Relaunching after a SpringBoard crash
+
+Sometimes SpringBoard crashes in the simulator right after xharness launches
+the test app. The app then stops making progress, and the test run eventually
+times out. The crash is a `SIGABRT` from `NSAssertionHandler` in
+`-[RBSAssertion dealloc]`, called while PosterUIFoundation (or PaperBoardUI)
+takes a wallpaper snapshot.
+
+While a simulator test app runs, xharness checks
+`~/Library/Logs/DiagnosticReports` every five seconds for new SpringBoard
+crash reports. A report triggers a relaunch only if all of these are true:
+
+- Its `coalitionName` is `com.apple.CoreSimulator.SimDevice.<UDID>` for the
+  simulator running the test.
+- Its `captureTime` is no earlier than the start of the launch (with two
+  seconds of tolerance), and no later than 60 seconds after it. On CI,
+  this crash happened 17-24 seconds after mlaunch started. The header's
+  `timestamp` isn't used, because it can be much later than the crash.
+- The crashed thread has the frames listed above, in that order.
+- The test run hasn't finished or timed out, and none of the test log, the
+  app's standard output, or its standard error has a `[FAIL]`, `Tests run:`,
+  or XML result yet.
+
+The result check runs again after collecting diagnostics and after stopping
+the app. If results arrive while stopping the app, xharness reports that
+attempt instead of relaunching. A complete result in the test log is reported
+as-is. If the run did not finish and a failure was printed, xharness reports
+that failure and notes that the run was interrupted.
+
+xharness stops looking for crash reports two minutes after the launch (the
+60-second window, plus up to 60 seconds for the report to be written; on CI,
+reports were written up to 39 seconds after the crash). Diagnostic collection
+and stopping the app can take longer.
+
+In the wrapped XML mode used on CI, the app sends its results to the test
+log only at the end of the run. The app's console output goes to standard
+error (through `NSLog`) and shows each failed test as it finishes, so a
+failure that was already printed stops the relaunch. The tests that the first
+attempt ran before it was stopped run again in the second attempt, and only
+the second attempt's results are reported. So a test that fails every time
+is still reported, but an intermittent failure in the first attempt that
+hadn't been printed yet can be hidden.
+
+When a relaunch is triggered, xharness saves the SpringBoard and app
+lifecycle messages to `simulator-lifecycle-springboard.log`, stops the app,
+and launches it once more on the same (still booted) simulator, with a new
+listener and new logs. The first attempt's test log, standard output and
+standard error stay in the test's report, with "(attempt 1, ended after a
+SpringBoard crash)" added to their descriptions. Its crash reports are also
+kept. The relaunch is noted in the execution log and test summary. The second
+attempt's result is reported as usual. These early stops collect lifecycle
+messages and crash reports, not app stacks; stack collection still runs on
+normal timeouts as described above.
+
+If stopping the launch process or terminating the app fails, xharness does
+not relaunch it. It keeps the diagnostics and reports a harness failure.
+If the app is already gone, xharness only relaunches it when the launch
+process reported its PID; otherwise the launch may still be in progress.
+
+If the same crash happens in the second attempt, the test is stopped as soon
+as the crash is detected (instead of waiting for the timeout) and reported as
+crashed, with a `springboard-crash` failure in the test results. Any other
+failure, timeout, or crash isn't retried. A matching crash outside the
+60-second window is only logged.

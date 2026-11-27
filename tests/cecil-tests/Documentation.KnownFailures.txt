@@ -1368,10 +1368,6 @@ F:BackgroundAssets.BAErrorCode.SessionDownloadDisallowedByDomain
 F:BackgroundAssets.BAErrorCode.SessionDownloadNotPermittedBeforeAppLaunch
 F:BackgroundAssets.BAManagedErrorCode.AssetPackNotFound
 F:BackgroundAssets.BAManagedErrorCode.FileNotFound
-F:BackgroundTasks.BGTaskSchedulerErrorCode.ImmediateRunIneligible
-F:BackgroundTasks.BGTaskSchedulerErrorCode.NotPermitted
-F:BackgroundTasks.BGTaskSchedulerErrorCode.TooManyPendingTaskRequests
-F:BackgroundTasks.BGTaskSchedulerErrorCode.Unavailable
 F:BrowserEngineKit.BEAccessibilityContainerType.Alert
 F:BrowserEngineKit.BEAccessibilityContainerType.Article
 F:BrowserEngineKit.BEAccessibilityContainerType.DescriptionList
@@ -54767,7 +54763,6 @@ T:BackgroundTasks.BGProcessingTaskRequest
 T:BackgroundTasks.BGTask
 T:BackgroundTasks.BGTaskRequest
 T:BackgroundTasks.BGTaskScheduler
-T:BackgroundTasks.BGTaskSchedulerErrorCode
 T:BackgroundTasks.BGTaskSchedulerSubmitCompletionHandler
 T:BrowserEngineCore.BEAudioSession
 T:BrowserEngineKit.BEAccessibilityContainerType

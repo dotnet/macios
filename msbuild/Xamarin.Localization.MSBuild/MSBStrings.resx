@@ -1828,6 +1828,14 @@ Do not translate Info.plist, UIApplicationSceneManifest, UIKit, https://aka.ms/u
     <data name="E7202" xml:space="preserve">
         <value>The binding generator failed for unknown reasons. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
+    <data name="E7203" xml:space="preserve">
+        <value>EnableAssemblyILStripping=true is not supported because assembly IL stripping has been removed.</value>
+        <comment>Shown when EnableAssemblyILStripping is set to true. Do not translate EnableAssemblyILStripping or true.</comment>
+    </data>
+    <data name="E7204" xml:space="preserve">
+        <value>--nostrip:false is not supported because assembly IL stripping has been removed.</value>
+        <comment>Shown when --nostrip:false (or equivalent) is passed in AppBundleExtraOptions. Do not translate --nostrip:false or AppBundleExtraOptions.</comment>
+    </data>
     <data name="UseNativeHttpHandlerHasNoEffectOnMacOS" xml:space="preserve">
         <value>The property 'UseNativeHttpHandler' has no effect on macOS. Pass an NSUrlSessionHandler instance directly to the HttpClient constructor to use the native HTTP handler.</value>
         <comment>Do not translate 'UseNativeHttpHandler', 'macOS', 'NSUrlSessionHandler' or 'HttpClient'.</comment>

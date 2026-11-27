@@ -260,63 +260,6 @@ class MainClass {
 			AssertTargetNotExecuted (targets, "_ExecutePostprocessAssembliesAfterIlc", "Incremental NativeAOT post-processing");
 		}
 
-		[TestCase ("trimmable-static", null, null, true)]
-		[TestCase ("managed-static", null, null, false)]
-		[TestCase ("trimmable-static", "false", null, false)]
-		[TestCase ("trimmable-static", null, "true", false)]
-		public void ExportAttributeRemovalEligibility (string registrar, string? trimExportAttributes, string? dynamicRegistrationSupported, bool expectedRemoval)
-		{
-			var platform = ApplePlatform.iOS;
-			var runtimeIdentifiers = "iossimulator-arm64";
-			var project = "ExportAttributeRemovalApp";
-			var configuration = "Release";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var projectPath = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out _, configuration: configuration);
-			Clean (projectPath);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["Configuration"] = configuration;
-			properties ["EnableAssemblyILStripping"] = "true";
-			properties ["MtouchLink"] = registrar == "managed-static" ? "SdkOnly" : "Full";
-			properties ["PublishReadyToRun"] = "false";
-			properties ["Registrar"] = registrar;
-			if (trimExportAttributes is not null)
-				properties ["TrimExportAttributes"] = trimExportAttributes;
-			if (dynamicRegistrationSupported is not null)
-				properties ["DynamicRegistrationSupported"] = dynamicRegistrationSupported;
-
-			var target = "Compile;_ComputePublishTrimmed;_ComputeLinkMode;_ComputeLinkerArguments;_PrepareAssemblies;_SetDynamicRegistrationSupportedFeature;_SetTrimExportAttributesFeature;_ComputeFrameworkFilesToPublish;_ComputeDynamicLibrariesToPublish;ComputeFilesToPublish;_ComputeStripAssemblyIL;_StripAssemblyIL";
-			var assemblyDirectory = Path.Combine (GetObjDir (projectPath, platform, runtimeIdentifiers, configuration), "stripped");
-			DotNet.AssertBuild (projectPath, properties, target: target);
-			var platformAssemblyPath = Path.Combine (assemblyDirectory, Configuration.GetBaseLibraryName (platform));
-			var appAssemblyPath = Path.Combine (assemblyDirectory, project + ".dll");
-
-			AssertExportMetadata (platformAssemblyPath, appAssemblyPath, !expectedRemoval);
-
-			if (expectedRemoval) {
-				properties ["DynamicRegistrationSupported"] = "true";
-				DotNet.AssertBuild (projectPath, properties, target: target);
-				AssertExportMetadata (platformAssemblyPath, appAssemblyPath, true);
-			}
-		}
-
-		static void AssertExportMetadata (string platformAssemblyPath, string appAssemblyPath, bool expected)
-		{
-			using var platformAssembly = AssemblyDefinition.ReadAssembly (platformAssemblyPath);
-			var bundlePath = platformAssembly.MainModule.GetType ("Foundation.NSBundle").Properties.Single (v => v.Name == "BundlePath");
-			AssertExport (bundlePath.GetMethod, expected, "direct-binding NSObject wrapper");
-
-			var nsObjectDescription = platformAssembly.MainModule.GetType ("Foundation.NSObject").Properties.Single (v => v.Name == "Description");
-			AssertExport (nsObjectDescription.GetMethod, expected, "wrapper ancestor with application subclasses");
-
-			using var appAssembly = AssemblyDefinition.ReadAssembly (appAssemblyPath);
-			var applicationType = appAssembly.MainModule.GetType ("ExportAttributeRemovalApp.ExportMetadataApplicationType");
-			AssertAttribute (applicationType.Methods.Single (v => v.Name == "ApplicationExport"), "ExportAttribute", expected, "application export");
-			AssertAttribute (applicationType.Methods.Single (v => v.Name == "ApplicationAction"), "ActionAttribute", expected, "application action");
-			AssertAttribute (applicationType.Properties.Single (v => v.Name == "ApplicationOutlet"), "OutletAttribute", expected, "application outlet");
-		}
-
 		[TestCase (false)]
 		[TestCase (true)]
 		public void ExportAttributeRemovalWithNSXpcInterfaceUsage (bool explicitlyEnabled)
@@ -354,15 +297,5 @@ class MainClass {
 			}
 		}
 
-		static void AssertExport (ICustomAttributeProvider provider, bool expected, string message)
-		{
-			AssertAttribute (provider, "ExportAttribute", expected, message);
-		}
-
-		static void AssertAttribute (ICustomAttributeProvider provider, string name, bool expected, string message)
-		{
-			var actual = provider.CustomAttributes.Any (v => v.AttributeType.Namespace == "Foundation" && v.AttributeType.Name == name);
-			Assert.That (actual, Is.EqualTo (expected), message);
-		}
 	}
 }

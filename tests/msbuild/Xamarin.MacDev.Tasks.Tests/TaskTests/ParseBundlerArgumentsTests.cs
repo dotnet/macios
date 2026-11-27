@@ -36,6 +36,20 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The --aot option is not supported because Mono AOT compilation has been removed."));
 		}
 
+		[TestCase ("--nostrip", null)]
+		[TestCase ("-nostrip:true", null)]
+		[TestCase ("/nostrip=1", null)]
+		[TestCase ("--nostrip:false", "true")]
+		[TestCase ("-nostrip:0", "true")]
+		[TestCase ("/nostrip=no", "true")]
+		public void LegacyAssemblyILStrippingOption (string option, string? requested)
+		{
+			var task = CreateTask<CustomParseBundlerArguments> ();
+			task.ExtraArgs = option;
+			ExecuteTask (task);
+			Assert.That (task.AssemblyILStrippingRequested, Is.EqualTo (requested));
+		}
+
 		[Test]
 		public void NoSymbolStrip ()
 		{

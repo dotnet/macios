@@ -131,6 +131,7 @@ namespace Registrar {
 			public bool IsInformalProtocol;
 			public bool IsWrapper;
 			public bool IsGeneric;
+			public Exception? RetainCountException;
 #if !LEGACY_TOOLS && !BUNDLER
 			public IntPtr Handle;
 #else
@@ -346,6 +347,13 @@ namespace Registrar {
 
 			public bool Add (ObjCMethod method, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
+				if (!IsWrapper && !IsProtocol && !method.IsNativeStatic && method.Selector == "retainCount" && method.Method is not null) {
+					var exception = Registrar.CreateRetainCountException (method.Method);
+					RetainCountException ??= exception;
+					AddException (ref exceptions, exception);
+					return false;
+				}
+
 				bool rv;
 
 				if (Methods is null)
@@ -1584,7 +1592,7 @@ namespace Registrar {
 			List<Exception>? exceptions = null;
 
 			lock (types) {
-				if (types.TryGetValue (type, out rv))
+				if (types.TryGetValue (type, out rv) && rv.RetainCountException is null)
 					return rv;
 
 				rv = RegisterTypeUnsafe (type, ref exceptions);
@@ -1601,6 +1609,11 @@ namespace Registrar {
 		{
 			lock (types)
 				return RegisterTypeUnsafe (type, ref exceptions);
+		}
+
+		protected Exception CreateRetainCountException (TMethod method)
+		{
+			return CreateException (4199, method, Errors.MT4199, method.DeclaringType?.FullName, GetDescriptiveMethodName (method));
 		}
 
 		bool VerifyNonGenericMethod ([NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions, TType declaringType, TMethod method)
@@ -1973,13 +1986,18 @@ namespace Registrar {
 				};
 				if (category_method.SetExportAttribute (ea, ref exceptions)) {
 					objcType.Add (category_method, ref exceptions);
-					declaringType.Add (category_method, ref exceptions);
 				}
 			}
 
 			// TODO: properties
 
-			OnRegisterCategory (objcType, ref exceptions);
+			if (objcType.RetainCountException is null) {
+				if (objcType.Methods is not null) {
+					foreach (var method in objcType.Methods)
+						declaringType.Add (method, ref exceptions);
+				}
+				OnRegisterCategory (objcType, ref exceptions);
+			}
 
 			return objcType;
 		}
@@ -1998,7 +2016,10 @@ namespace Registrar {
 			}
 
 			if (types.TryGetValue (type, out var objcType)) {
-				OnReloadType (objcType);
+				if (objcType.RetainCountException is not null)
+					AddException (ref exceptions, objcType.RetainCountException);
+				else
+					OnReloadType (objcType);
 				return objcType;
 			}
 
@@ -2051,6 +2072,7 @@ namespace Registrar {
 				IsProtocol = isProtocol,
 				IsInformalProtocol = isInformalProtocol,
 				IsGeneric = isGenericType,
+				RetainCountException = baseObjCType?.RetainCountException,
 			};
 			objcType.VerifyRegisterAttribute (ref exceptions);
 			objcType.AdoptedProtocols = GetAdoptedProtocols (objcType);
@@ -2529,7 +2551,7 @@ namespace Registrar {
 
 			if (objcType.IsProtocol) {
 				OnRegisterProtocol (objcType);
-			} else {
+			} else if (objcType.RetainCountException is null) {
 				OnRegisterType (objcType);
 			}
 

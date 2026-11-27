@@ -3123,6 +3123,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ItemGroup>
 			<_AppExtensionPostProcessingItemsPath Include="@(_ResolvedAppExtensionReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')" />
 			<_WatchAppPostProcessingItemPath Include="@(_ResolvedWatchAppReferences -> '%(Identity)\..\postprocessing.items')" Condition="Exists('%(Identity)\..\postprocessing.items')"/>
+			<_RuntimeIdentifierPostProcessingItemsFile Include="@(_RuntimeIdentifiersAsItems->'%(Identity)\postprocessing.items')" />
+		</ItemGroup>
+		<CombinePath BasePath="%(_ResolvedAppExtensionReferences.Identity)\.." Paths="@(_RuntimeIdentifierPostProcessingItemsFile)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0'">
+			<Output TaskParameter="CombinedPaths" ItemName="_AppExtensionR2RPostProcessingItemsPathFromRuntimeIdentifiers" />
+		</CombinePath>
+		<ItemGroup>
+			<_AppExtensionR2RPostProcessingItemsPath Include="@(_AppExtensionR2RPostProcessingItemsPathFromRuntimeIdentifiers)" Condition="Exists('%(Identity)')" />
 		</ItemGroup>
 	</Target>
 

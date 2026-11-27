@@ -717,6 +717,147 @@ namespace Xamarin.Tests {
 			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false, true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", false, false)]
+		public void AppExtensionR2RFrameworkPostProcessing (ApplePlatform platform, string runtimeIdentifier, bool extensionOptsOutOfPostProcessing, bool appOptsOutOfPostProcessing)
+		{
+			const string configuration = "Release";
+			const string frameworkName = "ExtensionProject.r2r";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var projectPath = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath, configuration: configuration);
+			var extensionProjectPath = GetProjectPath ("ExtensionProject", platform: platform);
+			Clean (extensionProjectPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Configuration"] = configuration;
+			properties ["EnableCodeSigning"] = "false";
+			properties ["UseMonoRuntime"] = "false";
+			var framework = Path.Combine (appPath, "Frameworks", frameworkName + ".framework", frameworkName);
+			var originalFramework = Path.Combine (GetObjDir (extensionProjectPath, platform, runtimeIdentifier, configuration), "r2rframework", frameworkName + ".framework", frameworkName);
+			var dsymDir = Path.Combine (Path.GetDirectoryName (appPath)!, frameworkName + ".framework.dSYM");
+
+			if (extensionOptsOutOfPostProcessing) {
+				var extensionProperties = GetDefaultProperties (runtimeIdentifier);
+				extensionProperties ["Configuration"] = configuration;
+				extensionProperties ["EnableCodeSigning"] = "false";
+				extensionProperties ["UseMonoRuntime"] = "false";
+				extensionProperties ["NoSymbolStrip"] = "true";
+				extensionProperties ["NoDSymUtil"] = "true";
+				DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+				properties ["_BuildReferencedExtensionProjects"] = "false";
+				DotNet.AssertBuild (projectPath, properties);
+				Assert.That (new FileInfo (framework).Length, Is.EqualTo (new FileInfo (originalFramework).Length), "Extension framework should not be stripped");
+				Assert.That (dsymDir, Does.Not.Exist, "Extension framework dSYM should not be generated");
+
+				extensionProperties.Remove ("NoSymbolStrip");
+				extensionProperties.Remove ("NoDSymUtil");
+				DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+				DotNet.AssertBuild (projectPath, properties);
+				Assert.That (new FileInfo (framework).Length, Is.LessThan (new FileInfo (originalFramework).Length), "Extension framework should be stripped");
+
+				extensionProperties ["NoSymbolStrip"] = "true";
+				extensionProperties ["NoDSymUtil"] = "true";
+				DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+				DotNet.AssertBuild (projectPath, properties);
+				Assert.That (new FileInfo (framework).Length, Is.EqualTo (new FileInfo (originalFramework).Length), "Extension framework should not be stripped");
+
+				extensionProperties.Remove ("NoSymbolStrip");
+				extensionProperties.Remove ("NoDSymUtil");
+				DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+			} else if (appOptsOutOfPostProcessing) {
+				var extensionProperties = GetDefaultProperties (runtimeIdentifier);
+				extensionProperties ["Configuration"] = configuration;
+				extensionProperties ["EnableCodeSigning"] = "false";
+				extensionProperties ["UseMonoRuntime"] = "false";
+				DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+				properties ["NoSymbolStrip"] = "true";
+				properties ["NoDSymUtil"] = "true";
+				properties ["_BuildReferencedExtensionProjects"] = "false";
+			}
+
+			DotNet.AssertBuild (projectPath, properties);
+
+			Assert.That (framework, Does.Exist, "Extension framework");
+			Assert.That (originalFramework, Does.Exist, "Original extension framework");
+			if (appOptsOutOfPostProcessing) {
+				Assert.That (new FileInfo (framework).Length, Is.EqualTo (new FileInfo (originalFramework).Length), "Extension framework should not be stripped");
+				Assert.That (dsymDir, Does.Not.Exist, "Extension framework dSYM should not be generated");
+			} else {
+				Assert.That (new FileInfo (framework).Length, Is.LessThan (new FileInfo (originalFramework).Length), "Extension framework should be stripped");
+				var dsym = Path.Combine (dsymDir, "Contents", "Resources", "DWARF", frameworkName);
+				Assert.That (dsym, Does.Exist, "Extension framework dSYM");
+				var frameworkUuid = AssertExecute ("xcrun", "dwarfdump", "--uuid", framework).ToString ().Split (' ', StringSplitOptions.RemoveEmptyEntries) [1];
+				var dsymUuid = AssertExecute ("xcrun", "dwarfdump", "--uuid", dsym).ToString ().Split (' ', StringSplitOptions.RemoveEmptyEntries) [1];
+				Assert.That (dsymUuid, Is.EqualTo (frameworkUuid), "Extension framework dSYM UUID");
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", true, false)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false, true)]
+		public void AppExtensionR2RFrameworkPostProcessingWithMultipleRuntimeIdentifiers (ApplePlatform platform, string runtimeIdentifiers, bool extensionOptsOutOfPostProcessing, bool appOptsOutOfPostProcessing)
+		{
+			const string configuration = "Release";
+			const string frameworkName = "ExtensionProject.r2r";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var projectPath = GetProjectPath ("ExtensionConsumer", runtimeIdentifiers, platform, out var appPath, configuration: configuration);
+			var extensionProjectPath = GetProjectPath ("ExtensionProject", platform: platform);
+			Clean (extensionProjectPath);
+			Clean (projectPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["EnableCodeSigning"] = "false";
+			properties ["UseMonoRuntime"] = "false";
+			properties ["NoSymbolStrip"] = "false";
+			properties ["NoDSymUtil"] = "false";
+			properties ["CreateR2RFramework"] = "true";
+			if (appOptsOutOfPostProcessing) {
+				properties ["NoSymbolStrip"] = "true";
+				properties ["NoDSymUtil"] = "true";
+			}
+			var extensionProperties = GetDefaultProperties (runtimeIdentifiers);
+			extensionProperties ["Configuration"] = configuration;
+			extensionProperties ["EnableCodeSigning"] = "false";
+			extensionProperties ["UseMonoRuntime"] = "false";
+			extensionProperties ["CreateR2RFramework"] = "true";
+			extensionProperties ["NoSymbolStrip"] = extensionOptsOutOfPostProcessing ? "true" : "false";
+			extensionProperties ["NoDSymUtil"] = extensionOptsOutOfPostProcessing ? "true" : "false";
+			DotNet.AssertBuild (extensionProjectPath, extensionProperties);
+			properties ["_BuildReferencedExtensionProjects"] = "false";
+
+			var result = DotNet.AssertBuild (projectPath, properties);
+
+			var frameworkDirectory = platform == ApplePlatform.MacCatalyst ? Path.Combine (appPath, "Contents", "Frameworks") : Path.Combine (appPath, "Frameworks");
+			var framework = Path.Combine (frameworkDirectory, frameworkName + ".framework", frameworkName);
+			var dsymDir = Path.Combine (Path.GetDirectoryName (appPath)!, frameworkName + ".framework.dSYM");
+			Assert.That (framework, Does.Exist, "Extension framework");
+			var frameworkItemSuffix = $"{frameworkName}.framework/{frameworkName}";
+			var appBundlePrefix = Path.GetFileName (appPath).Replace ('\\', '/') + "/";
+			var frameworkItems = GetPostProcessingItems (result.BinLogPath).Where (i => {
+				var itemSpec = i.ItemSpec.Replace ('\\', '/');
+				return itemSpec.StartsWith (appBundlePrefix, StringComparison.Ordinal) && itemSpec.EndsWith (frameworkItemSuffix, StringComparison.Ordinal) && !itemSpec.Contains ("/PlugIns/", StringComparison.Ordinal);
+			}).ToArray ();
+			Assert.That (frameworkItems.Length, Is.EqualTo (1), "Extension framework post-processing item");
+			if (extensionOptsOutOfPostProcessing || appOptsOutOfPostProcessing) {
+				Assert.That (frameworkItems [0].GetMetadata ("NoSymbolStrip"), Is.EqualTo ("true"), "NoSymbolStrip metadata");
+				Assert.That (frameworkItems [0].GetMetadata ("NoDSymUtil"), Is.EqualTo ("true"), "NoDSymUtil metadata");
+				Assert.That (dsymDir, Does.Not.Exist, "Extension framework dSYM should not be generated");
+			} else {
+				Assert.That (dsymDir, Does.Exist, "Extension framework dSYM");
+				var frameworkUuids = AssertExecute ("xcrun", "dwarfdump", "--uuid", framework).ToString ().Split ('\n', StringSplitOptions.RemoveEmptyEntries).Select (line => line.Split (' ', StringSplitOptions.RemoveEmptyEntries) [1]).ToArray ();
+				var dsym = Path.Combine (dsymDir, "Contents", "Resources", "DWARF", frameworkName);
+				var dsymUuids = AssertExecute ("xcrun", "dwarfdump", "--uuid", dsym).ToString ().Split ('\n', StringSplitOptions.RemoveEmptyEntries).Select (line => line.Split (' ', StringSplitOptions.RemoveEmptyEntries) [1]).ToArray ();
+				Assert.That (dsymUuids, Is.EquivalentTo (frameworkUuids), "Extension framework dSYM UUIDs");
+			}
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Release")]

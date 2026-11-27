@@ -1069,6 +1069,17 @@
 		</_ComputeFrameworkFilesToPublishDependsOn>
 	</PropertyGroup>
 
+	<ItemDefinitionGroup>
+		<_FilteredFrameworkToPublish>
+			<NoSymbolStrip></NoSymbolStrip>
+			<NoDSymUtil></NoDSymUtil>
+		</_FilteredFrameworkToPublish>
+		<_FrameworksFromAppExtensions>
+			<NoSymbolStrip></NoSymbolStrip>
+			<NoDSymUtil></NoDSymUtil>
+		</_FrameworksFromAppExtensions>
+	</ItemDefinitionGroup>
+
 	<!-- Look in the _FrameworkNativeReference items for frameworks that need to be added to the app bundle, and add all those frameworks to _FrameworkToPublish -->
 	<Target Name="_ComputeFrameworkFilesToPublish" DependsOnTargets="$(_ComputeFrameworkFilesToPublishDependsOn)">
 		<ItemGroup>
@@ -1091,14 +1102,20 @@
 			FrameworkToPublish="@(_FrameworkToPublish)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
-			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
+			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublishFromTask" />
 		</FilterStaticFrameworks>
+		<ItemGroup>
+			<_FilteredFrameworkToPublish Include="@(_FilteredFrameworkToPublishFromTask)" />
+		</ItemGroup>
 
 		<!-- If we're an app extension, store the list of all the frameworks to disk (and don't publish any of them to the appex) -->
 		<!-- Note that app extensions may be nested, so we first check if we have any app extensions with frameworks, read those, then store the full list to disk if we're an app extension, so the containing app project sees everything -->
 		<ReadItemsFromFile File="@(_ResolvedAppExtensionReferences->'%(Identity)\..\native-frameworks.items')" Condition="Exists('%(Identity)\..\native-frameworks.items')">
-			<Output TaskParameter="Items" ItemName="_FrameworksFromAppExtensions" />
+			<Output TaskParameter="Items" ItemName="_FrameworksFromAppExtensionsFromFile" />
 		</ReadItemsFromFile>
+		<ItemGroup>
+			<_FrameworksFromAppExtensions Include="@(_FrameworksFromAppExtensionsFromFile)" />
+		</ItemGroup>
 
 		<WriteItemsToFile
 			Condition="'$(IsAppExtension)' == 'true'"
@@ -1112,6 +1129,8 @@
 		<ItemGroup>
 			<_FrameworksFromAppExtensions Update="@(_FrameworksFromAppExtensions)">
 				<TargetDirectory>$(_RelativePublishDir)$(_AppBundleFrameworksDir)\%(Filename)%(Extension).framework</TargetDirectory>
+				<NoSymbolStrip Condition="'%(_FrameworksFromAppExtensions.NoSymbolStrip)' == ''">$(NoSymbolStrip)</NoSymbolStrip>
+				<NoDSymUtil Condition="'%(_FrameworksFromAppExtensions.NoDSymUtil)' == ''">$(NoDSymUtil)</NoDSymUtil>
 			</_FrameworksFromAppExtensions>
 		</ItemGroup>
 
@@ -1133,9 +1152,14 @@
 		<PropertyGroup>
 			<_CopyDirectoriesToBundleInputFile>$(DeviceSpecificIntermediateOutputPath)CopyDirectoriesToBundleInputs.cache</_CopyDirectoriesToBundleInputFile>
 		</PropertyGroup>
+		<ItemGroup>
+			<_CopyDirectoriesToBundleInput Include="StripFrameworkHeaders=$(StripFrameworkHeaders)" />
+			<_CopyDirectoriesToBundleInput
+				Include="@(_DirectoriesToPublish->'%(Identity)|%(NoSymbolStrip)|%(NoDSymUtil)')" />
+		</ItemGroup>
 		<WriteLinesToFile
 			File="$(_CopyDirectoriesToBundleInputFile)"
-			Lines="StripFrameworkHeaders=$(StripFrameworkHeaders)"
+			Lines="@(_CopyDirectoriesToBundleInput)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 		/>
@@ -2947,6 +2971,9 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 		</_CollectItemsForPostProcessingDependsOn>
 	</PropertyGroup>
 	<Target Name="_CollectR2RFrameworksForPostProcessing" DependsOnTargets="_ComputeFrameworksToCreate;_PrepareR2RModules">
+		<ReadItemsFromFile File="@(_AppExtensionR2RPostProcessingItemsPath)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '@(_AppExtensionR2RPostProcessingItemsPath->Count())' != '0'">
+			<Output TaskParameter="Items" ItemName="_AppExtensionPostProcessingItemsForR2RFrameworks" />
+		</ReadItemsFromFile>
 		<ItemGroup>
 			<!-- Add CoreCLR runtime -->
 			<_PostProcessingItem
@@ -2961,6 +2988,21 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 				<Kind>Framework</Kind>
 				<DSymName>%(_R2RModule.FrameworkName).framework.dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- App extension frameworks are copied into the container app. -->
+			<_AppExtensionR2RFrameworkForPostProcessing Include="@(_FrameworksFromAppExtensions)" Condition="'$(IsAppExtension)' != 'true' And '%(_FrameworksFromAppExtensions.Extension)' == '.r2r'" />
+			<_AppExtensionR2RFrameworkForPostProcessing Include="@(_AppExtensionPostProcessingItemsForR2RFrameworks)" Condition="'@(_RuntimeIdentifiersAsItems->Count())' != '0' And '$(IsAppExtension)' != 'true' And '%(_AppExtensionPostProcessingItemsForR2RFrameworks.Kind)' == 'Framework' And '%(_AppExtensionPostProcessingItemsForR2RFrameworks.Extension)' == '.r2r'" />
+			<_AppExtensionR2RFrameworkPostProcessingItem Include="@(_AppExtensionR2RFrameworkForPostProcessing->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+				<Kind>Framework</Kind>
+				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
+				<NoSymbolStrip Condition="'$(NoSymbolStrip)' == 'true' Or '%(_AppExtensionR2RFrameworkForPostProcessing.NoSymbolStrip)' == 'true'">true</NoSymbolStrip>
+				<NoDSymUtil Condition="'$(NoDSymUtil)' == 'true' Or '%(_AppExtensionR2RFrameworkForPostProcessing.NoDSymUtil)' == 'true'">true</NoDSymUtil>
+			</_AppExtensionR2RFrameworkPostProcessingItem>
+		</ItemGroup>
+		<RemoveDuplicates Inputs="@(_AppExtensionR2RFrameworkPostProcessingItem)">
+			<Output TaskParameter="Filtered" ItemName="_UniqueAppExtensionR2RFrameworkPostProcessingItem" />
+		</RemoveDuplicates>
+		<ItemGroup>
+			<_PostProcessingItem Include="@(_UniqueAppExtensionR2RFrameworkPostProcessingItem)" />
 		</ItemGroup>
 	</Target>
 

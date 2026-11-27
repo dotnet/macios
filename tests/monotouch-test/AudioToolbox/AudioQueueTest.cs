@@ -8,12 +8,100 @@
 //
 
 using AudioToolbox;
+using CoreFoundation;
 
 namespace MonoTouchFixtures.AudioToolbox {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class AudioQueueTest {
+		[Test]
+		[TestCase (0)]
+		[TestCase (1)]
+		[TestCase (2)]
+		public void OutputFormatInputs (int overload)
+		{
+			var format = AudioStreamBasicDescription.CreateLinearPCM ();
+			var expected = format;
+			using var mode = new CFString ("kCFRunLoopDefaultMode");
+#if XAMCORE_5_0
+			using var queue = overload switch {
+				0 => new OutputAudioQueue (in format),
+				1 => new OutputAudioQueue (in format, CFRunLoop.Current, "kCFRunLoopDefaultMode"),
+				_ => new OutputAudioQueue (in format, CFRunLoop.Current, mode),
+			};
+			var status = queue.SetOfflineRenderFormat (in format, null);
+#else
+			using var queue = overload switch {
+				0 => new OutputAudioQueue (format),
+				1 => new OutputAudioQueue (format, CFRunLoop.Current, "kCFRunLoopDefaultMode"),
+				_ => new OutputAudioQueue (format, CFRunLoop.Current, mode),
+			};
+			var status = queue.SetOfflineRenderFormat (format, null);
+#endif
+			Assert.That (queue.GetProperty<AudioStreamBasicDescription> (AudioQueueProperty.StreamDescription), Is.EqualTo (expected), "Format");
+			Assert.That (status, Is.EqualTo (AudioQueueStatus.Ok), "Offline format");
+			Assert.That (queue.DisableOfflineRender (), Is.EqualTo (AudioQueueStatus.Ok), "Disable offline render");
+			Assert.That (format, Is.EqualTo (expected), "Input");
+		}
+
+		[Test]
+		[TestCase (false)]
+		[TestCase (true)]
+		public void InputFormatInputs (bool runLoop)
+		{
+			TestRuntime.RequestMicrophonePermission ();
+			var format = AudioStreamBasicDescription.CreateLinearPCM ();
+			var expected = format;
+#if XAMCORE_5_0
+			using var queue = runLoop ? new InputAudioQueue (in format, CFRunLoop.Current, "kCFRunLoopDefaultMode") : new InputAudioQueue (in format);
+#else
+			using var queue = runLoop ? new InputAudioQueue (format, CFRunLoop.Current, "kCFRunLoopDefaultMode") : new InputAudioQueue (format);
+#endif
+			Assert.That (queue.GetProperty<AudioStreamBasicDescription> (AudioQueueProperty.StreamDescription), Is.EqualTo (expected), "Format");
+			Assert.That (format, Is.EqualTo (expected), "Input");
+		}
+
+		[Test]
+		public unsafe void TimestampInputs ()
+		{
+			TestRuntime.AssertNotVirtualMachine ();
+			TestRuntime.IgnoreIfLockedScreen ();
+			using var queue = new OutputAudioQueue (AudioStreamBasicDescription.CreateLinearPCM ());
+			Assert.That (queue.AllocateBuffer (4096, out AudioQueueBuffer* buffer), Is.EqualTo (AudioQueueStatus.Ok), "Allocate");
+			buffer->AsSpan ().Clear ();
+			buffer->AudioDataByteSize = 4096;
+			Assert.That (queue.EnqueueBuffer (buffer, []), Is.EqualTo (AudioQueueStatus.Ok), "Enqueue");
+			var startTime = new AudioTimeStamp ();
+			var expectedStart = startTime;
+#if XAMCORE_5_0
+			var status = queue.Start (in startTime);
+#else
+			var status = queue.Start (startTime);
+#endif
+			Assert.That (status, Is.EqualTo (AudioQueueStatus.Ok), "Start with timestamp");
+			try {
+				var time = queue.CurrentTime;
+				var expectedTime = time;
+#if XAMCORE_5_0
+				var translated = queue.TranslateTime (in time);
+#else
+				var translated = queue.TranslateTime (time);
+#endif
+				var translatedFlags = AudioTimeStamp.AtsFlags.SampleTimeValid | AudioTimeStamp.AtsFlags.HostTimeValid;
+				Assert.That (translated.Flags & translatedFlags, Is.EqualTo (translatedFlags), "Translated flags");
+				Assert.That (translated.SampleTime, Is.EqualTo (time.SampleTime).Within (1), "Translated sample time");
+				Assert.That (time, Is.EqualTo (expectedTime), "Translate input");
+			} finally {
+				queue.Stop (true);
+			}
+			Assert.That (startTime, Is.EqualTo (expectedStart), "Start input");
+			Assert.That (queue.Reset (), Is.EqualTo (AudioQueueStatus.Ok), "Reset");
+			Assert.That (queue.EnqueueBuffer (buffer, []), Is.EqualTo (AudioQueueStatus.Ok), "Re-enqueue");
+			Assert.That (queue.Start (), Is.EqualTo (AudioQueueStatus.Ok), "Start without timestamp");
+			Assert.That (queue.Stop (true), Is.EqualTo (AudioQueueStatus.Ok), "Stop");
+		}
+
 #if !MONOMAC && !__MACCATALYST__ // HardwareCodecPolicy and SetChannelAssignments are iOS only
 		[Test]
 		public void Properties ()
@@ -104,6 +192,38 @@ namespace MonoTouchFixtures.AudioToolbox {
 				Assert.That (buffer->AsSpanOfValidData ().Length, Is.EqualTo (0), "AsSpanOfValidData ().Length");
 			});
 			Assert.That (aq.FreeBuffer (buffer), Is.EqualTo (AudioQueueStatus.Ok), "FreeBuffer");
+		}
+
+		[Test]
+		[TestCase (false)]
+		[TestCase (true)]
+		public unsafe void EnqueueBufferPreservesStartTime (bool usePointer)
+		{
+			using var queue = new OutputAudioQueue (AudioStreamBasicDescription.CreateLinearPCM ());
+			Assert.That (queue.AllocateBuffer (4096, out AudioQueueBuffer* buffer), Is.EqualTo (AudioQueueStatus.Ok), "AllocateBuffer");
+			buffer->AsSpan ().Clear ();
+			buffer->AudioDataByteSize = 4096;
+			var startTime = new AudioTimeStamp {
+				SampleTime = 1234,
+				Flags = AudioTimeStamp.AtsFlags.SampleTimeValid,
+			};
+			var expected = startTime;
+			AudioQueueStatus status;
+			if (usePointer) {
+#if XAMCORE_5_0
+				status = queue.EnqueueBuffer (buffer, 4096, [], 0, 0, [], in startTime, out var actualStartTime);
+#else
+				status = queue.EnqueueBuffer (buffer, 4096, [], 0, 0, [], ref startTime, out var actualStartTime);
+#endif
+			} else {
+#if XAMCORE_5_0
+				status = queue.EnqueueBuffer ((IntPtr) buffer, 4096, [], 0, 0, [], in startTime, out var actualStartTime);
+#else
+				status = queue.EnqueueBuffer ((IntPtr) buffer, 4096, [], 0, 0, [], ref startTime, out var actualStartTime);
+#endif
+			}
+			Assert.That (status, Is.EqualTo (AudioQueueStatus.Ok), "EnqueueBuffer");
+			Assert.That (startTime, Is.EqualTo (expected), "StartTime");
 		}
 
 		[Test]

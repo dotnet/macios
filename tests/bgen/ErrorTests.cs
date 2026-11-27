@@ -144,16 +144,20 @@ namespace GeneratorTests {
 		}
 
 		[Test]
-		[TestCase (Profile.macOSMobile)]
-		public void BI1040 (Profile profile)
+		[TestCase (Profile.macOSMobile, false)]
+		[TestCase (Profile.macOSMobile, true)]
+		public void BI1040 (Profile profile, bool readonlyInput)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-out.cs")));
+			var definition = File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-out.cs"));
+			if (readonlyInput)
+				definition = definition.Replace ("out int b", "in int b");
+			bgen.CreateTemporaryBinding (definition);
 			bgen.AssertExecuteError ("build");
-			bgen.AssertError (1040, "The selector doit:withmore on type Derived is found multiple times with different argument out states on argument 1.");
+			bgen.AssertError (1040, "The selector doit:withmore on type Derived is found multiple times with different reference modifiers on argument 1.");
 		}
 
 		[Test]

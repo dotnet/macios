@@ -27,56 +27,56 @@ namespace CoreGraphics {
 
 		/// <summary>The width of the new <see cref="CGBitmapContext" />.</summary>
 		public nuint Width {
-			get => width;
+			readonly get => width;
 			set => width = value;
 		}
 
 		/// <summary>The height of the new <see cref="CGBitmapContext" />.</summary>
 		public nuint Height {
-			get => height;
+			readonly get => height;
 			set => height = value;
 		}
 
 		/// <summary>The number of bytes per pixel for the new <see cref="CGBitmapContext" />.</summary>
 		public nuint BytesPerPixel {
-			get => bytesPerPixel;
+			readonly get => bytesPerPixel;
 			set => bytesPerPixel = value;
 		}
 
 		/// <summary>The number of aligned bytes per row for the new <see cref="CGBitmapContext" />.</summary>
 		public nuint AlignedBytesPerRow {
-			get => alignedBytesPerRow;
+			readonly get => alignedBytesPerRow;
 			set => alignedBytesPerRow = value;
 		}
 
 		/// <summary>The <see cref="CGComponent" /> value for the new <see cref="CGBitmapContext" />.</summary>
 		public CGComponent Component {
-			get => component;
+			readonly get => component;
 			set => component = value;
 		}
 
 		/// <summary>The <see cref="CGBitmapLayout" /> value for the new <see cref="CGBitmapContext" />.</summary>
 		public CGBitmapLayout Layout {
-			get => layout;
+			readonly get => layout;
 			set => layout = value;
 		}
 
 		/// <summary>The pixel format for the new <see cref="CGBitmapContext" />.</summary>
 		public CGImagePixelFormatInfo Format {
-			get => format;
+			readonly get => format;
 			set => format = value;
 		}
 
 		/// <summary>The handle for the colorspace of the new <see cref="CGBitmapContext" />.</summary>
 		public IntPtr ColorSpaceHandle {
-			get => colorSpace;
+			readonly get => colorSpace;
 			set => colorSpace = value;
 		}
 
 		/// <summary>The <see cref="CGColorSpace" /> for the new <see cref="CGBitmapContext" />.</summary>
 		/// <remarks>When setting this value, the calling code must keep a reference to the <see cref="CGColorSpace" /> instance, because this struct does not increment the retainCount of it to prevent the GC from collecting the instance.</remarks>
 		public CGColorSpace? ColorSpace {
-			get => Runtime.GetINativeObject<CGColorSpace> (colorSpace, false);
+			readonly get => Runtime.GetINativeObject<CGColorSpace> (colorSpace, false);
 			set {
 				ArgumentNullException.ThrowIfNull (value);
 				// this is unsafe: the calling code must keep the managed CGColorSpace instance around somehow.
@@ -89,19 +89,19 @@ namespace CoreGraphics {
 
 		/// <summary>Whether the new <see cref="CGBitmapContext" /> has premultiplied alpha values.</summary>
 		public bool HasPremultipliedAlpha {
-			get => hasPremultipliedAlpha != 0;
+			readonly get => hasPremultipliedAlpha != 0;
 			set => hasPremultipliedAlpha = value.AsByte ();
 		}
 
 		/// <summary>The byte order for the new <see cref="CGBitmapContext" />.</summary>
 		public CFByteOrder ByteOrder {
-			get => (CFByteOrder) byteOrder;
+			readonly get => (CFByteOrder) byteOrder;
 			set => byteOrder = (nint) (long) value;
 		}
 
 		/// <summary>The EDR target headroom for the new <see cref="CGBitmapContext" />.</summary>
 		public float EdrTargetHeadroom {
-			get => edrTargetHeadroom;
+			readonly get => edrTargetHeadroom;
 			set => edrTargetHeadroom = value;
 		}
 

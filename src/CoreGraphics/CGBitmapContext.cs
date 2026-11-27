@@ -317,7 +317,11 @@ namespace CoreGraphics {
 			return 0;
 		}
 
+#if XAMCORE_5_0
+		public delegate CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ OnAllocateCallback (ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters);
+#else
 		public delegate CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ OnAllocateCallback (ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+#endif
 
 		[UserDelegateType (typeof (OnAllocateCallback))]
 		[UnmanagedCallersOnly]
@@ -329,13 +333,21 @@ namespace CoreGraphics {
 		{
 			var del = BlockLiteral.GetTarget<OnAllocateCallback> (block);
 			if (del is not null) {
+#if XAMCORE_5_0
+				var rv = del (ref Unsafe.AsRef<CGContentInfo> (contentInfo), in Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#else
 				var rv = del (ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#endif
 				return Runtime.RetainAndAutoreleaseHandle (rv);
 			}
 			return IntPtr.Zero;
 		}
 
+#if XAMCORE_5_0
+		public delegate void OnFreeCallback (CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ renderingBufferProvider, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters);
+#else
 		public delegate void OnFreeCallback (CGRenderingBufferProvider /* CGRenderingBufferProviderRef */ renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+#endif
 
 		[UserDelegateType (typeof (OnFreeCallback))]
 		[UnmanagedCallersOnly]
@@ -348,11 +360,19 @@ namespace CoreGraphics {
 			var del = BlockLiteral.GetTarget<OnFreeCallback> (block);
 			if (del is not null) {
 				using var renderingBufferProvider = new CGRenderingBufferProvider (bufferingProviderRef, false);
+#if XAMCORE_5_0
+				del (renderingBufferProvider, ref Unsafe.AsRef<CGContentInfo> (contentInfo), in Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#else
 				del (renderingBufferProvider, ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#endif
 			}
 		}
 
+#if XAMCORE_5_0
+		public delegate void OnErrorCallback (NSError error, ref CGContentInfo contentInfo, in CGBitmapParameters bitmapParameters);
+#else
 		public delegate void OnErrorCallback (NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters);
+#endif
 
 		[UserDelegateType (typeof (OnErrorCallback))]
 		[UnmanagedCallersOnly]
@@ -365,7 +385,11 @@ namespace CoreGraphics {
 			var del = BlockLiteral.GetTarget<OnErrorCallback> (block);
 			if (del is not null) {
 				var error = Runtime.GetNSObject<NSError> (errorHandle, false)!;
+#if XAMCORE_5_0
+				del (error, ref Unsafe.AsRef<CGContentInfo> (contentInfo), in Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#else
 				del (error, ref Unsafe.AsRef<CGContentInfo> (contentInfo), ref Unsafe.AsRef<CGBitmapParameters> (bitmapParameters));
+#endif
 			}
 		}
 

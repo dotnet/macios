@@ -353,6 +353,16 @@ and rename the binding method if a different factory method name is desired.
 
 ### <a name='BI1129'/>BI1129: The selector '\*' on '\*' contains invalid characters.
 
+### <a name='BI1130'/>BI1130: The interface '\*' is being ignored because it does not have a [BaseType], [Protocol], [Static], [Partial] or [StrongDictionary] attribute.
+
+An interface in the API definition assembly does not have an attribute that tells
+the binding generator how to process it, so no binding code is generated for it.
+Attributes on base interfaces do not apply to derived interfaces.
+
+To fix this warning, add the appropriate binding attribute to the interface. If
+the interface is managed code rather than a binding definition, move it to a
+source file compiled only into the final binding assembly.
+
 <!-- 2xxx: reserved -->
 <!-- 3xxx: reserved -->
 <!-- 4xxx: reserved -->

@@ -612,7 +612,8 @@ namespace Xamarin.MacDev.Tasks {
 							break;
 					}
 					if (!found) {
-						log.LogError (MSBStrings.E0175 /* No matching framework found inside '{0}'. SupportedPlatform: '{1}', SupportedPlatformVariant: '{2}', SupportedArchitectures: '{3}'. */, xcframeworkPath, platformName, variant, architectures);
+						var supportedArchitectures = string.Join (", ", supported_architectures.Cast<PString> ().Select (v => v.Value));
+						log.LogError (MSBStrings.E0175a /* The xcframework '{0}' does not support the requested architectures '{1}' for platform '{2}' and platform variant '{3}'. Supported architectures: '{4}'. Contact the vendor of the xcframework to obtain a version that supports these architectures. */, xcframeworkPath, architectures, platformName, variant, supportedArchitectures);
 						return false;
 					}
 				}

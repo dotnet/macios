@@ -420,11 +420,11 @@ namespace CoreText {
 
 		#region Paragraph Style Creation
 		[DllImport (Constants.CoreTextLibrary)]
-		static extern IntPtr CTParagraphStyleCreate (CTParagraphStyleSetting []? settings, nint settingCount);
-		/// <param name="settings">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public CTParagraphStyle (CTParagraphStyleSettings? settings)
+		unsafe static extern IntPtr CTParagraphStyleCreate (CTParagraphStyleSetting* settings, nint settingCount);
+
+		/// <summary>Initializes a new <see cref="CTParagraphStyle" /> instance with the specified settings.</summary>
+		/// <param name="settings">The paragraph style settings to apply, or <see langword="null" /> to create a default paragraph style.</param>
+		public unsafe CTParagraphStyle (CTParagraphStyleSettings? settings)
 			: base (settings is null ? CTParagraphStyleCreate (null, 0) : CreateFromSettings (settings), true, true)
 		{
 		}
@@ -452,7 +452,9 @@ namespace CoreText {
 					byte* p = &pv [i].int8;
 					settings [i].value = (IntPtr) p;
 				}
-				handle = CTParagraphStyleCreate (settings, settings.Length);
+				fixed (CTParagraphStyleSetting* settingsPtr = settings) {
+					handle = CTParagraphStyleCreate (settingsPtr, settings.Length);
+				}
 			}
 			// Yes this weird Dispose implementation is correct, this bugzilla
 			// comment explains more about it. TL;DR: check CTParagraphStyleSpecifierIntPtrsValue

@@ -36,15 +36,17 @@ namespace Foundation {
 		/// <returns>The number of bytes read, zero at the end of the stream, or -1 if an error occurs.</returns>
 		/// <exception cref="ArgumentNullException"><paramref name="buffer" /> is <see langword="null" />.</exception>
 		/// <exception cref="ArgumentException"><paramref name="len" /> exceeds the buffer length.</exception>
-		public nint Read (byte [] buffer, nuint len)
+		public unsafe nint Read (byte [] buffer, nuint len)
 		{
 			if (buffer is null)
 				throw new ArgumentNullException (nameof (buffer));
 			if (len > (nuint) buffer.Length)
 				throw new ArgumentException ("The requested length exceeds the buffer length.", nameof (len));
-			var result = objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
-			GC.KeepAlive (this);
-			return result;
+			fixed (byte* ptr = buffer) {
+				var result = objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), (IntPtr) ptr, len);
+				GC.KeepAlive (this);
+				return result;
+			}
 		}
 
 		/// <summary>Reads data from the stream into the provided buffer starting at the given offset.</summary>
@@ -78,9 +80,6 @@ namespace Foundation {
 			fixed (byte* ptr = buffer)
 				return Read ((IntPtr) (buffer.IsEmpty ? &empty : ptr), (nuint) buffer.Length);
 		}
-
-		[DllImport (Messaging.LIBOBJC_DYLIB)]
-		static extern nint objc_msgSend (IntPtr handle, IntPtr sel, [In, Out] byte [] buffer, nuint len);
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		static extern nint objc_msgSend (IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);

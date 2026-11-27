@@ -65,6 +65,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool Debug { get; set; }
 
+		public bool GenerateArchivedExpandedEntitlements { get; set; } = true;
+
 		public string Entitlements { get; set; } = string.Empty;
 
 		public string ProvisioningProfile { get; set; } = string.Empty;
@@ -431,6 +433,9 @@ namespace Xamarin.MacDev.Tasks {
 		// this virtual method is required for tests
 		protected virtual MobileProvision GetMobileProvision (MobileProvisionPlatform platform, string name)
 		{
+			if (File.Exists (name))
+				return MobileProvision.LoadFromFile (name);
+
 			return MobileProvisionIndex.GetMobileProvision (platform, name);
 		}
 
@@ -539,7 +544,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				// No matter what, I haven't been able to make Xcode apply any entitlements to the when signing simulator apps
 				compiled = new PDictionary ();
-			} else {
+			} else if (GenerateArchivedExpandedEntitlements) {
 				archived = GetArchivedExpandedEntitlements (templates, compiled);
 			}
 

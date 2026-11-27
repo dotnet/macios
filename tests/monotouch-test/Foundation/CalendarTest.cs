@@ -68,11 +68,34 @@ namespace MonoTouchFixtures.Foundation {
 			TestRuntime.AssertXcodeVersion (6, 0);
 		}
 
-		public NSDate Yesterday { get { return NSDate.FromTimeIntervalSinceNow (-60 * 60 * 24); } }
-		public NSDate Tomorrow { get { return NSDate.FromTimeIntervalSinceNow (60 * 60 * 24); } }
+		static NSDate AddDays (NSCalendar calendar, NSDate date, int days)
+		{
+			using var components = new NSDateComponents { Day = days };
+			return calendar.DateByAddingComponents (components, date, NSCalendarOptions.None);
+		}
+
 		public NSDate NowPlusTenSeconds { get { return NSDate.FromTimeIntervalSinceNow (10); } }
 		public NSDate NowPlusOneHour { get { return NSDate.FromTimeIntervalSinceNow (60 * 60); } }
 		public NSDate NowMinusTenSeconds { get { return NSDate.FromTimeIntervalSinceNow (-10); } }
+
+		[TestCase (3, 7, 23, 1, 23)]
+		[TestCase (3, 9, 0, -1, 23)]
+		[TestCase (11, 1, 0, 1, 25)]
+		[TestCase (11, 1, 23, -1, 25)]
+		public void TestAddDaysAcrossDaylightSavingTime (int month, int day, int hour, int days, int elapsedHours)
+		{
+			using var calendar = new NSCalendar (NSCalendarType.Gregorian);
+			using var timeZone = NSTimeZone.FromName ("America/Los_Angeles");
+			calendar.TimeZone = timeZone;
+			using var components = new NSDateComponents { Year = 2026, Month = month, Day = day, Hour = hour };
+			using var date = calendar.DateFromComponents (components);
+			using var result = AddDays (calendar, date, days);
+
+			components.Day += days;
+			using var expected = calendar.DateFromComponents (components);
+			Assert.That (result.SecondsSinceReferenceDate, Is.EqualTo (expected.SecondsSinceReferenceDate), "Calendar day");
+			Assert.That (result.SecondsSinceReferenceDate - date.SecondsSinceReferenceDate, Is.EqualTo (days * elapsedHours * 3600), "Elapsed seconds");
+		}
 
 
 		[Test]
@@ -179,10 +202,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			RequiresIos8 ();
 
-			NSDateComponents todayComponents = NSCalendar.CurrentCalendar.Components (NSCalendarUnit.Day | NSCalendarUnit.Month | NSCalendarUnit.Year, NSDate.Now);
-			NSDateComponents tomorrowComponents = NSCalendar.CurrentCalendar.Components (NSCalendarUnit.Day | NSCalendarUnit.Month | NSCalendarUnit.Year, Tomorrow);
+			var calendar = NSCalendar.CurrentCalendar;
+			using var now = NSDate.Now;
+			using var tomorrow = AddDays (calendar, now, 1);
+			NSDateComponents todayComponents = calendar.Components (NSCalendarUnit.Day | NSCalendarUnit.Month | NSCalendarUnit.Year, now);
+			NSDateComponents tomorrowComponents = calendar.Components (NSCalendarUnit.Day | NSCalendarUnit.Month | NSCalendarUnit.Year, tomorrow);
 
-			NSDateComponents components = NSCalendar.CurrentCalendar.ComponentsFromDateToDate (NSCalendarUnit.Day | NSCalendarUnit.Month, todayComponents, tomorrowComponents, NSCalendarOptions.None);
+			NSDateComponents components = calendar.ComponentsFromDateToDate (NSCalendarUnit.Day | NSCalendarUnit.Month, todayComponents, tomorrowComponents, NSCalendarOptions.None);
 			Assert.That (components.Day, Is.EqualTo ((nint) 1), "One day passed between today and tomorrow");
 		}
 
@@ -222,10 +248,11 @@ namespace MonoTouchFixtures.Foundation {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			NSDate now = NSDate.Now;
+			using var tomorrow = AddDays (NSCalendar.CurrentCalendar, now, 1);
 			NSDate oneDayFromNow = NSCalendar.CurrentCalendar.DateByAddingUnit (NSCalendarUnit.Day, 1, now, NSCalendarOptions.None);
-			Assert.That (NSCalendar.CurrentCalendar.IsEqualToUnitGranularity (Tomorrow, oneDayFromNow, NSCalendarUnit.Day), Is.True, $"oneDayFromNow: DateByAddingUnit - One day from now should be tomorrow {Tomorrow} != {oneDayFromNow}");
+			Assert.That (NSCalendar.CurrentCalendar.IsEqualToUnitGranularity (tomorrow, oneDayFromNow, NSCalendarUnit.Day), Is.True, $"oneDayFromNow: DateByAddingUnit - One day from now should be tomorrow {tomorrow} != {oneDayFromNow}");
 
-			var todayDayNumber = NSCalendar.CurrentCalendar.GetComponentFromDate (NSCalendarUnit.Day, NSDate.Now);
+			var todayDayNumber = NSCalendar.CurrentCalendar.GetComponentFromDate (NSCalendarUnit.Day, now);
 			NSDate todayPlusADay = NSCalendar.CurrentCalendar.DateBySettingUnit (NSCalendarUnit.Day, todayDayNumber + 1, now, NSCalendarOptions.None);
 			if (todayPlusADay is null) { // Work on the last day of a month
 				var todayMonthNumber = NSCalendar.CurrentCalendar.GetComponentFromDate (NSCalendarUnit.Month, now);
@@ -235,7 +262,7 @@ namespace MonoTouchFixtures.Foundation {
 				var todayYearNumber = NSCalendar.CurrentCalendar.GetComponentFromDate (NSCalendarUnit.Year, now);
 				todayPlusADay = NSCalendar.CurrentCalendar.DateBySettingUnit (NSCalendarUnit.Year, todayYearNumber + 1, now, NSCalendarOptions.None);
 			}
-			Assert.That (NSCalendar.CurrentCalendar.IsEqualToUnitGranularity (Tomorrow, todayPlusADay, NSCalendarUnit.Day), Is.True, $"todayPlusADay: lDateBySettingUnit - One day from now should be tomorrow {Tomorrow} != {todayPlusADay}");
+			Assert.That (NSCalendar.CurrentCalendar.IsEqualToUnitGranularity (tomorrow, todayPlusADay, NSCalendarUnit.Day), Is.True, $"todayPlusADay: lDateBySettingUnit - One day from now should be tomorrow {tomorrow} != {todayPlusADay}");
 		}
 
 		[Test]
@@ -277,21 +304,36 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			RequiresIos8 ();
 
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInToday (NSDate.Now), Is.True, "IsDateInToday positive");
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInToday (Tomorrow), Is.False, "IsDateInToday negative");
+			var calendar = NSCalendar.CurrentCalendar;
+			using var now = NSDate.Now;
+			using var tomorrow = AddDays (calendar, now, 1);
+			using var yesterday = AddDays (calendar, now, -1);
 
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInTomorrow (NSDate.Now), Is.False, "IsDateInTomorrow negative");
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInTomorrow (Tomorrow), Is.True, "IsDateInTomorrow positive");
+			var nowIsToday = calendar.IsDateInToday (now);
+			var tomorrowIsToday = calendar.IsDateInToday (tomorrow);
+			var nowIsTomorrow = calendar.IsDateInTomorrow (now);
+			var tomorrowIsTomorrow = calendar.IsDateInTomorrow (tomorrow);
+			var nowIsYesterday = calendar.IsDateInYesterday (now);
+			var yesterdayIsYesterday = calendar.IsDateInYesterday (yesterday);
+			using var after = NSDate.Now;
+			if (!calendar.IsInSameDay (now, after))
+				Assert.Inconclusive ("The calendar day changed while collecting relative-date results.");
 
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInYesterday (NSDate.Now), Is.False, "IsDateInYesterday negative");
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInYesterday (Yesterday), Is.True, "IsDateInYesterday positive");
+			Assert.That (nowIsToday, Is.True, "IsDateInToday positive");
+			Assert.That (tomorrowIsToday, Is.False, "IsDateInToday negative");
 
-			Assert.That (NSCalendar.CurrentCalendar.IsInSameDay (NSDate.Now, Tomorrow), Is.False, "IsInSameDay negative");
+			Assert.That (nowIsTomorrow, Is.False, "IsDateInTomorrow negative");
+			Assert.That (tomorrowIsTomorrow, Is.True, "IsDateInTomorrow positive");
+
+			Assert.That (nowIsYesterday, Is.False, "IsDateInYesterday negative");
+			Assert.That (yesterdayIsYesterday, Is.True, "IsDateInYesterday positive");
+
+			Assert.That (calendar.IsInSameDay (now, tomorrow), Is.False, "IsInSameDay negative");
 
 			NSDate weekend;
 			double length;
-			NSCalendar.CurrentCalendar.FindNextWeekend (out weekend, out length, NSCalendarOptions.None, NSDate.Now);
-			Assert.That (NSCalendar.CurrentCalendar.IsDateInWeekend (weekend), Is.True, "IsDateInWeekend positive");
+			calendar.FindNextWeekend (out weekend, out length, NSCalendarOptions.None, now);
+			Assert.That (calendar.IsDateInWeekend (weekend), Is.True, "IsDateInWeekend positive");
 		}
 
 		[Test]

@@ -26,14 +26,19 @@ namespace Xamarin.Tests {
 		[Test]
 		[Category ("WindowsInclusive")]
 		[TestCase ("SubscribeToDeviceUpdates", "The 'DeviceUpdatesPipeName' property must be set to the name of a named pipe created by the caller.")]
-		[TestCase ("StreamDeviceLog", "The 'DeviceLogPipeName' property must be set to the name of a named pipe created by the caller.")]
-		public void RequirePipeName (string target, string expectedError)
+		[TestCase ("StreamDeviceLog", "Exactly one of the 'DeviceLogPipeName' and 'DeviceLogFile' properties must be set.")]
+		[TestCase ("StreamDeviceLog", "Exactly one of the 'DeviceLogPipeName' and 'DeviceLogFile' properties must be set.", "placeholder", "placeholder.log")]
+		public void RequirePipeName (string target, string expectedError, string? deviceLogPipeName = null, string? deviceLogFile = null)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
 
 			var project = GetProjectPath ("MySimpleApp", "iossimulator-arm64", ApplePlatform.iOS, out _);
 			var properties = GetDefaultProperties (includeRemoteProperties: false);
 			properties ["Device"] = "placeholder";
+			if (deviceLogPipeName is not null)
+				properties ["DeviceLogPipeName"] = deviceLogPipeName;
+			if (deviceLogFile is not null)
+				properties ["DeviceLogFile"] = deviceLogFile;
 
 			var result = DotNet.AssertBuildFailure (project, properties, target: target);
 			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).Select (v => v.Message).ToArray ();

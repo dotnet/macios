@@ -5628,8 +5628,6 @@ F:Security.TlsProtocolVersion.Tls10
 F:Security.TlsProtocolVersion.Tls11
 F:Security.TlsProtocolVersion.Tls12
 F:Security.TlsProtocolVersion.Tls13
-F:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection.Incoming
-F:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection.Outgoing
 F:SensorKit.SRAcousticSettingsAccessibilityBackgroundSoundsName.Airplane
 F:SensorKit.SRAcousticSettingsAccessibilityBackgroundSoundsName.Babble
 F:SensorKit.SRAcousticSettingsAccessibilityBackgroundSoundsName.BalancedNoise
@@ -58330,7 +58328,6 @@ T:SensitiveContentAnalysis.SCSensitivityAnalysis
 T:SensitiveContentAnalysis.SCSensitivityAnalyzer
 T:SensitiveContentAnalysis.SCVideoStreamAnalysisChangeHandler
 T:SensitiveContentAnalysis.SCVideoStreamAnalyzer
-T:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection
 T:SensorKit.SRAcousticSettings
 T:SensorKit.SRAcousticSettingsAccessibility
 T:SensorKit.SRAcousticSettingsAccessibilityBackgroundSounds

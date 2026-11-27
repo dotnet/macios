@@ -80,10 +80,13 @@ namespace SensitiveContentAnalysis {
 		NSProgress AnalyzeVideo (NSUrl fileUrl, Action<SCSensitivityAnalysis, NSError> completionHandler);
 	}
 
+	/// <summary>Enumerates the directions of a video stream that a video stream analyzer analyzes.</summary>
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	public enum SCVideoStreamAnalyzerStreamDirection : long {
+		/// <summary>The stream is sent to another device, such as the stream from this device's camera.</summary>
 		Outgoing = 1,
+		/// <summary>The stream comes from another device, such as one received over the network from another device's camera.</summary>
 		Incoming = 2,
 	}
 

@@ -17,7 +17,7 @@ namespace Foundation {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		[Obsolete ("The NewsstandKit framework has been removed from iOS.")]
+		[Obsolete (Constants.NewsstandKitRemoved)]
 		public virtual global::NewsstandKit.NKAssetDownload NewsstandAssetDownload {
 			get {
 				throw new InvalidOperationException (Constants.NewsstandKitRemoved);

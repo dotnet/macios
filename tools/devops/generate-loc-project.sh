@@ -23,7 +23,7 @@ emit_loc_item () {
 		return 1
 	fi
 
-	# Hand-backs still use paths from the old s/macios checkout.
+	# LCL files still use paths from the old s/macios checkout.
 	local lcl="macios/Localize/loc/{Lang}/macios/$source.lcl"
 
 	printf '%s' "$separator"

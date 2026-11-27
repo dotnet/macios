@@ -5,11 +5,17 @@ using AppKit;
 using ObjCRuntime;
 using Security;
 
+#if XAMCORE_5_0
+using SecKeychain = Security.SecKeychain2;
+#endif
+
 namespace SecurityInterface {
 
 	public partial class SFKeychainSavePanel {
 
+#if XAMCORE_5_0
 		/// <summary>Gets the keychain created by the panel, or <see langword="null" /> if no keychain was created.</summary>
+#endif
 		public SecKeychain? Keychain => _Keychain == IntPtr.Zero ? null : new SecKeychain (_Keychain, owns: false);
 
 		/// <summary>Displays the save panel as a sheet and invokes the callback when it closes.</summary>

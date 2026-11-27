@@ -241,6 +241,11 @@ this mode:
 dotnet build MyApp.csproj -f net12.0-ios -t:StreamDeviceLog -p:DeviceLogFile=device.log -p:Device=<udid> -p:ServerAddress=mac.example.com -p:ServerUser=remote-user
 ```
 
+Use Ctrl+C to stop file output. On macOS, sending SIGTERM only to the
+`dotnet` process can leave the stream running in the MSBuild server, keeping
+the SSH connection open and writing to the file. Programs that need an
+explicit stop signal should use pipe mode and send `Stop` or close the pipe.
+
 Added in .NET 12.
 
 ## SubscribeToDeviceUpdates

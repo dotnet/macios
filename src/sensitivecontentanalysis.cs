@@ -9,11 +9,11 @@ namespace SensitiveContentAnalysis {
 	/// <summary>Enumerates the types of sensitive content.</summary>
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	public enum SCSensitiveContentType {
-		/// <summary>The content is sexually explicit.</summary>
+		/// <summary>The content is nude or sexually explicit.</summary>
 		[Field ("SCSensitiveContentTypeSexuallyExplicit")]
 		SexuallyExplicit,
 
-		/// <summary>The content contains gore or violence.</summary>
+		/// <summary>The content contains graphic violence or gore.</summary>
 		[Field ("SCSensitiveContentTypeGoreOrViolence")]
 		GoreOrViolence,
 	}

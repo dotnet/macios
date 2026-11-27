@@ -1368,8 +1368,6 @@ F:BackgroundAssets.BAErrorCode.SessionDownloadDisallowedByDomain
 F:BackgroundAssets.BAErrorCode.SessionDownloadNotPermittedBeforeAppLaunch
 F:BackgroundAssets.BAManagedErrorCode.AssetPackNotFound
 F:BackgroundAssets.BAManagedErrorCode.FileNotFound
-F:BackgroundTasks.BGContinuedProcessingTaskRequestResources.Default
-F:BackgroundTasks.BGContinuedProcessingTaskRequestResources.Gpu
 F:BackgroundTasks.BGTaskSchedulerErrorCode.ImmediateRunIneligible
 F:BackgroundTasks.BGTaskSchedulerErrorCode.NotPermitted
 F:BackgroundTasks.BGTaskSchedulerErrorCode.TooManyPendingTaskRequests
@@ -54762,7 +54760,6 @@ T:BackgroundTasks.BGAppRefreshTask
 T:BackgroundTasks.BGAppRefreshTaskRequest
 T:BackgroundTasks.BGContinuedProcessingTask
 T:BackgroundTasks.BGContinuedProcessingTaskRequest
-T:BackgroundTasks.BGContinuedProcessingTaskRequestResources
 T:BackgroundTasks.BGHealthResearchTask
 T:BackgroundTasks.BGHealthResearchTaskRequest
 T:BackgroundTasks.BGProcessingTask

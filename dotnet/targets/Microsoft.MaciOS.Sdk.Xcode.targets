@@ -33,7 +33,7 @@ This file contains MSBuild targets that support building Xcode framework project
 
 
   <Target Name="_GetBuildXcodeProjectsInputs"
-      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) " >
+      Condition=" '@(XcodeProject->Count())' != '0' " >
     <ItemGroup>
       <_AllXcbFiles Include="%(XcodeProject.RootDir)%(XcodeProject.Directory)/**/*"
           Condition= " Exists('%(XcodeProject.RootDir)%(XcodeProject.Directory)') "/>
@@ -47,7 +47,7 @@ This file contains MSBuild targets that support building Xcode framework project
   </Target>
 
   <Target Name="_CalculateXcodeProjectOutputPaths"
-        Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) "
+        Condition=" '@(XcodeProject->Count())' != '0' "
         Outputs="%(XcodeProject.Identity)" >
     <Hash
         ItemsToHash="%(XcodeProject.Identity)"
@@ -61,13 +61,24 @@ This file contains MSBuild targets that support building Xcode framework project
     </ItemGroup>
   </Target>
 
+  <Target Name="_PrepareXcodeProjects"
+      Condition=" '@(XcodeProject->Count())' != '0' "
+      DependsOnTargets="_DetectSdkLocations" >
+    <MacDevMessage ResourceName="XcodeBuild_RequiresMacConnection"
+        Error="true"
+        Condition=" '$(IsMacEnabled)' != 'true' " />
+    <PropertyGroup>
+      <_XcodeProjectBuildSessionId>$(BuildSessionId)</_XcodeProjectBuildSessionId>
+    </PropertyGroup>
+  </Target>
+
   <Target Name="_BuildXcodeProjects"
-      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) "
-      DependsOnTargets="_GetBuildXcodeProjectsInputs;_CalculateXcodeProjectOutputPaths;_DetectSdkLocations"
+      Condition=" '@(XcodeProject->Count())' != '0' "
+      DependsOnTargets="_PrepareXcodeProjects;_GetBuildXcodeProjectsInputs;_CalculateXcodeProjectOutputPaths"
       Inputs="@(_XcbInputs)"
       Outputs="$(_BuildXcodeProjectsStamp)" >
-    <RemoveDir Directories="@(XcodeProject->'%(OutputPath)archives')" />
-    <RemoveDir Directories="@(XcodeProject->'%(OutputPath)xcframeworks')" />
+    <RemoveDir SessionId="$(BuildSessionId)" Directories="@(XcodeProject->'%(OutputPath)archives')" />
+    <RemoveDir SessionId="$(BuildSessionId)" Directories="@(XcodeProject->'%(OutputPath)xcframeworks')" />
 
     <PropertyGroup>
       <_XcArchivePlatform Condition=" '$(TargetPlatformIdentifier)' == 'maccatalyst' ">generic/platform=macOS,variant=Mac Catalyst</_XcArchivePlatform>
@@ -78,6 +89,7 @@ This file contains MSBuild targets that support building Xcode framework project
     <!-- Create XCARCHIVE for $(TargetPlatformIdentifier) -->
     <!-- The derivedDataPath and packageCachePath arguments are used to better support multitargeting projects building in parallel -->
     <CreateXcArchive
+        SessionId="$(BuildSessionId)"
         ProjectPath="%(XcodeProject.FullPath)"
         SchemeName="%(XcodeProject.SchemeName)"
         Configuration="%(XcodeProject.Configuration)"
@@ -85,12 +97,14 @@ This file contains MSBuild targets that support building Xcode framework project
         OutputPath="%(XcodeProject.OutputPath)archives/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier).xcarchive"
         DerivedDataPath="$(_XcodeProjectDefaultOutputPathRoot)DerivedData"
         PackageCachePath="$(_XcodeProjectDefaultOutputPathRoot)Cache"
+        InputExcludeDirectories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath);$(BaseOutputPath);$(OutputPath);%(XcodeProject.OutputPath)"
         SdkDevPath="$(_SdkDevPath)"
         WorkingDirectory="%(XcodeProject.RootDir)%(XcodeProject.Directory)" >
     </CreateXcArchive>
 
     <!-- Create simulator XCARCHIVE for $(TargetPlatformIdentifier) -->
     <CreateXcArchive
+        SessionId="$(BuildSessionId)"
         Condition=" '$(TargetPlatformIdentifier)' == 'ios' or  '$(TargetPlatformIdentifier)' == 'tvos' "
         ProjectPath="%(XcodeProject.FullPath)"
         SchemeName="%(XcodeProject.SchemeName)"
@@ -98,6 +112,7 @@ This file contains MSBuild targets that support building Xcode framework project
         ArchivePlatform="$(_XcArchivePlatform) Simulator"
         DerivedDataPath="$(_XcodeProjectDefaultOutputPathRoot)DerivedData"
         PackageCachePath="$(_XcodeProjectDefaultOutputPathRoot)Cache"
+        InputExcludeDirectories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath);$(BaseOutputPath);$(OutputPath);%(XcodeProject.OutputPath)"
         OutputPath="%(XcodeProject.OutputPath)archives/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier)Simulator.xcarchive"
         SdkDevPath="$(_SdkDevPath)"
         WorkingDirectory="%(XcodeProject.RootDir)%(XcodeProject.Directory)" >
@@ -105,6 +120,7 @@ This file contains MSBuild targets that support building Xcode framework project
 
     <!-- Create XCFRAMEWORK for $(TargetPlatformIdentifier) -->
     <CreateXcFramework
+        SessionId="$(BuildSessionId)"
         XcArchivePath="%(XcodeProject.OutputPath)archives"
         FrameworkName="%(XcodeProject.SchemeName).framework"
         OutputPath="%(XcodeProject.OutputPath)xcframeworks/%(XcodeProject.SchemeName)$(TargetPlatformIdentifier).xcframework"
@@ -130,17 +146,26 @@ This file contains MSBuild targets that support building Xcode framework project
     <Touch Files="$(_BuildXcodeProjectsStamp)" AlwaysCreate="true" />
     <ItemGroup>
       <!-- Add stamp and build outputs to FileWrites so they are not deleted on IncrementalClean -->
-      <FileWrites Include="$(_BuildXcodeProjectsStamp);%(XcodeProject.OutputPath)**/*" />
+      <FileWrites Include="$(_BuildXcodeProjectsStamp)" />
+      <_XcodeProjectBuildStamp Include="$(_BuildXcodeProjectsStamp)" />
       <!-- Automatically add XCFRAMEWORK outputs to be bound or otherwise processed later in the build -->
       <NativeReference Include="@(_XcodeProjectXcFrameworkOutputs)" Kind="%(Kind)" ForceLoad="%(ForceLoad)" Frameworks="%(Frameworks)" SmartLink="%(SmartLink)" Visible="%(Visible)" />
     </ItemGroup>
   </Target>
 
+  <Target Name="_CollectXcodeProjectOutputs"
+      AfterTargets="_BuildXcodeProjects"
+      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) " >
+    <ItemGroup>
+      <FileWrites Include="%(XcodeProject.OutputPath)**/*" />
+    </ItemGroup>
+  </Target>
+
 
   <Target Name="_CleanXcodeProjects"
-      Condition=" '@(XcodeProject->Count())' != '0' and $([MSBuild]::IsOSPlatform('osx')) "
+      Condition=" '@(XcodeProject->Count())' != '0' "
       DependsOnTargets="_GetBuildXcodeProjectsInputs;_CalculateXcodeProjectOutputPaths" >
-    <RemoveDir Directories="@(XcodeProject->'%(OutputPath)')" />
+    <RemoveDir SessionId="$(BuildSessionId)" Directories="@(XcodeProject->'%(OutputPath)')" />
   </Target>
 
 </Project>

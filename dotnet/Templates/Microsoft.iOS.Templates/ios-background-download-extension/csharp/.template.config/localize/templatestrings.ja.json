@@ -1,0 +1,18 @@
+{
+  "author": "Microsoft",
+  "name": "iOS Background Download Extension",
+  "description": "A .NET iOS downloader extension for self-hosted Background Assets packs. The system manages the downloads.",
+  "postActions/addProjectReference/description": "Add the extension to the containing app",
+  "postActions/addProjectReference/manualInstructions/default/text": "In the app project, add a ProjectReference to iOSBackgroundDownloadExtension1.csproj with IsAppExtension set to true. Configure the app for self-hosted Background Assets with system-managed downloads, and use the same app group in the app and the extension. See https://github.com/dotnet/macios/blob/main/dotnet/Templates/README.md#background-download-extension.",
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/bundleId/description": "The bundle identifier of the app that contains the extension",
+  "symbols/appGroupId/displayName": "App group ID",
+  "symbols/appGroupId/description": "The app group shared by the app and the extension",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
+  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file (must be 26.0 or later)",
+  "symbols/extensionClassName/displayName": "Extension class name",
+  "symbols/extensionClassName/description": "The downloader class name, used in [Register] and EXPrincipalClass",
+  "symbols/Framework/description": "The target framework for the project.",
+  "symbols/Framework/choices/net12.0-ios/description": "Target net12.0-ios",
+  "symbols/Framework/choices/net11.0-ios/description": "Target net11.0-ios"
+}

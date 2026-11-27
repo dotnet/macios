@@ -9,13 +9,13 @@ namespace NS {
 		[Export ("propA")]
 		NSObject PropA {
 			get;
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			set;
 		}
 
 		[Export ("propB")]
 		NSObject PropB {
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			get;
 			set;
 		}
@@ -27,14 +27,14 @@ namespace NS {
 		[Export ("iPropA")]
 		NSObject IPropA {
 			get;
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			set;
 		}
 
 		[Abstract]
 		[Export ("iPropB")]
 		NSObject IPropB {
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			get;
 			set;
 		}
@@ -42,13 +42,13 @@ namespace NS {
 		[Export ("iPropAOpt")]
 		NSObject IPropAOpt {
 			get;
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			set;
 		}
 
 		[Export ("iPropBOpt")]
 		NSObject IPropBOpt {
-			[NoiOS]
+			[NoiOS, NoMac, NoTV, NoMacCatalyst]
 			get;
 			set;
 		}

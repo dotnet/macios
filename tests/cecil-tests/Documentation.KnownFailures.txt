@@ -5628,9 +5628,6 @@ F:Security.TlsProtocolVersion.Tls10
 F:Security.TlsProtocolVersion.Tls11
 F:Security.TlsProtocolVersion.Tls12
 F:Security.TlsProtocolVersion.Tls13
-F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.DescriptiveInterventions
-F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.Disabled
-F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.SimpleInterventions
 F:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection.Incoming
 F:SensitiveContentAnalysis.SCVideoStreamAnalyzerStreamDirection.Outgoing
 F:SensorKit.SRAcousticSettingsAccessibilityBackgroundSoundsName.Airplane
@@ -58330,7 +58327,6 @@ T:Security.TlsCipherSuiteGroup
 T:Security.TlsProtocolVersion
 T:SecurityUI.SFCertificatePresentation
 T:SensitiveContentAnalysis.SCSensitivityAnalysis
-T:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy
 T:SensitiveContentAnalysis.SCSensitivityAnalyzer
 T:SensitiveContentAnalysis.SCVideoStreamAnalysisChangeHandler
 T:SensitiveContentAnalysis.SCVideoStreamAnalyzer

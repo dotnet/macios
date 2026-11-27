@@ -49,11 +49,15 @@ namespace SensitiveContentAnalysis {
 		bool ShouldMuteAudio { get; }
 	}
 
+	/// <summary>Enumerates the sensitivity analysis policies on the device, which determine the kind of intervention to show.</summary>
 	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum SCSensitivityAnalysisPolicy : long {
+		/// <summary>No feature that requires sensitivity analysis is enabled, so analysis is disabled.</summary>
 		Disabled = 0,
+		/// <summary>Sensitivity analysis is enabled through Sensitive Content Warning in Settings. Apps are expected to show brief, inline UI, such as a simple button to show the content.</summary>
 		SimpleInterventions = 1,
+		/// <summary>Sensitivity analysis is enabled for children or teens through Communication Safety in Screen Time. Apps are expected to show more descriptive UI that explains the potential risks.</summary>
 		DescriptiveInterventions = 2,
 	}
 

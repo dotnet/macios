@@ -255,10 +255,13 @@ namespace CoreBluetooth {
 		High,
 	}
 
+	/// <summary>Enumerates the connection events of a peripheral.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBConnectionEvent : long {
+		/// <summary>The peripheral disconnected.</summary>
 		Disconnected = 0,
+		/// <summary>The peripheral connected.</summary>
 		Connected = 1,
 	}
 

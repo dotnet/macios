@@ -17,10 +17,10 @@ This file should be imported by eng/Versions.props
     <MicrosoftNETCoreAppRefPackageVersion>12.0.0-alpha.1.26575.106</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>12.0.100-alpha.1.26575.106</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet-macios dependencies -->
-    <MicrosoftiOSSdknet110_272PackageVersion>27.2.11062</MicrosoftiOSSdknet110_272PackageVersion>
-    <MicrosoftMacCatalystSdknet110_272PackageVersion>27.2.11062</MicrosoftMacCatalystSdknet110_272PackageVersion>
-    <MicrosoftmacOSSdknet110_272PackageVersion>27.2.11062</MicrosoftmacOSSdknet110_272PackageVersion>
-    <MicrosofttvOSSdknet110_272PackageVersion>27.2.11062</MicrosofttvOSSdknet110_272PackageVersion>
+    <MicrosoftiOSSdknet110_272PackageVersion>27.2.11066</MicrosoftiOSSdknet110_272PackageVersion>
+    <MicrosoftMacCatalystSdknet110_272PackageVersion>27.2.11066</MicrosoftMacCatalystSdknet110_272PackageVersion>
+    <MicrosoftmacOSSdknet110_272PackageVersion>27.2.11066</MicrosoftmacOSSdknet110_272PackageVersion>
+    <MicrosofttvOSSdknet110_272PackageVersion>27.2.11066</MicrosofttvOSSdknet110_272PackageVersion>
     <!-- dotnet-macios-devtools dependencies -->
     <MicrosoftAppleToolsMaciOSPackageVersion>1.0.0-preview.1.26575.1</MicrosoftAppleToolsMaciOSPackageVersion>
     <!-- dotnet-xharness dependencies -->

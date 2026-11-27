@@ -322,6 +322,20 @@ Other capitalization, such as `.Framework` or `.FRAMEWORK`, produces warning
 `MT7200` because the framework may not be linked or bundled
 correctly. Rename the directory and update the reference to use `.framework`.
 
+Binding projects can reference system frameworks using their system paths:
+
+```xml
+<ItemGroup>
+    <NativeReference Include="/System/Library/Frameworks/ScriptingBridge.framework" Kind="Framework" />
+</ItemGroup>
+```
+
+System frameworks are linked by name from the target Apple SDK, not copied into
+the binding resource package or the app bundle. The framework doesn't need to
+exist at that path on the build machine, so the same syntax also works when
+building bindings on Windows. Additional `Frameworks`, `WeakFrameworks`, and
+`LinkerFlags` metadata is preserved.
+
 ## ObjcBindingApiDefinition
 
 An item group that lists all the API definitions for binding projects.

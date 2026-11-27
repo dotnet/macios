@@ -14,7 +14,7 @@ using Xamarin.Utils;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class CreateBindingResourceTaskTests : TestBase {
-		CreateBindingResourcePackage ExecuteTask (string compress, bool symlinks, out string tmpdir)
+		CreateBindingResourcePackage ExecuteTask (string compress, bool symlinks, out string tmpdir, bool includeSystemFramework = false)
 		{
 			tmpdir = Cache.CreateTemporaryDirectory ();
 			var task = CreateTask<CreateBindingResourcePackage> ();
@@ -22,6 +22,8 @@ namespace Xamarin.MacDev.Tasks {
 			task.BindingResourcePath = Path.Combine (tmpdir, "CreateBindingResourceTaskTest");
 			task.IntermediateOutputPath = Path.Combine (tmpdir, "IntermediateOutputPath");
 			task.NativeReferences = CreateNativeReferences (tmpdir, symlinks);
+			if (includeSystemFramework)
+				task.NativeReferences = task.NativeReferences.Concat (new [] { CreateSystemFramework () }).ToArray ();
 
 			var currentDir = Environment.CurrentDirectory;
 			try {
@@ -32,6 +34,49 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			return task;
+		}
+
+		static TaskItem CreateSystemFramework ()
+		{
+			var framework = new TaskItem ("/System/Library/Frameworks/ScriptingBridge.framework");
+			framework.SetMetadata ("Kind", "Framework");
+			return framework;
+		}
+
+		[TestCase ("true")]
+		[TestCase ("false")]
+		[TestCase ("auto")]
+		public void SystemFrameworkOnly (string compress)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var framework = CreateSystemFramework ();
+			var task = CreateTask<CreateBindingResourcePackage> ();
+			task.Compress = compress;
+			task.BindingResourcePath = Path.Combine (tmpdir, "Binding.resources");
+			task.IntermediateOutputPath = Path.Combine (tmpdir, "obj");
+			task.NativeReferences = new [] { framework };
+
+			ExecuteTask (task);
+
+			Assert.That (task.PackagedFiles, Is.Empty, "Packaged files");
+			Assert.That (Directory.Exists (task.BindingResourcePath), Is.False, "No sidecar directory");
+			Assert.That (File.Exists (task.BindingResourcePath + ".zip"), Is.False, "No sidecar zip");
+			Assert.That (task.ShouldCopyToBuildServer (framework), Is.False, "Copy to Mac");
+			Assert.That (task.GetAdditionalItemsToBeCopied (), Is.Empty, "Additional files to copy");
+		}
+
+		[TestCase ("true")]
+		[TestCase ("false")]
+		[TestCase ("auto")]
+		public void MixedSystemAndCustomReferences (string compress)
+		{
+			var task = ExecuteTask (compress, false, out var tmpdir, includeSystemFramework: true);
+			var directory = task.BindingResourcePath;
+			if (compress != "false") {
+				directory = Path.Combine (tmpdir, "Extracted");
+				Extract (task.BindingResourcePath + ".zip", directory);
+			}
+			AssertResourceDirectory (directory, false);
 		}
 
 		[Test]
@@ -189,4 +234,3 @@ namespace Xamarin.MacDev.Tasks {
 
 	}
 }
-

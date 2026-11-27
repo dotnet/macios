@@ -393,8 +393,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var first = new NSMutableSet<NSString> ())
 			using (var second = new NSMutableSet<NSString> ((NSString) "1", (NSString) "2")) {
-				var result = first - second;
-				Assert.That (result, Is.Null, "Empty first should return null");
+				using var result = first - second;
+				Assert.That (result, Is.Not.Null, "Empty first should return an empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "Count");
 			}
 		}
 
@@ -416,8 +417,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var first = new NSMutableSet<NSString> ())
 			using (var second = new NSMutableSet<NSString> ()) {
-				var result = first - second;
-				Assert.That (result, Is.Null, "Both empty should return null");
+				using var result = first - second;
+				Assert.That (result, Is.Not.Null, "Both empty should return an empty set");
+				Assert.That (result.Count, Is.EqualTo ((nuint) 0), "Count");
 			}
 		}
 

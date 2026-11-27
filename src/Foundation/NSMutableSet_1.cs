@@ -26,6 +26,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
@@ -128,10 +129,12 @@ namespace Foundation {
 			return base.ToArray<TKey> ();
 		}
 
-		/// <summary>Creates a new mutable set containing all objects from both sets.</summary>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the union of both sets, or <see langword="null" /> if both sets are <see langword="null" />.</returns>
+		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSMutableSet<TKey>? operator + (NSMutableSet<TKey>? first, NSMutableSet<TKey>? second)
 		{
 			if (first is null && second is null)
@@ -140,18 +143,19 @@ namespace Foundation {
 				return second is null ? new NSMutableSet<TKey> () : new NSMutableSet<TKey> (second);
 			if (second is null || second.Count == 0)
 				return new NSMutableSet<TKey> (first);
-			var result = new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
-			GC.KeepAlive (second);
-			return result;
+			var copy = new NSMutableSet<TKey> (first);
+			copy.UnionSet (second);
+			return copy;
 		}
 
-		/// <summary>Creates a new mutable set with objects from the first set that are not in the second set.</summary>
-		/// <param name="first">The first set.</param>
-		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the difference, or <see langword="null" /> if the first set is <see langword="null" /> or empty.</returns>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSMutableSet<TKey>? operator - (NSMutableSet<TKey>? first, NSMutableSet<TKey>? second)
 		{
-			if (first is null || first.Count == 0)
+			if (first is null)
 				return null;
 			if (second is null || second.Count == 0)
 				return new NSMutableSet<TKey> (first);

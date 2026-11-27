@@ -31,6 +31,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
@@ -107,10 +108,12 @@ namespace Foundation {
 		}
 		#endregion
 
-		/// <summary>Adds two sets together, creating a new set that contains all elements from both sets.</summary>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSSet" /> containing all elements from both sets.</returns>
+		/// <returns>A new <see cref="NSSet" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSSet? operator + (NSSet? first, NSSet? second)
 		{
 			if (first is null)
@@ -120,10 +123,12 @@ namespace Foundation {
 			return first.SetByAddingObjectsFromSet (second);
 		}
 
-		/// <summary>Adds a set and an ordered set together, creating a new set that contains all elements from both.</summary>
-		/// <param name="first">The set.</param>
-		/// <param name="second">The ordered set.</param>
-		/// <returns>A new <see cref="NSSet" /> containing all elements from both the set and the ordered set.</returns>
+		/// <summary>Creates a new set containing all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSSet" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSSet? operator + (NSSet? first, NSOrderedSet? second)
 		{
 			if (first is null)
@@ -139,6 +144,7 @@ namespace Foundation {
 		/// <param name="first">The set to subtract from.</param>
 		/// <param name="second">The set whose elements should be removed.</param>
 		/// <returns>A new <see cref="NSSet" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSSet? operator - (NSSet? first, NSSet? second)
 		{
 			if (first is null)
@@ -150,10 +156,11 @@ namespace Foundation {
 			return copy;
 		}
 
-		/// <summary>Subtracts the elements of an ordered set from a set.</summary>
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
 		/// <param name="first">The set to subtract from.</param>
-		/// <param name="second">The ordered set whose elements should be removed.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
 		/// <returns>A new <see cref="NSSet" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
 		public static NSSet? operator - (NSSet? first, NSOrderedSet? second)
 		{
 			if (first is null)

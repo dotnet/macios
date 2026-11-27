@@ -4795,12 +4795,6 @@ F:MetalPerformanceShadersGraph.MPSGraphTensorNamedDataLayout.Ndhwc
 F:MetalPerformanceShadersGraph.MPSGraphTensorNamedDataLayout.Nhwc
 F:MetalPerformanceShadersGraph.MPSGraphTensorNamedDataLayout.Oidhw
 F:MetalPerformanceShadersGraph.MPSGraphTensorNamedDataLayout.Oihw
-F:MetricKit.MXErrorCode.Duplicated
-F:MetricKit.MXErrorCode.InternalFailure
-F:MetricKit.MXErrorCode.InvalidId
-F:MetricKit.MXErrorCode.MaxCount
-F:MetricKit.MXErrorCode.PastDeadline
-F:MetricKit.MXErrorCode.Unknown
 F:MLCompute.MLCActivationType.Absolute
 F:MLCompute.MLCActivationType.Celu
 F:MLCompute.MLCActivationType.Clamp
@@ -57584,7 +57578,6 @@ T:MetricKit.MXDiskIOMetric
 T:MetricKit.MXDiskSpaceUsageMetric
 T:MetricKit.MXDiskWriteExceptionDiagnostic
 T:MetricKit.MXDisplayMetric
-T:MetricKit.MXErrorCode
 T:MetricKit.MXForegroundExitData
 T:MetricKit.MXGpuMetric
 T:MetricKit.MXHangDiagnostic

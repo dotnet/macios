@@ -4029,10 +4029,6 @@ F:Intents.INVocabularyStringType.MediaMusicArtistName
 F:Intents.INVocabularyStringType.MediaPlaylistTitle
 F:Intents.INVocabularyStringType.MediaShowTitle
 F:LocalAuthentication.LABiometryType.OpticId
-F:LocalAuthentication.LACompanionType.Mac
-F:LocalAuthentication.LACompanionType.None
-F:LocalAuthentication.LACompanionType.Vision
-F:LocalAuthentication.LACompanionType.Watch
 F:LocalAuthentication.LACredentialType.SmartCardPin
 F:LocalAuthentication.LAPolicy.DeviceOwnerAuthenticationWithBiometricsOrWatch
 F:LocalAuthentication.LAPolicy.DeviceOwnerAuthenticationWithWatch
@@ -56681,7 +56677,6 @@ T:LinkPresentation.LPLinkView
 T:LinkPresentation.LPMetadataProvider
 T:LocalAuthentication.LAAuthenticationRequirement
 T:LocalAuthentication.LABiometryFallbackRequirement
-T:LocalAuthentication.LACompanionType
 T:LocalAuthentication.LADomainState
 T:LocalAuthentication.LADomainStateBiometry
 T:LocalAuthentication.LADomainStateCompanion

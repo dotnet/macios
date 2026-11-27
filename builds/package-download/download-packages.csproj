@@ -6,8 +6,6 @@
     <NoWarn>$(NoWarn);NU1505</NoWarn> <!--  warning NU1505: Duplicate 'PackageDownload' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. -->
   </PropertyGroup>
 
-  <Import Project="../../eng/Versions.props" />
-
   <ItemGroup>
     <!-- Download any runtime packs as specified using the PackageRuntimeIdentifiers property -->
     <PackageRuntimeIdentifiers Include="$(PackageRuntimeIdentifiers.Split(' '))" />

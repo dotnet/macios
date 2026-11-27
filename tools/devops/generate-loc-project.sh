@@ -2,7 +2,7 @@
 
 set -o pipefail
 
-# Generates the checked-in OneLocBuild project, including template localization files.
+# Generates eng/Localize/LocProject.json on stdout, including template localization files.
 cd "$(dirname "$0")/../.."
 
 cat <<'EOF'
@@ -23,7 +23,7 @@ emit_loc_item () {
 		return 1
 	fi
 
-	# Keep using the LCL files maintained by the current localization pipeline.
+	# Hand-backs still use paths from the old s/macios checkout.
 	local lcl="macios/Localize/loc/{Lang}/macios/$source.lcl"
 
 	printf '%s' "$separator"

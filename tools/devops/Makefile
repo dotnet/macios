@@ -2,7 +2,9 @@ TOP=../..
 include $(TOP)/Make.config
 
 LocProject.json: generate-loc-project.sh Makefile $(TOP)/Make.config
-	$(Q_GEN) $(TOP)/tools/devops/generate-loc-project.sh > $(TOP)/eng/Localize/$@;
+	$(Q_GEN) tmp="$(TOP)/eng/Localize/$@.tmp"; \
+	trap 'rm -f "$$tmp"' 0; \
+	$(TOP)/tools/devops/generate-loc-project.sh > "$$tmp" && mv "$$tmp" "$(TOP)/eng/Localize/$@"
 
 all check: check-sh check-yaml
 	@true

@@ -78,6 +78,7 @@ public class RegistrarTests : BaseClass {
 		new LoadAssembliesStep ().Process (context);
 		var platformAssembly = context.GetAssemblies ().Single (v => v.Name.Name == $"Microsoft.{platform.AsString ()}");
 		platformAssembly.MainModule.GetType ("UIKit.UIWindowSceneDelegate").Interfaces.Clear ();
+		platformAssembly.MainModule.Types.Remove (platformAssembly.MainModule.GetType ("UIKit.IUIWindowSceneDelegate"));
 		var userAssembly = context.GetAssemblies ().Single (v => v.Name.Name == "Test");
 		userAssembly.MainModule.GetType ("MyClass").Interfaces.Clear ();
 		userAssembly.MainModule.Types.Remove (userAssembly.MainModule.GetType ("IMyProtocol"));
@@ -93,7 +94,7 @@ public class RegistrarTests : BaseClass {
 		Assert.That (declaration, Does.Not.Contain ("MyProtocol"), "Trimmed managed protocol conformance");
 		Assert.That (declaration, Does.Not.Contain ("MyTrimmedProtocol"), "Trimmed protocol with wrapper");
 		Assert.That (declaration, Does.Contain ("MyRetainedProtocol"), "Retained protocol with trimmed conformance");
-		Assert.That (declaration, Does.Contain ("MyExternalProtocol"), "External framework protocol");
+		Assert.That (declaration, Does.Not.Contain ("MyExternalProtocol"), "Trimmed external framework protocol");
 		Assert.That (header, Has.Some.StartsWith ("@protocol MyRetainedProtocol"), "Retained protocol declaration");
 	}
 

@@ -136,7 +136,7 @@ extends:
         dependsOn: []
         condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
         jobs:
-          - template: /eng/common/templates-official/job/onelocbuild.yml
+          - template: /eng/common/templates-official/job/onelocbuild.yml@self
             parameters:
               pool:
                 name: AzurePipelines-EO

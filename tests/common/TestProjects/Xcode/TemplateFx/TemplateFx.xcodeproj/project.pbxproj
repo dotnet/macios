@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D01A22F32C9CBF9C0090773D /* TemplateFx.h in Headers */ = {isa = PBXBuildFile; fileRef = D01A22F22C9CBF9C0090773D /* TemplateFx.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08E31682C9CD1AD00899062 /* SwiftBindTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08E31672C9CD1AD00899062 /* SwiftBindTest.swift */; };
+		A00000000000000000000001 /* DynamicDependency in Frameworks */ = {isa = PBXBuildFile; productRef = A00000000000000000000002 /* DynamicDependency */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A00000000000000000000001 /* DynamicDependency in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +83,9 @@
 			dependencies = (
 			);
 			name = TemplateFx;
+			packageProductDependencies = (
+				A00000000000000000000002 /* DynamicDependency */,
+			);
 			productName = TemplateFx;
 			productReference = D01A22EF2C9CBF9C0090773D /* TemplateFx.framework */;
 			productType = "com.apple.product-type.framework";
@@ -109,6 +114,9 @@
 				Base,
 			);
 			mainGroup = D01A22E52C9CBF9C0090773D;
+			packageReferences = (
+				A00000000000000000000003 /* XCLocalSwiftPackageReference "DynamicDependency" */,
+			);
 			productRefGroup = D01A22F02C9CBF9C0090773D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -138,6 +146,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A00000000000000000000003 /* XCLocalSwiftPackageReference "DynamicDependency" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = DynamicDependency;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A00000000000000000000002 /* DynamicDependency */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DynamicDependency;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D01A22F42C9CBF9C0090773D /* Debug */ = {

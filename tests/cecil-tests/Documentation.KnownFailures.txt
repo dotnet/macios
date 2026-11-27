@@ -4037,10 +4037,6 @@ F:LocalAuthentication.LACredentialType.SmartCardPin
 F:LocalAuthentication.LAPolicy.DeviceOwnerAuthenticationWithBiometricsOrWatch
 F:LocalAuthentication.LAPolicy.DeviceOwnerAuthenticationWithWatch
 F:LocalAuthentication.LAPolicy.DeviceOwnerAuthenticationWithWristDetection
-F:LocalAuthentication.LARightState.Authorized
-F:LocalAuthentication.LARightState.Authorizing
-F:LocalAuthentication.LARightState.NotAuthorized
-F:LocalAuthentication.LARightState.Unknown
 F:LocalAuthentication.LAStatus.BiometryDisconnected
 F:LocalAuthentication.LAStatus.BiometryNotPaired
 F:LocalAuthentication.LAStatus.CompanionNotAvailable
@@ -56744,7 +56740,6 @@ T:LocalAuthentication.LAPublicKeyCompletionHandler
 T:LocalAuthentication.LAPublicKeyVerifyDataCompletionHandler
 T:LocalAuthentication.LARight
 T:LocalAuthentication.LARightAuthorizeCompletionHandler
-T:LocalAuthentication.LARightState
 T:LocalAuthentication.LARightStore
 T:LocalAuthentication.LARightStoreCompletionHandler
 T:LocalAuthentication.LARightStoreRemoveRightCompletionHandler

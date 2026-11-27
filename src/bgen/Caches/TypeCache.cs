@@ -169,9 +169,9 @@ public class TypeCache {
 	public TypeCache (MetadataLoadContext universe, BGenFrameworks frameworks, PlatformName currentPlatform, Assembly apiAssembly, Assembly corlibAssembly, Assembly platformAssembly, bool bindThirdPartyLibrary)
 	{
 		if (frameworks is null)
-			throw ErrorHelper.CreateError (3, currentPlatform);
+			throw ErrorHelper.CreateError (1900, currentPlatform);
 
-		Universe = universe ?? throw ErrorHelper.CreateError (4, currentPlatform);
+		Universe = universe ?? throw ErrorHelper.CreateError (1901, currentPlatform);
 
 		/* corlib */
 		System_Attribute = Lookup (corlibAssembly, "System", "Attribute");

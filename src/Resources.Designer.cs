@@ -85,38 +85,11 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Frameworks were not loaded for platform {0}..
-        /// </summary>
-        internal static string BI0003 {
-            get {
-                return ResourceManager.GetString("BI0003", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Universe was not loaded for platform {0}..
-        /// </summary>
-        internal static string BI0004 {
-            get {
-                return ResourceManager.GetString("BI0004", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Could not parse the command line argument &apos;--warnaserror&apos;: {0}.
         /// </summary>
         internal static string BI0026 {
             get {
                 return ResourceManager.GetString("BI0026", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Could not parse the command line argument &apos;{0}&apos;: {1}.
-        /// </summary>
-        internal static string BI0027 {
-            get {
-                return ResourceManager.GetString("BI0027", resourceCulture);
             }
         }
         
@@ -247,24 +220,6 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No selector specified for method `{0}.{1}&apos;.
-        /// </summary>
-        internal static string BI1009 {
-            get {
-                return ResourceManager.GetString("BI1009", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No Export attribute on {0}.{1} property.
-        /// </summary>
-        internal static string BI1010 {
-            get {
-                return ResourceManager.GetString("BI1010", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Do not know how to extract type {0}/{1} from an NSDictionary.
         /// </summary>
         internal static string BI1011 {
@@ -279,33 +234,6 @@ namespace bgen {
         internal static string BI1012 {
             get {
                 return ResourceManager.GetString("BI1012", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unsupported type for Fields (string), you probably meant NSString.
-        /// </summary>
-        internal static string BI1013 {
-            get {
-                return ResourceManager.GetString("BI1013", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unsupported type for Fields: {0} for &apos;{1}&apos;..
-        /// </summary>
-        internal static string BI1014 {
-            get {
-                return ResourceManager.GetString("BI1014", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to In class {0} You specified the Events property, but did not bind those to names with Delegates.
-        /// </summary>
-        internal static string BI1015 {
-            get {
-                return ResourceManager.GetString("BI1015", resourceCulture);
             }
         }
         
@@ -360,15 +288,6 @@ namespace bgen {
         internal static string BI1021 {
             get {
                 return ResourceManager.GetString("BI1021", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Model classes can not be categories.
-        /// </summary>
-        internal static string BI1022 {
-            get {
-                return ResourceManager.GetString("BI1022", resourceCulture);
             }
         }
         
@@ -468,24 +387,6 @@ namespace bgen {
         internal static string BI1033 {
             get {
                 return ResourceManager.GetString("BI1033", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The property {0} on class {1} is hiding a property from a parent class {2} but the selectors do not match..
-        /// </summary>
-        internal static string BI1035 {
-            get {
-                return ResourceManager.GetString("BI1035", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The last parameter in the method &apos;{0}.{1}&apos; must be a delegate (it&apos;s &apos;{2}&apos;)..
-        /// </summary>
-        internal static string BI1036 {
-            get {
-                return ResourceManager.GetString("BI1036", resourceCulture);
             }
         }
         
@@ -1206,6 +1107,105 @@ namespace bgen {
         internal static string BI1129 {
             get {
                 return ResourceManager.GetString("BI1129", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frameworks were not loaded for platform {0}..
+        /// </summary>
+        internal static string BI1900 {
+            get {
+                return ResourceManager.GetString("BI1900", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Universe was not loaded for platform {0}..
+        /// </summary>
+        internal static string BI1901 {
+            get {
+                return ResourceManager.GetString("BI1901", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not parse the command line argument &apos;{0}&apos;: {1}.
+        /// </summary>
+        internal static string BI1902 {
+            get {
+                return ResourceManager.GetString("BI1902", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No selector specified for method `{0}.{1}&apos;.
+        /// </summary>
+        internal static string BI1903 {
+            get {
+                return ResourceManager.GetString("BI1903", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Export attribute on {0}.{1} property.
+        /// </summary>
+        internal static string BI1904 {
+            get {
+                return ResourceManager.GetString("BI1904", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported type for Fields (string), you probably meant NSString.
+        /// </summary>
+        internal static string BI1905 {
+            get {
+                return ResourceManager.GetString("BI1905", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported type for Fields: {0} for &apos;{1}&apos;..
+        /// </summary>
+        internal static string BI1906 {
+            get {
+                return ResourceManager.GetString("BI1906", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In class {0} You specified the Events property, but did not bind those to names with Delegates.
+        /// </summary>
+        internal static string BI1907 {
+            get {
+                return ResourceManager.GetString("BI1907", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model classes can not be categories.
+        /// </summary>
+        internal static string BI1908 {
+            get {
+                return ResourceManager.GetString("BI1908", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The property {0} on class {1} is hiding a property from a parent class {2} but the selectors do not match..
+        /// </summary>
+        internal static string BI1909 {
+            get {
+                return ResourceManager.GetString("BI1909", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The last parameter in the method &apos;{0}.{1}&apos; must be a delegate (it&apos;s &apos;{2}&apos;)..
+        /// </summary>
+        internal static string BI1910 {
+            get {
+                return ResourceManager.GetString("BI1910", resourceCulture);
             }
         }
     }

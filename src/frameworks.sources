@@ -2094,6 +2094,7 @@ MACOS_FRAMEWORKS =          \
 	ImageIO                 \
 	ImageCaptureCore	\
 	ImageKit                \
+	InputMethodKit          \
 	Intents                 \
 	IntentsUI               \
 	IOSurface 		\

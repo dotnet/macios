@@ -227,6 +227,7 @@ partial class BGenFrameworks {
 		"ImageCaptureCore",
 		"ImageIO",
 		"ImageKit",
+		"InputMethodKit",
 		"Intents",
 		"IntentsUI",
 		"IOSurface",
@@ -632,6 +633,7 @@ partial class BGenFrameworks {
 	bool? _ImageCaptureCore;
 	bool? _ImageIO;
 	bool? _ImageKit;
+	bool? _InputMethodKit;
 	bool? _Intents;
 	bool? _IntentsUI;
 	bool? _IOSurface;
@@ -812,6 +814,7 @@ partial class BGenFrameworks {
 	public bool HaveImageCaptureCore { get { if (!_ImageCaptureCore.HasValue) _ImageCaptureCore = GetValue ("ImageCaptureCore"); return _ImageCaptureCore.Value; } }
 	public bool HaveImageIO { get { if (!_ImageIO.HasValue) _ImageIO = GetValue ("ImageIO"); return _ImageIO.Value; } }
 	public bool HaveImageKit { get { if (!_ImageKit.HasValue) _ImageKit = GetValue ("ImageKit"); return _ImageKit.Value; } }
+	public bool HaveInputMethodKit { get { if (!_InputMethodKit.HasValue) _InputMethodKit = GetValue ("InputMethodKit"); return _InputMethodKit.Value; } }
 	public bool HaveIntents { get { if (!_Intents.HasValue) _Intents = GetValue ("Intents"); return _Intents.Value; } }
 	public bool HaveIntentsUI { get { if (!_IntentsUI.HasValue) _IntentsUI = GetValue ("IntentsUI"); return _IntentsUI.Value; } }
 	public bool HaveIOSurface { get { if (!_IOSurface.HasValue) _IOSurface = GetValue ("IOSurface"); return _IOSurface.Value; } }

@@ -57,12 +57,21 @@ crash reports. A report triggers a relaunch only if all of these are true:
 
 - Its `coalitionName` is `com.apple.CoreSimulator.SimDevice.<UDID>` for the
   simulator running the test.
-- Its `captureTime` is no earlier than the launch (with two seconds of
-  tolerance), and no later than two minutes after it. The header's
+- Its `captureTime` is no earlier than the start of the launch (with two
+  seconds of tolerance), and no later than 60 seconds after it. On CI,
+  this crash happened 17-24 seconds after mlaunch started. The header's
   `timestamp` isn't used, because it can be much later than the crash.
 - The crashed thread has the frames listed above, in that order.
 - The test run hasn't finished, and the test log has no `[FAIL]` or
-  `Tests run:` lines yet. A relaunch never hides a test result.
+  `Tests run:` lines yet.
+
+The last check only works when test results are sent to xharness while the
+tests run. In the wrapped XML mode used on CI, the app sends all results at
+the end of the run, so the first attempt may already have run (and failed)
+some tests when SpringBoard crashed. Those results are lost, and the tests
+run again in the second attempt. A failure that happens every time is
+reported by the second attempt, but an intermittent failure in the first
+attempt can be hidden.
 
 xharness then collects the simulator lifecycle log, stops the app, and
 launches it once more on the same (still booted) simulator, with a new
@@ -74,4 +83,4 @@ test summary. The second attempt's result is reported as usual.
 If the same crash happens in the second attempt, the test fails right away as
 crashed, with a `springboard-crash` failure in the test results. Any other
 failure, timeout, or crash isn't retried. A matching crash outside the
-two-minute window is only logged.
+60-second window is only logged.

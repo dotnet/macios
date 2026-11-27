@@ -27,7 +27,9 @@ namespace Xharness {
 	// test app then stops making progress.
 	public class SpringBoardCrashDetector {
 		public static readonly TimeSpan ClockTolerance = TimeSpan.FromSeconds (2);
-		public static readonly TimeSpan LaunchWindow = TimeSpan.FromMinutes (2);
+		// In the 19 crashes we've seen on CI, SpringBoard crashed 17-24 seconds after mlaunch started (6-9 seconds
+		// after the app launched), and mlaunch took at most 31 seconds to launch the app (in 296 launches).
+		public static readonly TimeSpan LaunchWindow = TimeSpan.FromSeconds (60);
 		public static readonly TimeSpan PollInterval = TimeSpan.FromSeconds (5);
 
 		static readonly string [] captureTimeFormats = {

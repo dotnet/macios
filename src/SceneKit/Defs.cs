@@ -642,10 +642,13 @@ namespace SceneKit {
 		Realtime = 1,
 	}
 
+	/// <summary>Enumerates the shapes of an area light.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightAreaType : long {
+		/// <summary>The light is a rectangle. This is the default.</summary>
 		Rectangle = 1,
+		/// <summary>The light is a polygon.</summary>
 		Polygon = 4,
 	}
 

@@ -334,6 +334,8 @@ namespace MonoTests.System.Net.Http {
 					}
 				} catch (Exception e) when (e is OperationCanceledException || e is IOException || e is SocketException || e is ObjectDisposedException) {
 					// The test is done, or the client closed the connection.
+				} catch (InvalidOperationException) when (serverCancellationToken.IsCancellationRequested) {
+					// The listener was stopped before the worker started.
 				}
 			});
 

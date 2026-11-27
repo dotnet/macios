@@ -9,7 +9,9 @@
 
 #nullable enable
 
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 using CoreFoundation;
 using CoreMedia;
@@ -23,6 +25,12 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	public class VTDecompressionSession : VTSession {
 		GCHandle? callbackHandle;
+		object? callbackLock; // Created lazily, because the (NativeHandle, bool) constructor must not run any other code.
+		object CallbackLock => LazyInitializer.EnsureInitialized (ref callbackLock);
+		bool invalidating;
+#if !__TVOS__
+		List<GCHandle>? multiImageCallbackHandles;
+#endif
 
 		[Preserve (Conditional = true)]
 		internal VTDecompressionSession (NativeHandle handle, bool owns) : base (handle, owns)
@@ -32,6 +40,19 @@ namespace VideoToolbox {
 		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
+#if !__TVOS__
+			List<GCHandle>? handles;
+#endif
+			lock (CallbackLock) {
+				if (invalidating)
+					return;
+				invalidating = true;
+#if !__TVOS__
+				handles = multiImageCallbackHandles;
+				multiImageCallbackHandles = null;
+#endif
+			}
+
 			if (Handle != IntPtr.Zero)
 				VTDecompressionSessionInvalidate (Handle);
 
@@ -39,6 +60,13 @@ namespace VideoToolbox {
 				callbackHandle.Value.Free ();
 				callbackHandle = null;
 			}
+
+#if !__TVOS__
+			if (handles is not null) {
+				foreach (var handle in handles)
+					handle.Free ();
+			}
+#endif
 
 			base.Dispose (disposing);
 		}
@@ -400,13 +428,15 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		unsafe static extern VTStatus VTDecompressionSessionSetMultiImageCallback (
 			IntPtr /* CM_NONNULL VTDecompressionSessionRef */ decompressionSession,
-			BlockLiteral* /* CM_NONNULL VTDecompressionOutputMultiImageCallback */ outputMultiImageCallback,
+			delegate* unmanaged<IntPtr, IntPtr, VTStatus, VTDecodeInfoFlags, IntPtr, CMTime, CMTime, void> /* CM_NONNULL VTDecompressionOutputMultiImageCallback */ outputMultiImageCallback,
 			IntPtr /* void * CM_NULLABLE */ outputMultiImageRefcon);
 
 		/// <summary>Set a callback that will be called when a single call to <see cref="DecodeFrame(CMSampleBuffer,VTDecodeFrameFlags,IntPtr,out VTDecodeInfoFlags)" /> produces multiple images.</summary>
 		/// <param name="outputMultiImageCallback">The callback that will be called when a single call to <see cref="DecodeFrame(CMSampleBuffer,VTDecodeFrameFlags,IntPtr,out VTDecodeInfoFlags)" /> produces multiple images.</param>
 		/// <param name="outputMultiImageReference">A user-provided value that is passed to the callback.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
+		/// <exception cref="ArgumentNullException"><paramref name="outputMultiImageCallback" /> is <see langword="null" />.</exception>
+		/// <remarks>Each successfully registered callback is kept alive until the session is disposed, including callbacks replaced by later calls.</remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -414,25 +444,42 @@ namespace VideoToolbox {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public unsafe VTStatus SetMultiImageCallback (VTDecompressionOutputMultiImageCallback outputMultiImageCallback, IntPtr outputMultiImageReference)
 		{
-			delegate* unmanaged<BlockLiteral*, IntPtr, IntPtr, VTStatus, VTDecodeInfoFlags, IntPtr, CMTime, CMTime, void> trampoline = &VTDecompressionOutputMultiImageCallbackBlock;
-			using var multiImageCapableOutputHandlerBlock = new BlockLiteral (trampoline, outputMultiImageCallback, typeof (VTDecompressionSession), nameof (VTDecompressionOutputMultiImageCallbackBlock));
+			if (outputMultiImageCallback is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputMultiImageCallback));
 
-			return VTDecompressionSessionSetMultiImageCallback (GetCheckedHandle (), &multiImageCapableOutputHandlerBlock, outputMultiImageReference);
+			lock (CallbackLock) {
+				if (invalidating)
+					throw new ObjectDisposedException (nameof (VTDecompressionSession));
+				var session = GetCheckedHandle ();
+				multiImageCallbackHandles ??= new List<GCHandle> ();
+				var handle = GCHandle.Alloc ((outputMultiImageCallback, outputMultiImageReference));
+				var registered = false;
+				try {
+					multiImageCallbackHandles.Add (handle);
+					var status = VTDecompressionSessionSetMultiImageCallback (session, &VTDecompressionOutputMultiImageCallbackTrampoline, GCHandle.ToIntPtr (handle));
+					registered = status == VTStatus.Ok;
+					return status;
+				} finally {
+					if (!registered) {
+						multiImageCallbackHandles.Remove (handle);
+						handle.Free ();
+					}
+				}
+			}
 		}
 
-		[UserDelegateType (typeof (VTDecompressionOutputMultiImageCallback))]
 		[UnmanagedCallersOnly]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
-		unsafe static void VTDecompressionOutputMultiImageCallbackBlock (BlockLiteral* block, IntPtr decompressionOutputMultiImageRefCon, IntPtr sourceFrameRefCon, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
+		static void VTDecompressionOutputMultiImageCallbackTrampoline (IntPtr context, IntPtr sourceFrameRefCon, VTStatus status, VTDecodeInfoFlags infoFlags, IntPtr taggedBufferGroup, CMTime presentationTimeStamp, CMTime presentationDuration)
 		{
-			var del = BlockLiteral.GetTarget<VTDecompressionOutputMultiImageCallback> ((IntPtr) block);
-			if (del is not null) {
-				var taggedBufferGroupObj = taggedBufferGroup == IntPtr.Zero ? null : new CMTaggedBufferGroup (taggedBufferGroup, owns: false);
-				del (decompressionOutputMultiImageRefCon, sourceFrameRefCon, status, infoFlags, taggedBufferGroupObj, presentationTimeStamp, presentationDuration);
-			}
+			if (GCHandle.FromIntPtr (context).Target is not ValueTuple<VTDecompressionOutputMultiImageCallback, IntPtr> callback)
+				return;
+			var (del, reference) = callback;
+			var taggedBufferGroupObj = taggedBufferGroup == IntPtr.Zero ? null : new CMTaggedBufferGroup (taggedBufferGroup, owns: false);
+			del (reference, sourceFrameRefCon, status, infoFlags, taggedBufferGroupObj, presentationTimeStamp, presentationDuration);
 		}
 
 		/// <summary>A callback for <see cref="SetMultiImageCallback" />.</summary>

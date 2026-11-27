@@ -59,11 +59,14 @@ namespace SafariServices {
 		MaximumAttemptsExceeded = 6,
 	}
 
+	/// <summary>Enumerates the errors that can occur when accessing Safari settings.</summary>
 	[NoTV, NoiOS, MacCatalyst (27, 0), Mac (27, 0)]
 	[Native]
 	[ErrorDomain ("SFSafariSettingsErrorDomain")]
 	public enum SFSafariSettingsError : long {
+		/// <summary>The app isn't allowed to access Safari settings.</summary>
 		NotAllowed,
+		/// <summary>Accessing Safari settings failed.</summary>
 		Failed,
 	}
 

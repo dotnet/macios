@@ -195,11 +195,10 @@ dotnet build -t:Run project.csproj -p:Device=<udid>
 ## StreamDeviceLog
 
 Streams the system log of an iOS device or simulator on a remote Mac to the
-caller through a named pipe, or to a file. Set
-[`Device`](build-properties.md#device) to the UDID or name of the device, and
-set exactly one of [`DeviceLogPipeName`](build-properties.md#devicelogpipename)
-(the name of the pipe) and [`DeviceLogFile`](build-properties.md#devicelogfile)
-(the path of the file).
+caller through a named pipe. Set [`Device`](build-properties.md#device) to the
+UDID or name of the device, and
+[`DeviceLogPipeName`](build-properties.md#devicelogpipename) to the name of
+the pipe.
 
 This is a long-running target. It uses the same connection and authentication
 properties as [`ConfigureMac`](#configuremac): an SSH key, then the SSH agent,
@@ -230,21 +229,6 @@ message is sent.
 ```shell
 dotnet build MyApp.csproj -f net12.0-ios -t:StreamDeviceLog -p:DeviceLogPipeName=<pipe-name> -p:Device=<udid> -p:ServerAddress=mac.example.com -p:ServerUser=remote-user
 ```
-
-When `DeviceLogFile` is set, each log line is written to the file as plain
-text instead of being sent as a message. The file is overwritten, and missing
-parent directories are created. The build keeps running until it's cancelled
-(for example with Ctrl+C) or the stream fails, so there's no `Stop` message in
-this mode:
-
-```shell
-dotnet build MyApp.csproj -f net12.0-ios -t:StreamDeviceLog -p:DeviceLogFile=device.log -p:Device=<udid> -p:ServerAddress=mac.example.com -p:ServerUser=remote-user
-```
-
-Use Ctrl+C to stop file output. On macOS, sending SIGTERM only to the
-`dotnet` process can leave the stream running in the MSBuild server, keeping
-the SSH connection open and writing to the file. Programs that need an
-explicit stop signal should use pipe mode and send `Stop` or close the pipe.
 
 Added in .NET 12.
 

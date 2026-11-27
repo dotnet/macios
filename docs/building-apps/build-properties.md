@@ -442,18 +442,11 @@ either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
 For more information about device selection, see the
 [.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).
 
-## DeviceLogFile
-
-The path of a file that [`StreamDeviceLog`](build-targets.md#streamdevicelog)
-writes the device log to, one line per log line. The file is overwritten, and
-missing parent directories are created. Set either this property or
-[`DeviceLogPipeName`](#devicelogpipename), not both.
-
 ## DeviceLogPipeName
 
 The name of the named pipe [`StreamDeviceLog`](build-targets.md#streamdevicelog)
 sends the device log to. The caller must create the pipe before starting the
-build. Set either this property or [`DeviceLogFile`](#devicelogfile), not both.
+build.
 
 ## DeviceSpecificBuild
 

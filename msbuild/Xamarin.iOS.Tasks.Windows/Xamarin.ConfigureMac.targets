@@ -87,16 +87,15 @@
 		/>
 	</Target>
 
-	<!-- Long-running target: it only returns once the caller sends Stop or closes the pipe, or (when writing to a file) the build is cancelled. See docs/building-apps/build-targets.md. -->
+	<!-- Long-running target: it only returns once the caller sends Stop or closes the pipe. See docs/building-apps/build-targets.md. -->
 	<Target Name="StreamDeviceLog">
-		<Error Condition="('$(DeviceLogPipeName)' == '' And '$(DeviceLogFile)' == '') Or ('$(DeviceLogPipeName)' != '' And '$(DeviceLogFile)' != '')" Text="Exactly one of the 'DeviceLogPipeName' and 'DeviceLogFile' properties must be set." />
+		<Error Condition="'$(DeviceLogPipeName)' == ''" Text="The 'DeviceLogPipeName' property must be set to the name of a named pipe created by the caller." />
 		<Error Condition="'$(Device)' == ''" Text="The 'Device' property must be set to the UDID or name of the device or simulator to stream the log from." />
 		<PropertyGroup>
 			<ServerSshPort Condition="'$(ServerSshPort)' == ''">22</ServerSshPort>
 		</PropertyGroup>
 		<Xamarin.Messaging.Remote.Tasks.StreamDeviceLog
 			Device="$(Device)"
-			DeviceLogFile="$(DeviceLogFile)"
 			PipeName="$(DeviceLogPipeName)"
 			RemoteBasePath="$(RemoteBasePath)"
 			RemoteDotNetRoot="$(RemoteDotNetRoot)"

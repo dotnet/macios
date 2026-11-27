@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 using CoreFoundation;
 using CoreMedia;
@@ -24,7 +25,8 @@ namespace VideoToolbox {
 	[SupportedOSPlatform ("macos")]
 	public class VTDecompressionSession : VTSession {
 		GCHandle? callbackHandle;
-		readonly object callbackLock = new object ();
+		object? callbackLock; // Created lazily, because the (NativeHandle, bool) constructor must not run any other code.
+		object CallbackLock => LazyInitializer.EnsureInitialized (ref callbackLock);
 		bool invalidating;
 #if !__TVOS__
 		List<GCHandle>? multiImageCallbackHandles;
@@ -41,7 +43,7 @@ namespace VideoToolbox {
 #if !__TVOS__
 			List<GCHandle>? handles;
 #endif
-			lock (callbackLock) {
+			lock (CallbackLock) {
 				if (invalidating)
 					return;
 				invalidating = true;
@@ -445,7 +447,7 @@ namespace VideoToolbox {
 			if (outputMultiImageCallback is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (outputMultiImageCallback));
 
-			lock (callbackLock) {
+			lock (CallbackLock) {
 				if (invalidating)
 					throw new ObjectDisposedException (nameof (VTDecompressionSession));
 				var session = GetCheckedHandle ();

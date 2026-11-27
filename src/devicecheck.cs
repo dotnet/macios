@@ -10,6 +10,7 @@
 
 namespace DeviceCheck {
 
+	/// <summary>Enumerates the errors that can occur when using DeviceCheck.</summary>
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("DCErrorDomain")]
 	[Native]
@@ -18,8 +19,11 @@ namespace DeviceCheck {
 		UnknownSystemFailure,
 		/// <summary>The DeviceCheck feature is not supported on this device.</summary>
 		FeatureUnsupported,
+		/// <summary>The input provided to the operation is invalid.</summary>
 		InvalidInput,
+		/// <summary>Using the App Attest key failed. The key may already be attested, may not be attested yet, or may have been rejected.</summary>
 		InvalidKey,
+		/// <summary>Attestation couldn't reach the App Attest service. Retry later with the same key and client data hash.</summary>
 		ServerUnavailable,
 	}
 

@@ -220,20 +220,11 @@ namespace ObjCRuntime {
 
 		internal unsafe static void* GetTaggedMemory (NSObject obj)
 		{
-			// If https://github.com/dotnet/runtime/issues/128476 is accepted and implemented,
-			// can just call that new API instead of calling ObjectiveCMarshal.CreateReferenceTrackingHandle and
-			// freeing the returned handle.
-
-#pragma warning disable CA1416 // https://github.com/dotnet/runtime/pull/131583
-			var gchandle = ObjectiveCMarshal.CreateReferenceTrackingHandle (obj, out var info);
-#pragma warning restore CA1416
-			// We only care about the tagged memory ('info'), so just free the GCHandle.
-			// We might want to request an API to just get the tagged memory at some point.
-			gchandle.Free ();
+			var tagged = ObjectiveCMarshal.GetOrCreateReferenceTrackingMemory (obj);
 			// The tagged memory pointer is guaranteed to be the same for every call to ObjectiveCMarshal.CreateReferenceTrackingHandle,
 			// and it will automatically be freed once the 'obj' is freed by the GC (in particular _once the instance is freed_,
 			// not _once the instance is collectible_, which is a very important distinction for us).
-			return Unsafe.AsPointer (ref info.GetPinnableReference ());
+			return Unsafe.AsPointer (ref tagged.GetPinnableReference ());
 		}
 
 		// See  "Toggle-ref support for CoreCLR" in coreclr-bridge.m for more information.

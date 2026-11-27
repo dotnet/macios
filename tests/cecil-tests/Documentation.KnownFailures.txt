@@ -51,8 +51,6 @@ F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
 F:AdServices.AAAttributionErrorCode.PlatformNotSupported
-F:AppClip.APActivationPayloadErrorCode.Disallowed
-F:AppClip.APActivationPayloadErrorCode.DoesNotMatch
 F:AppKit.NSApplicationPresentationOptions.DisableScreenCornerInteractions
 F:AppKit.NSAttributedStringDocumentType.DocFormat
 F:AppKit.NSAttributedStringDocumentType.Html
@@ -1335,9 +1333,6 @@ F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeNone
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeSubject
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeText
 F:AVKit.AVVideoFrameAnalysisType.AVVideoFrameAnalysisTypeVisualSearch
-F:AVRouting.AVCustomRoutingEventReason.Activate
-F:AVRouting.AVCustomRoutingEventReason.Deactivate
-F:AVRouting.AVCustomRoutingEventReason.Reactivate
 F:AVSystemRouting.AVSystemRouteEventReason.Activate
 F:AVSystemRouting.AVSystemRouteEventReason.Deactivate
 F:AVSystemRouting.AVSystemRouteLaunchMode.Application
@@ -1651,12 +1646,6 @@ F:ClassKit.CLSProgressReportingCapabilityKind.Duration
 F:ClassKit.CLSProgressReportingCapabilityKind.Percent
 F:ClassKit.CLSProgressReportingCapabilityKind.Quantity
 F:ClassKit.CLSProgressReportingCapabilityKind.Score
-F:CloudKit.CKAccountStatus.TemporarilyUnavailable
-F:CloudKit.CKErrorCode.ParticipantAlreadyInvited
-F:CloudKit.CKErrorCode.TemporarilyUnavailable
-F:CloudKit.CKRecordZoneCapabilities.ZoneWideSharing
-F:CloudKit.CKRecordZoneEncryptionScope.Record
-F:CloudKit.CKRecordZoneEncryptionScope.Zone
 F:Contacts.CNAuthorizationStatus.Limited
 F:Contacts.CNErrorCode.ChangeHistoryExpired
 F:Contacts.CNErrorCode.ChangeHistoryInvalidAnchor
@@ -2410,8 +2399,6 @@ F:CoreSpotlight.CSSuggestionKind.None
 F:CoreSpotlight.CSUserInteraction.Default
 F:CoreSpotlight.CSUserInteraction.Focus
 F:CoreSpotlight.CSUserInteraction.Select
-F:CoreTelephony.CTCellularPlanCapability.AndVoice
-F:CoreTelephony.CTCellularPlanCapability.Only
 F:CoreText.CTFontManagerError.AssetNotFound
 F:CoreText.CTFontManagerError.CancelledByUser
 F:CoreText.CTFontManagerError.DuplicatedName
@@ -2559,9 +2546,6 @@ F:CryptoTokenKit.TKTokenOperation.None
 F:CryptoTokenKit.TKTokenOperation.PerformKeyExchange
 F:CryptoTokenKit.TKTokenOperation.ReadData
 F:CryptoTokenKit.TKTokenOperation.SignData
-F:DeviceCheck.DCError.InvalidInput
-F:DeviceCheck.DCError.InvalidKey
-F:DeviceCheck.DCError.ServerUnavailable
 F:DeviceDiscoveryExtension.DDDeviceCategory.AccessorySetup
 F:DeviceDiscoveryExtension.DDDeviceCategory.DesktopComputer
 F:DeviceDiscoveryExtension.DDDeviceCategory.HiFiSpeaker
@@ -4089,9 +4073,6 @@ F:Intents.INVocabularyStringType.MediaAudiobookTitle
 F:Intents.INVocabularyStringType.MediaMusicArtistName
 F:Intents.INVocabularyStringType.MediaPlaylistTitle
 F:Intents.INVocabularyStringType.MediaShowTitle
-F:IntentsUI.INUIAddVoiceShortcutButtonStyle.Automatic
-F:IntentsUI.INUIAddVoiceShortcutButtonStyle.AutomaticOutLine
-F:iTunesLibrary.ITLibPlaylistProperty.Primary
 F:LinkPresentation.LPErrorCode.MetadataFetchCancelled
 F:LinkPresentation.LPErrorCode.MetadataFetchFailed
 F:LinkPresentation.LPErrorCode.MetadataFetchNotAllowed
@@ -4684,9 +4665,6 @@ F:Metal.MTLVisibilityResultType.Reset
 F:Metal.NSDeviceCertification.iPhonePerformanceGaming
 F:Metal.NSProcessPerformanceProfile.Default
 F:Metal.NSProcessPerformanceProfile.Sustained
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Hdr
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Linear
-F:MetalFX.MTLFXSpatialScalerColorProcessingMode.Perceptual
 F:MetalPerformanceShaders.MPSAccelerationStructureUsage.PreferCpuBuild
 F:MetalPerformanceShaders.MPSAccelerationStructureUsage.PreferGpuBuild
 F:MetalPerformanceShaders.MPSAliasingStrategy.AliasingReserved
@@ -5551,9 +5529,6 @@ F:PushToTalk.PTServiceStatus.Unavailable
 F:PushToTalk.PTTransmissionMode.FullDuplex
 F:PushToTalk.PTTransmissionMode.HalfDuplex
 F:PushToTalk.PTTransmissionMode.ListenOnly
-F:QuickLook.QLPreviewItemEditingMode.CreateCopy
-F:QuickLook.QLPreviewItemEditingMode.Disabled
-F:QuickLook.QLPreviewItemEditingMode.UpdateContents
 F:QuickLookThumbnailing.QLThumbnailError.GenerationFailed
 F:QuickLookThumbnailing.QLThumbnailError.NoCachedThumbnail
 F:QuickLookThumbnailing.QLThumbnailError.NoCloudThumbnail
@@ -5568,28 +5543,6 @@ F:QuickLookThumbnailing.QLThumbnailGenerationRequestRepresentationTypes.Thumbnai
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Icon
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.LowQualityThumbnail
 F:QuickLookThumbnailing.QLThumbnailRepresentationType.Thumbnail
-F:ReplayKit.RPPreviewViewControllerMode.Preview
-F:ReplayKit.RPPreviewViewControllerMode.Share
-F:ReplayKit.RPRecordingError.AttemptToStartInRecordingState
-F:ReplayKit.RPRecordingError.AttemptToStopNonRecording
-F:ReplayKit.RPRecordingError.BroadcastSetupFailed
-F:ReplayKit.RPRecordingError.ExportClipToUrlInProgress
-F:ReplayKit.RPRecordingError.FailedAssetWriterExportCanceled
-F:ReplayKit.RPRecordingError.FailedAssetWriterExportFailed
-F:ReplayKit.RPRecordingError.FailedAssetWriterFailedToSave
-F:ReplayKit.RPRecordingError.FailedAssetWriterInWrongState
-F:ReplayKit.RPRecordingError.FailedIncorrectTimeStamps
-F:ReplayKit.RPRecordingError.FailedNoAssetWriter
-F:ReplayKit.RPRecordingError.FailedToObtainUrl
-F:ReplayKit.RPRecordingError.FailedToProcessFirstSample
-F:ReplayKit.RPRecordingError.FailedToRemoveFile
-F:ReplayKit.RPRecordingError.FailedToStartCaptureStack
-F:ReplayKit.RPRecordingError.FilePermissions
-F:ReplayKit.RPRecordingError.InvalidParameter
-F:ReplayKit.RPRecordingError.PhotoFailure
-F:ReplayKit.RPRecordingError.RecordingInvalidSession
-F:SafariServices.SFSafariSettingsError.Failed
-F:SafariServices.SFSafariSettingsError.NotAllowed
 F:SafetyKit.SAAuthorizationStatus.Authorized
 F:SafetyKit.SAAuthorizationStatus.Denied
 F:SafetyKit.SAAuthorizationStatus.NotDetermined
@@ -5955,8 +5908,6 @@ F:SharedWithYou.SWHighlightPersistenceEventTrigger.Created
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Deleted
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Moved
 F:SharedWithYou.SWHighlightPersistenceEventTrigger.Renamed
-F:SharedWithYouCore.SWIdentifierType.Collaboration
-F:SharedWithYouCore.SWIdentifierType.Local
 F:ShazamKit.SHErrorCode.AudioDiscontinuity
 F:ShazamKit.SHErrorCode.CustomCatalogInvalid
 F:ShazamKit.SHErrorCode.CustomCatalogInvalidURL
@@ -53490,7 +53441,6 @@ T:Accounts.ACLinkedInKey
 T:AdServices.AAAttribution
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
-T:AppClip.APActivationPayloadErrorCode
 T:AppKit.DrawerShouldCloseDelegate
 T:AppKit.DrawerShouldOpenDelegate
 T:AppKit.DrawerWillResizeContentsDelegate
@@ -54783,7 +54733,6 @@ T:AVRouting.AVCustomDeviceRoute
 T:AVRouting.AVCustomRoutingActionItem
 T:AVRouting.AVCustomRoutingController
 T:AVRouting.AVCustomRoutingEvent
-T:AVRouting.AVCustomRoutingEventReason
 T:AVRouting.AVCustomRoutingPartialIP
 T:AVRouting.AVRoutingPlaybackArbiter
 T:AVSystemRouting.AVSystemRoute
@@ -55096,7 +55045,6 @@ T:CloudKit.CKQuerySubscription
 T:CloudKit.CKRecord
 T:CloudKit.CKRecordID
 T:CloudKit.CKRecordZone
-T:CloudKit.CKRecordZoneEncryptionScope
 T:CloudKit.CKRecordZoneID
 T:CloudKit.CKRecordZoneNotification
 T:CloudKit.CKRecordZonePerRecordZoneCompletionHandler
@@ -55605,7 +55553,6 @@ T:CoreSpotlight.CSSuggestionKind
 T:CoreSpotlight.CSUserInteraction
 T:CoreSpotlight.CSUserQuery
 T:CoreSpotlight.CSUserQueryContext
-T:CoreTelephony.CTCellularPlanCapability
 T:CoreTelephony.CTCellularPlanProperties
 T:CoreTelephony.CTCellularPlanProvisioning
 T:CoreTelephony.CTCellularPlanProvisioningAddPlanCompletionHandler
@@ -55701,7 +55648,6 @@ T:DataDetection.DDMatchPhoneNumber
 T:DataDetection.DDMatchPostalAddress
 T:DataDetection.DDMatchShipmentTrackingNumber
 T:DeviceCheck.DCAppAttestService
-T:DeviceCheck.DCError
 T:DeviceDiscoveryExtension.DDDevice
 T:DeviceDiscoveryExtension.DDDeviceCategory
 T:DeviceDiscoveryExtension.DDDeviceEvent
@@ -56810,7 +56756,6 @@ T:Intents.INVoiceShortcutCenter
 T:Intents.INVoiceShortcutCenterGetVoiceShortcutsHandler
 T:Intents.INVolumeResolutionResult
 T:Intents.NSExtensionContext_ShareExtension
-T:IntentsUI.INUIAddVoiceShortcutButtonStyle
 T:IntentsUI.INUIAddVoiceShortcutViewController
 T:IntentsUI.INUIEditVoiceShortcutViewController
 T:IntentsUI.INUIHostedViewContext
@@ -56836,7 +56781,6 @@ T:iTunesLibrary.ITLibMediaItemPlayStatus
 T:iTunesLibrary.ITLibMediaItemVideoInfo
 T:iTunesLibrary.ITLibPlaylist
 T:iTunesLibrary.ITLibPlaylistKind
-T:iTunesLibrary.ITLibPlaylistProperty
 T:iTunesLibrary.ITLibrary
 T:iTunesLibrary.ITLibraryNotifications
 T:iTunesLibrary.MediaItemProperty
@@ -57303,7 +57247,6 @@ T:Metal.NSDeviceCertification
 T:Metal.NSProcessInfo_NSDeviceCertification
 T:Metal.NSProcessPerformanceProfile
 T:MetalFX.MTLFXFrameInterpolatorDescriptor
-T:MetalFX.MTLFXSpatialScalerColorProcessingMode
 T:MetalFX.MTLFXSpatialScalerDescriptor
 T:MetalFX.MTLFXTemporalDenoisedScalerDescriptor
 T:MetalFX.MTLFXTemporalScalerDescriptor
@@ -58310,7 +58253,6 @@ T:QuickLook.QLEditingMode
 T:QuickLook.QLFilePreviewRequest
 T:QuickLook.QLFrame
 T:QuickLook.QLOpenUrl
-T:QuickLook.QLPreviewItemEditingMode
 T:QuickLook.QLPreviewProvider
 T:QuickLook.QLPreviewReply
 T:QuickLook.QLPreviewReplyAttachment
@@ -58343,7 +58285,6 @@ T:QuickLookUI.QLPreviewView
 T:QuickLookUI.QLPreviewViewStyle
 T:ReplayKit.NSExtensionContext_RPBroadcastExtension
 T:ReplayKit.RPBroadcastActivityController
-T:ReplayKit.RPPreviewViewControllerMode
 T:ReplayKit.RPSampleBufferType
 T:ReplayKit.RPSystemBroadcastPickerView
 T:SafariServices.SFAddToHomeScreenActivityItemGetHomeScreenWebAppInfoCallback
@@ -58364,7 +58305,6 @@ T:SafariServices.SFSafariPage
 T:SafariServices.SFSafariPageProperties
 T:SafariServices.SFSafariSettings
 T:SafariServices.SFSafariSettingsCheckAutoFillUserNamesAndPasswordsEnabledCompletionHandler
-T:SafariServices.SFSafariSettingsError
 T:SafariServices.SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler
 T:SafariServices.SFSafariSettingsOpenExtensionsSettingsCompletionHandler
 T:SafariServices.SFSafariTab
@@ -58583,7 +58523,6 @@ T:SharedWithYouCore.SWCollaborationOption
 T:SharedWithYouCore.SWCollaborationOptionsGroup
 T:SharedWithYouCore.SWCollaborationOptionsPickerGroup
 T:SharedWithYouCore.SWCollaborationShareOptions
-T:SharedWithYouCore.SWIdentifierType
 T:SharedWithYouCore.SWPerson
 T:SharedWithYouCore.SWPersonIdentity
 T:SharedWithYouCore.SWPersonIdentityProof

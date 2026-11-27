@@ -1,0 +1,5 @@
+<Project>
+	<ItemGroup Condition="'$(Language)' == 'C#'">
+		<Analyzer Include="$(MSBuildThisFileDirectory)..\analyzers\dotnet\cs\Microsoft.Macios.Analyzers.dll" />
+	</ItemGroup>
+</Project>

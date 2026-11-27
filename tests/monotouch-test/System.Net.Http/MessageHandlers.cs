@@ -297,116 +297,76 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void TestNSUrlSessionTimeoutExceptionWhileStreamingContent ()
 		{
-			if (!HttpListener.IsSupported) {
-				Assert.Inconclusive ("HttpListener is not supported");
-			}
-
-			// HTPP listener config
-			IPEndPoint httpListenerEndPoint = null;
-			var serverLaunchedSemaphore = new SemaphoreSlim (0, 1);
 			const int expectedHttpResponseContentLength = 10;
 
+			// Use a TcpListener instead of an HttpListener, because adding a prefix to an HttpListener does a DNS lookup
+			// of the machine's host name (System.Net.ServiceNameStore.BuildServiceNames), which takes 5 seconds on the CI bots.
 			var serverCancellationTokenSource = new CancellationTokenSource ();
 			var serverCancellationToken = serverCancellationTokenSource.Token;
-
+			var listener = new TcpListener (IPAddress.Loopback, 0);
+			listener.Start ();
+			var port = ((IPEndPoint) listener.LocalEndpoint).Port;
 
 			// NSUrlSession config
 			var config = NSUrlSessionConfiguration.DefaultSessionConfiguration;
 			config.TimeoutIntervalForResource = 3;
 
 			Task.Run (async () => {
-				// Trying to bing a HttpListener to the first available port
-				// To avoid race condition, we cannot list available ports, then decide to bind to one of them
-				HttpListener httpListener = null;
-
-				// IANA suggested range for dynamic or private ports
-				const int MinPort = 49215;
-				const int MaxPort = 65535;
-
-				int listeningPort = -1;
-				for (var port = MinPort; port < MaxPort; port++) {
-					httpListener = new HttpListener ();
-					httpListener.Prefixes.Add ($"http://*:{port}/");
-					try {
-						httpListener.Start ();
-						listeningPort = port;
-						break;
-					} catch {
-						// nothing to do here -- the listener disposes itself when Start throws
-					}
-				}
-
-				if (httpListener is null) {
-					return;
-				}
-
-				httpListenerEndPoint = new IPEndPoint (IPAddress.Any, listeningPort);
-
-				serverLaunchedSemaphore.Release ();
-
 				try {
 					while (true) {
-						var contextTask = httpListener.GetContextAsync ();
-						Task.WaitAny (
-							new Task [] { contextTask },
-							serverCancellationToken);
-
-						var context = contextTask.Result;
-						var request = context.Request;
-						var response = context.Response;
-
-						// Construct a response.
-						response.ContentType = "application/octet-stream";
-						response.StatusCode = 200;
-
-						try {
-							// Dripping response blocks, with increasing interval
-							using (var output = response.OutputStream) {
-								for (var i = 0; i < expectedHttpResponseContentLength; i++) {
-									serverCancellationToken.ThrowIfCancellationRequested ();
-
-									await output.WriteAsync (new byte [] { 0x42 });
-									output.Flush ();
-
-									await Task.Delay (TimeSpan.FromSeconds (i));
-								}
+						using var client = await listener.AcceptTcpClientAsync (serverCancellationToken);
+						using var stream = client.GetStream ();
+						using (var reader = new StreamReader (stream, Encoding.ASCII, false, 1024, leaveOpen: true)) {
+							while (!string.IsNullOrEmpty (await reader.ReadLineAsync (serverCancellationToken))) {
+								// Skip the request line and headers.
 							}
-						} finally {
-							response.Close ();
+						}
+
+						var headers = $"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {expectedHttpResponseContentLength}\r\nConnection: close\r\n\r\n";
+						await stream.WriteAsync (Encoding.ASCII.GetBytes (headers), serverCancellationToken);
+
+						// Dripping response blocks, with increasing interval
+						for (var i = 0; i < expectedHttpResponseContentLength; i++) {
+							await stream.WriteAsync (new byte [] { 0x42 }, serverCancellationToken);
+							await stream.FlushAsync (serverCancellationToken);
+							await Task.Delay (TimeSpan.FromSeconds (i), serverCancellationToken);
 						}
 					}
-				} finally {
-					httpListener.Stop ();
+				} catch (Exception e) when (e is OperationCanceledException || e is IOException || e is SocketException || e is ObjectDisposedException) {
+					// The test is done, or the client closed the connection.
 				}
 			});
 
 			var timeoutExceptionWasThrown = false;
 			var timeoutExceptionShouldHaveBeenThrown = true;
+			bool done;
+			Exception ex;
 
-			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				HttpClient client = new HttpClient (new NSUrlSessionHandler (config));
+			try {
+				done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					HttpClient client = new HttpClient (new NSUrlSessionHandler (config));
 
-				await serverLaunchedSemaphore.WaitAsync ();
+					try {
+						var responseMessage = await client.GetAsync (
+														$"http://127.0.0.1:{port}/",
+														HttpCompletionOption.ResponseHeadersRead);
 
-				try {
-					var responseMessage = await client.GetAsync (
-													$"http://{httpListenerEndPoint.Address}:{httpListenerEndPoint.Port}",
-													HttpCompletionOption.ResponseHeadersRead);
+						using (var contentStream = await responseMessage.Content.ReadAsStreamAsync ())
+						using (var outputStream = new global::System.IO.MemoryStream ()) {
+							await contentStream.CopyToAsync (outputStream);
 
-					using (var contentStream = await responseMessage.Content.ReadAsStreamAsync ())
-					using (var outputStream = new global::System.IO.MemoryStream ()) {
-						await contentStream.CopyToAsync (outputStream);
-
-						timeoutExceptionWasThrown = false;
-						timeoutExceptionShouldHaveBeenThrown = outputStream.ToArray ().Length < expectedHttpResponseContentLength;
+							timeoutExceptionWasThrown = false;
+							timeoutExceptionShouldHaveBeenThrown = outputStream.ToArray ().Length < expectedHttpResponseContentLength;
+						}
+					} catch (Exception e)
+						  when (e is TimeoutException || e is HttpRequestException) {
+						timeoutExceptionWasThrown = true;
 					}
-				} catch (Exception e)
-					  when (e is TimeoutException || e is HttpRequestException) {
-					timeoutExceptionWasThrown = true;
-				}
-			}, out var ex);
-
-			serverCancellationTokenSource.Cancel ();
+				}, out ex);
+			} finally {
+				serverCancellationTokenSource.Cancel ();
+				listener.Stop ();
+			}
 
 			if (!done) {
 				Assert.Inconclusive ("Test run timedout.");

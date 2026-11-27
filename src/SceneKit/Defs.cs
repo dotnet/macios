@@ -632,10 +632,13 @@ namespace SceneKit {
 		Radiance = 1,
 	}
 
+	/// <summary>Enumerates how often a light probe updates.</summary>
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeUpdateType : long {
+		/// <summary>SceneKit never updates the probe automatically. For example, the probe was baked in the Xcode scene editor, or it uses a provided environment.</summary>
 		Never = 0,
+		/// <summary>SceneKit updates the probe automatically every frame.</summary>
 		Realtime = 1,
 	}
 

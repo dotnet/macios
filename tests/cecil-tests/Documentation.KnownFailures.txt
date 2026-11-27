@@ -5628,8 +5628,6 @@ F:Security.TlsProtocolVersion.Tls10
 F:Security.TlsProtocolVersion.Tls11
 F:Security.TlsProtocolVersion.Tls12
 F:Security.TlsProtocolVersion.Tls13
-F:SensitiveContentAnalysis.SCSensitiveContentType.GoreOrViolence
-F:SensitiveContentAnalysis.SCSensitiveContentType.SexuallyExplicit
 F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.DescriptiveInterventions
 F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.Disabled
 F:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy.SimpleInterventions
@@ -58331,7 +58329,6 @@ T:Security.TlsCipherSuite
 T:Security.TlsCipherSuiteGroup
 T:Security.TlsProtocolVersion
 T:SecurityUI.SFCertificatePresentation
-T:SensitiveContentAnalysis.SCSensitiveContentType
 T:SensitiveContentAnalysis.SCSensitivityAnalysis
 T:SensitiveContentAnalysis.SCSensitivityAnalysisPolicy
 T:SensitiveContentAnalysis.SCSensitivityAnalyzer

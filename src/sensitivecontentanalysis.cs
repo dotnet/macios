@@ -6,11 +6,14 @@ using CoreVideo;
 using VideoToolbox;
 
 namespace SensitiveContentAnalysis {
+	/// <summary>Enumerates the types of sensitive content.</summary>
 	[NoTV, iOS (27, 0), Mac (27, 0), MacCatalyst (27, 0)]
 	public enum SCSensitiveContentType {
+		/// <summary>The content is sexually explicit.</summary>
 		[Field ("SCSensitiveContentTypeSexuallyExplicit")]
 		SexuallyExplicit,
 
+		/// <summary>The content contains gore or violence.</summary>
 		[Field ("SCSensitiveContentTypeGoreOrViolence")]
 		GoreOrViolence,
 	}

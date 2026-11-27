@@ -169,10 +169,13 @@ namespace BackgroundTasks {
 		NativeHandle Constructor (string identifier, string title, string subtitle);
 	}
 
+	/// <summary>Enumerates how the scheduler handles a continued processing task request that can't run immediately.</summary>
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 	[Native]
 	public enum BGContinuedProcessingTaskRequestSubmissionStrategy : long {
+		/// <summary>Fail the submission if there is no room for the request, or if the system is under heavy load and can't run it immediately.</summary>
 		Fail,
+		/// <summary>Add the request to the back of a queue if it can't run immediately. The system cancels queued requests when the user removes the app from the app switcher.</summary>
 		Queue,
 	}
 

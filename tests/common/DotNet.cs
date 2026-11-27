@@ -169,7 +169,13 @@ namespace Xamarin.Tests {
 			return installed;
 		}
 
-		public static ExecutionResult RunTool (string tool, params string [] args) => ExecuteCommand (tool, args);
+		public static ExecutionResult RunTool (string tool, params string [] args)
+		{
+			var env = new Dictionary<string, string?> {
+				["DOTNET_ROLL_FORWARD"] = "Major",
+			};
+			return ExecuteCommand (tool, env, args);
+		}
 
 		public static string GetProperty (string projectPath, string propertyName, Dictionary<string, string>? properties = null)
 		{
